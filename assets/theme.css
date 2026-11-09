@@ -61,3 +61,12 @@ html[data-theme="light"] .mobile-toggle{background:#fffdf9;color:var(--ink)}
 @media(max-width:720px){.site-header{flex-wrap:wrap;padding-block:9px}.site-nav.open{top:100%}.brand-logo{width:48px;height:46px}.theme-toggle{margin-left:auto}.logo-hero{min-height:320px}.hero-logo{width:min(350px,100%)}} 
 @media(max-width:420px){.brand-text{font-size:.85rem}.theme-toggle{padding:7px 8px;font-size:.68rem}.dice-line{justify-content:flex-start}}
 @media print{.theme-toggle{display:none!important}.brand-logo{background:transparent}.sheet-preview{break-inside:avoid}html[data-theme="dark"] .sheet-preview{background:white;color:#111}html[data-theme="dark"] .sheet-preview *{color:#111}}
+
+/* Dados rolados com a forma geométrica da peça. */
+.die .die-face{position:relative;display:flex;align-items:center;justify-content:center;width:48px;height:46px;margin:0 auto 3px;line-height:1}
+.die .die-face .die-shape{width:44px;height:44px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linejoin:round}
+.die .die-face .die-number{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:850;color:var(--ink)}
+.die .die-symbols{color:var(--ink);font-weight:750}
+.die .die-symbols::first-letter{color:var(--accent)}
+.die .die-face .die-shape.d4{color:#267a45}.die .die-face .die-shape.d6{color:#2369bb}.die .die-face .die-shape.d10{color:#8654a4}.die .die-face .die-shape.d12{color:#c19a46}
+@media(max-width:720px){.creator-title .chip-row{max-width:100%}.creator-main .panel{overflow-wrap:anywhere}}
