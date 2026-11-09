@@ -70,3 +70,23 @@ html[data-theme="light"] .mobile-toggle{background:#fffdf9;color:var(--ink)}
 .die .die-symbols::first-letter{color:var(--accent)}
 .die .die-face .die-shape.d4{color:#267a45}.die .die-face .die-shape.d6{color:#2369bb}.die .die-face .die-shape.d10{color:#8654a4}.die .die-face .die-shape.d12{color:#c19a46}
 @media(max-width:720px){.creator-title .chip-row{max-width:100%}.creator-main .panel{overflow-wrap:anywhere}}
+
+/* Runas dos dados no Livro do Jogador, legíveis em ambos os temas */
+.faces-scroll{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.faces-scroll .faces-table{min-width:710px;table-layout:fixed}
+.faces-table thead th:first-child,.faces-table tbody th{position:sticky;left:0;background:var(--surface);z-index:1;width:66px;min-width:66px}
+.faces-table thead th:first-child{z-index:2}
+.faces-table th,.faces-table td{padding:8px 10px;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.faces-table tbody tr:nth-child(2n){background:rgba(132,119,95,.065)}
+.faces-table .symbol-face{display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:1.23rem;font-weight:800;line-height:1.4}
+.symbol-e{color:#46b675}.symbol-a{color:#75afff}.symbol-p{color:#c58be3}
+.symbol-plus,.symbol-blank{color:var(--muted)}
+html[data-theme="light"] .symbol-e{color:#267a45}
+html[data-theme="light"] .symbol-a{color:#2369bb}
+html[data-theme="light"] .symbol-p{color:#542176}
+.rune-legend{display:flex;gap:8px 17px;flex-wrap:wrap;margin:14px 0 20px;color:var(--muted);font-size:.85rem}
+.rune-legend b{font-size:1.3em;padding-right:3px}
+.source-group-title{font-size:1rem;letter-spacing:0;border-top:1px solid var(--line);padding-top:12px;margin:15px 0 4px}
+.source-group-title:first-child{border-top:0;padding-top:0}
+html[data-theme="light"] .faces-table thead th:first-child,html[data-theme="light"] .faces-table tbody th{background:#fffdfa}
+@media(max-width:720px){.faces-table th,.faces-table td{padding:8px 7px}.faces-table .symbol-face{font-size:1.1rem;gap:2px}.faces-scroll .faces-table{min-width:660px}}
