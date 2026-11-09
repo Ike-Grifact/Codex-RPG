@@ -12,7 +12,7 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD integral e histórico | [docs/srd-continuidade-v0.23.md](docs/srd-continuidade-v0.23.md) | **Continuidade v0.23 preservada integralmente** |
+| Notas normativas de continuidade | Material de desenvolvimento, sem link no portal | Revisão interna v0.24 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -20,7 +20,7 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 
 Abra **criador.html** pelo portal. Ele permite:
 
-- Nome, conceito e estilo de combate sem classe obrigatória.
+- Nome, conceito/profissão emergente, origem, Virtude e personalidade; sem estilo de combate obrigatório.
 - Distribuição de Atributos (progressão oficial de dados e custos acumulados).
 - Escolha de Conhecimentos e Práticas com custos reais.
 - Compra de Perícias iniciais documentadas, com requisitos disponíveis.
@@ -61,11 +61,11 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **SRD v0.23**, com seção 0-F. Ordem:
+A fonte normativa atual é a **continuidade interna v0.24**, com seção 0-H. Ordem:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-F do SRD v0.23.
-3. Histórico v0.21 e anteriores, onde não houver conflito.
+2. Seção 0-H da continuidade interna v0.24.
+3. Seções 0-G e 0-F e histórico anterior, onde não houver conflito.
 4. Livro de leitura, que não altera sozinho regras do SRD.
 
 **DEFINIDO** é uma regra aprovada. **EXPERIMENTAL** é um número ou procedimento de teste. **PROPOSTO** é uma alternativa não aprovada. **PENDENTE** requer decisão. O projeto não deve tratar as categorias como equivalentes.
@@ -88,6 +88,8 @@ A fonte normativa atual é o **SRD v0.23**, com seção 0-F. Ordem:
 
 **Projeto autoral Codex RPG.** Não importar mecânicas de outros sistemas de RPG sem decisão explícita.
 
-## Consolidação de 9/11/2026 — SRD v0.23
+## Consolidações de 9/11/2026 — continuidade interna v0.24
 
 O criador agora apresenta todos os Conhecimentos e Práticas pertinentes com **1d6 gratuito individual no grau 0** (Atributos continuam com 1d4), ícones poliédricos e seleção por clique. O Livro mostra as runas coloridas e a tabela **d20 reforçado G consolidada**, além da definição de **DE = Dificuldade de Êxito**, **PP = Ponto de Perícia**, **Perícia em Coragem no nível 5**, Furtividade, afinidades de peso, usos criativos dos elementos e a progressão de armadura por Grau (integridade inicial; primeira resistência no Grau 2, equipável a partir do nível 5; segunda no Grau 3 para peças aptas; imunidade específica no Grau 4 quando habilitada). A reserva de 19 XP permanece experimental.
+
+**Revisão v0.24:** leitura dos efeitos individuais de Água, Fogo, Terra, Ar, Psique, Sagrado, Trevas, Sangue, Veneno e Raio; catálogo conceitual de armas e armas de fogo; recuperação de Vida em três caixas; Ladino perde rastreamento dos inimigos ao mover-se após Furtividade; Dificuldade de Êxito expressa como Agilidade + (Destreza ÷ 2, arredondada para baixo). Profissões performáticas e efeitos futuros foram registrados apenas como propostas. O portal não oferece links para o documento interno de continuidade.
