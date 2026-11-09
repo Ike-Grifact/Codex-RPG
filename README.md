@@ -24,6 +24,8 @@ Abra **criador.html** pelo portal. Ele permite:
 - Distribuição de Atributos (progressão oficial de dados e custos acumulados).
 - Escolha de Conhecimentos e Práticas com custos reais.
 - Compra de Perícias iniciais documentadas, com requisitos disponíveis.
+- **Editor de Perícias experimentais:** definir nome, custo, requisitos e efeito; comprar o rascunho na ficha sem torná-lo regra oficial.
+- Simular manualmente **+1E ou +2E de Perícias condicionais** para comparar hipóteses de build.
 - Cálculo automático de Vida, DE, balanço corporal e Coragem.
 - Laboratório de rolagem d4/d6/d10/d12: seleção **manual** de dados mantidos, requisito de um Atributo, gasto de Coragem, afinidade entre pesos, conversão de Antecipar, classificação de acerto e Pavor.
 - Salvamento **local no navegador**, importação e exportação em JSON, impressão da ficha.
@@ -31,6 +33,8 @@ Abra **criador.html** pelo portal. Ele permite:
 **Importante:** a hipótese de criação nível 1 é **7 XP de Atributos + 7 XP de Formação + 5 XP de Perícias = 19 XP**. A distribuição inicial ainda é **EXPERIMENTAL**; não substituir decisões definitivas do SRD por suposições da ferramenta.
 
 **Limitações intencionais v0.1:** não há catálogo completo de armas, preço de Grau 7, compra de equipamento, bônus final de DE de armadura ou cálculo completo da carga da Perícia Armas. O laboratório é de estudo, não substitui todas as regras de Narrador, crítico, fonte de dano, ações conjuntas ou efeitos elementais. O custo em XP e as condições de todas as Perícias futuras ainda dependem de design.
+
+[**Guia de criação de Perícias e playtest nível 1**](docs/guia-criador-playtest.md)
 
 ## Rodar localmente
 
