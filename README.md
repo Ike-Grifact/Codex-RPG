@@ -12,7 +12,7 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD integral e histórico | [docs/srd-continuidade-v0.22.md](docs/srd-continuidade-v0.22.md) | **Continuidade v0.22 preservada integralmente** |
+| SRD integral e histórico | [docs/srd-continuidade-v0.23.md](docs/srd-continuidade-v0.23.md) | **Continuidade v0.23 preservada integralmente** |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -61,10 +61,10 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **SRD v0.22**, com seção 0-F. Ordem:
+A fonte normativa atual é o **SRD v0.23**, com seção 0-F. Ordem:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-F do SRD v0.22.
+2. Seção 0-F do SRD v0.23.
 3. Histórico v0.21 e anteriores, onde não houver conflito.
 4. Livro de leitura, que não altera sozinho regras do SRD.
 
@@ -87,3 +87,7 @@ A fonte normativa atual é o **SRD v0.22**, com seção 0-F. Ordem:
 - Aprimorar o criador para níveis mais altos, inventário, magias, fichas de inimigos e confronto de grupos.
 
 **Projeto autoral Codex RPG.** Não importar mecânicas de outros sistemas de RPG sem decisão explícita.
+
+## Consolidação de 9/11/2026 — SRD v0.23
+
+O criador agora apresenta todos os Conhecimentos e Práticas pertinentes com **1d6 gratuito individual no grau 0** (Atributos continuam com 1d4), ícones poliédricos e seleção por clique. O Livro mostra as runas coloridas e a tabela **d20 reforçado G consolidada**, além da definição de **DE = Dificuldade de Êxito**, **PP = Ponto de Perícia**, **Perícia em Coragem no nível 5**, Furtividade, afinidades de peso, usos criativos dos elementos e a progressão de armadura por Grau (integridade inicial; primeira resistência no Grau 2, equipável a partir do nível 5; segunda no Grau 3 para peças aptas; imunidade específica no Grau 4 quando habilitada). A reserva de 19 XP permanece experimental.
