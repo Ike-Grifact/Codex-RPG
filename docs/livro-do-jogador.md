@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.2 (9 de novembro de 2026)
+## Edição de leitura do portal · v0.3 (9 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A versão normativa de referência é o [SRD de Continuidade v0.23](srd-continuidade-v0.23.md), sobretudo a seção 0-G. Este livro apresenta as regras de modo didático e não consolida valores de playtest. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.24). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -46,7 +46,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE (Dificuldade de Êxito) natural:** Agilidade + piso(Destreza/2).
+**DE (Dificuldade de Êxito) defensiva natural:** **Agilidade + (Destreza ÷ 2, arredondada para baixo)**. Exemplo: Agilidade **4**, Destreza **3** → metade de Destreza é 1,5, arredondada para baixo fica **1** → **DE = 4 + 1 = 5**. A metade é arredondada antes de somar Agilidade.
 
 **Coragem:** começa com 10 e possui teto normal 10. **PP (Pontos de Perícia):** 0 nos níveis 1–4. O primeiro PP e a Perícia em Coragem são obtidos no nível 5.
 
@@ -164,6 +164,20 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
+### Recuperação natural de Vida pelas três caixas [DEFINIDO / arredondamentos PENDENTES]
+
+A Vida máxima é representada em **três caixas**. O tempo de recuperação depende de quão fundo a Vida restante caiu, e é aplicado a **cada ponto de Vida** — uma semana não devolve automaticamente toda a caixa.
+
+| Caixa em que ficou a Vida restante | Recuperação |
+|---|---|
+| **3/3**, faixa superior | **1 Vida por dia** |
+| **2/3**, faixa intermediária | **1 semana por ponto de Vida** |
+| **1/3**, faixa crítica | **intervenção médica obrigatória** e depois **1 semana por ponto de Vida** |
+
+**Exemplo com 12 Vida máxima:** com **10/12** restantes, o personagem está na faixa superior e recupera 1 Vida após 1 dia; com **7/12** restantes, está na faixa intermediária e precisa de uma semana para cada ponto; com **3/12**, está na faixa crítica, precisa de atendimento médico e recupera 1 ponto por semana.
+
+**PENDENTE:** definir fronteiras e arredondamentos para totais de Vida não divisíveis por três, a mudança de ritmo quando a Vida recuperada atravessa caixas e a intervenção de Medicina/curas especiais.
+
 ### Proteções por Grau [DEFINIDO quanto ao acesso e propriedades]
 
 | Grau da armadura | Efeitos permitidos | Acesso |
@@ -185,6 +199,29 @@ Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria
 O Aprendiz de Conjurador começa com o elemento **Psíquico**. Fogo, Água, Raio, Vento, Terra e elementos especiais dependem das habilitações próprias.
 
 **Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. Incluir o segundo elemento conscientemente com a Perícia adequada gasta **1A**, não reutilizável. A mistura por si só **não soma dados nem Êxitos**, e efeitos avançados exigem os Pontos de Perícia (PP) e as Especialidades pertinentes.
+
+### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
+
+Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Pontos de Perícia, distância, área e efeitos avançados ainda dependem dos requisitos.
+
+| Elemento | Leve / Grau 1 | Médio / Grau 2 | Pesado / Grau 3 |
+|---|---|---|---|
+| **Água** | Congelar e imobilizar por 1 rodada com Desvantagem, sem dano automático | Perfuração no crítico habilitado | Empurrar e causar dano; mantém condições menores pertinentes |
+| **Fogo** | Disparar à distância sem queimadura direta à Vida | Área reduzida e proximidade histórica de 8 m | Dano à integridade e Vida em cone, linha ou área, podendo afetar aliados |
+| **Terra** | Desvantagem por 2 rodadas | Enredar, imobilizar e espinhos que desgastam proteção | Dano, empurrar e derrubar |
+| **Ar / Vento** | Mover mais rápido, puxar/empurrar objetos | Sufocar, deslocar e derrubar | Grande área, vários alvos e possíveis danos de queda |
+| **Raio** | Pendente | Pendente | Pendente |
+
+**Elementos especiais:**
+
+- **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
+- **Sagrado:** apoiar, acalmar, purificar, recuperar Coragem. A especialização documentada permite converter um **Êxito em 1 Coragem** para si ou aliado, até uma conversão por conjuração/turno; o E gasto não conta para a DE nem para dano.
+- **Trevas:** escuridão, maldições e Pavor; técnica habilitada pode acrescentar **2 Pavor em uma rolagem**, com até dois alvos distintos sob condições ainda detalhadas no catálogo.
+- **Sangue:** manipular sangue/efeitos ligados à Vida; especialização custa **1 Vida do conjurador**, mesmo em falha, e acrescenta **1 Pavor**; um acerto pode retirar **1 Vida** de alvo com sangue, contornando integridade.
+- **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
+- **Raio:** habilitado como elemento básico, mas sem progressão autoral de efeitos individuais por Grau concluída. Não inventar atordoamento automático.
+
+**Peso elemental e físico:** Sagrado e Veneno são leves na referência; Psíquico é médio; Sangue e Trevas são pesados; elementos naturais variam conforme a forma da magia e seus dados. Isso não é a mesma coisa que carga no inventário ou afinidade automática de arma.
 
 ### Exemplos de combinação criativa em diferentes cenas
 
@@ -211,22 +248,54 @@ Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fr
 **Magia extraordinária** com d20 depende do Grau 7 e requisitos desde o nível 10. No nível 20, uma Maestria pode converter um dado de Inteligência em d20 por **2 PP**; gastar +1 PP da Especialidade Elemental pode ativar área e efeitos avançados, eventualmente afetando aliados. Uma conjuração básica sem tais efeitos pode permanecer em um alvo único.
 
 
-## VIII. Perícias e profissões emergentes
+## VIII. Armas e seus efeitos
+
+O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo V.
+
+### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
+
+| Tipo | Propriedade possível | Limite |
+|---|---|---|
+| **Cortante** | Abrir Sangramento | É uma abertura, **não** dano automático a cada turno |
+| **Perfurante** | Técnica habilitada ignora integridade e atinge Vida | Exige acerto, até 3 Vida em golpe não colossal |
+| **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
+| **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
+| **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
+
+**Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
+
+### Armas de fogo — catálogo histórico em revisão
+
+Armas de fogo dependem de **munição por calibre, carregador, disparos consumidos, recarga, alcance e recuo**. Armas suscetíveis a travamento podem travar com **Pavor predominante**, e não qualquer Pavor; limpar travamento exige Engenharia pertinente sem usar dados da própria arma. **Revólver não trava.**
+
+| Arma | Grau indicado historicamente | Características em desenvolvimento |
+|---|---|---|
+| Revólver | G2 | Não trava; Perícia básica histórica 3 XP |
+| Pistola | G3 | Carregador e travamento; Perícia básica 5 XP |
+| Metralhadora | G3 | Vários disparos/munição; alcance histórico 16 m; Perícia básica 5 XP |
+| Doze / escopeta | G3 | Cone, derrubada, não perfurante; básica histórica 5 XP |
+| Rifle | G4 | Avançada pode derrubar ou atravessar dois alvos alinhados; básica histórica 6 XP |
+| Lança-granadas | G5 histórico | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
+
+**PENDENTE:** preços finais, composições, dano, alcance e procedimentos de recarga. **A referência antiga de 3d20 do lança-granadas é incompatível com o limite atual de até dois d20 por ação de jogador comum**, devendo ser refeita. Não usar o catálogo histórico como lista de compras definitiva.
+
+## IX. Perícias e profissões emergentes
 
 Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
 
-### Furtividade, fuga e busca ativa [DEFINIDO; custo de nova ocultação PROPOSTO]
+### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
 
-Um Ladino com a Perícia pertinente pode usar **1E para fugir**, mesmo quando a ação principal não atinge a DE; outros Êxitos podem aumentar a distância ou favorecer nova ocultação. **1A** pode permitir desvencilhar e **1E** correr nas condições da Perícia.
+O Ladino com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
 
-Compara-se o resultado de **Furtividade** com a **DE defensiva de cada adversário**:
-- **DE maior que Furtividade:** esse adversário sabe a posição.
-- **DE menor que Furtividade:** esse adversário não sabe onde o Ladino está.
-- **DE igual a Furtividade:** o adversário pode realizar **busca ativa**.
+**Nova decisão:** se o Ladino **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
 
-Na busca ativa, os dados mantidos do buscador devem reproduzir **todas as faces numéricas mantidas pelo Ladino, incluindo resultados repetidos**, respeitando seu próprio limite de dados. Contra alvo realmente oculto, Furtividade serve de referência em vez da DE defensiva comum. Distância, fumaça, luz, terreno e condições podem alterar a abordagem e causar Desvantagem, sem transformar furtividade física em invisibilidade.
+**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o Ladino está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o Ladino manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
 
-**PROPOSTO, NÃO ADOTADO:** repetir a rolagem de ocultação na mesma sequência gastando 1 PP.
+**Exemplo:** se o Ladino manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
+
+**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
+
+**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência ao custo de 1 PP.
 
 Exemplos documentados de Perícias iniciais:
 
@@ -249,7 +318,7 @@ Exemplos documentados de Perícias iniciais:
 
 A lista completa ainda será desenhada pelo autor. A ferramenta de criação expõe somente as capacidades documentadas e não cria poderes inéditos.
 
-## IX. Níveis, Marcos e XP
+## X. Níveis, Marcos e XP
 
 **PP = Pontos de Perícia.** PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 5 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
 
@@ -257,6 +326,6 @@ Armas e Conjuração possuem **sete Graus de acesso**, com Grau 7 habilitando o 
 
 A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**, assim como a alternativa de 600. O orçamento final aguarda os custos do catálogo completo de Perícias e a composição do Grau 7.
 
-## X. Referência de continuidade
+## XI. Referência de continuidade
 
-O sistema ainda precisa finalizar a geometria de magias, bônus de DE, integridade de armaduras, limiares de ferimentos, classificação quantitativa de encontros e a árvore completa de Perícias. As decisões e estudos estão registrados no **[SRD v0.23](srd-continuidade-v0.23.md)**. A antiga redação do Livro v0.5 foi mantida em arquivo para comparação histórica; **não sobrescreve a seção mais recente do SRD**.
+O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, os valores de integridade, os arredondamentos de caixas de Vida, as condições de localização de Furtividade e as árvores completas de Perícias. As decisões de continuidade são mantidas em documento interno de desenvolvimento. O Livro histórico v0.5 foi preservado para comparação e não substitui decisões mais recentes.
