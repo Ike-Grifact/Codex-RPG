@@ -316,6 +316,8 @@ Exemplos documentados de Perícias iniciais:
 
 **Punhos 1 não é uma Perícia adicional de 2 XP no orçamento de Perícias:** é o **primeiro grau da Prática Punhos**, adquirido com **2 XP de Formação**, após a habilitação específica. A sequência inicial completa de Armas 1 (2 XP de Perícias) + Punhos 1 (2 XP de Formação) + Artes Marciais (1 XP de Perícias) é possível quando os requisitos estão atendidos.
 
+**Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
+
 A lista completa ainda será desenhada pelo autor. A ferramenta de criação expõe somente as capacidades documentadas e não cria poderes inéditos.
 
 ## X. Níveis, Marcos e XP
