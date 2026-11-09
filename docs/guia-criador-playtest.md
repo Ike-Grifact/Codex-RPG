@@ -1,6 +1,6 @@
 # Laboratório de Aprendizes — guia de playtest
 
-O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. Está vinculado ao [SRD de Continuidade v0.22](srd-continuidade-v0.22.md).
+O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. As regras de referência são mantidas em notas internas de continuidade; o portal não publica atalhos para esses documentos.
 
 ## Criação nível 1: orçamento experimental
 
@@ -11,18 +11,18 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 | Perícias | 5 | 5 XP iniciais definidos, porém soma com 14 históricos ainda EXPERIMENTAL |
 | **Total** | **19** | **EXPERIMENTAL** |
 
-A progressão dos dados de cada grau e seu custo acumulado são do SRD. A escolha das profissões é aberta, não existe classe obrigatória.
+Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
 
 ## O que funciona
 
 - Distribuir XP em seis Atributos, Conhecimentos, Práticas e Perícias iniciais com seus preços.
-- Ver Vida, DE natural, balanço corporal, carga parcial, Coragem e resumo da ficha.
+- Ver Vida, **Dificuldade de Êxito (DE)** natural, balanço corporal, carga parcial, Coragem e resumo da ficha. **DE = Agilidade + (Destreza ÷ 2, arredondada para baixo)**; exemplo: Agilidade 4, Destreza 3 → **DE 5**.
 - Comprar Perícias documentadas, com uma verificação conservadora dos requisitos conhecidos.
 - Criar **rascunhos de Perícias personalizadas**, de 1 a 5 XP, com nome, requisitos e efeito. Elas entram como opções na ficha, não no catálogo oficial.
 - Selecionar Atributo e fontes de dados, rolar d4/d6/d10/d12, manter manualmente dois dados (ou três mediante Coragem) e converter Antecipar.
 - Testar o bônus **condicional de +1E ou +2E** concedido por Perícias distintas mediante um seletor manual; não ultrapassar +2E por ação.
 - Aplicar afinidades entre peso do ataque (leve, médio, pesado) e balanço defensivo do alvo (leve, médio, pesado): Vantagem +1A / Desvantagem −1A.
-- Calcular DE atingida, classificação do resultado, dano básico por E e piso(P/2), e gastos de Coragem.
+- Calcular DE atingida, classificação do resultado, dano básico por Êxitos e por pares completos de Pavor mantido não anulado, e gastos de Coragem.
 - Salvar localmente no navegador, importar/exportar JSON e imprimir.
 
 ## Como desenhar uma Perícia experimental
@@ -55,7 +55,7 @@ Compare os resultados nos diferentes perfis de DE e peso. O Pavor remanescente n
 
 Ainda não há cálculo automático de críticos, dano elemental específico, armas físicas, escudos, integridade da armadura, dano à Vida, combate de grupos, condições de Saúde, alcance ou ações conjuntas. O laboratório mostra **dano básico**, não a totalidade de um combate. A capacidade de carga está parcialmente implementada e não soma o grau completo de Armas, ainda não modelado no protótipo.
 
-Bônus de múltiplas Vantagens/Desvantagens até estados absolutos permanecem PENDENTES e não são simulados automaticamente. D20 reforçado G é EXPERIMENTAL e não é dado comum do Aprendiz nível 1.
+Bônus de múltiplas Vantagens/Desvantagens até estados absolutos permanecem PENDENTES e não são simulados automaticamente. O d20 reforçado G está **DEFINIDO**, porém não é um dado comum de Aprendiz de nível 1; exige fonte extraordinária e requisitos de acesso.
 
 O laboratório é uma ferramenta para desenhar e comparar hipóteses, **não converte Perícias experimentais em regras DEFINIDAS**.
 
