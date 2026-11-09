@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.1 (9 de novembro de 2026)
+## Edição de leitura do portal · v0.2 (9 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A versão normativa de referência é o [SRD de Continuidade v0.22](srd-continuidade-v0.22.md), sobretudo a seção 0-F. Este livro apresenta as regras de modo didático e não consolida valores de playtest. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A versão normativa de referência é o [SRD de Continuidade v0.23](srd-continuidade-v0.23.md), sobretudo a seção 0-G. Este livro apresenta as regras de modo didático e não consolida valores de playtest. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -26,7 +26,7 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 | Grau | Dados de Atributo | XP acumulado | Dados de Conhecimento/Prática | XP acumulado |
 |---:|---|---:|---|---:|
-| 0 | 1d4 | 0 | 1d4 | 0 |
+| 0 | 1d4 | 0 | **1d6** | 0 |
 | 1 | 1d6 | 1 | 1d10 | 2 |
 | 2 | 2d6 | 3 | 2d10 | 8 |
 | 3 | 3d6 | 7 | 3d10 | 20 |
@@ -38,15 +38,17 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 **Práticas de referência:** Atletismo, Furtividade, Infiltração, Manufaturas, Mineração, Herborismo, Expressão, Comércio, Sobrevivência. Punhos exige habilitação própria.
 
+**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Punhos continua exigindo habilitação específica.
+
 O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
 
 **EXPERIMENTAL — orçamento de criação:** 7 XP em Base (Atributos) + 7 XP em Formação + 5 XP iniciais destinados a Perícias = **19 XP**. O gasto de 5 XP iniciais em Perícias já havia sido decidido, mas sua relação final com os 14 XP históricos ainda precisa ser confirmada. O criador de nível 1 implementa explicitamente **essa hipótese**, sem apresentá-la como oficial.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE natural:** Agilidade + piso(Destreza/2).
+**DE (Dificuldade de Êxito) natural:** Agilidade + piso(Destreza/2).
 
-**Coragem:** começa com 10 e possui teto normal 10. **PP:** 0 nos níveis 1–4.
+**Coragem:** começa com 10 e possui teto normal 10. **PP (Pontos de Perícia):** 0 nos níveis 1–4. O primeiro PP e a Perícia em Coragem são obtidos no nível 5.
 
 **Balanço corporal:** Agilidade maior que Vigor → leve; valores iguais → médio; Vigor maior que Agilidade → pesado. Equipamentos podem alterar o peso efetivo conforme carga e requisitos.
 
@@ -59,27 +61,39 @@ O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, ro
 | 1–5 | 2 | 3 |
 | 6–20 | 3 | 4 |
 
-Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Também é possível gastar 1 Coragem para elevar um passo de um dado apropriado **antes** da rolagem: d4→d6→d10→d12, normalmente uma elevação por rodada, com exceções habilitadas.
+Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem para elevar um passo permitido de um dado antes da rolagem segue d4→d6→d10→d12, em suas condições normais.
 
-A elevação de passo permite que personagens tentem tarefas fora da especialização: um guerreiro pouco treinado em estudo pode elevar seu d4 de Inteligência e arriscar uma tarefa que não domina.
+### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
-### Faces dos dados comuns — DEFINIDO
+A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica a quantidade de símbolos. Esta tabela inclui a distribuição **d20 reforçado G consolidada pelo autor em 9/11/2026**, substituindo o protótipo experimental anterior.
 
-| Face | d4 | d6 | d10 | d12 |
-|---:|---|---|---|---|
-| 1–2 | Vazio | Vazio | Vazio | Vazio |
-| 3 | P | P | P | P |
-| 4 | A+P | P | P | P |
-| 5 | — | A+P | A+P | A+P |
-| 6 | — | E | E | E |
-| 7 | — | — | 2E | 2E |
-| 8 | — | — | E+A | E+A |
-| 9 | — | — | E+A+P | E+A+P |
-| 10 | — | — | 2E+P | 2E+P |
-| 11 | — | — | — | E+2A+P |
-| 12 | — | — | — | 2P |
+**Runas e identidade cromática:** **ᛋ Êxito (E)** — verde `#267A45`; **ᚨ Antecipar (A)** — azul `#2369BB`; **ᚦ Pavor (P)** — roxo `#542176`. ○ é uma face vazia; — indica face inexistente naquele dado.
 
-O **d20 reforçado G** permanece **EXPERIMENTAL** no SRD. No nível 1 ele não faz parte das rolagens comuns.
+| Face | d4 | d6 | d10 | d12 | d20 |
+|---:|---|---|---|---|---|
+| 1 | ○ | ○ | ○ | ○ | ○ |
+| 2 | ○ | ○ | ○ | ○ | ○ |
+| 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 4 | ᚨ+ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
+| 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
+| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ+ᚨ |
+| 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | 2ᛋ+ᚨ |
+| 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | 2ᛋ+ᚨ+ᚦ |
+| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
+| 11 | — | — | — | ᛋ+2ᚨ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
+| 12 | — | — | — | 2ᚦ | 2ᚦ |
+| 13 | — | — | — | — | 2ᛋ+2ᚨ |
+| 14 | — | — | — | — | 3ᛋ+2ᚨ |
+| 15 | — | — | — | — | 4ᛋ+2ᚨ |
+| 16 | — | — | — | — | 4ᚦ |
+| 17 | — | — | — | — | 4ᛋ+2ᚨ |
+| 18 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
+| 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
+| 20 | — | — | — | — | 8ᛋ |
+
+A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 são vazias. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
+
 
 ## IV. Resolver ações
 
@@ -106,55 +120,113 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 Enquanto não houver Pavor não anulado, jogadores preservam o fluxo entre si. Inimigos gastam Pavor local para ativar ataques ou capacidades em suas oportunidades; a reserva pública do Narrador começa em 2P e tem limite 2 + número de jogadores.
 
-## V. Defesa e afinidade de peso
+## V. Defesa, Vantagem e peso
 
-O tipo de ataque e a categoria do alvo produzem **Vantagem ou Desvantagem**:
+**DE = Dificuldade de Êxito.** O tipo de ataque e o balanço do alvo produzem condições de Vantagem ou Desvantagem, conforme a situação.
 
-| Ataque \ Alvo | Leve | Médio | Pesado |
+### Condições da ação
+
+| Condição | Efeito |
+|---|---|
+| Vantagem absoluta | +1E |
+| Vantagem | +1A |
+| Normal | Nenhum |
+| Desvantagem | −1A |
+| Desvantagem absoluta | −1E |
+| Ação de Sorte | −2E |
+
+**Não confundir Vantagem com +1E**: a Vantagem comum concede **Antecipar**, não Êxito automático. Estado situacional e afinidade de peso/arma são fontes distintas e podem interagir conforme as regras; condições ambientais iguais não se acumulam livremente.
+
+### Afinidade entre peso do ataque e balanço do alvo
+
+| Ataque / Alvo | Leve | Médio | Pesado |
 |---|---|---|---|
 | **Leve** | Normal | Vantagem | Desvantagem |
 | **Médio** | Vantagem | Desvantagem | Normal |
 | **Pesado** | Desvantagem | Normal | Vantagem |
 
-**Vantagem = +1A**; **Desvantagem = −1A**; **Vantagem absoluta = +1E**; **Desvantagem absoluta = −1E**; **Ação de Sorte = −2E**. Estado situacional e afinidade de arma/peso são origens diferentes, que podem interagir. **Não confundir Vantagem com +1E**.
+O peso efetivo de cada ataque depende das **armas, Perícias e abordagem**. Um personagem não escolhe estilo obrigatório na criação. O balanço natural deriva de Agilidade e Vigor, com alterações pertinentes de equipamentos e circunstâncias.
 
-O alvo de DE alta pode superar a capacidade de um Aprendiz isolado. A coordenação de até **três participantes por ataque conjunto** é uma maneira legítima de enfrentar oponentes muito ágeis.
+### Criatividade em combate e fora dele
 
-**EXPERIMENTAL — referências para testar a criação:** DE 1–2 comum, DE 3 treinado e DE 4 excepcional nos níveis 1–5. Não aplicar como obrigação a toda criatura; a DE defensiva resulta da ficha e do equipamento.
+**No conflito**, um ataque leve pode explorar passagem estreita, um ataque pesado pode tentar deslocar um obstáculo, e o grupo pode combinar Força + Atletismo, Inteligência + Engenharia ou outros recursos pertinentes para atingir o objetivo. Uma terceira fonte depende da Perícia habilitadora.
+
+**Fora do conflito**, a mesma lógica permite construir proteções, investigar ruínas, negociar, atravessar terreno, improvisar ferramentas ou resgatar um aliado. **Nenhum exemplo concede bônus automático**; o Narrador avalia a Dificuldade de Êxito, a posição, as fontes e as consequências. O peso pode ser uma vantagem real para um objetivo e um inconveniente para outro.
+
+Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva conjunta respeita o teto 30. **EXPERIMENTAL:** referências iniciais de DE 1–2 comum, 3 treinado e 4 excepcional para Aprendizes, sem substituir a defesa calculada na ficha.
+
 
 ## VI. Dano, armadura e Vida
 
-**Dano básico após acertar:** E total + piso(P não anulado/2), ressalvadas propriedades especiais.
+**Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Pavor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Pavor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `P/2` sem mudar a matemática.
 
-**DEFINIDO:** cada Perícia pode acrescentar no máximo **+1E** nas condições previstas. O total de Êxitos adicionais originados em Perícias é **+2E por ação**, independentemente do número de Perícias elegíveis. Esses Êxitos afetam **a DE e o dano**; Êxitos dos dados ou convertidos de Antecipar não são limitados por esse teto.
+**DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
 
-A armadura **absorve primeiro sua integridade**; o excedente chega à Vida. **Erro não desgasta proteção.** Perfuração especial habilitada pode ignorar integridade ao acertar a DE. Um golpe não colossal causa no máximo **3 Vida**; as faixas exatas de perda entre 1 e 3 Vida seguem **PENDENTES**. Um colossal exige dano corporal de pelo menos **3 × Vida máxima** num único ataque após proteção.
+Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
-### Cinco categorias de armadura
+### Proteções por Grau [DEFINIDO quanto ao acesso e propriedades]
 
-- **Muito Leve:** esquiva/DE, sem integridade.
-- **Leve:** proteção pequena e DE; bônus numérico pendente.
-- **Média:** uma resistência.
-- **Pesada:** duas resistências.
-- **Extrema:** uma imunidade específica pertinente.
+| Grau da armadura | Efeitos permitidos | Acesso |
+|---|---|---|
+| **1** | Somente integridade; nenhuma resistência ou imunidade automática | Inicial, conforme requisitos da peça |
+| **2** | Primeira resistência, apenas se a armadura puder recebê-la | **Equipar somente a partir do nível 5** |
+| **3** | Segunda resistência, se o modelo comportar | Nível e requisitos específicos pendentes |
+| **4** | Imunidade específica, quando habilitada | Nível e requisitos específicos pendentes |
 
-**Valores de integridade de entrada para playtest (EXPERIMENTAL, não oficial):** Muito Leve 0, Leve 2, Média 4, Pesada 8, Extrema 12. Requerem confirmação, assim como os bônus de DE sugeridos de +2 Muito Leve e +1 Leve.
+Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau são coisas distintas. Uma armadura Média ou Pesada no Grau 1 **não começa com resistência**; a evolução depende do seu Grau e do tipo de peça. Imunidade não é universal.
 
-**Carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3). A graduação de Armas e a massa física de equipamentos devem ser registradas corretamente; os dados de composição não equivalem automaticamente à carga real. A ferramenta experimental do nível 1 não possui um catálogo completo de Armas e não calcula seu bônus por grau.
+**EXPERIMENTAL:** os valores numéricos de integridade por categoria/qualidade, bônus de DE e requisitos por peça seguem em teste. Não importar como oficiais os números históricos das tabelas v0.22.
 
-## VII. Conjuração
+**Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
 
-O Aprendiz de Conjurador possui acesso inicial ao elemento Psíquico. Elementos básicos (Fogo, Água, Raio, Vento, Terra) exigem a habilitação apropriada; Sagrado, Sangue, Trevas e Veneno possuem habilitações especiais.
 
-**Combinação elemental:** no máximo **dois elementos por magia**. A ordem determina o **principal** e o **secundário**. A inclusão do segundo elemento com Perícia pertinente consome **1A**, que não pode ser reutilizado. Misturas habilitadas podem gerar dano básico, mas efeitos extraordinários exigem PP e Especialidade Elemental.
+## VII. Conjuração, elementos e possibilidades
 
-**Resistência dupla:** metade do dano dos Êxitos; Pavor não entra no dano. **Imune apenas ao elemento principal:** metade dos Êxitos e Pavor sem dano. **Imune aos dois:** dano zero. **Vulnerabilidade corretamente explorada:** o dano dos Êxitos dobra, mas a DE não. Sagrado e Trevas possuem vulnerabilidade mútua; Psique e Veneno não possuem fraquezas elementais universais. A matriz natural completa, arredondamentos e casos mistos permanecem pendentes.
+O Aprendiz de Conjurador começa com o elemento **Psíquico**. Fogo, Água, Raio, Vento, Terra e elementos especiais dependem das habilitações próprias.
 
-Magia extraordinária com d20 pode ser desenvolvida a partir do nível 10 com o Grau 7 e requisitos. No nível 20, uma Maestria especial pode converter um dado de Inteligência em d20 por **2 PP**; gastar **+1 PP** ativa uma Especialidade Elemental habilitada com efeitos como área, atingindo aliados se presentes. A conjuração sem ativar tal Especialidade pode permanecer **alvo único** e dano elemental básico. O talento “Tecelão Arcano” foi descartado.
+**Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. Incluir o segundo elemento conscientemente com a Perícia adequada gasta **1A**, não reutilizável. A mistura por si só **não soma dados nem Êxitos**, e efeitos avançados exigem os Pontos de Perícia (PP) e as Especialidades pertinentes.
+
+### Exemplos de combinação criativa em diferentes cenas
+
+| Elementos | Durante um conflito | Fora do conflito |
+|---|---|---|
+| Fogo + Ar | Calor, fumaça ou área perigosa quando habilitada | Forja, ventilação, sinalização |
+| Água + Terra | Lama, cobertura, alterar o caminho | Irrigação, moldagem de barro, travessia |
+| Água + Ar | Névoa como elemento de ocultação situacional | Refrescar, dispersar vapor |
+| Fogo + Terra | Trabalhar obstáculos e materiais | Cerâmica, forja, transformação |
+| Raio + Água | Explorar condução, quando houver meio apropriado | Investigar mecanismos e fenômenos |
+
+São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades automáticas. O Narrador define DE, efeitos, risco, alvo, recursos, extensão, disponibilidade dos elementos e segurança de aliados. A criatividade deve incentivar **soluções dentro e fora de combate**, sem dispensar perícias e custos.
+
+### Defesas elementais [DEFINIDO / PENDENTE]
+
+- Resistência aos **dois** elementos: metade do dano dos Êxitos, Pavor não causa dano.
+- Imunidade ao **principal**, mas não ao secundário: metade dos Êxitos, sem componente de dano de Pavor.
+- Imunidade aos **dois** elementos: dano elemental zero.
+- Resistência apenas ao secundário, sem resistência ao principal: dano normal.
+- Vulnerabilidade **efetivamente explorada**: dobra o dano dos Êxitos, sem duplicar a DE.
+
+Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
+
+**Magia extraordinária** com d20 depende do Grau 7 e requisitos desde o nível 10. No nível 20, uma Maestria pode converter um dado de Inteligência em d20 por **2 PP**; gastar +1 PP da Especialidade Elemental pode ativar área e efeitos avançados, eventualmente afetando aliados. Uma conjuração básica sem tais efeitos pode permanecer em um alvo único.
+
 
 ## VIII. Perícias e profissões emergentes
 
 Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
+
+### Furtividade, fuga e busca ativa [DEFINIDO; custo de nova ocultação PROPOSTO]
+
+Um Ladino com a Perícia pertinente pode usar **1E para fugir**, mesmo quando a ação principal não atinge a DE; outros Êxitos podem aumentar a distância ou favorecer nova ocultação. **1A** pode permitir desvencilhar e **1E** correr nas condições da Perícia.
+
+Compara-se o resultado de **Furtividade** com a **DE defensiva de cada adversário**:
+- **DE maior que Furtividade:** esse adversário sabe a posição.
+- **DE menor que Furtividade:** esse adversário não sabe onde o Ladino está.
+- **DE igual a Furtividade:** o adversário pode realizar **busca ativa**.
+
+Na busca ativa, os dados mantidos do buscador devem reproduzir **todas as faces numéricas mantidas pelo Ladino, incluindo resultados repetidos**, respeitando seu próprio limite de dados. Contra alvo realmente oculto, Furtividade serve de referência em vez da DE defensiva comum. Distância, fumaça, luz, terreno e condições podem alterar a abordagem e causar Desvantagem, sem transformar furtividade física em invisibilidade.
+
+**PROPOSTO, NÃO ADOTADO:** repetir a rolagem de ocultação na mesma sequência gastando 1 PP.
 
 Exemplos documentados de Perícias iniciais:
 
@@ -179,7 +251,7 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 ## IX. Níveis, Marcos e XP
 
-PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 10 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
+**PP = Pontos de Perícia.** PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 5 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
 
 Armas e Conjuração possuem **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
 
@@ -187,4 +259,4 @@ A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**, assim como a alte
 
 ## X. Referência de continuidade
 
-O sistema ainda precisa finalizar a geometria de magias, bônus de DE, integridade de armaduras, limiares de ferimentos, classificação quantitativa de encontros e a árvore completa de Perícias. As decisões e estudos estão registrados no **[SRD v0.22](srd-continuidade-v0.22.md)**. A antiga redação do Livro v0.5 foi mantida em arquivo para comparação histórica; **não sobrescreve a seção mais recente do SRD**.
+O sistema ainda precisa finalizar a geometria de magias, bônus de DE, integridade de armaduras, limiares de ferimentos, classificação quantitativa de encontros e a árvore completa de Perícias. As decisões e estudos estão registrados no **[SRD v0.23](srd-continuidade-v0.23.md)**. A antiga redação do Livro v0.5 foi mantida em arquivo para comparação histórica; **não sobrescreve a seção mais recente do SRD**.
