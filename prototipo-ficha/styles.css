@@ -266,3 +266,12 @@ html[data-theme="light"]{
 @media(max-width:1370px){.fp-vitals{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:960px){.fp-xp-topline{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-xp-tracks{grid-template-columns:1fr}.fp-vitals{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.fp-vitals{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-progression{padding:13px}.fp-xp-highlight{padding:10px}.fp-xp-highlight>strong{font-size:23px}.fp-xp-controls{align-items:stretch}.fp-award{width:100%}.fp-xp-controls #lock-creation{width:100%}.fp-weapon-focus{align-items:start;flex-direction:column}.fp-grade-controls{flex-basis:57px}}
+
+
+/* Chave visual permanente dos cinco dados: cor ligada ao tipo, não ao bônus obtido. */
+.fp-dice-legend{display:flex;flex-basis:100%;flex-wrap:wrap;gap:7px;padding:3px 0 11px;margin-bottom:3px;border-bottom:1px solid var(--fp-stroke)}
+.fp-dice-legend .fp-die-badge{display:inline-flex;gap:6px;align-items:center;justify-content:center;
+ border:1px solid var(--fp-stroke);border-radius:7px;background:var(--fp-deep);padding:5px 9px;
+ font-size:11px;font-weight:800}
+.fp-dice-legend svg{width:26px;height:26px}
+.fp-dice-legend .fp-die-badge b{color:inherit;font-size:11px}
