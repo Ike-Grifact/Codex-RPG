@@ -11,7 +11,11 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 | Perícias | 5 | 5 XP iniciais definidos, porém soma com 14 históricos ainda EXPERIMENTAL |
 | **Total** | **19** | **EXPERIMENTAL** |
 
-Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
+Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**.
+
+**Conhecimentos:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
+
+**Práticas:** Armas, Conjuração, Atletismo, Furtividade, Artesão, Apresentação, Coleta. Punhos é especialização de Armas, com habilitação própria; não é oitava Prática. As opções Armas/Conjuração não recebem exclusividade automática no protótipo. Fichas de versões anteriores guardam fontes descontinuadas em histórico, sem transferir XP automaticamente. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
 
 ## O que funciona
 
@@ -52,6 +56,8 @@ Clique **“Registrar como rascunho”**. Ela aparecerá em uma categoria separa
 Compare os resultados nos diferentes perfis de DE e peso. O Pavor remanescente não causa automaticamente uma ativação inimiga a cada símbolo; o Narrador usa as reservas e oportunidades.
 
 ## Limitações explícitas
+
+O requisito provisório de Artes Marciais usa Armas 1 (foco Punhos) e Prática Armas grau 1; a equivalência deve ser confirmada na revisão normativa.
 
 Ainda não há cálculo automático de críticos, dano elemental específico, armas físicas, escudos, integridade da armadura, dano à Vida, combate de grupos, condições de Saúde, alcance ou ações conjuntas. O laboratório mostra **dano básico**, não a totalidade de um combate. A capacidade de carga está parcialmente implementada e não soma o grau completo de Armas, ainda não modelado no protótipo.
 
