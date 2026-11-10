@@ -383,7 +383,7 @@ function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
- const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
+ const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
   '<strong class="fp-face">'+d.face+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face))+'</span></button>').join("")+'</div>';
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
