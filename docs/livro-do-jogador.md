@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.6 (10 de novembro de 2026)
+## Edição de leitura do portal · v0.7 (10 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.27](srd-continuidade-v0.27.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.28](srd-continuidade-v0.28.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -259,7 +259,15 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 - **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
 - **Raio:** habilitado como elemento básico, mas sem progressão autoral de efeitos individuais por Grau concluída. Não inventar atordoamento automático.
 
-**Peso elemental e físico:** Sagrado e Veneno são leves na referência; Psíquico é médio; Sangue e Trevas são pesados; elementos naturais variam conforme a forma da magia e seus dados. Isso não é a mesma coisa que carga no inventário ou afinidade automática de arma.
+### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
+
+**Todos os elementos mágicos têm peso padrão Médio**, incluindo Sagrado, Veneno, Psíquico/Psique, Sangue, Trevas, Fogo, Água, Terra, Ar/Vento e Raio. **Não existe mais peso Leve ou Pesado atribuído automaticamente por tipo de elemento.** Esta decisão substitui as classificações antigas de Sagrado/Veneno Leves e Sangue/Trevas Pesados.
+
+**Existe uma Perícia que permite modificar o peso da magia durante a conjuração.** **PENDENTE:** seu nome, custo de XP, pré-requisitos, ativação e limites. Até esses detalhes serem definidos, o Livro não a oferece como compra e não concede alteração de peso gratuita.
+
+**Os efeitos de peso anteriores continuam válidos:** efeitos Leves, Médios e Pesados, afinidade com Balanço e consequências pertinentes continuam disponíveis quando a magia assume esse peso pelas regras apropriadas. A tabela de efeitos acima mantém suas aplicações condicionadas a **Grau, habilitação e custos próprios**; seus títulos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3* **não classificam o peso padrão de cada elemento** e não dão automaticamente acesso a efeitos avançados.
+
+**Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
 
 ### Exemplos de combinação criativa em diferentes cenas
 
