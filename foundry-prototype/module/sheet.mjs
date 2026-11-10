@@ -92,6 +92,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
       canComplement:allowed,contextApproved:this._opts.contextApproved,
       de:this._opts.de,situations:Object.entries(SITUATIONS).map(([id,v])=>({id,label:v.label,selected:id===this._opts.situation})),
       weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
+      attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
+      targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
       extraKeep:this._opts.extraKeep,step:this._opts.step,combatBonus:this._opts.combatBonus,
       hasCombatSkill:s.skills.includes("combate"),canExecute:plan.ok&&actor.isOwner,
       errors:plan.errors,pool:plan.pool.map(d=>({sides:d.sides,label:sourceLabel(d.group,d.key,s),icon:dieSvg(d.sides)})),
@@ -139,6 +141,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;
    if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):el.value;
+   if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
    if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;}
    this.render();return;
   }
