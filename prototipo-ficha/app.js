@@ -220,15 +220,17 @@ function renderSources(){
  for(const group of ["know","attr","practice"]){
   const html=GROUPS[group].map(([id,name])=>{
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
+   const nextCost=xpStepCost(group,id,1),canRaise=g<6&&canAfford(group,nextCost);
+   const canReduce=g>0&&!state.creationLocked&&!state.pending;
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
    return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+'">'+
     '<button type="button" class="fp-source-pick" data-action="source" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+!!flag+'" '+(state.pending?"disabled":"")+'>'+
     '<span class="fp-src-title"><span>'+esc(title)+'</span>'+(flag?'<span class="fp-flag">'+flag+'</span>':"")+'</span>'+
-    '<span class="fp-dice-list">'+dice.map(n=>'<span class="fp-die-badge">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("")+'</span></button>'+
-    '<div class="fp-grade-controls"><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" aria-label="Aumentar grau de '+esc(title)+'" '+(g>=6||state.pending?"disabled":"")+'>+</button>'+
-    '<b>'+g+'</b><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" aria-label="Reduzir grau de '+esc(title)+'" '+(g<=0||state.pending?"disabled":"")+'>−</button></div></div>';
+    '<span class="fp-dice-list">'+dice.map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("")+'</span></button>'+
+    '<div class="fp-grade-controls"><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" aria-label="Aumentar grau de '+esc(title)+'" '+(!canRaise||state.pending?"disabled":"")+'>+</button>'+
+    '<b>'+g+'</b><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" aria-label="Reduzir grau de '+esc(title)+'" '+(!canReduce?"disabled":"")+'>−</button><small class="fp-xp-step-cost">'+(g<6?'+'+nextCost+' XP':'MAX')+'</small></div></div>';
   }).join("");
   $({know:"knowledge-list",attr:"attribute-list",practice:"practice-list"}[group]).innerHTML=html;
  }
@@ -414,10 +416,22 @@ function finalize(){
  toast(s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
 function updateGrade(group,id,delta){
- if(state.pending){toast("Finalize a rolagem antes de mudar os dados.");return;}
- const p=SOURCE_PROPS[group],old=state[p][id]||0;
- state[p][id]=clamp(old+delta,0,6);
+ if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
+ const p=SOURCE_PROPS[group];if(!p||!GROUPS[group].some(x=>x[0]===id)||![-1,1].includes(delta))return;
+ const old=state[p][id]||0,next=clamp(old+delta,0,6);
+ if(next===old)return;
+ if(delta>0){
+  const cost=xpStepCost(group,id,1);
+  if(!canAfford(group,cost)){toast("XP insuficiente: este avanço custa "+cost+" XP.");return;}
+ }else{
+  if(state.creationLocked){toast("Compras consolidadas não podem ser devolvidas.");return;}
+  const tmp=structuredClone(state);tmp[p][id]=next;
+  const problem=dependentsValid(tmp);
+  if(problem){toast("Não é possível reduzir: "+problem);return;}
+ }
+ state[p][id]=next;
  render();save();
+ if(delta>0)toast("Grau "+next+" comprado por "+xpStepCost(group,id,-1)+" XP.");
 }
 function adjustResource(resource,delta){
  const max=resource==="life"?maxLife():resource==="pp"?maxPP():10;
@@ -425,10 +439,17 @@ function adjustResource(resource,delta){
 }
 function renderSkills(){
  $("skills-list").innerHTML=SKILLS.map(([id,name,detail,cost])=>{
-  const owned=state.skills.includes(id);
-  return'<div class="fp-skill '+(owned?"owned":"")+'"><div><strong>'+esc(name)+'</strong><small>'+esc(detail)+' · '+cost+' XP</small></div>'+
-   '<button type="button" data-action="skill" data-id="'+id+'" aria-pressed="'+owned+'" '+(state.pending?"disabled":"")+'>'+(owned?"Adquirida":"Ativar")+'</button></div>';
+  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
+  const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked);
+  const note=req||(!owned&&!affordable?"XP insuficiente.":"");
+  const text=owned?(state.creationLocked?"Adquirida ✓":"Desfazer"):cost===null?"PENDENTE":"Comprar · "+cost+" XP";
+  return'<div class="fp-skill '+(owned?"owned":"")+(req?" fp-skill-locked":"")+'"><div><strong>'+esc(name)+'</strong>'+
+   '<small>'+esc(detail)+'</small>'+(note?'<small class="fp-skill-req">'+esc(note)+'</small>':"")+
+   '</div><button type="button" data-action="skill" data-id="'+id+'" aria-pressed="'+owned+'" title="'+esc(note||"")+'"'+(disabled?" disabled":"")+'>'+text+'</button></div>';
  }).join("");
+ $("weapon-focus-wrap").hidden=!state.skills.includes("armas");
+ $("weapon-focus").value=state.weaponFocus;
+ $("weapon-focus").disabled=state.creationLocked||!!state.pending;
  $("convert-courage").disabled=state.level<5||state.courage<2||state.pp>=maxPP()||state.courageUsedTurn;
  $("courage-skill-message").textContent=state.level<5?"Perícia em Coragem: disponível a partir do nível 5.":state.courageUsedTurn?"Conversão já usada neste turno.":"A conversão pode ser usada uma vez por turno.";
 }
@@ -461,6 +482,8 @@ function demo(){
  s.knowledges={alquimia:1,medicina:0,protecao:1};
  s.practices={armas_conjuracao:2,atletismo:1,furtividade:1,apresentacao:2};
  s.skills=["armas","aprendiz","combinacao","combate"];
+ s.creationLocked=true;s.xpEarned=80;s.weaponFocus="medio";
+ s.xpHistory=[{at:new Date().toISOString(),amount:80,note:"XP de exemplo para testar evolução"}];
  s.courage=8;s.pp=1;s.life=maxLife(s)-1;
  s.items=[normalizeItem({name:"Espada de treinamento",type:"arma",weight:"medio",grade:1,qty:1,equipped:true,max:0,hp:0}),
   normalizeItem({name:"Armadura de demonstração",type:"armadura",weight:"alto",grade:2,qty:1,equipped:true,max:5,hp:4}),
@@ -521,8 +544,21 @@ function onClick(event){
    state.pending=null;save();render();toast("Rolagem descartada por confirmação.");
   }break;
  case "skill":{
-  if(state.pending){toast("Finalize a rolagem antes de mudar as Perícias.");return;}
-  const k=state.skills.indexOf(id);if(k>=0)state.skills.splice(k,1);else state.skills.push(id);
+  if(state.pending){toast("Finalize a rolagem antes de modificar Perícias.");return;}
+  const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
+  const existing=state.skills.indexOf(id);
+  if(existing<0){
+   const reason=skillReq(id);
+   if(reason){toast(reason);return;}
+   if(!Number.isInteger(skill[3])){toast("Custo pendente.");return;}
+   if(!canAfford("skills",skill[3])){toast("XP insuficiente: "+skill[3]+" XP necessários.");return;}
+   state.skills.push(id);toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
+  }else{
+   if(state.creationLocked){toast("Compra consolidada; não há devolução automática.");return;}
+   const tmp=structuredClone(state);tmp.skills=tmp.skills.filter(x=>x!==id);
+   const problem=dependentsValid(tmp);if(problem){toast("Outra Perícia depende desta: "+problem);return;}
+   state.skills.splice(existing,1);toast("Compra de criação desfeita.");
+  }
   if(draft.third&&!mayThird())draft.third=null;
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
   render();save();break;
