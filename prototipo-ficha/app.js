@@ -678,9 +678,19 @@ async function importFile(file){
   const isNew=raw.schema==="codex-html-playtest-v1";
   const v=isNew?raw:fromCreator(input);
   if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
-  state=normalize(v);draft=freshDraft();syncFields();render();save();
+  state=normalize(v);draft=freshDraft();viewMode=state.creationLocked?"sheet":"builder";
+  wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
   toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
  }catch(e){toast("Falha ao importar: "+e.message);}
+}
+function setWeaponFocus(selected){
+ if(state.creationLocked||state.pending)return;
+ if(!["leve","medio","pesado","distancia","Punhos"].includes(selected))return;
+ const previous=state.weaponFocus;
+ state.weaponFocus=selected;
+ const reason=dependentsValid(state);
+ if(reason){state.weaponFocus=previous;toast("Especialização bloqueada: "+reason);render();return;}
+ render();save();
 }
 function onClick(event){
  const button=event.target.closest("button");if(!button)return;
@@ -688,6 +698,11 @@ function onClick(event){
  if(!action)return;
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
+ case "wizard-next":wizardSelectStep(wizardStep+1);break;
+ case "wizard-back":wizardSelectStep(wizardStep-1);break;
+ case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
+ case "wizard-finish":wizardFinalize();break;
+ case "wizard-portrait":$("portrait-input").click();break;
  case "source":selectSource(group,source);break;
  case "grade":updateGrade(group,source,Number(delta));break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
@@ -772,6 +787,17 @@ function bind(){
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
  document.addEventListener("change",onChange);
+ document.addEventListener("input",event=>{
+  const field=event.target?.dataset?.wizardField;
+  if(viewMode!=="builder"||!["name","concept","origin","virtue","personality"].includes(field))return;
+  state[field]=String(event.target.value).slice(0,field==="name"?70:100);
+  save();
+  const heading=$("wizard-summary")?.querySelector?.(".fp-wiz-summary-top strong");
+  if(heading)heading.textContent=state.name||"Novo Aprendiz";
+ });
+ document.addEventListener("change",event=>{
+  if(event.target?.matches?.("[data-wizard-focus]"))setWeaponFocus(event.target.value);
+ });
  for(const [id,field] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
   $(id).addEventListener("input",function(){state[field]=this.value;save();});
  }
@@ -799,15 +825,7 @@ function bind(){
   state.level=next;state.creationLocked=true;
   render();save();toast("Nível "+next+" alcançado. Distribua o XP recebido conforme a campanha.");
  });
- $("weapon-focus").addEventListener("change",event=>{
-  if(state.creationLocked||state.pending){event.target.value=state.weaponFocus;return;}
-  const previous=state.weaponFocus,selected=event.target.value;
-  if(!["leve","medio","pesado","distancia","Punhos"].includes(selected))return;
-  state.weaponFocus=selected;
-  const reason=dependentsValid(state);
-  if(reason){state.weaponFocus=previous;event.target.value=previous;toast("Especialização bloqueada: "+reason);return;}
-  render();save();
- });
+ $("weapon-focus").addEventListener("change",event=>setWeaponFocus(event.target.value));
  $("theme-toggle").addEventListener("click",()=>{
   const next=document.documentElement.dataset.theme==="light"?"dark":"light";
   document.documentElement.dataset.theme=next;
@@ -815,11 +833,18 @@ function bind(){
  });
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Armas → Força → Apresentação.");
+  state=demo();draft=freshDraft();viewMode="sheet";wizardStep=4;wizardReached=4;
+  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Armas → Força → Apresentação.");
+ });
+ $("start-wizard").addEventListener("click",()=>{
+  if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
+  state=defaultState();draft=freshDraft();viewMode="builder";wizardStep=0;wizardReached=0;
+  wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
   if(!confirm("Reiniciar todos os dados deste protótipo?"))return;
-  state=defaultState();draft=freshDraft();syncFields();render();save();toast("Protótipo reiniciado.");
+  state=defaultState();draft=freshDraft();viewMode="builder";wizardStep=0;wizardReached=0;
+  wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
  $("import-trigger").addEventListener("click",()=>$("import-json").click());
@@ -830,7 +855,9 @@ function bind(){
   if(f.size>1000000||!["image/jpeg","image/png","image/webp"].includes(f.type)){toast("Use PNG, JPG ou WebP de até 1 MB.");return;}
   const reader=new FileReader();
   reader.onload=()=>{if(String(reader.result).length>1550000){toast("Imagem grande demais para o salvamento local.");return;}
-   state.portrait=String(reader.result);$("portrait-image").src=state.portrait;save();toast("Retrato atualizado.");};
+   state.portrait=String(reader.result);$("portrait-image").src=state.portrait;
+   $("portrait-trigger").classList.toggle("fp-has-portrait",true);renderWizard();
+   save();toast("Retrato atualizado.");};
   reader.readAsDataURL(f);event.target.value="";
  });
  $("add-item").addEventListener("click",()=>{
