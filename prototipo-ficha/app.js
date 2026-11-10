@@ -202,7 +202,10 @@ function syncFields(){
  $("char-level").value=state.level;
  $("portrait-image").src=state.portrait||"../assets/codex-logo.svg";
 }
-function render(){renderVitals();renderXP();renderSources();renderComposer();renderSkills();renderInventory();}
+function renderDiceLegend(){
+ $("dice-legend").innerHTML=[4,6,10,12,20].map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("");
+}
+function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();}
 function renderVitals(){
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
