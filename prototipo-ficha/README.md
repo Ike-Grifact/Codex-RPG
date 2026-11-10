@@ -12,17 +12,27 @@ Também é possível baixar o repositório e abrir `prototipo-ficha/index.html` 
 
 Esta pasta é **completamente independente** de `criador.html` e do protótipo de Foundry. A ficha usa `localStorage` sob outra chave e não altera a ficha salva no criador.
 
-## Como experimentar
+## Como experimentar — fluxo de criação
 
-1. Abra a página. Para **construir um Aprendiz**, use as setas de Grau e os botões **Comprar** nas Perícias; a ficha calcula quanto XP resta dos orçamentos experimentais **7 de Atributos + 7 de Formação + 5 de Perícias**. Não é possível comprar sem saldo.
-2. Use **Concluir criação** para consolidar as compras. Em **Criação e evolução**, registre os XP recebidos por meio de **+ Adicionar XP** e clique em **Subir nível** quando o Narrador autorizar. A progressão de XP por nível exibida é apenas uma referência de playtest, não uma regra definitiva. Subir nível não concede XP automaticamente.
-3. Alternativamente, escolha **Carregar exemplo** para observar uma ficha avançada sem preencher tudo do zero.
-4. Clique em **Armas** (Prática compartilhada) como **Base** e em **Força** como Atributo. A preparação abre automaticamente à direita (ou abaixo, no celular).
-5. Se a Perícia **Combinação de Fontes** estiver marcada, clique em **Apresentação** como terceiro componente e confirme a pertinência contextual na preparação.
-6. Confirme o teste com **Rolar dados**, depois clique nos dados que serão mantidos. Pode gastar Antecipar para anular Pavor, converter 2A em 1E ou passar uma oportunidade.
-7. Finalize a ação: os custos de Coragem aplicáveis são descontados e o último resultado fica registrado.
-8. Limpe a composição e teste **Apresentação → Força → Armas**. Os dados podem ser os mesmos, mas agora a Base é Apresentação e a finalidade da ação mudou.
-9. Use **Perícias**, **Equipamentos** e **Recursos**; troque o portrait, o tema claro/escuro e experimente salvar e carregar JSON.
+**Ao abrir uma ficha nova**, você vê o **construtor em cinco telas independentes**, não a ficha jogável de uma vez:
+
+1. **Identidade** — nome obrigatório, conceito, origem, virtude, personalidade e portrait. A logo padrão usa fundo marfim no escuro para preservar o contraste; uma imagem enviada usa corte fotográfico normal.
+2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **7 XP (EXPERIMENTAL)**.
+3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Armas ou Conjuração**; todos têm 1d6 gratuito no Grau 0, e compartilham **7 XP (EXPERIMENTAL)**.
+4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (EXPERIMENTAL)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
+5. **Revisão** — identificação, dados de combate derivados, investimento por categoria e todas as compras. O botão **Concluir e abrir a ficha** consolida a criação e mostra **somente então** a ficha jogável completa.
+
+Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíveis na trilha superior. Se sair ou atualizar o navegador, os campos e a etapa são lembrados localmente. Para voltar a uma criação nova após finalizar, use **Novo personagem**; exporte a ficha anterior antes, pois essa operação a substitui.
+
+**Na ficha completa:** experimente a composição **Armas → Força → Apresentação** e sua inversão, prepare a rolagem, escolha os dados mantidos e finalize. Inventário, Coragem, PP, XP e movimentação continuam disponíveis.
+
+**Carregar exemplo** abre diretamente uma ficha já consolidada, para testar a parte jogável sem passar pelas cinco telas. **Importar** retoma o construtor para personagens ainda em criação e abre a ficha completa para personagens com criação concluída.
+
+## Correções visuais desta versão
+
+- **Modo escuro:** a logo SVG original contém grandes áreas cinza-escuro e não pode ficar sobre fundo escuro. Um fundo marfim permanente e `object-fit: contain` foram aplicados ao emblema padrão do personagem; o pequeno logo do cabeçalho ganhou a mesma base clara. Retratos personalizados permanecem sem o fundo de emblema.
+- O criador agora usa painéis distintos por etapa e um resumo lateral de XP, progresso e estatísticas. Na conclusão, exibe a ficha integral já existente. Telas menores recebem layout responsivo.
+- A identidade cromática anterior dos dados permanece: d4 roxo, d6 azul, d10 verde, d12 cinza e d20 dourado.
 
 ## Regras respeitadas
 
