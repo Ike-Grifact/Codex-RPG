@@ -42,6 +42,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    toggleKept:CodexCharacterSheet.toggleKept,
    finalizeRoll:CodexCharacterSheet.finalizeRoll,
    addEquipment:CodexCharacterSheet.addEquipment,
+   openEquipment:CodexCharacterSheet.openEquipment,
    toggleEquip:CodexCharacterSheet.toggleEquip,
    adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
    removeEquipment:CodexCharacterSheet.removeEquipment
@@ -278,6 +279,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    name:"Novo equipamento",type:"equipment",
    system:{kind:"weapon",grade:1,quantity:1,weight:0.5,equipped:false,integrity:{value:0,max:0}}
   }]);
+ }
+ static async openEquipment(event,target){
+  const item=this.actor.items.get(target.dataset.id);
+  if(item)item.sheet.render({force:true});
  }
  static async toggleEquip(event,target){
   const item=this.actor.items.get(target.dataset.id);
