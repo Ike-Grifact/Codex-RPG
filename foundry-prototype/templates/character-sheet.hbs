@@ -144,7 +144,7 @@
       <div class="codex-result-dice">
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
-          {{{this.icon}}}<strong>{{this.face}}</strong><span>d{{this.sides}} · {{this.label}}</span><small>{{this.symbolsText}}</small>
+          {{{this.icon}}}<strong>{{this.face}}</strong><span>d{{this.sides}} · {{this.label}}</span><small class="codex-symbols" aria-label="{{this.symbolsText}}">{{{this.symbolsHTML}}}</small>
         </button>
       {{/each}}
       </div>
@@ -154,7 +154,7 @@
       </div>
       {{#if codex.pending.summary}}
         {{#if codex.pending.summary.ok}}
-          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong><span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span>ᛋ {{codex.pending.summary.e}} · ᚨ {{codex.pending.summary.aRemaining}} · ᚦ {{codex.pending.summary.p}}</span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
+          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong><span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
