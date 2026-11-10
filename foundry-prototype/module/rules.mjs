@@ -15,11 +15,9 @@ export const FACES={
 4:[[0,0,0],[0,0,0],[0,0,1],[0,1,1]],
 6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
-12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,2,1],[0,0,2]],
+12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
 20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
-// O d12 é intencionalmente declarado separadamente para verificar as doze faces.
-FACES[12]=[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]];
 export const GROUPS={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
 export const SITUATIONS={superior:{label:"Vantagem absoluta",e:1,a:0},advantage:{label:"Vantagem",e:0,a:1},neutral:{label:"Normal",e:0,a:0},disadvantage:{label:"Desvantagem",e:0,a:-1},inferior:{label:"Desvantagem absoluta",e:-1,a:0},luck:{label:"Ação de Sorte",e:-2,a:0}};
 export function faceSymbols(sides,face){
