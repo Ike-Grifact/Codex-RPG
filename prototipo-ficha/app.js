@@ -15,17 +15,30 @@ const FACES={
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
  20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
+const AT_COST=[0,1,3,7,15,31,55];
+const TRAIN_COST=[0,2,8,20,38,66,102];
+const CREATE_BUDGET={attr:7,training:7,skills:5}; // EXPERIMENTAL.
 const SKILLS=[
- ["armas","Armas 1","Habilita uso marcial da Prática compartilhada.",2],
- ["aprendiz","Aprendiz de Conjurador","Habilita conjurar com Psique, sem nova Prática.",2],
- ["combinacao","Combinação de Fontes","Permite propor terceira fonte pertinente à ação.",2],
- ["peritoconj","Perito Conjurador","Fontes complementares pertinentes à conjuração.",2],
- ["combate","Combate","+1 Antecipar em ação de combate pertinente.",1],
- ["marciais","Artes Marciais","Técnica de Punhos; requisitos específicos em revisão.",1],
- ["magia","Magia Única","Habilita criar magia inicial do Grau permitido.",1],
- ["fogo","Elemento: Fogo","Habilitação elemental, não concede dados extras.",1],
- ["agua","Elemento: Água","Habilitação elemental, não concede dados extras.",1],
- ["sagrado","Magia Sagrada","Capacidade de Coragem conforme requisitos.",3]
+ ["combate","Combate","+1A em combate pertinente.",1],
+ ["armas","Armas 1","Habilita uma categoria de arma, inclusive Punhos.",2],
+ ["marciais","Artes Marciais","Especialização em Punhos. Requisito provisório em playtest.",1],
+ ["montar","Montar Animal","Requer Influência grau 2.",2],
+ ["combinacao","Combinação de Fontes","Habilita propor a terceira fonte pertinente.",2],
+ ["aprendiz","Aprendiz de Conjurador","Conjuração inicial com Psique, sem segunda Prática.",2],
+ ["magia","Magia Única","Criar uma magia inicial do Grau permitido.",1],
+ ["peritoconj","Perito Conjurador","Combinação pertinente à Conjuração.",2],
+ ["improviso","Improviso Mágico","Usa elemento disponível na cena.",1],
+ ["mestre","Mestre Elementalista","Segundo elemento custa 1A; +1A em conjuração.",5],
+ ["fogo","Elemento: Fogo","Habilitação de Fogo.",1],
+ ["agua","Elemento: Água","Habilitação de Água.",1],
+ ["raio","Elemento: Raio","Habilitação de Raio.",1],
+ ["vento","Elemento: Vento","Habilitação de Vento.",1],
+ ["terra","Elemento: Terra","Habilitação de Terra.",1],
+ ["sagrado","Magia Sagrada","Recuperação de Coragem sob condições.",3],
+ ["veneno","Magia de Veneno","Penalidades sob condições.",3],
+ ["sangue","Magia de Sangue","Magia Grau 2 ainda não disponível.",3],
+ ["trevas","Magia de Trevas","Magia Grau 2 ainda não disponível.",3],
+ ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null]
 ];
 const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Alto / Pesado",1],extremo:["Extremo",2]};
 const SITUATIONS={normal:["Normal",0,0],vantagem:["Vantagem (+1A)",0,1],desvantagem:["Desvantagem (−1A)",0,-1],absoluta:["Vantagem absoluta (+1E)",1,0],desv_absoluta:["Desvantagem absoluta (−1E)",-1,0],sorte:["Ação de Sorte (−2E)",-2,0]};
@@ -37,7 +50,8 @@ const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
- level:1,attributes:{},knowledges:{},practices:{},skills:[],life:3,courage:10,pp:0,xp:0,
+ level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,
+ xpEarned:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null;
@@ -61,7 +75,13 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
- s.skills=[...new Set(Array.isArray(v.skills)?v.skills.filter(x=>SKILLS.some(y=>y[0]===x)):[])];
+  s.skills=[...new Set(Array.isArray(v.skills)?v.skills.filter(x=>SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))):[])];
+ s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
+ s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
+ s.creationLocked=!!v.creationLocked||s.level>1;
+ s.xpHistory=Array.isArray(v.xpHistory)?v.xpHistory.slice(0,60).map(x=>({
+  at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
+ })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
  s.courage=clamp(Math.floor(v.courage??10),0,10);
  s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
@@ -90,6 +110,61 @@ function save(){
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
 function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
+function xpCosts(s=state){
+ const attributes=A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0);
+ const training=K.reduce((n,[k])=>n+TRAIN_COST[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+TRAIN_COST[s.practices[k]||0],0);
+ const skills=s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0);
+ const generalSpent=Math.max(0,attributes-CREATE_BUDGET.attr)+Math.max(0,training-CREATE_BUDGET.training)+Math.max(0,skills-CREATE_BUDGET.skills);
+ return {attributes,training,skills,total:attributes+training+skills,generalSpent,free:(s.xpEarned||0)-generalSpent};
+}
+function xpStepCost(group,k,delta){
+ const table=group==="attr"?AT_COST:TRAIN_COST,field=SOURCE_PROPS[group];
+ const g=state[field][k]||0,next=clamp(g+delta,0,6);
+ return Math.max(0,table[next]-table[g]);
+}
+function canAfford(group,cost){
+ const totals=xpCosts(),cat=group==="attr"?"attributes":group==="skills"?"skills":"training";
+ const cap=group==="attr"?CREATE_BUDGET.attr:group==="skills"?CREATE_BUDGET.skills:CREATE_BUDGET.training;
+ const additional=Math.max(0,totals[cat]+cost-cap)-Math.max(0,totals[cat]-cap);
+ return cost>=0&&totals.free>=additional;
+}
+function skillReq(id,s=state){
+ const has=x=>s.skills.includes(x);
+ if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
+ if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
+  return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Prática Armas grau 1.";
+ if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
+ if(["magia","peritoconj","improviso","mestre","fogo","agua","raio","vento","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("aprendiz"))
+  return"Requer Aprendiz de Conjurador.";
+ if(id==="sangue"||id==="trevas")return"Magia Grau 2 ainda não disponível neste protótipo.";
+ return null;
+}
+function dependentsValid(testState){
+ const invalid=testState.skills.find(id=>skillReq(id,testState));
+ return invalid?skillReq(invalid,testState):null;
+}
+function movement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function renderXP(){
+ const x=xpCosts();
+ $("xp-total-spent").textContent=x.total+" XP";
+ $("xp-earned-text").textContent=(state.xpEarned||0)+" XP";
+ $("xp-free-text").textContent=(x.free<0?"−":"")+Math.abs(x.free)+" XP";
+ $("xp-free-text").classList.toggle("fp-negative",x.free<0);
+ $("build-status").textContent=state.creationLocked?"Progressão · compras permanentes":"Aprendiz · orçamento experimental";
+ $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0;
+ $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
+ $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
+ $("xp-award").disabled=!!state.pending;
+ $("xp-next-level").textContent="PENDENTE";
+ for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
+  const cap=CREATE_BUDGET[type];
+  $(id+"-caption").textContent=used+" / "+cap+" XP"+(used>cap?" · excedente de evolução":"");
+  const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
+ }
+ $("xp-feedback").textContent=x.free<0?"Saldo insuficiente: faltam "+Math.abs(x.free)+" XP. Adicione XP ou reorganize as compras ainda não consolidadas.":
+  "As compras consomem primeiro o orçamento da categoria. O excedente utiliza XP de evolução."+ (state.creationLocked?" Após a criação não há reembolso livre.":"");
+ $("char-level").value=state.level;
+}
 function deNatural(){return (state.attributes.agilidade||0)+Math.floor((state.attributes.destreza||0)/2);}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
@@ -126,7 +201,7 @@ function syncFields(){
  $("char-level").value=state.level;
  $("portrait-image").src=state.portrait||"../assets/codex-logo.svg";
 }
-function render(){renderVitals();renderSources();renderComposer();renderSkills();renderInventory();}
+function render(){renderVitals();renderXP();renderSources();renderComposer();renderSkills();renderInventory();}
 function renderVitals(){
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
@@ -134,6 +209,8 @@ function renderVitals(){
  $("pp-text").textContent=state.pp+" / "+maxPP();
  $("de-text").textContent=deNatural();$("balance-text").textContent=balance();
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
+ $("move-text").textContent=movement()+" m";
+ $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
  const ratio=lifeMaxValue?state.life/lifeMaxValue:0;
  const tier=ratio>2/3?3:ratio>1/3?2:1;
  $("life-boxes").innerHTML=[1,2,3].map(i=>'<span class="'+(i<=tier?"filled":"")+(tier===1?" critical":"")+'"></span>').join("");
