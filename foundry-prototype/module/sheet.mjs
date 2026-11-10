@@ -27,6 +27,10 @@ function initialMode(system,base){
 function printableSymbols(s){
  return (s[0]?s[0]+"ᛋ ":"")+(s[1]?s[1]+"ᚨ ":"")+(s[2]?s[2]+"ᚦ":"")||"Vazio";
 }
+function coloredSymbols(s){
+ return [["e","ᛋ",s[0]],["a","ᚨ",s[1]],["p","ᚦ",s[2]]]
+  .filter(x=>x[2]>0).map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
+}
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-character-sheet"],
@@ -111,7 +115,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const selectedCount=p.selected.length;
     ctx.codex.pending={
       dice:p.dice.map(d=>({...d,icon:dieSvg(d.sides),label:sourceLabel(d.group,d.key,s),
-        selected:p.selected.includes(d.id),symbolsText:printableSymbols(d.symbols)})),
+        selected:p.selected.includes(d.id),symbolsText:printableSymbols(d.symbols),symbolsHTML:coloredSymbols(d.symbols)})),
       selectedCount,canFinalize:summary?.ok&&actor.isOwner,
       summary,errors:summary?.errors||[],de:p.options.de,formula:p.formula,
       limit:keepLimit(s.level,p.options.extraKeep),extraKeep:p.options.extraKeep,
