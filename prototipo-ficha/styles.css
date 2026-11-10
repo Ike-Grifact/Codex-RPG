@@ -281,19 +281,19 @@ html[data-theme="light"]{
    precisa de um fundo claro próprio, mesmo quando a ficha está no modo escuro. */
 .fp-body [hidden]{display:none!important}
 .fp-brand img{
-  background:linear-gradient(145deg,#fbf3e6,#e3d1b5);
+  background:#ffffff;
   border:1px solid #bca170;
   border-radius:11px;padding:6px;object-fit:contain;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.18))
 }
 .fp-portrait:not(.fp-has-portrait){
- background:radial-gradient(circle at 42% 35%,#fcf4e8,#d6c1a0 85%);
+ background:#ffffff;
  border-color:#b69760;
 }
 .fp-portrait:not(.fp-has-portrait) img{object-fit:contain;padding:11px;filter:drop-shadow(0 4px 4px rgba(49,36,24,.16))}
 .fp-portrait.fp-has-portrait{background:#121820}
 .fp-portrait.fp-has-portrait img{object-fit:cover;padding:0;filter:none}
-html[data-theme="light"] .fp-brand img{background:linear-gradient(145deg,#fff5e5,#dfc7a5)}
+html[data-theme="light"] .fp-brand img{background:#ffffff}
 
 /* Criador por etapas — uma tela por vez, ficha integral somente ao finalizar. */
 .fp-wizard{
@@ -309,12 +309,12 @@ html[data-theme="light"] .fp-brand img{background:linear-gradient(145deg,#fff5e5
 .fp-wizard-intro h2{font:normal clamp(26px,3vw,39px)/1.12 Georgia,serif;margin:7px 0 8px;letter-spacing:-.04em}
 .fp-wizard-intro h2 em{color:var(--fp-gold);font-style:italic}
 .fp-wizard-intro p{max-width:660px;font-size:12px;line-height:1.7}
-.fp-wizard-seal{width:105px;min-width:105px;height:105px;display:flex;align-items:center;justify-content:center;flex-direction:column;
- border:1px solid color-mix(in srgb,var(--fp-gold) 65%,var(--fp-stroke));border-radius:50%;
- color:var(--fp-gold);background:radial-gradient(circle,rgba(190,154,94,.10),transparent 78%);
- transform:rotate(-9deg)}
-.fp-wizard-seal span{font-size:10px;letter-spacing:.12em}.fp-wizard-seal strong{font:24px Georgia,serif}
-.fp-wizard-seal small{font-size:10px;letter-spacing:.25em}
+.fp-wizard-logo{
+ width:118px;min-width:118px;height:112px;display:grid;place-items:center;
+ background:#ffffff;border:1px solid #b8a583;border-radius:16px;
+ padding:9px;box-shadow:0 8px 24px rgba(0,0,0,.15)
+}
+.fp-wizard-logo img{width:100%;height:100%;object-fit:contain;display:block}
 .fp-wizard-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;
  padding:0 clamp(15px,2.4vw,32px);border-bottom:1px solid var(--fp-stroke);background:var(--fp-deep)}
 .fp-wiz-nav-item{display:flex;gap:11px;align-items:center;background:transparent;color:var(--fp-muted);
@@ -340,7 +340,7 @@ html[data-theme="light"] .fp-brand img{background:linear-gradient(145deg,#fff5e5
 .fp-wiz-identity{display:grid;grid-template-columns:165px minmax(0,1fr);align-items:start;gap:22px}
 .fp-wiz-portrait{position:relative;display:grid;place-items:center;width:165px;height:176px;
  border:1px solid #ac905d;border-radius:17px;overflow:hidden;padding:12px;
- background:radial-gradient(circle at 42% 35%,#fcf4e8,#d6c1a0 85%)}
+ background:#ffffff}
 .fp-wiz-portrait img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(49,36,24,.13))}
 .fp-wiz-portrait.custom{padding:0;background:var(--fp-deep)}
 .fp-wiz-portrait.custom img{object-fit:cover;filter:none}
@@ -399,7 +399,7 @@ html[data-theme="light"] .fp-brand img{background:linear-gradient(145deg,#fff5e5
 .fp-wiz-review-hero{display:flex;gap:17px;align-items:center;padding:17px;border:1px solid var(--fp-stroke);
  border-radius:13px;background:var(--fp-deep)}
 .fp-wiz-avatar{width:99px;height:100px;display:grid;place-items:center;flex:none;border-radius:12px;
- background:radial-gradient(circle at 42% 35%,#fcf4e8,#d6c1a0);border:1px solid #b59762;padding:8px;overflow:hidden}
+ background:#ffffff;border:1px solid #b59762;padding:8px;overflow:hidden}
 .fp-wiz-avatar img{height:100%;width:100%;object-fit:contain}
 .fp-wiz-avatar img.custom{object-fit:cover}
 .fp-wiz-review-hero small{color:var(--fp-gold);font-size:10px;letter-spacing:.08em;font-weight:700}
@@ -457,7 +457,7 @@ html[data-theme="light"] .fp-brand img{background:linear-gradient(145deg,#fff5e5
  .fp-wiz-formation{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:600px){
- .fp-wizard-intro{padding:20px 15px}.fp-wizard-seal{display:none}
+ .fp-wizard-intro{padding:20px 15px}.fp-wizard-logo{width:74px;min-width:74px;height:74px;padding:6px;border-radius:12px}
  .fp-wizard-content{padding:23px 15px}
  .fp-wizard-steps{padding:0 4px}
  .fp-wiz-nav-item{padding:11px 2px;min-width:0}
