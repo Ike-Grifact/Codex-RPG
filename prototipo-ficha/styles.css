@@ -145,6 +145,8 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 .fp-roll-die .fp-die-source{font-size:9px;color:var(--fp-muted);overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis}
 .fp-roll-die .fp-symbol-line{font-size:11px;font-weight:700;display:flex;gap:4px}
 .fp-symbol-line .e{color:var(--fp-e)}.fp-symbol-line .a{color:var(--fp-a)}.fp-symbol-line .p{color:var(--fp-p)}
+/* Crítico: destaque SOMENTE da runa no símbolo da face máxima, não da face inteira. */
+.fp-roll-die .fp-symbol-line .fp-critical-glyph{color:var(--fp-gold);font-weight:850;text-shadow:0 0 2px color-mix(in srgb,var(--fp-gold) 28%,transparent)}
 .fp-outcome{margin-top:13px;padding:12px;background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:9px}
 .fp-outcome h4{font:normal 21px Georgia,serif;margin-bottom:9px}
 .fp-outcome .fp-outcome-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
