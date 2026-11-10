@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.7 (10 de novembro de 2026)
+## Edição de leitura do portal · v0.8 (10 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.28](srd-continuidade-v0.28.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.29](srd-continuidade-v0.29.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -122,13 +122,38 @@ A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 s�
 
 Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular P.
 
-### Crítico [DEFINIDO quanto à revisão documentada; bônus antigo PENDENTE]
+### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
 
-Conforme a **última revisão específica documentada no SRD (v0.20, seção 0-D.2)**, ocorre um **crítico quando todos os dados efetivamente mantidos**, no mínimo dois e incluindo pelo menos um dado de Atributo, mostram **suas próprias faces numéricas máximas**. Nessa situação, **todos os símbolos dessas faces mantidas se convertem em Êxitos, um por símbolo**. Dados descartados não contam.
+Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos** e **ao menos um dado de Atributo**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contam nem geram símbolos. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
 
-**Exemplo:** manter um d4 na face 4 e um d10 na face 10 satisfaz o gatilho (4 e 10 são os máximos de seus respectivos dados). Os símbolos dessas faces convertidos em Êxitos constituem o efeito crítico; a numeração das faces não é somada à DE. Efeitos especiais de uma arma ainda exigem **acertar a DE**, mesmo quando houve crítico.
+| Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
+|---|:---:|:---:|:---:|
+| Converter **1P próprio em 1E** | Sim | Sim | Sim |
+| Êxito adicional | — | **+1E** | **+1E** |
+| Antecipar adicional | — | **+1A** | **+1A** |
+| Recuperação de PP | **1 PP** | **2 PP** | **2 PP** |
+| Recuperação de Coragem | **1** | **2** | **2** |
+| Dobrar dano | Não | Não | **Sim** |
 
-**Divergência histórica:** uma regra mais antiga exigia apenas **dois dados mantidos em suas faces máximas** e concedia **+1E e recuperação de 1 Coragem**. A revisão posterior passou a exigir **todos os mantidos máximos**, com conversão de símbolos, e deixou a acumulação do bônus antigo **PENDENTE**. Não aplicar os dois modelos ao mesmo tempo sem nova decisão do autor.
+**Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
+
+**Exemplo:** um d6 com face **6** (1E) e um d10 com face **10** (2E + 1P), ambos mantidos, formam o crítico de dois: o resultado passa de **3E + 1P** a **4E sem Pavor**, recuperando até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
+
+**Reservas:** a Coragem individual tem teto normal 10. O máximo de PP é **0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**. Recuperação que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
+
+**Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face numérica máxima** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
+
+### Críticos dos monstros e Pavor do Narrador [DEFINIDO / alocação fina PENDENTE]
+
+O nome do recurso é sempre **Pavor (P)**; não há moeda separada chamada Pressão. Um monstro que obtém crítico usa os mesmos benefícios de conversão de símbolos, +1E, +1A e dano dobrado. **Os benefícios de recuperar PP e Coragem, porém, se convertem em Pavor para o Narrador: 1 PP = 1P e 1 Coragem = 1P.**
+
+| Crítico do monstro | Pavor gerado pelos recursos |
+|---|---:|
+| **2 mantidos máximos** | **2P** |
+| **3 mantidos máximos** | **4P** |
+| **4 mantidos máximos** | **4P** e dano dobrado |
+
+**Persistência:** o monstro mantém consigo, na **reserva local limitada por seu Grau**, o Pavor que puder conservar para a próxima rodada. A reserva pública do Narrador tem teto de **2 + número de jogadores** e saldo persistente. **O mesmo Pavor nunca pode ser registrado nas duas reservas.** O tratamento preciso dos excedentes fica **PENDENTE**, sem ultrapassar limites. O ganho por crítico não cancela automaticamente o Pavor residual dos dados nem substitui a resolução do ataque.
 
 ### Resultados e protagonismo
 
