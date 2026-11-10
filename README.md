@@ -61,11 +61,11 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é a **continuidade interna v0.25**, com seção 0-I. Ordem:
+A fonte normativa atual é a **continuidade interna v0.26**, com seção 0-J. Ordem:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-I da continuidade interna v0.25.
-3. Seções 0-H, 0-G e 0-F e histórico anterior, onde não houver conflito.
+2. Seção 0-J da continuidade interna v0.26.
+3. Seções 0-I, 0-H, 0-G e 0-F e histórico anterior, onde não houver conflito.
 4. Livro de leitura, que não altera sozinho regras do SRD.
 
 **DEFINIDO** é uma regra aprovada. **EXPERIMENTAL** é um número ou procedimento de teste. **PROPOSTO** é uma alternativa não aprovada. **PENDENTE** requer decisão. O projeto não deve tratar as categorias como equivalentes.
@@ -88,10 +88,10 @@ A fonte normativa atual é a **continuidade interna v0.25**, com seção 0-I. Or
 
 **Projeto autoral Codex RPG.** Não importar mecânicas de outros sistemas de RPG sem decisão explícita.
 
-## Consolidações de 9/11/2026 — continuidade interna v0.25
+## Consolidações de 9/11/2026 — continuidade interna v0.26
 
 O criador agora apresenta todos os Conhecimentos e Práticas pertinentes com **1d6 gratuito individual no grau 0** (Atributos continuam com 1d4), ícones poliédricos e seleção por clique. O Livro mostra as runas coloridas e a tabela **d20 reforçado G consolidada**, além da definição de **DE = Dificuldade de Êxito**, **PP = Ponto de Perícia**, **Perícia em Coragem no nível 5**, Furtividade, afinidades de peso, usos criativos dos elementos e a progressão de armadura por Grau (integridade inicial; primeira resistência no Grau 2, equipável a partir do nível 5; segunda no Grau 3 para peças aptas; imunidade específica no Grau 4 quando habilitada). A reserva de 19 XP permanece experimental.
 
 **Revisão v0.24:** leitura dos efeitos individuais de Água, Fogo, Terra, Ar, Psique, Sagrado, Trevas, Sangue, Veneno e Raio; catálogo conceitual de armas e armas de fogo; recuperação de Vida em três caixas; Ladino perde rastreamento dos inimigos ao mover-se após Furtividade; Dificuldade de Êxito expressa como Agilidade + (Destreza ÷ 2, arredondada para baixo). Profissões performáticas e efeitos futuros foram registrados apenas como propostas. O portal não oferece links para o documento interno de continuidade.
 
-**Fontes corrigidas na v0.25:** Conhecimentos = **Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição**. Práticas = **Armas, Conjuração, Atletismo, Furtividade, Artesão, Apresentação e Coleta**. Punhos permanece especialização de Armas, não uma Prática separada. Na criação experimental, dependências de Artes Marciais aguardam ratificação. Fichas antigas preservam fontes excluídas apenas como histórico, sem conversão automática.
+**Fontes consolidadas na v0.26:** Conhecimentos = **Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição**. Práticas = **Armas ou Conjuração (Prática única)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. A mesma Prática atende a ambos os usos segundo as Perícias e tem apenas um custo de Formação e uma pilha de dados. Não se paga mais 2 XP de Formação para começar a conjurar por possuir a Prática Armas; a Perícia habilitadora de magia mantém seu custo próprio. Punhos é especialização marcial. Na criação experimental, dependências de Artes Marciais aguardam ratificação. Fichas antigas migram a graduação de Conjuração para a Prática única usando provisoriamente o maior grau e preservando o registro original.
