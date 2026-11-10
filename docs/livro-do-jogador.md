@@ -153,7 +153,7 @@ O nome do recurso é sempre **Pavor (P)**; não há moeda separada chamada Press
 | **3 mantidos máximos** | **4P** |
 | **4 mantidos máximos** | **4P** e dano dobrado |
 
-**Persistência:** o monstro mantém consigo, na **reserva local limitada por seu Grau**, o Pavor que puder conservar para a próxima rodada. A reserva pública do Narrador tem teto de **2 + número de jogadores** e saldo persistente. **O mesmo Pavor nunca pode ser registrado nas duas reservas.** O tratamento preciso dos excedentes fica **PENDENTE**, sem ultrapassar limites. O ganho por crítico não cancela automaticamente o Pavor residual dos dados nem substitui a resolução do ataque.
+**Persistência:** o monstro **guarda primeiro na reserva local o Pavor que couber no teto do seu Grau**, conservando-o para a próxima rodada. **O excedente vai à reserva pública do Narrador**, respeitando seu teto de **2 + número de jogadores** e saldo persistente. Se ambas atingirem seus tetos, o excedente não pode ser armazenado. **O mesmo Pavor nunca pode ser registrado nas duas reservas.** O ganho por crítico não cancela automaticamente o Pavor residual dos dados nem substitui a resolução do ataque.
 
 ### Resultados e protagonismo
 
