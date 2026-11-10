@@ -34,6 +34,7 @@
       <p>Uma prévia visual e interativa antes de levar a experiência para o Foundry VTT.</p>
     </div>
     <div class="fp-page-tools">
+      <a class="fp-secondary" href="#progressao">XP e evolução</a>
       <span class="fp-status-pill"><span class="fp-dot"></span> Protótipo HTML independente</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
       <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
@@ -55,7 +56,7 @@
         <div class="fp-identity-top"><span class="fp-overline">REGISTRO DE PERSONAGEM</span><span class="fp-portrait-hint">A imagem é salva apenas neste navegador</span></div>
         <div class="fp-name-row">
           <label class="fp-field fp-field-hero">Nome do personagem<input id="char-name" type="text" maxlength="70" placeholder="Seu Aprendiz"></label>
-          <label class="fp-field fp-level-field">Nível <input id="char-level" type="number" min="1" max="20" value="1"></label>
+          <label class="fp-field fp-level-field">Nível <input id="char-level" type="number" min="1" max="20" value="1" readonly title="Alterar nível na área Evolução"></label>
         </div>
         <div class="fp-fields fp-fields-identity">
           <label class="fp-field">Conceito / profissão emergente<input id="char-concept" type="text" maxlength="100" placeholder="Quem pretende se tornar?"></label>
@@ -92,6 +93,37 @@
       <div class="fp-vital fp-vital-basic">
         <div class="fp-vital-label">CARGA</div><strong id="load-text">0 / 1</strong><small>Unidades Alto · fórmula em teste</small>
       </div>
+      <div class="fp-vital fp-vital-basic fp-movement-vital"><div class="fp-vital-label">DESLOCAMENTO</div><strong id="move-text">8 m</strong><small id="move-caption">8 + Agilidade + ⌊Atletismo ÷ 3⌋</small></div>
+    </section>
+
+
+    <section class="fp-panel fp-progression" id="progressao">
+      <div class="fp-panel-heading">
+        <span class="fp-panel-icon">✧</span>
+        <div><h3>Criação e evolução</h3><small>Distribua XP para construir sua profissão</small></div>
+        <span id="build-status" class="fp-tiny-tag">Aprendiz · orçamento experimental</span>
+      </div>
+      <div class="fp-xp-topline">
+        <div class="fp-xp-highlight"><small>XP INVESTIDO</small><strong id="xp-total-spent">0</strong><span>Fontes e Perícias</span></div>
+        <div class="fp-xp-highlight"><small>XP DE EVOLUÇÃO</small><strong id="xp-earned-text">0</strong><span>Recebido após criação</span></div>
+        <div class="fp-xp-highlight"><small>XP LIVRE</small><strong id="xp-free-text">0</strong><span>Além do orçamento inicial</span></div>
+        <div class="fp-xp-highlight"><small>PRÓXIMO NÍVEL</small><strong id="xp-next-level">—</strong><span>XP por nível pendente</span></div>
+      </div>
+      <div class="fp-xp-tracks">
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Atributos</b><span id="xp-attr-caption">0 / 7 XP</span></div><div class="fp-xp-meter"><span id="xp-attr-bar"></span></div></div>
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Formação</b><span id="xp-training-caption">0 / 7 XP</span></div><div class="fp-xp-meter"><span id="xp-training-bar"></span></div></div>
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Perícias</b><span id="xp-skill-caption">0 / 5 XP</span></div><div class="fp-xp-meter"><span id="xp-skill-bar"></span></div></div>
+      </div>
+      <div class="fp-xp-controls">
+        <div class="fp-award">
+          <label class="fp-field" for="xp-award-amount">XP conquistado<input id="xp-award-amount" type="number" min="1" max="9999" step="1" value="5"></label>
+          <button id="xp-award" type="button" class="fp-secondary">+ Adicionar XP</button>
+        </div>
+        <div class="fp-award"><button id="level-up" type="button" class="fp-primary-btn">↑ Subir nível</button><span class="fp-muted">Nenhum XP automático ao subir de nível.</span></div>
+        <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
+      </div>
+      <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
+      <p class="fp-footnote">Orçamento inicial de <b>7 + 7 + 5 XP</b>: <strong>EXPERIMENTAL</strong>. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, as compras não são devolvidas livremente. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
     </section>
 
     <div class="fp-workspace">
@@ -134,7 +166,8 @@
       <section class="fp-panel fp-skills-panel" id="pericias">
         <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Ative para experimentar a composição</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
         <div id="skills-list" class="fp-skills-grid"></div>
-        <p class="fp-footnote">A seleção nesta prévia não desconta XP nem substitui os requisitos definitivos de aquisição. A terceira fonte necessita de uma Perícia aplicável e confirmação contextual.</p>
+        <p class="fp-footnote">Perícias consomem XP e verificam os requisitos disponíveis. Capacidade pendente não pode ser comprada; a terceira fonte continua sujeita à pertinência da ação.</p>
+        <div class="fp-weapon-focus" id="weapon-focus-wrap" hidden><label class="fp-field">Especialização de Armas 1<select id="weapon-focus"><option value="leve">Leve</option><option value="medio">Média</option><option value="pesado">Pesada</option><option value="distancia">Distância</option><option value="Punhos">Punhos</option></select></label><small class="fp-muted">Esta escolha afeta os requisitos experimentais de Artes Marciais.</small></div>
         <div class="fp-support-actions">
           <button id="convert-courage" class="fp-secondary" type="button">Converter 2 Coragem → 1 PP</button>
           <button id="reset-turn" class="fp-secondary" type="button">Novo turno</button>
