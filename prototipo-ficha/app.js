@@ -1,7 +1,7 @@
 /* Codex RPG — protótipo HTML independente. Regras v0.26. Não afeta o criador atual. */
 (function(){
 "use strict";
-const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1";
+const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Armas ou Conjuração"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -55,13 +55,26 @@ function defaultState(){return{
  xpEarned:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],notes:"",pending:null,history:[],courageUsedTurn:false
 };}
-let state=defaultState(),draft=null,toastTimer=null;
+let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder";
+const WIZARD_STEPS=[
+ ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
+ ["Atributos","Defina suas capacidades","Distribua os XP de Atributos"],
+ ["Formação","Escolha seus caminhos","Práticas e Conhecimentos"],
+ ["Perícias","Desperte suas habilidades","Especialize sua construção"],
+ ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
+];
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false});
 function load(){
  try{const saved=localStorage.getItem(SAVE_KEY);if(saved)state=normalize(JSON.parse(saved));}catch(e){console.warn("Codex: armazenamento indisponível",e);}
  draft=freshDraft();
+ try{
+  const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
+  wizardStep=clamp(Math.floor(w.step||0),0,4);
+  wizardReached=clamp(Math.floor(w.reached||wizardStep),wizardStep,4);
+ }catch(e){wizardStep=0;wizardReached=0;}
+ viewMode=state.creationLocked?"sheet":"builder";
  document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";
  syncFields();render();
 }
@@ -201,11 +214,157 @@ function syncFields(){
  }
  $("char-level").value=state.level;
  $("portrait-image").src=state.portrait||"../assets/codex-logo.svg";
+ $("portrait-trigger").classList.toggle("fp-has-portrait",!!state.portrait);
 }
 function renderDiceLegend(){
  $("dice-legend").innerHTML=[4,6,10,12,20].map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("");
 }
-function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();}
+function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderWizard();}
+
+/* Cinco telas reais: construímos primeiro; a ficha completa só aparece depois. */
+function wizardPersist(){
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify({step:wizardStep,reached:wizardReached}));}
+ catch(e){console.warn("Codex: etapa não persistida",e);}
+}
+function wizardSelectStep(next){
+ if(viewMode!=="builder"||state.creationLocked||next<0||next>4||next>wizardReached+1)return;
+ if(wizardStep===0&&next>0&&!state.name.trim()){
+  toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
+ }
+ wizardStep=next;wizardReached=Math.max(wizardReached,wizardStep);wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardFinalize(){
+ if(viewMode!=="builder"||state.pending||state.creationLocked)return;
+ if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardSelectStep(0);return;}
+ const xp=xpCosts();
+ if(xp.free<0){toast("A ficha tem mais XP investidos do que disponíveis.");return;}
+ const unused=["attr","training","skills"].map((k,i)=>CREATE_BUDGET[k]-[xp.attributes,xp.training,xp.skills][i]);
+ const message=unused.some(n=>n>0)?
+  "Concluir a criação com XP não utilizado nos orçamentos iniciais? Os saldos continuam associados às respectivas categorias para revisão futura; não são convertidos em XP de evolução.":
+  "Concluir a criação? Suas compras serão consolidadas, sem reembolso automático.";
+ if(!confirm(message))return;
+ state.creationLocked=true;viewMode="sheet";wizardStep=4;wizardReached=4;wizardPersist();
+ syncFields();render();save();toast("Aprendiz criado! Sua ficha jogável está pronta.");
+ window.scrollTo?.({top:0,behavior:"smooth"});
+}
+function wizardDice(group,id,grade){
+ return dataDice(group,grade).map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("");
+}
+function wizardSource(group,item){
+ const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
+ const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
+ const lower=g>0&&!state.creationLocked&&!state.pending;
+ return '<article class="fp-wiz-source">'+
+  '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
+  '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
+  '<div class="fp-wiz-source-actions">'+
+  '<span class="fp-wiz-cost">'+(g>=6?'Grau máximo':'Próximo avanço: '+next+' XP')+'</span>'+
+  '<div class="fp-wiz-stepper"><button data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" type="button" aria-label="Reduzir grau de '+esc(name)+'"'+(lower?'':' disabled')+'>−</button><b>'+g+'</b><button data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" type="button" aria-label="Comprar grau de '+esc(name)+'"'+(raised?'':' disabled')+'>+</button></div>'+
+  '</div></article>';
+}
+function wizardSkills(){
+ return '<div class="fp-wiz-skills">'+SKILLS.map(([id,name,desc,cost])=>{
+  const owned=state.skills.includes(id),reason=skillReq(id);
+  const available=Number.isInteger(cost)&&canAfford("skills",cost)&&!reason;
+  const removable=owned&&!state.creationLocked&&!state.pending;
+  const disabled=owned?!removable:!available;
+  const action=owned?"Desfazer":cost===null?"Pendente":"Comprar · "+cost+" XP";
+  return '<article class="fp-wiz-skill'+(owned?' selected':'')+'">'+
+   '<div><strong>'+esc(name)+'</strong><p>'+esc(desc)+'</p>'+
+   (reason?'<small class="fp-wiz-warning">'+esc(reason)+'</small>':'')+'</div>'+
+   '<button type="button" data-action="skill" data-id="'+id+'"'+(disabled?' disabled':'')+'>'+
+   (owned?'Adquirida ✓':action)+'</button></article>';
+ }).join("")+'</div>'+
+ (state.skills.includes("armas")?'<div class="fp-wiz-focus"><label>Especialização de Armas 1<select data-wizard-focus aria-label="Especialização de Armas 1">'+
+  [["leve","Leve"],["medio","Média"],["pesado","Pesada"],["distancia","Distância"],["Punhos","Punhos"]]
+   .map(([v,label])=>'<option value="'+v+'"'+(state.weaponFocus===v?' selected':'')+'>'+label+'</option>').join("")+
+  '</select></label><small>A escolha de Punhos é relevante para os requisitos provisórios de Artes Marciais.</small></div>':'');
+}
+function wizardReview(){
+ const x=xpCosts(),life=maxLife(),move=movement();
+ const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
+  .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
+ const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
+  '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
+  '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
+  '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
+  '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
+  '<div class="fp-wiz-review-list"><section><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
+  '<section><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
+  '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
+  '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
+  '<div class="fp-wiz-reminder"><strong>Orçamento de criação experimental</strong>'+
+  '<p>Atributos: '+x.attributes+'/7 XP · Formação: '+x.training+'/7 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado continua em sua categoria nesta prévia. A curva de XP por nível não é definitiva.</p></div>';
+}
+function wizardOverview(){
+ const spent=xpCosts(),categories=[
+  ["Atributos",spent.attributes,7],["Formação",spent.training,7],["Perícias",spent.skills,5]
+ ];
+ const sum=categories.map(([name,used,cap])=>'<div class="fp-wiz-budget-row"><span>'+name+'</span><b>'+used+' / '+cap+' XP</b>'+
+  '<div class="fp-wiz-meter"><span style="width:'+Math.min(100,used/cap*100)+'%"></span></div></div>').join("");
+ const totalDone=categories.reduce((n,[,v])=>n+v,0);
+ return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
+  '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
+  '<div class="fp-wiz-sidebar-title">INVESTIMENTO INICIAL</div>'+sum+
+  '<div class="fp-wiz-summary-total"><span>TOTAL INVESTIDO</span><strong>'+totalDone+' XP</strong></div>'+
+  '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS ATUAIS</div>'+
+  '<div class="fp-wiz-pairs"><span>Vida máxima</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
+  '<span>DE defensiva</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
+  '<p class="fp-wiz-sidebar-note">Cada Atributo começa com 1d4. Cada Conhecimento ou Prática começa com 1d6. O custo de XP compra melhorias, não a existência da fonte.</p>';
+}
+function renderWizard(){
+ const builder=$("builder-root"),sheet=$("full-sheet");
+ const show=viewMode==="builder"&&!state.creationLocked;
+ builder.hidden=!show;sheet.hidden=show;
+ $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
+ $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
+ $("page-subtitle").textContent=show?
+  "Cinco etapas de criação. Distribua XP, escolha suas Perícias e veja a ficha completa ao concluir.":
+  "Ficha completa, evolução e rolagens — protótipo HTML do Codex RPG.";
+ if(!show)return;
+ $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
+  const clickable=i<=wizardReached&&(i===0||!!state.name.trim());
+  const active=i===wizardStep;
+  return '<button type="button" data-action="wizard-go" data-step="'+i+'" class="fp-wiz-nav-item'+(active?' active':'')+(i<wizardStep?' complete':'')+'"'+
+   (clickable?'':' disabled')+(active?' aria-current="step"':'')+'>'+
+   '<span class="fp-wiz-nav-index">'+String(i+1).padStart(2,"0")+'</span><span><b>'+title+'</b><small>'+desc+'</small></span></button>';
+ }).join("");
+ const stage=wizardStep;
+ let content="";
+ if(stage===0){
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 01 · IDENTIDADE</span><h3>Quem você quer ser?</h3><p>Todo personagem começa como Aprendiz. O conceito não limita a combinação de fontes nem impõe uma classe.</p></div>'+
+   '<div class="fp-wiz-identity"><button class="fp-wiz-portrait'+(state.portrait?' custom':'')+'" type="button" data-action="wizard-portrait" aria-label="Escolher retrato">'+
+   '<img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt="Emblema de personagem"><span>Escolher retrato</span></button>'+
+   '<div class="fp-wiz-input-grid">'+[
+    ["name","Nome do personagem","Como seu Aprendiz se chama?",70],
+    ["concept","Conceito / profissão emergente","Um caminho que deseja seguir",100],
+    ["origin","Origem","Humano",80],
+    ["virtue","Virtude","O que o move?",60],
+    ["personality","Personalidade","Como reage ao mundo?",100]
+   ].map(([field,label,placeholder,max])=>'<label class="fp-wiz-field'+(field==="name"?' wide':'')+'">'+label+
+    '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
+   '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
+ }else if(stage===1){
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ATRIBUTOS</span><h3>Seu potencial natural.</h3><p>Distribua até <strong>7 XP de Atributos</strong> no orçamento inicial experimental. Cada atributo começa no Grau 0 com 1d4. Um avanço tem custo incremental.</p></div>'+
+   '<div class="fp-wiz-source-grid">'+A.map(item=>wizardSource("attr",item)).join("")+'</div>';
+ }else if(stage===2){
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · FORMAÇÃO</span><h3>O que você sabe fazer?</h3><p>Conhecimentos e Práticas compartilham os <strong>7 XP de Formação</strong> iniciais. Cada fonte começa no Grau 0 com 1d6 gratuito.</p></div>'+
+   '<div class="fp-wiz-formation"><section><h4>Conhecimentos</h4><div class="fp-wiz-source-grid">'+K.map(item=>wizardSource("know",item)).join("")+
+   '</div></section><section><h4>Práticas</h4><div class="fp-wiz-source-grid">'+P.map(item=>wizardSource("practice",item)).join("")+'</div></section></div>'+
+   '<div class="fp-wiz-reminder"><b>Armas ou Conjuração é uma única Prática.</b><p>Perícias específicas habilitam o uso como arma, conjuração ou ambos. Nunca se compra uma segunda fonte apenas por possuir duas habilitações.</p></div>';
+ }else if(stage===3){
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PERÍCIAS</span><h3>Escolha suas especializações.</h3><p>Use os <strong>5 XP iniciais de Perícias</strong>. As habilidades exigem requisitos e seus custos são cobrados. Opções ainda pendentes não podem ser compradas.</p></div>'+wizardSkills();
+ }else content=wizardReview();
+ $("wizard-content").innerHTML=content;
+ $("wizard-summary").innerHTML=wizardOverview();
+ $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE 5</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
+  '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
+  '<button type="button" class="fp-primary-btn" data-action="'+(stage===4?'wizard-finish':'wizard-next')+'">'+
+  (stage===4?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
+}
+
 function renderVitals(){
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
