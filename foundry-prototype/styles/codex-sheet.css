@@ -119,3 +119,5 @@
 .codex-item-form .codex-check{flex-direction:row;align-items:center;gap:9px}
 .codex-gear .codex-gear-name{font-weight:bold;text-align:left;border:0;padding:2px 0;background:transparent}
 @media(max-width:550px){.codex-item-form{grid-template-columns:1fr}.codex-item-form .codex-wide{grid-column:span 1}}
+
+.codex-rune{font-weight:800;white-space:nowrap}.codex-rune-e{color:var(--cx-E)}.codex-rune-a{color:var(--cx-A)}.codex-rune-p{color:var(--cx-P)}
