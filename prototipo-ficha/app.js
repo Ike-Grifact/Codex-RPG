@@ -1,4 +1,4 @@
-/* Codex RPG — protótipo HTML independente. Regras v0.26. Não afeta o criador atual. */
+/* Codex RPG — protótipo HTML independente. Regras do Livro/SRD v0.29 para críticos. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -204,9 +204,10 @@ function dieIcon(n){
  };
  return '<svg viewBox="0 0 42 42" aria-hidden="true">'+(shapes[n]||shapes[4])+'</svg>';
 }
-function symbolMarkup(symbols){
+function symbolMarkup(symbols,criticalFace=false){
  if(!symbols.some(Boolean))return'<span>—</span>';
- return ['e','a','p'].map((type,i)=>symbols[i]?'<span class="'+type+'">'+symbols[i]+['ᛋ','ᚨ','ᚦ'][i]+'</span>':"").join("");
+ return ['e','a','p'].map((type,i)=>symbols[i]?'<span class="'+type+'">'+symbols[i]+
+  '<span'+(criticalFace?' class="fp-critical-glyph"':'')+'>'+['ᛋ','ᚨ','ᚦ'][i]+'</span></span>':"").join("");
 }
 function syncFields(){
  for(const [id,key] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
@@ -525,35 +526,45 @@ function score(){
  if(!dice.some(x=>x.group==="attr"))errs.push("É obrigatório manter pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
+ const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
+ const criticalConverted=critTier&&raw[2]>0?1:0;
+ const pAvailable=Math.max(0,raw[2]-criticalConverted);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
- const eBase=Math.max(0,raw[0]+situation[1]);
- const aPool=Math.max(0,raw[1]+situation[2]+w+(p.opts.combatBonus?1:0));
+ const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0));
+ const aPool=Math.max(0,raw[1]+situation[2]+w+(p.opts.combatBonus?1:0)+(critTier>=3?1:0));
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
- if(cancel>raw[2])errs.push("Não há tantos Pavor para anular.");
+ if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
- const E=eBase+pairs,P=Math.max(0,raw[2]-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ const E=eBase+pairs,P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  const courageCost=Number(p.opts.extraKeep)+Number(p.opts.step);
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem preparada.");
- return{dice,raw,E,P,remainingA,reached,success,outcome,damage:success?E+Math.floor(P/2):0,errors:errs,
-  aPool,courageCost};
+ const critRecovery=critTier>=3?2:critTier>=2?1:0;
+ const damageBasic=success?E+Math.floor(P/2):0;
+ return{dice,raw,E,P,remainingA,reached,success,outcome,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
+  aPool,courageCost,pAvailable,critTier,critRecovery,criticalConverted};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
  const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
-  '<strong class="fp-face">'+d.face+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face))+'</span></button>').join("")+'</div>';
+  '<strong class="fp-face">'+d.face+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const controls='<div class="fp-form-grid">'+
- selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.raw[2],s.aPool),p.cancelP)+
+ selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
  selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>';
- const stats='<div class="fp-outcome"><h4>'+esc(s.outcome)+'</h4><div class="fp-outcome-stats">'+
+ const criticalNote=s.critTier?'<div class="fp-alert"><strong>Crítico de '+s.critTier+' dados mantidos!</strong> '+
+  (s.criticalConverted?'1P convertido em 1E. ':'Sem Pavor próprio para converter. ')+
+  (s.critTier>=3?'+1E e +1A. ':'')+
+  'Recuperação de até '+s.critRecovery+' PP e '+s.critRecovery+' Coragem (respeitando os tetos). '+
+  (s.critTier===4?'Dano básico dobrado; interação com proteções ainda pendente. ':'')+'</div>':'';
+ const stats='<div class="fp-outcome"><h4>'+esc(s.outcome)+'</h4>'+criticalNote+'<div class="fp-outcome-stats">'+
  '<div class="fp-outcome-stat">DE alcançada<b>'+s.reached+' / '+de+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-e">Êxito ᛋ</span><b>'+s.E+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-a">Antecipar ᚨ</span><b>'+s.remainingA+'</b></div>'+
@@ -571,12 +582,20 @@ function finalize(){
  const p=state.pending,s=score();
  if(!p||s.errors.length){toast(s?.errors?.[0]||"Rolagem inválida.");return;}
  state.courage=clamp(state.courage-s.courageCost,0,10);
+ const oldCourage=state.courage,oldPP=state.pp;
+ if(s.critRecovery){
+  state.courage=clamp(state.courage+s.critRecovery,0,10);
+  state.pp=clamp(state.pp+s.critRecovery,0,maxPP());
+ }
+ const gainedCourage=state.courage-oldCourage,gainedPP=state.pp-oldPP;
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?(p.mode==="conjuracao"?"Conjuração":"Armas"):label(p.base.group,p.base.key);
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
-  E:s.E,A:s.remainingA,P:s.P,faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
+  E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,
+  faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
- toast(s.outcome+" · DE "+s.reached+"/"+p.opts.de);
+ toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
 function updateGrade(group,id,delta){
  if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
