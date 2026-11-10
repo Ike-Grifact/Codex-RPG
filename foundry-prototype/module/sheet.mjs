@@ -256,7 +256,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(s.courage<cost)throw Error("Coragem mudou durante a ação. Verifique os recursos.");
    const chosen=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=chosen.map(d=>'<li>d'+d.sides+' ('+escapeHTML(sourceLabel(d.group,d.key,s))+'): '+d.face+' → '+escapeHTML(printableSymbols(d.symbols))+'</li>').join("");
-   const content='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(result.outcome)+'</h3>'+
+   const mainAction=p.base?.group==="practice"&&p.base.key==="armas_conjuracao"?(p.options.mode==="conjuracao"?"Conjuração":"Armas"):sourceLabel(p.base.group,p.base.key,s);
+   const composition=escapeHTML(mainAction)+" + "+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+(p.complement?" + "+escapeHTML(sourceLabel(p.complement.group,p.complement.key,s)):"");
+   const content='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mainAction)+' · '+escapeHTML(result.outcome)+'</h3><p><strong>Composição:</strong> '+composition+'</p>'+
     '<p><strong>DE atingida:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p><strong>Êxitos:</strong> '+result.e+' · <strong>Antecipar restante:</strong> '+result.aRemaining+
     ' · <strong>Pavor residual:</strong> '+result.p+'</p>'+
