@@ -15,7 +15,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 **Conhecimentos:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas:** Armas, Conjuração, Atletismo, Furtividade, Artesão, Apresentação, Coleta. Punhos é especialização de Armas, com habilitação própria; não é oitava Prática. As opções Armas/Conjuração não recebem exclusividade automática no protótipo. Fichas de versões anteriores guardam fontes descontinuadas em histórico, sem transferir XP automaticamente. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
+**Práticas (6):** **Armas ou Conjuração (uma única Prática)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. O nome exibido pode variar entre Armas, Conjuração e Armas / Conjuração conforme as Perícias escolhidas; isso **não** cria fontes adicionais. O grau 1 compartilhado custa 2 XP de Formação apenas uma vez. Aprendiz de Conjurador é uma **Perícia habilitadora**, não uma segunda Prática de Formação; sua compra segue o preço do catálogo. Punhos é especialização marcial. Fichas antigas preservam o registro de Conjuração no histórico e usam provisoriamente o maior grau entre as antigas fontes Armas e Conjuração, sem somá-las. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
 
 ## O que funciona
 
