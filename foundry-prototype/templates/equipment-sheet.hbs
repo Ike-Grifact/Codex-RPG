@@ -1,0 +1,20 @@
+<section class="codex-foundry-root codex-equipment-root">
+ <div class="codex-brand">
+   <img class="codex-logo" src="systems/codex-rpg-foundry/assets/codex-logo.svg" alt="">
+   <div><span class="codex-overline">CODEX RPG · EQUIPAMENTO</span><strong>Equipar não altera as regras sem habilitação.</strong></div>
+ </div>
+ <div class="codex-item-form">
+  <label>Nome<input type="text" value="{{equipment.name}}" data-field="name"></label>
+  <label>Tipo<select data-field="system.kind">{{#each equipment.types}}
+    <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select>
+  </label>
+  <label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
+  <label>Peso (unidades Alto)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
+  <label>Quantidade<input type="number" min="1" step="1" value="{{equipment.quantity}}" data-field="system.quantity"></label>
+  <label class="codex-check"><input type="checkbox" data-field="system.equipped" {{#if equipment.equipped}}checked{{/if}}> Equipado</label>
+  <label>Integridade atual<input type="number" min="0" step="1" value="{{equipment.integrity}}" data-field="system.integrity.value"></label>
+  <label>Integridade máxima<input type="number" min="0" step="1" value="{{equipment.integrityMax}}" data-field="system.integrity.max"></label>
+  <label class="codex-wide">Descrição / propriedades<textarea rows="5" data-field="system.description">{{equipment.description}}</textarea></label>
+ </div>
+ <p class="codex-tip">Protótipo: valores numéricos de integridade, resistências, imunidades e composição dos dados ainda exigem catálogo final. Ajustes são registrados no documento Item; não há bônus automático por equipar.</p>
+</section>
