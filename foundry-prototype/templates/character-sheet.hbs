@@ -178,7 +178,7 @@
       <p class="codex-tip">Integridade e peso dos itens são editáveis em suas fichas futuras. Esta versão permite criar, equipar, retirar e ajustar integridade, sem inferir resistências automáticas.</p>
       {{#each codex.gear}}
       <div class="codex-gear">
-        <div><strong>{{this.name}}</strong><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small></div>
+        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small></div>
         <div class="codex-gear-actions">
           <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
           <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>
