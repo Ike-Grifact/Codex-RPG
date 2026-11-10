@@ -1,5 +1,5 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.5 (10 de novembro de 2026)
+## Edição de leitura do portal · v0.6 (10 de novembro de 2026)
 
 > **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.27](srd-continuidade-v0.27.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
