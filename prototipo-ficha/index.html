@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Codex RPG: protótipo HTML independente de ficha de personagem, composição de fontes, rolagens e equipamentos.">
+  <title>Ficha jogável · Protótipo HTML — Codex RPG</title>
+  <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body class="fp-body">
+<a class="skip-link" href="#ficha">Pular para a ficha</a>
+<div class="fp-shell" id="ficha">
+  <header class="fp-topbar">
+    <a class="fp-brand" href="../index.html" aria-label="Codex RPG, página inicial">
+      <img src="../assets/codex-logo.svg" alt="" width="48" height="48">
+      <span><strong>CODEX <em>RPG</em></strong><small>O INÍCIO DE UMA HISTÓRIA</small></span>
+    </a>
+    <div class="fp-nav">
+      <a href="../criador.html" class="fp-text-link">Criador atual</a>
+      <a href="../livro.html" class="fp-text-link">Livro</a>
+      <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="fp-page-label">
+    <div><span class="fp-kicker">LABORATÓRIO DE INTERFACE · CODEx RPG</span>
+      <h1>Ficha de personagem <span>jogável.</span></h1>
+      <p>Uma prévia visual e interativa antes de levar a experiência para o Foundry VTT.</p>
+    </div>
+    <div class="fp-page-tools">
+      <span class="fp-status-pill"><span class="fp-dot"></span> Protótipo HTML independente</span>
+      <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
+      <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
+      <button class="fp-secondary" id="import-trigger" type="button">Importar</button>
+      <input id="import-json" type="file" accept=".json,application/json" hidden>
+    </div>
+  </div>
+
+  <main class="fp-main">
+    <section class="fp-identity fp-panel" aria-label="Identidade do personagem">
+      <div class="fp-portrait-wrap">
+        <button type="button" id="portrait-trigger" class="fp-portrait" aria-label="Alterar retrato do personagem">
+          <img id="portrait-image" src="../assets/codex-logo.svg" alt="Retrato ou emblema do personagem">
+          <span class="fp-portrait-overlay">Alterar retrato</span>
+        </button>
+        <input type="file" id="portrait-input" accept="image/png,image/jpeg,image/webp" hidden>
+      </div>
+      <div class="fp-identity-main">
+        <div class="fp-identity-top"><span class="fp-overline">REGISTRO DE PERSONAGEM</span><span class="fp-portrait-hint">A imagem é salva apenas neste navegador</span></div>
+        <div class="fp-name-row">
+          <label class="fp-field fp-field-hero">Nome do personagem<input id="char-name" type="text" maxlength="70" placeholder="Seu Aprendiz"></label>
+          <label class="fp-field fp-level-field">Nível <input id="char-level" type="number" min="1" max="20" value="1"></label>
+        </div>
+        <div class="fp-fields fp-fields-identity">
+          <label class="fp-field">Conceito / profissão emergente<input id="char-concept" type="text" maxlength="100" placeholder="Quem pretende se tornar?"></label>
+          <label class="fp-field">Origem<input id="char-origin" type="text" maxlength="80" placeholder="Humano"></label>
+          <label class="fp-field">Virtude<input id="char-virtue" type="text" maxlength="60" placeholder="Sua virtude"></label>
+          <label class="fp-field">Personalidade<input id="char-personality" type="text" maxlength="100" placeholder="Um traço marcante"></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="fp-vitals" aria-label="Recursos e defesas">
+      <div class="fp-vital fp-life-vital">
+        <div class="fp-vital-label">VIDA <span>atual / máxima</span></div>
+        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">3 / 3</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
+        <div class="fp-life-boxes" id="life-boxes" aria-label="Três caixas de Vida"><span></span><span></span><span></span></div>
+        <small id="life-recovery">Faixa superior · 1 Vida por dia</small>
+      </div>
+      <div class="fp-vital">
+        <div class="fp-vital-label">CORAGEM <span>reserva</span></div>
+        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="courage" data-delta="-1" aria-label="Gastar Coragem">−</button><strong id="courage-text">10 / 10</strong><button type="button" class="fp-counter" data-resource="courage" data-delta="1" aria-label="Recuperar Coragem">+</button></div>
+        <small>Retenção, passos e capacidades</small>
+      </div>
+      <div class="fp-vital">
+        <div class="fp-vital-label">PONTOS DE PERÍCIA <span>PP</span></div>
+        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="pp" data-delta="-1" aria-label="Gastar PP">−</button><strong id="pp-text">0 / 0</strong><button type="button" class="fp-counter" data-resource="pp" data-delta="1" aria-label="Recuperar PP">+</button></div>
+        <small>Reserva global do personagem</small>
+      </div>
+      <div class="fp-vital fp-vital-basic">
+        <div class="fp-vital-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small>Agilidade + Destreza ÷ 2 ↓</small>
+      </div>
+      <div class="fp-vital fp-vital-basic">
+        <div class="fp-vital-label">BALANÇO</div><strong id="balance-text">Médio</strong><small>Agilidade × Vigor</small>
+      </div>
+      <div class="fp-vital fp-vital-basic">
+        <div class="fp-vital-label">CARGA</div><strong id="load-text">0 / 1</strong><small>Unidades Alto · fórmula em teste</small>
+      </div>
+    </section>
+
+    <div class="fp-workspace">
+      <div class="fp-primary-column">
+        <section class="fp-section-intro">
+          <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
+          <p>Comece por um <strong>Conhecimento ou Prática</strong>. Depois escolha um <strong>Atributo</strong>. Um complemento exige Perícia pertinente.</p>
+        </section>
+        <div class="fp-source-grid" id="source-grid">
+          <section class="fp-panel fp-source-panel">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3>Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="knowledge-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3>Atributos</h3><small>Segunda fonte</small></div><span class="fp-count">06</span></div>
+            <div id="attribute-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3>Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="practice-list" class="fp-sources"></div>
+          </section>
+        </div>
+        <section class="fp-panel fp-bottom-note">
+          <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
+          <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
+          <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
+          <p>A fonte <strong>Base</strong> determina o tipo de teste. <em>Armas + Força + Apresentação</em> e <em>Apresentação + Força + Armas</em> não têm a mesma finalidade, mesmo com dados iguais.</p>
+        </section>
+      </div>
+
+      <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
+        <section class="fp-panel fp-composer" id="composer-panel">
+          <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
+          <div id="composer-content"></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="fp-lower">
+      <section class="fp-panel fp-skills-panel" id="pericias">
+        <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Ative para experimentar a composição</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
+        <div id="skills-list" class="fp-skills-grid"></div>
+        <p class="fp-footnote">A seleção nesta prévia não desconta XP nem substitui os requisitos definitivos de aquisição. A terceira fonte necessita de uma Perícia aplicável e confirmação contextual.</p>
+        <div class="fp-support-actions">
+          <button id="convert-courage" class="fp-secondary" type="button">Converter 2 Coragem → 1 PP</button>
+          <button id="reset-turn" class="fp-secondary" type="button">Novo turno</button>
+          <span id="courage-skill-message" class="fp-muted"></span>
+        </div>
+      </section>
+
+      <section class="fp-panel fp-inventory-panel" id="equipamentos">
+        <div class="fp-panel-heading"><span class="fp-panel-icon">▣</span><div><h3>Equipamento e proteção</h3><small>Integridade, carga e peças equipadas</small></div><button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Item</button></div>
+        <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
+        <p class="fp-muted fp-load-caption" id="load-caption">Carga estimada: 0 de 1 Alto</p>
+        <div id="inventory-list" class="fp-inventory-list"></div>
+        <p class="fp-footnote">Armaduras de Grau 1 fornecem integridade. Grau 2 permite primeira resistência em peças aptas, a partir do nível 5. Valores e efeitos não são aplicados automaticamente nesta prévia.</p>
+      </section>
+    </section>
+
+    <section class="fp-panel fp-notes-panel">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">✎</span><div><h3>Anotações do personagem</h3><small>Persistência local independente do criador</small></div></div>
+      <textarea id="char-notes" rows="4" maxlength="5000" placeholder="Objetivos, contatos, descobertas, condições e lembretes de sessão..."></textarea>
+      <div class="fp-bottom-actions">
+        <span class="fp-muted" id="save-indicator">Salvamento automático neste navegador</span>
+        <button class="fp-secondary" id="reset-sheet" type="button">Reiniciar protótipo</button>
+      </div>
+    </section>
+  </main>
+  <footer class="fp-footer">CODEX RPG · Demonstração HTML · Sem alteração do criador original · Mecânicas pendentes identificadas como teste</footer>
+</div>
+<div id="toast" role="status" aria-live="polite" class="fp-toast"></div>
+</body>
+</html>
