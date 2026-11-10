@@ -290,6 +290,8 @@ Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fr
 
 O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo V.
 
+**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o Balanço concede **+1A pela Vantagem natural**, com ou sem Maestria. A Maestria **Arma Certa** acrescenta **+1E somente quando a arma corresponde à categoria favorável contra aquele Balanço**, além do +1A natural. **PENDENTE:** custo de XP e requisitos definitivos para comprar essa Maestria.
+
 ### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
 
 | Tipo | Propriedade possível | Limite |
