@@ -17,8 +17,8 @@ Esta pasta é **completamente independente** de `criador.html` e do protótipo d
 **Ao abrir uma ficha nova**, você vê o **construtor em cinco telas independentes**, não a ficha jogável de uma vez:
 
 1. **Identidade** — nome obrigatório, conceito, origem, virtude, personalidade e portrait. A logo padrão usa fundo marfim no escuro para preservar o contraste; uma imagem enviada usa corte fotográfico normal.
-2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **7 XP (EXPERIMENTAL)**.
-3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Armas ou Conjuração**; todos têm 1d6 gratuito no Grau 0, e compartilham **7 XP (EXPERIMENTAL)**.
+2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **6 XP (EXPERIMENTAL)**.
+3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Armas ou Conjuração**; todos têm 1d6 gratuito no Grau 0, e compartilham **8 XP (EXPERIMENTAL)**.
 4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (EXPERIMENTAL)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
 5. **Revisão** — identificação, dados de combate derivados, investimento por categoria e todas as compras. O botão **Concluir e abrir a ficha** consolida a criação e mostra **somente então** a ficha jogável completa.
 
@@ -49,7 +49,7 @@ Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíve
 ## Limites e hipóteses do protótipo
 
 - **A compra de graus e Perícias agora calcula e consome XP**. Os custos acumulados das fontes são os mesmos do criador: Atributos 0/1/3/7/15/31/55 e Formação 0/2/8/20/38/66/102. As Perícias são cobradas conforme os preços documentados no catálogo.
-- **Orçamento inicial 7/7/5 XP é EXPERIMENTAL**, não foi consolidado como regra oficial. Uma compra que exceda seu orçamento de categoria requer XP de evolução livre.
+- **Orçamento inicial 6/8/5 XP é EXPERIMENTAL**, não foi consolidado como regra oficial. Uma compra que exceda seu orçamento de categoria requer XP de evolução livre.
 - **XP por nível segue PENDENTE.** A tabela de referência 19/31/46/.../664 XP é apenas uma curva de playtest; o protótipo não exige esses valores para subir de nível e não os concede automaticamente.
 - **Antes de concluir a criação**, pode reorganizar compras. **Depois**, não permite reduzir graus nem desfazer Perícias; evolução é feita comprando com novos XP.
 - **Maestria Arma Certa** aparece para consulta com seu efeito definido (+1E no peso favorável); seu custo de XP e requisitos finais continuam PENDENTES, por isso ainda não é comprável.
@@ -73,3 +73,9 @@ prototipo-ficha/
 ```
 
 **Atenção:** os documentos internos de SRD não estão vinculados nesta página; apenas o Livro e o criador originais são acessíveis pela navegação.
+
+## Redistribuição experimental para o nível 1 (6/8/5)
+
+A distribuição inicial foi ajustada de 7 XP em Atributos / 7 XP em Formação / 5 XP em Perícias para **6 XP em Atributos / 8 XP em Formação / 5 XP em Perícias**. O total de 19 XP permanece. Esta alteração é exclusiva do **protótipo HTML**; não modifica o Livro do Jogador ou o SRD em desenvolvimento. A curva de XP dos níveis superiores não foi alterada.
+
+**Impacto para playtest:** a Formação Grau 2 custa 8 XP acumulados e passa a ser acessível na criação para uma única fonte (2d10), enquanto o Atributo Grau 3 custa 7 XP e deixa de caber no orçamento inicial de Atributos. A progressão ainda usa os mesmos custos acumulados; o excedente de categorias necessita XP de evolução.
