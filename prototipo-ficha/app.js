@@ -329,7 +329,8 @@ function finalize(){
  const p=state.pending,s=score();
  if(!p||s.errors.length){toast(s?.errors?.[0]||"Rolagem inválida.");return;}
  state.courage=clamp(state.courage-s.courageCost,0,10);
- const name=label(p.base.group,p.base.key)+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?(p.mode==="conjuracao"?"Conjuração":"Armas"):label(p.base.group,p.base.key);
+ const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
