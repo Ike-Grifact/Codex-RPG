@@ -18,6 +18,7 @@ const FACES={
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
 const CREATE_BUDGET={attr:7,training:7,skills:5}; // EXPERIMENTAL.
+const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  ["combate","Combate","+1A em combate pertinente.",1],
  ["armas","Armas 1","Habilita uma categoria de arma, inclusive Punhos.",2],
@@ -155,7 +156,7 @@ function renderXP(){
  $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
  $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
  $("xp-award").disabled=!!state.pending;
- $("xp-next-level").textContent="PENDENTE";
+ $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
   const cap=CREATE_BUDGET[type];
   $(id+"-caption").textContent=used+" / "+cap+" XP"+(used>cap?" · excedente de evolução":"");
@@ -420,9 +421,9 @@ function updateGrade(group,id,delta){
  const p=SOURCE_PROPS[group];if(!p||!GROUPS[group].some(x=>x[0]===id)||![-1,1].includes(delta))return;
  const old=state[p][id]||0,next=clamp(old+delta,0,6);
  if(next===old)return;
+ const purchaseCost=delta>0?xpStepCost(group,id,1):0;
  if(delta>0){
-  const cost=xpStepCost(group,id,1);
-  if(!canAfford(group,cost)){toast("XP insuficiente: este avanço custa "+cost+" XP.");return;}
+  if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
   if(state.creationLocked){toast("Compras consolidadas não podem ser devolvidas.");return;}
   const tmp=structuredClone(state);tmp[p][id]=next;
@@ -431,7 +432,7 @@ function updateGrade(group,id,delta){
  }
  state[p][id]=next;
  render();save();
- if(delta>0)toast("Grau "+next+" comprado por "+xpStepCost(group,id,-1)+" XP.");
+ if(delta>0)toast("Grau "+next+" comprado por "+purchaseCost+" XP.");
 }
 function adjustResource(resource,delta){
  const max=resource==="life"?maxLife():resource==="pp"?maxPP():10;
@@ -612,9 +613,38 @@ function bind(){
  for(const [id,field] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
   $(id).addEventListener("input",function(){state[field]=this.value;save();});
  }
- $("char-level").addEventListener("change",function(){
-  state.level=clamp(Math.floor(this.value),1,20);this.value=state.level;
-  state.pp=clamp(state.pp,0,maxPP());render();save();
+ $("char-level").addEventListener("change",function(){this.value=state.level;});
+ $("xp-award").addEventListener("click",()=>{
+  if(state.pending){toast("Finalize a rolagem antes de conceder XP.");return;}
+  const amount=Math.floor(Number($("xp-award-amount").value));
+  if(!Number.isSafeInteger(amount)||amount<1||amount>9999){toast("Informe de 1 a 9999 XP.");return;}
+  if(state.xpEarned+amount>1000000){toast("XP acumulado acima do limite desta ferramenta.");return;}
+  if(!state.creationLocked){state.creationLocked=true;toast("Criação concluída ao receber XP de evolução.");}
+  state.xpEarned+=amount;
+  state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
+  state.xpHistory=state.xpHistory.slice(0,60);
+  render();save();toast("+"+amount+" XP de evolução disponíveis para compra.");
+ });
+ $("lock-creation").addEventListener("click",()=>{
+  if(state.pending||state.creationLocked||xpCosts().free<0)return;
+  if(!confirm("Concluir a criação do Aprendiz? Compras já feitas deixarão de ser reversíveis."))return;
+  state.creationLocked=true;render();save();toast("Criação concluída. Novos avanços custam XP.");
+ });
+ $("level-up").addEventListener("click",()=>{
+  if(state.pending||state.level>=20||xpCosts().free<0)return;
+  const next=state.level+1;
+  if(!confirm("Evoluir para o nível "+next+"? A curva de XP é experimental: nenhuma quantidade será concedida automaticamente."))return;
+  state.level=next;state.creationLocked=true;
+  render();save();toast("Nível "+next+" alcançado. Distribua o XP recebido conforme a campanha.");
+ });
+ $("weapon-focus").addEventListener("change",event=>{
+  if(state.creationLocked||state.pending){event.target.value=state.weaponFocus;return;}
+  const previous=state.weaponFocus,selected=event.target.value;
+  if(!["leve","medio","pesado","distancia","Punhos"].includes(selected))return;
+  state.weaponFocus=selected;
+  const reason=dependentsValid(state);
+  if(reason){state.weaponFocus=previous;event.target.value=previous;toast("Especialização bloqueada: "+reason);return;}
+  render();save();
  });
  $("theme-toggle").addEventListener("click",()=>{
   const next=document.documentElement.dataset.theme==="light"?"dark":"light";
