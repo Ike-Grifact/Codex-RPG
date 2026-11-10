@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.4 (9 de novembro de 2026)
+## Edição de leitura do portal · v0.5 (10 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.26). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.27](srd-continuidade-v0.27.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -46,7 +46,7 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
 
-**EXPERIMENTAL — orçamento de criação:** 7 XP em Base (Atributos) + 7 XP em Formação + 5 XP iniciais destinados a Perícias = **19 XP**. O gasto de 5 XP iniciais em Perícias já havia sido decidido, mas sua relação final com os 14 XP históricos ainda precisa ser confirmada. O criador de nível 1 implementa explicitamente **essa hipótese**, sem apresentá-la como oficial.
+**EXPERIMENTAL — orçamento de criação no nível 1:** **6 XP em Atributos + 8 XP em Formação + 5 XP em Perícias = 19 XP**. Esta distribuição de playtest substitui a hipótese 7/7/5, sem mudar a curva de custos por Grau; o total de 19 XP permanece experimental, não oficial. O XP conquistado após a criação continua livre. Com 8 XP de Formação pode-se alcançar o Grau 2 de uma fonte (2d10), enquanto o Grau 3 de um Atributo (7 XP) não cabe nos 6 XP iniciais desta categoria.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
@@ -55,6 +55,14 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 **Coragem:** começa com 10 e possui teto normal 10. **PP (Pontos de Perícia):** 0 nos níveis 1–4. O primeiro PP e a Perícia em Coragem são obtidos no nível 5.
 
 **Balanço corporal:** Agilidade maior que Vigor → leve; valores iguais → médio; Vigor maior que Agilidade → pesado. Equipamentos podem alterar o peso efetivo conforme carga e requisitos.
+
+### Deslocamento [DEFINIDO]
+
+O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a cada 3 graus completos de Atletismo**.
+
+**Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
+
+**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
 
 ## III. Rolar dados e mantê-los
 
@@ -114,9 +122,17 @@ A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 s�
 
 Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular P.
 
+### Crítico [DEFINIDO quanto à revisão documentada; bônus antigo PENDENTE]
+
+Conforme a **última revisão específica documentada no SRD (v0.20, seção 0-D.2)**, ocorre um **crítico quando todos os dados efetivamente mantidos**, no mínimo dois e incluindo pelo menos um dado de Atributo, mostram **suas próprias faces numéricas máximas**. Nessa situação, **todos os símbolos dessas faces mantidas se convertem em Êxitos, um por símbolo**. Dados descartados não contam.
+
+**Exemplo:** manter um d4 na face 4 e um d10 na face 10 satisfaz o gatilho (4 e 10 são os máximos de seus respectivos dados). Os símbolos dessas faces convertidos em Êxitos constituem o efeito crítico; a numeração das faces não é somada à DE. Efeitos especiais de uma arma ainda exigem **acertar a DE**, mesmo quando houve crítico.
+
+**Divergência histórica:** uma regra mais antiga exigia apenas **dois dados mantidos em suas faces máximas** e concedia **+1E e recuperação de 1 Coragem**. A revisão posterior passou a exigir **todos os mantidos máximos**, com conversão de símbolos, e deixou a acumulação do bônus antigo **PENDENTE**. Não aplicar os dois modelos ao mesmo tempo sem nova decisão do autor.
+
 ### Resultados e protagonismo
 
-- **Acerto puro:** alcança DE sem Pavor residual.
+- **Acerto puro:** alcança DE sem Pavor residual. **Mantém o protagonismo:** o mesmo jogador pode agir novamente ou passar voluntariamente a oportunidade a um aliado, sem limitar a continuidade a apenas dois ataques.
 - **Acerto normal:** alcança DE com Pavor não anulado sem predominância de P sobre E.
 - **Acerto com Pavor predominante:** alcança DE com P>E, podendo introduzir consequências graves.
 - **Falha limpa:** não alcança DE e não tem consequência negativa automática.
@@ -168,19 +184,37 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
-### Recuperação natural de Vida pelas três caixas [DEFINIDO / arredondamentos PENDENTES]
 
-A Vida máxima é representada em **três caixas**. O tempo de recuperação depende de quão fundo a Vida restante caiu, e é aplicado a **cada ponto de Vida** — uma semana não devolve automaticamente toda a caixa.
+### Caixas de Vida, penalidades e Coragem [DEFINIDO]
 
-| Caixa em que ficou a Vida restante | Recuperação |
+A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
+
+| Estado da Saúde | Penalidade | Coragem para agir |
+|---|---|---|
+| **Saudável (3/3)** | Nenhuma | Sem custo adicional de Saúde |
+| **Machucado (2/3)** | **−1A** | Pode pagar **1 Coragem** para ignorar a penalidade nessa ação |
+| **Incapacitado (1/3)** | **−2E e −1A** | **1 Coragem para agir** com penalidade; **2 Coragens no total** para agir e ignorar as penalidades dessa ação |
+| **Morto (0 Vida)** | Não pode agir | Não se aplica |
+
+As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
+
+### Recuperação natural de Vida [DEFINIDO]
+
+| Caixa em recuperação | Tempo por ponto de Vida |
 |---|---|
-| **3/3**, faixa superior | **1 Vida por dia** |
-| **2/3**, faixa intermediária | **1 semana por ponto de Vida** |
-| **1/3**, faixa crítica | **intervenção médica obrigatória** e depois **1 semana por ponto de Vida** |
+| **Saudável (3/3)** | **1 dia** |
+| **Machucado (2/3)** | **1 semana** |
+| **Incapacitado (1/3)** | **Tratamento médico obrigatório** e depois **1 semana** |
 
-**Exemplo com 12 Vida máxima:** com **10/12** restantes, o personagem está na faixa superior e recupera 1 Vida após 1 dia; com **7/12** restantes, está na faixa intermediária e precisa de uma semana para cada ponto; com **3/12**, está na faixa crítica, precisa de atendimento médico e recupera 1 ponto por semana.
+O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condições de repouso, interrupção e duração do tratamento seguem **PENDENTES**.
 
-**PENDENTE:** definir fronteiras e arredondamentos para totais de Vida não divisíveis por três, a mudança de ritmo quando a Vida recuperada atravessa caixas e a intervenção de Medicina/curas especiais.
+### Perícia Recuperação Vigorosa [DEFINIDO]
+
+**Requisito: Vigor 3. Compra: 1 XP.** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
+
+**Exemplo com 6 Vida:** Vigor 3, Força 0 → caixas **2 / 2 / 2**. Se a ficha está em **0 / 1 / 2**, a Perícia permite passar a **0 / 2 / 2 em 1 dia**.
+
+**Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
 ### Proteções por Grau [DEFINIDO quanto ao acesso e propriedades]
 
@@ -268,6 +302,35 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 
 **Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
 
+### Proximidade, armas longas e alcance efetivo [DEFINIDO]
+
+**Próximo / adjacente** significa **até 1 metro** do inimigo. Armas comuns de combate corpo a corpo atingem a **1 m**. Uma **arma longa** atinge a **2 m** e, enquanto mantém o inimigo a essa distância, impede um contra-ataque de quem só possui alcance de 1 m. Um oponente com **outra arma longa** pode responder normalmente no mesmo alcance. Esse efeito protege pela distância, **não anula Pavor**.
+
+A distância máxima normal de uma arma ou técnica é **R**. Para além desse alcance, aplicam-se as condições seguintes:
+
+| Distância | Condição | Modificador |
+|---|---|---|
+| Até **R** | Normal por alcance | Nenhum |
+| **Acima de R** e **abaixo de R + 8 m** | Desvantagem | **−1A** |
+| De **R + 8 m** a menos de **R + 16 m** | Desvantagem absoluta | **−1E** |
+| A partir de **R + 16 m** | **Acerto de Sorte / Ação de Sorte** | **−2E** |
+
+Os patamares **se substituem**; não se aplica −1A e depois −1E e depois −2E pela mesma fonte de distância. Outros riscos independentes, como aliados a até 1 m do alvo, podem acrescentar condições. A possibilidade e os limites de ataques muito além de R + 16 m continuam **PENDENTES**.
+
+### Perícia Arremesso de Armas Leves [DEFINIDO / detalhes PENDENTES]
+
+**Compra: 1 XP. Requisitos: Força 2, Destreza 2 e Agilidade 1. Ativação: 1 Ponto de Perícia (PP) ou 2 Coragens.**
+
+Permite arremessar uma **arma leve**, causar dano e aplicar seus efeitos pertinentes. **Alcance normal de 24 m**: até **24 m**, normal; acima de 24 m e abaixo de **32 m**, Desvantagem (−1A); de **32 m** até abaixo de **40 m**, Desvantagem absoluta (−1E); a partir de **40 m**, Acerto de Sorte (−2E). A técnica **não sofre Desvantagem por estar muito perto**, mas continua sujeita à presença de aliados próximos do alvo (**até 1 m**).
+
+- **Acerto sem Pavor:** a arma fica alojada no inimigo, e o jogador pode aproveitar a continuidade do protagonismo para avançar, **retirar normalmente a arma sem teste** e realizar novo ataque corpo a corpo, ou passar a oportunidade a um aliado. A Perícia não concede uma ação extra separada: acerto sem Pavor já permite continuar agindo.
+- **Acerto com Pavor:** a arma fica alojada; o adversário pode tentar tomá-la e utilizá-la quando obtiver oportunidade pertinente, sem ganhar turno automático apenas pela existência da arma.
+- **Falha sem Pavor:** a arma cai no caminho; **1A** permite correr até ela e recuperá-la.
+- **Falha com Pavor predominante (P > E):** a arma cai perto do alvo ou pode atingir um aliado a **até 1 m do inimigo**. Se o resultado **não alcançou a DE do inimigo, mas alcança a DE do aliado**, atinge o aliado; caso contrário, cai perto deles.
+- **Retirada resistida quando exigida:** teste **Armas + Força + Atletismo** contra dificuldade baseada em **Força + Vigor + Atletismo do inimigo**, considerando seus dados comprados. A forma exata de converter esses dados em uma DE numérica permanece **PENDENTE**.
+
+**PENDENTE:** efeitos precisos por tipo de arma alojada, procedimento para vários aliados próximos, distância extrema e resolução detalhada da retirada resistida. Essas Perícias não são restritas à criação de nível 1; seus requisitos podem exigir evolução.
+
 ### Armas de fogo — catálogo histórico em revisão
 
 Armas de fogo dependem de **munição por calibre, carregador, disparos consumidos, recarga, alcance e recuo**. Armas suscetíveis a travamento podem travar com **Pavor predominante**, e não qualquer Pavor; limpar travamento exige Engenharia pertinente sem usar dados da própria arma. **Revólver não trava.**
@@ -301,7 +364,7 @@ O Ladino com Perícia pertinente pode usar **1E para fugir** mesmo quando a aç�
 
 **PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência ao custo de 1 PP.
 
-Exemplos documentados de Perícias iniciais:
+Exemplos documentados de Perícias (não necessariamente disponíveis no nível 1):
 
 | Perícia | XP | Função |
 |---|---:|---|
@@ -317,6 +380,8 @@ Exemplos documentados de Perícias iniciais:
 | Magia Sagrada / de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
+| **Recuperação Vigorosa** | **1** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Arremesso de Armas Leves** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
 **A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Armas grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
 
@@ -334,4 +399,4 @@ A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**, assim como a alte
 
 ## XI. Referência de continuidade
 
-O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, os valores de integridade, os arredondamentos de caixas de Vida, as condições de localização de Furtividade e as árvores completas de Perícias. As decisões de continuidade são mantidas em documento interno de desenvolvimento. O Livro histórico v0.5 foi preservado para comparação e não substitui decisões mais recentes.
+O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, os valores de integridade, a interação avançada entre penalidades de distância, a resolução de retirada resistida de armas arremessadas, as condições de localização de Furtividade e as árvores completas de Perícias. As decisões de continuidade são mantidas em documento interno de desenvolvimento. O Livro histórico v0.5 foi preservado para comparação e não substitui decisões mais recentes.
