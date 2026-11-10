@@ -32,7 +32,7 @@ Não existe, ainda, URL de instalação por manifesto nem ZIP de release publica
 - Faces simbólicas d4, d6, d10, d12 e d20 reforçado G; dados descartados não entram no cálculo.
 - Seleção de dados mantidos depois de rolar, conversões básicas de Antecipar, cálculo de DE, classificação de risco com Pavor e dano básico.
 - Rolagem já executada é guardada em `flags.codex-rpg-foundry.pendingRoll` para não abrir um novo teste gratuitamente por fechar a janela. No botão **Finalizar**, os custos de Coragem da preparação são aplicados e a ação é registrada no chat.
-- Equipamentos básicos persistidos como Items: cadastro, estado equipado, peso e integridade.
+- Equipamentos básicos persistidos como Items: cadastro, estado equipado, peso e integridade. Clique no nome do equipamento para abrir sua ficha de edição (tipo, Grau, peso, quantidade, integridade e descrição).
 - Temas claro/escuro e interface adaptável para telas menores.
 
 ## Limitações importantes
@@ -56,11 +56,13 @@ foundry-prototype/
   lang/pt-BR.json
   module/
     main.mjs
+    item-sheet.mjs
     data-model.mjs
     rules.mjs
     roll-engine.mjs
     sheet.mjs
   templates/character-sheet.hbs
+  templates/equipment-sheet.hbs
   styles/codex-sheet.css
   tests/rules.test.mjs
   README.md
