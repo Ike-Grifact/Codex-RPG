@@ -34,7 +34,7 @@
       <p>Uma prévia visual e interativa antes de levar a experiência para o Foundry VTT.</p>
     </div>
     <div class="fp-page-tools">
-      <a class="fp-secondary" href="#progressao">XP e evolução</a>
+      <a class="fp-secondary" href="#progressao" id="xp-shortcut">XP e evolução</a>
       <span class="fp-status-pill"><span class="fp-dot"></span> Protótipo HTML independente</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
       <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
@@ -43,7 +43,25 @@
     </div>
   </div>
 
-  <main class="fp-main">
+
+  <section class="fp-wizard fp-panel" id="builder-root" aria-label="Construtor de personagem por etapas">
+    <div class="fp-wizard-intro">
+      <div>
+        <span class="fp-kicker">CRIAÇÃO ASSISTIDA · APRENDIZ</span>
+        <h2>Construa seu personagem, <em>etapa por etapa.</em></h2>
+        <p>Escolha seus investimentos, veja os custos e acompanhe o resultado. A ficha jogável será exibida ao concluir a revisão.</p>
+      </div>
+      <div class="fp-wizard-seal"><span>01—05</span><strong>CODEX</strong><small>RPG</small></div>
+    </div>
+    <nav class="fp-wizard-steps" id="wizard-steps" aria-label="Etapas da criação"></nav>
+    <div class="fp-wizard-grid">
+      <div class="fp-wizard-content" id="wizard-content" role="region" aria-live="polite" aria-label="Etapa atual"></div>
+      <aside class="fp-wizard-sidebar" id="wizard-summary" aria-label="Resumo da construção"></aside>
+    </div>
+    <footer class="fp-wizard-footer" id="wizard-controls"></footer>
+  </section>
+
+  <main class="fp-main" id="full-sheet" hidden>
     <section class="fp-identity fp-panel" aria-label="Identidade do personagem">
       <div class="fp-portrait-wrap">
         <button type="button" id="portrait-trigger" class="fp-portrait" aria-label="Alterar retrato do personagem">
