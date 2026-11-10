@@ -116,14 +116,14 @@
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
         {{#if codex.prepare.weightEnabled}}
           <label>Peso do ataque<select data-roll-option="attackWeight">
-            <option value="leve" {{#if (eq codex.prepare.attackWeight "leve")}}selected{{/if}}>Leve</option>
-            <option value="medio" {{#if (eq codex.prepare.attackWeight "medio")}}selected{{/if}}>Médio</option>
-            <option value="pesado" {{#if (eq codex.prepare.attackWeight "pesado")}}selected{{/if}}>Pesado</option>
+            <option value="leve" {{#if codex.prepare.attackWeightLeve}}selected{{/if}}>Leve</option>
+            <option value="medio" {{#if codex.prepare.attackWeightMedio}}selected{{/if}}>Médio</option>
+            <option value="pesado" {{#if codex.prepare.attackWeightPesado}}selected{{/if}}>Pesado</option>
           </select></label>
           <label>Balanço do alvo<select data-roll-option="targetWeight">
-            <option value="leve" {{#if (eq codex.prepare.targetWeight "leve")}}selected{{/if}}>Leve</option>
-            <option value="medio" {{#if (eq codex.prepare.targetWeight "medio")}}selected{{/if}}>Médio</option>
-            <option value="pesado" {{#if (eq codex.prepare.targetWeight "pesado")}}selected{{/if}}>Pesado</option>
+            <option value="leve" {{#if codex.prepare.targetWeightLeve}}selected{{/if}}>Leve</option>
+            <option value="medio" {{#if codex.prepare.targetWeightMedio}}selected{{/if}}>Médio</option>
+            <option value="pesado" {{#if codex.prepare.targetWeightPesado}}selected{{/if}}>Pesado</option>
           </select></label>
         {{/if}}
         {{#if codex.selectedComplement}}<label class="codex-check codex-warn"><input type="checkbox" data-roll-option="contextApproved" {{#if codex.prepare.contextApproved}}checked{{/if}}> Narrador confirmou a pertinência da Perícia e do complemento (regra de combinação ainda incompleta)</label>{{/if}}
