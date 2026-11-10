@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.3 (9 de novembro de 2026)
+## Edição de leitura do portal · v0.4 (9 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.24). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.25). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -34,11 +34,13 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 | 5 | 1d6 + 2d10 | 31 | 1d10 + 2d12 | 66 |
 | 6 | 3d10 | 55 | 3d12 | 102 |
 
-**Conhecimentos de referência:** Ciências, Biologia, Engenharia, Erudição, Geografia, Medicina.
+**Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas de referência:** Atletismo, Furtividade, Infiltração, Manufaturas, Mineração, Herborismo, Expressão, Comércio, Sobrevivência. Punhos exige habilitação própria.
+**Práticas DEFINIDAS:** Armas, Conjuração, Atletismo, Furtividade, Artesão, Apresentação, Coleta.
 
-**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Punhos continua exigindo habilitação específica.
+**Armas e Conjuração** são opções de Prática, com técnicas dependentes das Perícias habilitadoras. A possibilidade de as duas serem mutuamente exclusivas na criação **não foi definida**; por enquanto não se impede construção híbrida. **Punhos é uma especialização de Armas, não uma Prática independente**. A habilitação marcial própria continua necessária.
+
+**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Armas na especialização de Punhos continua exigindo habilitação específica.
 
 O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
 
@@ -303,7 +305,7 @@ Exemplos documentados de Perícias iniciais:
 |---|---:|---|
 | Combate | 1 | +1A em combate pertinente |
 | Armas 1 | 2 | Habilitação e primeira especialização de arma |
-| Artes Marciais | 1 | Combinação desarmada, após Armas e Punhos |
+| Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
 | Aprendiz de Conjurador | 2 | Conjuração grau 1 |
 | Magia Única | 1 | Uma magia inicial |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
@@ -314,7 +316,7 @@ Exemplos documentados de Perícias iniciais:
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
 
-**Punhos 1 não é uma Perícia adicional de 2 XP no orçamento de Perícias:** é o **primeiro grau da Prática Punhos**, adquirido com **2 XP de Formação**, após a habilitação específica. A sequência inicial completa de Armas 1 (2 XP de Perícias) + Punhos 1 (2 XP de Formação) + Artes Marciais (1 XP de Perícias) é possível quando os requisitos estão atendidos.
+**A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Armas grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
 
 **Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
 
