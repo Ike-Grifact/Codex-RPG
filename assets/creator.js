@@ -130,7 +130,7 @@ function renderSource(){
    if(name==="Armas"&&g===1&&has("marciais")){alert("Remova Artes Marciais antes de reduzir a Prática Armas abaixo do grau 1.");return;}
    if(g===1)delete state.sources[name];else state.sources[name]=g-1;
    clearRoll();renderAll();
-  },"Armas"===name?name:name);
+  },name);
  });
  if(Object.keys(state.legacySources||{}).length){
  var oldConj=state.legacySources["Conjuração"];
