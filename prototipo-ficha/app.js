@@ -300,7 +300,7 @@ function wizardReview(){
 }
 function wizardOverview(){
  const spent=xpCosts(),categories=[
-  ["Atributos",spent.attributes,7],["Formação",spent.training,7],["Perícias",spent.skills,5]
+  ["Atributos",spent.attributes,CREATE_BUDGET.attr],["Formação",spent.training,CREATE_BUDGET.training],["Perícias",spent.skills,CREATE_BUDGET.skills]
  ];
  const sum=categories.map(([name,used,cap])=>'<div class="fp-wiz-budget-row"><span>'+name+'</span><b>'+used+' / '+cap+' XP</b>'+
   '<div class="fp-wiz-meter"><span style="width:'+Math.min(100,used/cap*100)+'%"></span></div></div>').join("");
