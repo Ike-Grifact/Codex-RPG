@@ -187,3 +187,82 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 @media(max-width:1120px){.fp-workspace{grid-template-columns:1fr}.fp-side-column{position:static}.fp-source-grid{gap:12px}.fp-page-label{align-items:start;flex-direction:column}.fp-page-tools{justify-content:flex-start}}
 @media(max-width:850px){.fp-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-lower{grid-template-columns:1fr}.fp-fields-identity{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-vitals{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.fp-topbar{height:66px}.fp-text-link{display:none}.fp-brand img{width:37px;height:37px}.fp-brand strong{font-size:14px}.fp-brand small{font-size:8px}.fp-page-label{padding:23px 0 17px}.fp-page-tools{gap:6px}.fp-status-pill{width:100%;justify-content:center}.fp-identity{padding:13px;gap:11px}.fp-portrait-wrap,.fp-portrait{width:89px;flex-basis:89px}.fp-portrait{height:116px}.fp-identity-top .fp-portrait-hint{display:none}.fp-identity-fields{grid-template-columns:1fr}.fp-fields-identity{grid-template-columns:1fr 1fr;gap:6px}.fp-name-row{grid-template-columns:1fr 65px;gap:6px}.fp-field-hero input{font-size:18px}.fp-vitals{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-vital{min-height:110px;padding:10px 8px}.fp-vital strong{font-size:19px}.fp-vital-label{font-size:9px}.fp-source-grid{grid-template-columns:1fr}.fp-section-intro{align-items:start;flex-direction:column;gap:6px}.fp-composer{padding:12px}.fp-skills-grid{grid-template-columns:1fr}.fp-item{grid-template-columns:minmax(0,1fr) minmax(70px,.7fr)}.fp-item-hint{grid-column:1/-1}}
+
+
+/* Revisão de identidade: d4 Pavor, d6 Antecipar, d10 Êxito, d12 cinza, d20 dourado. */
+:root {
+ --fp-bg:#111318;
+ --fp-surface:#1b2029;
+ --fp-deep:#151a23;
+ --fp-raised:#262d38;
+ --fp-stroke:#3b4654;
+ --fp-text:#f1ece3;
+ --fp-muted:#b1bcc9;
+ --fp-gold:#d7bc88;
+ --fp-e:#60b781;--fp-a:#78aef1;--fp-p:#a277cc;
+ --fp-d4:#a277cc;
+ --fp-d6:#78aef1;
+ --fp-d10:#60b781;
+ --fp-d12:#aab4c0;
+ --fp-d20:#d7bc88;
+}
+html[data-theme="light"]{
+ --fp-d4:#542176;--fp-d6:#2369BB;--fp-d10:#267A45;
+ --fp-d12:#687583;--fp-d20:#a27b35;
+}
+.fp-die-badge.fp-die-d4{color:var(--fp-d4)}
+.fp-die-badge.fp-die-d6{color:var(--fp-d6)}
+.fp-die-badge.fp-die-d10{color:var(--fp-d10)}
+.fp-die-badge.fp-die-d12{color:var(--fp-d12)}
+.fp-die-badge.fp-die-d20{color:var(--fp-d20)}
+.fp-roll-die.fp-die-d4 svg{stroke:var(--fp-d4)}
+.fp-roll-die.fp-die-d6 svg{stroke:var(--fp-d6)}
+.fp-roll-die.fp-die-d10 svg{stroke:var(--fp-d10)}
+.fp-roll-die.fp-die-d12 svg{stroke:var(--fp-d12)}
+.fp-roll-die.fp-die-d20 svg{stroke:var(--fp-d20)}
+.fp-roll-die.fp-die-d4 .fp-face{color:var(--fp-d4)}
+.fp-roll-die.fp-die-d6 .fp-face{color:var(--fp-d6)}
+.fp-roll-die.fp-die-d10 .fp-face{color:var(--fp-d10)}
+.fp-roll-die.fp-die-d12 .fp-face{color:var(--fp-d12)}
+.fp-roll-die.fp-die-d20 .fp-face{color:var(--fp-d20)}
+.fp-vitals{grid-template-columns:repeat(7,minmax(0,1fr))}
+.fp-vital.fp-movement-vital{border-color:color-mix(in srgb,var(--fp-a) 50%,var(--fp-stroke))}
+.fp-movement-vital>strong{font-size:26px}
+.fp-progression{padding:19px 21px;margin-bottom:25px;scroll-margin-top:15px}
+.fp-progression>.fp-panel-heading{padding-bottom:11px;border-bottom:1px solid var(--fp-stroke)}
+.fp-xp-topline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:15px 0}
+.fp-xp-highlight{display:flex;flex-direction:column;gap:4px;background:var(--fp-deep);border:1px solid var(--fp-stroke);
+ border-radius:10px;padding:14px;min-width:0}
+.fp-xp-highlight>small{font-size:10px;font-weight:750;letter-spacing:.075em;color:var(--fp-muted)}
+.fp-xp-highlight>strong{font:normal 28px/1.15 Georgia,serif;color:var(--fp-gold)}
+.fp-xp-highlight>span{color:var(--fp-muted);font-size:10px}
+.fp-xp-highlight strong.fp-negative{color:var(--fp-p)}
+.fp-xp-tracks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:15px 0}
+.fp-xp-track{min-width:0}
+.fp-xp-track-title{display:flex;justify-content:space-between;gap:9px;margin-bottom:7px;font-size:11px}
+.fp-xp-track-title b{color:var(--fp-text)}
+.fp-xp-track-title span{color:var(--fp-muted);text-align:right;font-size:10px;line-height:1.4}
+.fp-xp-meter{height:7px;background:var(--fp-deep);border-radius:8px;border:1px solid var(--fp-stroke);overflow:hidden}
+.fp-xp-meter>span{display:block;height:100%;width:0;background:var(--fp-gold);border-radius:7px;transition:width .18s}
+.fp-xp-meter>span.over{background:var(--fp-p)}
+.fp-xp-controls{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px;padding:10px 0}
+.fp-award{display:flex;gap:7px;align-items:end;flex-wrap:wrap}
+.fp-award>label{width:125px}
+.fp-award .fp-muted{max-width:175px;line-height:1.45}
+.fp-xp-controls .fp-primary-btn{padding:9px 12px}
+.fp-xp-feedback{font-size:11px;line-height:1.45;color:var(--fp-muted);background:var(--fp-deep);
+ padding:10px 12px;border-radius:7px;border-left:3px solid var(--fp-gold)}
+.fp-xp-step-cost{font-size:8px!important;color:var(--fp-gold);font-weight:700;letter-spacing:.01em;text-align:center;white-space:nowrap}
+.fp-grade-controls{gap:1px;flex-basis:57px}
+.fp-grade-controls button{height:18px}
+.fp-grade-controls b{line-height:1}
+.fp-source-item{min-height:73px}
+.fp-skill-req{color:var(--fp-p)!important}
+.fp-skill button:disabled{opacity:.6;cursor:not-allowed}
+.fp-weapon-focus{display:flex;gap:14px;align-items:end;border-top:1px solid var(--fp-stroke);margin:14px 0;padding-top:12px}
+.fp-weapon-focus[hidden]{display:none}
+.fp-weapon-focus .fp-field{max-width:220px}
+.fp-weapon-focus select{width:100%;padding:7px;border-radius:6px;background:var(--fp-deep);color:var(--fp-text);border:1px solid var(--fp-stroke)}
+@media(max-width:1370px){.fp-vitals{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:960px){.fp-xp-topline{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-xp-tracks{grid-template-columns:1fr}.fp-vitals{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.fp-vitals{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-progression{padding:13px}.fp-xp-highlight{padding:10px}.fp-xp-highlight>strong{font-size:23px}.fp-xp-controls{align-items:stretch}.fp-award{width:100%}.fp-xp-controls #lock-creation{width:100%}.fp-weapon-focus{align-items:start;flex-direction:column}.fp-grade-controls{flex-basis:57px}}
