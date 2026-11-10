@@ -74,8 +74,21 @@ prototipo-ficha/
 
 **Atenção:** os documentos internos de SRD não estão vinculados nesta página; apenas o Livro e o criador originais são acessíveis pela navegação.
 
+## Críticos cumulativos (SRD v0.29)
+
+O rolador de dados da ficha HTML reconhece **crítico quando todos os dados escolhidos para manter estão em suas faces máximas**, exigindo pelo menos dois mantidos e um dado de Atributo. Apenas a **runa nos símbolos das faces máximas** ganha dourado: o número, o corpo e o contorno do dado não recebem nova cor por ser uma face candidata a crítico.
+
+- **2 mantidos:** converte até 1 Pavor próprio em 1 Êxito e recupera até 1 PP e 1 Coragem.
+- **3 mantidos:** benefícios anteriores, mais +1 Êxito, +1 Antecipar, total de até 2 PP e 2 Coragens recuperados.
+- **4 mantidos:** todos os benefícios anteriores e **dano básico dobrado**; a interação final com proteções e limites de Vida ainda está pendente, portanto o valor exibido é anterior à resolução de armadura.
+
+A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos níveis 5–9, 2 nos níveis 10–19 e 3 no nível 20; Coragem máxima normal 10. O terceiro dado mantido no nível 1 ainda consome 1 Coragem; as recuperações são aplicadas após esse gasto. Os críticos ficam registrados no histórico do personagem.
+
+**Os críticos dos monstros foram documentados no Livro e SRD**, com conversão de recuperações em Pavor (2P/4P/4P), mas **não são simulados no rolador da ficha de jogador**. O protótipo também não automatiza todos os gastos do Narrador, reservas locais ou o excedente de Pavor entre as reservas.
+
+
 ## Redistribuição experimental para o nível 1 (6/8/5)
 
-A distribuição inicial foi ajustada de 7 XP em Atributos / 7 XP em Formação / 5 XP em Perícias para **6 XP em Atributos / 8 XP em Formação / 5 XP em Perícias**. O total de 19 XP permanece. Esta alteração é exclusiva do **protótipo HTML**; não modifica o Livro do Jogador ou o SRD em desenvolvimento. A curva de XP dos níveis superiores não foi alterada.
+A distribuição inicial foi ajustada de 7 XP em Atributos / 7 XP em Formação / 5 XP em Perícias para **6 XP em Atributos / 8 XP em Formação / 5 XP em Perícias**. O total de 19 XP permanece. A mesma distribuição **EXPERIMENTAL** foi registrada nos documentos de leitura e no SRD de continuidade; não é um orçamento inicial definitivo. A curva de XP dos níveis superiores não foi alterada.
 
 **Impacto para playtest:** a Formação Grau 2 custa 8 XP acumulados e passa a ser acessível na criação para uma única fonte (2d10), enquanto o Atributo Grau 3 custa 7 XP e deixa de caber no orçamento inicial de Atributos. A progressão ainda usa os mesmos custos acumulados; o excedente de categorias necessita XP de evolução.
