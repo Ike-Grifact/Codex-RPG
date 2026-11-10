@@ -110,3 +110,12 @@
 .codex-chat-result{border-left:4px solid #b99756;padding:8px 12px}
 @media(max-width:970px){.codex-resources{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-source-layout{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.codex-foundry-root{padding:10px}.codex-hero{grid-template-columns:95px 1fr}.codex-portrait{min-height:120px}.codex-logo{width:32px;height:32px}.codex-brand strong{font-size:13px}.codex-identity-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-identity-fields label:nth-child(5),.codex-identity-fields label:nth-child(6){grid-column:span 1}.codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-source-layout,.codex-bottom-layout,.codex-prep-controls{grid-template-columns:1fr}.codex-compose{grid-template-columns:1fr}.codex-check.codex-warn{grid-column:span 1}.codex-source{grid-template-columns:minmax(0,1fr) 75px}}
+
+/* Editor de equipamentos, exclusivamente neste sistema. */
+.codex-item-form{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:15px 0}
+.codex-item-form label{display:flex;flex-direction:column;gap:4px;color:var(--cx-muted);font-size:12px}
+.codex-item-form .codex-wide{grid-column:span 2}
+.codex-item-form textarea{width:100%;padding:9px;min-width:0;background:var(--cx-panel2);color:var(--cx-text);border:1px solid var(--cx-line);border-radius:6px;font:inherit}
+.codex-item-form .codex-check{flex-direction:row;align-items:center;gap:9px}
+.codex-gear .codex-gear-name{font-weight:bold;text-align:left;border:0;padding:2px 0;background:transparent}
+@media(max-width:550px){.codex-item-form{grid-template-columns:1fr}.codex-item-form .codex-wide{grid-column:span 1}}
