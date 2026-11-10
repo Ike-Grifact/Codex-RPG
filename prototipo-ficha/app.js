@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:7,training:7,skills:5}; // EXPERIMENTAL.
+const CREATE_BUDGET={attr:6,training:8,skills:5}; // EXPERIMENTAL: redistribuição nível 1, total 19 XP.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  ["combate","Combate","+1A em combate pertinente.",1],
@@ -296,7 +296,7 @@ function wizardReview(){
   '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
   '<div class="fp-wiz-reminder"><strong>Orçamento de criação experimental</strong>'+
-  '<p>Atributos: '+x.attributes+'/7 XP · Formação: '+x.training+'/7 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado continua em sua categoria nesta prévia. A curva de XP por nível não é definitiva.</p></div>';
+  '<p>Atributos: '+x.attributes+'/6 XP · Formação: '+x.training+'/8 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado continua em sua categoria nesta prévia. A curva de XP por nível não é definitiva.</p></div>';
 }
 function wizardOverview(){
  const spent=xpCosts(),categories=[
@@ -347,10 +347,10 @@ function renderWizard(){
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ATRIBUTOS</span><h3>Seu potencial natural.</h3><p>Distribua até <strong>7 XP de Atributos</strong> no orçamento inicial experimental. Cada atributo começa no Grau 0 com 1d4. Um avanço tem custo incremental.</p></div>'+
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ATRIBUTOS</span><h3>Seu potencial natural.</h3><p>Distribua até <strong>6 XP de Atributos</strong> no orçamento inicial experimental. Cada atributo começa no Grau 0 com 1d4. Um avanço tem custo incremental.</p></div>'+
    '<div class="fp-wiz-source-grid">'+A.map(item=>wizardSource("attr",item)).join("")+'</div>';
  }else if(stage===2){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · FORMAÇÃO</span><h3>O que você sabe fazer?</h3><p>Conhecimentos e Práticas compartilham os <strong>7 XP de Formação</strong> iniciais. Cada fonte começa no Grau 0 com 1d6 gratuito.</p></div>'+
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · FORMAÇÃO</span><h3>O que você sabe fazer?</h3><p>Conhecimentos e Práticas compartilham os <strong>8 XP de Formação</strong> iniciais. Cada fonte começa no Grau 0 com 1d6 gratuito.</p></div>'+
    '<div class="fp-wiz-formation"><section><h4>Conhecimentos</h4><div class="fp-wiz-source-grid">'+K.map(item=>wizardSource("know",item)).join("")+
    '</div></section><section><h4>Práticas</h4><div class="fp-wiz-source-grid">'+P.map(item=>wizardSource("practice",item)).join("")+'</div></section></div>'+
    '<div class="fp-wiz-reminder"><b>Armas ou Conjuração é uma única Prática.</b><p>Perícias específicas habilitam o uso como arma, conjuração ou ambos. Nunca se compra uma segunda fonte apenas por possuir duas habilitações.</p></div>';
