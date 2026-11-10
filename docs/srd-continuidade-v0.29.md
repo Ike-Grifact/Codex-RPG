@@ -48,7 +48,7 @@ Um **monstro que obtém crítico** recebe os mesmos benefícios pertinentes de *
 | **3 mantidos máximos** | 2 PP + 2 Coragens | **4P** |
 | **4 mantidos máximos** | 2 PP + 2 Coragens; dano dobrado | **4P** |
 
-**Persistência [DEFINIDO]:** o monstro pode **conservar em sua própria reserva local, até o teto do seu Grau, a parte desse Pavor que puder manter**; esse saldo permanece disponível **na próxima rodada**. O Pavor pertinente à reserva pública do Narrador respeita o teto **2 + número de jogadores**, com seu saldo persistente entre sessões. **Não depositar o mesmo ponto simultaneamente nas reservas local e pública.** Quando houver excedente, a ordem exata de distribuição entre reservas e o destino de pontos que não couberem nelas ficam **PENDENTES** até confirmação específica; nunca ultrapassar tetos nem criar Pavor duplicado.
+**Persistência [DEFINIDO]:** do Pavor gerado pelo crítico, o monstro **conserva primeiro na própria reserva local a quantidade que couber no teto do seu Grau**, para usar **na próxima rodada**. **O restante segue para a reserva pública do Narrador**, respeitando seu limite **2 + número de jogadores** e o saldo entre sessões. Um ponto de Pavor ocupa **somente uma reserva**; não é somado duas vezes. Nenhuma reserva ultrapassa seu teto, e Pavor que não couber em nenhuma delas não fica armazenado.
 
 O Pavor de um crítico de monstro assim gerado é **distinto do Pavor não anulado de seus dados mantidos**: aplicar a transferência desses símbolos segundo as regras existentes, sem duplicar nem transformar o recurso do crítico em dano automático.
 
