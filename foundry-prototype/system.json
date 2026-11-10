@@ -1,0 +1,39 @@
+{
+  "id": "codex-rpg-foundry",
+  "title": "Codex RPG — Protótipo Foundry",
+  "description": "Protótipo independente de ficha e rolagem simbólica do Codex RPG. Regras de continuidade v0.26; desenvolvimento não publicado.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "Ike-Grifact",
+      "url": "https://github.com/Ike-Grifact/Codex-RPG"
+    }
+  ],
+  "esmodules": [
+    "module/main.mjs"
+  ],
+  "styles": [
+    "styles/codex-sheet.css"
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "equipment": {}
+    }
+  },
+  "url": "https://github.com/Ike-Grifact/Codex-RPG"
+}
