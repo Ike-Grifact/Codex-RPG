@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.4 (9 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.25). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa é mantida em material interno de desenvolvimento (v0.26). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -36,9 +36,11 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 **Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas DEFINIDAS:** Armas, Conjuração, Atletismo, Furtividade, Artesão, Apresentação, Coleta.
+**Práticas DEFINIDAS (6):** **Armas ou Conjuração** (Prática compartilhada), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
 
-**Armas e Conjuração** são opções de Prática, com técnicas dependentes das Perícias habilitadoras. A possibilidade de as duas serem mutuamente exclusivas na criação **não foi definida**; por enquanto não se impede construção híbrida. **Punhos é uma especialização de Armas, não uma Prática independente**. A habilitação marcial própria continua necessária.
+**Armas ou Conjuração é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a combate ou magia segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
+
+**Fichas antigas:** os valores anteriormente separados como Armas e Conjuração são conciliados provisoriamente pelo maior grau, com anotação histórica dos valores antigos; não se somam os dados nem os custos.
 
 **DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Armas na especialização de Punhos continua exigindo habilitação específica.
 
