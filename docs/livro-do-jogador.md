@@ -212,7 +212,7 @@ DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
 
 Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
 
-**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. O mesmo personagem usando a armadura pesada especializada descrita adiante fica com **DE 5**, pois a penalidade da armadura é aplicada **depois** do teto natural.
+**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Se a ficha usar a **antiga variante Pesada especializada** com a penalidade particular de −2 DE, fica com **DE 5**, aplicada **depois** do teto natural. A nova regra não impõe essa penalidade a toda armadura Grau 4.
 
 **PENDENTE:** estabelecer se existe um mínimo de DE defensiva (0 ou 1). A fórmula ainda pode resultar em zero; não aplicar mínimo 1 automaticamente.
 
@@ -288,38 +288,31 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
-### Armadura pesada especializada — imunidade física [DEFINIDO]
+### Armaduras Grau 4 — imunidade física e escolha elemental [DEFINIDO]
 
-Esta é uma **variante de armadura Pesada de Grau 4**, obtida por compra, fabricação ou evolução apropriada. **Requer Vigor Grau 6 e Atletismo Grau 6 para equipar**. Não se obtém sua imunidade apenas por usar qualquer armadura pesada ou qualquer peça de Grau 4. Esses dois requisitos somam **157 XP em Atributo e Prática**, sem incluir aquisição e fabricação da peça; a especialização está disponível para qualquer profissão, inclusive magos de batalha e guerreiros-magos.
+**Toda armadura Grau 4 é naturalmente imune a dano físico comum**, independentemente da categoria. A imunidade é **sempre física**, não é um espaço de propriedade trocável. Não exige a antiga variante Pesada especializada nem, por si só, Vigor 6 ou Atletismo 6.
 
-| Propriedade | Aplicação |
-|---|---|
-| **Defesa** | **−2 DE**, depois do cálculo da DE natural, limitada a 9 |
-| **Imunidade física** | **Todo dano físico comum é anulado**: não perde integridade nem Vida |
-| **Exceção física** | **Perfurante habilitado**, com ataque que alcance a DE, pode penetrar e atingir diretamente Vida |
-| **Resistência elemental** | **Uma resistência elemental específica**, determinada pela peça **comprada ou fabricada** |
-| **Condições de armas** | Derrubar, afastar, Sangramento superficial e demais efeitos **continuam possíveis**, se devidamente habilitados |
+**Além** da imunidade física, a peça possui **uma destas configurações**, definida na aquisição ou fabricação:
 
-A imunidade física protege contra dano de **cortes, impactos, perfurações comuns e outras fontes físicas**. Ela não transforma a armadura em imunidade a condições, Pavor ou magia. O tipo **Perfurante** só atravessa essa proteção quando o **efeito de penetração da arma estiver habilitado**: exige acerto e o gatilho correspondente, por exemplo crítico pertinente ou ativação por **1 PP ou 2 Coragens** nos casos em que a técnica prevê esses custos. Perfurar não dá dano direto gratuito a toda arma pontiaguda. Uma penetração habilitada ignora integridade, respeitando o limite de até **3 Vida por ataque não colossal**.
+- **Imunidade a um elemento** específico **OU**
+- **Duas resistências elementais** específicas.
 
-**Exemplo:** contra um personagem com **DE 5** usando essa armadura, um machado que acerta não causa dano físico à integridade ou Vida, mas pode **derrubá-lo** se a manobra estiver habilitada. Uma adaga com Sangramento habilitado pode fazê-lo sangrar superficialmente sem causar dano. Uma arma perfurante com penetração habilitada pode atingir a Vida.
+Não somar as duas alternativas. Os elementos são **características da peça**, não podem ser trocados livremente durante a cena. Os tipos concretos de cada modelo de armadura dependerão do catálogo.
 
-**Resistência elemental:** a peça tem seu elemento de resistência definido **na aquisição ou fabricação**. A resistência não pode ser trocada de um ataque para outro. A imunidade física ampla é a **exceção específica desta variante**, distinta da progressão geral de armaduras de Grau 1–4; **não** conceder resistência extra ou outra imunidade automaticamente.
-
-**PENDENTE:** catálogo de peças, preço e procedimentos de fabricação, integridade, interação com dano colossal/misto e casos especiais de proteção. Outros requisitos específicos de armaduras não são preenchidos por suposição.
-
-### Proteções por Grau [DEFINIDO quanto ao acesso e propriedades]
-
-| Grau da armadura | Efeitos permitidos | Acesso |
+| Grau da armadura | Proteção aprovada | Acesso |
 |---|---|---|
-| **1** | Somente integridade; nenhuma resistência ou imunidade automática | Inicial, conforme requisitos da peça |
-| **2** | Primeira resistência, apenas se a armadura puder recebê-la | **Equipar somente a partir do nível 5** |
-| **3** | Segunda resistência, se o modelo comportar | Nível e requisitos específicos pendentes |
-| **4** | Imunidade específica, quando habilitada | Nível e requisitos específicos pendentes |
+| **1** | Integridade; sem resistência ou imunidade automática | Inicial, conforme requisitos da peça |
+| **2** | Primeiro acesso à resistência, se a armadura comportar | **Equipar somente a partir do nível 5** |
+| **3** | Pode receber a segunda resistência, se habilitada | Nível e requisitos específicos pendentes |
+| **4** | **Imunidade física obrigatória + (imunidade a 1 elemento OU 2 resistências elementais)** | Nível e requisitos de aquisição específicos pendentes |
 
-Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau são coisas distintas. Uma armadura Média ou Pesada no Grau 1 **não começa com resistência**; a evolução depende do seu Grau e do tipo de peça. **A imunidade física ampla da armadura Pesada especializada de Grau 4 é uma exceção expressamente definida**, não uma propriedade automática de todos os equipamentos.
+**Imunidade física:** ataques físicos comuns não causam perda de integridade nem Vida, mesmo após alcançarem a DE. A proteção não elimina Pavor nem efeitos habilitados como **derrubar, afastar e Sangramento superficial**, cujos próprios gatilhos precisam ocorrer. **Perfuração especial habilitada** continua tendo a exceção da continuidade anterior: quando a técnica permite atravessar imunidade/integridade e alcança a DE, pode atingir Vida, respeitando até **3 Vida por golpe não colossal**; ser apenas uma arma Perfurante não basta. A eventual revisão dessa exceção à imunidade universal é **PENDENTE**.
 
-**EXPERIMENTAL:** os valores numéricos de integridade por categoria/qualidade e demais bônus/requisitos por peça seguem em teste, **exceto** os requisitos e a penalidade **−2 DE** definidos para a armadura Pesada especializada. Não importar como oficiais os números históricos das tabelas v0.22.
+**Exemplo:** uma armadura Média de Grau 4 possui imunidade física e uma imunidade específica a Fogo. Outra armadura de Grau 4 possui imunidade física e resistências a Fogo e Água. A segunda **não** é imune a Fogo e também não ganha uma terceira proteção por alcançar Grau 4. São apenas exemplos de elementos possíveis, não um catálogo oficial.
+
+**Variante Pesada especializada anterior:** a v0.34 descrevia uma peça Pesada G4 com requisitos **Vigor 6 / Atletismo 6** e penalidade **−2 DE após o teto**. Esses custos **não são requisitos gerais do Grau 4**. Como a imunidade física não distingue mais essa variante, manter seu papel e eventuais benefícios específicos está **PENDENTE**; não aplicar automaticamente sua penalidade a qualquer outra peça. Fichas existentes que usem especificamente a variante anterior podem identificá-la até a revisão.
+
+Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau não são a mesma coisa. **EXPERIMENTAL:** valores numéricos de integridade e demais custos por modelo. **PENDENTE:** catálogo, fabricação, resistências por elemento, requisitos adicionais e resolução de casos especiais de dano misto/colossal. Não criar imunidades ou resistências extras.
 
 **Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
 
