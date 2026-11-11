@@ -1,8 +1,8 @@
 # Codex RPG — Livro do Mestre
 
-**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.35**
+**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.36**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.35](srd-continuidade-v0.35.md). Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.36](srd-continuidade-v0.36.md). Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
 
@@ -63,9 +63,9 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 ## Armaduras Grau 4 — orientação ao Mestre [DEFINIDO / PENDENTE]
 
-Toda armadura Grau 4 é **natural e obrigatoriamente imune a danos físicos comuns**, independentemente de sua categoria. Além disso, traz **uma imunidade a elemento específico OU duas resistências elementais**. Essas duas alternativas elementais não se acumulam; a configuração pertence à peça e não muda a cada ataque. Imunidade física não equivale a imunidade automática contra condições de armas ou Pavor. Exceções de penetração habilitada permanecem sujeitas a seus gatilhos; seus casos extraordinários estão em revisão.
+Toda armadura **Grau 4 é Muito Pesada/Extrema**, exige **Vigor 6 e Atletismo 6**, impõe **−2 DE** após o teto natural e é **natural e obrigatoriamente imune a danos físicos comuns**. Armaduras **Grau 3 são Pesadas e impõem −1 DE**. Além disso, traz **uma imunidade a elemento específico OU duas resistências elementais**. Essas duas alternativas elementais não se acumulam; a configuração pertence à peça e não muda a cada ataque. Imunidade física não equivale a imunidade automática contra condições de armas ou Pavor. Exceções de penetração habilitada permanecem sujeitas a seus gatilhos; seus casos extraordinários estão em revisão.
 
-A antiga armadura Pesada especializada com Vigor 6/Atletismo 6 e −2 DE não é requisito para a imunidade física geral. Sua identidade como variante separada está PENDENTE. Ver [SRD v0.35](srd-continuidade-v0.35.md).
+A antiga distinção de “armadura Pesada especializada” foi absorvida pela **regra geral de armadura Grau 4**; não existe exceção leve de G4. Requisitos adicionais de G3, integridade e casos especiais de dano permanecem PENDENTES. Ver [SRD v0.36](srd-continuidade-v0.36.md).
 
 ## 2. Exemplos para conduzir a cena
 
