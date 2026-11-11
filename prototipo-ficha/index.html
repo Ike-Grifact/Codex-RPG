@@ -20,7 +20,7 @@
       <span><strong>CODEX <em>RPG</em></strong><small>O INÍCIO DE UMA HISTÓRIA</small></span>
     </a>
     <div class="fp-nav">
-      <a href="../criador.html" class="fp-text-link">Criador atual</a>
+      <a href="../index.html" class="fp-text-link">Início</a>
       <a href="../livro.html" class="fp-text-link">Jogador</a>
       <a href="../narrador.html" class="fp-text-link">Narrador</a>
       <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
@@ -30,18 +30,19 @@
   </header>
 
   <div class="fp-page-label">
-    <div><span class="fp-kicker">LABORATÓRIO DE INTERFACE · CODEx RPG</span>
+    <div><span class="fp-kicker">CRIADOR E FICHA · CODEX RPG</span>
       <h1 id="page-title">Ficha de personagem <span>jogável.</span></h1>
-      <p id="page-subtitle">Uma prévia visual e interativa antes de levar a experiência para o Foundry VTT.</p>
+      <p id="page-subtitle">Crie, edite, evolua e jogue com seu personagem no mesmo lugar.</p>
     </div>
     <div class="fp-page-tools">
       <a class="fp-secondary" href="#progressao" id="xp-shortcut">XP e evolução</a>
       <button type="button" class="fp-secondary fp-edit-toggle" id="edit-sheet" aria-pressed="false" hidden>Editar ficha</button>
       <button type="button" class="fp-secondary" id="start-wizard" hidden>Novo personagem</button>
-      <span class="fp-status-pill"><span class="fp-dot"></span> Protótipo HTML independente</span>
+      <span class="fp-status-pill"><span class="fp-dot"></span> Criador e ficha unificados</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
       <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
-      <button class="fp-secondary" id="import-trigger" type="button">Importar</button>
+      <button class="fp-secondary" id="import-trigger" type="button">Importar JSON</button>
+      <button class="fp-secondary" id="import-old-creator" type="button" hidden title="Recuperar ficha guardada no criador anterior">Importar ficha antiga</button>
       <input id="import-json" type="file" accept=".json,application/json" hidden>
     </div>
   </div>
@@ -151,21 +152,21 @@
       <div class="fp-primary-column">
         <section class="fp-section-intro">
           <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
-          <p>Comece por um <strong>Conhecimento ou Prática</strong>. Depois escolha um <strong>Atributo</strong>. Um complemento exige Perícia pertinente.</p>
+          <p>Escolha seu <strong>Atributo</strong> e a <strong>Base</strong> em Práticas ou Conhecimentos, em qualquer ordem. Um complemento exige Perícia pertinente.</p>
         </section>
         <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
         <div class="fp-source-grid" id="source-grid">
-          <section class="fp-panel fp-source-panel">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3>Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
-            <div id="knowledge-list" class="fp-sources"></div>
-          </section>
-          <section class="fp-panel fp-source-panel">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3>Atributos</h3><small>Segunda fonte</small></div><span class="fp-count">06</span></div>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-attr">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3 id="sources-attr">Atributos</h3><small>Fonte obrigatória na rolagem</small></div><span class="fp-count">06</span></div>
             <div id="attribute-list" class="fp-sources"></div>
           </section>
-          <section class="fp-panel fp-source-panel">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3>Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-practice">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3 id="sources-practice">Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
             <div id="practice-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-know">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3 id="sources-know">Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="knowledge-list" class="fp-sources"></div>
           </section>
         </div>
         <section class="fp-panel fp-bottom-note">
@@ -189,6 +190,12 @@
       <section class="fp-panel fp-skills-panel" id="pericias">
         <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Ative para experimentar a composição</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
         <div id="skills-list" class="fp-skills-grid"></div>
+        <div class="fp-taunt-rule" id="provocar">
+          <h4>Provocar — ação tática básica</h4>
+          <p><strong>Qualquer personagem</strong> pode testar Influência contra a DE de <strong>um inimigo</strong>. Resultado <strong>igual ou superior</strong> provoca; resultado inferior falha.</p>
+          <p>Nos ataques do turno em que estiver provocado: contra <strong>seus aliados</strong>, o inimigo sofre <strong>Desvantagem (−1A)</strong>; contra <strong>você</strong>, recebe <strong>Vantagem (+1A)</strong>. É uma troca de risco, não uma Perícia obrigatória.</p>
+          <p><strong>Provocação Sofisticada:</strong> exige Influência 2, custa 1 XP. Sua descrição atual repete o efeito básico; <strong>benefício adicional ainda pendente</strong>, sem acumular Vantagem ou Desvantagem. Consulte <a href="../livro.html#provocacao">a regra completa</a>.</p>
+        </div>
         <p class="fp-footnote">Perícias consomem XP e verificam os requisitos disponíveis. Capacidade pendente não pode ser comprada; a terceira fonte continua sujeita à pertinência da ação. <strong>Conjuração elemental começa Leve, Grau 1.</strong> Raio é condição ou manifestação de magia, não um elemento comprável.</p>
         <div class="fp-weapon-focus" id="weapon-focus-wrap" hidden><label class="fp-field">Especialização de Armas 1<select id="weapon-focus"><option value="leve">Leve</option><option value="medio">Média</option><option value="pesado">Pesada</option><option value="distancia">Distância</option><option value="Punhos">Punhos</option></select></label><small class="fp-muted">Esta escolha afeta os requisitos experimentais de Artes Marciais.</small></div>
         <div class="fp-support-actions">
@@ -208,15 +215,15 @@
     </section>
 
     <section class="fp-panel fp-notes-panel">
-      <div class="fp-panel-heading"><span class="fp-panel-icon">✎</span><div><h3>Anotações do personagem</h3><small>Persistência local independente do criador</small></div></div>
+      <div class="fp-panel-heading"><span class="fp-panel-icon">✎</span><div><h3>Anotações do personagem</h3><small>Salvamento automático e compatível com o criador anterior</small></div></div>
       <textarea id="char-notes" rows="4" maxlength="5000" placeholder="Objetivos, contatos, descobertas, condições e lembretes de sessão..."></textarea>
       <div class="fp-bottom-actions">
         <span class="fp-muted" id="save-indicator">Salvamento automático neste navegador</span>
-        <button class="fp-secondary" id="reset-sheet" type="button">Reiniciar protótipo</button>
+        <button class="fp-secondary" id="reset-sheet" type="button">Reiniciar ficha</button>
       </div>
     </section>
   </main>
-  <footer class="fp-footer">CODEX RPG · Demonstração HTML · Sem alteração do criador original · Mecânicas pendentes identificadas como teste</footer>
+  <footer class="fp-footer">CODEX RPG · Criador e ficha jogável unificados · Regras experimentais e pendentes identificadas</footer>
 </div>
 <div id="toast" role="status" aria-live="polite" class="fp-toast"></div>
 </body>
