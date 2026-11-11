@@ -433,7 +433,7 @@ function renderVitals(){
  $("life-recovery").textContent=state.life===0?"Vida zerada · procedimento pendente":tier===3?"Faixa 3/3 · 1 Vida por dia":tier===2?"Faixa 2/3 · 1 semana por Vida":"Faixa 1/3 · Medicina + 1 semana por Vida";
 }
 function renderSources(){
- for(const group of ["know","attr","practice"]){
+ for(const group of ["attr","practice","know"]){
   const html=GROUPS[group].map(([id,name])=>{
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
    const nextCost=xpStepCost(group,id,1),canEdit=(viewMode==="builder"&&!state.creationLocked)||editMode;
@@ -465,13 +465,15 @@ function selectSource(group,k){
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
  const source={group,key:k};
  if(group==="attr"){
-  if(!draft.base){toast("Primeiro escolha um Conhecimento ou Prática como Base.");return;}
   draft.attribute=same(source,draft.attribute)?null:source;
   if(!draft.attribute){draft.third=null;draft.contextOK=false;}
  }else if(!draft.base){
-  draft=freshDraft();draft.base=source;draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
+  const selectedAttribute=draft.attribute;
+  draft=freshDraft();draft.base=source;draft.attribute=selectedAttribute;
+  draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
  }else if(same(source,draft.base)){
-  draft=freshDraft();
+  const selectedAttribute=draft.attribute;
+  draft=freshDraft();draft.attribute=selectedAttribute;
  }else if(!draft.attribute){
   draft.base=source;draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
  }else{
@@ -509,9 +511,11 @@ function renderComposer(){
  const box=$("composer-content"),stat=$("composer-status");
  if(state.pending){stat.textContent="Rolagem pendente";box.innerHTML=renderPending();return;}
  if(!draft.base){
-  stat.textContent="Aguardando uma Base";
-  box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4><p>Escolha primeiro um Conhecimento ou uma Prática na ficha. O primeiro clique define a natureza da ação; o Atributo vem depois.</p></div>'+
-   '<div class="fp-alert">Experimente <strong>Disciplina (Armas) → Força → Apresentação</strong> e depois inverta a Base. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
+  stat.textContent=draft.attribute?"Escolha a Base":"Selecione suas fontes";
+  const chosen=draft.attribute?'<p><strong>'+esc(label(draft.attribute.group,draft.attribute.key))+'</strong> já está selecionado. Agora escolha uma Prática ou Conhecimento para definir a Base.</p>':
+   '<p>Selecione um Atributo à esquerda e uma Base em Práticas ou Conhecimentos. A ordem dos cliques é livre.</p>';
+  box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4>'+chosen+'</div>'+
+   '<div class="fp-alert">Experimente <strong>Disciplina (Armas) + Força + Apresentação</strong> e depois inverta a Base. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
    (state.history.length?'<p class="fp-caption">Última ação: '+esc(state.history[0].name)+' · '+esc(state.history[0].outcome)+'</p>':"");
   return;
  }
@@ -520,7 +524,7 @@ function renderComposer(){
  '<div class="fp-step-box attr"><small>02 · ATRIBUTO</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
  '<div class="fp-step-box third"><small>03 · COMPLEMENTO</small><strong>'+(draft.third?esc(label(draft.third.group,draft.third.key)):"Opcional")+'</strong></div></div>';
  if(!draft.attribute){
-  box.innerHTML=step+'<p class="fp-prepare-description">A Base já foi definida. Clique em um Atributo na coluna central. Nenhum dado será rolado sem sua confirmação.</p>'+
+  box.innerHTML=step+'<p class="fp-prepare-description">A Base já foi definida. Clique em um Atributo na coluna à esquerda. Nenhum dado será rolado sem sua confirmação.</p>'+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
  const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
@@ -764,7 +768,7 @@ function fromCreator(v){
    old.customSkills.slice(0,50).map(x=>String(x.name||x.id||"Sem nome")+" ("+String(x.cost||"?")+" XP)").join(", "));
  }
  if(unrecognized.length)notes.push("Perícias antigas sem equivalente automático: "+unrecognized.join(", "));
- if(notes.length)s.notes=(s.notes+"\\n"+notes.join("\\n")).trim().slice(0,5000);
+ if(notes.length)s.notes=(s.notes+"\n"+notes.join("\n")).trim().slice(0,5000);
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(old.weaponFocus)?old.weaponFocus:"leve";
  s.courage=old.courage??10;
  s.xpEarned=Math.max(0,Math.floor(Number(old.xpEarned)||0));
