@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.35, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.36, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -130,7 +130,7 @@ function normalize(v){
  s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  s.items=Array.isArray(v.items)?v.items.slice(0,150).map(item=>normalizeItem(item)):[];
- for(const item of s.items)if(item.equipped&&item.specialArmor&&!canWearSpecialArmor(s,item))item.equipped=false;
+ for(const item of s.items)if(item.equipped&&item.type==="armadura"&&item.grade===4&&!canWearGrade4(s))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
  s.courageUsedTurn=!!v.courageUsedTurn;
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
@@ -140,12 +140,12 @@ function normalize(v){
 }
 function normalizeItem(it={}){
  const type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(it.type)?it.type:"outro";
- const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
+ const weight=type==="armadura"&&grade===4?"extremo":type==="armadura"&&grade===3?"alto":Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
  const max=clamp(Math.floor(it.max??0),0,999);
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
-  specialArmor:!!it.specialArmor,elementalResistance:String(it.elementalResistance||"").slice(0,70),
+  elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances"};
 }
@@ -217,14 +217,11 @@ function deNatural(s=state){
  return Math.min(9,(s.attributes.agilidade||0)+Math.floor((s.attributes.destreza||0)/2)+
   Math.floor((s.attributes.vigor||0)/2)+Math.floor((s.practices.atletismo||0)/3));
 }
-function isSpecialArmor(it){return !!it&&it.type==="armadura"&&it.grade===4&&it.weight==="alto"&&it.specialArmor;}
-function canWearSpecialArmor(s=state,it=null){
- return (s.attributes.vigor||0)>=6&&(s.practices.atletismo||0)>=6&&(!it||isSpecialArmor(it));
+function canWearGrade4(s=state){return (s.attributes.vigor||0)>=6&&(s.practices.atletismo||0)>=6;}
+function armorDePenalty(s=state){
+ return s.items.reduce((n,it)=>it.equipped&&it.type==="armadura"?Math.max(n,it.grade===4?2:it.grade===3?1:0):n,0);
 }
-function activeSpecialArmor(s=state){
- return s.items.some(it=>it.equipped&&isSpecialArmor(it)&&canWearSpecialArmor(s,it));
-}
-function deDefense(s=state){return Math.max(0,deNatural(s)-(activeSpecialArmor(s)?2:0));}
+function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty,0);}
@@ -425,7 +422,7 @@ function renderVitals(){
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
  $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
- $("de-caption").textContent=activeSpecialArmor()?"DE natural "+deNatural()+" − 2 (armadura especializada)":"DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
+ $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura G"+(armorDePenalty()===2?"4 Muito Pesada":"3 Pesada")+")":"DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
@@ -673,7 +670,7 @@ function updateGrade(group,id,delta){
   if(problem){toast("Não é possível reduzir: "+problem);return;}
  }
  state[p][id]=next;
- for(const item of state.items)if(item.equipped&&item.specialArmor&&!canWearSpecialArmor(state,item))item.equipped=false;
+ for(const item of state.items)if(item.equipped&&item.type==="armadura"&&item.grade===4&&!canWearGrade4(state))item.equipped=false;
  render();save();
  if(delta>0)toast("Grau "+next+" comprado por "+purchaseCost+" XP.");
  else toast("Grau reduzido para "+next+". XP da ficha recalculado.");
@@ -719,12 +716,11 @@ function renderInventory(){
      `<div class="fp-item-hint"><label>Resistência elemental 2${it.grade<4?" (se habilitada)":""}: <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Segundo elemento da peça"></label></div>`:"")+
    (it.grade===4?
      '<div class="fp-item-hint">Imunidade física + apenas UMA alternativa elemental fixa, definida na aquisição da peça.</div>':"")+
-   (it.grade===4&&it.weight==="alto"?
-     `<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="${esc(it.id)}"${it.specialArmor?" checked":""}> Variante Pesada especializada histórica (VIG 6/ATL 6; −2 DE), em revisão. Não é requisito para imunidade física.</label></div>`:"")
+   (it.grade===4?'<div class="fp-item-hint"><strong>Grau 4 Muito Pesada:</strong> Vigor 6, Atletismo 6, −2 DE após o teto. Peso Extremo.</div>':it.grade===3?'<div class="fp-item-hint"><strong>Grau 3 Pesada:</strong> −1 DE após o teto. Peso Alto/Pesado.</div>':"")
   );
   return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
-  inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
+  (it.type==="armadura"&&it.grade>=3?'<span class="fp-item-hint">Peso fixo: '+esc(WEIGHTS[it.weight][0])+'</span>':inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id))+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b>'+it.hp+'/'+it.max+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
@@ -862,7 +858,7 @@ function onClick(event){
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(!it.equipped&&it.type==="armadura"&&it.grade>=2&&state.level<5){toast("Armadura Grau 2 requer nível 5 para equipar.");return;}
-  if(!it.equipped&&it.specialArmor&&!canWearSpecialArmor(state,it)){toast("Armadura especializada exige peça Pesada Grau 4, Vigor 6 e Atletismo 6.");return;}
+  if(!it.equipped&&it.type==="armadura"&&it.grade===4&&!canWearGrade4(state)){toast("Armadura Grau 4 Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   it.equipped=!it.equipped;renderInventory();renderVitals();save();break;
  }
  case "delete-item":{
@@ -889,15 +885,11 @@ function onChange(event){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
   const k=el.dataset.itemField;
   if(k==="name")it.name=el.value.slice(0,90);
-  else if(k==="type")it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";
-  else if(k==="weight")it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";
+  else if(k==="type"){it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";if(it.type==="armadura"&&it.grade===4)it.weight="extremo";else if(it.type==="armadura"&&it.grade===3)it.weight="alto";}
+  else if(k==="weight"){if(it.type==="armadura"&&it.grade>=3)return;it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";}
   else if(k==="qty")it.qty=clamp(Math.floor(el.value),1,99);
-  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.equipped&&it.type==="armadura"&&it.grade>=2&&state.level<5){it.equipped=false;toast("Peça retirada: Grau 2 exige nível 5.");}}
+  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="armadura"&&it.grade===4)it.weight="extremo";else if(it.type==="armadura"&&it.grade===3)it.weight="alto";if(it.equipped&&it.type==="armadura"&&it.grade>=2&&state.level<5){it.equipped=false;toast("Peça retirada: Grau 2 ou superior exige nível 5.");}}
   else if(k==="max"){it.max=clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
-  else if(k==="specialArmor"){
-   if(it.type!=="armadura"||it.grade!==4||it.weight!=="alto")return;
-   it.specialArmor=!!el.checked;
-  }
   else if(k==="g4ElementalMode"&&it.type==="armadura"&&it.grade===4){
    it.g4ElementalMode=el.value==="immunity"?"immunity":"resistances";
    if(it.g4ElementalMode==="immunity"){it.elementalResistance="";it.secondResistance="";}
@@ -906,8 +898,7 @@ function onChange(event){
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
-  if(it.specialArmor&&!isSpecialArmor(it)){it.specialArmor=false;toast("Variante especializada desmarcada: exige armadura Pesada Grau 4.");}
-  if(it.equipped&&it.specialArmor&&!canWearSpecialArmor(state,it)){it.equipped=false;toast("Peça especializada desequipada: requisitos não atendidos.");}
+  if(it.equipped&&it.type==="armadura"&&it.grade===4&&!canWearGrade4(state)){it.equipped=false;toast("Armadura Grau 4 desequipada: Vigor 6 e Atletismo 6 necessários.");}
   renderInventory();renderVitals();save();return;
  }
 }
