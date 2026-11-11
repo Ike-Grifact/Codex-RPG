@@ -1,6 +1,6 @@
 # Codex RPG — Guia do Narrador
 
-**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.34](srd-continuidade-v0.34.md).
+**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.35](srd-continuidade-v0.35.md).
 
 ## 1. O papel do Narrador
 
@@ -41,11 +41,11 @@ O Narrador pode expressar a intervenção por alteração de terreno, posicionam
 
 Se **todos os Líderes** caírem, a oposição fica desorganizada, concedendo **Vantagem aos jogadores**. Um candidato precisa convencer aliados com **Influência contra as DEs**; não há requisito de Inteligência 2. Jogadores podem disputar os alvos, valendo **a última convicção bem-sucedida**. Sucesso com Pavor continua válido, mas permite reação; sem Pavor os jogadores mantêm o protagonismo. O conflito pode terminar por rendição ou fuga.
 
-Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o **[Livro do Mestre](livro-do-mestre.md)** e o SRD v0.34.
+Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o **[Livro do Mestre](livro-do-mestre.md)** e o SRD v0.35.
 
 ## 4. DE, ameaças e ações conjuntas [DEFINIDO / EXPERIMENTAL]
 
-**DE natural individual = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**. A armadura Pesada especializada aplica **−2 DE depois do teto**.
+**DE natural individual = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**. **Toda armadura Grau 4 é imune a dano físico comum** e possui **imunidade a um elemento OU duas resistências elementais** como escolha adicional da peça. **A penalidade −2 DE não é geral**: só consta da variante Pesada especializada histórica, cuja identidade está em revisão.
 
 A **DE conjunta** mantém **teto 30**, com coordenação e demais regras específicas. Até **três participantes** podem atuar em ataques conjuntos. Ataque em área que efetivamente atinge três criaturas separadas pode atingir três fichas; uma criatura composta de **uma ficha** não sofre dano multiplicado por suas partes abstratas.
 
