@@ -1,4 +1,4 @@
-/* Codex RPG — protótipo HTML independente. Regras do Livro/SRD v0.30, incluindo DE e armadura especializada. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.33, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
