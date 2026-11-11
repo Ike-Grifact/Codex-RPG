@@ -1,4 +1,4 @@
-/* Codex RPG — protótipo HTML independente. Regras do Livro/SRD v0.29 para críticos. */
+/* Codex RPG — protótipo HTML independente. Regras do Livro/SRD v0.30, incluindo DE e armadura especializada. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -101,6 +101,7 @@ function normalize(v){
  s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  s.items=Array.isArray(v.items)?v.items.slice(0,150).map(item=>normalizeItem(item)):[];
+ for(const item of s.items)if(item.equipped&&item.specialArmor&&!canWearSpecialArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
  s.courageUsedTurn=!!v.courageUsedTurn;
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
@@ -114,7 +115,8 @@ function normalizeItem(it={}){
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
  const max=clamp(Math.floor(it.max??0),0,999);
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
-  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped};
+  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
+  specialArmor:!!it.specialArmor,elementalResistance:String(it.elementalResistance||"").slice(0,70)};
 }
 function save(){
  try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));$("save-indicator").textContent="Salvo neste navegador";}catch(e){
@@ -179,7 +181,18 @@ function renderXP(){
   "As compras consomem primeiro o orçamento da categoria. O excedente utiliza XP de evolução."+ (state.creationLocked?" Após a criação não há reembolso livre.":"");
  $("char-level").value=state.level;
 }
-function deNatural(){return (state.attributes.agilidade||0)+Math.floor((state.attributes.destreza||0)/2);}
+function deNatural(s=state){
+ return Math.min(9,(s.attributes.agilidade||0)+Math.floor((s.attributes.destreza||0)/2)+
+  Math.floor((s.attributes.vigor||0)/2)+Math.floor((s.practices.atletismo||0)/3));
+}
+function isSpecialArmor(it){return !!it&&it.type==="armadura"&&it.grade===4&&it.weight==="alto"&&it.specialArmor;}
+function canWearSpecialArmor(s=state,it=null){
+ return (s.attributes.vigor||0)>=6&&(s.practices.atletismo||0)>=6&&(!it||isSpecialArmor(it));
+}
+function activeSpecialArmor(s=state){
+ return s.items.some(it=>it.equipped&&isSpecialArmor(it)&&canWearSpecialArmor(s,it));
+}
+function deDefense(s=state){return Math.max(0,deNatural(s)-(activeSpecialArmor(s)?2:0));}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty,0);}
@@ -371,7 +384,8 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- $("de-text").textContent=deNatural();$("balance-text").textContent=balance();
+ $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
+ $("de-caption").textContent=activeSpecialArmor()?"DE natural "+deNatural()+" − 2 (armadura especializada)":"DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
@@ -654,7 +668,13 @@ function renderInventory(){
   '<div class="fp-item-hint"><label>Grau <input type="number" data-item-field="grade" data-id="'+esc(it.id)+'" min="1" max="4" value="'+it.grade+'" style="width:40px"></label> · '+
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
   '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px"></label>'+
-  ' · '+(it.equipped?"Equipado":"No inventário")+'</div></div>';
+  ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
+  (it.type==="armadura"&&it.weight==="alto"&&it.grade===4?
+    '<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="'+esc(it.id)+'"'+
+    (it.specialArmor?' checked':'')+'> Armadura Pesada especializada (VIG 6/ATL 6, imunidade física, −2 DE)</label></div>'+
+    (it.specialArmor?'<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="'+
+     esc(it.id)+'" value="'+esc(it.elementalResistance)+'" maxlength="70" placeholder="Elemento da peça adquirida/craftada"></label></div>':'')
+    :'')+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
 function demo(){
@@ -766,7 +786,8 @@ function onClick(event){
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(!it.equipped&&it.type==="armadura"&&it.grade>=2&&state.level<5){toast("Armadura Grau 2 requer nível 5 para equipar.");return;}
-  it.equipped=!it.equipped;renderInventory();save();break;
+  if(!it.equipped&&it.specialArmor&&!canWearSpecialArmor(state,it)){toast("Armadura especializada exige peça Pesada Grau 4, Vigor 6 e Atletismo 6.");return;}
+  it.equipped=!it.equipped;renderInventory();renderVitals();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -797,6 +818,12 @@ function onChange(event){
   else if(k==="qty")it.qty=clamp(Math.floor(el.value),1,99);
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.equipped&&it.type==="armadura"&&it.grade>=2&&state.level<5){it.equipped=false;toast("Peça retirada: Grau 2 exige nível 5.");}}
   else if(k==="max"){it.max=clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
+  else if(k==="specialArmor"){
+   if(it.type!=="armadura"||it.grade!==4||it.weight!=="alto")return;
+   it.specialArmor=!!el.checked;
+  }
+  else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
+  if(it.equipped&&it.specialArmor&&!canWearSpecialArmor(state,it)){it.equipped=false;toast("Peça especializada desequipada: requisitos não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
 }
