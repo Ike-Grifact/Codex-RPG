@@ -8,11 +8,11 @@ var ALL=KNOW.concat(PRACT);
 var AT_COST=[0,1,3,7,15,31,55],TR_COST=[0,2,8,20,38,66,102];
 var SKILLS=[
 {id:"combate",name:"Combate",category:"Tática",cost:1,desc:"+1A em teste de combate pertinente."},
-{id:"armas",name:"Armas 1",category:"Combate",cost:2,desc:"Habilita uma categoria de arma, inclusive Punhos. Usa a Prática compartilhada Armas/Conjuração; não compra outra fonte."},
+{id:"armas",name:"Armas 1",category:"Combate",cost:2,desc:"Habilita uma categoria de arma, inclusive Punhos. Usa a Prática compartilhada Disciplina; não compra outra fonte."},
 {id:"marciais",name:"Artes Marciais",category:"Combate",cost:1,desc:"Combina fontes pertinentes para lutar com Punhos, mediante habilitação e treinamento em Armas."},
 {id:"montar",name:"Montar Animal",category:"Combate",cost:2,desc:"Montaria comum; exige Influência grau 2."},
 {id:"combinacao",name:"Combinação de Fontes",category:"Caminhos híbridos",cost:2,desc:"Habilitação geral de combinação pertinente de três fontes; a fonte principal define a ação."},
-{id:"aprendiz",name:"Aprendiz de Conjurador",category:"Conjuração",cost:2,desc:"Habilita conjurar com o elemento Psíquico usando os dados da Prática compartilhada Armas/Conjuração; não exige outro investimento em Formação."},
+{id:"aprendiz",name:"Aprendiz de Conjurador",category:"Conjuração",cost:2,desc:"Habilita conjurar com o elemento Psíquico usando os dados da Prática compartilhada Disciplina; não exige outro investimento em Formação."},
 {id:"magia",name:"Magia Única",category:"Conjuração",cost:1,desc:"Cria uma magia inicial do grau permitido."},
 {id:"peritoconj",name:"Perito Conjurador",category:"Conjuração",cost:2,desc:"Combinação de fontes pertinentes à Conjuração."},
 {id:"improviso",name:"Improviso Mágico",category:"Conjuração",cost:1,desc:"Incorpora elemento disponível na cena, conforme requisitos."},
@@ -105,12 +105,7 @@ function stepper(parent,title,sub,g,value,up,down,sourceKey){var row=document.cr
 function renderAttrs(){var box=el("attribute-list");box.innerHTML="";var used=sum(state.attributes,AT_COST);el("attr-used").textContent=used;el("attr-left").textContent=7-used;el("attr-max").textContent=Math.max.apply(null,ATTR.map(grade));
 ATTR.forEach(function(a){var g=grade(a);stepper(box,a,"Atributo",g,g,{enabled:g<6&&used+AT_COST[g+1]-AT_COST[g]<=7,run:function(){state.attributes[a]++;clearRoll();renderAll();}},function(){state.attributes[a]--;clearRoll();renderAll();});});}
 function sourceName(x){return KNOW.indexOf(x)>-1?"Conhecimento":"Prática";}
-function displaySource(x){if(x!=="Armas")return x;
- if(has("armas")&&has("aprendiz"))return"Armas / Conjuração";
- if(has("aprendiz"))return"Conjuração";
- if(has("armas"))return"Armas";
- return"Armas ou Conjuração";
-}
+function displaySource(x){return x==="Armas"?"Disciplina":x;}
 function renderSource(){
  var box=el("source-list");box.innerHTML="";
  var used=sum(state.sources,TR_COST);
@@ -127,7 +122,7 @@ function renderSource(){
    run:function(){state.sources[name]=g+1;clearRoll();renderAll();}
   },function(){
    if(g===0)return;
-   if(name==="Armas"&&g===1&&has("marciais")){alert("Remova Artes Marciais antes de reduzir a Prática Armas abaixo do grau 1.");return;}
+   if(name==="Armas"&&g===1&&has("marciais")){alert("Remova Artes Marciais antes de reduzir a Prática Disciplina abaixo do grau 1.");return;}
    if(g===1)delete state.sources[name];else state.sources[name]=g-1;
    clearRoll();renderAll();
   },name);
@@ -136,10 +131,10 @@ function renderSource(){
  var oldConj=state.legacySources["Conjuração"];
  var deprecated=Object.keys(state.legacySources).filter(function(n){return n!=="Conjuração";});
  if(deprecated.length){var warning=document.createElement("p");warning.className="warning-inline";warning.textContent="Ficha antiga: "+deprecated.map(function(n){return n+" (grau "+state.legacySources[n]+")";}).join(", ")+". Fontes descontinuadas foram preservadas no histórico, sem dados nem XP ativos. Realoque manualmente.";box.prepend(warning);}
- if(oldConj){var note=document.createElement("p");note.className="small muted";note.textContent="Migração: Conjuração grau "+oldConj+" foi incorporada à Prática compartilhada Armas ou Conjuração (usando o maior grau anterior, sem somar XP ou dados). Registro antigo preservado.";box.prepend(note);}
+ if(oldConj){var note=document.createElement("p");note.className="small muted";note.textContent="Migração: Conjuração grau "+oldConj+" foi incorporada à Prática compartilhada Disciplina (usando o maior grau anterior, sem somar XP ou dados). Registro antigo preservado.";box.prepend(note);}
 }
 }
-function preReq(id){if(id==="marciais")return has("armas")&&state.weaponFocus==="Punhos"&&sourceGrade("Armas")>=1?null:"Exige habilitação Armas 1 (Punhos) e Prática Armas no grau 1 (adaptação provisória à nova lista).";
+function preReq(id){if(id==="marciais")return has("armas")&&state.weaponFocus==="Punhos"&&sourceGrade("Armas")>=1?null:"Exige habilitação Armas 1 (Punhos) e Prática Disciplina no grau 1 (adaptação provisória à nova lista).";
 if(id==="montar")return grade("Influência")>=2?null:"Exige Influência 2.";
 if(["magia","peritoconj","improviso","mestre","fogo","agua","raio","vento","terra","sagrado","veneno","sangue","trevas"].indexOf(id)>-1){if(!has("aprendiz"))return"Exige Aprendiz de Conjurador.";}
 if(["sangue","trevas"].indexOf(id)>-1)return"Exige magia de grau 2 (indisponível neste protótipo nível 1).";return null;}
@@ -170,14 +165,14 @@ function toggleDie(i){if(!currentRoll||currentRoll.done)return;var n=currentRoll
 function selectRebuild(sel,maximum,previous){sel.innerHTML="";for(var i=0;i<=maximum;i++){var o=document.createElement("option");o.value=String(i);o.textContent=String(i);sel.appendChild(o);}sel.value=String(Math.min(maximum,previous||0));}
 function analyse(){if(!currentRoll)return;var dice=currentRoll.dice.filter(function(x){return x.selected;});var total=[0,0,0];dice.forEach(function(d){for(var i=0;i<3;i++)total[i]+=d.symbols[i];});var affinity=attackAffinity();var bonus=el("roll-skill")&&el("roll-skill").checked&&has("combate")?1:0;var availableA=Math.max(0,total[1]+affinity+bonus);var cancel=el("cancel-p"),pairs=el("convert-e");var cPrev=Number(cancel.value)||0,pPrev=Number(pairs.value)||0;selectRebuild(cancel,Math.min(availableA,total[2]),cPrev);var c=Number(cancel.value);selectRebuild(pairs,Math.floor((availableA-c)/2),pPrev);cancel.disabled=!!currentRoll.done;pairs.disabled=!!currentRoll.done;var p=Number(pairs.value),manualE=clamp(Number(el("roll-extra-e").value)||0,0,2),E=total[0]+p+manualE,P=total[2]-c,rank=E+P,de=Number(el("roll-de").value);el("dice-kept").textContent=dice.length+" / "+(dice.length>2?"3 (1 Coragem)":"2 (grátis)");el("dice-symbols").textContent=total[0]+"E · "+total[1]+"A · "+total[2]+"P";el("dice-affinity").textContent=(affinity===1?"Vantagem +1A":affinity===-1?"Desvantagem −1A":"Normal")+(bonus?" · Combate +1A":"");
 var outcome=el("dice-outcome"),detail=el("dice-detail");outcome.className="outcome";
-var validAttr=dice.some(function(x){return x.kind==="attr";});var validSelected=dice.length>0&&validAttr;if(!validSelected){outcome.textContent=dice.length?"É obrigatório manter um dado de Atributo.":"Selecione os dados mantidos.";detail.textContent="Os dados descartados não têm efeito.";el("roll-commit").disabled=true;return;}
+var validAttr=currentRoll.dice.some(function(x){return x.kind==="attr";});var validSelected=dice.length>0&&validAttr;if(!validSelected){outcome.textContent=dice.length?"É obrigatório rolar um dado de Atributo.":"Selecione os dados mantidos.";detail.textContent="Os dados descartados não têm efeito.";el("roll-commit").disabled=true;return;}
 if(dice.length===3&&state.courage<1){outcome.textContent="Sem Coragem suficiente para o terceiro dado.";detail.textContent="Escolha no máximo dois dados mantidos.";el("roll-commit").disabled=true;return;}
 var success=rank>=de;var pure=P===0;var predominant=P>E;
 outcome.textContent=(success?(pure?"Acerto puro":predominant?"Acerto com Pavor predominante":"Acerto normal com Pavor"):(pure?"Falha limpa":"Falha com Pavor"));outcome.classList.add(success&&pure?"pure":P?"risk":"fail");
 detail.textContent="DE alcançada "+rank+" / "+de+"; E finais "+E+", P residuais "+P+", A livres "+(availableA-c-p*2)+". Dano básico se houver acerto: "+(E+Math.floor(P/2))+". Bônus experimental de Perícias: +"+manualE+"E. "+(P?"Pavor residual pode transferir oportunidade ao inimigo.":"Sem Pavor residual.")+(currentRoll.spentForStep?" Um ponto de Coragem já foi gasto para elevar o passo.":"");
 el("roll-commit").disabled=!!currentRoll.done;currentRoll.result={success:success,pavor:P,kept:dice.length};}
 function commit(){if(!currentRoll||currentRoll.done||!currentRoll.result)return;var r=currentRoll.result;if(r.kept===3){if(state.courage<1){alert("Coragem insuficiente.");return;}state.courage--;}if(!r.success&&r.pavor>0)state.courage=Math.max(0,state.courage-1);currentRoll.done=true;el("roll-commit").disabled=true;el("roll-commit").textContent="Ação finalizada";el("dice-detail").textContent+=" Custos aplicados à ficha. O Pavor residual deve ser administrado pelo Narrador conforme a cena.";renderSummary();save();renderDice();el("roll-commit").disabled=true;}
-function download(){var out={schema:"codex-rpg-ficha-nivel1-v1",status:"EXPERIMENTAL",exportedAt:new Date().toISOString(),character:state,info:"XP inicial 7+7+5 em playtest. Armas ou Conjuração é uma Prática única: o uso depende das Perícias e seus dados não se duplicam. Fontes antigas descontinuadas ficam arquivadas sem custo ativo."};var blob=new Blob([JSON.stringify(out,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="codex-aprendiz-"+(state.name?state.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,24):"nivel1")+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},500);}
+function download(){var out={schema:"codex-rpg-ficha-nivel1-v1",status:"EXPERIMENTAL",exportedAt:new Date().toISOString(),character:state,info:"XP inicial 7+7+5 em playtest. Disciplina é uma Prática única: o uso depende das Perícias e seus dados não se duplicam. Fontes antigas descontinuadas ficam arquivadas sem custo ativo."};var blob=new Blob([JSON.stringify(out,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="codex-aprendiz-"+(state.name?state.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,24):"nivel1")+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},500);}
 function addCustomSkill(){var name=el("custom-skill-name").value.trim(),cost=Number(el("custom-skill-cost").value),req=el("custom-skill-req").value.trim(),desc=el("custom-skill-desc").value.trim();if(!name||!desc||!Number.isInteger(cost)||cost<1||cost>5){el("custom-skill-status").textContent="Informe nome, efeito e custo entre 1 e 5 XP.";return;}if(state.customSkills.length>=80){el("custom-skill-status").textContent="Máximo de 80 rascunhos por ficha.";return;}var id="draft-"+Date.now().toString(36)+"-"+Math.floor(Math.random()*100000).toString(36);state.customSkills.push({id:id,name:name.slice(0,80),cost:cost,req:req.slice(0,220),desc:desc.slice(0,500),category:"Perícias experimentais"});["custom-skill-name","custom-skill-req","custom-skill-desc"].forEach(function(k){el(k).value="";});el("custom-skill-status").textContent="Rascunho registrado; selecione Comprar para aplicar XP na ficha.";renderAll();}
 function attach(){el("custom-skill-add").addEventListener("click",addCustomSkill);
 ["char-name","char-concept","char-virtue","char-personality","char-notes"].forEach(function(id){el(id).addEventListener("input",function(){var fields={"char-name":"name","char-concept":"concept","char-virtue":"virtue","char-personality":"personality","char-notes":"notes"};state[fields[id]]=this.value;renderPreview();save();});});el("char-origin").addEventListener("change",function(){state.origin=this.value;renderPreview();save();});
