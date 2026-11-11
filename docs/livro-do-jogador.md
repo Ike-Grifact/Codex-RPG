@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.8 (10 de novembro de 2026)
+## Edição de leitura do portal · v0.9 (10 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.29](srd-continuidade-v0.29.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.30](srd-continuidade-v0.30.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -169,6 +169,22 @@ Enquanto não houver Pavor não anulado, jogadores preservam o fluxo entre si. I
 
 **DE = Dificuldade de Êxito.** O tipo de ataque e o balanço do alvo produzem condições de Vantagem ou Desvantagem, conforme a situação.
 
+### DE defensiva — Vigor e Atletismo [DEFINIDO]
+
+A **Dificuldade de Êxito (DE) defensiva natural** considera o treinamento de mobilidade, precisão e resistência física:
+
+**DE natural = mínimo entre 9 e Agilidade + parte inteira(Destreza ÷ 2) + parte inteira(Vigor ÷ 2) + parte inteira(Atletismo ÷ 3).**
+
+```text
+DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
+```
+
+Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
+
+**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. O mesmo personagem usando a armadura pesada especializada descrita adiante fica com **DE 5**, pois a penalidade da armadura é aplicada **depois** do teto natural.
+
+**PENDENTE:** estabelecer se existe um mínimo de DE defensiva (0 ou 1). A fórmula ainda pode resultar em zero; não aplicar mínimo 1 automaticamente.
+
 ### Condições da ação
 
 | Condição | Efeito |
@@ -241,6 +257,26 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
+### Armadura pesada especializada — imunidade física [DEFINIDO]
+
+Esta é uma **variante de armadura Pesada de Grau 4**, obtida por compra, fabricação ou evolução apropriada. **Requer Vigor Grau 6 e Atletismo Grau 6 para equipar**. Não se obtém sua imunidade apenas por usar qualquer armadura pesada ou qualquer peça de Grau 4. Esses dois requisitos somam **157 XP em Atributo e Prática**, sem incluir aquisição e fabricação da peça; a especialização está disponível para qualquer profissão, inclusive magos de batalha e guerreiros-magos.
+
+| Propriedade | Aplicação |
+|---|---|
+| **Defesa** | **−2 DE**, depois do cálculo da DE natural, limitada a 9 |
+| **Imunidade física** | **Todo dano físico comum é anulado**: não perde integridade nem Vida |
+| **Exceção física** | **Perfurante habilitado**, com ataque que alcance a DE, pode penetrar e atingir diretamente Vida |
+| **Resistência elemental** | **Uma resistência elemental específica**, determinada pela peça **comprada ou fabricada** |
+| **Condições de armas** | Derrubar, afastar, Sangramento superficial e demais efeitos **continuam possíveis**, se devidamente habilitados |
+
+A imunidade física protege contra dano de **cortes, impactos, perfurações comuns e outras fontes físicas**. Ela não transforma a armadura em imunidade a condições, Pavor ou magia. O tipo **Perfurante** só atravessa essa proteção quando o **efeito de penetração da arma estiver habilitado**: exige acerto e o gatilho correspondente, por exemplo crítico pertinente ou ativação por **1 PP ou 2 Coragens** nos casos em que a técnica prevê esses custos. Perfurar não dá dano direto gratuito a toda arma pontiaguda. Uma penetração habilitada ignora integridade, respeitando o limite de até **3 Vida por ataque não colossal**.
+
+**Exemplo:** contra um personagem com **DE 5** usando essa armadura, um machado que acerta não causa dano físico à integridade ou Vida, mas pode **derrubá-lo** se a manobra estiver habilitada. Uma adaga com Sangramento habilitado pode fazê-lo sangrar superficialmente sem causar dano. Uma arma perfurante com penetração habilitada pode atingir a Vida.
+
+**Resistência elemental:** a peça tem seu elemento de resistência definido **na aquisição ou fabricação**. A resistência não pode ser trocada de um ataque para outro. A imunidade física ampla é a **exceção específica desta variante**, distinta da progressão geral de armaduras de Grau 1–4; **não** conceder resistência extra ou outra imunidade automaticamente.
+
+**PENDENTE:** catálogo de peças, preço e procedimentos de fabricação, integridade, interação com dano colossal/misto e casos especiais de proteção. Outros requisitos específicos de armaduras não são preenchidos por suposição.
+
 ### Proteções por Grau [DEFINIDO quanto ao acesso e propriedades]
 
 | Grau da armadura | Efeitos permitidos | Acesso |
@@ -250,9 +286,9 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 | **3** | Segunda resistência, se o modelo comportar | Nível e requisitos específicos pendentes |
 | **4** | Imunidade específica, quando habilitada | Nível e requisitos específicos pendentes |
 
-Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau são coisas distintas. Uma armadura Média ou Pesada no Grau 1 **não começa com resistência**; a evolução depende do seu Grau e do tipo de peça. Imunidade não é universal.
+Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau são coisas distintas. Uma armadura Média ou Pesada no Grau 1 **não começa com resistência**; a evolução depende do seu Grau e do tipo de peça. **A imunidade física ampla da armadura Pesada especializada de Grau 4 é uma exceção expressamente definida**, não uma propriedade automática de todos os equipamentos.
 
-**EXPERIMENTAL:** os valores numéricos de integridade por categoria/qualidade, bônus de DE e requisitos por peça seguem em teste. Não importar como oficiais os números históricos das tabelas v0.22.
+**EXPERIMENTAL:** os valores numéricos de integridade por categoria/qualidade e demais bônus/requisitos por peça seguem em teste, **exceto** os requisitos e a penalidade **−2 DE** definidos para a armadura Pesada especializada. Não importar como oficiais os números históricos das tabelas v0.22.
 
 **Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
 
@@ -329,11 +365,13 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 
 | Tipo | Propriedade possível | Limite |
 |---|---|---|
-| **Cortante** | Abrir Sangramento | É uma abertura, **não** dano automático a cada turno |
+| **Cortante** | **Sangramento superficial** habilitado | O sangue escorre, **sem reduzir Vida nem causar dano periódico** |
 | **Perfurante** | Técnica habilitada ignora integridade e atinge Vida | Exige acerto, até 3 Vida em golpe não colossal |
 | **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
 | **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
 | **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
+
+**Sangramento superficial [DEFINIDO]:** a propriedade de armas cortantes, inclusive a mecânica descrita para a adaga, representa somente uma abertura com sangue escorrendo. **Não reduz Vida, não acrescenta dano, não aplica dano por rodada e não cria penalidade automática.** Se o efeito cortante estiver habilitado e o ataque alcançar a DE, pode ocorrer **mesmo quando a armadura especializada anulou o dano físico**. Isso é **diferente das magias de Sangue**, que têm custos e efeitos próprios.
 
 **Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
 
