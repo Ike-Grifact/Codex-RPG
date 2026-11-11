@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.11 (11 de novembro de 2026)
+## Edição de leitura do portal · v0.12 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.32](srd-continuidade-v0.32.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.33](srd-continuidade-v0.33.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -178,6 +178,23 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 ### Como jogar narrativamente
 
 Declare **o que deseja alcançar** e **como seu personagem tenta fazê-lo**. Escolha as fontes pertinentes à abordagem, role a pilha e interprete os símbolos. Um Êxito pode representar a realização do objetivo; Antecipar permite reagir ou cooperar; Pavor introduz tensão e oportunidade para a situação mudar. A **falha limpa** não precisa causar dano ou humilhação narrativa. Não é obrigatório usar todas as opções de posicionamento, peso ou equipamentos em toda cena. Em desafios conjuntos, as ações dos aliados podem ser coordenadas conforme as regras específicas.
+
+### Provocar: ação tática básica [DEFINIDO]
+
+**Qualquer personagem pode Provocar**, sem comprar Perícia. Declare que deseja atrair a atenção de **um inimigo** e realize um teste normal de **Influência** contra a **DE do inimigo**:
+
+- **Resultado maior ou igual à DE:** o inimigo **fica provocado por você**. Resultado igual **é sucesso**.
+- **Resultado inferior à DE:** a provocação **falha**, sem impor Vantagem ou Desvantagem ao inimigo.
+- **Enquanto provocado, nos ataques do turno desse inimigo**, atacar **um aliado seu** impõe **Desvantagem (−1 Antecipar)**; atacar **você** concede **Vantagem (+1 Antecipar)** ao inimigo.
+- O bônus ou a penalidade dependem de **quem o inimigo realmente escolhe atacar**, não do mero anúncio do ataque. Não se aplica custo adicional de PP ou Coragem à ação básica sem uma regra que o defina.
+
+**Exemplo:** se sua ação de Influência resultar em 3 contra **DE 3**, você provocou o inimigo. No turno afetado, atacar um aliado concede −1A ao inimigo; atacar você concede +1A. Resultado 2 não provoca.
+
+### Provocação Sofisticada [DEFINIDO: requisito e XP; efeito exclusivo PENDENTE]
+
+A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1 XP**. Sua descrição fornecida até aqui **repete o efeito da ação Provocar básica**. Portanto, **não há benefício adicional distinto aprovado**: não empilhar Vantagens ou Desvantagens, não ampliar automaticamente a duração e não adicionar outros alvos. **A compra não é exigida para usar Provocar.**
+
+**PENDENTE:** definir o que diferencia a Perícia, a duração além do turno afetado, alcance e conflito entre múltiplas provocações. Não importar essas propriedades de outros RPGs.
 
 ## V. Defesa, Vantagem e peso
 
@@ -465,6 +482,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | Magia Sagrada / de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
+| **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
 | **Recuperação Vigorosa** | **1** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
 | **Arremesso de Armas Leves** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
@@ -485,7 +503,7 @@ A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**. O orçamento fina
 
 ### Materiais para públicos diferentes
 
-Este documento concentra regras necessárias **aos jogadores**. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
+Este documento concentra regras necessárias **aos jogadores**. Para a ficha jogável unificada, use o [Criador de personagem e ficha](../prototipo-ficha/); o antigo endereço `criador.html` encaminha para essa ferramenta. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
 
 ## XI. Referência de continuidade
 
