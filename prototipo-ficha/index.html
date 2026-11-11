@@ -35,6 +35,7 @@
     </div>
     <div class="fp-page-tools">
       <a class="fp-secondary" href="#progressao" id="xp-shortcut">XP e evolução</a>
+      <button type="button" class="fp-secondary fp-edit-toggle" id="edit-sheet" aria-pressed="false" hidden>Editar ficha</button>
       <button type="button" class="fp-secondary" id="start-wizard" hidden>Novo personagem</button>
       <span class="fp-status-pill"><span class="fp-dot"></span> Protótipo HTML independente</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
@@ -142,7 +143,7 @@
         <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
       </div>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
-      <p class="fp-footnote">Orçamento inicial de <b>6 + 8 + 5 XP</b>: <strong>EXPERIMENTAL</strong>. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, as compras não são devolvidas livremente. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
+      <p class="fp-footnote">Orçamento inicial de <b>6 + 8 + 5 XP</b>: <strong>EXPERIMENTAL</strong>. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, correções de investimentos podem ser feitas somente pelo botão <strong>Editar ficha</strong>; isso não concede reembolso livre durante a campanha. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
     </section>
 
     <div class="fp-workspace">
@@ -151,6 +152,7 @@
           <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
           <p>Comece por um <strong>Conhecimento ou Prática</strong>. Depois escolha um <strong>Atributo</strong>. Um complemento exige Perícia pertinente.</p>
         </section>
+        <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
         <div class="fp-source-grid" id="source-grid">
           <section class="fp-panel fp-source-panel">
             <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3>Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
