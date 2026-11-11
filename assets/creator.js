@@ -19,7 +19,6 @@ var SKILLS=[
 {id:"mestre",name:"Mestre Elementalista",category:"Conjuração",cost:5,desc:"Habilita segundo elemento conscientemente, gastando 1A; +1A na Conjuração."},
 {id:"fogo",name:"Elemento: Fogo",category:"Elementos básicos",cost:1,desc:"Habilita Fogo em conjurações."},
 {id:"agua",name:"Elemento: Água",category:"Elementos básicos",cost:1,desc:"Habilita Água em conjurações."},
-{id:"raio",name:"Elemento: Raio",category:"Elementos básicos",cost:1,desc:"Habilita Raio em conjurações."},
 {id:"vento",name:"Elemento: Vento",category:"Elementos básicos",cost:1,desc:"Habilita Vento em conjurações."},
 {id:"terra",name:"Elemento: Terra",category:"Elementos básicos",cost:1,desc:"Habilita Terra em conjurações."},
 {id:"sagrado",name:"Magia Sagrada",category:"Elementos especiais",cost:3,desc:"Habilita Sagrado; recuperação de Coragem obedece às condições."},
@@ -52,7 +51,9 @@ function hydrate(o){var s=defaultState();if(!o||typeof o!=="object")return s;["n
   s.sources.Armas=Math.max(s.sources.Armas||0,legacyConj);
   s.legacySources["Conjuração"]=legacyConj;
  }
- var customs=Array.isArray(o.customSkills)?o.customSkills:[];s.customSkills=customs.slice(0,80).filter(function(x){return x&&/^draft-[a-z0-9-]+$/.test(String(x.id||""))&&typeof x.name==="string"&&Number.isInteger(x.cost)&&x.cost>=1&&x.cost<=5;}).map(function(x){return {id:x.id.slice(0,60),name:x.name.slice(0,80),cost:x.cost,desc:typeof x.desc==="string"?x.desc.slice(0,500):"",req:typeof x.req==="string"?x.req.slice(0,220):"",category:"Perícias experimentais"};});var ids=SKILLS.concat(s.customSkills).map(function(x){return x.id;});if(Array.isArray(o.skills))s.skills=Array.from(new Set(o.skills.filter(function(x){return ids.indexOf(x)>-1;})));return s;}
+ var customs=Array.isArray(o.customSkills)?o.customSkills:[];s.customSkills=customs.slice(0,80).filter(function(x){return x&&/^draft-[a-z0-9-]+$/.test(String(x.id||""))&&typeof x.name==="string"&&Number.isInteger(x.cost)&&x.cost>=1&&x.cost<=5;}).map(function(x){return {id:x.id.slice(0,60),name:x.name.slice(0,80),cost:x.cost,desc:typeof x.desc==="string"?x.desc.slice(0,500):"",req:typeof x.req==="string"?x.req.slice(0,220):"",category:"Perícias experimentais"};});var ids=SKILLS.concat(s.customSkills).map(function(x){return x.id;});if(Array.isArray(o.skills)){s.skills=Array.from(new Set(o.skills.filter(function(x){return ids.indexOf(x)>-1;})));
+ if(o.skills.indexOf("raio")>-1&&s.notes.indexOf("Legado Raio:")<0)s.notes=(s.notes+"\nLegado Raio: habilitação de elemento retirada; Raio é condição. XP anterior liberado.").trim().slice(0,2000);
+ }return s;}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));el("save-status").textContent="Ficha salva localmente."; }catch(err){el("save-status").textContent="Armazenamento indisponível; use Exportar JSON.";}}
 function clearRoll(){currentRoll=null;el("dice-results").innerHTML='<p class="empty-hint">Nenhuma rolagem ativa.</p>';el("dice-analysis").classList.add("hidden");}
 function badge(text){var x=document.createElement("span");x.className="pill";x.textContent=text;return x;}
