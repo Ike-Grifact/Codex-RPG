@@ -55,7 +55,7 @@ function defaultState(){return{
  xpEarned:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],notes:"",pending:null,history:[],courageUsedTurn:false
 };}
-let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder";
+let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
  ["Atributos","Defina suas capacidades","Distribua os XP de Atributos"],
@@ -166,7 +166,7 @@ function renderXP(){
  $("xp-earned-text").textContent=(state.xpEarned||0)+" XP";
  $("xp-free-text").textContent=(x.free<0?"−":"")+Math.abs(x.free)+" XP";
  $("xp-free-text").classList.toggle("fp-negative",x.free<0);
- $("build-status").textContent=state.creationLocked?"Progressão · compras permanentes":"Aprendiz · orçamento experimental";
+ $("build-status").textContent=editMode?"Modo edição · corrigindo a ficha":state.creationLocked?"Progressão · compras permanentes":"Aprendiz · orçamento experimental";
  $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0;
  $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
  $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
@@ -178,7 +178,7 @@ function renderXP(){
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo insuficiente: faltam "+Math.abs(x.free)+" XP. Adicione XP ou reorganize as compras ainda não consolidadas.":
-  "As compras consomem primeiro o orçamento da categoria. O excedente utiliza XP de evolução."+ (state.creationLocked?" Após a criação não há reembolso livre.":"");
+  "As compras consomem primeiro o orçamento da categoria. O excedente utiliza XP de evolução."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
@@ -256,7 +256,7 @@ function wizardFinalize(){
  const unused=["attr","training","skills"].map((k,i)=>CREATE_BUDGET[k]-[xp.attributes,xp.training,xp.skills][i]);
  const message=unused.some(n=>n>0)?
   "Concluir a criação com XP não utilizado nos orçamentos iniciais? Os saldos continuam associados às respectivas categorias para revisão futura; não são convertidos em XP de evolução.":
-  "Concluir a criação? Suas compras serão consolidadas, sem reembolso automático.";
+  "Concluir a criação? As compras serão consolidadas; correções exigem Editar ficha.";
  if(!confirm(message))return;
  state.creationLocked=true;viewMode="sheet";wizardStep=4;wizardReached=4;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! Sua ficha jogável está pronta.");
@@ -332,6 +332,13 @@ function renderWizard(){
  const builder=$("builder-root"),sheet=$("full-sheet");
  const show=viewMode==="builder"&&!state.creationLocked;
  builder.hidden=!show;sheet.hidden=show;
+ const editButton=$("edit-sheet");
+ editButton.hidden=show;
+ editButton.disabled=!!state.pending;
+ editButton.setAttribute("aria-pressed",String(editMode));
+ editButton.textContent=editMode?"Concluir edição":"Editar ficha";
+ $("edit-sheet-help").hidden=show||!editMode;
+ $("source-grid").classList.toggle("fp-edit-mode",editMode);
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
@@ -398,13 +405,14 @@ function renderSources(){
  for(const group of ["know","attr","practice"]){
   const html=GROUPS[group].map(([id,name])=>{
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
-   const nextCost=xpStepCost(group,id,1),canRaise=g<6&&canAfford(group,nextCost);
-   const canReduce=g>0&&!state.creationLocked&&!state.pending;
+   const nextCost=xpStepCost(group,id,1),canEdit=(viewMode==="builder"&&!state.creationLocked)||editMode;
+   const canRaise=canEdit&&g<6&&canAfford(group,nextCost);
+   const canReduce=canEdit&&g>0&&!state.pending;
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
    return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+'">'+
-    '<button type="button" class="fp-source-pick" data-action="source" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+!!flag+'" '+(state.pending?"disabled":"")+'>'+
+    '<button type="button" class="fp-source-pick" data-action="source" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+!!flag+'" title="'+(editMode?"Modo edição: use + ou −":"Selecionar fonte")+'" '+(state.pending||editMode?"disabled":"")+'>'+
     '<span class="fp-src-title"><span>'+esc(title)+'</span>'+(flag?'<span class="fp-flag">'+flag+'</span>':"")+'</span>'+
     '<span class="fp-dice-list">'+dice.map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("")+'</span></button>'+
     '<div class="fp-grade-controls"><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" aria-label="Aumentar grau de '+esc(title)+'" '+(!canRaise||state.pending?"disabled":"")+'>+</button>'+
@@ -422,6 +430,7 @@ function canUseShared(){
  return draft.mode==="armas"?state.skills.includes("armas"):draft.mode==="conjuracao"?state.skills.includes("aprendiz"):false;
 }
 function selectSource(group,k){
+ if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
  const source={group,key:k};
  if(group==="attr"){
@@ -517,6 +526,7 @@ function randomFace(n){
  return Math.floor(Math.random()*n)+1;
 }
 function roll(){
+ if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
@@ -613,6 +623,7 @@ function finalize(){
 }
 function updateGrade(group,id,delta){
  if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
+ if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir o investimento em XP.");return;}
  const p=SOURCE_PROPS[group];if(!p||!GROUPS[group].some(x=>x[0]===id)||![-1,1].includes(delta))return;
  const old=state[p][id]||0,next=clamp(old+delta,0,6);
  if(next===old)return;
@@ -620,14 +631,16 @@ function updateGrade(group,id,delta){
  if(delta>0){
   if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
-  if(state.creationLocked){toast("Compras consolidadas não podem ser devolvidas.");return;}
+  if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir a compra.");return;}
   const tmp=structuredClone(state);tmp[p][id]=next;
   const problem=dependentsValid(tmp);
   if(problem){toast("Não é possível reduzir: "+problem);return;}
  }
  state[p][id]=next;
+ for(const item of state.items)if(item.equipped&&item.specialArmor&&!canWearSpecialArmor(state,item))item.equipped=false;
  render();save();
  if(delta>0)toast("Grau "+next+" comprado por "+purchaseCost+" XP.");
+ else toast("Grau reduzido para "+next+". XP da ficha recalculado.");
 }
 function adjustResource(resource,delta){
  const max=resource==="life"?maxLife():resource==="pp"?maxPP():10;
@@ -636,16 +649,16 @@ function adjustResource(resource,delta){
 function renderSkills(){
  $("skills-list").innerHTML=SKILLS.map(([id,name,detail,cost])=>{
   const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
-  const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked);
+  const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
   const note=req||(!owned&&!affordable?"XP insuficiente.":"");
-  const text=owned?(state.creationLocked?"Adquirida ✓":"Desfazer"):cost===null?"PENDENTE":"Comprar · "+cost+" XP";
+  const text=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"PENDENTE":"Comprar · "+cost+" XP";
   return'<div class="fp-skill '+(owned?"owned":"")+(req?" fp-skill-locked":"")+'"><div><strong>'+esc(name)+'</strong>'+
    '<small>'+esc(detail)+'</small>'+(note?'<small class="fp-skill-req">'+esc(note)+'</small>':"")+
    '</div><button type="button" data-action="skill" data-id="'+id+'" aria-pressed="'+owned+'" title="'+esc(note||"")+'"'+(disabled?" disabled":"")+'>'+text+'</button></div>';
  }).join("");
  $("weapon-focus-wrap").hidden=!state.skills.includes("armas");
  $("weapon-focus").value=state.weaponFocus;
- $("weapon-focus").disabled=state.creationLocked||!!state.pending;
+ $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
  $("convert-courage").disabled=state.level<5||state.courage<2||state.pp>=maxPP()||state.courageUsedTurn;
  $("courage-skill-message").textContent=state.level<5?"Perícia em Coragem: disponível a partir do nível 5.":state.courageUsedTurn?"Conversão já usada neste turno.":"A conversão pode ser usada uma vez por turno.";
 }
@@ -771,7 +784,7 @@ function onClick(event){
    if(!canAfford("skills",skill[3])){toast("XP insuficiente: "+skill[3]+" XP necessários.");return;}
    state.skills.push(id);toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
   }else{
-   if(state.creationLocked){toast("Compra consolidada; não há devolução automática.");return;}
+   if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir esta Perícia.");return;}
    const tmp=structuredClone(state);tmp.skills=tmp.skills.filter(x=>x!==id);
    const problem=dependentsValid(tmp);if(problem){toast("Outra Perícia depende desta: "+problem);return;}
    state.skills.splice(existing,1);toast("Compra de criação desfeita.");
@@ -861,7 +874,7 @@ function bind(){
  });
  $("lock-creation").addEventListener("click",()=>{
   if(state.pending||state.creationLocked||xpCosts().free<0)return;
-  if(!confirm("Concluir a criação do Aprendiz? Compras já feitas deixarão de ser reversíveis."))return;
+  if(!confirm("Concluir a criação do Aprendiz? Corrija compras depois pelo modo Editar ficha."))return;
   state.creationLocked=true;render();save();toast("Criação concluída. Novos avanços custam XP.");
  });
  $("level-up").addEventListener("click",()=>{
@@ -877,19 +890,25 @@ function bind(){
   document.documentElement.dataset.theme=next;
   localStorage.setItem(THEME_KEY,next);
  });
+ $("edit-sheet").addEventListener("click",()=>{
+  if(state.pending){toast("Finalize ou descarte a rolagem antes de editar.");return;}
+  if(viewMode!=="sheet")return;
+  editMode=!editMode;draft=freshDraft();render();save();
+  toast(editMode?"Edição ativa: use + ou − para ajustar graus e XP.":"Edição concluída. Selecione fontes para rolar.");
+ });
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();viewMode="sheet";wizardStep=4;wizardReached=4;
+  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";wizardStep=4;wizardReached=4;
   wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Armas → Força → Apresentação.");
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
-  state=defaultState();draft=freshDraft();viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
   if(!confirm("Reiniciar todos os dados deste protótipo?"))return;
-  state=defaultState();draft=freshDraft();viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
