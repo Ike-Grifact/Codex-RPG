@@ -497,3 +497,13 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-edit-mode .fp-grade-controls button{height:25px;min-width:40px;font-size:18px;color:var(--fp-text);font-weight:700}
 .fp-edit-mode .fp-grade-controls button:disabled{opacity:.25;cursor:not-allowed}
 .fp-edit-mode .fp-grade-controls button:not(:disabled):hover{color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 12%,transparent)}
+
+/* Referência tática de Provocar na ficha unificada */
+.fp-taunt-rule{margin:16px 0 4px;padding:14px 16px;border:1px solid var(--fp-stroke);border-radius:12px;background:var(--fp-raised)}
+.fp-taunt-rule h4{font:normal 19px/1.2 Georgia,serif;margin:0 0 9px}
+.fp-taunt-rule p{font-size:12px;line-height:1.6;margin:6px 0;color:var(--fp-muted)}
+.fp-taunt-rule p strong{color:var(--fp-text)}
+.fp-taunt-rule a{color:var(--fp-gold);text-decoration:underline;text-underline-offset:2px}
+.fp-source-panel[aria-labelledby="sources-attr"] .fp-panel-heading{border-bottom-color:color-mix(in srgb,var(--fp-a) 40%,transparent)}
+.fp-source-panel[aria-labelledby="sources-practice"] .fp-panel-heading{border-bottom-color:color-mix(in srgb,var(--fp-gold) 40%,transparent)}
+.fp-source-panel[aria-labelledby="sources-know"] .fp-panel-heading{border-bottom-color:color-mix(in srgb,var(--fp-e) 40%,transparent)}
