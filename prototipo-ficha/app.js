@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.34, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.35, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -146,7 +146,8 @@ function normalizeItem(it={}){
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
   specialArmor:!!it.specialArmor,elementalResistance:String(it.elementalResistance||"").slice(0,70),
-  secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70)};
+  secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
+  g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances"};
 }
 function save(){
  try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));$("save-indicator").textContent="Salvo neste navegador";}catch(e){
@@ -707,18 +708,21 @@ function renderInventory(){
  $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
   const armorFields=it.type!=="armadura"?"":(
-  (it.grade===4&&it.weight==="alto"?
-   `<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="${esc(it.id)}"${it.specialArmor?" checked":""}> Armadura Pesada especializada (VIG 6/ATL 6, imunidade física, −2 DE)</label></div>`:"")+
-  (it.grade>=2?
-   `<div class="fp-item-hint"><label>${it.specialArmor?"Resistência elemental fixa da peça":"Resistência 1 (Grau 2+, se habilitada)"}: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Propriedade autorizada da peça"></label></div>`:"")+
-  (it.grade>=3&&!it.specialArmor?
-   `<div class="fp-item-hint"><label>Resistência 2 (Grau 3+, se habilitada): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Somente se o modelo permitir"></label></div>`:"")+
-  (it.grade===4&&!it.specialArmor?
-   `<div class="fp-item-hint"><label>Imunidade específica (Grau 4, se habilitada): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Somente se a peça possuir a imunidade"></label></div><div class="fp-item-hint">Grau 4 habilita uma imunidade específica quando prevista na peça; não concede imunidade automática.</div>`:"")+
-  (it.grade===4&&it.specialArmor?
-   '<div class="fp-item-hint">Variante especializada: imunidade física ampla e uma resistência elemental, sem segunda resistência ou imunidade adicional automática.</div>':"")
- );
- return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
+   (it.grade===4?
+     '<div class="fp-item-hint"><strong>Grau 4: imunidade física obrigatória</strong>. Danos físicos comuns não reduzem integridade ou Vida.</div>'+
+     `<div class="fp-item-hint"><label>Proteção elemental Grau 4: <select data-item-field="g4ElementalMode" data-id="${esc(it.id)}"><option value="resistances"${it.g4ElementalMode==="resistances"?" selected":""}>Duas resistências elementais</option><option value="immunity"${it.g4ElementalMode==="immunity"?" selected":""}>Imunidade a um elemento</option></select></label></div>`:"")+
+   (it.grade===4&&it.g4ElementalMode==="immunity"?
+     `<div class="fp-item-hint"><label>Elemento da imunidade: <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento fixo da peça"></label></div>`:"")+
+   (it.grade>=2&&(it.grade<4||it.g4ElementalMode==="resistances")?
+     `<div class="fp-item-hint"><label>Resistência elemental 1${it.grade<4?" (se habilitada)":""}: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento da peça"></label></div>`:"")+
+   (it.grade>=3&&(it.grade<4||it.g4ElementalMode==="resistances")?
+     `<div class="fp-item-hint"><label>Resistência elemental 2${it.grade<4?" (se habilitada)":""}: <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Segundo elemento da peça"></label></div>`:"")+
+   (it.grade===4?
+     '<div class="fp-item-hint">Imunidade física + apenas UMA alternativa elemental fixa, definida na aquisição da peça.</div>':"")+
+   (it.grade===4&&it.weight==="alto"?
+     `<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="${esc(it.id)}"${it.specialArmor?" checked":""}> Variante Pesada especializada histórica (VIG 6/ATL 6; −2 DE), em revisão. Não é requisito para imunidade física.</label></div>`:"")
+  );
+  return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b>'+it.hp+'/'+it.max+'</b>'+
@@ -893,6 +897,11 @@ function onChange(event){
   else if(k==="specialArmor"){
    if(it.type!=="armadura"||it.grade!==4||it.weight!=="alto")return;
    it.specialArmor=!!el.checked;
+  }
+  else if(k==="g4ElementalMode"&&it.type==="armadura"&&it.grade===4){
+   it.g4ElementalMode=el.value==="immunity"?"immunity":"resistances";
+   if(it.g4ElementalMode==="immunity"){it.elementalResistance="";it.secondResistance="";}
+   else it.specificImmunity="";
   }
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
