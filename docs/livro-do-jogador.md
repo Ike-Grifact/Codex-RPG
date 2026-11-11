@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.9 (10 de novembro de 2026)
+## Edição de leitura do portal · v0.10 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.30](srd-continuidade-v0.30.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.31](srd-continuidade-v0.31.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -36,9 +36,9 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 **Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas DEFINIDAS (6):** **Armas ou Conjuração** (Prática compartilhada), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
+**Práticas DEFINIDAS (6):** **Disciplina** (Prática compartilhada para ataques, defesas e conjurações), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
 
-**Armas ou Conjuração é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a combate ou magia segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
+**Disciplina é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a técnicas ofensivas, defensivas ou mágicas segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
 
 **Fichas antigas:** os valores anteriormente separados como Armas e Conjuração são conciliados provisoriamente pelo maior grau, com anotação histórica dos valores antigos; não se somam os dados nem os custos.
 
@@ -111,7 +111,7 @@ A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 s�
 
 1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
 2. Estabeleça a DE adequada ao alvo ou tarefa. A DE natural defensiva não é substituída por uma dificuldade inventada se houver ficha.
-3. Role a pilha permitida e escolha os dados mantidos.
+3. Role a pilha permitida, **incluindo pelo menos um dado de Atributo**, e escolha livremente os dados mantidos, **sem precisar manter nenhum dado de Atributo**. Respeite o limite de retenção.
 4. Conte Êxitos (E), Antecipar (A) e Pavor (P) **somente dos dados mantidos**.
 5. Gaste Antecipar:
    - **1A anula 1P próprio**;
@@ -124,7 +124,7 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 ### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
 
-Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos** e **ao menos um dado de Atributo**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contam nem geram símbolos. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
+Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contam nem geram símbolos. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
 
 | Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
 |---|:---:|:---:|:---:|
@@ -400,7 +400,7 @@ Permite arremessar uma **arma leve**, causar dano e aplicar seus efeitos pertine
 - **Acerto com Pavor:** a arma fica alojada; o adversário pode tentar tomá-la e utilizá-la quando obtiver oportunidade pertinente, sem ganhar turno automático apenas pela existência da arma.
 - **Falha sem Pavor:** a arma cai no caminho; **1A** permite correr até ela e recuperá-la.
 - **Falha com Pavor predominante (P > E):** a arma cai perto do alvo ou pode atingir um aliado a **até 1 m do inimigo**. Se o resultado **não alcançou a DE do inimigo, mas alcança a DE do aliado**, atinge o aliado; caso contrário, cai perto deles.
-- **Retirada resistida quando exigida:** teste **Armas + Força + Atletismo** contra dificuldade baseada em **Força + Vigor + Atletismo do inimigo**, considerando seus dados comprados. A forma exata de converter esses dados em uma DE numérica permanece **PENDENTE**.
+- **Retirada resistida quando exigida:** teste **Disciplina (uso de Armas) + Força + Atletismo** contra dificuldade baseada em **Força + Vigor + Atletismo do inimigo**, considerando seus dados comprados. A forma exata de converter esses dados em uma DE numérica permanece **PENDENTE**.
 
 **PENDENTE:** efeitos precisos por tipo de arma alojada, procedimento para vários aliados próximos, distância extrema e resolução detalhada da retirada resistida. Essas Perícias não são restritas à criação de nível 1; seus requisitos podem exigir evolução.
 
@@ -456,7 +456,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Recuperação Vigorosa** | **1** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
 | **Arremesso de Armas Leves** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
-**A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Armas grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
+**A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Disciplina grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
 
 **Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
 
