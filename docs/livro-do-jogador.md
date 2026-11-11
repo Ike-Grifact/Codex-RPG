@@ -481,7 +481,7 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
 
-A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**, assim como a alternativa de 600. O orçamento final aguarda os custos do catálogo completo de Perícias e a composição do Grau 7.
+A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**. O orçamento final aguarda a aprovação dos custos das Perícias e a composição do Grau 7. Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
 
 ### Materiais para públicos diferentes
 
