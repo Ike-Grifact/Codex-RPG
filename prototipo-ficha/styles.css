@@ -141,6 +141,16 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 .fp-roll-die{min-width:0;display:flex;align-items:center;justify-content:start;flex-direction:column;gap:4px;background:var(--fp-deep);border:1px solid var(--fp-stroke);color:var(--fp-text);padding:9px 4px;border-radius:9px;min-height:100px}
 .fp-roll-die:hover{border-color:var(--fp-gold)}.fp-roll-die.kept{border:2px solid var(--fp-gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--fp-gold) 20%,transparent)}
 .fp-roll-die svg{width:32px;height:32px;stroke:var(--fp-gold);fill:none;stroke-width:1.6}
+.fp-roll-die .fp-face-runes{
+ min-height:31px;max-width:100%;display:flex;align-items:center;justify-content:center;
+ align-content:center;flex-wrap:wrap;gap:1px 3px;font-family:Georgia,serif;
+ font-size:clamp(13px,1.4vw,22px);font-weight:700;line-height:1.02;
+}
+.fp-roll-die .fp-face-runes .e{color:var(--fp-e)}
+.fp-roll-die .fp-face-runes .a{color:var(--fp-a)}
+.fp-roll-die .fp-face-runes .p{color:var(--fp-p)}
+.fp-roll-die .fp-face-runes .fp-blank-rune{color:var(--fp-muted);font-weight:400}
+.fp-roll-die .fp-face-runes .fp-critical-glyph{color:var(--fp-gold);text-shadow:0 0 2px color-mix(in srgb,var(--fp-gold) 28%,transparent)}
 .fp-roll-die .fp-face{font:normal 21px/1 Georgia,serif}
 .fp-roll-die .fp-die-source{font-size:9px;color:var(--fp-muted);overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis}
 .fp-roll-die .fp-symbol-line{font-size:11px;font-weight:700;display:flex;gap:4px}
@@ -476,3 +486,14 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  .fp-wiz-footer-buttons{justify-content:space-between}
  .fp-wiz-footer-buttons .fp-primary-btn{min-width:0}
 }
+
+/* Edição explícita da ficha: ajustes de XP e seleção de dados não se misturam. */
+.fp-edit-toggle[aria-pressed="true"]{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 17%,var(--fp-surface))}
+.fp-edit-help{margin:2px 0 12px;padding:12px 14px;border:1px solid var(--fp-gold);border-radius:10px;background:var(--fp-surface);font-size:12px;line-height:1.55}
+.fp-edit-mode .fp-source-pick{cursor:default;opacity:1}
+.fp-edit-mode .fp-source-pick:disabled{color:var(--fp-text);opacity:1}
+.fp-edit-mode .fp-source-item{border-color:color-mix(in srgb,var(--fp-gold) 42%,var(--fp-stroke))}
+.fp-edit-mode .fp-grade-controls{flex-basis:58px}
+.fp-edit-mode .fp-grade-controls button{height:25px;min-width:40px;font-size:18px;color:var(--fp-text);font-weight:700}
+.fp-edit-mode .fp-grade-controls button:disabled{opacity:.25;cursor:not-allowed}
+.fp-edit-mode .fp-grade-controls button:not(:disabled):hover{color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 12%,transparent)}
