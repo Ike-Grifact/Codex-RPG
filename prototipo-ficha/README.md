@@ -10,9 +10,9 @@ A nova ficha usa colunas **Atributos à esquerda**, **Práticas no centro** e **
 
 **Provocar** é ação tática básica: teste de Influência **≥ DE** do inimigo para provocar. No turno do alvo, ataques contra aliados do provocador têm **Desvantagem (−1A)**; ataques contra quem o provocou têm **Vantagem (+1A)**. **Provocação Sofisticada** exige **Influência 2** e custa **1 XP**; **benefício adicional distinto ainda PENDENTE**, porque a descrição fornecida repete o efeito básico. A ficha informa isso, sem automatizar condições de inimigos.
 
-# Codex RPG — Protótipo HTML de ficha jogável
+# Codex RPG — Criador e ficha jogável unificados
 
-**Estado:** protótipo visual e funcional para aprovação da experiência de uso, anterior à adaptação Foundry. Não é o Livro do Jogador, nem substitui o criador atual.
+**Estado:** criador e ficha jogável unificados, com regras experimentais identificadas; adaptação Foundry. Não é o Livro do Jogador, nem substitui o criador atual.
 
 ## Acessar
 
@@ -22,7 +22,7 @@ A nova ficha usa colunas **Atributos à esquerda**, **Práticas no centro** e **
 
 Também é possível baixar o repositório e abrir `prototipo-ficha/index.html` diretamente em um navegador. O projeto referencia o CSS e a logo que já existem em `../assets/`.
 
-Esta pasta é **completamente independente** de `criador.html` e do protótipo de Foundry. A ficha usa `localStorage` sob outra chave e não altera a ficha salva no criador.
+Esta pasta é a **única interface ativa** para criação e ficha. O antigo `criador.html` direciona para ela; o programa antigo `assets/creator.js` fica como código histórico, sem executar no site. A ficha usa sua chave própria de `localStorage`, pode importar os dados legados da chave antiga e **não apaga** a ficha original armazenada.
 
 ## Como experimentar — fluxo de criação
 
