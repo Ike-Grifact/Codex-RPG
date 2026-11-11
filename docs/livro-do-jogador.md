@@ -149,18 +149,6 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 
 **Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face numérica máxima** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
 
-### Críticos dos monstros e Pavor do Narrador [DEFINIDO / alocação fina PENDENTE]
-
-O nome do recurso é sempre **Pavor (P)**; não há moeda separada chamada Pressão. Um monstro que obtém crítico usa os mesmos benefícios de conversão de símbolos, +1E, +1A e dano dobrado. **Os benefícios de recuperar PP e Coragem, porém, se convertem em Pavor para o Narrador: 1 PP = 1P e 1 Coragem = 1P.**
-
-| Crítico do monstro | Pavor gerado pelos recursos |
-|---|---:|
-| **2 mantidos máximos** | **2P** |
-| **3 mantidos máximos** | **4P** |
-| **4 mantidos máximos** | **4P** e dano dobrado |
-
-**Persistência:** o monstro **guarda primeiro na reserva local o Pavor que couber no teto do seu Grau**, conservando-o para a próxima rodada. **O excedente vai à reserva pública do Narrador**, respeitando seu teto de **2 + número de jogadores** e saldo persistente. Se ambas atingirem seus tetos, o excedente não pode ser armazenado. **O mesmo Pavor nunca pode ser registrado nas duas reservas.** O ganho por crítico não cancela automaticamente o Pavor residual dos dados nem substitui a resolução do ataque.
-
 ### Resultados e protagonismo
 
 - **Acerto puro:** alcança DE sem Pavor residual. **Mantém o protagonismo:** o mesmo jogador pode agir novamente ou passar voluntariamente a oportunidade a um aliado, sem limitar a continuidade a apenas dois ataques.
@@ -169,7 +157,7 @@ O nome do recurso é sempre **Pavor (P)**; não há moeda separada chamada Press
 - **Falha limpa:** não alcança DE e não tem consequência negativa automática.
 - **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
 
-Enquanto não houver Pavor não anulado, jogadores preservam o fluxo entre si. Inimigos gastam Pavor local para ativar ataques ou capacidades em suas oportunidades; a reserva pública do Narrador começa em 2P e tem limite 2 + número de jogadores.
+Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html).
 
 ### Rodadas, oportunidades e protagonismo [DEFINIDO]
 
@@ -240,7 +228,7 @@ O peso efetivo de cada ataque depende das **armas, Perícias e abordagem**. Um p
 
 **Fora do conflito**, a mesma lógica permite construir proteções, investigar ruínas, negociar, atravessar terreno, improvisar ferramentas ou resgatar um aliado. **Nenhum exemplo concede bônus automático**; o Narrador avalia a Dificuldade de Êxito, a posição, as fontes e as consequências. O peso pode ser uma vantagem real para um objetivo e um inconveniente para outro.
 
-Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva conjunta respeita o teto 30. **EXPERIMENTAL:** referências iniciais de DE 1–2 comum, 3 treinado e 4 excepcional para Aprendizes, sem substituir a defesa calculada na ficha.
+Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva conjunta respeita o teto 30. Referências experimentais para preparar DE sem ficha pertencem ao [Guia do Narrador](../narrador.html#dificuldades).
 
 
 ## VI. Dano, armadura e Vida
