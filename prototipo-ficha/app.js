@@ -148,7 +148,7 @@ function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
  if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
-  return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Prática Armas grau 1.";
+  return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(["magia","peritoconj","improviso","mestre","fogo","agua","raio","vento","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("aprendiz"))
   return"Requer Aprendiz de Conjurador.";
@@ -632,7 +632,6 @@ function updateGrade(group,id,delta){
  if(delta>0){
   if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
-  if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir a compra.");return;}
   const tmp=structuredClone(state);tmp[p][id]=next;
   const problem=dependentsValid(tmp);
   if(problem){toast("Não é possível reduzir: "+problem);return;}
@@ -731,13 +730,13 @@ async function importFile(file){
   const isNew=raw.schema==="codex-html-playtest-v1";
   const v=isNew?raw:fromCreator(input);
   if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
-  state=normalize(v);draft=freshDraft();viewMode=state.creationLocked?"sheet":"builder";
+  state=normalize(v);draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";
   wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
   toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
  }catch(e){toast("Falha ao importar: "+e.message);}
 }
 function setWeaponFocus(selected){
- if(state.creationLocked||state.pending)return;
+ if((state.creationLocked&&!editMode)||state.pending)return;
  if(!["leve","medio","pesado","distancia","Punhos"].includes(selected))return;
  const previous=state.weaponFocus;
  state.weaponFocus=selected;
