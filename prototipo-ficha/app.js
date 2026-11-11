@@ -4,7 +4,7 @@
 const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
-const P=[["armas_conjuracao","Armas ou Conjuração"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
+const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
 const GROUPS={attr:A,know:K,practice:P},SOURCE_PROPS={attr:"attributes",know:"knowledges",practice:"practices"};
 const DICE_ATTR=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]];
 const DICE_FORM=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
@@ -200,11 +200,6 @@ function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
 function label(g,k){
- if(g==="practice"&&k==="armas_conjuracao"){
-  if(state.skills.includes("armas")&&state.skills.includes("aprendiz"))return "Armas / Conjuração";
-  if(state.skills.includes("aprendiz"))return"Conjuração";
-  if(state.skills.includes("armas"))return"Armas";
- }
  const source=(GROUPS[g]||[]).find(x=>x[0]===k);return source?.[1]||k;
 }
 function dieIcon(n){
@@ -216,6 +211,12 @@ function dieIcon(n){
  20:'<polygon points="21,2 34,8 40,21 34,35 21,40 8,35 2,21 8,8"/><path d="M21 2 L21 40 M8 8 L34 35 M34 8 L8 35 M2 21 L40 21 M8 8 L21 21 L34 8 M8 35 L21 21 L34 35"/>'
  };
  return '<svg viewBox="0 0 42 42" aria-hidden="true">'+(shapes[n]||shapes[4])+'</svg>';
+}
+function faceRunesMarkup(symbols,criticalFace=false){
+ const glyphs=["ᛋ","ᚨ","ᚦ"];
+ if(!symbols.some(Boolean))return'<span class="fp-blank-rune" aria-label="Face sem símbolos">—</span>';
+ return symbols.map((n,i)=>Array.from({length:n},()=>'<span class="fp-face-rune '+["e","a","p"][i]+
+  (criticalFace?' fp-critical-glyph':'')+'">'+glyphs[i]+'</span>').join("")).join("");
 }
 function symbolMarkup(symbols,criticalFace=false){
  if(!symbols.some(Boolean))return'<span>—</span>';
@@ -374,7 +375,7 @@ function renderWizard(){
   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · FORMAÇÃO</span><h3>O que você sabe fazer?</h3><p>Conhecimentos e Práticas compartilham os <strong>8 XP de Formação</strong> iniciais. Cada fonte começa no Grau 0 com 1d6 gratuito.</p></div>'+
    '<div class="fp-wiz-formation"><section><h4>Conhecimentos</h4><div class="fp-wiz-source-grid">'+K.map(item=>wizardSource("know",item)).join("")+
    '</div></section><section><h4>Práticas</h4><div class="fp-wiz-source-grid">'+P.map(item=>wizardSource("practice",item)).join("")+'</div></section></div>'+
-   '<div class="fp-wiz-reminder"><b>Armas ou Conjuração é uma única Prática.</b><p>Perícias específicas habilitam o uso como arma, conjuração ou ambos. Nunca se compra uma segunda fonte apenas por possuir duas habilitações.</p></div>';
+   '<div class="fp-wiz-reminder"><b>Disciplina é uma única Prática.</b><p>As Perícias específicas habilitam seu uso com armas, conjuração e defesa; não se compra outra fonte ao adquirir habilitações diferentes.</p></div>';
  }else if(stage===3){
   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PERÍCIAS</span><h3>Escolha suas especializações.</h3><p>Use os <strong>5 XP iniciais de Perícias</strong>. As habilidades exigem requisitos e seus custos são cobrados. Opções ainda pendentes não podem ser compradas.</p></div>'+wizardSkills();
  }else content=wizardReview();
@@ -480,7 +481,7 @@ function renderComposer(){
  if(!draft.base){
   stat.textContent="Aguardando uma Base";
   box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4><p>Escolha primeiro um Conhecimento ou uma Prática na ficha. O primeiro clique define a natureza da ação; o Atributo vem depois.</p></div>'+
-   '<div class="fp-alert">Experimente <strong>Armas → Força → Apresentação</strong> e depois inverta a Base. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
+   '<div class="fp-alert">Experimente <strong>Disciplina (Armas) → Força → Apresentação</strong> e depois inverta a Base. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
    (state.history.length?'<p class="fp-caption">Última ação: '+esc(state.history[0].name)+' · '+esc(state.history[0].outcome)+'</p>':"");
   return;
  }
@@ -536,7 +537,7 @@ function roll(){
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0};
  draft=freshDraft();save();render();
- toast("Dados rolados. Agora escolha quais manter.");
+ toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
 function affinity(attack,target){
  const matrix={leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}};
@@ -547,7 +548,7 @@ function score(){
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
- if(!dice.some(x=>x.group==="attr"))errs.push("É obrigatório manter pelo menos um dado de Atributo.");
+ if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
@@ -575,8 +576,8 @@ function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
- const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
-  '<strong class="fp-face">'+d.face+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
+ const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" title="Face '+d.face+' do d'+d.sides+'" aria-label="'+esc(label(d.group,d.key))+' · d'+d.sides+' · face '+d.face+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
+  '<strong class="fp-face-runes" aria-hidden="true">'+faceRunesMarkup(face(d.sides,d.face),d.face===d.sides)+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const controls='<div class="fp-form-grid">'+
@@ -595,7 +596,7 @@ function renderPending(){
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-p">Pavor ᚦ</span><b>'+s.P+'</b></div></div>'+
  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p></div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
- '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados, incluindo um Atributo. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
+ '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -612,7 +613,7 @@ function finalize(){
   state.pp=clamp(state.pp+s.critRecovery,0,maxPP());
  }
  const gainedCourage=state.courage-oldCourage,gainedPP=state.pp-oldPP;
- const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?(p.mode==="conjuracao"?"Conjuração":"Armas"):label(p.base.group,p.base.key);
+ const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,
