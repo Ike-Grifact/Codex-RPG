@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.12 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.35](srd-continuidade-v0.35.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.36](srd-continuidade-v0.36.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -212,7 +212,7 @@ DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
 
 Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
 
-**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Se a ficha usar a **antiga variante Pesada especializada** com a penalidade particular de −2 DE, fica com **DE 5**, aplicada **depois** do teto natural. A nova regra não impõe essa penalidade a toda armadura Grau 4.
+**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Pesada Grau 3**, fica com **DE 6** (−1 depois do teto); com armadura **Muito Pesada Grau 4**, fica com **DE 5** (−2 depois do teto).
 
 **PENDENTE:** estabelecer se existe um mínimo de DE defensiva (0 ou 1). A fórmula ainda pode resultar em zero; não aplicar mínimo 1 automaticamente.
 
@@ -288,31 +288,28 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
-### Armaduras Grau 4 — imunidade física e escolha elemental [DEFINIDO]
+### Progressão de armaduras pesadas — Grau 3 e Grau 4 [DEFINIDO]
 
-**Toda armadura Grau 4 é naturalmente imune a dano físico comum**, independentemente da categoria. A imunidade é **sempre física**, não é um espaço de propriedade trocável. Não exige a antiga variante Pesada especializada nem, por si só, Vigor 6 ou Atletismo 6.
+A categoria de **peso das armaduras de Grau 3 e Grau 4 é determinada pelo Grau**. Não há armadura leve de Grau 4: todas são da categoria **Muito Pesada / Extrema**.
 
-**Além** da imunidade física, a peça possui **uma destas configurações**, definida na aquisição ou fabricação:
+| Grau | Tipo | Penalidade na DE | Proteção |
+|---|---|---|---|
+| **1** | Porte específico pendente | Sem penalidade geral de Grau aprovada | Integridade |
+| **2** | Porte específico pendente | Sem penalidade geral de Grau aprovada | Possível primeira resistência; **equipável a partir do nível 5** |
+| **3** | **Pesada** | **−1 DE** | Pode oferecer segunda resistência, conforme a peça |
+| **4** | **Muito Pesada / Extrema** | **−2 DE** | **Imunidade física obrigatória + (imunidade a 1 elemento OU 2 resistências elementais)** |
 
-- **Imunidade a um elemento** específico **OU**
-- **Duas resistências elementais** específicas.
+A penalidade de Grau 3 ou 4 é subtraída **depois de calcular a DE natural e aplicar seu teto de 9**, sem reduzir Agilidade nem deslocamento automaticamente. Uma armadura usa a penalidade correspondente ao Grau equipado; não se somam −1 e −2 pelo fato de Grau 4 vir após Grau 3.
 
-Não somar as duas alternativas. Os elementos são **características da peça**, não podem ser trocados livremente durante a cena. Os tipos concretos de cada modelo de armadura dependerão do catálogo.
+**Requisitos da armadura Grau 4 [DEFINIDO]:** **Vigor Grau 6 e Atletismo Grau 6**, da antiga descrição de armadura Pesada especializada, passam a valer para **toda** armadura de Grau 4, que é sempre muito pesada. Esses investimentos somam **157 XP** (55 de Vigor, 102 de Atletismo), além do custo de aquisição/fabricação, ainda **PENDENTE**. A armadura não exige uma classe rígida.
 
-| Grau da armadura | Proteção aprovada | Acesso |
-|---|---|---|
-| **1** | Integridade; sem resistência ou imunidade automática | Inicial, conforme requisitos da peça |
-| **2** | Primeiro acesso à resistência, se a armadura comportar | **Equipar somente a partir do nível 5** |
-| **3** | Pode receber a segunda resistência, se habilitada | Nível e requisitos específicos pendentes |
-| **4** | **Imunidade física obrigatória + (imunidade a 1 elemento OU 2 resistências elementais)** | Nível e requisitos de aquisição específicos pendentes |
+**Imunidade física natural [DEFINIDO]:** a Grau 4 não recebe dano físico comum em sua integridade nem em Vida. Não é apenas redução de dano. A imunidade não elimina Pavor nem condições habilitadas, como **derrubar, afastar e Sangramento superficial**. Perfuração **especial habilitada** conserva a exceção já prevista: pode atravessar a proteção ao acertar a DE e satisfazer os requisitos/custos da técnica; uma arma Perfurante comum não a atravessa por ser pontiaguda.
 
-**Imunidade física:** ataques físicos comuns não causam perda de integridade nem Vida, mesmo após alcançarem a DE. A proteção não elimina Pavor nem efeitos habilitados como **derrubar, afastar e Sangramento superficial**, cujos próprios gatilhos precisam ocorrer. **Perfuração especial habilitada** continua tendo a exceção da continuidade anterior: quando a técnica permite atravessar imunidade/integridade e alcança a DE, pode atingir Vida, respeitando até **3 Vida por golpe não colossal**; ser apenas uma arma Perfurante não basta. A eventual revisão dessa exceção à imunidade universal é **PENDENTE**.
+**Alternativa elemental [DEFINIDO]:** toda peça Grau 4 possui, além da imunidade física, **uma imunidade a elemento específico OU duas resistências elementais**. Os dois pacotes não se combinam. Os elementos são propriedades fixas da peça adquirida/fabricada, não são escolhidos novamente a cada ataque.
 
-**Exemplo:** uma armadura Média de Grau 4 possui imunidade física e uma imunidade específica a Fogo. Outra armadura de Grau 4 possui imunidade física e resistências a Fogo e Água. A segunda **não** é imune a Fogo e também não ganha uma terceira proteção por alcançar Grau 4. São apenas exemplos de elementos possíveis, não um catálogo oficial.
+**Exemplo:** com DE natural 7, a armadura Pesada Grau 3 deixa a DE em **6**. Uma armadura Muito Pesada Grau 4 deixa em **5**, torna o portador imune ao dano físico comum e pode ser imune a Fogo **ou**, em alternativa, resistente a Fogo e Água.
 
-**Variante Pesada especializada anterior:** a v0.34 descrevia uma peça Pesada G4 com requisitos **Vigor 6 / Atletismo 6** e penalidade **−2 DE após o teto**. Esses custos **não são requisitos gerais do Grau 4**. Como a imunidade física não distingue mais essa variante, manter seu papel e eventuais benefícios específicos está **PENDENTE**; não aplicar automaticamente sua penalidade a qualquer outra peça. Fichas existentes que usem especificamente a variante anterior podem identificá-la até a revisão.
-
-Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria e Grau não são a mesma coisa. **EXPERIMENTAL:** valores numéricos de integridade e demais custos por modelo. **PENDENTE:** catálogo, fabricação, resistências por elemento, requisitos adicionais e resolução de casos especiais de dano misto/colossal. Não criar imunidades ou resistências extras.
+**PENDENTE:** requisitos adicionais de armadura Grau 3, designação do peso por Grau 1/2, regras de múltiplas armaduras equipadas, integridade de modelos, preços, crafting e casos de dano misto/colossal. Não transferir automaticamente os requisitos de G4 para G3 nem atribuir penalidades novas a G1/G2.
 
 **Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
 
