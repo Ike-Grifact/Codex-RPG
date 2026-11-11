@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
-## Edição de leitura do portal · v0.10 (11 de novembro de 2026)
+## Edição de leitura do portal · v0.11 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.31](srd-continuidade-v0.31.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.32](srd-continuidade-v0.32.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -19,6 +19,12 @@ Codex RPG é um sistema independente de fantasia, narrativa emergente e combate 
 | Pavor (P) | Thurisaz **ᚦ** | **#542176** | Tensão, risco e oportunidade de intervenção |
 
 Um resultado pode alcançar o objetivo e ainda deixar Pavor para o adversário.
+
+### Filosofia de jogo: escolhas e consequências
+
+No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão pela combinação de Atributos, Conhecimentos, Práticas (inclusive Disciplina), Perícias e equipamentos. A liberdade de construir um personagem híbrido não é um bônus gratuito: cada investimento abre possibilidades e deixa outras para depois. O grupo pode favorecer **interpretação narrativa**, **combate tático** ou alternar ambos, usando as mesmas regras centrais de dados e símbolos.
+
+**Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
 
 ## II. Criar o Aprendiz
 
@@ -124,7 +130,7 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 ### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
 
-Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contam nem geram símbolos. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
+Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contribuem com Êxitos ou Antecipar para o crítico; o Pavor descartado ainda obedece às regras da pilha. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
 
 | Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
 |---|:---:|:---:|:---:|
@@ -164,6 +170,26 @@ O nome do recurso é sempre **Pavor (P)**; não há moeda separada chamada Press
 - **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
 
 Enquanto não houver Pavor não anulado, jogadores preservam o fluxo entre si. Inimigos gastam Pavor local para ativar ataques ou capacidades em suas oportunidades; a reserva pública do Narrador começa em 2P e tem limite 2 + número de jogadores.
+
+### Rodadas, oportunidades e protagonismo [DEFINIDO]
+
+Uma **rodada** organiza a passagem das oportunidades em conflito; a sequência **não** impõe alternância automática entre jogador e inimigo. Enquanto não surgir Pavor não anulado que dê ocasião para intervenção, o grupo mantém o protagonismo e **pode transferir voluntariamente a ação** ao aliado mais adequado. Uma **falha limpa** não impõe consequência negativa automática e a oportunidade passa a outro jogador. Com **Pavor residual**, o Narrador normalmente pode intervir; gastar **1A** permite passar a ação a um aliado antes dessa intervenção, **sem apagar o Pavor nem gerar outro**.
+
+O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o fato de uma pessoa agir mais de uma vez não concede recursos extras.
+
+### Coragem e seus usos [DEFINIDO]
+
+**Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
+- **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
+- **Gastar 1 Coragem** para elevar um passo de um dado de Atributo antes de rolar (d4 → d6 → d10 → d12, quando pertinente).
+- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Pavor também retira 1 Coragem**.
+- A partir do nível 5, o Talento automático **Perícia em Coragem** permite gastar **2 Coragens para recuperar 1 PP**, uma vez por turno e sem ultrapassar o máximo de PP.
+
+**Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** O máximo de PP por nível permanece 0 (1–4), 1 (5–9), 2 (10–19) e 3 (nível 20).
+
+### Como jogar narrativamente
+
+Declare **o que deseja alcançar** e **como seu personagem tenta fazê-lo**. Escolha as fontes pertinentes à abordagem, role a pilha e interprete os símbolos. Um Êxito pode representar a realização do objetivo; Antecipar permite reagir ou cooperar; Pavor introduz tensão e oportunidade para a situação mudar. A **falha limpa** não precisa causar dano ou humilhação narrativa. Não é obrigatório usar todas as opções de posicionamento, peso ou equipamentos em toda cena. Em desafios conjuntos, as ações dos aliados podem ser coordenadas conforme as regras específicas.
 
 ## V. Defesa, Vantagem e peso
 
@@ -295,7 +321,7 @@ Categorias existentes: **Muito Leve, Leve, Média, Pesada e Extrema**. Categoria
 
 ## VII. Conjuração, elementos e possibilidades
 
-O Aprendiz de Conjurador começa com o elemento **Psíquico**. Fogo, Água, Raio, Vento, Terra e elementos especiais dependem das habilitações próprias.
+O Aprendiz de Conjurador começa com o elemento **Psíquico**. Fogo, Água, Ar/Vento, Terra e elementos especiais dependem das habilitações próprias.
 
 **Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. Incluir o segundo elemento conscientemente com a Perícia adequada gasta **1A**, não reutilizável. A mistura por si só **não soma dados nem Êxitos**, e efeitos avançados exigem os Pontos de Perícia (PP) e as Especialidades pertinentes.
 
@@ -309,7 +335,6 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 | **Fogo** | Disparar à distância sem queimadura direta à Vida | Área reduzida e proximidade histórica de 8 m | Dano à integridade e Vida em cone, linha ou área, podendo afetar aliados |
 | **Terra** | Desvantagem por 2 rodadas | Enredar, imobilizar e espinhos que desgastam proteção | Dano, empurrar e derrubar |
 | **Ar / Vento** | Mover mais rápido, puxar/empurrar objetos | Sufocar, deslocar e derrubar | Grande área, vários alvos e possíveis danos de queda |
-| **Raio** | Pendente | Pendente | Pendente |
 
 **Elementos especiais:**
 
@@ -318,15 +343,15 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 - **Trevas:** escuridão, maldições e Pavor; técnica habilitada pode acrescentar **2 Pavor em uma rolagem**, com até dois alvos distintos sob condições ainda detalhadas no catálogo.
 - **Sangue:** manipular sangue/efeitos ligados à Vida; especialização custa **1 Vida do conjurador**, mesmo em falha, e acrescenta **1 Pavor**; um acerto pode retirar **1 Vida** de alvo com sangue, contornando integridade.
 - **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
-- **Raio:** habilitado como elemento básico, mas sem progressão autoral de efeitos individuais por Grau concluída. Não inventar atordoamento automático.
+**Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
 
 ### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
 
-**Todos os elementos mágicos têm peso padrão Médio**, incluindo Sagrado, Veneno, Psíquico/Psique, Sangue, Trevas, Fogo, Água, Terra, Ar/Vento e Raio. **Não existe mais peso Leve ou Pesado atribuído automaticamente por tipo de elemento.** Esta decisão substitui as classificações antigas de Sagrado/Veneno Leves e Sangue/Trevas Pesados.
+**Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
 
 **Existe uma Perícia que permite modificar o peso da magia durante a conjuração.** **PENDENTE:** seu nome, custo de XP, pré-requisitos, ativação e limites. Até esses detalhes serem definidos, o Livro não a oferece como compra e não concede alteração de peso gratuita.
 
-**Os efeitos de peso anteriores continuam válidos:** efeitos Leves, Médios e Pesados, afinidade com Balanço e consequências pertinentes continuam disponíveis quando a magia assume esse peso pelas regras apropriadas. A tabela de efeitos acima mantém suas aplicações condicionadas a **Grau, habilitação e custos próprios**; seus títulos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3* **não classificam o peso padrão de cada elemento** e não dão automaticamente acesso a efeitos avançados.
+**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
 
 **Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
 
@@ -338,7 +363,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 | Água + Terra | Lama, cobertura, alterar o caminho | Irrigação, moldagem de barro, travessia |
 | Água + Ar | Névoa como elemento de ocultação situacional | Refrescar, dispersar vapor |
 | Fogo + Terra | Trabalhar obstáculos e materiais | Cerâmica, forja, transformação |
-| Raio + Água | Explorar condução, quando houver meio apropriado | Investigar mecanismos e fenômenos |
+| Água com manifestação elétrica habilitada | Conduzir eletricidade na água, se a técnica e o ambiente permitirem | Investigar condução elétrica e fenômenos naturais |
 
 São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades automáticas. O Narrador define DE, efeitos, risco, alvo, recursos, extensão, disponibilidade dos elementos e segurança de aliados. A criatividade deve incentivar **soluções dentro e fora de combate**, sem dispensar perícias e custos.
 
@@ -404,20 +429,20 @@ Permite arremessar uma **arma leve**, causar dano e aplicar seus efeitos pertine
 
 **PENDENTE:** efeitos precisos por tipo de arma alojada, procedimento para vários aliados próximos, distância extrema e resolução detalhada da retirada resistida. Essas Perícias não são restritas à criação de nível 1; seus requisitos podem exigir evolução.
 
-### Armas de fogo — catálogo histórico em revisão
+### Armas de fogo — Graus atualizados [DEFINIDO / catálogo PENDENTE]
 
 Armas de fogo dependem de **munição por calibre, carregador, disparos consumidos, recarga, alcance e recuo**. Armas suscetíveis a travamento podem travar com **Pavor predominante**, e não qualquer Pavor; limpar travamento exige Engenharia pertinente sem usar dados da própria arma. **Revólver não trava.**
 
-| Arma | Grau indicado historicamente | Características em desenvolvimento |
+| Arma | Grau definido | Características em desenvolvimento |
 |---|---|---|
-| Revólver | G2 | Não trava; Perícia básica histórica 3 XP |
-| Pistola | G3 | Carregador e travamento; Perícia básica 5 XP |
+| Revólver | **G1** | Não trava; Perícia básica histórica 3 XP |
+| Pistola | **G2** | Carregador e travamento; Perícia básica 5 XP |
 | Metralhadora | G3 | Vários disparos/munição; alcance histórico 16 m; Perícia básica 5 XP |
 | Doze / escopeta | G3 | Cone, derrubada, não perfurante; básica histórica 5 XP |
 | Rifle | G4 | Avançada pode derrubar ou atravessar dois alvos alinhados; básica histórica 6 XP |
-| Lança-granadas | G5 histórico | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
+| Lança-granadas | **G5** | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
 
-**PENDENTE:** preços finais, composições, dano, alcance e procedimentos de recarga. **A referência antiga de 3d20 do lança-granadas é incompatível com o limite atual de até dois d20 por ação de jogador comum**, devendo ser refeita. Não usar o catálogo histórico como lista de compras definitiva.
+**PENDENTE:** preços finais, composições, dano, alcance e procedimentos de recarga. **A referência antiga de 3d20 do lança-granadas é incompatível com o limite atual de até dois d20 por ação de jogador comum**, devendo ser refeita. Os **Graus acima estão definidos**, mas não se devem tratar como definitivos os preços históricos de Perícias, danos, composições e fichas ainda não aprovados.
 
 ## IX. Perícias e profissões emergentes
 
@@ -466,9 +491,13 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 **PP = Pontos de Perícia.** PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 5 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
 
-Armas e Conjuração possuem **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
+Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
 
 A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**, assim como a alternativa de 600. O orçamento final aguarda os custos do catálogo completo de Perícias e a composição do Grau 7.
+
+### Materiais para públicos diferentes
+
+Este documento concentra regras necessárias **aos jogadores**. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
 
 ## XI. Referência de continuidade
 
