@@ -74,6 +74,14 @@ prototipo-ficha/
 
 **Atenção:** os documentos internos de SRD não estão vinculados nesta página; apenas o Livro e o criador originais são acessíveis pela navegação.
 
+## DE defensiva e armadura especializada (SRD v0.30)
+
+A ficha calcula **DE natural = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**; o cálculo permanece atualizado com os graus da ficha. Se uma armadura especial estiver equipada, a ficha mostra **DE natural − 2**. O caso de DE mínima 0 ou 1 ainda está pendente e não foi assumido.
+
+Para registrar uma **armadura Pesada Grau 4 especializada**, crie um item Armadura, escolha peso **Alto/Pesado**, informe Grau **4** e marque **Armadura Pesada especializada**. Preencha a **resistência elemental da peça** com o elemento fixado na compra ou fabricação. A ficha só permitirá equipá-la se o personagem tiver **Vigor 6 e Atletismo 6**. Ela aplica somente a penalidade de DE no cálculo automático.
+
+**Regras não automatizadas no protótipo:** a imunidade a todo dano físico comum (que anula dano à integridade e à Vida), a resistência elemental específica e a exceção de penetração por arma perfurante habilitada (crítico pertinente ou técnica com custo de 1 PP/2 Coragens quando aplicável). Também continuam possíveis condições como derrubar, afastar e **Sangramento superficial** de cortantes; esse Sangramento não causa dano nem perda periódica de Vida e não é igual a magia de Sangue. A mesa aplica essas consequências; a ficha não simula ataques inimigos.
+
 ## Críticos cumulativos (SRD v0.29)
 
 O rolador de dados da ficha HTML reconhece **crítico quando todos os dados escolhidos para manter estão em suas faces máximas**, exigindo pelo menos dois mantidos e um dado de Atributo. Apenas a **runa nos símbolos das faces máximas** ganha dourado: o número, o corpo e o contorno do dado não recebem nova cor por ser uma face candidata a crítico.
