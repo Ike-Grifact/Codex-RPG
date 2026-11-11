@@ -59,4 +59,6 @@ As manifestações de **Raio são condições/efeitos**, não um elemento separa
 
 Aferir acerto limpo, acerto com Pavor, falha limpa e falha com Pavor, consumo e recuperação de Coragem/PP, geração e gasto de Pavor, duração da sequência de oportunidades, participação de cada jogador e tempo por decisão. Repetir com construções puras e híbridas, em cenas narrativas e táticas.
 
+**EXPERIMENTAL:** a curva atual de XP acumulado aponta 664 XP no nível 20; também foi analisada uma alternativa de 600 XP, ainda não aprovada.
+
 **PENDENTE:** XP definitivo por nível, catálogo completo de Perícias, integridades das armaduras, interações excepcionais de dano misto/colossal, custo e requisitos de alterar peso de magia e procedimentos mecânicos de Raio como manifestação. Não preencher lacunas silenciosamente.
