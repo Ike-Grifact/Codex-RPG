@@ -1,3 +1,15 @@
+## Criador e ficha unificados
+
+**Página única e canônica:** `prototipo-ficha/`. O endereço histórico `criador.html` agora redireciona para cá, sem remover o registro antigo do navegador.
+
+A nova ficha usa colunas **Atributos à esquerda**, **Práticas no centro** e **Conhecimentos à direita**. O usuário pode selecionar o Atributo ou a Base primeiro, mas a pilha ainda deve **rolar pelo menos um dado de Atributo**. A regra não exige Atributo mantido.
+
+**Migração:** caso a ferramenta nova ainda não tenha personagem salvo, tenta trazer a ficha antiga armazenada sob `codex-rpg-ficha-nivel1-v1`. Nunca apaga o registro anterior. O botão **Importar ficha antiga** permite refazer a importação deliberadamente (com confirmação de substituição da ficha nova). Perícias personalizadas ou IDs sem tradução automática são documentados nas notas da ficha e continuam disponíveis na cópia antiga do navegador. Exportar JSON antes de substituir personagens continua recomendado.
+
+## Provocar e Provocação Sofisticada
+
+**Provocar** é ação tática básica: teste de Influência **≥ DE** do inimigo para provocar. No turno do alvo, ataques contra aliados do provocador têm **Desvantagem (−1A)**; ataques contra quem o provocou têm **Vantagem (+1A)**. **Provocação Sofisticada** exige **Influência 2** e custa **1 XP**; **benefício adicional distinto ainda PENDENTE**, porque a descrição fornecida repete o efeito básico. A ficha informa isso, sem automatizar condições de inimigos.
+
 # Codex RPG — Protótipo HTML de ficha jogável
 
 **Estado:** protótipo visual e funcional para aprovação da experiência de uso, anterior à adaptação Foundry. Não é o Livro do Jogador, nem substitui o criador atual.
