@@ -1,7 +1,7 @@
 /* Codex RPG — protótipo HTML independente. Regras do Livro/SRD v0.30, incluindo DE e armadura especializada. */
 (function(){
 "use strict";
-const SAVE_KEY="codex-html-ficha-prototipo-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
+const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -24,6 +24,7 @@ const SKILLS=[
  ["armas","Armas 1","Habilita uma categoria de arma, inclusive Punhos.",2],
  ["marciais","Artes Marciais","Especialização em Punhos. Requisito provisório em playtest.",1],
  ["montar","Montar Animal","Requer Influência grau 2.",2],
+ ["provocacao-sofisticada","Provocação Sofisticada","Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",1],
  ["combinacao","Combinação de Fontes","Habilita propor a terceira fonte pertinente.",2],
  ["aprendiz","Aprendiz de Conjurador","Conjuração inicial com Psique, sem segunda Prática.",2],
  ["magia","Magia Única","Criar uma magia inicial do Grau permitido.",1],
@@ -66,7 +67,28 @@ const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,si
   extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false});
 function load(){
- try{const saved=localStorage.getItem(SAVE_KEY);if(saved)state=normalize(JSON.parse(saved));}catch(e){console.warn("Codex: armazenamento indisponível",e);}
+ let migrated=false,legacyAvailable=false;
+ try{
+  const saved=localStorage.getItem(SAVE_KEY);
+  const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
+  legacyAvailable=!!oldRaw;
+  if(saved)state=normalize(JSON.parse(saved));
+  else if(oldRaw){
+   const old=JSON.parse(oldRaw);
+   const character=old?.character||old;
+   const hasData=character&&typeof character==="object"&&(
+    !!String(character.name||"").trim()||
+    Object.values(character.attributes||{}).some(v=>Number(v)>0)||
+    Object.values(character.sources||{}).some(v=>Number(v)>0)||
+    (Array.isArray(character.skills)&&character.skills.length>0));
+   if(hasData){
+    const converted=fromCreator(old);
+    converted.creationLocked=!!String(character.name||"").trim();
+    state=normalize(converted);
+    migrated=true;
+   }
+  }
+ }catch(e){console.warn("Codex: falha ao recuperar ficha anterior",e);}
  draft=freshDraft();
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
@@ -74,8 +96,13 @@ function load(){
   wizardReached=clamp(Math.floor(w.reached||wizardStep),wizardStep,4);
  }catch(e){wizardStep=0;wizardReached=0;}
  viewMode=state.creationLocked?"sheet":"builder";
- document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";
+ try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
+ $("import-old-creator").hidden=!legacyAvailable;
+ if(migrated){
+  save();
+  toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
+ }
 }
 function normalize(v){
  const s=defaultState();
@@ -152,6 +179,7 @@ function skillReq(id,s=state){
  if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
+ if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(["magia","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("aprendiz"))
   return"Requer Aprendiz de Conjurador.";
  if(id==="sangue"||id==="trevas")return"Magia Grau 2 ainda não disponível neste protótipo.";
@@ -346,7 +374,7 @@ function renderWizard(){
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
   "Cinco etapas de criação. Distribua XP, escolha suas Perícias e veja a ficha completa ao concluir.":
-  "Ficha completa, evolução e rolagens — protótipo HTML do Codex RPG.";
+  "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
   const clickable=i<=wizardReached&&(i===0||!!state.name.trim());
@@ -713,17 +741,34 @@ function download(){
  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="codex-ficha-prototipo.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500);
 }
 function fromCreator(v){
- const s=defaultState(),old=v.character||v;
+ const s=defaultState(),old=v?.character||v||{};
  for(const x of ["name","concept","origin","virtue","personality","notes"])if(typeof old[x]==="string")s[x]=old[x];
  const attrNames={Força:"forca",Agilidade:"agilidade",Destreza:"destreza",Inteligência:"inteligencia",Influência:"influencia",Vigor:"vigor"};
  const sources={Proteção:"protecao",Astronomia:"astronomia",Medicina:"medicina",Alquimia:"alquimia",Engenharia:"engenharia",Erudição:"erudicao",Armas:"armas_conjuracao",Conjuração:"armas_conjuracao",Disciplina:"armas_conjuracao",Atletismo:"atletismo",Furtividade:"furtividade",Artesão:"artesao",Apresentação:"apresentacao",Coleta:"coleta"};
- for(const [name,id] of Object.entries(attrNames))s.attributes[id]=old.attributes?.[name]||0;
- for(const [name,id] of Object.entries(sources))if(name in(old.sources||{})){
-  const dest=K.some(x=>x[0]===id)?"knowledges":"practices";
-  s[dest][id]=Math.max(s[dest][id]||0,old.sources[name]||0);
+ for(const [name,id] of Object.entries(attrNames))s.attributes[id]=clamp(Math.floor(old.attributes?.[name]||0),0,6);
+ for(const [name,id] of Object.entries(sources)){
+  const degree=Math.max(Number(old.sources?.[name]||0),Number(old.legacySources?.[name]||0));
+  if(degree>0){
+   const dest=K.some(x=>x[0]===id)?"knowledges":"practices";
+   s[dest][id]=Math.max(s[dest][id]||0,clamp(Math.floor(degree),0,6));
+  }
  }
- const map={armas:"armas",aprendiz:"aprendiz",combinacao:"combinacao",peritoconj:"peritoconj",marciais:"marciais",combate:"combate",magia:"magia",fogo:"fogo",agua:"agua",sagrado:"sagrado"};
- s.skills=(old.skills||[]).map(x=>map[x]).filter(Boolean);s.courage=old.courage??10;s.life=maxLife(s);
+ const supported=new Set(SKILLS.filter(x=>Number.isInteger(x[3])).map(x=>x[0]));
+ const oldSkills=Array.isArray(old.skills)?old.skills.filter(x=>typeof x==="string"):[];
+ s.skills=[...new Set(oldSkills.filter(id=>supported.has(id)))];
+ const unrecognized=oldSkills.filter(id=>!supported.has(id)&&id!=="raio");
+ const notes=[];
+ if(oldSkills.includes("raio"))notes.push("Raio era uma habilitação antiga. Agora é condição, não elemento; seu XP não permanece investido.");
+ if(Array.isArray(old.customSkills)&&old.customSkills.length){
+  notes.push("Perícias personalizadas do criador anterior (preservadas em texto; não automatizadas): "+
+   old.customSkills.slice(0,50).map(x=>String(x.name||x.id||"Sem nome")+" ("+String(x.cost||"?")+" XP)").join(", "));
+ }
+ if(unrecognized.length)notes.push("Perícias antigas sem equivalente automático: "+unrecognized.join(", "));
+ if(notes.length)s.notes=(s.notes+"\\n"+notes.join("\\n")).trim().slice(0,5000);
+ s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(old.weaponFocus)?old.weaponFocus:"leve";
+ s.courage=old.courage??10;
+ s.xpEarned=Math.max(0,Math.floor(Number(old.xpEarned)||0));
+ s.life=maxLife(s);
  return s;
 }
 async function importFile(file){
@@ -901,7 +946,7 @@ function bind(){
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
   state=demo();draft=freshDraft();editMode=false;viewMode="sheet";wizardStep=4;wizardReached=4;
-  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Armas → Força → Apresentação.");
+  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina (Armas) → Força → Apresentação.");
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
@@ -909,12 +954,26 @@ function bind(){
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
-  if(!confirm("Reiniciar todos os dados deste protótipo?"))return;
+  if(!confirm("Reiniciar a ficha atual? Exporte o personagem antes se quiser preservar uma cópia."))return;
   state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
  $("import-trigger").addEventListener("click",()=>$("import-json").click());
+ $("import-old-creator").addEventListener("click",()=>{
+  let raw;
+  try{raw=localStorage.getItem(OLD_SAVE_KEY);}catch(e){}
+  if(!raw){toast("Nenhuma ficha do criador anterior encontrada neste navegador.");return;}
+  if(!confirm("Importar a ficha do criador anterior? Isso substituirá a ficha atual. Exporte a ficha atual antes se quiser preservá-la. A ficha antiga continuará guardada."))return;
+  try{
+   const converted=fromCreator(JSON.parse(raw));
+   converted.creationLocked=!!converted.name.trim();
+   state=normalize(converted);draft=freshDraft();editMode=false;
+   viewMode=state.creationLocked?"sheet":"builder";
+   wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
+   toast("Ficha antiga importada. Confira as anotações e investimentos em XP.");
+  }catch(e){toast("Não foi possível importar a ficha antiga: "+e.message);}
+ });
  $("import-json").addEventListener("change",async event=>{const f=event.target.files?.[0];if(f)await importFile(f);event.target.value="";});
  $("portrait-trigger").addEventListener("click",()=>$("portrait-input").click());
  $("portrait-input").addEventListener("change",event=>{
