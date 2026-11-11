@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.33, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.34, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -145,7 +145,8 @@ function normalizeItem(it={}){
  const max=clamp(Math.floor(it.max??0),0,999);
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
-  specialArmor:!!it.specialArmor,elementalResistance:String(it.elementalResistance||"").slice(0,70)};
+  specialArmor:!!it.specialArmor,elementalResistance:String(it.elementalResistance||"").slice(0,70),
+  secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70)};
 }
 function save(){
  try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));$("save-indicator").textContent="Salvo neste navegador";}catch(e){
@@ -705,7 +706,19 @@ function renderInventory(){
  $("load-caption").textContent="Ocupação estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Não inclui bônus de equipamentos ainda pendentes.";
  $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
-  return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
+  const armorFields=it.type!=="armadura"?"":(
+  (it.grade===4&&it.weight==="alto"?
+   `<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="${esc(it.id)}"${it.specialArmor?" checked":""}> Armadura Pesada especializada (VIG 6/ATL 6, imunidade física, −2 DE)</label></div>`:"")+
+  (it.grade>=2?
+   `<div class="fp-item-hint"><label>${it.specialArmor?"Resistência elemental fixa da peça":"Resistência 1 (Grau 2+, se habilitada)"}: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Propriedade autorizada da peça"></label></div>`:"")+
+  (it.grade>=3&&!it.specialArmor?
+   `<div class="fp-item-hint"><label>Resistência 2 (Grau 3+, se habilitada): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Somente se o modelo permitir"></label></div>`:"")+
+  (it.grade===4&&!it.specialArmor?
+   `<div class="fp-item-hint"><label>Imunidade específica (Grau 4, se habilitada): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Somente se a peça possuir a imunidade"></label></div><div class="fp-item-hint">Grau 4 habilita uma imunidade específica quando prevista na peça; não concede imunidade automática.</div>`:"")+
+  (it.grade===4&&it.specialArmor?
+   '<div class="fp-item-hint">Variante especializada: imunidade física ampla e uma resistência elemental, sem segunda resistência ou imunidade adicional automática.</div>':"")
+ );
+ return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b>'+it.hp+'/'+it.max+'</b>'+
@@ -716,12 +729,7 @@ function renderInventory(){
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
   '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px"></label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
-  (it.type==="armadura"&&it.weight==="alto"&&it.grade===4?
-    '<div class="fp-item-hint"><label><input type="checkbox" data-item-field="specialArmor" data-id="'+esc(it.id)+'"'+
-    (it.specialArmor?' checked':'')+'> Armadura Pesada especializada (VIG 6/ATL 6, imunidade física, −2 DE)</label></div>'+
-    (it.specialArmor?'<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="'+
-     esc(it.id)+'" value="'+esc(it.elementalResistance)+'" maxlength="70" placeholder="Elemento da peça adquirida/craftada"></label></div>':'')
-    :'')+'</div>';
+  armorFields+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
 function demo(){
@@ -887,6 +895,9 @@ function onChange(event){
    it.specialArmor=!!el.checked;
   }
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
+  else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
+  else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
+  if(it.specialArmor&&!isSpecialArmor(it)){it.specialArmor=false;toast("Variante especializada desmarcada: exige armadura Pesada Grau 4.");}
   if(it.equipped&&it.specialArmor&&!canWearSpecialArmor(state,it)){it.equipped=false;toast("Peça especializada desequipada: requisitos não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
