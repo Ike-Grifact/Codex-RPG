@@ -1,6 +1,6 @@
 # Codex RPG — Guia do Narrador
 
-**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.33](srd-continuidade-v0.33.md).
+**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.34](srd-continuidade-v0.34.md).
 
 ## 1. O papel do Narrador
 
@@ -11,10 +11,10 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 ## 2. Pavor do Narrador e Pavor dos inimigos [DEFINIDO]
 
 - **Existe apenas Pavor (P)**, não outra moeda chamada Pressão.
-- **Reserva pública do Narrador:** inicia a campanha com **2P**, possui teto de **2 + número de jogadores** e persiste entre sessões. Serve para **iniciar conflitos**, apresentando ameaças e objetivos apropriados à situação.
+- **Reserva pública do Narrador:** inicia a campanha com **2P**, possui teto de **2 + número de jogadores** e persiste entre sessões. Serve para **iniciar conflitos**, **convocar aliados a golpes conjuntos do Líder (1P por aliado)** e viabilizar **iniciativa da oposição sob liderança** em oportunidades apropriadas (custo geral desta iniciativa PENDENTE).
 - **Reserva local de uma ameaça:** tem teto igual ao **Grau da criatura**; o Pavor que nela couber é preservado para a rodada seguinte. Uma criatura paga **1P para ativar seu turno**, podendo gastar até **4P na ativação** quando suas capacidades o permitirem.
 - Não confundir a **entrada de um conflito** com a **ativação de um inimigo**. Não contabilizar o mesmo Pavor duas vezes.
-- Pavor de dados descartados está sujeito às regras gerais da pilha; Êxito e Antecipar descartados não são utilizados como símbolos mantidos.
+- **Dados descartados não geram Pavor** na continuidade vigente; Êxito e Antecipar descartados também não são utilizados.
 - Falhas com Pavor de inimigos podem conceder Coragem aos jogadores nas proporções previstas pela continuidade; não definir outro cálculo por suposição.
 
 ## 3. Intervenções e protagonismo [DEFINIDO]
@@ -29,11 +29,19 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 
 O Narrador pode expressar a intervenção por alteração de terreno, posicionamento, novos perigos, ameaça ou informação pertinente. Não transformar toda intervenção em dano não previsto pelas técnicas.
 
-### Provocação [DEFINIDO]
+### Provocação, foco e sucessão [DEFINIDO / PENDENTE]
 
-**Provocar** é uma ação tática básica que usa **Influência** contra a DE de **um inimigo**. **Igual ou superior à DE provoca**, inferior falha. No turno do inimigo provocado, atacar **um aliado do provocador** causa **Desvantagem (−1A)**; atacar **quem o provocou** concede **Vantagem (+1A)** ao inimigo. Não há custo adicional de PP ou Coragem definido para Provocar básico. A ação não obriga o adversário a escolher um alvo.
+**Provocação básica** não exige Perícia: Influência deve igualar/superar a DE do inimigo. O personagem pode **provocar e atacar** com **Influência + arma**. O inimigo foca quem o provocou **por uma rodada**, quando puder atacar; uma nova Provocação bem-sucedida substitui o foco anterior. A Provocação simples concede **+1A ao inimigo quando ataca o provocador** e mantém a **−1A ao atacar aliados** quando esse ataque for excepcionalmente válido.
 
-**Provocação Sofisticada:** Perícia com requisito **Influência 2** e custo **1 XP**. Como a descrição autoral fornecida para ela **repete integralmente o efeito básico**, seu benefício exclusivo permanece **PENDENTE** e não autoriza empilhar Vantagens/Desvantagens. Também são pendentes alcance, duração após o turno afetado e conflitos entre múltiplos provocadores.
+**Provocação Planejada** substitui o nome Provocação Sofisticada; preserva **Influência Grau 2 e custo 1 XP**, elimina a vantagem do inimigo contra o provocador e concede **+1A ao provocador contra o inimigo provocado**.
+
+**Provocação em Área:** Influência + Apresentação, **uma rolagem comparada individualmente com as DEs**: **8×8 normal**, **16×16 com Desvantagem**, **32×32 com Desvantagem Absoluta**. O Pavor não multiplica pelo número de alvos; unidade espacial e destino de Pavor local multi-alvo estão **PENDENTES**.
+
+**Antecipar inimigo (1A)** antecipa o turno **individual** de um aliado, sem ação conjunta. **Líder** pode incorporar aliados a **um golpe conjunto focado gastando 1P público por aliado** (substitui o custo fixo histórico de 3P); máximo de três participantes conforme a regra vigente. O Narrador pode gastar Pavor público para a oposição com Líder agir quando todos os jogadores passam/falham sem Pavor, mas o **custo geral dessa iniciativa ainda é PENDENTE**.
+
+Se **todos os Líderes** caírem, a oposição fica desorganizada, concedendo **Vantagem aos jogadores**. Um candidato precisa convencer aliados com **Influência contra as DEs**; não há requisito de Inteligência 2. Jogadores podem disputar os alvos, valendo **a última convicção bem-sucedida**. Sucesso com Pavor continua válido, mas permite reação; sem Pavor os jogadores mantêm o protagonismo. O conflito pode terminar por rendição ou fuga.
+
+Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o **[Livro do Mestre](livro-do-mestre.md)** e o SRD v0.34.
 
 ## 4. DE, ameaças e ações conjuntas [DEFINIDO / EXPERIMENTAL]
 
