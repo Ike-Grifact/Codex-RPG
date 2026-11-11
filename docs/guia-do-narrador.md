@@ -1,6 +1,6 @@
 # Codex RPG — Guia do Narrador
 
-**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.32](srd-continuidade-v0.32.md).
+**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.33](srd-continuidade-v0.33.md).
 
 ## 1. O papel do Narrador
 
@@ -28,6 +28,12 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 | Passar com **1A** | Antecipar passa a ação antes da intervenção, mas **não anula o Pavor** nem produz outro |
 
 O Narrador pode expressar a intervenção por alteração de terreno, posicionamento, novos perigos, ameaça ou informação pertinente. Não transformar toda intervenção em dano não previsto pelas técnicas.
+
+### Provocação [DEFINIDO]
+
+**Provocar** é uma ação tática básica que usa **Influência** contra a DE de **um inimigo**. **Igual ou superior à DE provoca**, inferior falha. No turno do inimigo provocado, atacar **um aliado do provocador** causa **Desvantagem (−1A)**; atacar **quem o provocou** concede **Vantagem (+1A)** ao inimigo. Não há custo adicional de PP ou Coragem definido para Provocar básico. A ação não obriga o adversário a escolher um alvo.
+
+**Provocação Sofisticada:** Perícia com requisito **Influência 2** e custo **1 XP**. Como a descrição autoral fornecida para ela **repete integralmente o efeito básico**, seu benefício exclusivo permanece **PENDENTE** e não autoriza empilhar Vantagens/Desvantagens. Também são pendentes alcance, duração após o turno afetado e conflitos entre múltiplos provocadores.
 
 ## 4. DE, ameaças e ações conjuntas [DEFINIDO / EXPERIMENTAL]
 
