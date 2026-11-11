@@ -18,7 +18,7 @@ Esta pasta é **completamente independente** de `criador.html` e do protótipo d
 
 1. **Identidade** — nome obrigatório, conceito, origem, virtude, personalidade e portrait. A logo padrão usa fundo marfim no escuro para preservar o contraste; uma imagem enviada usa corte fotográfico normal.
 2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **6 XP (EXPERIMENTAL)**.
-3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Armas ou Conjuração**; todos têm 1d6 gratuito no Grau 0, e compartilham **8 XP (EXPERIMENTAL)**.
+3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Disciplina**; todos têm 1d6 gratuito no Grau 0, e compartilham **8 XP (EXPERIMENTAL)**.
 4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (EXPERIMENTAL)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
 5. **Revisão** — identificação, dados de combate derivados, investimento por categoria e todas as compras. O botão **Concluir e abrir a ficha** consolida a criação e mostra **somente então** a ficha jogável completa.
 
@@ -36,7 +36,7 @@ Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíve
 
 ## Regras respeitadas
 
-- São **6 Atributos, 6 Conhecimentos e 6 Práticas**. Armas ou Conjuração é uma única Prática, e as Perícias determinam o uso marcial ou mágico.
+- São **6 Atributos, 6 Conhecimentos e 6 Práticas**. Disciplina é uma única Prática, e as Perícias determinam o uso marcial ou mágico.
 - Todo teste começa por um **Conhecimento ou Prática (Base)** e recebe um **Atributo** como segundo componente. Uma terceira fonte é opcional, de Conhecimento ou Prática, com habilitação apropriada.
 - Terceira fonte só aparece com Perícia habilitadora e **confirmação de pertinência**: a lista detalhada de combinações ainda exige decisão autoral.
 - Até 9 dados rolados; retenção de 2 normalmente até o nível 5, 3 a partir do nível 6, ou mais 1 com Coragem, teto 4.
@@ -73,6 +73,16 @@ prototipo-ficha/
 ```
 
 **Atenção:** os documentos internos de SRD não estão vinculados nesta página; apenas o Livro e o criador originais são acessíveis pela navegação.
+
+## Modo edição e runas nas faces — atualização de 11/11/2026
+
+Na ficha jogável, o botão **Editar ficha** alterna entre o modo normal (clicar nas fontes para montar a rolagem) e o modo de edição (botões **+** e **−** para corrigir graus e XP de Atributos, Conhecimentos e Práticas). Nesse modo também é possível desfazer Perícias adquiridas, desde que não invalide seus requisitos. O modo edição não funciona durante rolagem pendente. O XP investido e o XP livre são recalculados automaticamente; **isso corrige a ficha, não cria uma regra de reembolso de XP em campanha**.
+
+A fonte compartilhada passou a se chamar **Disciplina**. Fichas existentes com o identificador interno `armas_conjuracao` mantêm seus graus e XP: só mudou o nome visível, não os dados salvos.
+
+Nos dados rolados, o destaque principal mostra **as runas reais da face repetidas uma vez por símbolo** (por exemplo, **ᛋ ᛋ ᚦ**, em vez de uma face numérica grande). As contagens menores continuam sob o dado e os valores numéricos das faces permanecem preservados para cálculo, acessibilidade e críticos.
+
+**Retenção corrigida:** ao menos um dado de Atributo deve ser **rolado**, mas o jogador é livre para descartá-lo e manter apenas outros dados válidos. O crítico de duas ou mais faces máximas também não exige Atributo mantido.
 
 ## DE defensiva e armadura especializada (SRD v0.30)
 
