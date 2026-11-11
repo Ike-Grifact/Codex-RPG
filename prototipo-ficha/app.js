@@ -32,7 +32,6 @@ const SKILLS=[
  ["mestre","Mestre Elementalista","Segundo elemento custa 1A; +1A em conjuração.",5],
  ["fogo","Elemento: Fogo","Habilitação de Fogo.",1],
  ["agua","Elemento: Água","Habilitação de Água.",1],
- ["raio","Elemento: Raio","Habilitação de Raio.",1],
  ["vento","Elemento: Vento","Habilitação de Vento.",1],
  ["terra","Elemento: Terra","Habilitação de Terra.",1],
  ["sagrado","Magia Sagrada","Recuperação de Coragem sob condições.",3],
@@ -90,6 +89,9 @@ function normalize(v){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
   s.skills=[...new Set(Array.isArray(v.skills)?v.skills.filter(x=>SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))):[])];
+ if(Array.isArray(v.skills)&&v.skills.includes("raio")&&!s.notes.includes("Legado Raio:")){
+  s.notes=(s.notes+"\nLegado Raio: habilitação antiga removida; Raio agora é condição, não elemento. O XP da compra antiga foi liberado para redistribuição.").trim().slice(0,5000);
+ }
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
  s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
  s.creationLocked=!!v.creationLocked||s.level>1;
@@ -150,7 +152,7 @@ function skillReq(id,s=state){
  if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
- if(["magia","peritoconj","improviso","mestre","fogo","agua","raio","vento","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("aprendiz"))
+ if(["magia","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("aprendiz"))
   return"Requer Aprendiz de Conjurador.";
  if(id==="sangue"||id==="trevas")return"Magia Grau 2 ainda não disponível neste protótipo.";
  return null;
@@ -714,7 +716,7 @@ function fromCreator(v){
  const s=defaultState(),old=v.character||v;
  for(const x of ["name","concept","origin","virtue","personality","notes"])if(typeof old[x]==="string")s[x]=old[x];
  const attrNames={Força:"forca",Agilidade:"agilidade",Destreza:"destreza",Inteligência:"inteligencia",Influência:"influencia",Vigor:"vigor"};
- const sources={Proteção:"protecao",Astronomia:"astronomia",Medicina:"medicina",Alquimia:"alquimia",Engenharia:"engenharia",Erudição:"erudicao",Armas:"armas_conjuracao",Conjuração:"armas_conjuracao",Atletismo:"atletismo",Furtividade:"furtividade",Artesão:"artesao",Apresentação:"apresentacao",Coleta:"coleta"};
+ const sources={Proteção:"protecao",Astronomia:"astronomia",Medicina:"medicina",Alquimia:"alquimia",Engenharia:"engenharia",Erudição:"erudicao",Armas:"armas_conjuracao",Conjuração:"armas_conjuracao",Disciplina:"armas_conjuracao",Atletismo:"atletismo",Furtividade:"furtividade",Artesão:"artesao",Apresentação:"apresentacao",Coleta:"coleta"};
  for(const [name,id] of Object.entries(attrNames))s.attributes[id]=old.attributes?.[name]||0;
  for(const [name,id] of Object.entries(sources))if(name in(old.sources||{})){
   const dest=K.some(x=>x[0]===id)?"knowledges":"practices";
