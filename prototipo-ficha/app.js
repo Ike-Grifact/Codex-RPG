@@ -139,6 +139,26 @@ const CARD_EFFECTS={
  "criar-antidoto":"Uma dose não diluída neutraliza um acúmulo.",
  transfusao:"Transfere 1 Vida ou aplica Antídoto à distância."
 };
+
+const CARD_BRIEFS={
+ "criar-item-foco-magia":"Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
+ "escudo-arcano":"Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
+ "conjuracao-equilibrada":"Ajusta uma magia à categoria Leve ou Pesada mediante gasto, sem liberar dados nem novos Graus gratuitamente.",
+ improviso:"Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
+ mestre:"Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
+ sagrado:"Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
+ trevas:"Escolhe até dois alvos usando a mesma rolagem; +2 Pavor são exclusivos para dano após o acerto, não para atingir DE nem gerar reserva.",
+ sangue:"Sacrifício depende do Sangramento próprio: 2 Vida sem o estado, 1 ao autoaplicar e zero se já estiver Sangrando. Dano direto à Vida ou Integridade.",
+ veneno:"Exige Sangramento no alvo. Cada aplicação soma um acúmulo por duas rodadas. Penalidades dependem da Vida atual, não da máxima.",
+ "criar-antidoto":"Cada dose produzida com material venenoso neutraliza um acúmulo. Pode ser ingerida ou aplicada em Sangramento; exige a Perícia Criar Veneno.",
+ "criar-veneno":"A compra de Criar Veneno ainda carece de custo e requisitos definidos pelo autor; não pode ser oferecida como compra final.",
+ transfusao:"Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
+ fogo:"Manipula fogo disponível e técnicas especiais conforme Grau. Na versão inicial, o disparo não causa queimadura direta à Vida.",
+ agua:"Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
+ vento:"Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
+ terra:"Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico."
+};
+
 const CARD_ACTIVATIONS={
  "criar-item-foco-magia":"1 PP ou 2 Coragens para efeito Psíquico",
  "escudo-arcano":"1 PP ou 2 Coragens (+ custo por expansão)",
@@ -163,7 +183,7 @@ function skillCompactCard([id,name,detail,cost],wizard){
  '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div>'+
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
  '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl></div>'+
- '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
+ '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(CARD_BRIEFS[id]||detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
  '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
  (warning?'<small class="fp-skill-req">'+esc(warning)+'</small>':'')+'</div></article>';
 }
