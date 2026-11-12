@@ -430,6 +430,22 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 **Continuidade:** substitui a entrada antiga **Elemento: Terra** da ficha, conservando o identificador e personagens salvos. Não é necessário adquirir as duas versões.
 
+### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
+
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. Em ataques que acertem, **independentemente de crítico**, gastar **1 PP ou 2 Coragens** permite aplicar **um efeito especial escolhido** do elemento, conforme o Grau habilitado.
+
+| Grau | Efeitos e manifestações de Fogo |
+|---|---|
+| **G1** | **Disparo à distância** que **danifica armadura**, mas **não causa queimadura direta à Vida**; **iluminar** ou **conduzir chamas**. **Não produz fogo do nada**: exige chama/faísca, como lamparina a óleo, isqueiro ou foco pequeno encantado (ex.: luvas que produzem faísca ao estalar os dedos) |
+| **G2** | Ampliar a área do disparo para **4 × 4**, em **cone, linha ou círculo**; pode causar **dano direto à Vida e à armadura**. Se estiver **sem item de foco**, pode **invocar fogo ao gastar 1 ponto de Coragem** |
+| **G3** | **Conjurar no final do turno dos aliados**; área **8 × 8**, em formato **circular, cone ou linha** |
+
+**Estratégia de um mago de Fogo:** produzir ou carregar **uma pequena faísca** e **ampliá-la magicamente** pode gerar grandes incêndios e devastação. Isso descreve o potencial narrativo do elemento; danos persistentes, propagação e duração dos incêndios **não recebem regras automáticas** sem aprovação.
+
+**PENDENTE:** se o gasto de **1 Coragem para invocar fogo sem foco no G2** se soma ao custo regular de ativação de efeito especial (1 PP ou 2 Coragens) ou o substitui para essa aplicação; unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados. **Não impor custos cumulativos não definidos.**
+
+**Continuidade:** a entrada antiga da ficha **Elemento: Fogo** foi renomeada **Perícia em Elemento Fogo**, preservando a compra existente. Não cria uma segunda habilidade de Fogo.
+
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
 Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Pontos de Perícia, distância, área e efeitos avançados ainda dependem dos requisitos.
@@ -629,6 +645,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
+| **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; disparo e conduzir chamas G1, área/dano à Vida no G2, área 8 × 8 e atuação no fim do turno dos aliados G3 |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
