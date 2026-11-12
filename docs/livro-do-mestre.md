@@ -110,3 +110,11 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 **Spellslots mentais:** a capacidade deriva **exclusivamente dos dados de Disciplina**. Inteligência não adiciona slots; quantificação por dado e possível teto 9 continuam PENDENTES. **Focos permanecem objetos com carga física convencional**, sem anulação por memorizar magias.
 
 **Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1, começando por magias Leves. Ao acertar ataques, com ou sem crítico, gaste 1 PP ou 2 Coragens para aplicar um efeito especial: G1 deslocamento 4m/empurrar/puxar; G2 sufocar com dano à Vida ou armadura, empurrar e derrubar, deslocamento até 8m; G3 agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda, referência 16m. Formas linha/círculo/cone/X. **PENDENTE:** interpretação de 16m, alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
+
+## Conjuração — Água, Fôlego e spellslots por dado (12/11/2026)
+
+**Cada dado de Disciplina = 1 unidade de peso mental para spellslots**, independente do tamanho; Inteligência não concede capacidade. A progressão atual alcança 3d12 em Disciplina 6, total de 3 unidades, incompatível com o exemplo pretendido de seis magias G2. **Divergência pendente**, não alterar dados sem decisão. Focos continuam ocupando carga física.
+
+**Ar:** além dos efeitos já listados, pode recuperar Fôlego; Grau, custo/gatilho e quantidade PENDENTES.
+
+**Perícia em Elemento Água:** 1 XP, Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Ao acertar, mesmo sem crítico, 1 PP/2 Coragens aplica um efeito à escolha. G1: Congelar por uma rodada sem dano em magia Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar por crítico OU ativação paga, com dano à Vida e à armadura. G3: conjurar ao final do turno dos aliados, empurrar, perfurar, congelar, danificar Vida/armadura e preservar efeitos menores pertinentes. A entrada anterior Elemento: Água é a mesma Perícia, não há compra duplicada. Dano, alcance, efeitos adicionais e operação exata estão pendentes.
