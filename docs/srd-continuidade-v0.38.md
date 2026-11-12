@@ -140,6 +140,59 @@ Esses efeitos são exemplos de capacidade: **PENDENTE** definir os procedimentos
 - A ficha registra as descrições, mas **não automatiza** fabricação/recarga do foco, controle mental, escudo, área ou geração de magia.
 - O filtro de Perícias deve associá-las a **Inteligência** e **Disciplina**; Criar Item de Foco e Magia também a **Artesão**, sem converter afinidade temática em requisito adicional.
 
+## 0-V.8. Revisão de Conjuração: substituição, círculo, criação, pesos e Conjuração Equilibrada [DEFINIDO / PENDENTE]
+
+**Esta é a decisão autoral mais recente para os pontos abaixo e prevalece sobre a seção 0-V.7 e capítulos históricos quando divergirem.** Não apagar o histórico das versões anteriores, apenas identificá-lo como superado.
+
+### Habilitação única inicial [DEFINIDO]
+
+**Criar Item de Foco e Magia** (**1 XP; Disciplina 1 + Inteligência 1**) **SUBSTITUI INTEGRALMENTE**, no catálogo de compra, as antigas Perícias **Aprendiz de Conjurador** (2 XP) e **Magia Única** (1 XP). Não exigir as duas antigas e não ofertá-las como novas compras. Personagens antigos devem ter suas compras conciliadas sem perder o registro do investimento, preservando a opção de corrigir a ficha. O acesso inicial à magia Psíquica e à criação de magias/focos pertence à nova Perícia. As habilitações de elementos específicos e efeitos avançados conservam seus requisitos não revogados.
+
+### Escudo Arcano [DEFINIDO / geometria de ampliação PENDENTE]
+
+**Compra 1 XP; Inteligência 2 + Criar Item de Foco e Magia.** A área de defesa agora é **circular, de 3×3 metros**, e **dura 1 rodada**. Permanece a escolha de escudo no próprio conjurador ou cobrindo a área, pagando **1 PP OU 2 Coragens**; rolagem de Conjuração estabelece a **DE para quebrar** e há comportamento de proteção semelhante à Integridade de armadura. Personagens dentro do círculo são imunes ao **dano elemental conjurado** protegido; inimigo que entrar na área e atacar ou conjurar corpo a corpo ignora o escudo naquela interação.
+
+**Ampliar:** cada **1 PP OU 2 Coragens** adicional aumenta a área em **mais 3×3**, preservado o formato circular. **PENDENTE:** o modo geométrico exato de medir essa ampliação circular (3×3 como dimensão do círculo, extensão de diâmetro ou medida equivalente), a relação entre DE de ruptura e Integridade numérica e a interação com magias mistas. **Duração e formato circular não estão mais pendentes.**
+
+### Preparar e memorizar magia [DEFINIDO / slots PENDENTES]
+
+A partir de **Disciplina 2**, a Perícia **Criar Item de Foco e Magia** permite **criar magias de Grau 2 e Grau 3** para deixá-las **memorizadas em um slot mágico** e, assim, conjurá-las rapidamente depois. A **criação/preparação acontece FORA de combate**, ao custo de **1 PP OU 2 Coragens por criação**. A conjuração posterior não recebe custo novo, ação extra ou redução numérica de tempo presumidos nesta seção: “rapidamente” precisa ser detalhado com o procedimento de conjuração.
+
+**Peso nominal informado para a magia por Grau:**
+
+| Grau | Peso |
+|---|---:|
+| 1 | **1** |
+| 2 | **2** |
+| 3 | **3** |
+| 4 | **4** |
+
+**Sem item de foco**, a magia criada recebe **−1 de peso** conforme a decisão do autor. **PENDENTE:** confirmar se esse peso nominal é a ocupação de capacidade de slots, se o desconto incide sobre esse total, qual o mínimo e que consequências isso traz a uma magia G1 (peso 1−1=0 se não houver piso); não aplicar automaticamente o abatimento à carga física de equipamento ou ao peso tático Leve/Médio/Pesado. O **Grau 4 tem peso 4 definido**, mas ainda não foi concedido por esta atualização acesso à **criação G4**.
+
+**Capacidade de slots — VERIFICAR COM O AUTOR, não automatizar fórmula:** o autor recorda como possível regra **“cada Grau de Inteligência = 1 ponto de peso/capacidade de spellslot”**, mas explicitamente não confirma a lembrança. O histórico SRD contém regras divergentes:
+- **Seção histórica 14 / Aprendizado e slots:** **1 slot por aumento de Conjuração e +1 slot a cada 3 Graus de Inteligência** [marcado DEFINIDO na versão histórica];
+- **Seção 0-E.8:** **máximo 9 slots de magia**, ocupação 1/2/3/4 para Graus 1/2/3/4 [marcada DEFINIDO naquela versão];
+- **Seção 0-D.6:** ocupação 1/2/3/4 era apenas PROPOSTA nessa versão intermediária.
+
+**A decisão atual confirmou o peso 1/2/3/4**, mas **NÃO confirmou a fórmula de capacidade total**, nem revogou expressamente o limite histórico de 9 slots. Mostrar essa divergência para escolha do autor antes de implementar a mecânica, sem somar todos os bônus históricos nem importar uma fórmula intuitiva.
+
+**Itens de foco:** o peso para carregar fisicamente o equipamento deve ser calculado mediante **Potência com Força e Atletismo**, conforme a indicação recente do autor. **PENDENTE:** definição operacional de Potência, quantos pontos de carga cada Grau de foco ocupa e como aplicar isso sobre a fórmula antiga da capacidade geral (que também menciona Vigor e Disciplina). Não confundir **peso de magia/slot** com **carga física de foco** nem automatizar conversão sem regra. A **recarga de foco** permanece **N rodadas para foco Grau N**, a fabricação por **teste de Artesão**, e a capacidade de usar elementos habilitados sem estarem presentes no ambiente permanece.
+
+### Conjuração Equilibrada [DEFINIDO no efeito informado / distinção Grau–peso PENDENTE]
+
+**Custo de aquisição: 1 XP. Requisitos cumulativos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
+
+**Ativação: 1 PP OU 2 Coragens.** Permite alterar a categoria da magia para **Pesada ou Leve**, conforme a expressão autoral “alterar o grau da magia, para pesado ou leve”. **PENDENTE:** confirmar se o termo “grau” aqui se refere só ao **peso tático** Leve/Pesado (sem alterar o Grau numérico da magia) e os respectivos efeitos na afinidade contra o Balanço, sem confundir com o **peso nominal 1–4 de armazenamento**. Não liberar acesso a Grau maior nem criar dano/Êxito automático por esta Perícia até esclarecer.
+
+### Mudanças de catálogo e ficha [DEFINIDO na implementação]
+
+- Remover **Aprendiz de Conjurador** e **Magia Única** da lista de novas compras; conservar histórico de XP de fichas anteriores ao migrar.
+- Com os requisitos satisfeitos, **Criar Item de Foco e Magia** habilita conjuração inicial Psíquica.
+- Adicionar **Conjuração Equilibrada** (1 XP) e verificar os quatro requisitos explicitados.
+- Atualizar a descrição do **Escudo Arcano** para círculo 3×3 m e 1 rodada; a ficha registra mas não automatiza a proteção/área.
+- Informar a tabela de pesos 1–4, a criação G2–G3 fora de combate e seu custo, sem calcular ocupação/disponibilidade de spellslots não decididos.
+- Preservar filtros por Inteligência, Destreza, Disciplina e Artesão quando pertinentes; filtros temáticos não viram exigências.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
