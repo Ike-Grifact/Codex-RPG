@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.36, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.37, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:6,training:8,skills:5}; // EXPERIMENTAL: redistribuição nível 1, total 19 XP.
+const CREATE_BUDGET={attr:6,training:8,skills:5}; // 5 XP Perícias DEFINIDO; 6+8 experimentais.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  ["combate","Combate","+1A em combate pertinente.",1],
@@ -39,6 +39,22 @@ const SKILLS=[
  ["veneno","Magia de Veneno","Penalidades sob condições.",3],
  ["sangue","Magia de Sangue","Magia Grau 2 ainda não disponível.",3],
  ["trevas","Magia de Trevas","Magia Grau 2 ainda não disponível.",3],
+
+ ["armas-leves","Perícia em Armas Leves","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",2],
+ ["armas-medias","Perícia em Armas Médias","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Efeito não automatizado.",2],
+ ["armas-pesadas","Perícia em Armas Pesadas","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Efeito não automatizado.",2],
+ ["disciplina-avancada","Disciplina Avançada","Disciplina 2; permite combinar mais 1 Atributo, Conhecimento ou Prática pertinente. Fonte adicional não automatizada.",1],
+ ["manejo-perfeito","Manejo Perfeito — Armas Corpo a Corpo","Disciplina Avançada; arma correta: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",null],
+ ["golpe-fulminante","Golpe Fulminante","Disciplina 2 + especialização. Gaste 1 PP ou 2 Coragens; no acerto Pavor mantido não anulado vale 1 dano cada. Não automatizado.",1],
+ ["espalhar-golpe","Espalhar Golpe","Disciplina 2 + Golpe Fulminante + especialização; metade do dano de Êxitos em área 3 m, +1E, custos por alvos PENDENTES. Não automatizado.",1],
+ ["pugilismo","Pugilismo","Disciplina 1; desarmado, 1 PP ou 2 Coragens para mudar peso do soco. Pesos permitidos PENDENTES.",1],
+ ["artista-marcial","Artista Marcial","Disciplina 2 + Pugilismo. 1 PP/2 Coragens por manobra ou crítico de Pugilismo; uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",1],
+ ["maestria-arremesso-armas","Maestria em Arremesso de Armas","Armas Leves + FOR 2, DES 2, AGI 1; 1 PP/2 Coragens. Arremessa arma Leve até 24 m e segue efeitos de alojamento. Não automatizado.",1],
+ ["recuperacao-vigorosa","Recuperação Vigorosa","Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",null],
+ ["recuperacao-movimento","Maestria em Recuperação Vigorosa em Movimento","Recuperação Vigorosa e Vigor 6; cura natural em viagem após 8h sem dano. Custo XP PENDENTE.",null],
+ ["recobrar-coragem","Recobrar Coragem","1 XP. Após descanso curto ou longo e cena narrativa, recupera 2 Coragens. Recuperação anotada manualmente.",1],
+ ["maestria-manejo-duplo","Maestria em Manejo Duplo","Perícia Manejo Duplo, Maestrias correlatas e Disciplina Avançada; requisitos pendentes. Duas armas, um golpe, efeitos de ambas em crítico.",1],
+ ["instinto-sobrevivencia","Instinto de Sobrevivência","Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",null],
  ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null]
 ];
 const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Alto / Pesado",1],extremo:["Extremo",2]};
@@ -177,6 +193,19 @@ function canAfford(group,cost){
 }
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
+ const hasDis=(s.practices.armas_conjuracao||0),vig=(s.attributes.vigor||0);
+ const weaponSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","pugilismo"].some(has);
+ if(["armas-leves","armas-medias","armas-pesadas"].includes(id)&&!has("armas"))return"Requer Perícia Armas 1.";
+ if(["disciplina-avancada","golpe-fulminante","espalhar-golpe","artista-marcial"].includes(id)&&hasDis<2)return"Requer Disciplina 2.";
+ if(id==="pugilismo"&&hasDis<1)return"Requer Disciplina 1.";
+ if(id==="artista-marcial"&&!has("pugilismo"))return"Requer Pugilismo.";
+ if(id==="golpe-fulminante"&&!weaponSpecialty)return"Requer Perícia em Armas Leves, Médias ou Pesadas; Maestria em Arremesso de Armas; Pugilismo; ou Manejo Duplo (ainda não catalogado).";
+ if(id==="espalhar-golpe"&&(!has("golpe-fulminante")||!weaponSpecialty))return"Requer Golpe Fulminante e uma especialização de armas.";
+ if(id==="maestria-arremesso-armas"&&(!has("armas-leves")||(s.attributes.forca||0)<2||(s.attributes.destreza||0)<2||(s.attributes.agilidade||0)<1))return"Requer Perícia em Armas Leves, Força 2, Destreza 2 e Agilidade 1.";
+ if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
+ if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
+ if(id==="manejo-perfeito")return"XP pendente; requer Disciplina Avançada e definição de Golpe Certo.";
+ if(id==="maestria-manejo-duplo")return"Requisitos não fechados: Perícia Manejo Duplo e Maestrias intermediárias ainda sem descrição. Compra pendente.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
  if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
@@ -339,7 +368,7 @@ function wizardReview(){
   '<section><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
   '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
-  '<div class="fp-wiz-reminder"><strong>Orçamento de criação experimental</strong>'+
+  '<div class="fp-wiz-reminder"><strong>5 XP de Perícias definidos · 6/8 XP em playtest</strong>'+
   '<p>Atributos: '+x.attributes+'/6 XP · Formação: '+x.training+'/8 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado continua em sua categoria nesta prévia. A curva de XP por nível não é definitiva.</p></div>';
 }
 function wizardOverview(){
@@ -406,7 +435,7 @@ function renderWizard(){
    '</div></section><section><h4>Práticas</h4><div class="fp-wiz-source-grid">'+P.map(item=>wizardSource("practice",item)).join("")+'</div></section></div>'+
    '<div class="fp-wiz-reminder"><b>Disciplina é uma única Prática.</b><p>As Perícias específicas habilitam seu uso com armas, conjuração e defesa; não se compra outra fonte ao adquirir habilitações diferentes.</p></div>';
  }else if(stage===3){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PERÍCIAS</span><h3>Escolha suas especializações.</h3><p>Use os <strong>5 XP iniciais de Perícias</strong>. As habilidades exigem requisitos e seus custos são cobrados. Opções ainda pendentes não podem ser compradas.</p></div>'+wizardSkills();
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PERÍCIAS</span><h3>Escolha suas especializações.</h3><p>Use os <strong>5 XP de Perícias definidos no nível 1</strong>. As habilidades exigem requisitos e seus custos são cobrados. Opções ainda pendentes não podem ser compradas.</p></div>'+wizardSkills();
  }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
