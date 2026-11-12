@@ -1,6 +1,6 @@
 # Codex RPG — Guia do Narrador
 
-**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.36](srd-continuidade-v0.36.md).
+**Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.37](srd-continuidade-v0.37.md).
 
 ## 1. O papel do Narrador
 
@@ -41,11 +41,11 @@ O Narrador pode expressar a intervenção por alteração de terreno, posicionam
 
 Se **todos os Líderes** caírem, a oposição fica desorganizada, concedendo **Vantagem aos jogadores**. Um candidato precisa convencer aliados com **Influência contra as DEs**; não há requisito de Inteligência 2. Jogadores podem disputar os alvos, valendo **a última convicção bem-sucedida**. Sucesso com Pavor continua válido, mas permite reação; sem Pavor os jogadores mantêm o protagonismo. O conflito pode terminar por rendição ou fuga.
 
-Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o **[Livro do Mestre](livro-do-mestre.md)** e o SRD v0.36.
+Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o **[Livro do Mestre](livro-do-mestre.md)** e o SRD v0.37.
 
 ## 4. DE, ameaças e ações conjuntas [DEFINIDO / EXPERIMENTAL]
 
-**DE natural individual = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**. **Toda armadura Grau 4 é imune a dano físico comum** e possui **imunidade a um elemento OU duas resistências elementais** como escolha adicional da peça. **Grau 3 é Pesada (−1 DE)**; **Grau 4 é Muito Pesada/Extrema (−2 DE)** e exige **Vigor 6 e Atletismo 6**. Essas penalidades são aplicadas após o teto 9 da DE natural.
+**DE natural individual = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**. **Tipo de armadura não depende de Grau:** Muito Leve +2 DE na esquiva, Leve +1 DE na esquiva, Média 0, Pesada −1 DE, Muito Pesada −2 DE. **Muito Pesada** requer **Vigor 6 e Atletismo 6** e tem imunidade física natural **em qualquer Grau**. No G2 recebe resistência elemental; no G4 pode acrescentar imunidade elemental **sem perder a resistência**. Graus 2/3/4 exigem níveis 5/10/20. **Psíquico é neutro, não físico:** Integridade primeiro e depois Vida, não ignorando proteção automaticamente. Modificadores de DE são aplicados após o teto natural e bônus da Leve/Muito Leve somente na esquiva.
 
 A **DE conjunta** mantém **teto 30**, com coordenação e demais regras específicas. Até **três participantes** podem atuar em ataques conjuntos. Ataque em área que efetivamente atinge três criaturas separadas pode atingir três fichas; uma criatura composta de **uma ficha** não sofre dano multiplicado por suas partes abstratas.
 
@@ -75,4 +75,4 @@ Aferir acerto limpo, acerto com Pavor, falha limpa e falha com Pavor, consumo e 
 
 **EXPERIMENTAL:** a curva atual de XP acumulado aponta 664 XP no nível 20; também foi analisada uma alternativa de 600 XP, ainda não aprovada.
 
-**PENDENTE:** XP definitivo por nível, catálogo completo de Perícias, integridades das armaduras, interações excepcionais de dano misto/colossal, custo e requisitos de alterar peso de magia e procedimentos mecânicos de Raio como manifestação. Não preencher lacunas silenciosamente.
+**PENDENTE:** XP definitivo por nível, efeitos/custos e procedimentos específicos das Perícias autorais descritas na v0.37 (ver checklist), integridades das armaduras intencionalmente adiadas até análise de dano, interações excepcionais de dano misto/colossal, custo e requisitos de alterar peso de magia e procedimentos mecânicos de Raio como manifestação. Não preencher lacunas silenciosamente.
