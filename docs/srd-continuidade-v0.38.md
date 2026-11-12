@@ -292,6 +292,24 @@ Habilita **magias elementais Leves de Água**, dominando os efeitos iniciais do 
 
 **PENDENTE:** como tratar matematicamente uma magia G1 de peso nominal 1 após redução de 1 (resultado 0), especialmente para evitar memorização ilimitada; efeitos exatos de alterar peso tático com Conjuração Equilibrada; e detalhes de conjurar rapidamente as magias memorizadas. O exemplo de seis magias G2 **não é mais uma divergência** e **não requer alterar a progressão de dados de Disciplina**. O teto histórico de nove slots não substitui nem amplia esta capacidade de Grau 0–6 sem nova decisão.
 
+## 0-V.12. Perícia em Elemento Terra [DEFINIDO / procedimentos PENDENTES]
+
+**Custo de aquisição: 1 XP. Requisitos cumulativos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Esta decisão autoral mais recente prevalece sobre descrições históricas do elemento Terra onde divergirem.
+
+Permite **dominar os efeitos iniciais de Terra** e conjurar **magias elementais Leves**. Ao **acertar um ataque, independentemente de ser crítico**, pode gastar **1 PP OU 2 Coragens** para aplicar **UM efeito especial escolhido** do elemento Terra, conforme o Grau habilitado. Crítico, por si só, não foi indicado como ativação gratuita. A Perícia não concede automaticamente os Graus 2 e 3 de conjuração sem suas habilitações próprias.
+
+| Grau | Efeitos e condições informados pelo autor |
+|---|---|
+| **Grau 1** | Aplicar **Desvantagem por 2 rodadas** (por exemplo, terra nos olhos); **emaranhar os pés**, **derrubar**, conduzir **pedras pequenas em alta velocidade**, **criar plataformas de deslocamento**; **sentido sísmico em área de 18 × 18 m**, permitindo detectar a posição de **criaturas furtivas** e **armadilhas** |
+| **Grau 2** | **Enredar e imobilizar**, impondo **Desvantagem por 2 turnos**; **espinhos** causam **dano à armadura/proteção**; **sentido sísmico em área de 32 × 32** (unidade não repetida nesta descrição) |
+| **Grau 3** | **Conjurar ao final do turno dos aliados**; **área de efeito 5 × 5** ou formatos **linha, cone ou círculo**, com manifestação **a partir do alvo**; causar **dano, empurrão e derrubada**; **sentido sísmico em área de 64 × 64** (unidade não repetida nesta descrição) |
+
+**Distinção preservada:** o autor descreveu **2 rodadas** para a Desvantagem de G1 e **2 turnos** para a Desvantagem de G2. Não substituir silenciosamente uma duração pela outra. O sentido sísmico de G1 explicita **18 × 18 metros**; as medidas **32 × 32**, **64 × 64** e **5 × 5** foram dadas sem unidade textual. Não atribuir metros ou outras unidades a elas sem confirmação, embora a progressão sugira áreas de dimensões crescentes.
+
+**PENDENTE:** condições de uso de cada efeito utilitário sem teste de ataque/acerto, critérios de detecção de armadilhas e furtividade (inclusive limites da percepção sísmica), se a Desvantagem de G1 e a imobilização de G2 têm condições resistidas, valores de dano dos espinhos e de G3, o que exatamente significa “a partir do alvo” nas formas da conjuração, unidades da área 5 × 5 e dos sentidos sísmicos G2/G3, bem como o procedimento de ação ao final do turno dos aliados.
+
+**Continuidade do catálogo:** a entrada antiga do criador de fichas **“Elemento: Terra”** passa a exibir **“Perícia em Elemento Terra”**, usando o **mesmo identificador interno `terra`**. A compra não se duplica nem deve ser perdida ao carregar uma ficha salva. A ficha verifica custo e requisitos, mas **não automatiza** sentidos sísmicos, condições, deslocamentos, dano ou áreas sem procedimento mecânico aprovado.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
