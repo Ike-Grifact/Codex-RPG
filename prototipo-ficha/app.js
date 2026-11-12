@@ -69,7 +69,7 @@ const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
- level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,
+ level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -140,6 +140,13 @@ function normalize(v){
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
  s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
  s.creationLocked=!!v.creationLocked||s.level>1;
+ // Snapshot da criação: fichas antigas recuperam saldo não gasto sem alterar as compras.
+ if(s.creationLocked){
+  const used=rawCreationCosts(s),saved=v.creationBudgetSnapshot;
+  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET[k])?
+   {attr:saved.attr,training:saved.training,skills:saved.skills}:
+   {attr:Math.min(used.attr,CREATE_BUDGET.attr),training:Math.min(used.training,CREATE_BUDGET.training),skills:Math.min(used.skills,CREATE_BUDGET.skills)};
+ }
  s.xpHistory=Array.isArray(v.xpHistory)?v.xpHistory.slice(0,60).map(x=>({
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
  })):[];
@@ -175,12 +182,31 @@ function save(){
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
 function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
+function rawCreationCosts(s=state){
+ return {attr:A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0),
+  training:K.reduce((n,[k])=>n+TRAIN_COST[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+TRAIN_COST[s.practices[k]||0],0),
+  skills:s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0)};
+}
+function unusedInitialXP(spent){
+ return ["attr","training","skills"].reduce((n,k)=>n+Math.max(0,CREATE_BUDGET[k]-spent[k]),0);
+}
 function xpCosts(s=state){
- const attributes=A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0);
- const training=K.reduce((n,[k])=>n+TRAIN_COST[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+TRAIN_COST[s.practices[k]||0],0);
- const skills=s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0);
- const generalSpent=Math.max(0,attributes-CREATE_BUDGET.attr)+Math.max(0,training-CREATE_BUDGET.training)+Math.max(0,skills-CREATE_BUDGET.skills);
- return {attributes,training,skills,total:attributes+training+skills,generalSpent,free:(s.xpEarned||0)-generalSpent};
+ const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills;
+ const budget=s.creationLocked&&s.creationBudgetSnapshot?s.creationBudgetSnapshot:CREATE_BUDGET;
+ const generalSpent=["attr","training","skills"].reduce((n,k)=>n+Math.max(0,spent[k]-budget[k]),0);
+ const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(budget):0;
+ const free=(s.xpEarned||0)+initialCarryover-generalSpent;
+ return {attributes,training,skills,total:attributes+training+skills,generalSpent,free,initialCarryover,
+  initialRemaining:Math.max(0,initialCarryover-generalSpent),
+  evolutionRemaining:Math.max(0,(s.xpEarned||0)-Math.max(0,generalSpent-initialCarryover))};
+}
+function lockCreation(){
+ if(state.creationLocked)return 0;
+ const spent=rawCreationCosts(state);
+ state.creationBudgetSnapshot={attr:Math.min(CREATE_BUDGET.attr,spent.attr),
+  training:Math.min(CREATE_BUDGET.training,spent.training),skills:Math.min(CREATE_BUDGET.skills,spent.skills)};
+ state.creationLocked=true;
+ return unusedInitialXP(state.creationBudgetSnapshot);
 }
 function xpStepCost(group,k,delta){
  const table=group==="attr"?AT_COST:TRAIN_COST,field=SOURCE_PROPS[group];
@@ -189,7 +215,8 @@ function xpStepCost(group,k,delta){
 }
 function canAfford(group,cost){
  const totals=xpCosts(),cat=group==="attr"?"attributes":group==="skills"?"skills":"training";
- const cap=group==="attr"?CREATE_BUDGET.attr:group==="skills"?CREATE_BUDGET.skills:CREATE_BUDGET.training;
+ const category=group==="attr"?"attr":group==="skills"?"skills":"training";
+ const cap=(state.creationLocked&&state.creationBudgetSnapshot?state.creationBudgetSnapshot:CREATE_BUDGET)[category];
  const additional=Math.max(0,totals[cat]+cost-cap)-Math.max(0,totals[cat]-cap);
  return cost>=0&&totals.free>=additional;
 }
@@ -242,11 +269,11 @@ function renderXP(){
  $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
   const cap=CREATE_BUDGET[type];
-  $(id+"-caption").textContent=used+" / "+cap+" XP"+(used>cap?" · excedente de evolução":"");
+  $(id+"-caption").textContent=used+" / "+cap+" XP"+(used>cap?" · XP adicional":"");
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo insuficiente: faltam "+Math.abs(x.free)+" XP. Adicione XP ou reorganize as compras ainda não consolidadas.":
-  "As compras consomem primeiro o orçamento da categoria. O excedente utiliza XP de evolução."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
+  (state.creationLocked?"XP inicial não utilizado e liberado: "+x.initialCarryover+"; disponível dessa sobra: "+x.initialRemaining+". ":"5 XP de Perícias definidos no nível 1; 6 XP de Atributos e 8 de Formação experimentais. ")+"Avanços consomem o saldo livre."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
@@ -334,11 +361,11 @@ function wizardFinalize(){
  if(xp.free<0){toast("A ficha tem mais XP investidos do que disponíveis.");return;}
  const unused=["attr","training","skills"].map((k,i)=>CREATE_BUDGET[k]-[xp.attributes,xp.training,xp.skills][i]);
  const message=unused.some(n=>n>0)?
-  "Concluir a criação com XP não utilizado nos orçamentos iniciais? Os saldos continuam associados às respectivas categorias para revisão futura; não são convertidos em XP de evolução.":
+  "Concluir a criação? "+unused.reduce((n,v)=>n+Math.max(0,v),0)+" XP inicial(is) não gasto(s) passa(m) a ser LIVRE(S) para qualquer Atributo, Conhecimento, Prática ou Perícia. Esse saldo não é XP de evolução.":
   "Concluir a criação? As compras serão consolidadas; correções exigem Editar ficha.";
  if(!confirm(message))return;
- state.creationLocked=true;viewMode="sheet";wizardStep=4;wizardReached=4;wizardPersist();
- syncFields();render();save();toast("Aprendiz criado! Sua ficha jogável está pronta.");
+ const residual=lockCreation();viewMode="sheet";wizardStep=4;wizardReached=4;wizardPersist();
+ syncFields();render();save();toast("Aprendiz criado! XP inicial livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
 function wizardDice(group,id,grade){
@@ -389,7 +416,7 @@ function wizardReview(){
   '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
   '<div class="fp-wiz-reminder"><strong>5 XP de Perícias definidos · 6/8 XP em playtest</strong>'+
-  '<p>Atributos: '+x.attributes+'/6 XP · Formação: '+x.training+'/8 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado continua em sua categoria nesta prévia. A curva de XP por nível não é definitiva.</p></div>';
+  '<p>Atributos: '+x.attributes+'/6 XP · Formação: '+x.training+'/8 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado será livre após concluir a criação. A curva de XP por nível não é definitiva.</p></div>';
 }
 function wizardOverview(){
  const spent=xpCosts(),categories=[
@@ -485,7 +512,7 @@ function renderSources(){
   const html=GROUPS[group].map(([id,name])=>{
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
    const nextCost=xpStepCost(group,id,1),canEdit=(viewMode==="builder"&&!state.creationLocked)||editMode;
-   const canRaise=canEdit&&g<6&&canAfford(group,nextCost);
+   const canRaise=(canEdit||state.creationLocked)&&!state.pending&&g<6&&canAfford(group,nextCost);
    const canReduce=canEdit&&g>0&&!state.pending;
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
@@ -709,7 +736,7 @@ function finalize(){
 }
 function updateGrade(group,id,delta){
  if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
- if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir o investimento em XP.");return;}
+ if(state.creationLocked&&!editMode&&delta<0){toast("Ative Editar ficha para reduzir graus. Avanços positivos podem usar XP livre.");return;}
  const p=SOURCE_PROPS[group];if(!p||!GROUPS[group].some(x=>x[0]===id)||![-1,1].includes(delta))return;
  const old=state[p][id]||0,next=clamp(old+delta,0,6);
  if(next===old)return;
@@ -976,7 +1003,7 @@ function bind(){
   const amount=Math.floor(Number($("xp-award-amount").value));
   if(!Number.isSafeInteger(amount)||amount<1||amount>9999){toast("Informe de 1 a 9999 XP.");return;}
   if(state.xpEarned+amount>1000000){toast("XP acumulado acima do limite desta ferramenta.");return;}
-  if(!state.creationLocked){state.creationLocked=true;toast("Criação concluída ao receber XP de evolução.");}
+  if(!state.creationLocked){lockCreation();toast("Criação concluída com saldo inicial não gasto livre.");}
   state.xpEarned+=amount;
   state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
   state.xpHistory=state.xpHistory.slice(0,60);
@@ -984,14 +1011,14 @@ function bind(){
  });
  $("lock-creation").addEventListener("click",()=>{
   if(state.pending||state.creationLocked||xpCosts().free<0)return;
-  if(!confirm("Concluir a criação do Aprendiz? Corrija compras depois pelo modo Editar ficha."))return;
-  state.creationLocked=true;render();save();toast("Criação concluída. Novos avanços custam XP.");
+  if(!confirm("Concluir a criação do Aprendiz? O XP inicial não gasto ficará livre para qualquer categoria. Reduções exigem Editar ficha."))return;
+  const residual=lockCreation();render();save();toast("Criação concluída! XP inicial livre: "+residual+".");
  });
  $("level-up").addEventListener("click",()=>{
   if(state.pending||state.level>=20||xpCosts().free<0)return;
   const next=state.level+1;
   if(!confirm("Evoluir para o nível "+next+"? A curva de XP é experimental: nenhuma quantidade será concedida automaticamente."))return;
-  state.level=next;state.creationLocked=true;
+  if(!state.creationLocked)lockCreation();state.level=next;
   render();save();toast("Nível "+next+" alcançado. Distribua o XP recebido conforme a campanha.");
  });
  $("weapon-focus").addEventListener("change",event=>setWeaponFocus(event.target.value));
