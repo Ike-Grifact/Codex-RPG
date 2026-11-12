@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.37, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.38, com referências experimentais identificadas. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -41,19 +41,21 @@ const SKILLS=[
  ["trevas","Magia de Trevas","Magia Grau 2 ainda não disponível.",3],
 
  ["armas-leves","Perícia em Armas Leves","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",2],
- ["armas-medias","Perícia em Armas Médias","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Efeito não automatizado.",2],
- ["armas-pesadas","Perícia em Armas Pesadas","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Efeito não automatizado.",2],
+ ["armas-medias","Perícia em Armas Médias","Disciplina 1 + Força 1; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Não automatizado.",2],
+ ["armas-pesadas","Perícia em Armas Pesadas","Disciplina 2 + Força 2; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Não automatizado.",2],
  ["disciplina-avancada","Disciplina Avançada","Disciplina 2; permite combinar mais 1 Atributo, Conhecimento ou Prática pertinente. Fonte adicional não automatizada.",1],
- ["manejo-perfeito","Manejo Perfeito — Armas Corpo a Corpo","Disciplina Avançada; arma correta: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",null],
- ["golpe-fulminante","Golpe Fulminante","Disciplina 2 + especialização. Gaste 1 PP ou 2 Coragens; no acerto Pavor mantido não anulado vale 1 dano cada. Não automatizado.",1],
- ["espalhar-golpe","Espalhar Golpe","Disciplina 2 + Golpe Fulminante + especialização; metade do dano de Êxitos em área 3 m, +1E, custos por alvos PENDENTES. Não automatizado.",1],
- ["pugilismo","Pugilismo","Disciplina 1; desarmado, 1 PP ou 2 Coragens para mudar peso do soco. Pesos permitidos PENDENTES.",1],
- ["artista-marcial","Artista Marcial","Disciplina 2 + Pugilismo. 1 PP/2 Coragens por manobra ou crítico de Pugilismo; uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",1],
+ ["manejo-perfeito","Manejo Perfeito — Armas Corpo a Corpo","Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",null],
+ ["golpe-fulminante","Golpe Fulminante","Disciplina 2 + Força 2 + especialização corpo a corpo. Ativação: 1 PP/2 Coragens; em acerto, Pavor mantido não anulado vale 1 dano cada. Não automatizado.",1],
+ ["espalhar-golpe","Espalhar Golpe","Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo. Raio 2 m centrado no atacante; 1 PP/2 Coragens por alvo ADICIONAL; metade do dano dos Êxitos; SEM +1E. Não automatizado.",1],
+ ["pugilismo","Pugilismo","Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/2 Coragens para mudar peso do soco. Pesos disponíveis PENDENTES.",1],
+ ["artista-marcial","Artista Marcial","Disciplina 2 + Pugilismo + Destreza 2. 1 PP/2 Coragens por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",1],
  ["maestria-arremesso-armas","Maestria em Arremesso de Armas","Armas Leves + FOR 2, DES 2, AGI 1; 1 PP/2 Coragens. Arremessa arma Leve até 24 m e segue efeitos de alojamento. Não automatizado.",1],
+ ["disparo-fulminante","Disparo Fulminante","Ramo de distância/arremesso separado de Golpe Fulminante. Requisitos, XP e ativação PENDENTES.",null],
+ ["disparo-multiplo","Disparo Múltiplo","Ramo de distância/arremesso; círculo de 2 metros ao redor do ALVO principal. Requisitos, XP e detalhes de disparos PENDENTES.",null],
  ["recuperacao-vigorosa","Recuperação Vigorosa","Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",null],
  ["recuperacao-movimento","Maestria em Recuperação Vigorosa em Movimento","Recuperação Vigorosa e Vigor 6; cura natural em viagem após 8h sem dano. Custo XP PENDENTE.",null],
  ["recobrar-coragem","Recobrar Coragem","1 XP. Após descanso curto ou longo e cena narrativa, recupera 2 Coragens. Recuperação anotada manualmente.",1],
- ["maestria-manejo-duplo","Maestria em Manejo Duplo","Perícia Manejo Duplo, Maestrias correlatas e Disciplina Avançada; requisitos pendentes. Duas armas, um golpe, efeitos de ambas em crítico.",1],
+ ["maestria-manejo-duplo","Maestria em Manejo Duplo","Requisitos anteriores (a esclarecer) + Destreza 2 + Agilidade 1. Um golpe com duas armas; Armas + Armas + Atributo; efeitos das duas em crítico. Compra pendente.",1],
  ["instinto-sobrevivencia","Instinto de Sobrevivência","Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",null],
  ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null]
 ];
@@ -193,21 +195,26 @@ function canAfford(group,cost){
 }
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
- const hasDis=(s.practices.armas_conjuracao||0),vig=(s.attributes.vigor||0);
- const weaponSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","pugilismo"].some(has);
- if(["armas-leves","armas-medias","armas-pesadas"].includes(id)&&!has("armas"))return"Requer Perícia Armas 1.";
- if(["disciplina-avancada","golpe-fulminante","espalhar-golpe","artista-marcial"].includes(id)&&hasDis<2)return"Requer Disciplina 2.";
- if(id==="pugilismo"&&hasDis<1)return"Requer Disciplina 1.";
- if(id==="artista-marcial"&&!has("pugilismo"))return"Requer Pugilismo.";
- if(id==="golpe-fulminante"&&!weaponSpecialty)return"Requer Perícia em Armas Leves, Médias ou Pesadas; Maestria em Arremesso de Armas; Pugilismo; ou Manejo Duplo (ainda não catalogado).";
- if(id==="espalhar-golpe"&&(!has("golpe-fulminante")||!weaponSpecialty))return"Requer Golpe Fulminante e uma especialização de armas.";
- if(id==="maestria-arremesso-armas"&&(!has("armas-leves")||(s.attributes.forca||0)<2||(s.attributes.destreza||0)<2||(s.attributes.agilidade||0)<1))return"Requer Perícia em Armas Leves, Força 2, Destreza 2 e Agilidade 1.";
+ const disc=s.practices.armas_conjuracao||0;
+ const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
+ const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(has);
+ // Perícia em Manejo Duplo continua sem definição/publicação neste catálogo e não pode habilitar a compra por ora.
+ if(id==="armas-leves"&&!has("armas"))return"Requer Perícia Armas 1.";
+ if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
+ if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
+ if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
+ if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Maestria em Arremesso não habilita este golpe.";
+ if(id==="espalhar-golpe"&&(disc<2||dex<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Golpe Fulminante e especialização corpo a corpo.";
+ if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
+ if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
+ if(id==="maestria-arremesso-armas"&&(!has("armas-leves")||strength<2||dex<2||agi<1))return"Requer Perícia em Armas Leves, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
- if(id==="manejo-perfeito")return"XP pendente; requer Disciplina Avançada e definição de Golpe Certo.";
- if(id==="maestria-manejo-duplo")return"Requisitos não fechados: Perícia Manejo Duplo e Maestrias intermediárias ainda sem descrição. Compra pendente.";
+ if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
+ if(id==="maestria-manejo-duplo")return"Destreza 2 e Agilidade 1 definidos, mas combinação dos demais requisitos de Manejo Duplo está pendente; compra bloqueada.";
+ if(["disparo-fulminante","disparo-multiplo"].includes(id))return"Ramo de distância/arremesso; requisitos e XP serão definidos pelo autor.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
- if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||(s.practices.armas_conjuracao||0)<1))
+ if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||disc<1))
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
