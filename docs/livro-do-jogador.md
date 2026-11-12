@@ -442,9 +442,21 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 **Estratégia de um mago de Fogo:** produzir ou carregar **uma pequena faísca** e **ampliá-la magicamente** pode gerar grandes incêndios e devastação. Isso descreve o potencial narrativo do elemento; danos persistentes, propagação e duração dos incêndios **não recebem regras automáticas** sem aprovação.
 
-**PENDENTE:** se o gasto de **1 Coragem para invocar fogo sem foco no G2** se soma ao custo regular de ativação de efeito especial (1 PP ou 2 Coragens) ou o substitui para essa aplicação; unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados. **Não impor custos cumulativos não definidos.**
+**Custo adicional de Fogo G2 [DEFINIDO]:** invocar fogo sem item de foco custa **1 Coragem ADICIONAL** à ativação normal de efeito especial: **1 PP + 1 Coragem** ou **3 Coragens** (2 Coragens da ativação + 1 adicional). Não cobrar esse acréscimo em magias de Fogo que não invocam fogo sem foco. **PENDENTE:** unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados.
 
 **Continuidade:** a entrada antiga da ficha **Elemento: Fogo** foi renomeada **Perícia em Elemento Fogo**, preservando a compra existente. Não cria uma segunda habilidade de Fogo.
+
+### Perícia em Elemento Sagrado [DEFINIDO / procedimentos PENDENTES]
+
+**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. Ao acertar um ataque, **mesmo sem crítico**, permite pagar **1 PP ou 2 Coragens** para ativar **um efeito especial escolhido** do elemento.
+
+**Grau 1:** acalmar, purificar, apoiar e recuperar Coragem. **Um Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante, uma vez por conjuração/turno.** Esse **Êxito é consumido** e **não conta para atingir a DE nem para causar dano**. Não se concede um Êxito gratuito para financiar a conversão, nem se convertem vários Êxitos no mesmo turno/conjuração.
+
+**Graus 2 e 3:** são obtidos **a partir de combinações com outros elementos**. A compra de Sagrado isoladamente não fornece poderes G2/G3 prontos nem dispensa habilitações de combinação.
+
+**PENDENTE:** procedimento de acalmar/purificar/apoiar sem ataque; momento da escolha de converter um Êxito e o que ocorre se o acerto deixar de alcançar a DE após o gasto; alcance/beneficiários e limites da recuperação de Coragem; exigência de pagamento de ativação (1 PP ou 2 Coragens) para a conversão de Êxito em ações não ofensivas; quais combinações habilitam efeitos de Grau 2 e 3.
+
+**Continuidade:** substitui a antiga entrada **Magia Sagrada** (custo histórico 3 XP) por **Perícia em Elemento Sagrado** (**2 XP**), preservando a Perícia existente no cadastro de personagens.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
@@ -460,7 +472,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 **Elementos especiais:**
 
 - **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
-- **Sagrado:** apoiar, acalmar, purificar, recuperar Coragem. A especialização documentada permite converter um **Êxito em 1 Coragem** para si ou aliado, até uma conversão por conjuração/turno; o E gasto não conta para a DE nem para dano.
+- **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
 - **Trevas:** escuridão, maldições e Pavor; técnica habilitada pode acrescentar **2 Pavor em uma rolagem**, com até dois alvos distintos sob condições ainda detalhadas no catálogo.
 - **Sangue:** manipular sangue/efeitos ligados à Vida; especialização custa **1 Vida do conjurador**, mesmo em falha, e acrescenta **1 Pavor**; um acerto pode retirar **1 Vida** de alvo com sangue, contornando integridade.
 - **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
@@ -650,7 +662,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
-| Magia Sagrada / de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
+| **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
+| Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
