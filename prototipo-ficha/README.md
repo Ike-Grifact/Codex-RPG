@@ -130,3 +130,11 @@ A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos ní
 A distribuição de playtest usa **6 XP Atributos / 8 XP Formação [EXPERIMENTAIS] + 5 XP Perícias [DEFINIDO]**. O total de 19 XP não é definitivo enquanto os dois primeiros orçamentos não forem aprovados. A curva de XP dos níveis superiores não foi alterada.
 
 **Impacto para playtest:** a Formação Grau 2 custa 8 XP acumulados e passa a ser acessível na criação para uma única fonte (2d10), enquanto o Atributo Grau 3 custa 7 XP e deixa de caber no orçamento inicial de Atributos. A progressão ainda usa os mesmos custos acumulados; o excedente de categorias necessita XP de evolução.
+
+## Atualização operacional — Disciplina e XP residual (SRD v0.38)
+
+- **Disciplina** é a Prática compartilhada para armas ou conjuração; testes marciais básicos podem ser rolados com Disciplina + Atributo sem comprar Armas 1. Habilitações específicas permanecem para efeitos próprios, e a conjuração especializada conserva os requisitos pertinentes.
+- **Disciplina Avançada:** somente quando a ação usa Disciplina, permite acrescentar um Atributo, Conhecimento ou Prática pertinente; a ficha passa a montar essa terceira fonte, inclusive outro Atributo, sem elevar a retenção.
+- **Filtros do catálogo:** busca, Atributos, Conhecimentos, Práticas, relacionadas às adquiridas e requisitos atingidos. A categorização temática não estabelece requisitos.
+- **Saldo inicial livre:** XP não gasto durante o orçamento inicial passa a ser livre para novas compras após concluir a criação. Compras reduzem o saldo, sem permitir reembolso livre automático de compras consolidadas. Os 5 XP iniciais de Perícias são DEFINIDOS; 6 XP Atributos/8 XP Formação são EXPERIMENTAIS.
+- **Espalhar Golpe:** metade do dano dos Êxitos arredondada para baixo é calculada antes de aplicar a Integridade e as resistências de cada alvo adicional que tenha sido acertado conforme sua DE individual.
