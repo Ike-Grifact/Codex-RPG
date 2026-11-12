@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.12 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.37](srd-continuidade-v0.37.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.37](srd-continuidade-v0.38.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -440,41 +440,52 @@ Armas de fogo dependem de **munição por calibre, carregador, disparos consumid
 
 Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
 
-### Perícias autorais de combate e recuperação [DEFINIDO / pendências assinaladas]
+### Perícias autorais: corpo a corpo, disparos e recuperação [DEFINIDO / PENDENTE]
 
-**Referência para criação:** **5 XP de Perícias no nível 1 [DEFINIDO]**. Ter o XP não dispensa requisitos. **Espadachim** é uma inspiração de organização, **nunca uma classe obrigatória**.
+O Aprendiz nível 1 começa com **5 XP de Perícias [DEFINIDO]**. Estes ramos são acessíveis por requisitos, não por classes obrigatórias. **Espadachim** é apenas uma inspiração de personagem.
 
-| Perícia | XP | Requisitos | Regra informada |
+| Perícia | XP | Requisitos (decisões mais recentes) | Função |
 |---|---:|---|---|
-| **Perícia em Armas Leves** | **2** | Armas 1 | Crítico ativa efeitos da arma sem custo; acerto sem crítico exige 1 PP ou 2 Coragens; ignora Desvantagem contra oponentes **pesados** |
-| **Perícia em Armas Médias** | **2** | Armas 1 | Mesmo gatilho/custo; ignora Desvantagem contra oponentes **médios** |
-| **Perícia em Armas Pesadas** | **2** | Armas 1 | Mesmo gatilho/custo; ignora Desvantagem contra oponentes **leves** |
-| **Disciplina Avançada** | **1** | Disciplina 2 | Permite combinar +1 Atributo, Conhecimento **ou** Prática pertinente |
-| **Manejo Perfeito — Corpo a Corpo** | **PENDENTE** | Disciplina Avançada | Arma correta contra alvo com Desvantagem contra ela → Vantagem Absoluta; se já a possui → **Golpe Certo** |
-| **Golpe Fulminante** | **1** | Disciplina 2 + 1 especialização admitida | Por 1 PP ou 2 Coragens, em acerto os Pavor mantidos não anulados causam **1 dano cada** |
-| **Espalhar Golpe** | **1** | Disciplina 2 + Golpe Fulminante + 1 especialização admitida | Golpe Colossal, metade do dano de Êxitos em área, até 3 m; custo por alvos e +1E conforme texto abaixo |
-| **Pugilismo** | **1** | Disciplina 1 | No ataque desarmado, 1 PP ou 2 Coragens permitem mudar o peso do soco |
-| **Artista Marcial** | **1** | Disciplina 2 + Pugilismo | Crítico ativando Pugilismo **ou** 1 PP/2 Coragens por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar, Desarmar |
-| **Maestria em Arremesso de Armas** | **1** | Perícia em Armas Leves; FOR 2, DES 2, AGI 1 | Arremesso de Arma Leve até 24 m, alojamento e consequências dos resultados (ver seção de arremesso) |
-| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3 | A cada 3 graus de Vigor, acelera um dos últimos pontos da caixa Machucado para 1 dia |
-| **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | Recuperação Vigorosa + Vigor 6 | Pode recuperar Vida enquanto viaja após 8 h sem dano, sem descanso longo; dano reinicia contador |
-| **Recobrar Coragem** | **1** | Não indicado | Descanso curto ou longo + cena narrativa motivadora recuperam **2 Coragens** |
-| **Maestria em Manejo Duplo** | **1** | Perícia em Manejo Duplo + lista de Maestrias e Disciplina Avançada (estrutura **PENDENTE**) | Equipar duas armas, **um golpe** com Armas + Armas + Atributo; em crítico aplica efeitos de ambas |
-| **Instinto de Sobrevivência** | **PENDENTE** | Vigor 3 | Em Incapacitado, ignora **−1A**; demais penalidades permanecem |
+| **Perícia em Armas Leves** | **2** | **Armas 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 PP/2 Coragens** |
+| **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente médio |
+| **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente leve |
+| **Disciplina Avançada** | **1** | **Disciplina 2** | Combina +1 fonte pertinente: Atributo, Conhecimento ou Prática |
+| **Manejo Perfeito — Armas Corpo a Corpo** | **PENDENTE** | **Disciplina Avançada + Destreza 2** | Arma certa aplica Vantagem Absoluta; se já possui, Golpe Certo (definição pendente) |
+| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | Em acerto, 1 PP/2 Coragens altera Pavor de ½ para **1 dano por Pavor mantido e não anulado** |
+| **Espalhar Golpe** | **1** | **Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo** | **1 PP/2 Coragens por alvo adicional** no **raio de 2 m ao redor do atacante**; cada adicional recebe metade do dano de Êxitos; **sem +1E** |
+| **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Desarmado: 1 PP/2 Coragens permite mudar o peso do soco; limites pendentes |
+| **Artista Marcial** | **1** | **Disciplina 2 + Pugilismo + Destreza 2** | Crítico que ativa Pugilismo ou 1 PP/2 Coragens por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
+| **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
+| **Disparo Fulminante** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado para disparos/arremessos; detalhes de ativação e custo aguardam decisão |
+| **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
+| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
+| **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
+| **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
+| **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
+| **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
 
-**Especializações aceitas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Médias ou Pesadas; Perícia em Manejo Duplo; Maestria em Arremesso de Armas; ou Pugilismo. A composição é **Disciplina 2 + pelo menos uma** delas; Espalhar Golpe exige **também Golpe Fulminante**.
+**Armas Médias e Armas Pesadas:** os **novos requisitos expressos** substituem a menção anterior a Armas 1 para estas duas Perícias; a Perícia em Armas Leves mantém Armas 1. Os benefícios por crítico e o custo de 1 PP/2 Coragens em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
 
-**Ativação dos três manejos de armas:** em **crítico**, aplicar os efeitos habilitados da arma **sem custo**; em **acerto não crítico**, só os aplica pagando **1 PP OU 2 Coragens**. Não interpretar como efeitos automáticos e gratuitos de cada acerto. Ignorar Desvantagem vale para a relação com o peso de oponente indicado, não para riscos independentes.
+**Especializações corpo a corpo admitidas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Perícia em Armas Médias, Perícia em Manejo Duplo, Perícia em Armas Pesadas ou Pugilismo. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
 
-**Espalhar Golpe — descrição ainda ambígua:** “Golpe Colossal; permite causar metade do dano de Êxito em área; 1 PP a cada 2 alvos em até 3 metros, ou 2 Coragens; aumentando 1 Êxito”. **PENDENTE:** se custos são cumulativos, interpretação de +1E, divisão do dano/limite de alvos e como “Colossal” interage com a regra de dano extraordinário. Não distribuir automaticamente dano de Pavor.
+**Espalhar Golpe [DEFINIDO]:** o inimigo principal já é atingido pelo ataque normal, sem pagamento de Espalhar Golpe. A cada **1 PP ou 2 Coragens**, **um inimigo adicional** dentro de um círculo de **2 m de raio centrado no personagem atacante** recebe metade do **dano dos Êxitos**. O primeiro pagamento já cobre o primeiro adicional; cada novo pagamento cobre mais um. **Não acrescenta +1 Êxito**. **“Golpe Colossal” era o nome anterior de Espalhar Golpe**, não técnica separada. **PENDENTE:** arredondamento de metade e comparação de DE dos alvos adicionais. Não aplicar automaticamente componente de dano de Pavor sobre os adicionais.
 
-**Artista Marcial:** cada efeito aplicado exige **seu próprio 1 PP ou 2 Coragens** quando não for ativado pelo crítico, e **só uma manobra por vez**. A interação de gastos com Pugilismo permanece em revisão.
+| Alvos totais | Adicionais | Gastos de Espalhar Golpe | Equivalente só em Coragem |
+|---|---:|---:|---:|
+| 1 | 0 | 0 | 0 |
+| 2 | 1 | 1 PP ou 2 Coragens | 2 |
+| 3 | 2 | 2 PP ou 4 Coragens | 4 |
+| 4 | 3 | 3 PP ou 6 Coragens | 6 |
 
-**Maestria em Manejo Duplo:** as Maestrias em Armas Leves/Médias/Pesadas e Maestrias de Arremesso de Armas Médias/Pesadas constam **nos requisitos informados**, mas ainda não possuem descrições próprias aprovadas. Não supor que sejam idênticas às Perícias básicas em Armas. **PENDENTE:** se Disciplina Avançada é obrigatória ou alternativa, e como a mesma fonte Armas pode entrar duas vezes.
+**Golpe Fulminante:** além do requisito de **Força 2**, custa separadamente **1 PP ou 2 Coragens** para aprimorar dano de Pavor no alvo atingido. **Espalhar Golpe** custa seus próprios recursos por alvo adicional. A combinação pressiona a reserva de Coragem e não ignora Pavor, Pressão ou Apavorado.
 
-**Recuperação Vigorosa em Movimento:** receber dano reinicia a contagem de **8 horas**; não comprimir automaticamente um prazo de cura de 1 semana em 8 horas. **Recobrar Coragem** exige **uma cena narrativa** que justifique os 2 pontos recuperados.
+**Custo-padrão de ativação:** **1 PP ou 2 Coragens** quando explicitamente definido para a Perícia. **Exceção informada:** **Amplificar Atributo custa 2 PP ou 4 Coragens**; seus demais requisitos/efeitos não são introduzidos nesta seção.
 
-**PENDENTES, para decidir um a um:** custo e Golpe Certo de Manejo Perfeito; custos e resolução de Espalhar Golpe; pesos de Pugilismo; retirada/resolução de arremesso; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; critérios de Manejo Duplo; efeitos de Disciplina Avançada no número de fontes; limite de Recobrar Coragem por descanso. **Números de Integridade continuam deliberadamente adiados** até medir os danos desse conjunto.
+**Disparo Múltiplo [DEFINIDO em geometria / PENDENTE no restante]:** o círculo para os outros atingidos terá **2 metros de raio ao redor do alvo principal**. O ramo de arremesso é separado para evitar autorizar implicitamente que uma única arma arremessada produza ataques simultâneos; possibilidades como duas armas lançadas ou uma arma grande aguardam o detalhamento de requisitos pelo autor. A Maestria em Arremesso de Armas continua com seus próprios efeitos de alojamento e recuperação.
+
+**Artista Marcial:** cada manobra adicional requer ativação própria e só se aplica uma por vez; o crítico de Pugilismo conserva sua condição anterior. **Recuperação em Movimento:** dano reinicia a contagem de 8 horas e não transforma automaticamente prazos semanais em 8h. **Maestria em Manejo Duplo:** além de DES 2 e AGI 1 agora definidos, falta determinar os requisitos combinados de Maestrias/Disciplina Avançada. **Manejo Perfeito:** requer DES 2, mas custo XP/Golpe Certo continuam pendentes.
+
+**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; resolução da DE e arredondamento dos alvos adicionais de Espalhar Golpe; agrupamento de requisitos e dados de Manejo Duplo; custo de Manejo Perfeito e Golpe Certo; limites de Pugilismo; retirada de armas lançadas e riscos a aliados; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; Disciplina Avançada; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
 
 ### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
 
