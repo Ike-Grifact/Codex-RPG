@@ -35,7 +35,7 @@ const SKILLS=[
  [
   "marciais",
   "Artes Marciais",
-  "Especialização em Punhos. Requisito provisório em playtest.",
+  "Especialização desarmada. Exige Disciplina 1; outras regras em playtest.",
   1
  ],
  [
@@ -143,7 +143,7 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  "Disciplina 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
   2
  ],
  [
@@ -678,7 +678,9 @@ const CARD_REQUIREMENTS={
  "maestria-manejo-duplo": "Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 + uma Perícia em Armas Leves, Médias, Pesadas, Arremesso, Fogo ou Longo Alcance",
  "criar-veneno": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2",
  "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
- "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade"
+ "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade",
+ "armas-leves": "Disciplina 1",
+ "marciais": "Disciplina 1 (demais detalhes experimentais)"
 };
 
 const CARD_EFFECTS={
@@ -1034,7 +1036,7 @@ function skillReq(id,s=state){
  if(id==="furtividade-avancada"&&(stealth<2||!has("furtividade")))return"Requer Furtividade 2 e Perícia em Furtividade.";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
- if(id==="armas-leves"&&!has("armas"))return"Requer Perícia Armas 1.";
+ if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
  if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
  if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
@@ -1053,8 +1055,8 @@ function skillReq(id,s=state){
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
- if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||disc<1))
-  return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
+ if(id==="marciais"&&disc<1)
+  return"EXPERIMENTAL: requer Disciplina 1; detalhes do treino desarmado pendentes.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
@@ -1211,12 +1213,9 @@ function wizardSkillCardsMarkup(){
 }
 function wizardSkills(){
  return skillFilterControls()+
-  '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>'+
-  (state.skills.includes("armas")?'<div class="fp-wiz-focus"><label>Especialização de Armas 1<select data-wizard-focus aria-label="Especialização de Armas 1">'+
-   [["leve","Leve"],["medio","Média"],["pesado","Pesada"],["distancia","Distância"],["Punhos","Punhos"]]
-    .map(([v,label])=>'<option value="'+v+'"'+(state.weaponFocus===v?' selected':'')+'>'+label+'</option>').join("")+
-   '</select></label><small>Esta escolha se refere à habilitação Armas 1, não à rolagem básica de Disciplina.</small></div>':'');
+  '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>';
 }
+
 function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
@@ -1585,7 +1584,7 @@ function adjustResource(resource,delta){
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
  $("skills-list").innerHTML=filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>';
- $("weapon-focus-wrap").hidden=!state.skills.includes("armas");
+ $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
  $("convert-courage").disabled=state.level<5||state.courage<2||state.pp>=maxPP()||state.courageUsedTurn;

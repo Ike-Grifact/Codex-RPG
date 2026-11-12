@@ -585,7 +585,7 @@ O Aprendiz nível 1 começa com **5 XP de Perícias [DEFINIDO]**. Estes ramos s�
 
 | Perícia | XP | Requisitos (decisões mais recentes) | Função |
 |---|---:|---|---|
-| **Perícia em Armas Leves** | **2** | **Armas 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 PP/2 Coragens** |
+| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 PP/2 Coragens** |
 | **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente médio |
 | **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente leve |
 | **Disciplina Avançada** | **1** | **Disciplina 2** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
@@ -603,9 +603,9 @@ O Aprendiz nível 1 começa com **5 XP de Perícias [DEFINIDO]**. Estes ramos s�
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
 | **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
 
-**Armas Médias e Armas Pesadas:** os **novos requisitos expressos** substituem a menção anterior a Armas 1 para estas duas Perícias; a Perícia em Armas Leves mantém Armas 1. Os benefícios por crítico e o custo de 1 PP/2 Coragens em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
+**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. Os benefícios por crítico e o custo de 1 PP/2 Coragens em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
 
-**Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia Armas 1**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Disciplina Avançada (1 XP, Disciplina 2)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
+**Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia de armas adicional**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Disciplina Avançada (1 XP, Disciplina 2)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
 
 **Especializações corpo a corpo admitidas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Perícia em Armas Médias, Perícia em Manejo Duplo, Perícia em Armas Pesadas ou Pugilismo. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
 
@@ -648,8 +648,6 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 
 | Perícia | XP | Função |
 |---|---:|---|
-| Combate | 1 | +1A em combate pertinente |
-| Armas 1 | 2 | Habilitação e primeira especialização de arma |
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
@@ -670,7 +668,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
 | **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
-**A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Disciplina grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
+**A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
 
 **Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
 
@@ -733,3 +731,6 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 - **Criar Antídoto:** 1 XP; Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno. Produz antídoto de materiais venenosos coletados; uma dose não diluída remove 1 acúmulo, ingerida ou aplicada ao alvo em Sangramento. Duas doses removem dois acúmulos. Transfusão mantém regra própria sem aquisição definida.
 
 ---
+
+
+> **Decisão autoral posterior — 12/11/2026 [DEFINIDO]:** qualquer requisito Armas 1 é substituído por Disciplina 1, sem Perícia intermediária. Armas 1 e Combate não estão disponíveis para novas compras. IDs e custos antigos permanecem em fichas anteriores para compatibilidade, sem reembolso automático.

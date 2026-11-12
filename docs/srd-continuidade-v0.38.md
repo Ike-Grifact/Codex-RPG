@@ -14,6 +14,9 @@ updated: "2026-11-11"
 
 ## 0-W. Consolidação de Perícias: ladino, combate, armas e alquimia — 12/11/2026 [DEFINIDO / PENDENTE]
 
+**DECISÃO POSTERIOR [DEFINIDO]:** toda exigência de **Armas 1** passa a equivaler a **Disciplina 1**. Perícia em Armas Leves exige Disciplina 1; Artes Marciais também exige Disciplina 1 no lugar de Armas 1 + foco Punhos (seus demais procedimentos permanecem experimentais). Perícia Armas 1 e Combate deixam o catálogo e não podem ser adquiridas em novas builds. IDs antigos e custos pagos em fichas anteriores são preservados apenas para compatibilidade, sem reembolso automático. Requisitos de Disciplina superiores expressamente aprovados permanecem. Menções incompatíveis nas seções históricas do SRD não têm vigência.
+
+
 **Precedência:** as decisões autorais desta seção substituem entradas históricas incompatíveis sobre Espalhar Golpe, Maestria em Arremesso, Maestria em Manejo Duplo, Disparo Múltiplo, Armas de Fogo e Veneno. Não misturar tabelas antigas. Os IDs internos das Perícias renomeadas são mantidos para preservar fichas antigas.
 
 ### Ladino e Furtividade [DEFINIDO]
