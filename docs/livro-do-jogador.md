@@ -346,9 +346,9 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Sem item de foco:** a magia criada tem **−1 de peso**. **PENDENTE:** confirmar se a redução atua sobre a ocupação dos slots e como tratar G1 com peso 0; não confundir peso de magia memorizada com a carga física dos itens de foco.
 
-**Spellslots — divergência histórica [PENDENTE]:** sua lembrança recente é **1 ponto de capacidade de slots por Grau de Inteligência**, mas sem confirmação. O SRD histórico afirmava **1 slot por aumento de Conjuração e +1 slot a cada 3 Graus de Inteligência**; outra seção estabelecia **máximo de 9 slots** e ocupação de 1/2/3/4 por Grau 1/2/3/4. A **tabela de pesos de magia** foi confirmada nesta revisão; a **fórmula de capacidade de slots** ainda requer decisão e não será aplicada automaticamente na ficha.
+**Capacidade de spellslots mentais [DEFINIDO em fonte / PENDENTE na fórmula]:** a reserva de espaços mentais baseia-se **somente nos dados da Prática Disciplina**, sem acréscimos por Inteligência. Não somar +1 slot por aumento de Inteligência, nem +1 por três Graus, nem incluir itens de foco. **PENDENTE:** como a quantidade e/ou tamanho dos dados de Disciplina se transformam em pontos de capacidade e se o antigo limite de 9 slots ainda se aplica. A ficha não inventa essa conversão.
 
-**Itens de foco e carga:** seu transporte deve considerar **Potência com Força e Atletismo**; a fórmula da Potência, conversão para unidades de peso físico e compatibilidade com o cálculo de carga anterior são **PENDENTES**. O foco criado por teste de **Artesão** continua com recarga de **N rodadas no Grau N**.
+**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, sem serem anulados pelo fato de uma magia estar memorizada ou não exigir foco. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco criado com Artesão continua a recarregar em **N rodadas no Grau N**.
 
 **PENDENTE:** limites de controle mental, testes dos alvos, duração, alcance, magias memorizadas e tempo efetivo da conjuração rápida. Não transformar exemplos em efeitos automáticos.
 
@@ -367,6 +367,20 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 **Custo: 1 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
 
 **Ativação: 1 PP ou 2 Coragens.** Permite alterar a magia para **Pesada ou Leve**. A descrição autoral diz “alterar o grau da magia, para pesado ou leve”; **PENDENTE:** confirmar se é apenas a categoria de **peso tático**, sem alteração do **Grau numérico** ou do peso de armazenamento em spellslots. A ficha registra a Perícia sem inventar efeitos de Grau superior.
+
+### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
+
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Domina os efeitos iniciais do elemento **Ar**, permitindo conjurar **magias elementais Leves**. **Ao acertar um ataque, independentemente do crítico**, pode gastar **1 PP ou 2 Coragens** para aplicar **um efeito especial de Ar à escolha**, não vários com um pagamento.
+
+| Grau | Efeitos e formatos apresentados |
+|---|---|
+| **G1** | **Autoempurrão para aumentar deslocamento em 4 m**; puxar ou empurrar objetos; linha reta, círculo, cone ou X |
+| **G2** | **Sufocar** com dano à Vida ou à armadura; **puxar, empurrar e derrubar com dano**; amplificar o deslocamento para **8 m**; linha reta, círculo, cone ou X |
+| **G3** | **Conjurar no final do turno dos aliados**; área grande e vários alvos; tornado ou forte rajada de vento e possíveis danos por queda, com referência de **16 m**; linha reta, círculo, cone ou X |
+
+**Nome atualizado:** esta é a habilitação antes registrada no protótipo como **Elemento: Vento**, e não uma segunda compra do mesmo elemento. A ficha mantém o ID interno para preservar personagens antigos, mas exibe **Perícia em Elemento Ar**, com os requisitos atualizados.
+
+**PENDENTE:** interpretar os 16 m (área, alcance, deslocamento ou altura de queda), duração de Sufocar, valores dos danos, dimensões e alcance de linha/círculo/cone/X, interação entre a ativação após acerto e efeitos utilitários, e ordem exata de ações no fim do turno dos aliados. Os Graus superiores não ficam disponíveis apenas por comprar a Perícia de acesso ao Ar.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
@@ -564,6 +578,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3, 1 PP/2 Coragens ao acertar |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
