@@ -268,6 +268,30 @@ Habilita **magias elementais Leves de Água**, dominando os efeitos iniciais do 
 
 **Catálogo e continuidade:** a entrada antiga **Elemento: Água**, identificador interno `agua`, passa a exibir **Perícia em Elemento Água**, **sem duplicar compras ou perder personagens salvos**, com os novos requisitos específicos. A antiga entrada de Vento já foi renomeada para **Perícia em Elemento Ar** sob o mesmo princípio.
 
+## 0-V.11. Capacidade mental por Grau de Disciplina e desconto de Criar Magia [DEFINIDO]
+
+**CORREÇÃO AUTORAL MAIS RECENTE — substitui a interpretação de “um dado = um slot” da seção 0-V.10, bem como as hipóteses anteriores das seções 0-V.8 e 0-V.9.** A quantidade de dados rolados e sua composição são independentes da capacidade de armazenar magias.
+
+- **Cada ponto investido (Grau adquirido) na Prática Disciplina concede 1 ponto de capacidade de spellslots mentais.** Portanto, **capacidade mental = Grau de Disciplina**, de 0 a 6 na progressão de fontes atualmente publicada. **Não usar a quantidade de dados de Disciplina para este cálculo.** Não somar Inteligência nem bônus dos itens de foco.
+- **Criar Magia reduz em 1 ponto o peso de cada magia criada e memorizada** por essa capacidade. A redução incide na **ocupação mental da magia preparada**, não nos dados rolados, no Grau de acesso ou no peso físico do item de foco. A decisão recente atribui o desconto ao **ato/habilitação de Criar Magia**, e não o condiciona a criar a magia sem foco, como constava em textos antigos.
+- **Pesos nominais de magia:** Grau 1 = 1, Grau 2 = 2, Grau 3 = 3 e Grau 4 = 4. Quando criada e memorizada por Criar Magia, o cálculo nominal é **peso de Grau − 1**, observado o caso pendente de Grau 1.
+- **Exemplo DEFINIDO:** Disciplina 6 = **6 pontos mentais**; cada magia criada/memorizada de **Grau 2** ocupa **2 − 1 = 1 ponto**; portanto **6 magias de Grau 2** cabem simultaneamente nos 6 pontos, respeitando as demais habilitações de criação (Disciplina 2 para criar magias G2/G3, quando aplicável), o custo de **1 PP ou 2 Coragens por criação fora de combate** e o procedimento de conjuração posterior.
+- **Itens de foco:** são equipamentos físicos e **continuam contando na carga convencional do inventário**. Criar Magia não os torna leves/gratuitos, e peso físico de equipamento **não é** capacidade mental.
+
+| Grau adquirido de Disciplina | Capacidade mental em pontos | Quantidade máxima de magias G2 criadas/memorizadas (peso efetivo 1 cada) |
+|---:|---:|---:|
+| 0 | 0 | 0 |
+| 1 | 1 | 1¹ |
+| 2 | 2 | 2 |
+| 3 | 3 | 3 |
+| 4 | 4 | 4 |
+| 5 | 5 | 5 |
+| 6 | 6 | 6 |
+
+¹ Capacidade meramente ilustrativa; **criar magias de Grau 2 requer Disciplina 2** na regra autoral publicada.
+
+**PENDENTE:** como tratar matematicamente uma magia G1 de peso nominal 1 após redução de 1 (resultado 0), especialmente para evitar memorização ilimitada; efeitos exatos de alterar peso tático com Conjuração Equilibrada; e detalhes de conjurar rapidamente as magias memorizadas. O exemplo de seis magias G2 **não é mais uma divergência** e **não requer alterar a progressão de dados de Disciplina**. O teto histórico de nove slots não substitui nem amplia esta capacidade de Grau 0–6 sem nova decisão.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
