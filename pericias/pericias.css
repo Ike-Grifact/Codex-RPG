@@ -1,0 +1,42 @@
+
+:root { --codex-edge:color-mix(in srgb, currentColor 17%, transparent); }
+.skill-shell{max-width:1050px;margin:0 auto;padding:30px 22px 75px}
+.skill-breadcrumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;color:var(--muted,#aeb4be);font-size:13px;margin-bottom:24px}
+.skill-breadcrumbs a,.skill-navlinks a,.skill-inline-link,.skill-catalog-card a,.skill-back{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.skill-hero{padding:27px 29px;border:1px solid var(--codex-edge);border-radius:18px;background:color-mix(in srgb,currentColor 3%,transparent)}
+.skill-eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.7;margin:0 0 10px}
+.skill-hero h1{font:normal clamp(29px,5vw,47px)/1.16 Georgia,serif;margin:0 0 15px}
+.skill-description{font-size:16px;line-height:1.65;opacity:.9;margin:0;max-width:760px}
+.skill-badge{display:inline-block;margin:0 0 14px;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:7px;padding:5px 9px;border:1px solid var(--codex-edge)}
+.skill-badge.pending{color:#d6b581}
+.skill-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 24px}
+.skill-stat{border:1px solid var(--codex-edge);border-radius:12px;padding:14px 16px;min-width:0}
+.skill-stat dt{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:750;opacity:.7;margin-bottom:5px}
+.skill-stat dd{margin:0;line-height:1.5;font-size:14px;overflow-wrap:anywhere}
+.skill-article{font-size:15px;line-height:1.78;overflow-wrap:anywhere}
+.skill-article h2{font:normal 27px Georgia,serif;margin:30px 0 12px}
+.skill-article h3{font:normal 20px Georgia,serif;margin:23px 0 11px}
+.skill-article p{margin:0 0 14px}
+.skill-article .table-scroll{overflow:auto;margin:15px 0 20px}
+.skill-article table{width:100%;border-collapse:collapse;font-size:13px}
+.skill-article th,.skill-article td{padding:12px;border-bottom:1px solid var(--codex-edge);text-align:left;vertical-align:top}
+.skill-article a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.skill-definition{padding:16px;border-left:3px solid #267a45;border-radius:0 10px 10px 0;background:color-mix(in srgb,currentColor 4%,transparent)}
+.skill-related{margin-top:30px;padding-top:22px;border-top:1px solid var(--codex-edge)}
+.skill-related-links{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 20px}
+.skill-related-links a{padding:8px 11px;border:1px solid var(--codex-edge);border-radius:9px;text-decoration:none;font-size:13px}
+.skill-related-links a:hover{border-color:currentColor}
+.skill-navlinks{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px;padding-top:17px;border-top:1px solid var(--codex-edge)}
+.skill-searchbox{width:100%;max-width:510px;font-size:16px;padding:13px 15px;border:1px solid var(--codex-edge);border-radius:10px;background:transparent;color:inherit;margin-top:18px}
+.skill-category{margin:33px 0 15px}
+.skill-category h2{font:normal 27px Georgia,serif;margin:0 0 16px}
+.skill-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.skill-catalog-card{padding:15px;border:1px solid var(--codex-edge);border-radius:12px}
+.skill-catalog-card h3{margin:0 0 10px;font:normal 19px Georgia,serif}
+.skill-catalog-card p{font-size:13px;line-height:1.5;margin:0 0 8px;opacity:.85}
+.skill-catalog-card small{font-size:12px;opacity:.78}
+.skill-catalog-card a{display:block}
+.skill-catalog-card a:hover{text-decoration-thickness:2px}
+.skill-catalog-empty{margin-top:18px;opacity:.75}
+@media(max-width:780px){.skill-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.skill-shell{padding:20px 14px 55px}.skill-hero{padding:19px}.skill-stats{gap:8px}.skill-stat{padding:11px}.skill-catalog-grid{grid-template-columns:1fr}.skill-article h2{font-size:23px}}

@@ -8,8 +8,8 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.39-1">
-  <script src="./app.js?v=0.39-3" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=0.40-1">
+  <script src="./app.js?v=0.40-1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -21,7 +21,7 @@
     </a>
     <div class="fp-nav">
       <a href="../index.html" class="fp-text-link">Início</a>
-      <a href="../livro.html" class="fp-text-link">Jogador</a>
+      <a href="../livro.html" class="fp-text-link">Jogador</a><a href="../pericias/" class="fp-text-link">Perícias</a>
       <a href="../narrador.html" class="fp-text-link">Narrador</a>
       <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
@@ -227,10 +227,6 @@
   </main>
   <footer class="fp-footer">CODEX RPG · Criador e ficha jogável unificados · Regras experimentais e pendentes identificadas</footer>
 </div>
-<dialog id="skill-detail-dialog" class="fp-skill-dialog" aria-labelledby="skill-detail-title">
-  <div class="fp-skill-dialog-head"><h3 id="skill-detail-title">Detalhes da Perícia</h3><button type="button" id="skill-detail-close" class="fp-secondary" aria-label="Fechar detalhes">Fechar ×</button></div>
-  <div id="skill-detail-body" class="fp-skill-dialog-body"></div>
-</dialog>
 <div id="toast" role="status" aria-live="polite" class="fp-toast"></div>
 </body>
 </html>

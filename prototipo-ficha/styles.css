@@ -569,3 +569,11 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-skill-modal-warning{color:var(--fp-gold)}
 .fp-skill-modal-hint{font-size:11px;color:var(--fp-muted)}
 @media(max-width:600px){.fp-skill-modal-meta{grid-template-columns:1fr}.fp-skill-preview{display:none!important}}
+
+/* Links diretos para verbetes individuais */
+.fp-skill-compact .fp-skill-main-link{display:block;color:inherit;text-decoration:none;min-width:0}
+.fp-skill-compact .fp-skill-main-link:hover strong,.fp-skill-compact .fp-skill-main-link:focus-visible strong{text-decoration:underline;text-underline-offset:3px}
+.fp-skill-compact .fp-skill-main-link:focus-visible{outline:2px solid var(--fp-gold);outline-offset:3px;border-radius:6px}
+.fp-skill-compact .fp-skill-link-note{display:block;margin-top:7px;font-size:10px;color:var(--fp-gold);font-weight:750}
+.fp-skill-compact:focus-within .fp-skill-preview{display:block}
+@media(max-width:600px){.fp-skill-compact:focus-within .fp-skill-preview{display:none}}

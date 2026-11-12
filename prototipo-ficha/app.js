@@ -104,6 +104,49 @@ const SKILL_BRANCHES=[
  ["provocacao-sofisticada","combate","montar","recobrar-coragem"]
 ];
 
+const SKILL_PERMALINKS={
+ "combate": "combate",
+ "armas": "armas-1",
+ "marciais": "artes-marciais",
+ "montar": "montar-animal",
+ "provocacao-sofisticada": "provocacao-sofisticada",
+ "combinacao": "combinacao-de-fontes",
+ "criar-item-foco-magia": "criar-item-de-foco-e-magia",
+ "escudo-arcano": "escudo-arcano",
+ "conjuracao-equilibrada": "conjuracao-equilibrada",
+ "peritoconj": "perito-conjurador",
+ "improviso": "improviso-elemental",
+ "mestre": "maestria-elemental",
+ "fogo": "pericia-em-elemento-fogo",
+ "agua": "pericia-em-elemento-agua",
+ "vento": "pericia-em-elemento-ar",
+ "terra": "pericia-em-elemento-terra",
+ "sagrado": "pericia-em-elemento-sagrado",
+ "veneno": "pericia-em-elemento-veneno",
+ "sangue": "pericia-em-elemento-sangue",
+ "trevas": "pericia-em-elemento-trevas",
+ "armas-leves": "pericia-em-armas-leves",
+ "armas-medias": "pericia-em-armas-medias",
+ "armas-pesadas": "pericia-em-armas-pesadas",
+ "disciplina-avancada": "disciplina-avancada",
+ "manejo-perfeito": "manejo-perfeito-armas-corpo-a-corpo",
+ "golpe-fulminante": "golpe-fulminante",
+ "espalhar-golpe": "espalhar-golpe",
+ "pugilismo": "pugilismo",
+ "artista-marcial": "artista-marcial",
+ "maestria-arremesso-armas": "maestria-em-arremesso-de-armas",
+ "disparo-fulminante": "disparo-fulminante",
+ "disparo-multiplo": "disparo-multiplo",
+ "recuperacao-vigorosa": "recuperacao-vigorosa",
+ "recuperacao-movimento": "maestria-em-recuperacao-vigorosa-em-movimento",
+ "recobrar-coragem": "recobrar-coragem",
+ "maestria-manejo-duplo": "maestria-em-manejo-duplo",
+ "instinto-sobrevivencia": "instinto-de-sobrevivencia",
+ "arma-certa": "maestria-arma-certa",
+ "criar-veneno": "criar-veneno",
+ "criar-antidoto": "criar-antidoto",
+ "transfusao": "transfusao"
+};
 const CARD_REQUIREMENTS={
  "criar-item-foco-magia":"Disciplina 1, Inteligência 1",
  "escudo-arcano":"Inteligência 2, Vigor 1, Criar Foco",
@@ -178,25 +221,18 @@ function skillCompactCard([id,name,detail,cost],wizard){
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
- '<div class="fp-skill-content"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
+ '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div>'+
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
- '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl></div>'+
+ '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
  '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(CARD_BRIEFS[id]||detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
  '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
  (warning?'<small class="fp-skill-req">'+esc(warning)+'</small>':'')+'</div></article>';
 }
 function openSkillDetails(id){
- const skill=SKILLS.find(item=>item[0]===id),dlg=$("skill-detail-dialog");if(!skill||!dlg)return;
- const [key,name,detail,cost]=skill;
- $("skill-detail-title").textContent=name;
- $("skill-detail-body").innerHTML='<dl class="fp-skill-modal-meta"><div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[key]||"Consultar descrição")+'</dd></div>'+
- '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div></dl>'+
- '<h4>Explicação completa</h4><p>'+esc(detail)+'</p>'+
- (skillReq(key)?'<p class="fp-skill-modal-warning">Para adquirir: '+esc(skillReq(key))+'</p>':'')+
- '<p class="fp-skill-modal-hint"><a href="../livro.html#conjuracao">Livro do Jogador — Conjuração</a>.</p>';
- if(!dlg.open)dlg.showModal();
+ const slug=SKILL_PERMALINKS[id];
+ if(slug)window.location.href="../pericias/"+slug+".html";
 }
 
 const skillFilter={scope:"all",ready:false,query:""};
