@@ -31,7 +31,7 @@ Esta pasta é a **única interface ativa** para criação e ficha. O antigo `cri
 1. **Identidade** — nome obrigatório, conceito, origem, virtude, personalidade e portrait. A logo padrão usa fundo marfim no escuro para preservar o contraste; uma imagem enviada usa corte fotográfico normal.
 2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **6 XP (EXPERIMENTAL)**.
 3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Disciplina**; todos têm 1d6 gratuito no Grau 0, e compartilham **8 XP (EXPERIMENTAL)**.
-4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (EXPERIMENTAL)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
+4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (DEFINIDO)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
 5. **Revisão** — identificação, dados de combate derivados, investimento por categoria e todas as compras. O botão **Concluir e abrir a ficha** consolida a criação e mostra **somente então** a ficha jogável completa.
 
 Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíveis na trilha superior. Se sair ou atualizar o navegador, os campos e a etapa são lembrados localmente. Para voltar a uma criação nova após finalizar, use **Novo personagem**; exporte a ficha anterior antes, pois essa operação a substitui.
@@ -61,7 +61,7 @@ Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíve
 ## Limites e hipóteses do protótipo
 
 - **A compra de graus e Perícias agora calcula e consome XP**. Os custos acumulados das fontes são os mesmos do criador: Atributos 0/1/3/7/15/31/55 e Formação 0/2/8/20/38/66/102. As Perícias são cobradas conforme os preços documentados no catálogo.
-- **Orçamento inicial 6/8/5 XP é EXPERIMENTAL**, não foi consolidado como regra oficial. Uma compra que exceda seu orçamento de categoria requer XP de evolução livre.
+- **O nível 1 possui 5 XP iniciais de Perícias [DEFINIDO].** Os 6 XP de Atributos e 8 XP de Formação ainda são **EXPERIMENTAIS**. Uma compra que exceda seu orçamento de categoria requer XP de evolução livre.
 - **XP por nível segue PENDENTE.** A tabela de referência 19/31/46/.../664 XP é apenas uma curva de playtest; o protótipo não exige esses valores para subir de nível e não os concede automaticamente.
 - **Antes de concluir a criação**, pode reorganizar compras. **Depois**, não permite reduzir graus nem desfazer Perícias; evolução é feita comprando com novos XP.
 - **Maestria Arma Certa** aparece para consulta com seu efeito definido (+1E no peso favorável); seu custo de XP e requisitos finais continuam PENDENTES, por isso ainda não é comprável.
@@ -96,13 +96,21 @@ Nos dados rolados, o destaque principal mostra **as runas reais da face repetida
 
 **Retenção corrigida:** ao menos um dado de Atributo deve ser **rolado**, mas o jogador é livre para descartá-lo e manter apenas outros dados válidos. O crítico de duas ou mais faces máximas também não exige Atributo mantido.
 
-## DE defensiva e armadura especializada (SRD v0.30)
 
-A ficha calcula **DE natural = min(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋ + ⌊Atletismo/3⌋)**; o cálculo permanece atualizado com os graus da ficha. Se uma armadura especial estiver equipada, a ficha mostra **DE natural − 2**. O caso de DE mínima 0 ou 1 ainda está pendente e não foi assumido.
+## Armaduras por tipo e Grau (SRD v0.37)
 
-Para registrar uma **armadura Pesada Grau 4 especializada**, crie um item Armadura, escolha peso **Alto/Pesado**, informe Grau **4** e marque **Armadura Pesada especializada**. Preencha a **resistência elemental da peça** com o elemento fixado na compra ou fabricação. A ficha só permitirá equipá-la se o personagem tiver **Vigor 6 e Atletismo 6**. Ela aplica somente a penalidade de DE no cálculo automático.
+O tipo de armadura é independente do Grau: **Muito Leve** (sem Integridade, +2 DE na esquiva), **Leve** (Integridade baixa, +1 DE na esquiva), **Média** (0 DE), **Pesada** (−1 DE) e **Muito Pesada** (−2 DE, imunidade física natural e requisitos Vigor 6 + Atletismo 6 em qualquer Grau).
 
-**Regras não automatizadas no protótipo:** a imunidade a todo dano físico comum (que anula dano à integridade e à Vida), a resistência elemental específica e a exceção de penetração por arma perfurante habilitada (crítico pertinente ou técnica com custo de 1 PP/2 Coragens quando aplicável). Também continuam possíveis condições como derrubar, afastar e **Sangramento superficial** de cortantes; esse Sangramento não causa dano nem perda periódica de Vida e não é igual a magia de Sangue. A mesa aplica essas consequências; a ficha não simula ataques inimigos.
+A ficha mostra **DE base** e, quando for relevante, o valor de **DE para esquiva**. O teto 9 é aplicado à DE natural antes dos modificadores. O peso da peça não é alterado automaticamente ao escolher Grau 3 ou Grau 4. Uma Muito Leve não pode ter Integridade. Ao equipar, o protótipo verifica nível mínimo: G1 nível 1, G2 nível 5, G3 nível 10, G4 nível 20. Por conveniência técnica, o protótipo deixa apenas uma armadura equipada de cada vez; **não é uma nova regra oficial de sobreposição**.
+
+**Propriedades por Grau:** Muito Leve e Leve recebem campo de resistência G3+; Média G2+; Pesada G2+ com segunda resistência G3+; Muito Pesada G2+ com resistência e G4 com **imunidade elemental adicional cumulativa**. A ficha apenas registra os elementos e mostra a imunidade física natural da Muito Pesada, **não calcula resistências nem dano recebido**. A natureza **neutra do Psíquico** impede que seja tratado como dano físico automaticamente. Integridades numéricas aguardam análise do dano das Perícias iniciais.
+
+## Perícias autorais e orçamento de criação
+
+**5 XP de Perícias no nível 1 [DEFINIDO]**; Atributos 6 XP + Formação 8 XP permanecem EXPERIMENTAIS. O catálogo da ficha apresenta 15 Perícias fornecidas pelo autor, além das opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
+
+A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.37](../docs/srd-continuidade-v0.37.md).
+
 
 ## Críticos cumulativos (SRD v0.29)
 
@@ -119,6 +127,6 @@ A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos ní
 
 ## Redistribuição experimental para o nível 1 (6/8/5)
 
-A distribuição inicial foi ajustada de 7 XP em Atributos / 7 XP em Formação / 5 XP em Perícias para **6 XP em Atributos / 8 XP em Formação / 5 XP em Perícias**. O total de 19 XP permanece. A mesma distribuição **EXPERIMENTAL** foi registrada nos documentos de leitura e no SRD de continuidade; não é um orçamento inicial definitivo. A curva de XP dos níveis superiores não foi alterada.
+A distribuição de playtest usa **6 XP Atributos / 8 XP Formação [EXPERIMENTAIS] + 5 XP Perícias [DEFINIDO]**. O total de 19 XP não é definitivo enquanto os dois primeiros orçamentos não forem aprovados. A curva de XP dos níveis superiores não foi alterada.
 
 **Impacto para playtest:** a Formação Grau 2 custa 8 XP acumulados e passa a ser acessível na criação para uma única fonte (2d10), enquanto o Atributo Grau 3 custa 7 XP e deixa de caber no orçamento inicial de Atributos. A progressão ainda usa os mesmos custos acumulados; o excedente de categorias necessita XP de evolução.
