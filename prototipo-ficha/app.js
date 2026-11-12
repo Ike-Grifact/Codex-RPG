@@ -43,7 +43,7 @@ const SKILLS=[
  ["armas-leves","Perícia em Armas Leves","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",2],
  ["armas-medias","Perícia em Armas Médias","Disciplina 1 + Força 1; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Não automatizado.",2],
  ["armas-pesadas","Perícia em Armas Pesadas","Disciplina 2 + Força 2; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Não automatizado.",2],
- ["disciplina-avancada","Disciplina Avançada","Disciplina 2; permite combinar mais 1 Atributo, Conhecimento ou Prática pertinente. Fonte adicional não automatizada.",1],
+ ["disciplina-avancada","Disciplina Avançada","Disciplina 2; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",1],
  ["manejo-perfeito","Manejo Perfeito — Armas Corpo a Corpo","Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",null],
  ["golpe-fulminante","Golpe Fulminante","Disciplina 2 + Força 2 + especialização corpo a corpo. Ativação: 1 PP/2 Coragens; em acerto, Pavor mantido não anulado vale 1 dano cada. Não automatizado.",1],
  ["espalhar-golpe","Espalhar Golpe","Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo. Raio 2 m centrado no atacante; 1 PP/2 Coragens por alvo ADICIONAL; mesmo resultado da rolagem principal contra a DE de CADA alvo adicional (se inferior, erra); CUSTO CONSUMIDO mesmo em erro do alvo adicional; metade do dano dos Êxitos ARREDONDADA PARA BAIXO; SEM +1E. Não automatizado.",1],
@@ -527,24 +527,27 @@ function renderSources(){
   $({know:"knowledge-list",attr:"attribute-list",practice:"practice-list"}[group]).innerHTML=html;
  }
 }
-function mayThird(){
- return state.skills.includes("combinacao")||
- (draft.base?.group==="practice"&&draft.base?.key==="armas_conjuracao"&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));
-}
-function hasMartialPermission(){
- return ["armas","armas-leves","armas-medias","armas-pesadas","pugilismo"].some(id=>state.skills.includes(id));
-}
+function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key==="armas_conjuracao";}
+function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
+function mayThird(){return disciplineAdvancedActive()||state.skills.includes("combinacao")||
+ (usingDiscipline()&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));}
 function canUseShared(){
- if(draft.base?.group!=="practice"||draft.base.key!=="armas_conjuracao")return true;
- return draft.mode==="armas"?hasMartialPermission():draft.mode==="conjuracao"?state.skills.includes("aprendiz"):false;
+ if(!usingDiscipline())return true;
+ // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
+ return draft.mode==="armas"||(draft.mode==="conjuracao"&&state.skills.includes("aprendiz"));
 }
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
  const source={group,key:k};
  if(group==="attr"){
-  draft.attribute=same(source,draft.attribute)?null:source;
-  if(!draft.attribute){draft.third=null;draft.contextOK=false;}
+  if(disciplineAdvancedActive()&&draft.attribute&&!same(source,draft.attribute)){
+   draft.third=same(source,draft.third)?null:source;
+   draft.contextOK=false;
+  }else{
+   draft.attribute=same(source,draft.attribute)?null:source;
+   if(!draft.attribute){draft.third=null;draft.contextOK=false;}
+  }
  }else if(!draft.base){
   const selectedAttribute=draft.attribute;
   draft=freshDraft();draft.base=source;draft.attribute=selectedAttribute;
@@ -561,16 +564,17 @@ function selectSource(group,k){
  renderSources();renderComposer();
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
-function modeDefault(){return hasMartialPermission()?"armas":state.skills.includes("aprendiz")?"conjuracao":"armas";}
+function modeDefault(){return "armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
  if(draft.third){
-  if(same(draft.third,draft.base))errors.push("Não duplique a mesma fonte.");
+  if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
+  if(draft.third.group==="attr"&&!disciplineAdvancedActive())errors.push("Segundo Atributo só é permitido com Disciplina Avançada numa ação com Disciplina.");
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
  }
- if(!canUseShared())errors.push(draft.mode==="conjuracao"?"Conjurar requer Aprendiz de Conjurador.":"Uso marcial especializado requer Perícia habilitadora de armas ou Pugilismo.");
+ if(!canUseShared())errors.push("Para conjuração especializada, adquira Aprendiz de Conjurador. Rolagens marciais básicas de Disciplina são livres.");
  for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
   dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides}));
@@ -593,7 +597,7 @@ function renderComposer(){
   const chosen=draft.attribute?'<p><strong>'+esc(label(draft.attribute.group,draft.attribute.key))+'</strong> já está selecionado. Agora escolha uma Prática ou Conhecimento para definir a Base.</p>':
    '<p>Selecione um Atributo à esquerda e uma Base em Práticas ou Conhecimentos. A ordem dos cliques é livre.</p>';
   box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4>'+chosen+'</div>'+
-   '<div class="fp-alert">Experimente <strong>Disciplina (Armas) + Força + Apresentação</strong> e depois inverta a Base. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
+   '<div class="fp-alert">Experimente <strong>Disciplina + Força</strong>. Com Disciplina Avançada, acrescente uma terceira fonte pertinente. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
    (state.history.length?'<p class="fp-caption">Última ação: '+esc(state.history[0].name)+' · '+esc(state.history[0].outcome)+'</p>':"");
   return;
  }
@@ -607,9 +611,9 @@ function renderComposer(){
  }
  const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
  const isShared=draft.base.group==="practice"&&draft.base.key==="armas_conjuracao";
- const usage=isShared?(draft.mode==="conjuracao"?"Conjuração":"Armas"):label(draft.base.group,draft.base.key);
+ const usage=isShared?(draft.mode==="conjuracao"?"Disciplina · Conjuração":"Disciplina · Armas"):label(draft.base.group,draft.base.key);
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
- const modes=[["armas","Armas"],["conjuracao","Conjuração"]];
+ const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]];
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar o primeiro dado de Atributo (1 Coragem)</label>'+
@@ -624,8 +628,8 @@ function renderComposer(){
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
- (draft.third?'<p class="fp-caption">Para trocar o complemento, clique em outra Prática ou Conhecimento. Para trocar a Base, limpe a seleção e comece novamente.</p>':
- '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia pertinente de combinação, este teste utiliza somente duas fontes.")+'</p>')+
+ (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com Disciplina Avançada, pode acrescentar inclusive outro Atributo quando a Base é Disciplina.</p>':
+ '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, a ação mantém duas fontes. Disciplina Avançada permite uma terceira fonte somente em ações com Disciplina.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  '<div class="fp-composer-actions"><button class="fp-secondary" type="button" data-action="clear">Limpar</button>'+
  '<button class="fp-primary-btn" type="button" data-action="roll"'+(errors.length?" disabled":"")+'>Rolar dados →</button></div>';
@@ -1036,7 +1040,7 @@ function bind(){
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
   state=demo();draft=freshDraft();editMode=false;viewMode="sheet";wizardStep=4;wizardReached=4;
-  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina (Armas) → Força → Apresentação.");
+  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina → Força; Disciplina Avançada permite uma terceira fonte.");
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
