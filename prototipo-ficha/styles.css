@@ -526,3 +526,46 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-skill-empty{grid-column:1/-1;border:1px dashed var(--fp-stroke);border-radius:9px;padding:16px;
  color:var(--fp-muted);font-size:11px;text-align:center}
 @media(max-width:680px){.fp-skill-filters{grid-template-columns:1fr}.fp-skill-filters>label,.fp-skill-filter-hint{grid-column:1}}
+
+
+/* Cards de Perícias v0.39: consulta progressiva em três níveis */
+.fp-skill.fp-skill-compact,
+.fp-wiz-skill.fp-skill-compact{
+  position:relative;display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:8px;
+  padding:11px 12px;cursor:pointer;overflow:visible;border:1px solid var(--fp-stroke);
+  border-radius:10px;background:var(--fp-deep);text-align:left;
+}
+.fp-skill-compact:hover,.fp-skill-compact:focus-visible{border-color:var(--fp-gold);outline:1px solid var(--fp-gold)}
+.fp-skill-compact .fp-skill-content{min-width:0;width:100%}
+.fp-skill-compact .fp-skill-content>strong{font-size:12px;line-height:1.35;display:block;margin-bottom:8px}
+.fp-skill-quick{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px 10px;margin:0;min-width:0}
+.fp-skill-quick>div{min-width:0}
+.fp-skill-quick dt{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--fp-gold)}
+.fp-skill-quick dd{margin:2px 0 0;color:var(--fp-text);font-size:10px;line-height:1.35;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fp-skill-compact .fp-skill-controls{display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;width:100%}
+.fp-skill-compact .fp-skill-controls button{min-height:30px;padding:6px 9px;font-size:10px;cursor:pointer}
+.fp-skill-compact .fp-skill-controls small{flex:1;font-size:9px;line-height:1.3}
+.fp-skill-preview{display:none;position:absolute;z-index:35;left:0;bottom:calc(100% + 7px);width:min(330px,calc(100vw - 44px));
+  background:var(--fp-raised);border:1px solid var(--fp-gold);border-radius:10px;padding:12px;
+  box-shadow:0 18px 35px rgba(0,0,0,.35);pointer-events:none}
+.fp-skill-preview strong{color:var(--fp-gold);font-size:11px}
+.fp-skill-preview p{margin:7px 0!important;color:var(--fp-text);font-size:11px;line-height:1.5}
+.fp-skill-preview small{color:var(--fp-muted);font-size:10px}
+@media(hover:hover){.fp-skill-compact:hover .fp-skill-preview,.fp-skill-compact:focus-visible .fp-skill-preview{display:block}}
+.fp-skill-dialog{max-width:min(680px,calc(100vw - 26px));max-height:88vh;width:100%;
+  padding:0;color:var(--fp-text);background:var(--fp-surface);border:1px solid var(--fp-gold);
+  border-radius:16px;box-shadow:0 28px 70px rgba(0,0,0,.5)}
+.fp-skill-dialog::backdrop{background:rgba(0,0,0,.73)}
+.fp-skill-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px;border-bottom:1px solid var(--fp-stroke)}
+.fp-skill-dialog-head h3{font:normal 22px Georgia,serif;margin:0}
+.fp-skill-dialog-body{padding:18px;max-height:72vh;overflow:auto;font-size:13px;line-height:1.65}
+.fp-skill-dialog-body h4{margin:18px 0 6px;color:var(--fp-gold);font-size:13px}
+.fp-skill-dialog-body p{margin:8px 0;white-space:pre-line}
+.fp-skill-dialog-body a{color:var(--fp-gold);text-decoration:underline}
+.fp-skill-modal-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+.fp-skill-modal-meta>div{background:var(--fp-deep);border:1px solid var(--fp-stroke);padding:10px;border-radius:8px;min-width:0}
+.fp-skill-modal-meta dt{font-size:10px;color:var(--fp-gold);font-weight:800}
+.fp-skill-modal-meta dd{margin:3px 0 0;font-size:11px;overflow-wrap:anywhere}
+.fp-skill-modal-warning{color:var(--fp-gold)}
+.fp-skill-modal-hint{font-size:11px;color:var(--fp-muted)}
+@media(max-width:600px){.fp-skill-modal-meta{grid-template-columns:1fr}.fp-skill-preview{display:none!important}}
