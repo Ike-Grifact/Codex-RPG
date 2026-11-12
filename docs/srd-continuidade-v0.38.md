@@ -310,6 +310,26 @@ Permite **dominar os efeitos iniciais de Terra** e conjurar **magias elementais 
 
 **Continuidade do catálogo:** a entrada antiga do criador de fichas **“Elemento: Terra”** passa a exibir **“Perícia em Elemento Terra”**, usando o **mesmo identificador interno `terra`**. A compra não se duplica nem deve ser perdida ao carregar uma ficha salva. A ficha verifica custo e requisitos, mas **não automatiza** sentidos sísmicos, condições, deslocamentos, dano ou áreas sem procedimento mecânico aprovado.
 
+## 0-V.13. Perícia em Elemento Fogo [DEFINIDO / procedimentos PENDENTES]
+
+**Custo de aquisição: 1 XP. Requisitos cumulativos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Esta decisão autoral é posterior às descrições históricas de Fogo e prevalece quando divergirem.
+
+Permite dominar os efeitos iniciais do **elemento Fogo** e conjurar **magias elementais Leves**. Ao **acertar um ataque**, mesmo que **não seja crítico**, pode gastar **1 PP OU 2 Coragens** para aplicar **UM efeito especial escolhido** de Fogo, respeitando o Grau de conjuração já habilitado. Um único gasto não ativa automaticamente todas as opções; o autor não informou gratuidade por crítico.
+
+| Grau | Efeitos e condições informados pelo autor |
+|---|---|
+| **Grau 1** | **Disparo à distância**, **sem queimadura direta à Vida**, mas capaz de causar **dano à armadura**; também **iluminar** e **conduzir chamas**. **Não invoca fogo do nada**: usa uma **chama/faísca disponível**, por exemplo lamparina a óleo, isqueiro ou **item de foco pequeno encantado**, como luvas que geram uma faísca ao estalar os dedos |
+| **Grau 2** | **Aumentar a área** do disparo para **4 × 4**, ou utilizar **cone, linha ou círculo**; causa **dano direto à Vida e à armadura**. Quando **não dispõe de item de foco**, pode **invocar fogo gastando 1 ponto de Coragem** |
+| **Grau 3** | Permite **conjurar no final do turno dos aliados**, com área **8 × 8** em formato **circular, cone ou linha** |
+
+**Estratégia elemental / identidade narrativa [DEFINIDO conceitualmente]:** o conjurador de Fogo pode **iniciar com uma pequena faísca ou chama e amplificá-la por magia**, potencialmente provocando grandes incêndios e devastação conforme situação e Grau. Não transformar essa intenção narrativa em uma regra aprovada de dano contínuo, propagação automática de incêndio ou efeitos de área além dos valores informados.
+
+**Distinção entre fontes e invocação:** no **Grau 1**, Fogo **não surge do nada**; uma chama/faísca disponível ou produzida por equipamento é a base do efeito. No **Grau 2**, a capacidade de **invocar fogo sem item de foco** tem um custo explicitamente informado de **1 Coragem**. **PENDENTE:** se essa Coragem é **adicional** ao custo padrão de **1 PP OU 2 Coragens** para ativar efeitos especiais, ou se substitui esse pagamento no ato de invocação; não deduzir as duas despesas cumulativamente sem decisão. A regra anterior de fabricação de foco permite conjurar um elemento habilitado sem sua presença ambiental; o Grau 1 pode utilizar uma faísca produzida por um item de foco, mas a interação exata entre o foco e a invocação de fogo permanece PENDENTE nos casos extremos.
+
+**PENDENTE:** unidades e geometria exata das áreas **4 × 4** e **8 × 8** (não explicitadas em metros neste envio), alcance do disparo, valores do dano à armadura e à Vida, consequências de propagação ou duração de incêndios, uso não ofensivo de iluminação/condução sem acerto, forma do G3 e eventual continuidade de benefícios G2 no G3, e oportunidade exata para conjurar ao final do turno dos aliados.
+
+**Catálogo e continuidade:** a antiga entrada da ficha **“Elemento: Fogo”**, identificador interno `fogo`, passa a chamar-se **“Perícia em Elemento Fogo”**, sem perder a compra de personagens anteriores nem gerar uma segunda compra. Custo e requisitos são verificados; dano, área e incêndios não são automatizados até serem definidos seus procedimentos.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
