@@ -414,6 +414,22 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 **PENDENTE:** condições mecânicas de Congelar e Perfurar, tempo/alcance, forma exata da conjuração após o turno dos aliados, danos à Vida/armadura e como se preservam ou acumulam efeitos menores no G3. Atos utilitários sem ataque carecem de procedimento específico.
 
+### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
+
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. Ao acertar um ataque, **independentemente de crítico**, pode pagar **1 PP ou 2 Coragens** para ativar **um efeito especial escolhido**, respeitando o Grau de conjuração habilitado.
+
+| Grau | Efeitos de Terra |
+|---|---|
+| **G1** | **Desvantagem por 2 rodadas** (ex.: terra nos olhos); **emaranhar os pés** ou **derrubar**; mover pedras pequenas em alta velocidade; criar **plataformas de deslocamento**; **sentido sísmico em 18 × 18 m**, permitindo localizar **criaturas furtivas e armadilhas** |
+| **G2** | **Enredar e imobilizar**, aplicando **Desvantagem por 2 turnos**; **espinhos causando dano à armadura/proteção**; **sentido sísmico de 32 × 32** |
+| **G3** | **Conjurar ao final do turno dos aliados**; área de efeito **5 × 5**, linha, cone ou círculo **a partir do alvo**; **dano, empurrão e derrubada**; **sentido sísmico de 64 × 64** |
+
+**Observação:** os períodos de **2 rodadas (G1)** e **2 turnos (G2)** foram informados de modo distinto e não foram equiparados. Apenas o sentido sísmico G1 especifica expressamente metros; as unidades das dimensões G2/G3 e da área de efeito 5 × 5 ainda são **PENDENTES**.
+
+**PENDENTE:** quantidade de dano de espinhos/ataques, testes resistidos, alcance das formas, detecção sísmica e suas limitações, definição geométrica de “a partir do alvo”, forma de aplicar os efeitos fora de ataques e procedimento de conjuração no fim do turno dos aliados. Os Graus G2 e G3 não ficam automaticamente disponíveis pela compra da Perícia G1.
+
+**Continuidade:** substitui a entrada antiga **Elemento: Terra** da ficha, conservando o identificador e personagens salvos. Não é necessário adquirir as duas versões.
+
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
 Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Pontos de Perícia, distância, área e efeitos avançados ainda dependem dos requisitos.
@@ -612,6 +628,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
 | **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
+| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
