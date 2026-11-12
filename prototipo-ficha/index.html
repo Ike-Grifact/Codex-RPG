@@ -8,8 +8,8 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.38-2">
-  <script src="./app.js?v=0.38-10" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=0.39-1">
+  <script src="./app.js?v=0.39-1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -188,7 +188,7 @@
 
     <section class="fp-lower">
       <section class="fp-panel fp-skills-panel" id="pericias">
-        <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Ative para experimentar a composição</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
+        <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Resumo no card · Passe o mouse para ver verbete · Clique para detalhes</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
         <div id="skills-filterbar"></div>
         <div id="skills-list" class="fp-skills-grid"></div>
         <div class="fp-taunt-rule" id="provocar">
@@ -227,6 +227,10 @@
   </main>
   <footer class="fp-footer">CODEX RPG · Criador e ficha jogável unificados · Regras experimentais e pendentes identificadas</footer>
 </div>
+<dialog id="skill-detail-dialog" class="fp-skill-dialog" aria-labelledby="skill-detail-title">
+  <div class="fp-skill-dialog-head"><h3 id="skill-detail-title">Detalhes da Perícia</h3><button type="button" id="skill-detail-close" class="fp-secondary" aria-label="Fechar detalhes">Fechar ×</button></div>
+  <div id="skill-detail-body" class="fp-skill-dialog-body"></div>
+</dialog>
 <div id="toast" role="status" aria-live="polite" class="fp-toast"></div>
 </body>
 </html>
