@@ -95,6 +95,51 @@ A tabela expressa **equivalências**, não PP obrigatoriamente disponíveis: PP 
 
 **Organização da ficha:** filtros por **Atributo, Conhecimento, Prática, Perícias relacionadas às adquiridas** e **requisitos atingidos**, além de pesquisa de texto. Associações temáticas servem à navegação, **não criam novos requisitos**. Compras continuam verificadas pelos requisitos oficiais.
 
+## 0-V.7. Conjuradores: Criar Item de Foco e Magia e Escudo Arcano [DEFINIDO / PENDENTE]
+
+**Esta seção contém decisões autorais posteriores ao capítulo histórico de conjuração.** Não converter sugestões de efeitos em dano, duração, distâncias, modificadores de DE ou requisitos adicionais não informados. Psíquico continua elemento **neutro, não físico**, submetido ao fluxo de Integridade → Vida quando causar dano.
+
+### Criar Item de Foco e Magia [DEFINIDO]
+
+**Compra: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.**
+
+É uma Perícia de conjuração que permite dominar os efeitos iniciais de conjuração **a partir de poderes Psíquicos**, trabalhar com **magias Leves** e **moldar elementos** conforme as capacidades de conjuração já adquiridas.
+
+**Efeitos especiais de Psíquico:** ao **acertar um ataque**, independentemente de ser crítico, pode **pagar 1 PP OU 2 Coragens** para aplicar **um efeito escolhido** do elemento Psíquico, compatível com o Grau e as capacidades do conjurador. O crítico não torna esse efeito automaticamente gratuito. Não aplicar todos os efeitos simultaneamente com um só pagamento, nem dispensar o acerto em ataques.
+
+**Exemplos de aplicações do Psíquico por Grau fornecidos pelo autor:**
+
+| Grau | Exemplos e condições |
+|---|---|
+| **Grau 1** | Psíquico neutro não físico, efeitos psicológicos ou telecinéticos: amassar armadura, arrancar um objeto, lançar pedra, ler mente, impor pensamento, sentir presenças |
+| **Grau 2** | Controlar um alvo para que ataque a si próprio, com **rolagem de Influência**; arremessar pequenos objetos mentalmente |
+| **Grau 3** | Controlar **dois alvos** para que um ataque o outro; **requer Conjuração** e **rolagem de Influência**; somente com **Psíquico puro ou combinado com Trevas** |
+
+Esses efeitos são exemplos de capacidade: **PENDENTE** definir os procedimentos e DE para leitura/controle mental, duração, resistência dos alvos, critérios de acerto em ações não ofensivas, alcance e dano específico dos objetos; não permitir Graus superiores sem acesso pertinente.
+
+**Criação de item de foco:** exige **rolagem com Artesão**. O foco permite conjurar **magias elementais sem depender de o elemento estar presente na cena**, respeitando as habilitações elementais. A evolução de **Disciplina** aumenta a capacidade de criação de Graus de itens e magias; a relação numérica exata entre Grau de Disciplina e Grau máximo que se pode criar continua **PENDENTE** até confirmação. O **peso físico do foco é proporcional ao Grau da magia**, sem números de inventário ainda definidos.
+
+**Recarga do foco:** um item de **Grau 1** recarrega após **1 rodada**, **Grau 2** após **2 rodadas** e assim sucessivamente (**Grau N → N rodadas**), sem assumir que sua utilização concede novas ações ou que a recarga altera as regras gerais de descanso/PP.
+
+**Criação de magias:** adquirir a Perícia permite moldar os elementos conforme as capacidades de conjuração do personagem; não habilita gratuitamente todos os elementos, Graus, efeitos ou alterações de peso. **PENDENTE:** como a nova Perícia convive com **Aprendiz de Conjurador** e **Magia Única**, que aparecem no catálogo histórico com custos distintos. **Na ficha**, não exigir Aprendiz de Conjurador adicionalmente para comprar esta Perícia, pois o autor forneceu somente Disciplina 1 + Inteligência 1; ambas as habilitações ficam documentadas enquanto essa relação é esclarecida.
+
+### Escudo Arcano [DEFINIDO / aplicação PENDENTE]
+
+**Compra: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
+
+**Ativação:** **1 PP OU 2 Coragens** para criar **escudo elemental em si próprio OU uma área inicial de 3×3**. A rolagem utiliza **Conjuração**; **o resultado da rolagem estabelece a DE para quebrar o escudo**. O escudo funciona como proteção de **Integridade de armadura**, embora a conversão exata entre DE para romper, Integridade consumida e dano absorvido permaneça **PENDENTE**.
+
+**Proteção da área:** quem estiver **dentro da área** fica **imune ao dano elemental conjurado**, conforme a descrição do autor. **Exceção:** se um inimigo **adentrar a área** e atacar ou conjurar magia **corpo a corpo**, o **efeito protetor do escudo é ignorado** para essa interação. Não transformar isso em imunidade a ataques físicos, Psíquico neutro ou outros efeitos não cobertos.
+
+**Ampliação:** cada gasto adicional de **1 PP OU 2 Coragens** aumenta a área em **mais 3×3**. **PENDENTE:** unidade exata da medida 3×3, geometria e adjacência das ampliações, alcance para posicionar a área, duração, como se rompe o escudo por ataques diversos, se escudos se sobrepõem e quantos elementos protege em conjuração combinada. Nenhum desses detalhes é inventado pela publicação.
+
+### Integração com o criador de fichas [DEFINIDO / implementação parcial]
+
+- Ambos os custos de XP e requisitos explícitos são verificáveis na compra.
+- A Perícia Criar Item de Foco e Magia **habilita a preparação de conjuração Psíquica** com a Prática Disciplina, sem precisar comprar obrigatoriamente Aprendiz de Conjurador além dos requisitos recém-informados. Não confundir aquisição com aplicação automática de efeitos e danos.
+- A ficha registra as descrições, mas **não automatiza** fabricação/recarga do foco, controle mental, escudo, área ou geração de magia.
+- O filtro de Perícias deve associá-las a **Inteligência** e **Disciplina**; Criar Item de Foco e Magia também a **Artesão**, sem converter afinidade temática em requisito adicional.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
