@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.12 (11 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.36](srd-continuidade-v0.36.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.37](srd-continuidade-v0.37.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -52,7 +52,7 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
 
-**EXPERIMENTAL — orçamento de criação no nível 1:** **6 XP em Atributos + 8 XP em Formação + 5 XP em Perícias = 19 XP**. Esta distribuição de playtest substitui a hipótese 7/7/5, sem mudar a curva de custos por Grau; o total de 19 XP permanece experimental, não oficial. O XP conquistado após a criação continua livre. Com 8 XP de Formação pode-se alcançar o Grau 2 de uma fonte (2d10), enquanto o Grau 3 de um Atributo (7 XP) não cabe nos 6 XP iniciais desta categoria.
+**DEFINIDO: cada personagem de nível 1 começa com 5 XP para adquirir Perícias.** **EXPERIMENTAL:** 6 XP em Atributos + 8 XP em Formação (total de 19 XP, considerando os 5 XP já definidos para Perícias). Esta distribuição de playtest substitui a hipótese 7/7/5, sem mudar a curva de custos por Grau; o total de 19 XP permanece experimental, não oficial. O XP conquistado após a criação continua livre. Com 8 XP de Formação pode-se alcançar o Grau 2 de uma fonte (2d10), enquanto o Grau 3 de um Atributo (7 XP) não cabe nos 6 XP iniciais desta categoria.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
@@ -212,7 +212,7 @@ DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
 
 Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
 
-**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Pesada Grau 3**, fica com **DE 6** (−1 depois do teto); com armadura **Muito Pesada Grau 4**, fica com **DE 5** (−2 depois do teto).
+**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Pesada**, fica com **DE 6** (−1 depois do teto); com armadura **Muito Pesada**, fica com **DE 5** (−2 depois do teto), **independentemente do Grau**.
 
 **PENDENTE:** estabelecer se existe um mínimo de DE defensiva (0 ou 1). A fórmula ainda pode resultar em zero; não aplicar mínimo 1 automaticamente.
 
@@ -282,34 +282,33 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 ### Perícia Recuperação Vigorosa [DEFINIDO]
 
-**Requisito: Vigor 3. Compra: 1 XP.** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
+**Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
 
 **Exemplo com 6 Vida:** Vigor 3, Força 0 → caixas **2 / 2 / 2**. Se a ficha está em **0 / 1 / 2**, a Perícia permite passar a **0 / 2 / 2 em 1 dia**.
 
 **Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
-### Progressão de armaduras pesadas — Grau 3 e Grau 4 [DEFINIDO]
+### Armaduras: cinco tipos independentes do Grau [DEFINIDO]
 
-A categoria de **peso das armaduras de Grau 3 e Grau 4 é determinada pelo Grau**. Não há armadura leve de Grau 4: todas são da categoria **Muito Pesada / Extrema**.
+**Tipo** determina categoria, Integridade, DE e proteção natural. **Grau** determina acesso a propriedades adicionais. Uma armadura Muito Leve de Grau 4 **continua Muito Leve**; uma Muito Pesada de Grau 1 já tem imunidade física natural.
 
-| Grau | Tipo | Penalidade na DE | Proteção |
+| Tipo | Integridade | DE | Progressão elemental |
 |---|---|---|---|
-| **1** | Porte específico pendente | Sem penalidade geral de Grau aprovada | Integridade |
-| **2** | Porte específico pendente | Sem penalidade geral de Grau aprovada | Possível primeira resistência; **equipável a partir do nível 5** |
-| **3** | **Pesada** | **−1 DE** | Pode oferecer segunda resistência, conforme a peça |
-| **4** | **Muito Pesada / Extrema** | **−2 DE** | **Imunidade física obrigatória + (imunidade a 1 elemento OU 2 resistências elementais)** |
+| **Muito Leve** | **Nenhuma** | **+2 DE para esquiva** | **Grau 3+:** pode ter resistência elemental |
+| **Leve** | Baixa; valor **PENDENTE** | **+1 DE para esquiva** | **Grau 3+:** pode ter resistência elemental |
+| **Média** | Média; valor **PENDENTE** | **0** | **Grau 2+:** pode receber resistências específicas |
+| **Pesada** | Maior Integridade das armaduras convencionais; valor **PENDENTE** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
+| **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
 
-A penalidade de Grau 3 ou 4 é subtraída **depois de calcular a DE natural e aplicar seu teto de 9**, sem reduzir Agilidade nem deslocamento automaticamente. Uma armadura usa a penalidade correspondente ao Grau equipado; não se somam −1 e −2 pelo fato de Grau 4 vir após Grau 3.
+**Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
 
-**Requisitos da armadura Grau 4 [DEFINIDO]:** **Vigor Grau 6 e Atletismo Grau 6**, da antiga descrição de armadura Pesada especializada, passam a valer para **toda** armadura de Grau 4, que é sempre muito pesada. Esses investimentos somam **157 XP** (55 de Vigor, 102 de Atletismo), além do custo de aquisição/fabricação, ainda **PENDENTE**. A armadura não exige uma classe rígida.
+**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Imunidade física natural [DEFINIDO]:** a Grau 4 não recebe dano físico comum em sua integridade nem em Vida. Não é apenas redução de dano. A imunidade não elimina Pavor nem condições habilitadas, como **derrubar, afastar e Sangramento superficial**. Perfuração **especial habilitada** conserva a exceção já prevista: pode atravessar a proteção ao acertar a DE e satisfazer os requisitos/custos da técnica; uma arma Perfurante comum não a atravessa por ser pontiaguda.
+**Modificadores de esquiva:** +2 (Muito Leve) e +1 (Leve) só se aplicam **ao esquivar**, não automaticamente a qualquer ação. Média não altera a DE, Pesada aplica −1 DE, Muito Pesada −2 DE, após o cálculo/teto da DE natural. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
 
-**Alternativa elemental [DEFINIDO]:** toda peça Grau 4 possui, além da imunidade física, **uma imunidade a elemento específico OU duas resistências elementais**. Os dois pacotes não se combinam. Os elementos são propriedades fixas da peça adquirida/fabricada, não são escolhidos novamente a cada ataque.
+**Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Pavor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 
-**Exemplo:** com DE natural 7, a armadura Pesada Grau 3 deixa a DE em **6**. Uma armadura Muito Pesada Grau 4 deixa em **5**, torna o portador imune ao dano físico comum e pode ser imune a Fogo **ou**, em alternativa, resistente a Fogo e Água.
-
-**PENDENTE:** requisitos adicionais de armadura Grau 3, designação do peso por Grau 1/2, regras de múltiplas armaduras equipadas, integridade de modelos, preços, crafting e casos de dano misto/colossal. Não transferir automaticamente os requisitos de G4 para G3 nem atribuir penalidades novas a G1/G2.
+**Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
 **Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
 
@@ -410,19 +409,17 @@ A distância máxima normal de uma arma ou técnica é **R**. Para além desse a
 
 Os patamares **se substituem**; não se aplica −1A e depois −1E e depois −2E pela mesma fonte de distância. Outros riscos independentes, como aliados a até 1 m do alvo, podem acrescentar condições. A possibilidade e os limites de ataques muito além de R + 16 m continuam **PENDENTES**.
 
-### Perícia Arremesso de Armas Leves [DEFINIDO / detalhes PENDENTES]
+### Maestria em Arremesso de Armas [DEFINIDO / detalhes PENDENTES]
 
-**Compra: 1 XP. Requisitos: Força 2, Destreza 2 e Agilidade 1. Ativação: 1 Ponto de Perícia (PP) ou 2 Coragens.**
+**Nome corrigido:** Maestria em Arremesso de Armas, não “Arremesso de Armas Leves”. **Compra: 1 XP. Requisitos: Perícia em Armas Leves, Força 2, Destreza 2, Agilidade 1. Ativação: 1 PP ou 2 Coragens.** Arremessa **Armas Leves a 24 m**, causando dano e efeitos habilitados, e a arma fica alojada no alvo. Usa os patamares de armas à distância além do alcance, **sem Desvantagem por arremessar próximo do alvo**; aliados próximos do inimigo impõem Desvantagem.
 
-Permite arremessar uma **arma leve**, causar dano e aplicar seus efeitos pertinentes. **Alcance normal de 24 m**: até **24 m**, normal; acima de 24 m e abaixo de **32 m**, Desvantagem (−1A); de **32 m** até abaixo de **40 m**, Desvantagem absoluta (−1E); a partir de **40 m**, Acerto de Sorte (−2E). A técnica **não sofre Desvantagem por estar muito perto**, mas continua sujeita à presença de aliados próximos do alvo (**até 1 m**).
+- **Acerto sem Pavor:** pode realizar nova jogada, avançar até o inimigo, retirar a arma e atacar novamente corpo a corpo.
+- **Acerto com Pavor:** o inimigo pode tentar pegar a arma alojada e utilizá-la ou arremessá-la.
+- **Falha sem Pavor:** arma cai no meio do caminho; **1A** pode permitir correr e recuperá-la.
+- **Falha com Pavor:** arma cai perto do alvo ou pode atingir aliado próximo, conforme comparação com a DE do aliado.
+- **Retirada resistida quando exigida:** teste **Armas + Força + Atletismo** contra dificuldade determinada por **Força + Vigor + Atletismo do inimigo**, considerando os dados comprados.
 
-- **Acerto sem Pavor:** a arma fica alojada no inimigo, e o jogador pode aproveitar a continuidade do protagonismo para avançar, **retirar normalmente a arma sem teste** e realizar novo ataque corpo a corpo, ou passar a oportunidade a um aliado. A Perícia não concede uma ação extra separada: acerto sem Pavor já permite continuar agindo.
-- **Acerto com Pavor:** a arma fica alojada; o adversário pode tentar tomá-la e utilizá-la quando obtiver oportunidade pertinente, sem ganhar turno automático apenas pela existência da arma.
-- **Falha sem Pavor:** a arma cai no caminho; **1A** permite correr até ela e recuperá-la.
-- **Falha com Pavor predominante (P > E):** a arma cai perto do alvo ou pode atingir um aliado a **até 1 m do inimigo**. Se o resultado **não alcançou a DE do inimigo, mas alcança a DE do aliado**, atinge o aliado; caso contrário, cai perto deles.
-- **Retirada resistida quando exigida:** teste **Disciplina (uso de Armas) + Força + Atletismo** contra dificuldade baseada em **Força + Vigor + Atletismo do inimigo**, considerando seus dados comprados. A forma exata de converter esses dados em uma DE numérica permanece **PENDENTE**.
-
-**PENDENTE:** efeitos precisos por tipo de arma alojada, procedimento para vários aliados próximos, distância extrema e resolução detalhada da retirada resistida. Essas Perícias não são restritas à criação de nível 1; seus requisitos podem exigir evolução.
+**PENDENTE:** gatilho da retirada resistida versus avanço após acerto sem Pavor, conversão de dados inimigos em DE, consequências de alojamento, comparação exata de DE do aliado e se nova jogada muda o fluxo normal. Para requisitos de outras Perícias, usar exclusivamente o nome **Maestria em Arremesso de Armas**.
 
 ### Armas de fogo — Graus atualizados [DEFINIDO / catálogo PENDENTE]
 
@@ -442,6 +439,42 @@ Armas de fogo dependem de **munição por calibre, carregador, disparos consumid
 ## IX. Perícias e profissões emergentes
 
 Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
+
+### Perícias autorais de combate e recuperação [DEFINIDO / pendências assinaladas]
+
+**Referência para criação:** **5 XP de Perícias no nível 1 [DEFINIDO]**. Ter o XP não dispensa requisitos. **Espadachim** é uma inspiração de organização, **nunca uma classe obrigatória**.
+
+| Perícia | XP | Requisitos | Regra informada |
+|---|---:|---|---|
+| **Perícia em Armas Leves** | **2** | Armas 1 | Crítico ativa efeitos da arma sem custo; acerto sem crítico exige 1 PP ou 2 Coragens; ignora Desvantagem contra oponentes **pesados** |
+| **Perícia em Armas Médias** | **2** | Armas 1 | Mesmo gatilho/custo; ignora Desvantagem contra oponentes **médios** |
+| **Perícia em Armas Pesadas** | **2** | Armas 1 | Mesmo gatilho/custo; ignora Desvantagem contra oponentes **leves** |
+| **Disciplina Avançada** | **1** | Disciplina 2 | Permite combinar +1 Atributo, Conhecimento **ou** Prática pertinente |
+| **Manejo Perfeito — Corpo a Corpo** | **PENDENTE** | Disciplina Avançada | Arma correta contra alvo com Desvantagem contra ela → Vantagem Absoluta; se já a possui → **Golpe Certo** |
+| **Golpe Fulminante** | **1** | Disciplina 2 + 1 especialização admitida | Por 1 PP ou 2 Coragens, em acerto os Pavor mantidos não anulados causam **1 dano cada** |
+| **Espalhar Golpe** | **1** | Disciplina 2 + Golpe Fulminante + 1 especialização admitida | Golpe Colossal, metade do dano de Êxitos em área, até 3 m; custo por alvos e +1E conforme texto abaixo |
+| **Pugilismo** | **1** | Disciplina 1 | No ataque desarmado, 1 PP ou 2 Coragens permitem mudar o peso do soco |
+| **Artista Marcial** | **1** | Disciplina 2 + Pugilismo | Crítico ativando Pugilismo **ou** 1 PP/2 Coragens por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar, Desarmar |
+| **Maestria em Arremesso de Armas** | **1** | Perícia em Armas Leves; FOR 2, DES 2, AGI 1 | Arremesso de Arma Leve até 24 m, alojamento e consequências dos resultados (ver seção de arremesso) |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3 | A cada 3 graus de Vigor, acelera um dos últimos pontos da caixa Machucado para 1 dia |
+| **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | Recuperação Vigorosa + Vigor 6 | Pode recuperar Vida enquanto viaja após 8 h sem dano, sem descanso longo; dano reinicia contador |
+| **Recobrar Coragem** | **1** | Não indicado | Descanso curto ou longo + cena narrativa motivadora recuperam **2 Coragens** |
+| **Maestria em Manejo Duplo** | **1** | Perícia em Manejo Duplo + lista de Maestrias e Disciplina Avançada (estrutura **PENDENTE**) | Equipar duas armas, **um golpe** com Armas + Armas + Atributo; em crítico aplica efeitos de ambas |
+| **Instinto de Sobrevivência** | **PENDENTE** | Vigor 3 | Em Incapacitado, ignora **−1A**; demais penalidades permanecem |
+
+**Especializações aceitas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Médias ou Pesadas; Perícia em Manejo Duplo; Maestria em Arremesso de Armas; ou Pugilismo. A composição é **Disciplina 2 + pelo menos uma** delas; Espalhar Golpe exige **também Golpe Fulminante**.
+
+**Ativação dos três manejos de armas:** em **crítico**, aplicar os efeitos habilitados da arma **sem custo**; em **acerto não crítico**, só os aplica pagando **1 PP OU 2 Coragens**. Não interpretar como efeitos automáticos e gratuitos de cada acerto. Ignorar Desvantagem vale para a relação com o peso de oponente indicado, não para riscos independentes.
+
+**Espalhar Golpe — descrição ainda ambígua:** “Golpe Colossal; permite causar metade do dano de Êxito em área; 1 PP a cada 2 alvos em até 3 metros, ou 2 Coragens; aumentando 1 Êxito”. **PENDENTE:** se custos são cumulativos, interpretação de +1E, divisão do dano/limite de alvos e como “Colossal” interage com a regra de dano extraordinário. Não distribuir automaticamente dano de Pavor.
+
+**Artista Marcial:** cada efeito aplicado exige **seu próprio 1 PP ou 2 Coragens** quando não for ativado pelo crítico, e **só uma manobra por vez**. A interação de gastos com Pugilismo permanece em revisão.
+
+**Maestria em Manejo Duplo:** as Maestrias em Armas Leves/Médias/Pesadas e Maestrias de Arremesso de Armas Médias/Pesadas constam **nos requisitos informados**, mas ainda não possuem descrições próprias aprovadas. Não supor que sejam idênticas às Perícias básicas em Armas. **PENDENTE:** se Disciplina Avançada é obrigatória ou alternativa, e como a mesma fonte Armas pode entrar duas vezes.
+
+**Recuperação Vigorosa em Movimento:** receber dano reinicia a contagem de **8 horas**; não comprimir automaticamente um prazo de cura de 1 semana em 8 horas. **Recobrar Coragem** exige **uma cena narrativa** que justifique os 2 pontos recuperados.
+
+**PENDENTES, para decidir um a um:** custo e Golpe Certo de Manejo Perfeito; custos e resolução de Espalhar Golpe; pesos de Pugilismo; retirada/resolução de arremesso; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; critérios de Manejo Duplo; efeitos de Disciplina Avançada no número de fontes; limite de Recobrar Coragem por descanso. **Números de Integridade continuam deliberadamente adiados** até medir os danos desse conjunto.
 
 ### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
 
@@ -474,8 +507,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **1** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
-| **Arremesso de Armas Leves** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
 **A Prática Punhos foi retirada da lista atual.** Punhos permanece como especialização habilitada por Armas 1. **EXPERIMENTAL/PENDENTE:** para preservar um teste funcional, o criador exige Armas 1 com foco Punhos e Prática Disciplina grau 1 como requisitos de Artes Marciais. Essa equivalência e os custos do treino desarmado precisam de confirmação; não se trata de nova regra aprovada.
 
