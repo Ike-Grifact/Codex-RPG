@@ -504,9 +504,12 @@ function mayThird(){
  return state.skills.includes("combinacao")||
  (draft.base?.group==="practice"&&draft.base?.key==="armas_conjuracao"&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));
 }
+function hasMartialPermission(){
+ return ["armas","armas-leves","armas-medias","armas-pesadas","pugilismo"].some(id=>state.skills.includes(id));
+}
 function canUseShared(){
  if(draft.base?.group!=="practice"||draft.base.key!=="armas_conjuracao")return true;
- return draft.mode==="armas"?state.skills.includes("armas"):draft.mode==="conjuracao"?state.skills.includes("aprendiz"):false;
+ return draft.mode==="armas"?hasMartialPermission():draft.mode==="conjuracao"?state.skills.includes("aprendiz"):false;
 }
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
@@ -531,7 +534,7 @@ function selectSource(group,k){
  renderSources();renderComposer();
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
-function modeDefault(){return state.skills.includes("armas")?"armas":state.skills.includes("aprendiz")?"conjuracao":"armas";}
+function modeDefault(){return hasMartialPermission()?"armas":state.skills.includes("aprendiz")?"conjuracao":"armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
@@ -540,7 +543,7 @@ function buildPool(){
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
  }
- if(!canUseShared())errors.push(draft.mode==="conjuracao"?"Conjurar requer Aprendiz de Conjurador.":"Uso marcial especializado requer Armas 1.");
+ if(!canUseShared())errors.push(draft.mode==="conjuracao"?"Conjurar requer Aprendiz de Conjurador.":"Uso marcial especializado requer Perícia habilitadora de armas ou Pugilismo.");
  for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
   dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides}));
