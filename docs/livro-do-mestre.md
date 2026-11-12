@@ -1,8 +1,8 @@
 # Codex RPG — Livro do Mestre
 
-**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.37**
+**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.38**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.37](srd-continuidade-v0.37.md). Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.38](srd-continuidade-v0.38.md). Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
 
@@ -69,7 +69,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]: 5 XP em Perícias no nível 1**; 6 XP em Atributos e 8 XP em Formação permanecem EXPERIMENTAIS. Ver [SRD v0.37](srd-continuidade-v0.37.md), seção 0-U, para os efeitos e a fila de pendências das 15 Perícias recentemente fornecidas pelo autor.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]: 5 XP em Perícias no nível 1**; 6 XP em Atributos e 8 XP em Formação permanecem EXPERIMENTAIS. Ver [SRD v0.38](srd-continuidade-v0.38.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
