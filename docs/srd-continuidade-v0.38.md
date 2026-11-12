@@ -223,6 +223,51 @@ Permite **conjurar magias elementais de Ar**, começando por **Magias Leves**, e
 
 **Interação com outras Perícias [PENDENTE]:** a Perícia habilita os efeitos elementais descritos, mas não elimina os requisitos de criar e memorizar magias, de conjuração equilibrada nem da combinação com Trevas ou outros elementos. Condições específicas de efeitos superiores devem ser confirmadas antes de automação.
 
+## 0-V.10. Peso mental por dado de Disciplina, Ar com fôlego e Perícia em Elemento Água [DEFINIDO / PENDENTE]
+
+**Prevalência:** esta seção incorpora as decisões autorais mais recentes e prevalece sobre as expressões “conversão de dados em capacidade PENDENTE” das seções 0-V.8–0-V.9. Os efeitos de Água a seguir prevalecem sobre tabelas elementais históricas quando divergirem.
+
+### Slots mentais: um dado = uma unidade de peso [DEFINIDO]
+
+**Cada dado fornecido pela Prática Disciplina representa exatamente um spellslot mental de capacidade 1 de peso.** A **capacidade total em unidades de peso mental é a quantidade de dados da fonte Disciplina** no Grau adquirido; d6, d10 e d12 dão **a mesma capacidade 1**. **Inteligência não aumenta capacidade**. Focos permanecem itens de **carga física convencional**, não ocupam nem concedem capacidade mental.
+
+| Grau de Disciplina | Dados atualmente previstos na ficha | Capacidade em peso mental |
+|---|---|---:|
+| 1 | 1d10 | 1 |
+| 2 | 2d10 | 2 |
+| 3 | 3d10 | 3 |
+| 4 | 2d10 + 1d12 | 3 |
+| 5 | 1d10 + 2d12 | 3 |
+| 6 | 3d12 | 3 |
+
+**Divergência numérica a resolver [PENDENTE]:** o autor indicou como intenção que, no nível máximo, fosse possível **memorizar 6 magias/elementos de Grau 2**. Mas, com a **progressão publicada** acima, o Grau 6 de Disciplina fornece **3 dados = 3 unidades de capacidade**, não 6. Se magias G2 consumirem seu peso nominal 2, cabe **uma magia G2** (sobra 1 de capacidade). Se uma G2 criada sem foco tiver peso efetivo 1 (2−1), cabem **três magias G2**. **Seis G2** exigiriam respectivamente **12 ou 6 unidades**, dependendo da aplicação do desconto; nenhum dos dois valores corresponde aos 3 dados presentes. **Não alterar a tabela de dados, não multiplicar capacidade, não introduzir novas fontes e não proclamar seis magias como resultado oficial sem decisão autoral.** A regra 1 dado = 1 unidade está DEFINIDA; a intenção do exemplo de 6 magias ainda precisa de compatibilização com ela e com a progressão.
+
+**Peso por Grau da magia [DEFINIDO]:** G1=1, G2=2, G3=3, G4=4; a regra “−1 peso ao criar sem foco” também está DEFINIDA, mas o **mínimo para G1** e a aplicação à ocupação mental ainda requerem confirmação. Fica **PENDENTE** a representação dos slots como unidades fungíveis ou compartimentos individuais, sobretudo quando uma magia pesa 2 ou 3. Até esse esclarecimento, a ficha exibe a capacidade total em peso mental, sem automatizar armazenagem de magias ou declarar que uma G3 pode ocupar vários slots individuais.
+
+**O teto histórico de 9 slots** não é aplicado automaticamente como fonte de bônus ou limite adicional; sua necessidade prática deverá ser reavaliada com a regra atual por dados.
+
+### Ar: também recuperar Fôlego [DEFINIDO no efeito / parâmetros PENDENTES]
+
+A **Perícia em Elemento Ar** inclui agora a possibilidade de **recuperar Fôlego**, além dos efeitos de movimentação, manipulação de objetos, sufocamento, rajadas e tornados descritos na seção 0-V.9. **PENDENTE:** Grau de acesso, quantidade recuperada, se Fôlego é reserva, estado ou outra mecânica, quem pode recuperar e se a recuperação exige acerto, ativação de 1 PP/2 Coragens ou outro gatilho. Não confundir Fôlego com **Coragem**, **PP** ou **Vida**, nem automatizar valores sem informação do autor.
+
+### Perícia em Elemento Água [DEFINIDO no texto fornecido / procedimentos PENDENTES]
+
+**Custo de aquisição: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.**
+
+Habilita **magias elementais Leves de Água**, dominando os efeitos iniciais do elemento. **Ao acertar um ataque, independentemente de crítico**, pode gastar **1 PP OU 2 Coragens** para ativar **um efeito especial escolhido de Água**, compatível com o Grau da técnica. Não acrescentar todos os efeitos simultaneamente por uma ativação, salvo combinações próprias informadas.
+
+| Grau | Efeitos informados pelo autor |
+|---|---|
+| **Grau 1** | **Congelar** por **1 rodada**, **sem causar dano** na forma **Leve**; **extrair água do ar**, mover água, **molhar** e **limpar** |
+| **Grau 2** | **Perfurar** ativa no **crítico dos dados** OU pelo **uso pago do efeito da Perícia** (1 PP ou 2 Coragens), causando dano à **Vida e à armadura**, conforme a resolução de ataque e proteção |
+| **Grau 3** | Pode **conjurar ao final do turno dos aliados**; efeitos **Empurrar**, **Perfurar** e **Congelar**, com possibilidade de **causar dano** à Vida e à armadura e conservar **propriedades menores pertinentes** |
+
+**Crítico de Água G2:** a possibilidade de ativar **Perfurar** no crítico é alternativa ao acionamento pelo custo de efeito da Perícia; **não exigir obrigatoriamente o custo quando o gatilho de crítico ocorrer**. O efeito de Água G1 **Congelar** na categoria Leve dura 1 rodada e **não causa dano** por si. **Não importar automaticamente Desvantagem** de tabelas históricas para essa nova definição sem confirmação; o texto recente especifica a duração e a ausência de dano, não esse modificador.
+
+**PENDENTE:** alcance/área e dimensões das formas de Água, testes para ações utilitárias fora de ataques, duração/condições adicionais de Congelar, interação do G2 com a resolução do crítico e dano a Vida/armadura, distribuição de efeitos de G3 e quando é possível conservar propriedades menores, e o significado operacional de agir ao fim do turno dos aliados.
+
+**Catálogo e continuidade:** a entrada antiga **Elemento: Água**, identificador interno `agua`, passa a exibir **Perícia em Elemento Água**, **sem duplicar compras ou perder personagens salvos**, com os novos requisitos específicos. A antiga entrada de Vento já foi renomeada para **Perícia em Elemento Ar** sob o mesmo princípio.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
