@@ -120,11 +120,41 @@ const CARD_REQUIREMENTS={
  trevas:"Disciplina 2, Inteligência 2, Criar Foco",
  "criar-antidoto":"Artesão 1, Inteligência 2, Alquimia 2, Medicina 2, Criar Veneno"
 };
+
+const CARD_EFFECTS={
+ "criar-item-foco-magia":"Prepara magias, focos e efeito Psíquico inicial.",
+ "escudo-arcano":"Protege por 1 rodada; DE e Integridade vêm de E+P.",
+ "conjuracao-equilibrada":"Altera a categoria da magia para Leve ou Pesada.",
+ improviso:"+1A e elemento disponível na cena sem efeito especial.",
+ mestre:"+1A cumulativo e dois efeitos de elementos habilitados.",
+ fogo:"Fogo leve, dano e manipulação de chamas.",
+ agua:"Água leve, congelamento e manipulação.",
+ vento:"Ar leve, movimento e deslocamento.",
+ terra:"Terra leve, terreno e percepção sísmica.",
+ sagrado:"Êxitos excedentes recuperam Coragem; P anula recuperação.",
+ veneno:"Envenena alvo em Sangramento; limiares usam Vida atual.",
+ sangue:"Manipula Sangue: 2 Vida diretos ou dano à Integridade.",
+ trevas:"Até dois alvos; +2P exclusivamente para dano após acerto.",
+ "criar-veneno":"Preparo de Veneno ainda sem custo/regras definidos.",
+ "criar-antidoto":"Uma dose não diluída neutraliza um acúmulo.",
+ transfusao:"Transfere 1 Vida ou aplica Antídoto à distância."
+};
+const CARD_ACTIVATIONS={
+ "criar-item-foco-magia":"1 PP ou 2 Coragens para efeito Psíquico",
+ "escudo-arcano":"1 PP ou 2 Coragens (+ custo por expansão)",
+ "conjuracao-equilibrada":"1 PP ou 2 Coragens",
+ improviso:"Passiva",mestre:"1 PP ou 2 Coragens",
+ fogo:"1 PP ou 2 Coragens",agua:"1 PP ou 2 Coragens",vento:"1 PP ou 2 Coragens",
+ terra:"1 PP ou 2 Coragens",sagrado:"1 PP ou 2 Coragens",veneno:"1 PP ou 2 Coragens",
+ sangue:"1 PP ou 2 Coragens; Vida se aplicável",trevas:"1 PP ou 2 Coragens",
+ "criar-veneno":"Pendente","criar-antidoto":"Dose preparada",transfusao:"Custo de Vida; PP/Coragem a confirmar"
+};
+
 function skillCompactCard([id,name,detail,cost],wizard){
  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
  const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
- const act=/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":/pendente/i.test(detail)&&cost===null?"Pendente":"Passiva / consultar";
- const practical=detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
+ const act=CARD_ACTIVATIONS[id]||(/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":"Passiva / consultar");
+ const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
