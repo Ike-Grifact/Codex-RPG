@@ -330,6 +330,37 @@ Permite dominar os efeitos iniciais do **elemento Fogo** e conjurar **magias ele
 
 **Catálogo e continuidade:** a antiga entrada da ficha **“Elemento: Fogo”**, identificador interno `fogo`, passa a chamar-se **“Perícia em Elemento Fogo”**, sem perder a compra de personagens anteriores nem gerar uma segunda compra. Custo e requisitos são verificados; dano, área e incêndios não são automatizados até serem definidos seus procedimentos.
 
+## 0-V.14. Fogo G2 com custo cumulativo; Perícia em Elemento Sagrado [DEFINIDO / PENDENTE]
+
+**Precedência:** estas decisões autorais posteriores prevalecem sobre a seção 0-V.13 quanto ao custo de invocação sem foco e sobre referências históricas de compra, requisitos e efeitos da magia Sagrada.
+
+### Fogo G2: 1 Coragem ADICIONAL para invocação sem foco [DEFINIDO]
+
+Na **Perícia em Elemento Fogo**, **invocar fogo sem item de foco no Grau 2** custa **1 Coragem adicional** à ativação ordinária do efeito especial de **1 PP OU 2 Coragens**.
+
+- **Pagamento por PP:** **1 PP + 1 Coragem**.
+- **Pagamento por Coragem:** **2 Coragens + 1 Coragem = 3 Coragens**.
+
+A Coragem de invocação **não substitui** o custo ordinário de ativação. Esse custo adicional se refere à invocação de fogo G2 **sem item de foco**; não acrescentá-lo a todos os usos de Fogo, nem ao disparo G1 com fonte de chama disponível. A ficha descreve os valores, mas não cobra automaticamente as ativações na rolagem.
+
+### Perícia em Elemento Sagrado [DEFINIDO]
+
+**Custo de compra: 2 XP. Requisitos cumulativos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.**
+
+Domina os efeitos iniciais de **Sagrado** e permite conjurar **magias elementais Leves**. **Em ataques acertados, independentemente de serem críticos**, pode **pagar 1 PP OU 2 Coragens** para ativar **UM efeito especial de Sagrado**. Exemplos iniciais: **acalmar, purificar, apoiar e recuperar Coragem**. Não tornar esses efeitos automaticamente gratuitos em acerto crítico, nem somá-los todos com uma ativação.
+
+**Grau 1 — conversão de Êxito em Coragem [DEFINIDO]:**
+- **1 Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante**; não restringir automaticamente o recebedor somente ao conjurador ou aos aliados.
+- **Limite: uma conversão por conjuração/turno** — não permitir múltiplas conversões nesse mesmo uso/turno, independentemente da quantidade de Êxitos disponíveis.
+- O **Êxito gasto sai do resultado útil da ação**: **não contribui para atingir a DE e não causa dano**. Um mesmo símbolo não pode servir às duas finalidades.
+- **A conversão consome um Êxito efetivamente disponível**, **não concede +1 Êxito gratuito** antes da conversão. Referências históricas de Sagrado concedendo +1E devem ser revistas e não aplicadas automaticamente como efeito desta Perícia.
+
+**Graus 2 e 3 [DEFINIDO em acesso / PENDENTE em efeitos]:** são **obtidos a partir de combinação com outros elementos**. Não listar poderes Sagrados G2/G3 isolados, não liberar esses Graus como progressão automática por Disciplina apenas, nem dispensar os requisitos de combinação de elementos, de Grau e de criação/memorização de magias quando aplicáveis.
+
+**PENDENTE:** critérios e DE de acalmar/purificar/apoiar fora de ataques; se o gasto de Êxito que reduz o resultado abaixo da DE de um ataque invalida aquele acerto e a conversão, e em qual momento a escolha é feita; pertinência do recebedor de Coragem, alcance, interação com limite máximo e condições de recuperação; se a conversão de Êxito em Coragem requer ativação ordinária de **1 PP ou 2 Coragens** além do Êxito consumido, sobretudo em ações não ofensivas; quais combinações de elementos habilitam cada efeito dos Graus 2 e 3.
+
+**Continuidade do catálogo:** a antiga entrada **`sagrado`**, anteriormente chamada **“Magia Sagrada”** com custo **3 XP**, passa a se chamar **“Perícia em Elemento Sagrado”**, com custo **2 XP** e os requisitos acima. Manter **o mesmo ID `sagrado`** para não perder compras já registradas. Na ficha, o custo atual entra no cálculo de orçamento; o histórico de eventual compra a 3 XP não gera crédito adicional automático duplicado — o procedimento de conciliação de fichas antigas deve preservar o saldo consistente sem criar nova compra.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
