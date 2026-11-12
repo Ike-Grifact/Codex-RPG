@@ -99,6 +99,52 @@ const SKILL_BRANCHES=[
  ["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"],
  ["provocacao-sofisticada","combate","montar","recobrar-coragem"]
 ];
+
+const CARD_REQUIREMENTS={
+ "criar-item-foco-magia":"Disciplina 1, Inteligência 1",
+ "escudo-arcano":"Inteligência 2, Vigor 1, Criar Foco",
+ "conjuracao-equilibrada":"Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
+ improviso:"Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
+ mestre:"Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
+ fogo:"Disciplina 1, Inteligência 1, Criar Foco",
+ agua:"Disciplina 1, Inteligência 1, Criar Foco",
+ vento:"Disciplina 1, Inteligência 1, Criar Foco",
+ terra:"Disciplina 1, Inteligência 1, Criar Foco",
+ sagrado:"Disciplina 2, Inteligência 2, Criar Foco",
+ veneno:"Disciplina 2, Inteligência 2, Alquimia 2, Medicina 2",
+ sangue:"Disciplina 2, Inteligência 2, Criar Foco",
+ trevas:"Disciplina 2, Inteligência 2, Criar Foco",
+ "criar-antidoto":"Artesão 1, Inteligência 2, Alquimia 2, Medicina 2, Criar Veneno"
+};
+function skillCompactCard([id,name,detail,cost],wizard){
+ const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
+ const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
+ const act=/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":/pendente/i.test(detail)&&cost===null?"Pendente":"Passiva / consultar";
+ const practical=detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
+ const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
+ const button=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"Pendente":"Comprar · "+cost+" XP";
+ return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
+ '<div class="fp-skill-content"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
+ '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
+ '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div>'+
+ '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
+ '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl></div>'+
+ '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
+ '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
+ (warning?'<small class="fp-skill-req">'+esc(warning)+'</small>':'')+'</div></article>';
+}
+function openSkillDetails(id){
+ const skill=SKILLS.find(item=>item[0]===id),dlg=$("skill-detail-dialog");if(!skill||!dlg)return;
+ const [key,name,detail,cost]=skill;
+ $("skill-detail-title").textContent=name;
+ $("skill-detail-body").innerHTML='<dl class="fp-skill-modal-meta"><div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[key]||"Consultar descrição")+'</dd></div>'+
+ '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div></dl>'+
+ '<h4>Explicação completa</h4><p>'+esc(detail)+'</p>'+
+ (skillReq(key)?'<p class="fp-skill-modal-warning">Para adquirir: '+esc(skillReq(key))+'</p>':'')+
+ '<p class="fp-skill-modal-hint"><a href="../livro.html#conjuracao">Livro do Jogador — Conjuração</a>.</p>';
+ if(!dlg.open)dlg.showModal();
+}
+
 const skillFilter={scope:"all",ready:false,query:""};
 function skillRequirementsMet(id){
  if(id==="manejo-perfeito")return state.skills.includes("disciplina-avancada")&&(state.attributes.destreza||0)>=2;
@@ -494,18 +540,7 @@ function wizardSource(group,item){
 }
 function wizardSkillCardsMarkup(){
  const items=filteredSkills();
- return items.length?items.map(([id,name,desc,cost])=>{
-  const owned=state.skills.includes(id),reason=skillReq(id);
-  const available=Number.isInteger(cost)&&canAfford("skills",cost)&&!reason;
-  const removable=owned&&!state.creationLocked&&!state.pending;
-  const disabled=owned?!removable:!available;
-  const action=owned?"Desfazer":cost===null?"Pendente":"Comprar · "+cost+" XP";
-  return '<article class="fp-wiz-skill'+(owned?' selected':'')+'">'+
-   '<div><strong>'+esc(name)+'</strong><p>'+esc(desc)+'</p>'+
-   (reason?'<small class="fp-wiz-warning">'+esc(reason)+'</small>':'')+'</div>'+
-   '<button type="button" data-action="skill" data-id="'+id+'"'+(disabled?' disabled':'')+'>'+
-   (owned?'Adquirida ✓':action)+'</button></article>';
- }).join(""):'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros. Experimente outra opção.</div>';
+ return items.length?items.map(item=>skillCompactCard(item,true)).join(""):'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>';
 }
 function wizardSkills(){
  return skillFilterControls()+
@@ -878,15 +913,7 @@ function adjustResource(resource,delta){
 }
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
- $("skills-list").innerHTML=filteredSkills().map(([id,name,detail,cost])=>{
-  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
-  const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
-  const note=req||(!owned&&!affordable?"XP insuficiente.":"");
-  const text=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"PENDENTE":"Comprar · "+cost+" XP";
-  return'<div class="fp-skill '+(owned?"owned":"")+(req?" fp-skill-locked":"")+'"><div><strong>'+esc(name)+'</strong>'+
-   '<small>'+esc(detail)+'</small>'+(note?'<small class="fp-skill-req">'+esc(note)+'</small>':"")+
-   '</div><button type="button" data-action="skill" data-id="'+id+'" aria-pressed="'+owned+'" title="'+esc(note||"")+'"'+(disabled?" disabled":"")+'>'+text+'</button></div>';
- }).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros. Tente ampliar a busca.</div>';
+ $("skills-list").innerHTML=filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>';
  $("weapon-focus-wrap").hidden=!state.skills.includes("armas");
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -1112,6 +1139,18 @@ function onChange(event){
 }
 function bind(){
  document.addEventListener("click",onClick);
+ document.addEventListener("click",event=>{
+  const dlg=$("skill-detail-dialog");
+  if(event.target.closest("#skill-detail-close")){dlg.close();return;}
+  if(event.target===dlg){dlg.close();return;}
+  const card=event.target.closest("[data-skill-open]");
+  if(card&&!event.target.closest("button, a, input, select"))openSkillDetails(card.dataset.skillOpen);
+ });
+ document.addEventListener("keydown",event=>{
+  if((event.key==="Enter"||event.key===" ")&&event.target.matches("[data-skill-open]")){
+   event.preventDefault();openSkillDetails(event.target.dataset.skillOpen);
+  }
+ });
  document.addEventListener("click",event=>{
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
