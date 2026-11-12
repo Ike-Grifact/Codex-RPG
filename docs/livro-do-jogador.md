@@ -344,20 +344,23 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 | **3** | 3 |
 | **4** | 4 |
 
-**Sem item de foco:** a magia criada tem **−1 de peso**. **PENDENTE:** confirmar se a redução atua sobre a ocupação dos slots e como tratar G1 com peso 0; não confundir peso de magia memorizada com a carga física dos itens de foco.
+**Criar Magia e peso mental [DEFINIDO]:** a habilitação de **Criar Magia**, incluída em **Criar Item de Foco e Magia**, **reduz em 1 o peso de cada magia criada e memorizada**. O desconto pertence à magia criada, **não depende de estar sem item de foco**. Peso nominal: G1=1, G2=2, G3=3, G4=4; peso mental reduzido: G2=1, G3=2, G4=3. **PENDENTE:** se o mínimo de peso de magia G1 deve ser 0 ou 1, para evitar memorização ilimitada. Esta redução não altera peso físico de foco, Grau de magia, nem os dados de Disciplina.
 
-**Spellslots mentais [DEFINIDO]:** cada **dado da Prática Disciplina** concede **1 unidade de capacidade mental, equivalente a 1 ponto de peso de magia**. Não importa se é d6, d10 ou d12; **Inteligência não acrescenta espaços**. O peso nominal das magias é G1=1, G2=2, G3=3, G4=4. A redução de **−1 peso para magia criada sem foco** permanece, mas o mínimo de peso para G1 e como distribuir uma magia pesada entre slots individuais precisam ser esclarecidos.
+**Spellslots mentais [DEFINIDO]:** cada **ponto investido em Disciplina** concede **1 ponto de capacidade mental**; não é a quantidade de dados rolados. A capacidade vai de **0 a 6** nos Graus atuais da Prática, sem acréscimos de Inteligência ou de equipamentos.
 
-| Grau de Disciplina | Dados atuais | Capacidade mental em unidades de peso |
-|---:|---|---:|
-| 1 | 1d10 | 1 |
-| 2 | 2d10 | 2 |
-| 3 | 3d10 | 3 |
-| 4 | 2d10 + 1d12 | 3 |
-| 5 | 1d10 + 2d12 | 3 |
-| 6 | 3d12 | 3 |
+| Grau de Disciplina | Capacidade mental | Magias G2 criadas e memorizadas (peso 1 cada) |
+|---:|---:|---:|
+| 0 | 0 | 0 |
+| 1 | 1 | 1* |
+| 2 | 2 | 2 |
+| 3 | 3 | 3 |
+| 4 | 4 | 4 |
+| 5 | 5 | 5 |
+| 6 | 6 | **6** |
 
-**Divergência numérica [PENDENTE]:** o exemplo do autor fala em **6 elementos de Grau 2 memorizados no nível máximo**. Mas a progressão atual de Disciplina chega a **3 dados = 3 unidades de capacidade**, comportando **1 magia G2** de peso nominal 2 ou **até 3 magias G2** se a redução de peso sem foco aplicar-se integralmente aos slots (2−1=1). **Não há seis slots de peso 1** nessa tabela. A regra de 1 unidade por dado está definida; a expectativa de memorizar 6 G2 requer revisar a progressão ou outra regra, ainda sem aprovação. Não multiplicar capacidade nem inventar novos dados.
+*Capacidade ilustrativa: **criar magias de Grau 2 exige Disciplina 2**, conforme a regra de criação.*
+
+**Exemplo no máximo:** Disciplina 6 fornece 6 pontos mentais. Uma magia criada G2 pesa 2 − 1 = **1 ponto**. Assim, o personagem memoriza **seis magias G2**, sem modificar os dados da Prática. A divergência anteriormente apontada entre “3 dados” e “6 magias” está **RESOLVIDA**: são seis **pontos investidos**, não seis dados.
 
 **Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, sem serem anulados pelo fato de uma magia estar memorizada ou não exigir foco. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco criado com Artesão continua a recarregar em **N rodadas no Grau N**.
 
