@@ -33,8 +33,8 @@ const SKILLS=[
  ["improviso","Improviso Mágico","Usa elemento disponível na cena.",1],
  ["mestre","Mestre Elementalista","Segundo elemento custa 1A; +1A em conjuração.",5],
  ["fogo","Elemento: Fogo","Habilitação de Fogo.",1],
- ["agua","Elemento: Água","Habilitação de Água.",1],
- ["vento","Perícia em Elemento Ar","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 2 Coragens para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. Efeitos não automatizados.",1],
+ ["agua","Perícia em Elemento Água","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",1],
+ ["vento","Perícia em Elemento Ar","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 2 Coragens para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",1],
  ["terra","Elemento: Terra","Habilitação de Terra.",1],
  ["sagrado","Magia Sagrada","Recuperação de Coragem sob condições.",3],
  ["veneno","Magia de Veneno","Penalidades sob condições.",3],
@@ -70,7 +70,7 @@ const SKILL_AFFINITY={
  "escudo-arcano":["practice:armas_conjuracao","attr:inteligencia"],
  "conjuracao-equilibrada":["practice:armas_conjuracao","attr:inteligencia","attr:destreza"],peritoconj:["practice:armas_conjuracao"],
  improviso:["practice:armas_conjuracao","know:alquimia"],mestre:["practice:armas_conjuracao"],
- fogo:["practice:armas_conjuracao","know:alquimia"],agua:["practice:armas_conjuracao","know:alquimia"],
+ fogo:["practice:armas_conjuracao","know:alquimia"],agua:["practice:armas_conjuracao","attr:inteligencia"],
  vento:["practice:armas_conjuracao","attr:inteligencia"],terra:["practice:armas_conjuracao","know:engenharia"],
  sagrado:["practice:armas_conjuracao","know:medicina"],veneno:["practice:armas_conjuracao","know:alquimia"],
  sangue:["practice:armas_conjuracao","know:medicina"],trevas:["practice:armas_conjuracao"],
@@ -329,7 +329,7 @@ function skillReq(id,s=state){
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
  if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
  if(id==="criar-item-foco-magia"&&(disc<1||(s.attributes.inteligencia||0)<1))return"Requer Disciplina 1 e Inteligência 1.";
- if(id==="vento"&&(disc<1||(s.attributes.inteligencia||0)<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Criar Item de Foco e Magia e Inteligência 1.";
+ if(["vento","agua"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Criar Item de Foco e Magia e Inteligência 1.";
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Inteligência 2 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Maestria em Arremesso não habilita este golpe.";
@@ -347,7 +347,7 @@ function skillReq(id,s=state){
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
- if(["peritoconj","improviso","mestre","fogo","agua","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("criar-item-foco-magia"))
+ if(["peritoconj","improviso","mestre","fogo","terra","sagrado","veneno","sangue","trevas"].includes(id)&&!has("criar-item-foco-magia"))
   return"Requer Criar Item de Foco e Magia.";
  if(id==="sangue"||id==="trevas")return"Magia Grau 2 ainda não disponível neste protótipo.";
  return null;
@@ -407,6 +407,10 @@ function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
+function mentalSlotCapacity(s=state){
+ // DEFINIDO: cada dado da Prática Disciplina vale uma unidade de peso mental.
+ return dataDice("practice",s.practices.armas_conjuracao||0).length;
+}
 function label(g,k){
  const source=(GROUPS[g]||[]).find(x=>x[0]===k);return source?.[1]||k;
 }
@@ -897,8 +901,9 @@ function renderInventory(){
  const mental=$("mental-slot-caption");
  if(mental){
   const dice=dataDice("practice",state.practices.armas_conjuracao||0);
-  mental.textContent="Slots mentais: capacidade baseada somente nos dados de Disciplina ("+
-   dice.map(n=>"d"+n).join(" + ")+"). Conversão para capacidade: PENDENTE. Inteligência e focos não concedem slots mentais.";
+  const points=mentalSlotCapacity();
+  mental.textContent="Slots mentais: "+points+" unidade"+(points===1?"":"s")+" de peso mental ("+
+   dice.map(n=>"d"+n).join(" + ")+"). Cada dado de Disciplina = 1 unidade. Magias: G1=1, G2=2, G3=3, G4=4; sem foco −1 de peso (mínimo e armazenamento pendentes). Focos seguem ocupando carga física. Comparação dos 6 elementos G2 com o limite de dados atual: PENDENTE.";
  }
  $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
