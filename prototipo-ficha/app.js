@@ -20,88 +20,579 @@ const TRAIN_COST=[0,2,8,20,38,66,102];
 const CREATE_BUDGET={attr:6,training:8,skills:5}; // 5 XP Perícias DEFINIDO; 6+8 experimentais.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
- ["combate","Combate","+1A em combate pertinente.",1],
- ["armas","Armas 1","Habilita uma categoria de arma, inclusive Punhos.",2],
- ["marciais","Artes Marciais","Especialização em Punhos. Requisito provisório em playtest.",1],
- ["montar","Montar Animal","Requer Influência grau 2.",2],
- ["provocacao-sofisticada","Provocação Sofisticada","Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",1],
- ["combinacao","Combinação de Fontes","Habilita propor a terceira fonte pertinente.",2],
- ["criar-item-foco-magia","Criar Item de Foco e Magia","1 XP · Disciplina 1 + Inteligência 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/2 Coragens; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/2 Coragens e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",1],
- ["escudo-arcano","Escudo Arcano","Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 2 Coragens. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/2 Coragens amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa.",1],
- ["conjuracao-equilibrada","Conjuração Equilibrada","1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Por 1 PP ou 2 Coragens altera a magia para Pesada ou Leve. PENDENTE: confirmar se é só peso tático, não mudança do Grau numérico nem dos pesos de slots.",1],
- ["peritoconj","Perito Conjurador","Combinação pertinente à Conjuração.",2],
- ["improviso","Improviso Elemental","Requisitos Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",1],
- ["mestre","Maestria Elemental","Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. Custo 1 PP ou 2 Coragens para mesclar dois elementos e ativar simultaneamente as propriedades especiais dos dois, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",1],
- ["fogo","Perícia em Elemento Fogo","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 3 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",1],
- ["agua","Perícia em Elemento Água","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",1],
- ["vento","Perícia em Elemento Ar","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 2 Coragens para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",1],
- ["terra","Perícia em Elemento Terra","1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, 1 PP ou 2 Coragens ativa UM efeito escolhido. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",1],
- ["sagrado","Perícia em Elemento Sagrado","Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",2],
- ["veneno","Perícia em Elemento Veneno","Requisitos Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2; magias Leves. Ativação especial 1 PP ou 2 Coragens. Acerto em alvo com Sangramento aplica 1 acúmulo por 2 rodadas; novas aplicações não renovam anteriores. Envenenamento compara-se à Vida atual: ao atingir 2/3 aplica Ferido, depois Incapacitado (limiar intermediário pendente), ao alcançar toda a Vida atual fica Inconsciente. Incapacitado custa 1 Coragem/Pavor para agir, Inconsciente custa 2. Imunidades de pedra, mecânicas e outras criaturas pertinentes. G2/G3 por combinação.",2],
- ["sangue","Perícia em Elemento Sangue","Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Conjurar sem Sangramento próprio custa inicialmente 2 Vida mesmo em falha; autoaplicar Sangramento na conjuração reduz esse custo para 1 Vida; se já estava em Sangramento, o custo inicial é zero. +1P comum na conjuração. Ao acertar alvo em Sangramento ou já danificado na Vida, escolher 2 Vida diretos (não comba com colossal) OU dano convencional de Integridade com sangue coagulado, consumido no uso. Sangue fluido pode ser remanipulado sem aumento de dano, mas alvo único sem mescla. Transfusão é outra Perícia. G2/G3 por combinação.",2],
- ["trevas","Perícia em Elemento Trevas","Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens após acerto mesmo sem crítico. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra até dois alvos distintos, comparada à DE de cada alvo; depois de acertar soma +2P só ao cálculo do dano, nunca à DE, sem gerar Pavor ou intervenção extras. G2/G3 por combinação.",2],
-
- ["armas-leves","Perícia em Armas Leves","Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",2],
- ["armas-medias","Perícia em Armas Médias","Disciplina 1 + Força 1; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Não automatizado.",2],
- ["armas-pesadas","Perícia em Armas Pesadas","Disciplina 2 + Força 2; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Não automatizado.",2],
- ["disciplina-avancada","Disciplina Avançada","Disciplina 2; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",1],
- ["manejo-perfeito","Manejo Perfeito — Armas Corpo a Corpo","Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",null],
- ["golpe-fulminante","Golpe Fulminante","Disciplina 2 + Força 2 + especialização corpo a corpo. Ativação: 1 PP/2 Coragens; em acerto, Pavor mantido não anulado vale 1 dano cada. Não automatizado.",1],
- ["espalhar-golpe","Espalhar Golpe","Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo. Raio 2 m centrado no atacante; 1 PP/2 Coragens por alvo ADICIONAL; mesmo resultado da rolagem principal contra a DE de CADA alvo adicional (se inferior, erra); CUSTO CONSUMIDO mesmo em erro do alvo adicional; metade do dano dos Êxitos ARREDONDADA PARA BAIXO; SEM +1E. Não automatizado.",1],
- ["pugilismo","Pugilismo","Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/2 Coragens para mudar peso do soco. Pesos disponíveis PENDENTES.",1],
- ["artista-marcial","Artista Marcial","Disciplina 2 + Pugilismo + Destreza 2. 1 PP/2 Coragens por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",1],
- ["maestria-arremesso-armas","Maestria em Arremesso de Armas","Armas Leves + FOR 2, DES 2, AGI 1; 1 PP/2 Coragens. Arremessa arma Leve até 24 m e segue efeitos de alojamento. Não automatizado.",1],
- ["disparo-fulminante","Disparo Fulminante","Ramo de distância/arremesso separado de Golpe Fulminante. Requisitos, XP e ativação PENDENTES.",null],
- ["disparo-multiplo","Disparo Múltiplo","Ramo de distância/arremesso; círculo de 2 metros ao redor do ALVO principal. Mesmo resultado do primeiro disparo contra a DE de cada alvo, sem novas rolagens; abaixo da DE erra. Requisitos, XP e detalhes de disparos PENDENTES.",null],
- ["recuperacao-vigorosa","Recuperação Vigorosa","Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",null],
- ["recuperacao-movimento","Maestria em Recuperação Vigorosa em Movimento","Recuperação Vigorosa e Vigor 6; cura natural em viagem após 8h sem dano. Custo XP PENDENTE.",null],
- ["recobrar-coragem","Recobrar Coragem","1 XP. Após descanso curto ou longo e cena narrativa, recupera 2 Coragens. Recuperação anotada manualmente.",1],
- ["maestria-manejo-duplo","Maestria em Manejo Duplo","Requisitos anteriores (a esclarecer) + Destreza 2 + Agilidade 1. Um golpe com duas armas; Armas + Armas + Atributo; efeitos das duas em crítico. Compra pendente.",1],
- ["instinto-sobrevivencia","Instinto de Sobrevivência","Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",null],
- ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null],
- ["criar-veneno","Criar Veneno","Requisito de Criar Antídoto, mas aquisição, custo e preparo ainda pendentes nesta leva. Compra bloqueada até decisão do autor.",null],
- ["criar-antidoto","Criar Antídoto","Requisitos Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno. 1 XP. Preparar doses com materiais venenosos coletados. Ingerir ou aplicar em Sangramento: cada dose não diluída remove 1 acúmulo de Envenenamento. Hemomante pode conduzir por Transfusão à distância com sacrifício de Vida e gasto das doses. Criar Veneno ainda precisa de definição para habilitar compra.",1],
- ["transfusao","Transfusão","Perícia separada de Elemento Sangue, compra e requisitos próprios ainda pendentes. Pode agir em combate se conjurador e alvo estiverem em Sangramento: transfere 1 Vida própria, recuperando 1 Vida do beneficiário. Pode levar Antídoto à distância ao custo de 1 Vida e das doses usadas, sem duplicação. Não gera Vida adicional.",null],
+ [
+  "combate",
+  "Combate",
+  "+1A em combate pertinente.",
+  1
+ ],
+ [
+  "armas",
+  "Armas 1",
+  "Habilita uma categoria de arma, inclusive Punhos.",
+  2
+ ],
+ [
+  "marciais",
+  "Artes Marciais",
+  "Especialização em Punhos. Requisito provisório em playtest.",
+  1
+ ],
+ [
+  "montar",
+  "Montar Animal",
+  "Requer Influência grau 2.",
+  2
+ ],
+ [
+  "provocacao-sofisticada",
+  "Provocação Sofisticada",
+  "Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",
+  1
+ ],
+ [
+  "combinacao",
+  "Combinação de Fontes",
+  "Habilita propor a terceira fonte pertinente.",
+  2
+ ],
+ [
+  "criar-item-foco-magia",
+  "Criar Item de Foco e Magia",
+  "1 XP · Disciplina 1 + Inteligência 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/2 Coragens; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/2 Coragens e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",
+  1
+ ],
+ [
+  "escudo-arcano",
+  "Escudo Arcano",
+  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 2 Coragens. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/2 Coragens amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa.",
+  1
+ ],
+ [
+  "conjuracao-equilibrada",
+  "Conjuração Equilibrada",
+  "1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Por 1 PP ou 2 Coragens altera a magia para Pesada ou Leve. PENDENTE: confirmar se é só peso tático, não mudança do Grau numérico nem dos pesos de slots.",
+  1
+ ],
+ [
+  "peritoconj",
+  "Perito Conjurador",
+  "Combinação pertinente à Conjuração.",
+  2
+ ],
+ [
+  "improviso",
+  "Improviso Elemental",
+  "Requisitos Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
+  1
+ ],
+ [
+  "mestre",
+  "Maestria Elemental",
+  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. Custo 1 PP ou 2 Coragens para mesclar dois elementos e ativar simultaneamente as propriedades especiais dos dois, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
+  1
+ ],
+ [
+  "fogo",
+  "Perícia em Elemento Fogo",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 3 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",
+  1
+ ],
+ [
+  "agua",
+  "Perícia em Elemento Água",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  1
+ ],
+ [
+  "vento",
+  "Perícia em Elemento Ar",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 2 Coragens para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  1
+ ],
+ [
+  "terra",
+  "Perícia em Elemento Terra",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, 1 PP ou 2 Coragens ativa UM efeito escolhido. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  1
+ ],
+ [
+  "sagrado",
+  "Perícia em Elemento Sagrado",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  2
+ ],
+ [
+  "veneno",
+  "Perícia em Elemento Veneno",
+  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 2 Coragens para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
+  2
+ ],
+ [
+  "sangue",
+  "Perícia em Elemento Sangue",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Conjurar sem Sangramento próprio custa inicialmente 2 Vida mesmo em falha; autoaplicar Sangramento na conjuração reduz esse custo para 1 Vida; se já estava em Sangramento, o custo inicial é zero. +1P comum na conjuração. Ao acertar alvo em Sangramento ou já danificado na Vida, escolher 2 Vida diretos (não comba com colossal) OU dano convencional de Integridade com sangue coagulado, consumido no uso. Sangue fluido pode ser remanipulado sem aumento de dano, mas alvo único sem mescla. Transfusão é outra Perícia. G2/G3 por combinação.",
+  2
+ ],
+ [
+  "trevas",
+  "Perícia em Elemento Trevas",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens após acerto mesmo sem crítico. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra até dois alvos distintos, comparada à DE de cada alvo; depois de acertar soma +2P só ao cálculo do dano, nunca à DE, sem gerar Pavor ou intervenção extras. G2/G3 por combinação.",
+  2
+ ],
+ [
+  "armas-leves",
+  "Perícia em Armas Leves",
+  "Armas 1; 2 XP. Crítico ativa efeitos; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  2
+ ],
+ [
+  "armas-medias",
+  "Perícia em Armas Médias",
+  "Disciplina 1 + Força 1; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Não automatizado.",
+  2
+ ],
+ [
+  "armas-pesadas",
+  "Perícia em Armas Pesadas",
+  "Disciplina 2 + Força 2; 2 XP. Crítico ativa efeitos; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Não automatizado.",
+  2
+ ],
+ [
+  "disciplina-avancada",
+  "Disciplina Avançada",
+  "Disciplina 2; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
+  1
+ ],
+ [
+  "manejo-perfeito",
+  "Manejo Perfeito — Armas Corpo a Corpo",
+  "Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",
+  null
+ ],
+ [
+  "golpe-fulminante",
+  "Golpe Fulminante",
+  "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.",
+  1
+ ],
+ [
+  "espalhar-golpe",
+  "Golpe Colossal",
+  "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SEM bônus de +1E. Não espalha automaticamente o dano de Pavor de Golpe Fulminante. Arremesso não é especialização aceita. Centro da área PENDENTE.",
+  1
+ ],
+ [
+  "pugilismo",
+  "Pugilismo",
+  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/2 Coragens para mudar peso do soco. Pesos disponíveis PENDENTES.",
+  1
+ ],
+ [
+  "artista-marcial",
+  "Artista Marcial",
+  "Disciplina 2 + Pugilismo + Destreza 2. 1 PP/2 Coragens por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  1
+ ],
+ [
+  "maestria-arremesso-armas",
+  "Perícia em Arremesso de Armas",
+  "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 2 Coragens, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m ou mais −2E (Acerto de Sorte); não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
+  1
+ ],
+ [
+  "disparo-fulminante",
+  "Disparo Fulminante",
+  "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.",
+  1
+ ],
+ [
+  "disparo-multiplo",
+  "Disparo Múltiplo",
+  "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 2 Coragens permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e somente 0,5 de dano por Pavor válido mesmo se Disparo Fulminante for ativado no principal. Cada técnica é paga separadamente; crítico não dispensa custo. Armas de fogo usam apenas a modalidade especial Descarregar Tambor, nunca o efeito de Disparo Fulminante.",
+  1
+ ],
+ [
+  "recuperacao-vigorosa",
+  "Recuperação Vigorosa",
+  "Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",
+  null
+ ],
+ [
+  "recuperacao-movimento",
+  "Maestria em Recuperação Vigorosa em Movimento",
+  "Recuperação Vigorosa e Vigor 6; cura natural em viagem após 8h sem dano. Custo XP PENDENTE.",
+  null
+ ],
+ [
+  "recobrar-coragem",
+  "Recobrar Coragem",
+  "1 XP. Após descanso curto ou longo e cena narrativa, recupera 2 Coragens. Recuperação anotada manualmente.",
+  1
+ ],
+ [
+  "maestria-manejo-duplo",
+  "Perícia em Manejo Duplo",
+  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa efeitos das duas armas sem custo; acerto comum ativa ambos por um ÚNICO gasto de 1 PP ou 2 Coragens. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
+  1
+ ],
+ [
+  "instinto-sobrevivencia",
+  "Instinto de Sobrevivência",
+  "Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",
+  null
+ ],
+ [
+  "arma-certa",
+  "Maestria Arma Certa",
+  "+1E com peso favorável. Custo de XP pendente.",
+  null
+ ],
+ [
+  "criar-veneno",
+  "Criar Veneno",
+  "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se os efeitos de ambas forem ativados, um de cada arma. Veneno usa VIDA ATUAL: a partir de 2/3 da Vida atual o alvo fica Ferido; ao atingir total de Vida atual em acúmulos, fica Incapacitado. Fica INCONSCIENTE caso esteja Envenenado com exatamente 2 de Vida atual OU ao atingir 12 acúmulos ativos, independentemente da Vida. Cada acúmulo dura 2 rodadas individualmente. Amplificar Veneno será futura Perícia PENDENTE. Graus 2/3 exigem combinação elemental (sem tornar a alquimia magia).",
+  1
+ ],
+ [
+  "criar-antidoto",
+  "Criar Antídoto",
+  "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos forem atendidos; aquisição de Transfusão ainda pendente.",
+  1
+ ],
+ [
+  "transfusao",
+  "Transfusão",
+  "Perícia separada de Elemento Sangue, compra e requisitos próprios ainda pendentes. Pode agir em combate se conjurador e alvo estiverem em Sangramento: transfere 1 Vida própria, recuperando 1 Vida do beneficiário. Pode levar Antídoto à distância ao custo de 1 Vida e das doses usadas, sem duplicação. Não gera Vida adicional.",
+  null
+ ],
+ [
+  "armas-longo-alcance",
+  "Perícia em Armas de Longo Alcance",
+  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa todos os efeitos próprios da arma sem custo; acerto normal exige 1 PP ou 2 Coragens.",
+  2
+ ],
+ [
+  "disparo-violento",
+  "Disparo Violento",
+  "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crítico.",
+  1
+ ],
+ [
+  "disparo-tatico",
+  "Disparo Tático",
+  "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.",
+  null
+ ],
+ [
+  "armas-fogo",
+  "Perícia em Armas de Fogo",
+  "Crítico ativa gratuitamente os efeitos próprios da arma; acerto normal custa 1 PP ou 2 Coragens. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 PP OU 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
+  3
+ ],
+ [
+  "golpe-baixo",
+  "Golpe Baixo",
+  "Técnica somática: chutar ponto vulnerável, jogar terra nos olhos e outros golpes desleais. Ao acertar aplica Desvantagem (−1A) por 1 rodada. Contra inimigos com Inteligência grau ZERO, o inimigo ignora Provocar e fixa quem aplicou Golpe Baixo como alvo até que um dos dois seja eliminado, mesmo após terminar a rodada de Desvantagem. Não concede movimentação ou turno gratuito.",
+  1
+ ],
+ [
+  "furtividade",
+  "Perícia em Furtividade",
+  "Ao usar Furtividade como fonte do teste, recebe +1A automaticamente e sem custo. Cumulativa com outras Vantagens legítimas como Concentrado, mas cada símbolo A só pode ser gasto uma vez. Alguns inimigos são IMUNES a Furtividade; vantagens não anulam essa imunidade nem garantem ocultação.",
+  1
+ ],
+ [
+  "furtividade-avancada",
+  "Furtividade Avançada",
+  "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
+  1
+ ]
 ];
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
- combate:["practice:armas_conjuracao"],armas:["practice:armas_conjuracao"],marciais:["practice:armas_conjuracao"],
- montar:["attr:influencia"],"provocacao-sofisticada":["attr:influencia","practice:apresentacao"],
- combinacao:[],
- "criar-item-foco-magia":["practice:armas_conjuracao","attr:inteligencia","practice:artesao"],
- "escudo-arcano":["practice:armas_conjuracao","attr:inteligencia","attr:vigor"],
- "conjuracao-equilibrada":["practice:armas_conjuracao","attr:inteligencia","attr:destreza"],peritoconj:["practice:armas_conjuracao"],
- improviso:["practice:armas_conjuracao","attr:destreza","attr:inteligencia"],mestre:["practice:armas_conjuracao","attr:destreza","attr:inteligencia"],
- fogo:["practice:armas_conjuracao","attr:inteligencia","know:alquimia"],agua:["practice:armas_conjuracao","attr:inteligencia"],
- vento:["practice:armas_conjuracao","attr:inteligencia"],terra:["practice:armas_conjuracao","attr:inteligencia","know:engenharia"],
- sagrado:["practice:armas_conjuracao","attr:inteligencia","know:medicina"],veneno:["practice:armas_conjuracao","know:alquimia"],
- sangue:["practice:armas_conjuracao","know:medicina"],trevas:["practice:armas_conjuracao"],
- "criar-veneno":["know:alquimia","know:medicina"],"criar-antidoto":["practice:artesao","know:alquimia","know:medicina","attr:inteligencia"],transfusao:["practice:armas_conjuracao","know:medicina"],
- "armas-leves":["practice:armas_conjuracao"],"armas-medias":["practice:armas_conjuracao","attr:forca"],
- "armas-pesadas":["practice:armas_conjuracao","attr:forca"],"disciplina-avancada":["practice:armas_conjuracao"],
- "manejo-perfeito":["practice:armas_conjuracao","attr:destreza"],
- "golpe-fulminante":["practice:armas_conjuracao","attr:forca"],
- "espalhar-golpe":["practice:armas_conjuracao","attr:destreza"],
- pugilismo:["practice:armas_conjuracao","attr:forca","attr:destreza"],
- "artista-marcial":["practice:armas_conjuracao","attr:destreza"],
- "maestria-arremesso-armas":["practice:armas_conjuracao","attr:forca","attr:destreza","attr:agilidade"],
- "disparo-fulminante":["practice:armas_conjuracao"],"disparo-multiplo":["practice:armas_conjuracao"],
- "recuperacao-vigorosa":["attr:vigor","know:medicina"],
- "recuperacao-movimento":["attr:vigor","practice:atletismo","know:medicina"],
- "recobrar-coragem":["attr:influencia","practice:apresentacao"],
- "maestria-manejo-duplo":["practice:armas_conjuracao","attr:destreza","attr:agilidade"],
- "instinto-sobrevivencia":["attr:vigor","know:protecao"],
- "arma-certa":["practice:armas_conjuracao"]
+ "combate": [
+  "practice:armas_conjuracao"
+ ],
+ "armas": [
+  "practice:armas_conjuracao"
+ ],
+ "marciais": [
+  "practice:armas_conjuracao"
+ ],
+ "montar": [
+  "attr:influencia"
+ ],
+ "provocacao-sofisticada": [
+  "attr:influencia",
+  "practice:apresentacao"
+ ],
+ "combinacao": [],
+ "criar-item-foco-magia": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "practice:artesao"
+ ],
+ "escudo-arcano": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "attr:vigor"
+ ],
+ "conjuracao-equilibrada": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "attr:destreza"
+ ],
+ "peritoconj": [
+  "practice:armas_conjuracao"
+ ],
+ "improviso": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:inteligencia"
+ ],
+ "mestre": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:inteligencia"
+ ],
+ "fogo": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "know:alquimia"
+ ],
+ "agua": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia"
+ ],
+ "vento": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia"
+ ],
+ "terra": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "know:engenharia"
+ ],
+ "sagrado": [
+  "practice:armas_conjuracao",
+  "attr:inteligencia",
+  "know:medicina"
+ ],
+ "veneno": [
+  "practice:armas_conjuracao",
+  "know:alquimia"
+ ],
+ "sangue": [
+  "practice:armas_conjuracao",
+  "know:medicina"
+ ],
+ "trevas": [
+  "practice:armas_conjuracao"
+ ],
+ "criar-veneno": [
+  "know:alquimia",
+  "know:medicina"
+ ],
+ "criar-antidoto": [
+  "practice:artesao",
+  "know:alquimia",
+  "know:medicina",
+  "attr:inteligencia"
+ ],
+ "transfusao": [
+  "practice:armas_conjuracao",
+  "know:medicina"
+ ],
+ "armas-leves": [
+  "practice:armas_conjuracao"
+ ],
+ "armas-medias": [
+  "practice:armas_conjuracao",
+  "attr:forca"
+ ],
+ "armas-pesadas": [
+  "practice:armas_conjuracao",
+  "attr:forca"
+ ],
+ "disciplina-avancada": [
+  "practice:armas_conjuracao"
+ ],
+ "manejo-perfeito": [
+  "practice:armas_conjuracao",
+  "attr:destreza"
+ ],
+ "golpe-fulminante": [
+  "practice:armas_conjuracao",
+  "attr:forca"
+ ],
+ "espalhar-golpe": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:agilidade"
+ ],
+ "pugilismo": [
+  "practice:armas_conjuracao",
+  "attr:forca",
+  "attr:destreza"
+ ],
+ "artista-marcial": [
+  "practice:armas_conjuracao",
+  "attr:destreza"
+ ],
+ "maestria-arremesso-armas": [
+  "practice:armas_conjuracao",
+  "attr:forca",
+  "attr:destreza",
+  "attr:agilidade"
+ ],
+ "disparo-fulminante": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "disparo-multiplo": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "recuperacao-vigorosa": [
+  "attr:vigor",
+  "know:medicina"
+ ],
+ "recuperacao-movimento": [
+  "attr:vigor",
+  "practice:atletismo",
+  "know:medicina"
+ ],
+ "recobrar-coragem": [
+  "attr:influencia",
+  "practice:apresentacao"
+ ],
+ "maestria-manejo-duplo": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "instinto-sobrevivencia": [
+  "attr:vigor",
+  "know:protecao"
+ ],
+ "arma-certa": [
+  "practice:armas_conjuracao"
+ ],
+ "armas-longo-alcance": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "disparo-violento": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "disparo-tatico": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "armas-fogo": [
+  "practice:armas_conjuracao",
+  "attr:destreza",
+  "attr:forca"
+ ],
+ "golpe-baixo": [
+  "attr:destreza",
+  "attr:forca",
+  "attr:agilidade"
+ ],
+ "furtividade": [
+  "practice:furtividade",
+  "attr:destreza",
+  "attr:agilidade"
+ ],
+ "furtividade-avancada": [
+  "practice:furtividade",
+  "attr:destreza",
+  "attr:agilidade"
+ ]
 };
 const SKILL_BRANCHES=[
- ["armas","armas-leves","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo"],
- ["armas","armas-leves","armas-medias","armas-pesadas","golpe-fulminante","espalhar-golpe","manejo-perfeito","maestria-manejo-duplo"],
- ["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe"],
- ["disciplina-avancada","manejo-perfeito","maestria-manejo-duplo"],
- ["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"],
- ["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas","criar-veneno","criar-antidoto","transfusao"],
- ["provocacao-sofisticada","combate","montar","recobrar-coragem"]
+ [
+  "armas",
+  "armas-leves",
+  "maestria-arremesso-armas",
+  "disparo-fulminante",
+  "disparo-multiplo"
+ ],
+ [
+  "armas",
+  "armas-leves",
+  "armas-medias",
+  "armas-pesadas",
+  "golpe-fulminante",
+  "espalhar-golpe",
+  "manejo-perfeito",
+  "maestria-manejo-duplo"
+ ],
+ [
+  "pugilismo",
+  "artista-marcial",
+  "golpe-fulminante",
+  "espalhar-golpe"
+ ],
+ [
+  "disciplina-avancada",
+  "manejo-perfeito",
+  "maestria-manejo-duplo"
+ ],
+ [
+  "recuperacao-vigorosa",
+  "recuperacao-movimento",
+  "instinto-sobrevivencia"
+ ],
+ [
+  "criar-item-foco-magia",
+  "escudo-arcano",
+  "conjuracao-equilibrada",
+  "peritoconj",
+  "improviso",
+  "mestre",
+  "fogo",
+  "agua",
+  "vento",
+  "terra",
+  "sagrado",
+  "veneno",
+  "sangue",
+  "trevas",
+  "criar-veneno",
+  "criar-antidoto",
+  "transfusao"
+ ],
+ [
+  "provocacao-sofisticada",
+  "combate",
+  "montar",
+  "recobrar-coragem"
+ ],
+ [
+  "armas-longo-alcance",
+  "maestria-arremesso-armas",
+  "disparo-fulminante",
+  "disparo-multiplo",
+  "disparo-violento",
+  "disparo-tatico"
+ ],
+ [
+  "armas-fogo",
+  "disparo-multiplo"
+ ],
+ [
+  "furtividade",
+  "furtividade-avancada"
+ ]
 ];
 
 const SKILL_PERMALINKS={
@@ -131,86 +622,154 @@ const SKILL_PERMALINKS={
  "disciplina-avancada": "disciplina-avancada",
  "manejo-perfeito": "manejo-perfeito-armas-corpo-a-corpo",
  "golpe-fulminante": "golpe-fulminante",
- "espalhar-golpe": "espalhar-golpe",
+ "espalhar-golpe": "golpe-colossal",
  "pugilismo": "pugilismo",
  "artista-marcial": "artista-marcial",
- "maestria-arremesso-armas": "maestria-em-arremesso-de-armas",
+ "maestria-arremesso-armas": "pericia-em-arremesso-de-armas",
  "disparo-fulminante": "disparo-fulminante",
  "disparo-multiplo": "disparo-multiplo",
  "recuperacao-vigorosa": "recuperacao-vigorosa",
  "recuperacao-movimento": "maestria-em-recuperacao-vigorosa-em-movimento",
  "recobrar-coragem": "recobrar-coragem",
- "maestria-manejo-duplo": "maestria-em-manejo-duplo",
+ "maestria-manejo-duplo": "pericia-em-manejo-duplo",
  "instinto-sobrevivencia": "instinto-de-sobrevivencia",
  "arma-certa": "maestria-arma-certa",
  "criar-veneno": "criar-veneno",
  "criar-antidoto": "criar-antidoto",
- "transfusao": "transfusao"
+ "transfusao": "transfusao",
+ "armas-longo-alcance": "pericia-em-armas-de-longo-alcance",
+ "disparo-violento": "disparo-violento",
+ "disparo-tatico": "disparo-tatico",
+ "armas-fogo": "pericia-em-armas-de-fogo",
+ "golpe-baixo": "golpe-baixo",
+ "furtividade": "pericia-em-furtividade",
+ "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
- "criar-item-foco-magia":"Disciplina 1, Inteligência 1",
- "escudo-arcano":"Inteligência 2, Vigor 1, Criar Foco",
- "conjuracao-equilibrada":"Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
- improviso:"Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
- mestre:"Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
- fogo:"Disciplina 1, Inteligência 1, Criar Foco",
- agua:"Disciplina 1, Inteligência 1, Criar Foco",
- vento:"Disciplina 1, Inteligência 1, Criar Foco",
- terra:"Disciplina 1, Inteligência 1, Criar Foco",
- sagrado:"Disciplina 2, Inteligência 2, Criar Foco",
- veneno:"Disciplina 2, Inteligência 2, Alquimia 2, Medicina 2",
- sangue:"Disciplina 2, Inteligência 2, Criar Foco",
- trevas:"Disciplina 2, Inteligência 2, Criar Foco",
- "criar-antidoto":"Artesão 1, Inteligência 2, Alquimia 2, Medicina 2, Criar Veneno"
+ "criar-item-foco-magia": "Disciplina 1, Inteligência 1",
+ "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
+ "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
+ "improviso": "Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
+ "mestre": "Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
+ "fogo": "Disciplina 1, Inteligência 1, Criar Foco",
+ "agua": "Disciplina 1, Inteligência 1, Criar Foco",
+ "vento": "Disciplina 1, Inteligência 1, Criar Foco",
+ "terra": "Disciplina 1, Inteligência 1, Criar Foco",
+ "sagrado": "Disciplina 2, Inteligência 2, Criar Foco",
+ "veneno": "Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2",
+ "sangue": "Disciplina 2, Inteligência 2, Criar Foco",
+ "trevas": "Disciplina 2, Inteligência 2, Criar Foco",
+ "criar-antidoto": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno",
+ "armas-longo-alcance": "Disciplina 1 + Destreza 2",
+ "golpe-fulminante": "Disciplina 2 + Força 2 + uma especialização corpo a corpo",
+ "espalhar-golpe": "Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo",
+ "maestria-arremesso-armas": "Força 2 + Destreza 2 + Agilidade 1 + Armas Leves OU Médias OU Pesadas",
+ "disparo-fulminante": "Destreza 2 + Força 1 + Disciplina 2 + (Armas de Longo Alcance OU Perícia em Arremesso de Armas)",
+ "disparo-multiplo": "Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Armas de Longo Alcance OU Arremesso)",
+ "disparo-violento": "Destreza 2 + Disciplina 2 + (Força 2 OU Força 1 + Atletismo 1) + (Armas de Longo Alcance OU Arremesso)",
+ "disparo-tatico": "PENDENTE (compatível com Perícia em Arremesso de Armas)",
+ "armas-fogo": "Disciplina 2 + Destreza 2",
+ "golpe-baixo": "Destreza 2 + Força 1 + Agilidade 1",
+ "maestria-manejo-duplo": "Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 + uma Perícia em Armas Leves, Médias, Pesadas, Arremesso, Fogo ou Longo Alcance",
+ "criar-veneno": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2",
+ "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
+ "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade"
 };
 
 const CARD_EFFECTS={
- "criar-item-foco-magia":"Prepara magias, focos e efeito Psíquico inicial.",
- "escudo-arcano":"Protege por 1 rodada; DE e Integridade vêm de E+P.",
- "conjuracao-equilibrada":"Altera a categoria da magia para Leve ou Pesada.",
- improviso:"+1A e elemento disponível na cena sem efeito especial.",
- mestre:"+1A cumulativo e dois efeitos de elementos habilitados.",
- fogo:"Fogo leve, dano e manipulação de chamas.",
- agua:"Água leve, congelamento e manipulação.",
- vento:"Ar leve, movimento e deslocamento.",
- terra:"Terra leve, terreno e percepção sísmica.",
- sagrado:"Êxitos excedentes recuperam Coragem; P anula recuperação.",
- veneno:"Envenena alvo em Sangramento; limiares usam Vida atual.",
- sangue:"Manipula Sangue: 2 Vida diretos ou dano à Integridade.",
- trevas:"Até dois alvos; +2P exclusivamente para dano após acerto.",
- "criar-veneno":"Preparo de Veneno ainda sem custo/regras definidos.",
- "criar-antidoto":"Uma dose não diluída neutraliza um acúmulo.",
- transfusao:"Transfere 1 Vida ou aplica Antídoto à distância."
+ "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
+ "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
+ "conjuracao-equilibrada": "Altera a categoria da magia para Leve ou Pesada.",
+ "improviso": "+1A e elemento disponível na cena sem efeito especial.",
+ "mestre": "+1A cumulativo e dois efeitos de elementos habilitados.",
+ "fogo": "Fogo leve, dano e manipulação de chamas.",
+ "agua": "Água leve, congelamento e manipulação.",
+ "vento": "Ar leve, movimento e deslocamento.",
+ "terra": "Terra leve, terreno e percepção sísmica.",
+ "sagrado": "Êxitos excedentes recuperam Coragem; P anula recuperação.",
+ "veneno": "Magia de Veneno: 1 acúmulo em alvo com Sangramento; limiares por Vida atual",
+ "sangue": "Manipula Sangue: 2 Vida diretos ou dano à Integridade.",
+ "trevas": "Até dois alvos; +2P exclusivamente para dano após acerto.",
+ "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
+ "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
+ "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
+ "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
+ "golpe-fulminante": "Dano de Pavor válido passa a 1 por P no alvo corpo a corpo",
+ "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
+ "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
+ "disparo-fulminante": "Pavor válido provoca 1 dano por P no alvo principal",
+ "disparo-multiplo": "Principal recebe dano integral; adicionais no raio de 3 m recebem metade dos Êxitos e 0,5 por P",
+ "disparo-violento": "Derruba inimigo atingido e empurra 4 m",
+ "disparo-tatico": "Técnica futura, com compatibilidade com Arremesso definida",
+ "armas-fogo": "Especialização em armas de fogo; Descarregar Tambor contra um único alvo",
+ "golpe-baixo": "Acerto aplica Desvantagem (−1A) durante 1 rodada",
+ "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, efeitos de ambas as armas, dano básico uma vez",
+ "furtividade": "Recebe Vantagem (+1A) em testes com Furtividade, cumulativa com Concentrado",
+ "furtividade-avancada": "Acrescenta mais um Atributo, Conhecimento ou Prática pertinente a teste de Furtividade"
 };
 
 const CARD_BRIEFS={
- "criar-item-foco-magia":"Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
- "escudo-arcano":"Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
- "conjuracao-equilibrada":"Ajusta uma magia à categoria Leve ou Pesada mediante gasto, sem liberar dados nem novos Graus gratuitamente.",
- improviso:"Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
- mestre:"Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
- sagrado:"Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
- trevas:"Escolhe até dois alvos usando a mesma rolagem; +2 Pavor são exclusivos para dano após o acerto, não para atingir DE nem gerar reserva.",
- sangue:"Sacrifício depende do Sangramento próprio: 2 Vida sem o estado, 1 ao autoaplicar e zero se já estiver Sangrando. Dano direto à Vida ou Integridade.",
- veneno:"Exige Sangramento no alvo. Cada aplicação soma um acúmulo por duas rodadas. Penalidades dependem da Vida atual, não da máxima.",
- "criar-antidoto":"Cada dose produzida com material venenoso neutraliza um acúmulo. Pode ser ingerida ou aplicada em Sangramento; exige a Perícia Criar Veneno.",
- "criar-veneno":"A compra de Criar Veneno ainda carece de custo e requisitos definidos pelo autor; não pode ser oferecida como compra final.",
- transfusao:"Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
- fogo:"Manipula fogo disponível e técnicas especiais conforme Grau. Na versão inicial, o disparo não causa queimadura direta à Vida.",
- agua:"Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
- vento:"Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
- terra:"Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico."
+ "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
+ "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
+ "conjuracao-equilibrada": "Ajusta uma magia à categoria Leve ou Pesada mediante gasto, sem liberar dados nem novos Graus gratuitamente.",
+ "improviso": "Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
+ "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
+ "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
+ "trevas": "Escolhe até dois alvos usando a mesma rolagem; +2 Pavor são exclusivos para dano após o acerto, não para atingir DE nem gerar reserva.",
+ "sangue": "Sacrifício depende do Sangramento próprio: 2 Vida sem o estado, 1 ao autoaplicar e zero se já estiver Sangrando. Dano direto à Vida ou Integridade.",
+ "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 2 Coragens para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
+ "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
+ "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
+ "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
+ "fogo": "Manipula fogo disponível e técnicas especiais conforme Grau. Na versão inicial, o disparo não causa queimadura direta à Vida.",
+ "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
+ "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
+ "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
+ "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
+ "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
+ "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
+ "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 2 Coragens, e exige possuir a especialização corpo a corpo do peso usado. Al…",
+ "disparo-fulminante": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.…",
+ "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 2 Coragens permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
+ "disparo-violento": "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crític…",
+ "disparo-tatico": "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.…",
+ "armas-fogo": "Crítico ativa gratuitamente os efeitos próprios da arma; acerto normal custa 1 PP ou 2 Coragens. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escope…",
+ "golpe-baixo": "Técnica somática: chutar ponto vulnerável, jogar terra nos olhos e outros golpes desleais. Ao acertar aplica Desvantagem (−1A) por 1 rodada. Contra inimigos com Inteligência grau ZERO, o inimigo ignora Provocar e fixa quem aplicou Golpe Baixo como alvo até que um dos dois seja eliminado, m…",
+ "maestria-manejo-duplo": "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa efeitos das duas armas sem custo; acerto comum ativa ambo…",
+ "furtividade": "Ao usar Furtividade como fonte do teste, recebe +1A automaticamente e sem custo. Cumulativa com outras Vantagens legítimas como Concentrado, mas cada símbolo A só pode ser gasto uma vez. Alguns inimigos são IMUNES a Furtividade; vantagens não anulam essa imunidade nem garantem ocultação.…",
+ "furtividade-avancada": "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite…"
 };
 
 const CARD_ACTIVATIONS={
- "criar-item-foco-magia":"1 PP ou 2 Coragens para efeito Psíquico",
- "escudo-arcano":"1 PP ou 2 Coragens (+ custo por expansão)",
- "conjuracao-equilibrada":"1 PP ou 2 Coragens",
- improviso:"Passiva",mestre:"1 PP ou 2 Coragens",
- fogo:"1 PP ou 2 Coragens",agua:"1 PP ou 2 Coragens",vento:"1 PP ou 2 Coragens",
- terra:"1 PP ou 2 Coragens",sagrado:"1 PP ou 2 Coragens",veneno:"1 PP ou 2 Coragens",
- sangue:"1 PP ou 2 Coragens; Vida se aplicável",trevas:"1 PP ou 2 Coragens",
- "criar-veneno":"Pendente","criar-antidoto":"Dose preparada",transfusao:"Custo de Vida; PP/Coragem a confirmar"
+ "criar-item-foco-magia": "1 PP ou 2 Coragens para efeito Psíquico",
+ "escudo-arcano": "1 PP ou 2 Coragens (+ custo por expansão)",
+ "conjuracao-equilibrada": "1 PP ou 2 Coragens",
+ "improviso": "Passiva",
+ "mestre": "1 PP ou 2 Coragens",
+ "fogo": "1 PP ou 2 Coragens",
+ "agua": "1 PP ou 2 Coragens",
+ "vento": "1 PP ou 2 Coragens",
+ "terra": "1 PP ou 2 Coragens",
+ "sagrado": "1 PP ou 2 Coragens",
+ "veneno": "1 PP ou 2 Coragens após acerto",
+ "sangue": "1 PP ou 2 Coragens; Vida se aplicável",
+ "trevas": "1 PP ou 2 Coragens",
+ "criar-veneno": "Preparação alquímica; ativação conforme arma",
+ "criar-antidoto": "1 dose remove 1 acúmulo",
+ "transfusao": "Custo de Vida; PP/Coragem a confirmar",
+ "armas-longo-alcance": "1 PP ou 2 Coragens no acerto comum; crítico gratuito",
+ "golpe-fulminante": "1 PP ou 2 Coragens; crítico não dispensa",
+ "espalhar-golpe": "1 PP ou 2 Coragens por até 2 alvos adicionais",
+ "maestria-arremesso-armas": "1 PP ou 2 Coragens ao acertar para ativar efeitos",
+ "disparo-fulminante": "1 PP ou 2 Coragens; crítico não dispensa",
+ "disparo-multiplo": "1 PP ou 2 Coragens a cada até 2 alvos adicionais",
+ "disparo-violento": "1 PP ou 2 Coragens; crítico não dispensa",
+ "disparo-tatico": "PENDENTE",
+ "armas-fogo": "1 PP ou 2 Coragens no acerto comum; crítico gratuito para efeitos da arma",
+ "golpe-baixo": "1 PP ou 2 Coragens",
+ "maestria-manejo-duplo": "1 PP ou 2 Coragens no acerto normal; crítico gratuito",
+ "furtividade": "Passiva",
+ "furtividade-avancada": "Passiva"
 };
 
 function skillCompactCard([id,name,detail,cost],wizard){
@@ -236,11 +795,8 @@ function openSkillDetails(id){
 }
 
 const skillFilter={scope:"all",ready:false,query:""};
-function skillRequirementsMet(id){
- if(id==="manejo-perfeito")return state.skills.includes("disciplina-avancada")&&(state.attributes.destreza||0)>=2;
- if(["maestria-manejo-duplo","disparo-fulminante","disparo-multiplo","arma-certa"].includes(id))return false;
- return !skillReq(id);
-}
+function skillRequirementsMet(id){const s=SKILLS.find(x=>x[0]===id);return !!s&&Number.isInteger(s[3])&&!skillReq(id);}
+
 function filteredSkills(){
  const query=skillFilter.query.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
  return SKILLS.filter(([id,name,description])=>{
@@ -458,8 +1014,20 @@ function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
- const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(has);
- // Perícia em Manejo Duplo continua sem definição/publicação neste catálogo e não pode habilitar a compra por ora.
+ const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
+ const rangedSpecialty=has("armas-longo-alcance")||has("maestria-arremesso-armas");
+ const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;
+ if(id==="armas-longo-alcance"&&(disc<1||dex<2))return"Requer Disciplina 1 e Destreza 2.";
+ if(id==="armas-fogo"&&(disc<2||dex<2))return"Requer Disciplina 2 e Destreza 2.";
+ if(id==="disparo-fulminante"&&(disc<2||dex<2||strength<1||!rangedSpecialty))return"Requer Disciplina 2, Destreza 2, Força 1 e Armas Longo Alcance OU Arremesso.";
+ if(id==="disparo-multiplo"&&(disc<2||dex<2||agi<2||!has("disparo-fulminante")||!rangedSpecialty))return"Requer Disciplina 2, Destreza 2, Agilidade 2, Disparo Fulminante e Longo Alcance OU Arremesso.";
+ if(id==="disparo-violento"&&(disc<2||dex<2||!(strength>=2||(strength>=1&&(s.practices.atletismo||0)>=1))||!rangedSpecialty))return"Requer Disciplina 2, Destreza 2, Força 2 OU Força 1 + Atletismo 1, Longo Alcance OU Arremesso.";
+ if(id==="disparo-tatico")return"Regras, requisitos e XP pendentes.";
+ if(id==="golpe-baixo"&&(dex<2||strength<1||agi<1))return"Requer Destreza 2, Força 1 e Agilidade 1.";
+ if(id==="furtividade"&&(stealth<2||dex<2||agi<1))return"Requer Furtividade 2, Destreza 2 e Agilidade 1.";
+ if(id==="furtividade-avancada"&&(stealth<2||!has("furtividade")))return"Requer Furtividade 2 e Perícia em Furtividade.";
+ if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
+ // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
  if(id==="armas-leves"&&!has("armas"))return"Requer Perícia Armas 1.";
  if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
@@ -470,15 +1038,14 @@ function skillReq(id,s=state){
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||vig<1||!has("criar-item-foco-magia")))return"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Maestria em Arremesso não habilita este golpe.";
- if(id==="espalhar-golpe"&&(disc<2||dex<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Golpe Fulminante e especialização corpo a corpo.";
+ if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
- if(id==="maestria-arremesso-armas"&&(!has("armas-leves")||strength<2||dex<2||agi<1))return"Requer Perícia em Armas Leves, Força 2, Destreza 2 e Agilidade 1.";
+ if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Perícia em Armas Leves, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
- if(id==="maestria-manejo-duplo")return"Destreza 2 e Agilidade 1 definidos, mas combinação dos demais requisitos de Manejo Duplo está pendente; compra bloqueada.";
- if(["disparo-fulminante","disparo-multiplo"].includes(id))return"Ramo de distância/arremesso; requisitos e XP serão definidos pelo autor.";
+ if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
  if(id==="marciais"&&(!has("armas")||s.weaponFocus!=="Punhos"||disc<1))
   return"EXPERIMENTAL: requer Armas 1 (foco Punhos) e Disciplina grau 1.";
@@ -489,7 +1056,7 @@ function skillReq(id,s=state){
  if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
- if(id==="criar-veneno"||id==="transfusao")return"Compra ainda pendente de custo ou regras de aquisição.";
+ if(id==="transfusao")return"Compra ainda pendente de custo ou regras de aquisição.";
  if(id==="peritoconj"&&!has("criar-item-foco-magia"))return"Requer Criar Item de Foco e Magia.";
  return null;
 }
@@ -772,7 +1339,9 @@ function renderSources(){
 }
 function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key==="armas_conjuracao";}
 function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
-function mayThird(){return disciplineAdvancedActive()||state.skills.includes("combinacao")||
+function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&state.skills.includes("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
+function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
+function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive()||state.skills.includes("combinacao")||
  (usingDiscipline()&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));}
 function canUseShared(){
  if(!usingDiscipline())return true;
@@ -784,7 +1353,7 @@ function selectSource(group,k){
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
  const source={group,key:k};
  if(group==="attr"){
-  if(disciplineAdvancedActive()&&draft.attribute&&!same(source,draft.attribute)){
+  if(canSecondAttribute()&&draft.attribute&&!same(source,draft.attribute)){
    draft.third=same(source,draft.third)?null:source;
    draft.contextOK=false;
   }else{
@@ -813,7 +1382,7 @@ function buildPool(){
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
-  if(draft.third.group==="attr"&&!disciplineAdvancedActive())errors.push("Segundo Atributo só é permitido com Disciplina Avançada numa ação com Disciplina.");
+  if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo exige Disciplina Avançada com Disciplina ou Furtividade Avançada com Furtividade.");
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
  }
@@ -872,7 +1441,7 @@ function renderComposer(){
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
  (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com Disciplina Avançada, pode acrescentar inclusive outro Atributo quando a Base é Disciplina.</p>':
- '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, a ação mantém duas fontes. Disciplina Avançada permite uma terceira fonte somente em ações com Disciplina.")+'</p>')+
+ '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, são duas fontes. Disciplina Avançada e Furtividade Avançada habilitam complemento em suas ações.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  '<div class="fp-composer-actions"><button class="fp-secondary" type="button" data-action="clear">Limpar</button>'+
  '<button class="fp-primary-btn" type="button" data-action="roll"'+(errors.length?" disabled":"")+'>Rolar dados →</button></div>';
@@ -916,7 +1485,9 @@ function score(){
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0));
- const aPool=Math.max(0,raw[1]+situation[2]+w+(p.opts.combatBonus?1:0)+(critTier>=3?1:0));
+ const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
+ const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
+ const aPool=Math.max(0,raw[1]+situation[2]+w+(p.opts.combatBonus?1:0)+stealthBonus+(critTier>=3?1:0));
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");

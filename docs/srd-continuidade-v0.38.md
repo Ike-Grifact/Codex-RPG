@@ -11,6 +11,46 @@ updated: "2026-11-11"
 
 **Precedência:** decisão explícita do autor > seção **0-V (v0.38)** > seção 0-U da v0.37 nos assuntos não revistos > documentos históricos.
 
+
+## 0-W. Consolidação de Perícias: ladino, combate, armas e alquimia — 12/11/2026 [DEFINIDO / PENDENTE]
+
+**Precedência:** as decisões autorais desta seção substituem entradas históricas incompatíveis sobre Espalhar Golpe, Maestria em Arremesso, Maestria em Manejo Duplo, Disparo Múltiplo, Armas de Fogo e Veneno. Não misturar tabelas antigas. Os IDs internos das Perícias renomeadas são mantidos para preservar fichas antigas.
+
+### Ladino e Furtividade [DEFINIDO]
+
+- **Perícia em Furtividade:** compra 1 XP; Furtividade 2 + Destreza 2 + Agilidade 1. Vantagem passiva +1A em testes que usam Furtividade, cumulativa com outras Vantagens (como Concentrado). Inimigos imunes a Furtividade não são afetados pela ocultação.
+- **Furtividade Avançada:** compra 1 XP; Furtividade 2 + Perícia em Furtividade. Pode incluir mais um Atributo, Conhecimento ou Prática pertinente no teste com Furtividade, respeitando pilha, limites e pertinência da fonte.
+- **Golpe Baixo:** compra 1 XP; Destreza 2 + Força 1 + Agilidade 1; custa 1 PP ou 2 Coragens ao acertar, aplica Desvantagem (−1A) por 1 rodada. Contra alvo de Inteligência grau 0, ignora Provocar e fixa o agressor até eliminação de um dos envolvidos; sem ações ou movimentos gratuitos.
+
+### Ramo corpo a corpo [DEFINIDO / área PENDENTE]
+
+- **Golpe Fulminante:** Disciplina 2 + Força 2 + especialização corpo a corpo (Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Ao acertar, por 1 PP ou 2 Coragens, Pavor não anulado passa a causar 1 dano por P; crítico não dispensa ativação. Maestria/Perícia em Arremesso não satisfaz esse requisito.
+- **Golpe Colossal:** substitui Espalhar Golpe (nome novo, mesmo ID de ficha). Compra 1 XP; Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo. Cada 1 PP ou 2 Coragens permite atingir até 2 alvos adicionais dentro de 3 m, com a mesma rolagem contra DE individual e metade do dano dos Êxitos arredondada para baixo; custo consumido ainda que erre alvo adicional. Alvo principal recebe dano integral. Não fornece +1E. Não transmite dano de Pavor de Golpe Fulminante aos adicionais. **PENDENTE:** centro exato da área.
+- **Perícia em Manejo Duplo:** compra 1 XP, Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 e pelo menos uma das Perícias Leves, Médias, Pesadas, Arremesso, Armas de Fogo ou Armas de Longo Alcance. Permite equipar duas armas, rolar Armas + Armas + Atributo em um único golpe; dano básico não é duplicado. Crítico ativa efeitos das duas armas gratuitamente; acerto normal por 1 PP ou 2 Coragens ativa efeitos próprios de ambas.
+
+### Ramo de longa distância, arremesso e técnicas somáticas [DEFINIDO / ressalvas]
+
+- **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2; crítico ativa efeitos da arma gratuitamente, acerto normal custa 1 PP ou 2 Coragens. Ignora Desvantagens naturais por peso, mantendo Vantagens. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta pequena neutra em todos; besta de duas mãos −1A/neutro/+1A.
+- **Arremesso é ação geral:** qualquer personagem pode arremessar armas, passar armas a aliados e lançar armas inimigas para longe. **Perícia em Arremesso de Armas** (antiga Maestria; ID salvo preservado) custa 1 XP, exige Força 2 + Destreza 2 + Agilidade 1 e Perícia em Armas Leves OU Médias OU Pesadas. Por 1 PP ou 2 Coragens no acerto, ativa os efeitos especiais da arma arremessada além do dano básico. Alcance efetivo leve 12 m, médio 8 m, pesado 4 m; exceder 1 m dá Desvantagem (−1A), 2 m Desvantagem Absoluta (−1E), 3 m ou mais Acerto de Sorte (−2E). Não sofre Desvantagem por proximidade, mas aliados próximos do alvo geram Desvantagem. Arma se aloja no alvo com penalidade pertinente. Acerto limpo pode permitir nova jogada, avanço, retirada e ataque corpo a corpo; acerto com Pavor pode permitir ao inimigo utilizar a arma. Falha limpa: cai no caminho, pode gastar 1A para correr e recuperar; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Distância da queda em falha (metros) = E mantidos + P mantidos NÃO anulados + 1E por 2A convertidos; A restante não soma. Retirar arma alojada testa Armas + Força + Atletismo contra resistência Força + Vigor + Atletismo do alvo; conversão da dificuldade ainda PENDENTE.
+- **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Ao acertar, pagando 1 PP/2 Coragens, Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
+- **Disparo Múltiplo:** compra 1 XP; Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Longo Alcance OU Arremesso). Cada 1 PP/2 Coragens cobre até dois alvos adicionais num raio de 3 m ao redor do ALVO PRINCIPAL; rolagem única vs DE individual, custo pago mesmo se errar. Alvo principal dano integral; adicionais metade dos Êxitos arredondada para baixo e 0,5 por Pavor válido, mesmo se Fulminante estiver ativado no principal.
+- **Disparo Violento:** compra 1 XP, Destreza 2 + Disciplina 2 + (Força 2 OU Força 1 + Atletismo 1) + (Longo Alcance OU Arremesso). 1 PP/2 Coragens no acerto derruba e empurra o inimigo 4 m. Arco longo ou besta de duas mãos; com Arremesso precisa arma MÉDIA ou PESADA. Crítico não dispensa.
+- **Disparo Tático:** compatível com Arremesso, demais regras de compra/ativação PENDENTES.
+- Técnicas somáticas independentes podem ser ativadas na mesma oportunidade pagando cada custo.
+
+### Armas de Fogo [DEFINIDO / dependência PENDENTE]
+
+- **Perícia em Armas de Fogo:** 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente efeitos da arma e acerto normal custa 1 PP/2 Coragens. Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
+- **Descarregar Tambor:** modalidade de Disparo Múltiplo exclusivamente com arma automática ou semiautomática, alvo ÚNICO, um teste, consome todas as munições disponíveis, custa **1 PP OU 1 Coragem por tiro**. Primeiro tiro dano integral de Êxitos; demais metade dos Êxitos cada (arredondar para baixo). Pavor NÃO causa dano. Um Pavor mantido e não anulado provoca travamento em arma sujeita; P anulado por A ou descartado não trava. O revólver não trava e não é automático. Disparo Fulminante não se aplica a armas de fogo. **PENDENTE:** exceção de acesso a Disparo Múltiplo para especialistas só em armas de fogo, pois seu requisito atual exige Fulminante/Longo Alcance/Arremesso.
+
+### Veneno e Antídoto [DEFINIDO / evolução PENDENTE]
+
+- **Criar Veneno:** compra 1 XP, Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2. Preparação alquímica, NÃO concede conjuração. Cria doses não diluídas de materiais venenosos. Cada dose ingerida provoca 1 acúmulo. Máximo de UMA dose por arma; para aplicar com golpe, alvo deve estar em Sangramento. Duas armas envenenadas com Manejo Duplo podem aplicar 2 acúmulos no mesmo ataque (um por arma, se ambos os efeitos forem ativados).
+- **Envenenamento (alquímico e elemental):** cada acúmulo dura 2 rodadas individualmente e não é renovado por aplicação posterior. Usa **Vida ATUAL, nunca Vida máxima**. 2/3 da Vida atual em acúmulos ativa Ferido. Acúmulos iguais à Vida atual ativam Incapacitado. Se estiver envenenado com **exatamente 2 de Vida atual**, ou se houver **12 acúmulos ativos**, ativa Inconsciente. Graus 2 e 3 elementais exigem combinação. **Amplificar Veneno** fica PENDENTE para futura decisão, sem multiplicar doses por arma agora.
+- **Criar Antídoto:** 1 XP; Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno. Produz antídoto de materiais venenosos coletados; uma dose não diluída remove 1 acúmulo, ingerida ou aplicada ao alvo em Sangramento. Duas doses removem dois acúmulos. Transfusão mantém regra própria sem aquisição definida.
+
+---
+
 ## 0-V.1. Espalhar Golpe [DEFINIDO]
 
 **Nome:** Espalhar Golpe. O termo **“Golpe Colossal” é o nome anterior da própria Perícia**, não um benefício separado cumulativo, nem uma ativação de outra técnica. **Espalhar Golpe NÃO acrescenta +1 Êxito.** Retirar esse bônus de todas as versões desta regra.
