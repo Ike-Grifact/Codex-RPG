@@ -211,19 +211,39 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
-  s.skills=[...new Set(Array.isArray(v.skills)?v.skills.filter(x=>SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))):[])];
+ const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string"))]:[];
+ const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
+ const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1;
+ const shouldMigrateFocus=legacyCost>0&&qualifiesForFocus&&!rawSkills.includes("criar-item-foco-magia");
+ const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
+ s.skills=[...new Set(rawSkills.filter(x=>SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ if(shouldMigrateFocus)s.skills.push("criar-item-foco-magia");
+ if(legacyCost>0&&!s.notes.includes("Migração conjuração 2026:")){
+  const outcome=qualifiesForFocus?"Perícias antigas substituídas por Criar Item de Foco e Magia (1 XP).":
+   "Perícias antigas encerradas, mas a nova exige Disciplina 1 e Inteligência 1; o XP correspondente foi liberado, adquira a nova Perícia após cumprir requisitos.";
+  s.notes=(s.notes+String.fromCharCode(10)+"Migração conjuração 2026: "+outcome+" Crédito calculado sem duplicar reembolso.").trim().slice(0,5000);
+ }
  if(Array.isArray(v.skills)&&v.skills.includes("raio")&&!s.notes.includes("Legado Raio:")){
   s.notes=(s.notes+"\nLegado Raio: habilitação antiga removida; Raio agora é condição, não elemento. O XP da compra antiga foi liberado para redistribuição.").trim().slice(0,5000);
  }
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
  s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
+ s.legacyXPRefund=clamp(Math.floor(v.legacyXPRefund||0),0,1000000);
  s.creationLocked=!!v.creationLocked||s.level>1;
- // Snapshot da criação: fichas antigas recuperam saldo não gasto sem alterar as compras.
+ // Snapshot da criação: preservar a distribuição anterior ao substituir as Perícias antigas.
  if(s.creationLocked){
   const used=rawCreationCosts(s),saved=v.creationBudgetSnapshot;
+  const formerSkillsCost=used.skills+legacyDifference;
   s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET[k])?
    {attr:saved.attr,training:saved.training,skills:saved.skills}:
-   {attr:Math.min(used.attr,CREATE_BUDGET.attr),training:Math.min(used.training,CREATE_BUDGET.training),skills:Math.min(used.skills,CREATE_BUDGET.skills)};
+   {attr:Math.min(used.attr,CREATE_BUDGET.attr),training:Math.min(used.training,CREATE_BUDGET.training),
+    skills:Math.min(formerSkillsCost,CREATE_BUDGET.skills)};
+  if(legacyCost>0&&legacyDifference>0){
+   const oldGeneral=Math.max(0,formerSkillsCost-s.creationBudgetSnapshot.skills);
+   const newGeneral=Math.max(0,used.skills-s.creationBudgetSnapshot.skills);
+   const alreadyRefunded=oldGeneral-newGeneral;
+   s.legacyXPRefund+=Math.max(0,legacyDifference-alreadyRefunded);
+  }
  }
  s.xpHistory=Array.isArray(v.xpHistory)?v.xpHistory.slice(0,60).map(x=>({
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
@@ -354,7 +374,8 @@ function renderXP(){
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo insuficiente: faltam "+Math.abs(x.free)+" XP. Adicione XP ou reorganize as compras ainda não consolidadas.":
-  (state.creationLocked?"XP inicial não utilizado e liberado: "+x.initialCarryover+"; disponível dessa sobra: "+x.initialRemaining+". ":"5 XP de Perícias definidos no nível 1; 6 XP de Atributos e 8 de Formação experimentais. ")+"Avanços consomem o saldo livre."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
+  (state.creationLocked?"XP inicial não utilizado e liberado: "+x.initialCarryover+"; disponível dessa sobra: "+x.initialRemaining+". ":"5 XP de Perícias definidos no nível 1; 6 XP de Atributos e 8 de Formação experimentais. ")+
+  (state.legacyXPRefund?"Crédito de migração de Perícias de conjuração: "+state.legacyXPRefund+" XP. ":"")+"Avanços consomem o saldo livre."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
