@@ -98,3 +98,9 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 - Observe quantas vezes a queda do último Líder realmente abriu negociação, fuga, rendição ou reorganização por Influência.
 - Não invente custo de iniciativa pública de inimigo, divisão de Pavor de área ou novos graus de Vantagem enquanto os procedimentos estão PENDENTES.
 
+
+## Atualização de Conjuração — novembro 2026
+
+As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1). A partir de Disciplina 2, permite criar magias de Grau 2 e 3 fora de combate, 1 PP ou 2 Coragens por criação, memorizadas em slots para conjuração rápida. Pesos G1=1, G2=2, G3=3, G4=4; sem foco −1 peso (incidência e piso PENDENTES). A capacidade total de slots permanece PENDENTE em razão da divergência com histórico do SRD.
+
+**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Equilibrada** custa 1 XP, requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2, e custa 1 PP ou 2 Coragens para tornar uma magia Pesada ou Leve; distinção de Grau numérico pendente. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.38 para versões e status.
