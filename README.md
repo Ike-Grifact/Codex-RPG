@@ -12,8 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.37 | [docs/srd-continuidade-v0.37.md](docs/srd-continuidade-v0.37.md) | **Versão mais recente (11/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.37 |
+| SRD de Continuidade v0.38 | [docs/srd-continuidade-v0.38.md](docs/srd-continuidade-v0.38.md) | **Versão mais recente (11/11/2026)** |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.38 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -62,7 +62,7 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **SRD de Continuidade v0.37**, com seção **0-R** para Provocação, Liderança, Antecipar de inimigos e disputa de influência. Ordem:
+A fonte normativa atual é o **SRD de Continuidade v0.38**, com seção **0-V** para golpes, disparos e requisitos revisados; **0-U** para armaduras e Perícias; **0-R** para Provocação, Liderança, Antecipar de inimigos e disputa de influência. Ordem:
 
 1. Decisão explícita mais recente do autor.
 2. Seção 0-R da continuidade v0.37, nos assuntos que regula.
