@@ -58,7 +58,7 @@ const SKILLS=[
  ["recobrar-coragem","Recobrar Coragem","1 XP. Após descanso curto ou longo e cena narrativa, recupera 2 Coragens. Recuperação anotada manualmente.",1],
  ["maestria-manejo-duplo","Maestria em Manejo Duplo","Requisitos anteriores (a esclarecer) + Destreza 2 + Agilidade 1. Um golpe com duas armas; Armas + Armas + Atributo; efeitos das duas em crítico. Compra pendente.",1],
  ["instinto-sobrevivencia","Instinto de Sobrevivência","Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",null],
- ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null]
+ ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null],
  ["criar-veneno","Criar Veneno","Requisito de Criar Antídoto, mas aquisição, custo e preparo ainda pendentes nesta leva. Compra bloqueada até decisão do autor.",null],
  ["criar-antidoto","Criar Antídoto","Requisitos Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno. 1 XP. Preparar doses com materiais venenosos coletados. Ingerir ou aplicar em Sangramento: cada dose não diluída remove 1 acúmulo de Envenenamento. Hemomante pode conduzir por Transfusão à distância com sacrifício de Vida e gasto das doses. Criar Veneno ainda precisa de definição para habilitar compra.",1],
  ["transfusao","Transfusão","Perícia separada de Elemento Sangue, compra e requisitos próprios ainda pendentes. Pode agir em combate se conjurador e alvo estiverem em Sangramento: transfere 1 Vida própria, recuperando 1 Vida do beneficiário. Pode levar Antídoto à distância ao custo de 1 Vida e das doses usadas, sem duplicação. Não gera Vida adicional.",null],
