@@ -97,7 +97,7 @@ Nos dados rolados, o destaque principal mostra **as runas reais da face repetida
 **Retenção corrigida:** ao menos um dado de Atributo deve ser **rolado**, mas o jogador é livre para descartá-lo e manter apenas outros dados válidos. O crítico de duas ou mais faces máximas também não exige Atributo mantido.
 
 
-## Armaduras por tipo e Grau (SRD v0.37)
+## Armaduras por tipo e Grau (SRD v0.38)
 
 O tipo de armadura é independente do Grau: **Muito Leve** (sem Integridade, +2 DE na esquiva), **Leve** (Integridade baixa, +1 DE na esquiva), **Média** (0 DE), **Pesada** (−1 DE) e **Muito Pesada** (−2 DE, imunidade física natural e requisitos Vigor 6 + Atletismo 6 em qualquer Grau).
 
@@ -107,9 +107,9 @@ A ficha mostra **DE base** e, quando for relevante, o valor de **DE para esquiva
 
 ## Perícias autorais e orçamento de criação
 
-**5 XP de Perícias no nível 1 [DEFINIDO]**; Atributos 6 XP + Formação 8 XP permanecem EXPERIMENTAIS. O catálogo da ficha apresenta 15 Perícias fornecidas pelo autor, além das opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
+**5 XP de Perícias no nível 1 [DEFINIDO]**; Atributos 6 XP + Formação 8 XP permanecem EXPERIMENTAIS. O catálogo da ficha apresenta as 15 Perícias fornecidas pelo autor, os dois novos Disparos pendentes e as opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
 
-A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.37](../docs/srd-continuidade-v0.37.md).
+A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe/Disparos pendentes, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.38](../docs/srd-continuidade-v0.38.md).
 
 
 ## Críticos cumulativos (SRD v0.29)
