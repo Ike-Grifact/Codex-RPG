@@ -59,6 +59,81 @@ const SKILLS=[
  ["instinto-sobrevivencia","Instinto de Sobrevivência","Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",null],
  ["arma-certa","Maestria Arma Certa","+1E com peso favorável. Custo de XP pendente.",null]
 ];
+
+// Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
+const SKILL_AFFINITY={
+ combate:["practice:armas_conjuracao"],armas:["practice:armas_conjuracao"],marciais:["practice:armas_conjuracao"],
+ montar:["attr:influencia"],"provocacao-sofisticada":["attr:influencia","practice:apresentacao"],
+ combinacao:[],aprendiz:["practice:armas_conjuracao","attr:inteligencia"],
+ magia:["practice:armas_conjuracao","attr:inteligencia"],peritoconj:["practice:armas_conjuracao"],
+ improviso:["practice:armas_conjuracao","know:alquimia"],mestre:["practice:armas_conjuracao"],
+ fogo:["practice:armas_conjuracao","know:alquimia"],agua:["practice:armas_conjuracao","know:alquimia"],
+ vento:["practice:armas_conjuracao"],terra:["practice:armas_conjuracao","know:engenharia"],
+ sagrado:["practice:armas_conjuracao","know:medicina"],veneno:["practice:armas_conjuracao","know:alquimia"],
+ sangue:["practice:armas_conjuracao","know:medicina"],trevas:["practice:armas_conjuracao"],
+ "armas-leves":["practice:armas_conjuracao"],"armas-medias":["practice:armas_conjuracao","attr:forca"],
+ "armas-pesadas":["practice:armas_conjuracao","attr:forca"],"disciplina-avancada":["practice:armas_conjuracao"],
+ "manejo-perfeito":["practice:armas_conjuracao","attr:destreza"],
+ "golpe-fulminante":["practice:armas_conjuracao","attr:forca"],
+ "espalhar-golpe":["practice:armas_conjuracao","attr:destreza"],
+ pugilismo:["practice:armas_conjuracao","attr:forca","attr:destreza"],
+ "artista-marcial":["practice:armas_conjuracao","attr:destreza"],
+ "maestria-arremesso-armas":["practice:armas_conjuracao","attr:forca","attr:destreza","attr:agilidade"],
+ "disparo-fulminante":["practice:armas_conjuracao"],"disparo-multiplo":["practice:armas_conjuracao"],
+ "recuperacao-vigorosa":["attr:vigor","know:medicina"],
+ "recuperacao-movimento":["attr:vigor","practice:atletismo","know:medicina"],
+ "recobrar-coragem":["attr:influencia","practice:apresentacao"],
+ "maestria-manejo-duplo":["practice:armas_conjuracao","attr:destreza","attr:agilidade"],
+ "instinto-sobrevivencia":["attr:vigor","know:protecao"],
+ "arma-certa":["practice:armas_conjuracao"]
+};
+const SKILL_BRANCHES=[
+ ["armas","armas-leves","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo"],
+ ["armas","armas-leves","armas-medias","armas-pesadas","golpe-fulminante","espalhar-golpe","manejo-perfeito","maestria-manejo-duplo"],
+ ["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe"],
+ ["disciplina-avancada","manejo-perfeito","maestria-manejo-duplo"],
+ ["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"],
+ ["aprendiz","magia","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"],
+ ["provocacao-sofisticada","combate","montar","recobrar-coragem"]
+];
+const skillFilter={scope:"all",ready:false,query:""};
+function skillRequirementsMet(id){
+ if(id==="manejo-perfeito")return state.skills.includes("disciplina-avancada")&&(state.attributes.destreza||0)>=2;
+ if(["maestria-manejo-duplo","disparo-fulminante","disparo-multiplo","arma-certa"].includes(id))return false;
+ return !skillReq(id);
+}
+function filteredSkills(){
+ const query=skillFilter.query.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+ return SKILLS.filter(([id,name,description])=>{
+  if(skillFilter.ready&&!skillRequirementsMet(id))return false;
+  if(skillFilter.scope==="related"){
+   if(!SKILL_BRANCHES.some(branch=>branch.includes(id)&&branch.some(k=>state.skills.includes(k))))return false;
+  }else if(skillFilter.scope!=="all"&&!(SKILL_AFFINITY[id]||[]).includes(skillFilter.scope))return false;
+  const str=(name+" "+description).toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return !query||str.includes(query);
+ });
+}
+function skillFilterControls(){
+ const opt=(value,label)=>'<option value="'+value+'"'+(skillFilter.scope===value?" selected":"")+'>'+esc(label)+'</option>';
+ const category=(label,group,items)=>'<optgroup label="'+label+'">'+items.map(([id,name])=>opt(group+":"+id,name)).join("")+'</optgroup>';
+ return '<div class="fp-skill-filters">'+
+  '<label>Pesquisar Perícia<input type="search" data-skill-search placeholder="Nome ou efeito..." value="'+esc(skillFilter.query)+'"></label>'+
+  '<label>Organizar por<select data-skill-scope>'+opt("all","Todas as Perícias")+opt("related","Relacionadas às adquiridas")+
+   category("Por Atributo","attr",A)+category("Por Conhecimento","know",K)+category("Por Prática","practice",P)+'</select></label>'+
+  '<label class="fp-skill-ready"><input data-skill-ready type="checkbox"'+(skillFilter.ready?" checked":"")+'> Requisitos atingidos</label>'+
+  '<p class="fp-skill-filter-hint">Atributos, Conhecimentos e Práticas organizam por requisito ou afinidade temática, não criam requisitos novos. <strong>'+filteredSkills().length+' de '+SKILLS.length+'</strong> Perícias exibidas.</p></div>';
+}
+function syncSkillFilterControls(){
+ document.querySelectorAll("[data-skill-scope]").forEach(el=>el.value=skillFilter.scope);
+ document.querySelectorAll("[data-skill-ready]").forEach(el=>el.checked=skillFilter.ready);
+ document.querySelectorAll("[data-skill-search]").forEach(el=>{if(el!==document.activeElement)el.value=skillFilter.query;});
+ document.querySelectorAll(".fp-skill-filter-hint strong").forEach(el=>el.textContent=filteredSkills().length+" de "+SKILLS.length);
+}
+function renderWizardSkillCards(){
+ const container=$("wizard-skill-cards");
+ if(container)container.innerHTML=wizardSkillCardsMarkup();
+}
+
 const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Alto / Pesado",1],extremo:["Extremo",2]};
 const SITUATIONS={normal:["Normal",0,0],vantagem:["Vantagem (+1A)",0,1],desvantagem:["Desvantagem (−1A)",0,-1],absoluta:["Vantagem absoluta (+1E)",1,0],desv_absoluta:["Desvantagem absoluta (−1E)",-1,0],sorte:["Ação de Sorte (−2E)",-2,0]};
 const $=id=>document.getElementById(id),esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -383,8 +458,9 @@ function wizardSource(group,item){
   '<div class="fp-wiz-stepper"><button data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" type="button" aria-label="Reduzir grau de '+esc(name)+'"'+(lower?'':' disabled')+'>−</button><b>'+g+'</b><button data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" type="button" aria-label="Comprar grau de '+esc(name)+'"'+(raised?'':' disabled')+'>+</button></div>'+
   '</div></article>';
 }
-function wizardSkills(){
- return '<div class="fp-wiz-skills">'+SKILLS.map(([id,name,desc,cost])=>{
+function wizardSkillCardsMarkup(){
+ const items=filteredSkills();
+ return items.length?items.map(([id,name,desc,cost])=>{
   const owned=state.skills.includes(id),reason=skillReq(id);
   const available=Number.isInteger(cost)&&canAfford("skills",cost)&&!reason;
   const removable=owned&&!state.creationLocked&&!state.pending;
@@ -395,11 +471,15 @@ function wizardSkills(){
    (reason?'<small class="fp-wiz-warning">'+esc(reason)+'</small>':'')+'</div>'+
    '<button type="button" data-action="skill" data-id="'+id+'"'+(disabled?' disabled':'')+'>'+
    (owned?'Adquirida ✓':action)+'</button></article>';
- }).join("")+'</div>'+
- (state.skills.includes("armas")?'<div class="fp-wiz-focus"><label>Especialização de Armas 1<select data-wizard-focus aria-label="Especialização de Armas 1">'+
-  [["leve","Leve"],["medio","Média"],["pesado","Pesada"],["distancia","Distância"],["Punhos","Punhos"]]
-   .map(([v,label])=>'<option value="'+v+'"'+(state.weaponFocus===v?' selected':'')+'>'+label+'</option>').join("")+
-  '</select></label><small>A escolha de Punhos é relevante para os requisitos provisórios de Artes Marciais.</small></div>':'');
+ }).join(""):'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros. Experimente outra opção.</div>';
+}
+function wizardSkills(){
+ return skillFilterControls()+
+  '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>'+
+  (state.skills.includes("armas")?'<div class="fp-wiz-focus"><label>Especialização de Armas 1<select data-wizard-focus aria-label="Especialização de Armas 1">'+
+   [["leve","Leve"],["medio","Média"],["pesado","Pesada"],["distancia","Distância"],["Punhos","Punhos"]]
+    .map(([v,label])=>'<option value="'+v+'"'+(state.weaponFocus===v?' selected':'')+'>'+label+'</option>').join("")+
+   '</select></label><small>Esta escolha se refere à habilitação Armas 1, não à rolagem básica de Disciplina.</small></div>':'');
 }
 function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
@@ -763,7 +843,7 @@ function adjustResource(resource,delta){
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
 function renderSkills(){
- $("skills-list").innerHTML=SKILLS.map(([id,name,detail,cost])=>{
+ $("skills-list").innerHTML=filteredSkills().map(([id,name,detail,cost])=>{
   const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
   const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
   const note=req||(!owned&&!affordable?"XP insuficiente.":"");
@@ -952,6 +1032,11 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.skillScope!==undefined||el.dataset.skillReady!==undefined){
+  if(el.dataset.skillScope!==undefined)skillFilter.scope=el.value;
+  if(el.dataset.skillReady!==undefined)skillFilter.ready=el.checked;
+  syncSkillFilterControls();renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;
+ }
  if(el.dataset.option){
   const k=el.dataset.option;
   if(!Object.hasOwn(draft,k))return;
@@ -988,6 +1073,10 @@ function bind(){
  });
  document.addEventListener("change",onChange);
  document.addEventListener("input",event=>{
+  if(event.target?.dataset?.skillSearch!==undefined){
+   skillFilter.query=String(event.target.value).slice(0,100);
+   renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;
+  }
   const field=event.target?.dataset?.wizardField;
   if(viewMode!=="builder"||!["name","concept","origin","virtue","personality"].includes(field))return;
   state[field]=String(event.target.value).slice(0,field==="name"?70:100);
