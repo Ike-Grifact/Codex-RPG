@@ -193,6 +193,36 @@ A partir de **Disciplina 2**, a Perícia **Criar Item de Foco e Magia** permite 
 - Informar a tabela de pesos 1–4, a criação G2–G3 fora de combate e seu custo, sem calcular ocupação/disponibilidade de spellslots não decididos.
 - Preservar filtros por Inteligência, Destreza, Disciplina e Artesão quando pertinentes; filtros temáticos não viram exigências.
 
+## 0-V.9. Capacidade mental por dados de Disciplina e Perícia em Elemento Ar [DEFINIDO / PENDENTE]
+
+**Decisões autorais mais recentes — prevalência sobre hipóteses de Inteligência e perícias históricas Vento.**
+
+### Spellslots mentais e foco físico [DEFINIDO em princípio / conversão PENDENTE]
+
+- **A capacidade de carga dos spellslots mentais deriva EXCLUSIVAMENTE dos dados da Prática Disciplina**. Não acrescentar slots por **Grau de Inteligência**, por blocos de três Graus de Inteligência, pelo inventário nem por carregar itens de foco. A antiga capacidade com acréscimos por Conjuração e Inteligência é **superada onde divergir**: apenas os **dados de Disciplina** entram na capacidade.
+- **PENDENTE:** a função exata que transforma os dados de Disciplina (quantidade e/ou tamanho) em **unidades de capacidade**. Não pressupor que um dado equivale a um slot, nem somar as faces dos dados, nem automatizar a capacidade sem confirmação. O limite histórico de **9 slots** e seu eventual uso atual também precisam de confirmação.
+- **Peso nominal de magia memorizada [DEFINIDO]:** G1=1, G2=2, G3=3, G4=4. **Criar magia sem foco:** −1 no peso da magia; tratamento de G1 e aplicação exata a slots continuam **PENDENTES**, sem concluir que peso 0 permite armazenar infinitas magias.
+- **Itens de foco são OBJETOS FÍSICOS:** usam **as cargas convencionais de inventário**, e seu peso **NÃO é anulado** por memorização, uso de slots mentais ou criação de magia. A indicação anterior de usar **Potência com Força e Atletismo** para calcular a carga deve ser interpretada juntamente com as regras gerais de carga; correspondência exata entre Potência, Força, Atletismo e carga continua **PENDENTE** onde não publicada. Não oferecer bônus de carga mental por portar foco.
+- Na ficha, continuar somando **todo foco cadastrado** ao peso físico convencional. Spellslots mentais permanecem **informativos e não automatizados**, até a fórmula estar decidida.
+
+### Perícia em Elemento Ar [DEFINIDO no texto fornecido / procedimentos PENDENTES]
+
+**Custo: 1 XP. Requisitos cumulativos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.**
+
+Permite **conjurar magias elementais de Ar**, começando por **Magias Leves**, e dominar os efeitos iniciais do elemento. **Em ataque que acerte, independentemente de ser crítico**, pode gastar **1 PP OU 2 Coragens** para ativar **UM efeito especial escolhido** de Ar. Não aplicar todos os efeitos simultaneamente nem tornar efeitos gratuitos por crítico.
+
+| Grau | Exemplos de efeitos e manifestações |
+|---|---|
+| **Grau 1** | Aumentar deslocamento em **4 m** por **autoempurrão**; puxar ou empurrar objetos; formas em **linha reta, círculo, cone ou X** |
+| **Grau 2** | **Sufocar**, causando dano na **Vida ou armadura** segundo a situação; **puxar**, **empurrar + derrubar com dano**; deslocamento aumentado para **8 m**; formas em linha reta, círculo, cone ou X |
+| **Grau 3** | **Conjurar ao final do turno dos aliados**; afetar vários alvos em **área grande**; invocar **tornado** ou **forte rajada de vento**, com possíveis **danos por queda**; referência espacial de **16 m**, cujo significado exato ainda necessita ser identificado; formas em linha reta, círculo, cone ou X |
+
+**PENDENTE:** se 16 m mede alcance, deslocamento, área ou altura da queda; requisitos efetivos para lançar magias G2/G3 além de possuir a Perícia; duração e limites de Sufocar; valores de dano da queda; largura/raio/área das formas; testes resistidos ou DE de alvo; custo e gatilho em efeitos utilitários que não sejam ataques com acerto; definição de quando se considera “final do turno dos aliados”, sem inserir ações extras ou turnos novos por presunção.
+
+**Nome e catálogo:** o nome autoral atual é **Perícia em Elemento Ar**, e **Ar/Vento são o mesmo elemento neste contexto, não compras duplicadas**. A antiga entrada **Elemento: Vento** do protótipo será **renomeada**, mantendo-se o identificador interno de compra **vento** para preservar fichas já salvas, com os novos requisitos e efeitos acima. Não criar um elemento “Raio” separado; os fenômenos elétricos não são automaticamente poderes desta Perícia.
+
+**Interação com outras Perícias [PENDENTE]:** a Perícia habilita os efeitos elementais descritos, mas não elimina os requisitos de criar e memorizar magias, de conjuração equilibrada nem da combinação com Trevas ou outros elementos. Condições específicas de efeitos superiores devem ser confirmadas antes de automação.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
