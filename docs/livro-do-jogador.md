@@ -346,7 +346,18 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Sem item de foco:** a magia criada tem **−1 de peso**. **PENDENTE:** confirmar se a redução atua sobre a ocupação dos slots e como tratar G1 com peso 0; não confundir peso de magia memorizada com a carga física dos itens de foco.
 
-**Capacidade de spellslots mentais [DEFINIDO em fonte / PENDENTE na fórmula]:** a reserva de espaços mentais baseia-se **somente nos dados da Prática Disciplina**, sem acréscimos por Inteligência. Não somar +1 slot por aumento de Inteligência, nem +1 por três Graus, nem incluir itens de foco. **PENDENTE:** como a quantidade e/ou tamanho dos dados de Disciplina se transformam em pontos de capacidade e se o antigo limite de 9 slots ainda se aplica. A ficha não inventa essa conversão.
+**Spellslots mentais [DEFINIDO]:** cada **dado da Prática Disciplina** concede **1 unidade de capacidade mental, equivalente a 1 ponto de peso de magia**. Não importa se é d6, d10 ou d12; **Inteligência não acrescenta espaços**. O peso nominal das magias é G1=1, G2=2, G3=3, G4=4. A redução de **−1 peso para magia criada sem foco** permanece, mas o mínimo de peso para G1 e como distribuir uma magia pesada entre slots individuais precisam ser esclarecidos.
+
+| Grau de Disciplina | Dados atuais | Capacidade mental em unidades de peso |
+|---:|---|---:|
+| 1 | 1d10 | 1 |
+| 2 | 2d10 | 2 |
+| 3 | 3d10 | 3 |
+| 4 | 2d10 + 1d12 | 3 |
+| 5 | 1d10 + 2d12 | 3 |
+| 6 | 3d12 | 3 |
+
+**Divergência numérica [PENDENTE]:** o exemplo do autor fala em **6 elementos de Grau 2 memorizados no nível máximo**. Mas a progressão atual de Disciplina chega a **3 dados = 3 unidades de capacidade**, comportando **1 magia G2** de peso nominal 2 ou **até 3 magias G2** se a redução de peso sem foco aplicar-se integralmente aos slots (2−1=1). **Não há seis slots de peso 1** nessa tabela. A regra de 1 unidade por dado está definida; a expectativa de memorizar 6 G2 requer revisar a progressão ou outra regra, ainda sem aprovação. Não multiplicar capacidade nem inventar novos dados.
 
 **Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, sem serem anulados pelo fato de uma magia estar memorizada ou não exigir foco. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco criado com Artesão continua a recarregar em **N rodadas no Grau N**.
 
@@ -370,17 +381,35 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Domina os efeitos iniciais do elemento **Ar**, permitindo conjurar **magias elementais Leves**. **Ao acertar um ataque, independentemente do crítico**, pode gastar **1 PP ou 2 Coragens** para aplicar **um efeito especial de Ar à escolha**, não vários com um pagamento.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. Em ataques acertados, independentemente de crítico, **1 PP ou 2 Coragens** ativa **um efeito especial escolhido**.
 
-| Grau | Efeitos e formatos apresentados |
+| Grau | Efeitos e formas |
 |---|---|
-| **G1** | **Autoempurrão para aumentar deslocamento em 4 m**; puxar ou empurrar objetos; linha reta, círculo, cone ou X |
-| **G2** | **Sufocar** com dano à Vida ou à armadura; **puxar, empurrar e derrubar com dano**; amplificar o deslocamento para **8 m**; linha reta, círculo, cone ou X |
-| **G3** | **Conjurar no final do turno dos aliados**; área grande e vários alvos; tornado ou forte rajada de vento e possíveis danos por queda, com referência de **16 m**; linha reta, círculo, cone ou X |
+| **G1** | Autoempurrão para aumentar deslocamento em **4 m**; puxar ou empurrar objetos; linha reta, círculo, cone, X |
+| **G2** | **Sufocar**, causando dano à Vida ou armadura; puxar, empurrar + derrubar com dano; deslocamento até **8 m**; linha reta, círculo, cone, X |
+| **G3** | Conjurar ao **final do turno dos aliados**; grandes áreas e múltiplos alvos, tornado/rajada, possíveis danos por queda e referência de **16 m**; linha reta, círculo, cone, X |
 
-**Nome atualizado:** esta é a habilitação antes registrada no protótipo como **Elemento: Vento**, e não uma segunda compra do mesmo elemento. A ficha mantém o ID interno para preservar personagens antigos, mas exibe **Perícia em Elemento Ar**, com os requisitos atualizados.
+**Ar também pode recuperar Fôlego [DEFINIDO no efeito].** **PENDENTE:** em qual Grau, quanto Fôlego recupera, quem recebe e qual gatilho/custo; não confundir Fôlego com PP, Coragem ou Vida.
 
-**PENDENTE:** interpretar os 16 m (área, alcance, deslocamento ou altura de queda), duração de Sufocar, valores dos danos, dimensões e alcance de linha/círculo/cone/X, interação entre a ativação após acerto e efeitos utilitários, e ordem exata de ações no fim do turno dos aliados. Os Graus superiores não ficam disponíveis apenas por comprar a Perícia de acesso ao Ar.
+**Nome atualizado:** esta é a habilitação antes registrada como **Elemento: Vento**; as duas denominações correspondem ao **mesmo elemento**, não a duas compras. A ficha preserva o identificador antigo.
+
+**PENDENTE:** interpretar 16 m, duração e dano de Sufocar/queda, geometrias dos formatos e ações não ofensivas.
+
+### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
+
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. Ao acertar um ataque, independentemente de crítico, **1 PP ou 2 Coragens** permite aplicar **um efeito escolhido** de Água; G2 também possui gatilho alternativo de crítico para Perfurar.
+
+| Grau | Efeitos |
+|---|---|
+| **G1** | **Congelar por 1 rodada**, **sem causar dano** na forma Leve; extrair água do ar, mover água, molhar ou limpar |
+| **G2** | **Perfurar** ao obter **crítico nos dados** **ou** por ativação paga de efeito (1 PP ou 2 Coragens); causa dano à **Vida e armadura** |
+| **G3** | **Conjurar ao final do turno dos aliados**; efeitos **Empurrar, Perfurar e Congelar**, com dano à Vida e armadura e preservação das propriedades menores pertinentes |
+
+**Perfurar no crítico** pode ser ativado por esse gatilho sem exigir o gasto alternativo de 1 PP ou 2 Coragens. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
+
+**Nome atualizado:** a antiga entrada **Elemento: Água** da ficha corresponde à mesma habilidade, agora denominada **Perícia em Elemento Água**, sem segunda compra nem exclusão de personagens anteriores.
+
+**PENDENTE:** condições mecânicas de Congelar e Perfurar, tempo/alcance, forma exata da conjuração após o turno dos aliados, danos à Vida/armadura e como se preservam ou acumulam efeitos menores no G3. Atos utilitários sem ataque carecem de procedimento específico.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
@@ -578,7 +607,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
-| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3, 1 PP/2 Coragens ao acertar |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
+| **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
