@@ -187,3 +187,11 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 - **G3:** conjurar ao **final do turno dos aliados**, com área **8 × 8**, circular, cone ou linha.
 
 **Identidade narrativa:** criar/transportar uma pequena faísca e ampliá-la para grandes incêndios. **PENDENTE:** unidades e geometria de 4 × 4 e 8 × 8, alcance, dano numérico, duração/propagação de incêndios, ações utilitárias e efeitos G3. A ficha registra a Perícia e os pré-requisitos, mas não automatiza esses efeitos.
+
+## Sagrado e Coragem adicional de Fogo G2 — 12/11/2026
+
+**Fogo G2:** ao **invocar fogo sem item de foco**, o custo de **1 Coragem é ADICIONAL** ao custo da ativação de efeito especial (1 PP **OU** 2 Coragens); portanto o custo efetivo é **1 PP + 1 Coragem** ou **3 Coragens**. Não aplicar custo extra ao Fogo G1 com fonte de chama nem a magias de Fogo que não fazem essa invocação sem foco.
+
+**Perícia em Elemento Sagrado:** custo **2 XP**, requisitos **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**, substituindo a antiga descrição **Magia Sagrada (3 XP)** sem mudar o ID `sagrado` das fichas. A compra e os requisitos são verificados no protótipo. Magias Leves, ativação de **1 PP ou 2 Coragens** em ataque acertado mesmo sem crítico, para aplicar um efeito especial escolhido. **G1:** Acalmar, Purificar, Apoiar e Recuperar Coragem; **1 Êxito obtido na capacidade sagrada pode se converter em 1 Coragem para um participante, no máximo uma vez por conjuração/turno**. O Êxito gasto **não soma à DE nem ao dano**; nenhum Êxito adicional gratuito é criado. **G2/G3:** exigem combinação com outros elementos; não são liberados automaticamente pela compra.
+
+**PENDENTE:** ordem de alocação do Êxito em relação ao teste de DE, alvos e limites de Coragem, critérios de apoio sem ataque e quais combinações habilitam G2/G3. A ficha registra texto e requisitos, **não** subtrai automaticamente Êxito, não reembolsa XP histórico duplicado e não aplica efeitos mágicos automaticamente. Uma compra histórica a 3 XP pode exigir conferência do orçamento na ficha, pois o custo atualizado é 2 XP.
