@@ -118,3 +118,7 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 **Ar:** além dos efeitos já listados, pode recuperar Fôlego; Grau, custo/gatilho e quantidade PENDENTES.
 
 **Perícia em Elemento Água:** 1 XP, Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Ao acertar, mesmo sem crítico, 1 PP/2 Coragens aplica um efeito à escolha. G1: Congelar por uma rodada sem dano em magia Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar por crítico OU ativação paga, com dano à Vida e à armadura. G3: conjurar ao final do turno dos aliados, empurrar, perfurar, congelar, danificar Vida/armadura e preservar efeitos menores pertinentes. A entrada anterior Elemento: Água é a mesma Perícia, não há compra duplicada. Dano, alcance, efeitos adicionais e operação exata estão pendentes.
+
+## CORREÇÃO MAIS RECENTE — Memorização de magias (12/11/2026)
+
+Substitui as descrições anteriores deste documento de “1 unidade por dado”. **Cada ponto investido em Disciplina concede 1 unidade de capacidade mental**. **Criar Magia reduz em 1 unidade de peso as magias criadas e memorizadas**, independentemente de haver item de foco. Logo, com **Disciplina 6 = 6 pontos mentais**, cabem **seis magias G2**: peso nominal 2, reduzido a 1 por magia. A tabela de dados da Prática não é modificada. **PENDENTE:** peso mínimo de G1 (1−1=0), detalhes de uso rápido e armazenamento de magias; equipamentos de foco seguem ocupando carga física.
