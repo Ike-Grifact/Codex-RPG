@@ -315,7 +315,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 ## VII. Conjuração, elementos e possibilidades
 
-A habilitação anterior **Aprendiz de Conjurador** começa com **Psíquico**. A nova Perícia **Criar Item de Foco e Magia** também inicia efeitos Psíquicos, com **Disciplina 1 + Inteligência 1** e compra de 1 XP. **PENDENTE:** relação entre as duas habilitações e a antiga Magia Única. Outros elementos continuam sujeitos às suas habilitações próprias.
+**Criar Item de Foco e Magia (1 XP; Disciplina 1 + Inteligência 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
 
 **Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. Incluir o segundo elemento conscientemente com a Perícia adequada gasta **1A**, não reutilizável. A mistura por si só **não soma dados nem Êxitos**, e efeitos avançados exigem os Pontos de Perícia (PP) e as Especialidades pertinentes.
 
@@ -335,19 +335,38 @@ A habilitação anterior **Aprendiz de Conjurador** começa com **Psíquico**. A
 
 **Recarga:** foco de G1 recarrega em **1 rodada**, G2 em **2 rodadas** e assim sucessivamente (**Grau N → N rodadas**). **Criar Magia:** a Perícia permite moldar os elementos conforme a capacidade de conjuração, sem conceder gratuitamente outras habilitações elementais.
 
-**PENDENTE:** distâncias e durações, DE e resistência a efeitos mentais, como resolver ações psíquicas sem ataques, dano de objetos, e relação entre **Criar Item de Foco e Magia**, **Aprendiz de Conjurador** e **Magia Única**. Não tratar exemplos como dano ou condição automática.
+**Criação e memorização [DEFINIDO]:** a partir de **Disciplina 2**, pode criar magias de **Grau 2 e Grau 3**, **fora de combate**, pagando **1 PP ou 2 Coragens por criação**, e deixá-las **memorizadas em um slot mágico** para conjurá-las rapidamente depois. Não há autorização automática para preparar Grau 4 nessa regra.
 
-### Escudo Arcano [DEFINIDO / procedimentos PENDENTES]
+| Grau de magia | Peso nominal |
+|---|---:|
+| **1** | 1 |
+| **2** | 2 |
+| **3** | 3 |
+| **4** | 4 |
+
+**Sem item de foco:** a magia criada tem **−1 de peso**. **PENDENTE:** confirmar se a redução atua sobre a ocupação dos slots e como tratar G1 com peso 0; não confundir peso de magia memorizada com a carga física dos itens de foco.
+
+**Spellslots — divergência histórica [PENDENTE]:** sua lembrança recente é **1 ponto de capacidade de slots por Grau de Inteligência**, mas sem confirmação. O SRD histórico afirmava **1 slot por aumento de Conjuração e +1 slot a cada 3 Graus de Inteligência**; outra seção estabelecia **máximo de 9 slots** e ocupação de 1/2/3/4 por Grau 1/2/3/4. A **tabela de pesos de magia** foi confirmada nesta revisão; a **fórmula de capacidade de slots** ainda requer decisão e não será aplicada automaticamente na ficha.
+
+**Itens de foco e carga:** seu transporte deve considerar **Potência com Força e Atletismo**; a fórmula da Potência, conversão para unidades de peso físico e compatibilidade com o cálculo de carga anterior são **PENDENTES**. O foco criado por teste de **Artesão** continua com recarga de **N rodadas no Grau N**.
+
+**PENDENTE:** limites de controle mental, testes dos alvos, duração, alcance, magias memorizadas e tempo efetivo da conjuração rápida. Não transformar exemplos em efeitos automáticos.
+
+### Escudo Arcano [DEFINIDO / resolução de proteção PENDENTE]
 
 **Custo: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
 
-**Ativação:** por **1 PP OU 2 Coragens**, cria **escudo elemental sobre si** ou uma **área de 3×3**. Faz **rolagem com Conjuração**, cujo resultado estabelece a **DE para quebrar o escudo**. O escudo funciona como proteção semelhante à **Integridade de armadura**, sem fórmula adicional presumida.
+**Ativação:** **1 PP ou 2 Coragens** cria escudo sobre si mesmo ou uma **área circular de 3×3 metros**, que **dura 1 rodada**. Uma rolagem com **Conjuração** estabelece a **DE para quebrar o escudo**, que funciona como Integridade de armadura.
 
-Quem estiver **dentro da área** fica **imune ao dano elemental conjurado**. **Exceção:** se um inimigo **entrar na área** e **atacar ou conjurar corpo a corpo**, o efeito do escudo **é ignorado** nessa interação.
+Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um inimigo entrar na área e atacar ou conjurar magia **corpo a corpo**, ignora o escudo para essa interação. Por cada **1 PP ou 2 Coragens adicional**, a área circular é ampliada em **mais 3×3 metros**.
 
-**Ampliar:** por **mais 1 PP OU 2 Coragens**, aumenta a área em **mais 3×3**. Os custos de ativações adicionais são separados.
+**PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
 
-**PENDENTE:** unidade de medida e geometria de 3×3, duração/alcance do escudo, se a DE para quebrar também equivale à sua Integridade, alcance da imunidade frente a elementos combinados, condições exatas para romper a defesa. Nenhuma automação desses efeitos foi presumida na ficha.
+### Conjuração Equilibrada [DEFINIDO / terminologia PENDENTE]
+
+**Custo: 1 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
+
+**Ativação: 1 PP ou 2 Coragens.** Permite alterar a magia para **Pesada ou Leve**. A descrição autoral diz “alterar o grau da magia, para pesado ou leve”; **PENDENTE:** confirmar se é apenas a categoria de **peso tático**, sem alteração do **Grau numérico** ou do peso de armazenamento em spellslots. A ficha registra a Perícia sem inventar efeitos de Grau superior.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
@@ -373,7 +392,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 **Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
 
-**Existe uma Perícia que permite modificar o peso da magia durante a conjuração.** **PENDENTE:** seu nome, custo de XP, pré-requisitos, ativação e limites. Até esses detalhes serem definidos, o Livro não a oferece como compra e não concede alteração de peso gratuita.
+**Conjuração Equilibrada (1 XP):** permite alterar a magia para **Pesada ou Leve** pagando **1 PP ou 2 Coragens**, com Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2. **PENDENTE:** esclarecer se isso altera somente o peso tático, preservando o Grau numérico e a ocupação do slot.
 
 **Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
 
@@ -542,10 +561,9 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Combate | 1 | +1A em combate pertinente |
 | Armas 1 | 2 | Habilitação e primeira especialização de arma |
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
-| Aprendiz de Conjurador | 2 | Conjuração grau 1 (habilitação anterior; interação com foco pendente) |
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
-| **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área 3×3, DE por Conjuração |
-| Magia Única | 1 | Uma magia inicial |
+| **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
+| **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
