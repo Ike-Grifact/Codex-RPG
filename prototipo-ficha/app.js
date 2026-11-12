@@ -310,6 +310,11 @@ const SKILLS=[
  ]
 ];
 
+// IDs de Perícias legadas continuam nas fichas salvas e no cálculo de XP,
+// mas não aparecem nas opções novas de compra.
+const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);
+const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
+
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
  "combate": [
@@ -800,6 +805,7 @@ function skillRequirementsMet(id){const s=SKILLS.find(x=>x[0]===id);return !!s&&
 function filteredSkills(){
  const query=skillFilter.query.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
  return SKILLS.filter(([id,name,description])=>{
+   if(HIDDEN_CATALOG_SKILLS.has(id))return false;
   if(skillFilter.ready&&!skillRequirementsMet(id))return false;
   if(skillFilter.scope==="related"){
    if(!SKILL_BRANCHES.some(branch=>branch.includes(id)&&branch.some(k=>state.skills.includes(k))))return false;
@@ -816,13 +822,13 @@ function skillFilterControls(){
   '<label>Organizar por<select data-skill-scope>'+opt("all","Todas as Perícias")+opt("related","Relacionadas às adquiridas")+
    category("Por Atributo","attr",A)+category("Por Conhecimento","know",K)+category("Por Prática","practice",P)+'</select></label>'+
   '<label class="fp-skill-ready"><input data-skill-ready type="checkbox"'+(skillFilter.ready?" checked":"")+'> Requisitos atingidos</label>'+
-  '<p class="fp-skill-filter-hint">Atributos, Conhecimentos e Práticas organizam por requisito ou afinidade temática, não criam requisitos novos. <strong>'+filteredSkills().length+' de '+SKILLS.length+'</strong> Perícias exibidas.</p></div>';
+  '<p class="fp-skill-filter-hint">Atributos, Conhecimentos e Práticas organizam por requisito ou afinidade temática, não criam requisitos novos. <strong>'+filteredSkills().length+' de '+visibleSkillCount()+'</strong> Perícias exibidas.</p></div>';
 }
 function syncSkillFilterControls(){
  document.querySelectorAll("[data-skill-scope]").forEach(el=>el.value=skillFilter.scope);
  document.querySelectorAll("[data-skill-ready]").forEach(el=>el.checked=skillFilter.ready);
  document.querySelectorAll("[data-skill-search]").forEach(el=>{if(el!==document.activeElement)el.value=skillFilter.query;});
- document.querySelectorAll(".fp-skill-filter-hint strong").forEach(el=>el.textContent=filteredSkills().length+" de "+SKILLS.length);
+ document.querySelectorAll(".fp-skill-filter-hint strong").forEach(el=>el.textContent=filteredSkills().length+" de "+visibleSkillCount());
 }
 function renderWizardSkillCards(){
  const container=$("wizard-skill-cards");
