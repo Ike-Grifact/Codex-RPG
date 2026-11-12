@@ -28,7 +28,7 @@ updated: "2026-11-11"
 
 A tabela expressa **equivalências**, não PP obrigatoriamente disponíveis: PP têm seu teto por Marco, e custos podem ser pagos por recurso conforme permitido. Não deduzir recurso não existente na reserva. O custo normal de ativação das Perícias é **1 PP ou 2 Coragens** salvo exceção expressa; **Amplificar Atributo** é a exceção informada de **2 PP ou 4 Coragens**, sem outro efeito definido aqui.
 
-**Dano:** Espalhar Golpe afeta **metade do dano de Êxitos**, **não espalha automaticamente os Pavor** potencializados por Golpe Fulminante. Não adiciona +1E. **PENDENTE:** arredondamento de metade, procedimento para aferir DE individual dos inimigos adicionais, ordem de ativação e resolução com equipamentos e limites de Vida. O rótulo “Colossal” não estabelece um segundo pacote de efeitos.
+**Dano [DEFINIDO]:** cada alvo adicional recebe **metade do dano dos Êxitos, sempre arredondada para baixo**, isto é, **⌊dano de Êxitos ÷ 2⌋**; por exemplo, 5 de dano de Êxitos causam **2 de dano** a cada alvo adicional, antes das defesas. Espalhar Golpe **não espalha automaticamente os Pavor** potencializados por Golpe Fulminante e **não adiciona +1E**. **PENDENTE:** procedimento para aferir DE individual dos inimigos adicionais, ordem de ativação e resolução com equipamentos e limites de Vida. O rótulo “Colossal” não estabelece um segundo pacote de efeitos.
 
 ## 0-V.2. Golpe Fulminante — nova exigência [DEFINIDO]
 
@@ -67,7 +67,7 @@ A tabela expressa **equivalências**, não PP obrigatoriamente disponíveis: PP 
 ## 0-V.5. Pendências atualizadas para discutir em sequência
 
 1. **Disparo Fulminante e Disparo Múltiplo:** requisitos, custos de aquisição, que armas/disparos permitem ativar e como se resolve múltiplos projéteis; círculo de 2 m **centrado no alvo principal já DEFINIDO**.
-2. **Espalhar Golpe:** arredondamento de metade dos Êxitos; como resolver DE dos alvos adicionais; aplicação de dano após absorção e limites de Vida. **Custo, alcance e ausência de +1E já DEFINIDOS.**
+2. **Espalhar Golpe:** como resolver DE dos alvos adicionais; aplicação de dano após absorção e limites de Vida. **Custo, alcance, ausência de +1E e arredondamento para baixo de metade do dano dos Êxitos já DEFINIDOS.**
 3. **Maestria em Manejo Duplo:** alternativas/cumulatividade dos requisitos anteriores e composição Armas + Armas + Atributo. **Destreza 2 + Agilidade 1 definidos.**
 4. **Manejo Perfeito:** XP de compra, efeito operacional de Golpe Certo. **Destreza 2 definido.**
 5. **Pugilismo:** pesos disponíveis e ativação por crítico. **Disciplina 1 + Força 2 + Destreza 1 definidos.**
