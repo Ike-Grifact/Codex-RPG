@@ -12,8 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.36 | [docs/srd-continuidade-v0.36.md](docs/srd-continuidade-v0.36.md) | **Versão mais recente (11/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.36 |
+| SRD de Continuidade v0.37 | [docs/srd-continuidade-v0.37.md](docs/srd-continuidade-v0.37.md) | **Versão mais recente (11/11/2026)** |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.37 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -31,9 +31,9 @@ Abra **criador.html** pelo portal. Ele permite:
 - Laboratório de rolagem d4/d6/d10/d12: seleção **manual** de dados mantidos, requisito de um Atributo, gasto de Coragem, afinidade entre pesos, conversão de Antecipar, classificação de acerto e Pavor.
 - Salvamento **local no navegador**, importação e exportação em JSON, impressão da ficha.
 
-**Importante:** a hipótese de criação nível 1 é **7 XP de Atributos + 7 XP de Formação + 5 XP de Perícias = 19 XP**. A distribuição inicial ainda é **EXPERIMENTAL**; não substituir decisões definitivas do SRD por suposições da ferramenta.
+**Criação nível 1 [DEFINIDO]: 5 XP destinados a Perícias.** O protótipo utiliza **6 XP de Atributos e 8 XP de Formação [EXPERIMENTAL]**, totalizando 19 XP em playtest. Não tratar a distribuição inteira como definitivamente aprovada nem confundir os 5 XP com Pontos de Perícia (PP).
 
-**Limitações intencionais v0.1:** não há catálogo completo de armas, preço de Grau 7, compra de equipamento, bônus final de DE de armadura ou cálculo completo da carga da Perícia Armas. O laboratório é de estudo, não substitui todas as regras de Narrador, crítico, fonte de dano, ações conjuntas ou efeitos elementais. O custo em XP e as condições de todas as Perícias futuras ainda dependem de design.
+**Limitações intencionais:** ainda não há catálogo completo de armas, preço de Grau 7 nem valores finais de Integridade. A ficha exibe os modificadores por tipo de armadura e a lista de Perícias autorais, mas não resolve automaticamente seus efeitos, dano de ataques recebidos ou a carga definitiva da Perícia Armas. O laboratório é de estudo, não substitui todas as regras de Narrador, crítico, fonte de dano, ações conjuntas ou efeitos elementais. O custo em XP e as condições de todas as Perícias futuras ainda dependem de design.
 
 [**Guia de criação de Perícias e playtest nível 1**](docs/guia-criador-playtest.md)
 
@@ -62,10 +62,10 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **SRD de Continuidade v0.36**, com seção **0-R** para Provocação, Liderança, Antecipar de inimigos e disputa de influência. Ordem:
+A fonte normativa atual é o **SRD de Continuidade v0.37**, com seção **0-R** para Provocação, Liderança, Antecipar de inimigos e disputa de influência. Ordem:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-R da continuidade v0.36, nos assuntos que regula.
+2. Seção 0-R da continuidade v0.37, nos assuntos que regula.
 3. Seções históricas 0-Q e anteriores do mesmo SRD, onde não houver conflito.
 4. Livro de leitura, que não altera sozinho regras do SRD.
 
