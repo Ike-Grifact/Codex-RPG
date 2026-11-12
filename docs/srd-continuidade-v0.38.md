@@ -83,6 +83,18 @@ A tabela expressa **equivalências**, não PP obrigatoriamente disponíveis: PP 
 
 ---
 
+## 0-V.6. Disciplina, Disciplina Avançada e saldo inicial livre [DEFINIDO]
+
+**Disciplina** é a **Prática única compartilhada** de uso de Armas e Conjuração. **A rolagem marcial básica com Disciplina + um Atributo está disponível mesmo sem comprar Armas 1**: a Perícia específica habilita seus efeitos/especializações, mas não impede fazer um teste básico com essa Prática. A **Conjuração especializada** mantém as próprias habilitações de acesso do Aprendiz de Conjurador e de outras Perícias. O criador de fichas não deve bloquear a rolagem marcial com a mensagem legada “Uso marcial especializado requer Armas 1”.
+
+**Disciplina Avançada:** compra **1 XP**, exige **Disciplina 2**. **Somente ao realizar uma ação com Disciplina**, permite combinar **mais uma fonte pertinente** entre **Atributo, Conhecimento ou Prática**. Quando a composição básica é Disciplina + Atributo, é possível acrescentar por exemplo **outro Atributo** (sem duplicar a mesma fonte), mediante pertinência e validação do Narrador. São aplicados os dados da fonte efetivamente comprada; **não** se soma Êxito gratuito nem se eleva o limite de dados mantidos. Se outras Perícias permitirem fontes adicionais simultâneas, a composição acima de três fontes permanece **PENDENTE**, não autorizada automaticamente pelo protótipo.
+
+**XP inicial remanescente:** no **nível 1**, o Aprendiz possui **5 XP em Perícias [DEFINIDO]**. No orçamento do criador ainda **EXPERIMENTAL**, são 6 XP Atributos, 8 XP Formação e 5 XP Perícias. **Ao concluir a distribuição inicial**, todo XP **não gasto** desses orçamentos torna-se **saldo inicial livre**, podendo comprar **Atributo, Conhecimento, Prática ou Perícia**, independentemente da categoria da sobra, sem dispensar os preços nem os requisitos de compra. Exemplo: gastar 5/6 Atributos, 8/8 Formação e 5/5 Perícias conserva **1 XP inicial livre** após concluir a criação; uma nova compra de 1 XP em qualquer categoria cabível o consome. **Este saldo não é XP recebido por evolução**. A distribuição inicial consolidada não gera reembolsos livres; ajustes retroativos exigem correção da ficha, não concedem XP de campanha.
+
+**Dano de Espalhar Golpe após a DE:** para cada alvo adicional que alcançar sua **DE individual** com a rolagem do ataque principal, primeiro calcular **⌊dano dos Êxitos ÷ 2⌋** e **depois** aplicar, **separadamente para aquele alvo**, Integridade, resistências, imunidades e demais defesas pertinentes. O alvo não acertado não recebe dano; o custo para tentar incluí-lo é consumido mesmo assim. Não adicionar o dano de Pavor de Golpe Fulminante a esses alvos sem habilitação própria. Resolução de danos mistos e casos extremos de proteção permanece PENDENTE.
+
+**Organização da ficha:** filtros por **Atributo, Conhecimento, Prática, Perícias relacionadas às adquiridas** e **requisitos atingidos**, além de pesquisa de texto. Associações temáticas servem à navegação, **não criam novos requisitos**. Compras continuam verificadas pelos requisitos oficiais.
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
