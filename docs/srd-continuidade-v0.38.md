@@ -361,6 +361,100 @@ Domina os efeitos iniciais de **Sagrado** e permite conjurar **magias elementais
 
 **Continuidade do catálogo:** a antiga entrada **`sagrado`**, anteriormente chamada **“Magia Sagrada”** com custo **3 XP**, passa a se chamar **“Perícia em Elemento Sagrado”**, com custo **2 XP** e os requisitos acima. Manter **o mesmo ID `sagrado`** para não perder compras já registradas. Na ficha, o custo atual entra no cálculo de orçamento; o histórico de eventual compra a 3 XP não gera crédito adicional automático duplicado — o procedimento de conciliação de fichas antigas deve preservar o saldo consistente sem criar nova compra.
 
+## 0-V.15. Consolidação do Conjurador básico — 12/11/2026 [DEFINIDO / PENDENTE]
+
+**Precedência:** decisões explícitas do autor nesta seção substituem as descrições anteriores de Sagrado, Trevas, Sangue, Veneno, Improviso Mágico/Mestre Elementalista e Escudo Arcano, quando divergentes. Preservar os IDs antigos da ficha `sagrado`, `trevas`, `sangue`, `veneno`, `improviso` e `mestre`. **Não** transportar custos históricos antigos (3/5 XP) como se fossem os preços novos. Esta é a **primeira leva de Perícias padrões de Conjurador** para playtest; Invocador, Encantador e Transformador são uma segunda leva, não liberada.
+
+### Regra comum da conjuração [DEFINIDO]
+
+- Alcance inicial de **até 8 m sem desvantagem por distância**; acima de 8 m aplicam-se as desvantagens da regra geral. Oito metros não é o alcance absoluto.
+- Efeitos especiais elementais de ataques podem ser ativados **no acerto, mesmo sem crítico**, pagando normalmente **1 PP OU 2 Coragens**, salvo ressalva específica.
+- Magias especiais passam a exigir a **DE de cada alvo** na área. E e P válidos mantidos são considerados conforme as regras gerais. Não somar gratuitamente símbolos de um segundo alvo, nem usar bônus de dano de Trevas para alcançar a DE.
+- Escopo dos Graus 2 e 3 de Sagrado, Trevas, Sangue e Veneno depende de **combinação com outros elementos** e Perícias pertinentes; não inventar efeitos extras de graus isolados.
+- **Incapacitado** exige **1 Coragem para agir**; **Inconsciente**, **2 Coragens**. Inimigos e profissões de Terror pagam respectivamente **1 ou 2 Pavor**, utilizando a mesma tabela.
+
+### Perícia em Elemento Sagrado — 2 XP [DEFINIDO]
+
+**Requisitos:** Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia. Magias Leves. Ativação especial: 1 PP ou 2 Coragens.
+
+- Em suporte no próprio conjurador ou aliado próximo, deve-se **atingir a DE do beneficiário**. Beneficiados não sofrem dano sagrado de suporte.
+- Cada **Êxito excedente à DE** destinado à recuperação proporciona **1 Coragem**. Cada **Pavor não anulado** destrói **um Êxito excedente de recuperação**; esse símbolo deixa de curar **e não se transforma em dano**. Recuperação não negativa nem além da reserva permitida.
+- Magias em área podem atingir inimigos e apoiar aliados ao mesmo tempo. **Vários aliados recuperam igualmente** o benefício, sem dividir a quantidade entre eles. Os mesmos Êxitos excedentes válidos podem contribuir para dano dos inimigos cuja DE foi alcançada e recuperação de Coragem, conforme escolha de ênfase do conjurador; Êxitos anulados por Pavor na parcela de suporte não geram dano alternativo.
+- Exemplo de suporte: 5E, DE 2 e 1P não anulado: 3E excedentes destinados à recuperação, 1 anulado por P, **2 Coragens por aliado** e nenhum dano oriundo do E anulado.
+- Substitui o antigo limite de recuperação de 1 Coragem por conjuração e a antiga descrição de 1E extra concedido automaticamente. PENDENTE: posicionamento preciso/representação geométrica de algumas áreas.
+
+### Perícia em Elemento Trevas — 2 XP [DEFINIDO]
+
+**Requisitos:** Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia. Magias Leves. Ativação especial: 1 PP ou 2 Coragens. Efeitos de Grau 1 incluem escurecimento, Pavor e maldições.
+
+**Técnica especializada:** permite selecionar **até dois alvos diferentes** e usar **uma única rolagem**, comparada individualmente à DE de cada alvo. **Após confirmar o acerto** de cada alvo, acrescentar **+2P somente para calcular dano**, nunca para alcançar a DE, gerar reserva de Pavor ou provocar intervenção adicional. Não rolar novamente nem duplicar Pavor da pilha para os dois alvos. G2/G3 exigem mescla.
+
+### Perícia em Elemento Veneno — 2 XP [DEFINIDO / PENDENTE]
+
+**Requisitos:** Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2. Magias Leves. Ativação especial: 1 PP ou 2 Coragens. A aplicação exige **alvo em Sangramento**.
+
+- Cada aplicação acertada representa **1 acúmulo**, sem dano direto à Vida. Cada acúmulo dura **2 rodadas individualmente**; nova aplicação **não renova** os antigos. Imunidades pertinentes incluem criaturas de pedra, mecânicas e seres biologicamente incompatíveis.
+- Limiares de Envenenamento usam **Vida atual**, não a máxima. Alcançar **2/3 da Vida atual** aplica Ferido; os acúmulos seguintes aplicam **Incapacitado** até que cheguem ao total de Vida atual, quando o alvo fica **Inconsciente**. A transição numérica exata para o estágio intermediário Incapacitado é **PENDENTE** e não deve ser calculada arbitrariamente.
+- Inconsciente provocado por Veneno **não exige Vida real igual a 1**. São condições diferentes que podem produzir o mesmo estado. O Veneno não diminui a Vida para cumprir o limiar.
+- Restauração de Vida altera o limiar por usar Vida atual, mas a remoção de acúmulos é tarefa específica de **Antídoto**. Não criar recuperação automática de acúmulos pelo descanso ou pela nova aplicação. G2/G3 exigem mescla.
+
+### Criar Antídoto — 1 XP [DEFINIDO em efeito]
+
+**Requisitos:** Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + **Criar Veneno**. É uma Perícia de preparação alquímica, **não** conjuração elemental gratuita.
+
+- Cria doses de Antídoto a partir de itens venenosos coletados. **Cada dose não diluída elimina 1 acúmulo de Envenenamento**. Para eliminar 2, consumir 2 doses, sem multiplicar uma dose por diluição.
+- O Antídoto pode ser **ingerido** ou **aplicado em quem está em Sangramento**. O Hemomante pode canalizá-lo à distância por meio de Transfusão pagando o próprio custo de Vida e consumindo doses normais.
+- **PENDENTE:** custo e requisitos para a Perícia separada **Criar Veneno** e rendimento/tempo dos ingredientes. Não disponibilizar compra de Criar Antídoto sem verificar a Perícia exigida.
+
+### Perícia em Elemento Sangue — 2 XP [DEFINIDO / PENDENTE]
+
+**Requisitos:** Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia. Magias Leves, ativação especial 1 PP ou 2 Coragens.
+
+- Conjuração sanguínea soma **+1P normal de risco**, diferente do +2P de Trevas exclusivo para dano. Sem estar em Sangramento, disponibilizar sangue próprio custa **2 Vida**, mesmo que falhe. Se o Hemomante **já estiver em Sangramento**, não há custo inicial adicional de Vida para disponibilizar o sangue.
+- Ao acertar alvo em Sangramento ou já danificado diretamente na Vida, escolha **2 de dano direto à Vida** (sem combiná-los com dano colossal) **OU** dano normal à **Integridade de armadura**, por sangue coagulado. Sangue coagulado utilizado não pode ser remanipulado: exige nova conjuração.
+- Manipulação de sangue fluido próprio, de inimigos e de aliados feridos pode continuar enquanto houver sangue disponível, **sem amplificar o dano**; magia pura de Sangue é de **alvo único**. Mesclas com outros elementos expandem manifestações, áreas e efeitos, conforme as habilitações.
+- Exemplos definidos como aplicações temáticas das mesclas: Água congela sangue; Terra cria lâmina; Fogo evapora; Ar espalha gotículas; Sagrado impede que sangue deixe o corpo; Trevas permite dois alvos ao custo declarado de 1 Vida; Veneno combina Envenenamento e dano sanguíneo; Psique pode provocar derrame. **PENDENTE:** efeitos quantitativos e requisitos adicionais não informados de cada mescla.
+- **Transfusão é Perícia separada**, não efeito gratuito da compra de Sangue.
+
+### Transfusão — Perícia independente [DEFINIDO em uso / PENDENTE em compra]
+
+- Pode ser executada **durante combate**, com Hemomante e beneficiário **em Sangramento**. Transfere **1 Vida do Hemomante** para recuperar **exatamente 1 Vida do aliado**, sem criar Vida ou multiplicação.
+- Pode conduzir **Antídoto à distância** em combate, sem exigir que o aliado beba, mantendo o sacrifício de **1 Vida do Hemomante** e a proporção de **1 dose = 1 acúmulo anulado**. As doses são consumidas.
+- **PENDENTE:** custo de XP e requisitos específicos da Perícia, alcance exato e procedimentos adicionais de ativação; não conceder Transfusão automaticamente a todo usuário de Sangue.
+
+### Improviso Elemental — 1 XP [DEFINIDO]
+
+**Requisitos:** Disciplina 1 + Inteligência 1 + **Destreza 1** + Criar Item de Foco e Magia. +**1A** em ações pertinentes com Disciplina e Conjuração. Permite agregar **um elemento realmente presente na cena** para dano de impacto e vantagens elementais, **sem ativar as propriedades especiais** desse elemento. O nome anterior *Improviso Mágico* permanece como histórico, não é segunda compra.
+
+### Maestria Elemental — 1 XP [DEFINIDO]
+
+**Requisitos:** Disciplina 3 + Inteligência 3 + Destreza 3 + Criar Item de Foco e Magia + Improviso Elemental + pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas.
+
+- Confere **+1A em Disciplina e Conjuração**, cumulativo ao +1A do Improviso Elemental.
+- Ativar por **1 PP OU 2 Coragens** permite mesclar dois elementos e aplicar simultaneamente ambos os efeitos especiais, **desde que o personagem tenha a Perícia de CADA elemento**. A compra de uma única Perícia não concede poderes especiais de todos os elementos.
+- Ficha preserva o ID histórico `mestre` para evitar duplicar compras antigas de Mestre Elementalista, cuja descrição/custo anterior está superada; conciliação de XP investido anteriormente exige conferência de histórico, não crédito duplicado automático.
+
+### Escudo Arcano — 1 XP [DEFINIDO / PENDENTE]
+
+**Requisitos atualizados:** Inteligência 2 + **Vigor 1** + Criar Item de Foco e Magia. Criar custa **1 PP OU 2 Coragens**; dura **1 rodada**, preservando a regra confirmada anterior.
+
+- Conjurar com **Disciplina + Atributo pertinente**, e com **mais uma fonte pertinente se possuir Disciplina Avançada**. O total de **E + P válidos mantidos** constitui a **DE inicial e a Integridade simbólica** do escudo.
+- O desgaste segue as equivalências normais: **1E do ataque anula 1E do escudo ou 2P; 1P anula 1P; 2P anulam 1E**. A DE vai diminuindo na medida da Integridade restante. Não criar uma segunda barra numérica de Vida para o escudo.
+- Formatos disponíveis: **escudo individual**, **parede em linha de 3 m** ou **área circular de 3×3 m**. Gasto de **1 PP OU 2 Coragens adicionais** amplia parede em mais 3 m ou expande a área circular. **PENDENTE:** geometria exata da expansão circular além da área inicial.
+- Escudo é imune ao elemento nele aplicado, exceto: **Sagrado é imune a Trevas**, e **Trevas é imune a Sagrado** (não a si próprios por essa exceção). Mesclar Sagrado e Trevas no mesmo escudo **anula os benefícios e efeitos elementais** dessa combinação, que não traz vantagem elemental. Outros elementos incorporados protegem conforme a habilitação correspondente.
+- Para alterar o elemento, é preciso **Improviso Elemental + Perícia do elemento**. Com **Maestria Elemental paga durante a conjuração inicial**, cada ataque contra a barreira e cada travessia da parede/área desencadeia os efeitos especiais habilitados dos elementos incorporados. Não cobrar outra ativação da Maestria a cada impacto.
+- Se um inimigo entrar na área e atacar ou conjurar corpo a corpo, **ignora a proteção** naquela interação, preservando a vulnerabilidade anterior. **PENDENTE:** resolução de resistência aos efeitos reativos, travessia por aliados e exceções específicas de magias mistas.
+
+### Conjuração Equilibrada — 1 XP [DEFINIDO]
+
+**Requisitos:** Disciplina 2 + Inteligência 2 + Destreza 2 + Criar Item de Foco e Magia. Gastar **1 PP OU 2 Coragens** permite alterar a magia para **Leve ou Pesada**. Não pressupor melhoria do Grau numérico, dados, dano ou slots, sem decisão específica.
+
+### Interface e publicação desta leva [DEFINIDO em apresentação]
+
+Cards de Perícias do criador/ficha devem conter só **requisitos, custo XP, custo de ativação e efeito prático**; ao passar o mouse, aparece **verbete resumido**, e ao clicar o card abre **explicação completa**. O botão de compra permanece independente. Conservar IDs de Perícias e verificar requisitos; aplicações especiais não automatizadas não podem ser apresentadas como rolagem automática. A próxima leva será Invocador, Encantador e Transformador.
+
+---
+
 ## Histórico integral — SRD v0.37 (prevalência inferior à seção 0-V)
 
 ---
