@@ -26,7 +26,9 @@ const SKILLS=[
  ["montar","Montar Animal","Requer Influência grau 2.",2],
  ["provocacao-sofisticada","Provocação Sofisticada","Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",1],
  ["combinacao","Combinação de Fontes","Habilita propor a terceira fonte pertinente.",2],
- ["aprendiz","Aprendiz de Conjurador","Conjuração inicial com Psique, sem segunda Prática.",2],
+ ["aprendiz","Aprendiz de Conjurador","Conjuração inicial com Psique, sem segunda Prática. Habilitação anterior; relação com Criar Item de Foco e Magia pendente.",2],
+ ["criar-item-foco-magia","Criar Item de Foco e Magia","1 XP · Disciplina 1 + Inteligência 1. Magias Leves e efeitos Psíquicos: em acerto, 1 PP ou 2 Coragens ativa UM efeito independente de crítico. Foco por Artesão permite usar elemento sem presença na cena. Peso cresce com Grau; recarga G1=1, G2=2, G3=3 rodadas etc. Graus e efeitos específicos seguem limites; escopo de conjuração em revisão.",1],
+ ["escudo-arcano","Escudo Arcano","1 XP · Inteligência 2 + Criar Item de Foco e Magia. Ativação 1 PP/2 Coragens; em si ou área 3×3. Rolagem de Conjuração determina DE para quebrar; proteção como Integridade. Quem está na área é imune a dano elemental conjurado; inimigo dentro atacando ou conjurando corpo a corpo ignora escudo. +1 PP/2 Coragens aumenta mais 3×3. Alcance, duração e mecânica de ruptura pendentes.",1],
  ["magia","Magia Única","Criar uma magia inicial do Grau permitido.",1],
  ["peritoconj","Perito Conjurador","Combinação pertinente à Conjuração.",2],
  ["improviso","Improviso Mágico","Usa elemento disponível na cena.",1],
@@ -65,6 +67,8 @@ const SKILL_AFFINITY={
  combate:["practice:armas_conjuracao"],armas:["practice:armas_conjuracao"],marciais:["practice:armas_conjuracao"],
  montar:["attr:influencia"],"provocacao-sofisticada":["attr:influencia","practice:apresentacao"],
  combinacao:[],aprendiz:["practice:armas_conjuracao","attr:inteligencia"],
+ "criar-item-foco-magia":["practice:armas_conjuracao","attr:inteligencia","practice:artesao"],
+ "escudo-arcano":["practice:armas_conjuracao","attr:inteligencia"],
  magia:["practice:armas_conjuracao","attr:inteligencia"],peritoconj:["practice:armas_conjuracao"],
  improviso:["practice:armas_conjuracao","know:alquimia"],mestre:["practice:armas_conjuracao"],
  fogo:["practice:armas_conjuracao","know:alquimia"],agua:["practice:armas_conjuracao","know:alquimia"],
@@ -93,7 +97,7 @@ const SKILL_BRANCHES=[
  ["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe"],
  ["disciplina-avancada","manejo-perfeito","maestria-manejo-duplo"],
  ["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"],
- ["aprendiz","magia","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"],
+ ["aprendiz","criar-item-foco-magia","escudo-arcano","magia","peritoconj","improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"],
  ["provocacao-sofisticada","combate","montar","recobrar-coragem"]
 ];
 const skillFilter={scope:"all",ready:false,query:""};
@@ -305,6 +309,8 @@ function skillReq(id,s=state){
  if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
  if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
+ if(id==="criar-item-foco-magia"&&(disc<1||(s.attributes.inteligencia||0)<1))return"Requer Disciplina 1 e Inteligência 1.";
+ if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Inteligência 2 e Criar Item de Foco e Magia.";
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Maestria em Arremesso não habilita este golpe.";
  if(id==="espalhar-golpe"&&(disc<2||dex<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
@@ -614,7 +620,7 @@ function mayThird(){return disciplineAdvancedActive()||state.skills.includes("co
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
- return draft.mode==="armas"||(draft.mode==="conjuracao"&&state.skills.includes("aprendiz"));
+ return draft.mode==="armas"||(draft.mode==="conjuracao"&&(state.skills.includes("aprendiz")||state.skills.includes("criar-item-foco-magia")));
 }
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
@@ -654,7 +660,7 @@ function buildPool(){
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
  }
- if(!canUseShared())errors.push("Para conjuração especializada, adquira Aprendiz de Conjurador. Rolagens marciais básicas de Disciplina são livres.");
+ if(!canUseShared())errors.push("Conjuração exige habilitação: Aprendiz de Conjurador ou Criar Item de Foco e Magia. Uso marcial básico de Disciplina é livre.");
  for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
   dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides}));
