@@ -8,8 +8,8 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./app.js?v=0.38" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=0.38-2">
+  <script src="./app.js?v=0.38-2" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -128,7 +128,7 @@
       <div class="fp-xp-topline">
         <div class="fp-xp-highlight"><small>XP INVESTIDO</small><strong id="xp-total-spent">0</strong><span>Fontes e Perícias</span></div>
         <div class="fp-xp-highlight"><small>XP DE EVOLUÇÃO</small><strong id="xp-earned-text">0</strong><span>Concedido manualmente</span></div>
-        <div class="fp-xp-highlight"><small>XP LIVRE</small><strong id="xp-free-text">0</strong><span>Após excedente da criação</span></div>
+        <div class="fp-xp-highlight"><small>XP LIVRE</small><strong id="xp-free-text">0</strong><span>Inclui sobras iniciais após concluir</span></div>
         <div class="fp-xp-highlight"><small>REF. PRÓXIMO NÍVEL</small><strong id="xp-next-level">—</strong><span>Curva experimental · não obrigatória</span></div>
       </div>
       <div class="fp-xp-tracks">
@@ -145,7 +145,7 @@
         <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
       </div>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
-      <p class="fp-footnote">Orçamento inicial de <b>6 + 8 + 5 XP</b>: <strong>EXPERIMENTAL</strong>. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, correções de investimentos podem ser feitas somente pelo botão <strong>Editar ficha</strong>; isso não concede reembolso livre durante a campanha. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
+      <p class="fp-footnote"><strong>5 XP iniciais de Perícias são DEFINIDOS</strong>; os 6 XP de Atributos e 8 XP de Formação continuam EXPERIMENTAIS. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, <strong>todo XP inicial não gasto vira saldo livre para qualquer categoria</strong>, e novos avanços podem ser comprados normalmente. Reduções e correções de investimentos exigem <strong>Editar ficha</strong>; isso não concede reembolso livre durante a campanha. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
     </section>
 
     <div class="fp-workspace">
@@ -174,7 +174,7 @@
           <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
           <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
           <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
-          <p>A fonte <strong>Base</strong> determina o tipo de teste. <em>Disciplina (Armas) + Força + Apresentação</em> e <em>Apresentação + Força + Disciplina (Armas)</em> não têm a mesma finalidade, mesmo com dados iguais.</p>
+          <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Disciplina Avançada</strong> pode acrescentar outra fonte pertinente quando a ação usa Disciplina.</p>
         </section>
       </div>
 
@@ -189,6 +189,7 @@
     <section class="fp-lower">
       <section class="fp-panel fp-skills-panel" id="pericias">
         <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Ative para experimentar a composição</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
+        <div id="skills-filterbar"></div>
         <div id="skills-list" class="fp-skills-grid"></div>
         <div class="fp-taunt-rule" id="provocar">
           <h4>Provocar — ação tática básica</h4>
