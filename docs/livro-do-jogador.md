@@ -315,9 +315,39 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 ## VII. Conjuração, elementos e possibilidades
 
-O Aprendiz de Conjurador começa com o elemento **Psíquico**. Fogo, Água, Ar/Vento, Terra e elementos especiais dependem das habilitações próprias.
+A habilitação anterior **Aprendiz de Conjurador** começa com **Psíquico**. A nova Perícia **Criar Item de Foco e Magia** também inicia efeitos Psíquicos, com **Disciplina 1 + Inteligência 1** e compra de 1 XP. **PENDENTE:** relação entre as duas habilitações e a antiga Magia Única. Outros elementos continuam sujeitos às suas habilitações próprias.
 
 **Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. Incluir o segundo elemento conscientemente com a Perícia adequada gasta **1A**, não reutilizável. A mistura por si só **não soma dados nem Êxitos**, e efeitos avançados exigem os Pontos de Perícia (PP) e as Especialidades pertinentes.
+
+### Criar Item de Foco e Magia [DEFINIDO / efeitos avançados PENDENTES]
+
+**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita os efeitos iniciais de **Psíquico**, magias **Leves**, criação de itens de foco e moldagem de magias segundo a capacidade de conjuração.
+
+**Efeitos especiais de Psíquico:** **ao acertar um ataque**, independentemente de crítico, pode gastar **1 PP OU 2 Coragens** para aplicar **um efeito escolhido** do elemento, dentro do Grau habilitado. Não presumir gratuidade no crítico.
+
+| Grau | Exemplos do elemento Psíquico, neutro e não físico |
+|---|---|
+| **G1** | Amassar armadura, arrancar objeto, lançar pedra, ler mente, impor pensamento ou sentir presenças; manifestações psicológicas/telecinéticas |
+| **G2** | Controlar **um alvo para atacar a si próprio** (**rolagem de Influência**) ou arremessar pequenos objetos mentalmente |
+| **G3** | Controlar **dois alvos para que um ataque o outro**, com **rolagem de Influência** e **Conjuração**; somente com **Psíquico puro ou combinado com Trevas** |
+
+**Foco:** o personagem faz a **rolagem de criação com Artesão**. Itens de foco permitem conjurar magias elementais **sem depender da presença do elemento na cena**, dentro das habilitações adquiridas. Cada grau investido em **Disciplina** aumenta a capacidade de criar Graus mais elevados de magias e itens; a correspondência numérica exata entre o Grau de Disciplina e o limite de fabricação ainda é **PENDENTE**. O **peso físico do foco** aumenta proporcionalmente ao Grau da magia, mas sem números de inventário definidos.
+
+**Recarga:** foco de G1 recarrega em **1 rodada**, G2 em **2 rodadas** e assim sucessivamente (**Grau N → N rodadas**). **Criar Magia:** a Perícia permite moldar os elementos conforme a capacidade de conjuração, sem conceder gratuitamente outras habilitações elementais.
+
+**PENDENTE:** distâncias e durações, DE e resistência a efeitos mentais, como resolver ações psíquicas sem ataques, dano de objetos, e relação entre **Criar Item de Foco e Magia**, **Aprendiz de Conjurador** e **Magia Única**. Não tratar exemplos como dano ou condição automática.
+
+### Escudo Arcano [DEFINIDO / procedimentos PENDENTES]
+
+**Custo: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
+
+**Ativação:** por **1 PP OU 2 Coragens**, cria **escudo elemental sobre si** ou uma **área de 3×3**. Faz **rolagem com Conjuração**, cujo resultado estabelece a **DE para quebrar o escudo**. O escudo funciona como proteção semelhante à **Integridade de armadura**, sem fórmula adicional presumida.
+
+Quem estiver **dentro da área** fica **imune ao dano elemental conjurado**. **Exceção:** se um inimigo **entrar na área** e **atacar ou conjurar corpo a corpo**, o efeito do escudo **é ignorado** nessa interação.
+
+**Ampliar:** por **mais 1 PP OU 2 Coragens**, aumenta a área em **mais 3×3**. Os custos de ativações adicionais são separados.
+
+**PENDENTE:** unidade de medida e geometria de 3×3, duração/alcance do escudo, se a DE para quebrar também equivale à sua Integridade, alcance da imunidade frente a elementos combinados, condições exatas para romper a defesa. Nenhuma automação desses efeitos foi presumida na ficha.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
@@ -512,7 +542,9 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Combate | 1 | +1A em combate pertinente |
 | Armas 1 | 2 | Habilitação e primeira especialização de arma |
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
-| Aprendiz de Conjurador | 2 | Conjuração grau 1 |
+| Aprendiz de Conjurador | 2 | Conjuração grau 1 (habilitação anterior; interação com foco pendente) |
+| **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
+| **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área 3×3, DE por Conjuração |
 | Magia Única | 1 | Uma magia inicial |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
