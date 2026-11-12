@@ -26,7 +26,7 @@ const SKILLS=[
  ["montar","Montar Animal","Requer Influência grau 2.",2],
  ["provocacao-sofisticada","Provocação Sofisticada","Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",1],
  ["combinacao","Combinação de Fontes","Habilita propor a terceira fonte pertinente.",2],
- ["criar-item-foco-magia","Criar Item de Foco e Magia","1 XP · Disciplina 1 + Inteligência 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/2 Coragens; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/2 Coragens e memorizar em slots; sem foco peso −1 (cálculo e capacidade pendentes). Pesos G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",1],
+ ["criar-item-foco-magia","Criar Item de Foco e Magia","1 XP · Disciplina 1 + Inteligência 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/2 Coragens; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/2 Coragens e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",1],
  ["escudo-arcano","Escudo Arcano","1 XP · Inteligência 2 + Criar Item de Foco e Magia. 1 PP/2 Coragens cria escudo pessoal ou área CIRCULAR 3×3 m por 1 RODADA. Rolagem de Conjuração determina DE para quebrar; proteção semelhante à Integridade. Dano elemental conjurado é bloqueado na área; inimigo que entrar e atacar/conjurar corpo a corpo ignora escudo. +1 PP/2 Coragens amplia em 3×3; geometria exata de ampliação e ruptura pendentes.",1],
  ["conjuracao-equilibrada","Conjuração Equilibrada","1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Por 1 PP ou 2 Coragens altera a magia para Pesada ou Leve. PENDENTE: confirmar se é só peso tático, não mudança do Grau numérico nem dos pesos de slots.",1],
  ["peritoconj","Perito Conjurador","Combinação pertinente à Conjuração.",2],
@@ -408,8 +408,9 @@ function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
 function mentalSlotCapacity(s=state){
- // DEFINIDO: cada dado da Prática Disciplina vale uma unidade de peso mental.
- return dataDice("practice",s.practices.armas_conjuracao||0).length;
+ // DEFINIDO: cada Grau investido em Disciplina vale 1 ponto de capacidade mental.
+ // A quantidade de dados da rolagem não altera essa capacidade.
+ return clamp(Math.floor(s.practices.armas_conjuracao||0),0,6);
 }
 function label(g,k){
  const source=(GROUPS[g]||[]).find(x=>x[0]===k);return source?.[1]||k;
@@ -900,10 +901,12 @@ function renderInventory(){
  $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
  const mental=$("mental-slot-caption");
  if(mental){
-  const dice=dataDice("practice",state.practices.armas_conjuracao||0);
   const points=mentalSlotCapacity();
-  mental.textContent="Slots mentais: "+points+" unidade"+(points===1?"":"s")+" de peso mental ("+
-   dice.map(n=>"d"+n).join(" + ")+"). Cada dado de Disciplina = 1 unidade. Magias: G1=1, G2=2, G3=3, G4=4; sem foco −1 de peso (mínimo e armazenamento pendentes). Focos seguem ocupando carga física. Comparação dos 6 elementos G2 com o limite de dados atual: PENDENTE.";
+  const canCreateG2=(state.practices.armas_conjuracao||0)>=2;
+  mental.textContent="Slots mentais: "+points+" ponto"+(points===1?"":"s")+" de capacidade (1 por Grau investido em Disciplina, NÃO por dado). "+
+   "Criar Magia reduz 1 ponto do peso das magias criadas e memorizadas: G2=1, G3=2, G4=3. "+
+   (canCreateG2?"Pode memorizar até "+points+" magia"+(points===1?"":"s")+" G2 criada"+(points===1?"":"s")+", conforme demais requisitos. ":"Criar magia G2 exige Disciplina 2. ")+
+   "G1 após −1: peso mínimo PENDENTE. Os itens de foco seguem contando como carga física.";
  }
  $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
