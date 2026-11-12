@@ -151,3 +151,11 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 
 **Conjuração Equilibrada:** 1 XP, requer **Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2**. Ao pagar 1 PP ou 2 Coragens, permite alterar a magia para **Pesada ou Leve**. Sua compra e os requisitos estão automatizados; o efeito sobre Grau numérico, peso tático e peso nominal dos slots aguarda confirmação, não se cria aumento automático de Grau ou dano.
 
+
+## Spellslots mentais e Perícia em Elemento Ar (12/11/2026)
+
+**Capacidade mental [DEFINIDO em fonte]:** determinada **somente pelos dados da Prática Disciplina**; não incluir bônus de Inteligência, foco, inventário ou a fórmula histórica baseada em graus. **PENDENTE:** quantos pontos de capacidade cada dado de Disciplina representa, e se o limite histórico de 9 ainda se aplica. Por isso, a ficha exibe os **dados de Disciplina** como referência, mas não inventa nem calcula capacidade numérica de slots.
+
+**Itens de foco:** **sempre** entram na carga física convencional do inventário. A ficha soma todos os itens do tipo Foco como qualquer outro equipamento, segundo seu peso cadastrado. Os pesos de cada foco por Grau e a relação de Potência com Força e Atletismo ainda dependem de especificação; não há peso físico gratuito.
+
+**Perícia em Elemento Ar:** custo 1 XP, requer **Disciplina 1, Criar Item de Foco e Magia e Inteligência 1**. Substitui o rótulo anterior **Elemento: Vento** mantendo o identificador técnico `vento` para preservar personagens que já o adquiriram. A compra e os requisitos estão verificados. O efeito especial custa **1 PP ou 2 Coragens**, condiciona-se a acerto mesmo sem crítico e aplica **um** dos efeitos do Ar: G1 autoempurrão e deslocamento +4m ou manipular objetos, G2 sufocar/dano à Vida ou armadura, empurrar/derrubar e deslocamento 8m, G3 conjuração ao final do turno dos aliados, tornado/rajada e possíveis danos por queda com referência 16m. Formatos linha/círculo/cone/X são opções mencionadas, não geometria calculada. Resolução de dano, duração e interpretação de 16m não estão automatizadas.
