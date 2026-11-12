@@ -843,6 +843,7 @@ function adjustResource(resource,delta){
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
 function renderSkills(){
+ const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
  $("skills-list").innerHTML=filteredSkills().map(([id,name,detail,cost])=>{
   const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
   const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
@@ -851,7 +852,7 @@ function renderSkills(){
   return'<div class="fp-skill '+(owned?"owned":"")+(req?" fp-skill-locked":"")+'"><div><strong>'+esc(name)+'</strong>'+
    '<small>'+esc(detail)+'</small>'+(note?'<small class="fp-skill-req">'+esc(note)+'</small>':"")+
    '</div><button type="button" data-action="skill" data-id="'+id+'" aria-pressed="'+owned+'" title="'+esc(note||"")+'"'+(disabled?" disabled":"")+'>'+text+'</button></div>';
- }).join("");
+ }).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros. Tente ampliar a busca.</div>';
  $("weapon-focus-wrap").hidden=!state.skills.includes("armas");
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
