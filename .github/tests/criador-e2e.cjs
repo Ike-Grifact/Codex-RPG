@@ -125,6 +125,8 @@ const { chromium } = require('playwright');
         throw new Error('Influência grau 2 deveria exibir dois dados reais');
       if(!await page.locator('#gene-builder-map .fp-gene-skill.is-owned[data-gene-id="montar"]').count())
         throw new Error('Montar Animal não foi incorporada como Perícia adquirida');
+      // Fechar a ficha lateral antes de interagir com os nós atrás dela.
+      await page.locator('#gene-builder-detail [data-action="gene-close-detail"]').click();
       // Evoluir Agilidade para grau 3 produz 3 ícones de dados; descartar não gasta XP.
       await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
       await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
