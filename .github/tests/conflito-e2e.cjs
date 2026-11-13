@@ -1,0 +1,71 @@
+const {chromium}=require("playwright");
+const assert=(p,msg)=>{if(!p)throw Error(msg);};
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1280,height:870}}),errors=[];
+  page.on("pageerror",e=>errors.push(e.message));
+  await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  assert(await page.getByText("Criar Conflito").count()>0,"Não abriu a área Criar Conflito");
+  await page.locator("#add-threat").click();
+  assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro");
+  assert((await page.locator("#public-count").innerText()).includes("2 / 6"),"Teto público incorreto");
+  await page.locator('#editor [data-field="xp"]').fill("20");
+  await page.locator('#editor [data-field="xp"]').dispatchEvent("change");
+  await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
+  await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
+  assert((await page.locator("#editor").innerText()).includes("2d10")||
+      await page.locator("#editor .cf-die.d10").count()===2,"Monstro grau 2 não rolou dois d10");
+  await page.locator('#editor [data-field="threatGrade"]').fill("5");
+  await page.locator('#editor [data-field="threatGrade"]').dispatchEvent("change");
+  await page.locator('#editor [data-keep="1"]').click();
+  await page.locator('#editor [data-keep="1"]').click();
+  assert((await page.locator("#editor").innerText()).includes("2P por oportunidade"),"Retenção de 4 dados não informa custo");
+  await page.locator('#new-kind').selectOption("humanoide");
+  await page.locator("#add-threat").click();
+  assert(await page.locator(".cf-threat-card").count()===2,"Não criou dois oponentes");
+  assert((await page.locator("#editor").innerText()).includes("20"),"Humanoide sem XP compartilhado");
+  await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
+  await page.locator('#editor [data-grade="practice"][data-key="atletismo"][data-delta="1"]').click();
+  assert((await page.locator("#editor").innerText()).includes("17"),"XP humanoide errado");
+  await page.locator('[data-players="1"]').click();
+  assert((await page.locator("#public-count").innerText()).includes("/ 7"),"Teto público não acompanhou jogadores");
+  await page.locator('#editor [data-add-catalog]').click();
+  assert(await page.locator("#editor .cf-item").count()===1,"Equipamento não entrou no inventário");
+  assert(!errors.length,"Erros Javascript "+errors.join(" | "));
+  console.log("PASS Desktop: fichas múltiplas, XP, Pavor, graus e inventário");
+
+  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),merrors=[];
+  mobile.on("pageerror",e=>merrors.push(e.message));
+  await mobile.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await mobile.locator("#add-threat").click();
+  const overflows=await mobile.evaluate(()=>{
+   const nodes=[...document.querySelectorAll("body,.cf-layout,.cf-editor,.cf-grade-group,.cf-top-dashboard")];
+   return nodes.filter(x=>x.getBoundingClientRect().right>window.innerWidth+2).map(x=>x.className);
+  });
+  assert(overflows.length===0,"Componentes do conflito cortados no celular: "+overflows);
+  assert(!merrors.length,"Erros Javascript mobile "+merrors.join(" | "));
+  console.log("PASS Mobile: área de conflitos sem cortes laterais");
+  await mobile.close();
+
+  const shop=await browser.newPage({viewport:{width:1280,height:900}}),shopErrors=[];
+  shop.on("pageerror",e=>shopErrors.push(e.message));
+  await shop.goto("http://127.0.0.1:8000/prototipo-ficha/",{waitUntil:"domcontentloaded"});
+  await shop.locator('[data-wizard-field="name"]').fill("Aprendiz de carga");
+  await shop.locator('#wizard-controls [data-action="wizard-next"]').click();
+  await shop.locator('[data-action="wizard-starter-attr"][data-key="forca"]').click();
+  await shop.locator('[data-action="wizard-starter-training"][data-group="practice"][data-key="atletismo"]').click();
+  await shop.locator('#wizard-controls [data-action="wizard-next"]').click();
+  await shop.locator('#wizard-controls [data-action="wizard-next"]').click();
+  await shop.waitForSelector(".fp-carry-guide");
+  const guide=await shop.locator("#wizard-content .fp-carry-guide").innerText();
+  assert(guide.includes("6 leves")&&guide.includes("1 médios")&&guide.includes("0 pesados"),"Contador inicial incorreto: "+guide);
+  await shop.locator('[data-action="wizard-shop-category"][data-category="armor"]').click();
+  assert(await shop.locator(".fp-wiz-shop-item").filter({hasText:"Armadura Pesada"}).locator(".fp-carry-warning").count()===1,"Armadura Pesada sem aviso de sobrecarga");
+  shop.once("dialog",d=>{assert(d.message().includes("ATENÇÃO: ultrapassará o limite"),"Compra sem alerta");d.dismiss();});
+  await shop.locator('[data-action="wizard-buy-item"][data-item="Armadura Pesada"]').click();
+  assert(!await shop.locator("#wizard-content").innerText().then(t=>t.includes("Armadura Pesada · No inventário")),"Item foi comprado apesar de recusa");
+  assert(!shopErrors.length,"Erros Javascript no criador "+shopErrors.join(" | "));
+  console.log("PASS Compra com VT: limites leve/médio/pesado e sobrecarga confirmável");
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
