@@ -85,6 +85,7 @@ const { chromium } = require('playwright');
       if(await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
         throw new Error('Opções futuras não foram ocultadas de novo');
       await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
+      await page.locator('#wizard-content button[data-action="wizard-tab"][data-group="attr"]').click();
       if(!await page.locator('#wizard-content [data-action="grade"][data-group="attr"][data-key="agilidade"]').count())
         throw new Error('Alternância de volta às listas perdeu o Atributo comprado');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
