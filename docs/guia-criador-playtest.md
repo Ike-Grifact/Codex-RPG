@@ -26,7 +26,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 **DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 20 XP; saldo livre de 17 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
 
-No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados têm as formas do rolador. Perícias **roxas** têm XP suficiente, mas faltam requisitos, enquanto as **azuis** podem ser compradas. Os detalhes abrem sobre o mapa; as conexões representam afinidades temáticas, não requisitos.
+No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados usam a geometria, cores e rótulos dN do rolador **entre os botões − e +**, expandindo até três dados por fonte. As ramificações de Perícias formam um grafo de afinidades conectado no estilo visual Obsidian. Perícias **roxas** têm uma compra automática possível: o XP cobre o custo dos graus e Perícias necessários e da própria Perícia. A ferramenta mostra o pacote e exige confirmação explícita antes de gastar. Perícias **azuis** já atendem seus requisitos. Os detalhes abrem sobre o mapa; as conexões representam afinidades temáticas, não requisitos.
 
 ## O que funciona
 
