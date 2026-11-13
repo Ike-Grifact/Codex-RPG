@@ -1501,16 +1501,47 @@ function wizardSkills(){
   '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>';
 }
 
-function wizardCategoryCards(){
- return '<div class="fp-wiz-choice-grid">'+WIZARD_CATEGORIES.map(c=>{
-  const selected=wizardCategory===c.id;
-  return '<button type="button" class="fp-wiz-choice'+(selected?' is-active':'')+'" data-action="wizard-category" data-group="'+c.id+'" aria-pressed="'+selected+'">'+
-   '<span class="fp-wiz-choice-top"><strong>'+c.title+'</strong><span>'+(selected?'Selecionado':'Escolher')+'</span></span>'+
-   '<span class="fp-wiz-choice-description">'+c.description+'</span><span class="fp-wiz-choice-example">'+c.example+'</span>'+
-   '<span class="fp-wiz-choice-dice">'+c.dice+'</span><span class="fp-wiz-choice-cost">'+c.cost+'</span>'+
-   '<small class="fp-wiz-choice-names">'+c.names+'</small></button>';
- }).join("")+'</div>'+
- '<div class="fp-wiz-reminder"><strong>Criação livre</strong><p>Para concluir, compre um Atributo grau 1 e um Conhecimento ou Prática grau 1. Depois, todo o XP restante é livre. A escolha acima só orienta a primeira lista a abrir.</p></div>';
+function wizardStarterOption(group,[id,name]){
+ const isAttr=group==="attr",key=isAttr?id:group+":"+id;
+ const info=isAttr?WIZARD_ATTRIBUTE_GUIDE[id]:WIZARD_TRAINING_GUIDE[key];
+ const grade=Number(state[SOURCE_PROPS[group]][id]||0);
+ const selected=isAttr?wizardStarterAttribute===id:wizardStarterTraining===key;
+ const cost=grade>=1?0:isAttr?AT_COST[1]:TRAIN_COST[1];
+ const dice=isAttr?"G0: 1d4 · G1: 1d6":"G0: 1d6 · G1: 1d10";
+ return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
+  '<span class="fp-wiz-focus-top"><strong>'+esc(name)+'</strong><small>'+(selected?'Escolhido':'Escolher')+'</small></span>'+
+  '<span class="fp-wiz-focus-role">'+esc(info[0])+'</span>'+
+  '<span class="fp-wiz-focus-description">'+esc(info[1])+'</span>'+
+  '<span class="fp-wiz-focus-example">'+esc(info[2])+'</span>'+
+  '<span class="fp-wiz-focus-bottom"><span>'+dice+'</span><b>'+(cost?cost+' XP · grau 1':'Grau '+grade+' já comprado')+'</b></span></button>';
+}
+function wizardStarterCards(){
+ const [group,id]=wizardStarterTraining.split(":");
+ const attr=A.find(([k])=>k===wizardStarterAttribute);
+ const training=GROUPS[group]?.find(([k])=>k===id);
+ const attrCost=wizardStarterAttribute&&(state.attributes[wizardStarterAttribute]||0)<1?AT_COST[1]:0;
+ const trainingCost=training&&(state[SOURCE_PROPS[group]][id]||0)<1?TRAIN_COST[1]:0;
+ const phases='<div class="fp-wiz-mini-progress" aria-label="Progresso da escolha inicial">'+
+  '<span class="'+(wizardStarterPhase==="attr"?'is-current':'is-complete')+'">1 · Atributo</span>'+
+  '<span class="'+(wizardStarterPhase==="training"?'is-current':wizardStarterPhase==="confirm"?'is-complete':'')+'">2 · Conhecimento ou Prática</span>'+
+  '<span class="'+(wizardStarterPhase==="confirm"?'is-current':'')+'">3 · Confirmar</span></div>';
+ if(wizardStarterPhase==="attr")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · PRIMEIRA ESCOLHA</span>'+
+  '<h3>Escolha um Atributo principal.</h3><p>Veja os seis Atributos, suas funções e exemplos. Selecione aquele com que deseja iniciar. <strong>“Principal” não cria bônus, classe ou restrição:</strong> será só sua primeira compra.</p></div>'+
+  phases+'<div class="fp-wiz-focus-grid">'+A.map(x=>wizardStarterOption("attr",x)).join("")+'</div>'+
+  '<div class="fp-wiz-reminder"><strong>Atributos</strong><p>Grau 0: 1d4; grau 1: 1d6 por 1 XP. Você poderá desenvolver outros Atributos mais tarde. O XP será gasto quando confirmar as duas escolhas.</p></div>';
+ if(wizardStarterPhase==="training")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · SEGUNDA ESCOLHA</span>'+
+  '<h3>Escolha um Conhecimento ou uma Prática.</h3><p>Seu Atributo inicial é <strong>'+esc(attr?.[1]||"não selecionado")+'</strong>. Agora selecione <strong>um</strong> Conhecimento ou <strong>uma</strong> Prática. Conhecimento representa estudo; Prática representa treinamento. Não é preciso escolher os dois.</p></div>'+
+  phases+
+  '<section class="fp-wiz-focus-section"><div class="fp-wiz-focus-heading"><h4>Conhecimentos</h4><p>Estudar, investigar e compreender.</p></div><div class="fp-wiz-focus-grid">'+K.map(x=>wizardStarterOption("know",x)).join("")+'</div></section>'+
+  '<section class="fp-wiz-focus-section"><div class="fp-wiz-focus-heading"><h4>Práticas</h4><p>Treinar, executar e aperfeiçoar.</p></div><div class="fp-wiz-focus-grid">'+P.map(x=>wizardStarterOption("practice",x)).join("")+'</div></section>'+
+  '<div class="fp-wiz-reminder"><strong>Conhecimentos e Práticas</strong><p>Grau 0: 1d6; grau 1: 1d10 por 2 XP. As outras fontes continuarão disponíveis depois, sem reserva por categoria.</p></div>';
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CONFIRMAR COMPRAS</span>'+
+  '<h3>Confirme as escolhas iniciais.</h3><p>Ao confirmar, as duas fontes terão pelo menos grau 1. Depois você poderá investir livremente em qualquer categoria, inclusive Perícias.</p></div>'+
+  phases+'<div class="fp-wiz-focus-confirm">'+
+  '<section><small>ATRIBUTO PRINCIPAL</small><strong>'+esc(attr?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+attrCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="attr">Alterar Atributo</button></section>'+
+  '<section><small>CONHECIMENTO OU PRÁTICA</small><strong>'+esc(training?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+trainingCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="training">Alterar escolha</button></section></div>'+
+  '<div class="fp-wiz-starter-total"><span>XP para confirmar: <strong>'+(attrCost+trainingCost)+'</strong></span><span>Saldo livre após confirmar: <strong>'+(xpCosts().free-attrCost-trainingCost)+' XP</strong></span></div>'+
+  '<div class="fp-wiz-reminder"><strong>A escolha “principal” é orientativa</strong><p>Não há bônus oculto. Se voltar aqui depois de outras compras, os investimentos já realizados permanecem na ficha e o custo de uma nova fonte será informado.</p></div>';
 }
 function wizardBuild(){
  const attrOK=A.some(([k])=>(state.attributes[k]||0)>=1);
@@ -1612,10 +1643,8 @@ function renderWizard(){
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
-   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ESCOLHA O QUE DESENVOLVER</span>'+
-   '<h3>O que você quer desenvolver?</h3><p>Entenda cada tipo de fonte e escolha por onde começar. <strong>A escolha não impõe classe nem reserva XP.</strong> Na próxima etapa, todas as categorias continuarão acessíveis.</p></div>'+
-   wizardCategoryCards();
-  }else if(stage===2){
+  content=wizardStarterCards();
+ }else if(stage===2){
    content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
    '<h3>Construa seu Aprendiz.</h3><p>O <strong>modo padrão</strong> apresenta as compras em listas. Se preferir, alterne para o <strong>Codex Genético</strong>. Ambos usam o mesmo personagem, as mesmas compras e o mesmo saldo de XP.</p></div>'+
    wizardBuild();
@@ -1626,7 +1655,7 @@ function renderWizard(){
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
   '<button type="button" class="fp-primary-btn" data-action="'+(stage===3?'wizard-finish':'wizard-next')+'">'+
-  (stage===3?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
+  (stage===3?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar e distribuir XP →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
@@ -2158,6 +2187,7 @@ function onClick(event){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
  case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
  case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
+ case "wizard-starter-edit":if(wizardStep===1){wizardStarterPhase=button.dataset.phase==="attr"?"attr":"training";wizardPersist();renderWizard();}break;
  case "wizard-category":{
   // Retido apenas para compatibilidade com rascunhos da interface antiga.
   break;
