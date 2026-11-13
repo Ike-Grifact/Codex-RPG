@@ -31,7 +31,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   });
   await page.locator('#gene-builder-detail [data-action="gene-auto-buy"]').click();
   const summary=await page.locator("#wizard-summary").innerText();
-  assert(summary.includes("13 XP")&&summary.includes("7 XP"),
+  assert(summary.includes("13 / 20 XP")&&summary.includes("7 XP"),
    "Compra assistida não atualizou saldo e XP corretamente: "+summary);
   await page.locator('[data-action="quick-human-send"]').click();
   await page.waitForURL("**/criar-conflito/?adicionar-humanoide=1");
