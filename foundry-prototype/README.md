@@ -1,15 +1,50 @@
-# Codex RPG — Protótipo de Sistema Foundry VTT v0.2.1 (branch de testes)
+# Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-**Estado:** implementação experimental em JavaScript para **Foundry VTT v14**. Não foi executado dentro de uma instância real, nem testado entre múltiplos usuários. Utilize somente em mundo de testes com backup.
+**Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
-## Instalar manualmente
+## Desenvolvimento local
 
-1. Baixe ou clone o repositório [Ike-Grifact/Codex-RPG](https://github.com/Ike-Grifact/Codex-RPG).
-2. Copie **o conteúdo** de `foundry-prototype/` (não a pasta que o contém) para `FoundryVTT/Data/systems/codex-rpg-foundry/`.
-3. Confirme que `system.json`, `module/`, `templates/`, `styles/`, `lang/` e `assets/` estejam dentro desse diretório.
-4. Reinicie o Foundry e crie um mundo usando **Codex RPG — Foundry (playtest)**.
+Feche completamente o aplicativo ou servidor do Foundry. Com Node.js 24, no clone de [Ike-Grifact/Codex-RPG](https://github.com/Ike-Grifact/Codex-RPG) já atualizado na branch do PR #4, execute o mesmo comando no Windows, Linux ou macOS:
 
-Não há instalador por URL de manifesto nem distribuição ZIP própria publicados. Uma URL `system.json` de subdiretório GitHub não é instalador remoto do Foundry.
+```sh
+node foundry-prototype/scripts/install.mjs
+```
+
+O instalador busca a User Data nos locais padrão do sistema operacional e na configuração `dataPath`. Também reconhece `FOUNDRY_VTT_DATA_PATH` e uma edição portátil quando executado a partir da árvore dela. Para indicar uma pasta personalizada ou escolher entre instalações, use a raiz **User Data**, a pasta que contém `Config` e `Data`. Este exemplo usa a instalação portátil do Windows:
+
+```powershell
+node foundry-prototype/scripts/install.mjs --user-data "F:/FoundryVTT-WindowsPortable-14.364"
+```
+
+Acrescente `--dry-run` para confirmar o caminho, o ID e as versões sem gravar arquivos. O script valida os arquivos do pacote e verifica se há um processo do Foundry ou um servidor escutando na porta configurada. Mantenha o Foundry fechado até a conclusão.
+
+A instalação anterior é movida inteira para `<User Data>/Backups/codex-rpg-system-installer/<data>/codex-rpg-foundry` antes da substituição. O instalador restaura essa cópia se a troca falhar e preserva a pasta `storage` do pacote. Mundos, Actors, Items e configurações de usuários continuam na User Data original. Nenhuma operação de escrita usa `Data/worlds`. Para restaurar manualmente, feche o Foundry, mova a pasta instalada para fora de `Data/systems` e copie a pasta do backup para `Data/systems/codex-rpg-foundry`.
+
+## Instalação e atualização pela interface do Foundry
+
+1. Na tela **Setup**, abra **Game Systems → Install System**.
+2. Cole a URL do canal no campo **Manifest URL** e clique em **Install**.
+3. Para atualizações futuras, volte a **Game Systems** e use **Update** no Codex RPG. Uma cópia antiga instalada sem manifesto passa a receber atualizações após a instalação pela URL.
+
+| Canal | URL do manifesto |
+| --- | --- |
+| Playtest | `https://raw.githubusercontent.com/Ike-Grifact/Codex-RPG/foundry-playtest-manifest/system.json` |
+| Estável | `https://github.com/Ike-Grifact/Codex-RPG/releases/latest/download/system.json` |
+
+Cada URL passa a responder com a primeira publicação do canal. Os canais usam o mesmo ID para manter a associação dos mundos existentes ao sistema. Para usar os dois ao mesmo tempo, configure duas User Data independentes. Para trocar de canal, faça backup do sistema e instale pelo manifesto desejado.
+
+## Publicação no GitHub
+
+- O PR testa o instalador nos três sistemas operacionais e gera o ZIP com o manifesto como artefato do workflow **Codex RPG - pacote instalável Foundry v14**.
+- Para publicar um playtest, aumente a versão de quatro partes em `system.json`, atualize `download` com a tag correspondente e crie a tag no commit revisado. Exemplo para a versão `0.2.1.1`:
+
+  ```sh
+  git tag foundry-playtest-v0.2.1.1
+  git push origin refs/tags/foundry-playtest-v0.2.1.1
+  ```
+
+  O workflow testa, publica a pré-release e atualiza a branch exclusiva do manifesto depois de verificar o ZIP publicado. A quarta parte numérica ordena as revisões de playtest no Foundry v14.
+- Para preparar (sem publicar) a versão estável correspondente, envie a tag `foundry-v0.2.1` no commit revisado. O workflow gera o manifesto de três partes e deixa a release em **rascunho**, com o ZIP e o manifesto anexados. Depois de aprovar a versão, o mantenedor deve abri-la em **Releases**, marcar **Set as the latest release** e clicar em **Publish release**. O fluxo de playtest nunca altera o lançamento estável.
 
 ## Fichas disponíveis
 
