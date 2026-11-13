@@ -1256,10 +1256,10 @@ function applySheetPage(){
  $("play-talents").hidden=!show||!isPlay;
  $("genetic-view").hidden=!show||!isGene;
  $("progressao").hidden=!show||!isEvolve;
- $("pericias").hidden=!show||!isEvolve;
+ $("pericias").hidden=true; // O catálogo fica na página Codex Genético, não na tela de XP.
  $("equipamentos").hidden=!show||!isInv;
  document.querySelector(".fp-workspace").hidden=!show||!(isPlay||isEvolve&&editMode);
- document.querySelector(".fp-lower").hidden=!show||!(isEvolve||isInv);
+ document.querySelector(".fp-lower").hidden=!show||!isInv;
  document.body.classList.toggle("fp-evolution-mode",show&&isEvolve);
  document.body.classList.toggle("fp-editing-sources",show&&isEvolve&&editMode);
  for(const b of nav.querySelectorAll("button[data-sheet-page]")){
@@ -1327,7 +1327,10 @@ function renderGenetic(){
  renderGeneDetail();
  const list=$("gene-list");
  if(list){list.hidden=!geneListOpen;
-  if(geneListOpen)list.innerHTML=filteredSkills().map(x=>skillCompactCard(x,false)).join("")||
+  if(geneListOpen)list.innerHTML=SKILLS.filter(x=>!HIDDEN_CATALOG_SKILLS.has(x[0])&&
+   (!geneSearch||[x[0],x[1],x[2]].join(" ").toLocaleLowerCase("pt-BR")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(geneSearch.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,""))))
+   .map(x=>skillCompactCard(x,false)).join("")||
     '<p class="fp-owned-empty">Nenhuma Perícia encontrada com os filtros.</p>';
  }
 }
@@ -1335,7 +1338,7 @@ function openSheetPage(page,focusSkill=""){
  if(!["play","evolution","genetic","inventory"].includes(page)||viewMode!=="sheet")return;
  sheetPage=page;
  if(focusSkill)geneSelected=focusSkill;
- if(page!=="evolution"&&editMode)editMode=false;
+ if((page==="play"||page==="inventory")&&editMode)editMode=false;
  render();
  $("sheet-navigation")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
 }
