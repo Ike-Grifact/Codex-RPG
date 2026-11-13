@@ -1198,3 +1198,18 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 @media(prefers-reduced-motion:reduce){
  .fp-gene-canvas .fp-gene-viewport{transition:none}
 }
+
+/* Carga na compra: limites e capacidade livre por categoria. */
+.fp-carry-guide{border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:12px;
+ padding:15px;display:grid;gap:8px;margin:12px 0;color:var(--fp-text);font-size:12px}
+.fp-carry-guide strong{font-size:14px;color:var(--fp-gold)}
+.fp-carry-guide>span,.fp-carry-guide small{color:var(--fp-muted);line-height:1.5}
+.fp-carry-guide.is-overloaded{border-color:#bd7474;background:color-mix(in srgb,#bd7474 9%,var(--fp-deep))}
+.fp-carry-guide.is-overloaded strong{color:#e7aaaa}
+.fp-carry-limits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.fp-carry-limits span{display:flex;gap:5px;align-items:center;justify-content:center;
+ background:var(--fp-raised);border:1px solid var(--fp-stroke);border-radius:9px;padding:10px 4px;font-size:11px}
+.fp-carry-limits b{color:var(--fp-gold);font-size:17px}
+.fp-carry-warning{border-left:3px solid #c76f77;color:#e7a4a9!important;padding:7px 9px;
+ background:color-mix(in srgb,#c76f77 9%,var(--fp-deep));font-size:11px!important}
+@media(max-width:430px){.fp-carry-limits span{font-size:10px}.fp-carry-limits b{font-size:14px}}
