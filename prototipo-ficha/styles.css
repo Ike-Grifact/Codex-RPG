@@ -1031,3 +1031,35 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
  .fp-gene-bottom-actions>[data-action="gene-confirm"]{grid-column:2;justify-self:center}
  .fp-gene-bottom-actions>small{grid-column:1/-1}
 }
+
+/* Inspector flutuante dentro do Codex: mapa inteiro visível, painel lateral sob demanda. */
+.fp-gene-canvas-shell{position:relative;min-width:0;width:100%;isolation:isolate}
+.fp-gene-canvas-shell .fp-gene-canvas{width:100%}
+.fp-gene-canvas-shell .fp-gene-float-detail{position:absolute;top:12px;right:12px;z-index:5;
+ width:min(348px,calc(100% - 24px));max-height:min(520px,72vh);overflow:auto;
+ border:1px solid var(--fp-gold);background:var(--fp-surface);
+ box-shadow:0 15px 46px rgba(0,0,0,.34);border-radius:14px;padding:15px}
+.fp-gene-canvas-shell .fp-gene-float-detail[hidden]{display:none!important}
+.fp-gene-float-top{display:flex;justify-content:space-between;align-items:center;gap:8px;
+ border-bottom:1px solid var(--fp-stroke);padding-bottom:8px}
+.fp-gene-float-top strong{color:var(--fp-gold);font-size:10px;letter-spacing:.065em}
+.fp-gene-float-top button{width:32px;height:32px;border-radius:9px;cursor:pointer;
+ border:1px solid var(--fp-stroke);color:var(--fp-text);background:var(--fp-raised);
+ font-weight:800;font-size:20px;line-height:1}
+.fp-gene-float-top button:hover,.fp-gene-float-top button:focus-visible{border-color:var(--fp-gold)}
+.fp-gene-float-detail h4{font-size:18px;margin-top:11px}
+.fp-gene-float-detail dl{display:block}
+.fp-gene-float-detail dt{margin-top:8px}
+.fp-gene-float-detail p{max-height:160px;overflow:auto}
+.fp-gene-float-detail .fp-gene-grade-actions{display:flex;flex-wrap:wrap;gap:7px}
+.fp-gene-float-detail .fp-gene-grade-actions>*{flex:1 1 115px;min-width:0}
+.fp-gene-float-detail .fp-primary-btn{max-width:100%;white-space:normal}
+.fp-gene-skill.is-potential .fp-gene-dot{fill:#542176;stroke:#a474d6;stroke-width:3}
+.fp-gene-skill.is-potential .fp-gene-node-label{fill:#8051ac}
+html:not([data-theme="light"]) .fp-gene-skill.is-potential .fp-gene-node-label{fill:#bc96ea}
+.fp-gene-legend .potential{color:#8652b6}
+html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
+.fp-gene-detail-status.is-potential{color:#8f5abd;border-color:#8f5abd}
+@media(max-width:620px){
+ .fp-gene-canvas-shell .fp-gene-float-detail{right:8px;top:8px;width:min(330px,calc(100% - 16px));max-height:58vh}
+}
