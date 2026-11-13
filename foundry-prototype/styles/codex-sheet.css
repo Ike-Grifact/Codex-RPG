@@ -124,3 +124,78 @@
 
 /* Foundry v0.2 — criação, catálogo e Pavor */
 .codex-creation-panel{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px solid var(--color-border-light-2,#777);border-radius:8px;margin:8px 0}.codex-creation-panel input{max-width:85px}.codex-creation-panel small{width:100%}.codex-catalog-picker{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.codex-catalog-picker select{max-width:250px}.codex-pavor-root{padding:14px}.codex-pavor-root .codex-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+
+
+/* Convergência com o site Codex RPG (tema preto e ouro, runas oficiais). */
+.codex-foundry-root{
+ --cx-bg:#070707;--cx-panel:#171717;--cx-panel2:#232323;
+ --cx-text:#f5f2ed;--cx-muted:#b9b9b9;--cx-line:#393939;--cx-gold:#d7bc88;
+ --cx-selected:#d7bc88;--cx-E:#267A45;--cx-A:#2369BB;--cx-P:#542176;
+ width:100%;max-width:100%;min-width:0;overflow-x:hidden;
+ background:var(--cx-bg);font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+}
+.codex-foundry-root h1,.codex-foundry-root h2,.codex-foundry-root h3,.codex-brand strong{
+ font-family:Georgia,"Palatino Linotype",serif}
+.codex-foundry-root button,.codex-foundry-root input,.codex-foundry-root select,
+.codex-foundry-root textarea{max-width:100%;min-width:0;border-radius:9px}
+.codex-foundry-root button{min-height:39px;touch-action:manipulation}
+.codex-foundry-root .codex-block,.codex-foundry-root .codex-hero,
+.codex-foundry-root .codex-resource{border-radius:13px}
+.codex-foundry-root .codex-primary{background:var(--cx-gold);color:#121212;font-weight:800}
+.codex-foundry-root .codex-creation-panel{border:1px solid var(--cx-line);
+ background:var(--cx-panel2);border-radius:10px}
+.codex-creation-warning,.codex-warning{color:#edaaac!important;font-weight:800}
+.codex-resource.is-overloaded{border:1px solid #ce7779}
+.codex-compare-rolls{margin:15px 0;padding:14px;border:1px solid var(--cx-line);
+ border-radius:12px;background:var(--cx-panel)}
+.codex-compare-rolls>summary{cursor:pointer;color:var(--cx-gold);font-size:14px;
+ font-weight:800;list-style-position:inside}
+.codex-compare-rolls .codex-tip{margin:10px 0;font-size:12px}
+.codex-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.codex-compare-option{display:grid;gap:7px;min-width:0;background:var(--cx-panel2);
+ border:1px solid var(--cx-line);border-radius:11px;padding:12px}
+.codex-compare-option>div{display:flex;justify-content:space-between;align-items:baseline;
+ flex-wrap:wrap;gap:5px}
+.codex-compare-option strong{color:var(--cx-gold);font-size:12px}
+.codex-compare-option b{font-size:13px;color:var(--cx-text)}
+.codex-compare-option span{font-size:12px}
+.codex-compare-option small{font-size:11px;color:var(--cx-muted)}
+.codex-compare-option em{font-style:normal;font-weight:750}
+.codex-foundry-root .codex-rune-e{color:#61c98a;text-shadow:0 0 1px var(--cx-E)}
+.codex-foundry-root .codex-rune-a{color:#81b7fb;text-shadow:0 0 1px var(--cx-A)}
+.codex-foundry-root .codex-rune-p{color:#c3a0ee;text-shadow:0 0 1px var(--cx-P)}
+.theme-light .codex-foundry-root,.theme-light.codex-rpg .codex-foundry-root{
+ --cx-bg:#f8f6f1;--cx-panel:#fffefa;--cx-panel2:#eeece7;--cx-text:#202020;
+ --cx-muted:#555b5c;--cx-line:#cbcbc5;--cx-gold:#826333;
+ --cx-selected:#826333;--cx-E:#267A45;--cx-A:#2369BB;--cx-P:#542176}
+.theme-light .codex-foundry-root .codex-rune-e{color:#267A45}
+.theme-light .codex-foundry-root .codex-rune-a{color:#2369BB}
+.theme-light .codex-foundry-root .codex-rune-p{color:#542176}
+@media(max-width:880px){
+ .codex-foundry-root{padding:12px}
+ .codex-hero{grid-template-columns:88px minmax(0,1fr)}
+ .codex-identity-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-source-layout,.codex-bottom-layout{grid-template-columns:1fr}
+ .codex-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:540px){
+ .codex-foundry-root{padding:8px;font-size:13px}
+ .codex-hero{grid-template-columns:1fr;gap:8px}
+ .codex-portrait{max-height:110px;min-height:82px;width:100px}
+ .codex-identity-fields{grid-template-columns:1fr 1fr;gap:7px}
+ .codex-identity-fields label{font-size:11px}
+ .codex-creation-panel{align-items:stretch}
+ .codex-creation-panel>label{width:100%}
+ .codex-resource{padding:11px}
+ .codex-source{grid-template-columns:minmax(0,1fr) 88px;gap:5px}
+ .codex-grade button,.codex-gear-actions button{min-height:43px;min-width:34px}
+ .codex-prep-controls,.codex-compare-grid{grid-template-columns:1fr}
+ .codex-roll-results .codex-result-dice{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-actions{display:flex;flex-wrap:wrap;gap:8px}
+ .codex-actions button{flex:1 1 130px}
+ .codex-gear{flex-wrap:wrap;gap:9px}
+ .codex-gear-actions{flex-wrap:wrap;justify-content:flex-start}
+ .codex-catalog-picker{flex-direction:column;align-items:stretch}
+ .codex-catalog-picker select{max-width:100%}
+}
