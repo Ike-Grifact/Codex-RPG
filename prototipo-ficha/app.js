@@ -901,7 +901,7 @@ let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
-let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false;
+let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false,geneInspectorTop=12;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
@@ -1474,7 +1474,9 @@ function renderGenetic(){
    label:preview.skills.includes(row[0])?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
   }))
  ];
- const choose=id=>{geneSelected=id;geneInspectorOpen=true;renderGenetic();};
+ const choose=(id,y)=>{geneSelected=id;geneInspectorOpen=true;
+  if(Number.isFinite(y))geneInspectorTop=Math.max(12,y-150);
+  renderGenetic();};
  for(const mapId of ["gene-map","gene-builder-map"]){
   const map=$(mapId);
   if(!map||map.isConnected===false)continue;
@@ -1488,6 +1490,8 @@ function renderGenetic(){
   const el=$(id);
   if(el&&el.isConnected!==false){
    el.hidden=!geneInspectorOpen;
+   const mapHeight=el.closest(".fp-gene-canvas-shell")?.querySelector(".fp-gene-canvas")?.getBoundingClientRect().height||500;
+   el.style.top=Math.min(geneInspectorTop,Math.max(12,mapHeight-340))+"px";
    el.innerHTML=geneInspectorOpen?'<div class="fp-gene-float-top"><strong>DETALHES DO CODEX</strong>'+
     '<button type="button" data-action="gene-close-detail" aria-label="Fechar detalhes">×</button></div>'+
     geneDetailHTML(geneSelected,preview):"";
