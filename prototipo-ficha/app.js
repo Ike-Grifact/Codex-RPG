@@ -897,11 +897,18 @@ function defaultState(){return{
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+let wizardCategory="",wizardTab="attr",wizardMode="list";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
- ["Codex Genético","Desenvolva seu DNA","19 XP de playtest, com distribuição livre após fontes mínimas"],
+ ["Escolher desenvolvimento","O que deseja desenvolver?","Atributos, Conhecimentos e Práticas"],
+ ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
+];
+const WIZARD_CATEGORIES=[
+ {id:"attr",title:"Atributos",description:"Capacidades fundamentais do personagem: força, agilidade, destreza, raciocínio, influência e vigor.",example:"Ex.: Força para erguer algo pesado; Inteligência para interpretar uma situação.",dice:"Grau 0: 1d4 · Grau 1: 1d6",cost:"Primeiro avanço: 1 XP",names:"Força, Agilidade, Destreza, Inteligência, Influência, Vigor"},
+ {id:"know",title:"Conhecimentos",description:"O que seu Aprendiz aprendeu pelo estudo, observação e investigação. Ajudam em ações pertinentes.",example:"Ex.: Medicina para compreender um ferimento; Engenharia para estudar mecanismos.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Primeiro avanço: 2 XP",names:"Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição"},
+ {id:"practice",title:"Práticas",description:"O que seu Aprendiz treinou para executar. Disciplina é uma única Prática usada em ações marciais e mágicas, conforme habilitações.",example:"Ex.: Atletismo para realizar esforço treinado; Artesão para fabricar um objeto.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Primeiro avanço: 2 XP",names:"Disciplina, Atletismo, Furtividade, Artesão, Apresentação, Coleta"}
 ];
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
@@ -933,8 +940,11 @@ function load(){
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
   const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
-  wizardStep=clamp(oldStep>1?2:oldStep,0,2);
-  wizardReached=clamp(oldReached>1?2:oldReached,wizardStep,2);
+  wizardStep=w.version===2?clamp(oldStep,0,3):clamp(oldStep>0?1:0,0,3);
+  wizardReached=w.version===2?clamp(oldReached,wizardStep,3):wizardStep;
+  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
+  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
+  wizardMode=w.mode==="genetic"?"genetic":"list";
  }catch(e){wizardStep=0;wizardReached=0;}
  viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
@@ -1283,13 +1293,12 @@ function sourceGeneInfo(id){
  if(!row)return null;
  const grade=Number(state[SOURCE_PROPS[group]][key]||0);
  const next=grade<6?xpStepCost(group,key,1):null;
- const prereq=viewMode==="builder"&&group!=="attr"&&!A.some(([k])=>state.attributes[k]>0);
+ const prereq=false; // Ordem de compra livre; fontes mínimas só são exigidas ao concluir.
  const available=!prereq&&next!==null&&canAfford(group,next)&&!state.pending;
  return {id,group,key,name:row[1],grade,next,state:grade>0?"owned":available?"available":"locked",prereq};
 }
 function geneSkillStatus([id,,,cost]){
  if(state.skills.includes(id))return"owned";
- if(viewMode==="builder"&&!hasStarterSources())return"locked";
  return Number.isInteger(cost)&&!skillReq(id)&&canAfford("skills",cost)&&!state.pending?"available":"locked";
 }
 function geneDetailHTML(id){
@@ -1336,7 +1345,7 @@ function renderGenetic(){
  for(const mapId of ["gene-map","gene-builder-map"]){
   const map=$(mapId);
   if(!map||map.isConnected===false)continue;
-  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===1))continue;
+  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===2&&wizardMode==="genetic"))continue;
   window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,affinity:SKILL_AFFINITY,
    selected:geneSelected,filter:mapId==="gene-builder-map"?"all":geneFilter,query:geneSearch,onSelect:choose});
  }
@@ -1371,18 +1380,19 @@ function prepareElementSkill(id){
 
 function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
-/* Cinco telas reais: construímos primeiro; a ficha completa só aparece depois. */
+/* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
- try{localStorage.setItem(WIZARD_KEY,JSON.stringify({step:wizardStep,reached:wizardReached}));}
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:2,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode}));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
 }
 function wizardSelectStep(next){
  if(viewMode!=="builder"||state.creationLocked||next<0||next>=WIZARD_STEPS.length||next>wizardReached+1)return;
- if(wizardStep===0&&next>0&&!state.name.trim()){
+ if(next>0&&!state.name.trim()){
   toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
  }
- if(next>=2&&!hasStarterSources()){
-  toast("Desenvolva pelo menos um Atributo e um Conhecimento ou Prática antes da revisão.");return;
+ if(next>=2&&!wizardCategory){toast("Escolha primeiro um tipo de desenvolvimento.");return;}
+ if(next>=3&&!hasStarterSources()){
+  toast("Compre pelo menos um Atributo e um Conhecimento ou Prática no grau 1 antes da revisão.");return;
  }
  wizardStep=next;wizardReached=Math.max(wizardReached,wizardStep);wizardPersist();renderWizard();
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
@@ -1390,12 +1400,12 @@ function wizardSelectStep(next){
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
- if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=1;renderWizard();return;}
+ if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=2;renderWizard();return;}
  const xp=xpCosts();
  if(xp.free<0){toast("O investimento ultrapassa 19 XP.");return;}
  if(!confirm("Concluir a criação usando "+xp.total+" dos 19 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
  const residual=lockCreation();if(residual===null)return;
- viewMode="sheet";sheetPage="play";wizardStep=2;wizardReached=2;wizardPersist();
+ viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! XP livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
@@ -1428,7 +1438,7 @@ function wizardReview(){
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
  const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
@@ -1453,7 +1463,7 @@ function wizardOverview(){
   '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
   '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
   '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
-  '<p class="fp-wiz-sidebar-note">Primeiro desenvolva um Atributo. Depois, desenvolva um Conhecimento ou Prática. As Perícias passam a ficar azuis conforme requisitos e saldo de XP.</p>';
+  '<p class="fp-wiz-sidebar-note">Para concluir, compre um Atributo e um Conhecimento ou Prática no grau 1. Depois, todo o XP restante é livre, inclusive para Perícias. Listas e Codex Genético compartilham o mesmo saldo.</p>';
 }
 function renderWizard(){
  const builder=$("builder-root"),sheet=$("full-sheet");
@@ -1813,9 +1823,6 @@ function updateGrade(group,id,delta){
  if(next===old)return;
  const purchaseCost=delta>0?xpStepCost(group,id,1):0;
  if(delta>0){
-   if(!state.creationLocked&&group!=="attr"&&!A.some(([key])=>(state.attributes[key]||0)>0)){
-    toast("Primeiro desenvolva um Atributo no centro do Codex Genético.");return;
-   }
    if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
   const tmp=structuredClone(state);tmp[p][id]=next;
@@ -2020,7 +2027,7 @@ async function importFile(file){
   const v=isNew?raw:fromCreator(input);
   if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
   state=normalize(v);draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";
-  wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
+  wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardPersist();syncFields();render();save();
   toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
  }catch(e){toast("Falha ao importar: "+e.message);}
 }
@@ -2040,6 +2047,19 @@ function onClick(event){
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
+ case "wizard-category":{
+  if(!["attr","know","practice"].includes(button.dataset.group))break;
+  wizardCategory=button.dataset.group;wizardTab=wizardCategory;wizardMode="list";
+  wizardPersist();renderWizard();break;
+ }
+ case "wizard-tab":{
+  if(wizardStep!==2||!["attr","know","practice","skills"].includes(button.dataset.group))break;
+  wizardTab=button.dataset.group;wizardPersist();renderWizard();break;
+ }
+ case "wizard-mode":{
+  if(wizardStep!==2||!["list","genetic"].includes(button.dataset.mode))break;
+  wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
+ }
  case "prepare-element":prepareElementSkill(id);break;
  case "wizard-back":wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
@@ -2077,9 +2097,6 @@ function onClick(event){
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
   const existing=state.skills.indexOf(id);
   if(existing<0){
-   if(!state.creationLocked&&!hasStarterSources()){
-    toast("Desenvolva um Atributo e um Conhecimento ou Prática antes de adquirir Perícias.");return;
-   }
    const reason=skillReq(id);
    if(reason){toast(reason);return;}
    if(!Number.isInteger(skill[3])){toast("Custo pendente.");return;}
@@ -2255,17 +2272,17 @@ function bind(){
  });
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;
+  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;
   wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina → Força; Disciplina Avançada permite uma terceira fonte.");
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
   if(!confirm("Reiniciar a ficha atual? Exporte o personagem antes se quiser preservar uma cópia."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
@@ -2280,7 +2297,7 @@ function bind(){
    converted.creationLocked=!!converted.name.trim();
    state=normalize(converted);draft=freshDraft();editMode=false;
    viewMode=state.creationLocked?"sheet":"builder";
-   wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
+   wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardPersist();syncFields();render();save();
    toast("Ficha antiga importada. Confira as anotações e investimentos em XP.");
   }catch(e){toast("Não foi possível importar a ficha antiga: "+e.message);}
  });
