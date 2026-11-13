@@ -91,6 +91,26 @@ const { chromium } = require('playwright');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
       console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
                   'categorias=',JSON.stringify(counters),'saldo=15 XP');
+      // A ficha já finalizada também deve dispor do mapa, sem compras instantâneas.
+      await page.locator('#wizard-controls [data-action="wizard-next"]').click();
+      await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
+      page.once('dialog', dialog => dialog.accept());
+      await page.locator('#wizard-controls [data-action="wizard-finish"]').click();
+      await page.waitForSelector('#full-sheet:not([hidden])');
+      await page.locator('#sheet-navigation button[data-sheet-page="genetic"]').click();
+      await page.waitForSelector('#genetic-view:not([hidden])');
+      if (!await page.locator('#gene-sheet-budget .fp-gene-dashboard').count()||
+          !await page.locator('#gene-sheet-actions [data-action="gene-confirm"]').count())
+        throw new Error('A ficha final não apresenta saldo ou confirmação do Codex Genético');
+      if (await page.locator('#gene-map .fp-gene-card').count() !== 18)
+        throw new Error('O mapa da ficha final perdeu uma fonte');
+      await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:destreza"]').click();
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('14 XP')))
+        throw new Error('Saldo prévio de XP na ficha final não responde aos dados');
+      await page.locator('#gene-sheet-actions [data-action="gene-reset"]').click();
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('15 XP')))
+        throw new Error('Descartar evolução falhou na ficha final');
+      if(exceptions.length)throw new Error('Erros Javascript na ficha final: '+exceptions.join(' | '));
       console.log('PASS', testCase.name);
       await page.close();
     }
