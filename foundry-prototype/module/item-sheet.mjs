@@ -6,7 +6,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const ctx=await super._prepareContext(options);
   const s=this.item.system;
   ctx.equipment={
-   name:this.item.name,img:this.item.img,kind:s.kind,grade:s.grade,weight:s.weight,
+   name:this.item.name,img:this.item.img,editable:this.item.isOwner,kind:s.kind,grade:s.grade,weight:s.weight,
    quantity:s.quantity,equipped:s.equipped,category:s.category,die:s.die,range:s.range,priceVT:s.priceVT,element:s.element,properties:s.properties.join(", "),ammo:s.ammo, durability:s.durability.value,durabilityMax:s.durability.max,
    categoryLeve:s.category==="leve",categoryMedio:s.category==="medio",categoryPesado:s.category==="pesado",categoryMuitoLeve:s.category==="muito-leve",
    integrity:s.integrity.value,integrityMax:s.integrity.max,description:s.description,
@@ -16,6 +16,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
     {key:"armor",label:"Armadura",selected:s.kind==="armor"},
     {key:"shield",label:"Escudo",selected:s.kind==="shield"},
     {key:"focus",label:"Foco",selected:s.kind==="focus"},
+    {key:"spell",label:"Magia",selected:s.kind==="spell"||s.kind==="magic"},
     {key:"tool",label:"Ferramenta",selected:s.kind==="tool"},
     {key:"misc",label:"Diversos",selected:s.kind==="misc"}
    ]
@@ -36,12 +37,22 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
    let val=input.type==="checkbox"?input.checked:input.value;
    if(["system.grade","system.quantity","system.integrity.value","system.integrity.max","system.weight","system.die","system.range","system.priceVT","system.ammo.value","system.ammo.max","system.ammo.reload","system.durability.value","system.durability.max"].includes(path)){
      val=Math.max(0,Number(val)||0);
-     if(path==="system.grade")val=Math.min(7,Math.floor(val));
+     if(path!=="system.weight")val=Math.floor(val);
+     if(path==="system.grade")val=Math.max(1,Math.min(7,val));
      if(path==="system.quantity")val=Math.max(1,Math.floor(val));
-     if(path.includes("integrity"))val=Math.floor(val);
    }
    if(path==="system.properties")val=String(val).split(",").map(x=>x.trim()).filter(Boolean);
-   await this.item.update({[path]:val});
+   const update={[path]:val};
+   for(const pair of ["integrity","durability","ammo"]){
+    const base="system."+pair;
+    if(path===base+".value")update[path]=Math.min(val,this.item.system[pair].max);
+    if(path===base+".max")update[base+".value"]=Math.min(val,this.item.system[pair].value);
+   }
+   try{await this.item.update(update);}catch(error){
+    console.error("Codex RPG · Equipamento",error);
+    ui.notifications.error(error.message);
+    this.render();
+   }
   });
  }
 }

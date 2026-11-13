@@ -1,55 +1,68 @@
-/* Painel manual do Narrador: Pavor público limitado a 2 + jogadores. */
 import {narratorCap} from "./rules.mjs";
-export const NS="codex-rpg-foundry";
-export const playerCount=()=>game.users.filter(u=>!u.isGM).length;
+import {NS} from "./roll-workflow.mjs";
+
+const setting=(key)=>game.settings.get(NS,key);
+const accounts=()=>game.users.filter(user=>user.hasRole(CONST.USER_ROLES.PLAYER)&&!user.isGM).length;
+export const playerCount=()=>setting("campaignPlayers")<0?accounts():setting("campaignPlayers");
+export const publicPavorCap=()=>narratorCap(playerCount());
+export const boundPavor=(value,cap)=>Math.min(cap,Math.max(0,Math.trunc(Number(value)||0)));
+let hud;
+let adjustments=Promise.resolve();
+
 export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
- static DEFAULT_OPTIONS={
-  id:"codex-pavor-panel",classes:["codex-rpg","codex-pavor-panel"],position:{width:430,height:305},
-  window:{title:"Codex RPG · Pavor público",resizable:false},
-  actions:{adjust:CodexPavorPanel.adjust}
- };
+ static DEFAULT_OPTIONS={id:"codex-pavor-hud",classes:["codex-rpg","codex-pavor-hud"],
+  window:{frame:false,positioned:false},actions:{adjust:CodexPavorPanel.adjust}};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/pavor-panel.hbs"}};
- async _prepareContext(){
-  const cap=narratorCap(playerCount()),value=game.settings.get(NS,"publicPavor");
-  return {value,cap,room:cap-value,players:playerCount(),isGM:game.user.isGM};
+ async _insertElement(element,options){
+  const top=document.querySelector("#ui-middle > #ui-top");
+  if(top)top.append(element);
+  else await super._insertElement(element,options);
  }
- static async adjust(event,target){
-  if(!game.user.isGM)return;
-  const val=Number(target.dataset.delta),cap=narratorCap(playerCount());
-  if(!Number.isInteger(val)||Math.abs(val)>6)return;
-  const cur=game.settings.get(NS,"publicPavor");
-  await game.settings.set(NS,"publicPavor",Math.max(0,Math.min(cap,cur+val)));
-  this.render();
+ async _prepareContext(){
+  const cap=publicPavorCap(),value=boundPavor(setting("publicPavor"),cap);
+  // Keep long campaign rosters scrollable within the HUD.
+  const slots=Array.from({length:cap},(_,index)=>({filled:index<value}));
+  return {cap,value,slots,isGM:game.user.isGM,full:value===cap,tooltip:`Pavor público: ${value}/${cap}`};
+ }
+ static async adjust(event,button){
+  if(!game.user.isGM||game.users.activeGM?.id!==game.user.id)return;
+  const delta=Number(button.dataset.delta);
+  if(![-1,1].includes(delta))return;
+  const run=async()=>{
+   const cap=publicPavorCap();
+   await game.settings.set(NS,"publicPavor",boundPavor(setting("publicPavor")+delta,cap));
+  };
+  adjustments=adjustments.then(run,run);
+  try{await adjustments;}catch(error){console.error("Codex RPG · Pavor",error);ui.notifications.error(error.message);}
  }
 }
-export async function transferCombatPavor(message){
- if(!game.user.isGM||!game.combat?.started)return;
- const obj=message.getFlag(NS,"transfer");
- if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
- const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
- if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
- if(obj.targetUuid){
-  const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","creature"].includes(target.type)){
-   const add=Math.max(0,obj.p);
-   if(obj.targetType==="character")
-    await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
-   else {
-    const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
-    await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-    // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
-   }
-  }
+export async function refreshPavor(){
+ if(!game.ready)return;
+ const show=(game.user.isGM||setting("showPavorToPlayers"))&&setting("showPavorLocally")&&
+  (game.user.isGM||!setting("hideEmptyPavor")||setting("publicPavor")>0);
+ if(show){
+  hud??=new CodexPavorPanel();
+  await hud.render({force:true});
+ }else if(hud?.rendered)await hud.close();
+}
+async function refreshCap(){
+ if(!game.ready)return;
+ const cap=publicPavorCap(),value=setting("publicPavor");
+ if(game.user.isGM&&game.users.activeGM?.id===game.user.id&&value!==boundPavor(value,cap)){
+  await game.settings.set(NS,"publicPavor",boundPavor(value,cap));
  }
- if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
-  const cap=Math.max(1,Math.min(6,Number(owner.system.threatGrade||1)));
-  const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
-  const saved=Math.min(available,obj.monsterCriticalPavor);
-  if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});
-  const overflow=obj.monsterCriticalPavor-saved;
-  if(overflow){
-   const publicCap=narratorCap(playerCount()),cur=game.settings.get(NS,"publicPavor");
-   await game.settings.set(NS,"publicPavor",Math.min(publicCap,cur+overflow));
-  }
- }
+ await refreshPavor();
+}
+export function registerPavor(){
+ const register=(key,config)=>game.settings.register(NS,key,config);
+ register("publicPavor",{name:"Pavor público",scope:"world",config:false,type:Number,default:2,onChange:refreshPavor});
+ register("campaignPlayers",{name:"Jogadores da campanha",
+  hint:"Informe o total real. −1 usa as contas de jogador cadastradas, incluindo as desconectadas.",
+  scope:"world",config:true,type:new foundry.data.fields.NumberField({integer:true,min:-1,max:1000,initial:-1}),default:-1,onChange:refreshCap});
+ register("showPavorToPlayers",{name:"Exibir Pavor público aos jogadores",scope:"world",config:true,type:Boolean,default:false,onChange:refreshPavor});
+ register("hideEmptyPavor",{name:"Ocultar HUD vazia para jogadores",scope:"world",config:true,type:Boolean,default:false,onChange:refreshPavor});
+ register("showPavorLocally",{name:"Mostrar HUD de Pavor para mim",scope:"user",config:true,type:Boolean,default:true,onChange:refreshPavor});
+ for(const event of ["canvasReady","updateScene","userConnected"])Hooks.on(event,refreshPavor);
+ for(const event of ["createUser","updateUser","deleteUser"])Hooks.on(event,refreshCap);
+ Hooks.once("ready",refreshCap);
 }

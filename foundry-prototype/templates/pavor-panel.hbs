@@ -1,13 +1,7 @@
-<section class="codex-foundry-root codex-pavor-root">
- <h2>Pavor público do Narrador</h2>
- <p>Teto: <strong>{{cap}}</strong> (2 + {{players}} jogadores). Saldo atual: <strong>{{value}}</strong>. Espaço disponível: <strong>{{room}}</strong>.</p>
- {{#if isGM}}
- <div class="codex-actions">
- <button type="button" data-action="adjust" data-delta="-1">−1P</button>
- <button type="button" data-action="adjust" data-delta="1">+1P</button>
- <button type="button" data-action="adjust" data-delta="-2">−2P</button>
- <button type="button" data-action="adjust" data-delta="2">+2P</button>
- </div>
- {{/if}}
- <p class="codex-tip">Painel manual. O excesso não ultrapassa o teto. Pavor de dados descartados não entra. As reservas locais das criaturas são registradas em suas próprias fichas.</p>
-</section>
+<div class="codex-hud-body" title="{{tooltip}}" aria-label="{{tooltip}}" role="group">
+  {{#if isGM}}<button type="button" data-action="adjust" data-delta="-1" aria-label="Diminuir Pavor público" {{#unless value}}disabled{{/unless}}>−</button>{{/if}}
+  <div class="codex-pavor-slots" aria-hidden="true">
+    {{#each slots}}{{#if filled}}<span class="codex-pavor-filled">ᚦ</span>{{else}}<span class="codex-pavor-empty">◇</span>{{/if}}{{/each}}
+  </div>
+  {{#if isGM}}<span class="codex-pavor-count">{{value}}/{{cap}}</span><button type="button" data-action="adjust" data-delta="1" aria-label="Aumentar Pavor público" {{#if full}}disabled{{/if}}>+</button>{{/if}}
+</div>

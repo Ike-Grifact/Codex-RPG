@@ -1,126 +1,332 @@
-/* Codex RPG: identidade própria. Todas as regras visuais são restritas ao protótipo. */
-.codex-rpg .window-content{padding:0;overflow:auto}
-.codex-foundry-root{
- --cx-bg:#12161b;--cx-panel:#1d242b;--cx-panel2:#242e35;--cx-text:#f0e8d9;
- --cx-muted:#b6ad9e;--cx-line:#455057;--cx-gold:#b99756;--cx-selected:#d8b870;
- --cx-E:#55b875;--cx-A:#78aeed;--cx-P:#a078c6;
- color:var(--cx-text);background:var(--cx-bg);font-family:Georgia,"Palatino Linotype",serif;
- min-height:100%;padding:18px;box-sizing:border-box;line-height:1.4;font-size:14px;
+.codex-rpg {
+  --codex-e: #267a45;
+  --codex-a: #2369bb;
+  --codex-p: #542176;
+  --codex-text: #20232a;
+  --codex-muted: #525862;
+  --codex-page: #f0f0eb;
+  --codex-panel: #fafaf7;
+  --codex-inset: #e8e9e4;
+  --codex-line: #c9cdc7;
+  --codex-accent: #285b46;
+  --codex-on-accent: #fff;
+  --codex-rune-e: var(--codex-e);
+  --codex-rune-a: var(--codex-a);
+  --codex-rune-p: var(--codex-p);
+  --codex-danger: #a0333d;
+  color: var(--codex-text);
+  font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
 }
-.theme-light .codex-foundry-root,.theme-light.codex-rpg .codex-foundry-root{
- --cx-bg:#f8f4e9;--cx-panel:#fffdf6;--cx-panel2:#eee8db;--cx-text:#28343b;
- --cx-muted:#5b6268;--cx-line:#d7c9b0;--cx-gold:#91713d;--cx-selected:#8d6624;
- --cx-E:#267a45;--cx-A:#2369bb;--cx-P:#542176;
+.theme-dark .codex-rpg, .codex-rpg.theme-dark {
+  --codex-text: #edf0e9;
+  --codex-muted: #b7bdb8;
+  --codex-page: #1e2327;
+  --codex-panel: #272e33;
+  --codex-inset: #313b40;
+  --codex-line: #48545b;
+  --codex-accent: #a9d5b9;
+  --codex-on-accent: #15271d;
+  --codex-rune-e: #8bda9e;
+  --codex-rune-a: #95c6ff;
+  --codex-rune-p: #dab4f4;
+  --codex-danger: #ffacb2;
 }
-.codex-foundry-root *{box-sizing:border-box}
-.codex-foundry-root h2,.codex-foundry-root p{margin:0}
-.codex-foundry-root button,.codex-foundry-root input,.codex-foundry-root select{
- font:inherit;color:inherit;border:1px solid var(--cx-line);background:var(--cx-panel2);border-radius:6px;
+.codex-rpg .window-content { padding: 0; color: var(--codex-text); background: var(--codex-page); }
+.codex-foundry-root { display: flex; flex-direction: column; height: 100%; min-height: 0; container-type: inline-size; }
+.codex-rpg .codex-header {
+  display: flex; align-items: center; gap: 14px; padding: 13px 20px;
+  background: var(--codex-panel); border-bottom: 1px solid var(--codex-line);
 }
-.codex-foundry-root input,.codex-foundry-root select{min-width:0;width:100%;padding:7px}
-.codex-foundry-root button{padding:5px 10px;cursor:pointer;white-space:normal}
-.codex-foundry-root button:hover{border-color:var(--cx-gold);background:color-mix(in srgb,var(--cx-panel2) 65%,var(--cx-gold))}
-.codex-foundry-root button:focus-visible,.codex-foundry-root input:focus-visible,.codex-foundry-root select:focus-visible{
- outline:2px solid var(--cx-gold);outline-offset:2px;
+.codex-rpg .codex-portrait {
+  width: 56px; height: 56px; flex: none; margin: 0;
+  border: 1px solid var(--codex-line); border-radius: 9px; object-fit: cover; background: var(--codex-inset);
 }
-.codex-foundry-root button:disabled{opacity:.45;cursor:not-allowed}
-.codex-hero{display:grid;grid-template-columns:145px minmax(0,1fr);gap:14px;align-items:stretch}
-.codex-portrait{border:2px solid var(--cx-gold);border-radius:12px;min-height:174px;overflow:hidden;background:var(--cx-panel)}
-.codex-portrait img{width:100%;height:100%;object-fit:cover;display:block}
-.codex-identity{display:flex;flex-direction:column;gap:10px}
-.codex-brand{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--cx-line);padding:0 0 6px}
-.codex-logo{width:48px;height:48px;object-fit:contain;flex:none}
-.codex-brand>div{display:flex;flex-direction:column;gap:2px}
-.codex-overline{color:var(--cx-gold);font-size:10px;font-weight:800;letter-spacing:.15em}
-.codex-brand strong{font-size:16px;letter-spacing:.015em}
-.codex-identity-fields{display:grid;grid-template-columns:2fr 2fr .6fr 1.3fr;gap:8px}
-.codex-identity-fields label{font-size:11px;color:var(--cx-muted);display:flex;flex-direction:column;gap:2px}
-.codex-identity-fields label:nth-child(5),.codex-identity-fields label:nth-child(6){grid-column:span 2}
-.codex-resources{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin:14px 0}
-.codex-resource{background:var(--cx-panel);border:1px solid var(--cx-line);border-radius:8px;min-height:107px;
- padding:10px 7px;display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;justify-content:flex-start}
-.codex-resource>span{font-size:10px;letter-spacing:.04em;color:var(--cx-muted);text-transform:uppercase}
-.codex-resource>strong{font-size:24px;line-height:1.15;color:var(--cx-text)}
-.codex-resource>small{font:11px/1.3 system-ui,sans-serif;color:var(--cx-muted);margin-top:auto}
-.codex-step{display:flex;gap:5px}
-.codex-step button{min-width:24px;padding:0px 5px}
-.codex-help{border-left:3px solid var(--cx-gold);padding:10px 12px;background:var(--cx-panel);display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
-.codex-help>span{font:12px/1.4 system-ui,sans-serif;color:var(--cx-muted)}
-.codex-help b{color:var(--cx-gold)}
-.codex-help .codex-live-note{color:var(--cx-text)}
-.codex-source-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;align-items:start}
-.codex-block{min-width:0;background:var(--cx-panel);border:1px solid var(--cx-line);padding:12px;border-radius:10px}
-.codex-block-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--cx-line)}
-.codex-block h2{font-size:17px;color:var(--cx-gold);font-weight:700}
-.codex-block-title>span{font:10px/1.2 system-ui,sans-serif;color:var(--cx-muted);text-align:right}
-.codex-source{border:1px solid var(--cx-line);border-radius:8px;display:grid;grid-template-columns:minmax(0,1fr) 72px;min-height:62px;margin:6px 0;overflow:hidden;background:var(--cx-panel2)}
-.codex-source-pick{border:0!important;border-radius:0!important;background:transparent!important;padding:8px!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:4px;text-align:left;min-width:0}
-.codex-source-name{font-size:14px;font-weight:bold}
-.codex-dice-strip{display:flex;flex-wrap:wrap;gap:4px}
-.codex-small-die{display:inline-flex;align-items:center;gap:2px;font-size:9px;color:var(--cx-muted)}
-.codex-die-svg{width:25px;height:25px;flex:none;color:var(--cx-gold)}
-.codex-small-die .codex-die-svg{width:21px;height:21px}
-.codex-small-die b{font:600 10px system-ui,sans-serif}
-.codex-grade{display:flex;align-items:center;justify-content:space-around;gap:3px;border-left:1px solid var(--cx-line);padding:4px}
-.codex-grade b{font-size:13px}
-.codex-grade button{min-width:19px;padding:3px;font-size:14px}
-.codex-source.is-base{outline:2px solid var(--cx-selected);outline-offset:-2px;box-shadow:0 0 0 2px color-mix(in srgb,var(--cx-gold) 25%,transparent)}
-.codex-source.is-attribute{border:2px solid var(--cx-A)}
-.codex-source.is-complement{border:2px dashed var(--cx-gold)}
-.codex-source-role{font:700 9px system-ui,sans-serif;letter-spacing:.07em;color:var(--cx-gold)}
-.codex-source.is-attribute .codex-source-role{color:var(--cx-A)}
-.codex-roll-prep,.codex-roll-results{margin-top:14px;border:2px solid var(--cx-gold)}
-.codex-compose{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:8px 0}
-.codex-compose>div{border:1px solid var(--cx-line);padding:9px;border-radius:6px;display:flex;flex-direction:column;gap:4px}
-.codex-compose small{font:700 10px system-ui,sans-serif;color:var(--cx-muted)}
-.codex-compose strong{font-size:15px}
-.codex-prep-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}
-.codex-prep-controls label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--cx-muted)}
-.codex-prep-controls .codex-check{flex-direction:row;align-items:flex-start;gap:7px;padding:8px;border:1px solid var(--cx-line);border-radius:6px}
-.codex-check input{width:auto;flex:none;margin:2px}
-.codex-check.codex-warn{border-color:var(--cx-gold);grid-column:span 2}
-.codex-pool{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding:10px;background:var(--cx-panel2);border:1px solid var(--cx-line);border-radius:7px}
-.codex-pool>strong{width:100%}
-.codex-pool-die{display:grid;grid-template-columns:27px 25px;column-gap:4px;align-items:center;padding:5px;border:1px solid var(--cx-line);border-radius:5px}
-.codex-pool-die small{font:9px system-ui,sans-serif;grid-column:span 2;color:var(--cx-muted)}
-.codex-actions{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px}
-.codex-actions small{flex:1;color:var(--cx-muted)}
-.codex-primary{background:var(--cx-gold)!important;color:#161915!important;border-color:var(--cx-gold)!important;font-weight:bold!important;padding:9px 13px!important}
-.codex-tip{font:12px/1.45 system-ui,sans-serif;color:var(--cx-muted);margin:10px 0!important}
-.codex-error{color:#ff928c;background:#40292a;border-left:3px solid #e16b66;border-radius:4px;padding:7px!important;margin:5px 0!important}
-.codex-result-dice{display:flex;gap:8px;flex-wrap:wrap}
-.codex-result-die{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:103px;min-height:131px;flex:1;max-width:170px;text-align:center;padding:10px!important}
-.codex-result-die .codex-die-svg{width:41px;height:41px}
-.codex-result-die strong{font-size:21px}
-.codex-result-die span{font:11px/1.3 system-ui,sans-serif}
-.codex-result-die small{font-size:13px}
-.codex-result-die.is-kept{border:2px solid var(--cx-gold);background:color-mix(in srgb,var(--cx-gold) 15%,var(--cx-panel2))}
-.codex-outcome{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:10px;background:var(--cx-panel2);padding:12px;border-radius:7px}
-.codex-outcome strong{font-size:16px;color:var(--cx-gold)}
-.codex-bottom-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.codex-skill,.codex-gear{display:flex;justify-content:space-between;gap:9px;align-items:center;padding:9px 2px;border-bottom:1px solid var(--cx-line)}
-.codex-skill>div,.codex-gear>div:first-child{display:flex;flex-direction:column;gap:4px}
-.codex-skill strong,.codex-gear strong{font-size:13px}
-.codex-skill small,.codex-gear small{font:11px/1.3 system-ui,sans-serif;color:var(--cx-muted)}
-.codex-skill.is-owned strong{color:var(--cx-gold)}
-.codex-skill button{font:11px system-ui,sans-serif;min-width:85px}
-.codex-gear-actions{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
-.codex-gear-actions button{font:11px system-ui,sans-serif;padding:4px}
-.codex-footer{margin-top:14px;text-align:center;color:var(--cx-muted);font:11px system-ui,sans-serif}
-.codex-chat-result{border-left:4px solid #b99756;padding:8px 12px}
-@media(max-width:970px){.codex-resources{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-source-layout{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.codex-foundry-root{padding:10px}.codex-hero{grid-template-columns:95px 1fr}.codex-portrait{min-height:120px}.codex-logo{width:32px;height:32px}.codex-brand strong{font-size:13px}.codex-identity-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-identity-fields label:nth-child(5),.codex-identity-fields label:nth-child(6){grid-column:span 1}.codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-source-layout,.codex-bottom-layout,.codex-prep-controls{grid-template-columns:1fr}.codex-compose{grid-template-columns:1fr}.codex-check.codex-warn{grid-column:span 1}.codex-source{grid-template-columns:minmax(0,1fr) 75px}}
+.codex-rpg .codex-identity { flex: 1; min-width: 0; }
+.codex-rpg h1, .codex-rpg h2, .codex-rpg h3 { color: inherit; margin: 0; border: 0; text-shadow: none; }
+.codex-rpg h1 { font: 650 24px/1.12 "Source Sans 3", "Segoe UI", sans-serif; overflow-wrap: anywhere; }
+.codex-rpg h2 { font: 650 19px/1.2 "Source Sans 3", "Segoe UI", sans-serif; }
+.codex-rpg h3 { font: 650 15px/1.2 "Source Sans 3", "Segoe UI", sans-serif; }
+.codex-rpg p { margin: 0; line-height: 1.45; }
+.codex-rpg small { font-size: 12px; color: var(--codex-muted); }
+.codex-identity p { color: var(--codex-muted); }
+.codex-modes, .codex-tabs { display: flex; flex-wrap: wrap; gap: 5px; }
+.codex-rpg button {
+  min-height: 30px; padding: 4px 10px; border: 1px solid var(--codex-line);
+  border-radius: 6px; color: var(--codex-text); background: var(--codex-panel);
+  line-height: 1.2; font: inherit; box-shadow: none;
+}
+.codex-rpg button:hover:not(:disabled), .codex-rpg button:focus-visible {
+  outline: 2px solid var(--codex-accent); outline-offset: -2px;
+}
+.codex-rpg button:disabled { cursor: not-allowed; opacity: .58; }
+.codex-rpg button[aria-pressed="true"] { color: var(--codex-accent); background: var(--codex-inset); border-color: var(--codex-accent); }
+.codex-rpg .codex-primary { background: var(--codex-accent); color: var(--codex-on-accent); border-color: var(--codex-accent); font-weight: 700; min-width: 108px; }
+.codex-rpg .codex-primary:focus-visible, .codex-rpg .codex-primary:hover:not(:disabled) { outline-color: var(--codex-on-accent); }
+.codex-facts {
+  background: var(--codex-panel); border-bottom: 1px solid var(--codex-line);
+  display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 8px 20px;
+}
+.codex-resource { display: grid; align-content: center; justify-items: start; gap: 3px; }
+.codex-resource > span { color: var(--codex-muted); font-size: 12px; }
+.codex-resource > div { display: flex; gap: 4px; align-items: center; }
+.codex-resource button { min-width: 24px; min-height: 24px; padding: 0 3px; line-height: 1; }
+.codex-tabs { padding: 7px 20px; border-bottom: 1px solid var(--codex-line); }
+.codex-tabs button { border-color: transparent; background: transparent; }
+.codex-scroll { display: block; flex: 1; min-height: 0; overflow: auto; padding: 14px 20px 20px; scrollbar-gutter: stable; }
+.codex-section, .codex-action {
+  display: grid; gap: 11px; margin: 0 0 12px; padding: 13px 15px;
+  background: var(--codex-panel); border: 1px solid var(--codex-line); border-radius: 9px;
+}
+.codex-action { border-color: var(--codex-accent); }
+.codex-section-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.codex-sources, .codex-grade-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit,minmax(min(225px,100%),1fr)); }
+.codex-sources > div { display: grid; gap: 5px; align-content: start; }
+.codex-sources h3 { margin-bottom: 4px; }
+.codex-source-pick { display: flex; align-items: center; justify-content: space-between; gap: 7px; text-align: left; }
+.codex-source-pick strong { font-size: 12px; white-space: nowrap; }
+.codex-attribute-pick, .codex-controls {
+  display: grid; gap: 8px; grid-template-columns: repeat(auto-fit,minmax(min(175px,100%),1fr)); align-items: end;
+}
+.codex-attribute-pick { grid-template-columns: repeat(auto-fit,minmax(min(105px,100%),1fr)); }
+.codex-attribute-pick button { min-height: 28px; padding: 4px 6px; }
+.codex-rpg label { display: grid; gap: 4px; color: var(--codex-muted); font-size: 13px; }
+.codex-rpg label.codex-check { display: flex; align-items: center; min-height: 29px; gap: 7px; }
+.codex-rpg :is(input:not([type="checkbox"]), textarea, select) {
+  min-height: 31px; padding: 3px 7px; background: var(--codex-page); border: 1px solid var(--codex-line); color: var(--codex-text); border-radius: 5px;
+}
+.codex-rpg select option { color: var(--codex-text); background: var(--codex-panel); }
+.codex-rpg input[type="checkbox"] { margin: 0; }
+.codex-target { display: grid; align-content: center; min-height: 49px; }
+.codex-pool { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.codex-pool-die { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--codex-line); padding: 3px 6px; border-radius: 5px; }
+.codex-die-svg { width: 23px; height: 23px; flex: none; }
+.codex-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 9px; }
+.codex-result-dice { display: grid; gap: 7px; grid-template-columns: repeat(auto-fit,minmax(min(85px,100%),1fr)); }
+.codex-rpg .codex-result-die { display: grid; height: auto; min-height: 100px; justify-items: center; align-content: start; gap: 3px; padding: 6px 4px; min-width: 0; }
+.codex-face { position: relative; display: grid; place-items: center; }
+.codex-face .codex-die-svg { width: 44px; height: 44px; opacity: .64; }
+.codex-face strong { position: absolute; inset: 0; display: grid; place-items: center; }
+.codex-result-die small { overflow-wrap: anywhere; }
+.codex-symbols { min-height: 22px; font-size: 19px; line-height: 1; overflow-wrap: anywhere; }
+.codex-rune { letter-spacing: .035em; }
+.codex-rune-e { color: var(--codex-rune-e,#267a45); }
+.codex-rune-a { color: var(--codex-rune-a,#2369bb); }
+.codex-rune-p { color: var(--codex-rune-p,#542176); }
+.codex-max-face .codex-rune { text-decoration: underline 2px #b5883c; text-underline-offset: .16em; }
+.codex-outcome { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 15px; background: var(--codex-inset); border-radius: 6px; padding: 8px; }
+.codex-error { color: var(--codex-danger); }
+.codex-note, .codex-notes { color: var(--codex-muted); white-space: pre-wrap; }
+.codex-grade, .codex-skill, .codex-gear {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 7px 12px; padding: 7px; border-bottom: 1px solid var(--codex-line);
+}
+.codex-grade > span, .codex-gear > div { display: grid; gap: 3px; }
+.codex-skill details { flex: 1 1 280px; min-width: 0; }
+.codex-skill details p { padding: 7px 0 1px; }
+.codex-skill > small { flex: 1 1 170px; }
+.codex-skill button { margin-left: auto; }
+.codex-catalog-picker { display: flex; flex-wrap: wrap; align-items: end; gap: 7px; }
+.codex-catalog-picker label, .codex-gear > div { flex: 1 1 250px; }
+.codex-rpg .codex-gear-name { justify-self: start; width: auto; min-height: auto; padding: 0; background: transparent; border-color: transparent; font-weight: 650; }
+.codex-chat-result .codex-rune { font-size: 18px; }
+.codex-item-sheet .window-content { overflow: auto; }
+.codex-equipment-root { display: grid; gap: 10px; padding: 15px; }
+.codex-equipment-root > header { display: flex; align-items: center; gap: 12px; }
+.codex-equipment-root > header img { width: 52px; height: 52px; object-fit: cover; }
+.codex-equipment-root fieldset { border: 0; margin: 0; padding: 0; }
+.codex-equipment-root .codex-wide { grid-column: 1 / -1; }
+.codex-equipment-root :is(.codex-equipment-fields,.codex-item-grid,.codex-item-fields,.codex-prep-controls) {
+  display: grid; grid-template-columns: repeat(auto-fit,minmax(min(140px,100%),1fr)); gap: 8px;
+}
+.codex-pavor-hud {
+  width: max-content; max-width: min(45vw, 440px); min-width: 0; align-self: center;
+  margin: 3px auto 0; pointer-events: auto; z-index: 1;
+  background: var(--codex-panel); border: 1px solid var(--codex-p); border-radius: 8px;
+}
+.codex-hud-body { display: flex; align-items: center; gap: 6px; padding: 2px 6px; }
+.codex-pavor-slots { display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; gap: 3px; padding: 0 2px; scrollbar-width: thin; }
+.codex-pavor-filled { color: var(--codex-rune-p); font-weight: 700; font-size: 23px; line-height: 1.15; }
+.codex-pavor-empty { color: var(--codex-muted); font-size: 16px; }
+.codex-pavor-count { white-space: nowrap; }
+.codex-pavor-hud button { min-width: 24px; min-height: 24px; width: auto; padding: 0 4px; }
+@container (max-width: 560px) {
+  .codex-rpg .codex-header { padding: 7px 10px; gap: 8px; flex-wrap: wrap; }
+  .codex-rpg .codex-portrait { width: 42px; height: 42px; }
+  .codex-modes { margin-left: auto; }
+  .codex-facts, .codex-tabs, .codex-scroll { padding-inline: 9px; }
+  .codex-facts { column-gap: 12px; }
+  .codex-section, .codex-action { padding: 8px; }
+}
 
-/* Editor de equipamentos, exclusivamente neste sistema. */
-.codex-item-form{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:15px 0}
-.codex-item-form label{display:flex;flex-direction:column;gap:4px;color:var(--cx-muted);font-size:12px}
-.codex-item-form .codex-wide{grid-column:span 2}
-.codex-item-form textarea{width:100%;padding:9px;min-width:0;background:var(--cx-panel2);color:var(--cx-text);border:1px solid var(--cx-line);border-radius:6px;font:inherit}
-.codex-item-form .codex-check{flex-direction:row;align-items:center;gap:9px}
-.codex-gear .codex-gear-name{font-weight:bold;text-align:left;border:0;padding:2px 0;background:transparent}
-@media(max-width:550px){.codex-item-form{grid-template-columns:1fr}.codex-item-form .codex-wide{grid-column:span 1}}
 
-.codex-rune{font-weight:800;white-space:nowrap}.codex-rune-e{color:var(--cx-E)}.codex-rune-a{color:var(--cx-A)}.codex-rune-p{color:var(--cx-P)}
+/* v0.3.1 · Identidade visual alinhada à ficha web do Codex RPG.
+   Tokens autorais: E #267A45 · A #2369BB · P #542176. */
+.codex-rpg{
+ --codex-e:#267A45;--codex-a:#2369BB;--codex-p:#542176;
+ --codex-page:#0c101a;--codex-panel:#172130;--codex-inset:#111927;
+ --codex-line:#2b394b;--codex-text:#f3efe7;--codex-muted:#aab9c9;
+ --codex-accent:#dec48e;--codex-on-accent:#0c101a;--codex-gold:#dec48e;
+ --codex-rune-e:#5bbd82;--codex-rune-a:#79aefa;--codex-rune-p:#b08acc;
+ --codex-danger:#ffacb2;
+ color:var(--codex-text);font-family:Inter,"Segoe UI",sans-serif;
+}
+.theme-light .codex-rpg,.codex-rpg.theme-light{
+ --codex-page:#f7f5f0;--codex-panel:#fffefa;--codex-inset:#f5f0e7;
+ --codex-line:#d8d2c8;--codex-text:#2e3036;--codex-muted:#626a75;
+ --codex-accent:#946b22;--codex-on-accent:#fffefa;--codex-gold:#946b22;
+ --codex-rune-e:#267A45;--codex-rune-a:#2369BB;--codex-rune-p:#542176;
+ --codex-danger:#a0333d;
+}
+.codex-rpg .window-content{
+ padding:0;background:radial-gradient(ellipse 75% 30% at 84% 0%,rgba(62,89,128,.17),transparent),var(--codex-page);color:var(--codex-text);
+}
+.codex-foundry-root{min-height:0;overflow:hidden}
+.codex-rpg :is(h1,h2,h3){font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.16;letter-spacing:-.03em}
+.codex-rpg h1{font-size:28px}
+.codex-rpg h2{font-size:22px}
+.codex-rpg h3{font-size:17px}
+.codex-rpg .codex-header{
+ padding:16px 22px;gap:14px;background:var(--codex-panel);border-bottom:1px solid var(--codex-line);flex-wrap:wrap;
+}
+.codex-rpg .codex-portrait{width:74px;height:78px;border-radius:11px;border:1.5px solid var(--codex-accent);background:var(--codex-inset)}
+.codex-rpg .codex-identity{min-width:160px}
+.codex-rpg .codex-identity small{letter-spacing:.13em;font-size:10px;text-transform:uppercase;color:var(--codex-accent);font-weight:700}
+.codex-rpg .codex-identity h1{margin:3px 0}
+.codex-brand-rune{display:flex;align-items:center;gap:4px;padding:6px 8px;color:var(--codex-e);font-size:23px;border-radius:8px;border:1px solid var(--codex-line);background:var(--codex-inset)}
+.codex-brand-rune span{color:var(--codex-a)}
+.codex-brand-rune{color:var(--codex-p)}
+.codex-brand-rune::first-letter{color:var(--codex-e)}
+.codex-rpg .codex-modes{margin-left:auto;align-self:center}
+.codex-rpg button{border-radius:9px;border-color:var(--codex-line);background:var(--codex-panel);color:var(--codex-text);transition:background .15s,border-color .15s}
+.codex-rpg button[aria-pressed="true"]{background:var(--codex-inset);border-color:var(--codex-accent);color:var(--codex-accent)}
+.codex-rpg button:hover:not(:disabled){border-color:var(--codex-accent);background:var(--codex-inset)}
+.codex-rpg .codex-primary{background:var(--codex-accent);border-color:var(--codex-accent);color:var(--codex-on-accent);font-weight:750}
+.codex-rpg .codex-facts{padding:12px 22px;gap:10px;background:var(--codex-page)}
+.codex-resource{padding:11px 13px;border:1px solid var(--codex-line);background:var(--codex-panel);border-radius:11px;min-width:105px;min-height:70px;gap:7px}
+.codex-resource>span{color:var(--codex-accent);font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:750}
+.codex-resource>strong,.codex-resource>div>strong{font-family:Georgia,serif;font-size:21px;color:var(--codex-text);font-weight:500}
+.codex-rpg .codex-tabs{padding:7px 22px 11px;gap:7px;background:var(--codex-page)}
+.codex-rpg .codex-tabs button{padding:9px 13px;text-align:left;font-weight:650;border:1px solid var(--codex-line);border-radius:9px;background:var(--codex-panel)}
+.codex-rpg .codex-tabs button[aria-pressed="true"]{border-color:var(--codex-accent);box-shadow:inset 3px 0 var(--codex-accent)}
+.codex-rpg .codex-scroll{padding:8px 22px 22px;background:transparent}
+.codex-rpg .codex-section,.codex-rpg .codex-action{
+ border:1px solid var(--codex-line);border-radius:14px;background:var(--codex-panel);
+ padding:17px 18px;gap:13px;margin:0 0 14px;
+ box-shadow:0 8px 24px rgba(0,0,0,.07);
+}
+.codex-rpg .codex-action{border-color:var(--codex-accent);background:linear-gradient(155deg,var(--codex-panel),var(--codex-inset))}
+.codex-rpg .codex-source-pick{min-height:40px;border-radius:8px;padding:9px 12px;background:var(--codex-inset)}
+.codex-rpg .codex-source-pick strong{color:var(--codex-accent);font-size:12px}
+.codex-rpg .codex-grade{border:1px solid var(--codex-line);border-radius:9px;background:var(--codex-inset);padding:10px 11px}
+.codex-rpg .codex-skill,.codex-rpg .codex-gear{background:var(--codex-inset);border:1px solid var(--codex-line);border-radius:9px;margin:0 0 7px;padding:10px}
+.codex-rpg .codex-skills-list{display:grid;gap:7px;max-height:min(470px,60vh);overflow:auto;padding-right:3px}
+.codex-rpg .codex-skill details summary{font-size:13px;font-weight:750;color:var(--codex-text);cursor:pointer}
+.codex-rpg .codex-skill small{color:var(--codex-muted);font-size:11px}
+.codex-rpg .codex-skill button{flex:none;min-width:88px}
+.codex-rpg .codex-pool{padding:12px;border:1px dashed var(--codex-line);border-radius:10px;background:var(--codex-inset)}
+.codex-rpg .codex-result-die{background:var(--codex-inset);border:1px solid var(--codex-line);border-radius:12px}
+.codex-rpg .codex-result-die[aria-pressed="true"]{border-color:var(--codex-accent);background:var(--codex-panel)}
+.codex-rpg .codex-outcome{padding:13px;background:var(--codex-inset);border:1px solid var(--codex-line);border-radius:9px}
+.codex-owned-showcase .codex-owned-columns{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:15px}
+.codex-owned-col h3{font-size:14px;margin-bottom:10px;color:var(--codex-accent)}
+.codex-owned-list{display:grid;gap:8px;align-content:start}
+.codex-owned-card{background:var(--codex-inset);border:1px solid var(--codex-line);border-radius:9px;padding:10px;display:grid;gap:5px}
+.codex-owned-card strong{font-size:12px}
+.codex-owned-card small{font-size:11px;line-height:1.5}
+.codex-element-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.codex-element-chip{border:1px solid var(--codex-a);color:var(--codex-rune-a);border-radius:30px;padding:6px 9px;font-size:11px;font-weight:750}
+.codex-wizard{display:grid;gap:16px}
+.codex-wizard-intro{border:1px solid var(--codex-line);border-radius:14px;padding:20px;
+ background:radial-gradient(ellipse at 95% 20%,rgba(148,107,34,.12),transparent 60%),var(--codex-panel)}
+.codex-wizard-intro small,.codex-wizard-kicker{font-size:10px;font-weight:750;letter-spacing:.16em;color:var(--codex-accent)}
+.codex-wizard-intro h2{font-size:28px;margin:7px 0}
+.codex-wizard-intro h2 em{font-weight:400;color:var(--codex-accent)}
+.codex-wizard-intro p{color:var(--codex-muted)}
+.codex-wizard-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.codex-rpg .codex-wizard-nav button{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:3px 8px;text-align:left;
+ padding:9px;border:1px solid var(--codex-line);border-radius:10px;min-height:60px}
+.codex-wizard-nav button>span{grid-row:span 2;font-size:21px;color:var(--codex-accent);font-family:Georgia,serif}
+.codex-wizard-nav button>strong{font-size:11px}
+.codex-wizard-nav button>small{font-size:10px}
+.codex-wizard-nav button[aria-current="step"]{border-color:var(--codex-accent);box-shadow:inset 3px 0 var(--codex-accent)}
+.codex-wizard-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(215px,.8fr);gap:12px}
+.codex-wizard-stage,.codex-wizard-sidebar{min-width:0;border-radius:13px;padding:20px;background:var(--codex-panel);border:1px solid var(--codex-line)}
+.codex-wizard-stage{display:grid;gap:14px;align-content:start}
+.codex-wizard-stage h2{font-size:25px}
+.codex-wizard-stage>p{font-size:12px;color:var(--codex-muted)}
+.codex-wizard-source-group{display:grid;gap:8px}
+.codex-wizard-source-group>h3{font-size:15px;color:var(--codex-accent)}
+.codex-wizard-grade{gap:7px;align-items:center}
+.codex-wizard-grade>div{display:flex;gap:5px}
+.codex-wizard-sidebar{align-self:start;display:grid;gap:10px}
+.codex-wizard-sidebar>small{font-size:10px;letter-spacing:.12em;color:var(--codex-accent)}
+.codex-wizard-sidebar>h3{font-size:22px}
+.codex-wizard-xp{display:grid;gap:6px;padding:13px;background:var(--codex-inset);border-radius:9px}
+.codex-wizard-xp>strong{font-family:Georgia,serif;font-size:25px;color:var(--codex-accent)}
+.codex-wizard-budget{display:flex;justify-content:space-between;gap:10px;font-size:12px;border-bottom:1px solid var(--codex-line);padding:8px 0}
+.codex-wizard-budget>b{color:var(--codex-accent)}
+.codex-wizard-review{display:grid;gap:7px;padding:20px;border:1px solid var(--codex-accent);border-radius:12px;background:var(--codex-inset)}
+.codex-wizard-review>strong{font:26px Georgia,serif}
+.codex-wizard-footer{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.codex-wizard-footer button{min-height:37px}
+@container (max-width: 750px){
+ .codex-rpg .codex-header{padding:10px 12px}
+ .codex-rpg .codex-facts{padding:9px 12px}
+ .codex-rpg .codex-tabs,.codex-rpg .codex-scroll{padding-inline:10px}
+ .codex-wizard-layout,.codex-owned-showcase .codex-owned-columns{grid-template-columns:1fr}
+ .codex-wizard-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .codex-brand-rune{display:none}
+}
+@container (max-width: 490px){
+ .codex-wizard-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-resource{min-width:80px}
+ .codex-rpg .codex-tabs{gap:3px}
+}
 
-/* Foundry v0.2 — criação, catálogo e Pavor */
-.codex-creation-panel{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px solid var(--color-border-light-2,#777);border-radius:8px;margin:8px 0}.codex-creation-panel input{max-width:85px}.codex-creation-panel small{width:100%}.codex-catalog-picker{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.codex-catalog-picker select{max-width:250px}.codex-pavor-root{padding:14px}.codex-pavor-root .codex-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+/* DNA em Foundry v14 · criação por 19 XP globais */
+.codex-wizard-layout:has([data-codex-gene]){grid-template-columns:1fr}
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar>h3,
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar>small,
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-xp,
+.codex-wizard-layout:has([data-codex-gene]) .codex-note{grid-column:1/-1}
+.codex-gene-layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(245px,.8fr);gap:14px;min-height:570px}
+.codex-gene-map{position:relative;min-height:570px;overflow:hidden;border:1px solid var(--codex-line);border-radius:12px;
+ background:var(--codex-inset);touch-action:pan-y;cursor:grab}
+.codex-gene-map:active{cursor:grabbing}
+.codex-gene-map .fp-gene-svg{width:100%;height:100%;display:block;color:var(--codex-muted)}
+.codex-gene-map .fp-gene-viewport{user-select:none}
+.codex-gene-map .fp-gene-dna-strand{fill:none;stroke-width:9;stroke-linecap:round;stroke-opacity:.24}
+.codex-gene-map .fp-gene-dna-strand.a{stroke:var(--codex-e)}
+.codex-gene-map .fp-gene-dna-strand.b{stroke:var(--codex-a)}
+.codex-gene-map .fp-gene-dna-rung{stroke:var(--codex-accent);stroke-width:3;stroke-opacity:.25}
+.codex-gene-map .fp-gene-cluster-label{fill:var(--codex-muted);font-size:12px;letter-spacing:.15em}
+.codex-gene-map .fp-gene-edge{stroke:var(--codex-muted);stroke-opacity:.19;stroke-width:1.4;pointer-events:none}
+.codex-gene-map .fp-gene-edge[data-gene-link="source"]{stroke:var(--codex-a);stroke-opacity:.35}
+.codex-gene-map .fp-gene-edge.completed{stroke:var(--codex-e);stroke-opacity:.55}
+.codex-gene-map .fp-gene-edge.active{stroke:var(--codex-accent);stroke-opacity:.9;stroke-width:3}
+.codex-gene-map .fp-gene-node{cursor:pointer}
+.codex-gene-map .fp-gene-hit{fill:transparent;pointer-events:all}
+.codex-gene-map .fp-gene-dot{fill:var(--codex-inset);stroke:var(--codex-muted);stroke-width:2.5}
+.codex-gene-map .fp-gene-node.is-owned .fp-gene-dot{fill:#267A45;stroke:#65c487}
+.codex-gene-map .fp-gene-node.is-available .fp-gene-dot{fill:#2369BB;stroke:#83baf7}
+.codex-gene-map .fp-gene-node.is-selected .fp-gene-dot{stroke:var(--codex-accent);stroke-width:4}
+.codex-gene-map .fp-gene-inside{fill:var(--codex-text);font-size:14px;pointer-events:none}
+.codex-gene-map .fp-gene-grade{fill:var(--codex-accent);font-size:12px;font-weight:800;pointer-events:none}
+.codex-gene-map .fp-gene-node-label{fill:var(--codex-text);stroke:var(--codex-inset);stroke-width:3;paint-order:stroke;
+ font-size:12px;font-weight:700;pointer-events:none}
+.codex-gene-layout .codex-gene-detail{border-radius:12px;border:1px solid var(--codex-line);padding:18px;background:var(--codex-panel);min-width:0}
+.codex-gene-detail h3{font-size:20px;margin:10px 0}
+.codex-gene-detail p,.codex-gene-detail small{color:var(--codex-muted);line-height:1.5}
+.codex-gene-detail dl{display:grid;gap:6px;margin:13px 0}
+.codex-gene-detail dt{font-weight:750;color:var(--codex-accent);font-size:11px}
+.codex-gene-detail dd{margin:0;font-size:12px}
+.codex-gene-detail button{margin:10px 5px 5px 0}
+.codex-gene-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px}
+.codex-gene-legend .owned{color:#5ec587}
+.codex-gene-legend .available{color:#84b9ff}
+.codex-gene-legend .locked{color:var(--codex-muted)}
+.codex-gene-buttons{display:flex;gap:6px;flex-wrap:wrap}
+@container (max-width:780px){.codex-gene-layout{grid-template-columns:1fr}.codex-gene-map{min-height:400px}}
+@container (max-width:460px){.codex-gene-map{min-height:320px}.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar{grid-template-columns:1fr}}
