@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
- buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
+ buildPool,resolveRoll,compareKeptOptions,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
@@ -135,4 +135,25 @@ test("Capacidade de carga inclui Disciplina, Força, Vigor e Atletismo",async()=
  s.attributes.forca=3;s.attributes.vigor=3;
  s.practices.armas_conjuracao=3;s.practices.atletismo=3;
  assert.equal(loadCapacity(s),5);
+});
+
+test("Comparativo de mantidos oferece alternativas sem modificar a rolagem",()=>{
+ const dice=[
+  {id:"forca",group:"attribute",sides:6,face:6},
+  {id:"disciplina",group:"practice",sides:10,face:10},
+  {id:"arma",group:"equipment",sides:6,face:2}
+ ];
+ const original=structuredClone(dice);
+ const options=compareKeptOptions(dice,{de:3,level:1,monster:false},5);
+ assert.equal(options.length,5);
+ assert.ok(options.every(x=>x.ids.length<=2));
+ assert.ok(options.every(x=>x.success===true));
+ assert.deepEqual(dice,original);
+ assert.ok(options.some(x=>x.p>0));
+});
+test("Monstro precisa de orçamento informado antes de comprar graus",async()=>{
+ const {canSpendXP}=await import("../module/equipment-logic.mjs");
+ const monstro={monsterRules:true,xp:0,attributes:{forca:0},skills:[],knowledges:{},practices:{}};
+ assert.equal(canSpendXP(monstro,2),false);
+ monstro.xp=10;assert.equal(canSpendXP(monstro,2),true);
 });
