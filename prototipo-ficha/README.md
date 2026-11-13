@@ -24,6 +24,16 @@ Também é possível baixar o repositório e abrir `prototipo-ficha/index.html` 
 
 Esta pasta é a **única interface ativa** para criação e ficha. O antigo `criador.html` direciona para ela; o programa antigo `assets/creator.js` fica como código histórico, sem executar no site. A ficha usa sua chave própria de `localStorage`, pode importar os dados legados da chave antiga e **não apaga** a ficha original armazenada.
 
+### Navegação do grafo (PC e celular) — prévia
+
+O Codex Genético funciona em uma **janela de exploração**; os nós e ramificações fora da vista continuam acessíveis por arraste e zoom, sem aumentar indefinidamente a altura da página.
+
+- **Desktop:** arrastar o fundo ou o próprio nó (sem acionar os botões −/+) para mover; roda do mouse ou gesto do trackpad para ampliar e afastar **na posição do cursor**. Dois cliques rápidos no mapa aproximam. Teclas de direção movem a câmera; `+`, `-`, `0` permitem zoom e recentralização.
+- **Celular/tablet:** deslizar **um dedo** para mover o mapa, **pinçar com dois dedos** para alterar o zoom em torno dos dedos, tocar nos nós e nos controles para consultar/comprar. A rolagem comum da página continua fora da área do mapa.
+- **Controles flutuantes:** botões grandes de **−, centralizar e +** dentro do próprio grafo; indicador percentual do zoom. O botão centralizador restaura uma escala inicial que é mais próxima no celular para manter os nós legíveis.
+
+**Status:** ajuste apenas de interface/ergonomia; não altera XP, VT, dados ou requisitos.
+
 ## Atualização do Codex Genético — mapa de fontes e evolução (prévia)
 
 **Interface refinada:** a dupla hélice foi restaurada atrás dos Atributos, os dados têm a mesma geometria poliédrica do rolador e os títulos do mapa são simples: Atributos, Conhecimentos e Práticas. Perícias em **roxo** apresentam uma **compra assistida** quando o XP cobre todos os graus e Perícias que faltam; ao clicar, o sistema mostra a lista e o custo total para confirmação, sem comprar pré-requisitos isolados. Perícias com requisitos já atendidos ficam azuis. Clicar em um nó abre um painel flutuante no lado do mapa, com seus detalhes e botão de fechar.
