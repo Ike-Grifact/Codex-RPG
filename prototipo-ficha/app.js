@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.38, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 19 XP experimental. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:19,training:19,skills:19,total:19}; // DEFINIDO: orçamento único de 19 XP.
+const CREATE_BUDGET={attr:19,training:19,skills:19,total:19}; // EXPERIMENTAL: total 19 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  [
@@ -900,7 +900,7 @@ let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
- ["Codex Genético","Desenvolva seu DNA","19 XP para fontes e Perícias"],
+ ["Codex Genético","Desenvolva seu DNA","19 XP de playtest, com distribuição livre após fontes mínimas"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
@@ -1469,7 +1469,7 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Criação pelo Codex Genético: 19 XP livres para Atributos, Conhecimentos, Práticas e Perícias.":
+  "Criação pelo Codex Genético: um Atributo e um Conhecimento ou Prática de grau 1; depois, XP livre.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
@@ -1496,7 +1496,7 @@ function renderWizard(){
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CODEX GENÉTICO</span>'+
-  '<h3>Seu DNA, suas escolhas.</h3><p>Desenvolva primeiro um <strong>Atributo</strong> na dupla hélice. Depois, escolha um <strong>Conhecimento ou Prática</strong> na órbita. Os ramos ficam azuis conforme os requisitos são cumpridos. Distribua <strong>19 XP</strong> como preferir.</p></div>'+
+  '<h3>Seu DNA, suas escolhas.</h3><p>Compre ao menos um <strong>Atributo grau 1</strong> na dupla hélice e um <strong>Conhecimento ou Prática grau 1</strong> na órbita. Depois, invista o XP restante livremente, inclusive em Perícias, observando requisitos. O criador usa <strong>19 XP compartilhados (total experimental)</strong>.</p></div>'+
   '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<p class="fp-wiz-reminder">A hélice representa seus Atributos; as órbitas representam Conhecimentos e Práticas. Conexões são afinidades, não requisitos adicionais.</p>';
