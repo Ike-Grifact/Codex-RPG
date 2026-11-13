@@ -36,7 +36,7 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
   await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
   await page.locator('#editor [data-grade="practice"][data-key="atletismo"][data-delta="1"]').click();
   assert((await page.locator("#editor").innerText()).includes("17"),"XP humanoide errado");
-  await page.locator("#add-human-quick").click();
+  await page.locator("#add-human-basic").click();
   assert(await page.locator(".cf-threat-card").count()===3,"Não criou humano comum por atalho");
   assert((await page.locator("#editor .cf-stat-grid").innerText()).includes("3 / 20"),"Atalho humanoide não consumiu os 3 XP mínimos");
   assert(await page.locator('[data-grade="practice"][data-key="armas_conjuracao"]').count()===2,"Disciplina G1 ausente no humano comum");
