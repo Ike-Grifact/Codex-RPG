@@ -900,3 +900,10 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-wiz-source[data-source-group] .fp-wiz-source-actions{border-top-color:color-mix(in srgb,var(--fp-category-color) 28%,var(--fp-stroke))}
 .fp-wiz-review-list [data-source-group] h4{color:var(--fp-category-color)}
 .fp-wiz-review-list [data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke))}
+
+/* Transição visível da etapa 2 para a distribuição livre da etapa 3. */
+.fp-wiz-creation-confirmed{display:flex;flex-direction:column;gap:5px;
+ margin:0 0 17px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--fp-e) 55%,var(--fp-stroke));
+ background:color-mix(in srgb,var(--fp-e) 8%,var(--fp-deep));border-radius:10px}
+.fp-wiz-creation-confirmed strong{color:var(--fp-e);font-size:12px}
+.fp-wiz-creation-confirmed span{color:var(--fp-text);font-size:11px;line-height:1.6}
