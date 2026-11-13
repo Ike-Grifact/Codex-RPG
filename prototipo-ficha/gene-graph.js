@@ -42,17 +42,35 @@ const sourcesAffinity={
 };
 const cameras=new WeakMap(),listeners=new WeakSet();
 const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0});return cameras.get(root);};
-function position(nodes){
+function position(nodes,branches=[]){
  const byId=new Map(nodes.map(n=>[n.id,n]));
  for(const [i,key] of baseAttr.entries()){const n=byId.get("attr:"+key);if(n){n.x=800;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of baseKnow.entries()){const n=byId.get("know:"+key);if(n){n.x=265;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of basePractice.entries()){const n=byId.get("practice:"+key);if(n){n.x=1335;n.y=BASE_Y+i*ROW;}}
- const skills=nodes.filter(n=>n.type==="skill").sort((a,b)=>{
-  const rank=n=>n.state==="owned"?0:n.state==="available"?1:n.state==="potential"?2:3;
-  return rank(a)-rank(b)||a.name.localeCompare(b.name,"pt-BR");
- });
- skills.forEach((n,i)=>{n.x=105+(i%6)*250;n.y=SKILL_Y+Math.floor(i/6)*72;});
- return Math.max(1000,SKILL_Y+Math.ceil(skills.length/6)*72+70);
+ // Grafo de afinidades temáticas já registrado no visualizador clássico.
+ // Posições estáveis, inclusive quando nós bloqueados são ocultados.
+ const groups=[
+  {name:"COMBATE E ARMAS",branch:[0,1,2,3,7,8],xs:[125,358,591,824],y:955},
+  {name:"CONJURAÇÃO E ELEMENTOS",branch:[5],xs:[1130,1400],y:955},
+  {name:"RECUPERAÇÃO",branch:[4],xs:[180,410],y:2060},
+  {name:"SOCIAL E AÇÕES",branch:[6],xs:[670,905],y:2060},
+  {name:"FURTIVIDADE",branch:[9],xs:[1170,1410],y:2060}
+ ];
+ const assigned=new Set();
+ for(const group of groups){
+  const ids=[...new Set(group.branch.flatMap(i=>branches[i]||[]))]
+    .filter(id=>byId.has("skill:"+id)&&!assigned.has(id));
+  ids.forEach((id,i)=>{
+   const n=byId.get("skill:"+id);
+   n.x=group.xs[i%group.xs.length];
+   n.y=group.y+Math.floor(i/group.xs.length)*112;
+   assigned.add(id);
+  });
+ }
+ const rest=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.key||n.id.slice(6)))
+  .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ rest.forEach((n,i)=>{n.x=160+(i%6)*255;n.y=2500+Math.floor(i/6)*112;});
+ return Math.max(1170,...nodes.filter(n=>n.type==="skill").map(n=>n.y+110));
 }
 function edge(a,b,cls){
  if(!a||!b)return"";
@@ -62,41 +80,45 @@ function edge(a,b,cls){
 }
 function card(n,edit){
  const c=n.type==="attr"?"attr":n.type==="know"?"know":"practice";
- const width=c==="attr"?270:294;
- const height=72;
- const x=n.x-width/2,y=n.y-height/2;
- const dice=(n.dice||[]).map((d,i)=>{
-  const cx=n.x+((i+0.5)-(n.dice.length/2))*39,cy=n.y-61;
-  const poly=DICE_SHAPES[Number(d.slice(1))]||DICE_SHAPES[4];
-  return '<g class="fp-gene-die-shape" transform="translate('+(cx-16.8)+' '+(cy-16.8)+') scale(.8)">'+poly+
-   '<text x="21" y="26" text-anchor="middle">'+esc(d)+'</text></g>';
+ const width=342,height=86,x=n.x-width/2,y=n.y-height/2;
+ const icons=n.dice||[];
+ const iconGap=icons.length===3?62:70;
+ const iconStart=n.x-(icons.length-1)*iconGap/2;
+ const dice=icons.map((die,i)=>{
+  const cx=iconStart+i*iconGap,cy=n.y+18;
+  const sides=Number(die.slice(1)),poly=DICE_SHAPES[sides]||DICE_SHAPES[4];
+  // Repete o dado do modo de listas: linha poliédrica sem preenchimento, dN ao lado.
+  return '<g class="fp-gene-die-inline is-d'+sides+'">'+
+   '<g class="fp-gene-die-poly" transform="translate('+(cx-20)+' '+(cy-14)+') scale(.67)">'+poly+'</g>'+
+   '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
- const pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
- const label=esc(n.name);
+ const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
  const canDown=edit&&n.previewGrade>0;
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
- const control=edit?'<g class="fp-gene-node-controls" aria-label="Ajustar grau de '+label+'">'+
-  '<g role="button" tabindex="'+(canDown?'0':'-1')+'" class="fp-gene-grade-button'+(canDown?'':' is-disabled')+'" data-gene-grade="-1" data-gene-id="'+esc(n.id)+'" aria-label="Diminuir '+label+'" aria-disabled="'+(!canDown)+'">'+
-  '<rect x="'+(n.x+width/2-88)+'" y="'+(n.y-13)+'" width="31" height="27" rx="7"/><text x="'+(n.x+width/2-72.5)+'" y="'+(n.y+5)+'" text-anchor="middle">−</text></g>'+
-  '<g role="button" tabindex="'+(canUp?'0':'-1')+'" class="fp-gene-grade-button'+(canUp?'':' is-disabled')+'" data-gene-grade="1" data-gene-id="'+esc(n.id)+'" aria-label="Aumentar '+label+'" aria-disabled="'+(!canUp)+'">'+
-  '<rect x="'+(n.x+width/2-49)+'" y="'+(n.y-13)+'" width="31" height="27" rx="7"/><text x="'+(n.x+width/2-33.5)+'" y="'+(n.y+5)+'" text-anchor="middle">+</text></g></g>':"";
- const textWidth=edit?width-120:width-42;
- return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
+ const makeButton=(delta,enabled,posX,text,aria)=>
+  '<g role="button" tabindex="'+(enabled?'0':'-1')+'" class="fp-gene-grade-button'+(enabled?'':' is-disabled')+
+  '" data-gene-grade="'+delta+'" data-gene-id="'+esc(n.id)+'" aria-label="'+aria+'" aria-disabled="'+(!enabled)+'">'+
+  '<rect x="'+posX+'" y="'+(n.y+4)+'" width="32" height="29" rx="8"/>'+
+  '<text x="'+(posX+16)+'" y="'+(n.y+25)+'" text-anchor="middle">'+text+'</text></g>';
+ const control=edit?makeButton(-1,canDown,x+14,"−","Diminuir "+label)+
+  makeButton(1,canUp,x+width-46,"+","Aumentar "+label):"";
+ return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+
+  '" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
   '<title>'+label+' — '+esc(n.label||"")+'</title>'+
-  '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="14"/>'+
-  dice+
-  '<text class="fp-gene-card-title" x="'+(x+17)+'" y="'+(y+29)+'">'+label+'</text>'+
-  '<text class="fp-gene-card-grade" x="'+(x+17)+'" y="'+(y+52)+'">Grau '+(n.previewGrade??n.grade)+(pending?' · a confirmar':'')+'</text>'+
-  control+'</g>';
+  '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="13"/>'+
+  '<text class="fp-gene-card-title" x="'+(x+18)+'" y="'+(y+28)+'">'+label+'</text>'+
+  '<text class="fp-gene-card-grade" x="'+(x+width-18)+'" y="'+(y+27)+'" text-anchor="end">GRAU '+(n.previewGrade??n.grade)+(pending?' *':'')+'</text>'+
+  '<line class="fp-gene-card-separator" x1="'+(x+17)+'" x2="'+(x+width-17)+'" y1="'+(y+38)+'" y2="'+(y+38)+'"/>'+
+  control+dice+'</g>';
 }
 function skill(n){
  const shortened=n.name.length>22?n.name.slice(0,21)+"…":n.name;
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
-  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="14"/>'+
-  '<text class="fp-gene-node-label" x="'+(n.x+23)+'" y="'+(n.y+5)+'">'+esc(shortened)+'</text></g>';
+  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
+  '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+esc(shortened)+'</text></g>';
 }
-function draw(nodes,height,selected,affinity,edit,camera){
+function draw(nodes,height,selected,affinity,branches,edit,camera){
  const byId=new Map(nodes.map(n=>[n.id,n]));
  let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e ramificações disponíveis abaixo.">'+
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
@@ -106,6 +128,19 @@ function draw(nodes,height,selected,affinity,edit,camera){
   '<text class="fp-gene-column-title is-attr" x="800" y="66" text-anchor="middle">ATRIBUTOS</text>'+
   '<text class="fp-gene-column-title is-practice" x="1335" y="66" text-anchor="middle">PRÁTICAS</text>'+
   dnaStrands();
+ // Ligações de ramificações vindas do mesmo grafo temático usado no modo Obsidian.
+ // NÃO equivalem a requisitos, que seguem exclusivamente skillReq().
+ const connected=new Set();
+ for(const branch of branches){
+  for(let i=1;i<branch.length;i++){
+   const a=byId.get("skill:"+branch[i-1]),b=byId.get("skill:"+branch[i]);
+   if(!a||!b)continue;
+   const signature=[a.id,b.id].sort().join("|");
+   if(connected.has(signature))continue;connected.add(signature);
+   const highlighted=selected===a.id||selected===b.id;
+   svg+=edge(a,b,"fp-gene-skill-link"+(highlighted?" is-related":""));
+  }
+ }
  // As afinidades aparecem apenas ao selecionar a fonte — sem rede de cruzamentos.
  const active=byId.get(selected);
  if(active){
@@ -169,7 +204,7 @@ function bind(root){
   const cam=getCamera(root);cam.zoom=clamp(cam.zoom*(event.deltaY<0?1.1:.91),.65,2.5);applyTransform(root);
  },{passive:false});
 }
-function render(root,{skills=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,onSelect=()=>{},onAdjust=()=>{}}={}){
+function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,onSelect=()=>{},onAdjust=()=>{}}={}){
  if(!root)return;
  root.__geneActions={onSelect,onAdjust};
  const all=skills.filter(n=>n&&n.type&&n.type!=="hidden").map(n=>({...n,key:n.key||n.id?.split(":")[1]}));
@@ -180,8 +215,8 @@ function render(root,{skills=[],affinity={},selected="",filter="related",query="
   visible=visible.filter(n=>n.type!=="skill"||filter==="all"||filter==="related"||(
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
- const height=position(visible),cam=getCamera(root);
- root.innerHTML=draw(visible,height,selected,affinity,edit,cam);
+ const height=position(all,branches),cam=getCamera(root);
+ root.innerHTML=draw(visible,height,selected,affinity,branches,edit,cam);
  bind(root);
 }
 function zoom(root,dir){
