@@ -837,3 +837,66 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  .fp-wiz-focus-confirm section{padding:16px}
  .fp-wiz-starter-total{flex-direction:column}
 }
+
+/* Identidade visual das categorias — APENAS interface, sem alterar runas ou regras. */
+.fp-wizard{
+ --fp-category-attr:#69ce96;
+ --fp-category-know:#80b9ff;
+ --fp-category-practice:#f5f5f5;
+}
+.fp-wiz-focus-card[data-group="attr"],
+.fp-wiz-focus-section[data-source-group="attr"],
+.fp-wiz-source[data-source-group="attr"],
+.fp-wiz-focus-confirm [data-source-group="attr"],
+.fp-wiz-review-list [data-source-group="attr"],
+.fp-wiz-tab-help[data-source-group="attr"]{--fp-category-color:var(--fp-category-attr)}
+.fp-wiz-focus-card[data-group="know"],
+.fp-wiz-focus-section[data-source-group="know"],
+.fp-wiz-source[data-source-group="know"],
+.fp-wiz-focus-confirm [data-source-group="know"],
+.fp-wiz-review-list [data-source-group="know"],
+.fp-wiz-tab-help[data-source-group="know"]{--fp-category-color:var(--fp-category-know)}
+.fp-wiz-focus-card[data-group="practice"],
+.fp-wiz-focus-section[data-source-group="practice"],
+.fp-wiz-source[data-source-group="practice"],
+.fp-wiz-focus-confirm [data-source-group="practice"],
+.fp-wiz-review-list [data-source-group="practice"],
+.fp-wiz-tab-help[data-source-group="practice"]{--fp-category-color:var(--fp-category-practice)}
+/* Cartões iniciais: título, borda, indicador e realce da mesma categoria. */
+.fp-wiz-focus-card[data-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke));
+ background:linear-gradient(140deg,color-mix(in srgb,var(--fp-category-color) 7%,var(--fp-deep)),var(--fp-deep) 78%)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-top strong,
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-role,
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-bottom b{color:var(--fp-category-color)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-top small{border-color:color-mix(in srgb,var(--fp-category-color) 50%,var(--fp-stroke));color:var(--fp-category-color)}
+.fp-wiz-focus-card[data-group]:hover,
+.fp-wiz-focus-card[data-group]:focus-visible{border-color:var(--fp-category-color);box-shadow:0 0 0 1px var(--fp-category-color)}
+.fp-wiz-focus-card[data-group].is-active{border-color:var(--fp-category-color);
+ background:color-mix(in srgb,var(--fp-category-color) 14%,var(--fp-deep));
+ box-shadow:inset 0 0 0 1px var(--fp-category-color)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-bottom{border-top-color:color-mix(in srgb,var(--fp-category-color) 25%,var(--fp-stroke))}
+/* Títulos das seções e confirmação — distinção persiste até a compra dos graus. */
+.fp-wiz-focus-section[data-source-group] .fp-wiz-focus-heading h4{color:var(--fp-category-color)}
+.fp-wiz-focus-section[data-source-group] .fp-wiz-focus-heading{padding-bottom:10px;
+ border-bottom:2px solid color-mix(in srgb,var(--fp-category-color) 55%,var(--fp-stroke))}
+.fp-wiz-focus-confirm [data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 50%,var(--fp-stroke))}
+.fp-wiz-focus-confirm [data-source-group] strong,
+.fp-wiz-focus-confirm [data-source-group] button{color:var(--fp-category-color)}
+.fp-wiz-focus-confirm [data-source-group] button{border-color:var(--fp-category-color)}
+/* Compra em listas, sem criar categoria de XP separada. */
+.fp-wiz-category-tabs button[data-group="attr"]{--fp-category-color:var(--fp-category-attr)}
+.fp-wiz-category-tabs button[data-group="know"]{--fp-category-color:var(--fp-category-know)}
+.fp-wiz-category-tabs button[data-group="practice"]{--fp-category-color:var(--fp-category-practice)}
+.fp-wiz-category-tabs button[data-group="attr"],
+.fp-wiz-category-tabs button[data-group="know"],
+.fp-wiz-category-tabs button[data-group="practice"]{color:var(--fp-category-color);border-color:color-mix(in srgb,var(--fp-category-color) 30%,var(--fp-stroke))}
+.fp-wiz-category-tabs button[data-group]:is(.is-active,:hover){border-color:var(--fp-category-color);
+ background:color-mix(in srgb,var(--fp-category-color) 12%,var(--fp-deep))}
+.fp-wiz-tab-help[data-source-group] strong,
+.fp-wiz-tab-help[data-source-group] span{color:var(--fp-category-color)}
+.fp-wiz-source[data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke))}
+.fp-wiz-source[data-source-group] .fp-wiz-source-title strong,
+.fp-wiz-source[data-source-group] .fp-wiz-cost{color:var(--fp-category-color)}
+.fp-wiz-source[data-source-group] .fp-wiz-source-actions{border-top-color:color-mix(in srgb,var(--fp-category-color) 28%,var(--fp-stroke))}
+.fp-wiz-review-list [data-source-group] h4{color:var(--fp-category-color)}
+.fp-wiz-review-list [data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke))}
