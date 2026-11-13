@@ -41,6 +41,8 @@ const create=async page=>{
   assert(Math.hypot((p.x-a.x)/a.zoom-(q.x-b.x)/b.zoom,
        (p.y-a.y)/a.zoom-(q.y-b.y)/b.zoom)<1,
        'Zoom não mantém o ponto do cursor: '+JSON.stringify({a,b,p,q}));
+  // Voltar à vista inicial antes de pegar o nó: o zoom anterior pode levá-lo para fora da janela.
+  await desktop.locator('#gene-builder-map [data-gene-nav="0"]').click();
   const attr=desktop.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:forca"]');
   const attrBox=await attr.boundingBox();
   assert(attrBox,'Nó Força não está visível para arraste');
