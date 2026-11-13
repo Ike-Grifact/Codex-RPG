@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 19 XP experimental. */
+/* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 20 XP experimental. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:19,training:19,skills:19,total:19}; // EXPERIMENTAL: total 19 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
+const CREATE_BUDGET={attr:20,training:20,skills:20,total:20}; // EXPERIMENTAL: total 20 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  [
@@ -1189,11 +1189,11 @@ function renderXP(){
  $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
   const cap=CREATE_BUDGET.total;
-  $(id+"-caption").textContent=used+" XP (orçamento global: 19 XP)";
+  $(id+"-caption").textContent=used+" XP (orçamento global: 20 XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
- "19 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
+ "20 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
  (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
 }
@@ -1588,8 +1588,8 @@ function wizardFinalize(){
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
  if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=2;renderWizard();return;}
  const xp=xpCosts();
- if(xp.free<0){toast("O investimento ultrapassa 19 XP.");return;}
- if(!confirm("Concluir a criação usando "+xp.total+" dos 19 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
+ if(xp.free<0){toast("O investimento ultrapassa 20 XP.");return;}
+ if(!confirm("Concluir a criação usando "+xp.total+" dos 20 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
  const residual=lockCreation();if(residual===null)return;
  viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! XP livre: "+residual+".");
@@ -1670,7 +1670,7 @@ function wizardBuild(){
  const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
   '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
   '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
-  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 19 XP (total experimental)</span></div>';
+  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 20 XP (total experimental)</span></div>';
  const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais estão registradas. Agora compre outros graus e Perícias usando o saldo compartilhado, ou alterne para o Codex Genético.</span></div>';
  if(wizardMode==="genetic")return confirmedHint+switcher+
   geneBudgetPanel()+
@@ -1712,7 +1712,7 @@ function wizardReview(){
   '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
   '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
-  '<div class="fp-wiz-reminder"><strong>19 XP iniciais · orçamento compartilhado</strong>'+
+  '<div class="fp-wiz-reminder"><strong>20 XP iniciais · orçamento compartilhado</strong>'+
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>';
 }
 function wizardOverview(){
@@ -1720,7 +1720,7 @@ function wizardOverview(){
  return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 19 XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
