@@ -173,3 +173,5 @@
 .cf-main .cf-life-full{font-size:11px;padding:7px 8px;min-height:35px}
 @media(max-width:510px){.cf-hero-actions .cf-quick-humanoid{grid-column:1/-1}}
 @media print{.cf-life-actions,.cf-life-full,.cf-quick-humanoid{display:none!important}}
+
+.cf-hero-actions #add-human-basic{border-style:dashed;color:var(--muted);font-size:12px}
