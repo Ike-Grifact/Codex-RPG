@@ -30,6 +30,7 @@ const create=async page=>{
   desktop.on('pageerror',e=>errors.push(e.message));
   await create(desktop);
   const map=desktop.locator('#gene-builder-map');
+  await map.scrollIntoViewIfNeeded();
   const box=await map.boundingBox();
   assert(box&&box.height>=450&&box.height<=730,'Mapa não é uma janela fixa: '+JSON.stringify(box));
   const x=box.x+box.width*.33,y=box.y+box.height*.42;
