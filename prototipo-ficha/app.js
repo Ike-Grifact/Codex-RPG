@@ -1224,8 +1224,20 @@ function armorDodgeBonus(s=state){
 function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
 function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
-function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
-function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
+function capacity(s=state){return 1+Math.floor((s.attributes.forca||0)/3)+Math.floor((s.attributes.vigor||0)/3)+Math.floor((s.practices.armas_conjuracao||0)/3)+Math.floor((s.practices.atletismo||0)/3);}
+function loadUsed(s=state){return s.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(s); /* Recursos de troca também ocupam Carga. */}
+function itemLoad(item){const normalized=normalizedCatalogItem(item);return WEIGHTS[normalized.weight][1]*((normalized.properties||[]).includes("Muito Leve")?0.5:1);}
+function itemLoadAfterPurchase(item,s=state){return loadUsed(s)+itemLoad(item)-Number(item.priceVT||0)/10*WEIGHTS.leve[1];}
+function freeLoad(s=state){return Math.max(0,capacity(s)-loadUsed(s));}
+function carryCounts(s=state){const free=freeLoad(s);return {leve:Math.floor((free+1e-9)/WEIGHTS.leve[1]),medio:Math.floor((free+1e-9)/WEIGHTS.medio[1]),pesado:Math.floor((free+1e-9)/WEIGHTS.alto[1])};}
+function carryGuide(s=state){
+ const count=carryCounts(s),left=capacity(s)-loadUsed(s);
+ return '<div class="fp-carry-guide'+(left<0?' is-overloaded':'')+'" aria-live="polite">'+
+ '<strong>'+(left<0?'Carga excedida por '+pad(-left)+' Alto!':'Carga disponível: '+pad(left)+' Alto')+'</strong>'+
+ '<span>Uso atual '+pad(loadUsed(s))+' / '+capacity(s)+' Alto (itens + recursos VT).</span>'+
+ '<div class="fp-carry-limits"><span><b>'+count.leve+'</b> leves</span><span><b>'+count.medio+'</b> médios</span><span><b>'+count.pesado+'</b> pesados</span></div>'+
+ '<small>Quantidades alternativas, não cumulativas. Comprar com VT reduz também a carga dos recursos usados.</small></div>';
+}
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
@@ -1874,11 +1886,13 @@ function wizardEquipment(){
  const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
  const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ .map(it=>{const price=Number(it.priceVT),projected=itemLoadAfterPurchase(it),over=projected>capacity()+1e-9,details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+' · Carga '+pad(itemLoad(it))+' Alto</p>'+
+ (over?'<p class="fp-carry-warning">Esta compra ultrapassa a carga ('+pad(projected)+' / '+capacity()+' Alto).</p>':'')+
+ '<footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
- '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
+ carryGuide()+'<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
@@ -2317,7 +2331,8 @@ function inventorySelect(field,value,values,id){
 function renderInventory(){
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
+ $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · ATENÇÃO: capacidade excedida":"")+". Recursos VT e focos usam carga convencional.";
+ const guide=$("inventory-carry-guide");if(guide)guide.innerHTML=carryGuide();
  const mental=$("mental-slot-caption");
  if(mental){
   const points=mentalSlotCapacity();
@@ -2386,6 +2401,7 @@ function renderTrade(){
  const currentShop=$("shop-items").value,currentPreferred=$("shop-preferred").value;
  $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>
   '<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+(x.die?"d"+x.die:x.integrity?.max+" Integridade")+'</option>').join("");
+ const buyHint=$("trade-carry-guide");if(buyHint)buyHint.innerHTML=carryGuide();
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
@@ -2395,8 +2411,11 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
  const price=Number(item.priceVT);
+ const projected=itemLoadAfterPurchase(item),limit=capacity(),exceeded=projected>limit+1e-9;
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
+ const weightNotice="\nCarga: "+pad(loadUsed())+" → "+pad(projected)+" / "+limit+" Alto. "+(exceeded?"ATENÇÃO: ultrapassará o limite!":"Dentro da capacidade.");
+ if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"+weightNotice+
+  (exceeded?"\n\nConsequências mecânicas da sobrecarga PENDENTES. Confirmar mesmo assim?":"")))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
  for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
@@ -2405,7 +2424,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  state.trade.resources=res;
  state.trade.purchases.push({name:item.name,price});
  state.items.push(normalizedCatalogItem(item));
- render();save();toast(item.name+" adquirido por "+price+" VT. Equipe no inventário.");
+ render();save();toast(item.name+" adquirido por "+price+" VT. "+(loadUsed()>capacity()?"ATENÇÃO: carga excedida!":"Equipe no inventário."));
 }
 function addTestFocus(){
  if(!state.skills.includes("criar-item-foco-magia")||
