@@ -899,12 +899,14 @@ function defaultState(){return{
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
+let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
  ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
+ ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
 // Metadados usados na etapa 3 para explicar as abas do visualizador padrão.
@@ -967,11 +969,13 @@ function load(){
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
   const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
-  wizardStep=w.version>=2?clamp(oldStep,0,3):clamp(oldStep>0?1:0,0,3);
-  wizardReached=w.version>=2?clamp(oldReached,wizardStep,3):wizardStep;
+  wizardStep=w.version>=4?clamp(oldStep,0,4):w.version>=2?(oldStep>=3?4:clamp(oldStep,0,2)):clamp(oldStep>0?1:0,0,4);
+  wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
   wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
   wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
   wizardMode=w.mode==="genetic"?"genetic":"list";
+  wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
+  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
   wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
   wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
   wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
@@ -1523,7 +1527,7 @@ function render(){renderVitals();renderXP();renderDiceLegend();renderSources();r
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
- try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:3,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining}));}
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred}));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
 }
 function wizardSelectStep(next){
@@ -1601,7 +1605,7 @@ function wizardFinalize(){
  if(xp.free<0){toast("O investimento ultrapassa 20 XP.");return;}
  if(!confirm("Concluir a criação usando "+xp.total+" dos 20 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
  const residual=lockCreation();if(residual===null)return;
- viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;wizardPersist();
+ viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! XP livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
