@@ -226,7 +226,7 @@ function bind(root){
  root.tabIndex=0;
  root.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight + - 0");
  const nodePosition=node=>node.getBoundingClientRect().top-root.getBoundingClientRect().top;
- const pointers=new Map();
+ const pointers=new Map(),handledTouchNav=new WeakSet();
  let pinch=null,dragging=false,suppressClick=false;
  const setMoving=value=>{dragging=value;root.classList.toggle("is-dragging",value);};
  const midpoint=()=>{
@@ -244,7 +244,10 @@ function bind(root){
  },true);
  root.addEventListener("click",event=>{
   const nav=event.target.closest("[data-gene-nav]");
-  if(nav){event.stopPropagation();zoom(root,Number(nav.dataset.geneNav));return;}
+  if(nav){event.stopPropagation();
+   if(handledTouchNav.has(nav)){handledTouchNav.delete(nav);return;}
+   zoom(root,Number(nav.dataset.geneNav));return;
+  }
   const grade=event.target.closest("[data-gene-grade]");
   if(grade){event.stopPropagation();
    if(grade.getAttribute("aria-disabled")!=="true")root.__geneActions?.onAdjust?.(grade.dataset.geneId,Number(grade.dataset.geneGrade));
@@ -320,6 +323,16 @@ function bind(root){
   }
  };
  root.addEventListener("pointerup",endPointer);
+ // Em alguns navegadores móveis, a pinça suprime o click sintético seguinte.
+ // Aplicar controles flutuantes também no pointerup tátil (sem duplicar em click).
+ root.addEventListener("pointerup",event=>{
+  if(event.pointerType!=="touch")return;
+  const nav=event.target.closest("[data-gene-nav]");
+  if(!nav)return;
+  handledTouchNav.add(nav);
+  zoom(root,Number(nav.dataset.geneNav));
+  setTimeout(()=>handledTouchNav.delete(nav),450);
+ });
  root.addEventListener("pointercancel",endPointer);
  root.addEventListener("lostpointercapture",event=>{
   if(!pointers.has(event.pointerId))return;
