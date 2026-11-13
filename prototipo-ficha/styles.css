@@ -787,3 +787,53 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  .fp-wiz-starter-status .fp-wiz-starter-xp{margin-left:0;width:100%}
  .fp-wiz-choice{padding:15px}
 }
+
+/* Seleção individual de fontes: Atributo principal, depois Conhecimento OU Prática. */
+.fp-wiz-mini-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.fp-wiz-mini-progress>span{padding:11px 8px;text-align:center;background:var(--fp-deep);color:var(--fp-muted);
+ border:1px solid var(--fp-stroke);border-radius:9px;font-size:11px;font-weight:750}
+.fp-wiz-mini-progress>span.is-current{color:var(--fp-gold);border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep))}
+.fp-wiz-mini-progress>span.is-complete{color:var(--fp-e);border-color:color-mix(in srgb,var(--fp-e) 60%,var(--fp-stroke))}
+.fp-wiz-focus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fp-wiz-focus-card{display:flex;flex-direction:column;gap:9px;min-width:0;min-height:236px;text-align:left;cursor:pointer;
+ padding:17px;border:1px solid var(--fp-stroke);border-radius:13px;background:var(--fp-deep);color:var(--fp-text);
+ transition:border-color .16s,background .16s,box-shadow .16s}
+.fp-wiz-focus-card:hover,.fp-wiz-focus-card:focus-visible{border-color:var(--fp-gold);outline:none;box-shadow:0 0 0 1px var(--fp-gold)}
+.fp-wiz-focus-card.is-active{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 9%,var(--fp-deep))}
+.fp-wiz-focus-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.fp-wiz-focus-top strong{color:var(--fp-gold);font:normal 21px Georgia,serif}
+.fp-wiz-focus-top small{font-size:10px;font-weight:750;border:1px solid var(--fp-stroke);border-radius:20px;padding:5px 8px;color:var(--fp-muted)}
+.fp-wiz-focus-card.is-active .fp-wiz-focus-top small{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-wiz-focus-role{color:var(--fp-a);font-size:11px;font-weight:800}
+.fp-wiz-focus-description{font-size:12px;line-height:1.6;color:var(--fp-text)}
+.fp-wiz-focus-example{font-size:11px;line-height:1.5;color:var(--fp-muted)}
+.fp-wiz-focus-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+ border-top:1px solid var(--fp-stroke);padding-top:11px;margin-top:auto;font-size:10px;color:var(--fp-a)}
+.fp-wiz-focus-bottom b{font-size:11px;color:var(--fp-gold)}
+.fp-wiz-focus-section+.fp-wiz-focus-section{margin-top:26px}
+.fp-wiz-focus-heading{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 12px}
+.fp-wiz-focus-heading h4{margin:0;color:var(--fp-gold);font:normal 22px Georgia,serif}
+.fp-wiz-focus-heading p{font-size:11px;color:var(--fp-muted)}
+.fp-wiz-focus-confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.fp-wiz-focus-confirm section{display:flex;flex-direction:column;gap:10px;padding:23px;background:var(--fp-deep);
+ border:1px solid var(--fp-stroke);border-radius:12px}
+.fp-wiz-focus-confirm small{font-size:10px;color:var(--fp-muted);font-weight:800;letter-spacing:.07em}
+.fp-wiz-focus-confirm strong{color:var(--fp-gold);font:normal 27px Georgia,serif}
+.fp-wiz-focus-confirm span{font-size:12px;color:var(--fp-text)}
+.fp-wiz-focus-confirm button{align-self:flex-start;border:1px solid var(--fp-gold);border-radius:9px;
+ background:transparent;color:var(--fp-gold);font-size:11px;font-weight:700;padding:10px 13px;cursor:pointer}
+.fp-wiz-focus-confirm button:hover,.fp-wiz-focus-confirm button:focus-visible{background:color-mix(in srgb,var(--fp-gold) 12%,transparent);outline:none}
+.fp-wiz-starter-total{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+ margin-top:14px;padding:17px;background:var(--fp-raised);border:1px solid var(--fp-stroke);border-radius:12px;
+ color:var(--fp-text);font-size:12px}
+.fp-wiz-starter-total strong{color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-wiz-footer-buttons .fp-primary-btn:disabled{opacity:.6;cursor:not-allowed}
+@media(max-width:1100px){.fp-wiz-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+ .fp-wiz-focus-grid,.fp-wiz-focus-confirm{grid-template-columns:1fr}
+ .fp-wiz-focus-card{min-height:0;padding:15px}
+ .fp-wiz-mini-progress{gap:5px}
+ .fp-wiz-mini-progress>span{font-size:9px;padding:9px 5px}
+ .fp-wiz-focus-confirm section{padding:16px}
+ .fp-wiz-starter-total{flex-direction:column}
+}
