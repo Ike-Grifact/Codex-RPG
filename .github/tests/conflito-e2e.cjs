@@ -59,7 +59,7 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
   await shop.locator('#wizard-controls [data-action="wizard-next"]').click();
   await shop.waitForSelector(".fp-carry-guide");
   const guide=await shop.locator("#wizard-content .fp-carry-guide").innerText();
-  assert(guide.includes("6 leves")&&guide.includes("1 médios")&&guide.includes("0 pesados"),"Contador inicial incorreto: "+guide);
+  assert(/6\s*leves/.test(guide)&&/1\s*médios/.test(guide)&&/0\s*pesados/.test(guide),"Contador inicial incorreto: "+guide);
   await shop.locator('[data-action="wizard-shop-category"][data-category="armor"]').click();
   assert(await shop.locator(".fp-wiz-shop-item").filter({hasText:"Armadura Pesada"}).locator(".fp-carry-warning").count()===1,"Armadura Pesada sem aviso de sobrecarga");
   shop.once("dialog",d=>{assert(d.message().includes("ATENÇÃO: ultrapassará o limite"),"Compra sem alerta");d.dismiss();});
