@@ -1270,48 +1270,82 @@ function renderOwnedPanel(){
   '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
   (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
+
+function geneLayout(mapId,detailId){
+ return '<div class="fp-gene-layout fp-gene-creator-layout">'+
+ '<div class="fp-gene-canvas" id="'+mapId+'" role="region" aria-label="Codex Genético: Atributos, Conhecimentos, Práticas e Perícias"></div>'+
+ '<aside class="fp-gene-detail" id="'+detailId+'" aria-live="polite"></aside></div>';
+}
+function sourceGeneInfo(id){
+ const [group,key]=String(id).split(":");
+ if(!GROUPS[group])return null;
+ const row=GROUPS[group].find(x=>x[0]===key);
+ if(!row)return null;
+ const grade=Number(state[SOURCE_PROPS[group]][key]||0);
+ const next=grade<6?xpStepCost(group,key,1):null;
+ const prereq=viewMode==="builder"&&group!=="attr"&&!A.some(([k])=>state.attributes[k]>0);
+ const available=!prereq&&next!==null&&canAfford(group,next)&&!state.pending;
+ return {id,group,key,name:row[1],grade,next,state:grade>0?"owned":available?"available":"locked",prereq};
+}
 function geneSkillStatus([id,,,cost]){
  if(state.skills.includes(id))return"owned";
- if(Number.isInteger(cost)&&!skillReq(id)&&canAfford("skills",cost)&&!state.pending)return"available";
- return"locked";
+ if(viewMode==="builder"&&!hasStarterSources())return"locked";
+ return Number.isInteger(cost)&&!skillReq(id)&&canAfford("skills",cost)&&!state.pending?"available":"locked";
 }
-function renderGeneDetail(){
- const p=$("gene-detail");if(!p)return;
- const skill=SKILLS.find(([id])=>id===geneSelected&&!HIDDEN_CATALOG_SKILLS.has(id));
- if(!skill){p.innerHTML='<span class="fp-gene-detail-empty">Selecione um nó para ver a Perícia, o caminho e o custo da compra.</span>';return;}
- const [id,name,detail,cost]=skill,owned=state.skills.includes(id),reason=skillReq(id),status=geneSkillStatus(skill);
- const req=CARD_REQUIREMENTS[id]||reason||"Consulte o verbete para os requisitos completos";
- const act=CARD_ACTIVATIONS[id]||"Consulte o verbete";
- const canCancel=owned&&(!state.creationLocked||editMode);
- const disabled=!owned&&status!=="available"||owned&&!canCancel;
- const action=owned?(canCancel?"Reverter compra":"Adquirida ✓"):(status==="available"?"Comprar · "+cost+" XP":"Ainda indisponível");
- p.innerHTML='<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":status==="available"?"Disponível agora":"Ramo futuro / bloqueado")+'</span>'+
- '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
- '<dl><dt>Requisitos</dt><dd>'+esc(req)+'</dd><dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
- '<dt>Ativação</dt><dd>'+esc(act)+'</dd><dt>Estado atual</dt><dd>'+esc(owned?"Já comprada":reason||(!Number.isInteger(cost)?"Regra pendente":"Requisitos cumpridos; confira o saldo de XP"))+'</dd></dl>'+
- '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(id)+'"'+(disabled?" disabled":"")+'>'+esc(action)+'</button>'+
- (SKILL_PERMALINKS[id]?'<a class="fp-gene-verbete" href="../pericias/'+esc(SKILL_PERMALINKS[id])+'.html" target="_blank" rel="noopener">Ler verbete completo ↗</a>':"")+
- '<small>O mapa não altera requisitos; apenas apresenta as Perícias já existentes no catálogo.</small>';
+function geneDetailHTML(id){
+ const src=sourceGeneInfo(id);
+ if(src){
+  const dice=dataDice(src.group,src.grade).map(n=>"d"+n).join(" + ");
+  const canReduce=src.grade>0&&(!state.creationLocked||editMode)&&!state.pending;
+  const increase=src.state==="available";
+  return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.grade?"Desenvolvido":"Potencial")+'</span>'+
+   '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo do DNA central.",know:"Conhecimento na órbita de aprendizado.",practice:"Prática na órbita de aprendizado."}[src.group])+'</p>'+
+   '<dl><dt>Grau / Dados</dt><dd>G'+src.grade+' · '+esc(dice)+'</dd>'+
+   '<dt>Próximo Grau</dt><dd>'+esc(src.next===null?"Grau máximo":src.next+" XP")+'</dd>'+
+   '<dt>XP disponível</dt><dd>'+xpCosts().free+' XP</dd>'+
+   (src.prereq?'<dt>Primeiro passo</dt><dd>Desenvolva um Atributo para desbloquear as fontes.</dd>':"")+'</dl>'+
+   '<div class="fp-gene-grade-actions">'+
+   '<button type="button" data-action="grade" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="-1"'+(canReduce?"":" disabled")+'>− Grau</button>'+
+   '<button type="button" class="fp-primary-btn" data-action="grade" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="1"'+(increase?"":" disabled")+'>+ Grau · '+(src.next===null?"máximo":src.next+" XP")+'</button></div>';
+ }
+ const skill=SKILLS.find(row=>row[0]===id&&!HIDDEN_CATALOG_SKILLS.has(row[0]));
+ if(!skill)return '<p>Selecione um Atributo central, depois um Conhecimento, uma Prática ou uma Perícia.</p>';
+ const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid);
+ const status=geneSkillStatus(skill),reason=skillReq(sid),canCancel=owned&&(!state.creationLocked||editMode);
+ const disabled=owned?!canCancel:status!=="available";
+ return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":status==="available"?"Disponível":"Bloqueada")+'</span>'+
+  '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
+  '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
+  '<dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
+  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+
+  '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(disabled?" disabled":"")+'>'+
+  (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
 }
 function renderGenetic(){
- const map=$("gene-map");if(!map)return;
- if(!geneSelected||!SKILLS.some(([id])=>id===geneSelected&&!HIDDEN_CATALOG_SKILLS.has(id))){
-  geneSelected=state.skills.find(id=>SKILLS.some(s=>s[0]===id&&!HIDDEN_CATALOG_SKILLS.has(id)))||
-   SKILLS.find(x=>geneSkillStatus(x)==="available"&&!HIDDEN_CATALOG_SKILLS.has(x[0]))?.[0]||"";
+ if(!geneSelected)geneSelected="attr:forca";
+ const nodes=[
+  ...A.map(([k])=>({type:"attr",...sourceGeneInfo("attr:"+k)})),
+  ...K.map(([k])=>({type:"know",...sourceGeneInfo("know:"+k)})),
+  ...P.map(([k])=>({type:"practice",...sourceGeneInfo("practice:"+k)})),
+  ...SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id)).map(row=>({
+   type:"skill",id:row[0],name:row[1],state:geneSkillStatus(row),
+   label:state.skills.includes(row[0])?"Adquirida":skillReq(row[0])||"Requisitos e XP"
+  }))
+ ];
+ const choose=id=>{geneSelected=id;renderGenetic();};
+ for(const mapId of ["gene-map","gene-builder-map"]){
+  const map=$(mapId);
+  if(!map||map.isConnected===false)continue;
+  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===1))continue;
+  window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,affinity:SKILL_AFFINITY,
+   selected:geneSelected,filter:mapId==="gene-builder-map"?"all":geneFilter,query:geneSearch,onSelect:choose});
  }
- const nodes=SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id))
-  .map(item=>({id:item[0],name:item[1],state:geneSkillStatus(item),label:state.skills.includes(item[0])?"Adquirida":
-   skillReq(item[0])||"Verificar orçamento",category:""}));
- window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,selected:geneSelected,
-  filter:geneFilter,query:geneSearch,onSelect:id=>{geneSelected=id;renderGenetic();}});
- renderGeneDetail();
+ for(const id of ["gene-detail","gene-builder-detail"]){
+  const el=$(id);if(el&&el.isConnected!==false)el.innerHTML=geneDetailHTML(geneSelected);
+ }
  const list=$("gene-list");
  if(list){list.hidden=!geneListOpen;
-  if(geneListOpen)list.innerHTML=SKILLS.filter(x=>!HIDDEN_CATALOG_SKILLS.has(x[0])&&
-   (!geneSearch||[x[0],x[1],x[2]].join(" ").toLocaleLowerCase("pt-BR")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(geneSearch.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,""))))
-   .map(x=>skillCompactCard(x,false)).join("")||
-    '<p class="fp-owned-empty">Nenhuma Perícia encontrada com os filtros.</p>';
+  if(geneListOpen)list.innerHTML=SKILLS.filter(row=>!HIDDEN_CATALOG_SKILLS.has(row[0])).map(row=>skillCompactCard(row,false)).join("");
  }
 }
 function openSheetPage(page,focusSkill=""){
