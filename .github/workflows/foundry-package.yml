@@ -1,0 +1,38 @@
+name: Codex RPG - pacote instalável Foundry v14
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'foundry-prototype/**'
+      - '.github/workflows/foundry-package.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  foundry-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Baixar branch de revisão
+        uses: actions/checkout@v4
+      - name: Validar testes de regras do sistema
+        run: node --test foundry-prototype/tests/*.test.mjs
+      - name: Montar pacote com o identificador do sistema
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/codex-rpg-foundry
+          cp -R foundry-prototype/assets foundry-prototype/lang foundry-prototype/module foundry-prototype/styles foundry-prototype/templates dist/codex-rpg-foundry/
+          cp foundry-prototype/system.json foundry-prototype/README.md dist/codex-rpg-foundry/
+          node -e "const s=require('./dist/codex-rpg-foundry/system.json');if(s.id!=='codex-rpg-foundry')process.exit(1)"
+          (cd dist && zip -q -r codex-rpg-foundry-v14.zip codex-rpg-foundry)
+          unzip -t dist/codex-rpg-foundry-v14.zip
+      - name: Publicar ZIP instalável como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-rpg-foundry-v14
+          path: dist/codex-rpg-foundry-v14.zip
+          if-no-files-found: error
+          retention-days: 14
