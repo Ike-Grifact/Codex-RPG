@@ -1,8 +1,8 @@
-/* Codex RPG — sistema Foundry VTT v14, protótipo 0.2.0. */
+/* Codex RPG — sistema Foundry VTT v14. */
 import {CodexCharacterData,CodexHumanoidData,CodexMonsterData,CodexEquipmentData} from "./data-model.mjs";
 import {CodexCharacterSheet} from "./sheet.mjs";
 import {CodexEquipmentSheet} from "./item-sheet.mjs";
-import {CodexPavorPanel,transferCombatPavor,NS} from "./pavor-panel.mjs";
+import {openPublicPavor,registerPublicPavor,transferCombatPavor} from "./pavor-panel.mjs";
 Hooks.once("init",()=>{
  CONFIG.Actor.dataModels.character=CodexCharacterData;
  CONFIG.Actor.dataModels.humanoid=CodexHumanoidData;
@@ -15,12 +15,10 @@ Hooks.once("init",()=>{
  sheet.registerSheet(foundry.documents.Item,game.system.id,CodexEquipmentSheet,{
   types:["equipment"],makeDefault:true,label:"Codex RPG — Item e equipamento"
  });
- game.settings.register(NS,"publicPavor",{name:"Pavor público do Narrador",hint:"Saldo, com teto dinâmico de 2 + jogadores.",
-  scope:"world",config:false,type:Number,default:2});
- console.info("Codex RPG | Foundry 0.2.0: Personagem, Humanoide, Criatura.");
+ registerPublicPavor();
 });
 Hooks.once("ready",()=>{
- game.codex={openPavorPanel:()=>new CodexPavorPanel().render({force:true})};
+ game.codex={openPavorPanel:openPublicPavor};
  if(game.user.isGM)game.codex.openPavorPanel();
 });
 Hooks.on("createChatMessage",(message)=>{transferCombatPavor(message).catch(e=>console.error("Codex RPG: Pavor",e));});

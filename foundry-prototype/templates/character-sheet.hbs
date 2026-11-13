@@ -1,43 +1,36 @@
 <section class="codex-foundry-root">
   <header class="codex-hero">
-    <div class="codex-portrait"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
+    <div class="codex-portrait-column">
+      <div class="codex-portrait"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
+      {{#if codex.isOwner}}
+      <button class="codex-edit-portrait" type="button" data-action="editPortrait"><i class="fa-solid fa-image" aria-hidden="true"></i> Alterar retrato</button>
+      {{/if}}
+    </div>
     <div class="codex-identity">
       <div class="codex-brand">
-        <img src="{{codex.logo}}" alt="" class="codex-logo">
-        <div><span class="codex-overline">CODEX RPG · PERSONAGEM / CRIATURA / HUMANOIDE</span><strong>O personagem se constrói pelas suas escolhas.</strong></div>
+        <div>
+          <span class="codex-overline">{{codex.actorTypeLabel}}</span>
+          <h2>{{codex.actorName}}</h2>
+        </div>
+        {{#if codex.isGM}}<button type="button" class="codex-open-pavor" data-action="openPavorPanel"><span aria-hidden="true">ᚦ</span> Pavor público</button>{{/if}}
       </div>
       <div class="codex-identity-fields">
-        <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name"></label>
-        <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept"></label>
-        <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level"></label>
-        <label>Origem <input type="text" value="{{codex.origin}}" data-field="system.origin"></label>
-        <label>Virtude <input type="text" value="{{codex.virtue}}" data-field="system.virtue"></label>
-        <label>Personalidade <input type="text" value="{{codex.personality}}" data-field="system.personality"></label>
+        <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{#if codex.isMonster}}
+          <label>Grau <input type="number" min="1" max="6" value="{{codex.threatGrade}}" data-field="system.threatGrade" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{else}}
+          <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{/if}}
+        <label>Origem <input type="text" value="{{codex.origin}}" data-field="system.origin" {{#unless codex.isOwner}}readonly{{/unless}}></label>
       </div>
-    <div class="codex-creation-panel">
-     <label>XP adicional / orçamento da criatura <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp"></label>
-     <span><strong>XP gasto:</strong> {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}}
-      · <strong>Disponível:</strong> {{codex.xpLedger.left}}</span>
-     <small>Criação: 20 XP iniciais compartilhados (EXPERIMENTAL); ao menos um Atributo G1 e um Conhecimento OU Prática G1. Saldo restante livre. Monstros extraordinários usam XP e Grau próprios.</small>
-     {{#if codex.isHumanoid}}<strong>Ficha de Humanoide: progressão de XP e dados de personagem.</strong>{{/if}}
-     {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}<small class="codex-creation-warning">Criação incompleta: Atributo G1 + Conhecimento OU Prática G1.</small>{{/unless}}{{/unless}}
-     {{#if codex.isMonster}}<strong>Ficha de Monstro: apenas Atributos próprios; escala d10/d12.</strong>{{/if}}
-     {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}
-       <details class="codex-starter-guide" open>
-        <summary>Compras mínimas orientadas · 3 XP no personagem novo</summary>
-        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 20 XP experimentais livremente, sem reservas.</p>
-        <div class="codex-starter-fields">
-         <label>Atributo inicial<select data-starter-attr>{{#each codex.starterAttributes}}
-          <option value="{{this.id}}">{{this.name}}</option>{{/each}}</select></label>
-         <label>Conhecimento ou Prática inicial<select data-starter-training>{{#each codex.starterTraining}}
-          <option value="{{this.value}}">{{this.name}}</option>{{/each}}</select></label>
-         <button type="button" class="codex-primary" data-action="purchaseStarter">Confirmar compras mínimas</button>
+      <details class="codex-identity-details" {{#if codex.identityOpen}}open{{/if}}>
+        <summary>Virtude e personalidade</summary>
+        <div class="codex-identity-fields">
+          <label>Virtude <input type="text" value="{{codex.virtue}}" data-field="system.virtue" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+          <label>Personalidade <input type="text" value="{{codex.personality}}" data-field="system.personality" {{#unless codex.isOwner}}readonly{{/unless}}></label>
         </div>
-        <small>Somente compras ainda não realizadas custam XP; requisitos mínimos são verificados antes de confirmar.</small>
-       </details>
-     {{/unless}}{{/unless}}
-     {{#if codex.isGM}}<button type="button" data-action="openPavorPanel">Painel de Pavor público</button>{{/if}}
-    </div>
+      </details>
     </div>
   </header>
 
@@ -69,6 +62,30 @@
      {{#if codex.overloaded}}<small class="codex-warning">ATENÇÃO: carga excedida. Penalidades pendentes.</small>{{/if}}
     </div>
   </div>
+
+  <details class="codex-creation-panel" {{#if codex.progressOpen}}open{{/if}}>
+    <summary>
+      <strong>Progressão</strong>
+      <span>{{codex.xpLedger.left}} XP disponíveis · {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}} gastos</span>
+    </summary>
+    <label>{{#if codex.isMonster}}Orçamento de XP{{else}}XP adicional{{/if}}
+      <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp" {{#unless codex.isOwner}}readonly{{/unless}}>
+    </label>
+     {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}
+       <details class="codex-starter-guide" open>
+        <summary>Compras mínimas orientadas · 3 XP no personagem novo</summary>
+        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 20 XP experimentais livremente, sem reservas.</p>
+        <div class="codex-starter-fields">
+         <label>Atributo inicial<select data-starter-attr>{{#each codex.starterAttributes}}
+          <option value="{{this.id}}">{{this.name}}</option>{{/each}}</select></label>
+         <label>Conhecimento ou Prática inicial<select data-starter-training>{{#each codex.starterTraining}}
+          <option value="{{this.value}}">{{this.name}}</option>{{/each}}</select></label>
+         <button type="button" class="codex-primary" data-action="purchaseStarter">Confirmar compras mínimas</button>
+        </div>
+        <small>Somente compras ainda não realizadas custam XP; requisitos mínimos são verificados antes de confirmar.</small>
+       </details>
+     {{/unless}}{{/unless}}
+  </details>
 
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
@@ -234,7 +251,7 @@
        <div class="codex-compare-grid">
        {{#each codex.comparisons}}
         <div class="codex-compare-option">
-         <div><strong>Alternativa {{this.position}}</strong><small>{{this.keptNames}}</small></div>
+         <div><strong>Alternativa {{this.position}}</strong><span class="codex-dice-strip">{{#each this.keptDice}}<span class="codex-small-die">{{{this.icon}}}<b>d{{this.sides}} · {{this.face}}</b></span>{{/each}}</span></div>
          <b>{{this.outcome}}</b>
          <span>DE {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
          <small>Dano básico {{this.damage}} {{#if this.critical}}· crítico {{this.critical}}{{/if}}</small>
@@ -261,10 +278,9 @@
     </section>
     <section class="codex-block">
       <div class="codex-block-title"><h2>Inventário e proteção</h2><span>Itens persistidos como documentos Foundry</span></div>
-      <p class="codex-tip">Integridade e peso dos itens são editáveis em suas fichas futuras. Esta versão permite criar, equipar, retirar e ajustar integridade, sem inferir resistências automáticas.</p>
       {{#each codex.gear}}
       <div class="codex-gear">
-        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small></div>
+        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
         <div class="codex-gear-actions">
           <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
           <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>

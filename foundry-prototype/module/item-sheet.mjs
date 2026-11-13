@@ -1,4 +1,5 @@
 /* Ficha mínima de equipamento nativa para Foundry 14. */
+import {dieSvg} from "./dice-icons.mjs";
 export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-item-sheet"],window:{resizable:true},position:{width:550,height:590}};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/equipment-sheet.hbs"}};
@@ -6,7 +7,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const ctx=await super._prepareContext(options);
   const s=this.item.system;
   ctx.equipment={
-   name:this.item.name,img:this.item.img,kind:s.kind,grade:s.grade,weight:s.weight,
+   name:this.item.name,dieIcon:dieSvg(s.die),img:this.item.img,kind:s.kind,grade:s.grade,weight:s.weight,
    quantity:s.quantity,equipped:s.equipped,category:s.category,die:s.die,range:s.range,priceVT:s.priceVT,element:s.element,properties:s.properties.join(", "),ammo:s.ammo, durability:s.durability.value,durabilityMax:s.durability.max,
    categoryLeve:s.category==="leve",categoryMedio:s.category==="medio",categoryPesado:s.category==="pesado",categoryMuitoLeve:s.category==="muito-leve",
    integrity:s.integrity.value,integrityMax:s.integrity.max,description:s.description,

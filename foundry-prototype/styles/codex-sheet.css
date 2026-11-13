@@ -446,3 +446,133 @@
 @media (prefers-reduced-motion:reduce){
  .codex-source,.codex-foundry-root button{transition:none!important}
 }
+
+/* Cabeçalho e recursos da ficha */
+.codex-character-sheet .codex-hero {
+  grid-template-columns: clamp(72px, 12cqi, 104px) minmax(0, 1fr);
+  align-items: start;
+  background: linear-gradient(125deg, var(--cx-panel2), var(--cx-panel) 70%);
+}
+.codex-character-sheet .codex-portrait-column { display: grid; gap: 7px; }
+.codex-character-sheet .codex-portrait {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1;
+}
+.codex-foundry-root .codex-edit-portrait { min-height: 32px; padding: 4px; font-size: 11px; }
+.codex-character-sheet .codex-brand {
+  min-height: 0;
+  margin: 0;
+  padding-bottom: 9px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-color: var(--cx-line);
+}
+.codex-character-sheet .codex-brand h2 {
+  color: var(--cx-text);
+  font-size: clamp(23px, 3.5cqi, 34px);
+  overflow-wrap: anywhere;
+}
+.codex-character-sheet .codex-overline { color: var(--cx-gold); }
+.codex-foundry-root .codex-open-pavor span {
+  margin-inline-end: 5px;
+  color: var(--cx-pavor-rune);
+  font-size: 18px;
+}
+.codex-character-sheet .codex-identity-fields label { font-size: 12px; }
+.codex-character-sheet .codex-identity-details { color: var(--cx-muted); }
+.codex-character-sheet .codex-identity-details summary,
+.codex-character-sheet .codex-creation-panel summary { cursor: pointer; }
+.codex-character-sheet .codex-identity-details .codex-identity-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 8px;
+}
+.codex-character-sheet .codex-resources {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
+  margin-bottom: 12px;
+}
+.codex-character-sheet .codex-resource { padding: 12px; }
+.codex-character-sheet .codex-resource > span { font-size: 11px; }
+.codex-character-sheet .codex-creation-panel {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--cx-text);
+}
+.codex-character-sheet .codex-creation-panel summary > span {
+  margin-inline-start: .65em;
+  color: var(--cx-muted);
+  font-size: 13px;
+}
+.codex-character-sheet .codex-creation-panel > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--cx-text);
+}
+
+/* Reserva pública do Narrador */
+.codex-foundry-root { --cx-pavor-rune: #d6a5f5; --cx-pavor-accent: #a977ce; }
+.theme-light .codex-foundry-root,
+.theme-light.codex-rpg .codex-foundry-root { --cx-pavor-rune: #542176; --cx-pavor-accent: #744695; }
+.codex-pavor-root { display: grid; gap: 12px; padding: 16px; }
+.codex-pavor-reserve, .codex-pavor-players {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--cx-line);
+  border-radius: 13px;
+  background: var(--cx-panel);
+}
+.codex-pavor-reserve {
+  border-top: 3px solid var(--cx-pavor-accent);
+  background: linear-gradient(130deg, color-mix(in srgb, var(--cx-pavor-accent) 13%, var(--cx-panel)), var(--cx-panel) 72%);
+}
+.codex-pavor-heading { display: flex; align-items: center; gap: 11px; }
+.codex-pavor-heading p { color: var(--cx-muted); }
+.codex-pavor-mark {
+  display: grid;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--cx-pavor-accent);
+  border-radius: 10px;
+  color: var(--cx-pavor-rune);
+  font: 30px Georgia, serif;
+}
+.codex-pavor-stats, .codex-pavor-actions, .codex-pavor-player-fields { display: grid; gap: 8px; }
+.codex-pavor-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.codex-pavor-stats > div {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--cx-line);
+  border-radius: 8px;
+  background: var(--cx-bg);
+}
+.codex-pavor-stats span { color: var(--cx-muted); font-size: 12px; }
+.codex-pavor-stats strong { overflow-wrap: anywhere; font-size: 25px; }
+.codex-pavor-stats strong small { font-size: 12px; }
+.codex-pavor-stats > div:first-child strong { color: var(--cx-pavor-rune); }
+.codex-pavor-meter { width: 100%; height: 10px; margin: 0; }
+.codex-pavor-meter::-webkit-meter-bar { border: 0; border-radius: 999px; background: var(--cx-panel2); }
+.codex-pavor-meter::-webkit-meter-optimum-value { background: var(--cx-pavor-accent); }
+.codex-pavor-actions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.codex-pavor-root .codex-pavor-actions button { padding-inline: 3px; }
+.codex-pavor-player-fields { grid-template-columns: minmax(50px, 1fr) auto auto; }
+.codex-pavor-players label { font-weight: 750; }
+.codex-pavor-players small { color: var(--cx-muted); }
+@container (max-width: 400px) {
+  .codex-character-sheet .codex-hero { grid-template-columns: 1fr; }
+  .codex-character-sheet .codex-portrait-column { width: 94px; }
+}
+@container (max-width: 305px) {
+  .codex-pavor-player-fields { grid-template-columns: minmax(50px, 1fr) auto; }
+  .codex-pavor-player-fields [data-mode="auto"] { grid-column: 1 / -1; }
+}
+.codex-chat-die { display: inline-flex; align-items: center; gap: 4px; }
+.codex-chat-die .codex-die-svg { width: 19px; height: 19px; color: inherit; }

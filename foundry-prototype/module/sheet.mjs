@@ -2,10 +2,11 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,lifeMax,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
-import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
+import {rollPool,escapeHTML} from "./roll-engine.mjs";
+import {dieSvg} from "./dice-icons.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
-import {CodexPavorPanel} from "./pavor-panel.mjs";
+import {openPublicPavor} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
@@ -41,7 +42,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  addEquipment:CodexCharacterSheet.addEquipment,openEquipment:CodexCharacterSheet.openEquipment,
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
- openPavorPanel:CodexCharacterSheet.openPavorPanel,adjustPavor:CodexCharacterSheet.adjustPavor
+ editPortrait:CodexCharacterSheet.editPortrait,openPavorPanel:openPublicPavor,adjustPavor:CodexCharacterSheet.adjustPavor
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs"}};
  constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;}
@@ -52,7 +53,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
   ctx.codex={
-   actorName:actor.name,portrait:actor.img,logo:"systems/codex-rpg-foundry/assets/codex-logo.svg",
+   actorName:actor.name,portrait:actor.img,
+   identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
+   progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!monster&&!(hasFirstAttribute&&hasTraining)),
+   actorTypeLabel:{character:"Personagem",humanoid:"Oponente humanoide",creature:"Monstro extraordinário"}[actor.type],
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
@@ -74,7 +78,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
     quantity:i.system.quantity,equipped:i.system.equipped,
-    integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,priceVT:i.system.priceVT
+    integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,dieIcon:dieSvg(i.system.die),priceVT:i.system.priceVT
    })),
    selectedBase:d.base?sourceLabel(d.base.group,d.base.key,s):"",
    selectedAttribute:d.attribute?sourceLabel(d.attribute.group,d.attribute.key,s):"",
@@ -114,7 +118,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    }catch(e){summary={ok:false,errors:[e.message]};}
    ctx.codex.comparisons=compareKeptOptions(p.dice,{...p.options,level:s.level,monster,threatGrade:s.threatGrade,
      courage:s.courage,weight:situate(p.options),hostile:actor.type==="humanoid"},4)
-     .map((x,i)=>({...x,position:i+1,keptNames:x.dice.join(" · ")}));
+     .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
+      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
       selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
@@ -311,7 +316,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
-   const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
+   const detail=kept.map(x=>'<li><span class="codex-chat-die">'+dieSvg(x.sides)+'d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</span></li>').join("");
    const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
    const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(result.outcome)+'</h3>'+
     '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
@@ -366,7 +371,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const item=this.actor.items.get(target.dataset.id);
   if(item&&this.actor.isOwner&&confirm('Excluir "'+item.name+'"?'))await item.delete();
  }
- static openPavorPanel(){if(game.user.isGM)new CodexPavorPanel().render({force:true});}
+ static async editPortrait(){
+  if(!this.actor.isOwner)return;
+  const picker=new foundry.applications.apps.FilePicker.implementation({
+   type:"image",current:this.actor.img,document:this.actor,
+   callback:img=>this.actor.update({img})
+  });
+  await picker.browse();
+ }
  static async adjustPavor(event,target){
   if(!game.user.isGM)return;
   const delta=Number(target.dataset.delta),s=this.actor.system;

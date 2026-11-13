@@ -1,13 +1,35 @@
 <section class="codex-foundry-root codex-pavor-root">
- <h2>Pavor público do Narrador</h2>
- <p>Teto: <strong>{{cap}}</strong> (2 + {{players}} jogadores). Saldo atual: <strong>{{value}}</strong>. Espaço disponível: <strong>{{room}}</strong>.</p>
- {{#if isGM}}
- <div class="codex-actions">
- <button type="button" data-action="adjust" data-delta="-1">−1P</button>
- <button type="button" data-action="adjust" data-delta="1">+1P</button>
- <button type="button" data-action="adjust" data-delta="-2">−2P</button>
- <button type="button" data-action="adjust" data-delta="2">+2P</button>
- </div>
- {{/if}}
- <p class="codex-tip">Painel manual. O excesso não ultrapassa o teto. Pavor de dados descartados não entra. As reservas locais das criaturas são registradas em suas próprias fichas.</p>
+  <div class="codex-pavor-reserve">
+    <div class="codex-pavor-heading">
+      <span class="codex-pavor-mark" aria-hidden="true">ᚦ</span>
+      <div><h2>Reserva pública</h2><p>Pavor do Narrador</p></div>
+    </div>
+    <div class="codex-pavor-stats">
+      <div><span>Saldo atual</span><strong>{{value}} <small>P</small></strong></div>
+      <div><span>Teto</span><strong>{{cap}} <small>P</small></strong></div>
+      <div><span>Espaço livre</span><strong>{{room}} <small>P</small></strong></div>
+    </div>
+    <meter class="codex-pavor-meter" min="0" max="{{cap}}" value="{{value}}" aria-label="Ocupação da reserva de Pavor"></meter>
+    {{#if isGM}}
+    <div class="codex-pavor-actions" role="group" aria-label="Ajustar Pavor público">
+      <button type="button" data-action="adjust" data-delta="-2" {{#unless canRemoveTwo}}disabled{{/unless}} aria-label="Retirar 2 de Pavor">−2P</button>
+      <button type="button" data-action="adjust" data-delta="-1" {{#unless canRemoveOne}}disabled{{/unless}} aria-label="Retirar 1 de Pavor">−1P</button>
+      <button type="button" data-action="adjust" data-delta="1" {{#unless canAddOne}}disabled{{/unless}} aria-label="Adicionar 1 de Pavor">+1P</button>
+      <button type="button" data-action="adjust" data-delta="2" {{#unless canAddTwo}}disabled{{/unless}} aria-label="Adicionar 2 de Pavor">+2P</button>
+    </div>
+    {{/if}}
+  </div>
+  {{#if isGM}}
+  <div class="codex-pavor-players">
+    <label for="codex-pavor-players">Jogadores na campanha</label>
+    <div class="codex-pavor-player-fields">
+      <input id="codex-pavor-players" data-pavor-players type="number" min="0" max="9007199254740989" step="1" value="{{players}}" required>
+      <button type="button" data-action="setPlayers">Aplicar</button>
+      {{#unless automatic}}
+      <button type="button" data-action="setPlayers" data-mode="auto">Usar cadastro</button>
+      {{/unless}}
+    </div>
+    <small>Teto de 2 + jogadores · {{#if automatic}}contagem do cadastro{{else}}contagem manual{{/if}}</small>
+  </div>
+  {{/if}}
 </section>

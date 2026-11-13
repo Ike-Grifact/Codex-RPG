@@ -75,7 +75,7 @@ As seis classificações de situação não são classes de ataque separadas. Qu
 
 ## Pavor do Narrador
 
-Ao entrar, o Narrador tem um **painel manual de Pavor público**. O teto é `2 + quantidade de jogadores cadastrados`; o saldo começa em 2 e não ultrapassa o teto. É possível adicionar/remover Pavor manualmente sem duplicar símbolos descartados.
+Ao entrar, o Narrador vê o saldo, o teto e o espaço livre da reserva pública. O mundo novo começa com 2P e o saldo salvo é retomado nas próximas sessões. O teto é `2 + jogadores`, com contagem inicial pelo cadastro de jogadores e opção de informar a quantidade da campanha. Se a quantidade cair, o saldo é limitado ao novo teto.
 
 Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
 
