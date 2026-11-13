@@ -105,6 +105,25 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
 }
 // Comparador determinístico das faces já roladas. Não rerrola dados nem
 // consome recursos: apenas apresenta alternativas legais de manutenção.
+// Compra inicial orientada: os únicos gastos obrigatórios são Atributo G1
+// e Conhecimento OU Prática G1. O saldo continua livre, sem reservas por categoria.
+export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey){
+ if(system?.monsterRules)return{ok:false,error:"Monstros extraordinários não usam a compra inicial humana."};
+ const attributes=system?.attributes||{},knowledge=system?.knowledges||{},practice=system?.practices||{};
+ if(!ATTRIBUTES.some(([id])=>id===attributeId))return{ok:false,error:"Escolha um Atributo válido."};
+ const group=trainingGroup==="knowledge"?KNOWLEDGES:trainingGroup==="practice"?PRACTICES:[];
+ if(!group.some(([id])=>id===trainingKey))return{ok:false,error:"Escolha um Conhecimento ou Prática válido."};
+ const hasAttribute=ATTRIBUTES.some(([id])=>Number(attributes[id]||0)>=1);
+ const hasTraining=[...KNOWLEDGES.map(([id])=>knowledge[id]),...PRACTICES.map(([id])=>practice[id])]
+   .some(grade=>Number(grade||0)>=1);
+ const changes={};
+ if(!hasAttribute)changes["system.attributes."+attributeId]=1;
+ if(!hasTraining)changes["system."+(trainingGroup==="knowledge"?"knowledges":"practices")+"."+trainingKey]=1;
+ const cost=(hasAttribute?0:XP_ATTRIBUTE[1])+(hasTraining?0:XP_TRAINING[1]);
+ const ledger=xpLedger(system);
+ return {ok:ledger.left>=cost,changes,cost,available:ledger.left,remaining:ledger.left-cost,
+  complete:hasAttribute&&hasTraining,error:ledger.left<cost?"XP disponível insuficiente para concluir as compras mínimas.":""};
+}
 export function compareKeptOptions(rolled,options={},limit=5){
  if(!Array.isArray(rolled)||!rolled.length||rolled.length>9)return [];
  const maximum=keepLimit(options.monster?options.threatGrade:options.level,options.extraKeep,!!options.monster);
