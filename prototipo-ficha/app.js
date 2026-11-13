@@ -1433,6 +1433,45 @@ function wizardSkills(){
   '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>';
 }
 
+function wizardCategoryCards(){
+ return '<div class="fp-wiz-choice-grid">'+WIZARD_CATEGORIES.map(c=>{
+  const selected=wizardCategory===c.id;
+  return '<button type="button" class="fp-wiz-choice'+(selected?' is-active':'')+'" data-action="wizard-category" data-group="'+c.id+'" aria-pressed="'+selected+'">'+
+   '<span class="fp-wiz-choice-top"><strong>'+c.title+'</strong><span>'+(selected?'Selecionado':'Escolher')+'</span></span>'+
+   '<span class="fp-wiz-choice-description">'+c.description+'</span><span class="fp-wiz-choice-example">'+c.example+'</span>'+
+   '<span class="fp-wiz-choice-dice">'+c.dice+'</span><span class="fp-wiz-choice-cost">'+c.cost+'</span>'+
+   '<small class="fp-wiz-choice-names">'+c.names+'</small></button>';
+ }).join("")+'</div>'+
+ '<div class="fp-wiz-reminder"><strong>Criação livre</strong><p>Para concluir, compre um Atributo grau 1 e um Conhecimento ou Prática grau 1. Depois, todo o XP restante é livre. A escolha acima só orienta a primeira lista a abrir.</p></div>';
+}
+function wizardBuild(){
+ const attrOK=A.some(([k])=>(state.attributes[k]||0)>=1);
+ const trainingOK=K.some(([k])=>(state.knowledges[k]||0)>=1)||P.some(([k])=>(state.practices[k]||0)>=1);
+ const switcher='<div class="fp-wiz-view-switch" role="group" aria-label="Visualização da criação">'+
+  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Modo padrão · listas</button>'+
+  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · mapa</button></div>';
+ const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
+  '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
+  '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
+  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 19 XP (total experimental)</span></div>';
+ if(wizardMode==="genetic")return switcher+status+
+  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
+  geneLayout("gene-builder-map","gene-builder-detail")+
+  '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Mapa e listas usam as mesmas compras e o mesmo XP.</p>';
+ const tabs=[["attr","Atributos"],["know","Conhecimentos"],["practice","Práticas"],["skills","Perícias"]];
+ const current=tabs.some(([id])=>id===wizardTab)?wizardTab:"attr";
+ const bar='<div class="fp-wiz-category-tabs" role="group" aria-label="Categoria de investimento">'+
+  tabs.map(([id,name])=>'<button type="button" data-action="wizard-tab" data-group="'+id+'" class="'+(current===id?'is-active':'')+'" aria-pressed="'+(current===id)+'">'+name+'</button>').join("")+'</div>';
+ let body;
+ if(current==="skills")body='<p class="fp-wiz-tab-help">Perícias especializam o personagem e exigem seus requisitos. Todas as compras usam o mesmo XP.</p>'+wizardSkills();
+ else{
+  const c=WIZARD_CATEGORIES.find(x=>x.id===current);
+  body='<div class="fp-wiz-tab-help"><strong>'+c.title+'</strong> · '+c.description+'<span>'+c.dice+' · '+c.cost+'</span></div>'+
+   '<div class="fp-wiz-source-grid">'+GROUPS[current].map(item=>wizardSource(current,item)).join("")+'</div>';
+ }
+ return switcher+status+bar+body+
+  '<p class="fp-wiz-reminder">Compre graus usando + e −. Você pode alternar entre categorias ou abrir o Codex Genético a qualquer momento, sem reiniciar a ficha.</p>';
+}
 function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
@@ -1505,19 +1544,21 @@ function renderWizard(){
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CODEX GENÉTICO</span>'+
-  '<h3>Seu DNA, suas escolhas.</h3><p>Compre ao menos um <strong>Atributo grau 1</strong> na dupla hélice e um <strong>Conhecimento ou Prática grau 1</strong> na órbita. Depois, invista o XP restante livremente, inclusive em Perícias, observando requisitos. O criador usa <strong>19 XP compartilhados (total experimental)</strong>.</p></div>'+
-  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
-  geneLayout("gene-builder-map","gene-builder-detail")+
-  '<p class="fp-wiz-reminder">A hélice representa seus Atributos; as órbitas representam Conhecimentos e Práticas. Conexões são afinidades, não requisitos adicionais.</p>';
- }else content=wizardReview();
+   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ESCOLHA O QUE DESENVOLVER</span>'+
+   '<h3>O que você quer desenvolver?</h3><p>Entenda cada tipo de fonte e escolha por onde começar. <strong>A escolha não impõe classe nem reserva XP.</strong> Na próxima etapa, todas as categorias continuarão acessíveis.</p></div>'+
+   wizardCategoryCards();
+  }else if(stage===2){
+   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
+   '<h3>Construa seu Aprendiz.</h3><p>O <strong>modo padrão</strong> apresenta as compras em listas. Se preferir, alterne para o <strong>Codex Genético</strong>. Ambos usam o mesmo personagem, as mesmas compras e o mesmo saldo de XP.</p></div>'+
+   wizardBuild();
+  }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
- if(stage===1)renderGenetic();
+ if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
-  '<button type="button" class="fp-primary-btn" data-action="'+(stage===2?'wizard-finish':'wizard-next')+'">'+
-  (stage===2?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
+  '<button type="button" class="fp-primary-btn" data-action="'+(stage===3?'wizard-finish':'wizard-next')+'">'+
+  (stage===3?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
