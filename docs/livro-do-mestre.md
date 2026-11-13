@@ -69,7 +69,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 19 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 20 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
