@@ -6,7 +6,7 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 
 **DEFINIDO:** para concluir a criação, compre **pelo menos um Atributo grau 1** e **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
 
-**EXPERIMENTAL (montante):** a ferramenta usa **19 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 19 XP restam 16 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
+**EXPERIMENTAL (montante):** a ferramenta usa **20 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 20 XP restam 17 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
 
 As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.39](srd-continuidade-v0.39.md), seção 0-Y.
 
@@ -23,7 +23,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
 4. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1.
 
-**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 19 XP; saldo livre de 16 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
+**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 20 XP; saldo livre de 17 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
 
 ## O que funciona
 
