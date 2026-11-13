@@ -233,7 +233,7 @@ const SKILLS=[
  [
   "maestria-manejo-duplo",
   "Perícia em Manejo Duplo",
-  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica das duas armas sem custo; acerto comum ativa ambos por um ÚNICO gasto de 1 PP ou 2 Coragens. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
+  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 PP ou 2 Coragens para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 PP ou 2 Coragens. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
   1
  ],
  [
@@ -269,7 +269,7 @@ const SKILLS=[
  [
   "armas-longo-alcance",
   "Perícia em Armas de Longo Alcance",
-  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa todos os efeitos próprios da arma sem custo; acerto normal exige 1 PP ou 2 Coragens.",
+  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 PP ou 2 Coragens ativa uma segunda; acerto normal exige 1 PP ou 2 Coragens.",
   2
  ],
  [
@@ -710,7 +710,7 @@ const CARD_EFFECTS={
  "disparo-tatico": "Técnica futura, com compatibilidade com Arremesso definida",
  "armas-fogo": "Especialização em armas de fogo; Descarregar Tambor contra um único alvo",
  "golpe-baixo": "Acerto aplica Desvantagem (−1A) durante 1 rodada",
- "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, efeitos de ambas as armas, dano básico uma vez",
+ "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, característica escolhida entre as armas, dano básico uma vez",
  "furtividade": "Recebe Vantagem (+1A) em testes com Furtividade, cumulativa com Concentrado",
  "furtividade-avancada": "Acrescenta mais um Atributo, Conhecimento ou Prática pertinente a teste de Furtividade"
 };
