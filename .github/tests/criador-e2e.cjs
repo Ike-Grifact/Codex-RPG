@@ -54,6 +54,42 @@ const { chromium } = require('playwright');
       }
       await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="genetic"]').click();
       if (!await page.locator('#gene-builder-map').count()) throw new Error('Alternância para o Codex Genético falhou');
+      // Mapa reorganizado: seis Atributos centrais, seis Conhecimentos à esquerda e seis Práticas à direita.
+      const counters = await Promise.all(['attr','know','practice'].map(group =>
+        page.locator('#gene-builder-map .fp-gene-card.type-' + group).count()));
+      if (counters.some(x=>x!==6)) throw new Error('Fontes não estão no mapa: '+JSON.stringify(counters));
+      const unlocked=await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count();
+      if (unlocked!==0) throw new Error('Ramificações bloqueadas aparecendo sem pedir: '+unlocked);
+      const mapRect=await page.locator('#gene-builder-map').boundingBox();
+      const detailRect=await page.locator('#gene-builder-detail').boundingBox();
+      if(!mapRect||!detailRect||detailRect.y<mapRect.y+mapRect.height-10||
+          detailRect.x<0||detailRect.x+detailRect.width>1281)
+        throw new Error('Mapa/painel se sobrepõem ou são cortados: '+JSON.stringify({mapRect,detailRect}));
+      // Ajustes são prévias. Confirmação é obrigatória antes de afetar a ficha.
+      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
+      const budgetDraft=await page.locator('#gene-build-budget').innerText();
+      if(!budgetDraft.includes('15 XP')||!budgetDraft.includes('4 XP'))
+        throw new Error('Prévia de XP incorreta: '+budgetDraft);
+      const spentBefore=await page.locator('#wizard-summary').innerText();
+      if(!spentBefore.includes('16 XP'))throw new Error('Alteração foi debitada antes de confirmar: '+spentBefore.slice(0,280));
+      await page.locator('#gene-build-actions button[data-action="gene-confirm"]').click();
+      const afterConfirm=await page.locator('#wizard-summary').innerText();
+      if(!afterConfirm.includes('15 XP')||!afterConfirm.includes('4 / 19 XP'))
+        throw new Error('Evolução não confirmada no XP compartilhado: '+afterConfirm.slice(0,300));
+      const attrCard=page.locator('#gene-builder-map [data-gene-id="attr:agilidade"].fp-gene-card');
+      if(!await attrCard.count())throw new Error('Grau comprado sumiu no mapa após confirmar');
+      await page.locator('#wizard-content button[data-action="gene-future"]').click();
+      if(!await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
+        throw new Error('O modo de ramificações futuras não mostra opções bloqueadas');
+      await page.locator('#wizard-content button[data-action="gene-future"]').click();
+      if(await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
+        throw new Error('Opções futuras não foram ocultadas de novo');
+      await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
+      if(!await page.locator('#wizard-content [data-action="grade"][data-group="attr"][data-key="agilidade"]').count())
+        throw new Error('Alternância de volta às listas perdeu o Atributo comprado');
+      if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
+      console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
+                  'categorias=',JSON.stringify(counters),'saldo=15 XP');
       console.log('PASS', testCase.name);
       await page.close();
     }
