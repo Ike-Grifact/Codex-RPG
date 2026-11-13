@@ -274,6 +274,9 @@ function bind(root){
   else root.__geneActions?.onSelect?.(node.dataset.geneId,nodePosition(node));
  });
  root.addEventListener("pointerdown",event=>{
+  // Um toque novo é uma nova intenção: não bloquear o botão após uma pinça.
+  // O click originado no gesto anterior continua protegido até sua conclusão.
+  if(!pointers.size)suppressClick=false;
   if(event.pointerType==="mouse"&&event.button!==0)return;
   if(event.target.closest("[data-gene-nav],[data-gene-grade]"))return;
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,downX:event.clientX,downY:event.clientY});
