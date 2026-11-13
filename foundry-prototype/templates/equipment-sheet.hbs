@@ -8,13 +8,30 @@
   <label>Tipo<select data-field="system.kind">{{#each equipment.types}}
     <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select>
   </label>
-  <label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
+  <label>Categoria<select data-field="system.category">
+<option value="leve" {{#if (eq equipment.category "leve")}}selected{{/if}}>Leve</option>
+<option value="medio" {{#if (eq equipment.category "medio")}}selected{{/if}}>Média</option>
+<option value="pesado" {{#if (eq equipment.category "pesado")}}selected{{/if}}>Pesada</option>
+<option value="muito-leve" {{#if (eq equipment.category "muito-leve")}}selected{{/if}}>Muito Leve</option>
+</select></label>
+<label>Dado adicional (0/6/10/12)<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
+<label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
+<label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>
+<label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
   <label>Peso (unidades Alto)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
   <label>Quantidade<input type="number" min="1" step="1" value="{{equipment.quantity}}" data-field="system.quantity"></label>
   <label class="codex-check"><input type="checkbox" data-field="system.equipped" {{#if equipment.equipped}}checked{{/if}}> Equipado</label>
   <label>Integridade atual<input type="number" min="0" step="1" value="{{equipment.integrity}}" data-field="system.integrity.value"></label>
   <label>Integridade máxima<input type="number" min="0" step="1" value="{{equipment.integrityMax}}" data-field="system.integrity.max"></label>
-  <label class="codex-wide">Descrição / propriedades<textarea rows="5" data-field="system.description">{{equipment.description}}</textarea></label>
+  <label>Durabilidade atual<input type="number" min="0" value="{{equipment.durability}}" data-field="system.durability.value"></label>
+<label>Durabilidade máxima<input type="number" min="0" value="{{equipment.durabilityMax}}" data-field="system.durability.max"></label>
+<label>Elemento (foco/magia)<input type="text" value="{{equipment.element}}" data-field="system.element"></label>
+<label>Características (separadas por vírgula)<input type="text" value="{{equipment.properties}}" data-field="system.properties"></label>
+<label>Munição atual<input type="number" min="0" value="{{equipment.ammo.value}}" data-field="system.ammo.value"></label>
+<label>Capacidade de munição<input type="number" min="0" value="{{equipment.ammo.max}}" data-field="system.ammo.max"></label>
+<label>Tempo de Recarga (a definir)<input type="number" min="0" value="{{equipment.ammo.reload}}" data-field="system.ammo.reload"></label>
+<label>Cartucho / calibre<input type="text" value="{{equipment.ammo.cartucho}}" data-field="system.ammo.cartucho"></label>
+<label class="codex-wide">Descrição / propriedades<textarea rows="5" data-field="system.description">{{equipment.description}}</textarea></label>
  </div>
- <p class="codex-tip">Protótipo: valores numéricos de integridade, resistências, imunidades e composição dos dados ainda exigem catálogo final. Ajustes são registrados no documento Item; não há bônus automático por equipar.</p>
+ <p class="codex-tip">Catálogo G1 possui hipóteses de preço, alcance e Integridade para playtest; não equivale a aprovação definitiva. Ajustes são registrados no documento Item; não há bônus automático por equipar.</p>
 </section>
