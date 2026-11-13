@@ -2,7 +2,7 @@
 
 **Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.38**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.38](srd-continuidade-v0.38.md). Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.39](srd-continuidade-v0.39.md). Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
 
@@ -69,7 +69,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]: 5 XP em Perícias no nível 1**; 6 XP em Atributos e 8 XP em Formação permanecem EXPERIMENTAIS. Ver [SRD v0.38](srd-continuidade-v0.38.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 19 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
@@ -103,7 +103,7 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1). A partir de Disciplina 2, permite criar magias de Grau 2 e 3 fora de combate, 1 PP ou 2 Coragens por criação, memorizadas em slots para conjuração rápida. Pesos G1=1, G2=2, G3=3, G4=4; sem foco −1 peso (incidência e piso PENDENTES). A capacidade total de slots permanece PENDENTE em razão da divergência com histórico do SRD.
 
-**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Equilibrada** custa 1 XP, requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2, e custa 1 PP ou 2 Coragens para tornar uma magia Pesada ou Leve; distinção de Grau numérico pendente. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.38 para versões e status.
+**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Equilibrada** custa 1 XP, requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2, e custa 1 PP ou 2 Coragens para tornar uma magia Pesada ou Leve; distinção de Grau numérico pendente. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
 
 ## Conjuração — nova decisão de slots e Ar (12/11/2026)
 
