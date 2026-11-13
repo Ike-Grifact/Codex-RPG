@@ -1,8 +1,8 @@
 
 /* Codex RPG — protótipo de ficha HTML, escopo isolado. */
 :root{
-  --fp-bg:#0c101a;--fp-surface:#172130;--fp-deep:#111927;--fp-raised:#1d2a3b;
-  --fp-stroke:#2b394b;--fp-text:#f3efe7;--fp-muted:#aab9c9;--fp-gold:#dec48e;
+  --fp-bg:#070707;--fp-surface:#171717;--fp-deep:#101010;--fp-raised:#232323;
+  --fp-stroke:#373737;--fp-text:#f3efe7;--fp-muted:#b9b9b9;--fp-gold:#dec48e;
   --fp-e:#5bbd82;--fp-a:#79aefa;--fp-p:#b08acc;
 }
 html[data-theme="light"]{
@@ -11,7 +11,7 @@ html[data-theme="light"]{
   --fp-e:#267A45;--fp-a:#2369BB;--fp-p:#542176;
 }
 html,body.fp-body{min-height:100%}
-body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128,.13),transparent 76%),var(--fp-bg);color:var(--fp-text);font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
+body.fp-body{background:var(--fp-bg);color:var(--fp-text);font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
 .fp-body button,.fp-body input,.fp-body select,.fp-body textarea{font:inherit}
 .fp-body button{cursor:pointer}
 .fp-body :is(button,input,select,textarea):focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
@@ -45,7 +45,7 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 .fp-panel{background:var(--fp-surface);border:1px solid var(--fp-stroke);border-radius:16px;box-shadow:0 15px 48px rgba(0,0,0,.08)}
 .fp-identity{display:flex;gap:23px;padding:22px;min-height:202px}
 .fp-portrait-wrap{width:148px;flex:0 0 148px}
-.fp-portrait{width:148px;height:158px;background:linear-gradient(140deg,#293c4b,#141c27);border:1px solid var(--fp-gold);overflow:hidden;border-radius:13px;position:relative;display:block;padding:0}
+.fp-portrait{width:148px;height:158px;background:linear-gradient(140deg,#292929,#111111);border:1px solid var(--fp-gold);overflow:hidden;border-radius:13px;position:relative;display:block;padding:0}
 .fp-portrait img{width:100%;height:100%;object-fit:cover}
 .fp-portrait-overlay{position:absolute;bottom:0;inset-inline:0;background:rgba(8,14,20,.82);font-size:10px;color:white;padding:8px;opacity:0;transition:opacity .2s}
 .fp-portrait:hover .fp-portrait-overlay,.fp-portrait:focus-visible .fp-portrait-overlay{opacity:1}
@@ -203,13 +203,13 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 
 /* Revisão de identidade: d4 Pavor, d6 Antecipar, d10 Êxito, d12 cinza, d20 dourado. */
 :root {
- --fp-bg:#111318;
- --fp-surface:#1b2029;
- --fp-deep:#151a23;
- --fp-raised:#262d38;
- --fp-stroke:#3b4654;
+ --fp-bg:#070707;
+ --fp-surface:#171717;
+ --fp-deep:#101010;
+ --fp-raised:#232323;
+ --fp-stroke:#373737;
  --fp-text:#f1ece3;
- --fp-muted:#b1bcc9;
+ --fp-muted:#b9b9b9;
  --fp-gold:#d7bc88;
  --fp-e:#60b781;--fp-a:#78aef1;--fp-p:#a277cc;
  --fp-d4:#a277cc;
@@ -303,7 +303,7 @@ html[data-theme="light"]{
  border-color:#b69760;
 }
 .fp-portrait:not(.fp-has-portrait) img{object-fit:contain;padding:11px;filter:drop-shadow(0 4px 4px rgba(49,36,24,.16))}
-.fp-portrait.fp-has-portrait{background:#121820}
+.fp-portrait.fp-has-portrait{background:#161616}
 .fp-portrait.fp-has-portrait img{object-fit:cover;padding:0;filter:none}
 html[data-theme="light"] .fp-brand img{background:#ffffff}
 
@@ -907,3 +907,24 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  background:color-mix(in srgb,var(--fp-e) 8%,var(--fp-deep));border-radius:10px}
 .fp-wiz-creation-confirmed strong{color:var(--fp-e);font-size:12px}
 .fp-wiz-creation-confirmed span{color:var(--fp-text);font-size:11px;line-height:1.6}
+
+/* Variação cromática por tema: no modo claro, cores profundas e contrastantes.
+   No modo escuro, branco real nas Práticas e fundo preto/cinzas neutros.
+   As runas E/A/P e seus tons oficiais não são alterados. */
+html[data-theme="light"] .fp-wizard{
+ --fp-category-attr:#206d41;       /* verde escuro, contraste ~5.6:1 */
+ --fp-category-know:#235c9e;       /* azul escuro, contraste ~6:1 */
+ --fp-category-practice:#535861;   /* cinza escuro, contraste ~6.3:1 */
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group]{
+ background:color-mix(in srgb,var(--fp-category-color) 4%,var(--fp-deep));
+ border-color:color-mix(in srgb,var(--fp-category-color) 38%,var(--fp-stroke));
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group].is-active{
+ background:color-mix(in srgb,var(--fp-category-color) 10%,var(--fp-deep));
+ border-color:var(--fp-category-color);
+ box-shadow:inset 0 0 0 1px var(--fp-category-color);
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group]:is(:hover,:focus-visible){
+ border-color:var(--fp-category-color);
+}
