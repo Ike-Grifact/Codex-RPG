@@ -40,7 +40,7 @@ const { chromium } = require('playwright');
       if (!content.includes('ETAPA 03') || !content.includes('Distribuição livre de XP')) {
         throw new Error('Falha de navegacao na etapa 2→3: ' + testCase.name + ' | ' + content.slice(0,300) + ' | Errors: ' + exceptions.join(' | '));
       }
-      if (!spent.includes('16 XP')) {
+      if (!spent.includes('17 XP')) {
         throw new Error('XP incorreto após confirmação: ' + spent.slice(0,450));
       }
       if (exceptions.length > 0) {
@@ -68,13 +68,13 @@ const { chromium } = require('playwright');
       // Ajustes são prévias. Confirmação é obrigatória antes de afetar a ficha.
       await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
       const budgetDraft=await page.locator('#gene-build-budget').innerText();
-      if(!budgetDraft.includes('15 XP')||!budgetDraft.includes('4 XP'))
+      if(!budgetDraft.includes('16 XP')||!budgetDraft.includes('4 XP'))
         throw new Error('Prévia de XP incorreta: '+budgetDraft);
       const spentBefore=await page.locator('#wizard-summary').innerText();
-      if(!spentBefore.includes('16 XP'))throw new Error('Alteração foi debitada antes de confirmar: '+spentBefore.slice(0,280));
+      if(!spentBefore.includes('17 XP'))throw new Error('Alteração foi debitada antes de confirmar: '+spentBefore.slice(0,280));
       await page.locator('#gene-build-actions button[data-action="gene-confirm"]').click();
       const afterConfirm=await page.locator('#wizard-summary').innerText();
-      if(!afterConfirm.includes('15 XP')||!afterConfirm.includes('4 / 19 XP'))
+      if(!afterConfirm.includes('16 XP')||!afterConfirm.includes('4 / 20 XP'))
         throw new Error('Evolução não confirmada no XP compartilhado: '+afterConfirm.slice(0,300));
       const attrCard=page.locator('#gene-builder-map [data-gene-id="attr:agilidade"].fp-gene-card');
       if(!await attrCard.count())throw new Error('Grau comprado sumiu no mapa após confirmar');
@@ -90,7 +90,7 @@ const { chromium } = require('playwright');
         throw new Error('Alternância de volta às listas perdeu o Atributo comprado');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
       console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
-                  'categorias=',JSON.stringify(counters),'saldo=15 XP');
+                  'categorias=',JSON.stringify(counters),'saldo=16 XP');
       // A ficha já finalizada também deve dispor do mapa, sem compras instantâneas.
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
@@ -105,10 +105,10 @@ const { chromium } = require('playwright');
       if (await page.locator('#gene-map .fp-gene-card').count() !== 18)
         throw new Error('O mapa da ficha final perdeu uma fonte');
       await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:destreza"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('14 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('15 XP')))
         throw new Error('Saldo prévio de XP na ficha final não responde aos dados');
       await page.locator('#gene-sheet-actions [data-action="gene-reset"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('15 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('16 XP')))
         throw new Error('Descartar evolução falhou na ficha final');
       if(exceptions.length)throw new Error('Erros Javascript na ficha final: '+exceptions.join(' | '));
       console.log('PASS', testCase.name);
