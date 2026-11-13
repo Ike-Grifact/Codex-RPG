@@ -147,7 +147,8 @@ test("Comparativo de mantidos oferece alternativas sem modificar a rolagem",()=>
  const options=compareKeptOptions(dice,{de:3,level:1,monster:false},5);
  assert.equal(options.length,5);
  assert.ok(options.every(x=>x.ids.length<=2));
- assert.ok(options.every(x=>x.success===true));
+ assert.ok(options.some(x=>x.success===true));
+ assert.ok(options.some(x=>x.success===false)); // comparador também exibe riscos de falha, não esconde opções
  assert.deepEqual(dice,original);
  assert.ok(options.some(x=>x.p>0));
 });
