@@ -1813,7 +1813,10 @@ function updateGrade(group,id,delta){
  if(next===old)return;
  const purchaseCost=delta>0?xpStepCost(group,id,1):0;
  if(delta>0){
-  if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
+   if(!state.creationLocked&&group!=="attr"&&!A.some(([key])=>(state.attributes[key]||0)>0)){
+    toast("Primeiro desenvolva um Atributo no centro do Codex Genético.");return;
+   }
+   if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
   const tmp=structuredClone(state);tmp[p][id]=next;
   const problem=dependentsValid(tmp);
@@ -2074,6 +2077,9 @@ function onClick(event){
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
   const existing=state.skills.indexOf(id);
   if(existing<0){
+   if(!state.creationLocked&&!hasStarterSources()){
+    toast("Desenvolva um Atributo e um Conhecimento ou Prática antes de adquirir Perícias.");return;
+   }
    const reason=skillReq(id);
    if(reason){toast(reason);return;}
    if(!Number.isInteger(skill[3])){toast("Custo pendente.");return;}
