@@ -1129,3 +1129,26 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  .fp-wiz-vt-stats strong{font-size:21px}
  .fp-wiz-vt-stats small{font-size:9px}
 }
+
+/* Visual de dados idêntico aos cartões em listas: − [dado(s) dN] +. */
+.fp-gene-die-inline{--gene-die:var(--fp-d6);pointer-events:none}
+.fp-gene-die-inline.is-d4{--gene-die:var(--fp-d4)}
+.fp-gene-die-inline.is-d6{--gene-die:var(--fp-d6)}
+.fp-gene-die-inline.is-d10{--gene-die:var(--fp-d10)}
+.fp-gene-die-inline.is-d12{--gene-die:var(--fp-d12)}
+.fp-gene-die-inline.is-d20{--gene-die:var(--fp-d20)}
+.fp-gene-die-inline .fp-gene-die-poly{fill:none;stroke:var(--gene-die);stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.fp-gene-die-inline .fp-gene-die-name{fill:var(--gene-die);font-size:15px;font-weight:800}
+.fp-gene-card-title{font-size:20px}
+.fp-gene-card-grade{font-size:11px;letter-spacing:.07em;font-weight:750}
+.fp-gene-card-separator{stroke:var(--gene-tint);stroke-opacity:.24;stroke-width:1}
+.fp-gene-card .fp-gene-grade-button rect{fill:var(--fp-raised);stroke:var(--fp-stroke);stroke-width:1.5}
+.fp-gene-card .fp-gene-grade-button text{fill:var(--fp-text)}
+.fp-gene-card .fp-gene-grade-button:hover:not(.is-disabled) rect,
+.fp-gene-card .fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke:var(--gene-tint);stroke-width:2.5}
+.fp-gene-card .fp-gene-grade-button.is-disabled{opacity:.38}
+.fp-gene-skill-link{stroke:var(--fp-muted);stroke-width:1.9;stroke-opacity:.28;fill:none;pointer-events:none}
+.fp-gene-skill-link.is-related{stroke:var(--fp-gold);stroke-width:3;stroke-opacity:.87}
+.fp-gene-auto-buy{background:#542176!important;border-color:#542176!important;color:#fff!important}
+.fp-gene-auto-buy:hover,.fp-gene-auto-buy:focus-visible{background:#6c329b!important;border-color:#6c329b!important}
+.fp-gene-auto-note{font-size:11px!important;line-height:1.5!important;max-height:none!important;color:var(--fp-muted)}
