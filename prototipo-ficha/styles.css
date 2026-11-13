@@ -1023,3 +1023,11 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 .fp-gene-die-shape :is(rect,circle,polygon){fill:color-mix(in srgb,var(--gene-tint) 16%,var(--fp-deep));
  stroke:var(--gene-tint);stroke-width:2}
 .fp-gene-die-shape text{fill:var(--gene-tint);font-size:12px;font-weight:800;pointer-events:none}
+
+/* Confirmação alinhada no centro real do painel, descarte à esquerda. */
+@media(min-width:621px){
+ .fp-gene-bottom-actions{display:grid;grid-template-columns:1fr auto 1fr;justify-items:center}
+ .fp-gene-bottom-actions>[data-action="gene-reset"]{grid-column:1;justify-self:start}
+ .fp-gene-bottom-actions>[data-action="gene-confirm"]{grid-column:2;justify-self:center}
+ .fp-gene-bottom-actions>small{grid-column:1/-1}
+}
