@@ -928,3 +928,84 @@ html[data-theme="light"] .fp-wiz-focus-card[data-group].is-active{
 html[data-theme="light"] .fp-wiz-focus-card[data-group]:is(:hover,:focus-visible){
  border-color:var(--fp-category-color);
 }
+
+
+/* Codex Genético v0.52: mapa inteiro, sem lateral cortada e com compra pendente. */
+.fp-gene-creator-layout{display:flex;flex-direction:column;gap:13px;max-width:100%;min-width:0}
+.fp-gene-creator-layout .fp-gene-canvas{width:100%;max-width:100%;min-width:0;max-height:none;min-height:0;
+ height:auto;aspect-ratio:auto;overflow:hidden;touch-action:pan-x pan-y}
+.fp-gene-creator-layout .fp-gene-detail{width:100%;max-height:none;min-height:0;overflow:visible;padding:16px}
+.fp-gene-creator-layout .fp-gene-detail dl{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px 15px}
+.fp-gene-creator-layout .fp-gene-detail dd{overflow-wrap:anywhere}
+.fp-gene-creator-layout .fp-gene-grade-actions{display:flex;flex-wrap:wrap;gap:9px}
+.fp-gene-creator-layout .fp-gene-grade-actions>*{width:auto;flex:1 1 180px}
+.fp-gene-canvas:has(.fp-gene-overview){aspect-ratio:auto;max-height:none;height:auto;min-height:0}
+.fp-gene-overview{display:block;width:100%;height:auto!important;max-width:none;overflow:visible}
+.fp-gene-column-title{font-size:21px;font-weight:800;letter-spacing:.06em;fill:var(--fp-muted)}
+.fp-gene-column-title.is-attr{fill:#206d41}.fp-gene-column-title.is-know{fill:#235c9e}
+.fp-gene-column-title.is-practice{fill:#535861}.fp-gene-column-title.is-skills{fill:var(--fp-text)}
+html:not([data-theme="light"]) .fp-gene-column-title.is-attr{fill:#69ce96}
+html:not([data-theme="light"]) .fp-gene-column-title.is-know{fill:#80b9ff}
+html:not([data-theme="light"]) .fp-gene-column-title.is-practice{fill:#f5f5f5}
+.fp-gene-dna-spine{stroke:#267A45;stroke-width:4;stroke-opacity:.24;stroke-dasharray:9 12;fill:none}
+.fp-gene-card{--gene-tint:#206d41;cursor:pointer}
+.fp-gene-card.type-know{--gene-tint:#235c9e}
+.fp-gene-card.type-practice{--gene-tint:#535861}
+html:not([data-theme="light"]) .fp-gene-card.type-attr{--gene-tint:#69ce96}
+html:not([data-theme="light"]) .fp-gene-card.type-know{--gene-tint:#80b9ff}
+html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
+.fp-gene-card-fill{fill:var(--fp-deep);stroke:var(--gene-tint);stroke-opacity:.73;stroke-width:2}
+.fp-gene-card:hover .fp-gene-card-fill,.fp-gene-card:focus-visible .fp-gene-card-fill,.fp-gene-card.is-selected .fp-gene-card-fill{
+ stroke-opacity:1;stroke-width:4}
+.fp-gene-card.is-pending .fp-gene-card-fill{stroke-dasharray:6 4;stroke-width:3.4}
+.fp-gene-card-title{fill:var(--gene-tint);font-size:20px;font-weight:750;pointer-events:none}
+.fp-gene-card-grade{fill:var(--fp-muted);font-size:14px;pointer-events:none}
+.fp-gene-card-dice{fill:var(--gene-tint);font-size:17px;font-weight:800;pointer-events:none}
+.fp-gene-grade-button{cursor:pointer}
+.fp-gene-grade-button rect{fill:var(--fp-raised);stroke:var(--gene-tint);stroke-width:1.7}
+.fp-gene-grade-button text{fill:var(--gene-tint);font-size:22px;font-weight:800;pointer-events:none}
+.fp-gene-grade-button.is-disabled{opacity:.32;cursor:not-allowed}
+.fp-gene-grade-button:hover:not(.is-disabled) rect,
+.fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke-width:3}
+.fp-gene-branch-rule{stroke:var(--fp-stroke);stroke-width:2}
+.fp-gene-skill .fp-gene-dot{stroke-width:3}
+.fp-gene-skill.is-owned .fp-gene-dot{fill:#267A45;stroke:#5ab57c}
+.fp-gene-skill.is-available .fp-gene-dot{fill:#2369BB;stroke:#80b9ff}
+.fp-gene-skill.is-locked{opacity:.25}
+.fp-gene-node-label{font-size:15px}
+.fp-gene-empty-text{font-size:16px;fill:var(--fp-muted)}
+.fp-gene-relation{fill:none;stroke:var(--fp-gold);stroke-opacity:.50;stroke-width:2.5;pointer-events:none}
+.fp-gene-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:11px;margin:14px 0}
+.fp-gene-map-tools>button{border:1px solid var(--fp-stroke);border-radius:10px;color:var(--fp-text);
+ background:var(--fp-raised);font-size:12px;font-weight:700;min-height:39px;padding:9px 13px;cursor:pointer}
+.fp-gene-map-tools>button[aria-pressed="true"]{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-gene-map-tools>span{flex:1 1 230px;color:var(--fp-muted);font-size:11px;line-height:1.5}
+.fp-gene-dashboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.fp-gene-dashboard>div{display:flex;flex-direction:column;gap:6px;text-align:center;padding:14px 11px;
+ background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:12px}
+.fp-gene-dashboard>div.is-primary{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 7%,var(--fp-deep))}
+.fp-gene-dashboard small{color:var(--fp-muted);font-size:10px;letter-spacing:.08em;font-weight:800}
+.fp-gene-dashboard strong{font:normal 27px Georgia,serif;color:var(--fp-text);font-variant-numeric:tabular-nums}
+.fp-gene-dashboard .is-primary strong{color:var(--fp-gold)}
+.fp-gene-dashboard span{color:var(--fp-muted);font-size:10px;line-height:1.4}
+.fp-gene-bottom-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.fp-gene-bottom-actions button{border:1px solid var(--fp-stroke);border-radius:10px;padding:12px 17px;
+ min-height:44px;background:var(--fp-raised);color:var(--fp-text);font-weight:750;cursor:pointer}
+.fp-gene-bottom-actions .fp-primary-btn{background:var(--fp-gold);color:#181818;min-width:250px}
+.fp-gene-bottom-actions button:disabled{opacity:.45;cursor:not-allowed}
+.fp-gene-bottom-actions small{flex-basis:100%;text-align:center;color:var(--fp-muted);font-size:11px}
+@media(max-width:900px){
+ .fp-gene-creator-layout .fp-gene-canvas{overflow:auto}
+ .fp-gene-creator-layout .fp-gene-overview{min-width:990px}
+ .fp-gene-layout:not(.fp-gene-creator-layout) .fp-gene-overview{min-width:900px}
+}
+@media(max-width:620px){
+ .fp-gene-dashboard{gap:5px}
+ .fp-gene-dashboard>div{padding:9px 5px}
+ .fp-gene-dashboard small{font-size:8px}
+ .fp-gene-dashboard strong{font-size:20px}
+ .fp-gene-dashboard span{font-size:9px}
+ .fp-gene-map-tools .fp-gene-zoom{width:100%}
+ .fp-gene-creator-layout .fp-gene-detail dl{grid-template-columns:1fr}
+ .fp-gene-bottom-actions>button{width:100%}
+}
