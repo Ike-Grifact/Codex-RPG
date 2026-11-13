@@ -143,6 +143,33 @@ const { chromium } = require('playwright');
       console.log('PASS', testCase.name);
       await page.close();
     }
+
+    // Navegação em tela estreita: o mapa pode rolar horizontalmente,
+    // mas o inspector e os controles precisam caber no viewport.
+    const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
+    const mobileErrors = [];
+    mobile.on('pageerror', e => mobileErrors.push(e.message));
+    await mobile.goto('http://127.0.0.1:8000/prototipo-ficha/', {waitUntil: 'domcontentloaded'});
+    await mobile.locator('input[data-wizard-field="name"]').fill('Aprendiz móvel');
+    await mobile.locator('#wizard-controls [data-action="wizard-next"]').click();
+    await mobile.locator('[data-action="wizard-starter-attr"][data-key="forca"]').click();
+    await mobile.locator('[data-action="wizard-starter-training"][data-group="practice"][data-key="atletismo"]').click();
+    await mobile.locator('#wizard-controls [data-action="wizard-next"]').click();
+    await mobile.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').click();
+    const shell = await mobile.locator('#wizard-content .fp-gene-canvas-shell').boundingBox();
+    if (!shell || shell.x < -1 || shell.x + shell.width > 392)
+      throw new Error('Mapa genético ultrapassa o viewport móvel: '+JSON.stringify(shell));
+    await mobile.locator('#gene-builder-map .fp-gene-skill.is-potential .fp-gene-dot').first().click();
+    await mobile.waitForSelector('#gene-builder-detail:not([hidden])');
+    const inspector = await mobile.locator('#gene-builder-detail').boundingBox();
+    if (!inspector || inspector.x < -1 || inspector.x + inspector.width > 392)
+      throw new Error('Inspector lateral cortado no celular: '+JSON.stringify(inspector));
+    await mobile.locator('#gene-builder-detail [data-action="gene-close-detail"]').click();
+    await mobile.locator('#wizard-controls [data-action="wizard-next"]').click();
+    await mobile.waitForSelector('#wizard-content .fp-wiz-vt-stats');
+    if (mobileErrors.length) throw new Error('Erro JS móvel: '+mobileErrors.join(' | '));
+    console.log('PASS Layout móvel de mapa, inspector e VT');
+    await mobile.close();
   } finally {
     await browser.close();
   }
