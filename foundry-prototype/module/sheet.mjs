@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,compareKeptOptions,lifeMax,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,lifeMax,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
@@ -36,7 +36,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  chooseSource:CodexCharacterSheet.chooseSource,adjustGrade:CodexCharacterSheet.adjustGrade,
  adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
- toggleKept:CodexCharacterSheet.toggleKept,finalizeRoll:CodexCharacterSheet.finalizeRoll,
+ toggleKept:CodexCharacterSheet.toggleKept,applyComparison:CodexCharacterSheet.applyComparison,
+ purchaseStarter:CodexCharacterSheet.purchaseStarter,finalizeRoll:CodexCharacterSheet.finalizeRoll,
  addEquipment:CodexCharacterSheet.addEquipment,openEquipment:CodexCharacterSheet.openEquipment,
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
@@ -58,6 +59,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
     xp:s.xp,xpLedger:ledger,hasCreationMinimum:hasFirstAttribute&&hasTraining,
+    starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
+    starterTraining:[
+     ...KNOWLEDGES.map(([id,name])=>({value:"knowledge:"+id,name:"Conhecimento · "+name})),
+     ...PRACTICES.map(([id,name])=>({value:"practice:"+id,name:"Prática · "+name}))
+    ],
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
@@ -151,6 +157,21 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    this._pending.options[key]=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
    await this.actor.setFlag(NS,"pendingRoll",this._pending);this.render();
   }
+ }
+ static async purchaseStarter(){
+  if(!this.actor.isOwner||this._pending||this.actor.system.monsterRules)return;
+  const attr=this.element?.querySelector("[data-starter-attr]")?.value;
+  const picked=this.element?.querySelector("[data-starter-training]")?.value||"";
+  const [group,key]=picked.split(":");
+  const plan=starterPurchasePlan(this.actor.system,attr,group,key);
+  if(!plan.ok){ui.notifications.warn(plan.error);return;}
+  if(plan.complete){ui.notifications.info("Compras mínimas atendidas. XP restante livre.");return;}
+  const message="Comprar as capacidades iniciais em falta por "+plan.cost+" XP?\n"+
+   "Um Atributo G1 e um Conhecimento ou Prática G1.\n"+
+   "XP disponível: "+plan.available+" → "+plan.remaining+".";
+  if(!confirm(message))return;
+  await this.actor.update(plan.changes);
+  ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
  }
  static async chooseSource(event,target){
   if(this._busy||this._pending)return;
@@ -247,6 +268,20 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    chosen.add(id);
   }
   p.selected=[...chosen];p.options.cancelP=0;p.options.convertPairs=0;
+  await this.actor.setFlag(NS,"pendingRoll",p);this.render();
+ }
+ static async applyComparison(event,target){
+  if(!this.actor.isOwner||this._busy||!this._pending)return;
+  const p=this._pending,index=Number(target.dataset.index);
+  if(!Number.isInteger(index)||index<0||index>=4)return;
+  const s=this.actor.system,monster=!!s.monsterRules;
+  const options=compareKeptOptions(p.dice,{...p.options,level:s.level,monster,
+    threatGrade:s.threatGrade,courage:s.courage,weight:situate(p.options),
+    hostile:this.actor.type==="humanoid"},4);
+  const chosen=options[index];if(!chosen)return;
+  p.selected=[...chosen.ids];
+  p.options.cancelP=0;p.options.convertPairs=0;
+  // Seleção da mesma rolagem, sem lançar novamente nem descontar recursos.
   await this.actor.setFlag(NS,"pendingRoll",p);this.render();
  }
  static async finalizeRoll(){
