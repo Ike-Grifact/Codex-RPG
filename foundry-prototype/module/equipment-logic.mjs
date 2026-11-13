@@ -95,8 +95,8 @@ export function canSpendXP(system,delta,bucket){
  const ledger=xpLedger(system);
  if(system.monsterRules||!bucket)return ledger.left>=delta;
  const freeSpend=Object.keys(CREATION_REFERENCE).filter(key=>key!=="total").reduce((sum,key)=>
-  sum+Math.max(0,ledger[key]+(bucket===key?delta:0)-CREATION_REFERENCE[key]),0);
- return freeSpend<=Number(system.xp||0)-Number(system.xpRetired||0);
+  sum+Math.max(0,ledger[key]+(system.xpRetired?.[key]??0)+(bucket===key?delta:0)-CREATION_REFERENCE[key]),0);
+ return freeSpend<=Number(system.xp||0);
 }
 export function defenseDE(actor,defense="natural"){
  const s=actor.system;

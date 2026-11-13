@@ -56,7 +56,7 @@ export function xpLedger(s){
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(s.skillCosts?.[id]??SKILLS.find(x=>x.id===id)?.cost??LEGACY_SKILL_COSTS[id]??0),0);
  const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:CREATION_REFERENCE.total);
- const retired=Number(s.xpRetired||0);
+ const retired=Object.values(s.xpRetired??{}).reduce((sum,value)=>sum+value,0);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,retired,left:grant-spent-retired,
   state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
 }

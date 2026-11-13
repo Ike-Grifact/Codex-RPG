@@ -1,7 +1,9 @@
 {
   "TYPES": {
     "Actor": {
-      "character": "Personagem"
+      "character": "Personagem",
+      "humanoid": "Humanoide",
+      "creature": "Criatura"
     },
     "Item": {
       "equipment": "Equipamento"

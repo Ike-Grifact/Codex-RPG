@@ -14,12 +14,33 @@ const schema=(monster=false)=>({
  skills:new F.ArrayField(new F.StringField({required:true}),{required:true,initial:[]}),
  life:new F.SchemaField({value:nn(3),medical:new F.BooleanField({initial:false})}),
  courage:nn(10),pp:nn(0),xp:nn(0),
+ xpRetired:new F.SchemaField({attributes:nn(),training:nn(),skills:nn()}),
+ creationOpen:new F.BooleanField({initial:false}),
+ opposition:new F.BooleanField({initial:false}),
+ defense:new F.StringField({required:true,choices:["natural","equipped","dodge"],initial:"natural"}),
+ skillCosts:new F.ObjectField({initial:{}}),
+ legacyDiscipline:new F.ObjectField({initial:{}}),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
  pavorLocal:nn(0),monsterRules:new F.BooleanField({initial:monster}),
  status:new F.SchemaField({hidden:new F.BooleanField({initial:false}),note:t()})
 });
-export class CodexCharacterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
-export class CodexHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
+class CodexPersonData extends foundry.abstract.TypeDataModel {
+ static defineSchema(){return schema(false);}
+ static migrateData(source){
+  const practices=source.practices;
+  if(practices&&(Number.isInteger(practices.armas)||Number.isInteger(practices.conjuracao))){
+   if(!Object.hasOwn(source.legacyDiscipline??{},"armas")){
+    source.legacyDiscipline={armas:practices.armas??0,conjuracao:practices.conjuracao??0};
+   }
+   practices.armas_conjuracao=Math.max(practices.armas_conjuracao??0,practices.armas??0,practices.conjuracao??0);
+   delete practices.armas;
+   delete practices.conjuracao;
+  }
+  return super.migrateData(source);
+ }
+}
+export class CodexCharacterData extends CodexPersonData {}
+export class CodexHumanoidData extends CodexPersonData {}
 export class CodexMonsterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(true);}}
 export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
  static defineSchema(){return{
