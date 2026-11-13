@@ -106,10 +106,17 @@ const create=async page=>{
   const afterPan=await cam(m);
   assert(Math.hypot(afterPan.x-beforePan.x,afterPan.y-beforePan.y)>70,
     'Arrastar com um dedo não deslocou o grafo');
+  await mobile.evaluate(()=>{
+    window.__geneTapTrace=[];
+    const btn=document.querySelector('#gene-builder-map [data-gene-nav="0"]');
+    for(const kind of ['pointerdown','pointerup','touchstart','touchend','click'])
+      btn.addEventListener(kind,()=>window.__geneTapTrace.push(kind),true);
+  });
   await mobile.locator('#gene-builder-map [data-gene-nav="0"]').tap();
   const resetMobile=await cam(m);
+  const tapTrace=await mobile.evaluate(()=>window.__geneTapTrace);
   assert(Math.abs(resetMobile.zoom-2.25)<.01,
-    'Centralizar não restaurou zoom móvel adequado: '+JSON.stringify(resetMobile));
+    'Centralizar não restaurou zoom móvel adequado: '+JSON.stringify({resetMobile,tapTrace}));
   assert(!merrors.length,'Erros Javascript no celular: '+merrors.join(' | '));
   console.log('PASS Mobile: pinça, um dedo arrasta, botões e zoom inicial legível');
   await ctx.close();
