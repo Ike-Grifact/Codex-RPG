@@ -115,10 +115,13 @@ test("Catálogo experimental contém arma mista e armaduras G1",()=>{
  assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,20);
  assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,12);
 });
-test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automaticamente",()=>{
+test("Armadura modifica a DE da resposta defensiva aplicável",()=>{
  const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;
  const heavy={type:"equipment",system:{kind:"armor",equipped:true,category:"pesado"}};
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
- assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
+ assert.equal(defenseDE({system:s,items:[heavy]}),4);
+ assert.equal(defenseDE({system:s,items:[heavy]},"equipped"),3);
  assert.equal(defenseDE({system:s,items:[light]}),4);
+ assert.equal(defenseDE({system:s,items:[light]},"equipped"),4);
+ assert.equal(defenseDE({system:s,items:[light]},"dodge"),5);
 });

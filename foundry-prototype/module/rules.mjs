@@ -25,6 +25,7 @@ export const SITUATIONS={
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
 export const CREATION_REFERENCE={attributes:6,training:8,skills:5,total:19}; // 6+8+5 experimental.
+export const LEGACY_SKILL_COSTS={armas:2,"armas-1":2,combate:1,aprendiz:2,"magia-unica":1};
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -49,12 +50,14 @@ export const monsterCap=grade=>Math.max(1,Math.min(6,Math.floor(Number(grade)||1
 export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Formação Disciplina na carga: pendente.
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
- const attr=ATTRIBUTES.reduce((n,[k])=>n+XP_ATTRIBUTE[Number(s.attributes?.[k]||0)],0);
+ const attributeScale=s.monsterRules?XP_TRAINING:XP_ATTRIBUTE;
+ const attr=ATTRIBUTES.reduce((n,[k])=>n+attributeScale[Number(s.attributes?.[k]||0)],0);
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
- const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:19);
- return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
+ const perks=(s.skills||[]).reduce((n,id)=>n+(s.skillCosts?.[id]??SKILLS.find(x=>x.id===id)?.cost??LEGACY_SKILL_COSTS[id]??0),0);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:CREATION_REFERENCE.total);
+ const retired=Number(s.xpRetired||0);
+ return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,retired,left:grant-spent-retired,
   state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
 }
 export function mayComplement(system,base,mode){
@@ -81,10 +84,8 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  }
  if(b?.key==="armas_conjuracao"&&!monster){
   const skills=system.skills||[];
-  const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","manejo-duplo"];
-  if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
   if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))errors.push("Conjuração exige Criar Item de Foco e Magia.");
-  if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
+  if(!["normal","armas","conjuracao"].includes(mode))errors.push("Escolha Teste comum, Armas ou Conjuração.");
  }
  if(!errors.length){
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
@@ -105,7 +106,8 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0}=options;
+  weight=0,cancelP=0,convertPairs=0,passA=false,canPass=false,skillBonusE=0,monster=false,hostile=false,
+  threatGrade=1,bonusA=0,bonusP=0,criticalBonusE=0,criticalBonusA=0}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  const maxKeep=keepLimit(monster?threatGrade:level,extraKeep,monster);
@@ -117,15 +119,18 @@ export function resolveRoll(rolled,selectedIds,options={}){
  let convertedCrit=0,extraCritE=0,extraCritA=0;
  if(crit){convertedCrit=raw[2]>0?1:0;extraCritE=kept.length>=3?1:0;extraCritA=kept.length>=3?1:0;}
  const st=SITUATIONS[situation]||SITUATIONS.neutral;
- const a=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA));
- const pBefore=Math.max(0,raw[2]-convertedCrit+Number(bonusP));
+ const a=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA)+(crit?criticalBonusA:0));
+ const pBefore=Math.max(0,raw[2]-convertedCrit+(crit&&bonusP?2:bonusP));
  if(!Number.isInteger(cancelP)||cancelP<0||cancelP>Math.min(pBefore,a))errors.push("Anulação de Pavor inválida.");
  if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs>a)errors.push("Conversão 2A → 1E inválida.");
- const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
- const outcome=success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
+ if(passA&&(!canPass||cancelP+2*convertPairs+1>a))errors.push("Passar a oportunidade exige 1 Antecipar disponível e um aliado elegível.");
+ const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)+(crit?criticalBonusE:0));
+ const p=Math.max(0,pBefore-cancelP),reached=e+p,success=de==null?null:reached>=de;
+ const outcome=success===null?"Teste sem DE":success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
  const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(crit&&kept.length===4?2:1):0;
  const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
- return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
+ return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aAvailable:a,pAvailable:pBefore,
+  aRemaining:a-cancelP-2*convertPairs-Number(passA),
   reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,
   criticalRefundPP:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
   freeCharacteristics:success&&crit?1:0,selected:kept};
