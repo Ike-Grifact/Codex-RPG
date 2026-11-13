@@ -1246,3 +1246,7 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-owned-integrity-actions button:disabled{opacity:.5;cursor:not-allowed}
 .fp-owned-integrity.is-none{gap:4px}
 .fp-owned-integrity.is-none strong{font-size:11px;font-weight:650}
+
+/* Rótulos de Perícias: nomes completos em várias linhas, sem reticências. */
+.fp-gene-skill .fp-gene-node-label{font-size:14px;font-weight:650;letter-spacing:0;paint-order:stroke;stroke-width:3;pointer-events:none}
+.fp-gene-skill .fp-gene-node-label tspan{dominant-baseline:alphabetic}
