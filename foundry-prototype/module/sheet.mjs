@@ -79,7 +79,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
-    extraKeep:this._opts.extraKeep,step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+    extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
+    step:this._opts.step,combatBonus:false,hasCombatSkill:false,
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
@@ -94,7 +95,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    let summary=null;
    if(p.selected.length)try{
     summary=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster,
-     threatGrade:s.threatGrade,weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options)});
+     threatGrade:s.threatGrade,weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:actor.type==="humanoid"});
    }catch(e){summary={ok:false,errors:[e.message]};}
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
@@ -127,7 +128,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(el.dataset.rollOption){
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
-   this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):el.value;
+   this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
    if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
    this.render();return;
@@ -205,8 +206,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   try{
    const s=this.actor.system,opts={...this._opts},item=selectedItem(this.actor,opts),die=item?equippedDie(this.actor,item,opts.mode):0;
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
-   const cost=Number(opts.extraKeep)+Number(opts.step)+(s.monsterRules&&game.combat?.started?1:0);
-   if((s.monsterRules?s.pavorLocal:s.courage)<cost)throw Error(s.monsterRules?"Pavor local insuficiente.":"Coragem insuficiente.");
+   const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0);
+   if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
    const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
    if(game.combat?.started&&targets.length&&targets[0].actor){
     const target=targets[0].actor;opts.targetActorUuid=target.uuid;opts.targetName=target.name;opts.targetType=target.type;
@@ -242,9 +243,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   try{
    const p=this._pending,s=this.actor.system,item=selectedItem(this.actor,p.options);
    const result=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster:s.monsterRules,threatGrade:s.threatGrade,
-    weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options)});
+    weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(s.monsterRules&&game.combat?.started?1:0),payPP=0;
+   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
    if(result.success&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
@@ -255,12 +256,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     }
     const activations=result.critical?(second?1:0):1;
     if(activations){
+     if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
      if(p.options.activationPayment==="pp")payPP=1;
      else cost+=2;
     }
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
-   if(cost>(s.monsterRules?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
+   if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
    const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
@@ -273,13 +275,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
     '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
-    '<p><small>Custo bruto '+cost+(s.monsterRules?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
-   if(s.monsterRules)await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
+    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
+   if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
    else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
     "system.pp":Math.min(maxPP(s.level),s.pp-payPP+result.criticalRefundPP)});
    await ChatMessage.create({user:game.user.id,speaker:ChatMessage.getSpeaker({actor:this.actor}),content:text,
     flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
-     transfer:game.combat?.started&&p.options.targetActorUuid?{
+     transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
       actorId:this.actor.id,targetUuid:p.options.targetActorUuid,targetType:p.options.targetType,
       p:result.p,monsterCriticalPavor:result.monsterCriticalPavor
      }:null}}});

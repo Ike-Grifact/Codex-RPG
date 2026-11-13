@@ -25,20 +25,23 @@ export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicat
 export async function transferCombatPavor(message){
  if(!game.user.isGM||!game.combat?.started)return;
  const obj=message.getFlag(NS,"transfer");
- if(!obj||!obj.actorId||!obj.targetUuid||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
+ if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
  const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
- const target=await fromUuid(obj.targetUuid);
- if(!target||!["character","humanoid","creature"].includes(target.type))return;
- const add=Math.max(0,obj.p);
- if(obj.targetType==="character"){
-  await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
- }else {
-  const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
-  await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-  // Excedente não é transferido automaticamente à reserva pública; painel manual.
+ if(obj.targetUuid){
+  const target=await fromUuid(obj.targetUuid);
+  if(target&&["character","humanoid","creature"].includes(target.type)){
+   const add=Math.max(0,obj.p);
+   if(obj.targetType==="character")
+    await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
+   else {
+    const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
+    await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
+    // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
+   }
+  }
  }
- if(obj.monsterCriticalPavor&&owner.type==="creature"){
+ if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
   const cap=Math.max(1,Math.min(6,Number(owner.system.threatGrade||1)));
   const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
   const saved=Math.min(available,obj.monsterCriticalPavor);

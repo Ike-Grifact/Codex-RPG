@@ -130,7 +130,15 @@
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
         {{/each}}</select></label>
+        {{#if codex.isMonster}}
+        <label>Dados extras mantidos — 1P cada<select data-roll-option="extraKeep">
+          <option value="0" {{#if codex.prepare.extraZero}}selected{{/if}}>0 (2 dados)</option>
+          <option value="1" {{#if codex.prepare.extraOne}}selected{{/if}}>+1 (3 dados, se habilitado)</option>
+          <option value="2" {{#if codex.prepare.extraTwo}}selected{{/if}}>+2 (4 dados, somente Graus 5–6)</option>
+        </select></label>
+        {{else}}
         <label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>
+        {{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 Coragem</label>
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
