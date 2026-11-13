@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./styles.css?v=0.45-1">
   <script src="./catalog.js?v=0.43-1" defer></script>
   <script src="./gene-graph.js?v=0.45-1" defer></script>
-  <script src="./app.js?v=0.45-1" defer></script>
+  <script src="./app.js?v=0.45-2" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -56,7 +56,7 @@
       <div>
         <span class="fp-kicker">CRIAÇÃO ASSISTIDA · APRENDIZ</span>
         <h2>Construa seu personagem, <em>pelo seu DNA.</em></h2>
-        <p>No Codex Genético, desenvolva Atributos, conecte Conhecimentos e Práticas e desbloqueie Perícias. Distribua livremente seus 19 XP.</p>
+        <p>No Codex Genético, compre pelo menos um Atributo e um Conhecimento ou Prática no grau 1. Depois, distribua o restante dos 19 XP compartilhados de playtest livremente, inclusive em Perícias.</p>
       </div>
       <div class="fp-wizard-logo"><img src="../assets/codex-logo.svg" alt="Logo original Codex RPG" width="108" height="100"></div>
     </div>
@@ -180,9 +180,9 @@
         <div class="fp-xp-highlight"><small>REF. PRÓXIMO NÍVEL</small><strong id="xp-next-level">—</strong><span>Curva experimental · não obrigatória</span></div>
       </div>
       <div class="fp-xp-tracks">
-        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Atributos</b><span id="xp-attr-caption">0 / 6 XP</span></div><div class="fp-xp-meter"><span id="xp-attr-bar"></span></div></div>
-        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Formação</b><span id="xp-training-caption">0 / 8 XP</span></div><div class="fp-xp-meter"><span id="xp-training-bar"></span></div></div>
-        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Perícias</b><span id="xp-skill-caption">0 / 5 XP</span></div><div class="fp-xp-meter"><span id="xp-skill-bar"></span></div></div>
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Atributos</b><span id="xp-attr-caption">0 XP usados</span></div><div class="fp-xp-meter"><span id="xp-attr-bar"></span></div></div>
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Formação</b><span id="xp-training-caption">0 XP usados</span></div><div class="fp-xp-meter"><span id="xp-training-bar"></span></div></div>
+        <div class="fp-xp-track"><div class="fp-xp-track-title"><b>Perícias</b><span id="xp-skill-caption">0 XP usados</span></div><div class="fp-xp-meter"><span id="xp-skill-bar"></span></div></div>
       </div>
       <div class="fp-xp-controls">
         <div class="fp-award">
@@ -193,7 +193,7 @@
         <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
       </div>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
-      <p class="fp-footnote"><strong>5 XP iniciais de Perícias são DEFINIDOS</strong>; os 6 XP de Atributos e 8 XP de Formação continuam EXPERIMENTAIS. A progressão das fontes usa seus custos acumulados do Codex. Depois de concluir a criação, <strong>todo XP inicial não gasto vira saldo livre para qualquer categoria</strong>, e novos avanços podem ser comprados normalmente. Reduções e correções de investimentos exigem <strong>Editar ficha</strong>; isso não concede reembolso livre durante a campanha. O XP de evolução é concedido manualmente porque a curva por nível ainda não foi aprovada.</p>
+      <p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>EXPERIMENTAL:</strong> orçamento inicial de 19 XP compartilhados. XP não gasto segue disponível após concluir; compras consolidadas não geram reembolso automático. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
     </section>
 
     <div class="fp-workspace">
