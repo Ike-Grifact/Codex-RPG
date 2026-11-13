@@ -13,7 +13,7 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
 | SRD de Continuidade v0.39 | [docs/srd-continuidade-v0.39.md](docs/srd-continuidade-v0.39.md) | **Atualização normativa vigente (13/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.38 |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras de Mestre preservadas; referências à criação atualizadas conforme SRD v0.39 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
