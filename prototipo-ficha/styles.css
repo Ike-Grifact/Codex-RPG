@@ -1152,3 +1152,49 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-gene-auto-buy{background:#542176!important;border-color:#542176!important;color:#fff!important}
 .fp-gene-auto-buy:hover,.fp-gene-auto-buy:focus-visible{background:#6c329b!important;border-color:#6c329b!important}
 .fp-gene-auto-note{font-size:11px!important;line-height:1.5!important;max-height:none!important;color:var(--fp-muted)}
+
+/* Navegação Obsidian-like: área fixa independente do comprimento do grafo. */
+.fp-gene-canvas-shell .fp-gene-canvas,
+.fp-gene-creator-layout .fp-gene-canvas,
+#genetic-view .fp-gene-canvas{
+ position:relative;display:block;box-sizing:border-box;width:100%;height:clamp(460px,73vh,720px);
+ min-height:460px;max-height:none;min-width:0;aspect-ratio:auto;
+ overflow:hidden!important;touch-action:none!important;overscroll-behavior:contain;
+ cursor:grab;user-select:none;-webkit-user-select:none}
+.fp-gene-canvas-shell .fp-gene-canvas.is-dragging{cursor:grabbing}
+.fp-gene-canvas:has(.fp-gene-overview){height:clamp(460px,73vh,720px);overflow:hidden!important}
+.fp-gene-canvas .fp-gene-overview,
+.fp-gene-creator-layout .fp-gene-overview,
+#genetic-view .fp-gene-overview{
+ display:block;width:100%!important;height:100%!important;min-width:0!important;
+ max-width:100%!important;max-height:100%;overflow:hidden;touch-action:none}
+.fp-gene-canvas-shell .fp-gene-card,.fp-gene-canvas-shell .fp-gene-skill{cursor:pointer}
+.fp-gene-canvas.is-dragging .fp-gene-node,.fp-gene-canvas.is-dragging svg{cursor:grabbing}
+.fp-gene-nav-float{
+ position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:5px;
+ padding:7px;border:1px solid var(--fp-stroke);border-radius:12px;z-index:3;
+ background:color-mix(in srgb,var(--fp-surface) 93%,transparent);
+ box-shadow:0 6px 20px rgba(0,0,0,.22);touch-action:manipulation}
+.fp-gene-nav-float button{display:grid;place-items:center;width:41px;height:41px;
+ border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised);
+ color:var(--fp-text);font-size:21px;font-weight:750;cursor:pointer;touch-action:manipulation}
+.fp-gene-nav-float button:focus-visible,.fp-gene-nav-float button:hover{border-color:var(--fp-gold)}
+.fp-gene-nav-float span{min-width:42px;color:var(--fp-muted);font-size:11px;text-align:center;
+ font-variant-numeric:tabular-nums}
+.fp-gene-gesture-hint{
+ position:absolute;top:12px;left:12px;pointer-events:none;
+ border:1px solid var(--fp-stroke);border-radius:8px;
+ padding:7px 10px;color:var(--fp-muted);
+ font-size:11px;line-height:1.3;background:color-mix(in srgb,var(--fp-surface) 92%,transparent)}
+@media(max-width:620px){
+ .fp-gene-canvas-shell .fp-gene-canvas,
+ .fp-gene-creator-layout .fp-gene-canvas,
+ #genetic-view .fp-gene-canvas,.fp-gene-canvas:has(.fp-gene-overview){
+  height:min(62vh,540px);min-height:390px;touch-action:none!important;overflow:hidden!important}
+ .fp-gene-nav-float{right:8px;bottom:8px;padding:5px}
+ .fp-gene-nav-float button{width:43px;height:43px}
+ .fp-gene-gesture-hint{font-size:10px;max-width:calc(100% - 20px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .fp-gene-canvas .fp-gene-viewport{transition:none}
+}
