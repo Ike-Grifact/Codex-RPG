@@ -26,13 +26,13 @@ Esta pasta é a **única interface ativa** para criação e ficha. O antigo `cri
 
 ## Atualização do Codex Genético — mapa de fontes e evolução (prévia)
 
-**Interface refinada:** a dupla hélice foi restaurada atrás dos Atributos, os dados têm a mesma geometria poliédrica do rolador e os títulos do mapa são simples: Atributos, Conhecimentos e Práticas. Perícias com XP suficiente e requisitos ainda pendentes aparecem em **roxo**, mas continuam indisponíveis para compra; apenas Perícias com todos os requisitos ficam em azul. Clicar em um nó abre um painel flutuante no lado do mapa, com seus detalhes e botão de fechar.
+**Interface refinada:** a dupla hélice foi restaurada atrás dos Atributos, os dados têm a mesma geometria poliédrica do rolador e os títulos do mapa são simples: Atributos, Conhecimentos e Práticas. Perícias em **roxo** apresentam uma **compra assistida** quando o XP cobre todos os graus e Perícias que faltam; ao clicar, o sistema mostra a lista e o custo total para confirmação, sem comprar pré-requisitos isolados. Perícias com requisitos já atendidos ficam azuis. Clicar em um nó abre um painel flutuante no lado do mapa, com seus detalhes e botão de fechar.
 
 Na visualização alternativa, o Codex Genético apresenta **Atributos em uma coluna central**, **Conhecimentos à esquerda** e **Práticas à direita**, com organização estável para facilitar a leitura. As conexões só aparecem ao selecionar uma fonte e indicam **afinidade temática**, nunca pré-requisitos automáticos.
 
-Os Atributos, Conhecimentos e Práticas exibem os **dados atuais acima de cada nó**, o **grau** e botões **+ / −**. Os ajustes são uma **prévia de evolução**: o XP não é debitado da ficha até selecionar **Confirmar evolução**; é possível descartar. O painel mostra XP atual, disponível e gasto. O mesmo fluxo está disponível no Codex Genético da ficha finalizada, respeitando os limites de reembolso e os requisitos vigentes.
+Os Atributos, Conhecimentos e Práticas exibem o **grau** e os dados atuais **entre − e +**, com o traço poliédrico e a cor correspondente a d4/d6/d10/d12 do rolador. Cada fonte mostra até três dados. Os ajustes são uma **prévia de evolução**: o XP não é debitado da ficha até selecionar **Confirmar evolução**; é possível descartar. O painel mostra XP atual, disponível e gasto. O mesmo fluxo está disponível no Codex Genético da ficha finalizada, respeitando os limites de reembolso e os requisitos vigentes.
 
-As bolinhas de Perícias aparecem por padrão apenas quando a Perícia já foi adquirida ou tem **requisitos e XP atendidos**. O botão **Mostrar futuras ramificações** revela opções bloqueadas somente para consulta, sem permitir comprá-las indevidamente. O detalhe do nó fica **abaixo do mapa**, para evitar o corte lateral e preservar a navegação em telas pequenas.
+As bolinhas de Perícias aparecem por padrão quando a Perícia já foi adquirida, tem **requisitos e XP atendidos**, ou existe um **pacote completo de evolução pagável**. O botão **Mostrar futuras ramificações** revela opções bloqueadas somente para consulta, sem permitir comprá-las indevidamente. O detalhe do nó aparece em janela flutuante, junto ao nó selecionado, dentro do mapa, sem cortar a lateral.
 
 **Status:** visualização em playtest; nenhuma regra mecânica, requisito ou custo foi modificado por essas alterações.
 
