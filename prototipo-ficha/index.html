@@ -8,8 +8,9 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.41-1">
-  <script src="./app.js?v=0.42-2" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=0.43-1">
+  <script src="./catalog.js?v=0.43-1" defer></script>
+  <script src="./app.js?v=0.43-1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -23,6 +24,7 @@
       <a href="../index.html" class="fp-text-link">Início</a>
       <a href="../livro.html" class="fp-text-link">Jogador</a><a href="../pericias/" class="fp-text-link">Perícias</a>
       <a href="../narrador.html" class="fp-text-link">Narrador</a>
+      <button class="fp-secondary fp-sound-toggle" type="button" id="sound-toggle" aria-pressed="true" aria-label="Silenciar rolagens" title="Som da rolagem; também funciona sem áudio externo">Som: ligado</button>
       <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
       </button>
@@ -211,8 +213,39 @@
         <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
         <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
         <p class="fp-muted fp-load-caption" id="mental-slot-caption">Slots mentais: 1 ponto de capacidade mental por Grau investido em Disciplina. Magias criadas e memorizadas reduzem 1 ponto de peso.</p>
+        <section class="fp-trade-panel" id="trade-panel" aria-label="Patrimônio em recursos e comércio">
+          <div class="fp-trade-heading">
+            <div><strong>Recursos e Valor de Troca (VT)</strong>
+              <small>Escambo de Grau 1 · 20 VT iniciais experimentais</small></div>
+            <div class="fp-trade-balance"><span>Disponível</span><strong id="trade-total">20 VT</strong></div>
+          </div>
+          <p class="fp-muted">VT não é moeda física. Ervas, Espólios, Couro, Comida e Minérios possuem valor de troca equivalente no mesmo Grau; todos ocupam Carga.</p>
+          <div class="fp-trade-wallet" id="trade-wallet"></div>
+          <details class="fp-trade-distribute">
+            <summary>Escolher recursos iniciais (antes da primeira compra ou coleta)</summary>
+            <div class="fp-trade-allocate" id="trade-allocate"></div>
+          </details>
+          <div class="fp-trade-shop">
+            <h4>Comprar equipamento G1</h4>
+            <div class="fp-trade-shop-grid">
+              <label>Equipamento <select id="shop-items"><option value="">Escolha um equipamento</option></select></label>
+              <label>Pagar preferencialmente com <select id="shop-preferred"></select></label>
+              <button type="button" class="fp-primary-btn" data-action="trade-buy">Comprar por VT</button>
+            </div>
+            <small>Preços e alcances sugeridos para playtest. A compra usa recursos reais na ficha, descontando primeiro o recurso escolhido e depois os demais.</small>
+          </div>
+          <div class="fp-trade-collect">
+            <h4>Registrar coleta durante a aventura</h4>
+            <label>Recurso <select id="collect-type"><option value="ervas">Ervas</option><option value="espolios">Espólios</option><option value="couro">Couro</option><option value="comida">Comida</option><option value="minerios">Minérios</option></select></label>
+            <label>Quantidade G1 <input id="collect-amount" type="number" min="1" max="999" value="1"></label>
+            <button class="fp-secondary" type="button" data-action="trade-collect">+ Registrar coleta</button>
+          </div>
+          <p class="fp-trade-meta">Total gasto em compras deste catálogo: <strong id="trade-spent">0 VT</strong>. Descontos e sobrepreços por Perícias de Comércio ainda não foram definidos.</p>
+          <div class="fp-crystal-summary" id="crystal-summary"></div>
+        </section>
+        <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Foco G1 para simulação (Artesão obrigatório na campanha)</button>
         <div id="inventory-list" class="fp-inventory-list"></div>
-        <p class="fp-footnote">**Tipo e Grau são independentes.** Muito Leve não tem Integridade e dá +2 DE na esquiva; Leve +1 na esquiva; Média 0; Pesada −1 DE; Muito Pesada −2 DE, requer Vigor 6 e Atletismo 6 e possui imunidade física natural em qualquer Grau. G2 exige nível 5, G3 nível 10 e G4 nível 20. Muito Pesada G4 pode acumular resistência elemental de G2 e imunidade elemental adicional. Valores de Integridade e resolução automática do dano permanecem pendentes.</p>
+        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve não tem Integridade e dá +2 DE na esquiva; Leve +1 na esquiva; Média 0; Pesada −1 DE; Muito Pesada −2 DE, requer Vigor 6 e Atletismo 6 e possui imunidade física natural em qualquer Grau. G2 exige nível 5, G3 nível 10 e G4 nível 20. Muito Pesada G4 pode acumular resistência elemental de G2 e imunidade elemental adicional. Integridades G1 de 10/15/20 são experimentais; escudos 6/9/12 são propostos. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
       </section>
     </section>
 
