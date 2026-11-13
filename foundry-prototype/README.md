@@ -1,91 +1,62 @@
-# Codex RPG — Protótipo Foundry VTT
+# Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
-**Estado:** protótipo experimental 0.1.0, independente do site e do criador de Aprendizes.
+**Estado:** implementação experimental em JavaScript para **Foundry VTT v14**. Não foi executado dentro de uma instância real, nem testado entre múltiplos usuários. Utilize somente em mundo de testes com backup.
 
-**Alvo técnico:** Foundry VTT **v14**. O projeto usa `ActorSheetV2`, `HandlebarsApplicationMixin`, `TypeDataModel` e `Roll` da API oficial. **Não foi executado em uma instância real do Foundry**; validamos a sintaxe e parte das regras puras. Não é versão pronta para campanha.
+## Instalar manualmente
 
-## Isolamento do protótipo
+1. Baixe ou clone o repositório [Ike-Grifact/Codex-RPG](https://github.com/Ike-Grifact/Codex-RPG).
+2. Copie **o conteúdo** de `foundry-prototype/` (não a pasta que o contém) para `FoundryVTT/Data/systems/codex-rpg-foundry/`.
+3. Confirme que `system.json`, `module/`, `templates/`, `styles/`, `lang/` e `assets/` estejam dentro desse diretório.
+4. Reinicie o Foundry e crie um mundo usando **Codex RPG — Foundry (playtest)**.
 
-Todo o código deste sistema está em `foundry-prototype/`. Nenhum arquivo do site `index.html`, `criador.html`, `livro.html` ou das bibliotecas web originais precisa ser substituído.
+Não há instalador por URL de manifesto nem distribuição ZIP própria publicados. Uma URL `system.json` de subdiretório GitHub não é instalador remoto do Foundry.
 
-A pasta é um **sistema Foundry independente**, não um módulo para instalar em cima de outro sistema. Para Foundry reconhecer `system.json`, o conteúdo desta pasta deve ser instalado com o nome de sistema `codex-rpg-foundry`.
+## Fichas disponíveis
 
-## Instalação manual para testes
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, PP, DE e Carga.
+- **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
+- **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
-1. Faça download/clone do repositório `Ike-Grifact/Codex-RPG` na sua máquina.
-2. Copie **todo o conteúdo** de `foundry-prototype/` para a pasta de dados do Foundry `Data/systems/codex-rpg-foundry/`, mantendo `system.json` na raiz dessa pasta.
-3. Reinicie a instalação do Foundry, selecione **Codex RPG — Protótipo Foundry** na criação de um mundo e crie um Actor do tipo **Personagem**.
-4. Abra a ficha. Edite conceito, nível, origem, virtude e personalidade; ajuste os graus e ative Perícias de teste conforme necessário.
+## Rolagem
 
-Não existe, ainda, URL de instalação por manifesto nem ZIP de release publicado. O link para um arquivo `system.json` dentro de uma subpasta do repositório **não é por si só um instalador automático**.
+1. Clique primeiro em uma fonte de base e depois em Atributo. Para monstro, clique em dois Atributos distintos.
+2. Escolha o modo de Disciplina, as condições de **Vantagem Absoluta (+1E), Vantagem (+1A), Normal, Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Ação de Sorte (−2E)**, equipamento equipado e custos opcionais.
+3. Selecione **exatamente um Token como alvo** durante o combate para consultar a DE defensiva desse alvo; sem alvo, o teste é apenas anunciado no chat.
+4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
+5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
+6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico devolve Coragem/PP ao jogador segundo o teto; monstro recebe recompensa em Pavor.
 
-## O que já existe
+As seis classificações de situação não são classes de ataque separadas. Quando a ação não supera a DE, o chat diferencia falha sem símbolos, falha com Êxito e falha com Pavor. Quando supera a DE, diferencia acerto limpo, acerto neutro com Pavor e acerto com Pavor predominante.
 
-- Ficha nativa `ActorSheetV2` com portrait, identidade, Vida, Coragem, PP, DE, balanço e carga teórica.
-- Dados geométricos SVG para os cinco formatos e identidade visual própria, incluindo logo vetorizada.
-- Seis Atributos, seis Conhecimentos e **seis Práticas**, sendo **Armas ou Conjuração uma única Prática compartilhada**.
-- Clique em Conhecimento/Prática para escolher a **Base**. Clique em Atributo para completar a composição: **abre a preparação automaticamente sem rolar**.
-- Terceiro Conhecimento/Prática, opcional, somente se houver Perícia de combinação pertinente e validação contextual expressa. **A terceira fonte não entra automaticamente por possuir uma Perícia qualquer**.
-- A Base determina a natureza da ação. `Armas + Força + Apresentação` e `Apresentação + Força + Armas` conservam ordens e significados distintos.
-- O uso marcial ou mágico da Prática compartilhada depende de Armas 1 ou Aprendiz de Conjurador. Nunca duplica a graduação nem o dado por possuir as duas.
-- Pilha limitada a nove dados; retenção natural de dois ou três conforme nível, com um adicional mediante Coragem, teto quatro e mínimo um dado de Atributo.
-- Faces simbólicas d4, d6, d10, d12 e d20 reforçado G; dados descartados não entram no cálculo.
-- Seleção de dados mantidos depois de rolar, conversões básicas de Antecipar, cálculo de DE, classificação de risco com Pavor e dano básico.
-- Rolagem já executada é guardada em `flags.codex-rpg-foundry.pendingRoll` para não abrir um novo teste gratuitamente por fechar a janela. No botão **Finalizar**, os custos de Coragem da preparação são aplicados e a ação é registrada no chat.
-- Equipamentos básicos persistidos como Items: cadastro, estado equipado, peso e integridade. Clique no nome do equipamento para abrir sua ficha de edição (tipo, Grau, peso, quantidade, integridade e descrição).
-- Temas claro/escuro e interface adaptável para telas menores.
+## Pavor do Narrador
 
-## Limitações importantes
+Ao entrar, o Narrador tem um **painel manual de Pavor público**. O teto é `2 + quantidade de jogadores cadastrados`; o saldo começa em 2 e não ultrapassa o teto. É possível adicionar/remover Pavor manualmente sem duplicar símbolos descartados.
 
-Este é um protótipo de validação de interação e motor. **Ainda não automatiza:** compra de XP, todos os requisitos das Perícias, composição avançada de armas/magias, especialidades elementais, munição, defesa e resistência de todas as peças, recuperação médica automática, Furtividade especial, dinâmica completa de Pavor adversário, economia de turnos, inimigos e lançamento de efeitos sobre Tokens.
+Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
 
-A seleção de Perícias serve, nesta fase, **para habilitação em playtest**, sem desconto automático de XP. O grau da Prática ou Conhecimento pode ser ajustado manualmente; o orçamento de criação 7+7+5 continua **EXPERIMENTAL**.
+**Importante:** o mecanismo de transferência por chat ainda requer validação multijogador, especialmente de permissões, casos simultâneos e adversários pertencentes a jogadores. Não utilize como contabilidade oficial sem conferir a reserva na ficha.
 
-A pertinência da terceira fonte precisa de confirmação contextual. Isso **não pretende** criar uma regra de que qualquer par é sempre permitido com a Perícia genérica: o catálogo de combinações ainda deve ser fechado.
+## Itens e Perícias
 
-A carga que envolve a Prática Armas ou Conjuração é apresentada como **cálculo provisório**, pois seu efeito quando utilizada exclusivamente para conjurar precisa de decisão.
+- Itens Foundry `equipment`: arma, arma de fogo, armadura, escudo, foco e recursos genéricos. Campos de Grau, Carga, dado adicional, alcance, Integridade, Durabilidade, VT, características, elemento, munição, cartucho e recarga.
+- Catálogo experimental G1 selecionável da ficha: armas, armaduras, escudos e foco Psíquico. **Os preços e alcances dos arcos, bestas e revólver são propostas**; Integridade das armaduras 10/15/20 é experimental e escudos 6/9/12 propostos.
+- O dado da arma ou foco é acrescentado à pilha quando o equipamento está equipado e a Perícia habilitadora é possuída. A Besta de uma mão com Manejo Duplo, múltiplos focos e efeitos simultâneos complexos ainda exigem código adicional.
+- A Perícia **Criar Item de Foco e Magia** custa 1 XP e exige **Disciplina 1 + Inteligência 1 + Artesão 1**. Seu Cristal Elemental inicial é uma regra definida, mas a escolha e entrega automática do item ainda não têm formulário próprio.
 
-O resultado de rolagem é persistido ao executar, mas transações multijogador/concorrentes, permissões por tipo de usuário e despesas de vários recursos ainda precisam de testes de integração e endurecimento. Evite usar o protótipo em mundos de campanha que não tenham backup.
+## Limites da automação atual
 
-## Estrutura
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
 
-```text
-foundry-prototype/
-  system.json
-  assets/codex-logo.svg
-  lang/pt-BR.json
-  module/
-    main.mjs
-    item-sheet.mjs
-    data-model.mjs
-    rules.mjs
-    roll-engine.mjs
-    sheet.mjs
-  templates/character-sheet.hbs
-  templates/equipment-sheet.hbs
-  styles/codex-sheet.css
-  tests/rules.test.mjs
-  README.md
+## Testes de regras
+
+Com Node.js compatível com Foundry v14 (Node 24), na pasta `foundry-prototype/`:
+
+```bash
+node --test tests/*.test.mjs
 ```
 
-O `rules.mjs` é independente da API do Foundry para viabilizar testes e reaproveitamento futuro. A ficha e o lançador de dados são adaptadores para o Foundry.
+Os testes cobrem faces, Vantagens, retenção, críticos, Pavor descartado, progressão monstruosa, aquisição básica, Perícias, itens e DE com armadura. **Testes unitários não substituem teste de integração dentro do Foundry.**
 
-## Testes
+## Identidade e compatibilidade
 
-Na raiz `foundry-prototype/`, execute:
-
-```sh
-node --test tests/rules.test.mjs
-```
-
-O teste verifica catálogos, faces, base e ordem de ação, requisito da terceira fonte, acesso marcial/mágico, retenção, DE, Pavor e Antecipar. Ainda é necessário realizar teste funcional **dentro de um Foundry v14 real** (cliques, renderização, criação de Actor, permissões e mensagens).
-
-## Identidade e escopo
-
-O protótipo preserva a paleta `#267A45` (Êxito ᛋ), `#2369BB` (Antecipar ᚨ), `#542176` (Pavor ᚦ), a logo SVG transparente, a geometria dos dados e os temas Codex.
-
-Não contém código, mecânicas, recursos nem identidade visual de Assimilação RPG. A auditoria externa serviu exclusivamente de referência de engenharia da interface.
-
-O SRD de Continuidade permanece um documento de desenvolvimento; **o protótipo não oferece links públicos para o SRD**.
-
-**Próximos passos:** validar a experiência de seleção e a ordem da Base em Foundry; fechar as Perícias de combinação; testar equipamentos como fontes independentes; implementar progressão e sistema de combate completo.
+Sistema e textos pertencem ao Codex RPG. As soluções de engenharia visual de dados de projetos anteriores serviram apenas como referência de arquitetura, não como fonte de regras importadas. Não existe dependência de instalar Assimilação RPG. O código do Foundry reside isoladamente em `foundry-prototype/`, sem substituir o site ou a ficha web.
