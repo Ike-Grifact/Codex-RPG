@@ -7,7 +7,7 @@
  <title>Criar Conflito — Codex RPG</title>
  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
  <link rel="stylesheet" href="../assets/theme.css">
- <link rel="stylesheet" href="./styles.css?v=0.1-3">
+ <link rel="stylesheet" href="./styles.css?v=0.1-4">
  <script src="../assets/site.js" defer></script>
  <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
  <script type="module" src="./app.js?v=0.1-3"></script>
@@ -41,11 +41,18 @@
      <option value="humanoide">Humanoide comum / NPC</option>
     </select></label>
     <button class="cf-primary" id="add-threat" type="button">+ Criar ficha</button>
-    <button id="add-human-quick" class="cf-quick-humanoid" type="button" title="Pular identidade e abrir diretamente a distribuição de XP no Codex Genético">+ Humano comum no DNA</button>
-    <button id="add-human-basic" type="button" title="Adicionar imediatamente um humanoide básico, sem abrir o DNA">+ Humano básico imediato</button>
     <button id="export-encounter" type="button">Exportar conflito</button>
     <label class="cf-upload">Importar JSON<input type="file" id="import-encounter" accept=".json,application/json"></label>
    </div>
+   <section class="cf-npc-launch" aria-label="Criação rápida de NPC e humanoide comum">
+    <div><span class="eyebrow">NPC / HUMANOIDE COMUM</span>
+     <h2>Criação rápida de inimigo humanoide</h2>
+     <p>Sem preencher as etapas do jogador. Distribua XP pelo Codex Genético; clique nas bolinhas roxas para comprar Perícias e requisitos juntos. Não usa regras de monstro extraordinário.</p></div>
+    <div class="cf-npc-buttons">
+     <button id="add-human-quick" class="cf-primary cf-quick-humanoid" type="button">+ Criar NPC / Humanoide pelo DNA</button>
+     <button id="add-human-basic" type="button">+ NPC básico imediato</button>
+    </div>
+   </section>
    <p class="cf-note">Salvo automaticamente neste navegador. Ferramenta em playtest: grau e XP não atribuem dificuldade ou recompensa automática.</p>
   </section>
   <section class="cf-top-dashboard" aria-label="Painel do confronto">
