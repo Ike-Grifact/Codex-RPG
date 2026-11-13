@@ -2,7 +2,7 @@
   "id": "codex-rpg-foundry",
   "title": "Codex RPG — Foundry (playtest)",
   "description": "Codex RPG · fichas de personagens, humanoides e monstros, dados simbólicos e Pavor.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14",

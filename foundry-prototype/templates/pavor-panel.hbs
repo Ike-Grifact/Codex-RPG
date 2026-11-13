@@ -3,5 +3,5 @@
   <div class="codex-pavor-slots" aria-hidden="true">
     {{#each slots}}{{#if filled}}<span class="codex-pavor-filled">ᚦ</span>{{else}}<span class="codex-pavor-empty">◇</span>{{/if}}{{/each}}
   </div>
-  {{#if isGM}}<span class="codex-pavor-count">{{value}}/{{cap}}</span><button type="button" data-action="adjust" data-delta="1" aria-label="Aumentar Pavor público">+</button>{{/if}}
+  {{#if isGM}}<span class="codex-pavor-count">{{value}}/{{cap}}</span><button type="button" data-action="adjust" data-delta="1" aria-label="Aumentar Pavor público" {{#if full}}disabled{{/if}}>+</button>{{/if}}
 </div>

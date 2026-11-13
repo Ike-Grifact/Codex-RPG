@@ -30,6 +30,9 @@ export function prepareRoll(actor,selection,config,targets,inCombat){
  const gear=item?equipmentEligibility(actor,item,config.mode):null;
  const plan=buildPool(system,selection,{...config,equipmentDie:gear?.die??0});
  const {errors,pool}=plan;
+ if(config.mode!=="normal"&&!system.monsterRules&&selection.base?.key!=="armas_conjuracao"){
+  errors.push("Ataque com arma e conjuração usam Disciplina.");
+ }
  if(config.equipmentId&&!gear?.usable)errors.push(gear?.reason??"Item selecionado indisponível.");
  if(config.mode==="conjuracao"&&!item)errors.push("Selecione um foco ou magia equipada com elemento habilitado.");
  if(config.dual)errors.push(system.skills.includes("maestria-manejo-duplo")?

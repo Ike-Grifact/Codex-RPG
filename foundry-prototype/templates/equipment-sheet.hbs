@@ -1,9 +1,6 @@
-<section class="codex-foundry-root codex-equipment-root">
- <div class="codex-brand">
-   <img class="codex-logo" src="systems/codex-rpg-foundry/assets/codex-logo.svg" alt="">
-   <div><span class="codex-overline">CODEX RPG · EQUIPAMENTO</span><strong>Equipar não altera as regras sem habilitação.</strong></div>
- </div>
- <div class="codex-item-form">
+<section class="codex-equipment-root">
+ <header><img src="{{equipment.img}}" alt=""><h1>{{equipment.name}}</h1></header>
+ <fieldset class="codex-item-fields" {{#unless equipment.editable}}disabled{{/unless}}>
   <label>Nome<input type="text" value="{{equipment.name}}" data-field="name"></label>
   <label>Tipo<select data-field="system.kind">{{#each equipment.types}}
     <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select>
@@ -14,10 +11,10 @@
 <option value="pesado" {{#if equipment.categoryPesado}}selected{{/if}}>Pesada</option>
 <option value="muito-leve" {{#if equipment.categoryMuitoLeve}}selected{{/if}}>Muito Leve</option>
 </select></label>
-<label>Dado adicional (0/6/10/12)<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
+<label>Dado adicional (0 usa a categoria)<input type="number" min="0" max="12" step="1" value="{{equipment.die}}" data-field="system.die"></label>
 <label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
 <label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>
-<label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
+<label>Grau<input type="number" min="1" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
   <label>Peso (unidades Alto)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
   <label>Quantidade<input type="number" min="1" step="1" value="{{equipment.quantity}}" data-field="system.quantity"></label>
   <label class="codex-check"><input type="checkbox" data-field="system.equipped" {{#if equipment.equipped}}checked{{/if}}> Equipado</label>
@@ -32,6 +29,6 @@
 <label>Tempo de Recarga (a definir)<input type="number" min="0" value="{{equipment.ammo.reload}}" data-field="system.ammo.reload"></label>
 <label>Cartucho / calibre<input type="text" value="{{equipment.ammo.cartucho}}" data-field="system.ammo.cartucho"></label>
 <label class="codex-wide">Descrição / propriedades<textarea rows="5" data-field="system.description">{{equipment.description}}</textarea></label>
- </div>
- <p class="codex-tip">Catálogo G1 possui hipóteses de preço, alcance e Integridade para playtest; não equivale a aprovação definitiva. Ajustes são registrados no documento Item; não há bônus automático por equipar.</p>
+ </fieldset>
+ <p class="codex-note">Preços e alcances do catálogo são referências de playtest. Recarga e Cartucho usam adjudicação do Narrador.</p>
 </section>

@@ -22,7 +22,7 @@ export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicat
   const cap=publicPavorCap(),value=boundPavor(setting("publicPavor"),cap);
   // Keep long campaign rosters scrollable within the HUD.
   const slots=Array.from({length:cap},(_,index)=>({filled:index<value}));
-  return {cap,value,slots,isGM:game.user.isGM,tooltip:`Pavor público: ${value}/${cap}`};
+  return {cap,value,slots,isGM:game.user.isGM,full:value===cap,tooltip:`Pavor público: ${value}/${cap}`};
  }
  static async adjust(event,button){
   if(!game.user.isGM||game.users.activeGM?.id!==game.user.id)return;
