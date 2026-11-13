@@ -61,10 +61,25 @@ const { chromium } = require('playwright');
       const unlocked=await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count();
       if (unlocked!==0) throw new Error('Ramificações bloqueadas aparecendo sem pedir: '+unlocked);
       const mapRect=await page.locator('#gene-builder-map').boundingBox();
-      const detailRect=await page.locator('#gene-builder-detail').boundingBox();
-      if(!mapRect||!detailRect||detailRect.y<mapRect.y+mapRect.height-10||
-          detailRect.x<0||detailRect.x+detailRect.width>1281)
-        throw new Error('Mapa/painel se sobrepõem ou são cortados: '+JSON.stringify({mapRect,detailRect}));
+      if(!mapRect||mapRect.x<0||mapRect.x+mapRect.width>1281)
+        throw new Error('Mapa ultrapassa a largura disponível: '+JSON.stringify(mapRect));
+      if(!await page.locator('#gene-builder-map .fp-gene-double-helix').count())
+        throw new Error('DNA de dupla hélice não renderizado');
+      if(!await page.locator('#gene-builder-map .fp-gene-die-shape path').count())
+        throw new Error('Dados poliédricos não têm os traços do rolador');
+      const potentials=page.locator('#gene-builder-map .fp-gene-skill.is-potential');
+      if(!await potentials.count())throw new Error('Perícias sem requisitos, mas com XP, não aparecem em roxo');
+      await potentials.first().click();
+      await page.waitForSelector('#gene-builder-detail:not([hidden])');
+      const detailText=await page.locator('#gene-builder-detail').innerText();
+      if(!detailText.includes('requisitos pendentes'))
+        throw new Error('Detalhes do nó roxo não explicam requisitos pendentes: '+detailText.slice(0,160));
+      const detailBox=await page.locator('#gene-builder-detail').boundingBox();
+      if(!detailBox||detailBox.x<mapRect.x||detailBox.x+detailBox.width>mapRect.x+mapRect.width+2)
+        throw new Error('Inspector flutuante sai da lateral do mapa: '+JSON.stringify(detailBox));
+      await page.locator('#gene-builder-detail [data-action="gene-close-detail"]').click();
+      if(!await page.locator('#gene-builder-detail').isHidden())
+        throw new Error('Não foi possível fechar o inspector');
       // Ajustes são prévias. Confirmação é obrigatória antes de afetar a ficha.
       await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
       const budgetDraft=await page.locator('#gene-build-budget').innerText();
@@ -91,7 +106,21 @@ const { chromium } = require('playwright');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
       console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
                   'categorias=',JSON.stringify(counters),'saldo=16 XP');
-      // A ficha já finalizada também deve dispor do mapa, sem compras instantâneas.
+      // O assistente agora inclui 20 VT experimentais para comprar os itens iniciais.
+      await page.locator('#wizard-controls [data-action="wizard-next"]').click();
+      await page.waitForSelector('#wizard-content .fp-wiz-shop-catalog');
+      const tradeScreen=await page.locator('#wizard-content').innerText();
+      if(!tradeScreen.includes('20 VT')||!tradeScreen.includes('VT DISPONÍVEIS'))
+        throw new Error('Etapa de VT não abriu corretamente');
+      if(await page.locator('#wizard-content [data-wizard-vt-draft]').count()!==5)
+        throw new Error('Faltam os cinco tipos de recursos de troca');
+      await page.locator('#wizard-content [data-action="wizard-shop-category"][data-category="weapon"]').click();
+      page.once('dialog', dialog => dialog.accept());
+      await page.locator('#wizard-content [data-action="wizard-buy-item"][data-item="Faca"]').click();
+      if(!await page.locator('#wizard-content').innerText().then(t=>t.includes('18')&&t.includes('Faca')))
+        throw new Error('Compra de Faca não atualizou saldo VT e inventário inicial');
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('16 XP')))
+        throw new Error('Compra com VT afetou indevidamente o saldo de XP ou VT');
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
       page.once('dialog', dialog => dialog.accept());
