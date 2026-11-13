@@ -1518,7 +1518,7 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Criação pelo Codex Genético: um Atributo e um Conhecimento ou Prática de grau 1; depois, XP livre.":
+  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
