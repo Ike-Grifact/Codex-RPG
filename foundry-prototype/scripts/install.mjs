@@ -164,7 +164,7 @@ async function replaceContents(target, stage, backup, port) {
       removed.push(name);
     }
     for (const name of readdirSync(stage)) {
-      if (name === "storage") continue;
+      if (name === "storage" && lstat(join(target, name))) continue;
       renameSync(join(stage, name), join(target, name));
       promoted.push(name);
     }
@@ -227,7 +227,9 @@ async function install(userData, dryRun) {
     preparePackage(stage);
     const existing = installedVersion(target);
     const storage = join(target, "storage");
-    if (existing && lstat(storage)) copyDirectory(storage, join(stage, "storage"));
+    const stagedStorage = join(stage, "storage");
+    if (existing && lstat(storage)) copyDirectory(storage, stagedStorage);
+    else if (manifest.persistentStorage) mkdirSync(stagedStorage);
     await assertFoundryClosed(port);
 
     if (existing) {

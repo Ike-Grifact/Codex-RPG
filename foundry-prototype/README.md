@@ -18,7 +18,7 @@ node foundry-prototype/scripts/install.mjs --user-data "F:/FoundryVTT-WindowsPor
 
 Acrescente `--dry-run` para confirmar o caminho, o ID e as versões sem gravar arquivos. O script valida os arquivos do pacote e verifica se há um processo do Foundry ou um servidor escutando na porta configurada. Mantenha o Foundry fechado até a conclusão.
 
-A instalação anterior é movida inteira para `<User Data>/Backups/codex-rpg-system-installer/<data>/codex-rpg-foundry` antes da substituição. O instalador restaura essa cópia se a troca falhar e preserva a pasta `storage` do pacote. Mundos, Actors, Items e configurações de usuários continuam na User Data original. Nenhuma operação de escrita usa `Data/worlds`. Para restaurar manualmente, feche o Foundry, mova a pasta instalada para fora de `Data/systems` e copie a pasta do backup para `Data/systems/codex-rpg-foundry`.
+A instalação anterior é movida inteira para `<User Data>/Backups/codex-rpg-system-installer/<data>/codex-rpg-foundry` antes da substituição. O instalador restaura essa cópia se a troca falhar e prepara a pasta persistente `storage` do pacote, preservando seu conteúdo. O Foundry usa essa pasta para atualizar os arquivos de um sistema sem remover a pasta inteira. Mundos, Actors, Items e configurações de usuários continuam na User Data original. Nenhuma operação de escrita usa `Data/worlds`. Para restaurar manualmente, feche o Foundry, mova a pasta instalada para fora de `Data/systems` e copie a pasta do backup para `Data/systems/codex-rpg-foundry`.
 
 ## Instalação e atualização pela interface do Foundry
 
@@ -32,6 +32,8 @@ A instalação anterior é movida inteira para `<User Data>/Backups/codex-rpg-sy
 | Estável | `https://github.com/Ike-Grifact/Codex-RPG/releases/latest/download/system.json` |
 
 Cada URL passa a responder com a primeira publicação do canal. Os canais usam o mesmo ID para manter a associação dos mundos existentes ao sistema. Para usar os dois ao mesmo tempo, configure duas User Data independentes. Para trocar de canal, faça backup do sistema e instale pelo manifesto desejado.
+
+Se o atualizador no Windows mostrar `EBUSY` ao remover `Data/systems/codex-rpg-foundry`, feche completamente o Foundry e execute o comando de desenvolvimento local acima. Ele refaz a instalação com backup e prepara o diretório persistente para as próximas atualizações pelo gerenciador.
 
 ## Publicação no GitHub
 

@@ -73,6 +73,7 @@ test("valida, instala e atualiza com backup integral e sem alterar dados de usu�
   const fresh = run(install, args);
   assert.equal(fresh.status, 0, fresh.stderr);
   assert.equal(validatePackage(packageRoot).version, current.version);
+  assert.deepEqual(readdirSync(join(packageRoot, "storage")), []);
   const optionsOld = { id: systemId, version: "0.2.0" };
   json(`Data/systems/${systemId}/system.json`, optionsOld);
   json(`Data/systems/${systemId}/storage/preferencias.json`, { value: 42 });
@@ -165,6 +166,7 @@ test("atualiza se o Windows travar a renomeação da pasta por causa do diretór
   }
   assert.equal(result.status, 0, result.stderr);
   assert.equal(validatePackage(packageRoot).version, current.version);
+  assert.deepEqual(readdirSync(join(packageRoot, "storage")), []);
   const backupRoot = join(root, "Backups", "codex-rpg-system-installer");
   const [transaction] = readdirSync(backupRoot);
   assert.deepEqual(readJson(join(backupRoot, transaction, systemId, "marcador.json")), { preserve: true });
