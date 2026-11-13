@@ -13,8 +13,8 @@ function human(){return{
 };}
 test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurador",()=>{
  assert.equal(ATTRIBUTES.length,6);assert.equal(KNOWLEDGES.length,6);assert.equal(PRACTICES.length,6);
- assert.equal(SKILLS.length,39);
- assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz"].includes(s.id)));
+ assert.equal(SKILLS.length,37);
+ assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz","marciais","combinacao"].includes(s.id)));
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
 });
 test("faces simbólicas mantêm a identidade do Codex",()=>{

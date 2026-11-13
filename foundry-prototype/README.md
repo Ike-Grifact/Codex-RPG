@@ -26,7 +26,7 @@ A reserva local de Pavor fica na ficha da oposição. O crítico preenche o espa
 
 - **PENDENTE** — orçamento monstruoso por Grau, capacidades extraordinárias, Manejo Duplo e acúmulo da besta de uma mão. O teste com uma única arma continua disponível.
 - **PENDENTE** — entrega do Cristal Elemental inicial, propriedades avançadas, dano final à Vida ou Integridade, condições, cartuchos, recarga e comércio. Use os campos do item e a adjudicação do Narrador.
-- **EXPERIMENTAL** — criação com 6 XP em Atributos e 8 em Formação. Os 5 XP iniciais de Perícias são definidos. Preços e alcances do catálogo G1 permanecem referências de playtest, assim como valores de Integridade assinalados no SRD.
+- **EXPERIMENTAL** — criação com **19 XP totais compartilhados**, sem cotas entre Atributos, Conhecimentos, Práticas e Perícias. A conclusão exige ao menos um Atributo e um Conhecimento ou Prática em Grau 1. Preços e alcances do catálogo G1 permanecem referências de playtest, assim como valores de Integridade assinalados no SRD.
 
 ## Verificação
 
@@ -44,6 +44,16 @@ Referências de engenharia consultadas: D&D5e 5.3.3 para composição das fichas
 
 A ficha jogável utiliza a identidade visual do site (base azul-escura e detalhes dourados) sem copiar regras de sistemas terceiros. As páginas são **Jogar**, **Evolução**, **Perícias** e **Inventário e Combate**. A página Jogar mostra somente Perícias adquiridas, elementos e itens equipados. A compra e leitura das Perícias ficam em sua própria página.
 
-Para **novos Personagens/Humanoides**, o campo `creationOpen` começa ligado e a criação assistida inicia em 5 etapas: Identidade → Atributos → Formação → Perícias → Revisão. O fluxo reaproveita as ações existentes de compra por XP e verificação dos requisitos, não cria uma segunda economia. Fichas antigas com criação encerrada não são reiniciadas. O monstro extraordinário continua com sua ficha de edição por Grau e XP próprio.
+Para **novos Personagens/Humanoides**, o campo `creationOpen` começa ligado e a criação assistida inicia em 3 etapas: Identidade → Atributos → Formação → Perícias → Revisão. O fluxo reaproveita as ações existentes de compra por XP e verificação dos requisitos, não cria uma segunda economia. Fichas antigas com criação encerrada não são reiniciadas. O monstro extraordinário continua com sua ficha de edição por Grau e XP próprio.
 
 **Verificação necessária em Foundry real:** redimensionamento da janela, rolagem após voltar à página Jogar, reversão de XP e fluxo de criação antes e depois da finalização. Não foi importada a economia de Assimilação; apenas a organização por etapas serviu de referência.
+
+## Codex Genético — criação e evolução do Aprendiz
+
+**DEFINIDO (2026-11-13):** o Aprendiz possui **19 XP iniciais compartilhados**. O jogador desenvolve primeiro um Atributo (mínimo Grau 1), depois um Conhecimento ou Prática (mínimo Grau 1) e pode distribuir o saldo livremente entre Atributos, Conhecimentos, Práticas e Perícias, respeitando seus custos e requisitos. A compra posterior de novos Graus no mapa continua possível quando houver XP. Não há classes obrigatórias nem limites de XP por categoria.
+
+O novo assistente de três etapas usa o **Codex Genético** na segunda: Atributos como hélice de DNA central, Conhecimentos e Práticas ao redor e Perícias nas ramificações. **Verde** marca aquisições, **azul** marca compras possíveis e **cinza** indica bloqueios. As conexões são **afinidades visuais, não regras de pré-requisito**.
+
+As entradas experimentais **Artes Marciais** e **Combinação de Fontes** foram aposentadas. A Perícia **Artista Marcial** permanece distinta. A antiga Combinação de Fontes não concede terceira fonte. IDs antigos não passam a conceder efeitos e não são cobrados no balanço de XP do ator; confira personagens importados com o Narrador.
+
+**Validação necessária:** testar a navegação e compras do Codex Genético com teclado/mouse no Foundry v14, garantir ausência de regressões em mundos existentes e conferir o fluxo em múltiplos jogadores. O PR #2 permanece em rascunho até essa confirmação.
