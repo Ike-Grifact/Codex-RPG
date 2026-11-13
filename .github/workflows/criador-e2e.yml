@@ -7,6 +7,7 @@ on:
       - 'criar-conflito/**'
       - 'foundry-prototype/**'
       - '.github/tests/conflito-e2e.cjs'
+      - '.github/tests/conflito-rolagens-e2e.cjs'
       - '.github/tests/humanoide-rapido-e2e.cjs'
       - '.github/tests/armadura-npc-e2e.cjs'
       - '.github/workflows/criador-e2e.yml'
@@ -42,9 +43,11 @@ jobs:
           cat /tmp/codex-http.log
           exit 1
       - name: Testar regras do Foundry e do conflito no Node
-        run: node --test foundry-prototype/tests/rules.test.mjs criar-conflito/rules.test.mjs
+        run: node --test foundry-prototype/tests/rules.test.mjs criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs
       - name: Testar conflito e sobrecarga de VT em Chromium
         run: node .github/tests/conflito-e2e.cjs
+      - name: Testar rolagens de criaturas e consumo de Pavor
+        run: node .github/tests/conflito-rolagens-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar humanoide rápido com DNA, compra roxa e envio ao conflito
