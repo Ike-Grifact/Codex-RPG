@@ -119,7 +119,7 @@ const { chromium } = require('playwright');
       if(!autoSpent.includes('11 XP')||!autoSpent.includes('9 / 20 XP'))
         throw new Error('Compra automática não debitou os 5 XP completos: '+autoSpent.slice(0,350));
       const influence=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:influencia"]');
-      if(!await influence.innerText().then(t=>t.includes('GRAU 2')))
+      if(!await influence.textContent().then(t=>t.includes('GRAU 2')))
         throw new Error('Compra automática não elevou Influência a grau 2');
       if(await influence.locator('.fp-gene-die-inline').count()!==2)
         throw new Error('Influência grau 2 deveria exibir dois dados reais');
