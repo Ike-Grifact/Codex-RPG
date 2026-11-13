@@ -1414,11 +1414,55 @@ function wizardSelectStep(next){
  if(next>0&&!state.name.trim()){
   toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
  }
- if(next>=2&&!wizardCategory){toast("Escolha primeiro um tipo de desenvolvimento.");return;}
+ if(wizardStep===1&&next===2){
+  if(wizardStarterPhase!=="confirm"||!wizardStarterAttribute||!wizardStarterTraining){
+   toast("Escolha um Atributo principal e depois um Conhecimento ou Prática.");return;
+  }
+  wizardConfirmStarterPicks();return;
+ }
  if(next>=3&&!hasStarterSources()){
   toast("Compre pelo menos um Atributo e um Conhecimento ou Prática no grau 1 antes da revisão.");return;
  }
  wizardStep=next;wizardReached=Math.max(wizardReached,wizardStep);wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardStarterSelect(group,id){
+ if(wizardStep!==1||viewMode!=="builder"||state.creationLocked)return;
+ if(group==="attr"){
+  if(!A.some(([k])=>k===id))return;
+  wizardStarterAttribute=id;wizardStarterPhase="training";
+ }else if(group==="know"||group==="practice"){
+  if(!GROUPS[group].some(([k])=>k===id)||!wizardStarterAttribute)return;
+  wizardStarterTraining=group+":"+id;wizardStarterPhase="confirm";
+ }else return;
+ wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardStarterBack(){
+ if(wizardStarterPhase==="confirm")wizardStarterPhase="training";
+ else if(wizardStarterPhase==="training")wizardStarterPhase="attr";
+ else {wizardSelectStep(0);return;}
+ wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardConfirmStarterPicks(){
+ const attr=wizardStarterAttribute,[group,id]=wizardStarterTraining.split(":");
+ if(!A.some(([k])=>k===attr)||!["know","practice"].includes(group)||!GROUPS[group].some(([k])=>k===id)){
+  toast("Confirme um Atributo e um Conhecimento ou Prática.");return;
+ }
+ if(state.pending||state.creationLocked)return;
+ const attrCost=(state.attributes[attr]||0)>=1?0:xpStepCost("attr",attr,1);
+ const trainingCost=(state[SOURCE_PROPS[group]][id]||0)>=1?0:xpStepCost(group,id,1);
+ if(xpCosts().free<attrCost+trainingCost){
+  toast("XP insuficiente para as duas compras. Ajuste outras compras antes de continuar.");return;
+ }
+ // Compras dos graus mínimos em uma operação, sem bônus de 'atributo principal'.
+ if(attrCost)state.attributes[attr]=1;
+ if(trainingCost)state[SOURCE_PROPS[group]][id]=1;
+ wizardCategory="attr";wizardTab="attr";wizardMode="list";
+ wizardStep=2;wizardReached=Math.max(wizardReached,2);
+ wizardPersist();save();render();
+ toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
 function wizardFinalize(){
@@ -2112,10 +2156,11 @@ function onClick(event){
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
+ case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
+ case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
  case "wizard-category":{
-  if(!["attr","know","practice"].includes(button.dataset.group))break;
-  wizardCategory=button.dataset.group;wizardTab=wizardCategory;wizardMode="list";
-  wizardPersist();renderWizard();break;
+  // Retido apenas para compatibilidade com rascunhos da interface antiga.
+  break;
  }
  case "wizard-tab":{
   if(wizardStep!==2||!["attr","know","practice","skills"].includes(button.dataset.group))break;
@@ -2126,7 +2171,7 @@ function onClick(event){
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
- case "wizard-back":wizardSelectStep(wizardStep-1);break;
+ case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
  case "wizard-portrait":$("portrait-input").click();break;
