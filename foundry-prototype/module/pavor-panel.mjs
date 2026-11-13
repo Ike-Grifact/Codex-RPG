@@ -4,7 +4,7 @@ export const NS = "codex-rpg-foundry";
 export const publicPavorDefault = 2;
 const automaticPlayers = -1;
 let pendingWrite = Promise.resolve();
-let panel;
+let hud;
 
 export function publicPavorState(players, value) {
   const cap = narratorCap(players);
@@ -28,6 +28,22 @@ function queueWrite(update) {
   return job;
 }
 
+async function changeReserve(delta) {
+  const {value, players} = readReserve();
+  const next = publicPavorState(players, value + delta);
+  if (next.value === value) return;
+
+  const combat = game.combat;
+  const round = combat?.started ? combat.round : null;
+  await game.settings.set(NS, "publicPavor", next.value);
+  if (round && next.value > value) {
+    const credits = combat.getFlag(NS, "publicPavorCredits") ?? {};
+    await combat.setFlag(NS, "publicPavorCredits", {
+      ...credits, [round]: (credits[round] ?? 0) + next.value - value,
+    });
+  }
+}
+
 async function setPlayers(players) {
   const current = readReserve();
   const count = players === automaticPlayers ? game.users.filter(user => !user.isGM).length : players;
@@ -36,19 +52,17 @@ async function setPlayers(players) {
   if (stored !== next.value) await game.settings.set(NS, "publicPavor", next.value);
   await game.settings.set(NS, "publicPavorPlayers", players);
   const discarded = Math.max(0, current.value - next.value);
-  ui.notifications.info(discarded
-    ? `Teto ajustado para ${next.cap}P. ${discarded}P acima do novo teto foi removido.`
-    : `Teto do Pavor público: ${next.cap}P.`);
+  if (discarded) ui.notifications.info(`Teto ajustado para ${next.cap}P. Excedente removido: ${discarded}P.`);
 }
 
 export function refreshPublicPavor() {
-  if (panel?.rendered) panel.render();
+  if (hud?.rendered) return hud.render();
 }
 
 export function openPublicPavor() {
   if (!game.user.isGM) return;
-  panel ??= new CodexPavorPanel();
-  return panel.render({force: true});
+  hud ??= new CodexPavorHUD();
+  return hud.render({force: true});
 }
 
 export function registerPublicPavor() {
@@ -77,57 +91,66 @@ export function registerPublicPavor() {
   for (const hook of ["ready", "createUser", "updateUser", "deleteUser"]) {
     Hooks.on(hook, syncPlayerCount);
   }
+  for (const hook of ["createCombat", "updateCombat", "deleteCombat", "renderCombatTracker", "canvasReady"]) {
+    Hooks.on(hook, refreshPublicPavor);
+  }
 }
 
-export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static DEFAULT_OPTIONS = {
-    id: "codex-pavor-panel",
-    classes: ["codex-rpg", "codex-pavor-panel"],
-    position: {width: 420, height: "auto"},
-    window: {title: "Codex RPG · Pavor público", resizable: true},
+    id: "codex-pavor-hud",
+    window: {frame: false, positioned: false},
     actions: {
-      adjust: CodexPavorPanel.adjust,
-      setPlayers: CodexPavorPanel.setPlayers,
+      adjust: CodexPavorHUD.adjust,
+      adjustPlayers: CodexPavorHUD.adjustPlayers,
+      useRegisteredPlayers: CodexPavorHUD.useRegisteredPlayers,
     },
   };
 
   static PARTS = {body: {template: "systems/codex-rpg-foundry/templates/pavor-panel.hbs"}};
 
+  async _insertElement(element, options) {
+    const top = element.ownerDocument.getElementById("ui-top");
+    if (top) top.append(element);
+    else await super._insertElement(element, options);
+  }
+
   async _prepareContext() {
     const reserve = readReserve();
+    const combat = game.combat;
+    const round = combat?.started ? combat.round : null;
+    const roundPavor = round ? combat.getFlag(NS, "publicPavorCredits")?.[round] ?? 0 : 0;
     return {
       ...reserve,
-      canRemoveOne: reserve.value >= 1,
-      canRemoveTwo: reserve.value >= 2,
-      canAddOne: reserve.room >= 1,
-      canAddTwo: reserve.room >= 2,
-      isGM: game.user.isGM,
+      round,
+      roundPavor,
+      canRemoveOne: reserve.value > 0,
+      canAddOne: reserve.room > 0,
+      canRemovePlayer: reserve.players > 0,
+      canAddPlayer: reserve.players < Number.MAX_SAFE_INTEGER - 2,
     };
   }
 
   static async adjust(_event, target) {
     if (!game.user.isGM) return;
     const delta = Number(target.dataset.delta);
-    if (![-2, -1, 1, 2].includes(delta)) return;
-    await queueWrite(async () => {
-      const {value, players} = readReserve();
-      const next = publicPavorState(players, value + delta);
-      if (next.value === value) return;
-      await game.settings.set(NS, "publicPavor", next.value);
-      ui.notifications.info(`Pavor público: ${value}P → ${next.value}P.`);
+    if (delta !== -1 && delta !== 1) return;
+    await queueWrite(() => changeReserve(delta));
+  }
+
+  static async adjustPlayers(_event, target) {
+    if (!game.user.isGM) return;
+    const delta = Number(target.dataset.delta);
+    if (delta !== -1 && delta !== 1) return;
+    await queueWrite(() => {
+      const players = readReserve().players + delta;
+      if (players >= 0 && players <= Number.MAX_SAFE_INTEGER - 2) return setPlayers(players);
     });
   }
 
-  static async setPlayers(_event, target) {
+  static async useRegisteredPlayers() {
     if (!game.user.isGM) return;
-    const input = this.element.querySelector("[data-pavor-players]");
-    const automatic = target.dataset.mode === "auto";
-    const players = automatic ? automaticPlayers : input.valueAsNumber;
-    if (!automatic && (!input.validity.valid || !Number.isSafeInteger(players))) {
-      input.reportValidity();
-      return;
-    }
-    await queueWrite(() => setPlayers(players));
+    await queueWrite(() => setPlayers(automaticPlayers));
   }
 }
 
@@ -157,11 +180,7 @@ export async function transferCombatPavor(message){
   if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});
   const overflow=obj.monsterCriticalPavor-saved;
   if(overflow){
-   await queueWrite(async () => {
-    const {value, players} = readReserve();
-    const next = publicPavorState(players, value + overflow);
-    if (next.value !== value) await game.settings.set(NS, "publicPavor", next.value);
-   });
+   await queueWrite(() => changeReserve(overflow));
   }
  }
 }

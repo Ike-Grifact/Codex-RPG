@@ -6,7 +6,6 @@ import {rollPool,escapeHTML} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
-import {openPublicPavor} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
@@ -42,7 +41,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  addEquipment:CodexCharacterSheet.addEquipment,openEquipment:CodexCharacterSheet.openEquipment,
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
- editPortrait:CodexCharacterSheet.editPortrait,openPavorPanel:openPublicPavor,adjustPavor:CodexCharacterSheet.adjustPavor
+ editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs"}};
  constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;}
@@ -68,7 +67,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      ...KNOWLEDGES.map(([id,name])=>({value:"knowledge:"+id,name:"Conhecimento · "+name})),
      ...PRACTICES.map(([id,name])=>({value:"practice:"+id,name:"Prática · "+name}))
     ],
-   isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
+   isMonster:monster,isHumanoid:actor.type==="humanoid",
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
    attributes:cards(ATTRIBUTES,"attribute",s,d),

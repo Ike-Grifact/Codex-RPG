@@ -12,7 +12,6 @@
           <span class="codex-overline">{{codex.actorTypeLabel}}</span>
           <h2>{{codex.actorName}}</h2>
         </div>
-        {{#if codex.isGM}}<button type="button" class="codex-open-pavor" data-action="openPavorPanel"><span aria-hidden="true">ᚦ</span> Pavor público</button>{{/if}}
       </div>
       <div class="codex-identity-fields">
         <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.isOwner}}readonly{{/unless}}></label>

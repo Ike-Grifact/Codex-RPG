@@ -1,35 +1,24 @@
-<section class="codex-foundry-root codex-pavor-root">
-  <div class="codex-pavor-reserve">
-    <div class="codex-pavor-heading">
-      <span class="codex-pavor-mark" aria-hidden="true">ᚦ</span>
-      <div><h2>Reserva pública</h2><p>Pavor do Narrador</p></div>
-    </div>
-    <div class="codex-pavor-stats">
-      <div><span>Saldo atual</span><strong>{{value}} <small>P</small></strong></div>
-      <div><span>Teto</span><strong>{{cap}} <small>P</small></strong></div>
-      <div><span>Espaço livre</span><strong>{{room}} <small>P</small></strong></div>
-    </div>
-    <meter class="codex-pavor-meter" min="0" max="{{cap}}" value="{{value}}" aria-label="Ocupação da reserva de Pavor"></meter>
-    {{#if isGM}}
-    <div class="codex-pavor-actions" role="group" aria-label="Ajustar Pavor público">
-      <button type="button" data-action="adjust" data-delta="-2" {{#unless canRemoveTwo}}disabled{{/unless}} aria-label="Retirar 2 de Pavor">−2P</button>
-      <button type="button" data-action="adjust" data-delta="-1" {{#unless canRemoveOne}}disabled{{/unless}} aria-label="Retirar 1 de Pavor">−1P</button>
-      <button type="button" data-action="adjust" data-delta="1" {{#unless canAddOne}}disabled{{/unless}} aria-label="Adicionar 1 de Pavor">+1P</button>
-      <button type="button" data-action="adjust" data-delta="2" {{#unless canAddTwo}}disabled{{/unless}} aria-label="Adicionar 2 de Pavor">+2P</button>
-    </div>
-    {{/if}}
+<section class="codex-pavor-hud" aria-label="Reserva pública de Pavor">
+  <div class="codex-pavor-group" role="group" aria-label="Jogadores na campanha">
+    <button type="button" data-action="adjustPlayers" data-delta="-1" title="Retirar um jogador" aria-label="Retirar um jogador" {{#unless canRemovePlayer}}disabled{{/unless}}>−</button>
+    <span class="codex-pavor-label" title="{{#if automatic}}Contagem do cadastro{{else}}Contagem manual; clique para voltar ao cadastro{{/if}}">
+      {{#if automatic}}
+        <i class="fa-solid fa-users" aria-hidden="true"></i>
+        <strong aria-live="polite">{{players}} <span class="codex-pavor-sr">jogadores</span></strong>
+      {{else}}
+        <button type="button" class="codex-pavor-player-count" data-action="useRegisteredPlayers" aria-label="{{players}} jogadores. Voltar à contagem do cadastro">
+          <i class="fa-solid fa-users" aria-hidden="true"></i> {{players}}
+        </button>
+      {{/if}}
+    </span>
+    <button type="button" data-action="adjustPlayers" data-delta="1" title="Adicionar um jogador" aria-label="Adicionar um jogador" {{#unless canAddPlayer}}disabled{{/unless}}>+</button>
   </div>
-  {{#if isGM}}
-  <div class="codex-pavor-players">
-    <label for="codex-pavor-players">Jogadores na campanha</label>
-    <div class="codex-pavor-player-fields">
-      <input id="codex-pavor-players" data-pavor-players type="number" min="0" max="9007199254740989" step="1" value="{{players}}" required>
-      <button type="button" data-action="setPlayers">Aplicar</button>
-      {{#unless automatic}}
-      <button type="button" data-action="setPlayers" data-mode="auto">Usar cadastro</button>
-      {{/unless}}
-    </div>
-    <small>Teto de 2 + jogadores · {{#if automatic}}contagem do cadastro{{else}}contagem manual{{/if}}</small>
+  <div class="codex-pavor-group" role="group" aria-label="Ajustar Pavor público">
+    <button type="button" data-action="adjust" data-delta="-1" title="Retirar 1 Pavor" aria-label="Retirar 1 Pavor" {{#unless canRemoveOne}}disabled{{/unless}}>−</button>
+    <strong class="codex-pavor-balance" aria-live="polite" title="Pavor público · saldo / teto"><span aria-hidden="true">ᚦ</span> {{value}}/{{cap}} <span class="codex-pavor-sr">Pavor público</span></strong>
+    <button type="button" data-action="adjust" data-delta="1" title="Adicionar 1 Pavor" aria-label="Adicionar 1 Pavor" {{#unless canAddOne}}disabled{{/unless}}>+</button>
   </div>
+  {{#if round}}
+    <span class="codex-pavor-round" title="Pavor que entrou na reserva pública nesta rodada" aria-live="polite">R{{round}} <strong>+{{roundPavor}}P</strong><span class="codex-pavor-sr"> adicionados à reserva nesta rodada</span></span>
   {{/if}}
 </section>

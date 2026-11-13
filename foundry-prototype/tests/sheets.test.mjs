@@ -13,7 +13,7 @@ class ApplicationV2 {
 globalThis.foundry = {
   applications: {api: {ApplicationV2, HandlebarsApplicationMixin: Base => Base}},
 };
-const {CodexPavorPanel, openPublicPavor, registerPublicPavor} = await import("../module/pavor-panel.mjs");
+const {CodexPavorHUD, openPublicPavor, registerPublicPavor, transferCombatPavor} = await import("../module/pavor-panel.mjs");
 
 test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da mesa", async () => {
   const stored = new Map();
@@ -38,36 +38,77 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
   registerPublicPavor();
   const panel = openPublicPavor();
   assert.equal(openPublicPavor(), panel);
-  function setPlayers(valueAsNumber, mode, valid = true) {
-    const input = {valueAsNumber, validity: {valid}, reportValidity() {}};
-    return CodexPavorPanel.setPlayers.call({element: {querySelector: () => input}}, null, {dataset: {mode}});
-  }
-  const adjust = delta => CodexPavorPanel.adjust(null, {dataset: {delta: String(delta)}});
+  const step = (action, delta) => action(null, {dataset: {delta: String(delta)}});
+  const adjust = delta => step(CodexPavorHUD.adjust, delta);
+  const adjustPlayers = delta => step(CodexPavorHUD.adjustPlayers, delta);
   let info = await panel._prepareContext();
   assert.deepEqual([info.players, info.value, info.cap], [2, 2, 4]);
-  await adjust(-2);
+  await Promise.all([adjust(-1), adjust(-1)]);
+  await adjustPlayers(1);
+  assert.equal((await panel._prepareContext()).players, 3);
   await hooks.get("ready")();
   info = await panel._prepareContext();
   assert.equal(info.value, 0);
   assert.equal(info.canRemoveOne, false);
-  await setPlayers(3);
-  await Promise.all([adjust(2), adjust(2), adjust(2)]);
+  assert.equal(info.round, null);
+
+  const flags = new Map();
+  game.combat = {
+    started: true,
+    round: 1,
+    getFlag: (_namespace, key) => flags.get(key),
+    async setFlag(_namespace, key, value) {
+      flags.set(key, value);
+      hooks.get("updateCombat")();
+    },
+  };
+  await Promise.all(Array.from({length: 7}, () => adjust(1)));
   info = await panel._prepareContext();
   assert.deepEqual([info.automatic, info.value, info.cap, info.room], [false, 5, 5, 0]);
-  await setPlayers(1);
+  assert.equal(info.roundPavor, 5);
+  await adjust(-1);
+  assert.equal((await panel._prepareContext()).roundPavor, 5);
+  game.combat.round = 2;
+  await hooks.get("updateCombat")();
+  info = await panel._prepareContext();
+  assert.deepEqual([info.round, info.roundPavor, info.value], [2, 0, 4]);
+  await adjust(1);
+  assert.equal((await panel._prepareContext()).roundPavor, 1);
+
+  // A rewarded critical goes through the same ledger, after the local reserve.
+  await adjust(-1);
+  await adjust(-1);
+  const monster = {type: "creature", system: {threatGrade: 2, pavorLocal: 1}};
+  monster.update = async updates => { monster.system.pavorLocal = updates["system.pavorLocal"]; };
+  game.actors = new Map([["threat", monster]]);
+  game.users = new Map([["gm", game.user]]);
+  await transferCombatPavor({
+    user: {id: "gm"},
+    getFlag: () => ({actorId: "threat", p: 0, monsterCriticalPavor: 3}),
+  });
+  assert.equal(monster.system.pavorLocal, 2);
+  assert.deepEqual([(await panel._prepareContext()).value, (await panel._prepareContext()).roundPavor], [5, 3]);
+  game.combat.round = 1;
+  assert.equal((await panel._prepareContext()).roundPavor, 5);
+  game.users = [{isGM: true}, {isGM: false}, {isGM: false}];
+  game.combat = null;
+  await hooks.get("deleteCombat")();
+  assert.equal((await panel._prepareContext()).round, null);
+
+  await Promise.all([adjustPlayers(-1), adjustPlayers(-1)]);
   info = await panel._prepareContext();
   assert.deepEqual([info.value, info.cap], [3, 3]);
-  assert.match(messages.at(-1), /2P acima do novo teto/);
-  await setPlayers(-1, undefined, false);
-  assert.equal((await panel._prepareContext()).automatic, false);
-  await setPlayers(0, "auto");
+  assert.match(messages.at(-1), /Excedente removido: 1P/);
+  await adjustPlayers(-2);
+  assert.equal((await panel._prepareContext()).players, 1);
+  await CodexPavorHUD.useRegisteredPlayers();
   assert.equal((await panel._prepareContext()).automatic, true);
   game.users = [{isGM: true}];
   await hooks.get("deleteUser")();
   assert.equal(stored.get("publicPavor"), 2);
   game.user.isGM = false;
   await adjust(-1);
-  await setPlayers(9);
+  await adjustPlayers(1);
   assert.equal((await panel._prepareContext()).value, 2);
   assert.equal(openPublicPavor(), undefined);
 });
