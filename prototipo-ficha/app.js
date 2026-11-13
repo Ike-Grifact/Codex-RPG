@@ -1336,9 +1336,21 @@ function renderOwnedPanel(){
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
     '<span class="fp-element-icon">ᚨ</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
  const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
-  '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
-  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+ $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
+  const isArmor=it.type==="armadura",noIntegrity=isArmor&&it.weight==="muito_leve";
+  const integrity=!isArmor?"":noIntegrity?
+   '<div class="fp-owned-integrity is-none"><span>Integridade</span><strong>Sem Integridade (Muito Leve)</strong></div>':
+   '<div class="fp-owned-integrity'+(it.hp<=0?' is-depleted':'')+'">'+
+    '<div class="fp-owned-integrity-header"><span>Integridade atual / máxima</span><b>'+it.hp+' / '+it.max+'</b></div>'+
+    '<div class="fp-owned-integrity-meter" role="meter" aria-label="Integridade de '+esc(it.name)+'" aria-valuemin="0" aria-valuemax="'+Math.max(0,it.max)+'" aria-valuenow="'+it.hp+'">'+
+     '<span style="width:'+(it.max>0?Math.max(0,Math.min(100,100*it.hp/it.max)):0)+'%"></span></div>'+
+    '<div class="fp-owned-integrity-actions">'+
+     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'"'+(it.hp<=0?' disabled':'')+'>−</button>'+
+     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Restaurar um ponto de Integridade de '+esc(it.name)+'"'+(it.hp>=it.max?' disabled':'')+'>+</button>'+
+    '</div>'+(it.max===0?'<small>Valor máximo não informado; ajuste no Inventário.</small>':'')+'</div>';
+  return '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
+   integrity+(it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>';
+ }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
 function geneLayout(mapId,detailId){
@@ -2684,7 +2696,7 @@ function onClick(event){
   render();save();break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderOwnedPanel();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -2693,11 +2705,11 @@ function onClick(event){
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
+  renderInventory();renderOwnedPanel();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
-  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderVitals();renderComposer();save();}break;
+  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderOwnedPanel();renderVitals();renderComposer();save();}break;
  }
  }
 }
@@ -2757,7 +2769,7 @@ function onChange(event){
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
   if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
-  renderInventory();renderVitals();save();return;
+  renderInventory();renderOwnedPanel();renderVitals();save();return;
  }
 }
 function bind(){
