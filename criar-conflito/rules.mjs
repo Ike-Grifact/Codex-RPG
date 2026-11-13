@@ -23,7 +23,7 @@ export function quickHumanoid(){
  t.name="Humano comum";
  t.concept="Oponente humanoide";
  t.attributes.forca=1;
- t.practices.disciplina=1;
+ t.practices.armas_conjuracao=1;
  t.life=stats(t).life;
  return t;
 }
