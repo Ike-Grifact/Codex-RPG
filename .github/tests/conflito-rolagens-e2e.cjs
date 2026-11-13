@@ -17,7 +17,7 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   await page.locator('[data-roll-start]').click();
   assert(await page.locator('.cf-roll-die').count()===3,"Não rolou 2d10 + 1d4");
   assert(await page.locator('.cf-roll-die.is-kept').count()===3,"Não manteve os 3 dados planejados");
-  assert((await page.locator(".cf-roll-outcome").innerText()).includes("Custo de retenção: 1P"),"Pavor da retenção não está indicado");
+  assert((await page.locator(".cf-roll-outcome").innerText()).includes("Gasto de retenção: 1P local"),"Pavor da retenção não está indicado");
   assert((await page.locator(".cf-local-row").first().innerText()).includes("Pavor 1 / 1"),"Pavor foi gasto antes de confirmar");
   page.once("dialog",d=>void d.accept());
   await page.locator("[data-roll-confirm]").click();
