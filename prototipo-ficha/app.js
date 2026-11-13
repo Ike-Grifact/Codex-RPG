@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:6,training:8,skills:5}; // 5 XP Perícias DEFINIDO; 6+8 experimentais.
+const CREATE_BUDGET={attr:19,training:19,skills:19,total:19}; // DEFINIDO: orçamento único de 19 XP.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  [
@@ -33,12 +33,6 @@ const SKILLS=[
   2
  ],
  [
-  "marciais",
-  "Artes Marciais",
-  "Especialização desarmada. Exige Disciplina 1; outras regras em playtest.",
-  1
- ],
- [
   "montar",
   "Montar Animal",
   "Requer Influência grau 2.",
@@ -49,12 +43,6 @@ const SKILLS=[
   "Provocação Sofisticada",
   "Influência 2; 1 XP. O texto atual repete Provocar básico. Benefício adicional PENDENTE; não acumula Vantagens ou Desvantagens.",
   1
- ],
- [
-  "combinacao",
-  "Combinação de Fontes",
-  "Habilita propor a terceira fonte pertinente.",
-  2
  ],
  [
   "criar-item-foco-magia",
@@ -313,6 +301,7 @@ const SKILLS=[
 // IDs de Perícias legadas continuam nas fichas salvas e no cálculo de XP,
 // mas não aparecem nas opções novas de compra.
 const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);
+const RETIRED_PROTOTYPES=new Set(["marciais","combinacao"]);
 const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
@@ -323,9 +312,6 @@ const SKILL_AFFINITY={
  "armas": [
   "practice:armas_conjuracao"
  ],
- "marciais": [
-  "practice:armas_conjuracao"
- ],
  "montar": [
   "attr:influencia"
  ],
@@ -333,7 +319,6 @@ const SKILL_AFFINITY={
   "attr:influencia",
   "practice:apresentacao"
  ],
- "combinacao": [],
  "criar-item-foco-magia": [
   "practice:armas_conjuracao",
   "attr:inteligencia",
@@ -603,10 +588,8 @@ const SKILL_BRANCHES=[
 const SKILL_PERMALINKS={
  "combate": "combate",
  "armas": "armas-1",
- "marciais": "artes-marciais",
  "montar": "montar-animal",
  "provocacao-sofisticada": "provocacao-sofisticada",
- "combinacao": "combinacao-de-fontes",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
  "conjuracao-equilibrada": "conjuracao-equilibrada",
@@ -680,8 +663,7 @@ const CARD_REQUIREMENTS={
  "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
  "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade",
  "armas-leves": "Disciplina 1",
- "marciais": "Disciplina 1 (demais detalhes experimentais)"
-};
+ };
 
 const CARD_EFFECTS={
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
@@ -918,9 +900,7 @@ let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
- ["Atributos","Defina suas capacidades","Distribua os XP de Atributos"],
- ["Formação","Escolha seus caminhos","Práticas e Conhecimentos"],
- ["Perícias","Desperte suas habilidades","Especialize sua construção"],
+ ["Codex Genético","Desenvolva seu DNA","19 XP para fontes e Perícias"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
@@ -952,8 +932,9 @@ function load(){
  draft=freshDraft();
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
-  wizardStep=clamp(Math.floor(w.step||0),0,4);
-  wizardReached=clamp(Math.floor(w.reached||wizardStep),wizardStep,4);
+  const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
+  wizardStep=clamp(oldStep>1?2:oldStep,0,2);
+  wizardReached=clamp(oldReached>1?2:oldReached,wizardStep,2);
  }catch(e){wizardStep=0;wizardReached=0;}
  viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
@@ -980,7 +961,12 @@ function normalize(v){
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
  const shouldMigrateFocus=legacyCost>0&&qualifiesForFocus&&!rawSkills.includes("criar-item-foco-magia");
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
- s.skills=[...new Set(rawSkills.filter(x=>SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
+ s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
+  s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":"Combinação de Fontes").join(" e ")+
+   ". XP liberado automaticamente pela retirada; Artista Marcial não é adquirido sem requisitos.").trim().slice(0,5000);
+ }
  if(shouldMigrateFocus)s.skills.push("criar-item-foco-magia");
  if(legacyCost>0&&!s.notes.includes("Migração conjuração 2026:")){
   const outcome=qualifiesForFocus?"Perícias antigas substituídas por Criar Item de Foco e Magia (1 XP).":
@@ -998,10 +984,9 @@ function normalize(v){
  if(s.creationLocked){
   const used=rawCreationCosts(s),saved=v.creationBudgetSnapshot;
   const formerSkillsCost=used.skills+legacyDifference;
-  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET[k])?
+  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET.total)?
    {attr:saved.attr,training:saved.training,skills:saved.skills}:
-   {attr:Math.min(used.attr,CREATE_BUDGET.attr),training:Math.min(used.training,CREATE_BUDGET.training),
-    skills:Math.min(formerSkillsCost,CREATE_BUDGET.skills)};
+   {attr:used.attr,training:used.training,skills:used.skills};
   if(legacyCost>0&&legacyDifference>0){
    const oldGeneral=Math.max(0,formerSkillsCost-s.creationBudgetSnapshot.skills);
    const newGeneral=Math.max(0,used.skills-s.creationBudgetSnapshot.skills);
@@ -1065,24 +1050,26 @@ function rawCreationCosts(s=state){
   training:K.reduce((n,[k])=>n+TRAIN_COST[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+TRAIN_COST[s.practices[k]||0],0),
   skills:s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0)};
 }
-function unusedInitialXP(spent){
- return ["attr","training","skills"].reduce((n,k)=>n+Math.max(0,CREATE_BUDGET[k]-spent[k]),0);
-}
+function unusedInitialXP(spent){return Math.max(0,CREATE_BUDGET.total-(spent.attr+spent.training+spent.skills));}
 function xpCosts(s=state){
- const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills;
- const budget=s.creationLocked&&s.creationBudgetSnapshot?s.creationBudgetSnapshot:CREATE_BUDGET;
- const generalSpent=["attr","training","skills"].reduce((n,k)=>n+Math.max(0,spent[k]-budget[k]),0);
- const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(budget):0;
- const free=(s.xpEarned||0)+(s.legacyXPRefund||0)+initialCarryover-generalSpent;
- return {attributes,training,skills,total:attributes+training+skills,generalSpent,free,initialCarryover,
+ const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills,total=attributes+training+skills;
+ const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(s.creationBudgetSnapshot):
+  Math.max(0,CREATE_BUDGET.total-total);
+ const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:CREATE_BUDGET.total-total;
+ const generalSpent=Math.max(0,total-CREATE_BUDGET.total);
+ return {attributes,training,skills,total,generalSpent,free,initialCarryover,
   initialRemaining:Math.max(0,initialCarryover-generalSpent),
-  evolutionRemaining:Math.max(0,(s.xpEarned||0)-Math.max(0,generalSpent-initialCarryover))};
+  evolutionRemaining:Math.max(0,(s.xpEarned||0)+(s.legacyXPRefund||0)-generalSpent)};
+}
+function hasStarterSources(s=state){
+ return A.some(([k])=>Number(s.attributes[k]||0)>=1)&&
+  (K.some(([k])=>Number(s.knowledges[k]||0)>=1)||P.some(([k])=>Number(s.practices[k]||0)>=1));
 }
 function lockCreation(){
  if(state.creationLocked)return 0;
+ if(!hasStarterSources()||xpCosts().free<0)return null;
  const spent=rawCreationCosts(state);
- state.creationBudgetSnapshot={attr:Math.min(CREATE_BUDGET.attr,spent.attr),
-  training:Math.min(CREATE_BUDGET.training,spent.training),skills:Math.min(CREATE_BUDGET.skills,spent.skills)};
+ state.creationBudgetSnapshot={attr:spent.attr,training:spent.training,skills:spent.skills};
  state.creationLocked=true;
  return unusedInitialXP(state.creationBudgetSnapshot);
 }
@@ -1091,13 +1078,7 @@ function xpStepCost(group,k,delta){
  const g=state[field][k]||0,next=clamp(g+delta,0,6);
  return Math.max(0,table[next]-table[g]);
 }
-function canAfford(group,cost){
- const totals=xpCosts(),cat=group==="attr"?"attributes":group==="skills"?"skills":"training";
- const category=group==="attr"?"attr":group==="skills"?"skills":"training";
- const cap=(state.creationLocked&&state.creationBudgetSnapshot?state.creationBudgetSnapshot:CREATE_BUDGET)[category];
- const additional=Math.max(0,totals[cat]+cost-cap)-Math.max(0,totals[cat]-cap);
- return cost>=0&&totals.free>=additional;
-}
+function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
  const disc=s.practices.armas_conjuracao||0;
@@ -1135,8 +1116,7 @@ function skillReq(id,s=state){
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
- if(id==="marciais"&&disc<1)
-  return"EXPERIMENTAL: requer Disciplina 1; detalhes do treino desarmado pendentes.";
+   return"EXPERIMENTAL: requer Disciplina 1; detalhes do treino desarmado pendentes.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
@@ -1160,19 +1140,19 @@ function renderXP(){
  $("xp-free-text").textContent=(x.free<0?"−":"")+Math.abs(x.free)+" XP";
  $("xp-free-text").classList.toggle("fp-negative",x.free<0);
  $("build-status").textContent=editMode?"Modo edição · corrigindo a ficha":state.creationLocked?"Progressão · compras permanentes":"Aprendiz · orçamento experimental";
- $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0;
+ $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0||!hasStarterSources();
  $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
  $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
  $("xp-award").disabled=!!state.pending;
  $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
-  const cap=CREATE_BUDGET[type];
-  $(id+"-caption").textContent=used+" / "+cap+" XP"+(used>cap?" · XP adicional":"");
+  const cap=CREATE_BUDGET.total;
+  $(id+"-caption").textContent=used+" XP (orçamento global: 19 XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
- $("xp-feedback").textContent=x.free<0?"Saldo insuficiente: faltam "+Math.abs(x.free)+" XP. Adicione XP ou reorganize as compras ainda não consolidadas.":
-  (state.creationLocked?"XP inicial não utilizado e liberado: "+x.initialCarryover+"; disponível dessa sobra: "+x.initialRemaining+". ":"5 XP de Perícias definidos no nível 1; 6 XP de Atributos e 8 de Formação experimentais. ")+
-  (state.legacyXPRefund?"Crédito de migração de Perícias de conjuração: "+state.legacyXPRefund+" XP. ":"")+"Avanços consomem o saldo livre."+ (editMode?" Modo edição: use + e − para corrigir graus e XP; isso não é reembolso de campanha.":state.creationLocked?" Após a criação não há reembolso livre.":"");
+ $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
+ "19 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
+ (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
@@ -1363,25 +1343,26 @@ function wizardPersist(){
  catch(e){console.warn("Codex: etapa não persistida",e);}
 }
 function wizardSelectStep(next){
- if(viewMode!=="builder"||state.creationLocked||next<0||next>4||next>wizardReached+1)return;
+ if(viewMode!=="builder"||state.creationLocked||next<0||next>=WIZARD_STEPS.length||next>wizardReached+1)return;
  if(wizardStep===0&&next>0&&!state.name.trim()){
   toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
+ }
+ if(next>=2&&!hasStarterSources()){
+  toast("Desenvolva pelo menos um Atributo e um Conhecimento ou Prática antes da revisão.");return;
  }
  wizardStep=next;wizardReached=Math.max(wizardReached,wizardStep);wizardPersist();renderWizard();
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
- if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardSelectStep(0);return;}
+ if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
+ if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=1;renderWizard();return;}
  const xp=xpCosts();
- if(xp.free<0){toast("A ficha tem mais XP investidos do que disponíveis.");return;}
- const unused=["attr","training","skills"].map((k,i)=>CREATE_BUDGET[k]-[xp.attributes,xp.training,xp.skills][i]);
- const message=unused.some(n=>n>0)?
-  "Concluir a criação? "+unused.reduce((n,v)=>n+Math.max(0,v),0)+" XP inicial(is) não gasto(s) passa(m) a ser LIVRE(S) para qualquer Atributo, Conhecimento, Prática ou Perícia. Esse saldo não é XP de evolução.":
-  "Concluir a criação? As compras serão consolidadas; correções exigem Editar ficha.";
- if(!confirm(message))return;
- const residual=lockCreation();viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;wizardPersist();
- syncFields();render();save();toast("Aprendiz criado! XP inicial livre: "+residual+".");
+ if(xp.free<0){toast("O investimento ultrapassa 19 XP.");return;}
+ if(!confirm("Concluir a criação usando "+xp.total+" dos 19 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
+ const residual=lockCreation();if(residual===null)return;
+ viewMode="sheet";sheetPage="play";wizardStep=2;wizardReached=2;wizardPersist();
+ syncFields();render();save();toast("Aprendiz criado! XP livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
 function wizardDice(group,id,grade){
@@ -1413,7 +1394,7 @@ function wizardReview(){
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
  const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
@@ -1422,24 +1403,23 @@ function wizardReview(){
   '<section><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
   '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
-  '<div class="fp-wiz-reminder"><strong>5 XP de Perícias definidos · 6/8 XP em playtest</strong>'+
-  '<p>Atributos: '+x.attributes+'/6 XP · Formação: '+x.training+'/8 XP · Perícias: '+x.skills+'/5 XP. O saldo não utilizado será livre após concluir a criação. A curva de XP por nível não é definitiva.</p></div>';
+  '<div class="fp-wiz-reminder"><strong>19 XP iniciais · orçamento compartilhado</strong>'+
+  '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>';
 }
 function wizardOverview(){
- const spent=xpCosts(),categories=[
-  ["Atributos",spent.attributes,CREATE_BUDGET.attr],["Formação",spent.training,CREATE_BUDGET.training],["Perícias",spent.skills,CREATE_BUDGET.skills]
- ];
- const sum=categories.map(([name,used,cap])=>'<div class="fp-wiz-budget-row"><span>'+name+'</span><b>'+used+' / '+cap+' XP</b>'+
-  '<div class="fp-wiz-meter"><span style="width:'+Math.min(100,used/cap*100)+'%"></span></div></div>').join("");
- const totalDone=categories.reduce((n,[,v])=>n+v,0);
+ const x=xpCosts();
  return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
-  '<div class="fp-wiz-sidebar-title">INVESTIMENTO INICIAL</div>'+sum+
-  '<div class="fp-wiz-summary-total"><span>TOTAL INVESTIDO</span><strong>'+totalDone+' XP</strong></div>'+
-  '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS ATUAIS</div>'+
-  '<div class="fp-wiz-pairs"><span>Vida máxima</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
-  '<span>DE defensiva</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
-  '<p class="fp-wiz-sidebar-note">Cada Atributo começa com 1d4. Cada Conhecimento ou Prática começa com 1d6. O custo de XP compra melhorias, não a existência da fonte.</p>';
+  '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 19 XP</strong></div>'+
+  '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
+  '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
+  '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
+  '<div class="fp-wiz-summary-total"><span>DISPONÍVEIS</span><strong>'+x.free+' XP</strong></div>'+
+  '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
+  '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
+  '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
+  '<p class="fp-wiz-sidebar-note">Primeiro desenvolva um Atributo. Depois, desenvolva um Conhecimento ou Prática. As Perícias passam a ficar azuis conforme requisitos e saldo de XP.</p>';
 }
 function renderWizard(){
  const builder=$("builder-root"),sheet=$("full-sheet");
@@ -1538,7 +1518,7 @@ function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key
 function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
 function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&state.skills.includes("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
 function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
-function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive()||state.skills.includes("combinacao")||
+function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive()||
  (usingDiscipline()&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));}
 function canUseShared(){
  if(!usingDiscipline())return true;
@@ -1954,7 +1934,7 @@ function demo(){
  s.level=6;s.attributes={forca:2,agilidade:3,destreza:2,inteligencia:1,influencia:1,vigor:3};
  s.knowledges={alquimia:1,medicina:0,protecao:1};
  s.practices={armas_conjuracao:2,atletismo:1,furtividade:1,apresentacao:2};
- s.skills=["armas","criar-item-foco-magia","combinacao","combate"];
+ s.skills=["armas-medias","disciplina-avancada","criar-item-foco-magia"];
  s.creationLocked=true;s.xpEarned=80;s.weaponFocus="medio";
  s.xpHistory=[{at:new Date().toISOString(),amount:80,note:"XP de exemplo para testar evolução"}];
  s.courage=8;s.pp=1;s.life=maxLife(s)-1;
