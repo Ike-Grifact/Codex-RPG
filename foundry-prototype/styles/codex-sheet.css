@@ -283,3 +283,50 @@
  .codex-resource{min-width:80px}
  .codex-rpg .codex-tabs{gap:3px}
 }
+
+/* DNA em Foundry v14 · criação por 19 XP globais */
+.codex-wizard-layout:has([data-codex-gene]){grid-template-columns:1fr}
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar>h3,
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar>small,
+.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-xp,
+.codex-wizard-layout:has([data-codex-gene]) .codex-note{grid-column:1/-1}
+.codex-gene-layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(245px,.8fr);gap:14px;min-height:570px}
+.codex-gene-map{position:relative;min-height:570px;overflow:hidden;border:1px solid var(--codex-line);border-radius:12px;
+ background:var(--codex-inset);touch-action:pan-y;cursor:grab}
+.codex-gene-map:active{cursor:grabbing}
+.codex-gene-map .fp-gene-svg{width:100%;height:100%;display:block;color:var(--codex-muted)}
+.codex-gene-map .fp-gene-viewport{user-select:none}
+.codex-gene-map .fp-gene-dna-strand{fill:none;stroke-width:9;stroke-linecap:round;stroke-opacity:.24}
+.codex-gene-map .fp-gene-dna-strand.a{stroke:var(--codex-e)}
+.codex-gene-map .fp-gene-dna-strand.b{stroke:var(--codex-a)}
+.codex-gene-map .fp-gene-dna-rung{stroke:var(--codex-accent);stroke-width:3;stroke-opacity:.25}
+.codex-gene-map .fp-gene-cluster-label{fill:var(--codex-muted);font-size:12px;letter-spacing:.15em}
+.codex-gene-map .fp-gene-edge{stroke:var(--codex-muted);stroke-opacity:.19;stroke-width:1.4;pointer-events:none}
+.codex-gene-map .fp-gene-edge[data-gene-link="source"]{stroke:var(--codex-a);stroke-opacity:.35}
+.codex-gene-map .fp-gene-edge.completed{stroke:var(--codex-e);stroke-opacity:.55}
+.codex-gene-map .fp-gene-edge.active{stroke:var(--codex-accent);stroke-opacity:.9;stroke-width:3}
+.codex-gene-map .fp-gene-node{cursor:pointer}
+.codex-gene-map .fp-gene-hit{fill:transparent;pointer-events:all}
+.codex-gene-map .fp-gene-dot{fill:var(--codex-inset);stroke:var(--codex-muted);stroke-width:2.5}
+.codex-gene-map .fp-gene-node.is-owned .fp-gene-dot{fill:#267A45;stroke:#65c487}
+.codex-gene-map .fp-gene-node.is-available .fp-gene-dot{fill:#2369BB;stroke:#83baf7}
+.codex-gene-map .fp-gene-node.is-selected .fp-gene-dot{stroke:var(--codex-accent);stroke-width:4}
+.codex-gene-map .fp-gene-inside{fill:var(--codex-text);font-size:14px;pointer-events:none}
+.codex-gene-map .fp-gene-grade{fill:var(--codex-accent);font-size:12px;font-weight:800;pointer-events:none}
+.codex-gene-map .fp-gene-node-label{fill:var(--codex-text);stroke:var(--codex-inset);stroke-width:3;paint-order:stroke;
+ font-size:12px;font-weight:700;pointer-events:none}
+.codex-gene-layout .codex-gene-detail{border-radius:12px;border:1px solid var(--codex-line);padding:18px;background:var(--codex-panel);min-width:0}
+.codex-gene-detail h3{font-size:20px;margin:10px 0}
+.codex-gene-detail p,.codex-gene-detail small{color:var(--codex-muted);line-height:1.5}
+.codex-gene-detail dl{display:grid;gap:6px;margin:13px 0}
+.codex-gene-detail dt{font-weight:750;color:var(--codex-accent);font-size:11px}
+.codex-gene-detail dd{margin:0;font-size:12px}
+.codex-gene-detail button{margin:10px 5px 5px 0}
+.codex-gene-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px}
+.codex-gene-legend .owned{color:#5ec587}
+.codex-gene-legend .available{color:#84b9ff}
+.codex-gene-legend .locked{color:var(--codex-muted)}
+.codex-gene-buttons{display:flex;gap:6px;flex-wrap:wrap}
+@container (max-width:780px){.codex-gene-layout{grid-template-columns:1fr}.codex-gene-map{min-height:400px}}
+@container (max-width:460px){.codex-gene-map{min-height:320px}.codex-wizard-layout:has([data-codex-gene]) .codex-wizard-sidebar{grid-template-columns:1fr}}

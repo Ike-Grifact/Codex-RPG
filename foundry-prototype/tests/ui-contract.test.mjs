@@ -19,9 +19,10 @@ test("o jogo exibe apenas Perícias adquiridas e elementos da ficha",()=>{
  assert.match(sheet(),/codex\.ownedElements/);
  assert.match(js(),/SKILLS\.filter\(skill=>s\.skills\.includes\(skill\.id\)\)/);
 });
-test("assistente de criação tem cinco etapas e fecha sem reiniciar ficha anterior",()=>{
- for(const step of ["Identidade","Atributos","Formação","Perícias","Revisão"])assert.match(js(),new RegExp('"'+step+'"'));
+test("assistente de criação tem DNA, três etapas e fecha sem reiniciar ficha anterior",()=>{
+ for(const step of ["Identidade","Codex Genético","Revisão"])assert.match(js(),new RegExp('"'+step+'"'));
  assert.match(sheet(),/codex-wizard-nav/);
+ assert.match(sheet(),/data-codex-gene/);
  assert.match(sheet(),/data-action="finishCreation"/);
  assert.match(sheet(),/data-action="wizardStep"/);
  assert.match(js(),/system\.creationOpen":false/);

@@ -39,7 +39,7 @@
   <section class="codex-wizard">
     <header class="codex-wizard-intro">
       <small>CRIAÇÃO ASSISTIDA · APRENDIZ</small>
-      <h2>Construa seu <em>Codex.</em></h2>
+      <h2>Desenvolva seu <em>Codex Genético.</em></h2>
       <p>Uma escolha por vez. A ficha jogável aparece após a revisão; as regras e o orçamento são do Codex RPG.</p>
     </header>
     <nav class="codex-wizard-nav" aria-label="Etapas da criação">
@@ -65,42 +65,37 @@
         </div>
         <label>História e notas<textarea data-field="system.notes" rows="4">{{codex.s.notes}}</textarea></label>
         {{/if}}
-        {{#if codex.wizardAttributes}}
-        <span class="codex-wizard-kicker">02 · ATRIBUTOS</span>
-        <h2>Seu potencial natural.</h2><p>Distribua os <strong>6 XP de Atributos experimentais</strong>. Cada um começa com 1d4.</p>
-        {{/if}}
-        {{#if codex.wizardTraining}}
-        <span class="codex-wizard-kicker">03 · FORMAÇÃO</span>
-        <h2>O que você sabe fazer?</h2><p>Conhecimentos e Práticas compartilham os <strong>8 XP de Formação experimentais</strong>.</p>
-        {{/if}}
-        {{#each codex.wizardGroups}}
-        <section class="codex-wizard-source-group"><h3>{{title}}</h3><div class="codex-grade-grid">
-        {{#each sources}}<div class="codex-grade codex-wizard-grade">
-          <span><strong>{{name}}</strong><small>Grau {{grade}} · {{dice}}</small></span>
-          <div>
-            <button type="button" data-action="adjustGrade" data-group="{{group}}" data-key="{{key}}" data-delta="-1" {{#unless grade}}disabled{{/unless}} aria-label="Reduzir grau de {{name}}">−</button>
-            <button type="button" data-action="adjustGrade" data-group="{{group}}" data-key="{{key}}" data-delta="1" {{#unless nextCost}}disabled{{/unless}} aria-label="Comprar grau de {{name}}">+ {{nextCost}} XP</button>
-          </div>
-        </div>{{/each}}</div></section>
-        {{/each}}
-        {{#if codex.wizardSkills}}
-        <span class="codex-wizard-kicker">04 · PERÍCIAS</span>
-        <h2>Escolha suas especializações.</h2>
-        <p>Os <strong>5 XP de Perícias iniciais</strong> são definidos. Custo e requisitos são conferidos em cada compra.</p>
-        <label>Encontrar Perícia<input type="search" data-skill-search value="{{codex.skillSearch}}" placeholder="Buscar pelo nome ou efeito"></label>
-        <div class="codex-skills-list">
-          {{#each codex.skills}}
-          <article class="codex-skill">
-            <details><summary>{{name}} · {{cost}} XP {{#if owned}}· adquirida{{/if}}</summary><p>{{detail}}</p></details>
-            <small>{{request.label}}</small>
-            {{#if owned}}<button type="button" data-action="toggleSkill" data-key="{{id}}">Reverter</button>
-            {{else}}<button type="button" data-action="toggleSkill" data-key="{{id}}" {{#unless canBuy}}disabled{{/unless}}>Adquirir</button>{{/if}}
-          </article>
-          {{else}}<p>Não há Perícias com este filtro.</p>{{/each}}
+        {{#if codex.wizardGenetic}}
+        <span class="codex-wizard-kicker">02 · CODEX GENÉTICO</span>
+        <h2>Seu DNA, suas escolhas.</h2>
+        <p>Desenvolva primeiro um <strong>Atributo</strong> na hélice central. Depois, escolha ao menos um <strong>Conhecimento ou Prática</strong> da órbita. As Perícias ficam azuis conforme o personagem atende aos requisitos. Distribua <strong>19 XP</strong> livremente, respeitando os custos dos Graus.</p>
+        <div class="codex-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível para comprar</span><span class="locked">● Bloqueado ou futuro</span></div>
+        <div class="codex-gene-layout">
+          <div class="codex-gene-map" data-codex-gene aria-label="Grafo do Codex Genético: Atributos centrais, Conhecimentos e Práticas orbitais e Perícias"></div>
+          <aside class="codex-gene-detail" aria-live="polite">
+            {{#with codex.geneDetail}}
+              <span class="codex-gene-state is-{{state}}">{{#if isSkill}}Perícia{{else}}Fonte do personagem{{/if}} · {{state}}</span>
+              <h3>{{name}}</h3>
+              {{#if isSkill}}
+                <p>{{detail}}</p>
+                <dl><dt>Requisitos</dt><dd>{{request}}</dd><dt>Custo</dt><dd>{{cost}} XP</dd></dl>
+                {{#if owned}}<button type="button" data-action="toggleSkill" data-key="{{id}}">Reverter Perícia</button>
+                {{else}}<button type="button" class="codex-primary" data-action="toggleSkill" data-key="{{id}}" {{#unless canBuy}}disabled{{/unless}}>Adquirir por {{cost}} XP</button>{{/if}}
+              {{else}}
+                <p>Grau {{grade}} · {{dice}}</p>
+                <p>Próximo Grau: {{nextCost}} XP</p>
+                <div class="codex-gene-buttons">
+                  <button type="button" data-action="adjustGrade" data-group="{{sourceGroup}}" data-key="{{key}}" data-delta="-1" {{#unless canLower}}disabled{{/unless}}>− Grau</button>
+                  <button type="button" class="codex-primary" data-action="adjustGrade" data-group="{{sourceGroup}}" data-key="{{key}}" data-delta="1" {{#unless canRaise}}disabled{{/unless}}>+ Grau · {{nextCost}} XP</button>
+                </div>
+              {{/if}}
+            {{/with}}
+            <small>As conexões são afinidades temáticas. O requisito válido é o descrito no verbete e verificado pelo sistema.</small>
+          </aside>
         </div>
         {{/if}}
         {{#if codex.wizardReview}}
-        <span class="codex-wizard-kicker">05 · REVISÃO FINAL</span><h2>Este é seu Aprendiz.</h2>
+        <span class="codex-wizard-kicker">03 · REVISÃO FINAL</span><h2>Este é seu Aprendiz.</h2>
         <p>Confira o nome, os investimentos e o conjunto de Perícias adquiridas antes de concluir.</p>
         <div class="codex-wizard-review">
           <strong>{{codex.name}}</strong>
@@ -118,11 +113,11 @@
         <small>IDENTIDADE EM FORMAÇÃO</small>
         <h3>{{codex.name}}</h3><p>{{codex.s.concept}}</p>
         <div class="codex-wizard-xp"><span>XP gasto</span><strong>{{codex.ledger.spent}} / {{codex.ledger.grant}}</strong></div>
-        <div class="codex-wizard-budget"><span>Atributos</span><b>{{codex.ledger.attributes}} / 6</b></div>
-        <div class="codex-wizard-budget"><span>Formação</span><b>{{codex.ledger.training}} / 8</b></div>
-        <div class="codex-wizard-budget"><span>Perícias</span><b>{{codex.ledger.skills}} / 5</b></div>
+        <div class="codex-wizard-budget"><span>Atributos</span><b>{{codex.ledger.attributes}} XP</b></div>
+        <div class="codex-wizard-budget"><span>Formação</span><b>{{codex.ledger.training}} XP</b></div>
+        <div class="codex-wizard-budget"><span>Perícias</span><b>{{codex.ledger.skills}} XP</b></div>
         <div class="codex-wizard-budget"><span>Saldo disponível</span><b>{{codex.ledger.left}} XP</b></div>
-        <p class="codex-note">6 XP de Atributos e 8 XP de Formação são experimentais; o orçamento de 5 XP de Perícias é definido.</p>
+        <p class="codex-note">Orçamento inicial DEFINIDO: 19 XP compartilhados, sem cotas por categoria. O criador exige um Atributo e um Conhecimento ou Prática de Grau 1.</p>
       </aside>
     </div>
     <footer class="codex-wizard-footer">

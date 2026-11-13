@@ -86,10 +86,10 @@ test("nove dados no máximo, retenção 2 a 4 e XP monstruoso separado",()=>{
  const s=actor("creature",{xp:8,attributes:{forca:2},practices:{}}).system;
  assert.equal(xpLedger({...s,monsterRules:true}).attributes,8);
  assert.equal(canSpendXP({...s,monsterRules:true},2,"attributes"),false);
- assert.equal(canSpendXP({...a.system,attributes:{forca:2},practices:{armas_conjuracao:1},skills:[]},4,"attributes"),false);
+ assert.equal(canSpendXP({...a.system,attributes:{forca:2},practices:{armas_conjuracao:1},skills:[]},4,"attributes"),true);
  assert.equal(xpLedger({skills:["armas","combate"]}).skills,3);
  const retired={...actor().system,xpRetired:{attributes:5,training:0,skills:0}};
- assert.equal(canSpendXP(retired,1,"attributes"),false);
+ assert.equal(canSpendXP(retired,1,"attributes"),true);
  assert.equal(canSpendXP(retired,2,"training"),true);
  assert.equal(xpLedger(retired).retired,5);
  assert.match(skillRequirements(actor().system,"maestria-manejo-duplo").label,/Disciplina Avançada/);
