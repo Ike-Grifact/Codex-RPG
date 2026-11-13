@@ -111,12 +111,33 @@ function card(n,edit){
   '<line class="fp-gene-card-separator" x1="'+(x+17)+'" x2="'+(x+width-17)+'" y1="'+(y+38)+'" y2="'+(y+38)+'"/>'+
   control+dice+'</g>';
 }
+/* Rótulos íntegros, em linhas previsíveis de até 20 caracteres.
+ * O espaçamento de 112 unidades entre linhas do mapa comporta até três
+ * linhas com 18 unidades de altura, sem invadir a bolinha da linha seguinte. */
+function splitSkillLabel(name){
+ const maxChars=20,words=String(name||"").trim().split(/\s+/),lines=[];
+ let current="";
+ for(const word of words){
+  // Evita cortar palavras usuais; nomes de habilidade não têm espaços no meio da palavra.
+  if(word.length>maxChars){
+   if(current){lines.push(current);current="";}
+   for(let i=0;i<word.length;i+=maxChars)lines.push(word.slice(i,i+maxChars));
+   continue;
+  }
+  const next=current?current+" "+word:word;
+  if(current&&next.length>maxChars){lines.push(current);current=word;}
+  else current=next;
+ }
+ if(current)lines.push(current);
+ return lines.length?lines:[""];
+}
 function skill(n){
- const shortened=n.name.length>22?n.name.slice(0,21)+"…":n.name;
+ const lines=splitSkillLabel(n.name);
+ const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
-  '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+esc(shortened)+'</text></g>';
+  '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
 function draw(nodes,height,selected,affinity,branches,edit,camera){
  const byId=new Map(nodes.map(n=>[n.id,n]));
