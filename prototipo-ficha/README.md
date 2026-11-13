@@ -24,6 +24,16 @@ Também é possível baixar o repositório e abrir `prototipo-ficha/index.html` 
 
 Esta pasta é a **única interface ativa** para criação e ficha. O antigo `criador.html` direciona para ela; o programa antigo `assets/creator.js` fica como código histórico, sem executar no site. A ficha usa sua chave própria de `localStorage`, pode importar os dados legados da chave antiga e **não apaga** a ficha original armazenada.
 
+## Atualização do Codex Genético — mapa de fontes e evolução (prévia)
+
+Na visualização alternativa, o Codex Genético apresenta **Atributos em uma coluna central**, **Conhecimentos à esquerda** e **Práticas à direita**, com organização estável para facilitar a leitura. As conexões só aparecem ao selecionar uma fonte e indicam **afinidade temática**, nunca pré-requisitos automáticos.
+
+Os Atributos, Conhecimentos e Práticas exibem os **dados atuais acima de cada nó**, o **grau** e botões **+ / −**. Os ajustes são uma **prévia de evolução**: o XP não é debitado da ficha até selecionar **Confirmar evolução**; é possível descartar. O painel mostra XP atual, disponível e gasto. O mesmo fluxo está disponível no Codex Genético da ficha finalizada, respeitando os limites de reembolso e os requisitos vigentes.
+
+As bolinhas de Perícias aparecem por padrão apenas quando a Perícia já foi adquirida ou tem **requisitos e XP atendidos**. O botão **Mostrar futuras ramificações** revela opções bloqueadas somente para consulta, sem permitir comprá-las indevidamente. O detalhe do nó fica **abaixo do mapa**, para evitar o corte lateral e preservar a navegação em telas pequenas.
+
+**Status:** visualização em playtest; nenhuma regra mecânica, requisito ou custo foi modificado por essas alterações.
+
 ## Como experimentar — fluxo de criação vigente (SRD v0.39)
 
 O criador apresenta **quatro etapas**, sem classe obrigatória:
