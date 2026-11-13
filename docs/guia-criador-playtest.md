@@ -16,6 +16,15 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 **Práticas (6):** **Disciplina**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. Disciplina é a Prática compartilhada para aplicações marciais e mágicas, sob as habilitações pertinentes; não se compram Armas e Conjuração como duas fontes independentes. Punhos permanece uma especialização marcial. O grau 1 de Disciplina custa 2 XP, pagos uma vez, e oferece 1d10. A criação não impõe profissão obrigatória.
 
+## Fluxo guiado da criação
+
+1. **Identidade:** fornecer nome, conceito, origem e características de identidade.
+2. **Escolher desenvolvimento:** conhecer Atributos, Conhecimentos e Práticas; selecionar uma categoria para abrir primeiro, sem travar as demais.
+3. **Distribuir XP:** o padrão é um **visualizador de listas** com abas para Atributos, Conhecimentos, Práticas e Perícias. Um botão alterna para o **Codex Genético**; as duas visões compram graus na mesma ficha e usam o mesmo XP.
+4. **Revisão:** concluir somente após adquirir um Atributo e um Conhecimento ou Prática no grau 1. O restante do XP é livre.
+
+A seleção inicial não implica comprar nessa categoria antes das outras. Também é possível alternar para a lista depois de usar o mapa, sem reiniciar o personagem.
+
 ## O que funciona
 
 - Distribuir XP em seis Atributos, Conhecimentos, Práticas e Perícias iniciais com seus preços.
@@ -30,7 +39,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 ## Como desenhar uma Perícia experimental
 
-Na etapa **04 · Perícias iniciais**, expanda **“Desenhar uma Perícia experimental”** e preencha:
+Quando estiver disponível o editor de Perícias experimentais, preencha os seguintes campos:
 
 1. **Nome:** distinto e curto.
 2. **Custo em XP:** hipótese de 1 a 5.
