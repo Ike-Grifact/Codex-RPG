@@ -31,10 +31,20 @@ Em **Criar Conflito**, use **+ Humano comum no DNA** para abrir `prototipo-ficha
 
 A área do DNA e a área de conflitos precisam estar sob a **mesma origem** (host e porta) para que o envio via armazenamento local funcione. O modo rápido funciona independentemente do sistema Foundry e não instala Actors diretamente no mundo.
 
+## Rolagens básicas e gasto de Pavor (playtest do editor web)
+
+- **Monstros extraordinários e criaturas comuns:** seção de rolagem básica com dois Atributos pertinentes, faces oficiais simbólicas, seleção dos dados mantidos e DE escolhida. A interface não deve ser confundida com a composição avançada: Atributos extras, d20 especial comprado, equipamento, efeitos de Perícias e ações conjuntas ainda exigem a ficha/fluxo completo.
+- **Antecipar:** permite anular Pavor (1A por P), converter 2A em 1E ou reservar 1A para passar oportunidade, sem gastar o mesmo A duas vezes. A prévia não debita recursos.
+- **Retenção monstruosa:** custa 1P **local** por dado mantido além de dois; desconto somente após confirmação explícita e desde que haja saldo. Críticos geram Pavor segundo o SRD, primeiro até o teto local do monstro, depois na reserva pública. Pavor descartado não conta.
+- **Ação conjunta hostil:** para Líder vivo com participantes disponíveis, gasto público de **1P para o Líder + 1 aliado** ou **2P para Líder + 2 aliados**, conforme seção 0-R.4 da v0.39. O histórico de custo fixo de 3P está **REVOGADO**. Os participantes, o alvo, os demais custos locais e a rolagem conjunta permanecem procedimentos manuais.
+- **Não automatizados:** iniciar um conflito com gasto público de custo **PENDENTE**, aplicar dano corporal à Vida, transferir Pavor residual por proximidade e distribuir Coragem entre alvos com empates. Não presumir que cliques manuais da reserva pública sejam uma ativação automática.
+- **Humanoides:** requerem o fluxo completo de fontes do jogador/Foundry, com Perícias e equipamento; não herdam as duas fontes monstruosas do simulador básico.
+- **Limitação:** o resultado confirmado deve ser registrado pelo Narrador e verificado quanto a pertinência; até aqui não há sincronização da ferramenta web com Actors/combate no cliente Foundry.
+
 ## Testes
 
-`node --test criar-conflito/rules.test.mjs foundry-prototype/tests/rules.test.mjs` para cálculos.
+`node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs foundry-prototype/tests/rules.test.mjs` para cálculos.
 
-`node .github/tests/conflito-e2e.cjs` e `node .github/tests/humanoide-rapido-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/criador-e2e.yml` faz a preparação automaticamente.
+`node .github/tests/conflito-e2e.cjs`, `node .github/tests/conflito-rolagens-e2e.cjs` e `node .github/tests/humanoide-rapido-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/criador-e2e.yml` faz a preparação automaticamente.
 
 **Importante**: a ferramenta é independente de autenticação; dados ficam no armazenamento do navegador. Exporte JSON antes de limpar o navegador ou compartilhar outro computador.
