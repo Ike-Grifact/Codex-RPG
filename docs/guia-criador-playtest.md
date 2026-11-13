@@ -21,9 +21,12 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 1. **Identidade:** informar nome, conceito, origem e identidade.
 2. **Escolhas iniciais:** primeiro selecionar **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos, dados e custo de 1 XP no grau 1. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
 3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
-4. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1.
+4. **VT e itens iniciais:** o playtest utiliza **20 VT experimentais**, valor separado dos 20 XP, distribuídos entre cinco recursos comuns. O catálogo G1 oferece compras opcionais com preços ainda **PROPOSTOS**, sem itens gratuitos presumidos. Equipamentos adquiridos entram no inventário da ficha.
+5. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1, conferindo também recursos e itens.
 
 **DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 20 XP; saldo livre de 17 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
+
+No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados têm as formas do rolador. Perícias **roxas** têm XP suficiente, mas faltam requisitos, enquanto as **azuis** podem ser compradas. Os detalhes abrem sobre o mapa; as conexões representam afinidades temáticas, não requisitos.
 
 ## O que funciona
 
