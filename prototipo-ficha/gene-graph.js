@@ -192,7 +192,8 @@ function syncCanvas(root){
 }
 function applyTransform(root){
  const cam=getCamera(root),v=root.querySelector(".fp-gene-viewport");
- if(v)v.setAttribute("transform","translate("+cam.x+" "+cam.y+") scale("+cam.zoom+")");
+ const rounded=n=>Math.abs(n)<1e-7?"0":String(Number(n.toFixed(4)));
+ if(v)v.setAttribute("transform","translate("+rounded(cam.x)+" "+rounded(cam.y)+") scale("+rounded(cam.zoom)+")");
  const label=root.querySelector("[data-gene-scale]");
  if(label)label.textContent=Math.round(cam.zoom*100)+"%";
 }
