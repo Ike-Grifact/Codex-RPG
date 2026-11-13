@@ -196,7 +196,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const chosen=geneNodes.find(node=>node.id===this._geneSelected)||geneNodes[0];
    const isSkill=chosen.type==="skill",sourceGroup=chosen.type==="attr"?"attribute":chosen.type==="know"?"knowledge":"practice";
    ctx.codex.geneDetail={...chosen,isSkill,sourceGroup,
-    canRaise:!isSkill&&chosen.state==="available",canLower:!isSkill&&chosen.grade>0,
+    canRaise:!isSkill&&chosen.next!==null&&(chosen.group==="attribute"||startedAttribute)&&
+      canSpendXP(s,chosen.next,chosen.group==="attribute"?"attributes":"training"),canLower:!isSkill&&chosen.grade>0,
     canBuy:isSkill&&chosen.state==="available",owned:isSkill&&chosen.state==="owned",
     request:isSkill?skillRequirements(s,chosen.id).label:"",
     nextCost:chosen.next??0};
