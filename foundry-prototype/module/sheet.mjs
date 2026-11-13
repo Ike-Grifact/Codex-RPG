@@ -9,15 +9,17 @@ const GROUPS={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
 const FIELDS={attribute:"attributes",knowledge:"knowledges",practice:"practices"};
 const same=(a,b)=>a?.key===b?.key&&a?.group===b?.group;
 const attributes=[["Atributos","attribute"],["Práticas","practice"],["Conhecimentos","knowledge"]];
-const tabs=[["overview","Resumo"],["training","Evolução e Perícias"],["inventory","Inventário e Combate"]];
+const tabs=[["overview","Jogar"],["training","Evolução"],["skills","Perícias"],["inventory","Inventário e Combate"]];
+const creationSteps=[["Identidade","Quem é seu Aprendiz?"],["Atributos","Seu potencial"],["Formação","Conhecimentos e Práticas"],["Perícias","Especialização"],["Revisão","Confirmar personagem"]];
 const reported=error=>{console.error("Codex RPG",error);ui.notifications.error("Codex · "+error.message);};
 const notify=message=>ui.notifications.warn(message);
 const selectedOptions=(values,value)=>values.map(([key,label])=>({key,label,selected:key===value}));
 
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
- static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:960,height:690},
+ static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1050,height:780},
   window:{resizable:true},actions:{
    selectTab:CodexCharacterSheet.selectTab,selectMode:CodexCharacterSheet.selectMode,
+   wizardStep:CodexCharacterSheet.wizardStep,finishCreation:CodexCharacterSheet.finishCreation,
    chooseSource:CodexCharacterSheet.chooseSource,clearDraft:CodexCharacterSheet.clearDraft,
    executeRoll:CodexCharacterSheet.executeRoll,toggleKept:CodexCharacterSheet.toggleKept,finalizeRoll:CodexCharacterSheet.finalizeRoll,
    adjustGrade:CodexCharacterSheet.adjustGrade,toggleSkill:CodexCharacterSheet.toggleSkill,adjustResource:CodexCharacterSheet.adjustResource,
@@ -29,6 +31,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  _opts=options();
  _tab="overview";
  _mode="play";
+ _wizardStep=0;
+ _wizardReached=0;
+ _creationVisited=false;
+ _skillSearch="";
  _busy=false;
  _refreshHooks=[];
 
@@ -49,6 +55,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _prepareContext(options){
   const ctx=await super._prepareContext(options), actor=this.actor,s=rulesFor(actor);
   const monster=actor.type==="creature",pavor=usesPavor(actor);
+  if(!this._creationVisited){this._creationVisited=true;
+   if(!monster&&actor.isOwner&&s.creationOpen){this._mode="edit";this._tab="training";}
+  }
+  const wizard=this._tab==="training"&&this.editing&&!!s.creationOpen&&!monster;
+  const activeStep=this._wizardStep;
   const items=actor.items.filter(i=>i.type==="equipment");
   const ledger=xpLedger(s), pending=this.pending, selection=this._draft;
   const targets=[...game.user.targets],inCombat=!!game.combat?.started;
@@ -113,7 +124,21 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    editing:this.editing,admin:this.administrative,creation:this.inCreation,
    canReverse:this.inCreation||this.administrative,humanoid:actor.type==="humanoid",
    modes:selectedOptions(actor.isOwner?[["play","Jogar"],["edit",this.inCreation?"Criar":"Editar"],...(game.user.isGM?[["admin","Administração"]]:[])]:[],this._mode),
-   tabs:selectedOptions(tabs,this._tab),overview:this._tab==="overview",training:this._tab==="training",inventory:this._tab==="inventory",
+   tabs:selectedOptions(tabs,this._tab),overview:this._tab==="overview",training:this._tab==="training"&&!wizard,
+   skillsPage:this._tab==="skills",inventory:this._tab==="inventory",
+   wizard,wizardStep:activeStep,wizardSteps:creationSteps.map(([name,subtitle],i)=>({
+    index:i,name,subtitle,selected:i===activeStep,complete:i<activeStep,available:i<=this._wizardReached+1,next:i===activeStep+1,prev:i===activeStep-1
+   })),wizardTitle:creationSteps[activeStep][0],wizardSubtitle:creationSteps[activeStep][1],
+   wizardIdentity:activeStep===0,wizardAttributes:activeStep===1,wizardTraining:activeStep===2,
+   wizardSkills:activeStep===3,wizardReview:activeStep===4,
+   wizardGroups:groups.filter(g=>activeStep===1?g.title==="Atributos":activeStep===2&&g.title!=="Atributos"),
+   wizardCanFinish:ledger.left>=0&&!!String(actor.name||"").trim(),wizardPrev:activeStep>0,
+   wizardLast:activeStep===creationSteps.length-1,skillSearch:this._skillSearch,
+   ownedSkills:monster?[]:SKILLS.filter(skill=>s.skills.includes(skill.id)).map(skill=>({
+    name:skill.name,detail:skill.detail.slice(0,130),element:["fogo","agua","vento","terra","sagrado","trevas","veneno","sangue"].includes(skill.id)})),
+   ownedElements:monster?[]:SKILLS.filter(skill=>s.skills.includes(skill.id)&&["fogo","agua","vento","terra","sagrado","trevas","veneno","sangue"].includes(skill.id)).map(skill=>({name:skill.name})),
+   equippedGear:items.filter(i=>i.system.equipped).map(i=>({name:i.name,summary:(i.system.properties||[]).join(" · "),
+    die:i.system.die?"d"+i.system.die:"Proteção"})),
    resources,de:defenseDE(actor,s.defense),defense:selectedOptions([["natural","Defesa natural"],["equipped","Defesa com armadura"],["dodge","Esquiva"]],s.defense),
    balance:balance(s),capacity:loadCapacity(s),load:Number(items.reduce((total,i)=>total+i.system.weight*i.system.quantity,0).toFixed(3)),
    ledger,groups,
@@ -124,7 +149,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     .filter(src=>!same(src,selection.base)&&!same(src,selection.attribute)).map(src=>({...src,key:src.group+"."+src.key,selected:same(src,selection.complement)})):[],
    sourceGroups:groups.filter(group=>monster||group.title!=="Atributos"),attributeGroup:groups[0],
    pickAttribute:!!selection.base&&!pending,prepare,result,hasPending:!!pending,
-   skills:monster?[]:SKILLS.map(skill=>{
+   skills:monster?[]:SKILLS.filter(skill=>!this._skillSearch.trim()||
+   (skill.name+" "+skill.detail).toLocaleLowerCase("pt-BR").includes(this._skillSearch.toLocaleLowerCase("pt-BR").trim())).map(skill=>{
     const request=skillRequirements(s,skill.id),owned=s.skills.includes(skill.id);
     return {...skill,request,owned,canBuy:request.met&&canSpendXP(s,skill.cost,"skills")};
    }),
@@ -158,6 +184,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _change(event){
   const input=event.target;
   if(!this.actor.isOwner||this._busy)return;
+  if(input.dataset.skillSearch!==undefined){this._skillSearch=String(input.value||"").slice(0,100);await this.render();return;}
   if(input.dataset.option&&!this.pending&&this._mode==="play"){
    const key=input.dataset.option;
    if(key==="complement"){
@@ -198,6 +225,22 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    });
   }
  }
+ static async wizardStep(event,button){
+  if(!this.inCreation||!this.editing||this.actor.type==="creature"||this.pending)return;
+  const next=Math.floor(Number(button.dataset.step));
+  if(!Number.isInteger(next)||next<0||next>=creationSteps.length||next>this._wizardReached+1)return;
+  if(next>0&&!String(this.actor.name||"").trim())return notify("Informe um nome antes de avançar.");
+  this._wizardStep=next;this._wizardReached=Math.max(this._wizardReached,next);await this.render();
+ }
+ static async finishCreation(){
+  if(!this.inCreation||!this.editing||this.actor.type==="creature"||this.pending)return;
+  if(xpLedger(rulesFor(this.actor)).left<0)return notify("Investimento acima do XP disponível.");
+  const approved=await foundry.applications.api.DialogV2.confirm({
+   window:{title:"Concluir criação · Codex RPG"},
+   content:"<p>Concluir a criação do Aprendiz? As Perícias e fontes compradas continuam na ficha. O XP inicial não usado permanece livre conforme as regras atuais.</p>",rejectClose:false});
+  if(!approved)return;
+  await this.run(async()=>{await this.actor.update({"system.creationOpen":false});this._mode="play";this._tab="overview";});
+ }
  static async selectTab(event,button){
   if(!tabs.some(([key])=>key===button.dataset.tab))return;
   this._tab=button.dataset.tab;await this.render();
@@ -205,7 +248,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async selectMode(event,button){
   const mode=button.dataset.mode;
   if(!this.actor.isOwner||this.pending||!["play","edit","admin"].includes(mode)||mode==="admin"&&!game.user.isGM)return;
-  this._mode=mode;this._tab=mode==="play"?"overview":"training";await this.render();
+  this._mode=mode;this._tab=mode==="play"?"overview":"training";if(mode==="edit"&&this.inCreation)this._wizardStep=0;await this.render();
  }
  static async chooseSource(event,button){
   if(this._busy||this.pending||this._mode!=="play"||!this.actor.isOwner)return;

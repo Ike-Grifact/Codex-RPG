@@ -39,3 +39,11 @@ node --test foundry-prototype/tests/*.test.mjs
 No Foundry v14, crie um personagem com Disciplina 1 e Perícia em Armas Leves. Adicione e equipe Faca G1. Em combate, mire um Token com DE conhecida, role Disciplina + Atributo, reabra a ficha, escolha dados e publique no chat. Repita sem alvo e sem a Perícia. Com duas sessões, ajuste a HUD como Narrador e verifique permissões e visibilidade individual como jogador.
 
 Referências de engenharia consultadas: D&D5e 5.3.3 para composição das fichas e preparação, Assimilação para ApplicationV2, inserção no topo do canvas, integração da rolagem e testes. Implementação, catálogo, símbolos e estilos do Codex.
+
+## Interface 0.3.1 — criação e páginas separadas (trabalho no PR #2)
+
+A ficha jogável utiliza a identidade visual do site (base azul-escura e detalhes dourados) sem copiar regras de sistemas terceiros. As páginas são **Jogar**, **Evolução**, **Perícias** e **Inventário e Combate**. A página Jogar mostra somente Perícias adquiridas, elementos e itens equipados. A compra e leitura das Perícias ficam em sua própria página.
+
+Para **novos Personagens/Humanoides**, o campo `creationOpen` começa ligado e a criação assistida inicia em 5 etapas: Identidade → Atributos → Formação → Perícias → Revisão. O fluxo reaproveita as ações existentes de compra por XP e verificação dos requisitos, não cria uma segunda economia. Fichas antigas com criação encerrada não são reiniciadas. O monstro extraordinário continua com sua ficha de edição por Grau e XP próprio.
+
+**Verificação necessária em Foundry real:** redimensionamento da janela, rolagem após voltar à página Jogar, reversão de XP e fluxo de criação antes e depois da finalização. Não foi importada a economia de Assimilação; apenas a organização por etapas serviu de referência.

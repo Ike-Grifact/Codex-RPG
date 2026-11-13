@@ -15,7 +15,7 @@ const schema=(monster=false)=>({
  life:new F.SchemaField({value:nn(3),medical:new F.BooleanField({initial:false})}),
  courage:nn(10),pp:nn(0),xp:nn(0),
  xpRetired:new F.SchemaField({attributes:nn(),training:nn(),skills:nn()}),
- creationOpen:new F.BooleanField({initial:false}),
+ creationOpen:new F.BooleanField({initial:!monster}),
  opposition:new F.BooleanField({initial:false}),
  defense:new F.StringField({required:true,choices:["natural","equipped","dodge"],initial:"natural"}),
  skillCosts:new F.ObjectField({initial:{}}),

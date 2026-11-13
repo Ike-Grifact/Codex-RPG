@@ -6,6 +6,7 @@
 <section class="codex-foundry-root">
   <header class="codex-header">
     <img class="codex-portrait" src="{{codex.portrait}}" alt="">
+    <div class="codex-brand-rune" aria-hidden="true">ᛋ <span>ᚨ</span> ᚦ</div>
     <div class="codex-identity">
       <small>{{codex.role}} {{#if codex.monster}}· G{{codex.s.threatGrade}}{{else}}· Nível {{codex.s.level}}{{/if}}</small>
       <h1>{{codex.name}}</h1>
@@ -33,6 +34,109 @@
     {{#each codex.tabs}}<button type="button" data-action="selectTab" data-tab="{{key}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">{{label}}</button>{{/each}}
   </nav>
   <div class="codex-scroll">
+
+  {{#if codex.wizard}}
+  <section class="codex-wizard">
+    <header class="codex-wizard-intro">
+      <small>CRIAÇÃO ASSISTIDA · APRENDIZ</small>
+      <h2>Construa seu <em>Codex.</em></h2>
+      <p>Uma escolha por vez. A ficha jogável aparece após a revisão; as regras e o orçamento são do Codex RPG.</p>
+    </header>
+    <nav class="codex-wizard-nav" aria-label="Etapas da criação">
+      {{#each codex.wizardSteps}}
+      <button type="button" data-action="wizardStep" data-step="{{index}}"
+       aria-current="{{#if selected}}step{{else}}false{{/if}}" {{#unless available}}disabled{{/unless}}>
+       <span>{{index}}</span><strong>{{name}}</strong><small>{{subtitle}}</small>
+      </button>
+      {{/each}}
+    </nav>
+    <div class="codex-wizard-layout">
+      <div class="codex-wizard-stage">
+        {{#if codex.wizardIdentity}}
+        <span class="codex-wizard-kicker">01 · IDENTIDADE</span>
+        <h2>Quem você quer ser?</h2>
+        <p>Todo personagem começa como Aprendiz. O conceito não limita as profissões emergentes.</p>
+        <div class="codex-controls">
+          <label>Nome<input data-field="name" value="{{codex.name}}" placeholder="Nome do Aprendiz"></label>
+          <label>Conceito / profissão<input data-field="system.concept" value="{{codex.s.concept}}" placeholder="Quem pretende se tornar?"></label>
+          <label>Origem<input data-field="system.origin" value="{{codex.s.origin}}"></label>
+          <label>Virtude<input data-field="system.virtue" value="{{codex.s.virtue}}"></label>
+          <label>Personalidade<input data-field="system.personality" value="{{codex.s.personality}}"></label>
+        </div>
+        <label>História e notas<textarea data-field="system.notes" rows="4">{{codex.s.notes}}</textarea></label>
+        {{/if}}
+        {{#if codex.wizardAttributes}}
+        <span class="codex-wizard-kicker">02 · ATRIBUTOS</span>
+        <h2>Seu potencial natural.</h2><p>Distribua os <strong>6 XP de Atributos experimentais</strong>. Cada um começa com 1d4.</p>
+        {{/if}}
+        {{#if codex.wizardTraining}}
+        <span class="codex-wizard-kicker">03 · FORMAÇÃO</span>
+        <h2>O que você sabe fazer?</h2><p>Conhecimentos e Práticas compartilham os <strong>8 XP de Formação experimentais</strong>.</p>
+        {{/if}}
+        {{#each codex.wizardGroups}}
+        <section class="codex-wizard-source-group"><h3>{{title}}</h3><div class="codex-grade-grid">
+        {{#each sources}}<div class="codex-grade codex-wizard-grade">
+          <span><strong>{{name}}</strong><small>Grau {{grade}} · {{dice}}</small></span>
+          <div>
+            <button type="button" data-action="adjustGrade" data-group="{{group}}" data-key="{{key}}" data-delta="-1" {{#unless grade}}disabled{{/unless}} aria-label="Reduzir grau de {{name}}">−</button>
+            <button type="button" data-action="adjustGrade" data-group="{{group}}" data-key="{{key}}" data-delta="1" {{#unless nextCost}}disabled{{/unless}} aria-label="Comprar grau de {{name}}">+ {{nextCost}} XP</button>
+          </div>
+        </div>{{/each}}</div></section>
+        {{/each}}
+        {{#if codex.wizardSkills}}
+        <span class="codex-wizard-kicker">04 · PERÍCIAS</span>
+        <h2>Escolha suas especializações.</h2>
+        <p>Os <strong>5 XP de Perícias iniciais</strong> são definidos. Custo e requisitos são conferidos em cada compra.</p>
+        <label>Encontrar Perícia<input type="search" data-skill-search value="{{codex.skillSearch}}" placeholder="Buscar pelo nome ou efeito"></label>
+        <div class="codex-skills-list">
+          {{#each codex.skills}}
+          <article class="codex-skill">
+            <details><summary>{{name}} · {{cost}} XP {{#if owned}}· adquirida{{/if}}</summary><p>{{detail}}</p></details>
+            <small>{{request.label}}</small>
+            {{#if owned}}<button type="button" data-action="toggleSkill" data-key="{{id}}">Reverter</button>
+            {{else}}<button type="button" data-action="toggleSkill" data-key="{{id}}" {{#unless canBuy}}disabled{{/unless}}>Adquirir</button>{{/if}}
+          </article>
+          {{else}}<p>Não há Perícias com este filtro.</p>{{/each}}
+        </div>
+        {{/if}}
+        {{#if codex.wizardReview}}
+        <span class="codex-wizard-kicker">05 · REVISÃO FINAL</span><h2>Este é seu Aprendiz.</h2>
+        <p>Confira o nome, os investimentos e o conjunto de Perícias adquiridas antes de concluir.</p>
+        <div class="codex-wizard-review">
+          <strong>{{codex.name}}</strong>
+          <span>{{codex.s.concept}} · {{codex.s.origin}}</span>
+          <p>Vida {{codex.s.life.value}} · DE {{codex.de}} · {{codex.ledger.spent}} XP investidos</p>
+        </div>
+        <h3>Suas Perícias</h3>
+        <div class="codex-owned-list">
+        {{#each codex.ownedSkills}}<div><strong>{{name}}</strong><small>{{detail}}</small></div>
+        {{else}}<p>Nenhuma Perícia comprada.</p>{{/each}}
+        </div>
+        {{/if}}
+      </div>
+      <aside class="codex-wizard-sidebar">
+        <small>IDENTIDADE EM FORMAÇÃO</small>
+        <h3>{{codex.name}}</h3><p>{{codex.s.concept}}</p>
+        <div class="codex-wizard-xp"><span>XP gasto</span><strong>{{codex.ledger.spent}} / {{codex.ledger.grant}}</strong></div>
+        <div class="codex-wizard-budget"><span>Atributos</span><b>{{codex.ledger.attributes}} / 6</b></div>
+        <div class="codex-wizard-budget"><span>Formação</span><b>{{codex.ledger.training}} / 8</b></div>
+        <div class="codex-wizard-budget"><span>Perícias</span><b>{{codex.ledger.skills}} / 5</b></div>
+        <div class="codex-wizard-budget"><span>Saldo disponível</span><b>{{codex.ledger.left}} XP</b></div>
+        <p class="codex-note">6 XP de Atributos e 8 XP de Formação são experimentais; o orçamento de 5 XP de Perícias é definido.</p>
+      </aside>
+    </div>
+    <footer class="codex-wizard-footer">
+      {{#each codex.wizardSteps}}
+        {{#if prev}}<button type="button" data-action="wizardStep" data-step="{{index}}">← Voltar</button>{{/if}}
+      {{/each}}
+      {{#if codex.wizardLast}}
+        <button type="button" class="codex-primary" data-action="finishCreation" {{#unless codex.wizardCanFinish}}disabled{{/unless}}>Concluir e abrir ficha →</button>
+      {{else}}
+        {{#each codex.wizardSteps}}{{#if next}}<button type="button" class="codex-primary" data-action="wizardStep" data-step="{{index}}">Continuar →</button>{{/if}}{{/each}}
+      {{/if}}
+    </footer>
+  </section>
+  {{else}}
   {{#if codex.showBattle}}
     <section class="codex-action" aria-label="Rolagem">
       {{#if codex.result}}
@@ -171,6 +275,22 @@
       </div>
       {{/if}}
     </section>
+
+    <section class="codex-section codex-owned-showcase">
+      <div class="codex-section-title"><h2>Seu repertório</h2><span>Somente habilidades adquiridas</span></div>
+      <div class="codex-owned-columns">
+        <div class="codex-owned-col"><h3>Perícias em jogo</h3><div class="codex-owned-list">
+        {{#each codex.ownedSkills}}<article class="codex-owned-card"><strong>{{name}}</strong><small>{{detail}}</small></article>
+        {{else}}<p>Você ainda não adquiriu Perícias. Abra a página Perícias para evoluir.</p>{{/each}}</div></div>
+        <div class="codex-owned-col"><h3>Elementos</h3><div class="codex-element-chips">
+         {{#each codex.ownedElements}}<span class="codex-element-chip">ᚨ {{name}}</span>
+         {{else}}<p>Nenhum elemento adquirido.</p>{{/each}}</div>
+         <h3>Equipamentos ativos</h3><div class="codex-owned-list">
+         {{#each codex.equippedGear}}<article class="codex-owned-card"><strong>{{name}} <small>{{die}}</small></strong><small>{{summary}}</small></article>
+         {{else}}<p>Nenhum equipamento ativo.</p>{{/each}}</div>
+        </div>
+      </div>
+    </section>
     {{#if codex.s.notes}}<section class="codex-section"><h2>Notas</h2><p class="codex-notes">{{codex.s.notes}}</p></section>{{/if}}
     {{/if}}
   {{/if}}
@@ -207,8 +327,12 @@
         </div>
       </section>
     {{/each}}
+  {{/if}}
+  {{#if codex.skillsPage}}
     {{#unless codex.monster}}
-    <section class="codex-section"><h2>Perícias</h2>
+    <section class="codex-section"><div class="codex-section-title"><h2>Catálogo de Perícias</h2><span>Compre e consulte fora da ficha de combate</span></div>
+      <label>Buscar Perícia<input type="search" data-skill-search value="{{codex.skillSearch}}" placeholder="Nome, efeito ou requisito"></label>
+      <div class="codex-skills-list">
       {{#each codex.skills}}
       <div class="codex-skill">
         <details><summary>{{name}} · {{cost}} XP{{#if owned}} · adquirida{{/if}}</summary><p>{{detail}}</p></details>
@@ -222,6 +346,7 @@
         {{/if}}
       </div>
       {{/each}}
+      </div>
     </section>
     {{/unless}}
   {{/if}}
@@ -254,6 +379,7 @@
       </div>{{/if}}
       <p class="codex-note">PENDENTE · combinação de duas armas e efeitos avançados são resolvidos pelo Narrador.</p>
     </section>
+  {{/if}}
   {{/if}}
   </div>
 </section>
