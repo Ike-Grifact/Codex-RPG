@@ -39,7 +39,7 @@ export function skillPrerequisite(system,id){
 }
 export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
- return !!system.monsterRules||ledger.spent+delta<=ledger.grant;
+ return Number.isFinite(delta)&&delta>=0&&ledger.spent+delta<=ledger.grant;
 }
 export function defenseDE(actor){
  const natural=actor?.system?Math.max(0,Number(actor.system.monsterRules?Number(actor.system.attributes?.agilidade||0)+Math.floor(Number(actor.system.attributes?.destreza||0)/2):0)):0;
