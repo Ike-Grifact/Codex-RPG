@@ -1751,7 +1751,9 @@ function wizardReview(){
   '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
   '<div class="fp-wiz-reminder"><strong>20 XP iniciais · orçamento compartilhado</strong>'+
-  '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>';
+  '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
+  '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
+  '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>';
 }
 function wizardOverview(){
  const x=xpCosts();
@@ -1763,6 +1765,9 @@ function wizardOverview(){
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
   '<div class="fp-wiz-summary-total"><span>DISPONÍVEIS</span><strong>'+x.free+' XP</strong></div>'+
+  '<div class="fp-wiz-sidebar-title">VT · PATRIMÔNIO</div>'+
+  '<div class="fp-wiz-budget-row"><span>VT disponíveis</span><b>'+walletValue()+' VT</b></div>'+
+  '<div class="fp-wiz-budget-row"><span>Itens</span><b>'+state.items.length+'</b></div>'+
   '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
   '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
   '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
@@ -2234,12 +2239,11 @@ function renderTrade(){
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
  // Seleção do navegador é preservada quando possível para evitar reset do formulário.
 }
-function buyCatalogItem(){
- const catalogName=$("shop-items")?.value,item=CATALOG.find(x=>x.name===catalogName);
+function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
+ const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- const preferred=$("shop-preferred")?.value;
  if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
@@ -2383,6 +2387,7 @@ function onClick(event){
   case "gene-close-detail":geneInspectorOpen=false;renderGenetic();break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
  case "roll":roll();break;
+ case "wizard-vt-allocate":
  case "trade-allocate":{
   if(state.trade.purchases.length||state.trade.collected)return;
   const total=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
@@ -2390,6 +2395,11 @@ function onClick(event){
   state.trade.resources={...tradeDraft};render();save();toast("Composição dos recursos iniciais atualizada.");break;
  }
  case "trade-buy":buyCatalogItem();break;
+ case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
+ case "wizard-shop-category":{
+  if(viewMode!=="builder"||wizardStep!==3||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
+  wizardShopCategory=button.dataset.category;wizardPersist();renderWizard();break;
+ }
  case "trade-collect":collectResources();break;
  case "focus-test":addTestFocus();break;
  case "keep":{
@@ -2442,7 +2452,7 @@ function onClick(event){
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderVitals();renderComposer();save();break;
+  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -2452,6 +2462,16 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.wizardVtDraft!==undefined){
+  if(state.trade.purchases.length||state.trade.collected)return;
+  const k=el.dataset.wizardVtDraft;
+  if(!RESOURCES.some(([key])=>key===k))return;
+  tradeDraft[k]=clamp(Math.floor(el.value),0,STARTING_VT);renderWizard();return;
+ }
+ if(el.dataset.wizardTradePreferred!==undefined){
+  if(!RESOURCES.some(([k])=>k===el.value))return;
+  wizardTradePreferred=el.value;wizardPersist();renderWizard();return;
+ }
  if(el.dataset.tradeDraft!==undefined){
   if(state.trade.purchases.length||state.trade.collected)return;
   const k=el.dataset.tradeDraft;if(!RESOURCES.some(x=>x[0]===k))return;
