@@ -199,3 +199,19 @@
  .codex-catalog-picker{flex-direction:column;align-items:stretch}
  .codex-catalog-picker select{max-width:100%}
 }
+
+/* Criação guiada mínima, sem substituir o editor livre existente. */
+.codex-starter-guide{display:block;flex-basis:100%;width:100%;border:1px solid var(--cx-gold);
+ border-radius:11px;background:var(--cx-panel);padding:12px;margin:7px 0}
+.codex-starter-guide summary{color:var(--cx-gold);font-weight:800;cursor:pointer;font-size:13px}
+.codex-starter-guide p,.codex-starter-guide small{color:var(--cx-muted);font-size:12px;line-height:1.5}
+.codex-starter-guide p{margin:11px 0}
+.codex-starter-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:9px;align-items:end;margin:12px 0}
+.codex-starter-fields label{display:flex;flex-direction:column;min-width:0;gap:4px;color:var(--cx-muted);font-size:11px}
+.codex-starter-fields select{width:100%;min-height:40px}
+.codex-starter-fields button{white-space:normal}
+.codex-compare-option button{margin-top:5px;background:var(--cx-panel);border:1px solid var(--cx-gold);
+ color:var(--cx-gold);min-height:42px;font-weight:750}
+@media(max-width:700px){.codex-starter-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-starter-fields button{grid-column:1/-1}}
+@media(max-width:480px){.codex-starter-fields{grid-template-columns:1fr}}
