@@ -1373,6 +1373,145 @@ function geneStageGrade(id,delta){
  if(next===baseGrade)geneDraft.delete(id);else geneDraft.set(id,next);
  geneRefresh();
 }
+// Requisitos explícitos transcritos das verificações de skillReq(), SEM dedução
+// a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
+// a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
+const GENE_AUTO_REQUIREMENTS={
+ "montar":[["a:influencia:2"]],
+ "provocacao-sofisticada":[["a:influencia:2"]],
+ "armas-leves":[["p:armas_conjuracao:1"]],
+ "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
+ "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
+ "disciplina-avancada":[["p:armas_conjuracao:2"]],
+ "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
+ "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
+ "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
+ "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
+ "furtividade-avancada":[["p:furtividade:2","s:furtividade"]],
+ "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
+ "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
+ "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
+ "peritoconj":[["s:criar-item-foco-magia"]],
+ "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
+ "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "vento":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "terra":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "sagrado":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "sangue":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "trevas":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "veneno":[["p:armas_conjuracao:2","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
+ "criar-veneno":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
+ "criar-antidoto":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2","s:criar-veneno"]],
+ "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
+ "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
+ "maestria-arremesso-armas":[
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-pesadas"]],
+ "golpe-fulminante":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+   ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
+ "espalhar-golpe":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante","s:"+id])],
+ "disparo-fulminante":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","s:"+id])],
+ "disparo-multiplo":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:2","a:agilidade:2","s:"+id,"s:disparo-fulminante"])],
+ "disparo-violento":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].flatMap(id=>[
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:2","s:"+id],
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","p:atletismo:1","s:"+id]])],
+ "maestria-manejo-duplo":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].map(id=>
+   ["a:forca:2","a:destreza:2","a:agilidade:1","s:disciplina-avancada","s:"+id])],
+ "mestre":[
+  ...["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].map(id=>
+   ["p:armas_conjuracao:3","a:inteligencia:3","a:destreza:3","s:criar-item-foco-magia","s:improviso","s:"+id])]
+};
+function geneCandidateCopy(s){
+ return {...s,attributes:{...s.attributes},knowledges:{...s.knowledges},
+  practices:{...s.practices},skills:[...s.skills]};
+}
+// Retorna a evolução inteira só se os requisitos REAIS forem satisfeitos
+// e todos os custos (inclusive Perícias intermediárias) couberem no orçamento.
+function geneAutoPlan(id,base=genePreviewState()){
+ const catalog=new Map(SKILLS.map(row=>[row[0],row]));
+ const addSkill=(skillId,current,stack)=>{
+  const row=catalog.get(skillId);
+  if(current.skills.includes(skillId))return current;
+  if(!row||HIDDEN_CATALOG_SKILLS.has(skillId)||!Number.isInteger(row[3])||
+    row[3]<0||stack.includes(skillId))return null;
+  const alternatives=GENE_AUTO_REQUIREMENTS[skillId]||
+   (skillReq(skillId,current)?[]:[[]]);
+  let best=null;
+  for(const required of alternatives){
+   let draft=geneCandidateCopy(current);
+   let valid=true;
+   // Primeiro todos os graus de fontes: permite calcular cada Perícia intermediária corretamente.
+   for(const token of required){
+    const [type,key,level]=token.split(":");
+    if(type==="s")continue;
+    const group={a:"attr",k:"know",p:"practice"}[type],field=SOURCE_PROPS[group];
+    const grade=Number(level);
+    if(!field||!GROUPS[group].some(([name])=>name===key)||
+      !Number.isInteger(grade)||grade<0||grade>6){valid=false;break;}
+    draft[field][key]=Math.max(draft[field][key]||0,grade);
+   }
+   if(!valid||xpCosts(draft).free<0)continue;
+   for(const token of required){
+    if(!token.startsWith("s:"))continue;
+    const linked=addSkill(token.slice(2),draft,[...stack,skillId]);
+    if(!linked){valid=false;break;}
+    draft=linked;
+   }
+   if(!valid||skillReq(skillId,draft))continue;
+   draft.skills.push(skillId);
+   if(xpCosts(draft).free<0||dependentsValid(draft))continue;
+   if(!best||xpCosts(draft).total<xpCosts(best).total)best=draft;
+  }
+  return best;
+ };
+ const completed=addSkill(id,base,[]);
+ if(!completed||xpCosts(completed).free<0||dependentsValid(completed))return null;
+ return {state:completed,cost:xpCosts(completed).total-xpCosts(base).total};
+}
+function geneAutoBuy(id){
+ if(!geneCanAdjust())return;
+ const base=genePreviewState(),plan=geneAutoPlan(id,base);
+ if(!plan||plan.cost<0){toast("Não há XP suficiente para todos os requisitos desta Perícia.");return;}
+ const row=SKILLS.find(([sid])=>sid===id);
+ const levels=[];
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key,name] of GROUPS[group]){
+   const from=Number(base[field][key]||0),to=Number(plan.state[field][key]||0);
+   if(to>from)levels.push(name+" "+from+" → "+to);
+  }
+ }
+ const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
+  .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const before=xpCosts(base).free,after=xpCosts(plan.state).free;
+ const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
+  (levels.length?"Graus:\n• "+levels.join("\n• ")+"\n\n":"")+
+  (newSkills.length?"Perícias:\n• "+newSkills.join("\n• ")+"\n\n":"")+
+  "Saldo: "+before+" XP → "+after+" XP.\n"+(genePendingCount()?"Os ajustes anteriores também serão confirmados.":"");
+ if(!confirm(summary))return;
+ // A compra completa é atômica: não grava nem debita um requisito isolado.
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key] of GROUPS[group]){
+   const grade=Number(plan.state[field][key]||0);
+   if(grade===Number(state[field][key]||0))geneDraft.delete(group+":"+key);
+   else geneDraft.set(group+":"+key,grade);
+  }
+ }
+ for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
+ geneCommit();
+}
 function geneStageSkill(id){
  if(!geneCanAdjust())return;
  const row=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
