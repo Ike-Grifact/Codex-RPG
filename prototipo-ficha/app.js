@@ -1840,11 +1840,11 @@ function wizardBuild(){
   geneBudgetPanel()+
   '<div class="fp-gene-map-tools"><button type="button" data-action="gene-future" aria-pressed="'+geneShowFuture+'">'+
   (geneShowFuture?'Ocultar futuras ramificações':'Mostrar futuras ramificações')+'</button>'+
-  '<span>Verde: adquirida · Azul: liberada · Roxo: XP suficiente, faltam requisitos.</span>'+
+  '<span>Verde: adquirida · Azul: liberada · Roxo: compra completa com requisitos pagáveis.</span>'+
   '<div class="fp-gene-zoom"><button type="button" data-gene-zoom="-1" aria-label="Diminuir zoom">−</button>'+
   '<button type="button" data-gene-zoom="0">Centralizar</button><button type="button" data-gene-zoom="1" aria-label="Aumentar zoom">+</button></div></div>'+
   
-  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● XP suficiente · faltam requisitos</span><span class="locked">● Futuro (opcional)</span></div>'+
+  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● Requisitos compráveis com XP</span><span class="locked">● Futuro (opcional)</span></div>'+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<div id="gene-build-actions">'+geneActionsPanel()+'</div>'+
   '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Alterações só entram na ficha após confirmar a evolução.</p>';
