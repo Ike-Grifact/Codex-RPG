@@ -3,7 +3,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity}
  from "../foundry-prototype/module/rules.mjs";
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,sourceDice,narratorCap};
-export const KINDS={criatura:"Criatura comum / animal",monstro:"Monstro extraordinário",humanoide:"Monstro humanoide"};
+export const KINDS={criatura:"Criatura comum / animal",monstro:"Monstro extraordinário",humanoide:"Humanoide comum / NPC"};
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
 export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(n))?Number(n):min));
