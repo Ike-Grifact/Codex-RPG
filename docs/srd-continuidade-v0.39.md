@@ -55,6 +55,16 @@ O XP inicial não investido continua disponível conforme a regra de evolução 
 
 ---
 
+### 0-Y.5. Criador didático, Codex Genético e VT — 13/11/2026 [IMPLEMENTAÇÃO / EXPERIMENTAL]
+
+**IMPLEMENTAÇÃO DE INTERFACE (não cria mecânicas):** o fluxo de criação apresenta Identidade → escolha orientativa de Atributo principal e Conhecimento OU Prática → distribuição livre de XP em listas ou Codex Genético → preparação de patrimônio com VT e equipamentos G1 → revisão final. A escolha de Atributo principal não concede bônus, requisito novo ou classe.
+
+O Codex Genético usa dados poliédricos visuais equivalentes aos do rolador e disposição temática: Atributos no DNA central, Conhecimentos à esquerda, Práticas à direita. Conexões visuais são apenas afinidades. **Perícias verdes** estão adquiridas; **azuis** têm requisitos atendidos e XP suficiente; **roxas** têm XP suficiente, mas requisitos ainda não atendidos, portanto **não podem ser compradas**. Opções sem recursos suficientes aparecem apenas mediante "Mostrar futuras ramificações". Detalhes e requisitos abrem em inspector lateral flutuante, sem alterar a ficha ao consultar.
+
+**DEFINIDO:** VT significa **Valor de Troca**, referência de escambo e não moeda física; compras de equipamentos não consomem XP. **EXPERIMENTAL:** **20 VT** de patrimônio inicial, distribuídos pelos cinco recursos comuns Grau 1. Distribuição padrão de 4 unidades por recurso apenas na ferramenta. **PROPOSTO:** preços e alcances do catálogo G1; não foram homologados por esta atualização. Não presumir itens gratuitos nem regras de mochila ainda pendentes. Itens G1 efetivamente comprados entram no inventário comum da ficha.
+
+**PENDENTE:** aprovação definitiva do total de XP inicial (atualmente 20), dos 20 VT iniciais, dos preços, das possíveis concessões gratuitas de equipamentos e das demais lacunas de comércio. A interface não valida automaticamente procedimentos de fabricação de foco nem autoriza comprar Perícias sem requisitos.
+
 ## Histórico íntegro — SRD de Continuidade v0.38 (13/11/2026)
 
 **Arquivo histórico preservado abaixo.** Todos os parágrafos que reservam XP por categoria (especialmente 6/8/5, 7/7/5 ou 5 XP obrigatoriamente exclusivos para Perícias) foram **substituídos pela seção 0-Y** acima. Para os demais assuntos, continuam válidas as decisões mais recentes da v0.38 sem conflito com a v0.39.
