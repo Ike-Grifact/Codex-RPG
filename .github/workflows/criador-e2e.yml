@@ -13,6 +13,7 @@ on:
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
+      - '.github/tests/genetico-rotulos-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -56,3 +57,5 @@ jobs:
         run: node .github/tests/armadura-npc-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular
         run: node .github/tests/genetico-navegacao-e2e.cjs
+      - name: Verificar rótulos inteiros no Codex Genético em desktop e celular
+        run: node .github/tests/genetico-rotulos-e2e.cjs
