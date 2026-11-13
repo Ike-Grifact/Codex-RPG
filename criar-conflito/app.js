@@ -3,6 +3,7 @@ import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES
  PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
+import {canDeclareJoint} from "./roll-engine.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -62,6 +63,12 @@ function renderSummary(){
  const summary=encounterSummary(model.roster,model.players),total=summary.totalXP,party=model.partyXp;
  el("player-count").value=model.players;
  el("public-count").textContent=model.publicPavor+" / "+summary.publicCap+" P";
+ const joint=el("public-joint-actions");
+ if(joint)joint.innerHTML=[2,3].map(n=>{
+  const allow=canDeclareJoint(model.roster,model.publicPavor,n);
+  return '<button type="button" data-joint="'+n+'"'+(allow.ok?'':' disabled')+'>'+
+   'Líder + '+(n-1)+' aliado(s) · '+allow.cost+'P</button>';
+ }).join("");
  el("roster-count").textContent=summary.count+" ficha"+(summary.count===1?"":"s");
  el("leader-count").textContent=summary.leaders?
   summary.leaders+" Líder"+(summary.leaders===1?"":"es")+" cadastrado"+(summary.leaders===1?"":"s"):
@@ -73,6 +80,14 @@ function renderSummary(){
   total<party?"XP das ameaças inferior ao grupo: não há XP por enfrentamento, conforme o SRD.":
   total===party?"XP igual: recompensa-base elegível; fórmula pendente.":
   "XP das ameaças superior ao grupo: potencial de recompensa maior; fórmula pendente.";
+}
+function publicJointSpend(n){
+ const check=canDeclareJoint(model.roster,model.publicPavor,n);
+ if(!check.ok)return notice("Requer Líder vivo, participantes e Pavor público suficiente.");
+ if(!confirm("Gastar "+check.cost+"P público para Líder + "+(n-1)+
+  " aliado(s)? A declaração não rola os dados; custos locais e alvos continuam manuais."))return;
+ model.publicPavor-=check.cost;save();renderSummary();
+ notice("Gasto de "+check.cost+"P público registrado para a ação conjunta.");
 }
 function renderRoster(){
  el("roster").innerHTML=model.roster.length?model.roster.map(t=>{
@@ -302,6 +317,7 @@ document.addEventListener("click",event=>{
  if(b.dataset.open){model.active=b.dataset.open;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
  if(b.dataset.delete)return remove(b.dataset.delete);
+ if(b.hasAttribute("data-joint"))return publicJointSpend(Number(b.dataset.joint));
  if(b.dataset.players){model.players=Math.floor(clamp(model.players+Number(b.dataset.players),0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
  if(b.dataset.public)return pavorDelta(Number(b.dataset.public));
  if(b.dataset.grade)return gradeChange(b.dataset.grade,b.dataset.key,Number(b.dataset.delta));
