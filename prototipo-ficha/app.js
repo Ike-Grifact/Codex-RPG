@@ -1,7 +1,11 @@
 /* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 20 XP experimental. */
 (function(){
 "use strict";
-const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
+const QUICK_HUMANOID=new URLSearchParams(window.location.search).get("modo")==="humanoide-rapido";
+const SAVE_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-v1":"codex-html-ficha-prototipo-v1";
+const OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1";
+const WIZARD_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-wizard-v1":"codex-html-ficha-wizard-v1";
+const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -896,7 +900,13 @@ function defaultState(){return{
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
-let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+function quickHumanoidDefault(){
+ const s=defaultState();
+ s.name="Humano comum";s.concept="Oponente humanoide";s.origin="Humano";
+ s.attributes.forca=1;s.practices.armas_conjuracao=1;
+ return s;
+}
+let state=QUICK_HUMANOID?quickHumanoidDefault():defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
@@ -946,7 +956,7 @@ function load(){
  let migrated=false,legacyAvailable=false;
  try{
   const saved=localStorage.getItem(SAVE_KEY);
-  const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
+  const oldRaw=QUICK_HUMANOID?null:localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
   if(saved)state=normalize(JSON.parse(saved));
   else if(oldRaw){
@@ -973,7 +983,7 @@ function load(){
   wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
   wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
   wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
-  wizardMode=w.mode==="genetic"?"genetic":"list";
+  wizardMode=w.mode==="genetic"?"genetic":QUICK_HUMANOID&&w.mode!=="list"?"genetic":"list";
   wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
   wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
   wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
@@ -982,10 +992,11 @@ function load(){
   if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
   if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
  }catch(e){wizardStep=0;wizardReached=0;}
- viewMode=state.creationLocked?"sheet":"builder";
+ if(QUICK_HUMANOID){wizardStep=2;wizardReached=2;viewMode="builder";state.creationLocked=false;}
+ else viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
- $("import-old-creator").hidden=!legacyAvailable;
+ $("import-old-creator").hidden=QUICK_HUMANOID||!legacyAvailable;
  if(migrated){
   save();
   toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
@@ -1101,7 +1112,8 @@ function xpCosts(s=state){
  const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills,total=attributes+training+skills;
  const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(s.creationBudgetSnapshot):
   Math.max(0,CREATE_BUDGET.total-total);
- const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:CREATE_BUDGET.total-total;
+ const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:
+  CREATE_BUDGET.total+(QUICK_HUMANOID?Math.max(0,Number(s.xpEarned)||0):0)-total;
  const generalSpent=Math.max(0,total-CREATE_BUDGET.total);
  return {attributes,training,skills,total,generalSpent,free,initialCarryover,
   initialRemaining:Math.max(0,initialCarryover-generalSpent),
@@ -1759,6 +1771,46 @@ function wizardConfirmStarterPicks(){
  toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
+function quickHumanoidGuide(){
+ return '<section class="fp-quick-human" aria-label="Criação rápida de humanoide comum">'+
+  '<div><span class="fp-kicker">HUMANOIDE COMUM · MODO RÁPIDO</span><h3>Distribua XP diretamente no DNA.</h3>'+
+  '<p>Sem assistente de identidade: começa com Força 1 e Disciplina 1 (3 XP), graus que você pode ajustar. Clique numa <strong>bolinha roxa</strong> para comprar a Perícia e todos os requisitos pagos com XP; a compra exige confirmação.</p></div>'+
+  '<div class="fp-quick-human-fields"><label>Nome (opcional)<input type="text" maxlength="70" data-quick-name value="'+esc(state.name)+'"></label>'+
+  '<label>XP adicional autorizado pelo Mestre<input type="number" min="0" max="50000" step="1" data-quick-xp value="'+(state.xpEarned||0)+'"></label></div>'+
+  '<div class="fp-quick-human-footer"><span>20 XP iniciais compartilhados (EXPERIMENTAL), sem progressão de monstro. O saldo é livre após os mínimos.</span>'+
+  '<button type="button" class="fp-secondary" data-action="quick-human-reset">Novo humanoide</button></div></section>';
+}
+function quickHumanoidToConflict(){
+ if(!QUICK_HUMANOID||state.pending)return;
+ if(genePendingCount()){toast("Confirme ou descarte a evolução pendente antes de adicionar ao conflito.");return;}
+ if(!hasStarterSources()){toast("A ficha exige Atributo G1 e Conhecimento ou Prática G1.");return;}
+ if(xpCosts().free<0||dependentsValid(state)){toast("Confira XP e requisitos das Perícias.");return;}
+ const attrs=Object.fromEntries(A.map(([k])=>[k,Number(state.attributes[k]||0)]));
+ const know=Object.fromEntries(K.map(([k])=>[k,Number(state.knowledges[k]||0)]));
+ const practices=Object.fromEntries(P.map(([k])=>[k,Number(state.practices[k]||0)]));
+ const items=state.items.map(it=>{
+  const base=WEIGHTS[it.weight]?.[1]||0;
+  return {name:String(it.name||"Item"),qty:Math.max(1,Math.floor(Number(it.qty)||1)),
+   weight:base*(Array.isArray(it.properties)&&it.properties.includes("Muito Leve")?0.5:1)};
+ });
+ const payload={schema:"codex-humanoide-rapido-v1",character:{
+  kind:"humanoide",name:state.name.trim()||"Humano comum",concept:state.concept||"Oponente humanoide",
+  level:state.level,threatGrade:1,xp:Math.floor(Number(state.xpEarned)||0),
+  attributes:attrs,knowledges:know,practices,skills:[...state.skills],
+  life:Math.floor(clamp(state.life,0,maxLife())),items
+ }};
+ try{localStorage.setItem(HUMANOID_INBOX_KEY,JSON.stringify(payload));save();}
+ catch(e){toast("Falha ao salvar a ficha para o conflito. Tente exportar o JSON.");return;}
+ window.location.assign("../criar-conflito/?adicionar-humanoide=1");
+}
+function quickHumanoidReset(){
+ if(!QUICK_HUMANOID)return;
+ if(xpCosts().total>3&&!confirm("Criar outro humanoide? A construção rápida atual será substituída."))return;
+ state=quickHumanoidDefault();draft=freshDraft();editMode=false;viewMode="builder";
+ wizardStep=2;wizardReached=2;wizardMode="genetic";wizardTab="attr";
+ geneSelected="";geneDraft.clear();genePendingSkills.clear();geneInspectorOpen=false;
+ wizardPersist();syncFields();render();save();toast("Novo humanoide comum preparado para distribuir XP.");
+}
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
@@ -1923,10 +1975,10 @@ function wizardReview(){
 }
 function wizardOverview(){
  const x=xpCosts();
- return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
+ return '<div class="fp-wiz-summary-top"><small>'+(QUICK_HUMANOID?"HUMANOIDE COMUM":"SEU PERSONAGEM")+'</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / '+(20+(QUICK_HUMANOID?Number(state.xpEarned||0):0))+' XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
@@ -1951,10 +2003,18 @@ function renderWizard(){
  $("edit-sheet-help").hidden=show||!editMode;
  $("source-grid").classList.toggle("fp-edit-mode",editMode);
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
- $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
- $("page-subtitle").textContent=show?
-  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
+ $("wizard-steps").hidden=QUICK_HUMANOID;
+ $("page-title").innerHTML=QUICK_HUMANOID?'Crie um <span>humanoide comum.</span>':show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
+ $("page-subtitle").textContent=QUICK_HUMANOID?
+  "Sem etapas: distribua XP, compre Perícias roxas no DNA e envie a ficha ao Criar Conflito.":
+  show?"Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
+ if(QUICK_HUMANOID){
+  const intro=builder.querySelector(".fp-wizard-intro");
+  intro.querySelector(".fp-kicker").textContent="CRIAÇÃO RÁPIDA · HUMANOIDE COMUM";
+  intro.querySelector("h2").textContent="Um inimigo comum, sem formulário inicial.";
+  intro.querySelector("p").textContent="Use a progressão humana normal: distribua XP pelo DNA e compre Perícias roxas com seus requisitos, sem preencher as etapas do Aprendiz.";
+ }
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
   const canConfirmStarter=wizardStep===1&&wizardStarterPhase==="confirm"&&!!wizardStarterAttribute&&!!wizardStarterTraining;
@@ -1988,8 +2048,15 @@ function renderWizard(){
   }else if(stage===3){
    content=wizardEquipment();
   }else content=wizardReview();
- $("wizard-content").innerHTML=content;
+ $("wizard-content").innerHTML=(QUICK_HUMANOID?quickHumanoidGuide():"")+content;
  $("wizard-summary").innerHTML=wizardOverview();
+ if(QUICK_HUMANOID){
+  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>HUMANOIDE COMUM</span><small>Graus e Perícias no Codex Genético</small></div>'+
+   '<div class="fp-wiz-footer-buttons"><a class="fp-secondary" href="../criar-conflito/">Voltar ao conflito</a>'+
+   '<button type="button" class="fp-primary-btn" data-action="quick-human-send">Adicionar ao conflito →</button></div>';
+  if(stage===2&&wizardMode==="genetic")renderGenetic();
+  return;
+ }
  if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
@@ -2527,6 +2594,8 @@ function onClick(event){
  if(!action)return;
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
+ case "quick-human-send":quickHumanoidToConflict();break;
+ case "quick-human-reset":quickHumanoidReset();break;
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
  case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
  case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
@@ -2721,8 +2790,19 @@ function bind(){
  document.addEventListener("click",event=>{
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
+ document.addEventListener("change",event=>{
+  if(!QUICK_HUMANOID||!event.target?.matches?.("[data-quick-xp]"))return;
+  const amount=Math.floor(Number(event.target.value));
+  if(!Number.isSafeInteger(amount)||amount<0||amount>50000){toast("XP adicional deve estar entre 0 e 50000.");event.target.value=state.xpEarned||0;return;}
+  const prev=state.xpEarned;state.xpEarned=amount;
+  if(xpCosts().free<0){state.xpEarned=prev;toast("O orçamento não cobre as compras realizadas.");event.target.value=prev;return;}
+  geneDraft.clear();genePendingSkills.clear();render();save();
+ });
  document.addEventListener("change",onChange);
  document.addEventListener("input",event=>{
+  if(QUICK_HUMANOID&&event.target?.matches?.("[data-quick-name]")){
+   state.name=event.target.value.slice(0,70);save();return;
+  }
   if(event.target?.dataset?.skillSearch!==undefined){
    skillFilter.query=String(event.target.value).slice(0,100);
    renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;
