@@ -1569,8 +1569,9 @@ function sourceGeneInfo(id,s=state){
 function geneSkillStatus([id,,,cost],s=state){
  if(s.skills.includes(id))return"owned";
  if(!Number.isInteger(cost)||xpCosts(s).free<cost||state.pending)return"locked";
- // Roxo = há XP para a compra, mas o personagem ainda não atende aos requisitos.
- return skillReq(id,s)?"potential":"available";
+ if(!skillReq(id,s))return"available";
+ // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
+ return geneAutoPlan(id,s)?"potential":"locked";
 }
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
@@ -1591,15 +1592,21 @@ function geneDetailHTML(id,s=state){
  if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
- return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"XP suficiente · requisitos pendentes":"Bloqueada")+'</span>'+
-  '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
-  '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
-  '<dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
-  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+
-  (geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
+ const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
+ const skillButton=status==="potential"&&packagePlan&&geneCanAdjust()?
+  '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
+   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
+   '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
+  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
    (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
-   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>');
+   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+ return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
+  '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
+  '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
+  '<dt>Custo da Perícia</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
+  (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
+  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton;
 }
 function renderGenetic(){
  const preview=genePreviewState();
@@ -2526,6 +2533,7 @@ function onClick(event){
  case "grade":updateGrade(group,source,Number(delta));break;
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
   case "gene-skill":geneStageSkill(id);break;
+  case "gene-auto-buy":geneAutoBuy(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
   case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
