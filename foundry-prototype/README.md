@@ -17,6 +17,12 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
+## Criação de fichas (protótipo)
+
+Além dos botões de aumento de grau e da compra de Perícias, a ficha de Personagem/Humanoide possui um painel **“Compras mínimas orientadas”**: escolhe-se um Atributo e um Conhecimento OU Prática, confirma-se a compra e apenas os graus ainda ausentes são debitados. Na ficha nova, o custo total é **3 XP** (1+2), deixando **17 XP livres** do total inicial **EXPERIMENTAL de 20 XP**. O restante das escolhas permanece livre; não existe reserva por categoria. Monstros extraordinários não participam dessa compra guiada e têm orçamento próprio definido pelo Narrador.
+
+O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma seleção alternativa dentro da **mesma rolagem já realizada**. Isso não rerrola, não consome recursos e não publica mensagem: somente a finalização confirmada produz efeitos.
+
 ## Rolagem
 
 1. Clique primeiro em uma fonte de base e depois em Atributo. Para monstro, clique em dois Atributos distintos.
