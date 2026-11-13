@@ -4,6 +4,7 @@ import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES
  from "./rules.mjs";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
+const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
@@ -30,6 +31,23 @@ function load(){
  return s;
 }
 let model=load(),noticeTimer=null;
+function consumeQuickHumanoid(){
+ let raw;
+ try{raw=localStorage.getItem(HUMANOID_INBOX_KEY);}catch(e){return "";}
+ if(!raw)return "";
+ if(model.roster.length>=80)return "Limite de 80 fichas. O humanoide permanece salvo no criador rápido.";
+ try{
+  const incoming=JSON.parse(raw);
+  if(incoming?.schema!=="codex-humanoide-rapido-v1"||incoming.character?.kind!=="humanoide")throw Error("Tipo de pacote inválido");
+  const unit=normalize(incoming.character);
+  if(unit.kind!=="humanoide")throw Error("Tipo inválido");
+  model.roster.push(unit);model.active=unit.id;
+  save();
+  localStorage.removeItem(HUMANOID_INBOX_KEY);
+  return "Humano comum adicionado ao conflito com "+ledger(unit).spent+" XP investidos.";
+ }catch(e){return "Não foi possível importar a ficha rápida. A construção permanece no criador de humanoides.";}
+}
+
 const selected=()=>model.roster.find(x=>x.id===model.active)||null;
 function save(){
  try{localStorage.setItem(KEY,JSON.stringify(model));}
@@ -276,7 +294,8 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
- if(b.id==="add-human-quick")return addQuickHumanoid();
+ if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?modo=humanoide-rapido");return;}
+  if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
  if(b.id==="export-encounter")return exportJson();
@@ -299,4 +318,6 @@ document.addEventListener("change",event=>{
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}
  if(target.dataset.field)update(target.dataset.field,target.type==="checkbox"?target.checked:target.value);
 });
+const quickImportNotice=consumeQuickHumanoid();
 render();
+if(quickImportNotice)notice(quickImportNotice);
