@@ -8,6 +8,7 @@ on:
       - 'foundry-prototype/**'
       - '.github/tests/conflito-e2e.cjs'
       - '.github/tests/humanoide-rapido-e2e.cjs'
+      - '.github/tests/armadura-npc-e2e.cjs'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
@@ -48,5 +49,7 @@ jobs:
         run: node .github/tests/criador-e2e.cjs
       - name: Testar humanoide rápido com DNA, compra roxa e envio ao conflito
         run: node .github/tests/humanoide-rapido-e2e.cjs
+      - name: Testar Integridade da armadura e atalho visual de NPC
+        run: node .github/tests/armadura-npc-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular
         run: node .github/tests/genetico-navegacao-e2e.cjs
