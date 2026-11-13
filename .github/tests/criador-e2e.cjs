@@ -69,7 +69,7 @@ const { chromium } = require('playwright');
         throw new Error('Dados poliédricos não têm os traços do rolador');
       const potentials=page.locator('#gene-builder-map .fp-gene-skill.is-potential');
       if(!await potentials.count())throw new Error('Perícias sem requisitos, mas com XP, não aparecem em roxo');
-      await potentials.first().click();
+      await potentials.first().locator('.fp-gene-dot').click();
       await page.waitForSelector('#gene-builder-detail:not([hidden])');
       const detailText=await page.locator('#gene-builder-detail').innerText();
       if(!detailText.includes('requisitos pendentes'))
