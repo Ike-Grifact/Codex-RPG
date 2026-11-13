@@ -84,11 +84,11 @@ test("Criatura não humanoide usa d4 no grau 0, d10 no G1, 2d10 no G2",()=>{
 });
 test("Compra de XP usa progressões distintas e perícias sem custo inventado",()=>{
  const s=human();const xp=xpLedger(s);
- assert.equal(CREATION_REFERENCE.total,19);
+ assert.equal(CREATION_REFERENCE.total,20);
  assert.equal(xp.attributes,4); // Força, Agilidade, Destreza, Vigor em grau 1
  assert.equal(xp.training,2);
  assert.equal(xp.skills,2);
- assert.equal(xp.grant,19);
+ assert.equal(xp.grant,20);
  assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
  assert.equal(lifeMax(s),4);
  assert.equal(maxPP(1),0);assert.equal(maxPP(5),1);
@@ -121,4 +121,18 @@ test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automati
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
  assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
  assert.equal(defenseDE({system:s,items:[light]}),4);
+});
+
+test("Orçamento monstruoso usa tabela da Formação e humanoide usa 20 XP compartilhados",()=>{
+ const m={monsterRules:true,xp:20,attributes:{forca:1,agilidade:2},skills:[],knowledges:{},practices:{}};
+ assert.equal(xpLedger(m).attributes,10); // d10 G1 = 2 XP; 2d10 G2 = 8 XP
+ assert.equal(xpLedger(m).grant,20);
+ assert.equal(xpLedger(human()).grant,20);
+});
+test("Capacidade de carga inclui Disciplina, Força, Vigor e Atletismo",async()=>{
+ const {loadCapacity}=await import("../module/rules.mjs");
+ const s=human();assert.equal(loadCapacity(s),1);
+ s.attributes.forca=3;s.attributes.vigor=3;
+ s.practices.armas_conjuracao=3;s.practices.atletismo=3;
+ assert.equal(loadCapacity(s),5);
 });
