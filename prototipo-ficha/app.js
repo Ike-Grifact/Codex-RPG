@@ -1415,10 +1415,21 @@ function wizardSelectStep(next){
   toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
  }
  if(wizardStep===1&&next===2){
-  if(wizardStarterPhase!=="confirm"||!wizardStarterAttribute||!wizardStarterTraining){
-   toast("Escolha um Atributo principal e depois um Conhecimento ou Prática.");return;
+  // A etapa 03 também pode ser aberta pelo indicador superior quando as escolhas estão prontas.
+  if(wizardStarterPhase==="confirm"&&wizardStarterAttribute&&wizardStarterTraining){
+   wizardConfirmStarterPicks();return;
   }
-  wizardConfirmStarterPicks();return;
+  // Ao voltar a uma criação já confirmada, não exigir que o jogador refaça as duas compras.
+  const [chosenGroup,chosenId]=wizardStarterTraining.split(":");
+  const alreadyConfirmed=!!wizardStarterAttribute&&
+   Number(state.attributes[wizardStarterAttribute]||0)>=1&&
+   !!SOURCE_PROPS[chosenGroup]&&Number(state[SOURCE_PROPS[chosenGroup]][chosenId]||0)>=1;
+  if(wizardReached>=2&&alreadyConfirmed){
+   wizardStep=2;wizardPersist();renderWizard();
+   $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});return;
+  }
+  toast("Escolha um Atributo principal e um Conhecimento ou Prática. Confirme as duas opções para abrir a distribuição livre de XP.");
+  return;
  }
  if(next>=3&&!hasStarterSources()){
   toast("Compre pelo menos um Atributo e um Conhecimento ou Prática no grau 1 antes da revisão.");return;
@@ -1553,7 +1564,8 @@ function wizardBuild(){
   '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
   '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
   '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 19 XP (total experimental)</span></div>';
- if(wizardMode==="genetic")return switcher+status+
+ const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais estão registradas. Agora compre outros graus e Perícias usando o saldo compartilhado, ou alterne para o Codex Genético.</span></div>';
+ if(wizardMode==="genetic")return confirmedHint+switcher+status+
   '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Mapa e listas usam as mesmas compras e o mesmo XP.</p>';
@@ -1568,7 +1580,7 @@ function wizardBuild(){
   body='<div class="fp-wiz-tab-help" data-source-group="'+current+'"><strong>'+c.title+'</strong> · '+c.description+'<span>'+c.dice+' · '+c.cost+'</span></div>'+
    '<div class="fp-wiz-source-grid">'+GROUPS[current].map(item=>wizardSource(current,item)).join("")+'</div>';
  }
- return switcher+status+bar+body+
+ return confirmedHint+switcher+status+bar+body+
   '<p class="fp-wiz-reminder">Compre graus usando + e −. Você pode alternar entre categorias ou abrir o Codex Genético a qualquer momento, sem reiniciar a ficha.</p>';
 }
 function wizardReview(){
@@ -1621,7 +1633,8 @@ function renderWizard(){
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
-  const clickable=i<=wizardReached&&(i===0||!!state.name.trim());
+  const canConfirmStarter=wizardStep===1&&wizardStarterPhase==="confirm"&&!!wizardStarterAttribute&&!!wizardStarterTraining;
+  const clickable=(i<=wizardReached||(i===2&&canConfirmStarter))&&(i===0||!!state.name.trim());
   const active=i===wizardStep;
   return '<button type="button" data-action="wizard-go" data-step="'+i+'" class="fp-wiz-nav-item'+(active?' active':'')+(i<wizardStep?' complete':'')+'"'+
    (clickable?'':' disabled')+(active?' aria-current="step"':'')+'>'+
@@ -1655,7 +1668,7 @@ function renderWizard(){
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
   '<button type="button" class="fp-primary-btn" data-action="'+(stage===3?'wizard-finish':'wizard-next')+'"'+(stage===1&&wizardStarterPhase!=="confirm"?' disabled':'')+'>'+
-  (stage===3?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar e distribuir XP →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
+  (stage===3?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
