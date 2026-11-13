@@ -48,7 +48,16 @@ function card(n,edit){
  const width=c==="attr"?270:294;
  const height=72;
  const x=n.x-width/2,y=n.y-height/2;
- const dice=(n.dice||[]).join(" · ")||"—";
+ const dice=(n.dice||[]).map((d,i)=>{
+  const x=n.x+((i+0.5)-(n.dice.length/2))*39,y=n.y-61;
+  const sides=Number(d.slice(1));
+  const shape=sides===4?'<polygon points="'+(x-15)+','+(y+10)+' '+(x+15)+','+(y+10)+' '+x+','+(y-13)+'"/>':
+   sides===6?'<rect x="'+(x-14)+'" y="'+(y-14)+'" width="28" height="28" rx="5"/>':
+   sides===10?'<polygon points="'+x+','+(y-16)+' '+(x+15)+','+(y-3)+' '+(x+11)+','+(y+15)+' '+(x-11)+','+(y+15)+' '+(x-15)+','+(y-3)+'"/>':
+   sides===12?'<polygon points="'+x+','+(y-16)+' '+(x+15)+','+(y-8)+' '+(x+15)+','+(y+9)+' '+x+','+(y+16)+' '+(x-15)+','+(y+9)+' '+(x-15)+','+(y-8)+'"/>':
+   '<circle cx="'+x+'" cy="'+y+'" r="15"/>';
+  return '<g class="fp-gene-die-shape">'+shape+'<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle">'+esc(d)+'</text></g>';
+ }).join("");
  const pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
  const label=esc(n.name);
  const canDown=edit&&n.previewGrade>0;
@@ -62,7 +71,7 @@ function card(n,edit){
  return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
   '<title>'+label+' — '+esc(n.label||"")+'</title>'+
   '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="14"/>'+
-  '<text class="fp-gene-card-dice" x="'+n.x+'" y="'+(y-15)+'" text-anchor="middle">'+esc(dice)+'</text>'+
+  dice+
   '<text class="fp-gene-card-title" x="'+(x+17)+'" y="'+(y+29)+'">'+label+'</text>'+
   '<text class="fp-gene-card-grade" x="'+(x+17)+'" y="'+(y+52)+'">Grau '+(n.previewGrade??n.grade)+(pending?' · a confirmar':'')+'</text>'+
   control+'</g>';
