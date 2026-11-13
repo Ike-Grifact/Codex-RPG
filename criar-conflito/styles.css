@@ -185,3 +185,28 @@
 .cf-npc-launch #add-human-basic{min-height:41px;border-style:dashed}
 @media(max-width:800px){.cf-npc-launch{grid-template-columns:1fr}}
 @media print{.cf-npc-launch{display:none!important}}
+
+/* Rolagem simbólica básica e gastos públicos de comando. */
+.cf-public-joints{display:flex;flex-wrap:wrap;gap:7px}
+.cf-public-joints button{font-size:11px;padding:7px;min-height:33px}
+.cf-roll-panel{border-top:3px solid var(--accent)}
+.cf-roll-config{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.cf-roll-config label{display:grid;gap:5px;font-size:12px;color:var(--muted)}
+.cf-roll-config select,.cf-roll-config input:not([type="checkbox"]){min-width:0;width:100%}
+.cf-roll-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:10px 0}
+.cf-roll-toolbar span{font-size:12px;color:var(--muted)}
+.cf-roll-dice{display:flex;flex-wrap:wrap;gap:9px;margin:13px 0}
+.cf-roll-die{display:grid;gap:5px;justify-items:start;align-content:start;min-width:116px;flex:1 1 116px;max-width:170px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:11px;cursor:pointer}
+.cf-roll-die.is-kept{border:2px solid var(--accent);background:var(--surface)}
+.cf-roll-die>b{font-size:12px;color:var(--ink)}
+.cf-roll-die small{font-size:10px;color:var(--muted)}
+.cf-roll-die>span:last-of-type{min-height:26px;font-size:12px}
+.cf-roll-die .cf-symbol{font-size:19px;font-weight:700;margin-right:4px}
+.cf-roll-die .cf-symbol-E{color:#267a45}.cf-roll-die .cf-symbol-A{color:#2369bb}.cf-roll-die .cf-symbol-P{color:#8d5ab4}
+.cf-roll-die .cf-symbol.is-max{color:#c69b52}
+.cf-roll-die input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);padding:0}
+.cf-roll-outcome{padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);display:grid;gap:8px}
+.cf-roll-outcome strong{font-size:15px}
+.cf-roll-outcome p{margin:0;font-size:12px;line-height:1.5}
+.cf-roll-outcome button{justify-self:start}
+@media(max-width:560px){.cf-roll-config{grid-template-columns:1fr}.cf-roll-die{min-width:104px;flex:1 1 104px}}
