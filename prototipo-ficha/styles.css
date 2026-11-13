@@ -743,3 +743,47 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-wiz-summary-total strong{font-variant-numeric:tabular-nums}
 @media(max-width:980px){.fp-gene-creator-layout{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:440px}.fp-gene-creator-layout .fp-gene-detail{max-height:none}}
 @media(max-width:620px){.fp-wizard-grid:has(#gene-builder-map) .fp-wizard-sidebar{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:320px}.fp-gene-grade-actions{grid-template-columns:1fr}}
+
+/* Fluxo guiado v0.46 — a compra em listas é o modo padrão; mapa genético alternativo. */
+.fp-wizard-steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+.fp-wiz-choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fp-wiz-choice{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:295px;text-align:left;
+ background:var(--fp-deep);color:var(--fp-text);border:1px solid var(--fp-stroke);border-radius:14px;padding:17px;
+ transition:border-color .16s,background .16s,box-shadow .16s;cursor:pointer}
+.fp-wiz-choice:hover,.fp-wiz-choice:focus-visible{border-color:var(--fp-gold);outline:none}
+.fp-wiz-choice.is-active{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep));box-shadow:inset 0 0 0 1px var(--fp-gold)}
+.fp-wiz-choice-top{display:flex;align-items:start;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.fp-wiz-choice-top strong{font:normal 20px Georgia,serif;color:var(--fp-gold)}
+.fp-wiz-choice-top span{font-size:10px;font-weight:750;color:var(--fp-muted);border:1px solid var(--fp-stroke);padding:5px 7px;border-radius:20px}
+.fp-wiz-choice.is-active .fp-wiz-choice-top span{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-wiz-choice-description{font-size:12px;line-height:1.6}
+.fp-wiz-choice-example{font-size:11px;line-height:1.6;color:var(--fp-muted)}
+.fp-wiz-choice-dice{font-size:12px;font-weight:750;color:var(--fp-a);margin-top:auto}
+.fp-wiz-choice-cost{font-size:11px;font-weight:750;color:var(--fp-gold)}
+.fp-wiz-choice-names{font-size:10px;line-height:1.55;color:var(--fp-muted);padding-top:10px;border-top:1px solid var(--fp-stroke)}
+.fp-wiz-view-switch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.fp-wiz-view-switch button{padding:12px 17px;border:1px solid var(--fp-stroke);border-radius:10px;
+ background:var(--fp-deep);color:var(--fp-text);font-size:12px;font-weight:750;cursor:pointer}
+.fp-wiz-view-switch button.is-active{background:var(--fp-gold);color:#18202a;border-color:var(--fp-gold)}
+.fp-wiz-view-switch button:focus-visible,.fp-wiz-category-tabs button:focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
+.fp-wiz-starter-status{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 17px}
+.fp-wiz-starter-status>span{font-size:11px;line-height:1.5;border:1px solid var(--fp-stroke);border-radius:8px;
+ padding:9px 10px;background:var(--fp-deep);color:var(--fp-muted)}
+.fp-wiz-starter-status>span.is-ready{border-color:var(--fp-e);color:var(--fp-e)}
+.fp-wiz-starter-status .fp-wiz-starter-xp{margin-left:auto;color:var(--fp-text)}
+.fp-wiz-starter-xp strong{color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-wiz-category-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:15px}
+.fp-wiz-category-tabs button{min-width:0;padding:12px 7px;border:1px solid var(--fp-stroke);border-radius:9px;
+ background:var(--fp-deep);color:var(--fp-muted);font-size:11px;font-weight:750;cursor:pointer}
+.fp-wiz-category-tabs button.is-active{border-color:var(--fp-gold);color:var(--fp-gold);
+ background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep))}
+.fp-wiz-tab-help{margin:0 0 15px;font-size:11px;line-height:1.65;color:var(--fp-muted)}
+.fp-wiz-tab-help strong{color:var(--fp-text)}
+.fp-wiz-tab-help span{display:block;font-weight:700;margin-top:6px;color:var(--fp-gold)}
+@media(max-width:1160px){.fp-wiz-choice-grid{grid-template-columns:1fr}.fp-wiz-choice{min-height:0;gap:10px}}
+@media(max-width:620px){
+ .fp-wiz-category-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fp-wiz-view-switch button{flex:1 1 145px;padding:11px 8px}
+ .fp-wiz-starter-status .fp-wiz-starter-xp{margin-left:0;width:100%}
+ .fp-wiz-choice{padding:15px}
+}
