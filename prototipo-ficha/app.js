@@ -1297,7 +1297,7 @@ function geneDetailHTML(id){
  if(src){
   const dice=dataDice(src.group,src.grade).map(n=>"d"+n).join(" + ");
   const canReduce=src.grade>0&&(!state.creationLocked||editMode)&&!state.pending;
-  const increase=src.state==="available";
+  const increase=!src.prereq&&src.next!==null&&canAfford(src.group,src.next)&&!state.pending;
   return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.grade?"Desenvolvido":"Potencial")+'</span>'+
    '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo do DNA central.",know:"Conhecimento na órbita de aprendizado.",practice:"Prática na órbita de aprendizado."}[src.group])+'</p>'+
    '<dl><dt>Grau / Dados</dt><dd>G'+src.grade+' · '+esc(dice)+'</dd>'+
