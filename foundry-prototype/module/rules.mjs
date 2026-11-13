@@ -24,7 +24,7 @@ export const SITUATIONS={
 };
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
-export const CREATION_REFERENCE={attributes:6,training:8,skills:5,total:19}; // 6+8+5 experimental.
+export const CREATION_REFERENCE={attributes:20,training:20,skills:20,total:20}; // EXPERIMENTAL: XP único compartilhado.
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -46,16 +46,16 @@ export const maxPP=level=>level>=20?3:level>=10?2:level>=5?1:0;
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
 export const monsterCap=grade=>Math.max(1,Math.min(6,Math.floor(Number(grade)||1)));
-export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Formação Disciplina na carga: pendente.
+export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.armas_conjuracao||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Fórmula da ficha vigente.
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
- const attr=ATTRIBUTES.reduce((n,[k])=>n+XP_ATTRIBUTE[Number(s.attributes?.[k]||0)],0);
+ const attr=ATTRIBUTES.reduce((n,[k])=>n+(s.monsterRules?XP_TRAINING:XP_ATTRIBUTE)[Number(s.attributes?.[k]||0)],0);
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:19);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:CREATION_REFERENCE.total);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
+  state:s.monsterRules?"XP monstruoso: orçamento definido pelo Narrador; Grau não fixa o XP.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];
