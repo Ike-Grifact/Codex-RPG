@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp}
+ PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
@@ -62,7 +62,7 @@ function renderRoster(){
   return '<article class="cf-threat-card'+(chosen?' is-active':'')+'">'+
    '<button type="button" class="cf-threat-pick" data-open="'+esc(t.id)+'" aria-pressed="'+chosen+'"><span><strong>'+esc(t.name||"Sem nome")+'</strong><small>'+esc(KINDS[t.kind])+
    ' · Grau '+t.threatGrade+'</small></span><span aria-hidden="true">'+(t.leader?'★':'›')+'</span></button>'+
-   '<div class="cf-threat-counts"><span>'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
+   '<div class="cf-threat-counts"><span>'+t.life+'/'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
    '<span class="is-purple">'+t.pavorLocal+'/'+x.limitLocal+' P</span>'+
    '<span'+(over?' style="color:#e6a1a1"':'')+'>'+x.xp.spent+'/'+x.xp.grant+' XP</span></div>'+
    '<div class="cf-threat-actions"><button type="button" data-copy="'+esc(t.id)+'">Duplicar</button>'+
@@ -96,7 +96,7 @@ function gradeCards(t,group,entries){
 function skillPanel(t){
  if(t.kind!=="humanoide")return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
-  '<details><summary>Selecionar Perícias e ver custo</summary><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)).map(it=>{
+  '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)).map(it=>{
    const valid=skillPrerequisite({...t,monsterRules:false},it.id);
    return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
     (valid?'':' disabled')+'><span>'+esc(it.name)+' · '+it.cost+' XP'+(valid?'':' (requisito pendente)')+'</span></label>';
@@ -143,8 +143,14 @@ function editorHTML(t){
   field(human?"XP adicional (20 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
   '<label class="cf-check"><input type="checkbox" data-field="leader"'+(t.leader?' checked':'')+'> É Líder</label></div>'+
   '<div class="cf-stat-grid">'+
-  [['VIDA',t.life+' / '+x.life],['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',t.keep+' / '+x.keepMax]]
-   .map(([label,val],i)=>'<div class="cf-stat'+(i===3&&x.xp.remaining<0?' is-warning':i===4?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
+  '<div class="cf-stat cf-stat-life"><small>VIDA ATUAL / MÁXIMA</small><strong>'+t.life+' / '+x.life+'</strong>'+
+  '<div class="cf-life-actions"><button type="button" data-life="-1"'+(t.life<=0?' disabled':'')+' aria-label="Reduzir Vida em um">−</button>'+
+  '<label>Vida atual<input type="number" data-field="life" min="0" max="'+x.life+'" step="1" value="'+t.life+'" aria-label="Editar Vida atual"></label>'+
+  '<button type="button" data-life="1"'+(t.life>=x.life?' disabled':'')+' aria-label="Aumentar Vida em um">+</button></div>'+
+  '<button type="button" class="cf-life-full" data-life-full'+(t.life>=x.life?' disabled':'')+'>Restaurar ao máximo</button>'+
+  '<small>Máximo calculado pelos Atributos; aumentos não curam automaticamente.</small></div>'+
+  [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',t.keep+' / '+x.keepMax]]
+   .map(([label,val],i)=>'<div class="cf-stat'+(i===2&&x.xp.remaining<0?' is-warning':i===3?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
   '</div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
   '<section class="cf-panel"><h3>Pavor local e retenção</h3>'+
   '<div class="cf-local-row"><strong>Pavor '+t.pavorLocal+' / '+pLocal+'</strong>'+
@@ -206,6 +212,20 @@ function addKind(kind){
  model.roster.push(t);model.active=t.id;save();render();
  el("editor-shell").scrollIntoView({behavior:"smooth",block:"start"});
 }
+function addQuickHumanoid(){
+ if(model.roster.length>=80)return notice("Limite de 80 fichas por conflito.");
+ const t=quickHumanoid();
+ model.roster.push(t);model.active=t.id;
+ save();render();
+ el("editor-shell").scrollIntoView({behavior:"smooth",block:"start"});
+ notice("Humano comum criado com formação mínima. Desenvolva suas capacidades e selecione Perícias na ficha.");
+}
+function adjustLife(delta,fill=false){
+ const t=selected();if(!t)return;
+ const max=stats(t).life;
+ t.life=fill?max:Math.floor(clamp(t.life+delta,0,max));
+ save();render();
+}
 function duplicate(id){
  const source=model.roster.find(x=>x.id===id);if(!source)return;
  if(model.roster.length>=80)return notice("Limite de 80 fichas por conflito.");
@@ -256,6 +276,9 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
+ if(b.id==="add-human-quick")return addQuickHumanoid();
+ if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
+ if(b.dataset.life)return adjustLife(Number(b.dataset.life));
  if(b.id==="export-encounter")return exportJson();
  if(b.dataset.open){model.active=b.dataset.open;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
