@@ -1116,7 +1116,7 @@ function skillReq(id,s=state){
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
-   return"EXPERIMENTAL: requer Disciplina 1; detalhes do treino desarmado pendentes.";
+
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
