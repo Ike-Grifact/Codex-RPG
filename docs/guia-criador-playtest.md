@@ -2,20 +2,19 @@
 
 O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. As regras de referência são mantidas em notas internas de continuidade; o portal não publica atalhos para esses documentos.
 
-## Criação nível 1: orçamento experimental
+## Criação nível 1: investimentos mínimos e XP livre
 
-| Categoria | XP | Estado |
-|---|---:|---|
-| Atributos | 7 | EXPERIMENTAL |
-| Conhecimentos e Práticas | 7 | EXPERIMENTAL |
-| Perícias | 5 | 5 XP iniciais definidos, porém soma com 14 históricos ainda EXPERIMENTAL |
-| **Total** | **19** | **EXPERIMENTAL** |
+**DEFINIDO:** para concluir a criação, compre **pelo menos um Atributo grau 1** e **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
+
+**EXPERIMENTAL (montante):** a ferramenta usa **19 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 19 XP restam 16 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
+
+As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.39](srd-continuidade-v0.39.md), seção 0-Y.
 
 Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**.
 
 **Conhecimentos:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas (6):** **Armas ou Conjuração (uma única Prática)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. O nome exibido pode variar entre Armas, Conjuração e Armas / Conjuração conforme as Perícias escolhidas; isso **não** cria fontes adicionais. O grau 1 compartilhado custa 2 XP de Formação apenas uma vez. Aprendiz de Conjurador é uma **Perícia habilitadora**, não uma segunda Prática de Formação; sua compra segue o preço do catálogo. Punhos é especialização marcial. Fichas antigas preservam o registro de Conjuração no histórico e usam provisoriamente o maior grau entre as antigas fontes Armas e Conjuração, sem somá-las. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
+**Práticas (6):** **Disciplina**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. Disciplina é a Prática compartilhada para aplicações marciais e mágicas, sob as habilitações pertinentes; não se compram Armas e Conjuração como duas fontes independentes. Punhos permanece uma especialização marcial. O grau 1 de Disciplina custa 2 XP, pagos uma vez, e oferece 1d10. A criação não impõe profissão obrigatória.
 
 ## O que funciona
 
