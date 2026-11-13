@@ -1228,3 +1228,5 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-quick-human-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--fp-muted)}
 .fp-quick-human-footer span{flex:1}
 @media(max-width:600px){.fp-quick-human-fields{grid-template-columns:1fr}.fp-quick-human-footer{align-items:stretch}}
+
+.fp-wizard-steps[hidden]{display:none!important}
