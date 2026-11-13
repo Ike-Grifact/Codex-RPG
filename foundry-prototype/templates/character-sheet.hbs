@@ -4,7 +4,7 @@
     <div class="codex-identity">
       <div class="codex-brand">
         <img src="{{codex.logo}}" alt="" class="codex-logo">
-        <div><span class="codex-overline">CODEx RPG · FICHA JOGÁVEL</span><strong>O personagem se constrói pelas suas escolhas.</strong></div>
+        <div><span class="codex-overline">CODEX RPG · PERSONAGEM / CRIATURA / HUMANOIDE</span><strong>O personagem se constrói pelas suas escolhas.</strong></div>
       </div>
       <div class="codex-identity-fields">
         <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name"></label>
@@ -14,6 +14,15 @@
         <label>Virtude <input type="text" value="{{codex.virtue}}" data-field="system.virtue"></label>
         <label>Personalidade <input type="text" value="{{codex.personality}}" data-field="system.personality"></label>
       </div>
+    <div class="codex-creation-panel">
+     <label>XP adicional / orçamento da criatura <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp"></label>
+     <span><strong>XP gasto:</strong> {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}}
+      · <strong>Disponível:</strong> {{codex.xpLedger.left}}</span>
+     <small>Criação 6 Atributos / 8 Formação / 5 Perícias é experimental. Monstros: XP e Grau próprios.</small>
+     {{#if codex.isHumanoid}}<strong>Ficha de Humanoide: progressão de XP e dados de personagem.</strong>{{/if}}
+     {{#if codex.isMonster}}<strong>Ficha de Monstro: apenas Atributos próprios; escala d10/d12.</strong>{{/if}}
+     {{#if codex.isGM}}<button type="button" data-action="openPavorPanel">Painel de Pavor público</button>{{/if}}
+    </div>
     </div>
   </header>
 
@@ -23,7 +32,7 @@
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
       <small>3/3: 1 dia · 2/3: 1 semana · 1/3: requer Medicina</small>
     </div>
-    <div class="codex-resource">
+    {{#unless codex.isMonster}}<div class="codex-resource">
       <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
       <small>Gasto na elevação ou retenção</small>
@@ -33,14 +42,17 @@
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="1">+</button></div>
       <small>Perícia em Coragem a partir do nível 5</small>
     </div>
-    <div class="codex-resource"><span>DE · DIFICULDADE DE ÊXITO</span><strong>{{codex.de}}</strong><small>Agilidade + metade de Destreza arredondada para baixo</small></div>
+{{/unless}}
+    {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
+    {{#if codex.isHumanoid}}<div class="codex-resource"><span>PAVOR LOCAL (oposição)</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
+    <div class="codex-resource"><span>DE · DIFICULDADE DE ÊXITO</span><strong>{{codex.de}}</strong><small>Agilidade + metade de Destreza e Vigor + Atletismo/3; monstros têm DE específica</small></div>
     <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
-    <div class="codex-resource"><span>CARGA · ALTO</span><strong>{{codex.capacity}}</strong><small>Fórmula da Prática compartilhada pendente</small></div>
+    <div class="codex-resource"><span>CARGA · ALTO</span><strong>{{codex.capacity}}</strong><small>Carga por Força, Vigor e Atletismo (contribuição de Disciplina pendente)</small></div>
   </div>
 
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
-    <span>1. Conhecimento ou Prática <b>BASE</b> → 2. Atributo → 3. Outro Conhecimento ou Prática, se Perícia permitir. Os dois primeiros cliques abrem a preparação, não executam dados.</span>
+    {{#if codex.isMonster}}<span>Monstro: selecione dois Atributos da criatura. No Grau 5+, um terceiro Atributo pertinente pode participar após validação.</span>{{else}}<span>1. Conhecimento ou Prática <b>BASE</b> → 2. Atributo → complemento pertinente habilitado. Os cliques apenas preparam a rolagem.</span>{{/if}}
     {{#if codex.selecting}}<span class="codex-live-note">Base selecionada: <b>{{codex.selectedBase}}</b>. Escolha agora o Atributo.</span>{{/if}}
   </div>
 
@@ -100,6 +112,14 @@
       </div>
       <p class="codex-tip">Para acrescentar ou trocar o complemento, clique em outro Conhecimento/Prática na ficha. A terceira fonte exige Perícia e pertinência confirmada.</p>
       <div class="codex-prep-controls">
+       <label>Equipamento equipado / fonte extra<select data-roll-option="equipmentId">
+        <option value="">Sem dado de equipamento</option>
+        {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
+       </select></label>
+       {{#if codex.prepare.inCombat}}
+        {{#if codex.prepare.hasTarget}}<p><strong>Alvo selecionado:</strong> {{codex.prepare.targetName}} — a DE do alvo será consultada no ataque.</p>
+        {{else}}<p>Sem Token selecionado como alvo. A rolagem usa DE informada e publica no chat.</p>{{/if}}
+       {{/if}}
         {{#if codex.prepare.isShared}}
           <label>Uso da Prática compartilhada<select data-roll-option="mode">
             <option value="armas" {{#if codex.prepare.modeArmas}}selected{{/if}}>Armas</option>
@@ -149,12 +169,29 @@
       {{/each}}
       </div>
       <div class="codex-prep-controls">
+        {{#if codex.pending.hasProperties}}
+        <label>Característica ativada<select data-pending-option="characteristic">
+         <option value="">Nenhuma</option>{{#each codex.pending.properties}}
+          <option value="{{this.name}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+         {{/each}}
+        </select></label>
+        <label>Segunda característica (somente em crítico)<select data-pending-option="secondCharacteristic">
+         <option value="">Nenhuma</option>{{#each codex.pending.properties}}
+          <option value="{{this.name}}" {{#if this.selectedSecond}}selected{{/if}}>{{this.name}}</option>
+         {{/each}}
+        </select></label>
+        <label>Pagamento da característica paga<select data-pending-option="activationPayment">
+         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>2 Coragens (ou P local para monstro: em revisão)</option>
+         <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP</option>
+        </select></label>
+        {{/if}}
+        {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>
         <label>Converter Antecipar (2A → 1E)<input type="number" data-pending-option="convertPairs" min="0" value="{{codex.pending.convertPairs}}"></label>
       </div>
       {{#if codex.pending.summary}}
         {{#if codex.pending.summary.ok}}
-          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong><span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
+          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
@@ -164,8 +201,8 @@
 
   <div class="codex-bottom-layout">
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Perícias / habilitações</h2><span>Seleção de teste · XP não cobrado automaticamente</span></div>
-      <p class="codex-tip">Neste primeiro protótipo, marcar uma Perícia simula sua aquisição. O custo em XP e os pré-requisitos completos precisam de um gestor de progressão.</p>
+      <div class="codex-block-title"><h2>Perícias / habilitações</h2><span>Compra experimental por XP disponível; requisitos principais validados</span></div>
+      <p class="codex-tip">Compra de Perícias consome o orçamento de XP calculado, respeitando os requisitos principais. Requisitos avançados ainda dependem da validação do Narrador.</p>
       {{#each codex.skills}}
       <div class="codex-skill {{#if this.owned}}is-owned{{/if}}">
         <div><strong>{{this.name}}</strong><small>{{this.detail}} · {{this.cost}} XP</small></div>
@@ -187,6 +224,12 @@
         </div>
       </div>
       {{else}}<p class="codex-tip">Nenhum equipamento cadastrado.</p>{{/each}}
+      <div class="codex-catalog-picker">
+       <label>Itens de Grau 1 — valores de playtest<select data-catalog-choice>
+       {{#each codex.catalog}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}
+       </select></label>
+       <button type="button" data-action="addCatalogEquipment">+ Item do catálogo</button>
+      </div>
       <button type="button" data-action="addEquipment">+ Novo equipamento</button>
       <p class="codex-tip">Armaduras: Grau 1 integridade; Grau 2 primeira resistência (nível 5); Grau 3 segunda resistência, quando apta; Grau 4 imunidade específica habilitada.</p>
     </section>

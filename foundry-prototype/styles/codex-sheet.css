@@ -121,3 +121,6 @@
 @media(max-width:550px){.codex-item-form{grid-template-columns:1fr}.codex-item-form .codex-wide{grid-column:span 1}}
 
 .codex-rune{font-weight:800;white-space:nowrap}.codex-rune-e{color:var(--cx-E)}.codex-rune-a{color:var(--cx-A)}.codex-rune-p{color:var(--cx-P)}
+
+/* Foundry v0.2 — criação, catálogo e Pavor */
+.codex-creation-panel{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px solid var(--color-border-light-2,#777);border-radius:8px;margin:8px 0}.codex-creation-panel input{max-width:85px}.codex-creation-panel small{width:100%}.codex-catalog-picker{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.codex-catalog-picker select{max-width:250px}.codex-pavor-root{padding:14px}.codex-pavor-root .codex-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}

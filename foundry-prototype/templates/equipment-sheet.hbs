@@ -9,10 +9,10 @@
     <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select>
   </label>
   <label>Categoria<select data-field="system.category">
-<option value="leve" {{#if (eq equipment.category "leve")}}selected{{/if}}>Leve</option>
-<option value="medio" {{#if (eq equipment.category "medio")}}selected{{/if}}>Média</option>
-<option value="pesado" {{#if (eq equipment.category "pesado")}}selected{{/if}}>Pesada</option>
-<option value="muito-leve" {{#if (eq equipment.category "muito-leve")}}selected{{/if}}>Muito Leve</option>
+<option value="leve" {{#if equipment.categoryLeve}}selected{{/if}}>Leve</option>
+<option value="medio" {{#if equipment.categoryMedio}}selected{{/if}}>Média</option>
+<option value="pesado" {{#if equipment.categoryPesado}}selected{{/if}}>Pesada</option>
+<option value="muito-leve" {{#if equipment.categoryMuitoLeve}}selected{{/if}}>Muito Leve</option>
 </select></label>
 <label>Dado adicional (0/6/10/12)<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
 <label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
