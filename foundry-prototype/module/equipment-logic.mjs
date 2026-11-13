@@ -64,7 +64,7 @@ export function skillRequirements(system,id){
   mestre:[disc>=3&&intel>=3&&dex>=3&&focus&&has("improviso")&&["vento","agua","terra","fogo","sagrado","trevas","veneno","sangue"].some(has),
    "Disciplina 3 · Inteligência 3 · Destreza 3 · Criar Item de Foco e Magia · Improviso Elemental · uma Perícia de elemento"],
   "provocacao-sofisticada":[a.influencia>=2,"Influência 2"],
-  marciais:[disc>=1,"Disciplina 1 · aplicação de luta desarmada experimental"],
+
   "disciplina-avancada":[disc>=2,"Disciplina 2"],
   "maestria-manejo-duplo":[has("disciplina-avancada")&&force>=2&&dex>=2&&agil>=1&&(light||ranged||has("armas-fogo")),
    "Disciplina Avançada · Força 2 · Destreza 2 · Agilidade 1 · uma Perícia de armas, arremesso ou longo alcance"],
@@ -92,11 +92,8 @@ export function skillRequirements(system,id){
 }
 export const skillPrerequisite=(system,id)=>skillRequirements(system,id).met;
 export function canSpendXP(system,delta,bucket){
- const ledger=xpLedger(system);
- if(system.monsterRules||!bucket)return ledger.left>=delta;
- const freeSpend=Object.keys(CREATION_REFERENCE).filter(key=>key!=="total").reduce((sum,key)=>
-  sum+Math.max(0,ledger[key]+(system.xpRetired?.[key]??0)+(bucket===key?delta:0)-CREATION_REFERENCE[key]),0);
- return freeSpend<=Number(system.xp||0);
+ // As categorias são apenas contabilidade informativa. O orçamento é global.
+ return Number.isFinite(delta)&&delta>=0&&xpLedger(system).left>=delta;
 }
 export function defenseDE(actor,defense="natural"){
  const s=actor.system;
