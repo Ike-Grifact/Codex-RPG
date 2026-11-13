@@ -1484,7 +1484,7 @@ function wizardSource(group,item){
  const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
  const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
  const lower=g>0&&!state.creationLocked&&!state.pending;
- return '<article class="fp-wiz-source">'+
+ return '<article class="fp-wiz-source" data-source-group="'+group+'">'+
   '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
   '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
   '<div class="fp-wiz-source-actions">'+
@@ -1532,14 +1532,14 @@ function wizardStarterCards(){
  if(wizardStarterPhase==="training")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · SEGUNDA ESCOLHA</span>'+
   '<h3>Escolha um Conhecimento ou uma Prática.</h3><p>Seu Atributo inicial é <strong>'+esc(attr?.[1]||"não selecionado")+'</strong>. Agora selecione <strong>um</strong> Conhecimento ou <strong>uma</strong> Prática. Conhecimento representa estudo; Prática representa treinamento. Não é preciso escolher os dois.</p></div>'+
   phases+
-  '<section class="fp-wiz-focus-section"><div class="fp-wiz-focus-heading"><h4>Conhecimentos</h4><p>Estudar, investigar e compreender.</p></div><div class="fp-wiz-focus-grid">'+K.map(x=>wizardStarterOption("know",x)).join("")+'</div></section>'+
-  '<section class="fp-wiz-focus-section"><div class="fp-wiz-focus-heading"><h4>Práticas</h4><p>Treinar, executar e aperfeiçoar.</p></div><div class="fp-wiz-focus-grid">'+P.map(x=>wizardStarterOption("practice",x)).join("")+'</div></section>'+
+  '<section class="fp-wiz-focus-section" data-source-group="know"><div class="fp-wiz-focus-heading"><h4>Conhecimentos</h4><p>Estudar, investigar e compreender.</p></div><div class="fp-wiz-focus-grid">'+K.map(x=>wizardStarterOption("know",x)).join("")+'</div></section>'+
+  '<section class="fp-wiz-focus-section" data-source-group="practice"><div class="fp-wiz-focus-heading"><h4>Práticas</h4><p>Treinar, executar e aperfeiçoar.</p></div><div class="fp-wiz-focus-grid">'+P.map(x=>wizardStarterOption("practice",x)).join("")+'</div></section>'+
   '<div class="fp-wiz-reminder"><strong>Conhecimentos e Práticas</strong><p>Grau 0: 1d6; grau 1: 1d10 por 2 XP. As outras fontes continuarão disponíveis depois, sem reserva por categoria.</p></div>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CONFIRMAR COMPRAS</span>'+
   '<h3>Confirme as escolhas iniciais.</h3><p>Ao confirmar, as duas fontes terão pelo menos grau 1. Depois você poderá investir livremente em qualquer categoria, inclusive Perícias.</p></div>'+
   phases+'<div class="fp-wiz-focus-confirm">'+
-  '<section><small>ATRIBUTO PRINCIPAL</small><strong>'+esc(attr?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+attrCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="attr">Alterar Atributo</button></section>'+
-  '<section><small>CONHECIMENTO OU PRÁTICA</small><strong>'+esc(training?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+trainingCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="training">Alterar escolha</button></section></div>'+
+  '<section data-source-group="attr"><small>ATRIBUTO PRINCIPAL</small><strong>'+esc(attr?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+attrCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="attr">Alterar Atributo</button></section>'+
+  '<section data-source-group="'+group+'"><small>CONHECIMENTO OU PRÁTICA</small><strong>'+esc(training?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+trainingCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="training">Alterar escolha</button></section></div>'+
   '<div class="fp-wiz-starter-total"><span>XP para confirmar: <strong>'+(attrCost+trainingCost)+'</strong></span><span>Saldo livre após confirmar: <strong>'+(xpCosts().free-attrCost-trainingCost)+' XP</strong></span></div>'+
   '<div class="fp-wiz-reminder"><strong>A escolha “principal” é orientativa</strong><p>Não há bônus oculto. Se voltar aqui depois de outras compras, os investimentos já realizados permanecem na ficha e o custo de uma nova fonte será informado.</p></div>';
 }
@@ -1565,7 +1565,7 @@ function wizardBuild(){
  if(current==="skills")body='<p class="fp-wiz-tab-help">Perícias especializam o personagem e exigem seus requisitos. Todas as compras usam o mesmo XP.</p>'+wizardSkills();
  else{
   const c=WIZARD_CATEGORIES.find(x=>x.id===current);
-  body='<div class="fp-wiz-tab-help"><strong>'+c.title+'</strong> · '+c.description+'<span>'+c.dice+' · '+c.cost+'</span></div>'+
+  body='<div class="fp-wiz-tab-help" data-source-group="'+current+'"><strong>'+c.title+'</strong> · '+c.description+'<span>'+c.dice+' · '+c.cost+'</span></div>'+
    '<div class="fp-wiz-source-grid">'+GROUPS[current].map(item=>wizardSource(current,item)).join("")+'</div>';
  }
  return switcher+status+bar+body+
@@ -1581,9 +1581,9 @@ function wizardReview(){
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
   '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
-  '<div class="fp-wiz-review-list"><section><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
-  '<section><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
-  '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
+  '<div class="fp-wiz-review-list"><section data-source-group="attr"><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
+  '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
+  '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
   '<div class="fp-wiz-reminder"><strong>19 XP iniciais · orçamento compartilhado</strong>'+
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>';
