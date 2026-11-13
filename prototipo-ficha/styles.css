@@ -624,3 +624,95 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  .fp-trade-heading{align-items:start}
  .fp-sound-toggle{font-size:10px!important}
 }
+
+
+/* v0.44 — Jogar / Evoluir / Codex Genético / Inventário */
+.fp-body [hidden]{display:none!important}
+.fp-sheet-navigation{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:15px 0 20px}
+.fp-sheet-navigation button{background:var(--fp-panel);border:1px solid var(--fp-stroke);border-radius:12px;padding:13px 14px;
+ color:var(--fp-text);font-size:14px;font-weight:800;line-height:1.3;cursor:pointer;text-align:left;transition:border-color .12s,background .12s}
+.fp-sheet-navigation button small{display:block;margin-top:4px;color:var(--fp-muted);font-size:10px;font-weight:500}
+.fp-sheet-navigation button.active,.fp-sheet-navigation button[aria-current="page"]{border-color:var(--fp-gold);box-shadow:inset 3px 0 var(--fp-gold);background:var(--fp-raised)}
+.fp-active-panel{margin-bottom:22px;padding:20px}
+.fp-active-panel .fp-panel-heading{margin-bottom:15px}
+.fp-play-talent-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:16px}
+.fp-play-talent-grid>div{min-width:0}
+.fp-play-talent-grid h4{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fp-gold);margin:0 0 10px}
+.fp-owned-list,.fp-owned-elements{display:grid;gap:9px;align-content:start}
+.fp-owned-card{padding:12px;border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:10px;display:grid;gap:6px}
+.fp-owned-card>div{display:flex;flex-wrap:wrap;align-items:start;justify-content:space-between;gap:5px}
+.fp-owned-card strong,.fp-owned-gear strong{color:var(--fp-text);font-size:12px}
+.fp-owned-card small,.fp-owned-gear small{color:var(--fp-muted);font-size:10px}
+.fp-owned-card p{font-size:11px;line-height:1.55;color:var(--fp-muted);margin:0}
+.fp-owned-details{justify-self:start;background:transparent;border:0;border-bottom:1px solid var(--fp-gold);color:var(--fp-gold);cursor:pointer;padding:3px 0;font-size:11px}
+.fp-owned-empty{color:var(--fp-muted);font-size:11px;line-height:1.5;padding:12px;border:1px dashed var(--fp-stroke);border-radius:9px}
+.fp-owned-crystal,.fp-owned-gear{padding:11px;border:1px solid var(--fp-stroke);border-radius:9px;display:grid;gap:5px;background:var(--fp-deep)}
+.fp-owned-crystal span,.fp-owned-gear span{font-size:11px;color:var(--fp-muted)}
+.fp-owned-crystal strong{color:var(--fp-gold);font-size:13px}
+.fp-element-prep{border:1px solid var(--fp-stroke);border-radius:9px;display:flex;gap:9px;align-items:center;text-align:left;
+ padding:10px;background:var(--fp-raised);color:var(--fp-text);cursor:pointer;flex-wrap:wrap}
+.fp-element-prep small{margin-left:auto;font-size:10px;color:var(--fp-gold)}
+.fp-element-icon{color:#2369bb;font-size:18px}
+.fp-genetic-panel{margin-bottom:22px;padding:20px}
+.fp-gene-legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0}
+.fp-gene-legend span{font-size:11px;font-weight:650;color:var(--fp-muted)}
+.fp-gene-legend .owned{color:#267a45}.fp-gene-legend .available{color:#2369bb}
+.fp-gene-toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin:12px 0}
+.fp-gene-toolbar label{min-width:180px;display:grid;gap:5px;flex:1 1 160px;color:var(--fp-muted);font-size:11px}
+.fp-gene-toolbar :is(select,input){min-height:37px;width:100%;border:1px solid var(--fp-stroke);border-radius:8px;padding:7px 10px;
+ color:var(--fp-text);background:var(--fp-raised)}
+.fp-gene-zoom{display:flex;gap:5px}
+.fp-gene-zoom button{min-height:37px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);padding:5px 12px;cursor:pointer}
+.fp-gene-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(245px,.8fr);gap:12px;min-height:490px}
+.fp-gene-canvas{position:relative;min-width:0;min-height:490px;aspect-ratio:1180/680;max-height:630px;overflow:hidden;
+ background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:12px;touch-action:pan-y;cursor:grab}
+.fp-gene-canvas:active{cursor:grabbing}
+.fp-gene-svg{display:block;width:100%;height:100%;color:var(--fp-muted);user-select:none}
+.fp-gene-cluster-label{fill:var(--fp-muted);font-size:14px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;opacity:.78}
+.fp-gene-edge{stroke:var(--fp-muted);stroke-opacity:.22;stroke-width:1.6;pointer-events:none}
+.fp-gene-edge.active{stroke:#2369bb;stroke-opacity:.8;stroke-width:2.8}
+.fp-gene-node{cursor:pointer}
+.fp-gene-hit{fill:transparent;pointer-events:all}
+.fp-gene-dot{fill:var(--fp-raised);stroke:var(--fp-muted);stroke-width:2.5}
+.fp-gene-node.is-owned .fp-gene-dot{fill:#267a45;stroke:#5ab57c}
+.fp-gene-node.is-available .fp-gene-dot{fill:#2369bb;stroke:#83baf7}
+.fp-gene-node.is-locked .fp-gene-dot{fill:var(--fp-panel);stroke:var(--fp-muted)}
+.fp-gene-node.is-selected .fp-gene-dot{stroke:var(--fp-gold);stroke-width:4}
+.fp-gene-halo{fill:none;stroke:var(--fp-gold);stroke-width:1.6;stroke-dasharray:4 3;pointer-events:none}
+.fp-gene-node-label{fill:var(--fp-text);font-size:12px;font-weight:650;paint-order:stroke;stroke:var(--fp-deep);stroke-width:4;pointer-events:none}
+.fp-gene-node:focus{outline:none}
+.fp-gene-node:focus .fp-gene-dot{stroke:var(--fp-gold);stroke-width:5}
+.fp-gene-detail{background:var(--fp-raised);border:1px solid var(--fp-stroke);border-radius:11px;padding:18px;min-width:0;overflow-y:auto;max-height:630px}
+.fp-gene-detail h4{font-size:19px;color:var(--fp-text);margin:10px 0}
+.fp-gene-detail p{line-height:1.6;color:var(--fp-muted);font-size:12px;max-height:160px;overflow:auto}
+.fp-gene-detail dl{display:grid;gap:5px;margin:15px 0;font-size:11px}
+.fp-gene-detail dt{color:var(--fp-gold);font-weight:700;margin-top:9px}
+.fp-gene-detail dd{color:var(--fp-text);margin:0;line-height:1.5}
+.fp-gene-detail-status{display:inline-flex;padding:6px 9px;border-radius:40px;border:1px solid var(--fp-stroke);
+ font-size:11px;font-weight:750}
+.fp-gene-detail-status.is-owned{color:#65bd82;border-color:#267a45}
+.fp-gene-detail-status.is-available{color:#7cb5fb;border-color:#2369bb}
+.fp-gene-detail-status.is-locked{color:var(--fp-muted)}
+.fp-gene-detail .fp-primary-btn{width:100%;margin:3px 0 10px}
+.fp-gene-detail .fp-primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.fp-gene-verbete{display:block;color:var(--fp-gold);font-size:12px;padding:7px 0}
+.fp-gene-detail>small{display:block;color:var(--fp-muted);font-size:10px}
+.fp-gene-list-toggle{display:inline;border:0;background:transparent;border-bottom:1px solid var(--fp-gold);color:var(--fp-gold);cursor:pointer;padding:0}
+#gene-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:15px 0}
+.fp-evolution-mode .fp-workspace{display:block}
+.fp-editing-sources .fp-side-column{display:none}
+.fp-editing-sources .fp-primary-column{width:100%}
+.fp-body .fp-lower:has(#equipamentos:not([hidden])){display:block}
+.fp-body .fp-lower:has(#pericias:not([hidden])){display:block}
+@media(max-width:1000px){
+ .fp-play-talent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fp-gene-layout{grid-template-columns:1fr}
+ .fp-gene-canvas{min-height:350px}
+ .fp-gene-detail{max-height:none}
+}
+@media(max-width:650px){
+ .fp-sheet-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fp-play-talent-grid{grid-template-columns:1fr}
+ .fp-gene-canvas{min-height:300px}
+ .fp-genetic-panel{padding:12px}
+}

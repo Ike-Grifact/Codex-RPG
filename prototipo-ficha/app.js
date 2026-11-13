@@ -651,7 +651,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
- "criar-item-foco-magia": "Disciplina 1, Inteligência 1",
+ "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
  "improviso": "Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
@@ -915,6 +915,7 @@ function defaultState(){return{
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
  ["Atributos","Defina suas capacidades","Distribua os XP de Atributos"],
@@ -1243,7 +1244,115 @@ function syncFields(){
 function renderDiceLegend(){
  $("dice-legend").innerHTML=[4,6,10,12,20].map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("");
 }
-function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderWizard();soundUI();}
+
+/* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
+const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+function applySheetPage(){
+ const show=viewMode==="sheet"&&!!state.creationLocked;
+ const nav=$("sheet-navigation");if(!nav)return;
+ nav.hidden=!show;
+ const chosen=sheetPage;
+ const isEvolve=chosen==="evolution",isInv=chosen==="inventory",isGene=chosen==="genetic",isPlay=chosen==="play";
+ $("play-talents").hidden=!show||!isPlay;
+ $("genetic-view").hidden=!show||!isGene;
+ $("progressao").hidden=!show||!isEvolve;
+ $("pericias").hidden=!show||!isEvolve;
+ $("equipamentos").hidden=!show||!isInv;
+ document.querySelector(".fp-workspace").hidden=!show||!(isPlay||isEvolve&&editMode);
+ document.querySelector(".fp-lower").hidden=!show||!(isEvolve||isInv);
+ document.body.classList.toggle("fp-evolution-mode",show&&isEvolve);
+ document.body.classList.toggle("fp-editing-sources",show&&isEvolve&&editMode);
+ for(const b of nav.querySelectorAll("button[data-sheet-page]")){
+  const active=b.dataset.sheetPage===chosen;
+  b.setAttribute("aria-current",active?"page":"false");b.classList.toggle("active",active);
+ }
+ $("page-subtitle").textContent=isGene?"Explore os caminhos presentes e futuros do seu Codex Genético.":isInv?
+ "Seus equipamentos, materiais e Valor de Troca num espaço próprio.":isEvolve?
+ "XP, fontes e Perícias para construir sua próxima especialização.":"Uma ficha de jogo limpa: recursos, rolagens e somente as habilidades que você adquiriu.";
+}
+function renderOwnedPanel(){
+ const learned=SKILLS.filter(([id])=>state.skills.includes(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
+ const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
+ const empty='<span class="fp-owned-empty">Nenhuma por enquanto. Explore o Codex Genético para encontrar novas opções.</span>';
+ const markup=([id,name,detail,cost])=>{
+  const text=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail.slice(0,130),action=CARD_ACTIVATIONS[id]||"Consultar";
+  return '<article class="fp-owned-card"><div><strong>'+esc(name)+'</strong><small>'+esc(action)+'</small></div>'+
+   '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
+ };
+ $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
+ const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
+ $("owned-elements").innerHTML=
+  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
+  (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
+    '<span class="fp-element-icon">ᚨ</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
+ const equipped=state.items.filter(it=>it.equipped);
+ $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
+  '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
+  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+}
+function geneSkillStatus([id,,,cost]){
+ if(state.skills.includes(id))return"owned";
+ if(Number.isInteger(cost)&&!skillReq(id)&&canAfford("skills",cost)&&!state.pending)return"available";
+ return"locked";
+}
+function renderGeneDetail(){
+ const p=$("gene-detail");if(!p)return;
+ const skill=SKILLS.find(([id])=>id===geneSelected&&!HIDDEN_CATALOG_SKILLS.has(id));
+ if(!skill){p.innerHTML='<span class="fp-gene-detail-empty">Selecione um nó para ver a Perícia, o caminho e o custo da compra.</span>';return;}
+ const [id,name,detail,cost]=skill,owned=state.skills.includes(id),reason=skillReq(id),status=geneSkillStatus(skill);
+ const req=CARD_REQUIREMENTS[id]||reason||"Consulte o verbete para os requisitos completos";
+ const act=CARD_ACTIVATIONS[id]||"Consulte o verbete";
+ const canCancel=owned&&(!state.creationLocked||editMode);
+ const disabled=!owned&&status!=="available"||owned&&!canCancel;
+ const action=owned?(canCancel?"Reverter compra":"Adquirida ✓"):(status==="available"?"Comprar · "+cost+" XP":"Ainda indisponível");
+ p.innerHTML='<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":status==="available"?"Disponível agora":"Ramo futuro / bloqueado")+'</span>'+
+ '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
+ '<dl><dt>Requisitos</dt><dd>'+esc(req)+'</dd><dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
+ '<dt>Ativação</dt><dd>'+esc(act)+'</dd><dt>Estado atual</dt><dd>'+esc(owned?"Já comprada":reason||(!Number.isInteger(cost)?"Regra pendente":"Requisitos cumpridos; confira o saldo de XP"))+'</dd></dl>'+
+ '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(id)+'"'+(disabled?" disabled":"")+'>'+esc(action)+'</button>'+
+ (SKILL_PERMALINKS[id]?'<a class="fp-gene-verbete" href="../pericias/'+esc(SKILL_PERMALINKS[id])+'.html" target="_blank" rel="noopener">Ler verbete completo ↗</a>':"")+
+ '<small>O mapa não altera requisitos; apenas apresenta as Perícias já existentes no catálogo.</small>';
+}
+function renderGenetic(){
+ const map=$("gene-map");if(!map)return;
+ if(!geneSelected||!SKILLS.some(([id])=>id===geneSelected&&!HIDDEN_CATALOG_SKILLS.has(id))){
+  geneSelected=state.skills.find(id=>SKILLS.some(s=>s[0]===id&&!HIDDEN_CATALOG_SKILLS.has(id)))||
+   SKILLS.find(x=>geneSkillStatus(x)==="available"&&!HIDDEN_CATALOG_SKILLS.has(x[0]))?.[0]||"";
+ }
+ const nodes=SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id))
+  .map(item=>({id:item[0],name:item[1],state:geneSkillStatus(item),label:state.skills.includes(item[0])?"Adquirida":
+   skillReq(item[0])||"Verificar orçamento",category:""}));
+ window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,selected:geneSelected,
+  filter:geneFilter,query:geneSearch,onSelect:id=>{geneSelected=id;renderGenetic();}});
+ renderGeneDetail();
+ const list=$("gene-list");
+ if(list){list.hidden=!geneListOpen;
+  if(geneListOpen)list.innerHTML=filteredSkills().map(x=>skillCompactCard(x,false)).join("")||
+    '<p class="fp-owned-empty">Nenhuma Perícia encontrada com os filtros.</p>';
+ }
+}
+function openSheetPage(page,focusSkill=""){
+ if(!["play","evolution","genetic","inventory"].includes(page)||viewMode!=="sheet")return;
+ sheetPage=page;
+ if(focusSkill)geneSelected=focusSkill;
+ if(page!=="evolution"&&editMode)editMode=false;
+ render();
+ $("sheet-navigation")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
+}
+function prepareElementSkill(id){
+ if(!ELEMENT_SKILLS.some(([key])=>key===id)||!state.skills.includes(id))return;
+ if(state.pending){toast("Finalize a rolagem pendente antes de preparar a magia.");return;}
+ if(!state.skills.includes("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
+ sheetPage="play";editMode=false;
+ draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";
+ const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
+  (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
+ if(focus)draft.equipmentId=focus.id;
+ render();toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
+  " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
+}
+
+function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Cinco telas reais: construímos primeiro; a ficha completa só aparece depois. */
 function wizardPersist(){
@@ -1268,7 +1377,7 @@ function wizardFinalize(){
   "Concluir a criação? "+unused.reduce((n,v)=>n+Math.max(0,v),0)+" XP inicial(is) não gasto(s) passa(m) a ser LIVRE(S) para qualquer Atributo, Conhecimento, Prática ou Perícia. Esse saldo não é XP de evolução.":
   "Concluir a criação? As compras serão consolidadas; correções exigem Editar ficha.";
  if(!confirm(message))return;
- const residual=lockCreation();viewMode="sheet";wizardStep=4;wizardReached=4;wizardPersist();
+ const residual=lockCreation();viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! XP inicial livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
@@ -1914,6 +2023,7 @@ function onClick(event){
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
+ case "prepare-element":prepareElementSkill(id);break;
  case "wizard-back":wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
@@ -2041,6 +2151,15 @@ function onChange(event){
 function bind(){
  document.addEventListener("click",onClick);
  document.addEventListener("click",event=>{
+  const page=event.target.closest("button[data-sheet-page]");
+  if(page){openSheetPage(page.dataset.sheetPage,page.dataset.geneSelect||"");return;}
+  const zoom=event.target.closest("button[data-gene-zoom]");
+  if(zoom){window.CodexGeneGraph?.zoom($("gene-map"),Number(zoom.dataset.geneZoom));return;}
+ });
+ $("gene-filter")?.addEventListener("change",event=>{geneFilter=event.target.value;renderGenetic();});
+ $("gene-search")?.addEventListener("input",event=>{geneSearch=event.target.value.slice(0,100);renderGenetic();});
+ $("gene-list-toggle")?.addEventListener("click",()=>{geneListOpen=!geneListOpen;renderGenetic();});
+ document.addEventListener("click",event=>{
   const dlg=$("skill-detail-dialog");
   if(event.target.closest("#skill-detail-close")){dlg.close();return;}
   if(event.target===dlg){dlg.close();return;}
@@ -2107,12 +2226,12 @@ function bind(){
  $("edit-sheet").addEventListener("click",()=>{
   if(state.pending){toast("Finalize ou descarte a rolagem antes de editar.");return;}
   if(viewMode!=="sheet")return;
-  editMode=!editMode;draft=freshDraft();render();save();
+  editMode=!editMode;sheetPage=editMode?"evolution":"play";draft=freshDraft();render();save();
   toast(editMode?"Edição ativa: use + ou − para ajustar graus e XP.":"Edição concluída. Selecione fontes para rolar.");
  });
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";wizardStep=4;wizardReached=4;
+  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;
   wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina → Força; Disciplina Avançada permite uma terceira fonte.");
  });
  $("start-wizard").addEventListener("click",()=>{

@@ -8,9 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.43-1">
+  <link rel="stylesheet" href="./styles.css?v=0.44-1">
   <script src="./catalog.js?v=0.43-1" defer></script>
-  <script src="./app.js?v=0.43-1" defer></script>
+  <script src="./gene-graph.js?v=0.44-1" defer></script>
+  <script src="./app.js?v=0.44-1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -121,6 +122,51 @@
     </section>
 
 
+    <nav class="fp-sheet-navigation" id="sheet-navigation" aria-label="Páginas da ficha">
+      <button type="button" data-sheet-page="play" aria-current="page">Jogar <small>Rolagens e habilidades</small></button>
+      <button type="button" data-sheet-page="evolution">Evolução <small>XP e investimentos</small></button>
+      <button type="button" data-sheet-page="genetic">Codex Genético <small>Mapa de perícias</small></button>
+      <button type="button" data-sheet-page="inventory">Inventário <small>Equipamentos e VT</small></button>
+    </nav>
+    <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
+      <div class="fp-play-talent-grid">
+        <div><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
+        <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
+        <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+      </div>
+    </section>
+    <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div>
+        <h3 id="gene-heading">Codex Genético</h3>
+        <small>Mapa dos caminhos do personagem · ligações indicam afinidade temática, não novos pré-requisitos</small>
+      </div></div>
+      <div class="fp-gene-legend" aria-label="Legenda dos nós"><span class="owned">● Comprada</span><span class="available">● Pode comprar</span><span class="locked">● Bloqueada ou futura</span></div>
+      <div class="fp-gene-toolbar">
+        <label>Ramo <select id="gene-filter">
+          <option value="related">Meus caminhos atuais</option><option value="all">Todas as Perícias</option>
+          <option value="marcial">Combate</option><option value="magia">Conjuração</option>
+          <option value="furtividade">Furtividade</option><option value="social">Social e Montaria</option>
+          <option value="suporte">Suporte</option><option value="livre">Combinações</option>
+          <option value="available">Disponíveis</option><option value="owned">Adquiridas</option>
+        </select></label>
+        <label>Encontrar Perícia <input id="gene-search" type="search" placeholder="Buscar por nome…"></label>
+        <div class="fp-gene-zoom" role="group" aria-label="Aproximar ou afastar o mapa">
+          <button type="button" data-gene-zoom="-1" aria-label="Afastar">−</button>
+          <button type="button" data-gene-zoom="0" aria-label="Centralizar">Centralizar</button>
+          <button type="button" data-gene-zoom="1" aria-label="Aproximar">+</button>
+        </div>
+      </div>
+      <div class="fp-gene-layout">
+        <div class="fp-gene-canvas" id="gene-map" tabindex="0" aria-label="Rede interativa de perícias, arraste para explorar"></div>
+        <aside class="fp-gene-detail" id="gene-detail" aria-live="polite" aria-label="Perícia selecionada">
+          <p>Selecione uma bolinha para conhecer a Perícia, seus requisitos e custo em XP.</p>
+        </aside>
+      </div>
+      <p class="fp-footnote">A compra utiliza os mesmos requisitos e o mesmo saldo de XP da ficha; perícias pendentes não podem ser adquiridas. Visão alternativa: <button type="button" class="fp-gene-list-toggle" id="gene-list-toggle">Abrir catálogo em lista</button>.</p>
+      <div id="gene-list" hidden></div>
+    </section>
+
     <section class="fp-panel fp-progression" id="progressao">
       <div class="fp-panel-heading">
         <span class="fp-panel-icon">✧</span>
@@ -190,6 +236,7 @@
 
     <section class="fp-lower">
       <section class="fp-panel fp-skills-panel" id="pericias">
+        <p class="fp-footnote">Catálogo completo: use esta lista para pesquisar quando preferir não usar o Codex Genético. Para jogar, as Perícias compradas aparecem na página Jogar.</p>
         <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div><h3>Perícias e habilitações</h3><small>Resumo no card · Passe o mouse para ver verbete · Clique para detalhes</small></div><span class="fp-tiny-tag">Aquisição em simulação</span></div>
         <div id="skills-filterbar"></div>
         <div id="skills-list" class="fp-skills-grid"></div>
