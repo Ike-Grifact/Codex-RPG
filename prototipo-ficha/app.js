@@ -1469,7 +1469,7 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Cinco etapas de criação. Distribua XP, escolha suas Perícias e veja a ficha completa ao concluir.":
+  "Criação pelo Codex Genético: 19 XP livres para Atributos, Conhecimentos, Práticas e Perícias.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
@@ -1495,22 +1495,19 @@ function renderWizard(){
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · ATRIBUTOS</span><h3>Seu potencial natural.</h3><p>Distribua até <strong>6 XP de Atributos</strong> no orçamento inicial experimental. Cada atributo começa no Grau 0 com 1d4. Um avanço tem custo incremental.</p></div>'+
-   '<div class="fp-wiz-source-grid">'+A.map(item=>wizardSource("attr",item)).join("")+'</div>';
- }else if(stage===2){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · FORMAÇÃO</span><h3>O que você sabe fazer?</h3><p>Conhecimentos e Práticas compartilham os <strong>8 XP de Formação</strong> iniciais. Cada fonte começa no Grau 0 com 1d6 gratuito.</p></div>'+
-   '<div class="fp-wiz-formation"><section><h4>Conhecimentos</h4><div class="fp-wiz-source-grid">'+K.map(item=>wizardSource("know",item)).join("")+
-   '</div></section><section><h4>Práticas</h4><div class="fp-wiz-source-grid">'+P.map(item=>wizardSource("practice",item)).join("")+'</div></section></div>'+
-   '<div class="fp-wiz-reminder"><b>Disciplina é uma única Prática.</b><p>As Perícias específicas habilitam seu uso com armas, conjuração e defesa; não se compra outra fonte ao adquirir habilitações diferentes.</p></div>';
- }else if(stage===3){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PERÍCIAS</span><h3>Escolha suas especializações.</h3><p>Use os <strong>5 XP de Perícias definidos no nível 1</strong>. As habilidades exigem requisitos e seus custos são cobrados. Opções ainda pendentes não podem ser compradas.</p></div>'+wizardSkills();
+  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CODEX GENÉTICO</span>'+
+  '<h3>Seu DNA, suas escolhas.</h3><p>Desenvolva primeiro um <strong>Atributo</strong> na dupla hélice. Depois, escolha um <strong>Conhecimento ou Prática</strong> na órbita. Os ramos ficam azuis conforme os requisitos são cumpridos. Distribua <strong>19 XP</strong> como preferir.</p></div>'+
+  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
+  geneLayout("gene-builder-map","gene-builder-detail")+
+  '<p class="fp-wiz-reminder">A hélice representa seus Atributos; as órbitas representam Conhecimentos e Práticas. Conexões são afinidades, não requisitos adicionais.</p>';
  }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
- $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE 5</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
+ if(stage===1)renderGenetic();
+ $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
-  '<button type="button" class="fp-primary-btn" data-action="'+(stage===4?'wizard-finish':'wizard-next')+'">'+
-  (stage===4?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
+  '<button type="button" class="fp-primary-btn" data-action="'+(stage===2?'wizard-finish':'wizard-next')+'">'+
+  (stage===2?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
@@ -2171,9 +2168,13 @@ function bind(){
   const page=event.target.closest("button[data-sheet-page]");
   if(page){openSheetPage(page.dataset.sheetPage,page.dataset.geneSelect||"");return;}
   const zoom=event.target.closest("button[data-gene-zoom]");
-  if(zoom){window.CodexGeneGraph?.zoom($("gene-map"),Number(zoom.dataset.geneZoom));return;}
+  if(zoom){window.CodexGeneGraph?.zoom(zoom.closest(".fp-wizard")?.querySelector(".fp-gene-canvas")||$("gene-map"),Number(zoom.dataset.geneZoom));return;}
  });
  $("gene-filter")?.addEventListener("change",event=>{geneFilter=event.target.value;renderGenetic();});
+ document.addEventListener("change",event=>{
+  if(event.target.matches("[data-gene-filter]")){geneFilter=event.target.value;renderGenetic();}
+  if(event.target.matches("[data-gene-search]")){geneSearch=event.target.value.slice(0,100);renderGenetic();}
+ });
  $("gene-search")?.addEventListener("input",event=>{geneSearch=event.target.value.slice(0,100);renderGenetic();});
  $("gene-list-toggle")?.addEventListener("click",()=>{geneListOpen=!geneListOpen;renderGenetic();});
  document.addEventListener("click",event=>{
