@@ -143,3 +143,29 @@ test("bloqueia um processo Foundry headless mesmo antes de abrir a porta", async
   assert.ok(!existsSync(packageRoot));
   assert.ok(!existsSync(join(root, "Backups")));
 });
+
+
+test("atualiza se o Windows travar a renomeação da pasta por causa do diretório de trabalho", {
+  skip: process.platform !== "win32",
+}, async (t) => {
+  const { root, json, packageRoot } = fixture(t);
+  json(`Data/systems/${systemId}/system.json`, { id: systemId, version: "0.2.0" });
+  json(`Data/systems/${systemId}/marcador.json`, { preserve: true });
+  const holder = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000); console.log('ready')"], {
+    cwd: packageRoot,
+  });
+  const exited = once(holder, "exit");
+  let result;
+  try {
+    await once(holder.stdout, "data");
+    result = run(install, ["--user-data", root]);
+  } finally {
+    holder.kill();
+    await exited;
+  }
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(validatePackage(packageRoot).version, current.version);
+  const backupRoot = join(root, "Backups", "codex-rpg-system-installer");
+  const [transaction] = readdirSync(backupRoot);
+  assert.deepEqual(readJson(join(backupRoot, transaction, systemId, "marcador.json")), { preserve: true });
+});

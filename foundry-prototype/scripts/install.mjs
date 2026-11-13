@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import {
-  mkdirSync, mkdtempSync, realpathSync, renameSync, rmdirSync, rmSync, statSync,
+  mkdirSync, mkdtempSync, realpathSync, readdirSync, renameSync, rmdirSync, rmSync, statSync,
 } from "node:fs";
 import { connect } from "node:net";
 import { homedir, networkInterfaces } from "node:os";
@@ -148,6 +148,40 @@ function installedVersion(target) {
   return manifest.version ?? "(versão desconhecida)";
 }
 
+async function replaceContents(target, stage, backup, port) {
+  // An open working directory on Windows may prevent renaming the package root.
+  // Back up everything before touching any entry, and keep storage in place.
+  copyDirectory(target, backup);
+  await assertFoundryClosed(port);
+  const holding = join(dirname(stage), "anterior");
+  mkdirSync(holding);
+  const removed = [];
+  const promoted = [];
+  try {
+    for (const name of readdirSync(target)) {
+      if (name === "storage") continue;
+      renameSync(join(target, name), join(holding, name));
+      removed.push(name);
+    }
+    for (const name of readdirSync(stage)) {
+      if (name === "storage") continue;
+      renameSync(join(stage, name), join(target, name));
+      promoted.push(name);
+    }
+    validatePackage(target);
+  } catch (error) {
+    try {
+      for (const name of promoted.reverse()) renameSync(join(target, name), join(stage, name));
+      for (const name of removed.reverse()) renameSync(join(holding, name), join(target, name));
+    } catch (restoreError) {
+      throw new Error(`Falha ao restaurar. Verifique ${backup}: ${restoreError.message}`, { cause: error });
+    }
+    throw error;
+  }
+  rmSync(holding, { recursive: true });
+  rmSync(stage, { recursive: true });
+}
+
 async function install(userData, dryRun) {
   const data = join(userData, "Data");
   const systems = join(data, "systems");
@@ -196,7 +230,17 @@ async function install(userData, dryRun) {
     if (existing && lstat(storage)) copyDirectory(storage, join(stage, "storage"));
     await assertFoundryClosed(port);
 
-    if (existing) renameSync(target, backup);
+    if (existing) {
+      try {
+        renameSync(target, backup);
+      } catch (error) {
+        if (process.platform !== "win32" || !["EBUSY", "EPERM", "EACCES"].includes(error.code)) throw error;
+        await replaceContents(target, stage, backup, port);
+        console.log(`Backup: ${backup}`);
+        console.log(`Instalado e validado: ${manifest.id} ${manifest.version}`);
+        return;
+      }
+    }
     let promoted = false;
     try {
       renameSync(stage, target);
