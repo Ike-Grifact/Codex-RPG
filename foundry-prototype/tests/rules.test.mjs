@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
- buildPool,resolveRoll,compareKeptOptions,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
+ buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
@@ -157,4 +157,21 @@ test("Monstro precisa de orçamento informado antes de comprar graus",async()=>{
  const monstro={monsterRules:true,xp:0,attributes:{forca:0},skills:[],knowledges:{},practices:{}};
  assert.equal(canSpendXP(monstro,2),false);
  monstro.xp=10;assert.equal(canSpendXP(monstro,2),true);
+});
+
+test("Compra inicial guiada cobra apenas os graus obrigatórios ainda ausentes",()=>{
+ const fresh={monsterRules:false,xp:0,attributes:{},knowledges:{},practices:{},skills:[]};
+ const plan=starterPurchasePlan(fresh,"forca","practice","atletismo");
+ assert.equal(plan.ok,true);assert.equal(plan.cost,3);assert.equal(plan.remaining,17);
+ assert.deepEqual(plan.changes,{"system.attributes.forca":1,"system.practices.atletismo":1});
+ const partial={...fresh,attributes:{forca:1}};
+ const middle=starterPurchasePlan(partial,"forca","knowledge","medicina");
+ assert.equal(middle.ok,true);assert.equal(middle.cost,2);assert.equal(middle.remaining,17);
+ assert.deepEqual(middle.changes,{"system.knowledges.medicina":1});
+ const complete={...partial,practices:{atletismo:1}};
+ const ready=starterPurchasePlan(complete,"forca","practice","atletismo");
+ assert.equal(ready.ok,true);assert.equal(ready.cost,0);assert.equal(ready.complete,true);
+ assert.deepEqual(ready.changes,{});
+ const monster={...fresh,monsterRules:true};
+ assert.equal(starterPurchasePlan(monster,"forca","practice","atletismo").ok,false);
 });
