@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="description" content="Criar Conflito: fichas de criaturas, monstros e humanoides no Codex RPG.">
+ <title>Criar Conflito — Codex RPG</title>
+ <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
+ <link rel="stylesheet" href="../assets/theme.css">
+ <link rel="stylesheet" href="./styles.css?v=0.1-1">
+ <script src="../assets/site.js" defer></script>
+ <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
+ <script type="module" src="./app.js?v=0.1-1"></script>
+</head>
+<body>
+ <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+ <header class="site-header">
+  <a class="brand" href="../index.html" aria-label="Codex RPG, início">
+   <img src="../assets/codex-logo.svg" alt="" width="55" height="53">
+   <span class="brand-text">CODEX <strong>RPG</strong></span>
+  </a>
+  <nav class="site-nav" aria-label="Menu principal">
+   <a href="../index.html">Início</a>
+   <a href="../livro.html">Livro do Jogador</a>
+   <a href="../pericias/">Perícias</a>
+   <a href="../narrador.html">Livro do Mestre</a>
+   <a href="../prototipo-ficha/">Criador de ficha</a>
+   <a href="./" class="active">Criar Conflito</a>
+  </nav>
+  <button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu" aria-expanded="false">☰</button>
+ </header>
+ <main class="cf-main shell" id="conteudo">
+  <section class="cf-hero">
+   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.39</span>
+   <h1>Criar <em>Conflito.</em></h1>
+   <p>Prepare um encontro inteiro com várias fichas de criaturas, monstros extraordinários e oponentes humanoides. Controle graus, dados, recursos e liderança sem trocar de página.</p>
+   <div class="cf-hero-actions">
+    <label>Tipo da nova ficha<select id="new-kind">
+     <option value="monstro">Monstro extraordinário</option>
+     <option value="criatura">Criatura comum / animal</option>
+     <option value="humanoide">Monstro humanoide</option>
+    </select></label>
+    <button class="cf-primary" id="add-threat" type="button">+ Criar ficha</button>
+    <button id="export-encounter" type="button">Exportar conflito</button>
+    <label class="cf-upload">Importar JSON<input type="file" id="import-encounter" accept=".json,application/json"></label>
+   </div>
+   <p class="cf-note">Salvo automaticamente neste navegador. Ferramenta em playtest: grau e XP não atribuem dificuldade ou recompensa automática.</p>
+  </section>
+  <section class="cf-top-dashboard" aria-label="Painel do confronto">
+   <div class="cf-dash">
+    <span>JOGADORES NO CONFLITO</span>
+    <label class="cf-counter"><button type="button" data-players="-1" aria-label="Menos um jogador">−</button>
+     <input id="player-count" type="number" min="0" max="30" value="4" aria-label="Quantidade de jogadores">
+     <button type="button" data-players="1" aria-label="Mais um jogador">+</button></label>
+    <small>O teto de Pavor público depende dos jogadores.</small>
+   </div>
+   <div class="cf-dash cf-pavor-public">
+    <span>RESERVA PÚBLICA DO MESTRE</span>
+    <div class="cf-counter"><button type="button" data-public="-1" aria-label="Gastar um Pavor público">−</button>
+     <strong id="public-count">2 / 6 P</strong>
+     <button type="button" data-public="1" aria-label="Adicionar um Pavor público">+</button></div>
+    <small>Teto 2 + jogadores · começa com 2P · no máximo 1P público por oportunidade.</small>
+   </div>
+   <div class="cf-dash">
+    <span>FICHAS / LIDERANÇA</span><strong id="roster-count">0 fichas</strong>
+    <small id="leader-count">Ao menos um Líder por conflito.</small>
+   </div>
+   <div class="cf-dash">
+    <span>XP DAS AMEAÇAS</span><strong id="encounter-xp">0 XP</strong>
+    <label class="cf-party-xp">XP total dos jogadores <input id="party-xp" min="0" max="99999" type="number" value="80"></label>
+    <small id="xp-compare">XP total não determina sozinho a dificuldade.</small>
+   </div>
+  </section>
+  <section class="cf-layout">
+   <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
+    <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Suas ameaças</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
+    <p class="cf-description">Clique em uma ficha para editá-la. Você pode duplicar a mesma criatura sem repetir a construção.</p>
+    <div id="roster" class="cf-roster" aria-live="polite"></div>
+    <p class="cf-note">Oponentes possuem Pavor <strong>local individual</strong>; a reserva pública do Mestre não é somada automaticamente.</p>
+   </aside>
+   <section id="editor-shell" class="cf-editor" aria-label="Ficha selecionada">
+    <div id="editor"><div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div></div>
+   </section>
+  </section>
+  <section class="cf-guidance">
+   <h2>Regras e limites desta versão</h2>
+   <p><strong>Humanoides</strong> usam as fontes, os dados e a economia dos jogadores, com 20 XP iniciais compartilhados em caráter experimental. <strong>Monstros extraordinários</strong> usam a escala própria de Atributos com d10 e d12. <strong>Criaturas comuns</strong> possuem atributos e XP próprios, sem receber automaticamente a progressão extraordinária.</p>
+   <p>O Grau de ameaça limita o Pavor local. Monstros de grau 1–4 podem manter até três dados; grau 5–6 até quatro, pagando 1P por cada dado além dos dois básicos. Capacidades próprias, alterações extraordinárias e efeitos específicos dependem do SRD. A ficha não concede automaticamente ações, êxitos nem pontos de Pavor.</p>
+   <p class="cf-note"><strong>PENDENTE:</strong> XP máximo por Grau monstruoso, escala exata de recompensas, procedimento de animais pequenos, divisão do Pavor entre ameaças e equilíbrio entre fichas. Estas lacunas não serão preenchidas por números fictícios.</p>
+  </section>
+ </main>
+ <div id="notice" class="cf-notice" role="status" aria-live="polite" hidden></div>
+ <footer class="cf-footer shell">CODEX RPG · FERRAMENTA DE PREPARAÇÃO · <a href="../narrador.html">Regras do Mestre</a></footer>
+</body>
+</html>
