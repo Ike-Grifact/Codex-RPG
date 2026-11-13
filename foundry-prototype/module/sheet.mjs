@@ -1,5 +1,6 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,lifeMax,balance,maxPP,loadCapacity,mayComplement,xpLedger,monsterCap} from "./rules.mjs";
+ sourceDice,sourceLabel,lifeMax,balance,maxPP,loadCapacity,mayComplement,xpLedger,monsterCap,hasStarterSources} from "./rules.mjs";
+import "./gene-graph.mjs";
 import {dieSvg,runeHTML,runeText} from "./roll-engine.mjs";
 import {canSpendXP,defenseDE,skillRequirements} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
@@ -10,7 +11,7 @@ const FIELDS={attribute:"attributes",knowledge:"knowledges",practice:"practices"
 const same=(a,b)=>a?.key===b?.key&&a?.group===b?.group;
 const attributes=[["Atributos","attribute"],["Práticas","practice"],["Conhecimentos","knowledge"]];
 const tabs=[["overview","Jogar"],["training","Evolução"],["skills","Perícias"],["inventory","Inventário e Combate"]];
-const creationSteps=[["Identidade","Quem é seu Aprendiz?"],["Atributos","Seu potencial"],["Formação","Conhecimentos e Práticas"],["Perícias","Especialização"],["Revisão","Confirmar personagem"]];
+const creationSteps=[["Identidade","Quem é seu Aprendiz?"],["Codex Genético","19 XP compartilhados"],["Revisão","Confirmar personagem"]];
 const reported=error=>{console.error("Codex RPG",error);ui.notifications.error("Codex · "+error.message);};
 const notify=message=>ui.notifications.warn(message);
 const selectedOptions=(values,value)=>values.map(([key,label])=>({key,label,selected:key===value}));
@@ -35,6 +36,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  _wizardReached=0;
  _creationVisited=false;
  _skillSearch="";
+ _geneSelected="attr:forca";
+ _geneNodes=[];
+ _geneAffinity={};
  _busy=false;
  _refreshHooks=[];
 
@@ -129,10 +133,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    wizard,wizardStep:activeStep,wizardSteps:creationSteps.map(([name,subtitle],i)=>({
     index:i,name,subtitle,selected:i===activeStep,complete:i<activeStep,available:i<=this._wizardReached+1,next:i===activeStep+1,prev:i===activeStep-1
    })),wizardTitle:creationSteps[activeStep][0],wizardSubtitle:creationSteps[activeStep][1],
-   wizardIdentity:activeStep===0,wizardAttributes:activeStep===1,wizardTraining:activeStep===2,
-   wizardSkills:activeStep===3,wizardReview:activeStep===4,
-   wizardGroups:groups.filter(g=>activeStep===1?g.title==="Atributos":activeStep===2&&g.title!=="Atributos"),
-   wizardCanFinish:ledger.left>=0&&!!String(actor.name||"").trim(),wizardPrev:activeStep>0,
+   wizardIdentity:activeStep===0,wizardGenetic:activeStep===1,wizardReview:activeStep===2,
+   wizardGroups:[],
+   geneDetail:null,
+   wizardCanFinish:ledger.left>=0&&hasStarterSources(s)&&!!String(actor.name||"").trim(),wizardPrev:activeStep>0,
    wizardLast:activeStep===creationSteps.length-1,skillSearch:this._skillSearch,
    ownedSkills:monster?[]:SKILLS.filter(skill=>s.skills.includes(skill.id)).map(skill=>({
     name:skill.name,detail:skill.detail.slice(0,130),element:["fogo","agua","vento","terra","sagrado","trevas","veneno","sangue"].includes(skill.id)})),
@@ -157,6 +161,46 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    gear:items.map(i=>({id:i.id,name:i.name,...i.system.toObject()})),
    catalog:G1_CATALOG.map((item,index)=>({id:index,name:item.name}))
   };
+  if(wizard){
+   const startedAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1);
+   const sources=[
+    ...ATTRIBUTES.map(([key,name])=>({group:"attribute",type:"attr",key,name})),
+    ...KNOWLEDGES.map(([key,name])=>({group:"knowledge",type:"know",key,name})),
+    ...PRACTICES.map(([key,name])=>({group:"practice",type:"practice",key,name}))
+   ];
+   const geneNodes=sources.map(node=>{
+    const grade=Number(s[FIELDS[node.group]]?.[node.key]||0),scale=node.group==="attribute"?XP_ATTRIBUTE:XP_TRAINING;
+    const next=grade<6?scale[grade+1]-scale[grade]:null;
+    const allowed=node.group==="attribute"||startedAttribute;
+    return {...node,id:node.type+":"+node.key,grade,next,
+     state:grade>0?"owned":allowed&&next!==null&&canSpendXP(s,next,node.group==="attribute"?"attributes":"training")?"available":"locked",
+     dice:sourceDice(node.group,node.key,s).map(n=>"d"+n).join(" + ")};
+   });
+   const affinities={};
+   for(const skill of SKILLS){
+    const label=skillRequirements(s,skill.id).label.toLowerCase();
+    const references=[["força","attr:forca"],["agilidade","attr:agilidade"],["destreza","attr:destreza"],
+     ["inteligência","attr:inteligencia"],["influência","attr:influencia"],["vigor","attr:vigor"],
+     ["disciplina","practice:armas_conjuracao"],["atletismo","practice:atletismo"],
+     ["furtividade","practice:furtividade"],["artesão","practice:artesao"],
+     ["apresentação","practice:apresentacao"],["coleta","practice:coleta"],
+     ["medicina","know:medicina"],["alquimia","know:alquimia"],
+     ["proteção","know:protecao"],["erudição","know:erudicao"]];
+    affinities[skill.id]=references.filter(([name])=>label.includes(name)).map(([,node])=>node);
+    const owned=s.skills.includes(skill.id),request=skillRequirements(s,skill.id);
+    geneNodes.push({type:"skill",id:skill.id,name:skill.name,
+     state:owned?"owned":hasStarterSources(s)&&request.met&&canSpendXP(s,skill.cost,"skills")?"available":"locked",
+     label:request.label,detail:skill.detail,cost:skill.cost});
+   }
+   this._geneNodes=geneNodes;this._geneAffinity=affinities;
+   const chosen=geneNodes.find(node=>node.id===this._geneSelected)||geneNodes[0];
+   const isSkill=chosen.type==="skill",sourceGroup=chosen.type==="attr"?"attribute":chosen.type==="know"?"knowledge":"practice";
+   ctx.codex.geneDetail={...chosen,isSkill,sourceGroup,
+    canRaise:!isSkill&&chosen.state==="available",canLower:!isSkill&&chosen.grade>0,
+    canBuy:isSkill&&chosen.state==="available",owned:isSkill&&chosen.state==="owned",
+    request:isSkill?skillRequirements(s,chosen.id).label:"",
+    nextCost:chosen.next??0};
+  }
   return ctx;
  }
  _onRender(ctx,options){
@@ -165,6 +209,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(body&&!body.dataset.bound){
    body.dataset.bound="true";
    body.addEventListener("change",event=>this._change(event));
+  }
+  const graph=this.element.querySelector("[data-codex-gene]");
+  if(graph&&window.CodexGeneGraph&&this._geneNodes.length){
+   window.CodexGeneGraph.render(graph,{skills:this._geneNodes,branches:[],affinity:this._geneAffinity,
+    selected:this._geneSelected,filter:"all",onSelect:id=>{this._geneSelected=id;this.render();}});
   }
   if(!this._refreshHooks.length){
    this._refreshHooks=[
@@ -230,10 +279,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const next=Math.floor(Number(button.dataset.step));
   if(!Number.isInteger(next)||next<0||next>=creationSteps.length||next>this._wizardReached+1)return;
   if(next>0&&!String(this.actor.name||"").trim())return notify("Informe um nome antes de avançar.");
+  if(next===2&&!hasStarterSources(rulesFor(this.actor)))return notify("Desenvolva um Atributo e um Conhecimento ou Prática antes da revisão.");
   this._wizardStep=next;this._wizardReached=Math.max(this._wizardReached,next);await this.render();
  }
  static async finishCreation(){
   if(!this.inCreation||!this.editing||this.actor.type==="creature"||this.pending)return;
+  if(!hasStarterSources(rulesFor(this.actor)))return notify("Desenvolva ao menos um Atributo e um Conhecimento ou Prática.");
   if(xpLedger(rulesFor(this.actor)).left<0)return notify("Investimento acima do XP disponível.");
   const approved=await foundry.applications.api.DialogV2.confirm({
    window:{title:"Concluir criação · Codex RPG"},
@@ -293,6 +344,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(!this.editing)return;
    const {group,key,delta}=button.dataset,s=rulesFor(this.actor),field=FIELDS[group];
    if(!GROUPS[group]?.some(([id])=>id===key)||![-1,1].includes(Number(delta))||s.monsterRules&&group!=="attribute")return;
+   if(this.inCreation&&group!=="attribute"&&Number(delta)>0&&
+      !ATTRIBUTES.some(([name])=>Number(s.attributes?.[name]||0)>=1)){
+    return notify("Comece com pelo menos um Atributo na hélice do Codex Genético.");
+   }
    const current=s[field][key],next=Math.max(0,Math.min(6,current+Number(delta)));
    if(current===next)return;
    const scale=group==="attribute"&&!s.monsterRules?XP_ATTRIBUTE:XP_TRAINING;
@@ -326,6 +381,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     changes["system.skills"]=skills;
     changes["system.skillCosts.-="+skill.id]=null;
    }else{
+    if(this.inCreation&&!hasStarterSources(s))return notify("Desenvolva primeiro um Atributo e um Conhecimento ou Prática.");
     const req=skillRequirements(s,skill.id);
     if(!req.met&&!this.administrative)return notify(req.label);
     if(!this.administrative&&!canSpendXP(s,skill.cost,"skills"))return notify("XP insuficiente para esta Perícia.");
