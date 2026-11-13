@@ -43,9 +43,9 @@ O criador apresenta **quatro etapas**, sem classe obrigatória:
 3. **Distribuir XP:** o modo padrão utiliza listas para Atributos, Conhecimentos, Práticas e Perícias, com compras livres e botões +/−. O **Codex Genético fica como alternativa por botão**, usando a mesma ficha e o mesmo XP.
 4. **Revisão:** conferir investimentos e saldo antes de abrir a ficha jogável.
 
-Na hipótese de **19 XP experimentais**, as compras mínimas de 1+2 XP deixam **16 XP livres**. Se o jogador voltar às escolhas guiadas após outras compras, os investimentos anteriores permanecem; escolhas novas informam o custo antes de confirmar.
+Na hipótese de **20 XP experimentais**, as compras mínimas de 1+2 XP deixam **17 XP livres**. Se o jogador voltar às escolhas guiadas após outras compras, os investimentos anteriores permanecem; escolhas novas informam o custo antes de confirmar.
 
-**DEFINIDO:** depois das duas compras mínimas, não existe reserva exclusiva de XP por categoria. **EXPERIMENTAL:** o total de 19 XP iniciais compartilhados. As antigas distribuições 6/8/5 e 7/7/5 permanecem somente no histórico do SRD.
+**DEFINIDO:** depois das duas compras mínimas, não existe reserva exclusiva de XP por categoria. **EXPERIMENTAL:** o total de 20 XP iniciais compartilhados. As antigas distribuições 6/8/5 e 7/7/5 permanecem somente no histórico do SRD.
 
 A ficha e a escolha do modo são salvas localmente; a alternância entre Codex Genético e listas usa o mesmo personagem. Após a criação, a evolução segue o saldo e as compras não geram reembolso automático. Recomenda-se exportar a ficha antes de escolher **Novo personagem**.
 
@@ -70,7 +70,7 @@ A ficha e a escolha do modo são salvas localmente; a alternância entre Codex G
 ## Limites e hipóteses do protótipo
 
 - **A compra de graus e Perícias agora calcula e consome XP**. Os custos acumulados das fontes são os mesmos do criador: Atributos 0/1/3/7/15/31/55 e Formação 0/2/8/20/38/66/102. As Perícias são cobradas conforme os preços documentados no catálogo.
-- **DEFINIDO:** na criação, comprar um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo o XP restante é livre, inclusive para Perícias; não há cotas por categoria. **EXPERIMENTAL:** o total compartilhado de 19 XP.
+- **DEFINIDO:** na criação, comprar um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo o XP restante é livre, inclusive para Perícias; não há cotas por categoria. **EXPERIMENTAL:** o total compartilhado de 20 XP.
 - **XP por nível segue PENDENTE.** A tabela de referência 19/31/46/.../664 XP é apenas uma curva de playtest; o protótipo não exige esses valores para subir de nível e não os concede automaticamente.
 - **Antes de concluir a criação**, pode reorganizar compras. **Depois**, não permite reduzir graus nem desfazer Perícias; evolução é feita comprando com novos XP.
 - **Maestria Arma Certa** aparece para consulta com seu efeito definido (+1E no peso favorável); seu custo de XP e requisitos finais continuam PENDENTES, por isso ainda não é comprável.
@@ -116,7 +116,7 @@ A ficha mostra **DE base** e, quando for relevante, o valor de **DE para esquiva
 
 ## Perícias autorais e orçamento de criação
 
-**XP livre na criação [DEFINIDO]** após uma compra de Atributo grau 1 e de Conhecimento ou Prática grau 1. **19 XP iniciais compartilhados [EXPERIMENTAL]**, sem reserva exclusiva para Perícias. O catálogo da ficha apresenta as 15 Perícias fornecidas pelo autor, os dois novos Disparos pendentes e as opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
+**XP livre na criação [DEFINIDO]** após uma compra de Atributo grau 1 e de Conhecimento ou Prática grau 1. **20 XP iniciais compartilhados [EXPERIMENTAL]**, sem reserva exclusiva para Perícias. O catálogo da ficha apresenta as 15 Perícias fornecidas pelo autor, os dois novos Disparos pendentes e as opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
 
 A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe/Disparos pendentes, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.39](../docs/srd-continuidade-v0.39.md).
 
@@ -136,14 +136,14 @@ A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos ní
 
 ## Atualização normativa — fontes mínimas e XP livre (SRD v0.39)
 
-**DEFINIDO:** comprar um Atributo grau 1 (1 XP) e um Conhecimento ou Prática grau 1 (2 XP). O restante pode ser gasto em qualquer categoria. **EXPERIMENTAL:** no orçamento único de 19 XP, restam 16 XP após as duas compras mínimas. Custos por grau não mudaram.
+**DEFINIDO:** comprar um Atributo grau 1 (1 XP) e um Conhecimento ou Prática grau 1 (2 XP). O restante pode ser gasto em qualquer categoria. **EXPERIMENTAL:** no orçamento único de 20 XP, restam 17 XP após as duas compras mínimas. Custos por grau não mudaram.
 
 ## Atualização operacional — Disciplina e XP residual (SRD v0.38)
 
 - **Disciplina** é a Prática compartilhada para armas ou conjuração; testes marciais básicos podem ser rolados com Disciplina + Atributo sem comprar Armas 1. Habilitações específicas permanecem para efeitos próprios, e a conjuração especializada conserva os requisitos pertinentes.
 - **Disciplina Avançada:** somente quando a ação usa Disciplina, permite acrescentar um Atributo, Conhecimento ou Prática pertinente; a ficha passa a montar essa terceira fonte, inclusive outro Atributo, sem elevar a retenção.
 - **Filtros do catálogo:** busca, Atributos, Conhecimentos, Práticas, relacionadas às adquiridas e requisitos atingidos. A categorização temática não estabelece requisitos.
-- **Saldo inicial livre:** XP não gasto durante o orçamento inicial passa a ser livre para novas compras após concluir a criação. Compras reduzem o saldo, sem permitir reembolso livre automático de compras consolidadas. A criação exige as duas fontes mínimas e permite investir o XP restante livremente; o total de 19 XP permanece experimental.
+- **Saldo inicial livre:** XP não gasto durante o orçamento inicial passa a ser livre para novas compras após concluir a criação. Compras reduzem o saldo, sem permitir reembolso livre automático de compras consolidadas. A criação exige as duas fontes mínimas e permite investir o XP restante livremente; o total de 20 XP permanece experimental.
 - **Espalhar Golpe:** metade do dano dos Êxitos arredondada para baixo é calculada antes de aplicar a Integridade e as resistências de cada alvo adicional que tenha sido acertado conforme sua DE individual.
 
 ## Conjuração atualizada — substituição e preparação de magias (12/11/2026)
