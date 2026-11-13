@@ -238,6 +238,8 @@ function bind(root){
  // O clique após arrastar não seleciona/compra acidentalmente um nó.
  root.addEventListener("click",event=>{
   if(!suppressClick)return;
+  // Botões explícitos de navegação são uma nova ação intencional, não seleção de nó.
+  if(event.target.closest("[data-gene-nav]")){suppressClick=false;return;}
   event.preventDefault();event.stopImmediatePropagation();suppressClick=false;
  },true);
  root.addEventListener("click",event=>{
