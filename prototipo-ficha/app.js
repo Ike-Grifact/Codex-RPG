@@ -1712,12 +1712,36 @@ function wizardBuild(){
  return confirmedHint+switcher+status+bar+body+
   '<p class="fp-wiz-reminder">Compre graus usando + e −. Você pode alternar entre categorias ou abrir o Codex Genético a qualquer momento, sem reiniciar a ficha.</p>';
 }
+function wizardEquipment(){
+ if(tradeOwner!==state){tradeOwner=state;tradeDraft={...state.trade.resources};}
+ const spent=state.trade.purchases.reduce((n,p)=>n+Number(p.price||0),0),remaining=walletValue();
+ const editable=!state.trade.purchases.length&&!state.trade.collected;
+ const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
+ const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
+ const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
+ const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
+ const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
+ .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
+ '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
+ '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
+ '<div class="fp-wiz-vt-actions"><strong>'+sum+' / '+STARTING_VT+' VT distribuídos</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
+ '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
+ '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
+ RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
+ '<div class="fp-wiz-shop-tabs">'+tabs+'</div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item cadastrado nesta categoria.</p>')+'</div></section>'+
+ '<section class="fp-wiz-vt-section"><h4>Seus itens iniciais</h4><div class="fp-wiz-owned-list">'+owned+'</div></section>'+
+ '<div class="fp-wiz-reminder"><strong>VT não é XP</strong><p>Você não precisa gastar todo o patrimônio. Itens comprados aparecem na ficha e podem ser equipados conforme as regras.</p></div>';
+}
 function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
  const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
@@ -1790,14 +1814,16 @@ function renderWizard(){
    content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
    '<h3>Construa seu Aprendiz.</h3><p>O <strong>modo padrão</strong> apresenta as compras em listas. Se preferir, alterne para o <strong>Codex Genético</strong>. Ambos usam o mesmo personagem, as mesmas compras e o mesmo saldo de XP.</p></div>'+
    wizardBuild();
+  }else if(stage===3){
+   content=wizardEquipment();
   }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
  if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
-  '<button type="button" class="fp-primary-btn" data-action="'+(stage===3?'wizard-finish':'wizard-next')+'"'+(stage===1&&wizardStarterPhase!=="confirm"?' disabled':'')+'>'+
-  (stage===3?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
+  '<button type="button" class="fp-primary-btn" data-action="'+(stage===4?'wizard-finish':'wizard-next')+'"'+(stage===1&&wizardStarterPhase!=="confirm"?' disabled':'')+'>'+
+  (stage===4?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
