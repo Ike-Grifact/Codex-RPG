@@ -16,6 +16,17 @@ export function blank(kind="monstro"){
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
  skills:[],life:3,pavorLocal:0,keep:2,abilities:"",items:[]};
 }
+/* Criação rápida de NPC: mínimo humano aprovado (1 XP atributo + 2 XP prática).
+   Sem habilidades, itens ou XP adicionais gratuitos. */
+export function quickHumanoid(){
+ const t=blank("humanoide");
+ t.name="Humano comum";
+ t.concept="Oponente humanoide";
+ t.attributes.forca=1;
+ t.practices.disciplina=1;
+ t.life=stats(t).life;
+ return t;
+}
 export function toSystem(t){
  return {...t,monsterRules:t.kind==="monstro",
   attributes:{...t.attributes},knowledges:{...t.knowledges},practices:{...t.practices},
