@@ -1,8 +1,8 @@
 {
   "id": "codex-rpg-foundry",
-  "title": "Codex RPG — Protótipo Foundry",
-  "description": "Protótipo independente de ficha e rolagem simbólica do Codex RPG. Regras de continuidade v0.26; desenvolvimento não publicado.",
-  "version": "0.1.0",
+  "title": "Codex RPG — Foundry (playtest)",
+  "description": "Codex RPG · fichas de personagens, humanoides e monstros, dados simbólicos e Pavor.",
+  "version": "0.2.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14",
@@ -29,7 +29,9 @@
   ],
   "documentTypes": {
     "Actor": {
-      "character": {}
+      "character": {},
+      "humanoid": {},
+      "creature": {}
     },
     "Item": {
       "equipment": {}
