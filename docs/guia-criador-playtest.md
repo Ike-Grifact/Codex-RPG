@@ -18,12 +18,12 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 ## Fluxo guiado da criação
 
-1. **Identidade:** fornecer nome, conceito, origem e características de identidade.
-2. **Escolher desenvolvimento:** conhecer Atributos, Conhecimentos e Práticas; selecionar uma categoria para abrir primeiro, sem travar as demais.
-3. **Distribuir XP:** o padrão é um **visualizador de listas** com abas para Atributos, Conhecimentos, Práticas e Perícias. Um botão alterna para o **Codex Genético**; as duas visões compram graus na mesma ficha e usam o mesmo XP.
-4. **Revisão:** concluir somente após adquirir um Atributo e um Conhecimento ou Prática no grau 1. O restante do XP é livre.
+1. **Identidade:** informar nome, conceito, origem e identidade.
+2. **Escolhas iniciais:** primeiro selecionar **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos, dados e custo de 1 XP no grau 1. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
+3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
+4. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1.
 
-A seleção inicial não implica comprar nessa categoria antes das outras. Também é possível alternar para a lista depois de usar o mapa, sem reiniciar o personagem.
+**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 19 XP; saldo livre de 16 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
 
 ## O que funciona
 
