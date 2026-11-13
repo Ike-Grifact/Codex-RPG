@@ -716,3 +716,30 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
  .fp-gene-canvas{min-height:300px}
  .fp-genetic-panel{padding:12px}
 }
+
+/* Codex Genético · a criação e distribuição de XP pela dupla hélice */
+.fp-wizard-grid:has(#gene-builder-map){grid-template-columns:minmax(0,1fr)}
+.fp-wizard-grid:has(#gene-builder-map) .fp-wizard-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.fp-wizard-grid:has(#gene-builder-map) .fp-wiz-summary-top,.fp-wizard-grid:has(#gene-builder-map) .fp-wiz-sidebar-title,
+.fp-wizard-grid:has(#gene-builder-map) .fp-wiz-summary-total,.fp-wizard-grid:has(#gene-builder-map) .fp-wiz-sidebar-note{grid-column:1/-1}
+#gene-builder-map{min-height:570px;max-height:none;aspect-ratio:1280/740}
+.fp-gene-creator-layout{grid-template-columns:minmax(0,2fr) minmax(250px,.9fr)}
+.fp-gene-creator-layout .fp-gene-detail{max-height:650px}
+.fp-gene-dna-strand{fill:none;stroke-width:9;stroke-linecap:round;stroke-opacity:.25}
+.fp-gene-dna-strand.a{stroke:#267A45}.fp-gene-dna-strand.b{stroke:#2369BB}
+.fp-gene-dna-rung{stroke:var(--fp-gold);stroke-opacity:.22;stroke-width:3}
+.fp-gene-node.type-attr .fp-gene-dot{stroke-width:4}
+.fp-gene-node.type-know .fp-gene-dot,.fp-gene-node.type-practice .fp-gene-dot{stroke-width:3}
+.fp-gene-inside{font-size:14px;fill:var(--fp-text);pointer-events:none}
+.fp-gene-grade{font-size:12px;font-weight:800;fill:var(--fp-gold);stroke:var(--fp-deep);stroke-width:3;paint-order:stroke;pointer-events:none}
+.fp-gene-edge[data-gene-link="source"]{stroke:#2369BB;stroke-opacity:.32;stroke-width:1.7}
+.fp-gene-edge[data-gene-link="affinity"]{stroke:#8b9eb0;stroke-opacity:.18}
+.fp-gene-edge.completed{stroke:#267A45;stroke-opacity:.5}
+.fp-gene-edge.active{stroke:var(--fp-gold);stroke-opacity:.85;stroke-width:3}
+.fp-gene-cluster-label{font-size:14px;letter-spacing:.17em}
+.fp-gene-grade-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;margin-top:16px}
+.fp-gene-grade-actions button{font-size:12px;min-height:42px}
+.fp-gene-grade-actions button:disabled{opacity:.38;cursor:not-allowed}
+.fp-wiz-summary-total strong{font-variant-numeric:tabular-nums}
+@media(max-width:980px){.fp-gene-creator-layout{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:440px}.fp-gene-creator-layout .fp-gene-detail{max-height:none}}
+@media(max-width:620px){.fp-wizard-grid:has(#gene-builder-map) .fp-wizard-sidebar{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:320px}.fp-gene-grade-actions{grid-template-columns:1fr}}
