@@ -34,8 +34,8 @@ function position(nodes){
   const rank=n=>n.state==="owned"?0:n.state==="available"?1:2;
   return rank(a)-rank(b)||a.name.localeCompare(b.name,"pt-BR");
  });
- skills.forEach((n,i)=>{n.x=115+(i%7)*221;n.y=SKILL_Y+Math.floor(i/7)*72;});
- return Math.max(1000,SKILL_Y+Math.ceil(skills.length/7)*72+70);
+ skills.forEach((n,i)=>{n.x=105+(i%6)*250;n.y=SKILL_Y+Math.floor(i/6)*72;});
+ return Math.max(1000,SKILL_Y+Math.ceil(skills.length/6)*72+70);
 }
 function edge(a,b,cls){
  if(!a||!b)return"";
