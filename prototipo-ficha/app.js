@@ -1402,6 +1402,9 @@ function geneRefresh(){
  const budget=$("gene-build-budget"),buttons=$("gene-build-actions");
  if(budget)budget.outerHTML=geneBudgetPanel();
  if(buttons)buttons.outerHTML='<div id="gene-build-actions">'+geneActionsPanel()+'</div>';
+ const sheetBudget=$("gene-sheet-budget"),sheetActions=$("gene-sheet-actions");
+ if(sheetBudget)sheetBudget.innerHTML=geneBudgetPanel().replace('id="gene-build-budget"','id="gene-sheet-budget-content"');
+ if(sheetActions)sheetActions.innerHTML=geneActionsPanel();
 }
 function sourceGeneInfo(id,s=state){
  const [group,key]=String(id).split(":");
@@ -1476,6 +1479,10 @@ function renderGenetic(){
  for(const id of ["gene-detail","gene-builder-detail"]){
   const el=$(id);if(el&&el.isConnected!==false)el.innerHTML=geneDetailHTML(geneSelected,preview);
  }
+ const sheetBudget=$("gene-sheet-budget"),sheetActions=$("gene-sheet-actions"),futureToggle=$("gene-sheet-future");
+ if(sheetBudget)sheetBudget.innerHTML=geneBudgetPanel().replace('id="gene-build-budget"','id="gene-sheet-budget-content"');
+ if(sheetActions)sheetActions.innerHTML=geneActionsPanel();
+ if(futureToggle){futureToggle.textContent=geneShowFuture?"Ocultar futuras ramificações":"Mostrar futuras ramificações";futureToggle.setAttribute("aria-pressed",String(geneShowFuture));}
  const list=$("gene-list");
  if(list){list.hidden=!geneListOpen;
   if(geneListOpen)list.innerHTML=SKILLS.filter(row=>!HIDDEN_CATALOG_SKILLS.has(row[0])).map(row=>skillCompactCard(row,false)).join("");
@@ -2332,7 +2339,7 @@ function onClick(event){
   case "gene-skill":geneStageSkill(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
-  case "gene-future":geneShowFuture=!geneShowFuture;renderWizard();break;
+  case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
  case "roll":roll();break;
  case "trade-allocate":{
