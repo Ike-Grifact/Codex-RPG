@@ -906,6 +906,13 @@ const WIZARD_STEPS=[
  ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
+// Metadados usados na etapa 3 para explicar as abas do visualizador padrão.
+// Restaurados após a separação do guia de escolhas individuais (etapa 2).
+const WIZARD_CATEGORIES=[
+ {id:"attr",title:"Atributos",description:"Capacidades fundamentais do Aprendiz. Permitem ações físicas, mentais e sociais pertinentes.",dice:"Grau 0: 1d4 · Grau 1: 1d6",cost:"Grau 1: 1 XP"},
+ {id:"know",title:"Conhecimentos",description:"Estudo, investigação e compreensão de assuntos especializados.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Grau 1: 2 XP"},
+ {id:"practice",title:"Práticas",description:"Treinamento e execução de técnicas. Disciplina é uma Prática única.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Grau 1: 2 XP"}
+];
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
