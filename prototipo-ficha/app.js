@@ -900,7 +900,7 @@ let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
-let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set();
+let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
@@ -1315,8 +1315,10 @@ function renderOwnedPanel(){
 
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
+  '<div class="fp-gene-canvas-shell">'+
   '<div class="fp-gene-canvas" id="'+mapId+'" role="region" aria-label="Codex Genético reorganizado: fontes com dados, graus e botões de ajuste"></div>'+
-  '<aside class="fp-gene-detail" id="'+detailId+'" aria-live="polite"></aside></div>';
+  '<aside class="fp-gene-detail fp-gene-float-detail" id="'+detailId+'" aria-label="Detalhes da fonte ou Perícia" aria-live="polite" hidden></aside>'+
+  '</div></div>';
 }
 function genePreviewState(){
  if(!geneDraft.size&&!genePendingSkills.size)return state;
@@ -1423,7 +1425,9 @@ function sourceGeneInfo(id,s=state){
 }
 function geneSkillStatus([id,,,cost],s=state){
  if(s.skills.includes(id))return"owned";
- return Number.isInteger(cost)&&!skillReq(id,s)&&xpCosts(s).free>=cost&&!state.pending?"available":"locked";
+ if(!Number.isInteger(cost)||xpCosts(s).free<cost||state.pending)return"locked";
+ // Roxo = há XP para a compra, mas o personagem ainda não atende aos requisitos.
+ return skillReq(id,s)?"potential":"available";
 }
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
@@ -1444,12 +1448,12 @@ function geneDetailHTML(id,s=state){
  if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
- return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":"Bloqueada")+'</span>'+
+ return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"XP suficiente · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+
-  (geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status==="locked"&&!staged?' disabled':'')+'>'+
+  (geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
    (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
    (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>');
@@ -1466,7 +1470,7 @@ function renderGenetic(){
    label:preview.skills.includes(row[0])?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
   }))
  ];
- const choose=id=>{geneSelected=id;renderGenetic();};
+ const choose=id=>{geneSelected=id;geneInspectorOpen=true;renderGenetic();};
  for(const mapId of ["gene-map","gene-builder-map"]){
   const map=$(mapId);
   if(!map||map.isConnected===false)continue;
@@ -1477,7 +1481,13 @@ function renderGenetic(){
    onAdjust:geneStageGrade});
  }
  for(const id of ["gene-detail","gene-builder-detail"]){
-  const el=$(id);if(el&&el.isConnected!==false)el.innerHTML=geneDetailHTML(geneSelected,preview);
+  const el=$(id);
+  if(el&&el.isConnected!==false){
+   el.hidden=!geneInspectorOpen;
+   el.innerHTML=geneInspectorOpen?'<div class="fp-gene-float-top"><strong>DETALHES DO CODEX</strong>'+
+    '<button type="button" data-action="gene-close-detail" aria-label="Fechar detalhes">×</button></div>'+
+    geneDetailHTML(geneSelected,preview):"";
+  }
  }
  const sheetBudget=$("gene-sheet-budget"),sheetActions=$("gene-sheet-actions"),futureToggle=$("gene-sheet-future");
  if(sheetBudget)sheetBudget.innerHTML=geneBudgetPanel().replace('id="gene-build-budget"','id="gene-sheet-budget-content"');
@@ -1676,11 +1686,11 @@ function wizardBuild(){
   geneBudgetPanel()+
   '<div class="fp-gene-map-tools"><button type="button" data-action="gene-future" aria-pressed="'+geneShowFuture+'">'+
   (geneShowFuture?'Ocultar futuras ramificações':'Mostrar futuras ramificações')+'</button>'+
-  '<span>As bolinhas indicam apenas Perícias adquiridas ou com requisitos e XP atendidos.</span>'+
+  '<span>Verde: adquirida · Azul: liberada · Roxo: XP suficiente, faltam requisitos.</span>'+
   '<div class="fp-gene-zoom"><button type="button" data-gene-zoom="-1" aria-label="Diminuir zoom">−</button>'+
   '<button type="button" data-gene-zoom="0">Centralizar</button><button type="button" data-gene-zoom="1" aria-label="Aumentar zoom">+</button></div></div>'+
   
-  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
+  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● XP suficiente · faltam requisitos</span><span class="locked">● Futuro (opcional)</span></div>'+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<div id="gene-build-actions">'+geneActionsPanel()+'</div>'+
   '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Alterações só entram na ficha após confirmar a evolução.</p>';
@@ -2340,6 +2350,7 @@ function onClick(event){
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
   case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
+  case "gene-close-detail":geneInspectorOpen=false;renderGenetic();break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
  case "roll":roll();break;
  case "trade-allocate":{
