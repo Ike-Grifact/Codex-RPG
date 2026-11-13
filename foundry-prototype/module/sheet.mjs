@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,resolveRoll,compareKeptOptions,lifeMax,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
@@ -23,6 +23,10 @@ const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(
  .map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
 const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
 const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
+const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
+ .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
+const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
+ .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
 function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
@@ -41,14 +45,19 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs"}};
  constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;}
  async _prepareContext(options){
-  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=actor.type==="creature",ledger=xpLedger(s);
+  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=actor.type==="creature",ledger=xpLedger(s),
+   used=carriedItems(actor),carryMax=loadCapacity(s),
+   hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
+   hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
   ctx.codex={
    actorName:actor.name,portrait:actor.img,logo:"systems/codex-rpg-foundry/assets/codex-logo.svg",
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
-   balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
+   balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
+    carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
+    xp:s.xp,xpLedger:ledger,hasCreationMinimum:hasFirstAttribute&&hasTraining,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
@@ -97,6 +106,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     summary=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster,
      threatGrade:s.threatGrade,weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:actor.type==="humanoid"});
    }catch(e){summary={ok:false,errors:[e.message]};}
+   ctx.codex.comparisons=compareKeptOptions(p.dice,{...p.options,level:s.level,monster,threatGrade:s.threatGrade,
+     courage:s.courage,weight:situate(p.options),hostile:actor.type==="humanoid"},4)
+     .map((x,i)=>({...x,position:i+1,keptNames:x.dice.join(" · ")}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
       selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
@@ -298,6 +310,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const n=Number(this.element?.querySelector("[data-catalog-choice]")?.value),row=G1_CATALOG[n];
   if(!row)return;
   const {name,...system}=structuredClone(row);
+  const projected=carriedItems(this.actor)+(Number(system.weight)||0)*Math.max(1,Number(system.quantity)||1),
+    capacity=loadCapacity(this.actor.system);
+  if(projected>capacity+1e-9)
+   ui.notifications.warn("ATENÇÃO: "+name+" excederá a capacidade de carga ("+projected.toFixed(3)+" / "+capacity+
+    " Alto). As penalidades exatas por sobrecarga ainda são PENDENTES no SRD.");
   await this.actor.createEmbeddedDocuments("Item",[{name,type:"equipment",system}]);
  }
  static async openEquipment(event,target){this.actor.items.get(target.dataset.id)?.sheet.render({force:true});}
