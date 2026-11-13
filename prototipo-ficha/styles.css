@@ -1009,3 +1009,11 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
  .fp-gene-creator-layout .fp-gene-detail dl{grid-template-columns:1fr}
  .fp-gene-bottom-actions>button{width:100%}
 }
+
+/* Ficha jogável: o mapa também ocupa a largura completa; detalhes ficam abaixo. */
+#genetic-view .fp-gene-layout{display:flex;flex-direction:column;gap:12px;min-width:0;max-width:100%}
+#genetic-view .fp-gene-canvas{width:100%;max-width:100%;min-width:0;max-height:none;height:auto;min-height:0;aspect-ratio:auto;overflow:hidden}
+#genetic-view .fp-gene-detail{max-height:none;min-width:0;width:100%;overflow:visible}
+#genetic-view #gene-sheet-budget{margin:12px 0}
+#genetic-view #gene-sheet-actions{margin:10px 0}
+@media(max-width:900px){#genetic-view .fp-gene-canvas{overflow:auto}#genetic-view .fp-gene-overview{min-width:990px}}
