@@ -26,15 +26,18 @@ Esta pasta é a **única interface ativa** para criação e ficha. O antigo `cri
 
 ## Como experimentar — fluxo de criação vigente (SRD v0.39)
 
-O criador atual apresenta três etapas:
+O criador atual apresenta **quatro etapas**, sem impor profissão:
 
 1. **Identidade:** nome obrigatório, conceito, origem, virtude, personalidade e retrato.
-2. **Codex Genético:** comprar pelo menos **um Atributo no grau 1** e **um Conhecimento ou Prática no grau 1**. O XP restante é livre para todas as categorias, inclusive Perícias, com seus custos e requisitos.
-3. **Revisão:** conferir a criação e abrir a ficha jogável.
+2. **Escolher desenvolvimento:** selecionar Atributos, Conhecimentos ou Práticas como primeiro foco de orientação. Cada cartão explica o tipo, apresenta exemplos de uso, dados do grau 0/1 e custo do primeiro avanço. Essa escolha não restringe as demais categorias.
+3. **Distribuir XP:** o **modo padrão usa listas** de Atributos, Conhecimentos, Práticas e Perícias, com botões +/−, dados, graus e custos. O **Codex Genético fica como alternância opcional**; ambos usam exatamente a mesma ficha e o mesmo XP, sem perder compras ao mudar.
+4. **Revisão:** conferir as compras mínimas, o saldo, dados derivados e abrir a ficha jogável.
+
+A compra de um Conhecimento/Prática pode acontecer antes da compra de Atributo. O bloqueio ocorre **apenas ao tentar concluir a criação** sem um Atributo grau 1 e um Conhecimento ou Prática grau 1.
 
 **DEFINIDO:** depois das duas compras mínimas, não existe reserva exclusiva de XP por categoria. **EXPERIMENTAL:** o total de 19 XP iniciais compartilhados. As antigas distribuições 6/8/5 e 7/7/5 permanecem somente no histórico do SRD.
 
-A ficha é salva localmente; a alternância entre Codex Genético e catálogo em lista usa o mesmo personagem. Após a criação, a evolução segue o saldo e as compras não geram reembolso automático. Recomenda-se exportar a ficha antes de escolher **Novo personagem**.
+A ficha e a escolha do modo são salvas localmente; a alternância entre Codex Genético e listas usa o mesmo personagem. Após a criação, a evolução segue o saldo e as compras não geram reembolso automático. Recomenda-se exportar a ficha antes de escolher **Novo personagem**.
 
 ## Correções visuais desta versão
 
