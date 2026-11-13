@@ -22,6 +22,20 @@
      {{#if codex.isHumanoid}}<strong>Ficha de Humanoide: progressão de XP e dados de personagem.</strong>{{/if}}
      {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}<small class="codex-creation-warning">Criação incompleta: Atributo G1 + Conhecimento OU Prática G1.</small>{{/unless}}{{/unless}}
      {{#if codex.isMonster}}<strong>Ficha de Monstro: apenas Atributos próprios; escala d10/d12.</strong>{{/if}}
+     {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}
+       <details class="codex-starter-guide" open>
+        <summary>Compras mínimas orientadas · 3 XP no personagem novo</summary>
+        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 20 XP experimentais livremente, sem reservas.</p>
+        <div class="codex-starter-fields">
+         <label>Atributo inicial<select data-starter-attr>{{#each codex.starterAttributes}}
+          <option value="{{this.id}}">{{this.name}}</option>{{/each}}</select></label>
+         <label>Conhecimento ou Prática inicial<select data-starter-training>{{#each codex.starterTraining}}
+          <option value="{{this.value}}">{{this.name}}</option>{{/each}}</select></label>
+         <button type="button" class="codex-primary" data-action="purchaseStarter">Confirmar compras mínimas</button>
+        </div>
+        <small>Somente compras ainda não realizadas custam XP; requisitos mínimos são verificados antes de confirmar.</small>
+       </details>
+     {{/unless}}{{/unless}}
      {{#if codex.isGM}}<button type="button" data-action="openPavorPanel">Painel de Pavor público</button>{{/if}}
     </div>
     </div>
@@ -210,7 +224,7 @@
       {{/if}}
       <details class="codex-compare-rolls">
        <summary>Comparar escolhas de dados mantidos (sem rolar novamente)</summary>
-       <p class="codex-tip">Resultados exatos das faces atuais, sem anulações ou conversões adicionais. Nenhuma alternativa é aplicada automaticamente; compare acerto, Pavor e dano.</p>
+       <p class="codex-tip">Resultados exatos das faces atuais, sem anulações ou conversões adicionais. Nenhuma alternativa é aplicada automaticamente; compare acerto, Pavor e dano. Você pode escolher uma delas sem rerrolar nem gastar recursos até finalizar.</p>
        <div class="codex-compare-grid">
        {{#each codex.comparisons}}
         <div class="codex-compare-option">
@@ -218,6 +232,7 @@
          <b>{{this.outcome}}</b>
          <span>DE {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
          <small>Dano básico {{this.damage}} {{#if this.critical}}· crítico {{this.critical}}{{/if}}</small>
+         <button type="button" data-action="applyComparison" data-index="{{@index}}">Usar estes dados mantidos</button>
         </div>
        {{/each}}
        </div>
