@@ -69,7 +69,7 @@ const { chromium } = require('playwright');
         throw new Error('Dados poliédricos não têm os traços do rolador');
       const potentials=page.locator('#gene-builder-map .fp-gene-skill.is-potential');
       if(!await potentials.count())throw new Error('Perícias sem requisitos, mas com XP, não aparecem em roxo');
-      await potentials.first().locator('.fp-gene-dot').click();
+      await potentials.first().press('Enter');
       await page.waitForSelector('#gene-builder-detail:not([hidden])');
       const detailText=await page.locator('#gene-builder-detail').innerText();
       if(!detailText.includes('requisitos pendentes'))
@@ -104,7 +104,7 @@ const { chromium } = require('playwright');
       if(branchLines<1)throw new Error('O grafo de Perícias não tem conexões de ramificação');
       const mount=page.locator('#gene-builder-map .fp-gene-skill.is-potential[data-gene-id="montar"]');
       if(await mount.count()!==1)throw new Error('Montar Animal deve mostrar pacote roxo com XP suficiente');
-      await mount.locator('.fp-gene-dot').click();
+      await mount.press('Enter');
       const buyAll=page.locator('#gene-builder-detail [data-action="gene-auto-buy"][data-id="montar"]');
       if(!await buyAll.count())throw new Error('Falta o botão comprar Perícia + requisitos');
       const preBuyText=await page.locator('#gene-builder-detail').innerText();
@@ -195,7 +195,7 @@ const { chromium } = require('playwright');
     const shell = await mobile.locator('#wizard-content .fp-gene-canvas-shell').boundingBox();
     if (!shell || shell.x < -1 || shell.x + shell.width > 392)
       throw new Error('Mapa genético ultrapassa o viewport móvel: '+JSON.stringify(shell));
-    await mobile.locator('#gene-builder-map .fp-gene-skill.is-potential .fp-gene-dot').first().click();
+    await mobile.locator('#gene-builder-map .fp-gene-skill.is-potential').first().press('Enter');
     await mobile.waitForSelector('#gene-builder-detail:not([hidden])');
     const inspector = await mobile.locator('#gene-builder-detail').boundingBox();
     if (!inspector || inspector.x < -1 || inspector.x + inspector.width > 392)
