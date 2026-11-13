@@ -65,7 +65,7 @@ const { chromium } = require('playwright');
         throw new Error('Mapa ultrapassa a largura disponível: '+JSON.stringify(mapRect));
       if(!await page.locator('#gene-builder-map .fp-gene-double-helix').count())
         throw new Error('DNA de dupla hélice não renderizado');
-      if(!await page.locator('#gene-builder-map .fp-gene-die-shape path').count())
+      if(!await page.locator('#gene-builder-map .fp-gene-die-inline .fp-gene-die-poly path').count())
         throw new Error('Dados poliédricos não têm os traços do rolador');
       const potentials=page.locator('#gene-builder-map .fp-gene-skill.is-potential');
       if(!await potentials.count())throw new Error('Perícias sem requisitos, mas com XP, não aparecem em roxo');
@@ -99,6 +99,40 @@ const { chromium } = require('playwright');
       await page.locator('#wizard-content button[data-action="gene-future"]').click();
       if(await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
         throw new Error('Opções futuras não foram ocultadas de novo');
+      // Ramificações conectadas como no grafo temático, não como pré-requisitos.
+      const branchLines=await page.locator('#gene-builder-map .fp-gene-skill-link').count();
+      if(branchLines<1)throw new Error('O grafo de Perícias não tem conexões de ramificação');
+      const mount=page.locator('#gene-builder-map .fp-gene-skill.is-potential[data-gene-id="montar"]');
+      if(await mount.count()!==1)throw new Error('Montar Animal deve mostrar pacote roxo com XP suficiente');
+      await mount.locator('.fp-gene-dot').click();
+      const buyAll=page.locator('#gene-builder-detail [data-action="gene-auto-buy"][data-id="montar"]');
+      if(!await buyAll.count())throw new Error('Falta o botão comprar Perícia + requisitos');
+      const preBuyText=await page.locator('#gene-builder-detail').innerText();
+      if(!preBuyText.includes('5 XP'))throw new Error('Pacote Montar não calcula Influence 2 + Perícia por 5 XP: '+preBuyText);
+      page.once('dialog', async dialog => {
+        if(!dialog.message().includes('Influência 0 → 2')||!dialog.message().includes('Montar Animal'))
+          throw new Error('Confirmação não lista todos os requisitos: '+dialog.message());
+        await dialog.accept();
+      });
+      await buyAll.click();
+      const autoSpent=await page.locator('#wizard-summary').innerText();
+      if(!autoSpent.includes('11 XP')||!autoSpent.includes('9 / 20 XP'))
+        throw new Error('Compra automática não debitou os 5 XP completos: '+autoSpent.slice(0,350));
+      const influence=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:influencia"]');
+      if(!await influence.innerText().then(t=>t.includes('GRAU 2')))
+        throw new Error('Compra automática não elevou Influência a grau 2');
+      if(await influence.locator('.fp-gene-die-inline').count()!==2)
+        throw new Error('Influência grau 2 deveria exibir dois dados reais');
+      if(!await page.locator('#gene-builder-map .fp-gene-skill.is-owned[data-gene-id="montar"]').count())
+        throw new Error('Montar Animal não foi incorporada como Perícia adquirida');
+      // Evoluir Agilidade para grau 3 produz 3 ícones de dados; descartar não gasta XP.
+      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
+      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
+      if(await page.locator('#gene-builder-map [data-gene-id="attr:agilidade"] .fp-gene-die-inline').count()!==3)
+        throw new Error('Grau 3 não exibe três dados entre − e +');
+      await page.locator('#gene-build-actions [data-action="gene-reset"]').click();
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('11 XP')))
+        throw new Error('Descartar evolução de três dados alterou o saldo real');
       await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
       await page.locator('#wizard-content button[data-action="wizard-tab"][data-group="attr"]').click();
       if(!await page.locator('#wizard-content [data-action="grade"][data-group="attr"][data-key="agilidade"]').count())
@@ -119,7 +153,7 @@ const { chromium } = require('playwright');
       await page.locator('#wizard-content [data-action="wizard-buy-item"][data-item="Faca"]').click();
       if(!await page.locator('#wizard-content').innerText().then(t=>t.includes('18')&&t.includes('Faca')))
         throw new Error('Compra de Faca não atualizou saldo VT e inventário inicial');
-      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('16 XP')))
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('11 XP')))
         throw new Error('Compra com VT afetou indevidamente o saldo de XP ou VT');
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
@@ -134,10 +168,10 @@ const { chromium } = require('playwright');
       if (await page.locator('#gene-map .fp-gene-card').count() !== 18)
         throw new Error('O mapa da ficha final perdeu uma fonte');
       await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:destreza"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('15 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('10 XP')))
         throw new Error('Saldo prévio de XP na ficha final não responde aos dados');
       await page.locator('#gene-sheet-actions [data-action="gene-reset"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('16 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('11 XP')))
         throw new Error('Descartar evolução falhou na ficha final');
       if(exceptions.length)throw new Error('Erros Javascript na ficha final: '+exceptions.join(' | '));
       console.log('PASS', testCase.name);
