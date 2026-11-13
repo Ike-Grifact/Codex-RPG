@@ -26,14 +26,14 @@ Esta pasta é a **única interface ativa** para criação e ficha. O antigo `cri
 
 ## Como experimentar — fluxo de criação vigente (SRD v0.39)
 
-O criador atual apresenta **quatro etapas**, sem impor profissão:
+O criador apresenta **quatro etapas**, sem classe obrigatória:
 
-1. **Identidade:** nome obrigatório, conceito, origem, virtude, personalidade e retrato.
-2. **Escolher desenvolvimento:** selecionar Atributos, Conhecimentos ou Práticas como primeiro foco de orientação. Cada cartão explica o tipo, apresenta exemplos de uso, dados do grau 0/1 e custo do primeiro avanço. Essa escolha não restringe as demais categorias.
-3. **Distribuir XP:** o **modo padrão usa listas** de Atributos, Conhecimentos, Práticas e Perícias, com botões +/−, dados, graus e custos. O **Codex Genético fica como alternância opcional**; ambos usam exatamente a mesma ficha e o mesmo XP, sem perder compras ao mudar.
-4. **Revisão:** conferir as compras mínimas, o saldo, dados derivados e abrir a ficha jogável.
+1. **Identidade:** nome, conceito, origem, virtude, personalidade e retrato.
+2. **Escolhas iniciais guiadas:** escolher **um dos seis Atributos principais**; cada cartão apresenta função, exemplos, grau 0 (d4), grau 1 (d6) e custo de 1 XP. Na sequência, escolher **um Conhecimento OU uma Prática**, entre 12 cartões separados por grupo, com resumos, exemplos, dados d6/d10 e custo de 2 XP. Confirmar os dois investimentos de uma só vez; **nada é cobrado antes da confirmação**. “Principal” é apenas orientação, sem bônus ou limitação.
+3. **Distribuir XP:** o modo padrão utiliza listas para Atributos, Conhecimentos, Práticas e Perícias, com compras livres e botões +/−. O **Codex Genético fica como alternativa por botão**, usando a mesma ficha e o mesmo XP.
+4. **Revisão:** conferir investimentos e saldo antes de abrir a ficha jogável.
 
-A compra de um Conhecimento/Prática pode acontecer antes da compra de Atributo. O bloqueio ocorre **apenas ao tentar concluir a criação** sem um Atributo grau 1 e um Conhecimento ou Prática grau 1.
+Na hipótese de **19 XP experimentais**, as compras mínimas de 1+2 XP deixam **16 XP livres**. Se o jogador voltar às escolhas guiadas após outras compras, os investimentos anteriores permanecem; escolhas novas informam o custo antes de confirmar.
 
 **DEFINIDO:** depois das duas compras mínimas, não existe reserva exclusiva de XP por categoria. **EXPERIMENTAL:** o total de 19 XP iniciais compartilhados. As antigas distribuições 6/8/5 e 7/7/5 permanecem somente no histórico do SRD.
 
