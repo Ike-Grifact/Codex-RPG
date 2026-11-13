@@ -22,6 +22,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 Abra **criador.html** pelo portal. Ele permite:
 
 - Nome, conceito/profissão emergente, origem, Virtude e personalidade; sem estilo de combate obrigatório.
+- Etapa guiada para escolher entre Atributos, Conhecimentos e Práticas, com exemplos, dados e custos para iniciantes.
+- Modo padrão em listas para comprar graus e Perícias, com alternância para o Codex Genético sem trocar de ficha.
 - Distribuição de Atributos (progressão oficial de dados e custos acumulados).
 - Escolha de Conhecimentos e Práticas com custos reais.
 - Compra de Perícias iniciais documentadas, com requisitos disponíveis.
