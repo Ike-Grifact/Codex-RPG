@@ -1017,3 +1017,9 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 #genetic-view #gene-sheet-budget{margin:12px 0}
 #genetic-view #gene-sheet-actions{margin:10px 0}
 @media(max-width:900px){#genetic-view .fp-gene-canvas{overflow:auto}#genetic-view .fp-gene-overview{min-width:990px}}
+
+/* Dados com silhuetas distintas acima das fontes do Codex Genético. */
+.fp-gene-die-shape{pointer-events:none}
+.fp-gene-die-shape :is(rect,circle,polygon){fill:color-mix(in srgb,var(--gene-tint) 16%,var(--fp-deep));
+ stroke:var(--gene-tint);stroke-width:2}
+.fp-gene-die-shape text{fill:var(--gene-tint);font-size:12px;font-weight:800;pointer-events:none}
