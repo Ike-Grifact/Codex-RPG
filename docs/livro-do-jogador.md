@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.38](srd-continuidade-v0.38.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.39](srd-continuidade-v0.39.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -56,7 +56,9 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 
 O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
 
-**DEFINIDO: cada personagem de nível 1 começa com 5 XP para adquirir Perícias.** **EXPERIMENTAL:** 6 XP em Atributos + 8 XP em Formação (total de 19 XP, considerando os 5 XP já definidos para Perícias). Esta distribuição de playtest substitui a hipótese 7/7/5, sem mudar a curva de custos por Grau; o total de 19 XP permanece experimental, não oficial. O XP conquistado após a criação continua livre. Com 8 XP de Formação pode-se alcançar o Grau 2 de uma fonte (2d10), enquanto o Grau 3 de um Atributo (7 XP) não cabe nos 6 XP iniciais desta categoria.
+**DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
+
+**EXPERIMENTAL — orçamento total:** a ferramenta utiliza **20 XP iniciais compartilhados**, cujo valor total ainda aguarda homologação. Atributo grau 1 custa 1 XP; Conhecimento/Prática grau 1 custa 2 XP, restando **17 XP de escolha livre** neste orçamento de playtest. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
@@ -585,7 +587,7 @@ Perícias têm preços e requisitos específicos; numerosas opções baratas pod
 
 ### Perícias autorais: corpo a corpo, disparos e recuperação [DEFINIDO / PENDENTE]
 
-O Aprendiz nível 1 começa com **5 XP de Perícias [DEFINIDO]**. Estes ramos são acessíveis por requisitos, não por classes obrigatórias. **Espadachim** é apenas uma inspiração de personagem.
+O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra seus requisitos. Não há reserva exclusiva de 5 XP para esta categoria. Estes ramos são acessíveis por requisitos, não por classes obrigatórias. **Espadachim** é apenas uma inspiração de personagem.
 
 | Perícia | XP | Requisitos (decisões mais recentes) | Função |
 |---|---:|---|---|
@@ -613,7 +615,7 @@ O Aprendiz nível 1 começa com **5 XP de Perícias [DEFINIDO]**. Estes ramos s�
 
 **Especializações corpo a corpo admitidas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Perícia em Armas Médias, Perícia em Manejo Duplo, Perícia em Armas Pesadas ou Pugilismo. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
 
-**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: gastar 5 dos 6 XP de Atributos, os 8 de Formação e os 5 de Perícias deixa **1 XP livre** depois da conclusão; não é XP de evolução. O orçamento de Atributos/Formação continua EXPERIMENTAL. Não liberar XP por reembolsos indevidos.
+**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 17 XP do orçamento experimental de 19, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
 
 **Espalhar Golpe [DEFINIDO]:** o inimigo principal já é atingido pelo ataque normal, sem pagamento de Espalhar Golpe. A cada **1 PP ou 2 Coragens**, **um inimigo adicional** dentro de um círculo de **2 m de raio centrado no personagem atacante** recebe metade do **dano dos Êxitos**. O primeiro pagamento já cobre o primeiro adicional; cada novo pagamento cobre mais um. **DEFINIDO: cada pagamento é consumido mesmo quando a rolagem não atinge a DE do alvo adicional escolhido.** Paga-se pela tentativa de incluí-lo no golpe, não pelo acerto. Essa regra de custo vale para Espalhar Golpe; os custos de Disparo Múltiplo continuam PENDENTES. **Não acrescenta +1 Êxito**. **“Golpe Colossal” era o nome anterior de Espalhar Golpe**, não técnica separada. **DEFINIDO:** a metade do dano dos Êxitos é **sempre arredondada para baixo** (⌊dano dos Êxitos ÷ 2⌋); com 5 de dano de Êxitos, cada alvo adicional recebe 2, antes das defesas. **DEFINIDO:** usa-se **o mesmo resultado da rolagem do ataque principal** contra a **DE de cada alvo adicional**, sem rolar novamente; se ficar **abaixo da DE de um alvo**, esse alvo **não é atingido**. Só os alvos cuja DE foi alcançada podem receber o dano reduzido. A mesma regra de comparação vale para **Disparo Múltiplo**, mas sua área é medida ao redor do alvo principal. **Ordem das defesas [DEFINIDO]:** primeiro obter a metade do dano dos Êxitos e arredondar para baixo, **depois** aplicar Integridade, resistências, imunidades e demais defesas **individualmente para cada alvo atingido**. Não aplicar automaticamente componente de dano de Pavor sobre os adicionais.
 

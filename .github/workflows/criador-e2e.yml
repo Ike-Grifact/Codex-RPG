@@ -1,0 +1,42 @@
+name: Codex RPG - teste real do criador
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prototipo-ficha/**'
+      - '.github/workflows/criador-e2e.yml'
+      - '.github/tests/criador-e2e.cjs'
+      - '.github/tests/genetico-navegacao-e2e.cjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  creator-e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Baixar codigo da branch
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install chromium --with-deps
+      - name: Servir o site como usuario final
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/codex-http.log 2>&1 &
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8000/prototipo-ficha/ -o /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/codex-http.log
+          exit 1
+      - name: Testar fluxo de criacao em Chromium
+        run: node .github/tests/criador-e2e.cjs
+      - name: Testar gestos de navegacao no grafo no PC e celular
+        run: node .github/tests/genetico-navegacao-e2e.cjs

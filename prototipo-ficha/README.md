@@ -24,21 +24,43 @@ Também é possível baixar o repositório e abrir `prototipo-ficha/index.html` 
 
 Esta pasta é a **única interface ativa** para criação e ficha. O antigo `criador.html` direciona para ela; o programa antigo `assets/creator.js` fica como código histórico, sem executar no site. A ficha usa sua chave própria de `localStorage`, pode importar os dados legados da chave antiga e **não apaga** a ficha original armazenada.
 
-## Como experimentar — fluxo de criação
+### Navegação do grafo (PC e celular) — prévia
 
-**Ao abrir uma ficha nova**, você vê o **construtor em cinco telas independentes**, não a ficha jogável de uma vez:
+O Codex Genético funciona em uma **janela de exploração**; os nós e ramificações fora da vista continuam acessíveis por arraste e zoom, sem aumentar indefinidamente a altura da página.
 
-1. **Identidade** — nome obrigatório, conceito, origem, virtude, personalidade e portrait. A logo padrão usa fundo marfim no escuro para preservar o contraste; uma imagem enviada usa corte fotográfico normal.
-2. **Atributos** — seis fontes com seu Grau, dados gratuitos, custos incrementais e botões de investimento; orçamento inicial **6 XP (EXPERIMENTAL)**.
-3. **Formação** — seis Conhecimentos e seis Práticas, incluindo **uma única Prática Disciplina**; todos têm 1d6 gratuito no Grau 0, e compartilham **8 XP (EXPERIMENTAL)**.
-4. **Perícias** — seleção de habilidades com preços, requisitos e custo efetivamente cobrado do orçamento inicial **5 XP (DEFINIDO)**. Maestria Arma Certa aparece como **PENDENTE para compra**, já que seu custo final ainda não foi fixado.
-5. **Revisão** — identificação, dados de combate derivados, investimento por categoria e todas as compras. O botão **Concluir e abrir a ficha** consolida a criação e mostra **somente então** a ficha jogável completa.
+- **Desktop:** arrastar o fundo ou o próprio nó (sem acionar os botões −/+) para mover; roda do mouse ou gesto do trackpad para ampliar e afastar **na posição do cursor**. Dois cliques rápidos no mapa aproximam. Teclas de direção movem a câmera; `+`, `-`, `0` permitem zoom e recentralização.
+- **Celular/tablet:** deslizar **um dedo** para mover o mapa, **pinçar com dois dedos** para alterar o zoom em torno dos dedos, tocar nos nós e nos controles para consultar/comprar. A rolagem comum da página continua fora da área do mapa.
+- **Controles flutuantes:** botões grandes de **−, centralizar e +** dentro do próprio grafo; indicador percentual do zoom. O botão centralizador restaura uma escala inicial que é mais próxima no celular para manter os nós legíveis.
 
-Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíveis na trilha superior. Se sair ou atualizar o navegador, os campos e a etapa são lembrados localmente. Para voltar a uma criação nova após finalizar, use **Novo personagem**; exporte a ficha anterior antes, pois essa operação a substitui.
+**Status:** ajuste apenas de interface/ergonomia; não altera XP, VT, dados ou requisitos.
 
-**Na ficha completa:** experimente a composição **Armas → Força → Apresentação** e sua inversão, prepare a rolagem, escolha os dados mantidos e finalize. Inventário, Coragem, PP, XP e movimentação continuam disponíveis.
+## Atualização do Codex Genético — mapa de fontes e evolução (prévia)
 
-**Carregar exemplo** abre diretamente uma ficha já consolidada, para testar a parte jogável sem passar pelas cinco telas. **Importar** retoma o construtor para personagens ainda em criação e abre a ficha completa para personagens com criação concluída.
+**Interface refinada:** a dupla hélice foi restaurada atrás dos Atributos, os dados têm a mesma geometria poliédrica do rolador e os títulos do mapa são simples: Atributos, Conhecimentos e Práticas. Perícias em **roxo** apresentam uma **compra assistida** quando o XP cobre todos os graus e Perícias que faltam; ao clicar, o sistema mostra a lista e o custo total para confirmação, sem comprar pré-requisitos isolados. Perícias com requisitos já atendidos ficam azuis. Clicar em um nó abre um painel flutuante no lado do mapa, com seus detalhes e botão de fechar.
+
+Na visualização alternativa, o Codex Genético apresenta **Atributos em uma coluna central**, **Conhecimentos à esquerda** e **Práticas à direita**, com organização estável para facilitar a leitura. As conexões só aparecem ao selecionar uma fonte e indicam **afinidade temática**, nunca pré-requisitos automáticos.
+
+Os Atributos, Conhecimentos e Práticas exibem o **grau** e os dados atuais **entre − e +**, com o traço poliédrico e a cor correspondente a d4/d6/d10/d12 do rolador. Cada fonte mostra até três dados. Os ajustes são uma **prévia de evolução**: o XP não é debitado da ficha até selecionar **Confirmar evolução**; é possível descartar. O painel mostra XP atual, disponível e gasto. O mesmo fluxo está disponível no Codex Genético da ficha finalizada, respeitando os limites de reembolso e os requisitos vigentes.
+
+As bolinhas de Perícias aparecem por padrão quando a Perícia já foi adquirida, tem **requisitos e XP atendidos**, ou existe um **pacote completo de evolução pagável**. O botão **Mostrar futuras ramificações** revela opções bloqueadas somente para consulta, sem permitir comprá-las indevidamente. O detalhe do nó aparece em janela flutuante, junto ao nó selecionado, dentro do mapa, sem cortar a lateral.
+
+**Status:** visualização em playtest; nenhuma regra mecânica, requisito ou custo foi modificado por essas alterações.
+
+## Como experimentar — fluxo de criação vigente (SRD v0.39)
+
+O criador apresenta **cinco etapas**, sem classe obrigatória:
+
+1. **Identidade:** nome, conceito, origem, virtude, personalidade e retrato.
+2. **Escolhas iniciais guiadas:** escolher **um dos seis Atributos principais**; cada cartão apresenta função, exemplos, grau 0 (d4), grau 1 (d6) e custo de 1 XP. Na sequência, escolher **um Conhecimento OU uma Prática**, entre 12 cartões separados por grupo, com resumos, exemplos, dados d6/d10 e custo de 2 XP. Confirmar os dois investimentos de uma só vez; **nada é cobrado antes da confirmação**. “Principal” é apenas orientação, sem bônus ou limitação.
+3. **Distribuir XP:** o modo padrão utiliza listas para Atributos, Conhecimentos, Práticas e Perícias, com compras livres e botões +/−. O **Codex Genético fica como alternativa por botão**, usando a mesma ficha e o mesmo XP.
+4. **VT e equipamentos iniciais:** distribuir **20 VT experimentais** entre Ervas, Espólios, Couro, Comida e Minérios, começando com 4 unidades de cada. Comprar, opcionalmente, equipamentos G1 do catálogo de preços **PROPOSTOS**; as compras usam VT, não XP. Os itens adquiridos entram no inventário da mesma ficha. Nenhum item grátis é presumido.
+5. **Revisão:** conferir Atributos, Conhecimentos, Práticas, Perícias, saldo de XP, recursos de troca e itens antes de abrir a ficha jogável.
+
+Na hipótese de **20 XP experimentais**, as compras mínimas de 1+2 XP deixam **17 XP livres**. Se o jogador voltar às escolhas guiadas após outras compras, os investimentos anteriores permanecem; escolhas novas informam o custo antes de confirmar.
+
+**DEFINIDO:** depois das duas compras mínimas, não existe reserva exclusiva de XP por categoria. **EXPERIMENTAL:** o total de 20 XP iniciais compartilhados. As antigas distribuições 6/8/5 e 7/7/5 permanecem somente no histórico do SRD.
+
+A ficha e a escolha do modo são salvas localmente; a alternância entre Codex Genético e listas usa o mesmo personagem. Após a criação, a evolução segue o saldo e as compras não geram reembolso automático. Recomenda-se exportar a ficha antes de escolher **Novo personagem**.
 
 ## Correções visuais desta versão
 
@@ -61,7 +83,7 @@ Navegue com **Continuar** e **Voltar**. As etapas já visitadas ficam disponíve
 ## Limites e hipóteses do protótipo
 
 - **A compra de graus e Perícias agora calcula e consome XP**. Os custos acumulados das fontes são os mesmos do criador: Atributos 0/1/3/7/15/31/55 e Formação 0/2/8/20/38/66/102. As Perícias são cobradas conforme os preços documentados no catálogo.
-- **O nível 1 possui 5 XP iniciais de Perícias [DEFINIDO].** Os 6 XP de Atributos e 8 XP de Formação ainda são **EXPERIMENTAIS**. Uma compra que exceda seu orçamento de categoria requer XP de evolução livre.
+- **DEFINIDO:** na criação, comprar um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo o XP restante é livre, inclusive para Perícias; não há cotas por categoria. **EXPERIMENTAL:** o total compartilhado de 20 XP.
 - **XP por nível segue PENDENTE.** A tabela de referência 19/31/46/.../664 XP é apenas uma curva de playtest; o protótipo não exige esses valores para subir de nível e não os concede automaticamente.
 - **Antes de concluir a criação**, pode reorganizar compras. **Depois**, não permite reduzir graus nem desfazer Perícias; evolução é feita comprando com novos XP.
 - **Maestria Arma Certa** aparece para consulta com seu efeito definido (+1E no peso favorável); seu custo de XP e requisitos finais continuam PENDENTES, por isso ainda não é comprável.
@@ -107,9 +129,9 @@ A ficha mostra **DE base** e, quando for relevante, o valor de **DE para esquiva
 
 ## Perícias autorais e orçamento de criação
 
-**5 XP de Perícias no nível 1 [DEFINIDO]**; Atributos 6 XP + Formação 8 XP permanecem EXPERIMENTAIS. O catálogo da ficha apresenta as 15 Perícias fornecidas pelo autor, os dois novos Disparos pendentes e as opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
+**XP livre na criação [DEFINIDO]** após uma compra de Atributo grau 1 e de Conhecimento ou Prática grau 1. **20 XP iniciais compartilhados [EXPERIMENTAL]**, sem reserva exclusiva para Perícias. O catálogo da ficha apresenta as 15 Perícias fornecidas pelo autor, os dois novos Disparos pendentes e as opções anteriores. Só libera compra das Perícias com custo informado e pré-requisitos verificáveis; **Manejo Perfeito, Recuperação Vigorosa, sua Maestria em Movimento e Instinto de Sobrevivência têm custo PENDENTE**, e Maestria em Manejo Duplo aguarda especificação dos requisitos.
 
-A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe/Disparos pendentes, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.38](../docs/srd-continuidade-v0.38.md).
+A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Golpe/Disparos pendentes, mudança de peso de Pugilismo, manobras, alojamento de armas, recuperação em movimento ou inclusão de fonte extra de Disciplina Avançada. A aquisição registra a Perícia, não inventa procedimentos. A descrição e a lista de decisões estão no [SRD v0.39](../docs/srd-continuidade-v0.39.md).
 
 
 ## Críticos cumulativos (SRD v0.29)
@@ -125,18 +147,16 @@ A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos ní
 **Os críticos dos monstros foram documentados no Livro e SRD**, com conversão de recuperações em Pavor (2P/4P/4P), mas **não são simulados no rolador da ficha de jogador**. O protótipo não automatiza os gastos do Narrador nem a alocação local-primeiro do Pavor crítico dos monstros, cujo excedente segue para a reserva pública até seu teto.
 
 
-## Redistribuição experimental para o nível 1 (6/8/5)
+## Atualização normativa — fontes mínimas e XP livre (SRD v0.39)
 
-A distribuição de playtest usa **6 XP Atributos / 8 XP Formação [EXPERIMENTAIS] + 5 XP Perícias [DEFINIDO]**. O total de 19 XP não é definitivo enquanto os dois primeiros orçamentos não forem aprovados. A curva de XP dos níveis superiores não foi alterada.
-
-**Impacto para playtest:** a Formação Grau 2 custa 8 XP acumulados e passa a ser acessível na criação para uma única fonte (2d10), enquanto o Atributo Grau 3 custa 7 XP e deixa de caber no orçamento inicial de Atributos. A progressão ainda usa os mesmos custos acumulados; o excedente de categorias necessita XP de evolução.
+**DEFINIDO:** comprar um Atributo grau 1 (1 XP) e um Conhecimento ou Prática grau 1 (2 XP). O restante pode ser gasto em qualquer categoria. **EXPERIMENTAL:** no orçamento único de 20 XP, restam 17 XP após as duas compras mínimas. Custos por grau não mudaram.
 
 ## Atualização operacional — Disciplina e XP residual (SRD v0.38)
 
 - **Disciplina** é a Prática compartilhada para armas ou conjuração; testes marciais básicos podem ser rolados com Disciplina + Atributo sem comprar Armas 1. Habilitações específicas permanecem para efeitos próprios, e a conjuração especializada conserva os requisitos pertinentes.
 - **Disciplina Avançada:** somente quando a ação usa Disciplina, permite acrescentar um Atributo, Conhecimento ou Prática pertinente; a ficha passa a montar essa terceira fonte, inclusive outro Atributo, sem elevar a retenção.
 - **Filtros do catálogo:** busca, Atributos, Conhecimentos, Práticas, relacionadas às adquiridas e requisitos atingidos. A categorização temática não estabelece requisitos.
-- **Saldo inicial livre:** XP não gasto durante o orçamento inicial passa a ser livre para novas compras após concluir a criação. Compras reduzem o saldo, sem permitir reembolso livre automático de compras consolidadas. Os 5 XP iniciais de Perícias são DEFINIDOS; 6 XP Atributos/8 XP Formação são EXPERIMENTAIS.
+- **Saldo inicial livre:** XP não gasto durante o orçamento inicial passa a ser livre para novas compras após concluir a criação. Compras reduzem o saldo, sem permitir reembolso livre automático de compras consolidadas. A criação exige as duas fontes mínimas e permite investir o XP restante livremente; o total de 20 XP permanece experimental.
 - **Espalhar Golpe:** metade do dano dos Êxitos arredondada para baixo é calculada antes de aplicar a Integridade e as resistências de cada alvo adicional que tenha sido acertado conforme sua DE individual.
 
 ## Conjuração atualizada — substituição e preparação de magias (12/11/2026)

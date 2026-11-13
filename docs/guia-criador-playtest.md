@@ -2,20 +2,31 @@
 
 O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. As regras de referência são mantidas em notas internas de continuidade; o portal não publica atalhos para esses documentos.
 
-## Criação nível 1: orçamento experimental
+## Criação nível 1: investimentos mínimos e XP livre
 
-| Categoria | XP | Estado |
-|---|---:|---|
-| Atributos | 7 | EXPERIMENTAL |
-| Conhecimentos e Práticas | 7 | EXPERIMENTAL |
-| Perícias | 5 | 5 XP iniciais definidos, porém soma com 14 históricos ainda EXPERIMENTAL |
-| **Total** | **19** | **EXPERIMENTAL** |
+**DEFINIDO:** para concluir a criação, compre **pelo menos um Atributo grau 1** e **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
+
+**EXPERIMENTAL (montante):** a ferramenta usa **20 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 20 XP restam 17 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
+
+As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.39](srd-continuidade-v0.39.md), seção 0-Y.
 
 Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**.
 
 **Conhecimentos:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
-**Práticas (6):** **Armas ou Conjuração (uma única Prática)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. O nome exibido pode variar entre Armas, Conjuração e Armas / Conjuração conforme as Perícias escolhidas; isso **não** cria fontes adicionais. O grau 1 compartilhado custa 2 XP de Formação apenas uma vez. Aprendiz de Conjurador é uma **Perícia habilitadora**, não uma segunda Prática de Formação; sua compra segue o preço do catálogo. Punhos é especialização marcial. Fichas antigas preservam o registro de Conjuração no histórico e usam provisoriamente o maior grau entre as antigas fontes Armas e Conjuração, sem somá-las. Os custos de avanço permanecem os apresentados no Livro do Jogador. A escolha das profissões é aberta, não existe classe obrigatória.
+**Práticas (6):** **Disciplina**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. Disciplina é a Prática compartilhada para aplicações marciais e mágicas, sob as habilitações pertinentes; não se compram Armas e Conjuração como duas fontes independentes. Punhos permanece uma especialização marcial. O grau 1 de Disciplina custa 2 XP, pagos uma vez, e oferece 1d10. A criação não impõe profissão obrigatória.
+
+## Fluxo guiado da criação
+
+1. **Identidade:** informar nome, conceito, origem e identidade.
+2. **Escolhas iniciais:** primeiro selecionar **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos, dados e custo de 1 XP no grau 1. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
+3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
+4. **VT e itens iniciais:** o playtest utiliza **20 VT experimentais**, valor separado dos 20 XP, distribuídos entre cinco recursos comuns. O catálogo G1 oferece compras opcionais com preços ainda **PROPOSTOS**, sem itens gratuitos presumidos. Equipamentos adquiridos entram no inventário da ficha.
+5. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1, conferindo também recursos e itens.
+
+**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 20 XP; saldo livre de 17 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
+
+No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados usam a geometria, cores e rótulos dN do rolador **entre os botões − e +**, expandindo até três dados por fonte. As ramificações de Perícias formam um grafo de afinidades conectado no estilo visual Obsidian. Perícias **roxas** têm uma compra automática possível: o XP cobre o custo dos graus e Perícias necessários e da própria Perícia. A ferramenta mostra o pacote e exige confirmação explícita antes de gastar. Perícias **azuis** já atendem seus requisitos. Os detalhes abrem sobre o mapa; as conexões representam afinidades temáticas, não requisitos.
 
 ## O que funciona
 
@@ -31,7 +42,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 ## Como desenhar uma Perícia experimental
 
-Na etapa **04 · Perícias iniciais**, expanda **“Desenhar uma Perícia experimental”** e preencha:
+Quando estiver disponível o editor de Perícias experimentais, preencha os seguintes campos:
 
 1. **Nome:** distinto e curto.
 2. **Custo em XP:** hipótese de 1 a 5.

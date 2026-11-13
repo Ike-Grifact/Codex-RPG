@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. Regras vigentes do SRD v0.38, com referências experimentais identificadas. */
+/* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 20 XP experimental. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -17,7 +17,7 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
-const CREATE_BUDGET={attr:19,training:19,skills:19,total:19}; // DEFINIDO: orçamento único de 19 XP.
+const CREATE_BUDGET={attr:20,training:20,skills:20,total:20}; // EXPERIMENTAL: total 20 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
  [
@@ -897,12 +897,48 @@ function defaultState(){return{
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+let wizardCategory="",wizardTab="attr",wizardMode="list";
+let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
+let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
+let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false,geneInspectorTop=12;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
- ["Codex Genético","Desenvolva seu DNA","19 XP para fontes e Perícias"],
+ ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
+ ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
+ ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
+// Metadados usados na etapa 3 para explicar as abas do visualizador padrão.
+// Restaurados após a separação do guia de escolhas individuais (etapa 2).
+const WIZARD_CATEGORIES=[
+ {id:"attr",title:"Atributos",description:"Capacidades fundamentais do Aprendiz. Permitem ações físicas, mentais e sociais pertinentes.",dice:"Grau 0: 1d4 · Grau 1: 1d6",cost:"Grau 1: 1 XP"},
+ {id:"know",title:"Conhecimentos",description:"Estudo, investigação e compreensão de assuntos especializados.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Grau 1: 2 XP"},
+ {id:"practice",title:"Práticas",description:"Treinamento e execução de técnicas. Disciplina é uma Prática única.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Grau 1: 2 XP"}
+];
+// Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
+const WIZARD_ATTRIBUTE_GUIDE={
+ forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Participa da DE defensiva natural e do deslocamento, conforme o SRD."],
+ destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
+ inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
+ influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Representa resistência e capacidade corporal."]
+};
+const WIZARD_TRAINING_GUIDE={
+ "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
+ "know:astronomia":["Estudo do céu","Observar astros, ciclos e fenômenos celestes.","Interpretação de informações astronômicas pertinentes."],
+ "know:medicina":["Estudo do corpo","Reconhecer ferimentos, sinais e formas de tratamento.","Diagnóstico e cuidados conforme a ação."],
+ "know:alquimia":["Estudo de substâncias","Analisar materiais, misturas e transformações.","Compreensão de composições e processos alquímicos."],
+ "know:engenharia":["Estudo de estruturas","Investigar mecanismos, construções e projetos.","Examinar ou planejar soluções técnicas."],
+ "know:erudicao":["Estudo e cultura","Pesquisar histórias, textos, tradições e saberes diversos.","Interpretação de informações e pesquisa."],
+ "practice:armas_conjuracao":["Treinamento disciplinado","Praticar ações marciais e mágicas segundo suas habilitações.","Disciplina é uma única Prática; efeitos específicos exigem Perícias."],
+ "practice:atletismo":["Treinamento corporal","Correr, saltar, escalar e superar obstáculos físicos.","Movimentos e esforços treinados."],
+ "practice:furtividade":["Treinamento discreto","Ocultar-se e mover-se sem chamar atenção.","Ações furtivas pertinentes."],
+ "practice:artesao":["Treinamento de ofício","Criar, ajustar e reparar objetos com técnicas aprendidas.","Fabricação e trabalho manual."],
+ "practice:apresentacao":["Treinamento expressivo","Atuar, discursar, cantar e realizar apresentações.","Performances e expressão treinada."],
+ "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
+};
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:""});
@@ -933,8 +969,18 @@ function load(){
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
   const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
-  wizardStep=clamp(oldStep>1?2:oldStep,0,2);
-  wizardReached=clamp(oldReached>1?2:oldReached,wizardStep,2);
+  wizardStep=w.version>=4?clamp(oldStep,0,4):w.version>=2?(oldStep>=3?4:clamp(oldStep,0,2)):clamp(oldStep>0?1:0,0,4);
+  wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
+  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
+  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
+  wizardMode=w.mode==="genetic"?"genetic":"list";
+  wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
+  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
+  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
+  wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
+  wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
+  if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
+  if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
  }catch(e){wizardStep=0;wizardReached=0;}
  viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
@@ -1147,11 +1193,11 @@ function renderXP(){
  $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
   const cap=CREATE_BUDGET.total;
-  $(id+"-caption").textContent=used+" XP (orçamento global: 19 XP)";
+  $(id+"-caption").textContent=used+" XP (orçamento global: 20 XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
- "19 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
+ "20 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
  (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
 }
@@ -1273,76 +1319,334 @@ function renderOwnedPanel(){
 
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
- '<div class="fp-gene-canvas" id="'+mapId+'" role="region" aria-label="Codex Genético: Atributos, Conhecimentos, Práticas e Perícias"></div>'+
- '<aside class="fp-gene-detail" id="'+detailId+'" aria-live="polite"></aside></div>';
+  '<div class="fp-gene-canvas-shell">'+
+  '<div class="fp-gene-canvas" id="'+mapId+'" role="region" aria-label="Codex Genético reorganizado: fontes com dados, graus e botões de ajuste"></div>'+
+  '<aside class="fp-gene-detail fp-gene-float-detail" id="'+detailId+'" aria-label="Detalhes da fonte ou Perícia" aria-live="polite" hidden></aside>'+
+  '</div></div>';
 }
-function sourceGeneInfo(id){
+function genePreviewState(){
+ if(!geneDraft.size&&!genePendingSkills.size)return state;
+ const s={...state,attributes:{...state.attributes},knowledges:{...state.knowledges},practices:{...state.practices},
+  skills:[...state.skills,...genePendingSkills]};
+ for(const [id,grade] of geneDraft){
+  const [group,key]=id.split(":");
+  if(SOURCE_PROPS[group]&&GROUPS[group].some(([k])=>k===key))s[SOURCE_PROPS[group]][key]=grade;
+ }
+ return s;
+}
+function geneCanAdjust(){
+ return !state.pending&&(viewMode==="builder"&&!state.creationLocked||viewMode==="sheet"&&sheetPage==="genetic");
+}
+function genePendingCount(){return geneDraft.size+genePendingSkills.size;}
+function geneBudgetPanel(){
+ const xp=xpCosts(genePreviewState()),actual=xpCosts();
+ return '<div class="fp-gene-dashboard" id="gene-build-budget" aria-label="XP do Codex Genético">'+
+  '<div><small>XP ATUAL</small><strong>'+Math.max(0,xp.total+xp.free)+' XP</strong><span>Orçamento compartilhado</span></div>'+
+  '<div class="is-primary"><small>XP DISPONÍVEL</small><strong>'+xp.free+' XP</strong><span>Após os ajustes previstos</span></div>'+
+  '<div><small>XP GASTO</small><strong>'+xp.total+' XP</strong><span>'+(xp.total-actual.total>=0?'+':'')+(xp.total-actual.total)+' XP nesta evolução</span></div>'+
+  '</div>';
+}
+function geneActionsPanel(){
+ const count=genePendingCount(),preview=genePreviewState();
+ const costs=xpCosts(preview);
+ const valid=costs.free>=0&&!dependentsValid(preview)&&(state.creationLocked||hasStarterSources(preview));
+ return '<div class="fp-gene-bottom-actions"><button type="button" data-action="gene-reset"'+(count?'':' disabled')+'>Descartar ajustes</button>'+
+  '<button type="button" class="fp-primary-btn" data-action="gene-confirm"'+(count&&valid?'':' disabled')+'>'+
+  (count?'Confirmar evolução · '+count+' alteração'+(count===1?'':'ões'):'Confirmar evolução')+'</button>'+
+  '<small>'+(count?'Prévia pendente: '+count+' alteração'+(count===1?'':'ões')+'. Nada foi debitado ainda.':
+   'Ajuste graus usando os botões + e − dos nós; confirme para efetivar.')+'</small></div>';
+}
+function geneStageGrade(id,delta){
+ if(!geneCanAdjust()){toast("Ajustes indisponíveis enquanto houver rolagem pendente.");return;}
+ const [group,key]=id.split(":");
+ if(!SOURCE_PROPS[group]||!GROUPS[group].some(([k])=>k===key)||![-1,1].includes(delta))return;
+ const source=SOURCE_PROPS[group],preview=genePreviewState(),old=preview[source][key]||0,next=clamp(old+delta,0,6);
+ if(next===old)return;
+ const baseGrade=state[source][key]||0;
+ if(state.creationLocked&&next<baseGrade&&!editMode){toast("Graus adquiridos após a criação não podem ser reembolsados livremente.");return;}
+ const candidate={...preview,[source]:{...preview[source],[key]:next}};
+ if(xpCosts(candidate).free<0){toast("XP insuficiente para este grau.");return;}
+ if(next<old){
+  const problem=dependentsValid(candidate);
+  if(problem){toast("Não é possível reduzir: "+problem);return;}
+ }
+ if(next===baseGrade)geneDraft.delete(id);else geneDraft.set(id,next);
+ geneRefresh();
+}
+// Requisitos explícitos transcritos das verificações de skillReq(), SEM dedução
+// a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
+// a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
+const GENE_AUTO_REQUIREMENTS={
+ "montar":[["a:influencia:2"]],
+ "provocacao-sofisticada":[["a:influencia:2"]],
+ "armas-leves":[["p:armas_conjuracao:1"]],
+ "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
+ "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
+ "disciplina-avancada":[["p:armas_conjuracao:2"]],
+ "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
+ "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
+ "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
+ "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
+ "furtividade-avancada":[["p:furtividade:2","s:furtividade"]],
+ "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
+ "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
+ "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
+ "peritoconj":[["s:criar-item-foco-magia"]],
+ "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
+ "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "vento":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "terra":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
+ "sagrado":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "sangue":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "trevas":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "veneno":[["p:armas_conjuracao:2","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
+ "criar-veneno":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
+ "criar-antidoto":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2","s:criar-veneno"]],
+ "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
+ "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
+ "maestria-arremesso-armas":[
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
+  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-pesadas"]],
+ "golpe-fulminante":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+   ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
+ "espalhar-golpe":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante","s:"+id])],
+ "disparo-fulminante":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","s:"+id])],
+ "disparo-multiplo":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
+   ["p:armas_conjuracao:2","a:destreza:2","a:agilidade:2","s:"+id,"s:disparo-fulminante"])],
+ "disparo-violento":[
+  ...["armas-longo-alcance","maestria-arremesso-armas"].flatMap(id=>[
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:2","s:"+id],
+   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","p:atletismo:1","s:"+id]])],
+ "maestria-manejo-duplo":[
+  ...["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].map(id=>
+   ["a:forca:2","a:destreza:2","a:agilidade:1","s:disciplina-avancada","s:"+id])],
+ "mestre":[
+  ...["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].map(id=>
+   ["p:armas_conjuracao:3","a:inteligencia:3","a:destreza:3","s:criar-item-foco-magia","s:improviso","s:"+id])]
+};
+function geneCandidateCopy(s){
+ return {...s,attributes:{...s.attributes},knowledges:{...s.knowledges},
+  practices:{...s.practices},skills:[...s.skills]};
+}
+// Retorna a evolução inteira só se os requisitos REAIS forem satisfeitos
+// e todos os custos (inclusive Perícias intermediárias) couberem no orçamento.
+function geneAutoPlan(id,base=genePreviewState()){
+ const catalog=new Map(SKILLS.map(row=>[row[0],row]));
+ const addSkill=(skillId,current,stack)=>{
+  const row=catalog.get(skillId);
+  if(current.skills.includes(skillId))return current;
+  if(!row||HIDDEN_CATALOG_SKILLS.has(skillId)||!Number.isInteger(row[3])||
+    row[3]<0||stack.includes(skillId))return null;
+  const alternatives=GENE_AUTO_REQUIREMENTS[skillId]||
+   (skillReq(skillId,current)?[]:[[]]);
+  let best=null;
+  for(const required of alternatives){
+   let draft=geneCandidateCopy(current);
+   let valid=true;
+   // Primeiro todos os graus de fontes: permite calcular cada Perícia intermediária corretamente.
+   for(const token of required){
+    const [type,key,level]=token.split(":");
+    if(type==="s")continue;
+    const group={a:"attr",k:"know",p:"practice"}[type],field=SOURCE_PROPS[group];
+    const grade=Number(level);
+    if(!field||!GROUPS[group].some(([name])=>name===key)||
+      !Number.isInteger(grade)||grade<0||grade>6){valid=false;break;}
+    draft[field][key]=Math.max(draft[field][key]||0,grade);
+   }
+   if(!valid||xpCosts(draft).free<0)continue;
+   for(const token of required){
+    if(!token.startsWith("s:"))continue;
+    const linked=addSkill(token.slice(2),draft,[...stack,skillId]);
+    if(!linked){valid=false;break;}
+    draft=linked;
+   }
+   if(!valid||skillReq(skillId,draft))continue;
+   draft.skills.push(skillId);
+   if(xpCosts(draft).free<0||dependentsValid(draft))continue;
+   if(!best||xpCosts(draft).total<xpCosts(best).total)best=draft;
+  }
+  return best;
+ };
+ const completed=addSkill(id,base,[]);
+ if(!completed||xpCosts(completed).free<0||dependentsValid(completed))return null;
+ return {state:completed,cost:xpCosts(completed).total-xpCosts(base).total};
+}
+function geneAutoBuy(id){
+ if(!geneCanAdjust())return;
+ const base=genePreviewState(),plan=geneAutoPlan(id,base);
+ if(!plan||plan.cost<0){toast("Não há XP suficiente para todos os requisitos desta Perícia.");return;}
+ const row=SKILLS.find(([sid])=>sid===id);
+ const levels=[];
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key,name] of GROUPS[group]){
+   const from=Number(base[field][key]||0),to=Number(plan.state[field][key]||0);
+   if(to>from)levels.push(name+" "+from+" → "+to);
+  }
+ }
+ const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
+  .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const before=xpCosts(base).free,after=xpCosts(plan.state).free;
+ const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
+  (levels.length?"Graus:\n• "+levels.join("\n• ")+"\n\n":"")+
+  (newSkills.length?"Perícias:\n• "+newSkills.join("\n• ")+"\n\n":"")+
+  "Saldo: "+before+" XP → "+after+" XP.\n"+(genePendingCount()?"Os ajustes anteriores também serão confirmados.":"");
+ if(!confirm(summary))return;
+ // A compra completa é atômica: não grava nem debita um requisito isolado.
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key] of GROUPS[group]){
+   const grade=Number(plan.state[field][key]||0);
+   if(grade===Number(state[field][key]||0))geneDraft.delete(group+":"+key);
+   else geneDraft.set(group+":"+key,grade);
+  }
+ }
+ for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
+ geneCommit();
+}
+function geneStageSkill(id){
+ if(!geneCanAdjust())return;
+ const row=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
+ if(!row||state.skills.includes(id))return;
+ if(genePendingSkills.has(id)){
+  genePendingSkills.delete(id);geneRefresh();return;
+ }
+ const cost=row[3],preview=genePreviewState();
+ if(!Number.isInteger(cost)||skillReq(id,preview)||xpCosts(preview).free<cost){
+  toast("Esta Perícia ainda não reúne os requisitos ou o XP necessário.");return;
+ }
+ genePendingSkills.add(id);geneRefresh();
+}
+function geneDiscard(){
+ geneDraft.clear();genePendingSkills.clear();geneRefresh();
+}
+function geneCommit(){
+ if(!geneCanAdjust()||!genePendingCount())return;
+ const preview=genePreviewState(),xp=xpCosts(preview),problem=dependentsValid(preview);
+ if(xp.free<0||problem||(!state.creationLocked&&!hasStarterSources(preview))){
+  toast(problem||"A criação exige Atributo 1 e Conhecimento ou Prática 1, sem exceder o XP.");return;
+ }
+ state.attributes={...preview.attributes};
+ state.knowledges={...preview.knowledges};
+ state.practices={...preview.practices};
+ state.skills=[...preview.skills];
+ geneDraft.clear();genePendingSkills.clear();
+ for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
+ render();save();toast("Evolução confirmada. Saldo de XP: "+xp.free+".");
+}
+function geneRefresh(){
+ renderGenetic();
+ const budget=$("gene-build-budget"),buttons=$("gene-build-actions");
+ if(budget)budget.outerHTML=geneBudgetPanel();
+ if(buttons)buttons.outerHTML='<div id="gene-build-actions">'+geneActionsPanel()+'</div>';
+ const sheetBudget=$("gene-sheet-budget"),sheetActions=$("gene-sheet-actions");
+ if(sheetBudget)sheetBudget.innerHTML=geneBudgetPanel().replace('id="gene-build-budget"','id="gene-sheet-budget-content"');
+ if(sheetActions)sheetActions.innerHTML=geneActionsPanel();
+}
+function sourceGeneInfo(id,s=state){
  const [group,key]=String(id).split(":");
  if(!GROUPS[group])return null;
- const row=GROUPS[group].find(x=>x[0]===key);
+ const row=GROUPS[group].find(([k])=>k===key);
  if(!row)return null;
  const grade=Number(state[SOURCE_PROPS[group]][key]||0);
- const next=grade<6?xpStepCost(group,key,1):null;
- const prereq=viewMode==="builder"&&group!=="attr"&&!A.some(([k])=>state.attributes[k]>0);
- const available=!prereq&&next!==null&&canAfford(group,next)&&!state.pending;
- return {id,group,key,name:row[1],grade,next,state:grade>0?"owned":available?"available":"locked",prereq};
+ const previewGrade=Number(s[SOURCE_PROPS[group]][key]||0);
+ const costTable=group==="attr"?AT_COST:TRAIN_COST;
+ const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
+ const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
+ return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,
+  dice:dataDice(group,previewGrade).map(n=>"d"+n),
+  state:previewGrade>0?"owned":canRaise?"available":"locked",
+  label:next===null?"Grau máximo":"Próximo avanço: "+next+" XP"};
 }
-function geneSkillStatus([id,,,cost]){
- if(state.skills.includes(id))return"owned";
- if(viewMode==="builder"&&!hasStarterSources())return"locked";
- return Number.isInteger(cost)&&!skillReq(id)&&canAfford("skills",cost)&&!state.pending?"available":"locked";
+function geneSkillStatus([id,,,cost],s=state){
+ if(s.skills.includes(id))return"owned";
+ if(!Number.isInteger(cost)||xpCosts(s).free<cost||state.pending)return"locked";
+ if(!skillReq(id,s))return"available";
+ // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
+ return geneAutoPlan(id,s)?"potential":"locked";
 }
-function geneDetailHTML(id){
- const src=sourceGeneInfo(id);
+function geneDetailHTML(id,s=state){
+ const src=sourceGeneInfo(id,s);
  if(src){
-  const dice=dataDice(src.group,src.grade).map(n=>"d"+n).join(" + ");
-  const canReduce=src.grade>0&&(!state.creationLocked||editMode)&&!state.pending;
-  const increase=!src.prereq&&src.next!==null&&canAfford(src.group,src.next)&&!state.pending;
-  return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.grade?"Desenvolvido":"Potencial")+'</span>'+
-   '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo do DNA central.",know:"Conhecimento na órbita de aprendizado.",practice:"Prática na órbita de aprendizado."}[src.group])+'</p>'+
-   '<dl><dt>Grau / Dados</dt><dd>G'+src.grade+' · '+esc(dice)+'</dd>'+
-   '<dt>Próximo Grau</dt><dd>'+esc(src.next===null?"Grau máximo":src.next+" XP")+'</dd>'+
-   '<dt>XP disponível</dt><dd>'+xpCosts().free+' XP</dd>'+
-   (src.prereq?'<dt>Primeiro passo</dt><dd>Desenvolva um Atributo para desbloquear as fontes.</dd>':"")+'</dl>'+
+  const dice=src.dice.join(" + "),editable=geneCanAdjust(),canReduce=src.previewGrade>0&&
+   (!state.creationLocked||editMode||src.previewGrade>src.grade)&&!state.pending;
+  return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.previewGrade?"Desenvolvido":"Potencial")+'</span>'+
+   '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo central.",know:"Conhecimento estudado.",practice:"Prática treinada."}[src.group])+'</p>'+
+   '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+'</dd>'+
+   '<dt>Próximo grau</dt><dd>'+esc(src.next===null?"Máximo":src.next+" XP")+'</dd>'+
+   '<dt>XP disponível</dt><dd>'+xpCosts(s).free+' XP</dd></dl>'+
    '<div class="fp-gene-grade-actions">'+
-   '<button type="button" data-action="grade" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="-1"'+(canReduce?"":" disabled")+'>− Grau</button>'+
-   '<button type="button" class="fp-primary-btn" data-action="grade" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="1"'+(increase?"":" disabled")+'>+ Grau · '+(src.next===null?"máximo":src.next+" XP")+'</button></div>';
+   '<button type="button" data-action="'+(editable?"gene-grade":"grade")+'" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="-1"'+(canReduce?'':' disabled')+'>− Grau</button>'+
+   '<button type="button" class="fp-primary-btn" data-action="'+(editable?"gene-grade":"grade")+'" data-group="'+src.group+'" data-key="'+src.key+'" data-delta="1"'+(src.canRaise?'':' disabled')+'>'+
+   '+ Grau · '+(src.next===null?"máximo":src.next+" XP")+'</button></div>';
  }
- const skill=SKILLS.find(row=>row[0]===id&&!HIDDEN_CATALOG_SKILLS.has(row[0]));
- if(!skill)return '<p>Selecione um Atributo central, depois um Conhecimento, uma Prática ou uma Perícia.</p>';
- const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid);
- const status=geneSkillStatus(skill),reason=skillReq(sid),canCancel=owned&&(!state.creationLocked||editMode);
- const disabled=owned?!canCancel:status!=="available";
- return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":status==="available"?"Disponível":"Bloqueada")+'</span>'+
+ const skill=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
+ if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
+ const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
+ const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
+ const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
+ const skillButton=status==="potential"&&packagePlan&&geneCanAdjust()?
+  '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
+   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
+   '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
+  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
+   (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
+   '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
+   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+ return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
-  '<dt>Custo</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
-  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+
-  '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(disabled?" disabled":"")+'>'+
-  (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+  '<dt>Custo da Perícia</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
+  (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
+  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton;
 }
 function renderGenetic(){
+ const preview=genePreviewState();
  if(!geneSelected)geneSelected="attr:forca";
  const nodes=[
-  ...A.map(([k])=>({type:"attr",...sourceGeneInfo("attr:"+k)})),
-  ...K.map(([k])=>({type:"know",...sourceGeneInfo("know:"+k)})),
-  ...P.map(([k])=>({type:"practice",...sourceGeneInfo("practice:"+k)})),
+  ...A.map(([k])=>({type:"attr",...sourceGeneInfo("attr:"+k,preview)})),
+  ...K.map(([k])=>({type:"know",...sourceGeneInfo("know:"+k,preview)})),
+  ...P.map(([k])=>({type:"practice",...sourceGeneInfo("practice:"+k,preview)})),
   ...SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id)).map(row=>({
-   type:"skill",id:row[0],name:row[1],state:geneSkillStatus(row),
-   label:state.skills.includes(row[0])?"Adquirida":skillReq(row[0])||"Requisitos e XP"
+   type:"skill",id:row[0],name:row[1],state:geneSkillStatus(row,preview),
+   label:preview.skills.includes(row[0])?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
   }))
  ];
- const choose=id=>{geneSelected=id;renderGenetic();};
+ const choose=(id,y)=>{geneSelected=id;geneInspectorOpen=true;
+  if(Number.isFinite(y))geneInspectorTop=Math.max(12,y-150);
+  renderGenetic();};
  for(const mapId of ["gene-map","gene-builder-map"]){
   const map=$(mapId);
   if(!map||map.isConnected===false)continue;
-  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===1))continue;
+  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===2&&wizardMode==="genetic"))continue;
   window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,affinity:SKILL_AFFINITY,
-   selected:geneSelected,filter:mapId==="gene-builder-map"?"all":geneFilter,query:geneSearch,onSelect:choose});
+   selected:geneSelected,filter:mapId==="gene-builder-map"?"all":geneFilter,query:geneSearch,
+   showFuture:geneShowFuture,edit:geneCanAdjust(),onSelect:choose,
+   onAdjust:geneStageGrade});
  }
  for(const id of ["gene-detail","gene-builder-detail"]){
-  const el=$(id);if(el&&el.isConnected!==false)el.innerHTML=geneDetailHTML(geneSelected);
+  const el=$(id);
+  if(el&&el.isConnected!==false){
+   el.hidden=!geneInspectorOpen;
+   const mapHeight=el.closest(".fp-gene-canvas-shell")?.querySelector(".fp-gene-canvas")?.getBoundingClientRect().height||500;
+   el.style.top=Math.min(geneInspectorTop,Math.max(12,mapHeight-340))+"px";
+   el.innerHTML=geneInspectorOpen?'<div class="fp-gene-float-top"><strong>DETALHES DO CODEX</strong>'+
+    '<button type="button" data-action="gene-close-detail" aria-label="Fechar detalhes">×</button></div>'+
+    geneDetailHTML(geneSelected,preview):"";
+  }
  }
+ const sheetBudget=$("gene-sheet-budget"),sheetActions=$("gene-sheet-actions"),futureToggle=$("gene-sheet-future");
+ if(sheetBudget)sheetBudget.innerHTML=geneBudgetPanel().replace('id="gene-build-budget"','id="gene-sheet-budget-content"');
+ if(sheetActions)sheetActions.innerHTML=geneActionsPanel();
+ if(futureToggle){futureToggle.textContent=geneShowFuture?"Ocultar futuras ramificações":"Mostrar futuras ramificações";futureToggle.setAttribute("aria-pressed",String(geneShowFuture));}
  const list=$("gene-list");
  if(list){list.hidden=!geneListOpen;
   if(geneListOpen)list.innerHTML=SKILLS.filter(row=>!HIDDEN_CATALOG_SKILLS.has(row[0])).map(row=>skillCompactCard(row,false)).join("");
@@ -1371,31 +1675,87 @@ function prepareElementSkill(id){
 
 function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
-/* Cinco telas reais: construímos primeiro; a ficha completa só aparece depois. */
+/* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
- try{localStorage.setItem(WIZARD_KEY,JSON.stringify({step:wizardStep,reached:wizardReached}));}
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred}));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
 }
 function wizardSelectStep(next){
  if(viewMode!=="builder"||state.creationLocked||next<0||next>=WIZARD_STEPS.length||next>wizardReached+1)return;
- if(wizardStep===0&&next>0&&!state.name.trim()){
+ if(next>0&&!state.name.trim()){
   toast("Escolha um nome para o Aprendiz antes de continuar.");$("wizard-content").querySelector?.('[data-wizard-field="name"]')?.focus?.();return;
  }
- if(next>=2&&!hasStarterSources()){
-  toast("Desenvolva pelo menos um Atributo e um Conhecimento ou Prática antes da revisão.");return;
+ if(wizardStep===1&&next===2){
+  // A etapa 03 também pode ser aberta pelo indicador superior quando as escolhas estão prontas.
+  if(wizardStarterPhase==="confirm"&&wizardStarterAttribute&&wizardStarterTraining){
+   wizardConfirmStarterPicks();return;
+  }
+  // Ao voltar a uma criação já confirmada, não exigir que o jogador refaça as duas compras.
+  const [chosenGroup,chosenId]=wizardStarterTraining.split(":");
+  const alreadyConfirmed=!!wizardStarterAttribute&&
+   Number(state.attributes[wizardStarterAttribute]||0)>=1&&
+   !!SOURCE_PROPS[chosenGroup]&&Number(state[SOURCE_PROPS[chosenGroup]][chosenId]||0)>=1;
+  if(wizardReached>=2&&alreadyConfirmed){
+   wizardStep=2;wizardPersist();renderWizard();
+   $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});return;
+  }
+  toast("Escolha um Atributo principal e um Conhecimento ou Prática. Confirme as duas opções para abrir a distribuição livre de XP.");
+  return;
+ }
+ if(next>=3&&!hasStarterSources()){
+  toast("Compre pelo menos um Atributo e um Conhecimento ou Prática no grau 1 antes da revisão.");return;
  }
  wizardStep=next;wizardReached=Math.max(wizardReached,wizardStep);wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardStarterSelect(group,id){
+ if(wizardStep!==1||viewMode!=="builder"||state.creationLocked)return;
+ if(group==="attr"){
+  if(!A.some(([k])=>k===id))return;
+  wizardStarterAttribute=id;wizardStarterPhase="training";
+ }else if(group==="know"||group==="practice"){
+  if(!GROUPS[group].some(([k])=>k===id)||!wizardStarterAttribute)return;
+  wizardStarterTraining=group+":"+id;wizardStarterPhase="confirm";
+ }else return;
+ wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardStarterBack(){
+ if(wizardStarterPhase==="confirm")wizardStarterPhase="training";
+ else if(wizardStarterPhase==="training")wizardStarterPhase="attr";
+ else {wizardSelectStep(0);return;}
+ wizardPersist();renderWizard();
+ $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
+}
+function wizardConfirmStarterPicks(){
+ const attr=wizardStarterAttribute,[group,id]=wizardStarterTraining.split(":");
+ if(!A.some(([k])=>k===attr)||!["know","practice"].includes(group)||!GROUPS[group].some(([k])=>k===id)){
+  toast("Confirme um Atributo e um Conhecimento ou Prática.");return;
+ }
+ if(state.pending||state.creationLocked)return;
+ const attrCost=(state.attributes[attr]||0)>=1?0:xpStepCost("attr",attr,1);
+ const trainingCost=(state[SOURCE_PROPS[group]][id]||0)>=1?0:xpStepCost(group,id,1);
+ if(xpCosts().free<attrCost+trainingCost){
+  toast("XP insuficiente para as duas compras. Ajuste outras compras antes de continuar.");return;
+ }
+ // Compras dos graus mínimos em uma operação, sem bônus de 'atributo principal'.
+ if(attrCost)state.attributes[attr]=1;
+ if(trainingCost)state[SOURCE_PROPS[group]][id]=1;
+ wizardCategory="attr";wizardTab="attr";wizardMode="list";
+ wizardStep=2;wizardReached=Math.max(wizardReached,2);
+ wizardPersist();save();render();
+ toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
- if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=1;renderWizard();return;}
+ if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=2;renderWizard();return;}
  const xp=xpCosts();
- if(xp.free<0){toast("O investimento ultrapassa 19 XP.");return;}
- if(!confirm("Concluir a criação usando "+xp.total+" dos 19 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
+ if(xp.free<0){toast("O investimento ultrapassa 20 XP.");return;}
+ if(!confirm("Concluir a criação usando "+xp.total+" dos 20 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
  const residual=lockCreation();if(residual===null)return;
- viewMode="sheet";sheetPage="play";wizardStep=2;wizardReached=2;wizardPersist();
+ viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;wizardPersist();
  syncFields();render();save();toast("Aprendiz criado! XP livre: "+residual+".");
  window.scrollTo?.({top:0,behavior:"smooth"});
 }
@@ -1406,7 +1766,7 @@ function wizardSource(group,item){
  const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
  const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
  const lower=g>0&&!state.creationLocked&&!state.pending;
- return '<article class="fp-wiz-source">'+
+ return '<article class="fp-wiz-source" data-source-group="'+group+'">'+
   '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
   '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
   '<div class="fp-wiz-source-actions">'+
@@ -1423,37 +1783,147 @@ function wizardSkills(){
   '<div id="wizard-skill-cards" class="fp-wiz-skills">'+wizardSkillCardsMarkup()+'</div>';
 }
 
+function wizardStarterOption(group,[id,name]){
+ const isAttr=group==="attr",key=isAttr?id:group+":"+id;
+ const info=isAttr?WIZARD_ATTRIBUTE_GUIDE[id]:WIZARD_TRAINING_GUIDE[key];
+ const grade=Number(state[SOURCE_PROPS[group]][id]||0);
+ const selected=isAttr?wizardStarterAttribute===id:wizardStarterTraining===key;
+ const cost=grade>=1?0:isAttr?AT_COST[1]:TRAIN_COST[1];
+ const dice=isAttr?"G0: 1d4 · G1: 1d6":"G0: 1d6 · G1: 1d10";
+ return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
+  '<span class="fp-wiz-focus-top"><strong>'+esc(name)+'</strong><small>'+(selected?'Escolhido':'Escolher')+'</small></span>'+
+  '<span class="fp-wiz-focus-role">'+esc(info[0])+'</span>'+
+  '<span class="fp-wiz-focus-description">'+esc(info[1])+'</span>'+
+  '<span class="fp-wiz-focus-example">'+esc(info[2])+'</span>'+
+  '<span class="fp-wiz-focus-bottom"><span>'+dice+'</span><b>'+(cost?cost+' XP · grau 1':'Grau '+grade+' já comprado')+'</b></span></button>';
+}
+function wizardStarterCards(){
+ const [group,id]=wizardStarterTraining.split(":");
+ const attr=A.find(([k])=>k===wizardStarterAttribute);
+ const training=GROUPS[group]?.find(([k])=>k===id);
+ const attrCost=wizardStarterAttribute&&(state.attributes[wizardStarterAttribute]||0)<1?AT_COST[1]:0;
+ const trainingCost=training&&(state[SOURCE_PROPS[group]][id]||0)<1?TRAIN_COST[1]:0;
+ const phases='<div class="fp-wiz-mini-progress" aria-label="Progresso da escolha inicial">'+
+  '<span class="'+(wizardStarterPhase==="attr"?'is-current':'is-complete')+'">1 · Atributo</span>'+
+  '<span class="'+(wizardStarterPhase==="training"?'is-current':wizardStarterPhase==="confirm"?'is-complete':'')+'">2 · Conhecimento ou Prática</span>'+
+  '<span class="'+(wizardStarterPhase==="confirm"?'is-current':'')+'">3 · Confirmar</span></div>';
+ if(wizardStarterPhase==="attr")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · PRIMEIRA ESCOLHA</span>'+
+  '<h3>Escolha um Atributo principal.</h3><p>Veja os seis Atributos, suas funções e exemplos. Selecione aquele com que deseja iniciar. <strong>“Principal” não cria bônus, classe ou restrição:</strong> será só sua primeira compra.</p></div>'+
+  phases+'<div class="fp-wiz-focus-grid">'+A.map(x=>wizardStarterOption("attr",x)).join("")+'</div>'+
+  '<div class="fp-wiz-reminder"><strong>Atributos</strong><p>Grau 0: 1d4; grau 1: 1d6 por 1 XP. Você poderá desenvolver outros Atributos mais tarde. O XP será gasto quando confirmar as duas escolhas.</p></div>';
+ if(wizardStarterPhase==="training")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · SEGUNDA ESCOLHA</span>'+
+  '<h3>Escolha um Conhecimento ou uma Prática.</h3><p>Seu Atributo inicial é <strong>'+esc(attr?.[1]||"não selecionado")+'</strong>. Agora selecione <strong>um</strong> Conhecimento ou <strong>uma</strong> Prática. Conhecimento representa estudo; Prática representa treinamento. Não é preciso escolher os dois.</p></div>'+
+  phases+
+  '<section class="fp-wiz-focus-section" data-source-group="know"><div class="fp-wiz-focus-heading"><h4>Conhecimentos</h4><p>Estudar, investigar e compreender.</p></div><div class="fp-wiz-focus-grid">'+K.map(x=>wizardStarterOption("know",x)).join("")+'</div></section>'+
+  '<section class="fp-wiz-focus-section" data-source-group="practice"><div class="fp-wiz-focus-heading"><h4>Práticas</h4><p>Treinar, executar e aperfeiçoar.</p></div><div class="fp-wiz-focus-grid">'+P.map(x=>wizardStarterOption("practice",x)).join("")+'</div></section>'+
+  '<div class="fp-wiz-reminder"><strong>Conhecimentos e Práticas</strong><p>Grau 0: 1d6; grau 1: 1d10 por 2 XP. As outras fontes continuarão disponíveis depois, sem reserva por categoria.</p></div>';
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CONFIRMAR COMPRAS</span>'+
+  '<h3>Confirme as escolhas iniciais.</h3><p>Ao confirmar, as duas fontes terão pelo menos grau 1. Depois você poderá investir livremente em qualquer categoria, inclusive Perícias.</p></div>'+
+  phases+'<div class="fp-wiz-focus-confirm">'+
+  '<section data-source-group="attr"><small>ATRIBUTO PRINCIPAL</small><strong>'+esc(attr?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+attrCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="attr">Alterar Atributo</button></section>'+
+  '<section data-source-group="'+group+'"><small>CONHECIMENTO OU PRÁTICA</small><strong>'+esc(training?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+trainingCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="training">Alterar escolha</button></section></div>'+
+  '<div class="fp-wiz-starter-total"><span>XP para confirmar: <strong>'+(attrCost+trainingCost)+'</strong></span><span>Saldo livre após confirmar: <strong>'+(xpCosts().free-attrCost-trainingCost)+' XP</strong></span></div>'+
+  '<div class="fp-wiz-reminder"><strong>A escolha “principal” é orientativa</strong><p>Não há bônus oculto. Se voltar aqui depois de outras compras, os investimentos já realizados permanecem na ficha e o custo de uma nova fonte será informado.</p></div>';
+}
+function wizardBuild(){
+ const attrOK=A.some(([k])=>(state.attributes[k]||0)>=1);
+ const trainingOK=K.some(([k])=>(state.knowledges[k]||0)>=1)||P.some(([k])=>(state.practices[k]||0)>=1);
+ const switcher='<div class="fp-wiz-view-switch" role="group" aria-label="Visualização da criação">'+
+  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Modo padrão · listas</button>'+
+  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · mapa</button></div>';
+ const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
+  '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
+  '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
+  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 20 XP (total experimental)</span></div>';
+ const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais estão registradas. Agora compre outros graus e Perícias usando o saldo compartilhado, ou alterne para o Codex Genético.</span></div>';
+ if(wizardMode==="genetic")return confirmedHint+switcher+
+  geneBudgetPanel()+
+  '<div class="fp-gene-map-tools"><button type="button" data-action="gene-future" aria-pressed="'+geneShowFuture+'">'+
+  (geneShowFuture?'Ocultar futuras ramificações':'Mostrar futuras ramificações')+'</button>'+
+  '<span>Verde: adquirida · Azul: liberada · Roxo: compra completa com requisitos pagáveis.</span>'+
+  '<div class="fp-gene-zoom"><button type="button" data-gene-zoom="-1" aria-label="Diminuir zoom">−</button>'+
+  '<button type="button" data-gene-zoom="0">Centralizar</button><button type="button" data-gene-zoom="1" aria-label="Aumentar zoom">+</button></div></div>'+
+  
+  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● Requisitos compráveis com XP</span><span class="locked">● Futuro (opcional)</span></div>'+
+  geneLayout("gene-builder-map","gene-builder-detail")+
+  '<div id="gene-build-actions">'+geneActionsPanel()+'</div>'+
+  '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Alterações só entram na ficha após confirmar a evolução.</p>';
+ const tabs=[["attr","Atributos"],["know","Conhecimentos"],["practice","Práticas"],["skills","Perícias"]];
+ const current=tabs.some(([id])=>id===wizardTab)?wizardTab:"attr";
+ const bar='<div class="fp-wiz-category-tabs" role="group" aria-label="Categoria de investimento">'+
+  tabs.map(([id,name])=>'<button type="button" data-action="wizard-tab" data-group="'+id+'" class="'+(current===id?'is-active':'')+'" aria-pressed="'+(current===id)+'">'+name+'</button>').join("")+'</div>';
+ let body;
+ if(current==="skills")body='<p class="fp-wiz-tab-help">Perícias especializam o personagem e exigem seus requisitos. Todas as compras usam o mesmo XP.</p>'+wizardSkills();
+ else{
+  const c=WIZARD_CATEGORIES.find(x=>x.id===current);
+  body='<div class="fp-wiz-tab-help" data-source-group="'+current+'"><strong>'+c.title+'</strong> · '+c.description+'<span>'+c.dice+' · '+c.cost+'</span></div>'+
+   '<div class="fp-wiz-source-grid">'+GROUPS[current].map(item=>wizardSource(current,item)).join("")+'</div>';
+ }
+ return confirmedHint+switcher+status+bar+body+
+  '<p class="fp-wiz-reminder">Compre graus usando + e −. Você pode alternar entre categorias ou abrir o Codex Genético a qualquer momento, sem reiniciar a ficha.</p>';
+}
+function wizardEquipment(){
+ if(tradeOwner!==state){tradeOwner=state;tradeDraft={...state.trade.resources};}
+ const spent=state.trade.purchases.reduce((n,p)=>n+Number(p.price||0),0),remaining=walletValue();
+ const editable=!state.trade.purchases.length&&!state.trade.collected;
+ // Depois da primeira compra, mostrar recursos restantes, não a distribuição original.
+ if(!editable)tradeDraft={...state.trade.resources};
+ const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
+ const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
+ const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
+ const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
+ const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
+ .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
+ '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
+ '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
+ '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
+ '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
+ '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
+ RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
+ '<div class="fp-wiz-shop-tabs">'+tabs+'</div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item cadastrado nesta categoria.</p>')+'</div></section>'+
+ '<section class="fp-wiz-vt-section"><h4>Seus itens iniciais</h4><div class="fp-wiz-owned-list">'+owned+'</div></section>'+
+ '<div class="fp-wiz-reminder"><strong>VT não é XP</strong><p>Você não precisa gastar todo o patrimônio. Itens comprados aparecem na ficha e podem ser equipados conforme as regras.</p></div>';
+}
 function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
  const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
   '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
-  '<div class="fp-wiz-review-list"><section><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
-  '<section><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
-  '<section><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
+  '<div class="fp-wiz-review-list"><section data-source-group="attr"><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
+  '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
+  '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
-  '<div class="fp-wiz-reminder"><strong>19 XP iniciais · orçamento compartilhado</strong>'+
-  '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>';
+  '<div class="fp-wiz-reminder"><strong>20 XP iniciais · orçamento compartilhado</strong>'+
+  '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
+  '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
+  '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>';
 }
 function wizardOverview(){
  const x=xpCosts();
  return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 19 XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
   '<div class="fp-wiz-summary-total"><span>DISPONÍVEIS</span><strong>'+x.free+' XP</strong></div>'+
+  '<div class="fp-wiz-sidebar-title">VT · PATRIMÔNIO</div>'+
+  '<div class="fp-wiz-budget-row"><span>VT disponíveis</span><b>'+walletValue()+' VT</b></div>'+
+  '<div class="fp-wiz-budget-row"><span>Itens</span><b>'+state.items.length+'</b></div>'+
   '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
   '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
   '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
-  '<p class="fp-wiz-sidebar-note">Primeiro desenvolva um Atributo. Depois, desenvolva um Conhecimento ou Prática. As Perícias passam a ficar azuis conforme requisitos e saldo de XP.</p>';
+  '<p class="fp-wiz-sidebar-note">Para concluir, compre um Atributo e um Conhecimento ou Prática no grau 1. Depois, todo o XP restante é livre, inclusive para Perícias. Listas e Codex Genético compartilham o mesmo saldo.</p>';
 }
 function renderWizard(){
  const builder=$("builder-root"),sheet=$("full-sheet");
@@ -1469,11 +1939,12 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Criação pelo Codex Genético: 19 XP livres para Atributos, Conhecimentos, Práticas e Perícias.":
+  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
-  const clickable=i<=wizardReached&&(i===0||!!state.name.trim());
+  const canConfirmStarter=wizardStep===1&&wizardStarterPhase==="confirm"&&!!wizardStarterAttribute&&!!wizardStarterTraining;
+  const clickable=(i<=wizardReached||(i===2&&canConfirmStarter))&&(i===0||!!state.name.trim());
   const active=i===wizardStep;
   return '<button type="button" data-action="wizard-go" data-step="'+i+'" class="fp-wiz-nav-item'+(active?' active':'')+(i<wizardStep?' complete':'')+'"'+
    (clickable?'':' disabled')+(active?' aria-current="step"':'')+'>'+
@@ -1495,19 +1966,21 @@ function renderWizard(){
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
    '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
-  content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · CODEX GENÉTICO</span>'+
-  '<h3>Seu DNA, suas escolhas.</h3><p>Desenvolva primeiro um <strong>Atributo</strong> na dupla hélice. Depois, escolha um <strong>Conhecimento ou Prática</strong> na órbita. Os ramos ficam azuis conforme os requisitos são cumpridos. Distribua <strong>19 XP</strong> como preferir.</p></div>'+
-  '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Disponível</span><span class="locked">● Bloqueado</span></div>'+
-  geneLayout("gene-builder-map","gene-builder-detail")+
-  '<p class="fp-wiz-reminder">A hélice representa seus Atributos; as órbitas representam Conhecimentos e Práticas. Conexões são afinidades, não requisitos adicionais.</p>';
- }else content=wizardReview();
+  content=wizardStarterCards();
+ }else if(stage===2){
+   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
+   '<h3>Construa seu Aprendiz.</h3><p>O <strong>modo padrão</strong> apresenta as compras em listas. Se preferir, alterne para o <strong>Codex Genético</strong>. Ambos usam o mesmo personagem, as mesmas compras e o mesmo saldo de XP.</p></div>'+
+   wizardBuild();
+  }else if(stage===3){
+   content=wizardEquipment();
+  }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
- if(stage===1)renderGenetic();
+ if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
-  '<button type="button" class="fp-primary-btn" data-action="'+(stage===2?'wizard-finish':'wizard-next')+'">'+
-  (stage===2?'Concluir e abrir a ficha →':'Continuar →')+'</button></div>';
+  '<button type="button" class="fp-primary-btn" data-action="'+(stage===4?'wizard-finish':'wizard-next')+'"'+(stage===1&&wizardStarterPhase!=="confirm"?' disabled':'')+'>'+
+  (stage===4?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
 function renderVitals(){
@@ -1813,9 +2286,6 @@ function updateGrade(group,id,delta){
  if(next===old)return;
  const purchaseCost=delta>0?xpStepCost(group,id,1):0;
  if(delta>0){
-   if(!state.creationLocked&&group!=="attr"&&!A.some(([key])=>(state.attributes[key]||0)>0)){
-    toast("Primeiro desenvolva um Atributo no centro do Codex Genético.");return;
-   }
    if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
  }else{
   const tmp=structuredClone(state);tmp[p][id]=next;
@@ -1921,12 +2391,11 @@ function renderTrade(){
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
  // Seleção do navegador é preservada quando possível para evitar reset do formulário.
 }
-function buyCatalogItem(){
- const catalogName=$("shop-items")?.value,item=CATALOG.find(x=>x.name===catalogName);
+function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
+ const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- const preferred=$("shop-preferred")?.value;
  if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
@@ -2020,7 +2489,7 @@ async function importFile(file){
   const v=isNew?raw:fromCreator(input);
   if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
   state=normalize(v);draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";
-  wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
+  wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
   toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
  }catch(e){toast("Falha ao importar: "+e.message);}
 }
@@ -2040,15 +2509,38 @@ function onClick(event){
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
+ case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
+ case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
+ case "wizard-starter-edit":if(wizardStep===1){wizardStarterPhase=button.dataset.phase==="attr"?"attr":"training";wizardPersist();renderWizard();}break;
+ case "wizard-category":{
+  // Retido apenas para compatibilidade com rascunhos da interface antiga.
+  break;
+ }
+ case "wizard-tab":{
+  if(wizardStep!==2||!["attr","know","practice","skills"].includes(button.dataset.group))break;
+  wizardTab=button.dataset.group;wizardPersist();renderWizard();break;
+ }
+ case "wizard-mode":{
+  if(wizardStep!==2||!["list","genetic"].includes(button.dataset.mode))break;
+  wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
+ }
  case "prepare-element":prepareElementSkill(id);break;
- case "wizard-back":wizardSelectStep(wizardStep-1);break;
+ case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
  case "wizard-portrait":$("portrait-input").click();break;
  case "source":selectSource(group,source);break;
  case "grade":updateGrade(group,source,Number(delta));break;
+  case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
+  case "gene-skill":geneStageSkill(id);break;
+  case "gene-auto-buy":geneAutoBuy(id);break;
+  case "gene-confirm":geneCommit();break;
+  case "gene-reset":geneDiscard();break;
+  case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
+  case "gene-close-detail":geneInspectorOpen=false;renderGenetic();break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
  case "roll":roll();break;
+ case "wizard-vt-allocate":
  case "trade-allocate":{
   if(state.trade.purchases.length||state.trade.collected)return;
   const total=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
@@ -2056,6 +2548,11 @@ function onClick(event){
   state.trade.resources={...tradeDraft};render();save();toast("Composição dos recursos iniciais atualizada.");break;
  }
  case "trade-buy":buyCatalogItem();break;
+ case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
+ case "wizard-shop-category":{
+  if(viewMode!=="builder"||wizardStep!==3||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
+  wizardShopCategory=button.dataset.category;wizardPersist();renderWizard();break;
+ }
  case "trade-collect":collectResources();break;
  case "focus-test":addTestFocus();break;
  case "keep":{
@@ -2077,9 +2574,6 @@ function onClick(event){
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
   const existing=state.skills.indexOf(id);
   if(existing<0){
-   if(!state.creationLocked&&!hasStarterSources()){
-    toast("Desenvolva um Atributo e um Conhecimento ou Prática antes de adquirir Perícias.");return;
-   }
    const reason=skillReq(id);
    if(reason){toast(reason);return;}
    if(!Number.isInteger(skill[3])){toast("Custo pendente.");return;}
@@ -2111,7 +2605,7 @@ function onClick(event){
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderVitals();renderComposer();save();break;
+  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -2121,6 +2615,16 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.wizardVtDraft!==undefined){
+  if(state.trade.purchases.length||state.trade.collected)return;
+  const k=el.dataset.wizardVtDraft;
+  if(!RESOURCES.some(([key])=>key===k))return;
+  tradeDraft[k]=clamp(Math.floor(el.value),0,STARTING_VT);renderWizard();return;
+ }
+ if(el.dataset.wizardTradePreferred!==undefined){
+  if(!RESOURCES.some(([k])=>k===el.value))return;
+  wizardTradePreferred=el.value;wizardPersist();renderWizard();return;
+ }
  if(el.dataset.tradeDraft!==undefined){
   if(state.trade.purchases.length||state.trade.collected)return;
   const k=el.dataset.tradeDraft;if(!RESOURCES.some(x=>x[0]===k))return;
@@ -2255,17 +2759,17 @@ function bind(){
  });
  $("demo-load").addEventListener("click",()=>{
   if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=4;wizardReached=4;
+  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;
   wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina → Força; Disciplina Avançada permite uma terceira fonte.");
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
   if(!confirm("Reiniciar a ficha atual? Exporte o personagem antes se quiser preservar uma cópia."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
@@ -2280,7 +2784,7 @@ function bind(){
    converted.creationLocked=!!converted.name.trim();
    state=normalize(converted);draft=freshDraft();editMode=false;
    viewMode=state.creationLocked?"sheet":"builder";
-   wizardStep=0;wizardReached=0;wizardPersist();syncFields();render();save();
+   wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
    toast("Ficha antiga importada. Confira as anotações e investimentos em XP.");
   }catch(e){toast("Não foi possível importar a ficha antiga: "+e.message);}
  });

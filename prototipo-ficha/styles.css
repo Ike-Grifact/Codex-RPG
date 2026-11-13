@@ -1,8 +1,8 @@
 
 /* Codex RPG — protótipo de ficha HTML, escopo isolado. */
 :root{
-  --fp-bg:#0c101a;--fp-surface:#172130;--fp-deep:#111927;--fp-raised:#1d2a3b;
-  --fp-stroke:#2b394b;--fp-text:#f3efe7;--fp-muted:#aab9c9;--fp-gold:#dec48e;
+  --fp-bg:#070707;--fp-surface:#171717;--fp-deep:#101010;--fp-raised:#232323;
+  --fp-stroke:#373737;--fp-text:#f3efe7;--fp-muted:#b9b9b9;--fp-gold:#dec48e;
   --fp-e:#5bbd82;--fp-a:#79aefa;--fp-p:#b08acc;
 }
 html[data-theme="light"]{
@@ -11,7 +11,7 @@ html[data-theme="light"]{
   --fp-e:#267A45;--fp-a:#2369BB;--fp-p:#542176;
 }
 html,body.fp-body{min-height:100%}
-body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128,.13),transparent 76%),var(--fp-bg);color:var(--fp-text);font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
+body.fp-body{background:var(--fp-bg);color:var(--fp-text);font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
 .fp-body button,.fp-body input,.fp-body select,.fp-body textarea{font:inherit}
 .fp-body button{cursor:pointer}
 .fp-body :is(button,input,select,textarea):focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
@@ -45,7 +45,7 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 .fp-panel{background:var(--fp-surface);border:1px solid var(--fp-stroke);border-radius:16px;box-shadow:0 15px 48px rgba(0,0,0,.08)}
 .fp-identity{display:flex;gap:23px;padding:22px;min-height:202px}
 .fp-portrait-wrap{width:148px;flex:0 0 148px}
-.fp-portrait{width:148px;height:158px;background:linear-gradient(140deg,#293c4b,#141c27);border:1px solid var(--fp-gold);overflow:hidden;border-radius:13px;position:relative;display:block;padding:0}
+.fp-portrait{width:148px;height:158px;background:linear-gradient(140deg,#292929,#111111);border:1px solid var(--fp-gold);overflow:hidden;border-radius:13px;position:relative;display:block;padding:0}
 .fp-portrait img{width:100%;height:100%;object-fit:cover}
 .fp-portrait-overlay{position:absolute;bottom:0;inset-inline:0;background:rgba(8,14,20,.82);font-size:10px;color:white;padding:8px;opacity:0;transition:opacity .2s}
 .fp-portrait:hover .fp-portrait-overlay,.fp-portrait:focus-visible .fp-portrait-overlay{opacity:1}
@@ -203,13 +203,13 @@ body.fp-body{background:radial-gradient(ellipse 60% 33% at 86% 0%,rgba(62,89,128
 
 /* Revisão de identidade: d4 Pavor, d6 Antecipar, d10 Êxito, d12 cinza, d20 dourado. */
 :root {
- --fp-bg:#111318;
- --fp-surface:#1b2029;
- --fp-deep:#151a23;
- --fp-raised:#262d38;
- --fp-stroke:#3b4654;
+ --fp-bg:#070707;
+ --fp-surface:#171717;
+ --fp-deep:#101010;
+ --fp-raised:#232323;
+ --fp-stroke:#373737;
  --fp-text:#f1ece3;
- --fp-muted:#b1bcc9;
+ --fp-muted:#b9b9b9;
  --fp-gold:#d7bc88;
  --fp-e:#60b781;--fp-a:#78aef1;--fp-p:#a277cc;
  --fp-d4:#a277cc;
@@ -303,7 +303,7 @@ html[data-theme="light"]{
  border-color:#b69760;
 }
 .fp-portrait:not(.fp-has-portrait) img{object-fit:contain;padding:11px;filter:drop-shadow(0 4px 4px rgba(49,36,24,.16))}
-.fp-portrait.fp-has-portrait{background:#121820}
+.fp-portrait.fp-has-portrait{background:#161616}
 .fp-portrait.fp-has-portrait img{object-fit:cover;padding:0;filter:none}
 html[data-theme="light"] .fp-brand img{background:#ffffff}
 
@@ -743,3 +743,458 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-wiz-summary-total strong{font-variant-numeric:tabular-nums}
 @media(max-width:980px){.fp-gene-creator-layout{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:440px}.fp-gene-creator-layout .fp-gene-detail{max-height:none}}
 @media(max-width:620px){.fp-wizard-grid:has(#gene-builder-map) .fp-wizard-sidebar{grid-template-columns:1fr}.fp-gene-creator-layout .fp-gene-canvas{min-height:320px}.fp-gene-grade-actions{grid-template-columns:1fr}}
+
+/* Fluxo guiado v0.46 — a compra em listas é o modo padrão; mapa genético alternativo. */
+.fp-wizard-steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+.fp-wiz-choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fp-wiz-choice{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:295px;text-align:left;
+ background:var(--fp-deep);color:var(--fp-text);border:1px solid var(--fp-stroke);border-radius:14px;padding:17px;
+ transition:border-color .16s,background .16s,box-shadow .16s;cursor:pointer}
+.fp-wiz-choice:hover,.fp-wiz-choice:focus-visible{border-color:var(--fp-gold);outline:none}
+.fp-wiz-choice.is-active{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep));box-shadow:inset 0 0 0 1px var(--fp-gold)}
+.fp-wiz-choice-top{display:flex;align-items:start;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.fp-wiz-choice-top strong{font:normal 20px Georgia,serif;color:var(--fp-gold)}
+.fp-wiz-choice-top span{font-size:10px;font-weight:750;color:var(--fp-muted);border:1px solid var(--fp-stroke);padding:5px 7px;border-radius:20px}
+.fp-wiz-choice.is-active .fp-wiz-choice-top span{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-wiz-choice-description{font-size:12px;line-height:1.6}
+.fp-wiz-choice-example{font-size:11px;line-height:1.6;color:var(--fp-muted)}
+.fp-wiz-choice-dice{font-size:12px;font-weight:750;color:var(--fp-a);margin-top:auto}
+.fp-wiz-choice-cost{font-size:11px;font-weight:750;color:var(--fp-gold)}
+.fp-wiz-choice-names{font-size:10px;line-height:1.55;color:var(--fp-muted);padding-top:10px;border-top:1px solid var(--fp-stroke)}
+.fp-wiz-view-switch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.fp-wiz-view-switch button{padding:12px 17px;border:1px solid var(--fp-stroke);border-radius:10px;
+ background:var(--fp-deep);color:var(--fp-text);font-size:12px;font-weight:750;cursor:pointer}
+.fp-wiz-view-switch button.is-active{background:var(--fp-gold);color:#18202a;border-color:var(--fp-gold)}
+.fp-wiz-view-switch button:focus-visible,.fp-wiz-category-tabs button:focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
+.fp-wiz-starter-status{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 17px}
+.fp-wiz-starter-status>span{font-size:11px;line-height:1.5;border:1px solid var(--fp-stroke);border-radius:8px;
+ padding:9px 10px;background:var(--fp-deep);color:var(--fp-muted)}
+.fp-wiz-starter-status>span.is-ready{border-color:var(--fp-e);color:var(--fp-e)}
+.fp-wiz-starter-status .fp-wiz-starter-xp{margin-left:auto;color:var(--fp-text)}
+.fp-wiz-starter-xp strong{color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-wiz-category-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:15px}
+.fp-wiz-category-tabs button{min-width:0;padding:12px 7px;border:1px solid var(--fp-stroke);border-radius:9px;
+ background:var(--fp-deep);color:var(--fp-muted);font-size:11px;font-weight:750;cursor:pointer}
+.fp-wiz-category-tabs button.is-active{border-color:var(--fp-gold);color:var(--fp-gold);
+ background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep))}
+.fp-wiz-tab-help{margin:0 0 15px;font-size:11px;line-height:1.65;color:var(--fp-muted)}
+.fp-wiz-tab-help strong{color:var(--fp-text)}
+.fp-wiz-tab-help span{display:block;font-weight:700;margin-top:6px;color:var(--fp-gold)}
+@media(max-width:1160px){.fp-wiz-choice-grid{grid-template-columns:1fr}.fp-wiz-choice{min-height:0;gap:10px}}
+@media(max-width:620px){
+ .fp-wiz-category-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fp-wiz-view-switch button{flex:1 1 145px;padding:11px 8px}
+ .fp-wiz-starter-status .fp-wiz-starter-xp{margin-left:0;width:100%}
+ .fp-wiz-choice{padding:15px}
+}
+
+/* Seleção individual de fontes: Atributo principal, depois Conhecimento OU Prática. */
+.fp-wiz-mini-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.fp-wiz-mini-progress>span{padding:11px 8px;text-align:center;background:var(--fp-deep);color:var(--fp-muted);
+ border:1px solid var(--fp-stroke);border-radius:9px;font-size:11px;font-weight:750}
+.fp-wiz-mini-progress>span.is-current{color:var(--fp-gold);border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 8%,var(--fp-deep))}
+.fp-wiz-mini-progress>span.is-complete{color:var(--fp-e);border-color:color-mix(in srgb,var(--fp-e) 60%,var(--fp-stroke))}
+.fp-wiz-focus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fp-wiz-focus-card{display:flex;flex-direction:column;gap:9px;min-width:0;min-height:236px;text-align:left;cursor:pointer;
+ padding:17px;border:1px solid var(--fp-stroke);border-radius:13px;background:var(--fp-deep);color:var(--fp-text);
+ transition:border-color .16s,background .16s,box-shadow .16s}
+.fp-wiz-focus-card:hover,.fp-wiz-focus-card:focus-visible{border-color:var(--fp-gold);outline:none;box-shadow:0 0 0 1px var(--fp-gold)}
+.fp-wiz-focus-card.is-active{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 9%,var(--fp-deep))}
+.fp-wiz-focus-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.fp-wiz-focus-top strong{color:var(--fp-gold);font:normal 21px Georgia,serif}
+.fp-wiz-focus-top small{font-size:10px;font-weight:750;border:1px solid var(--fp-stroke);border-radius:20px;padding:5px 8px;color:var(--fp-muted)}
+.fp-wiz-focus-card.is-active .fp-wiz-focus-top small{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-wiz-focus-role{color:var(--fp-a);font-size:11px;font-weight:800}
+.fp-wiz-focus-description{font-size:12px;line-height:1.6;color:var(--fp-text)}
+.fp-wiz-focus-example{font-size:11px;line-height:1.5;color:var(--fp-muted)}
+.fp-wiz-focus-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+ border-top:1px solid var(--fp-stroke);padding-top:11px;margin-top:auto;font-size:10px;color:var(--fp-a)}
+.fp-wiz-focus-bottom b{font-size:11px;color:var(--fp-gold)}
+.fp-wiz-focus-section+.fp-wiz-focus-section{margin-top:26px}
+.fp-wiz-focus-heading{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 12px}
+.fp-wiz-focus-heading h4{margin:0;color:var(--fp-gold);font:normal 22px Georgia,serif}
+.fp-wiz-focus-heading p{font-size:11px;color:var(--fp-muted)}
+.fp-wiz-focus-confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.fp-wiz-focus-confirm section{display:flex;flex-direction:column;gap:10px;padding:23px;background:var(--fp-deep);
+ border:1px solid var(--fp-stroke);border-radius:12px}
+.fp-wiz-focus-confirm small{font-size:10px;color:var(--fp-muted);font-weight:800;letter-spacing:.07em}
+.fp-wiz-focus-confirm strong{color:var(--fp-gold);font:normal 27px Georgia,serif}
+.fp-wiz-focus-confirm span{font-size:12px;color:var(--fp-text)}
+.fp-wiz-focus-confirm button{align-self:flex-start;border:1px solid var(--fp-gold);border-radius:9px;
+ background:transparent;color:var(--fp-gold);font-size:11px;font-weight:700;padding:10px 13px;cursor:pointer}
+.fp-wiz-focus-confirm button:hover,.fp-wiz-focus-confirm button:focus-visible{background:color-mix(in srgb,var(--fp-gold) 12%,transparent);outline:none}
+.fp-wiz-starter-total{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+ margin-top:14px;padding:17px;background:var(--fp-raised);border:1px solid var(--fp-stroke);border-radius:12px;
+ color:var(--fp-text);font-size:12px}
+.fp-wiz-starter-total strong{color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-wiz-footer-buttons .fp-primary-btn:disabled{opacity:.6;cursor:not-allowed}
+@media(max-width:1100px){.fp-wiz-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+ .fp-wiz-focus-grid,.fp-wiz-focus-confirm{grid-template-columns:1fr}
+ .fp-wiz-focus-card{min-height:0;padding:15px}
+ .fp-wiz-mini-progress{gap:5px}
+ .fp-wiz-mini-progress>span{font-size:9px;padding:9px 5px}
+ .fp-wiz-focus-confirm section{padding:16px}
+ .fp-wiz-starter-total{flex-direction:column}
+}
+
+/* Identidade visual das categorias — APENAS interface, sem alterar runas ou regras. */
+.fp-wizard{
+ --fp-category-attr:#69ce96;
+ --fp-category-know:#80b9ff;
+ --fp-category-practice:#f5f5f5;
+}
+.fp-wiz-focus-card[data-group="attr"],
+.fp-wiz-focus-section[data-source-group="attr"],
+.fp-wiz-source[data-source-group="attr"],
+.fp-wiz-focus-confirm [data-source-group="attr"],
+.fp-wiz-review-list [data-source-group="attr"],
+.fp-wiz-tab-help[data-source-group="attr"]{--fp-category-color:var(--fp-category-attr)}
+.fp-wiz-focus-card[data-group="know"],
+.fp-wiz-focus-section[data-source-group="know"],
+.fp-wiz-source[data-source-group="know"],
+.fp-wiz-focus-confirm [data-source-group="know"],
+.fp-wiz-review-list [data-source-group="know"],
+.fp-wiz-tab-help[data-source-group="know"]{--fp-category-color:var(--fp-category-know)}
+.fp-wiz-focus-card[data-group="practice"],
+.fp-wiz-focus-section[data-source-group="practice"],
+.fp-wiz-source[data-source-group="practice"],
+.fp-wiz-focus-confirm [data-source-group="practice"],
+.fp-wiz-review-list [data-source-group="practice"],
+.fp-wiz-tab-help[data-source-group="practice"]{--fp-category-color:var(--fp-category-practice)}
+/* Cartões iniciais: título, borda, indicador e realce da mesma categoria. */
+.fp-wiz-focus-card[data-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke));
+ background:linear-gradient(140deg,color-mix(in srgb,var(--fp-category-color) 7%,var(--fp-deep)),var(--fp-deep) 78%)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-top strong,
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-role,
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-bottom b{color:var(--fp-category-color)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-top small{border-color:color-mix(in srgb,var(--fp-category-color) 50%,var(--fp-stroke));color:var(--fp-category-color)}
+.fp-wiz-focus-card[data-group]:hover,
+.fp-wiz-focus-card[data-group]:focus-visible{border-color:var(--fp-category-color);box-shadow:0 0 0 1px var(--fp-category-color)}
+.fp-wiz-focus-card[data-group].is-active{border-color:var(--fp-category-color);
+ background:color-mix(in srgb,var(--fp-category-color) 14%,var(--fp-deep));
+ box-shadow:inset 0 0 0 1px var(--fp-category-color)}
+.fp-wiz-focus-card[data-group] .fp-wiz-focus-bottom{border-top-color:color-mix(in srgb,var(--fp-category-color) 25%,var(--fp-stroke))}
+/* Títulos das seções e confirmação — distinção persiste até a compra dos graus. */
+.fp-wiz-focus-section[data-source-group] .fp-wiz-focus-heading h4{color:var(--fp-category-color)}
+.fp-wiz-focus-section[data-source-group] .fp-wiz-focus-heading{padding-bottom:10px;
+ border-bottom:2px solid color-mix(in srgb,var(--fp-category-color) 55%,var(--fp-stroke))}
+.fp-wiz-focus-confirm [data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 50%,var(--fp-stroke))}
+.fp-wiz-focus-confirm [data-source-group] strong,
+.fp-wiz-focus-confirm [data-source-group] button{color:var(--fp-category-color)}
+.fp-wiz-focus-confirm [data-source-group] button{border-color:var(--fp-category-color)}
+/* Compra em listas, sem criar categoria de XP separada. */
+.fp-wiz-category-tabs button[data-group="attr"]{--fp-category-color:var(--fp-category-attr)}
+.fp-wiz-category-tabs button[data-group="know"]{--fp-category-color:var(--fp-category-know)}
+.fp-wiz-category-tabs button[data-group="practice"]{--fp-category-color:var(--fp-category-practice)}
+.fp-wiz-category-tabs button[data-group="attr"],
+.fp-wiz-category-tabs button[data-group="know"],
+.fp-wiz-category-tabs button[data-group="practice"]{color:var(--fp-category-color);border-color:color-mix(in srgb,var(--fp-category-color) 30%,var(--fp-stroke))}
+.fp-wiz-category-tabs button[data-group]:is(.is-active,:hover){border-color:var(--fp-category-color);
+ background:color-mix(in srgb,var(--fp-category-color) 12%,var(--fp-deep))}
+.fp-wiz-tab-help[data-source-group] strong,
+.fp-wiz-tab-help[data-source-group] span{color:var(--fp-category-color)}
+.fp-wiz-source[data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke))}
+.fp-wiz-source[data-source-group] .fp-wiz-source-title strong,
+.fp-wiz-source[data-source-group] .fp-wiz-cost{color:var(--fp-category-color)}
+.fp-wiz-source[data-source-group] .fp-wiz-source-actions{border-top-color:color-mix(in srgb,var(--fp-category-color) 28%,var(--fp-stroke))}
+.fp-wiz-review-list [data-source-group] h4{color:var(--fp-category-color)}
+.fp-wiz-review-list [data-source-group]{border-color:color-mix(in srgb,var(--fp-category-color) 42%,var(--fp-stroke))}
+
+/* Transição visível da etapa 2 para a distribuição livre da etapa 3. */
+.fp-wiz-creation-confirmed{display:flex;flex-direction:column;gap:5px;
+ margin:0 0 17px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--fp-e) 55%,var(--fp-stroke));
+ background:color-mix(in srgb,var(--fp-e) 8%,var(--fp-deep));border-radius:10px}
+.fp-wiz-creation-confirmed strong{color:var(--fp-e);font-size:12px}
+.fp-wiz-creation-confirmed span{color:var(--fp-text);font-size:11px;line-height:1.6}
+
+/* Variação cromática por tema: no modo claro, cores profundas e contrastantes.
+   No modo escuro, branco real nas Práticas e fundo preto/cinzas neutros.
+   As runas E/A/P e seus tons oficiais não são alterados. */
+html[data-theme="light"] .fp-wizard{
+ --fp-category-attr:#206d41;       /* verde escuro, contraste ~5.6:1 */
+ --fp-category-know:#235c9e;       /* azul escuro, contraste ~6:1 */
+ --fp-category-practice:#535861;   /* cinza escuro, contraste ~6.3:1 */
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group]{
+ background:color-mix(in srgb,var(--fp-category-color) 4%,var(--fp-deep));
+ border-color:color-mix(in srgb,var(--fp-category-color) 38%,var(--fp-stroke));
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group].is-active{
+ background:color-mix(in srgb,var(--fp-category-color) 10%,var(--fp-deep));
+ border-color:var(--fp-category-color);
+ box-shadow:inset 0 0 0 1px var(--fp-category-color);
+}
+html[data-theme="light"] .fp-wiz-focus-card[data-group]:is(:hover,:focus-visible){
+ border-color:var(--fp-category-color);
+}
+
+
+/* Codex Genético v0.52: mapa inteiro, sem lateral cortada e com compra pendente. */
+.fp-gene-creator-layout{display:flex;flex-direction:column;gap:13px;max-width:100%;min-width:0}
+.fp-gene-creator-layout .fp-gene-canvas{width:100%;max-width:100%;min-width:0;max-height:none;min-height:0;
+ height:auto;aspect-ratio:auto;overflow:hidden;touch-action:pan-x pan-y}
+.fp-gene-creator-layout .fp-gene-detail{width:100%;max-height:none;min-height:0;overflow:visible;padding:16px}
+.fp-gene-creator-layout .fp-gene-detail dl{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px 15px}
+.fp-gene-creator-layout .fp-gene-detail dd{overflow-wrap:anywhere}
+.fp-gene-creator-layout .fp-gene-grade-actions{display:flex;flex-wrap:wrap;gap:9px}
+.fp-gene-creator-layout .fp-gene-grade-actions>*{width:auto;flex:1 1 180px}
+.fp-gene-canvas:has(.fp-gene-overview){aspect-ratio:auto;max-height:none;height:auto;min-height:0}
+.fp-gene-overview{display:block;width:100%;height:auto!important;max-width:none;overflow:visible}
+.fp-gene-column-title{font-size:21px;font-weight:800;letter-spacing:.06em;fill:var(--fp-muted)}
+.fp-gene-column-title.is-attr{fill:#206d41}.fp-gene-column-title.is-know{fill:#235c9e}
+.fp-gene-column-title.is-practice{fill:#535861}.fp-gene-column-title.is-skills{fill:var(--fp-text)}
+html:not([data-theme="light"]) .fp-gene-column-title.is-attr{fill:#69ce96}
+html:not([data-theme="light"]) .fp-gene-column-title.is-know{fill:#80b9ff}
+html:not([data-theme="light"]) .fp-gene-column-title.is-practice{fill:#f5f5f5}
+.fp-gene-dna-spine{stroke:#267A45;stroke-width:4;stroke-opacity:.24;stroke-dasharray:9 12;fill:none}
+.fp-gene-card{--gene-tint:#206d41;cursor:pointer}
+.fp-gene-card.type-know{--gene-tint:#235c9e}
+.fp-gene-card.type-practice{--gene-tint:#535861}
+html:not([data-theme="light"]) .fp-gene-card.type-attr{--gene-tint:#69ce96}
+html:not([data-theme="light"]) .fp-gene-card.type-know{--gene-tint:#80b9ff}
+html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
+.fp-gene-card-fill{fill:var(--fp-deep);stroke:var(--gene-tint);stroke-opacity:.73;stroke-width:2}
+.fp-gene-card:hover .fp-gene-card-fill,.fp-gene-card:focus-visible .fp-gene-card-fill,.fp-gene-card.is-selected .fp-gene-card-fill{
+ stroke-opacity:1;stroke-width:4}
+.fp-gene-card.is-pending .fp-gene-card-fill{stroke-dasharray:6 4;stroke-width:3.4}
+.fp-gene-card-title{fill:var(--gene-tint);font-size:20px;font-weight:750;pointer-events:none}
+.fp-gene-card-grade{fill:var(--fp-muted);font-size:14px;pointer-events:none}
+.fp-gene-card-dice{fill:var(--gene-tint);font-size:17px;font-weight:800;pointer-events:none}
+.fp-gene-grade-button{cursor:pointer}
+.fp-gene-grade-button rect{fill:var(--fp-raised);stroke:var(--gene-tint);stroke-width:1.7}
+.fp-gene-grade-button text{fill:var(--gene-tint);font-size:22px;font-weight:800;pointer-events:none}
+.fp-gene-grade-button.is-disabled{opacity:.32;cursor:not-allowed}
+.fp-gene-grade-button:hover:not(.is-disabled) rect,
+.fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke-width:3}
+.fp-gene-branch-rule{stroke:var(--fp-stroke);stroke-width:2}
+.fp-gene-skill .fp-gene-dot{stroke-width:3}
+.fp-gene-skill.is-owned .fp-gene-dot{fill:#267A45;stroke:#5ab57c}
+.fp-gene-skill.is-available .fp-gene-dot{fill:#2369BB;stroke:#80b9ff}
+.fp-gene-skill.is-locked{opacity:.25}
+.fp-gene-node-label{font-size:15px}
+.fp-gene-empty-text{font-size:16px;fill:var(--fp-muted)}
+.fp-gene-relation{fill:none;stroke:var(--fp-gold);stroke-opacity:.50;stroke-width:2.5;pointer-events:none}
+.fp-gene-map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:11px;margin:14px 0}
+.fp-gene-map-tools>button{border:1px solid var(--fp-stroke);border-radius:10px;color:var(--fp-text);
+ background:var(--fp-raised);font-size:12px;font-weight:700;min-height:39px;padding:9px 13px;cursor:pointer}
+.fp-gene-map-tools>button[aria-pressed="true"]{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-gene-map-tools>span{flex:1 1 230px;color:var(--fp-muted);font-size:11px;line-height:1.5}
+.fp-gene-dashboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.fp-gene-dashboard>div{display:flex;flex-direction:column;gap:6px;text-align:center;padding:14px 11px;
+ background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:12px}
+.fp-gene-dashboard>div.is-primary{border-color:var(--fp-gold);background:color-mix(in srgb,var(--fp-gold) 7%,var(--fp-deep))}
+.fp-gene-dashboard small{color:var(--fp-muted);font-size:10px;letter-spacing:.08em;font-weight:800}
+.fp-gene-dashboard strong{font:normal 27px Georgia,serif;color:var(--fp-text);font-variant-numeric:tabular-nums}
+.fp-gene-dashboard .is-primary strong{color:var(--fp-gold)}
+.fp-gene-dashboard span{color:var(--fp-muted);font-size:10px;line-height:1.4}
+.fp-gene-bottom-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.fp-gene-bottom-actions button{border:1px solid var(--fp-stroke);border-radius:10px;padding:12px 17px;
+ min-height:44px;background:var(--fp-raised);color:var(--fp-text);font-weight:750;cursor:pointer}
+.fp-gene-bottom-actions .fp-primary-btn{background:var(--fp-gold);color:#181818;min-width:250px}
+.fp-gene-bottom-actions button:disabled{opacity:.45;cursor:not-allowed}
+.fp-gene-bottom-actions small{flex-basis:100%;text-align:center;color:var(--fp-muted);font-size:11px}
+@media(max-width:900px){
+ .fp-gene-creator-layout .fp-gene-canvas{overflow:auto}
+ .fp-gene-creator-layout .fp-gene-overview{min-width:990px}
+ .fp-gene-layout:not(.fp-gene-creator-layout) .fp-gene-overview{min-width:900px}
+}
+@media(max-width:620px){
+ .fp-gene-dashboard{gap:5px}
+ .fp-gene-dashboard>div{padding:9px 5px}
+ .fp-gene-dashboard small{font-size:8px}
+ .fp-gene-dashboard strong{font-size:20px}
+ .fp-gene-dashboard span{font-size:9px}
+ .fp-gene-map-tools .fp-gene-zoom{width:100%}
+ .fp-gene-creator-layout .fp-gene-detail dl{grid-template-columns:1fr}
+ .fp-gene-bottom-actions>button{width:100%}
+}
+
+/* Ficha jogável: o mapa também ocupa a largura completa; detalhes ficam abaixo. */
+#genetic-view .fp-gene-layout{display:flex;flex-direction:column;gap:12px;min-width:0;max-width:100%}
+#genetic-view .fp-gene-canvas{width:100%;max-width:100%;min-width:0;max-height:none;height:auto;min-height:0;aspect-ratio:auto;overflow:hidden}
+#genetic-view .fp-gene-detail{max-height:none;min-width:0;width:100%;overflow:visible}
+#genetic-view #gene-sheet-budget{margin:12px 0}
+#genetic-view #gene-sheet-actions{margin:10px 0}
+@media(max-width:900px){#genetic-view .fp-gene-canvas{overflow:auto}#genetic-view .fp-gene-overview{min-width:990px}}
+
+/* Dados com silhuetas distintas acima das fontes do Codex Genético. */
+.fp-gene-die-shape{pointer-events:none}
+.fp-gene-die-shape :is(rect,circle,polygon){fill:color-mix(in srgb,var(--gene-tint) 16%,var(--fp-deep));
+ stroke:var(--gene-tint);stroke-width:2}
+.fp-gene-die-shape text{fill:var(--gene-tint);font-size:12px;font-weight:800;pointer-events:none}
+
+/* Confirmação alinhada no centro real do painel, descarte à esquerda. */
+@media(min-width:621px){
+ .fp-gene-bottom-actions{display:grid;grid-template-columns:1fr auto 1fr;justify-items:center}
+ .fp-gene-bottom-actions>[data-action="gene-reset"]{grid-column:1;justify-self:start}
+ .fp-gene-bottom-actions>[data-action="gene-confirm"]{grid-column:2;justify-self:center}
+ .fp-gene-bottom-actions>small{grid-column:1/-1}
+}
+
+/* Inspector flutuante dentro do Codex: mapa inteiro visível, painel lateral sob demanda. */
+.fp-gene-canvas-shell{position:relative;min-width:0;width:100%;isolation:isolate}
+.fp-gene-canvas-shell .fp-gene-canvas{width:100%}
+.fp-gene-canvas-shell .fp-gene-float-detail{position:absolute;top:12px;right:12px;z-index:5;
+ width:min(348px,calc(100% - 24px));max-height:min(520px,72vh);overflow:auto;
+ border:1px solid var(--fp-gold);background:var(--fp-surface);
+ box-shadow:0 15px 46px rgba(0,0,0,.34);border-radius:14px;padding:15px}
+.fp-gene-canvas-shell .fp-gene-float-detail[hidden]{display:none!important}
+.fp-gene-float-top{display:flex;justify-content:space-between;align-items:center;gap:8px;
+ border-bottom:1px solid var(--fp-stroke);padding-bottom:8px}
+.fp-gene-float-top strong{color:var(--fp-gold);font-size:10px;letter-spacing:.065em}
+.fp-gene-float-top button{width:32px;height:32px;border-radius:9px;cursor:pointer;
+ border:1px solid var(--fp-stroke);color:var(--fp-text);background:var(--fp-raised);
+ font-weight:800;font-size:20px;line-height:1}
+.fp-gene-float-top button:hover,.fp-gene-float-top button:focus-visible{border-color:var(--fp-gold)}
+.fp-gene-float-detail h4{font-size:18px;margin-top:11px}
+.fp-gene-float-detail dl{display:block}
+.fp-gene-float-detail dt{margin-top:8px}
+.fp-gene-float-detail p{max-height:160px;overflow:auto}
+.fp-gene-float-detail .fp-gene-grade-actions{display:flex;flex-wrap:wrap;gap:7px}
+.fp-gene-float-detail .fp-gene-grade-actions>*{flex:1 1 115px;min-width:0}
+.fp-gene-float-detail .fp-primary-btn{max-width:100%;white-space:normal}
+.fp-gene-skill.is-potential .fp-gene-dot{fill:#542176;stroke:#a474d6;stroke-width:3}
+.fp-gene-skill.is-potential .fp-gene-node-label{fill:#8051ac}
+html:not([data-theme="light"]) .fp-gene-skill.is-potential .fp-gene-node-label{fill:#bc96ea}
+.fp-gene-legend .potential{color:#8652b6}
+html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
+.fp-gene-detail-status.is-potential{color:#8f5abd;border-color:#8f5abd}
+@media(max-width:620px){
+ .fp-gene-canvas-shell .fp-gene-float-detail{right:8px;top:8px;width:min(330px,calc(100% - 16px));max-height:58vh}
+}
+
+/* Etapa 04: VT experimental, itens iniciais e compras do catálogo G1. */
+.fp-wizard-steps{grid-template-columns:repeat(5,minmax(0,1fr))}
+.fp-wiz-vt-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:16px 0 20px}
+.fp-wiz-vt-stats>div{display:flex;flex-direction:column;gap:5px;padding:16px;text-align:center;
+ border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:11px}
+.fp-wiz-vt-stats small{color:var(--fp-muted);font-size:10px;font-weight:800;letter-spacing:.07em}
+.fp-wiz-vt-stats strong{font:normal 26px Georgia,serif;color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-wiz-vt-section{margin:18px 0 23px;padding:20px;border:1px solid var(--fp-stroke);
+ border-radius:13px;background:var(--fp-surface)}
+.fp-wiz-vt-section h4{font:normal 22px Georgia,serif;color:var(--fp-gold);margin:0 0 8px}
+.fp-wiz-vt-section p{color:var(--fp-muted);font-size:12px;line-height:1.65;margin:0 0 16px}
+.fp-wiz-vt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.fp-wiz-vt-resource{display:flex;flex-direction:column;gap:7px;border:1px solid var(--fp-stroke);
+ border-radius:9px;padding:11px 9px;min-width:0;background:var(--fp-deep)}
+.fp-wiz-vt-resource>span{color:var(--fp-text);font-size:12px;font-weight:750}
+.fp-wiz-vt-resource input{width:100%;min-width:0;border:1px solid var(--fp-stroke);border-radius:6px;
+ padding:9px;background:var(--fp-bg);color:var(--fp-text);font-variant-numeric:tabular-nums}
+.fp-wiz-vt-resource small{font-size:9px;line-height:1.35;color:var(--fp-muted)}
+.fp-wiz-vt-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:13px}
+.fp-wiz-vt-actions strong{color:var(--fp-gold);font-size:12px}
+.fp-wiz-vt-actions button,.fp-wiz-owned-item button{border:1px solid var(--fp-gold);
+ background:var(--fp-deep);color:var(--fp-gold);padding:10px 12px;border-radius:8px;
+ font-size:11px;cursor:pointer;font-weight:750}
+.fp-wiz-vt-actions button:disabled{opacity:.4;cursor:not-allowed}
+.fp-wiz-shop-preferred{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+ font-weight:750;font-size:12px;margin:13px 0}
+.fp-wiz-shop-preferred select{padding:10px;border:1px solid var(--fp-stroke);border-radius:8px;
+ color:var(--fp-text);background:var(--fp-deep);min-width:150px}
+.fp-wiz-shop-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.fp-wiz-shop-tabs button{border:1px solid var(--fp-stroke);border-radius:30px;padding:10px 12px;
+ background:var(--fp-deep);color:var(--fp-muted);font-size:11px;font-weight:750;cursor:pointer}
+.fp-wiz-shop-tabs button.is-active{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-wiz-shop-catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+ max-height:530px;overflow-y:auto;overscroll-behavior:contain;padding:2px}
+.fp-wiz-shop-item{display:flex;flex-direction:column;min-width:0;gap:8px;
+ border:1px solid var(--fp-stroke);border-radius:10px;background:var(--fp-deep);padding:13px}
+.fp-wiz-shop-item>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fp-wiz-shop-item strong{font-size:13px;color:var(--fp-text)}
+.fp-wiz-shop-item small{font-size:10px;color:var(--fp-muted)}
+.fp-wiz-shop-item p{font-size:10px;margin:0;line-height:1.45}
+.fp-wiz-shop-item footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.fp-wiz-shop-item footer b{font-size:13px;color:var(--fp-gold);white-space:nowrap}
+.fp-wiz-shop-item footer button{background:var(--fp-raised);color:var(--fp-text);
+ border:1px solid var(--fp-gold);border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:750;font-size:11px}
+.fp-wiz-shop-item footer button:disabled{border-color:var(--fp-stroke);opacity:.55;cursor:not-allowed}
+.fp-wiz-owned-list{display:grid;gap:8px}
+.fp-wiz-owned-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;
+ border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-deep)}
+.fp-wiz-owned-item span{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fp-wiz-owned-item strong{font-size:12px;color:var(--fp-text)}
+.fp-wiz-owned-item small{font-size:10px;color:var(--fp-muted)}
+@media(max-width:1000px){.fp-wiz-vt-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:740px){
+ .fp-wizard-steps{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(145px,1fr);
+  overflow-x:auto;overscroll-behavior-x:contain}
+ .fp-wiz-vt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+ .fp-wiz-vt-section{padding:12px}
+ .fp-wiz-shop-catalog{grid-template-columns:1fr;max-height:460px}
+ .fp-wiz-vt-stats{gap:5px}
+ .fp-wiz-vt-stats>div{padding:10px 6px}
+ .fp-wiz-vt-stats strong{font-size:21px}
+ .fp-wiz-vt-stats small{font-size:9px}
+}
+
+/* Visual de dados idêntico aos cartões em listas: − [dado(s) dN] +. */
+.fp-gene-die-inline{--gene-die:var(--fp-d6);pointer-events:none}
+.fp-gene-die-inline.is-d4{--gene-die:var(--fp-d4)}
+.fp-gene-die-inline.is-d6{--gene-die:var(--fp-d6)}
+.fp-gene-die-inline.is-d10{--gene-die:var(--fp-d10)}
+.fp-gene-die-inline.is-d12{--gene-die:var(--fp-d12)}
+.fp-gene-die-inline.is-d20{--gene-die:var(--fp-d20)}
+.fp-gene-die-inline .fp-gene-die-poly{fill:none;stroke:var(--gene-die);stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.fp-gene-die-inline .fp-gene-die-name{fill:var(--gene-die);font-size:15px;font-weight:800}
+.fp-gene-card-title{font-size:20px}
+.fp-gene-card-grade{font-size:11px;letter-spacing:.07em;font-weight:750}
+.fp-gene-card-separator{stroke:var(--gene-tint);stroke-opacity:.24;stroke-width:1}
+.fp-gene-card .fp-gene-grade-button rect{fill:var(--fp-raised);stroke:var(--fp-stroke);stroke-width:1.5}
+.fp-gene-card .fp-gene-grade-button text{fill:var(--fp-text)}
+.fp-gene-card .fp-gene-grade-button:hover:not(.is-disabled) rect,
+.fp-gene-card .fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke:var(--gene-tint);stroke-width:2.5}
+.fp-gene-card .fp-gene-grade-button.is-disabled{opacity:.38}
+.fp-gene-skill-link{stroke:var(--fp-muted);stroke-width:1.9;stroke-opacity:.28;fill:none;pointer-events:none}
+.fp-gene-skill-link.is-related{stroke:var(--fp-gold);stroke-width:3;stroke-opacity:.87}
+.fp-gene-auto-buy{background:#542176!important;border-color:#542176!important;color:#fff!important}
+.fp-gene-auto-buy:hover,.fp-gene-auto-buy:focus-visible{background:#6c329b!important;border-color:#6c329b!important}
+.fp-gene-auto-note{font-size:11px!important;line-height:1.5!important;max-height:none!important;color:var(--fp-muted)}
+
+/* Navegação Obsidian-like: área fixa independente do comprimento do grafo. */
+.fp-gene-canvas-shell .fp-gene-canvas,
+.fp-gene-creator-layout .fp-gene-canvas,
+#genetic-view .fp-gene-canvas{
+ position:relative;display:block;box-sizing:border-box;width:100%;height:clamp(460px,73vh,720px);
+ min-height:460px;max-height:none;min-width:0;aspect-ratio:auto;
+ overflow:hidden!important;touch-action:none!important;overscroll-behavior:contain;
+ cursor:grab;user-select:none;-webkit-user-select:none}
+.fp-gene-canvas-shell .fp-gene-canvas.is-dragging{cursor:grabbing}
+.fp-gene-canvas:has(.fp-gene-overview){height:clamp(460px,73vh,720px);overflow:hidden!important}
+.fp-gene-canvas .fp-gene-overview,
+.fp-gene-creator-layout .fp-gene-overview,
+#genetic-view .fp-gene-overview{
+ display:block;width:100%!important;height:100%!important;min-width:0!important;
+ max-width:100%!important;max-height:100%;overflow:hidden;touch-action:none}
+.fp-gene-canvas-shell .fp-gene-card,.fp-gene-canvas-shell .fp-gene-skill{cursor:pointer}
+.fp-gene-canvas.is-dragging .fp-gene-node,.fp-gene-canvas.is-dragging svg{cursor:grabbing}
+.fp-gene-nav-float{
+ position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:5px;
+ padding:7px;border:1px solid var(--fp-stroke);border-radius:12px;z-index:3;
+ background:color-mix(in srgb,var(--fp-surface) 93%,transparent);
+ box-shadow:0 6px 20px rgba(0,0,0,.22);touch-action:manipulation}
+.fp-gene-nav-float button{display:grid;place-items:center;width:41px;height:41px;
+ border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised);
+ color:var(--fp-text);font-size:21px;font-weight:750;cursor:pointer;touch-action:manipulation}
+.fp-gene-nav-float button:focus-visible,.fp-gene-nav-float button:hover{border-color:var(--fp-gold)}
+.fp-gene-nav-float span{min-width:42px;color:var(--fp-muted);font-size:11px;text-align:center;
+ font-variant-numeric:tabular-nums}
+.fp-gene-gesture-hint{
+ position:absolute;top:12px;left:12px;pointer-events:none;
+ border:1px solid var(--fp-stroke);border-radius:8px;
+ padding:7px 10px;color:var(--fp-muted);
+ font-size:11px;line-height:1.3;background:color-mix(in srgb,var(--fp-surface) 92%,transparent)}
+@media(max-width:620px){
+ .fp-gene-canvas-shell .fp-gene-canvas,
+ .fp-gene-creator-layout .fp-gene-canvas,
+ #genetic-view .fp-gene-canvas,.fp-gene-canvas:has(.fp-gene-overview){
+  height:min(62vh,540px);min-height:390px;touch-action:none!important;overflow:hidden!important}
+ .fp-gene-nav-float{right:8px;bottom:8px;padding:5px}
+ .fp-gene-nav-float button{width:43px;height:43px}
+ .fp-gene-gesture-hint{font-size:10px;max-width:calc(100% - 20px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .fp-gene-canvas .fp-gene-viewport{transition:none}
+}

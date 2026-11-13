@@ -12,8 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.38 | [docs/srd-continuidade-v0.38.md](docs/srd-continuidade-v0.38.md) | **Versão mais recente (11/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Atualizado conforme SRD v0.38 |
+| SRD de Continuidade v0.39 | [docs/srd-continuidade-v0.39.md](docs/srd-continuidade-v0.39.md) | **Atualização normativa vigente (13/11/2026)** |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras de Mestre preservadas; referências à criação atualizadas conforme SRD v0.39 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -22,6 +22,10 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 Abra **criador.html** pelo portal. Ele permite:
 
 - Nome, conceito/profissão emergente, origem, Virtude e personalidade; sem estilo de combate obrigatório.
+- Etapa guiada para escolher entre Atributos, Conhecimentos e Práticas, com exemplos, dados e custos para iniciantes.
+- Modo padrão em listas para comprar graus e Perícias, com alternância para o Codex Genético sem trocar de ficha.
+- Codex Genético com dupla hélice, dados do rolador entre − e +, ramificações de Perícias interligadas como grafo, compra assistida de requisitos quando o pacote completo cabe no XP e detalhes em inspector lateral.
+- Etapa própria de **VT e itens iniciais**, com distribuição dos recursos e compras opcionais G1 do catálogo de preços propostos; XP e VT permanecem separados.
 - Distribuição de Atributos (progressão oficial de dados e custos acumulados).
 - Escolha de Conhecimentos e Práticas com custos reais.
 - Compra de Perícias iniciais documentadas, com requisitos disponíveis.
@@ -31,7 +35,7 @@ Abra **criador.html** pelo portal. Ele permite:
 - Laboratório de rolagem d4/d6/d10/d12: seleção **manual** de dados mantidos, requisito de um Atributo, gasto de Coragem, afinidade entre pesos, conversão de Antecipar, classificação de acerto e Pavor.
 - Salvamento **local no navegador**, importação e exportação em JSON, impressão da ficha.
 
-**Criação nível 1 [DEFINIDO]: 5 XP destinados a Perícias.** O protótipo utiliza **6 XP de Atributos e 8 XP de Formação [EXPERIMENTAL]**, totalizando 19 XP em playtest. Não tratar a distribuição inteira como definitivamente aprovada nem confundir os 5 XP com Pontos de Perícia (PP).
+**Criação nível 1 [DEFINIDO]:** o personagem precisa comprar **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois, **todo XP restante é livre**, inclusive para Perícias, respeitando os requisitos; não há cotas fixas por categoria. O criador usa **20 XP totais compartilhados [EXPERIMENTAL quanto ao montante]**. As antigas divisões 6/8/5 e 7/7/5 e a reserva obrigatória de 5 XP exclusivamente em Perícias foram superadas. Não confundir XP com Pontos de Perícia (PP).
 
 **Limitações intencionais:** ainda não há catálogo completo de armas, preço de Grau 7 nem valores finais de Integridade. A ficha exibe os modificadores por tipo de armadura e a lista de Perícias autorais, mas não resolve automaticamente seus efeitos, dano de ataques recebidos ou a carga definitiva da Perícia Armas. O laboratório é de estudo, não substitui todas as regras de Narrador, crítico, fonte de dano, ações conjuntas ou efeitos elementais. O custo em XP e as condições de todas as Perícias futuras ainda dependem de design.
 
@@ -62,12 +66,12 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **SRD de Continuidade v0.38**, com seção **0-V** para golpes, disparos e requisitos revisados; **0-U** para armaduras e Perícias; **0-R** para Provocação, Liderança, Antecipar de inimigos e disputa de influência. Ordem:
+A fonte normativa atual é o **[SRD de Continuidade v0.39](docs/srd-continuidade-v0.39.md)**. A seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11; as seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-R da continuidade v0.37, nos assuntos que regula.
-3. Seções históricas 0-Q e anteriores do mesmo SRD, onde não houver conflito.
-4. Livro de leitura, que não altera sozinho regras do SRD.
+2. Seção 0-Y da v0.39 para a criação; depois as seções 0-X, 0-W, 0-V e demais capítulos recentes, nos assuntos pertinentes.
+3. Seções históricas somente onde não haja decisão mais recente conflitante.
+4. Livro de leitura e implementação, que não aprovam por si sós regras novas.
 
 **DEFINIDO** é uma regra aprovada. **EXPERIMENTAL** é um número ou procedimento de teste. **PROPOSTO** é uma alternativa não aprovada. **PENDENTE** requer decisão. O projeto não deve tratar as categorias como equivalentes.
 
@@ -91,8 +95,8 @@ A fonte normativa atual é o **SRD de Continuidade v0.38**, com seção **0-V** 
 
 ## Consolidações de 9/11/2026 — continuidade interna v0.26
 
-O criador agora apresenta todos os Conhecimentos e Práticas pertinentes com **1d6 gratuito individual no grau 0** (Atributos continuam com 1d4), ícones poliédricos e seleção por clique. O Livro mostra as runas coloridas e a tabela **d20 reforçado G consolidada**, além da definição de **DE = Dificuldade de Êxito**, **PP = Ponto de Perícia**, **Perícia em Coragem no nível 5**, Furtividade, afinidades de peso, usos criativos dos elementos e a progressão de armadura por Grau (integridade inicial; primeira resistência no Grau 2, equipável a partir do nível 5; segunda no Grau 3 para peças aptas; imunidade específica no Grau 4 quando habilitada). A reserva de 19 XP permanece experimental.
+O criador agora apresenta todos os Conhecimentos e Práticas pertinentes com **1d6 gratuito individual no grau 0** (Atributos continuam com 1d4), ícones poliédricos e seleção por clique. O Livro mostra as runas coloridas e a tabela **d20 reforçado G consolidada**, além da definição de **DE = Dificuldade de Êxito**, **PP = Ponto de Perícia**, **Perícia em Coragem no nível 5**, Furtividade, afinidades de peso, usos criativos dos elementos e a progressão de armadura por Grau (integridade inicial; primeira resistência no Grau 2, equipável a partir do nível 5; segunda no Grau 3 para peças aptas; imunidade específica no Grau 4 quando habilitada). A reserva de 20 XP permanece experimental.
 
 **Revisão v0.24:** leitura dos efeitos individuais de Água, Fogo, Terra, Ar, Psique, Sagrado, Trevas, Sangue, Veneno e Raio; catálogo conceitual de armas e armas de fogo; recuperação de Vida em três caixas; Ladino perde rastreamento dos inimigos ao mover-se após Furtividade; Dificuldade de Êxito expressa como Agilidade + (Destreza ÷ 2, arredondada para baixo). Profissões performáticas e efeitos futuros foram registrados apenas como propostas. O portal não oferece links para o documento interno de continuidade.
 
-**Fontes consolidadas na v0.26:** Conhecimentos = **Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição**. Práticas = **Armas ou Conjuração (Prática única)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. A mesma Prática atende a ambos os usos segundo as Perícias e tem apenas um custo de Formação e uma pilha de dados. Não se paga mais 2 XP de Formação para começar a conjurar por possuir a Prática Armas; a Perícia habilitadora de magia mantém seu custo próprio. Punhos é especialização marcial. Na criação experimental, dependências de Artes Marciais aguardam ratificação. Fichas antigas migram a graduação de Conjuração para a Prática única usando provisoriamente o maior grau e preservando o registro original.
+**Histórico de nomenclatura da v0.26 (superado em parte):** Conhecimentos = **Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição**. Práticas na nomenclatura atual = **Disciplina (Prática única)**, Atletismo, Furtividade, Artesão, Apresentação e Coleta. A mesma Prática atende a ambos os usos segundo as Perícias e tem apenas um custo de Formação e uma pilha de dados. Não se paga mais 2 XP de Formação para começar a conjurar por possuir a Prática Armas; a Perícia habilitadora de magia mantém seu custo próprio. Punhos é especialização marcial. Na criação experimental, dependências de Artes Marciais aguardam ratificação. Fichas antigas migram a graduação de Conjuração para a Prática única usando provisoriamente o maior grau e preservando o registro original.
