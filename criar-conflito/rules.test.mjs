@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT} from "./rules.mjs";
+import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid} from "./rules.mjs";
 
 test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  const animal=blank("criatura"),monster=blank("monstro");
@@ -52,4 +52,29 @@ test("Importação saneia campos e impede grau/capacidade fora do limite",()=>{
  assert.equal(t.keep,4);
  assert.equal(t.pavorLocal,6);
  assert.equal(t.items.length,1);
+});
+test("Humano comum rápido começa com investimento mínimo, saldo livre e Perícias disponíveis",()=>{
+ const t=quickHumanoid();
+ assert.equal(t.kind,"humanoide");
+ assert.equal(t.attributes.forca,1);
+ assert.equal(t.practices.armas_conjuracao,1);
+ assert.deepEqual({spent:ledger(t).spent,grant:ledger(t).grant,remaining:ledger(t).remaining},
+  {spent:3,grant:20,remaining:17});
+ assert.equal(t.life,stats(t).life);
+ assert.deepEqual(t.skills,[]);
+ t.skills.push("armas-leves");
+ assert.equal(ledger(t).remaining,15);
+ const restored=normalize(t);
+ assert.equal(restored.skills.includes("armas-leves"),true);
+ assert.equal(restored.practices.armas_conjuracao,1);
+});
+test("Vida atual pode ser inferior ao máximo calculado sem alterar os graus",()=>{
+ const monster=blank("monstro");
+ monster.attributes.forca=5;
+ monster.attributes.vigor=1;
+ assert.equal(stats(monster).life,6);
+ assert.equal(monster.life,3);
+ monster.life=6;
+ assert.equal(normalize(monster).life,6);
+ assert.equal(stats(monster).life,6);
 });
