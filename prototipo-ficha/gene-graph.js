@@ -133,12 +133,13 @@ function applyTransform(root){
 }
 function bind(root){
  if(listeners.has(root))return;
+ const nodePosition=node=>node.getBoundingClientRect().top-root.getBoundingClientRect().top;
  listeners.add(root);
  root.addEventListener("click",event=>{
   const g=event.target.closest("[data-gene-grade]");
   if(g){event.stopPropagation();if(g.getAttribute("aria-disabled")!=="true")root.__geneActions?.onAdjust?.(g.dataset.geneId,Number(g.dataset.geneGrade));return;}
   const node=event.target.closest("[data-gene-id]");
-  if(node)root.__geneActions?.onSelect?.(node.dataset.geneId);
+  if(node)root.__geneActions?.onSelect?.(node.dataset.geneId,nodePosition(node));
  });
  root.addEventListener("keydown",event=>{
   if(event.key!=="Enter"&&event.key!==" ")return;
@@ -146,7 +147,7 @@ function bind(root){
   event.preventDefault();
   const button=node.closest("[data-gene-grade]");
   if(button){if(button.getAttribute("aria-disabled")!=="true")root.__geneActions?.onAdjust?.(button.dataset.geneId,Number(button.dataset.geneGrade));}
-  else root.__geneActions?.onSelect?.(node.dataset.geneId);
+  else root.__geneActions?.onSelect?.(node.dataset.geneId,nodePosition(node));
  });
  let start=null;
  root.addEventListener("pointerdown",event=>{
