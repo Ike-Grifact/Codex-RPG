@@ -6,6 +6,7 @@ on:
       - 'prototipo-ficha/**'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
+      - '.github/tests/genetico-navegacao-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -37,3 +38,5 @@ jobs:
           exit 1
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
+      - name: Testar gestos de navegacao no grafo no PC e celular
+        run: node .github/tests/genetico-navegacao-e2e.cjs
