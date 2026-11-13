@@ -898,18 +898,37 @@ function defaultState(){return{
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let wizardCategory="",wizardTab="attr",wizardMode="list";
+let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
- ["Escolher desenvolvimento","O que deseja desenvolver?","Atributos, Conhecimentos e Práticas"],
+ ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
  ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
-const WIZARD_CATEGORIES=[
- {id:"attr",title:"Atributos",description:"Capacidades fundamentais do personagem: força, agilidade, destreza, raciocínio, influência e vigor.",example:"Ex.: Força para erguer algo pesado; Inteligência para interpretar uma situação.",dice:"Grau 0: 1d4 · Grau 1: 1d6",cost:"Primeiro avanço: 1 XP",names:"Força, Agilidade, Destreza, Inteligência, Influência, Vigor"},
- {id:"know",title:"Conhecimentos",description:"O que seu Aprendiz aprendeu pelo estudo, observação e investigação. Ajudam em ações pertinentes.",example:"Ex.: Medicina para compreender um ferimento; Engenharia para estudar mecanismos.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Primeiro avanço: 2 XP",names:"Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição"},
- {id:"practice",title:"Práticas",description:"O que seu Aprendiz treinou para executar. Disciplina é uma única Prática usada em ações marciais e mágicas, conforme habilitações.",example:"Ex.: Atletismo para realizar esforço treinado; Artesão para fabricar um objeto.",dice:"Grau 0: 1d6 · Grau 1: 1d10",cost:"Primeiro avanço: 2 XP",names:"Disciplina, Atletismo, Furtividade, Artesão, Apresentação, Coleta"}
-];
+// Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
+const WIZARD_ATTRIBUTE_GUIDE={
+ forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Participa da DE defensiva natural e do deslocamento, conforme o SRD."],
+ destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
+ inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
+ influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Representa resistência e capacidade corporal."]
+};
+const WIZARD_TRAINING_GUIDE={
+ "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
+ "know:astronomia":["Estudo do céu","Observar astros, ciclos e fenômenos celestes.","Interpretação de informações astronômicas pertinentes."],
+ "know:medicina":["Estudo do corpo","Reconhecer ferimentos, sinais e formas de tratamento.","Diagnóstico e cuidados conforme a ação."],
+ "know:alquimia":["Estudo de substâncias","Analisar materiais, misturas e transformações.","Compreensão de composições e processos alquímicos."],
+ "know:engenharia":["Estudo de estruturas","Investigar mecanismos, construções e projetos.","Examinar ou planejar soluções técnicas."],
+ "know:erudicao":["Estudo e cultura","Pesquisar histórias, textos, tradições e saberes diversos.","Interpretação de informações e pesquisa."],
+ "practice:armas_conjuracao":["Treinamento disciplinado","Praticar ações marciais e mágicas segundo suas habilitações.","Disciplina é uma única Prática; efeitos específicos exigem Perícias."],
+ "practice:atletismo":["Treinamento corporal","Correr, saltar, escalar e superar obstáculos físicos.","Movimentos e esforços treinados."],
+ "practice:furtividade":["Treinamento discreto","Ocultar-se e mover-se sem chamar atenção.","Ações furtivas pertinentes."],
+ "practice:artesao":["Treinamento de ofício","Criar, ajustar e reparar objetos com técnicas aprendidas.","Fabricação e trabalho manual."],
+ "practice:apresentacao":["Treinamento expressivo","Atuar, discursar, cantar e realizar apresentações.","Performances e expressão treinada."],
+ "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
+};
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:""});
@@ -940,11 +959,16 @@ function load(){
  try{
   const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
   const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
-  wizardStep=w.version===2?clamp(oldStep,0,3):clamp(oldStep>0?1:0,0,3);
-  wizardReached=w.version===2?clamp(oldReached,wizardStep,3):wizardStep;
+  wizardStep=w.version>=2?clamp(oldStep,0,3):clamp(oldStep>0?1:0,0,3);
+  wizardReached=w.version>=2?clamp(oldReached,wizardStep,3):wizardStep;
   wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
   wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
   wizardMode=w.mode==="genetic"?"genetic":"list";
+  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
+  wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
+  wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
+  if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
+  if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
  }catch(e){wizardStep=0;wizardReached=0;}
  viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
@@ -1382,7 +1406,7 @@ function render(){renderVitals();renderXP();renderDiceLegend();renderSources();r
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
- try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:2,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode}));}
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:3,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining}));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
 }
 function wizardSelectStep(next){
@@ -2068,7 +2092,7 @@ async function importFile(file){
   const v=isNew?raw:fromCreator(input);
   if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
   state=normalize(v);draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";
-  wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardPersist();syncFields();render();save();
+  wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
   toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
  }catch(e){toast("Falha ao importar: "+e.message);}
 }
@@ -2318,12 +2342,12 @@ function bind(){
  });
  $("start-wizard").addEventListener("click",()=>{
   if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("reset-sheet").addEventListener("click",()=>{
   if(!confirm("Reiniciar a ficha atual? Exporte o personagem antes se quiser preservar uma cópia."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";
+  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
  $("export-json").addEventListener("click",download);
@@ -2338,7 +2362,7 @@ function bind(){
    converted.creationLocked=!!converted.name.trim();
    state=normalize(converted);draft=freshDraft();editMode=false;
    viewMode=state.creationLocked?"sheet":"builder";
-   wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardPersist();syncFields();render();save();
+   wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
    toast("Ficha antiga importada. Confira as anotações e investimentos em XP.");
   }catch(e){toast("Não foi possível importar a ficha antiga: "+e.message);}
  });
