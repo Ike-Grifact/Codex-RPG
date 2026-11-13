@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'prototipo-ficha/**'
+      - 'criar-conflito/**'
+      - 'foundry-prototype/**'
+      - '.github/tests/conflito-e2e.cjs'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
@@ -36,6 +39,10 @@ jobs:
           done
           cat /tmp/codex-http.log
           exit 1
+      - name: Testar regras do Foundry e do conflito no Node
+        run: node --test foundry-prototype/tests/rules.test.mjs criar-conflito/rules.test.mjs
+      - name: Testar conflito e sobrecarga de VT em Chromium
+        run: node .github/tests/conflito-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular
