@@ -18,8 +18,9 @@
      <label>XP adicional / orçamento da criatura <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp"></label>
      <span><strong>XP gasto:</strong> {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}}
       · <strong>Disponível:</strong> {{codex.xpLedger.left}}</span>
-     <small>Criação 6 Atributos / 8 Formação / 5 Perícias é experimental. Monstros: XP e Grau próprios.</small>
+     <small>Criação: 20 XP iniciais compartilhados (EXPERIMENTAL); ao menos um Atributo G1 e um Conhecimento OU Prática G1. Saldo restante livre. Monstros extraordinários usam XP e Grau próprios.</small>
      {{#if codex.isHumanoid}}<strong>Ficha de Humanoide: progressão de XP e dados de personagem.</strong>{{/if}}
+     {{#unless codex.isMonster}}{{#unless codex.hasCreationMinimum}}<small class="codex-creation-warning">Criação incompleta: Atributo G1 + Conhecimento OU Prática G1.</small>{{/unless}}{{/unless}}
      {{#if codex.isMonster}}<strong>Ficha de Monstro: apenas Atributos próprios; escala d10/d12.</strong>{{/if}}
      {{#if codex.isGM}}<button type="button" data-action="openPavorPanel">Painel de Pavor público</button>{{/if}}
     </div>
@@ -47,7 +48,12 @@
     {{#if codex.isHumanoid}}<div class="codex-resource"><span>PAVOR LOCAL (oposição)</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
     <div class="codex-resource"><span>DE · DIFICULDADE DE ÊXITO</span><strong>{{codex.de}}</strong><small>Agilidade + metade de Destreza e Vigor + Atletismo/3; monstros têm DE específica</small></div>
     <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
-    <div class="codex-resource"><span>CARGA · ALTO</span><strong>{{codex.capacity}}</strong><small>Carga por Força, Vigor e Atletismo (contribuição de Disciplina pendente)</small></div>
+    <div class="codex-resource {{#if codex.overloaded}}is-overloaded{{/if}}">
+     <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
+     <small>Espaço restante: {{codex.loadFree}} Alto</small>
+     <small>Alternativas: {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</small>
+     {{#if codex.overloaded}}<small class="codex-warning">ATENÇÃO: carga excedida. Penalidades pendentes.</small>{{/if}}
+    </div>
   </div>
 
   <div class="codex-help">
@@ -202,6 +208,20 @@
           <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
+      <details class="codex-compare-rolls">
+       <summary>Comparar escolhas de dados mantidos (sem rolar novamente)</summary>
+       <p class="codex-tip">Resultados exatos das faces atuais, sem anulações ou conversões adicionais. Nenhuma alternativa é aplicada automaticamente; compare acerto, Pavor e dano.</p>
+       <div class="codex-compare-grid">
+       {{#each codex.comparisons}}
+        <div class="codex-compare-option">
+         <div><strong>Alternativa {{this.position}}</strong><small>{{this.keptNames}}</small></div>
+         <b>{{this.outcome}}</b>
+         <span>DE {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
+         <small>Dano básico {{this.damage}} {{#if this.critical}}· crítico {{this.critical}}{{/if}}</small>
+        </div>
+       {{/each}}
+       </div>
+      </details>
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
       <div class="codex-actions"><small>Não execute novamente a rolagem: as faces já estão registradas. Finalize para publicar no chat e confirmar o custo de Coragem.</small><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
     </section>
@@ -243,5 +263,5 @@
     </section>
   </div>
 
-  <footer class="codex-footer">Protótipo Foundry v14 · Continuidade v0.26 · Regras pendentes não são automatizadas como definitivas · Site original permanece intacto.</footer>
+  <footer class="codex-footer">Protótipo Foundry v14 · Continuidade v0.39 · orçamento experimental compartilhado · automação de Pavor sob validação.</footer>
 </section>
