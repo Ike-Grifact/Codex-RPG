@@ -59,15 +59,15 @@ function position(nodes,branches=[]){
  const assigned=new Set();
  for(const group of groups){
   const ids=[...new Set(group.branch.flatMap(i=>branches[i]||[]))]
-    .filter(id=>byId.has("skill:"+id)&&!assigned.has(id));
+    .filter(id=>byId.has(id)&&!assigned.has(id));
   ids.forEach((id,i)=>{
-   const n=byId.get("skill:"+id);
+   const n=byId.get(id);
    n.x=group.xs[i%group.xs.length];
    n.y=group.y+Math.floor(i/group.xs.length)*112;
    assigned.add(id);
   });
  }
- const rest=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.key||n.id.slice(6)))
+ const rest=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.id))
   .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
  rest.forEach((n,i)=>{n.x=160+(i%6)*255;n.y=2500+Math.floor(i/6)*112;});
  return Math.max(1170,...nodes.filter(n=>n.type==="skill").map(n=>n.y+110));
@@ -133,7 +133,7 @@ function draw(nodes,height,selected,affinity,branches,edit,camera){
  const connected=new Set();
  for(const branch of branches){
   for(let i=1;i<branch.length;i++){
-   const a=byId.get("skill:"+branch[i-1]),b=byId.get("skill:"+branch[i]);
+   const a=byId.get(branch[i-1]),b=byId.get(branch[i]);
    if(!a||!b)continue;
    const signature=[a.id,b.id].sort().join("|");
    if(connected.has(signature))continue;connected.add(signature);
