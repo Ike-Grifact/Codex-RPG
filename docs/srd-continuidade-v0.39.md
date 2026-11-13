@@ -30,17 +30,28 @@ A **seleção visual de Atributo, Conhecimento ou Prática no criador** serve pa
 
 ### 0-Y.2. Quantidade inicial de XP e custos [EXPERIMENTAL / DEFINIDO]
 
-O **criador implementa 19 XP iniciais compartilhados** como orçamento atual de playtest; a **homologação definitiva do total de 19 XP ainda é PENDENTE**. A **liberdade de distribuição após os dois investimentos mínimos é DEFINIDA**, independentemente de uma futura revisão do valor total. As tabelas de custos por grau não mudam.
+O **criador implementa 20 XP iniciais compartilhados** como orçamento atual de playtest; a **homologação definitiva do total de 20 XP ainda é PENDENTE**. A **liberdade de distribuição após os dois investimentos mínimos é DEFINIDA**, independentemente de uma futura revisão do valor total. As tabelas de custos por grau não mudam.
 
-Na tabela vigente, comprar **Atributo grau 1 custa 1 XP** e comprar **Conhecimento ou Prática grau 1 custa 2 XP**. Assim, o investimento mínimo custa **3 XP** e deixa **16 XP livres** no orçamento experimental de 19 XP.
+Na tabela vigente, comprar **Atributo grau 1 custa 1 XP** e comprar **Conhecimento ou Prática grau 1 custa 2 XP**. Assim, o investimento mínimo custa **3 XP** e deixa **17 XP livres** no orçamento experimental de 20 XP.
 
-**Exemplo:** Força 1 (1 XP) + Atletismo 1 (2 XP) satisfazem a formação mínima. O jogador escolhe livremente o destino dos 16 XP restantes, respeitando preços e requisitos. Este exemplo não obriga que Força ou Atletismo sejam as fontes escolhidas por outros personagens.
+**Exemplo:** Força 1 (1 XP) + Atletismo 1 (2 XP) satisfazem a formação mínima. O jogador escolhe livremente o destino dos 17 XP restantes, respeitando preços e requisitos. Este exemplo não obriga que Força ou Atletismo sejam as fontes escolhidas por outros personagens.
 
 ### 0-Y.3. Conciliação com o criador e com o Livro [IMPLEMENTAÇÃO / HISTÓRICO]
 
-A ficha atual em `prototipo-ficha/app.js` já usa uma **reserva única de 19 XP** e verifica a compra de pelo menos um Atributo e um Conhecimento ou Prática. A referência antiga a **6/8/5** no SRD v0.38, no guia de criação, no Livro e no README deve ser lida como **histórica, revogada para a distribuição**. A reserva de 19 XP não deve ser descrita como definitivamente aprovada enquanto seu total não for confirmado.
+A ficha atual em `prototipo-ficha/app.js` já usa uma **reserva única de 20 XP** e verifica a compra de pelo menos um Atributo e um Conhecimento ou Prática. A referência antiga a **6/8/5** no SRD v0.38, no guia de criação, no Livro e no README deve ser lida como **histórica, revogada para a distribuição**. A reserva de 20 XP não deve ser descrita como definitivamente aprovada enquanto seu total não for confirmado.
 
 O XP inicial não investido continua disponível conforme a regra de evolução da ficha; não se confunde com reembolso livre de escolhas já consolidadas. Não alterar preços por grau, dados, limite de dados mantidos, custo de Perícias nem regras de evolução por dedução desta mudança.
+
+### 0-Y.4. Revisão do XP base inicial — 13/11/2026 [EXPERIMENTAL]
+
+**Decisão autoral mais recente:** aumentar em **1 XP** o orçamento base inicial do Aprendiz, de **19 XP para 20 XP compartilhados** no criador e nos testes. Esta revisão **substitui o valor experimental de 19 XP** descrito anteriormente nesta versão e nas versões históricas; **não altera** os requisitos mínimos, as categorias de distribuição, nem os custos por grau.
+
+**DEFINIDO:** comprar ao menos um Atributo no grau 1 (1 XP) e um Conhecimento ou Prática no grau 1 (2 XP) para concluir a criação; o saldo é livre. **EXPERIMENTAL:** o novo total inicial de **20 XP**, deixando **17 XP livres** após as duas compras mínimas de 3 XP. A homologação definitiva do orçamento permanece **PENDENTE**.
+
+**Sem alteração da curva de progressão:** a tabela `XP_LEVEL_REFERENCE` usada como referência de níveis continua experimental e inalterada por esta decisão. Alterar o orçamento de criação não aprova automaticamente novos marcos de nível, dados, Perícias ou custos.
+
+**Implementação:** o protótipo passa a usar 20 XP iniciais compartilhados, inclusive ao recalcular o saldo de fichas carregadas; a concessão de +1 XP a fichas já criadas é consequência operacional do novo orçamento, não um ganho separado de XP de evolução.
+
 
 ---
 
