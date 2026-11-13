@@ -103,6 +103,30 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  if(pool.filter(x=>x.sides===20).length>2)errors.push("Máximo regular de dois d20.");
  return {ok:errors.length===0,errors,pool};
 }
+// Comparador determinístico das faces já roladas. Não rerrola dados nem
+// consome recursos: apenas apresenta alternativas legais de manutenção.
+export function compareKeptOptions(rolled,options={},limit=5){
+ if(!Array.isArray(rolled)||!rolled.length||rolled.length>9)return [];
+ const maximum=keepLimit(options.monster?options.threatGrade:options.level,options.extraKeep,!!options.monster);
+ const results=[];
+ function visit(start,ids){
+  if(ids.length){
+   const bonusP=options.noisy?(ids.length>=2&&
+    rolled.filter(d=>ids.includes(d.id)).every(d=>d.face===d.sides)?2:1):Number(options.bonusP||0);
+   const r=resolveRoll(rolled,ids,{...options,bonusP,cancelP:0,convertPairs:0});
+   if(r.ok)results.push({ids:[...ids],dice:r.selected.map(d=>"d"+d.sides+": "+d.face),
+    e:r.e,p:r.p,a:r.aRemaining,reached:r.reached,damage:r.damage,
+    success:r.success,outcome:r.outcome,critical:r.critical,
+    clean:r.success&&r.p===0});
+  }
+  if(ids.length>=maximum)return;
+  for(let i=start;i<rolled.length;i++)visit(i+1,[...ids,rolled[i].id]);
+ }
+ visit(0,[]);
+ return results.sort((a,b)=>Number(b.success)-Number(a.success)||
+  Number(b.clean)-Number(a.clean)||b.reached-a.reached||a.p-b.p||b.damage-a.damage)
+ .slice(0,Math.max(1,Math.min(12,Math.floor(Number(limit)||5))));
+}
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
   weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0}=options;
