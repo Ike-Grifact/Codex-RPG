@@ -3,6 +3,23 @@
 (function(){"use strict";
 const W=1600,BASE_Y=145,ROW=111,SKILL_Y=900;
 const GRADE_MAX=6;
+// Mesmos traços poliédricos de dieIcon() no criador: mantém identidade do rolador.
+const DICE_SHAPES={
+ 4:'<polygon points="21,4 39,36 3,36"/><path d="M21 4 L21 27 L3 36 M21 27 L39 36"/>',
+ 6:'<polygon points="21,3 37,12 37,30 21,39 5,30 5,12"/><path d="M5 12 L21 21 L37 12 M21 21 L21 39"/>',
+ 10:'<polygon points="21,2 35,14 32,32 21,40 10,32 7,14"/><path d="M7 14 L21 9 L35 14 M21 9 L21 40 M7 14 L21 25 L35 14 M21 25 L10 32 M21 25 L32 32"/>',
+ 12:'<polygon points="21,2 35,8 40,21 34,34 21,40 8,34 2,21 7,8"/><path d="M21 9 L31 16 L28 29 L14 29 L11 16 Z M21 2 L21 9 M35 8 L31 16 M40 21 L31 16 M34 34 L28 29 M21 40 L28 29 M8 34 L14 29 M2 21 L11 16 M7 8 L11 16"/>'
+};
+function dnaStrands(){
+ const center=800,left=[],right=[];let rungs='';
+ for(let i=0;i<=75;i++){
+  const y=102+i*9.1,offset=78*Math.sin((y-102)*2*Math.PI/270);
+  left.push((i?'L':'M')+(center+offset).toFixed(1)+' '+y.toFixed(1));
+  right.push((i?'L':'M')+(center-offset).toFixed(1)+' '+y.toFixed(1));
+  if(i%6===0)rungs+='<line class="fp-gene-dna-rung" x1="'+(center+offset).toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+(center-offset).toFixed(1)+'" y2="'+y.toFixed(1)+'"/>';
+ }
+ return '<g class="fp-gene-double-helix" aria-hidden="true"><path class="fp-gene-dna-strand a" d="'+left.join(" ")+'"/><path class="fp-gene-dna-strand b" d="'+right.join(" ")+'"/>'+rungs+'</g>';
+}
 const esc=x=>String(x??"").replace(/[&<>"']/g,v=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[v]));
 const clean=x=>String(x??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const clamp=(v,l,h)=>Math.max(l,Math.min(h,v));
@@ -31,7 +48,7 @@ function position(nodes){
  for(const [i,key] of baseKnow.entries()){const n=byId.get("know:"+key);if(n){n.x=265;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of basePractice.entries()){const n=byId.get("practice:"+key);if(n){n.x=1335;n.y=BASE_Y+i*ROW;}}
  const skills=nodes.filter(n=>n.type==="skill").sort((a,b)=>{
-  const rank=n=>n.state==="owned"?0:n.state==="available"?1:2;
+  const rank=n=>n.state==="owned"?0:n.state==="available"?1:n.state==="potential"?2:3;
   return rank(a)-rank(b)||a.name.localeCompare(b.name,"pt-BR");
  });
  skills.forEach((n,i)=>{n.x=105+(i%6)*250;n.y=SKILL_Y+Math.floor(i/6)*72;});
@@ -49,14 +66,10 @@ function card(n,edit){
  const height=72;
  const x=n.x-width/2,y=n.y-height/2;
  const dice=(n.dice||[]).map((d,i)=>{
-  const x=n.x+((i+0.5)-(n.dice.length/2))*39,y=n.y-61;
-  const sides=Number(d.slice(1));
-  const shape=sides===4?'<polygon points="'+(x-15)+','+(y+10)+' '+(x+15)+','+(y+10)+' '+x+','+(y-13)+'"/>':
-   sides===6?'<rect x="'+(x-14)+'" y="'+(y-14)+'" width="28" height="28" rx="5"/>':
-   sides===10?'<polygon points="'+x+','+(y-16)+' '+(x+15)+','+(y-3)+' '+(x+11)+','+(y+15)+' '+(x-11)+','+(y+15)+' '+(x-15)+','+(y-3)+'"/>':
-   sides===12?'<polygon points="'+x+','+(y-16)+' '+(x+15)+','+(y-8)+' '+(x+15)+','+(y+9)+' '+x+','+(y+16)+' '+(x-15)+','+(y+9)+' '+(x-15)+','+(y-8)+'"/>':
-   '<circle cx="'+x+'" cy="'+y+'" r="15"/>';
-  return '<g class="fp-gene-die-shape">'+shape+'<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle">'+esc(d)+'</text></g>';
+  const cx=n.x+((i+0.5)-(n.dice.length/2))*39,cy=n.y-61;
+  const poly=DICE_SHAPES[Number(d.slice(1))]||DICE_SHAPES[4];
+  return '<g class="fp-gene-die-shape" transform="translate('+(cx-16.8)+' '+(cy-16.8)+') scale(.8)">'+poly+
+   '<text x="21" y="26" text-anchor="middle">'+esc(d)+'</text></g>';
  }).join("");
  const pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
  const label=esc(n.name);
@@ -78,7 +91,7 @@ function card(n,edit){
 }
 function skill(n){
  const shortened=n.name.length>22?n.name.slice(0,21)+"…":n.name;
- return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":"ramificação futura")+'">'+
+ return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="14"/>'+
   '<text class="fp-gene-node-label" x="'+(n.x+23)+'" y="'+(n.y+5)+'">'+esc(shortened)+'</text></g>';
@@ -89,10 +102,10 @@ function draw(nodes,height,selected,affinity,edit,camera){
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
   '<rect width="'+W+'" height="'+height+'" fill="url(#codex-gene-dots)"/>'+
   '<g class="fp-gene-viewport" transform="translate('+camera.x+' '+camera.y+') scale('+camera.zoom+')">'+
-  '<text class="fp-gene-column-title is-know" x="265" y="66" text-anchor="middle">CONHECIMENTOS · ESTUDO</text>'+
-  '<text class="fp-gene-column-title is-attr" x="800" y="66" text-anchor="middle">ATRIBUTOS · CAPACIDADES</text>'+
-  '<text class="fp-gene-column-title is-practice" x="1335" y="66" text-anchor="middle">PRÁTICAS · TREINAMENTO</text>'+
-  '<path class="fp-gene-dna-spine" d="M800 110 V755"/>';
+  '<text class="fp-gene-column-title is-know" x="265" y="66" text-anchor="middle">CONHECIMENTOS</text>'+
+  '<text class="fp-gene-column-title is-attr" x="800" y="66" text-anchor="middle">ATRIBUTOS</text>'+
+  '<text class="fp-gene-column-title is-practice" x="1335" y="66" text-anchor="middle">PRÁTICAS</text>'+
+  dnaStrands();
  // As afinidades aparecem apenas ao selecionar a fonte — sem rede de cruzamentos.
  const active=byId.get(selected);
  if(active){
