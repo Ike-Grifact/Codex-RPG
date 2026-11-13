@@ -28,6 +28,7 @@ function load(){
    s.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(s.players)));
    s.roster=Array.isArray(raw.roster)?raw.roster.slice(0,80).map(normalize):[];
    s.active=s.roster.some(x=>x.id===raw.active)?raw.active:s.roster[0]?.id||null;
+   s.lastRoll=raw.lastRoll&&typeof raw.lastRoll==="object"?raw.lastRoll:null;
   }
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
@@ -190,12 +191,12 @@ function rollPane(t){
  return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem básica da criatura</h3>'+
   '<p class="cf-note">Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.</p>'+
   '<div class="cf-roll-config">'+
-  '<label>Atributo base<select id="cf-roll-first">'+choice(r?.first||"forca")+'</select></label>'+
-  '<label>Outro Atributo<select id="cf-roll-second">'+choice(r?.second||"vigor")+'</select></label>'+
-  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de" type="number" min="0" max="30" value="'+(r?.de??stats(t).de)+'"></label>'+
-  '<label>Situação<select id="cf-roll-situation">'+Object.entries(SITUATIONS).map(([key,v])=>
+  '<label>Atributo base<select id="cf-roll-first"'+(r?' disabled':'')+'>'+choice(r?.first||"forca")+'</select></label>'+
+  '<label>Outro Atributo<select id="cf-roll-second"'+(r?' disabled':'')+'>'+choice(r?.second||"vigor")+'</select></label>'+
+  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??stats(t).de)+'"></label>'+
+  '<label>Situação<select id="cf-roll-situation"'+(r?' disabled':'')+'>'+Object.entries(SITUATIONS).map(([key,v])=>
    '<option value="'+key+'"'+(r?.situation===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
-  '<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>Rolar</button>'+
+  '<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>Rolar novamente</button>'+(r?'<button type="button" data-roll-clear>Alterar fontes</button>':'')+
    '<span>'+remaining+' dados mantidos planejados · '+(t.kind==="monstro"?Math.max(0,remaining-2):0)+'P local para retenção</span></div>'+
   dice+(r?'<div class="cf-roll-config">'+
    '<label>Anular P (1A por P)<input type="number" data-roll-param="cancelP" min="0" max="9" value="'+r.cancelP+'"></label>'+
@@ -374,7 +375,7 @@ async function importJson(file){
   const raw=JSON.parse(await file.text());
   if(raw.schema!=="codex-conflito-v1"||!Array.isArray(raw.roster))throw Error("Formato inválido");
   if(!confirm("Substituir o conflito atual pelo arquivo importado?"))return;
-  model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,
+  model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,lastRoll:raw.lastRoll||null,
    partyXp:Math.floor(clamp(raw.partyXp,0,99999)),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
   model.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(model.players)));
   if(!model.roster.some(t=>t.id===model.active))model.active=model.roster[0]?.id||null;
@@ -390,6 +391,7 @@ document.addEventListener("click",event=>{
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
  if(b.id==="export-encounter")return exportJson();
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
  if(b.dataset.open){model.active=b.dataset.open;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
