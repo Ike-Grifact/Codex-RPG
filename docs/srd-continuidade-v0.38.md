@@ -12,6 +12,80 @@ updated: "2026-11-11"
 **Precedência:** decisão explícita do autor > seção **0-V (v0.38)** > seção 0-U da v0.37 nos assuntos não revistos > documentos históricos.
 
 
+
+
+## 0-X. Atualizações autorais de 13/11/2026 — armas, características, comércio e conjuração [DEFINIDO / EXPERIMENTAL / PROPOSTO / PENDENTE]
+
+**Precedência:** esta seção contém decisões expressas posteriores à 0-W. Substitui textos históricos conflitantes sobre ativar todos os efeitos das armas simultaneamente. As duas Perícias de Domar e Montaria ainda terão custos, requisitos e ativações revistos pelo autor; não modificá-los por dedução.
+
+### 0-X.1. Requisito de foco, perícias e seleção de características [DEFINIDO]
+
+**Criar Item de Foco e Magia:** mantém custo de **1 XP** e exige agora **Disciplina 1 + Inteligência 1 + Artesão 1**. A **criação física de item de foco** usa rolagem com **Artesão**, distinta do teste de conjuração. Quem adquire a capacidade de Criar Magia recebe **um Cristal Elemental inicial** e escolhe seu elemento para criar a magia única; a propriedade de um cristal não concede automaticamente todas as Perícias elementais.
+
+**Perícias pertinentes de armas corpo a corpo, longa distância, fogo, arremesso e Manejo Duplo:** com arma equipada e habilitação apropriada, seu dado é acrescentado à **pilha rolada** e seus efeitos podem ser ativados. O dado extra respeita teto **9 rolados**, retenção por Marco e decisão do jogador. **Um acerto normal pagando 1 PP ou 2 Coragens habilita exatamente UMA característica especial escolhida da arma. Um crítico que também acerta habilita UMA característica especial gratuitamente. Em crítico o jogador pode ainda pagar 1 PP ou 2 Coragens para habilitar UMA segunda característica.** Não habilitar todas as propriedades de uma arma mista com um único custo, nem tratar efeito passivo como ativação paga. Não criar um segundo efeito grátis por cada arma empunhada em Manejo Duplo; a escolha é aplicada ao ataque combinado, com custos pertinentes. Efeitos que não requerem ataque e técnicas independentes mantêm suas próprias condições.
+
+**Dados adicionais por categoria:** arma/magia leve +1d6, média +1d10, pesada +1d12, mediante Perícia da arma ou do elemento. Arcos: curto leve 1d6; longo médio 1d10; besta uma mão leve 1d6; besta duas mãos média 1d10; besta pesada pesada 1d12; zarabatana leve 1d6. Besta de uma mão pode integrar Manejo Duplo e acumular dados habilitados pela Perícia da arma e **Perícia em Armas de Longo Alcance**, até 9 dados rolados. Armas de fogo: revólver G1 leve +1d6; pistola G2 leve +1d10, acessível desde nível 5 com Perícia em Armas de Fogo. Focos/magias habilitados: leves 1d6, médios 1d10, pesados 1d12. Estes são **dados para rolar**, não dano ou Êxitos automáticos.
+
+### 0-X.2. Características de armas e conjurações [DEFINIDO; geometria/alcances específicos PENDENTES]
+
+- **Contundente:** na ativação derruba (condição Caído/Desvantagem, levantar-se gasta metade do deslocamento, atacantes têm Vantagem contra alvo caído) **ou** empurra 4 m.
+- **Cortante:** Sangramento superficial, permitindo efeitos expressamente habilitados de Veneno e Sangue, sem dano periódico automático.
+- **Perfurante:** mediante crítico que acerta ou ativação por 1 PP/2 Coragens com Perícia pertinente, **ignora a Integridade da armadura e causa dano direto à Vida, sem causar dano à armadura**; respeita fórmula de dano à Vida e limite de ataque comum. O autor indicou **9 E ou P equivalentes mantidos** como referência para dano colossal; reconciliar com limiar histórico de 3× Vida do alvo antes de automatizar execução de colossal.
+- **Longa:** alcance corpo a corpo **2 m**; +1 Antecipar em crítico; permite manter distância de contra-ataque de alcance inferior.
+- **À Distância:** habilita projéteis com características apropriadas, sem conceder gratuitamente os efeitos de outras propriedades.
+- **Cravar:** ataque direcionado ao **escudo** que alcance/supere a DE da tentativa de defesa causa dano à Integridade; quando **Êxitos mantidos/resultantes forem maiores que o Grau do escudo**, zera sua **Durabilidade**, independentemente de ainda haver Integridade. Apenas ataques com Cravar possuem essa propriedade; outras armas não a recebem.
+- **Enganchar:** prende ou impede item; remoção exige superar a DE estabelecida pela ação de engate.
+- **Silenciosa:** +1A em crítico e não revela posição nesse crítico.
+- **Barulhenta:** +1P na rolagem, que passa a +2P se crítico; revólver possui Barulhenta + À Distância como exceção inicial.
+- **Elemental:** elemento imbuído requer Perícia pertinente para ativar efeitos elementais.
+- **Defensiva:** +1 DE passivo apenas com a futura Perícia em Armas Defensivas (não liberada no nível 1); +1A em crítico ao atacar conforme habilitação.
+- **Precisa:** +1E em crítico.
+- **Muito Leve:** altera **Carga física**, reduzindo à metade a Carga de arma Leve. Em Kunai e Shuriken, acerto crítico ou ativação por 1 PP/2 Coragens permite **+4 m no alcance efetivo do arremesso**; não altera Balanço do alvo.
+- **Explosivo:** explosão **circular** de dimensão normal 5×5, ampliada para 8×8 em crítico; definição de medida/diâmetro e interação com múltiplos alvos PENDENTE.
+- **Munição, Recarga, Cartucho:** características **técnicas** próprias de armas de fogo, com quantidade, carregamento, capacidade e calibre conforme equipamento. O revólver G1 não trava. Tempo universal de Recarga e mecânica diferenciada de Cartucho PENDENTES; não aplicar custo não aprovado.
+
+**Limite de características de combate em Grau 1:** armas **Leves até 2**, **Médias até 2**, **Pesadas até 3**. Elemental, Precisa e Explosiva começam somente no **nível 5/Grau 2**, e nenhuma arma física G1 é Explosiva. Habilitações técnicas Munição/Recarga/Cartucho não são propriedades especiais ativáveis da contagem. Crítico é resultado **comparando dados mantidos e respectivas faces máximas**, nunca um modificador selecionável de rolagem. Vantagem Absoluta (+1E), Vantagem (+1A), Normal, Desvantagem (-1A), Desvantagem Absoluta (-1E) e Ação de Sorte (-2E) são modificadores de situação selecionáveis; nenhuma delas garante ou impede crítico.
+
+### 0-X.3. Catálogo básico G1 (nomes, peso e características DEFINIDOS; preços e alcances não homologados PROPOSTOS)
+
+| Categoria | Arma G1 | Características |
+|---|---|---|
+| Leve | Faca | Cortante |
+| Leve | Punhal | Perfurante |
+| Leve | Espada Curta | Cortante |
+| Leve | Maça Curta | Contundente |
+| Leve | Chicote | Enganchar |
+| Leve | Kunai | Perfurante + Muito Leve |
+| Leve | Shuriken | Cortante + Muito Leve |
+| Leve | Adaga Ritualística | Cortante + Muito Leve; **Vantagem (+1A) ao se cortar**, sem ativar outros efeitos gratuitamente |
+| Média | Espada Longa | Perfurante + Cortante |
+| Média | Espada Larga | Cortante |
+| Média | Lança | Longa + Perfurante |
+| Média | Machado Barbado | Cortante + Enganchar |
+| Média | Lança de Arremesso | Cravar |
+| Pesada | Martelo de Guerra | Perfurante |
+| Pesada | Machado de Guerra | Cortante + Contundente |
+| Pesada | Montante | Cortante + Contundente + Longa |
+| Pesada | Marreta | Contundente |
+| Grau 2 | Naginata (média) | Cortante + Longa |
+
+**Remoções/substituições do catálogo sugerido:** Estilete excluído; Gancho de Guerra substituído por Machado Barbado; Picareta de Combate substituída por Machado de Guerra; Montante é pesada; Martelo de Guerra é pesado e perfurante. Escudos G1 existem nas categorias Leve, Médio e Pesado e possuem Defensiva, mas +1 DE depende da Perícia em Armas Defensivas, ainda indisponível no nível 1. **Alcances à distância e preços individuais apresentados durante a análise são propostas de playtest, ainda não homologadas.** Alcance corpo a corpo padrão 1 m e Longa 2 m; arremessos leves 12 m/médios 8 m/pesados 4 m conforme revisão específica de Arremesso.
+
+### 0-X.4. Armaduras, escudos e trocas [EXPERIMENTAL / PROPOSTO / DEFINIDO]
+
+- **Armadura Muito Leve G1:** Integridade 0, +2 DE ao esquivar [DEFINIDO].
+- **Armadura Leve G1:** Integridade **10** [EXPERIMENTAL], +1 DE ao esquivar [DEFINIDO].
+- **Armadura Média G1:** Integridade **15** [EXPERIMENTAL], DE neutra [DEFINIDO].
+- **Armadura Pesada G1:** Integridade **20** [EXPERIMENTAL], -1 DE [DEFINIDO].
+- **Escudos Leve/Médio/Pesado G1:** Integridades **6/9/12 PROPOSTAS**, Durabilidade própria distinta, defesa mediante procedimentos de bloqueio pertinentes, sem +1 DE automático na falta de Perícia em Armas Defensivas. Cravar pode zerar Durabilidade conforme condição.
+- **VT = Valor de Troca** [DEFINIDO], referência contábil de preços em economia de escambo, não moeda física. Ervas, Espólios (presas/garras/partes coletadas), Couro, Comida e Minérios de mesmo Grau têm o mesmo valor-base [DEFINIDO]. Grau e Carga são independentes; artigos carregados ocupam Carga real. Progressão 1/3/9/27 por Grau de recurso comum, tabelas de preços, 20 VT de patrimônio inicial e 1 Alto de capacidade da mochila básica são **referências de playtest** a confirmar em publicação final. A intenção autoral é **todos os Aprendizes terem o mesmo valor inicial** e poder escolher sua composição em recursos coletáveis.
+- **Comércio** é profissão emergente, com Perícias que podem vender Espólios por preço maior e comprar itens mais baratos [DEFINIDO como capacidade]; fórmula de desconto/sobrepreço, limites e requisitos PENDENTES.
+- **Raridade de materiais** [DEFINIDO na ordem]: comuns < Cristais Elementais < Cristais Mágicos < Artefatos Mágicos < Cristais Alma. Valores exatos relativos PENDENTES; cristal elemental inicial de Criar Magia é benefício de acesso e precisa ser protegido de revenda abusiva.
+
+### 0-X.5. Integração Foundry VTT [IMPLEMENTAÇÃO EXPERIMENTAL]
+
+Priorizar sistema independente do Codex: ficha de Personagem, Criatura/Monstro não humanoide e Criatura/Monstro humanoide. Humanoides usam economia de XP, Atributos e Perícias dos jogadores; monstros extraordinários usam progressão de Atributos monstruosa, Pavor local e Grau da ameaça; companheiros domesticados preservam economia própria, não são monstros extraordinários automaticamente. Rolagem permite escolher categoria de Vantagem/Desvantagem; crítico detectado **exclusivamente pelas faces máximas de todos os dados mantidos** (mínimo dois). Dados descartados não contribuem. Seleção de alvo compara a soma E + P não anulado contra a DE do Actor alvo; testes sem alvo publicam resultado no chat. Pavor do jogador pode ser adicionado pelo Narrador manualmente ao painel público, respeitando teto **2 + número de jogadores**; **não duplicar** transferência para a reserva local e pública. Coragem recebida por jogadores depende de Pavor válido do ataque de inimigos. A distribuição automática de Pavor/Coragem sem confirmação fica pendente de uma política de alvo e permissões segura.
+
 ## 0-W. Consolidação de Perícias: ladino, combate, armas e alquimia — 12/11/2026 [DEFINIDO / PENDENTE]
 
 **DECISÃO POSTERIOR [DEFINIDO]:** toda exigência de **Armas 1** passa a equivaler a **Disciplina 1**. Perícia em Armas Leves exige Disciplina 1; Artes Marciais também exige Disciplina 1 no lugar de Armas 1 + foco Punhos (seus demais procedimentos permanecem experimentais). Perícia Armas 1 e Combate deixam o catálogo e não podem ser adquiridas em novas builds. IDs antigos e custos pagos em fichas anteriores são preservados apenas para compatibilidade, sem reembolso automático. Requisitos de Disciplina superiores expressamente aprovados permanecem. Menções incompatíveis nas seções históricas do SRD não têm vigência.
