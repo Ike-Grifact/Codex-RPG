@@ -26,6 +26,8 @@ Esta pasta é a **única interface ativa** para criação e ficha. O antigo `cri
 
 ## Atualização do Codex Genético — mapa de fontes e evolução (prévia)
 
+**Interface refinada:** a dupla hélice foi restaurada atrás dos Atributos, os dados têm a mesma geometria poliédrica do rolador e os títulos do mapa são simples: Atributos, Conhecimentos e Práticas. Perícias com XP suficiente e requisitos ainda pendentes aparecem em **roxo**, mas continuam indisponíveis para compra; apenas Perícias com todos os requisitos ficam em azul. Clicar em um nó abre um painel flutuante no lado do mapa, com seus detalhes e botão de fechar.
+
 Na visualização alternativa, o Codex Genético apresenta **Atributos em uma coluna central**, **Conhecimentos à esquerda** e **Práticas à direita**, com organização estável para facilitar a leitura. As conexões só aparecem ao selecionar uma fonte e indicam **afinidade temática**, nunca pré-requisitos automáticos.
 
 Os Atributos, Conhecimentos e Práticas exibem os **dados atuais acima de cada nó**, o **grau** e botões **+ / −**. Os ajustes são uma **prévia de evolução**: o XP não é debitado da ficha até selecionar **Confirmar evolução**; é possível descartar. O painel mostra XP atual, disponível e gasto. O mesmo fluxo está disponível no Codex Genético da ficha finalizada, respeitando os limites de reembolso e os requisitos vigentes.
@@ -36,12 +38,13 @@ As bolinhas de Perícias aparecem por padrão apenas quando a Perícia já foi a
 
 ## Como experimentar — fluxo de criação vigente (SRD v0.39)
 
-O criador apresenta **quatro etapas**, sem classe obrigatória:
+O criador apresenta **cinco etapas**, sem classe obrigatória:
 
 1. **Identidade:** nome, conceito, origem, virtude, personalidade e retrato.
 2. **Escolhas iniciais guiadas:** escolher **um dos seis Atributos principais**; cada cartão apresenta função, exemplos, grau 0 (d4), grau 1 (d6) e custo de 1 XP. Na sequência, escolher **um Conhecimento OU uma Prática**, entre 12 cartões separados por grupo, com resumos, exemplos, dados d6/d10 e custo de 2 XP. Confirmar os dois investimentos de uma só vez; **nada é cobrado antes da confirmação**. “Principal” é apenas orientação, sem bônus ou limitação.
 3. **Distribuir XP:** o modo padrão utiliza listas para Atributos, Conhecimentos, Práticas e Perícias, com compras livres e botões +/−. O **Codex Genético fica como alternativa por botão**, usando a mesma ficha e o mesmo XP.
-4. **Revisão:** conferir investimentos e saldo antes de abrir a ficha jogável.
+4. **VT e equipamentos iniciais:** distribuir **20 VT experimentais** entre Ervas, Espólios, Couro, Comida e Minérios, começando com 4 unidades de cada. Comprar, opcionalmente, equipamentos G1 do catálogo de preços **PROPOSTOS**; as compras usam VT, não XP. Os itens adquiridos entram no inventário da mesma ficha. Nenhum item grátis é presumido.
+5. **Revisão:** conferir Atributos, Conhecimentos, Práticas, Perícias, saldo de XP, recursos de troca e itens antes de abrir a ficha jogável.
 
 Na hipótese de **20 XP experimentais**, as compras mínimas de 1+2 XP deixam **17 XP livres**. Se o jogador voltar às escolhas guiadas após outras compras, os investimentos anteriores permanecem; escolhas novas informam o custo antes de confirmar.
 
