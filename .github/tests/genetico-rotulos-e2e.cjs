@@ -45,7 +45,7 @@ async function validate(page,label){
    const r=await validate(page,name);
    const after=page.locator('#gene-builder-map .fp-gene-skill[data-gene-id="criar-item-foco-magia"]');
    assert(await after.count()===1,name+": nó Criar Item de Foco e Magia ausente");
-   assert((await after.locator('.fp-gene-node-label').textContent()).replace(/\s+/g," ").trim()==="Criar Item de Foco e Magia",
+   assert((await after.locator('.fp-gene-node-label tspan').allTextContents()).join(" ")==="Criar Item de Foco e Magia",
      name+": rótulo longo cortado");
    assert(!errors.length,name+": JS: "+errors.join(" | "));
    console.log("PASS "+name+": "+r.checked+" rótulos completos, sem colisões ou abreviações.");
