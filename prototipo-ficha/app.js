@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.40: d10 crítico 2E+1A e elevação livre do dado; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.41: d10 crítico 2E+1A, elevação livre e Pavor enviado ao alvo atacado; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
