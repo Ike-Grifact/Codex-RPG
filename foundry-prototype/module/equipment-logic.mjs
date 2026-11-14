@@ -33,6 +33,7 @@ export function skillPrerequisite(system,id){
   "armas-fogo":disc>=2&&dex>=2,
   "criar-item-foco-magia":disc>=1&&intel>=1&&arts>=1,
   "disciplina-avancada":disc>=2,
+  "recuperacao-vigorosa":Number(a.vigor||0)>=3,
   "manejo-duplo":s.includes("disciplina-avancada")&&force>=2&&dex>=2&&agil>=1&&["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo"].some(x=>s.includes(x))
  };
  return req[id]??true;
