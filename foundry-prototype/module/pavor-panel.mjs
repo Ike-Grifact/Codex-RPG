@@ -28,16 +28,18 @@ export async function transferCombatPavor(message){
  if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
  const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
+ // O Pavor não anulado destina-se ao alvo selecionado da ação, nunca ao inimigo mais próximo.
+ // Sem alvo único declarado, a distribuição de ataques múltiplos/sem alvo permanece manual.
  if(obj.targetUuid){
   const target=await fromUuid(obj.targetUuid);
   if(target&&["character","humanoid","creature"].includes(target.type)){
    const add=Math.max(0,obj.p);
-   if(obj.targetType==="character")
+   if(target.type==="character")
     await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
    else {
     const cap=monsterCap(target.system.threatGrade);
     await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-    // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
+    // Sem repasse por proximidade; excedente permanece sujeito à resolução manual do Narrador.
    }
   }
  }
