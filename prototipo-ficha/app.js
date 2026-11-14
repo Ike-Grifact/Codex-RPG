@@ -1873,9 +1873,9 @@ function wizardEquipment(){
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
  const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
- const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ const items=CATALOG.filter(it=>it.kind!=="focus"&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
+ .map(it=>{const purchasable=it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':'Preço pendente')+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">Não disponível para compra</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
@@ -2394,6 +2394,7 @@ function renderTrade(){
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
+ if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
  if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
