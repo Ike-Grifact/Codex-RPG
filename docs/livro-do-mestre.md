@@ -1,10 +1,12 @@
 # Codex RPG — Livro do Mestre
 
-**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.38**
+**Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.41**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.39](srd-continuidade-v0.39.md). Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.41](srd-continuidade-v0.41.md), seção 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
+
+**Atualização de Pavor [DEFINIDO, 14/11/2026]:** inimigos **começam cada conflito com a reserva local cheia**; o teto por Grau é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. Em ataque contra um único inimigo declarado, **somente o alvo atacado** recebe o Pavor mantido e não anulado, mesmo distante e mesmo que o ataque falhe. **Não** se transfere ao inimigo mais próximo. Ataque inimigo contra um jogador continua gerando Coragem segundo 1P→1 Coragem, destinada ao alvo atacado. Aumento de estoque **não** concede turnos extras nem altera custos. A regra de múltiplos alvos, área e ações sem alvo atacado continua **PENDENTE** e não duplica símbolos.
 
 **Ideia central:** provocar atrai o perigo; antecipar faz os turnos individuais fluírem; um Líder usa Pavor público para montar um golpe coordenado. Ao cair a liderança, o conflito pode virar disputa por adesão, fuga ou rendição — sem exigir extermínio.
 
