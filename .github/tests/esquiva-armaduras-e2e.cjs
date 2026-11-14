@@ -22,12 +22,16 @@ const check=(ok,message)=>{if(!ok)throw Error(message)};
     }));
    });
    await page.reload({waitUntil:"domcontentloaded"});
-   const general=page.locator("#de-text"),dodge=page.locator("#de-dodge-text"),caption=page.locator("#de-dodge-caption");
-   const expect=async(g,d,description)=>{
-    check(await general.innerText()===String(g),screen+": DE geral incorreta ("+description+"): "+await general.innerText());
-    check(await dodge.innerText()===String(d),screen+": DE Esquiva incorreta ("+description+"): "+await dodge.innerText());
+   const value=page.locator("#de-text"),formula=page.locator("#de-caption"),condition=page.locator("#de-condition"),integrity=page.locator("#de-armor-panel");
+   check(await page.locator("#de-dodge-text").count()===0,"Indicador de DE duplicado ainda existe");
+   const expect=async(natural,final,description)=>{
+    check(await value.innerText()===String(final),screen+": DE final incorreta ("+description+"): "+await value.innerText());
+    const txt=await formula.innerText();
+    check(txt.includes("Natural "+natural)&&txt.includes(" = "+final),
+     screen+": cálculo incompleto ("+description+"): "+txt);
    };
    await expect(4,4,"sem armadura");
+   check(await integrity.isHidden(),"Integridade de armadura ausente deve ficar oculta");
    await page.locator('#sheet-navigation [data-sheet-page="inventory"]').click();
    const toggle=async id=>{
     const btn=page.locator('#inventory-list [data-action="equip"][data-id="'+id+'"]');
@@ -35,15 +39,22 @@ const check=(ok,message)=>{if(!ok)throw Error(message)};
     await btn.click();
    };
    await toggle("armor-ml");await expect(4,6,"Muito Leve");
-   check((await caption.innerText()).includes("+2"),screen+": não indicou bônus +2 em Esquiva");
+   check((await formula.innerText()).includes("+ 2 (Muito Leve)"),"Falta origem do modificador Muito Leve");
+   check((await condition.innerText()).includes("ao esquivar"),"Falta condição de Esquiva");
+   check((await integrity.innerText()).includes("Sem Integridade"),"Muito Leve não informa ausência de Integridade");
    await page.reload({waitUntil:"domcontentloaded"});
    await expect(4,6,"Muito Leve persiste após recarregar");
    await page.locator('#sheet-navigation [data-sheet-page="inventory"]').click();
    await toggle("armor-l");await expect(4,5,"Leve");
-   check((await caption.innerText()).includes("+1"),screen+": não indicou bônus +1");
+   check((await formula.innerText()).includes("+ 1 (Leve)"),"Falta origem do modificador Leve");
+   check((await integrity.innerText()).includes("10 / 10"),"Integridade Leve não aparece no mesmo cartão da DE");
+   await integrity.locator('[data-action="integrity"][data-delta="-1"]').click();
+   check((await integrity.innerText()).includes("9 / 10"),"Botão no cartão não reduz Integridade");
+   check((await page.locator("#inventory-list").innerText()).includes("9/10"),"Inventário não sincronizado com cartão");
    await toggle("armor-m");await expect(4,4,"Média");
-   await toggle("armor-h");await expect(3,3,"Pesada");
+   await toggle("armor-h");await expect(4,3,"Pesada");
    await toggle("armor-h");await expect(4,4,"desequipada");
+   check(await integrity.isHidden(),"Armadura desequipada deixou Integridade visível");
    await toggle("armor-ml");await expect(4,6,"Muito Leve novamente");
    await page.locator('#inventory-list [data-item-field="weight"][data-id="armor-ml"]').selectOption("leve");
    await expect(4,5,"mudou categoria da armadura equipada");
