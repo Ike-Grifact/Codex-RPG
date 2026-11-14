@@ -85,7 +85,7 @@ O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, ro
 | 1–5 | 2 | 3 |
 | 6–20 | 3 | 4 |
 
-Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem para elevar um passo permitido de um dado antes da rolagem segue d4→d6→d10→d12, em suas condições normais.
+Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem permite escolher **qual dado elegível da pilha** elevar em um passo antes da rolagem, incluindo Atributo, Conhecimento, Prática ou dado adicional habilitado de equipamento. A cadeia comum é d4→d6→d10→d12, com uma elevação comum por rodada e sem alterar limites de rolagem ou retenção.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
@@ -104,7 +104,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ+ᚨ |
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | 2ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | 2ᛋ+ᚨ+ᚦ |
-| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
+| 10 | — | — | 2ᛋ+ᚨ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
 | 11 | — | — | — | ᛋ+2ᚨ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
 | 12 | — | — | — | 2ᚦ | 2ᚦ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
@@ -116,7 +116,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 são vazias. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
+A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autoral **DEFINIDA em 14/11/2026**; ela é a face numérica máxima do d10. As faces 10 do d12 e d20 mantêm seus valores próprios, não alterados por esta decisão. A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 são vazias. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
 
 
 ## IV. Resolver ações
@@ -149,7 +149,7 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 
 **Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
 
-**Exemplo:** um d6 com face **6** (1E) e um d10 com face **10** (2E + 1P), ambos mantidos, formam o crítico de dois: o resultado passa de **3E + 1P** a **4E sem Pavor**, recuperando até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
+**Exemplo:** um d6 na face **6** (1E) e um d10 na face **10** (2E + 1A), ambos mantidos, formam o crítico de dois com **3E + 1A e nenhum Pavor**. Como não há Pavor próprio, o benefício crítico de converter 1P em 1E não é aplicado. A rolagem recupera até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
 
 **Reservas:** a Coragem individual tem teto normal 10. O máximo de PP é **0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**. Recuperação que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
 
@@ -175,7 +175,7 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar um passo de um dado de Atributo antes de rolar (d4 → d6 → d10 → d12, quando pertinente).
+- **Gastar 1 Coragem** para escolher e elevar um passo de **um dado elegível da pilha** antes de rolar (d4 → d6 → d10 → d12), inclusive um dado de Conhecimento ou Prática e uma fonte complementar habilitada por Perícia avançada. Uma elevação comum por rodada.
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Pavor também retira 1 Coragem**.
 - A partir do nível 5, o Talento automático **Perícia em Coragem** permite gastar **2 Coragens para recuperar 1 PP**, uma vez por turno e sem ultrapassar o máximo de PP.
 
