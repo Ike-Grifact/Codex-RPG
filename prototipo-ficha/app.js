@@ -2220,8 +2220,13 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
- $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada")+")":armorDodgeBonus()?"DE base "+deDefense()+" · Esquiva "+deDodge()+" (+"+armorDodgeBonus()+" da armadura)": "DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
+ $("de-text").textContent=deDefense();$("de-dodge-text").textContent=deDodge();$("balance-text").textContent=balance();
+ $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" pela armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada"):"DE geral natural · teto 9 antes dos equipamentos";
+ const dodgeBonus=armorDodgeBonus(),armor=equippedArmor();
+ $("de-dodge-caption").textContent=dodgeBonus?
+  "Bônus +"+dodgeBonus+" na esquiva · armadura "+(armor.weight==="muito_leve"?"Muito Leve":"Leve")+" equipada. Não vale para outras defesas.":
+  armorDePenalty()?"Sem bônus de esquiva; penalidade já incluída na DE geral":
+  "Sem bônus específico de armadura na esquiva";
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
