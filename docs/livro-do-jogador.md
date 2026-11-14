@@ -1,12 +1,20 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.39](srd-continuidade-v0.39.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.43](srd-continuidade-v0.43.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
-## Atualização normativa — 13/11/2026: características e Perícias [DEFINIDO / em playtest]
+## Atualização normativa — 14/11/2026: custos de Perícias e conjuração com foco [DEFINIDO / procedimentos PENDENTES]
+
+**Ativação paga de Perícia: 1 PP OU 1 Coragem** como custo-base; **não** modificar custos de compra em XP. Com **Criar Item de Foco e Magia + foco equipado válido + Perícia do elemento**, a escolha de **um efeito elemental habilitado é gratuita** (0 PP/0 Coragem), sem eliminar DE, Pavor, condições, limites de Grau ou requisitos. Amplificar até o maior peso **já permitido** custa **+1 Coragem**; reduzir Grau/intensidade é gratuito mas **preserva a recarga**. **PENDENTE:** distinção exata entre Grau, peso tático e slot, teto de amplificação e recarga em redução; papel de Conjuração Equilibrada.
+
+**Pedras elementais:** poderão ser compradas usando VT restante no criador. Fogo/Água/Terra/Ar/Psique compartilham faixa comum; Veneno/Sagrado/Trevas compartilham faixa mais cara; Sangue/Pedra da Alma não é comprável no nível 1. **PENDENTE:** preços oficiais em VT, carga e relação com Cristal inicial. A ficha pode registrar preços de mesa explicitamente EXPERIMENTAIS.
+
+**Regra anterior abaixo permanece como histórico no ponto em que disser 2 Coragens**; esta atualização de 14/11 substitui a ativação-base, não os requisitos da Perícia nem as taxas excepcionais não revisadas.
+
+## Atualização normativa — 13/11/2026: características e Perícias [HISTÓRICO nos custos]
 
 **Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **10/15/20 de Integridade são experimentais**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
 
