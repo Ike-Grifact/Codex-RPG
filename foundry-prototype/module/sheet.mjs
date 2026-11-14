@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINI
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,escapeHTML} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,dodgeDE,dodgeBonus} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
@@ -58,7 +58,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    actorTypeLabel:{character:"Personagem",humanoid:"Oponente humanoide",creature:"Monstro extraordinário"}[actor.type],
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
+   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defenseDE(actor),deDodge:dodgeDE(actor),dodgeBonus:dodgeBonus(actor),
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
     xp:s.xp,xpLedger:ledger,hasCreationMinimum:hasFirstAttribute&&hasTraining,
