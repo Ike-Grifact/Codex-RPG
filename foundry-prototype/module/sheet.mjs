@@ -227,10 +227,19 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
    const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0);
    if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
-   const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
-   if(game.combat?.started&&targets.length&&targets[0].actor){
-    const target=targets[0].actor;opts.targetActorUuid=target.uuid;opts.targetName=target.name;opts.targetType=target.type;
-    opts.de=defenseDE(target);
+   const targets=[...game.user.targets],trevasEligible=mayUseTrevas(this.actor,this._draft,opts);
+   if(targets.length>2)throw Error("Selecione até dois alvos.");
+   if(opts.trevasEnabled&&!trevasEligible)throw Error("Trevas exige sua Perícia e Disciplina em Conjuração.");
+   if(targets.length===2&&!opts.trevasEnabled)throw Error("Dois alvos exigem a técnica habilitada de Trevas.");
+   if(targets.length===2&&(!opts.trevasPreferredUuid||!targets.some(t=>t.actor?.uuid===opts.trevasPreferredUuid)))
+    throw Error("Escolha um dos alvos para concentração ou o Pavor indivisível.");
+   if(targets.length===2&&new Set(targets.map(t=>t.actor?.uuid)).size!==2)
+    throw Error("Trevas exige dois alvos distintos.");
+   if(game.combat?.started&&targets.length){
+    opts.targets=targets.filter(t=>t.actor).map(t=>({uuid:t.actor.uuid,name:t.actor.name,type:t.actor.type,de:defenseDE(t.actor)}));
+    if(opts.targets.length!==targets.length)throw Error("Alvo selecionado sem ficha.");
+    const target=opts.targets[0];opts.targetActorUuid=target.uuid;opts.targetName=opts.targets.map(t=>t.name).join(" e ");
+    opts.targetType=target.type;opts.de=target.de;
    }
    opts.noisy=!!item?.system.properties?.includes("Barulhenta");
    const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,stepDieId:opts.stepDieId,equipmentDie:die});
@@ -264,9 +273,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const result=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster:s.monsterRules,threatGrade:s.threatGrade,
     weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
+   const trevasOn=!!p.options.trevasEnabled;
+   if(trevasOn&&!mayUseTrevas(this.actor,{base:p.base},p.options))
+    throw Error("Trevas não habilitada para esta rolagem.");
+   const targetResults=(p.options.targets||[]).map(t=>({...t,success:result.reached>=t.de}));
+   const anyHit=targetResults.length?targetResults.some(t=>t.success):result.success;
    let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
-   if(result.success&&first){
+   if(anyHit&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
     active.push(first);
     if(second){
@@ -280,6 +294,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      else cost+=2;
     }
    }
+   // Mantém custo especial Trevas de 1 PP/2 Coragens após acerto; falha não tem custo novo.
+   if(trevasOn&&anyHit){
+    if(this.actor.type==="character"&&p.options.activationPayment==="pp")payPP++;
+    else cost+=2;
+   }
    if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
@@ -289,6 +308,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
     (item?'<p><strong>Equipamento:</strong> '+escapeHTML(item.name)+'</p>':'')+
     (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
+    (trevasOn?'<p><strong>Trevas:</strong> +2P para DE, dano e risco; transferência '+escapeHTML(p.options.trevasDistribution==="focus"?"concentrada":"dividida")+'.</p>':'')+
+    (targetResults.length>1?'<p><strong>DE por alvo:</strong> '+targetResults.map(t=>escapeHTML(t.name)+': DE '+t.de+' — '+(t.success?'acerto':'falha')).join('; ')+'</p>':'')+
     '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
@@ -302,6 +323,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
      transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
       actorId:this.actor.id,targetUuid:p.options.targetActorUuid,targetType:p.options.targetType,
+      targets:trevasOn&&targetResults.length===2
+       ?distributeDarknessPavor(result.p,targetResults.map(t=>t.uuid),
+         {mode:p.options.trevasDistribution,preferred:p.options.trevasPreferredUuid}).map(x=>({
+           targetUuid:x.uuid,targetType:targetResults.find(t=>t.uuid===x.uuid)?.type,p:x.p}))
+       :undefined,
       p:result.p,monsterCriticalPavor:result.monsterCriticalPavor
      }:null}}});
    await this.actor.unsetFlag(NS,"pendingRoll");this._pending=null;this.render();
