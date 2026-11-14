@@ -1713,7 +1713,7 @@ function geneRemoveSkill(id){
  const summary="Remover "+name+" e corrigir os investimentos?\n\n"+
   "Perícias removidas:\n• "+skills.join("\n• ")+
   (levelText.length?"\n\nGraus devolvidos:\n• "+levelText.join("\n• "):"")+
-  "\n\nXP devolvido à ficha: "+plan.refund+
+  "\n\nXP devolvido à ficha: "+plan.refund+" XP"+
   "\nSaldo livre: "+xpCosts(state).free+" → "+xpCosts(plan.candidate).free+" XP."+
   (plan.tracked?"":"\n\nEsta compra não tem histórico de pacote: somente compras identificadas podem ser revertidas automaticamente.")+
   "\nGraus necessários a outras Perícias ou à criação mínima permanecem."+
