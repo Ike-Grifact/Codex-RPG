@@ -6,12 +6,14 @@ Estamos testando o combate, a liberdade de builds e o equilíbrio de recursos do
 **Livro do Jogador:** https://ike-grifact.github.io/Codex-RPG/livro.html
 **Criador de Ficha:** https://ike-grifact.github.io/Codex-RPG/prototipo-ficha/
 
-**Atenção à versão:** este anúncio descreve regras de playtest da v0.42 ainda em revisão. Conferir se a publicação do site já incorporou essas decisões antes de apresentá-las como disponíveis no livro e criador online. Não encaminhar jogadores para o repositório técnico.
+**Atenção à versão:** este anúncio descreve regras de playtest da v0.43 ainda em revisão. Conferir se a publicação do site já incorporou essas decisões antes de apresentá-las como disponíveis no livro e criador online. Não encaminhar jogadores para o repositório técnico.
 
 **O que observar neste teste:**
 - **Pavor dos inimigos:** cada inimigo começa o combate com a reserva local cheia: G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P. Mais Pavor permite pagar capacidades existentes, **não concede turnos extras**.
 - **Destino do Pavor:** Pavor mantido e não anulado no ataque vai ao **inimigo atacado**, mesmo distante, e não ao mais próximo.
 - **Trevas:** a técnica acrescenta **+2P antes da DE**, contando para acerto, dano e risco. Pode escolher **um ou dois alvos**. Contra dois, uma única rolagem é comparada à DE de cada um; o Pavor residual é **dividido tão igualmente quanto possível** entre eles (ponto ímpar à escolha) **ou concentrado em um alvo**. Nunca se duplica Pavor.
+- **Ativação das Perícias:** o custo-base pago é **1 PP ou 1 Coragem**. Com foco e Perícia elemental correspondente, um efeito já habilitado é **gratuito**, sem dispensar DE, Grau ou risco; amplificar até peso permitido custa +1 Coragem, e reduzir intensidade mantém recarga.
+- **Pedras Elementais no criador:** o VT restante pode ser usado para comprar pedras de elementos comuns ou especiais. **Os preços ainda são experimentais e definidos pela mesa**; Veneno/Sagrado/Trevas devem custar igualmente e mais que elementos comuns. Sangue/Pedra da Alma não é comprável no nível 1.
 - **Crítico e Coragem:** d10 na face 10 = **2E + 1A, sem Pavor**. Ao elevar um dado com Coragem, o jogador escolhe qual dado elegível recebe o passo.
 
 ## Modelo de relato — copie e preencha
