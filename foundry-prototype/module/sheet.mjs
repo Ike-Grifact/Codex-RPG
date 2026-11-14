@@ -314,7 +314,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    // Falha não recebe cobrança inédita até solucionar a ordem de pagamento no SRD.
    if(trevasOn&&anyHit&&!freeFocusElement(this.actor,item,p.options,"trevas")){
     if(this.actor.type==="character"&&p.options.activationPayment==="pp")payPP++;
-    else cost+=1;
+    else cost+=this.actor.type==="character"?1:2; // Não alterar custo anterior em Pavor local dos adversários.
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
