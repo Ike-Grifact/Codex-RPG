@@ -15,7 +15,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 - **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, PP, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
-- **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
+- **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva local de Pavor ampliada experimentalmente para **Grau + 2** (G1=3P até G6=8P). Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
 ## Rolagem
 
@@ -28,11 +28,19 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 As seis classificações de situação não são classes de ataque separadas. Quando a ação não supera a DE, o chat diferencia falha sem símbolos, falha com Êxito e falha com Pavor. Quando supera a DE, diferencia acerto limpo, acerto neutro com Pavor e acerto com Pavor predominante.
 
+## Pavor local de inimigos no início de um conflito [EXPERIMENTAL]
+
+No início de um combate (`combatStart` do Foundry), o sistema preenche **uma única vez** o Pavor local de cada Actor de oposição (`humanoid` ou `creature`) incluído no conflito, com o teto do seu Grau. A escala testada é **G1=3P, G2=4P, G3=5P, G4=6P, G5=7P, G6=8P**. A ficha de Personagem (`character`) não é alterada.
+
+**Nenhuma outra regra muda:** ter Pavor não cria turnos adicionais nem dispensa oportunidade válida; ativação, deslocamento, elevação de dado, retenção, crítico, área, magia, progressão de Perícias e custos continuam iguais. A reserva não é restaurada automaticamente em cada turno nem rodada. Se uma ameaça dispõe de múltiplas capacidades habilitadas, pode gastar os pontos normais conforme suas regras. O teto da reserva **pública** do Narrador não muda.
+
+Esta escala é **hipótese de playtest, NÃO norma aprovada**. O SRD v0.40 permanece com os tetos anteriores até decisão autoral. A inicialização automática ainda exige **teste integrado em uma instância real do Foundry**; usa o hook oficial `combatStart` e é executada somente pelo cliente do GM que iniciou o combate. Inimigos adicionados ao combate após seu início não recebem esta inicialização automaticamente; o Narrador deve ajustá-los manualmente até haver decisão sobre reforços.
+
 ## Pavor do Narrador
 
 Ao entrar, o Narrador tem um **painel manual de Pavor público**. O teto é `2 + quantidade de jogadores cadastrados`; o saldo começa em 2 e não ultrapassa o teto. É possível adicionar/remover Pavor manualmente sem duplicar símbolos descartados.
 
-Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
+Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto experimental **Grau + 2**, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
 
 **Importante:** o mecanismo de transferência por chat ainda requer validação multijogador, especialmente de permissões, casos simultâneos e adversários pertencentes a jogadores. Não utilize como contabilidade oficial sem conferir a reserva na ficha.
 
