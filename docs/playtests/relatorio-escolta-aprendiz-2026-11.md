@@ -107,7 +107,7 @@
 **Consolidação realizada na branch:** [SRD v0.40](../srd-continuidade-v0.40.md) registra a aprovação definitiva de **2E+1A**; o Livro do Jogador e sua versão web tiveram a tabela e o exemplo corrigidos. A nova face está implementada na ficha web e no Foundry; **a `main` permanece intacta até revisão e mesclagem do PR**.
 
 
-## 9. Escala local de Pavor e início do confronto — correção de escopo autoral (14/11/2026)
+## 9. Escala local de Pavor e início do confronto — histórico do ensaio provisório G+2 (SUPERADO pela seção 10 e SRD v0.41)
 
 ### 9.1. Esclarecimento do objetivo
 
@@ -149,3 +149,27 @@ Para isolar a mudança, a branch adota **EXPERIMENTALMENTE** `teto = Grau + 2` (
 Testes pontuais de função confirmaram teto 3/4/5/6/7/8, preenchimento da reserva no início para humanoide e monstro, não alteração dos jogadores e prevenção de duplicidade por UUID de Actor; não houve execução no Foundry real.
 
 O próximo playtest deve comparar, nas **mesmas fichas e mesmas oportunidades**, quantos gastos de dados/efeitos cabem no estoque, frequência de acerto limpo/com Pavor, dano, risco, duração de recursos, recuperação de Coragem dos jogadores, e se a reserva pública do Narrador permanece relevante. **Ter maior estoque de Pavor não autoriza um segundo turno.**
+
+
+## 10. Decisão autoral consolidada: alvo do ataque e Pavor inicial G1=4P [DEFINIDO — 14/11/2026]
+
+**Fonte vigente na branch:** [SRD de Continuidade v0.41](../srd-continuidade-v0.41.md), seção **0-AA**. Esta decisão substitui expressamente as hipóteses provisórias da seção 9 e a regra histórica de transferência automática ao inimigo mais próximo. O SRD v0.40 permanece no histórico, sem alteração retroativa.
+
+### 10.1. Regra aprovada
+
+1. **Pavor vai ao adversário declarado como alvo do ataque, não ao inimigo mais próximo.** Distância não interfere. Vale em acertos e falhas, quando houver Pavor **dos dados mantidos** efetivamente **não anulado**. Dados descartados e Pavor anulado não geram transferência; não se duplica o mesmo Pavor entre reservas.
+2. **Inimigos humanoides e monstros iniciam cada combate com Pavor local cheio.** A escala fica em **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. O teto final de 8P solicitado anteriormente é mantido: o aumento de 1P por Grau cessa entre G5 e G6.
+3. O Pavor recebido é armazenado até o teto local. **Ter Pavor não concede turnos adicionais ou oportunidades gratuitas**. Custos de ativação, aproximação, dados adicionais, elevação, magias e Perícias continuam inalterados; reservas pública e local continuam distintas.
+4. Quando um **inimigo ataca um personagem**, o Pavor mantido não anulado **continua fornecendo Coragem** aos jogadores na proporção previamente definida 1P→1 Coragem, direcionada ao **personagem atacado** em ataque de alvo único; personagem não mantém Pavor local de monstro.
+
+**Exemplo autoral:** atirador joga contra criatura Grau 1 distante e mantém 2P não anulados. Mesmo que outra ameaça esteja mais próxima, **a criatura atacada recebe os 2P locais** (até 4P). Ao ter oportunidade legítima de agir, a criatura poderá pagar custos existentes para sua ofensiva. Não ganha um segundo turno por ter Pavor.
+
+### 10.2. Mudanças da branch
+
+- `foundry-prototype/module/rules.mjs`: teto local passa de `Grau + 2` experimental para **`min(8, Grau + 3)` definido**, mantendo Graus válidos 1–6.
+- `foundry-prototype/module/main.mjs`: já preenche uma única vez a reserva no evento de abertura `combatStart`; o preenchimento agora usa a nova função de teto. **Não** há recarga automática em rodada/turno.
+- `foundry-prototype/module/sheet.mjs`: já atribui o UUID do **alvo marcado no Foundry** à rolagem. Não recorre ao alvo mais próximo.
+- `foundry-prototype/module/pavor-panel.mjs`: recebe Pavor no **alvo marcado** e usa o teto novo; alvo jogador recebe Coragem conforme seu tipo real. Sem alvo marcado, não escolhe inimigo por proximidade silenciosamente.
+- `docs/livro-do-mestre.md`, `narrador.html` e `foundry-prototype/README.md`: explicam nova escala e novo destinatário; referências de README e guia atualizadas para o SRD v0.41.
+
+**PENDENTE:** distribuição em ataques de área, múltiplos alvos e ações sem adversário atacado, critérios de excedente nas situações não cobertas e automação para reforços incorporados depois de iniciado o combate. O protótipo só encaminha automaticamente o recurso quando **um alvo único foi marcado**; testes de mesa e integração real no Foundry permanecem pendentes. Nenhuma solução nova para esses casos foi inventada.
