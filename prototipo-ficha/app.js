@@ -1761,7 +1761,7 @@ function geneDetailHTML(id,s=state){
    (!canRemove||refundPlan?.error?' disabled':'')+'>'+
    (canRemove&&refundPlan&&!refundPlan.error?
     'Remover Perícia e reembolsar · '+refundPlan.refund+' XP':
-    'Ative Editar ficha para remover')+'</button>'+
+    canRemove?'Remoção bloqueada por requisitos':'Ative Editar ficha para remover')+'</button>'+
    (refundPlan?.error?'<p class="fp-gene-auto-note">'+esc(refundPlan.error)+'</p>':"")+
    (refundPlan&&!refundPlan.tracked&&!refundPlan.error?
     '<p class="fp-gene-auto-note">Compra antiga ou individual: não há registro dos requisitos adquiridos em pacote; apenas investimentos identificados serão revertidos.</p>':""):
