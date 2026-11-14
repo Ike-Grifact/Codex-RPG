@@ -13,7 +13,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 ## Fichas disponíveis
 
-- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, PP, DE e Carga.
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; mínimo de um Atributo G1 e um Conhecimento OU Prática G1, demais XP livres conforme orçamento experimental vigente; Vida, Coragem, PP, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva local de Pavor **DEFINIDA no SRD v0.41**: G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
