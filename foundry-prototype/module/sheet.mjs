@@ -26,6 +26,16 @@ const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));r
 const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
 const bonusP=(dice,selected,opts)=>(opts.noisy?(isCrit(dice,selected)?2:1):0)+(opts.trevasEnabled?2:0);
 const mayUseTrevas=(actor,d,opts)=>opts.mode==="conjuracao"&&d.base?.group==="practice"&&d.base.key==="armas_conjuracao"&&(actor.system.skills||[]).includes("trevas");
+// SRD v0.43: foco equipado e Perícia elemental pertinente tornam um efeito habilitado gratuito.
+const freeFocusElement=(actor,item,opts,required="")=>{
+ if(opts.mode!=="conjuracao"||item?.system.kind!=="focus"||!item.system.equipped)return false;
+ const skills=actor.system.skills||[];
+ if(!skills.includes("criar-item-foco-magia"))return false;
+ const el=(item.system.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+ const ids={fogo:"fogo",agua:"agua",ar:"vento",vento:"vento",terra:"terra",veneno:"veneno",
+  sagrado:"sagrado",trevas:"trevas",sangue:"sangue"};
+ return !!ids[el]&&skills.includes(ids[el])&&(!required||required===el);
+};
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
 function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
@@ -123,7 +133,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
        reached:summary?.reached||0,success:summary?.ok?(summary.reached>=t.de):false})),
      trevasEnabled:!!p.options.trevasEnabled,trevasDistribution:p.options.trevasDistribution,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
-    hasProperties:!!item?.system.properties?.length,hasPaidEffect:!!item?.system.properties?.length||!!p.options.trevasEnabled,
+    hasProperties:!!item?.system.properties?.length,hasPaidEffect:!!item?.system.properties?.length||
+     (!!p.options.trevasEnabled&&!freeFocusElement(actor,item,p.options,"trevas")),
+     freeElementalFocus:freeFocusElement(actor,item,p.options),
      paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
@@ -292,14 +304,17 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const activations=result.critical?(second?1:0):1;
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=2;
+     if(!(first==="Elemental"&&freeFocusElement(this.actor,item,p.options))){
+      if(p.options.activationPayment==="pp")payPP=1;
+      else cost+=1;
+     }
     }
    }
-   // Mantém custo especial Trevas de 1 PP/2 Coragens após acerto; falha não tem custo novo.
-   if(trevasOn&&anyHit){
+   // Trevas com foco e Perícia do elemento é gratuita; sem essa combinação, ativação 1 PP/1 Coragem.
+   // Falha não recebe cobrança inédita até solucionar a ordem de pagamento no SRD.
+   if(trevasOn&&anyHit&&!freeFocusElement(this.actor,item,p.options,"trevas")){
     if(this.actor.type==="character"&&p.options.activationPayment==="pp")payPP++;
-    else cost+=2;
+    else cost+=1;
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
