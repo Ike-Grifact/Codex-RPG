@@ -17,6 +17,12 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva local de Pavor **DEFINIDA no SRD v0.41**: G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
+## Revisão de recursos e foco [SRD v0.43 — implementação parcial]
+
+A ativação paga comum de Perícias passa a **1 PP OU 1 Coragem**. Para conjuração com **foco equipado correspondente ao elemento + Perícia desse elemento + Criar Item de Foco e Magia**, o efeito elemental habilitado é **gratuito quanto à ativação-base**. O protótipo implementa esta isenção na técnica de **Trevas** e na característica **Elemental** do foco; outros efeitos especiais elementais continuam exigindo adjudicação manual até haver automação. Compras em XP não mudam. A amplificação para peso máximo de magia (**+1 Coragem**) e a redução gratuita com recarga **não estão automatizadas**, pois o limite de peso/Grau ainda precisa ser fechado.
+
+A validação do foco agora consulta os **IDs reais de Perícias** (Fogo, Água, Terra, Ar/Vento, Trevas, etc.) em vez de exigir que seus nomes internos contenham “elemento”. A compra de pedras com preços definidos pela mesa foi preparada **somente no criador web**, não neste protótipo Foundry.
+
 ## Rolagem
 
 1. Clique primeiro em uma fonte de base e depois em Atributo. Para monstro, clique em dois Atributos distintos.
