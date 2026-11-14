@@ -1,5 +1,5 @@
 /* Painel manual do Narrador: Pavor público limitado a 2 + jogadores. */
-import {narratorCap} from "./rules.mjs";
+import {narratorCap,monsterCap} from "./rules.mjs";
 export const NS="codex-rpg-foundry";
 export const playerCount=()=>game.users.filter(u=>!u.isGM).length;
 export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
@@ -35,14 +35,14 @@ export async function transferCombatPavor(message){
    if(obj.targetType==="character")
     await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
    else {
-    const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
+    const cap=monsterCap(target.system.threatGrade);
     await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
     // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
    }
   }
  }
  if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
-  const cap=Math.max(1,Math.min(6,Number(owner.system.threatGrade||1)));
+  const cap=monsterCap(owner.system.threatGrade);
   const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
   const saved=Math.min(available,obj.monsterCriticalPavor);
   if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});
