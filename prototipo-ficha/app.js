@@ -823,6 +823,9 @@ const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio
 const CATALOG=(window.CODEX_G1_CATALOG||[]).filter(x=>x.grade===1);
 const RESOURCES=[["ervas","Ervas"],["espolios","Espólios"],["couro","Couro"],["comida","Comida"],["minerios","Minérios"]];
 const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT não é moeda física.
+// SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
+const STONE_CATALOG=[["Fogo","common"],["Água","common"],["Ar","common"],["Terra","common"],["Psíquico","common"],
+ ["Veneno","rare"],["Sagrado","rare"],["Trevas","rare"]];
 const ACTIVE_PROPERTIES=new Set(["Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]);
 const SOUND_KEY="codex-roll-sound-v1";
 let soundEnabled=true,audioContext=null,tradeDraft=null,tradeOwner=null;
@@ -846,7 +849,8 @@ function playRollSound(){
   }
  }catch(err){console.warn("Codex: áudio indisponível",err);}
 }
-function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries(RESOURCES.map(([k])=>[k,4])),purchases:[],collected:false};}
+function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries(RESOURCES.map(([k])=>[k,4])),purchases:[],collected:false,
+ stonePrices:{common:null,rare:null},stones:[]};}
 function walletValue(s=state){return RESOURCES.reduce((n,[k])=>n+Number(s.trade?.resources?.[k]||0),0);}
 function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // Lotes G1 pequenos: 10 unidades = 1 Leve (proposta).
 function combatItem(item,mode){
@@ -1053,7 +1057,15 @@ function normalize(v){
  s.trade=tradeDefault();
  if(rawTrade){
   s.trade.resources=Object.fromEntries(RESOURCES.map(([k])=>[k,clamp(Math.floor(rawTrade.resources?.[k]||0),0,100000)]));
-  s.trade.collected=!!rawTrade.collected;
+   s.trade.collected=!!rawTrade.collected;
+  // Valores introduzidos pela mesa: experimentais; sem preço oficial presumido.
+  for(const kind of ["common","rare"]){
+   const raw=rawTrade.stonePrices?.[kind];
+   s.trade.stonePrices[kind]=raw===null||raw===undefined||raw===""?null:clamp(Math.floor(raw),1,10000);
+  }
+  s.trade.stones=Array.isArray(rawTrade.stones)?rawTrade.stones.slice(0,150)
+   .filter(x=>x&&STONE_CATALOG.some(row=>row[0]===x.element))
+   .map(x=>({element:x.element,price:clamp(Math.floor(x.price||0),0,10000)})):[];
   s.trade.purchases=Array.isArray(rawTrade.purchases)?rawTrade.purchases.slice(0,150).filter(x=>x&&typeof x.name==="string")
    .map(x=>({name:x.name.slice(0,90),price:clamp(Math.floor(x.price||0),0,99999)})):[];
  }
@@ -2386,7 +2398,9 @@ function renderTrade(){
  $("trade-total").textContent=total+" VT";
  $("trade-spent").textContent=spent+" VT";
  if($("crystal-summary")){
-  const elements=["","Fogo","Água","Ar","Terra","Sangue","Veneno","Sagrado","Trevas"];
+  // Não permitir nova seleção de Sangue no nível 1, mas preservar fichas legadas em leitura.
+  const elements=["","Fogo","Água","Ar","Terra","Psíquico","Veneno","Sagrado","Trevas",
+   ...(state.elementalCrystal.element==="Sangue"?["Sangue"]:[])];
   $("crystal-summary").innerHTML=state.elementalCrystal.quantity?
    '<label>Cristal Elemental inicial (Criar Magia): <select id="crystal-element">'+
    elements.map(x=>'<option value="'+esc(x)+'"'+(x===state.elementalCrystal.element?" selected":"")+'>'+esc(x||"Escolha o elemento")+'</option>').join("")+
@@ -2407,7 +2421,44 @@ function renderTrade(){
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
+ renderStoneShop();
  // Seleção do navegador é preservada quando possível para evitar reset do formulário.
+}
+function renderStoneShop(){
+ const select=$("stone-element");if(!select)return;
+ const previous=select.value,common=state.trade.stonePrices.common,rare=state.trade.stonePrices.rare;
+ select.innerHTML='<option value="">Escolha uma pedra</option>'+STONE_CATALOG.map(([element,kind])=>
+  '<option value="'+esc(element)+'">'+esc(element)+' · '+(state.trade.stonePrices[kind]??"VT pendente")+(state.trade.stonePrices[kind]==null?"":" VT")+(kind==="rare"?" · rara":"")+'</option>').join("");
+ if(STONE_CATALOG.some(row=>row[0]===previous))select.value=previous;
+ const cp=$("stone-price-common"),rp=$("stone-price-rare");
+ if(cp&&document.activeElement!==cp)cp.value=common??"";
+ if(rp&&document.activeElement!==rp)rp.value=rare??"";
+ const row=STONE_CATALOG.find(x=>x[0]===select.value),valid=Number.isInteger(common)&&common>0&&
+  Number.isInteger(rare)&&rare>common,price=row?state.trade.stonePrices[row[1]]:null;
+ $("stone-buy").disabled=!row||!valid||!Number.isInteger(price)||price>walletValue();
+ $("stone-buy").title=valid?"Compra com VT restante.":"Defina valores de playtest: pedra rara precisa custar mais que comum.";
+ $("stone-owned").textContent=(state.trade.stones.length?
+  "Pedras compradas nesta ficha: "+state.trade.stones.map(x=>x.element+" ("+x.price+" VT)").join(", ")+". ":"")+
+  (valid?"Valores definidos pela mesa, não oficiais.":"Preços oficiais PENDENTES. Sangue/Pedra da Alma não comprável no nível 1.");
+}
+function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-preferred")?.value){
+ const row=STONE_CATALOG.find(x=>x[0]===element);if(!row){toast("Escolha uma pedra disponível.");return;}
+ const common=state.trade.stonePrices.common,rare=state.trade.stonePrices.rare;
+ if(!Number.isInteger(common)||!Number.isInteger(rare)||common<1||rare<=common){
+  toast("Defina preços de playtest: pedra rara precisa custar mais que comum.");return;
+ }
+ const price=state.trade.stonePrices[row[1]];
+ if(price>walletValue()){toast("VT insuficiente para a pedra escolhida.");return;}
+ if(state.trade.stones.length>=150||state.trade.purchases.length>=150){toast("Limite de registros do comércio atingido.");return;}
+ if(!confirm("Comprar Pedra Elemental de "+element+" por "+price+" VT? Preço experimental da mesa; esta compra não concede Perícia, magia ou efeito automaticamente."))return;
+ const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([k])=>k)].filter((x,i,a)=>a.indexOf(x)===i);
+ let due=price;
+ for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
+ if(due)throw Error("Saldo de recursos inconsistente; compra cancelada.");
+ state.trade.resources=res;
+ state.trade.stones.push({element,price});
+ state.trade.purchases.push({name:"Pedra Elemental de "+element,price});
+ save();render();toast("Pedra de "+element+" adquirida por "+price+" VT. Efeitos seguem requisitos de Perícia e foco.");
 }
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
@@ -2570,6 +2621,7 @@ function onClick(event){
   state.trade.resources={...tradeDraft};render();save();toast("Composição dos recursos iniciais atualizada.");break;
  }
  case "trade-buy":buyCatalogItem();break;
+ case "stone-buy":buyElementalStone();break;
  case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
  case "wizard-shop-category":{
   if(viewMode!=="builder"||wizardStep!==3||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
@@ -2653,8 +2705,18 @@ function onChange(event){
   tradeDraft[k]=clamp(Math.floor(el.value),0,STARTING_VT);
   renderTrade();return;
  }
+ if(el.dataset.stonePrice){
+  const kind=el.dataset.stonePrice;if(!["common","rare"].includes(kind))return;
+  const raw=String(el.value).trim();
+  state.trade.stonePrices[kind]=raw===""?null:clamp(Math.floor(Number(raw)),1,10000);
+  save();renderStoneShop();return;
+ }
+ if(el.id==="stone-element"){renderStoneShop();return;}
  if(el.id==="crystal-element"){
-  if(state.elementalCrystal.quantity)state.elementalCrystal.element=String(el.value).slice(0,30);
+  if(state.elementalCrystal.quantity){
+   if(el.value==="Sangue"){toast("Sangue exige Pedra da Alma; não é opção nova no nível 1.");renderTrade();return;}
+   state.elementalCrystal.element=String(el.value).slice(0,30);
+  }
   renderTrade();save();return;
  }
  if(el.dataset.skillScope!==undefined||el.dataset.skillReady!==undefined){
