@@ -1250,3 +1250,16 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 /* Rótulos de Perícias: nomes completos em várias linhas, sem reticências. */
 .fp-gene-skill .fp-gene-node-label{font-size:14px;font-weight:650;letter-spacing:0;paint-order:stroke;stroke-width:3;pointer-events:none}
 .fp-gene-skill .fp-gene-node-label tspan{dominant-baseline:alphabetic}
+
+/* Remoção de Perícias diretamente no nó do Codex Genético. */
+.fp-gene-remove-skill{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:100%;min-height:42px;padding:11px 14px;
+ background:var(--fp-raised);color:var(--fp-text);
+ border:1px solid var(--fp-gold);border-radius:9px;
+ font-family:inherit;font-weight:700;font-size:12px;line-height:1.4;
+ white-space:normal;text-align:center;cursor:pointer;
+}
+.fp-gene-remove-skill:hover:not(:disabled){background:var(--fp-deep);border-color:var(--fp-gold)}
+.fp-gene-remove-skill:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
+.fp-gene-remove-skill:disabled{opacity:.65;cursor:not-allowed}
