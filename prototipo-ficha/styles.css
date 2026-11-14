@@ -1263,3 +1263,10 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-gene-remove-skill:hover:not(:disabled){background:var(--fp-deep);border-color:var(--fp-gold)}
 .fp-gene-remove-skill:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
 .fp-gene-remove-skill:disabled{opacity:.65;cursor:not-allowed}
+
+/* Esquiva é defesa específica; bônus da armadura Muito Leve (+2) ou Leve (+1) não altera DE geral. */
+.fp-vital.fp-de-vital{gap:8px}
+.fp-de-dodge{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 10px;border:1px solid var(--fp-gold);border-radius:9px;background:var(--fp-raised)}
+.fp-de-dodge>span{font-size:10px;font-weight:800;letter-spacing:.045em;color:var(--fp-gold)}
+.fp-de-dodge>strong{font:normal 25px/1 Georgia,serif;color:var(--fp-text);white-space:nowrap}
+.fp-de-vital #de-dodge-caption{font-size:10px;line-height:1.45;margin-top:2px;color:var(--fp-muted)}
