@@ -52,7 +52,12 @@
 {{/unless}}
     {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
     {{#if codex.isHumanoid}}<div class="codex-resource"><span>PAVOR LOCAL (oposição)</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
-    <div class="codex-resource"><span>DE · DIFICULDADE DE ÊXITO</span><strong>{{codex.de}}</strong><small>Agilidade + metade de Destreza e Vigor + Atletismo/3; monstros têm DE específica</small></div>
+    <div class="codex-resource codex-defense-resource">
+      <span>DE DEFENSIVA · GERAL</span><strong>{{codex.de}}</strong>
+      <div class="codex-dodge-line"><span>DE ESQUIVA</span><strong>{{codex.deDodge}}</strong></div>
+      {{#if codex.dodgeBonus}}<small>+{{codex.dodgeBonus}} DE ao esquivar pela armadura equipada; não vale para outras defesas</small>
+      {{else}}<small>Sem bônus de armadura na Esquiva; eventuais penalidades já entram na DE geral</small>{{/if}}
+    </div>
     <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
     <div class="codex-resource {{#if codex.overloaded}}is-overloaded{{/if}}">
      <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
