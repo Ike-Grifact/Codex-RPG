@@ -163,7 +163,7 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 - **Falha limpa:** não alcança DE e não tem consequência negativa automática.
 - **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
 
-Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html).
+Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. **Em ataque contra um adversário declarado como alvo, o Pavor dos dados mantidos que não foi anulado entra na reserva local do próprio adversário atacado, mesmo que ele esteja distante e mesmo se o ataque falhar — nunca na reserva do inimigo mais próximo.** O alvo só pode aproveitar esse recurso quando tiver uma oportunidade válida. O teto local do inimigo começa em **4P no Grau 1**, e sobe até **8P nos Graus 5–6**; inimigos começam o conflito com saldo cheio. Ataques contra vários alvos/área e ações sem adversário atacado ainda têm distribuição PENDENTE. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html) e no [SRD v0.41](srd-continuidade-v0.41.md).
 
 ### Rodadas, oportunidades e protagonismo [DEFINIDO]
 
