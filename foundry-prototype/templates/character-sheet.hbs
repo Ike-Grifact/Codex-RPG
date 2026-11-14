@@ -208,11 +208,11 @@
         {{/if}}
         {{#if codex.pending.hasPaidEffect}}
         <label>Pagamento de efeito especial no acerto<select data-pending-option="activationPayment">
-         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>2 Coragens por efeito (ou Pavor local da ameaça)</option>
+         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>1 Coragem por efeito (ou Pavor local da ameaça)</option>
          <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP por efeito (personagens)</option>
         </select></label>{{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
-        {{#if codex.pending.trevasEnabled}}<p class="codex-tip">Trevas: bônus de +2P já incluído na DE. Distribuição do Pavor: {{codex.pending.trevasDistribution}}.</p>{{/if}}
+        {{#if codex.pending.trevasEnabled}}<p class="codex-tip">Trevas: bônus de +2P já incluído na DE. Distribuição do Pavor: {{codex.pending.trevasDistribution}}. Com foco válido e Perícia do elemento, o efeito elemental não paga ativação base.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>
         <label>Converter Antecipar (2A → 1E)<input type="number" data-pending-option="convertPairs" min="0" value="{{codex.pending.convertPairs}}"></label>
       </div>
