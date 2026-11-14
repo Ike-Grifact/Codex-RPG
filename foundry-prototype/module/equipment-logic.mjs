@@ -42,6 +42,12 @@ export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
  return Number.isFinite(delta)&&delta>=0&&ledger.spent+delta<=ledger.grant;
 }
+/* Modificador exclusivo de Esquiva; não altera DE geral nem empilha armaduras. */
+export function dodgeBonus(actor){
+ const armor=actor?.items?.find?.(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+ return armor?.system?.category==="muito-leve"?2:armor?.system?.category==="leve"?1:0;
+}
+export function dodgeDE(actor){return defenseDE(actor)+dodgeBonus(actor);}
 export function defenseDE(actor){
  const natural=actor?.system?Math.max(0,Number(actor.system.monsterRules?Number(actor.system.attributes?.agilidade||0)+Math.floor(Number(actor.system.attributes?.destreza||0)/2):0)):0;
  const s=actor.system;
