@@ -593,3 +593,17 @@
 .codex-dodge-line{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;border:1px solid var(--cx-gold);background:var(--cx-panel2)}
 .codex-dodge-line>span{font-size:10px;letter-spacing:.045em;font-weight:800;color:var(--cx-gold)}
 .codex-dodge-line>strong{font-size:23px;line-height:1.1;color:var(--cx-text)}
+
+/* DE final única, origem do modificador e Integridade visível no cartão. */
+.codex-defense-resource>.codex-de-calculation{font-size:11px;font-weight:700;color:var(--cx-text);margin:2px 0 0}
+.codex-defense-resource>.codex-de-condition{font-size:10px;color:var(--cx-muted);margin:0}
+.codex-defense-armor{width:100%;min-width:0;display:flex;flex-direction:column;gap:7px;padding:9px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel2);text-align:left}
+.codex-defense-armor-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;align-items:baseline}
+.codex-defense-armor-head>span{font:700 10px/1.35 system-ui,sans-serif;color:var(--cx-muted);overflow-wrap:anywhere}
+.codex-defense-armor-head>strong{font-size:18px;color:var(--cx-text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.codex-defense-armor>small{font:10px/1.4 system-ui,sans-serif;color:var(--cx-muted)}
+.codex-defense-armor-meter{height:7px;background:var(--cx-line);overflow:hidden;border-radius:9px}
+.codex-defense-armor-meter>span{display:block;height:100%;background:var(--cx-gold);border-radius:inherit}
+.codex-defense-armor-buttons{display:flex;justify-content:flex-end;gap:6px}
+.codex-defense-armor-buttons>button{min-height:30px;min-width:34px}
+.codex-defense-configure{padding:7px!important}
