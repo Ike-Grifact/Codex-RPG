@@ -60,6 +60,24 @@ const check=(ok,message)=>{if(!ok)throw Error(message)};
    await expect(4,5,"mudou categoria da armadura equipada");
    await page.locator('#inventory-list [data-item-field="weight"][data-id="armor-ml"]').selectOption("muito_leve");
    await expect(4,6,"voltou para Muito Leve");
+   // Armas leves cadastradas manualmente podem ter Integridade 0/0:
+   // não preencher máximo experimental automaticamente; oferecer atalho para ajuste.
+   await page.evaluate(()=>{
+    const key="codex-html-ficha-prototipo-v1",data=JSON.parse(localStorage.getItem(key));
+    const ml=data.items.find(x=>x.id==="armor-ml"),light=data.items.find(x=>x.id==="armor-l");
+    ml.equipped=false;light.equipped=true;light.max=0;light.hp=0;
+    localStorage.setItem(key,JSON.stringify(data));
+   });
+   await page.reload({waitUntil:"domcontentloaded"});
+   await expect(4,5,"Leve sem máximo de Integridade configurado");
+   check((await integrity.innerText()).includes("0 / 0")&&
+    (await integrity.innerText()).includes("Integridade máxima não definida"),
+    screen+": equipamento 0/0 não é explicado no cartão defensivo");
+   const settings=integrity.locator('[data-sheet-page="inventory"]');
+   check(await settings.isVisible(),screen+": atalho para configurar integridade ausente");
+   await settings.click();
+   check(await page.locator("#inventory-list").isVisible(),
+    screen+": atalho não abriu o Inventário");
    check(errors.length===0,screen+": erros JS: "+errors.join(" | "));
    console.log("PASS "+screen+": DE geral vs Esquiva, Muito Leve +2, Leve +1, Média, Pesada, desequipar, reload e trocar peso");
    await context.close();
