@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabe
  buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
-import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus} from "../module/equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus,defenseDisplay} from "../module/equipment-logic.mjs";
 
 function human(){return{
  monsterRules:false,level:1,xp:0,skills:["armas-leves"],
@@ -148,6 +148,13 @@ test("Esquiva: Muito Leve +2 e Leve +1 sem alterar DE geral nem acumular peças"
  assert.equal(defenseDE(extreme),2);assert.equal(dodgeDE(extreme),2);
  assert.equal(dodgeDE(stored),4);
  assert.equal(dodgeDE({system:s,items:[make("leve"),make("muito-leve")]}),5,"Não empilhar duas armaduras");
+ const displayed=defenseDisplay(veryLight);
+ assert.equal(displayed.de,6,"DE final única inclui bônus de Esquiva");
+ assert.equal(displayed.calculation,"Natural 4 + 2 (Muito Leve) = 6");
+ assert.match(displayed.condition,/somente ao esquivar/);
+ assert.equal(defenseDisplay(light).de,5);
+ assert.equal(defenseDisplay(heavy).de,3);
+ assert.equal(defenseDisplay(normal).calculation,"Natural 4 · sem modificador = 4");
 });
 test("Orçamento monstruoso usa tabela da Formação e humanoide usa 20 XP compartilhados",()=>{
  const m={monsterRules:true,xp:20,attributes:{forca:1,agilidade:2},skills:[],knowledges:{},practices:{}};
