@@ -53,12 +53,13 @@ export function xpLedger(s){
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:CREATION_REFERENCE.total);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules||s.animalRules?0:CREATION_REFERENCE.total);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules?"XP monstruoso: orçamento definido pelo Narrador; Grau não fixa o XP.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
+  state:s.monsterRules||s.animalRules?"Orçamento definido pelo Narrador.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];
+ if(system.animalRules)return false;
  if(system.monsterRules)return Number(system.threatGrade||1)>=5;
  if(sk.includes("combinacao"))return true;
  if(base?.group==="practice"&&base.key==="furtividade")return sk.includes("furtividade-avancada");
@@ -68,13 +69,14 @@ export function mayComplement(system,base,mode){
 }
 export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,equipmentDie=0}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
- if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(monster&&b.group!=="attribute")||(!monster&&b.group==="attribute"))
-  errors.push(monster?"Monstro: selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
+ const attributesOnly=monster||!!system.animalRules;
+ if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(attributesOnly!==(b.group==="attribute")))
+  errors.push(attributesOnly?"Selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
  if(!a||a.group!=="attribute"||!ATTRIBUTES.some(x=>x[0]===a.key))
   errors.push("Inclua um Atributo pertinente.");
  if(b&&a&&b.group===a.group&&b.key===a.key)errors.push("Fontes duplicadas.");
  if(c){
-  if(!(GROUPS[c.group]||[]).some(x=>x[0]===c.key)||(monster&&c.group!=="attribute"))errors.push("Complemento inválido.");
+  if(!(GROUPS[c.group]||[]).some(x=>x[0]===c.key)||(attributesOnly&&c.group!=="attribute"))errors.push("Complemento inválido.");
   if((b&&b.group===c.group&&b.key===c.key)||(a&&a.group===c.group&&a.key===c.key))errors.push("Complemento duplicado.");
   if(!mayComplement(system,b,mode))errors.push("Complemento exige Perícia ou capacidade de monstro.");
   if(!contextApproved)errors.push("Confirme pertinência do complemento.");
@@ -108,7 +110,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
 // Compra inicial orientada: os únicos gastos obrigatórios são Atributo G1
 // e Conhecimento OU Prática G1. O saldo continua livre, sem reservas por categoria.
 export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey){
- if(system?.monsterRules)return{ok:false,error:"Monstros extraordinários não usam a compra inicial humana."};
+ if(system?.monsterRules||system?.animalRules)return{ok:false,error:"Esta criatura não usa a compra inicial humana."};
  const attributes=system?.attributes||{},knowledge=system?.knowledges||{},practice=system?.practices||{};
  if(!ATTRIBUTES.some(([id])=>id===attributeId))return{ok:false,error:"Escolha um Atributo válido."};
  const group=trainingGroup==="knowledge"?KNOWLEDGES:trainingGroup==="practice"?PRACTICES:[];
@@ -126,7 +128,7 @@ export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey
 }
 export function compareKeptOptions(rolled,options={},limit=5){
  if(!Array.isArray(rolled)||!rolled.length||rolled.length>9)return [];
- const maximum=keepLimit(options.monster?options.threatGrade:options.level,options.extraKeep,!!options.monster);
+ const maximum=options.animal?2:keepLimit(options.monster?options.threatGrade:options.level,options.extraKeep,!!options.monster);
  const results=[];
  function visit(start,ids){
   if(ids.length){
@@ -148,10 +150,10 @@ export function compareKeptOptions(rolled,options={},limit=5){
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
- const maxKeep=keepLimit(monster?threatGrade:level,extraKeep,monster);
+ const maxKeep=animal?2:keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
  if(!rolled.some(d=>d.group==="attribute"))errors.push("A pilha deve conter um Atributo rolado.");
  if(Number(extraKeep)+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
@@ -170,6 +172,6 @@ export function resolveRoll(rolled,selectedIds,options={}){
  const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
   reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,
-  criticalRefundPP:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
+  criticalRefundPP:monster||hostile?0:refund,monsterCriticalPavor:!animal&&(monster||hostile)?2*refund:0,
   freeCharacteristics:success&&crit?1:0,selected:kept};
 }

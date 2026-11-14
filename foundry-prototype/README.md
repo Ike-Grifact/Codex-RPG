@@ -56,6 +56,14 @@ Se o atualizador no Windows mostrar `EBUSY` ao remover `Data/systems/codex-rpg-f
 
 ## Criação de fichas (protótipo)
 
+### Criação pelo diretório do Foundry
+
+Use **Criar ficha Codex** no diretório de Actors para escolher Aprendiz, Humanoide, Criatura comum ou Monstro extraordinário. **Importar do site** recebe o JSON do Criador de Fichas ou do Criar Conflito. No diretório de Items e em **+ Novo equipamento** na ficha, use o catálogo de playtest ou crie um item personalizado.
+
+Para animar as faces rúnicas em 3D, ative o módulo **Dice So Nice** no mundo. O mesmo lançamento alimenta a animação e as cartas dos dados mantidos. A animação é local para quem rola e o resultado confirmado vai para o chat.
+
+O [relatório de feedback](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/feedback-foundry-site-2026-11-14.md) compara a cobertura com o Criador, o Criar Conflito e o Roll & Keep do Assimilação.
+
 Além dos botões de aumento de grau e da compra de Perícias, a ficha de Personagem/Humanoide possui um painel **“Compras mínimas orientadas”**: escolhe-se um Atributo e um Conhecimento OU Prática, confirma-se a compra e apenas os graus ainda ausentes são debitados. Na ficha nova, o custo total é **3 XP** (1+2), deixando **17 XP livres** do total inicial **EXPERIMENTAL de 20 XP**. O restante das escolhas permanece livre; não existe reserva por categoria. Monstros extraordinários não participam dessa compra guiada e têm orçamento próprio definido pelo Narrador.
 
 O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma seleção alternativa dentro da **mesma rolagem já realizada**. Isso não rerrola, não consome recursos e não publica mensagem: somente a finalização confirmada produz efeitos.
@@ -77,7 +85,7 @@ As seis classificações de situação não são classes de ataque separadas. Qu
 
 ## Pavor do Narrador
 
-A HUD no topo da mesa exibe a quantidade de jogadores e o saldo de Pavor público sobre o teto. Use os botões −/+ ao lado de cada valor para ajustá-lo. Clique na contagem manual de jogadores para voltar à contagem do cadastro. Durante o combate, a HUD mostra quanto Pavor foi adicionado à reserva pública na rodada em exibição, já respeitando o teto. O mundo novo começa com 2P e retoma o saldo salvo nas próximas sessões.
+A HUD no topo da mesa exibe a quantidade de jogadores e o saldo de Pavor público sobre o teto, com uma runa por espaço da reserva. Use os botões −/+ ao lado de cada valor para ajustá-lo. Clique na contagem manual de jogadores para voltar à contagem do cadastro. Durante o combate, a HUD mostra quanto Pavor foi adicionado à reserva pública na rodada em exibição, já respeitando o teto. O mundo novo começa com 2P e retoma o saldo salvo nas próximas sessões.
 
 Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
 

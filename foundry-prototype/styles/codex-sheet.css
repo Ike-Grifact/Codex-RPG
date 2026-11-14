@@ -578,6 +578,16 @@
 .codex-pavor-hud button:disabled { opacity: .42; cursor: default; }
 .codex-pavor-hud .codex-pavor-player-count { border-color: transparent; background: transparent; }
 .codex-pavor-balance, .codex-pavor-round strong { color: var(--hud-pavor); }
+.codex-pavor-runes { display: inline-flex; flex-wrap: wrap; gap: 2px; max-width: min(26vw, 192px); }
+.codex-pavor-slot {
+  display: inline-grid; width: 14px; min-width: 14px; height: 22px; place-items: center;
+  border: 1px solid var(--hud-border); border-radius: 4px;
+  color: var(--hud-pavor); opacity: .38; font: 15px/1 Georgia, serif;
+}
+.codex-pavor-slot.is-filled { background: var(--hud-control); opacity: 1; }
+.codex-create-dialog .codex-creation-field { display: grid; gap: 4px; margin-bottom: 10px; }
+.codex-roll-marks { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
+.codex-roll-marks .codex-rune { font-size: 16px; }
 .codex-pavor-round { padding-inline: 2px; white-space: nowrap; }
 .codex-pavor-sr {
   position: absolute;

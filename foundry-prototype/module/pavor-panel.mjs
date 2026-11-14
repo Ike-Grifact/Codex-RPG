@@ -122,6 +122,8 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
     const roundPavor = round ? combat.getFlag(NS, "publicPavorCredits")?.[round] ?? 0 : 0;
     return {
       ...reserve,
+      slots: Array.from({length: Math.min(12, reserve.cap)}, (_, index) => ({filled: index < reserve.value})),
+      overflow: Math.max(0, reserve.cap - 12),
       round,
       roundPavor,
       canRemoveOne: reserve.value > 0,
@@ -162,7 +164,7 @@ export async function transferCombatPavor(message){
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
  if(obj.targetUuid){
   const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","creature"].includes(target.type)){
+  if(target&&["character","humanoid","animal","creature"].includes(target.type)){
    const add=Math.max(0,obj.p);
    if(obj.targetType==="character")
     await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});

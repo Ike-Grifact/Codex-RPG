@@ -15,7 +15,11 @@
   </div>
   <div class="codex-pavor-group" role="group" aria-label="Ajustar Pavor público">
     <button type="button" data-action="adjust" data-delta="-1" title="Retirar 1 Pavor" aria-label="Retirar 1 Pavor" {{#unless canRemoveOne}}disabled{{/unless}}>−</button>
-    <strong class="codex-pavor-balance" aria-live="polite" title="Pavor público · saldo / teto"><span aria-hidden="true">ᚦ</span> {{value}}/{{cap}} <span class="codex-pavor-sr">Pavor público</span></strong>
+    <span class="codex-pavor-runes" aria-hidden="true" title="{{value}} de {{cap}} Pavor na reserva">
+      {{#each slots}}<span class="codex-pavor-slot {{#if filled}}is-filled{{/if}}">ᚦ</span>{{/each}}
+      {{#if overflow}}<small>+{{overflow}}</small>{{/if}}
+    </span>
+    <strong class="codex-pavor-balance" aria-live="polite" title="Pavor público · saldo / teto">{{value}}/{{cap}}<span class="codex-pavor-sr"> Pavor público</span></strong>
     <button type="button" data-action="adjust" data-delta="1" title="Adicionar 1 Pavor" aria-label="Adicionar 1 Pavor" {{#unless canAddOne}}disabled{{/unless}}>+</button>
   </div>
   {{#if round}}

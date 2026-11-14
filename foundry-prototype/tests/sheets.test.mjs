@@ -50,6 +50,8 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
   info = await panel._prepareContext();
   assert.equal(info.value, 0);
   assert.equal(info.canRemoveOne, false);
+  assert.equal(info.slots.length, 5);
+  assert.equal(info.slots.filter(slot => slot.filled).length, 0);
   assert.equal(info.round, null);
 
   const flags = new Map();
@@ -66,6 +68,7 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
   info = await panel._prepareContext();
   assert.deepEqual([info.automatic, info.value, info.cap, info.room], [false, 5, 5, 0]);
   assert.equal(info.roundPavor, 5);
+  assert.equal(info.slots.filter(slot => slot.filled).length, 5);
   await adjust(-1);
   assert.equal((await panel._prepareContext()).roundPavor, 5);
   game.combat.round = 2;
