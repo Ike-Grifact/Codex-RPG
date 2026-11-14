@@ -861,7 +861,8 @@ function combatItem(item,mode){
   const element=(item.element||"psiquico").toLowerCase();
   const map={ar:"vento",água:"agua",agua:"agua",terra:"terra",fogo:"fogo",sagrado:"sagrado",sangue:"sangue",veneno:"veneno",trevas:"trevas"};
   if(!["psiquico","psíquico"].includes(element)&&!skills.includes(map[element]||element))return [];
-  return [die];
+  // O peso físico de um cetro G1 não habilita automaticamente magia Média/Pesada.
+  return [cat==="leve"||skills.includes("conjuracao-equilibrada")?die:6];
  }
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
@@ -1871,11 +1872,11 @@ function wizardEquipment(){
  const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
  const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
- const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
- const items=CATALOG.filter(it=>it.kind!=="focus"&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const purchasable=it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':'Preço pendente')+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">Não disponível para compra</span>')+'</footer></article>';}).join("");
+ const items=CATALOG.filter(it=>wizardShopCategory==="all"||it.kind===wizardShopCategory)
+ .map(it=>{const purchasable=it.kind!=="focus"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?"Fabricação por Artesão":"Preço pendente")+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
@@ -2315,6 +2316,12 @@ function inventorySelect(field,value,values,id){
  return'<select data-item-field="'+field+'" data-id="'+esc(id)+'">'+values.map(([k,v])=>'<option value="'+k+'"'+(k===value?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select>';
 }
 function renderInventory(){
+ const focusSelector=$("focus-test-model");
+ if(focusSelector){
+  const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1);
+  focusSelector.innerHTML=models.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join("");
+  if(models.some(x=>x.name===previous))focusSelector.value=previous;
+ }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
  $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
@@ -2416,11 +2423,14 @@ function addTestFocus(){
  }
  if(state.items.length>=150){toast("Inventário cheio.");return;}
  if(!confirm("Adicionar Foco G1 somente para simulação? A fabricação real exige teste com Artesão e recursos ainda não automatizados."))return;
- const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
+ const model=$("focus-test-model")?.value;
+ const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1&&x.name===model)||CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
  if(!row){toast("Foco de teste não cadastrado.");return;}
+ const isElementalModel=row.name!=="Foco de Magia Leve G1";
+ if(isElementalModel&&!state.elementalCrystal.element){toast("Escolha o elemento do Cristal Elemental antes de simular varinha ou cetro.");return;}
  const item=normalizedCatalogItem(row);
  item.element=String(state.elementalCrystal.element||"psiquico").toLowerCase();
- item.name="Foco G1 de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
+ item.name=row.name+" de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
  state.items.push(item);render();save();
  toast("Foco de teste adicionado; fabricação com Artesão continua pendente.");
 }
