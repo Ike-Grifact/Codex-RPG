@@ -896,7 +896,7 @@ const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
- level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
+ level:1,attributes:{},knowledges:{},practices:{},skills:[],genePackages:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -1020,6 +1020,17 @@ function normalize(v){
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ // Registra exclusivamente compras conjuntas feitas pelas esferas roxas.
+ // Fichas anteriores não têm histórico: nunca supor quais requisitos eram próprios.
+ s.genePackages=Array.isArray(v.genePackages)?v.genePackages.slice(-120).filter(r=>
+  r&&SKILLS.some(([id])=>id===r.root)&&Array.isArray(r.skills)&&Array.isArray(r.sources)
+ ).map(r=>({
+  root:r.root,active:r.active!==false,
+  skills:[...new Set(r.skills.filter(id=>SKILLS.some(([key])=>key===id)))].slice(0,30),
+  sources:r.sources.filter(x=>x&&SOURCE_PROPS[x.group]&&GROUPS[x.group].some(([k])=>k===x.key)&&
+   Number.isInteger(x.from)&&Number.isInteger(x.to)&&x.from>=0&&x.to<=6&&x.to>x.from
+  ).slice(0,20).map(x=>({group:x.group,key:x.key,from:x.from,to:x.to}))
+ })):[];
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
   s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":"Combinação de Fontes").join(" e ")+
    ". XP liberado automaticamente pela retirada; Artista Marcial não é adquirido sem requisitos.").trim().slice(0,5000);
@@ -1528,8 +1539,16 @@ function geneAutoBuy(id){
    if(to>from)levels.push(name+" "+from+" → "+to);
   }
  }
- const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
-  .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const addedSkillIds=plan.state.skills.filter(sid=>!base.skills.includes(sid));
+ const newSkills=addedSkillIds.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const receipt={root:id,active:true,skills:addedSkillIds,sources:[]};
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key] of GROUPS[group]){
+   const from=Number(base[field][key]||0),to=Number(plan.state[field][key]||0);
+   if(to>from)receipt.sources.push({group,key,from,to});
+  }
+ }
  const before=xpCosts(base).free,after=xpCosts(plan.state).free;
  const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
   (levels.length?"Graus:\n• "+levels.join("\n• ")+"\n\n":"")+
@@ -1546,7 +1565,7 @@ function geneAutoBuy(id){
   }
  }
  for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
- geneCommit();
+ geneCommit(receipt);
 }
 function geneStageSkill(id){
  if(!geneCanAdjust())return;
@@ -1564,7 +1583,7 @@ function geneStageSkill(id){
 function geneDiscard(){
  geneDraft.clear();genePendingSkills.clear();geneRefresh();
 }
-function geneCommit(){
+function geneCommit(receipt=null){
  if(!geneCanAdjust()||!genePendingCount())return;
  const preview=genePreviewState(),xp=xpCosts(preview),problem=dependentsValid(preview);
  if(xp.free<0||problem||(!state.creationLocked&&!hasStarterSources(preview))){
@@ -1574,6 +1593,10 @@ function geneCommit(){
  state.knowledges={...preview.knowledges};
  state.practices={...preview.practices};
  state.skills=[...preview.skills];
+ if(receipt?.root&&receipt.skills.includes(receipt.root)){
+  state.genePackages.push(receipt);
+  state.genePackages=state.genePackages.slice(-120);
+ }
  geneDraft.clear();genePendingSkills.clear();
  for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
  render();save();toast("Evolução confirmada. Saldo de XP: "+xp.free+".");
