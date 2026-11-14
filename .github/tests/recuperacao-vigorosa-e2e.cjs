@@ -8,7 +8,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.goto("http://127.0.0.1:8000/prototipo-ficha/?modo=humanoide-rapido",{waitUntil:"domcontentloaded"});
   const key="codex-html-humanoide-rapido-v1";
   const getState=()=>page.evaluate(k=>JSON.parse(localStorage.getItem(k)),key);
-  const starting=await getState();
+  const starting=(await getState())||{skills:[],attributes:{vigor:0},xpEarned:0};
   assert(!starting.skills.includes("recuperacao-vigorosa"),"Perícia pré-adquirida");
   const node=page.locator('#gene-builder-map .fp-gene-skill[data-gene-id="recuperacao-vigorosa"]');
   assert(await node.count()===1,"Recuperação Vigorosa ausente no DNA");
