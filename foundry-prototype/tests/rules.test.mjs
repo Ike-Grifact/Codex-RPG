@@ -13,9 +13,19 @@ function human(){return{
 };}
 test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurador",()=>{
  assert.equal(ATTRIBUTES.length,6);assert.equal(KNOWLEDGES.length,6);assert.equal(PRACTICES.length,6);
- assert.equal(SKILLS.length,39);
+ assert.equal(SKILLS.length,40);
  assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz"].includes(s.id)));
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
+});
+test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
+ const skill=SKILLS.find(s=>s.id==="recuperacao-vigorosa");
+ assert.equal(skill?.cost,1);
+ const actor=human();
+ actor.attributes.vigor=2;
+ assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),false);
+ actor.attributes.vigor=3;
+ assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),true);
+ assert.ok(!SKILLS.some(s=>s.id==="recuperacao-movimento"),"Maestria com XP pendente não pode ser comprada");
 });
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
