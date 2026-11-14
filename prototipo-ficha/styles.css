@@ -1270,3 +1270,22 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-de-dodge>span{font-size:10px;font-weight:800;letter-spacing:.045em;color:var(--fp-gold)}
 .fp-de-dodge>strong{font:normal 25px/1 Georgia,serif;color:var(--fp-text);white-space:nowrap}
 .fp-de-vital #de-dodge-caption{font-size:10px;line-height:1.45;margin-top:2px;color:var(--fp-muted)}
+
+/* Um único valor final de DE, com origem do modificador e Integridade visível. */
+.fp-de-vital #de-text{font-size:clamp(31px,2.2vw,37px);line-height:1.1}
+.fp-de-vital .fp-de-breakdown{font-size:11px;font-weight:700;color:var(--fp-text);line-height:1.45}
+.fp-de-vital .fp-de-condition{font-size:10px;line-height:1.4;color:var(--fp-muted)}
+.fp-defense-armor{display:grid;gap:6px;padding:9px 10px;margin-top:5px;border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised);min-width:0}
+.fp-defense-armor[hidden]{display:none!important}
+.fp-defense-armor-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.fp-defense-armor-head>span{font-size:10px;font-weight:750;color:var(--fp-muted);overflow-wrap:anywhere}
+.fp-defense-armor-head>strong{font-size:18px;font-weight:800;color:var(--fp-text);white-space:nowrap;font-variant-numeric:tabular-nums}
+.fp-defense-armor>small{font-size:10px;line-height:1.35;color:var(--fp-muted)}
+.fp-defense-armor-meter{height:7px;background:var(--fp-stroke);border-radius:10px;overflow:hidden}
+.fp-defense-armor-meter span{display:block;height:100%;border-radius:inherit;background:var(--fp-gold)}
+.fp-defense-armor-actions{display:flex;justify-content:flex-end;gap:7px}
+.fp-defense-armor-actions button{min-width:35px;min-height:32px;padding:3px 9px;border:1px solid var(--fp-stroke);border-radius:7px;background:var(--fp-deep);color:var(--fp-text);cursor:pointer}
+.fp-defense-armor-actions button:disabled{opacity:.42;cursor:not-allowed}
+.fp-defense-armor-actions button:focus-visible,.fp-defense-inventory-link:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
+.fp-defense-inventory-link{border:1px solid var(--fp-gold);background:var(--fp-deep);color:var(--fp-text);border-radius:7px;padding:7px;font:600 11px/1.25 inherit;cursor:pointer}
+.fp-defense-inventory-link:hover{border-color:var(--fp-text)}
