@@ -60,6 +60,16 @@
 
 **PENDENTE:** determinar preço, eventuais propriedades **além das já definidas**, se/quando a peça física pode ser preparada como foco mágico conforme Criar Item de Foco e Magia e sua interação exata com Artesão. Cadastrar uma arma não concede automaticamente Perícia, foco elemental ou dado adicional de conjuração.
 
+### Complemento autoral — focos elementais Grau 1 (14/11/2026)
+
+**DEFINIDO pelo autor:** incluir **Varinha G1** como foco elemental **Leve**, com as características **Muito Leve + Elemental**; incluir **Cetro Leve G1, Cetro Médio G1 e Cetro Pesado G1**, todos como **itens de foco elementais**, mas **sem características especiais**. Os quatro modelos têm **Grau 1**. O uso da palavra *elemental* nos cetros indica a **finalidade do foco**, não uma propriedade especial ativável; somente a Varinha recebe a propriedade **Elemental**.
+
+**IMPLEMENTADO NA BRANCH DE PLAYTEST:** os quatro modelos possuem `kind=focus`, elemento inicialmente **a definir** e categoria física correspondente; as categorias Leve/Média/Pesada ocupam carga física e possuem referências de dado d6/d10/d12. A Varinha usa a carga de Leve reduzida por **Muito Leve**. Para prevenir o ganho automático de magia Média/Pesada pelo simples porte do cetro, a rolagem de conjuração no criador e Foundry retorna d6 sem a habilitação **Conjuração Equilibrada**. Esta trava é uma proteção operacional do protótipo, não uma regra de peso de magia inventada. A relação definitiva entre categoria física do cetro e categoria de magia permanece **PENDENTE**.
+
+**FLUXO DO CRIADOR:** os focos aparecem no catálogo informativo de patrimônio, mas não podem ser comprados como armas; na ficha há seletor para **simular** a fabricação do modelo escolhido, ainda exigindo Criar Item de Foco e Magia e suas fontes. Para simular varinha/cetro é necessário selecionar o elemento no cristal da ficha. Essa simulação **não** substitui teste de Artesão nem material de fabricação.
+
+**PENDENTE:** preços em VT, materiais, procedimento efetivo de fabricação, atribuição definitiva do elemento a cada foco e eventual diferenciação entre peso físico e capacidade de magias. A característica **Elemental** da Varinha G1 deriva de decisão direta do autor para **foco**, não da tabela de armas físicas G1: a limitação do SRD que reserva Elemental para Grau 2 diz respeito às **armas físicas**. Um foco não concede Perícia elemental gratuitamente.
+
 ## 7. Medidas para o próximo playtest
 
 | Medida | Registro mínimo |
