@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINI
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,escapeHTML} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,dodgeDE,dodgeBonus} from "./equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,defenseDisplay} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
@@ -51,6 +51,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
+  const defense=defenseDisplay(actor);
+  const wornArmor=actor.items.find(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+  const armorSys=wornArmor?.system,armorMax=Math.max(0,Number(armorSys?.integrity?.max)||0);
+  const armorCurrent=Math.min(armorMax,Math.max(0,Number(armorSys?.integrity?.value)||0));
+  const armorCard=wornArmor?{
+   id:wornArmor.id,name:wornArmor.name,integrity:armorCurrent,maximum:armorMax,
+   noIntegrity:armorSys.category==="muito-leve",hasMaximum:armorMax>0,
+   percent:armorMax?Math.round(100*armorCurrent/armorMax):0
+  }:null;
   ctx.codex={
    actorName:actor.name,portrait:actor.img,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
@@ -58,7 +67,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    actorTypeLabel:{character:"Personagem",humanoid:"Oponente humanoide",creature:"Monstro extraordinário"}[actor.type],
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defenseDE(actor),deDodge:dodgeDE(actor),dodgeBonus:dodgeBonus(actor),
+   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
     xp:s.xp,xpLedger:ledger,hasCreationMinimum:hasFirstAttribute&&hasTraining,
