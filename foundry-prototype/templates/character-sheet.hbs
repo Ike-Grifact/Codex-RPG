@@ -220,7 +220,7 @@
         {{#if codex.pending.summary.ok}}
           {{#if codex.pending.trevasEnabled}}{{#each codex.pending.targetResults}}
           <p><strong>{{this.name}}:</strong> DE {{this.de}} · resultado {{this.reached}} · {{#if this.success}}acerto{{else}}falha{{/if}}</p>
-          {{/each}}{{/if}}
+          {{/each}}<p class="codex-tip">O quadro geral abaixo usa a DE do primeiro alvo; para dois alvos, os acertos são os resultados individuais acima.</p>{{/if}}
           <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
