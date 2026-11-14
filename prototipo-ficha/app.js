@@ -1431,6 +1431,7 @@ const GENE_AUTO_REQUIREMENTS={
  "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
  "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
  "disciplina-avancada":[["p:armas_conjuracao:2"]],
+ "recuperacao-vigorosa":[["a:vigor:3"]],
  "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
  "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
  "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
