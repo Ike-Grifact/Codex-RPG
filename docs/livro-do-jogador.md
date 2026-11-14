@@ -288,7 +288,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 ### Perícia Recuperação Vigorosa [DEFINIDO]
 
-**Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
+**Requisito: Vigor 3. Compra: 1 XP [DEFINIDO — reafirmado pelo autor em 13/11/2026].** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
 
 **Exemplo com 6 Vida:** Vigor 3, Força 0 → caixas **2 / 2 / 2**. Se a ficha está em **0 / 1 / 2**, a Perícia permite passar a **0 / 2 / 2 em 1 dia**.
 
@@ -603,7 +603,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado para disparos/arremessos; detalhes de ativação e custo aguardam decisão |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
-| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
+| **Recuperação Vigorosa** | **1 XP — DEFINIDO** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
 | **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
 | **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
@@ -634,7 +634,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **Artista Marcial:** cada manobra adicional requer ativação própria e só se aplica uma por vez; o crítico de Pugilismo conserva sua condição anterior. **Recuperação em Movimento:** dano reinicia a contagem de 8 horas e não transforma automaticamente prazos semanais em 8h. **Maestria em Manejo Duplo:** além de DES 2 e AGI 1 agora definidos, falta determinar os requisitos combinados de Maestrias/Disciplina Avançada. **Manejo Perfeito:** requer DES 2, mas custo XP/Golpe Certo continuam pendentes.
 
-**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; custo de Manejo Perfeito e Golpe Certo; limites de Pugilismo; retirada de armas lançadas e riscos a aliados; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; Disciplina Avançada; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
+**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; custo de Manejo Perfeito e Golpe Certo; limites de Pugilismo; retirada de armas lançadas e riscos a aliados; custos da Maestria em Recuperação Vigorosa em Movimento e de Instinto de Sobrevivência (Recuperação Vigorosa já custa 1 XP); Disciplina Avançada; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
 
 ### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
 
@@ -671,7 +671,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Recuperação Vigorosa** | **1 XP — DEFINIDO** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
 | **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
 **A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
