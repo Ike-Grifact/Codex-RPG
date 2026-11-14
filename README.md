@@ -12,8 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.39 | [docs/srd-continuidade-v0.39.md](docs/srd-continuidade-v0.39.md) | **Atualização normativa vigente (13/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras de Mestre preservadas; referências à criação atualizadas conforme SRD v0.39 |
+| SRD de Continuidade v0.40 | [docs/srd-continuidade-v0.40.md](docs/srd-continuidade-v0.40.md) | **Face crítica d10 = 2E+1A e elevação por Coragem aprovadas (14/11/2026)** |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras de Mestre preservadas; precedência geral do SRD v0.40 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
 
@@ -66,10 +66,10 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **[SRD de Continuidade v0.39](docs/srd-continuidade-v0.39.md)**. A seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11; as seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
+Na branch revisável, a referência mais recente é o **[SRD de Continuidade v0.40](docs/srd-continuidade-v0.40.md)**. A seção **0-Z** homologa a face crítica do d10 (**2E+1A**) e a escolha livre do dado elevado com Coragem; a seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11. As seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-Y da v0.39 para a criação; depois as seções 0-X, 0-W, 0-V e demais capítulos recentes, nos assuntos pertinentes.
+2. Seção 0-Z da v0.40 para faces e elevação com Coragem; depois 0-Y para criação, 0-X para armas e 0-W, 0-V nos assuntos não modificados.
 3. Seções históricas somente onde não haja decisão mais recente conflitante.
 4. Livro de leitura e implementação, que não aprovam por si sós regras novas.
 
