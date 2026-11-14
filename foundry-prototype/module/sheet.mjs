@@ -8,7 +8,7 @@ import {G1_CATALOG} from "./catalog.mjs";
 import {CodexPavorPanel} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
-const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
+const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
@@ -69,7 +69,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   };
   if(ctx.codex.preparing){
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
-   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
+   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
    const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
    ctx.codex.prepare={
@@ -80,7 +80,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
-    step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+    step:this._opts.step,stepChoices:[{id:"",label:"Escolha o dado a elevar",selected:!this._opts.stepDieId},
+     ...plan.pool.filter(x=>Object.hasOwn({4:6,6:10,10:12},x.baseSides))
+       .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+" · dado "+(Number(x.id.split(".").at(-1))+1)+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]),selected:this._opts.stepDieId===x.id}))],
+     combatBonus:false,hasCombatSkill:false,
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
@@ -214,7 +217,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     opts.de=defenseDE(target);
    }
    opts.noisy=!!item?.system.properties?.includes("Barulhenta");
-   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,equipmentDie:die});
+   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,stepDieId:opts.stepDieId,equipmentDie:die});
    if(!plan.ok)throw Error(plan.errors.join(" "));
    const result=await rollPool(plan.pool),pending={version:2,id:crypto.randomUUID(),created:Date.now(),
     base:this._draft.base,attribute:this._draft.attribute,complement:this._draft.complement,
