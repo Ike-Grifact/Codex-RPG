@@ -2,7 +2,7 @@
 
 **Registro:** 14/11/2026. **Data exata da sessão:** não informada.  
 **Fonte:** observações diretas do Narrador, sem log detalhado de rolagens.  
-**Referência normativa consultada:** [SRD de Continuidade v0.39](../srd-continuidade-v0.39.md), na `main` em 14/11/2026.  
+**Referência normativa do playtest:** [SRD de Continuidade v0.39](../srd-continuidade-v0.39.md), na `main` em 14/11/2026. **Consolidação posterior:** [SRD v0.40](../srd-continuidade-v0.40.md), preparado nesta branch e ainda não publicado na `main`.  
 **Estado:** relatório de observação, **não altera regras**.
 
 ## 1. Cenário e composição
@@ -91,8 +91,8 @@
 ### 8.1. Face máxima do d10
 
 - **ERRO OBSERVADO:** a face **10** do d10 estava codificada como **2E + 1P**, o que podia produzir crítico com Pavor próprio.
-- **DEFINIDO pelo autor:** a face crítica do d10 **não deve conter Pavor**; a alternativa mencionada foi **2E ou 2E+A**.
-- **EXPERIMENTAL na branch, não homologado quanto à alternativa:** escolher **2E+A** na face **10**, mantendo os símbolos das outras nove faces intactos. A alternativa **2E puro** permanece **PENDENTE de decisão final**. É uma mudança probabilística, não apenas estética: elimina **0,1 Pavor esperado por d10 rolado**, acrescenta **0,1 Antecipar esperado por d10 rolado** (antes da seleção de mantidos) e altera os usos de conversão de Pavor no crítico. Não afetar d12/d20 por analogia.
+- **DEFINIDO pelo autor em 14/11/2026:** a face máxima **10** do **d10** contém exatamente **2E+1A, sem Pavor**. O autor aprovou expressamente esta opção após considerar 2E puro.
+- **IMPLEMENTADO E HOMOLOGADO quanto à face:** **2E+1A** na face **10**, com as outras nove faces intactas; a alternativa **2E puro foi descartada**. É mudança probabilística: elimina **0,1 Pavor esperado por d10 rolado** e acrescenta **0,1 Antecipar esperado por d10 rolado** (antes da seleção de mantidos), além de alterar os usos de conversão de Pavor no crítico. **Não altera d12 nem d20.** A nova referência normativa está na seção **0-Z.1 do SRD v0.40**, em branch revisável.
 - **DEFINIDO e inalterado:** crítico exige manter **ao menos dois dados**, **todos nas respectivas faces numéricas máximas**; o Atributo é obrigatório na **rolagem**, mas não na **retenção**. Mudar os símbolos da face 10 **não** cria um crítico adicional nem altera o gatilho.
 
 ### 8.2. Elevação comum de dado com Coragem
@@ -104,5 +104,5 @@
 
 **Validação técnica:** faces d10 iguais no site e Foundry; testes positivos para selecionar Atributo, Prática, Conhecimento complementar e equipamento, e negativos para alvo omitido, inexistente ou que já é d12. Scripts sintaticamente válidos, porém **sem teste integrado de navegador/Foundry VTT real**.
 
-**Consolidação futura:** formalizar o resultado definitivo da face crítica (**2E puro** vs. **2E+A**) no próximo SRD e atualizar tabelas do Livro do Jogador apenas após aprovação. Até lá, o código revisável usa **2E+A experimental** e a `main` permanece intacta.
+**Consolidação realizada na branch:** [SRD v0.40](../srd-continuidade-v0.40.md) registra a aprovação definitiva de **2E+1A**; o Livro do Jogador e sua versão web tiveram a tabela e o exemplo corrigidos. A nova face está implementada na ficha web e no Foundry; **a `main` permanece intacta até revisão e mesclagem do PR**.
 
