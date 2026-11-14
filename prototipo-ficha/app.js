@@ -207,8 +207,8 @@ const SKILLS=[
  [
   "recuperacao-vigorosa",
   "Recuperação Vigorosa",
-  "Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",
-  null
+  "Requer Vigor 3. A cada 3 graus completos de Vigor acelera a recuperação de um dos últimos pontos da caixa Machucado de uma semana para um dia por ponto. Não substitui tratamento médico. Custa 1 XP.",
+  1
  ],
  [
   "recuperacao-movimento",
@@ -1180,7 +1180,8 @@ function skillReq(id,s=state){
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
- if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
+ if(id==="recuperacao-vigorosa"&&vig<3)return"Requer Vigor 3.";
+ if(id==="instinto-sobrevivencia"&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
