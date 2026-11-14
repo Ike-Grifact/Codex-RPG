@@ -2,9 +2,11 @@
 
 Estamos testando o combate, a liberdade de builds e o equilíbrio de recursos do **Codex RPG**. Não é preciso escrever um relatório técnico: queremos saber **o que aconteceu na mesa, o que funcionou, o que travou e como foi a experiência**.
 
-**Referência de teste:** SRD v0.42 na branch revisável (a versão publicada na main ainda pode estar anterior).
-SRD: https://github.com/Ike-Grifact/Codex-RPG/blob/playtest/escolta-aprendiz-equipamentos/docs/srd-continuidade-v0.42.md
-PR das alterações: https://github.com/Ike-Grifact/Codex-RPG/pull/5
+**Materiais para jogar no site oficial do Codex RPG:**
+**Livro do Jogador:** https://ike-grifact.github.io/Codex-RPG/livro.html
+**Criador de Ficha:** https://ike-grifact.github.io/Codex-RPG/prototipo-ficha/
+
+**Atenção à versão:** este anúncio descreve regras de playtest da v0.42 ainda em revisão. Conferir se a publicação do site já incorporou essas decisões antes de apresentá-las como disponíveis no livro e criador online. Não encaminhar jogadores para o repositório técnico.
 
 **O que observar neste teste:**
 - **Pavor dos inimigos:** cada inimigo começa o combate com a reserva local cheia: G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P. Mais Pavor permite pagar capacidades existentes, **não concede turnos extras**.
