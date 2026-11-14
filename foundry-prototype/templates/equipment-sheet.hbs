@@ -14,7 +14,7 @@
 <option value="pesado" {{#if equipment.categoryPesado}}selected{{/if}}>Pesada</option>
 <option value="muito-leve" {{#if equipment.categoryMuitoLeve}}selected{{/if}}>Muito Leve</option>
 </select></label>
-<label>Dado adicional (0/6/10/12)<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
+<label>Dado adicional (0/6/10/12) {{#if equipment.dieIcon}}<span class="codex-small-die">{{{equipment.dieIcon}}}<b>d{{equipment.die}}</b></span>{{/if}}<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
 <label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
 <label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>
 <label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>

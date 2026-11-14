@@ -73,6 +73,14 @@ O Codex Genético usa dados poliédricos visuais equivalentes aos do rolador e d
 
 **ESTADOS:** **DEFINIDO** permanece apenas o custo e requisito já homologados das fontes e Perícias; esta automação é **IMPLEMENTAÇÃO**, não uma nova regra de evolução. **EXPERIMENTAL** permanece o total de 20 XP e o saldo compartilhado no protótipo.
 
+### 0-Y.7. Recuperação Vigorosa — custo reafirmado em 13/11/2026 [DEFINIDO]
+
+**Decisão explícita do autor:** **Recuperação Vigorosa custa 1 XP**, mantendo **Vigor grau 3** como requisito. O efeito permanece aquele da seção histórica **0-K.3**: a cada três graus completos de Vigor, um dos últimos pontos da caixa intermediária (Machucado) recupera-se em **um dia por ponto**, em vez de uma semana, sem dispensar tratamento médico na caixa Incapacitado.
+
+**Precedência:** esta reafirmação supera as marcações de compra **PENDENTE** na seção histórica 0-V e nas referências antigas do Livro do Jogador. Não altera custos de outras Perícias ou graus, nem concede restituição automática a fichas prévias. O custo da **Maestria em Recuperação Vigorosa em Movimento** e de **Instinto de Sobrevivência** permanece **PENDENTE**.
+
+**Implementação:** permitir a compra no criador por 1 XP após Vigor 3, com o mesmo saldo compartilhado, validações e procedimento de edição das demais Perícias. As conexões do mapa são temáticas, nunca requisitos adicionais.
+
 ## Histórico íntegro — SRD de Continuidade v0.38 (13/11/2026)
 
 **Arquivo histórico preservado abaixo.** Todos os parágrafos que reservam XP por categoria (especialmente 6/8/5, 7/7/5 ou 5 XP obrigatoriamente exclusivos para Perícias) foram **substituídos pela seção 0-Y** acima. Para os demais assuntos, continuam válidas as decisões mais recentes da v0.38 sem conflito com a v0.39.
@@ -270,7 +278,7 @@ A tabela expressa **equivalências**, não PP obrigatoriamente disponíveis: PP 
 4. **Manejo Perfeito:** XP de compra, efeito operacional de Golpe Certo. **Destreza 2 definido.**
 5. **Pugilismo:** pesos disponíveis e ativação por crítico. **Disciplina 1 + Força 2 + Destreza 1 definidos.**
 6. **Arremesso de Armas:** retirada/recuperação resistida e condição de atingir aliado.
-7. **Recuperação Vigorosa e Maestria em Movimento:** custos, relação das 8h com prazos de cura, tratamento.
+7. **Recuperação Vigorosa e Maestria em Movimento:** custo de Recuperação Vigorosa (1 XP) resolvido em 0-Y.7; continuam pendentes o custo da Maestria e a relação das 8h com prazos de cura e tratamento.
 8. **Instinto de Sobrevivência:** custo XP.
 9. **Disciplina Avançada:** limite de fontes e dados, pertinência.
 10. **Recobrar Coragem:** frequência de uso por descanso/cena.
@@ -755,9 +763,9 @@ Permite arremessar **arma Leve a até 24 m**, aplicando dano e efeitos habilitad
 
 **Remoção quando exigida:** rolagem de **Armas + Força + Atletismo** contra dificuldade determinada por **Força + Vigor + Atletismo do inimigo, considerando dados comprados**. **PENDENTE:** como esses dados defensivos determinam DE; se a retirada no acerto limpo é sem teste ou depende de oposição; como interpretar o acerto acidental do aliado e se a nova jogada concede ação extra além do protagonismo normal.
 
-### Recuperação Vigorosa [DEFINIDO no efeito; compra PENDENTE]
+### Recuperação Vigorosa [DEFINIDO no efeito; anotação histórica de compra PENDENTE superada em 0-Y.7]
 
-**Requisito Vigor 3. Custo em XP PENDENTE** — a versão histórica do livro atribuiu 1 XP, mas o autor não reafirmou esse custo no conjunto atual.
+**REGISTRO HISTÓRICO:** a compra ainda era pendente nesta seção. **REGRA VIGENTE (0-Y.7): requisito Vigor 3, custo 1 XP**, reafirmados pelo autor em 13/11/2026.
 
 A cada **3 graus completos de Vigor**, acelera em **1 dia** a recuperação de **um dos últimos pontos da caixa intermediária (Machucado)**, que normalmente levaria **1 semana por ponto**. Ex.: com caixa **4/4/4** e Vigor 6, **0/1/4 → 0/2/4** ainda leva uma semana; as etapas **0/2/4 → 0/3/4** e **0/3/4 → 0/4/4** levam um dia cada. Não elimina tratamento da caixa Incapacitado.
 

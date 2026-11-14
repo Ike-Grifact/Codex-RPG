@@ -4,9 +4,19 @@ on:
     branches: [main]
     paths:
       - 'prototipo-ficha/**'
+      - 'criar-conflito/**'
+      - 'foundry-prototype/**'
+      - '.github/tests/conflito-e2e.cjs'
+      - '.github/tests/conflito-rolagens-e2e.cjs'
+      - '.github/tests/humanoide-rapido-e2e.cjs'
+      - '.github/tests/armadura-npc-e2e.cjs'
+      - '.github/tests/esquiva-armaduras-e2e.cjs'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
+      - '.github/tests/genetico-rotulos-e2e.cjs'
+      - '.github/tests/genetico-reembolso-e2e.cjs'
+      - '.github/tests/recuperacao-vigorosa-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -36,7 +46,25 @@ jobs:
           done
           cat /tmp/codex-http.log
           exit 1
+      - name: Testar regras do Foundry e do conflito no Node
+        run: node --test foundry-prototype/tests/rules.test.mjs criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs
+      - name: Testar conflito e sobrecarga de VT em Chromium
+        run: node .github/tests/conflito-e2e.cjs
+      - name: Testar rolagens de criaturas e consumo de Pavor
+        run: node .github/tests/conflito-rolagens-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
+      - name: Testar humanoide rápido com DNA, compra roxa e envio ao conflito
+        run: node .github/tests/humanoide-rapido-e2e.cjs
+      - name: Testar Integridade da armadura e atalho visual de NPC
+        run: node .github/tests/armadura-npc-e2e.cjs
+      - name: Testar DE Esquiva com Armadura Muito Leve e Leve no PC e celular
+        run: node .github/tests/esquiva-armaduras-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular
         run: node .github/tests/genetico-navegacao-e2e.cjs
+      - name: Verificar rótulos inteiros no Codex Genético em desktop e celular
+        run: node .github/tests/genetico-rotulos-e2e.cjs
+      - name: Testar reversão de Perícias e reembolso no DNA em modo edição
+        run: node .github/tests/genetico-reembolso-e2e.cjs
+      - name: Testar Recuperação Vigorosa por 1 XP, requisitos e reembolso
+        run: node .github/tests/recuperacao-vigorosa-e2e.cjs

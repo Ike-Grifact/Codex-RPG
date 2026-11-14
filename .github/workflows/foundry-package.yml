@@ -1,0 +1,152 @@
+name: Codex RPG - pacote instalável Foundry v14
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'foundry-prototype/**'
+      - '.github/workflows/foundry-package.yml'
+  push:
+    tags:
+      - 'foundry-v*'
+      - 'foundry-playtest-v*'
+
+permissions:
+  contents: read
+
+jobs:
+  installer-tests:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Testar regras e instalador
+        run: node --test 'foundry-prototype/tests/*.test.mjs'
+
+  foundry-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Montar e verificar o pacote
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ "$GITHUB_REF_TYPE" == tag ]]; then args+=(--tag "$GITHUB_REF_NAME"); fi
+          node foundry-prototype/scripts/build.mjs --out dist/codex-rpg-foundry "${args[@]}"
+          cp dist/codex-rpg-foundry/system.json dist/system.json
+          (cd dist && zip -q -r codex-rpg-foundry.zip codex-rpg-foundry)
+          unzip -tq dist/codex-rpg-foundry.zip
+          unzip -p dist/codex-rpg-foundry.zip codex-rpg-foundry/system.json | cmp - dist/system.json
+      - name: Guardar ZIP e manifesto para revisão
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-rpg-foundry-v14
+          path: |
+            dist/codex-rpg-foundry.zip
+            dist/system.json
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    if: github.repository == 'Ike-Grifact/Codex-RPG' && github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [installer-tests, foundry-package]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    concurrency:
+      group: foundry-release-${{ startsWith(github.ref_name, 'foundry-playtest-') && 'playtest' || 'stable' }}
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: codex-rpg-foundry-v14
+          path: dist
+      - name: Preparar release e publicar o canal de testes
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="$GITHUB_REF_NAME"
+
+          ensure_assets() {
+            local asset name
+            for asset in dist/system.json dist/codex-rpg-foundry.zip; do
+              name="${asset##*/}"
+              if ! gh release view "$tag" --json assets --jq '.assets[].name' | grep -Fx "$name" >/dev/null; then
+                gh release upload "$tag" "$asset"
+              fi
+            done
+          }
+
+          if [[ "$tag" != foundry-playtest-* ]]; then
+            # Somente o mantenedor publica o rascunho em Releases depois de aprová-lo.
+            if ! gh release view "$tag" --json isDraft >/dev/null 2>&1; then
+              gh release create "$tag" dist/system.json dist/codex-rpg-foundry.zip \
+                --verify-tag --draft --title "Codex RPG Foundry ${tag#foundry-v}" --generate-notes
+            fi
+            if [[ "$(gh release view "$tag" --json isDraft --jq .isDraft)" == true ]]; then ensure_assets; fi
+            exit 0
+          fi
+
+          channel=foundry-playtest-manifest
+          current_version=0.0.0
+          if [[ -n "$(git ls-remote --heads origin "refs/heads/$channel")" ]]; then
+            git fetch origin "refs/heads/$channel"
+            git show FETCH_HEAD:system.json > "$RUNNER_TEMP/current-system.json"
+            current_version="$(node -p "require(process.argv[1]).version" "$RUNNER_TEMP/current-system.json")"
+          fi
+          next_version="$(node -p "require('./dist/system.json').version")"
+          if [[ "$(printf '%s\n' "$current_version" "$next_version" | sort -V | tail -n1)" != "$next_version" ]]; then
+            echo "A versão $current_version já é mais recente que $next_version."
+            exit 0
+          fi
+
+          if ! gh release view "$tag" --json isDraft >/dev/null 2>&1; then
+            gh release create "$tag" dist/system.json dist/codex-rpg-foundry.zip \
+              --verify-tag --draft --prerelease --latest=false \
+              --title "Codex RPG Foundry — playtest $next_version" --generate-notes
+          fi
+          if [[ "$(gh release view "$tag" --json isDraft --jq .isDraft)" == true ]]; then
+            ensure_assets
+            gh release edit "$tag" --draft=false --prerelease=true --latest=false
+          fi
+          # Nunca apontar o manifesto de atualizações para um asset indisponível.
+          download="$(node -p "require('./dist/system.json').download")"
+          curl -fsSL --retry 3 "$download" -o "$RUNNER_TEMP/playtest.zip"
+          cmp -s dist/codex-rpg-foundry.zip "$RUNNER_TEMP/playtest.zip" || {
+            # O timestamp do ZIP pode variar em uma reexecução da mesma tag.
+            mkdir -p "$RUNNER_TEMP/playtest-published"
+            unzip -q "$RUNNER_TEMP/playtest.zip" -d "$RUNNER_TEMP/playtest-published"
+            unzip -q dist/codex-rpg-foundry.zip -d "$RUNNER_TEMP/playtest-expected"
+            diff -r "$RUNNER_TEMP/playtest-expected"/codex-rpg-foundry "$RUNNER_TEMP/playtest-published/codex-rpg-foundry"
+          }
+
+          if [[ "$current_version" == "$next_version" ]]; then
+            cmp "$RUNNER_TEMP/current-system.json" dist/system.json
+            exit 0
+          fi
+          export GIT_INDEX_FILE="$RUNNER_TEMP/foundry-manifest.index"
+          manifest_blob="$(git hash-object -w dist/system.json)"
+          git update-index --add --cacheinfo 100644,"$manifest_blob",system.json
+          tree="$(git write-tree)"
+          parents=()
+          if [[ "$current_version" != 0.0.0 ]]; then parents=(-p FETCH_HEAD); fi
+          commit="$(git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit-tree "$tree" "${parents[@]}" -m "Atualizar manifesto Foundry playtest para $next_version")"
+          git push origin "$commit:refs/heads/$channel"

@@ -123,4 +123,497 @@
 .codex-rune{font-weight:800;white-space:nowrap}.codex-rune-e{color:var(--cx-E)}.codex-rune-a{color:var(--cx-A)}.codex-rune-p{color:var(--cx-P)}
 
 /* Foundry v0.2 — criação, catálogo e Pavor */
-.codex-creation-panel{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px solid var(--color-border-light-2,#777);border-radius:8px;margin:8px 0}.codex-creation-panel input{max-width:85px}.codex-creation-panel small{width:100%}.codex-catalog-picker{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.codex-catalog-picker select{max-width:250px}.codex-pavor-root{padding:14px}.codex-pavor-root .codex-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.codex-creation-panel{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px solid var(--color-border-light-2,#777);border-radius:8px;margin:8px 0}.codex-creation-panel input{max-width:85px}.codex-creation-panel small{width:100%}.codex-catalog-picker{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.codex-catalog-picker select{max-width:250px}
+
+
+/* Convergência com o site Codex RPG (tema preto e ouro, runas oficiais). */
+.codex-foundry-root{
+ --cx-bg:#070707;--cx-panel:#171717;--cx-panel2:#232323;
+ --cx-text:#f5f2ed;--cx-muted:#b9b9b9;--cx-line:#393939;--cx-gold:#d7bc88;
+ --cx-selected:#d7bc88;--cx-E:#267A45;--cx-A:#2369BB;--cx-P:#542176;
+ width:100%;max-width:100%;min-width:0;overflow-x:hidden;
+ background:var(--cx-bg);font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+}
+.codex-foundry-root h1,.codex-foundry-root h2,.codex-foundry-root h3,.codex-brand strong{
+ font-family:Georgia,"Palatino Linotype",serif}
+.codex-foundry-root button,.codex-foundry-root input,.codex-foundry-root select,
+.codex-foundry-root textarea{max-width:100%;min-width:0;border-radius:9px}
+.codex-foundry-root button{min-height:39px;touch-action:manipulation}
+.codex-foundry-root .codex-block,.codex-foundry-root .codex-hero,
+.codex-foundry-root .codex-resource{border-radius:13px}
+.codex-foundry-root .codex-primary{background:var(--cx-gold);color:#121212;font-weight:800}
+.codex-foundry-root .codex-creation-panel{border:1px solid var(--cx-line);
+ background:var(--cx-panel2);border-radius:10px}
+.codex-creation-warning,.codex-warning{color:#edaaac!important;font-weight:800}
+.codex-resource.is-overloaded{border:1px solid #ce7779}
+.codex-compare-rolls{margin:15px 0;padding:14px;border:1px solid var(--cx-line);
+ border-radius:12px;background:var(--cx-panel)}
+.codex-compare-rolls>summary{cursor:pointer;color:var(--cx-gold);font-size:14px;
+ font-weight:800;list-style-position:inside}
+.codex-compare-rolls .codex-tip{margin:10px 0;font-size:12px}
+.codex-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.codex-compare-option{display:grid;gap:7px;min-width:0;background:var(--cx-panel2);
+ border:1px solid var(--cx-line);border-radius:11px;padding:12px}
+.codex-compare-option>div{display:flex;justify-content:space-between;align-items:baseline;
+ flex-wrap:wrap;gap:5px}
+.codex-compare-option strong{color:var(--cx-gold);font-size:12px}
+.codex-compare-option b{font-size:13px;color:var(--cx-text)}
+.codex-compare-option span{font-size:12px}
+.codex-compare-option small{font-size:11px;color:var(--cx-muted)}
+.codex-compare-option em{font-style:normal;font-weight:750}
+.codex-foundry-root .codex-rune-e{color:#61c98a;text-shadow:0 0 1px var(--cx-E)}
+.codex-foundry-root .codex-rune-a{color:#81b7fb;text-shadow:0 0 1px var(--cx-A)}
+.codex-foundry-root .codex-rune-p{color:#c3a0ee;text-shadow:0 0 1px var(--cx-P)}
+.theme-light .codex-foundry-root,.theme-light.codex-rpg .codex-foundry-root{
+ --cx-bg:#f8f6f1;--cx-panel:#fffefa;--cx-panel2:#eeece7;--cx-text:#202020;
+ --cx-muted:#555b5c;--cx-line:#cbcbc5;--cx-gold:#826333;
+ --cx-selected:#826333;--cx-E:#267A45;--cx-A:#2369BB;--cx-P:#542176}
+.theme-light .codex-foundry-root .codex-rune-e{color:#267A45}
+.theme-light .codex-foundry-root .codex-rune-a{color:#2369BB}
+.theme-light .codex-foundry-root .codex-rune-p{color:#542176}
+@media(max-width:880px){
+ .codex-foundry-root{padding:12px}
+ .codex-hero{grid-template-columns:88px minmax(0,1fr)}
+ .codex-identity-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-source-layout,.codex-bottom-layout{grid-template-columns:1fr}
+ .codex-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:540px){
+ .codex-foundry-root{padding:8px;font-size:13px}
+ .codex-hero{grid-template-columns:1fr;gap:8px}
+ .codex-portrait{max-height:110px;min-height:82px;width:100px}
+ .codex-identity-fields{grid-template-columns:1fr 1fr;gap:7px}
+ .codex-identity-fields label{font-size:11px}
+ .codex-creation-panel{align-items:stretch}
+ .codex-creation-panel>label{width:100%}
+ .codex-resource{padding:11px}
+ .codex-source{grid-template-columns:minmax(0,1fr) 88px;gap:5px}
+ .codex-grade button,.codex-gear-actions button{min-height:43px;min-width:34px}
+ .codex-prep-controls,.codex-compare-grid{grid-template-columns:1fr}
+ .codex-roll-results .codex-result-dice{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-actions{display:flex;flex-wrap:wrap;gap:8px}
+ .codex-actions button{flex:1 1 130px}
+ .codex-gear{flex-wrap:wrap;gap:9px}
+ .codex-gear-actions{flex-wrap:wrap;justify-content:flex-start}
+ .codex-catalog-picker{flex-direction:column;align-items:stretch}
+ .codex-catalog-picker select{max-width:100%}
+}
+
+/* Criação guiada mínima, sem substituir o editor livre existente. */
+.codex-starter-guide{display:block;flex-basis:100%;width:100%;border:1px solid var(--cx-gold);
+ border-radius:11px;background:var(--cx-panel);padding:12px;margin:7px 0}
+.codex-starter-guide summary{color:var(--cx-gold);font-weight:800;cursor:pointer;font-size:13px}
+.codex-starter-guide p,.codex-starter-guide small{color:var(--cx-muted);font-size:12px;line-height:1.5}
+.codex-starter-guide p{margin:11px 0}
+.codex-starter-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:9px;align-items:end;margin:12px 0}
+.codex-starter-fields label{display:flex;flex-direction:column;min-width:0;gap:4px;color:var(--cx-muted);font-size:11px}
+.codex-starter-fields select{width:100%;min-height:40px}
+.codex-starter-fields button{white-space:normal}
+.codex-compare-option button{margin-top:5px;background:var(--cx-panel);border:1px solid var(--cx-gold);
+ color:var(--cx-gold);min-height:42px;font-weight:750}
+@media(max-width:700px){.codex-starter-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-starter-fields button{grid-column:1/-1}}
+@media(max-width:480px){.codex-starter-fields{grid-template-columns:1fr}}
+
+
+/* Codex RPG — refinamento visual da ficha v0.4 | 2026-11-13 */
+/* Alinhamento às cores, fontes e superfícies usadas no portal Codex RPG.
+   Sem mudanças na semântica dos formulários, compra de XP ou rolagens. */
+.codex-rpg .window-content {
+  container-type:inline-size;
+  background:#070707;
+  scrollbar-color:#6a5942 #131313;
+}
+.codex-foundry-root{
+  --cx-bg:#090909;--cx-panel:#181818;--cx-panel2:#232323;
+  --cx-text:#f5f2ed;--cx-muted:#bcb7af;--cx-line:#3c3934;
+  --cx-gold:#d7bc88;--cx-selected:#e9c985;
+  --cx-E:#267a45;--cx-A:#2369bb;--cx-P:#542176;
+  background:radial-gradient(ellipse at 93% 0%,rgba(187,151,88,.09),transparent 37rem),var(--cx-bg);
+  font-family:Inter,"Segoe UI",system-ui,sans-serif;
+  font-size:14px;line-height:1.55;
+  padding:clamp(12px,2.6cqi,24px);
+  gap:0;
+}
+.codex-foundry-root h2,.codex-foundry-root h3,
+.codex-foundry-root .codex-brand strong{font-family:Georgia,"Palatino Linotype",serif;letter-spacing:-.025em}
+.codex-foundry-root h2{line-height:1.17;font-size:clamp(19px,2.8cqi,23px)}
+.codex-foundry-root strong{font-weight:750}
+.codex-hero{
+  border:1px solid var(--cx-line);
+  border-top:3px solid var(--cx-gold);
+  background:linear-gradient(140deg,#1b1a18,#111111 72%);
+  border-radius:18px!important;
+  padding:clamp(12px,2.2cqi,21px);
+  grid-template-columns:126px minmax(0,1fr);
+  gap:clamp(12px,2cqi,22px);
+  box-shadow:0 18px 42px rgba(0,0,0,.23);
+}
+.codex-portrait{
+  height:166px;min-height:0;max-height:166px;align-self:start;
+  border:1px solid #846f4b;border-radius:13px;
+  box-shadow:inset 0 0 0 2px #221e18,0 12px 32px #0005;
+}
+.codex-portrait img{height:100%;width:100%;object-fit:cover}
+.codex-brand{gap:13px;min-height:55px;padding-bottom:13px;margin-bottom:5px;border-color:#494036}
+.codex-logo{width:50px;height:50px;filter:drop-shadow(0 2px 6px #0008)}
+.codex-overline{font:800 11px/1.4 Inter,"Segoe UI",sans-serif;letter-spacing:.16em;color:#d7bc88}
+.codex-brand strong{font-size:clamp(16px,2.4cqi,22px);line-height:1.18;color:var(--cx-text)}
+.codex-identity-fields{gap:10px;grid-template-columns:minmax(0,1.5fr) minmax(0,1.5fr) minmax(65px,.55fr) minmax(0,1fr)}
+.codex-identity-fields label{font:700 11px/1.35 Inter,"Segoe UI",sans-serif;letter-spacing:.035em;color:var(--cx-muted)}
+.codex-foundry-root input:not([type="checkbox"]),.codex-foundry-root select,
+.codex-foundry-root textarea{
+  background:#111111;border:1px solid #534d44;border-radius:10px;
+  min-height:41px;padding:9px 11px;color:var(--cx-text);
+  box-shadow:inset 0 1px 3px #0006;
+}
+.codex-foundry-root input:focus,.codex-foundry-root select:focus,
+.codex-foundry-root textarea:focus{border-color:var(--cx-gold)}
+.codex-foundry-root button{
+  min-height:39px;border-radius:10px;border-color:#555047;
+  font-family:Inter,"Segoe UI",sans-serif;font-weight:650;
+  transition:background .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.codex-foundry-root button:hover:not(:disabled){border-color:#d7bc88;background:#35302a}
+.codex-foundry-root button[aria-pressed="true"]{border-color:var(--cx-gold)}
+.codex-foundry-root .codex-primary{
+  background:#d7bc88!important;color:#19160f!important;
+  border-color:#d7bc88!important;border-radius:10px;
+  box-shadow:0 2px 0 #967748;letter-spacing:.015em;
+}
+.codex-foundry-root .codex-primary:hover:not(:disabled){background:#efd19a!important}
+.codex-creation-panel{
+  align-items:center;gap:9px 13px;margin:11px 0 0;padding:14px;
+  border:1px solid #5c503d!important;
+  background:linear-gradient(110deg,#222019,#181818)!important;
+  border-radius:12px;
+}
+.codex-creation-panel>label{font-size:12px;font-weight:700;color:#d7bc88}
+.codex-creation-panel>span{font-size:13px}
+.codex-creation-panel>small{font:12px/1.5 Inter,"Segoe UI",sans-serif}
+.codex-creation-panel input{max-width:105px;min-height:38px}
+.codex-resources{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 18px}
+.codex-resource{
+  position:relative;align-items:flex-start;text-align:left;gap:7px;
+  min-height:112px;padding:15px 14px;
+  border:1px solid #423b32;
+  border-top:2px solid #997d4e;
+  background:linear-gradient(140deg,#24211d,#161616 74%);
+  border-radius:13px!important;
+}
+.codex-resource>span{color:#d4bf9c;font:800 10px/1.3 Inter,"Segoe UI",sans-serif;letter-spacing:.12em}
+.codex-resource>strong{font:750 25px/1.1 Inter,"Segoe UI",sans-serif;letter-spacing:-.04em;color:#fff8ed}
+.codex-resource>small{font:11px/1.4 Inter,"Segoe UI",sans-serif;color:#bdb7ae;margin-top:auto}
+.codex-step{margin-top:1px;gap:7px}
+.codex-step button{min-width:32px;min-height:30px;padding:2px 7px;font-size:17px}
+.codex-resource.is-overloaded{border-color:#d48080;border-top-color:#d48080;background:#2b1a1a}
+.codex-help{
+  margin-bottom:14px;padding:14px 16px;gap:7px;
+  border:1px solid #454039;border-left:3px solid var(--cx-gold);
+  border-radius:12px;background:linear-gradient(100deg,#242017,#171717);
+}
+.codex-help>strong{font:700 16px Georgia,"Palatino Linotype",serif;color:#f6eedf}
+.codex-help>span{font:12px/1.5 Inter,"Segoe UI",sans-serif}
+.codex-rune-legend{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}
+.codex-rune-legend>span{
+  display:inline-flex;align-items:center;gap:6px;
+  font:750 11px/1.2 Inter,"Segoe UI",sans-serif;
+  background:#0e0e0e;border:1px solid #45413c;border-radius:999px;padding:6px 10px;
+}
+.codex-rune-legend b{font:700 17px Georgia,serif}
+.codex-rune-legend .legend-e b{color:#6bc98b}
+.codex-rune-legend .legend-a b{color:#88b8fd}
+.codex-rune-legend .legend-p b{color:#c7a1eb}
+.codex-block{
+  border:1px solid #403c36;background:#181818;
+  border-radius:14px!important;padding:clamp(12px,1.9cqi,18px);
+  box-shadow:0 4px 20px rgba(0,0,0,.1);
+}
+.codex-block-title{padding-bottom:11px;margin-bottom:13px;align-items:baseline;gap:12px;border-bottom-color:#454039}
+.codex-block h2{font-size:21px;color:#eee3cf}
+.codex-block-title>span{font:11px/1.35 Inter,"Segoe UI",sans-serif;color:#c6b698}
+.codex-source-layout{gap:13px}
+.codex-source{
+  min-height:75px;margin:8px 0;grid-template-columns:minmax(0,1fr) 83px;
+  border-radius:10px;border:1px solid #414141;
+  background:linear-gradient(110deg,#242424,#1c1c1c);
+  transition:border-color .16s,background .16s,transform .16s;
+}
+.codex-source:hover{border-color:#af986e;background:#292720}
+.codex-source-pick{padding:10px 11px!important;gap:7px;justify-content:center}
+.codex-source-name{font:750 14px/1.2 Inter,"Segoe UI",sans-serif;color:#f6f1e9}
+.codex-source-role{font-size:10px;letter-spacing:.11em;color:#e6c88a}
+.codex-dice-strip{gap:5px}
+.codex-small-die{font-size:11px;color:#d8cec0}
+.codex-small-die .codex-die-svg{width:25px;height:25px}
+.codex-small-die b{font-size:11px}
+.codex-grade{gap:4px;padding:6px;border-left-color:#494137}
+.codex-grade b{font:800 14px Inter,"Segoe UI",sans-serif}
+.codex-grade button{min-height:31px;min-width:25px;border-radius:7px;padding:2px 5px;font-size:16px}
+.codex-source.is-base{outline:2px solid #d7bc88;outline-offset:-2px;background:#30291d}
+.codex-source.is-attribute{border:2px solid #568cd2;background:#1b2835}
+.codex-source.is-complement{border:2px dashed #c5a16a}
+.codex-roll-prep,.codex-roll-results{
+  border:1px solid #a18552;border-top:3px solid #d7bc88;
+  background:linear-gradient(140deg,#201c16,#171717 45%);
+  margin-top:16px;
+}
+.codex-compose{gap:10px}
+.codex-compose>div{padding:13px;border-radius:10px;background:#111;border-color:#514839}
+.codex-compose small{font-size:11px}
+.codex-compose strong{font-size:16px}
+.codex-prep-controls{gap:12px}
+.codex-prep-controls label{font-size:12px;font-weight:650;color:#c8bfb1}
+.codex-prep-controls .codex-check{border-radius:10px;background:#23211e;padding:12px}
+.codex-pool{border-radius:11px;padding:12px;background:#101010;border-color:#564c3b}
+.codex-pool-die{border-radius:9px;padding:7px;background:#23211e}
+.codex-result-dice{gap:10px}
+.codex-result-die{border:1px solid #62553d;background:#201e1a;max-width:none;min-width:108px;border-radius:12px;min-height:142px}
+.codex-result-die.is-kept{border:2px solid #e0be79;background:#312718;box-shadow:inset 0 0 0 1px #927847}
+.codex-outcome{border:1px solid #63513a;background:#211d17;border-radius:12px;padding:15px}
+.codex-outcome strong{font-size:17px;color:#e9c985}
+.codex-bottom-layout{gap:14px;margin-top:16px}
+.codex-skill,.codex-gear{padding:12px 0;gap:12px}
+.codex-skill strong,.codex-gear strong{font-size:14px}
+.codex-skill small,.codex-gear small{font-size:12px;line-height:1.45}
+.codex-compare-rolls{background:#181818;border-color:#5b4b34}
+.codex-compare-option{background:#22201c;border-color:#534b3b}
+.codex-footer{padding:15px 5px;margin-top:15px;border-top:1px solid #413b34}
+.theme-light .codex-foundry-root,.theme-light.codex-rpg .codex-foundry-root{
+ --cx-bg:#f7f5f0;--cx-panel:#fffefa;--cx-panel2:#eee9df;
+ --cx-text:#303032;--cx-muted:#55565c;--cx-line:#dad3c7;
+ --cx-gold:#946b22;--cx-selected:#946b22;
+ background:radial-gradient(ellipse at 95% 0%,#d6b7822a,transparent 35rem),#f7f5f0;
+}
+.theme-light .codex-hero,.theme-light .codex-block,
+.theme-light .codex-resource,.theme-light .codex-help,
+.theme-light .codex-creation-panel,.theme-light .codex-roll-prep,
+.theme-light .codex-roll-results{background:#fffefa!important;color:#303032;border-color:#d0c7b6}
+.theme-light .codex-source{background:#f5f0e8;border-color:#c7bca8}
+.theme-light .codex-foundry-root input:not([type="checkbox"]),
+.theme-light .codex-foundry-root select,.theme-light .codex-foundry-root textarea{background:#fffdfa;color:#303032;border-color:#b9b0a0}
+.theme-light .codex-resource>strong,.theme-light .codex-source-name,
+.theme-light .codex-block h2,.theme-light .codex-brand strong,
+.theme-light .codex-help>strong{color:#303032}
+.theme-light .codex-resource>span,.theme-light .codex-block-title>span{color:#805d28}
+.theme-light .codex-resource>small{color:#65615a}
+.theme-light .codex-rune-legend>span{background:#f5eee3;color:#303032;border-color:#c9b69c}
+.theme-light .codex-source.is-attribute{background:#eaf1f9;border-color:#2369bb}
+.theme-light .codex-source.is-base{background:#fbf2de;border-color:#946b22}
+.theme-light .codex-outcome,.theme-light .codex-compose>div,
+.theme-light .codex-pool{background:#f1eadc;color:#303032}
+.theme-light .codex-compare-option,.theme-light .codex-result-die{background:#f2ebde;color:#303032}
+.theme-light .codex-result-die.is-kept{background:#f9edcb;border-color:#946b22}
+@container (max-width:970px){
+ .codex-resources{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .codex-source-layout{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-source-layout>.codex-attributes{
+   grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 10px
+ }
+ .codex-attributes>.codex-block-title{grid-column:1/-1}
+ .codex-attributes>.codex-source{margin:0}
+ .codex-bottom-layout{grid-template-columns:1fr}
+ .codex-identity-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-identity-fields label:nth-child(5),.codex-identity-fields label:nth-child(6){grid-column:auto}
+}
+@container (max-width:640px){
+ .codex-hero{grid-template-columns:90px minmax(0,1fr);padding:11px}
+ .codex-portrait{height:120px;max-height:120px}
+ .codex-brand strong{font-size:17px}
+ .codex-logo{width:39px;height:39px}
+ .codex-overline{font-size:9px;letter-spacing:.09em}
+ .codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-source-layout,.codex-prep-controls{grid-template-columns:1fr}
+ .codex-source-layout>.codex-attributes{grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-compose{grid-template-columns:1fr}
+ .codex-compare-grid{grid-template-columns:1fr}
+}
+@container (max-width:470px){
+ .codex-hero{grid-template-columns:1fr}
+ .codex-portrait{width:86px;height:86px;max-height:86px}
+ .codex-identity-fields{grid-template-columns:1fr}
+ .codex-resources{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .codex-resource{padding:11px;min-height:101px}
+ .codex-resource>strong{font-size:22px}
+ .codex-source-layout>.codex-attributes{grid-template-columns:1fr}
+ .codex-brand{align-items:flex-start}
+ .codex-creation-panel>label{width:100%}
+ .codex-result-die{min-width:0;flex:1 1 115px}
+ .codex-gear{flex-wrap:wrap}
+ .codex-gear-actions{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+ .codex-source,.codex-foundry-root button{transition:none!important}
+}
+
+/* Cabeçalho e recursos da ficha */
+.codex-character-sheet .codex-hero {
+  grid-template-columns: clamp(72px, 12cqi, 104px) minmax(0, 1fr);
+  align-items: start;
+  background: linear-gradient(125deg, var(--cx-panel2), var(--cx-panel) 70%);
+}
+.codex-character-sheet .codex-portrait-column { display: grid; gap: 7px; }
+.codex-character-sheet .codex-portrait {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1;
+}
+.codex-foundry-root .codex-edit-portrait { min-height: 32px; padding: 4px; font-size: 11px; }
+.codex-character-sheet .codex-brand {
+  min-height: 0;
+  margin: 0;
+  padding-bottom: 9px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-color: var(--cx-line);
+}
+.codex-character-sheet .codex-brand h2 {
+  color: var(--cx-text);
+  font-size: clamp(23px, 3.5cqi, 34px);
+  overflow-wrap: anywhere;
+}
+.codex-character-sheet .codex-overline { color: var(--cx-gold); }
+.codex-character-sheet .codex-identity-fields label { font-size: 12px; }
+.codex-character-sheet .codex-identity-details { color: var(--cx-muted); }
+.codex-character-sheet .codex-identity-details summary,
+.codex-character-sheet .codex-creation-panel summary { cursor: pointer; }
+.codex-character-sheet .codex-identity-details .codex-identity-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 8px;
+}
+.codex-character-sheet .codex-resources {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
+  margin-bottom: 12px;
+}
+.codex-character-sheet .codex-resource { padding: 12px; }
+.codex-character-sheet .codex-resource > span { font-size: 11px; }
+.codex-character-sheet .codex-creation-panel {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--cx-text);
+}
+.codex-character-sheet .codex-creation-panel summary > span {
+  margin-inline-start: .65em;
+  color: var(--cx-muted);
+  font-size: 13px;
+}
+.codex-character-sheet .codex-creation-panel > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--cx-text);
+}
+
+@container (max-width: 400px) {
+  .codex-character-sheet .codex-hero { grid-template-columns: 1fr; }
+  .codex-character-sheet .codex-portrait-column { width: 94px; }
+}
+.codex-chat-die { display: inline-flex; align-items: center; gap: 4px; }
+.codex-chat-die .codex-die-svg { width: 19px; height: 19px; color: inherit; }
+
+/* HUD do Narrador no topo da área de jogo */
+#codex-pavor-hud {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  margin: 8px 4px 0;
+  pointer-events: auto;
+}
+.codex-pavor-hud {
+  --hud-bg: #19151d;
+  --hud-control: #2b2230;
+  --hud-border: #6a5077;
+  --hud-text: #f4edf5;
+  --hud-pavor: #e2b9fd;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 9px;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border: 1px solid var(--hud-border);
+  border-radius: 9px;
+  color: var(--hud-text);
+  background: var(--hud-bg);
+  box-shadow: 0 3px 10px #0006;
+  font: 600 13px/1.2 Inter, "Segoe UI", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.theme-light .codex-pavor-hud {
+  --hud-bg: #faf5fc;
+  --hud-control: #efe4f4;
+  --hud-border: #ad91b8;
+  --hud-text: #32233a;
+  --hud-pavor: #542176;
+}
+.codex-pavor-group, .codex-pavor-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.codex-pavor-label { padding-inline: 2px; }
+.codex-pavor-hud button {
+  flex: none;
+  width: auto;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 4px;
+  border: 1px solid var(--hud-border);
+  border-radius: 5px;
+  color: var(--hud-text);
+  background: var(--hud-control);
+  font: inherit;
+  cursor: pointer;
+}
+.codex-pavor-hud button:hover:not(:disabled),
+.codex-pavor-hud button:focus-visible {
+  outline: 2px solid var(--hud-pavor);
+  outline-offset: 1px;
+}
+.codex-pavor-hud button:disabled { opacity: .42; cursor: default; }
+.codex-pavor-hud .codex-pavor-player-count { border-color: transparent; background: transparent; }
+.codex-pavor-balance, .codex-pavor-round strong { color: var(--hud-pavor); }
+.codex-pavor-runes { display: inline-flex; flex-wrap: wrap; gap: 2px; max-width: min(26vw, 192px); }
+.codex-pavor-slot {
+  display: inline-grid; width: 14px; min-width: 14px; height: 22px; place-items: center;
+  border: 1px solid var(--hud-border); border-radius: 4px;
+  color: var(--hud-pavor); opacity: .38; font: 15px/1 Georgia, serif;
+}
+.codex-pavor-slot.is-filled { background: var(--hud-control); opacity: 1; }
+.codex-create-dialog .codex-creation-field { display: grid; gap: 4px; margin-bottom: 10px; }
+.codex-roll-marks { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
+.codex-roll-marks .codex-rune { font-size: 16px; }
+.codex-pavor-round { padding-inline: 2px; white-space: nowrap; }
+.codex-pavor-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Mostra Esquiva separadamente da DE geral; bônus não vale em outras defesas. */
+.codex-defense-resource{gap:9px}
+.codex-dodge-line{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;border:1px solid var(--cx-gold);background:var(--cx-panel2)}
+.codex-dodge-line>span{font-size:10px;letter-spacing:.045em;font-weight:800;color:var(--cx-gold)}
+.codex-dodge-line>strong{font-size:23px;line-height:1.1;color:var(--cx-text)}
+
+/* DE final única, origem do modificador e Integridade visível no cartão. */
+.codex-defense-resource>.codex-de-calculation{font-size:11px;font-weight:700;color:var(--cx-text);margin:2px 0 0}
+.codex-defense-resource>.codex-de-condition{font-size:10px;color:var(--cx-muted);margin:0}
+.codex-defense-armor{width:100%;min-width:0;display:flex;flex-direction:column;gap:7px;padding:9px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel2);text-align:left}
+.codex-defense-armor-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;align-items:baseline}
+.codex-defense-armor-head>span{font:700 10px/1.35 system-ui,sans-serif;color:var(--cx-muted);overflow-wrap:anywhere}
+.codex-defense-armor-head>strong{font-size:18px;color:var(--cx-text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.codex-defense-armor>small{font:10px/1.4 system-ui,sans-serif;color:var(--cx-muted)}
+.codex-defense-armor-meter{height:7px;background:var(--cx-line);overflow:hidden;border-radius:9px}
+.codex-defense-armor-meter>span{display:block;height:100%;background:var(--cx-gold);border-radius:inherit}
+.codex-defense-armor-buttons{display:flex;justify-content:flex-end;gap:6px}
+.codex-defense-armor-buttons>button{min-height:30px;min-width:34px}
+.codex-defense-configure{padding:7px!important}

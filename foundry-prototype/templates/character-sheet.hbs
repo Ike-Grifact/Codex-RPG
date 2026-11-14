@@ -1,28 +1,35 @@
 <section class="codex-foundry-root">
   <header class="codex-hero">
-    <div class="codex-portrait"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
+    <div class="codex-portrait-column">
+      <div class="codex-portrait"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
+      {{#if codex.isOwner}}
+      <button class="codex-edit-portrait" type="button" data-action="editPortrait"><i class="fa-solid fa-image" aria-hidden="true"></i> Alterar retrato</button>
+      {{/if}}
+    </div>
     <div class="codex-identity">
       <div class="codex-brand">
-        <img src="{{codex.logo}}" alt="" class="codex-logo">
-        <div><span class="codex-overline">CODEX RPG · PERSONAGEM / CRIATURA / HUMANOIDE</span><strong>O personagem se constrói pelas suas escolhas.</strong></div>
+        <div>
+          <span class="codex-overline">{{codex.actorTypeLabel}}</span>
+          <h2>{{codex.actorName}}</h2>
+        </div>
       </div>
       <div class="codex-identity-fields">
-        <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name"></label>
-        <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept"></label>
-        <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level"></label>
-        <label>Origem <input type="text" value="{{codex.origin}}" data-field="system.origin"></label>
-        <label>Virtude <input type="text" value="{{codex.virtue}}" data-field="system.virtue"></label>
-        <label>Personalidade <input type="text" value="{{codex.personality}}" data-field="system.personality"></label>
+        <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{#if codex.attributesOnly}}
+          <label>Grau <input type="number" min="1" max="6" value="{{codex.threatGrade}}" data-field="system.threatGrade" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{else}}
+          <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        {{/if}}
+        <label>Origem <input type="text" value="{{codex.origin}}" data-field="system.origin" {{#unless codex.isOwner}}readonly{{/unless}}></label>
       </div>
-    <div class="codex-creation-panel">
-     <label>XP adicional / orçamento da criatura <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp"></label>
-     <span><strong>XP gasto:</strong> {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}}
-      · <strong>Disponível:</strong> {{codex.xpLedger.left}}</span>
-     <small>Criação 6 Atributos / 8 Formação / 5 Perícias é experimental. Monstros: XP e Grau próprios.</small>
-     {{#if codex.isHumanoid}}<strong>Ficha de Humanoide: progressão de XP e dados de personagem.</strong>{{/if}}
-     {{#if codex.isMonster}}<strong>Ficha de Monstro: apenas Atributos próprios; escala d10/d12.</strong>{{/if}}
-     {{#if codex.isGM}}<button type="button" data-action="openPavorPanel">Painel de Pavor público</button>{{/if}}
-    </div>
+      <details class="codex-identity-details" {{#if codex.identityOpen}}open{{/if}}>
+        <summary>Virtude e personalidade</summary>
+        <div class="codex-identity-fields">
+          <label>Virtude <input type="text" value="{{codex.virtue}}" data-field="system.virtue" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+          <label>Personalidade <input type="text" value="{{codex.personality}}" data-field="system.personality" {{#unless codex.isOwner}}readonly{{/unless}}></label>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -32,7 +39,7 @@
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
       <small>3/3: 1 dia · 2/3: 1 semana · 1/3: requer Medicina</small>
     </div>
-    {{#unless codex.isMonster}}<div class="codex-resource">
+    {{#unless codex.attributesOnly}}<div class="codex-resource">
       <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
       <small>Gasto na elevação ou retenção</small>
@@ -44,33 +51,94 @@
     </div>
 {{/unless}}
     {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
+    {{#if codex.isAnimal}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
     {{#if codex.isHumanoid}}<div class="codex-resource"><span>PAVOR LOCAL (oposição)</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
-    <div class="codex-resource"><span>DE · DIFICULDADE DE ÊXITO</span><strong>{{codex.de}}</strong><small>Agilidade + metade de Destreza e Vigor + Atletismo/3; monstros têm DE específica</small></div>
+    <div class="codex-resource codex-defense-resource">
+      <span>DE DEFENSIVA · FINAL</span><strong>{{codex.de}}</strong>
+      <small class="codex-de-calculation">{{codex.deCalculation}}</small>
+      <small class="codex-de-condition">{{codex.deCondition}}</small>
+      {{#if codex.armorCard}}
+      <div class="codex-defense-armor">
+        <div class="codex-defense-armor-head">
+          <span>INTEGRIDADE · {{codex.armorCard.name}}</span>
+          <strong>{{#if codex.armorCard.noIntegrity}}Não possui{{else}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{/if}}</strong>
+        </div>
+        {{#unless codex.armorCard.noIntegrity}}
+          {{#if codex.armorCard.hasMaximum}}
+          <div class="codex-defense-armor-meter" role="progressbar" aria-label="Integridade da armadura" aria-valuemin="0" aria-valuemax="{{codex.armorCard.maximum}}" aria-valuenow="{{codex.armorCard.integrity}}"><span style="width:{{codex.armorCard.percent}}%"></span></div>
+          <div class="codex-defense-armor-buttons">
+            <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="-1" aria-label="Reduzir Integridade">−</button>
+            <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="1" aria-label="Recuperar Integridade">+</button>
+          </div>
+          {{else}}
+          <small>Integridade máxima não definida.</small>
+          <button type="button" class="codex-defense-configure" data-action="openEquipment" data-id="{{codex.armorCard.id}}">Configurar equipamento</button>
+          {{/if}}
+        {{/unless}}
+      </div>
+      {{/if}}
+    </div>
     <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
-    <div class="codex-resource"><span>CARGA · ALTO</span><strong>{{codex.capacity}}</strong><small>Carga por Força, Vigor e Atletismo (contribuição de Disciplina pendente)</small></div>
+    <div class="codex-resource {{#if codex.overloaded}}is-overloaded{{/if}}">
+     <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
+     <small>Espaço restante: {{codex.loadFree}} Alto</small>
+     <small>Alternativas: {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</small>
+     {{#if codex.overloaded}}<small class="codex-warning">ATENÇÃO: carga excedida. Penalidades pendentes.</small>{{/if}}
+    </div>
   </div>
+
+  <details class="codex-creation-panel" {{#if codex.progressOpen}}open{{/if}}>
+    <summary>
+      <strong>Progressão</strong>
+      <span>{{codex.xpLedger.left}} XP disponíveis · {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}} gastos</span>
+    </summary>
+    <label>{{#if codex.attributesOnly}}Orçamento de XP{{else}}XP adicional{{/if}}
+      <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp" {{#unless codex.isOwner}}readonly{{/unless}}>
+    </label>
+     {{#unless codex.attributesOnly}}{{#unless codex.hasCreationMinimum}}
+       <details class="codex-starter-guide" open>
+        <summary>Compras mínimas orientadas · 3 XP no personagem novo</summary>
+        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 20 XP experimentais livremente, sem reservas.</p>
+        <div class="codex-starter-fields">
+         <label>Atributo inicial<select data-starter-attr>{{#each codex.starterAttributes}}
+          <option value="{{this.id}}">{{this.name}}</option>{{/each}}</select></label>
+         <label>Conhecimento ou Prática inicial<select data-starter-training>{{#each codex.starterTraining}}
+          <option value="{{this.value}}">{{this.name}}</option>{{/each}}</select></label>
+         <button type="button" class="codex-primary" data-action="purchaseStarter">Confirmar compras mínimas</button>
+        </div>
+        <small>Somente compras ainda não realizadas custam XP; requisitos mínimos são verificados antes de confirmar.</small>
+       </details>
+     {{/unless}}{{/unless}}
+  </details>
 
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
-    {{#if codex.isMonster}}<span>Monstro: selecione dois Atributos da criatura. No Grau 5+, um terceiro Atributo pertinente pode participar após validação.</span>{{else}}<span>1. Conhecimento ou Prática <b>BASE</b> → 2. Atributo → complemento pertinente habilitado. Os cliques apenas preparam a rolagem.</span>{{/if}}
+    {{#if codex.attributesOnly}}<span>Selecione dois Atributos. {{#if codex.isMonster}}No Grau 5+, valide um terceiro Atributo pertinente.{{/if}}</span>{{else}}<span>1. Conhecimento ou Prática <b>BASE</b> → 2. Atributo → complemento pertinente habilitado. Os cliques apenas preparam a rolagem.</span>{{/if}}
     {{#if codex.selecting}}<span class="codex-live-note">Base selecionada: <b>{{codex.selectedBase}}</b>. Escolha agora o Atributo.</span>{{/if}}
+  </div>
+
+  <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
+    <span class="legend-e"><b aria-hidden="true">ᛋ</b> Êxito</span>
+    <span class="legend-a"><b aria-hidden="true">ᚨ</b> Antecipar</span>
+    <span class="legend-p"><b aria-hidden="true">ᚦ</b> Pavor</span>
   </div>
 
   <div class="codex-source-layout">
     <section class="codex-block codex-attributes">
       <div class="codex-block-title"><h2>Atributos</h2><span>Segunda fonte</span></div>
       {{#each codex.attributes}}
-        <div class="codex-source {{#if this.isAttribute}}is-attribute{{/if}}">
-          <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isAttribute}}true{{else}}false{{/if}}">
+        <div class="codex-source {{#if this.isAttribute}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
+          <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
-            {{#if this.isAttribute}}<small class="codex-source-role">ATRIBUTO</small>{{/if}}
+            {{#if this.isBase}}<small class="codex-source-role">BASE</small>{{/if}}{{#if this.isAttribute}}<small class="codex-source-role">ATRIBUTO</small>{{/if}}{{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
           </button>
           <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
         </div>
       {{/each}}
     </section>
 
+    {{#unless codex.attributesOnly}}
     <section class="codex-block">
       <div class="codex-block-title"><h2>Conhecimentos</h2><span>Base ou complemento</span></div>
       {{#each codex.knowledges}}
@@ -100,6 +168,7 @@
         </div>
       {{/each}}
     </section>
+    {{/unless}}
   </div>
 
   {{#if codex.preparing}}
@@ -137,9 +206,9 @@
           <option value="2" {{#if codex.prepare.extraTwo}}selected{{/if}}>+2 (4 dados, somente Graus 5–6)</option>
         </select></label>
         {{else}}
-        <label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>
+        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>{{/unless}}
         {{/if}}
-        <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 Coragem</label>
+        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>{{/unless}}
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
         {{#if codex.prepare.weightEnabled}}
@@ -159,7 +228,7 @@
       <div class="codex-pool"><strong>Pilha prevista · {{codex.prepare.poolCount}}/9 dados</strong>
         {{#each codex.prepare.pool}}<span class="codex-pool-die">{{{this.icon}}} <b>d{{this.sides}}</b><small>{{this.label}}</small></span>{{/each}}
       </div>
-      <p class="codex-tip">Retenção natural: {{codex.prepare.keepNatural}} · com Coragem: {{codex.prepare.keepWithCourage}} · ao menos um dado mantido deve ser de Atributo.</p>
+      <p class="codex-tip">Retenção natural: {{codex.prepare.keepNatural}}. A pilha inclui um dado de Atributo.</p>
       {{#each codex.prepare.errors}}<p class="codex-error">{{this}}</p>{{/each}}
       <div class="codex-actions"><button type="button" data-action="clearDraft">Cancelar preparação</button><button type="button" class="codex-primary" data-action="executeRoll" {{#unless codex.prepare.canExecute}}disabled{{/unless}}>Rolar dados</button></div>
     </section>
@@ -168,11 +237,11 @@
   {{#if codex.hasPending}}
     <section class="codex-block codex-roll-results" aria-label="Dados rolados e escolha dos mantidos">
       <div class="codex-block-title"><h2>Resultado dos dados — escolha os mantidos</h2><span>Rolagem pendente preservada no personagem</span></div>
-      <p class="codex-tip">{{codex.pending.formula}} · limite de {{codex.pending.limit}} mantidos · deve incluir Atributo · custo previsto de {{codex.pending.cost}} Coragem.</p>
+      <p class="codex-tip">{{codex.pending.selectedCount}} / {{codex.pending.limit}} mantidos · custo previsto {{codex.pending.cost}} {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}.</p>
       <div class="codex-result-dice">
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
-          {{{this.icon}}}<strong>{{this.face}}</strong><span>d{{this.sides}} · {{this.label}}</span><small class="codex-symbols" aria-label="{{this.symbolsText}}">{{{this.symbolsHTML}}}</small>
+          {{{this.icon}}}<strong>{{this.face}}</strong><span>d{{this.sides}} · {{this.label}}</span><small class="codex-symbols codex-roll-marks" aria-label="{{this.symbolsText}}">{{{this.symbolsHTML}}}</small>
         </button>
       {{/each}}
       </div>
@@ -202,12 +271,28 @@
           <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
+      <details class="codex-compare-rolls">
+       <summary>Comparar escolhas de dados mantidos (sem rolar novamente)</summary>
+       <p class="codex-tip">Resultados exatos das faces atuais, sem anulações ou conversões adicionais. Nenhuma alternativa é aplicada automaticamente; compare acerto, Pavor e dano. Você pode escolher uma delas sem rerrolar nem gastar recursos até finalizar.</p>
+       <div class="codex-compare-grid">
+       {{#each codex.comparisons}}
+        <div class="codex-compare-option">
+         <div><strong>Alternativa {{this.position}}</strong><span class="codex-dice-strip">{{#each this.keptDice}}<span class="codex-small-die">{{{this.icon}}}<b>d{{this.sides}} · {{this.face}}</b></span>{{/each}}</span></div>
+         <b>{{this.outcome}}</b>
+         <span>DE {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
+         <small>Dano básico {{this.damage}} {{#if this.critical}}· crítico {{this.critical}}{{/if}}</small>
+         <button type="button" data-action="applyComparison" data-index="{{@index}}">Usar estes dados mantidos</button>
+        </div>
+       {{/each}}
+       </div>
+      </details>
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
-      <div class="codex-actions"><small>Não execute novamente a rolagem: as faces já estão registradas. Finalize para publicar no chat e confirmar o custo de Coragem.</small><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
+      <div class="codex-actions"><button type="button" data-action="discardRoll" {{#unless codex.isOwner}}disabled{{/unless}}>Descartar rolagem</button><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
     </section>
   {{/if}}
 
   <div class="codex-bottom-layout">
+    {{#unless codex.attributesOnly}}
     <section class="codex-block">
       <div class="codex-block-title"><h2>Perícias / habilitações</h2><span>Compra experimental por XP disponível; requisitos principais validados</span></div>
       <p class="codex-tip">Compra de Perícias consome o orçamento de XP calculado, respeitando os requisitos principais. Requisitos avançados ainda dependem da validação do Narrador.</p>
@@ -218,12 +303,12 @@
       </div>
       {{/each}}
     </section>
+    {{/unless}}
     <section class="codex-block">
       <div class="codex-block-title"><h2>Inventário e proteção</h2><span>Itens persistidos como documentos Foundry</span></div>
-      <p class="codex-tip">Integridade e peso dos itens são editáveis em suas fichas futuras. Esta versão permite criar, equipar, retirar e ajustar integridade, sem inferir resistências automáticas.</p>
       {{#each codex.gear}}
       <div class="codex-gear">
-        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small></div>
+        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
         <div class="codex-gear-actions">
           <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
           <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>
@@ -243,5 +328,13 @@
     </section>
   </div>
 
-  <footer class="codex-footer">Protótipo Foundry v14 · Continuidade v0.26 · Regras pendentes não são automatizadas como definitivas · Site original permanece intacto.</footer>
+  <details class="codex-block">
+    <summary>Notas da ficha</summary>
+    {{#if codex.isHostile}}
+    <label>Capacidades <textarea data-field="system.abilities" {{#unless codex.isOwner}}readonly{{/unless}}>{{codex.abilities}}</textarea></label>
+    <label class="codex-check"><input type="checkbox" data-field="system.leader" {{#if codex.leader}}checked{{/if}} {{#unless codex.isOwner}}disabled{{/unless}}> Liderança</label>
+    {{/if}}
+    <label>Notas <textarea data-field="system.notes" {{#unless codex.isOwner}}readonly{{/unless}}>{{codex.notes}}</textarea></label>
+  </details>
+  <footer class="codex-footer">Protótipo Foundry v14 · Continuidade v0.39 · orçamento experimental compartilhado · automação de Pavor sob validação.</footer>
 </section>

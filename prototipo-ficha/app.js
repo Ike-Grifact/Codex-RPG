@@ -1,7 +1,11 @@
 /* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 20 XP experimental. */
 (function(){
 "use strict";
-const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
+const QUICK_HUMANOID=new URLSearchParams(window.location.search).get("modo")==="humanoide-rapido";
+const SAVE_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-v1":"codex-html-ficha-prototipo-v1";
+const OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1";
+const WIZARD_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-wizard-v1":"codex-html-ficha-wizard-v1";
+const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -203,8 +207,8 @@ const SKILLS=[
  [
   "recuperacao-vigorosa",
   "Recuperação Vigorosa",
-  "Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",
-  null
+  "Requer Vigor 3. A cada 3 graus completos de Vigor acelera a recuperação de um dos últimos pontos da caixa Machucado de uma semana para um dia por ponto. Não substitui tratamento médico. Custa 1 XP.",
+  1
  ],
  [
   "recuperacao-movimento",
@@ -892,11 +896,17 @@ const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
- level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
+ level:1,attributes:{},knowledges:{},practices:{},skills:[],genePackages:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
-let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+function quickHumanoidDefault(){
+ const s=defaultState();
+ s.name="Humano comum";s.concept="Oponente humanoide";s.origin="Humano";
+ s.attributes.forca=1;s.practices.armas_conjuracao=1;
+ return s;
+}
+let state=QUICK_HUMANOID?quickHumanoidDefault():defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
@@ -946,7 +956,7 @@ function load(){
  let migrated=false,legacyAvailable=false;
  try{
   const saved=localStorage.getItem(SAVE_KEY);
-  const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
+  const oldRaw=QUICK_HUMANOID?null:localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
   if(saved)state=normalize(JSON.parse(saved));
   else if(oldRaw){
@@ -973,7 +983,7 @@ function load(){
   wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
   wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
   wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
-  wizardMode=w.mode==="genetic"?"genetic":"list";
+  wizardMode=w.mode==="genetic"?"genetic":QUICK_HUMANOID&&w.mode!=="list"?"genetic":"list";
   wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
   wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
   wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
@@ -982,10 +992,11 @@ function load(){
   if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
   if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
  }catch(e){wizardStep=0;wizardReached=0;}
- viewMode=state.creationLocked?"sheet":"builder";
+ if(QUICK_HUMANOID){wizardStep=2;wizardReached=2;viewMode="builder";state.creationLocked=false;}
+ else viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
- $("import-old-creator").hidden=!legacyAvailable;
+ $("import-old-creator").hidden=QUICK_HUMANOID||!legacyAvailable;
  if(migrated){
   save();
   toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
@@ -1009,6 +1020,17 @@ function normalize(v){
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ // Registra exclusivamente compras conjuntas feitas pelas esferas roxas.
+ // Fichas anteriores não têm histórico: nunca supor quais requisitos eram próprios.
+ s.genePackages=Array.isArray(v.genePackages)?v.genePackages.slice(-120).filter(r=>
+  r&&SKILLS.some(([id])=>id===r.root)&&Array.isArray(r.skills)&&Array.isArray(r.sources)
+ ).map(r=>({
+  root:r.root,active:r.active!==false,
+  skills:[...new Set(r.skills.filter(id=>SKILLS.some(([key])=>key===id)))].slice(0,30),
+  sources:r.sources.filter(x=>x&&SOURCE_PROPS[x.group]&&GROUPS[x.group].some(([k])=>k===x.key)&&
+   Number.isInteger(x.from)&&Number.isInteger(x.to)&&x.from>=0&&x.to<=6&&x.to>x.from
+  ).slice(0,20).map(x=>({group:x.group,key:x.key,from:x.from,to:x.to}))
+ })):[];
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
   s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":"Combinação de Fontes").join(" e ")+
    ". XP liberado automaticamente pela retirada; Artista Marcial não é adquirido sem requisitos.").trim().slice(0,5000);
@@ -1101,7 +1123,8 @@ function xpCosts(s=state){
  const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills,total=attributes+training+skills;
  const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(s.creationBudgetSnapshot):
   Math.max(0,CREATE_BUDGET.total-total);
- const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:CREATE_BUDGET.total-total;
+ const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:
+  CREATE_BUDGET.total+(QUICK_HUMANOID?Math.max(0,Number(s.xpEarned)||0):0)-total;
  const generalSpent=Math.max(0,total-CREATE_BUDGET.total);
  return {attributes,training,skills,total,generalSpent,free,initialCarryover,
   initialRemaining:Math.max(0,initialCarryover-generalSpent),
@@ -1157,7 +1180,8 @@ function skillReq(id,s=state){
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
- if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
+ if(id==="recuperacao-vigorosa"&&vig<3)return"Requer Vigor 3.";
+ if(id==="instinto-sobrevivencia"&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
@@ -1224,8 +1248,20 @@ function armorDodgeBonus(s=state){
 function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
 function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
-function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
-function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
+function capacity(s=state){return 1+Math.floor((s.attributes.forca||0)/3)+Math.floor((s.attributes.vigor||0)/3)+Math.floor((s.practices.armas_conjuracao||0)/3)+Math.floor((s.practices.atletismo||0)/3);}
+function loadUsed(s=state){return s.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(s); /* Recursos de troca também ocupam Carga. */}
+function itemLoad(item){const normalized=normalizedCatalogItem(item);return WEIGHTS[normalized.weight][1]*((normalized.properties||[]).includes("Muito Leve")?0.5:1);}
+function itemLoadAfterPurchase(item,s=state){return loadUsed(s)+itemLoad(item)-Number(item.priceVT||0)/10*WEIGHTS.leve[1];}
+function freeLoad(s=state){return Math.max(0,capacity(s)-loadUsed(s));}
+function carryCounts(s=state){const free=freeLoad(s);return {leve:Math.floor((free+1e-9)/WEIGHTS.leve[1]),medio:Math.floor((free+1e-9)/WEIGHTS.medio[1]),pesado:Math.floor((free+1e-9)/WEIGHTS.alto[1])};}
+function carryGuide(s=state){
+ const count=carryCounts(s),left=capacity(s)-loadUsed(s);
+ return '<div class="fp-carry-guide'+(left<0?' is-overloaded':'')+'" aria-live="polite">'+
+ '<strong>'+(left<0?'Carga excedida por '+pad(-left)+' Alto!':'Carga disponível: '+pad(left)+' Alto')+'</strong>'+
+ '<span>Uso atual '+pad(loadUsed(s))+' / '+capacity(s)+' Alto (itens + recursos VT).</span>'+
+ '<div class="fp-carry-limits"><span><b>'+count.leve+'</b> leves</span><span><b>'+count.medio+'</b> médios</span><span><b>'+count.pesado+'</b> pesados</span></div>'+
+ '<small>Quantidades alternativas, não cumulativas. Comprar com VT reduz também a carga dos recursos usados.</small></div>';
+}
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
@@ -1312,9 +1348,21 @@ function renderOwnedPanel(){
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
     '<span class="fp-element-icon">ᚨ</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
  const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
-  '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
-  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+ $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
+  const isArmor=it.type==="armadura",noIntegrity=isArmor&&it.weight==="muito_leve";
+  const integrity=!isArmor?"":noIntegrity?
+   '<div class="fp-owned-integrity is-none"><span>Integridade</span><strong>Sem Integridade (Muito Leve)</strong></div>':
+   '<div class="fp-owned-integrity'+(it.hp<=0?' is-depleted':'')+'">'+
+    '<div class="fp-owned-integrity-header"><span>Integridade atual / máxima</span><b>'+it.hp+' / '+it.max+'</b></div>'+
+    '<div class="fp-owned-integrity-meter" role="meter" aria-label="Integridade de '+esc(it.name)+'" aria-valuemin="0" aria-valuemax="'+Math.max(0,it.max)+'" aria-valuenow="'+it.hp+'">'+
+     '<span style="width:'+(it.max>0?Math.max(0,Math.min(100,100*it.hp/it.max)):0)+'%"></span></div>'+
+    '<div class="fp-owned-integrity-actions">'+
+     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'"'+(it.hp<=0?' disabled':'')+'>−</button>'+
+     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Restaurar um ponto de Integridade de '+esc(it.name)+'"'+(it.hp>=it.max?' disabled':'')+'>+</button>'+
+    '</div>'+(it.max===0?'<small>Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>':'')+'</div>';
+  return '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
+   integrity+(it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>';
+ }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
 function geneLayout(mapId,detailId){
@@ -1383,6 +1431,7 @@ const GENE_AUTO_REQUIREMENTS={
  "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
  "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
  "disciplina-avancada":[["p:armas_conjuracao:2"]],
+ "recuperacao-vigorosa":[["a:vigor:3"]],
  "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
  "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
  "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
@@ -1492,8 +1541,16 @@ function geneAutoBuy(id){
    if(to>from)levels.push(name+" "+from+" → "+to);
   }
  }
- const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
-  .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const addedSkillIds=plan.state.skills.filter(sid=>!base.skills.includes(sid));
+ const newSkills=addedSkillIds.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const receipt={root:id,active:true,skills:addedSkillIds,sources:[]};
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key] of GROUPS[group]){
+   const from=Number(base[field][key]||0),to=Number(plan.state[field][key]||0);
+   if(to>from)receipt.sources.push({group,key,from,to});
+  }
+ }
  const before=xpCosts(base).free,after=xpCosts(plan.state).free;
  const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
   (levels.length?"Graus:\n• "+levels.join("\n• ")+"\n\n":"")+
@@ -1510,7 +1567,7 @@ function geneAutoBuy(id){
   }
  }
  for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
- geneCommit();
+ geneCommit(receipt);
 }
 function geneStageSkill(id){
  if(!geneCanAdjust())return;
@@ -1528,7 +1585,7 @@ function geneStageSkill(id){
 function geneDiscard(){
  geneDraft.clear();genePendingSkills.clear();geneRefresh();
 }
-function geneCommit(){
+function geneCommit(receipt=null){
  if(!geneCanAdjust()||!genePendingCount())return;
  const preview=genePreviewState(),xp=xpCosts(preview),problem=dependentsValid(preview);
  if(xp.free<0||problem||(!state.creationLocked&&!hasStarterSources(preview))){
@@ -1538,6 +1595,10 @@ function geneCommit(){
  state.knowledges={...preview.knowledges};
  state.practices={...preview.practices};
  state.skills=[...preview.skills];
+ if(receipt?.root&&receipt.skills.includes(receipt.root)){
+  state.genePackages.push(receipt);
+  state.genePackages=state.genePackages.slice(-120);
+ }
  geneDraft.clear();genePendingSkills.clear();
  for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
  render();save();toast("Evolução confirmada. Saldo de XP: "+xp.free+".");
@@ -1573,6 +1634,108 @@ function geneSkillStatus([id,,,cost],s=state){
  // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
  return geneAutoPlan(id,s)?"potential":"locked";
 }
+
+/* Reversão de compras da ficha, não concessão de XP de campanha.
+ * Só os investimentos registrados como parte de um pacote roxo são elegíveis
+ * à redução automática; fontes adquiridas antes da compra são preservadas. */
+function geneCanRemoveSkill(){
+ return !state.pending&&((viewMode==="builder"&&!state.creationLocked)||editMode);
+}
+function geneRefundPlan(id){
+ if(!state.skills.includes(id))return {error:"Perícia não adquirida."};
+ if(genePendingCount())return {error:"Confirme ou descarte os ajustes pendentes antes de remover uma Perícia."};
+ const candidate=geneCandidateCopy(state);
+ candidate.skills=candidate.skills.filter(sid=>sid!==id);
+ const invalid=candidate.skills.find(sid=>skillReq(sid,candidate));
+ if(invalid){
+  const name=SKILLS.find(([sid])=>sid===invalid)?.[1]||invalid;
+  return {error:"A Perícia "+name+" ainda depende desta compra. "+skillReq(invalid,candidate)};
+ }
+ const receipts=(state.genePackages||[]).map(r=>({...r,
+  skills:[...r.skills],sources:r.sources.map(x=>({...x}))}));
+ const receiptIndex=receipts.findLastIndex(r=>r.root===id&&r.active);
+ if(receiptIndex>=0)receipts[receiptIndex].active=false;
+ const inactive=receipts.filter(r=>!r.active);
+ const activeRoots=new Set(receipts.filter(r=>r.active).map(r=>r.root));
+ // Retira Perícias intermediárias exclusivas, mas preserva as compartilhadas.
+ const eligible=new Set(inactive.flatMap(r=>r.skills.filter(sid=>sid!==r.root)));
+ let changed=true;
+ while(changed){
+  changed=false;
+  for(const sid of eligible){
+   if(!candidate.skills.includes(sid)||activeRoots.has(sid))continue;
+   const next={...candidate,skills:candidate.skills.filter(key=>key!==sid)};
+   if(!dependentsValid(next)){candidate.skills=next.skills;changed=true;}
+  }
+ }
+ // Histórico inativo continua guardado: quando a última dependência compartilhada
+ // for removida numa edição posterior, o XP correspondente ainda pode ser liberado.
+ const sources=new Map();
+ for(const r of inactive)for(const x of r.sources){
+  const id=x.group+":"+x.key,old=sources.get(id);
+  sources.set(id,{group:x.group,key:x.key,
+   from:old?Math.min(old.from,x.from):x.from,
+   maxTo:old?Math.max(old.maxTo,x.to):x.to});
+ }
+ for(const x of sources.values()){
+  const field=SOURCE_PROPS[x.group],current=candidate[field][x.key]||0;
+  // Grau maior que qualquer pacote registrado: pode ter aumento manual posterior.
+  // Sem proveniência desse aumento, é mais seguro não reduzi-lo automaticamente.
+  if(current>x.maxTo)continue;
+  for(let grade=current-1;grade>=x.from;grade--){
+   const next={...candidate,[field]:{...candidate[field],[x.key]:grade}};
+   if(!hasStarterSources(next)||dependentsValid(next))break;
+   candidate[field][x.key]=grade;
+  }
+ }
+ if(!hasStarterSources(candidate)||dependentsValid(candidate))
+  return {error:"A remoção deixaria a ficha sem os requisitos mínimos ou invalidaria outra Perícia."};
+ const removed=state.skills.filter(sid=>!candidate.skills.includes(sid));
+ const levels=[];
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key,name] of GROUPS[group]){
+   const from=Number(state[field][key]||0),to=Number(candidate[field][key]||0);
+   if(to<from)levels.push({group,key,name,from,to});
+  }
+ }
+ const refund=xpCosts(state).total-xpCosts(candidate).total;
+ if(refund<0)return {error:"A correção não pode aumentar o XP gasto."};
+ return {candidate,receipts,removed,levels,refund,tracked:receiptIndex>=0};
+}
+function geneRemoveSkill(id){
+ if(!geneCanRemoveSkill()){
+  toast(state.creationLocked?"Ative Editar ficha e abra o Codex Genético para remover Perícias.":"Finalize a rolagem antes de editar.");return;
+ }
+ const plan=geneRefundPlan(id);
+ if(plan.error){toast(plan.error);return;}
+ const name=SKILLS.find(([sid])=>sid===id)?.[1]||id;
+ const skills=plan.removed.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const levelText=plan.levels.map(x=>x.name+" G"+x.from+" → G"+x.to);
+ const summary="Remover "+name+" e corrigir os investimentos?\n\n"+
+  "Perícias removidas:\n• "+skills.join("\n• ")+
+  (levelText.length?"\n\nGraus devolvidos:\n• "+levelText.join("\n• "):"")+
+  "\n\nXP devolvido à ficha: "+plan.refund+" XP"+
+  "\nSaldo livre: "+xpCosts(state).free+" → "+xpCosts(plan.candidate).free+" XP."+
+  (plan.tracked?"":"\n\nEsta compra não tem histórico de pacote: somente compras identificadas podem ser revertidas automaticamente.")+
+  "\nGraus necessários a outras Perícias ou à criação mínima permanecem."+
+  "\nEsta é uma correção da ficha, não um ganho de XP de campanha.";
+ if(!confirm(summary))return;
+ state.attributes={...plan.candidate.attributes};
+ state.knowledges={...plan.candidate.knowledges};
+ state.practices={...plan.candidate.practices};
+ state.skills=[...plan.candidate.skills];
+ state.genePackages=plan.receipts;
+ state.life=clamp(state.life,0,maxLife(state));
+ if(!state.skills.includes("criar-item-foco-magia")){
+  state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
+ }
+ for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
+ if(draft.third&&!mayThird())draft.third=null;
+ if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
+ render();save();toast("Correção confirmada. "+plan.refund+" XP retornaram ao saldo da ficha.");
+}
+
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
  if(src){
@@ -1593,14 +1756,26 @@ function geneDetailHTML(id,s=state){
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const skillButton=status==="potential"&&packagePlan&&geneCanAdjust()?
-  '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
-   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
-   '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
-  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
-   (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
-   '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
-   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+ const canRemove=geneCanRemoveSkill();
+ const refundPlan=owned&&canRemove?geneRefundPlan(sid):null;
+ const skillButton=owned?
+  '<button type="button" class="fp-gene-remove-skill" data-action="gene-remove-skill" data-id="'+esc(sid)+'"'+
+   (!canRemove||refundPlan?.error?' disabled':'')+'>'+
+   (canRemove&&refundPlan&&!refundPlan.error?
+    'Remover Perícia e reembolsar · '+refundPlan.refund+' XP':
+    canRemove?'Remoção bloqueada por requisitos':'Ative Editar ficha para remover')+'</button>'+
+   (refundPlan?.error?'<p class="fp-gene-auto-note">'+esc(refundPlan.error)+'</p>':"")+
+   (refundPlan&&!refundPlan.tracked&&!refundPlan.error?
+    '<p class="fp-gene-auto-note">Compra antiga ou individual: não há registro dos requisitos adquiridos em pacote; apenas investimentos identificados serão revertidos.</p>':""):
+  status==="potential"&&packagePlan&&geneCanAdjust()?
+   '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
+    'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
+    '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
+  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+
+    (status!=="available"&&!staged?' disabled':'')+'>'+
+    (staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
+    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+
+    (status!=="available"?' disabled':'')+'>'+(status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
@@ -1747,6 +1922,46 @@ function wizardConfirmStarterPicks(){
  toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
+function quickHumanoidGuide(){
+ return '<section class="fp-quick-human" aria-label="Criação rápida de humanoide comum">'+
+  '<div><span class="fp-kicker">HUMANOIDE COMUM · MODO RÁPIDO</span><h3>Distribua XP diretamente no DNA.</h3>'+
+  '<p>Sem assistente de identidade: começa com Força 1 e Disciplina 1 (3 XP), graus que você pode ajustar. Clique numa <strong>bolinha roxa</strong> para comprar a Perícia e todos os requisitos pagos com XP; a compra exige confirmação.</p></div>'+
+  '<div class="fp-quick-human-fields"><label>Nome (opcional)<input type="text" maxlength="70" data-quick-name value="'+esc(state.name)+'"></label>'+
+  '<label>XP adicional autorizado pelo Mestre<input type="number" min="0" max="50000" step="1" data-quick-xp value="'+(state.xpEarned||0)+'"></label></div>'+
+  '<div class="fp-quick-human-footer"><span>20 XP iniciais compartilhados (EXPERIMENTAL), sem progressão de monstro. O saldo é livre após os mínimos.</span>'+
+  '<button type="button" class="fp-secondary" data-action="quick-human-reset">Novo humanoide</button></div></section>';
+}
+function quickHumanoidToConflict(){
+ if(!QUICK_HUMANOID||state.pending)return;
+ if(genePendingCount()){toast("Confirme ou descarte a evolução pendente antes de adicionar ao conflito.");return;}
+ if(!hasStarterSources()){toast("A ficha exige Atributo G1 e Conhecimento ou Prática G1.");return;}
+ if(xpCosts().free<0||dependentsValid(state)){toast("Confira XP e requisitos das Perícias.");return;}
+ const attrs=Object.fromEntries(A.map(([k])=>[k,Number(state.attributes[k]||0)]));
+ const know=Object.fromEntries(K.map(([k])=>[k,Number(state.knowledges[k]||0)]));
+ const practices=Object.fromEntries(P.map(([k])=>[k,Number(state.practices[k]||0)]));
+ const items=state.items.map(it=>{
+  const base=WEIGHTS[it.weight]?.[1]||0;
+  return {name:String(it.name||"Item"),qty:Math.max(1,Math.floor(Number(it.qty)||1)),
+   weight:base*(Array.isArray(it.properties)&&it.properties.includes("Muito Leve")?0.5:1)};
+ });
+ const payload={schema:"codex-humanoide-rapido-v1",character:{
+  kind:"humanoide",name:state.name.trim()||"Humano comum",concept:state.concept||"Oponente humanoide",
+  level:state.level,threatGrade:1,xp:Math.floor(Number(state.xpEarned)||0),
+  attributes:attrs,knowledges:know,practices,skills:[...state.skills],
+  life:Math.floor(clamp(state.life,0,maxLife())),items
+ }};
+ try{localStorage.setItem(HUMANOID_INBOX_KEY,JSON.stringify(payload));save();}
+ catch(e){toast("Falha ao salvar a ficha para o conflito. Tente exportar o JSON.");return;}
+ window.location.assign("../criar-conflito/?adicionar-humanoide=1");
+}
+function quickHumanoidReset(){
+ if(!QUICK_HUMANOID)return;
+ if(xpCosts().total>3&&!confirm("Criar outro humanoide? A construção rápida atual será substituída."))return;
+ state=quickHumanoidDefault();draft=freshDraft();editMode=false;viewMode="builder";
+ wizardStep=2;wizardReached=2;wizardMode="genetic";wizardTab="attr";
+ geneSelected="";geneDraft.clear();genePendingSkills.clear();geneInspectorOpen=false;
+ wizardPersist();syncFields();render();save();toast("Novo humanoide comum preparado para distribuir XP.");
+}
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
@@ -1874,11 +2089,13 @@ function wizardEquipment(){
  const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
  const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ .map(it=>{const price=Number(it.priceVT),projected=itemLoadAfterPurchase(it),over=projected>capacity()+1e-9,details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+' · Carga '+pad(itemLoad(it))+' Alto</p>'+
+ (over?'<p class="fp-carry-warning">Esta compra ultrapassa a carga ('+pad(projected)+' / '+capacity()+' Alto).</p>':'')+
+ '<footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
- '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
+ carryGuide()+'<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
@@ -1909,10 +2126,10 @@ function wizardReview(){
 }
 function wizardOverview(){
  const x=xpCosts();
- return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
+ return '<div class="fp-wiz-summary-top"><small>'+(QUICK_HUMANOID?"HUMANOIDE COMUM":"SEU PERSONAGEM")+'</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / '+(20+(QUICK_HUMANOID?Number(state.xpEarned||0):0))+' XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
@@ -1937,10 +2154,18 @@ function renderWizard(){
  $("edit-sheet-help").hidden=show||!editMode;
  $("source-grid").classList.toggle("fp-edit-mode",editMode);
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
- $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
- $("page-subtitle").textContent=show?
-  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
+ $("wizard-steps").hidden=QUICK_HUMANOID;
+ $("page-title").innerHTML=QUICK_HUMANOID?'Crie um <span>humanoide comum.</span>':show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
+ $("page-subtitle").textContent=QUICK_HUMANOID?
+  "Sem etapas: distribua XP, compre Perícias roxas no DNA e envie a ficha ao Criar Conflito.":
+  show?"Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
+ if(QUICK_HUMANOID){
+  const intro=builder.querySelector(".fp-wizard-intro");
+  intro.querySelector(".fp-kicker").textContent="CRIAÇÃO RÁPIDA · HUMANOIDE COMUM";
+  intro.querySelector("h2").textContent="Um inimigo comum, sem formulário inicial.";
+  intro.querySelector("p").textContent="Use a progressão humana normal: distribua XP pelo DNA e compre Perícias roxas com seus requisitos, sem preencher as etapas do Aprendiz.";
+ }
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
   const canConfirmStarter=wizardStep===1&&wizardStarterPhase==="confirm"&&!!wizardStarterAttribute&&!!wizardStarterTraining;
@@ -1974,8 +2199,15 @@ function renderWizard(){
   }else if(stage===3){
    content=wizardEquipment();
   }else content=wizardReview();
- $("wizard-content").innerHTML=content;
+ $("wizard-content").innerHTML=(QUICK_HUMANOID?quickHumanoidGuide():"")+content;
  $("wizard-summary").innerHTML=wizardOverview();
+ if(QUICK_HUMANOID){
+  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>HUMANOIDE COMUM</span><small>Graus e Perícias no Codex Genético</small></div>'+
+   '<div class="fp-wiz-footer-buttons"><a class="fp-secondary" href="../criar-conflito/">Voltar ao conflito</a>'+
+   '<button type="button" class="fp-primary-btn" data-action="quick-human-send">Adicionar ao conflito →</button></div>';
+  if(stage===2&&wizardMode==="genetic")renderGenetic();
+  return;
+ }
  if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
@@ -1988,8 +2220,25 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
- $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada")+")":armorDodgeBonus()?"DE base "+deDefense()+" · Esquiva "+deDodge()+" (+"+armorDodgeBonus()+" da armadura)": "DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
+ const natural=deNatural(),armor=equippedArmor(),bonus=armorDodgeBonus(),penalty=armorDePenalty();
+ const modifier=bonus-penalty,finalDE=deDodge();
+ $("de-text").textContent=finalDE;$("balance-text").textContent=balance();
+ const source=bonus?(armor.weight==="muito_leve"?"Muito Leve":"Leve"):(penalty===2?"Muito Pesada":penalty?"Pesada":"");
+ $("de-caption").textContent="Natural "+natural+(modifier?" "+(modifier>0?"+":"−")+" "+Math.abs(modifier)+" ("+source+") = "+finalDE:" · sem modificador = "+finalDE);
+ $("de-condition").textContent=bonus?"O bônus da armadura só se aplica ao esquivar.":
+  penalty?"Penalidade da armadura aplicada à defesa.":armor?"Armadura equipada sem modificador de DE.":"Sem armadura equipada.";
+ const armorPanel=$("de-armor-panel");
+ armorPanel.hidden=!armor;
+ if(armor){
+  const noIntegrity=armor.weight==="muito_leve",maximum=Number(armor.max)||0,life=Number(armor.hp)||0;
+  const badge=noIntegrity?"Sem Integridade":life+" / "+maximum;
+  armorPanel.innerHTML='<div class="fp-defense-armor-head"><span>INTEGRIDADE · '+esc(armor.name)+'</span><strong>'+badge+'</strong></div>'+
+   (noIntegrity?'<small>Tipo Muito Leve: não possui Integridade.</small>':
+    maximum>0?'<div class="fp-defense-armor-meter" role="progressbar" aria-label="Integridade da armadura" aria-valuemin="0" aria-valuemax="'+maximum+'" aria-valuenow="'+life+'"><span style="width:'+Math.min(100,Math.max(0,100*life/maximum))+'%"></span></div>'+
+     '<div class="fp-defense-armor-actions"><button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(armor.name)+'"'+(life<=0?' disabled':'')+'>−</button>'+
+      '<button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="1" aria-label="Restaurar Integridade de '+esc(armor.name)+'"'+(life>=maximum?' disabled':'')+'>+</button></div>':
+    '<small class="fp-integrity-unset">Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>');
+ }
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
@@ -2317,7 +2566,8 @@ function inventorySelect(field,value,values,id){
 function renderInventory(){
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
+ $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · ATENÇÃO: capacidade excedida":"")+". Recursos VT e focos usam carga convencional.";
+ const guide=$("inventory-carry-guide");if(guide)guide.innerHTML=carryGuide();
  const mental=$("mental-slot-caption");
  if(mental){
   const points=mentalSlotCapacity();
@@ -2386,6 +2636,7 @@ function renderTrade(){
  const currentShop=$("shop-items").value,currentPreferred=$("shop-preferred").value;
  $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>
   '<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+(x.die?"d"+x.die:x.integrity?.max+" Integridade")+'</option>').join("");
+ const buyHint=$("trade-carry-guide");if(buyHint)buyHint.innerHTML=carryGuide();
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
@@ -2395,8 +2646,11 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
  const price=Number(item.priceVT);
+ const projected=itemLoadAfterPurchase(item),limit=capacity(),exceeded=projected>limit+1e-9;
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
+ const weightNotice="\nCarga: "+pad(loadUsed())+" → "+pad(projected)+" / "+limit+" Alto. "+(exceeded?"ATENÇÃO: ultrapassará o limite!":"Dentro da capacidade.");
+ if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"+weightNotice+
+  (exceeded?"\n\nConsequências mecânicas da sobrecarga PENDENTES. Confirmar mesmo assim?":"")))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
  for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
@@ -2405,7 +2659,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  state.trade.resources=res;
  state.trade.purchases.push({name:item.name,price});
  state.items.push(normalizedCatalogItem(item));
- render();save();toast(item.name+" adquirido por "+price+" VT. Equipe no inventário.");
+ render();save();toast(item.name+" adquirido por "+price+" VT. "+(loadUsed()>capacity()?"ATENÇÃO: carga excedida!":"Equipe no inventário."));
 }
 function addTestFocus(){
  if(!state.skills.includes("criar-item-foco-magia")||
@@ -2508,6 +2762,8 @@ function onClick(event){
  if(!action)return;
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
+ case "quick-human-send":quickHumanoidToConflict();break;
+ case "quick-human-reset":quickHumanoidReset();break;
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
  case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
  case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
@@ -2534,6 +2790,7 @@ function onClick(event){
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
   case "gene-skill":geneStageSkill(id);break;
   case "gene-auto-buy":geneAutoBuy(id);break;
+   case "gene-remove-skill":geneRemoveSkill(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
   case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
@@ -2584,19 +2841,14 @@ function onClick(event){
    }
    toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
   }else{
-   if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir esta Perícia.");return;}
-   const tmp=structuredClone(state);tmp.skills=tmp.skills.filter(x=>x!==id);
-   const problem=dependentsValid(tmp);if(problem){toast("Outra Perícia depende desta: "+problem);return;}
-   state.skills.splice(existing,1);
-   if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
-   toast("Compra de criação desfeita.");
+   geneRemoveSkill(id);return;
   }
   if(draft.third&&!mayThird())draft.third=null;
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
   render();save();break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderOwnedPanel();renderVitals();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -2605,11 +2857,11 @@ function onClick(event){
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
+  renderInventory();renderOwnedPanel();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
-  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderVitals();renderComposer();save();}break;
+  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderOwnedPanel();renderVitals();renderComposer();save();}break;
  }
  }
 }
@@ -2669,7 +2921,7 @@ function onChange(event){
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
   if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
-  renderInventory();renderVitals();save();return;
+  renderInventory();renderOwnedPanel();renderVitals();save();return;
  }
 }
 function bind(){
@@ -2702,8 +2954,19 @@ function bind(){
  document.addEventListener("click",event=>{
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
+ document.addEventListener("change",event=>{
+  if(!QUICK_HUMANOID||!event.target?.matches?.("[data-quick-xp]"))return;
+  const amount=Math.floor(Number(event.target.value));
+  if(!Number.isSafeInteger(amount)||amount<0||amount>50000){toast("XP adicional deve estar entre 0 e 50000.");event.target.value=state.xpEarned||0;return;}
+  const prev=state.xpEarned;state.xpEarned=amount;
+  if(xpCosts().free<0){state.xpEarned=prev;toast("O orçamento não cobre as compras realizadas.");event.target.value=prev;return;}
+  geneDraft.clear();genePendingSkills.clear();render();save();
+ });
  document.addEventListener("change",onChange);
  document.addEventListener("input",event=>{
+  if(QUICK_HUMANOID&&event.target?.matches?.("[data-quick-name]")){
+   state.name=event.target.value.slice(0,70);save();return;
+  }
   if(event.target?.dataset?.skillSearch!==undefined){
    skillFilter.query=String(event.target.value).slice(0,100);
    renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;

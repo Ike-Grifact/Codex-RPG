@@ -6,12 +6,12 @@
   <meta name="description" content="Codex RPG: criador e ficha unificados para personagens, XP, Perícias, equipamentos e rolagens.">
   <title>Criador de ficha e personagem — Codex RPG</title>
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
+  <link rel="stylesheet" href="../assets/styles.css?v=0.60-8">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.57-1">
+  <link rel="stylesheet" href="./styles.css?v=0.60-5">
   <script src="./catalog.js?v=0.43-1" defer></script>
-  <script src="./gene-graph.js?v=0.57-1" defer></script>
-  <script src="./app.js?v=0.56-1" defer></script>
+  <script src="./gene-graph.js?v=0.57-2" defer></script>
+  <script src="./app.js?v=0.60-8" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -109,8 +109,12 @@
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="pp" data-delta="-1" aria-label="Gastar PP">−</button><strong id="pp-text">0 / 0</strong><button type="button" class="fp-counter" data-resource="pp" data-delta="1" aria-label="Recuperar PP">+</button></div>
         <small>Reserva global do personagem</small>
       </div>
-      <div class="fp-vital fp-vital-basic">
-        <div class="fp-vital-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">Teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋</small>
+      <div class="fp-vital fp-vital-basic fp-de-vital">
+        <div class="fp-vital-label">DE DEFENSIVA <span>valor final</span></div>
+        <strong id="de-text">0</strong>
+        <small id="de-caption" class="fp-de-breakdown">Natural 0 · sem modificador</small>
+        <small id="de-condition" class="fp-de-condition">A armadura só modifica a DE nas condições descritas.</small>
+        <div id="de-armor-panel" class="fp-defense-armor" aria-label="Integridade da armadura equipada" hidden></div>
       </div>
       <div class="fp-vital fp-vital-basic">
         <div class="fp-vital-label">BALANÇO</div><strong id="balance-text">Médio</strong><small>Agilidade × Vigor</small>
@@ -263,6 +267,7 @@
         <div class="fp-panel-heading"><span class="fp-panel-icon">▣</span><div><h3>Equipamento e proteção</h3><small>Integridade, carga e peças equipadas</small></div><button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Item</button></div>
         <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
         <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
+        <div id="inventory-carry-guide"></div>
         <p class="fp-muted fp-load-caption" id="mental-slot-caption">Slots mentais: 1 ponto de capacidade mental por Grau investido em Disciplina. Magias criadas e memorizadas reduzem 1 ponto de peso.</p>
         <section class="fp-trade-panel" id="trade-panel" aria-label="Patrimônio em recursos e comércio">
           <div class="fp-trade-heading">
@@ -271,7 +276,7 @@
             <div class="fp-trade-balance"><span>Disponível</span><strong id="trade-total">20 VT</strong></div>
           </div>
           <p class="fp-muted">VT não é moeda física. Ervas, Espólios, Couro, Comida e Minérios possuem valor de troca equivalente no mesmo Grau; todos ocupam Carga.</p>
-          <div class="fp-trade-wallet" id="trade-wallet"></div>
+          <div id="trade-carry-guide"></div><div class="fp-trade-wallet" id="trade-wallet"></div>
           <details class="fp-trade-distribute">
             <summary>Escolher recursos iniciais (antes da primeira compra ou coleta)</summary>
             <div class="fp-trade-allocate" id="trade-allocate"></div>

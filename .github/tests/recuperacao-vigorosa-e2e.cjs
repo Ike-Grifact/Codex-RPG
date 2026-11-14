@@ -1,0 +1,51 @@
+const {chromium}=require("playwright");
+const assert=(condition,message)=>{if(!condition)throw Error(message);};
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1340,height:850}});
+  const errors=[];page.on("pageerror",e=>errors.push(e.message));
+  await page.goto("http://127.0.0.1:8000/prototipo-ficha/?modo=humanoide-rapido",{waitUntil:"domcontentloaded"});
+  const key="codex-html-humanoide-rapido-v1";
+  const getState=()=>page.evaluate(k=>JSON.parse(localStorage.getItem(k)),key);
+  const starting=(await getState())||{skills:[],attributes:{vigor:0},xpEarned:0};
+  assert(!starting.skills.includes("recuperacao-vigorosa"),"Perícia pré-adquirida");
+  const node=page.locator('#gene-builder-map .fp-gene-skill[data-gene-id="recuperacao-vigorosa"]');
+  assert(await node.count()===1,"Recuperação Vigorosa ausente no DNA");
+  assert((await node.getAttribute("class")).includes("is-potential"),"A Perícia deve ser roxa com pacote pagável");
+  await node.dispatchEvent("click");
+  const inspector=page.locator("#gene-builder-detail");
+  assert((await inspector.innerText()).includes("1 XP"),"Custo de Perícia não é 1 XP");
+  assert((await inspector.innerText()).includes("Vigor 3"),"Requisito Vigor 3 não aparece");
+  const buy=inspector.locator('[data-action="gene-auto-buy"]');
+  assert(await buy.isEnabled(),"Compra completa não foi habilitada");
+  page.once("dialog",d=>{
+   assert(d.type()==="confirm","Compra exige confirmação");
+   assert(d.message().includes("Recuperação Vigorosa"),"Resumo não menciona Perícia");
+   assert(d.message().includes("Vigor 0 → 3"),"Pacote não compra Vigor 3");
+   void d.accept();
+  });
+  await buy.click();
+  const purchased=await getState();
+  assert(purchased.attributes.vigor===3,"Compra não acrescentou Vigor 3");
+  assert(purchased.skills.includes("recuperacao-vigorosa"),"Perícia não foi salva");
+  assert(purchased.genePackages.some(r=>r.root==="recuperacao-vigorosa"),"Pacote não foi registrado");
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert((await getState()).skills.includes("recuperacao-vigorosa"),"Perícia não persistiu após reload");
+  await page.locator('#gene-builder-map .fp-gene-skill[data-gene-id="recuperacao-vigorosa"]').dispatchEvent("click");
+  const remove=page.locator('#gene-builder-detail [data-action="gene-remove-skill"]');
+  assert(await remove.isEnabled(),"Remoção não ficou disponível");
+  page.once("dialog",d=>void d.accept());
+  await remove.click();
+  const refunded=await getState();
+  assert(refunded.attributes.vigor===0,"Graus do pacote não foram devolvidos");
+  assert(!refunded.skills.includes("recuperacao-vigorosa"),"Perícia ainda adquirida após remoção");
+  assert(refunded.xpEarned===starting.xpEarned,"Reembolso não deve conceder XP de campanha");
+  await page.locator('[data-action="gene-future"]').first().click();
+  const pending=page.locator('#gene-builder-map .fp-gene-skill[data-gene-id="recuperacao-movimento"]');
+  assert(await pending.count()===1,"Maestria em Movimento ausente");
+  assert((await pending.getAttribute("class")).includes("is-locked"),"Maestria em Movimento não pode ser comprada sem custo");
+  assert(errors.length===0,"Erros JS: "+errors.join(" | "));
+  console.log("PASS: Recuperação Vigorosa 1 XP, Vigor 3, compra roxa, persistência, reembolso e Maestria pendente");
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
