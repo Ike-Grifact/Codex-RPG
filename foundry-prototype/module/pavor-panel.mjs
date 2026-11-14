@@ -28,19 +28,25 @@ export async function transferCombatPavor(message){
  if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
  const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
- // O Pavor não anulado destina-se ao alvo selecionado da ação, nunca ao inimigo mais próximo.
- // Sem alvo único declarado, a distribuição de ataques múltiplos/sem alvo permanece manual.
- if(obj.targetUuid){
-  const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","creature"].includes(target.type)){
-   const add=Math.max(0,obj.p);
-   if(target.type==="character")
-    await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
-   else {
-    const cap=monsterCap(target.system.threatGrade);
-    await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-    // Sem repasse por proximidade; excedente permanece sujeito à resolução manual do Narrador.
-   }
+ // SRD v0.42: um ataque de Trevas pode transferir o Pavor não anulado a dois alvos,
+ // dividido ou concentrado; jamais duplicar nem recalcular pela distância.
+ const entries=Array.isArray(obj.targets)?obj.targets:
+   (obj.targetUuid?[{targetUuid:obj.targetUuid,p:obj.p}]:[]);
+ if(Array.isArray(obj.targets)){
+  if(entries.length!==2||entries.some(x=>!x||typeof x.targetUuid!=="string"
+   ||!Number.isInteger(x.p)||x.p<0)||new Set(entries.map(x=>x.targetUuid)).size!==2
+   ||entries.reduce((n,x)=>n+x.p,0)!==obj.p)return;
+ }
+ for(const entry of entries){
+  if(!entry.p)continue;
+  const target=await fromUuid(entry.targetUuid);
+  if(!target||!["character","humanoid","creature"].includes(target.type))continue;
+  if(target.type==="character")
+   await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+entry.p)});
+  else {
+   const cap=monsterCap(target.system.threatGrade);
+   await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+entry.p)});
+   // Excedente permanece para decisão do Narrador, nunca para o alvo mais próximo.
   }
  }
  if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
