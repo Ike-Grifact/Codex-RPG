@@ -6,12 +6,12 @@
   <meta name="description" content="Codex RPG: criador e ficha unificados para personagens, XP, Perícias, equipamentos e rolagens.">
   <title>Criador de ficha e personagem — Codex RPG</title>
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/styles.css?v=0.60-7">
+  <link rel="stylesheet" href="../assets/styles.css?v=0.60-8">
   <link rel="stylesheet" href="../assets/theme.css">
   <link rel="stylesheet" href="./styles.css?v=0.60-5">
   <script src="./catalog.js?v=0.43-1" defer></script>
   <script src="./gene-graph.js?v=0.57-2" defer></script>
-  <script src="./app.js?v=0.60-7" defer></script>
+  <script src="./app.js?v=0.60-8" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -110,11 +110,11 @@
         <small>Reserva global do personagem</small>
       </div>
       <div class="fp-vital fp-vital-basic fp-de-vital">
-        <div class="fp-vital-label">DE DEFENSIVA <span>geral</span></div>
+        <div class="fp-vital-label">DE DEFENSIVA <span>valor final</span></div>
         <strong id="de-text">0</strong>
-        <div class="fp-de-dodge" aria-label="Dificuldade de Êxito para Esquiva"><span>DE ESQUIVA</span><strong id="de-dodge-text">0</strong></div>
-        <small id="de-caption">DE geral natural · teto 9 antes dos equipamentos</small>
-        <small id="de-dodge-caption">Sem bônus específico de armadura na esquiva</small>
+        <small id="de-caption" class="fp-de-breakdown">Natural 0 · sem modificador</small>
+        <small id="de-condition" class="fp-de-condition">A armadura só modifica a DE nas condições descritas.</small>
+        <div id="de-armor-panel" class="fp-defense-armor" aria-label="Integridade da armadura equipada" hidden></div>
       </div>
       <div class="fp-vital fp-vital-basic">
         <div class="fp-vital-label">BALANÇO</div><strong id="balance-text">Médio</strong><small>Agilidade × Vigor</small>
