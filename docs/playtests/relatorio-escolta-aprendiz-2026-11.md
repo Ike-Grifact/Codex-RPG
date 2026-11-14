@@ -106,3 +106,46 @@
 
 **Consolidação realizada na branch:** [SRD v0.40](../srd-continuidade-v0.40.md) registra a aprovação definitiva de **2E+1A**; o Livro do Jogador e sua versão web tiveram a tabela e o exemplo corrigidos. A nova face está implementada na ficha web e no Foundry; **a `main` permanece intacta até revisão e mesclagem do PR**.
 
+
+## 9. Escala local de Pavor e início do confronto — correção de escopo autoral (14/11/2026)
+
+### 9.1. Esclarecimento do objetivo
+
+O autor esclareceu que **não deseja criar turnos adicionais, novas oportunidades, custos de ativação, novas habilidades ou recargas por rodada**. Quer apenas que os inimigos:
+
+1. **Possuam um teto maior de Pavor local** em cada Grau, para financiar várias capacidades já habilitadas na **mesma ação** (ativação, elevação de dado, retenção adicional, deslocamento, técnicas e combinações mágicas pertinentes).
+2. **Comecem cada conflito com a própria reserva local cheia**, assim como os personagens contam com sua reserva inicial de Coragem, em vez de depender de gerar Pavor durante os primeiros turnos.
+
+A finalidade é permitir que monstros iniciais apresentem ameaça e que **humanoides construídos com Perícias e magias avançadas** possam pagar por combinações complexas dentro de seus requisitos. **Acesso ao gasto não concede automaticamente Perícias, magias, dados maiores ou êxitos;** a habilidade e a oportunidade precisam existir.
+
+### 9.2. Escala de teste, ainda não homologada
+
+Para isolar a mudança, a branch adota **EXPERIMENTALMENTE** `teto = Grau + 2` (Grau 1=3P, 2=4P, 3=5P, 4=6P, 5=7P, 6=8P), com estoque inicial cheio ao iniciar o combate. É a escala intermediária discutida anteriormente, que mantém +1P por avanço e termina em 8P.
+
+**PENDENTE:** confirmação autoral do valor inicial numérico, especialmente a alternativa originalmente cogitada de 4P no Grau 1. Não tratar G1=3P como decisão definitiva, nem incluir automaticamente G1=4P e G6=8P com +1P constante por Grau (essa sequência levaria a 9P no G6).
+
+| Grau | Teto anterior DEFINIDO | Teto experimental da branch |
+|---:|---:|---:|
+| 1 | 1P | **3P** |
+| 2 | 2P | **4P** |
+| 3 | 3P | **5P** |
+| 4 | 4P | **6P** |
+| 5 | 5P | **7P** |
+| 6 | 6P | **8P** |
+
+**O que permanece intacto:** critérios de oportunidade e protagonismo, custos já existentes (incluindo distância corpo a corpo 1P/2P/3P **totais**, sem dupla ativação), ação básica sem Pavor quando cabível, regras de liderança/Antecipar, teto público do Narrador, limites de dados, grau de ameaça, XP e capacidades habilitadas, transferência de Pavor residual, recompensas críticas e distribuição de Coragem dos jogadores.
+
+### 9.3. Implementação limitada no Foundry (draft)
+
+- `rules.mjs`: `monsterCap(grade)` passa a `Grau + 2`, conservando o domínio de Grau 1–6.
+- `pavor-panel.mjs`: a transferência de Pavor da ação e os ganhos em críticos passam a consultar o mesmo `monsterCap`, sem teto antigo divergente.
+- `sheet.mjs`: já consultava `monsterCap`; mantido sem outras alterações.
+- `main.mjs`: ao evento `combatStart`, GM preenche a reserva local até seu novo teto para cada inimigo `humanoid` ou `creature` integrante do conflito; personagem `character` não é alterado. A rotina não roda na troca de rodada ou turno e não concede oportunidade adicional.
+- **PENDENTE de interface:** preenchimento automático de reforços adicionados depois do início do conflito; não assumir que existe.
+- **Sem mudança ao SRD v0.40 ou Livro do Jogador neste experimento.**
+
+### 9.4. Validação e métricas pendentes
+
+Testes pontuais de função confirmaram teto 3/4/5/6/7/8, preenchimento da reserva no início para humanoide e monstro, não alteração dos jogadores e prevenção de duplicidade por UUID de Actor; não houve execução no Foundry real.
+
+O próximo playtest deve comparar, nas **mesmas fichas e mesmas oportunidades**, quantos gastos de dados/efeitos cabem no estoque, frequência de acerto limpo/com Pavor, dano, risco, duração de recursos, recuperação de Coragem dos jogadores, e se a reserva pública do Narrador permanece relevante. **Ter maior estoque de Pavor não autoriza um segundo turno.**
