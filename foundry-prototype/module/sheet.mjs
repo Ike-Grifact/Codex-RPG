@@ -277,7 +277,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const trevasOn=!!p.options.trevasEnabled;
    if(trevasOn&&!mayUseTrevas(this.actor,{base:p.base},p.options))
     throw Error("Trevas não habilitada para esta rolagem.");
-   const targetResults=(p.options.targets||[]).map(t=>({...t,success:result.reached>=t.de}));
+   const targetResults=(p.options.targets||[]).map(t=>({...t,success:result.reached>=t.de,
+    damage:result.reached>=t.de?(result.e+Math.floor(result.p/2))*(result.critical===4?2:1):0}));
    const anyHit=targetResults.length?targetResults.some(t=>t.success):result.success;
    let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
@@ -305,17 +306,17 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
    const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
-   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(result.outcome)+'</h3>'+
+   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(trevasOn&&targetResults.length>1?(anyHit?'Acerto em pelo menos um alvo':'Falha contra ambos os alvos'):result.outcome)+'</h3>'+
     '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
     (item?'<p><strong>Equipamento:</strong> '+escapeHTML(item.name)+'</p>':'')+
     (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
     (trevasOn?'<p><strong>Trevas:</strong> +2P para DE, dano e risco; transferência '+escapeHTML(p.options.trevasDistribution==="focus"?"concentrada":"dividida")+'.</p>':'')+
-    (targetResults.length>1?'<p><strong>DE por alvo:</strong> '+targetResults.map(t=>escapeHTML(t.name)+': DE '+t.de+' — '+(t.success?'acerto':'falha')).join('; ')+'</p>':'')+
+    (targetResults.length>1?'<p><strong>DE por alvo:</strong> '+targetResults.map(t=>escapeHTML(t.name)+': DE '+t.de+' — '+(t.success?'acerto, dano básico '+t.damage:'falha')).join('; ')+'</p>':'')+
     '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
-    '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
+    '<p><strong>Dano básico:</strong> '+(targetResults.length>1?'ver cada alvo acima':result.damage)+' (proteção e aplicação de condições: adjudicação)</p>'+
     '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
    if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
    else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
