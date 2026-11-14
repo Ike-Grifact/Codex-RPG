@@ -1359,7 +1359,7 @@ function renderOwnedPanel(){
     '<div class="fp-owned-integrity-actions">'+
      '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'"'+(it.hp<=0?' disabled':'')+'>−</button>'+
      '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Restaurar um ponto de Integridade de '+esc(it.name)+'"'+(it.hp>=it.max?' disabled':'')+'>+</button>'+
-    '</div>'+(it.max===0?'<small>Valor máximo não informado; ajuste no Inventário.</small>':'')+'</div>';
+    '</div>'+(it.max===0?'<small>Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>':'')+'</div>';
   return '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
    integrity+(it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>';
  }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
@@ -2220,13 +2220,25 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- $("de-text").textContent=deDefense();$("de-dodge-text").textContent=deDodge();$("balance-text").textContent=balance();
- $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" pela armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada"):"DE geral natural · teto 9 antes dos equipamentos";
- const dodgeBonus=armorDodgeBonus(),armor=equippedArmor();
- $("de-dodge-caption").textContent=dodgeBonus?
-  "Bônus +"+dodgeBonus+" na esquiva · armadura "+(armor.weight==="muito_leve"?"Muito Leve":"Leve")+" equipada. Não vale para outras defesas.":
-  armorDePenalty()?"Sem bônus de esquiva; penalidade já incluída na DE geral":
-  "Sem bônus específico de armadura na esquiva";
+ const natural=deNatural(),armor=equippedArmor(),bonus=armorDodgeBonus(),penalty=armorDePenalty();
+ const modifier=bonus-penalty,finalDE=deDodge();
+ $("de-text").textContent=finalDE;$("balance-text").textContent=balance();
+ const source=bonus?(armor.weight==="muito_leve"?"Muito Leve":"Leve"):(penalty===2?"Muito Pesada":penalty?"Pesada":"");
+ $("de-caption").textContent="Natural "+natural+(modifier?" "+(modifier>0?"+":"−")+" "+Math.abs(modifier)+" ("+source+") = "+finalDE:" · sem modificador = "+finalDE);
+ $("de-condition").textContent=bonus?"O bônus da armadura só se aplica ao esquivar.":
+  penalty?"Penalidade da armadura aplicada à defesa.":armor?"Armadura equipada sem modificador de DE.":"Sem armadura equipada.";
+ const armorPanel=$("de-armor-panel");
+ armorPanel.hidden=!armor;
+ if(armor){
+  const noIntegrity=armor.weight==="muito_leve",maximum=Number(armor.max)||0,life=Number(armor.hp)||0;
+  const badge=noIntegrity?"Sem Integridade":life+" / "+maximum;
+  armorPanel.innerHTML='<div class="fp-defense-armor-head"><span>INTEGRIDADE · '+esc(armor.name)+'</span><strong>'+badge+'</strong></div>'+
+   (noIntegrity?'<small>Tipo Muito Leve: não possui Integridade.</small>':
+    maximum>0?'<div class="fp-defense-armor-meter" role="progressbar" aria-label="Integridade da armadura" aria-valuemin="0" aria-valuemax="'+maximum+'" aria-valuenow="'+life+'"><span style="width:'+Math.min(100,Math.max(0,100*life/maximum))+'%"></span></div>'+
+     '<div class="fp-defense-armor-actions"><button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(armor.name)+'"'+(life<=0?' disabled':'')+'>−</button>'+
+      '<button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="1" aria-label="Restaurar Integridade de '+esc(armor.name)+'"'+(life>=maximum?' disabled':'')+'>+</button></div>':
+    '<small class="fp-integrity-unset">Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>');
+ }
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
@@ -2836,7 +2848,7 @@ function onClick(event){
   render();save();break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderOwnedPanel();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderOwnedPanel();renderVitals();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
