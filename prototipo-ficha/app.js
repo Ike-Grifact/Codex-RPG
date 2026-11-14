@@ -1632,6 +1632,108 @@ function geneSkillStatus([id,,,cost],s=state){
  // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
  return geneAutoPlan(id,s)?"potential":"locked";
 }
+
+/* Reversão de compras da ficha, não concessão de XP de campanha.
+ * Só os investimentos registrados como parte de um pacote roxo são elegíveis
+ * à redução automática; fontes adquiridas antes da compra são preservadas. */
+function geneCanRemoveSkill(){
+ return !state.pending&&((viewMode==="builder"&&!state.creationLocked)||editMode);
+}
+function geneRefundPlan(id){
+ if(!state.skills.includes(id))return {error:"Perícia não adquirida."};
+ if(genePendingCount())return {error:"Confirme ou descarte os ajustes pendentes antes de remover uma Perícia."};
+ const candidate=geneCandidateCopy(state);
+ candidate.skills=candidate.skills.filter(sid=>sid!==id);
+ const invalid=candidate.skills.find(sid=>skillReq(sid,candidate));
+ if(invalid){
+  const name=SKILLS.find(([sid])=>sid===invalid)?.[1]||invalid;
+  return {error:"A Perícia "+name+" ainda depende desta compra. "+skillReq(invalid,candidate)};
+ }
+ const receipts=(state.genePackages||[]).map(r=>({...r,
+  skills:[...r.skills],sources:r.sources.map(x=>({...x}))}));
+ const receiptIndex=receipts.findLastIndex(r=>r.root===id&&r.active);
+ if(receiptIndex>=0)receipts[receiptIndex].active=false;
+ const inactive=receipts.filter(r=>!r.active);
+ const activeRoots=new Set(receipts.filter(r=>r.active).map(r=>r.root));
+ // Retira Perícias intermediárias exclusivas, mas preserva as compartilhadas.
+ const eligible=new Set(inactive.flatMap(r=>r.skills.filter(sid=>sid!==r.root)));
+ let changed=true;
+ while(changed){
+  changed=false;
+  for(const sid of eligible){
+   if(!candidate.skills.includes(sid)||activeRoots.has(sid))continue;
+   const next={...candidate,skills:candidate.skills.filter(key=>key!==sid)};
+   if(!dependentsValid(next)){candidate.skills=next.skills;changed=true;}
+  }
+ }
+ // Histórico inativo continua guardado: quando a última dependência compartilhada
+ // for removida numa edição posterior, o XP correspondente ainda pode ser liberado.
+ const sources=new Map();
+ for(const r of inactive)for(const x of r.sources){
+  const id=x.group+":"+x.key,old=sources.get(id);
+  sources.set(id,{group:x.group,key:x.key,
+   from:old?Math.min(old.from,x.from):x.from,
+   maxTo:old?Math.max(old.maxTo,x.to):x.to});
+ }
+ for(const x of sources.values()){
+  const field=SOURCE_PROPS[x.group],current=candidate[field][x.key]||0;
+  // Grau maior que qualquer pacote registrado: pode ter aumento manual posterior.
+  // Sem proveniência desse aumento, é mais seguro não reduzi-lo automaticamente.
+  if(current>x.maxTo)continue;
+  for(let grade=current-1;grade>=x.from;grade--){
+   const next={...candidate,[field]:{...candidate[field],[x.key]:grade}};
+   if(!hasStarterSources(next)||dependentsValid(next))break;
+   candidate[field][x.key]=grade;
+  }
+ }
+ if(!hasStarterSources(candidate)||dependentsValid(candidate))
+  return {error:"A remoção deixaria a ficha sem os requisitos mínimos ou invalidaria outra Perícia."};
+ const removed=state.skills.filter(sid=>!candidate.skills.includes(sid));
+ const levels=[];
+ for(const group of ["attr","know","practice"]){
+  const field=SOURCE_PROPS[group];
+  for(const [key,name] of GROUPS[group]){
+   const from=Number(state[field][key]||0),to=Number(candidate[field][key]||0);
+   if(to<from)levels.push({group,key,name,from,to});
+  }
+ }
+ const refund=xpCosts(state).total-xpCosts(candidate).total;
+ if(refund<0)return {error:"A correção não pode aumentar o XP gasto."};
+ return {candidate,receipts,removed,levels,refund,tracked:receiptIndex>=0};
+}
+function geneRemoveSkill(id){
+ if(!geneCanRemoveSkill()){
+  toast(state.creationLocked?"Ative Editar ficha e abra o Codex Genético para remover Perícias.":"Finalize a rolagem antes de editar.");return;
+ }
+ const plan=geneRefundPlan(id);
+ if(plan.error){toast(plan.error);return;}
+ const name=SKILLS.find(([sid])=>sid===id)?.[1]||id;
+ const skills=plan.removed.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
+ const levelText=plan.levels.map(x=>x.name+" G"+x.from+" → G"+x.to);
+ const summary="Remover "+name+" e corrigir os investimentos?\n\n"+
+  "Perícias removidas:\n• "+skills.join("\n• ")+
+  (levelText.length?"\n\nGraus devolvidos:\n• "+levelText.join("\n• "):"")+
+  "\n\nXP devolvido à ficha: "+plan.refund+
+  "\nSaldo livre: "+xpCosts(state).free+" → "+xpCosts(plan.candidate).free+" XP."+
+  (plan.tracked?"":"\n\nEsta compra não tem histórico de pacote: somente compras identificadas podem ser revertidas automaticamente.")+
+  "\nGraus necessários a outras Perícias ou à criação mínima permanecem."+
+  "\nEsta é uma correção da ficha, não um ganho de XP de campanha.";
+ if(!confirm(summary))return;
+ state.attributes={...plan.candidate.attributes};
+ state.knowledges={...plan.candidate.knowledges};
+ state.practices={...plan.candidate.practices};
+ state.skills=[...plan.candidate.skills];
+ state.genePackages=plan.receipts;
+ state.life=clamp(state.life,0,maxLife(state));
+ if(!state.skills.includes("criar-item-foco-magia")){
+  state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
+ }
+ for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
+ if(draft.third&&!mayThird())draft.third=null;
+ if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
+ render();save();toast("Correção confirmada. "+plan.refund+" XP retornaram ao saldo da ficha.");
+}
+
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
  if(src){
@@ -1652,14 +1754,26 @@ function geneDetailHTML(id,s=state){
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const skillButton=status==="potential"&&packagePlan&&geneCanAdjust()?
-  '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
-   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
-   '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
-  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
-   (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
-   '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
-   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+ const canRemove=geneCanRemoveSkill();
+ const refundPlan=owned&&canRemove?geneRefundPlan(sid):null;
+ const skillButton=owned?
+  '<button type="button" class="fp-gene-remove-skill" data-action="gene-remove-skill" data-id="'+esc(sid)+'"'+
+   (!canRemove||refundPlan?.error?' disabled':'')+'>'+
+   (canRemove&&refundPlan&&!refundPlan.error?
+    'Remover Perícia e reembolsar · '+refundPlan.refund+' XP':
+    'Ative Editar ficha para remover')+'</button>'+
+   (refundPlan?.error?'<p class="fp-gene-auto-note">'+esc(refundPlan.error)+'</p>':"")+
+   (refundPlan&&!refundPlan.tracked&&!refundPlan.error?
+    '<p class="fp-gene-auto-note">Compra antiga ou individual: não há registro dos requisitos adquiridos em pacote; apenas investimentos identificados serão revertidos.</p>':""):
+  status==="potential"&&packagePlan&&geneCanAdjust()?
+   '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
+    'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
+    '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
+  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+
+    (status!=="available"&&!staged?' disabled':'')+'>'+
+    (staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
+    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+
+    (status!=="available"?' disabled':'')+'>'+(status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
@@ -2657,6 +2771,7 @@ function onClick(event){
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
   case "gene-skill":geneStageSkill(id);break;
   case "gene-auto-buy":geneAutoBuy(id);break;
+   case "gene-remove-skill":geneRemoveSkill(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
   case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
@@ -2707,12 +2822,7 @@ function onClick(event){
    }
    toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
   }else{
-   if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir esta Perícia.");return;}
-   const tmp=structuredClone(state);tmp.skills=tmp.skills.filter(x=>x!==id);
-   const problem=dependentsValid(tmp);if(problem){toast("Outra Perícia depende desta: "+problem);return;}
-   state.skills.splice(existing,1);
-   if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
-   toast("Compra de criação desfeita.");
+   geneRemoveSkill(id);return;
   }
   if(draft.third&&!mayThird())draft.third=null;
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
