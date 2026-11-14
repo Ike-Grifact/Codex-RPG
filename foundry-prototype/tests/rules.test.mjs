@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabe
  buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
-import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus} from "../module/equipment-logic.mjs";
 
 function human(){return{
  monsterRules:false,level:1,xp:0,skills:["armas-leves"],
@@ -133,6 +133,22 @@ test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automati
  assert.equal(defenseDE({system:s,items:[light]}),4);
 });
 
+test("Esquiva: Muito Leve +2 e Leve +1 sem alterar DE geral nem acumular peças",()=>{
+ const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;
+ const make=(category,equipped=true)=>({type:"equipment",system:{kind:"armor",equipped,category}});
+ const normal={system:s,items:[]},veryLight={system:s,items:[make("muito-leve")]},
+       light={system:s,items:[make("leve")]},medium={system:s,items:[make("medio")]},
+       heavy={system:s,items:[make("pesado")]},extreme={system:s,items:[make("muito-pesado")]},
+       stored={system:s,items:[make("muito-leve",false)]};
+ assert.equal(defenseDE(normal),4);assert.equal(dodgeDE(normal),4);
+ assert.equal(defenseDE(veryLight),4);assert.equal(dodgeBonus(veryLight),2);assert.equal(dodgeDE(veryLight),6);
+ assert.equal(defenseDE(light),4);assert.equal(dodgeBonus(light),1);assert.equal(dodgeDE(light),5);
+ assert.equal(defenseDE(medium),4);assert.equal(dodgeDE(medium),4);
+ assert.equal(defenseDE(heavy),3);assert.equal(dodgeDE(heavy),3);
+ assert.equal(defenseDE(extreme),2);assert.equal(dodgeDE(extreme),2);
+ assert.equal(dodgeDE(stored),4);
+ assert.equal(dodgeDE({system:s,items:[make("leve"),make("muito-leve")]}),5,"Não empilhar duas armaduras");
+});
 test("Orçamento monstruoso usa tabela da Formação e humanoide usa 20 XP compartilhados",()=>{
  const m={monsterRules:true,xp:20,attributes:{forca:1,agilidade:2},skills:[],knowledges:{},practices:{}};
  assert.equal(xpLedger(m).attributes,10); // d10 G1 = 2 XP; 2d10 G2 = 8 XP
