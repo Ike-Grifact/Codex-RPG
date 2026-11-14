@@ -45,8 +45,9 @@ export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.
 export const maxPP=level=>level>=20?3:level>=10?2:level>=5?1:0;
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
-// EXPERIMENTAL (playtest): reserva local de G1=3P a G6=8P; não altera oportunidades ou preços de ações.
-export const monsterCap=grade=>Math.max(1,Math.min(6,Math.floor(Number(grade)||1)))+2;
+// SRD v0.41 [DEFINIDO]: G1=4P; progressão +1/Grau até atingir 8P (G5=8P, G6=8P).
+// A reserva inicial é cheia; oportunidades, custos e retenção não são alterados.
+export const monsterCap=grade=>Math.min(8,Math.max(1,Math.min(6,Math.floor(Number(grade)||1)))+3);
 export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Formação Disciplina na carga: pendente.
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
