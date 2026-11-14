@@ -83,3 +83,26 @@
 | Ferramentas | Bugs de remover compras, registro de equipamentos, Pavor, estados, líder e rodadas |
 
 **Sequência recomendada:** (1) corrigir/validar ficha e Foundry, incluindo medição explícita de distância e Pavor local/público; (2) repetir com 80% do XP e regras vigentes para confirmar quantas oportunidades de aproximação foram perdidas; (3) com a mesma oposição de 80%, testar **somente** a hipótese de gasto público direto para aproximação/ativação por ameaça comum; (4) testar Líder e ação conjunta segundo as regras vigentes; (5) só então considerar a comparação de XP com 100%. Não mudar simultaneamente XP, teto local, retenção e ação conjunta.
+
+## 8. Correção posterior: crítico do d10 e elevação seletiva com Coragem (14/11/2026)
+
+**Origem:** apontamento direto do autor após o playtest, sobre a ficha e os dados simbólicos.
+
+### 8.1. Face máxima do d10
+
+- **ERRO OBSERVADO:** a face **10** do d10 estava codificada como **2E + 1P**, o que podia produzir crítico com Pavor próprio.
+- **DEFINIDO pelo autor:** a face crítica do d10 **não deve conter Pavor**; a alternativa mencionada foi **2E ou 2E+A**.
+- **EXPERIMENTAL na branch, não homologado quanto à alternativa:** escolher **2E+A** na face **10**, mantendo os símbolos das outras nove faces intactos. A alternativa **2E puro** permanece **PENDENTE de decisão final**. É uma mudança probabilística, não apenas estética: elimina **0,1 Pavor esperado por d10 rolado**, acrescenta **0,1 Antecipar esperado por d10 rolado** (antes da seleção de mantidos) e altera os usos de conversão de Pavor no crítico. Não afetar d12/d20 por analogia.
+- **DEFINIDO e inalterado:** crítico exige manter **ao menos dois dados**, **todos nas respectivas faces numéricas máximas**; o Atributo é obrigatório na **rolagem**, mas não na **retenção**. Mudar os símbolos da face 10 **não** cria um crítico adicional nem altera o gatilho.
+
+### 8.2. Elevação comum de dado com Coragem
+
+- **DEFINIDO pelo autor:** o jogador deve **escolher qual dado da pilha deseja elevar** por **1 Coragem**, em vez de elevar compulsoriamente o primeiro dado de Atributo. A escolha deve aceitar dados de **Atributo, Conhecimento, Prática e dado habilitado de equipamento**, desde que presentes na pilha, inclusive fontes complementares liberadas por Perícia de combinação como **Disciplina Avançada**. A seleção ocorre **antes de rolar**.
+- **DEFINIDO previamente e preservado:** **uma elevação comum por rodada**, cadeia **d4→d6→d10→d12**, sem d12→d20 por via comum; limite da pilha **9 dados rolados**, retenção **até 4**, gasto normal **1 Coragem**. Exceções extraordinárias permanecem com seus requisitos, não são introduzidas por este controle.
+- **IMPLEMENTADO NA BRANCH:** seletor do **ID do dado**, mostrando origem e passo; a rolagem é bloqueada se a opção de elevação estiver marcada sem dado válido. O dado de equipamento também aparece após verificar a habilitação e estar equipado, mantendo o respectivo requisito. A ficha web e o Foundry recebem o mesmo comportamento.
+- **Exemplo:** em uma ação de Disciplina + Força com Conhecimento complementar autorizado por Disciplina Avançada, o jogador pode pagar 1 Coragem para elevar **o d10 do Conhecimento → d12** sem tocar no d6 de Força. Mantém a liberdade de rolar o dado de Atributo e descartá-lo na retenção.
+
+**Validação técnica:** faces d10 iguais no site e Foundry; testes positivos para selecionar Atributo, Prática, Conhecimento complementar e equipamento, e negativos para alvo omitido, inexistente ou que já é d12. Scripts sintaticamente válidos, porém **sem teste integrado de navegador/Foundry VTT real**.
+
+**Consolidação futura:** formalizar o resultado definitivo da face crítica (**2E puro** vs. **2E+A**) no próximo SRD e atualizar tabelas do Livro do Jogador apenas após aprovação. Até lá, o código revisável usa **2E+A experimental** e a `main` permanece intacta.
+
