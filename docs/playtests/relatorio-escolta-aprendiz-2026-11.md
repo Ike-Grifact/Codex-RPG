@@ -173,3 +173,29 @@ O próximo playtest deve comparar, nas **mesmas fichas e mesmas oportunidades**,
 - `docs/livro-do-mestre.md`, `narrador.html` e `foundry-prototype/README.md`: explicam nova escala e novo destinatário; referências de README e guia atualizadas para o SRD v0.41.
 
 **PENDENTE:** distribuição em ataques de área, múltiplos alvos e ações sem adversário atacado, critérios de excedente nas situações não cobertas e automação para reforços incorporados depois de iniciado o combate. O protótipo só encaminha automaticamente o recurso quando **um alvo único foi marcado**; testes de mesa e integração real no Foundry permanecem pendentes. Nenhuma solução nova para esses casos foi inventada.
+
+
+## 11. Trevas para DE, dano e Pavor em um ou dois alvos — decisão de 14/11/2026 [DEFINIDO]
+
+**Referência normativa:** [SRD de Continuidade v0.42](../srd-continuidade-v0.42.md), seção **0-AB**. A aprovação autoral substitui a restrição anterior de **+2P somente para dano depois de confirmar acerto**. A razão original dessa restrição não está explicitada no registro histórico; não atribuir justificativa não documentada.
+
+### Mudança aprovada
+
+- Os **+2P da técnica especializada de Trevas** entram na **única rolagem antes da comparação com a DE**, contam para acerto, dano básico e Pavor residual a transferir, respeitando Antecipar e riscos.
+- O conjurador pode selecionar **um ou dois alvos**. Com dois, **a mesma rolagem inteira** enfrenta **cada DE separadamente**; não se duplicam +2P, dados ou transferência.
+- Com dois alvos, distribuir **todo o Pavor não anulado** da rolagem **tão igualmente quanto possível** entre suas reservas (ex.: 2P = 1P/1P; 3P = 2P/1P à escolha; 4P = 2P/2P) **ou concentrar integralmente em um alvo** (3P = 3P/0P). Atacar apenas um alvo é permitido; nesse caso todo Pavor válido entra na reserva dele até o teto.
+- Preservados requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia**, compra **2 XP** e custo especial **1 PP ou 2 Coragens** no acerto, sem alteração de Graus, combo de elementos ou outras habilidades.
+- **PENDENTE:** sequência fina de pagamento quando os +2P ajudam a alcançar DE mas a regra de ativação anterior referia-se a pagamento após acerto; em falha, não estabelecer nova cobrança sem decisão. **Não alterar** custos de outras Perícias.
+
+### Exemplo reproduzível
+
+Uma conjuração com **2E+1P** de dados mantidos recebe **+2P** de Trevas e termina com **2E+3P**, resultado **5** para a DE. Em dois alvos de **DE 4 e DE 6**, o primeiro é atingido e o segundo não, mas o Pavor residual pode ser atribuído **2P/1P** ou **3P/0P**, dentro dos tetos locais. **O dano básico do acerto** é **2 + ⌊3/2⌋ = 3**, antes das proteções. A existência de mais Pavor não gera ataque ou turno adicional.
+
+### Implementação e validação
+
+- **Foundry:** `module/rules.mjs` contém o bônus da técnica no processo de `resolveRoll` via opções, a função `distributeDarknessPavor` e os textos da Perícia. `module/sheet.mjs` permite usar Trevas apenas com habilitação e modo Conjuração, escolher um ou dois alvos, informar foco/divisão e declarar o alvo prioritário do Pavor indivisível. Cada alvo usa a própria DE e recebe registro independente de acerto e dano. `module/pavor-panel.mjs` valida que a soma das parcelas transferidas é **igual ao Pavor residual original**, evitando duplicação e respeitando os tetos.
+- **Criador web:** a técnica pode ser habilitada quando a build possui a Perícia; os +2P entram no escore antes da DE, e a interface explica a distribuição manual ao Narrador. O site **não possui duas fichas de alvo** nem transferência automática de Pavor entre elas.
+- **Documentação:** Livro do Jogador (Markdown e web), Livro do Mestre (Markdown e web), verbete individual de Trevas, README, guia do criador e README do Foundry atualizados.
+- **Testes pontuais:** com dados de **2E+1P** e DE 4, o resultado passa de **falha (3)** a **acerto com Pavor (5)** ao ativar Trevas; distribuição 2P, 3P e 4P nas modalidades dividida/concentrada verificada; a transferência à reserva de dois alvos recusa soma duplicada e respeita tetos. **Não foi realizado teste E2E de navegador nem execução no Foundry real.**
+
+**Coleta de feedback:** ver [post de orientação para Discord](post-discord-feedback-codex-rpg-2026-11-14.md). Medir separadamente frequência de acerto com Pavor, dano real, ganho de Pavor dos inimigos, oportunidades que isso permite e custo de Coragem/PP, especialmente contra builds não mágicas e conjurações de outros elementos.
