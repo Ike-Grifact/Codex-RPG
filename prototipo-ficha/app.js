@@ -11,7 +11,7 @@ const DICE_FORM=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 const FACES={
  4:[[0,0,0],[0,0,0],[0,0,1],[0,1,1]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
- 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
+ 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,1,0]],
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
  20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
@@ -861,7 +861,8 @@ function combatItem(item,mode){
   const element=(item.element||"psiquico").toLowerCase();
   const map={ar:"vento",água:"agua",agua:"agua",terra:"terra",fogo:"fogo",sagrado:"sagrado",sangue:"sangue",veneno:"veneno",trevas:"trevas"};
   if(!["psiquico","psíquico"].includes(element)&&!skills.includes(map[element]||element))return [];
-  return [die];
+  // O peso físico de um cetro G1 não habilita automaticamente magia Média/Pesada.
+  return [cat==="leve"||skills.includes("conjuracao-equilibrada")?die:6];
  }
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
@@ -940,7 +941,7 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:""});
 function load(){
  let migrated=false,legacyAvailable=false;
@@ -1871,11 +1872,11 @@ function wizardEquipment(){
  const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
  const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
- const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
- const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const price=Number(it.priceVT),details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ const items=CATALOG.filter(it=>wizardShopCategory==="all"||it.kind===wizardShopCategory)
+ .map(it=>{const purchasable=it.kind!=="focus"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?"Fabricação por Artesão":"Preço pendente")+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
@@ -2070,18 +2071,19 @@ function buildPool(){
  if(!canUseShared())errors.push("Conjuração exige Criar Item de Foco e Magia (a Perícia substitui Aprendiz de Conjurador e Magia Única). Uso marcial básico de Disciplina é livre.");
  for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
-  dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides}));
- }
- if(draft.step){
-  const attr=pool.find(d=>d.group==="attr");const next={4:6,6:10,10:12}[attr?.sides];
-  if(next)attr.sides=next;
-  else errors.push("Esse dado de Atributo não permite elevação comum.");
+  dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides,baseSides:sides}));
  }
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
   const dice=combatItem(item,draft.mode);
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
-  else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides}));
+  else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
+ }
+ if(draft.step){
+  const target=pool.find(d=>d.id===draft.stepDieId);
+  const next={4:6,6:10,10:12}[target?.baseSides];
+  if(next)target.sides=next;
+  else errors.push("Selecione um dado elegível da pilha para elevar por 1 Coragem (d4→d6→d10→d12).");
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
@@ -2123,9 +2125,11 @@ function renderComposer(){
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':'';
+ const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
+  .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
- '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar o primeiro dado de Atributo (1 Coragem)</label>'+
- ""+
+ '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
+ (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × balanço do alvo (se pertinente)</label>'+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
@@ -2157,7 +2161,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2315,6 +2319,12 @@ function inventorySelect(field,value,values,id){
  return'<select data-item-field="'+field+'" data-id="'+esc(id)+'">'+values.map(([k,v])=>'<option value="'+k+'"'+(k===value?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select>';
 }
 function renderInventory(){
+ const focusSelector=$("focus-test-model");
+ if(focusSelector){
+  const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1);
+  focusSelector.innerHTML=models.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join("");
+  if(models.some(x=>x.name===previous))focusSelector.value=previous;
+ }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
  $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
@@ -2394,6 +2404,7 @@ function renderTrade(){
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
+ if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
  if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
@@ -2415,11 +2426,14 @@ function addTestFocus(){
  }
  if(state.items.length>=150){toast("Inventário cheio.");return;}
  if(!confirm("Adicionar Foco G1 somente para simulação? A fabricação real exige teste com Artesão e recursos ainda não automatizados."))return;
- const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
+ const model=$("focus-test-model")?.value;
+ const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1&&x.name===model)||CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
  if(!row){toast("Foco de teste não cadastrado.");return;}
+ const isElementalModel=row.name!=="Foco de Magia Leve G1";
+ if(isElementalModel&&!state.elementalCrystal.element){toast("Escolha o elemento do Cristal Elemental antes de simular varinha ou cetro.");return;}
  const item=normalizedCatalogItem(row);
  item.element=String(state.elementalCrystal.element||"psiquico").toLowerCase();
- item.name="Foco G1 de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
+ item.name=row.name+" de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
  state.items.push(item);render();save();
  toast("Foco de teste adicionado; fabricação com Artesão continua pendente.");
 }

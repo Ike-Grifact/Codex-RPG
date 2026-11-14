@@ -9,7 +9,7 @@ export const MONSTER_DICE=[[4],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12
 export const FACES={
 4:[[0,0,0],[0,0,0],[0,0,1],[0,1,1]],
 6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
-10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
+10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,1,0]],
 12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
 20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
@@ -66,7 +66,7 @@ export function mayComplement(system,base,mode){
   return sk.includes("disciplina-avancada")||(mode==="conjuracao"&&sk.includes("peritoconj"));
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,equipmentDie=0}={}){
+export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
  if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(monster&&b.group!=="attribute")||(!monster&&b.group==="attribute"))
   errors.push(monster?"Monstro: selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
@@ -88,15 +88,16 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  }
  if(!errors.length){
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
-    pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides});
-  if(step){
-   const d=pool.find(x=>x.group==="attribute"),next={4:6,6:10,10:12}[d?.sides];
-   if(!next)errors.push("Não é possível elevar o dado.");
-   else d.sides=next;
-  }
+    pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides,baseSides:sides});
   if(equipmentDie){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
-   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
+   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie),baseSides:Number(equipmentDie)});
+  }
+  if(step){
+   const target=pool.find(d=>d.id===stepDieId);
+   const next={4:6,6:10,10:12}[target?.baseSides];
+   if(!next)errors.push("Selecione o dado elegível a elevar (1 Coragem; d4→d6→d10→d12).");
+   else target.sides=next;
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");
