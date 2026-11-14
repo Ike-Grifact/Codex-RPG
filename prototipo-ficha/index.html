@@ -285,6 +285,18 @@
             </div>
             <small>Preços e alcances sugeridos para playtest. A compra usa recursos reais na ficha, descontando primeiro o recurso escolhido e depois os demais.</small>
           </div>
+          <div class="fp-trade-shop" id="stone-shop" aria-label="Pedras elementais">
+            <h4>Pedras Elementais — compra por VT restante</h4>
+            <p class="fp-muted">DEFINIDO: pedras comuns custam igualmente; Veneno, Sagrado e Trevas custam igualmente entre si e mais que as comuns. Sangue (Pedra da Alma) não pode ser comprado no nível 1. Valores exatos de VT ainda PENDENTES.</p>
+            <div class="fp-trade-shop-grid">
+              <label>Pedra <select id="stone-element"><option value="">Escolha uma pedra</option></select></label>
+              <label>Preço comum de playtest em VT <input type="number" id="stone-price-common" data-stone-price="common" min="1" max="10000" placeholder="Definir em mesa"></label>
+              <label>Preço raro de playtest em VT <input type="number" id="stone-price-rare" data-stone-price="rare" min="1" max="10000" placeholder="Maior que o comum"></label>
+              <button type="button" class="fp-primary-btn" data-action="stone-buy" id="stone-buy">Comprar pedra com VT</button>
+            </div>
+            <small>Preços preenchidos pela mesa são <strong>EXPERIMENTAIS, não oficiais</strong>. A compra usa o saldo e a preferência de pagamento do comércio. A pedra adquirida fica registrada em compras, sem efeito mágico ou carga física automáticos até haver regra.</small>
+            <div class="fp-muted" id="stone-owned"></div>
+          </div>
           <div class="fp-trade-collect">
             <h4>Registrar coleta durante a aventura</h4>
             <label>Recurso <select id="collect-type"><option value="ervas">Ervas</option><option value="espolios">Espólios</option><option value="couro">Couro</option><option value="comida">Comida</option><option value="minerios">Minérios</option></select></label>
