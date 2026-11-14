@@ -1,14 +1,16 @@
 # Codex RPG — Livro do Mestre
 
-**Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.41**
+**Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.42](srd-continuidade-v0.42.md), seção 0-AB para Trevas e 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.43](srd-continuidade-v0.43.md), seção 0-AC para magia e custos, 0-AB para Trevas e 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
 
 **Atualização de Pavor [DEFINIDO, 14/11/2026]:** inimigos **começam cada conflito com a reserva local cheia**; o teto por Grau é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. Em ataque contra um único inimigo declarado, **somente o alvo atacado** recebe o Pavor mantido e não anulado, mesmo distante e mesmo que o ataque falhe. **Não** se transfere ao inimigo mais próximo. Ataque inimigo contra um jogador continua gerando Coragem segundo 1P→1 Coragem, destinada ao alvo atacado. Aumento de estoque **não** concede turnos extras nem altera custos. A regra de múltiplos alvos, área e ações sem alvo atacado continua **PENDENTE** e não duplica símbolos.
 
 **Trevas [DEFINIDO, 14/11/2026]:** a técnica de +2P conta **antes da DE** para acerto, dano e risco de intervenção, sem criar símbolos extras por haver dois alvos. Com dois alvos, a **mesma rolagem inteira** é comparada à DE individual de cada um. O **Pavor total não anulado** é dividido tão igualmente quanto possível entre as reservas dos dois (ponto ímpar atribuído ao alvo escolhido) ou concentrado inteiramente num deles. Pode optar por um único alvo. Manter os requisitos e custo **1 PP/2 Coragens no acerto**, sem nova cobrança inventada; o detalhe do pagamento em falha é PENDENTE.
+
+**Economia de Perícias e foco [DEFINIDO — 14/11/2026]:** custo-base de ativação paga **1 PP ou 1 Coragem**; efeito elemental habilitado com foco válido e Perícia do elemento **não paga ativação-base**. Amplificar o peso até o máximo permitido custa **1 Coragem adicional** e reduzir Grau/intensidade não paga Coragem, mas conserva recarga. **PENDENTE:** correspondências de Grau/peso, casos de magias mistas, escudos, e preços oficiais de pedras; não estender essa revisão aos custos em Pavor local da oposição sem decisão própria.
 
 **Ideia central:** provocar atrai o perigo; antecipar faz os turnos individuais fluírem; um Líder usa Pavor público para montar um golpe coordenado. Ao cair a liderança, o conflito pode virar disputa por adesão, fuga ou rendição — sem exigir extermínio.
 
