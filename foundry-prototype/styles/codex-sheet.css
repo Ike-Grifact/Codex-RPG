@@ -587,3 +587,9 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+/* Mostra Esquiva separadamente da DE geral; bônus não vale em outras defesas. */
+.codex-defense-resource{gap:9px}
+.codex-dodge-line{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;border:1px solid var(--cx-gold);background:var(--cx-panel2)}
+.codex-dodge-line>span{font-size:10px;letter-spacing:.045em;font-weight:800;color:var(--cx-gold)}
+.codex-dodge-line>strong{font-size:23px;line-height:1.1;color:var(--cx-text)}
