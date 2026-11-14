@@ -28,13 +28,24 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 As seis classificações de situação não são classes de ataque separadas. Quando a ação não supera a DE, o chat diferencia falha sem símbolos, falha com Êxito e falha com Pavor. Quando supera a DE, diferencia acerto limpo, acerto neutro com Pavor e acerto com Pavor predominante.
 
-## Pavor local de inimigos no início de um conflito [EXPERIMENTAL]
+## Pavor local de inimigos no início de um conflito [DEFINIDO — SRD v0.41]
 
 No início de um combate (`combatStart` do Foundry), o sistema preenche **uma única vez** o Pavor local de cada Actor de oposição (`humanoid` ou `creature`) incluído no conflito, com o teto do seu Grau. A escala aprovada é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. A ficha de Personagem (`character`) não é alterada.
 
 **Nenhuma outra regra muda:** ter Pavor não cria turnos adicionais nem dispensa oportunidade válida; ativação, deslocamento, elevação de dado, retenção, crítico, área, magia, progressão de Perícias e custos continuam iguais. A reserva não é restaurada automaticamente em cada turno nem rodada. Se uma ameaça dispõe de múltiplas capacidades habilitadas, pode gastar os pontos normais conforme suas regras. O teto da reserva **pública** do Narrador não muda.
 
 A escala e o preenchimento inicial são **DEFINIDOS no SRD v0.41**. A inicialização automática ainda exige **teste integrado em uma instância real do Foundry**; usa o hook oficial `combatStart` e é executada somente pelo cliente do GM que iniciou o combate. Inimigos adicionados ao combate após seu início não recebem esta inicialização automaticamente; o Narrador deve ajustá-los manualmente até haver decisão sobre reforços.
+
+## Técnica de Trevas: bônus e dois alvos [DEFINIDO — SRD v0.42]
+
+Com **Perícia em Elemento Trevas** adquirida e **Disciplina em Conjuração**, habilite a opção **Usar Trevas** na preparação da ação. O bônus de **+2P** integra a única rolagem **antes da DE**; conta para **acerto, dano e Pavor transferido** se não for anulado. O custo especial continua em **1 PP ou 2 Coragens no acerto**; a sequência de pagamento em falhas permanece PENDENTE, não são inventados custos extras.
+
+Selecione **um ou dois Tokens de alvos distintos**. Para dois, o resultado completo da rolagem é comparado com a **DE própria de cada alvo** e o Narrador vê o resultado individual no chat. Escolha antes da rolagem como atribuir o **Pavor residual**:
+- **Dividir:** metade para cada alvo; se o total for ímpar, o alvo escolhido na interface recebe o ponto adicional (distribuição mais equilibrada possível).
+- **Concentrar:** todo o Pavor num alvo escolhido, zero no outro.
+- **Um alvo:** a técnica não exige dois alvos; todo o Pavor vai ao único adversário escolhido.
+
+Os 2P da técnica **não são gerados duas vezes**. A transferência usa o UUID dos alvos selecionados e os tetos locais; nunca usa proximidade. Dano e proteção ainda exigem adjudicação do Narrador. Outras habilidades/ataques com múltiplos alvos continuam sujeitos a resolução manual até decisão própria. O site permite experimentar o +2P e orienta a distribuição, mas não possui duas fichas de alvos para transferência automática.
 
 ## Pavor do Narrador
 
@@ -53,7 +64,7 @@ Com combate ativo e um único alvo selecionado, o sistema transfere **Pavor mant
 
 ## Limites da automação atual
 
-Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Combinações de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. A seleção de dois alvos e a divisão de Pavor foram automatizadas **apenas para a técnica de Trevas**. **Domar e Montar** continuam em revisão.
 
 ## Testes de regras
 
