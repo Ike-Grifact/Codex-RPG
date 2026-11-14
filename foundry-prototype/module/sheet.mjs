@@ -96,7 +96,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:targets.map(t=>t.actor?.name).filter(Boolean).join(" e "),hasTarget:targets.length>0,inCombat:!!game.combat?.started,
     canExecute:plan.ok&&actor.isOwner&&targets.length<=2&&(targets.length<2||(canTrevas&&this._opts.trevasEnabled
-       &&!!this._opts.trevasPreferredUuid&&new Set(targets.map(t=>t.actor?.uuid)).size===2)),
+       &&targets.some(t=>t.actor?.uuid===this._opts.trevasPreferredUuid)&&new Set(targets.map(t=>t.actor?.uuid)).size===2)),
      errors:[...plan.errors,...(targets.length>2?["Selecione até dois alvos."]:[]),
        ...(targets.length===2&&(!canTrevas||!this._opts.trevasEnabled)?["Dois alvos exigem a técnica habilitada de Trevas."]:[]),
        ...(targets.length===2&&this._opts.trevasEnabled&&!this._opts.trevasPreferredUuid?["Escolha um alvo para a concentração ou o Pavor indivisível."]:[])],
@@ -150,7 +150,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
+   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.trevasEnabled=false;this._opts.trevasPreferredUuid="";}
    this.render();return;
   }
   if(el.dataset.pendingOption&&this._pending){
