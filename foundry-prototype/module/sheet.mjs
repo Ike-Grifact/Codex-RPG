@@ -1,7 +1,7 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,affinity,xpLedger,monsterCap,distributeDarknessPavor} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
@@ -10,7 +10,8 @@ const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage",
+ trevasEnabled:false,trevasDistribution:"split",trevasPreferredUuid:""});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
@@ -23,7 +24,8 @@ const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(
  .map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
 const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
 const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
-const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
+const bonusP=(dice,selected,opts)=>(opts.noisy?(isCrit(dice,selected)?2:1):0)+(opts.trevasEnabled?2:0);
+const mayUseTrevas=(actor,d,opts)=>opts.mode==="conjuracao"&&d.base?.group==="practice"&&d.base.key==="armas_conjuracao"&&(actor.system.skills||[]).includes("trevas");
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
 function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
@@ -71,7 +73,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
    const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets],canTrevas=mayUseTrevas(actor,d,this._opts);
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,de:this._opts.de,
@@ -84,10 +86,21 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      ...plan.pool.filter(x=>Object.hasOwn({4:6,6:10,10:12},x.baseSides))
        .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+" · dado "+(Number(x.id.split(".").at(-1))+1)+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]),selected:this._opts.stepDieId===x.id}))],
      combatBonus:false,hasCombatSkill:false,
+     hasTrevas:canTrevas,trevasEnabled:canTrevas&&this._opts.trevasEnabled,
+     trevasMultipleTargets:targets.length===2,trevasDistributionSplit:this._opts.trevasDistribution==="split",
+     trevasDistributionFocus:this._opts.trevasDistribution==="focus",
+     trevasTargetOptions:[{uuid:"",label:"Escolha um dos alvos",selected:!this._opts.trevasPreferredUuid},
+       ...targets.filter(t=>t.actor).map(t=>({uuid:t.actor.uuid,label:t.actor.name,selected:this._opts.trevasPreferredUuid===t.actor.uuid}))],
+
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
-    targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
-    canExecute:plan.ok&&actor.isOwner,errors:plan.errors,
+    targetName:targets.map(t=>t.actor?.name).filter(Boolean).join(" e "),hasTarget:targets.length>0,inCombat:!!game.combat?.started,
+    canExecute:plan.ok&&actor.isOwner&&targets.length<=2&&(targets.length<2||(canTrevas&&this._opts.trevasEnabled
+       &&!!this._opts.trevasPreferredUuid&&new Set(targets.map(t=>t.actor?.uuid)).size===2)),
+     errors:[...plan.errors,...(targets.length>2?["Selecione até dois alvos."]:[]),
+       ...(targets.length===2&&(!canTrevas||!this._opts.trevasEnabled)?["Dois alvos exigem a técnica habilitada de Trevas."]:[]),
+       ...(targets.length===2&&this._opts.trevasEnabled&&!this._opts.trevasPreferredUuid?["Escolha um alvo para a concentração ou o Pavor indivisível."]:[])],
+
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
     poolCount:plan.pool.length,keepNatural:keepLimit(monster?s.threatGrade:s.level,false,monster),
     keepWithCourage:keepLimit(monster?s.threatGrade:s.level,true,monster)
@@ -106,6 +119,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
+     targetResults:(p.options.targets||[]).map(t=>({name:t.name,de:t.de,
+       reached:summary?.reached||0,success:summary?.ok?(summary.reached>=t.de):false})),
+     trevasEnabled:!!p.options.trevasEnabled,trevasDistribution:p.options.trevasDistribution,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
     hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
