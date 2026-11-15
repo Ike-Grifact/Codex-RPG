@@ -2117,6 +2117,7 @@ function canUseShared(){
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
+ const declaredSkill=draft.declaredSkill||"";
  const source={group,key:k};
  if(group==="attr"){
   if(canSecondAttribute()&&draft.attribute&&!same(source,draft.attribute)){
@@ -2139,6 +2140,7 @@ function selectSource(group,k){
   if(!mayThird()){toast("Terceira fonte exige uma Perícia pertinente de combinação.");return;}
   draft.third=same(source,draft.third)?null:source;draft.contextOK=false;
  }
+ if(declaredSkill&&!draft.declaredSkill)draft.declaredSkill=declaredSkill;
  renderSources();renderComposer();renderTacticalBar();
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
