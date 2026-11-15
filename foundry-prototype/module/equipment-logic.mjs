@@ -23,7 +23,7 @@ export function equippedDie(actor,item,mode){
  }else return 0;
  const die=Number(item.system.die)||({leve:6,medio:10,pesado:12}[cat]||0);
  // O peso físico de um cetro G1 não concede dado de magia Média/Pesada sem habilitação.
- if(mode==="conjuracao"&&cat!=="leve"&&!keys.includes("conjuracao-equilibrada"))return 6;
+ if(mode==="conjuracao"&&cat!=="leve")return 6; // Refinada não aumenta dados nem peso; alcance novo PENDENTE SRD v0.44.
  return [6,10,12].includes(die)?die:0;
 }
 export function skillPrerequisite(system,id){
