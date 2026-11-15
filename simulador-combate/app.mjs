@@ -57,8 +57,8 @@ function equippedWeapons(actor){
    const firearm=!!it.firearm||it.kind==="firearm"||entry?.kind==="firearm";
    const expected=firearm?"armas-fogo":category==="medio"?"armas-medias":
     category==="pesado"?"armas-pesadas":"armas-leves";
-   const die=Number(it.die||entry?.die||0);
-   return {id:String(it.id||it.name),name:String(it.name||"Arma"),die,expected,
+   const die=Number(it.die||entry?.die||0),range=Number(it.range||entry?.range||0);
+   return {id:String(it.id||it.name),name:String(it.name||"Arma"),die,range,expected,
     allowed:skills.includes(expected)&&[6,10,12].includes(die)};
   });
 }
@@ -518,6 +518,10 @@ function bind(){
  $("confirm").addEventListener("click",confirmRoll);
  $("apply-resource").addEventListener("click",applyResource);
  $("arcane-shield").addEventListener("click",declareShield);
+ $("equipment-source").addEventListener("change",()=>{
+  const w=equippedWeapons(selected()).find(x=>x.id===$("equipment-source").value&&x.allowed);
+  if(w?.range>0)$("range").value=String(w.range);
+ });
  for(const id of ["difficulty","situation","extra-keep","cancel-p","convert-a","spell-grade","extra-source","context-approved","equipment-source"])
   $(id).addEventListener("change",()=>{if(pending)previewAction();});
  $("dodge").addEventListener("change",()=>{targetInfo(true);if(pending)previewAction();});
