@@ -14,7 +14,7 @@ export function blank(kind="monstro"){
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
- skills:[],life:3,pavorLocal:4,keep:2,abilities:"",items:[]};
+ skills:[],life:3,pavorLocal:4,keep:2,courage:humanoid?10:0,abilities:"",items:[]};
 }
 /* Criação rápida de NPC: mínimo humano aprovado (1 XP atributo + 2 XP prática).
    Sem habilidades, itens ou XP adicionais gratuitos. */
@@ -62,17 +62,21 @@ export function normalize(raw){
  const kind=Object.hasOwn(KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
  for(const k of ["name","concept","notes","abilities"])t[k]=String(raw[k]||"").slice(0,k==="notes"||k==="abilities"?4000:160);
  t.leader=!!raw.leader;
- for(const k of ["level","threatGrade","xp","life","pavorLocal","keep"]){
-  const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="xp"?[0,50000]:[0,999];
+ for(const k of ["level","threatGrade","xp","life","pavorLocal","keep","courage"]){
+  const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,10]:k==="xp"?[0,50000]:[0,999];
   t[k]=Math.floor(clamp(raw[k]??t[k],min,max));
  }
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)t[group][key]=Math.floor(clamp(raw[group]?.[key],0,6));
  t.skills=Array.isArray(raw.skills)?[...new Set(raw.skills.filter(id=>SKILLS.some(s=>s.id===id)))]:[];
- t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(i=>({
-  id:String(i.id||uid()).slice(0,100),name:String(i.name||"Item").slice(0,90),
-  weight:clamp(i.weight,0,100),qty:Math.floor(clamp(i.qty,1,99))
- })):[];
+ t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(i=>{
+  const max=Math.floor(clamp(i.integrityMax??i.max??0,0,999));
+  return {id:String(i.id||uid()).slice(0,100),name:String(i.name||"Item").slice(0,90),
+   weight:clamp(i.weight,0,100),qty:Math.floor(clamp(i.qty,1,99)),
+   kind:["armor","shield","weapon","other"].includes(i.kind)?i.kind:"other",
+   integrityMax:max,integrity:Math.floor(clamp(i.integrity??i.hp??max,0,max)),
+   equipped:!!i.equipped};
+ }):[];
  t.id=String(raw.id||uid()).slice(0,110);
  const st=stats(t);t.pavorLocal=Math.min(t.pavorLocal,st.limitLocal);
  t.keep=Math.min(t.keep,st.keepMax);
