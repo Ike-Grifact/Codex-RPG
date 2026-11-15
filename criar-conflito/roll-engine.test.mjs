@@ -93,14 +93,14 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  assert.equal(confirmed.publicPavor,4); // excedente de crítico vai ao Pavor público
 });
 
-test("Retenção humana respeita Marco sem conceder quarto ou dado pago",()=>{
+test("Retenção humana inimiga respeita Grau da ameaça sem conceder quarto gratuito",()=>{
  const npc=quickHumanoid();npc.practices.atletismo=2;
  const pool=humanoidPool(npc,"practice","atletismo","forca");
  assert.equal(pool.ok,true);
  const dice=rollCreatureFaces(pool.pool,()=>0.5);
  assert.equal(dice.length,3);
  assert.equal(previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1}).ok,false);
- npc.level=6;npc.keep=3;
+ npc.threatGrade=2;npc.keep=3;
  const allowed=previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1});
  assert.equal(allowed.ok,true);
  assert.equal(allowed.cost,0);
@@ -161,4 +161,73 @@ test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=
  assert.equal(saved.items[0].integrity,5);
  const restored=normalize(saved);
  assert.equal(restored.items[0].integrity,5);
+});
+
+
+test("Humanoide Monstro rola com Formação + Atributo e permite Perícias, mantendo o limite humanoide",()=>{
+ const h=blank("humanoide-monstro");
+ h.attributes.forca=1;h.practices.atletismo=1;h.skills=["montar"];
+ const pool=humanoidPool(h,"practice","atletismo","forca");
+ assert.equal(pool.ok,true);
+ assert.deepEqual(pool.pool.map(x=>x.sides),[10,6]); // Formação G1 d10, Atributo G1 d6
+ assert.equal(creaturePool(h,"forca","vigor").ok,false);
+ const combined=composeActionPool(h,{baseGroup:"practice",baseKey:"atletismo",attribute:"forca"});
+ assert.equal(combined.ok,true);
+ const rolled=rollCreatureFaces(combined.pool,()=>0.999);
+ const preview=previewHumanoidRoll(h,rolled,rolled.map(x=>x.id),{de:1});
+ assert.equal(preview.ok,true);
+ assert.equal(preview.courageCost,0);
+ assert.equal(previewCreatureRoll(h,rolled,rolled.map(x=>x.id),{de:1}).ok,false);
+});
+test("Perito Conjurador não concede terceira fonte em humanos antigos",()=>{
+ const h=blank("humanoide");h.skills=["peritoconj","criar-item-foco-magia"];
+ h.practices.armas_conjuracao=2;h.attributes.inteligencia=1;h.attributes.destreza=1;
+ const sources={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"inteligencia",
+  mode:"conjuracao",extra:{group:"attribute",key:"destreza"},contextOK:true};
+ assert.equal(composeActionPool(h,sources).ok,false);
+ h.skills.push("disciplina-avancada");
+ assert.equal(composeActionPool(h,sources).ok,true);
+});
+test("Inimigo não humanoide Grau 2 mantém quatro dados por 2P; Grau 1 não mantém quatro",()=>{
+ const enemy=blank("monstro");
+ enemy.attributes.forca=2;enemy.attributes.agilidade=2;enemy.keep=4;
+ const pool=creaturePool(enemy,"forca","agilidade");
+ assert.equal(pool.ok,true);
+ assert.equal(pool.pool.length,4);
+ const rolled=rollCreatureFaces(pool.pool,()=>0.12),ids=rolled.map(d=>d.id);
+ assert.equal(previewCreatureRoll(enemy,rolled,ids,{de:0}).ok,false);
+ enemy.threatGrade=2;
+ const p=previewCreatureRoll(enemy,rolled,ids,{de:0});
+ assert.equal(p.ok,true);
+ assert.equal(p.cost,2);
+ const after=settleCreatureRoll(enemy,0,4,p);
+ assert.equal(after.ok,true);
+ assert.equal(after.spent,2);
+ assert.equal(after.unit.pavorLocal,enemy.pavorLocal-2);
+ assert.equal(enemy.pavorLocal,4,"Prévia não gasta Pavor");
+ enemy.pavorLocal=1;
+ assert.equal(previewCreatureRoll(enemy,rolled,ids,{de:0}).ok,false);
+});
+test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível sozinho não libera",()=>{
+ for(const kind of ["humanoide","humanoide-monstro"]){
+  const enemy=blank(kind);
+  enemy.level=20;enemy.threatGrade=1;
+  enemy.attributes.forca=2;enemy.practices.atletismo=2;
+  const pool=humanoidPool(enemy,"practice","atletismo","forca");
+  assert.equal(pool.ok,true);
+  const rolled=rollCreatureFaces(pool.pool,()=>0.13),ids=rolled.map(d=>d.id);
+  assert.equal(rolled.length,4);
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+  enemy.level=1;enemy.threatGrade=2;
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:false}).ok,false);
+  const p=previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true});
+  assert.equal(p.ok,true);
+  assert.equal(p.courageCost,1);
+  const post=settleCreatureRoll(enemy,0,4,p);
+  assert.equal(post.ok,true);
+  assert.equal(post.courageSpent,1);
+  assert.equal(post.unit.courage,enemy.courage-1);
+  enemy.courage=0;
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+ }
 });

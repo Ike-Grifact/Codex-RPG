@@ -1,12 +1,23 @@
 # Criar Conflito — Codex RPG (prévia)
 
-Área de preparação de encontros em `criar-conflito/`. Ferramenta web experimental em `criar-conflito/`, incorporada ao portal na revisão v0.44. O atalho de transferência direta do DNA de humanoides permanece **PENDENTE** e desabilitado.
+Área de preparação de encontros em `criar-conflito/`. Ferramenta web experimental em `criar-conflito/`, incorporada ao portal na revisão v0.44. A transferência de humanoides comuns pelo Codex Genético está implementada.
 
-## Fichas e regras utilizadas
+## Três tipos de ameaça — decisão autoral de 15/11/2026
 
-- **Criatura comum / animal**: Atributos na progressão comum, XP próprio informado pelo Narrador. Não é convertida em monstro extraordinário automaticamente.
-- **Monstro extraordinário não humanoide**: Atributos na escala monstruosa de XP acumulado `0/2/8/20/38/66/102`, com dados `d4/d10/2d10/3d10/2d10+d12/d10+2d12/3d12`.
-- **Humanoide comum / NPC**: a mesma tabela de XP, Atributos, Conhecimentos, Práticas e Perícias de um personagem. Criação com **20 XP iniciais EXPERIMENTAIS** compartilhados, além do XP extra que o Narrador acrescentar. A compra mínima de um Atributo G1 e um Conhecimento ou Prática G1 continua **DEFINIDA** na criação de personagens.
+| Tipo novo | Atributos — XP acumulado G0–G6 | Conhecimentos/Práticas | Perícias |
+|---|---|---|---|
+| **Humanoide** | 0 / 1 / 3 / 7 / 15 / 31 / 55 | 0 / 2 / 8 / 20 / 38 / 66 / 102 | Sim, por seus custos próprios |
+| **Criatura/Monstro** | 0 / 2 / 8 / 20 / 38 / 66 / 102 | Não participam da compra normal deste tipo | Não |
+| **Humanoide Monstro** | 0 / 2 / 8 / 20 / 38 / 66 / 102 | 0 / 2 / 8 / 20 / 38 / 66 / 102 | Sim, por seus custos próprios |
+
+**DEFINIDO:** a seleção para novas ameaças contém exatamente os três tipos acima. Humanoide comum recebe os **20 XP iniciais experimentais** da Ficha; para os dois tipos de monstro o orçamento de XP é inserido pelo Narrador, pois não foi definido outro valor inicial. O nível, os graus e o orçamento não atribuem recompensas automaticamente.
+
+**IMPLEMENTAÇÃO / PENDENTE:** até definição de escala própria, o Humanoide Monstro rola uma Base (Conhecimento ou Prática) + Atributo com os dados e retenção humanoides já existentes; sua tabela monstruosa altera o **custo da compra**, não inventa automaticamente novos dados nem outro custo de Coragem/Pavor. Criatura/Monstro mantém as faces monstruosas anteriores. A edição de Perícias do Humanoide Monstro preserva requisitos e XP.
+
+**Fichas históricas:** o identificador `criatura` (animal comum da versão anterior) continua aceito na importação/localStorage, sem conversão silenciosa de dados ou XP. Não aparece entre as três escolhas para criar uma nova ameaça.
+
+**Perito Conjurador [REVOGADO pelo autor em 15/11/2026]:** não consta entre as Perícias, não habilita a terceira fonte e novas compras são bloqueadas. Fichas antigas com o identificador peritoconj são normalizadas sem ele; o custo histórico de 2 XP deixa de ser debitado, preservando o saldo para redistribuição.
+
 
 Múltiplas fichas no mesmo encontro, duplicação, liderança, Vida atual/máxima, DE, Pavor local e reserva pública, planejamento de dados mantidos, texto de capacidades, inventário, notas, salvamento local e importação/exportação em JSON.
 
@@ -59,3 +70,9 @@ A ferramenta web continua experimental quanto ao fluxo e a recursos opcionais de
 Na aba **Rolagem**, fontes com SVGs aparecem à esquerda; Armas, Elementos, Perícias compradas e controles de rolagem ficam à direita. A escolha de uma ação registra seu nome, sem conceder benefícios gratuitos; histórico/CSV/JSON guardam a declaração.
 
 **Compatibilidade de Perícias:** a Ficha apresenta Combate (1 XP) e Armas 1 (2 XP), custos já definidos e agora reconhecidos no Conflito para NPCs importados. Perícias de custo ainda PENDENTE não recebem valor nem efeito fictício.
+
+### Retenção de dados por Grau de ameaça (15/11/2026)
+
+**DEFINIDO:** Grau 1 preserva o limite anterior (até 3 dados); **Grau 2 a Grau 6** passa a poder manter **até 4 dados** em qualquer tipo de ameaça. O teto é do **Grau de ameaça**, não do nível do humanoide. Custos conhecidos continuam: Criatura/Monstro paga **1P local por dado além de dois**; humanoide inimigo mantém três naturalmente em Grau 2+ e paga **1 Coragem pelo quarto dado efetivamente mantido**. O limite não cria dados extras na pilha; é preciso tê-los rolado.
+
+**Referência de confronto [DEFINIDA]:** Grau 2 de ameaça equivale a um jogador de nível 5. Este dado orienta a ameaça relativa, sem alterar as tabelas de atributos, custos de XP, fontes e retenção. **Somente a equivalência do Grau 2 foi definida**; os demais Graus seguem sem tabela de nível correspondente.

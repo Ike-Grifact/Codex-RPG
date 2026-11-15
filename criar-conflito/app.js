@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
-import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
+import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
- from "./rules.mjs?v=0.44-3";
+ from "./rules.mjs?v=20261115-kinds1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=0.44-4";
+ from "./roll-engine.mjs?v=20261115-kinds1";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -51,12 +51,12 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
+   step:false,stepDieId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
 function selectionFor(t,d){
- return t.kind==="humanoide"?
+ return isHumanoidKind(t.kind)?
   {baseGroup:d.baseGroup,baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,extra:d.extra,contextOK:d.contextOK}:
   {first:d.first,second:d.second,extra:d.extra,contextOK:d.contextOK};
 }
@@ -96,7 +96,7 @@ function consumeQuickHumanoid(){
   const incoming=JSON.parse(raw);
   if(incoming?.schema!=="codex-humanoide-rapido-v1"||incoming.character?.kind!=="humanoide")throw Error("Tipo de pacote inválido");
   const unit=normalize(incoming.character);
-  if(unit.kind!=="humanoide")throw Error("Tipo inválido");
+  if(!isHumanoidKind(unit.kind))throw Error("Tipo inválido");
   model.roster.push(unit);model.active=unit.id;
   save();
   localStorage.removeItem(HUMANOID_INBOX_KEY);
@@ -148,7 +148,7 @@ function renderRoster(){
  el("roster").innerHTML=model.roster.length?model.roster.map(t=>{
   const x=stats(t),chosen=t.id===model.active,over=x.xp.remaining<0;
   return '<article class="cf-threat-card'+(chosen?' is-active':'')+'">'+
-   '<button type="button" class="cf-threat-pick" data-open="'+esc(t.id)+'" aria-pressed="'+chosen+'"><span><strong>'+esc(t.name||"Sem nome")+'</strong><small>'+esc(KINDS[t.kind])+
+   '<button type="button" class="cf-threat-pick" data-open="'+esc(t.id)+'" aria-pressed="'+chosen+'"><span><strong>'+esc(t.name||"Sem nome")+'</strong><small>'+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+
    ' · Grau '+t.threatGrade+'</small></span><span aria-hidden="true">'+(t.leader?'★':'›')+'</span></button>'+
    '<div class="cf-threat-counts"><span>'+t.life+'/'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
    '<span class="is-purple">'+t.pavorLocal+'/'+x.limitLocal+' P</span>'+
@@ -173,7 +173,7 @@ function gradeCards(t,group,entries){
  return '<div class="cf-grade-group">'+entries.map(([key,name])=>{
   const grade=Number(t[prop][key]||0);
   const numbers=group==="attr"?dice(t,key):(()=>{const diceTable=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];return diceTable[grade];})();
-  const cost=group==="attr"?(t.kind==="monstro"?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
+  const cost=group==="attr"?(monsterAttributeCost(t.kind)?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
    [0,2,8,20,38,66,102];
   const note=grade<6?"Próximo grau: "+(cost[grade+1]-cost[grade])+" XP":"Grau máximo";
   return '<div class="cf-grade is-'+group+'"><strong>'+esc(name)+' · Grau '+grade+'</strong>'+
@@ -184,7 +184,7 @@ function gradeCards(t,group,entries){
  }).join("")+'</div>';
 }
 function skillPanel(t){
- if(t.kind!=="humanoide")return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
+ if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
   '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
    const valid=skillPrerequisite({...t,monsterRules:false},it.id);
@@ -227,7 +227,7 @@ function inventory(t,x){
 
 
 function rollSourceCards(t){
- const d=draftFor(t),human=t.kind==="humanoide";
+ const d=draftFor(t),human=isHumanoidKind(t.kind);
  const rows=[
   {title:"Atributos",group:"attribute",defs:ATTRIBUTES,field:"attributes"},
   ...(human?[
@@ -292,7 +292,7 @@ function historyPanel(t){
 const ELEMENTAL_NPC_SKILLS=new Set(["fogo","agua","vento","terra","psiquico","veneno","sagrado","trevas","sangue"]);
 /** Atalhos declarativos: não concedem automaticamente efeitos especiais ou dados extras. */
 function threatActions(t){
- const human=t.kind==="humanoide",d=draftFor(t),tabs=[["weapons","Armas"],["elements","Elementos"],["skills","Perícias"]];
+ const human=isHumanoidKind(t.kind),d=draftFor(t),tabs=[["weapons","Armas"],["elements","Elementos"],["skills","Perícias"]];
  const owned=(t.skills||[]).map(id=>SKILLS.find(row=>row.id===id)).filter(Boolean);
  const skills=owned.filter(row=>conflictActionTab==="elements"?ELEMENTAL_NPC_SKILLS.has(row.id):!ELEMENTAL_NPC_SKILLS.has(row.id));
  const weapons=(t.items||[]).filter(item=>item.kind==="weapon");
@@ -328,7 +328,7 @@ function prepareThreatAction(kind,skillId,itemId){
  if(kind==="skill"&&ELEMENTAL_NPC_SKILLS.has(skillId)){
   if(!t.skills.includes("criar-item-foco-magia"))return notice("Conjuração requer Criar Item de Foco e Magia e foco habilitado.");
   d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="conjuracao";
- }else if(kind==="weapon"&&t.kind==="humanoide"){
+ }else if(kind==="weapon"&&isHumanoidKind(t.kind)){
   d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="armas";
  }
  d.declaredSkill=row?.id||"";
@@ -339,9 +339,10 @@ function prepareThreatAction(kind,skillId,itemId){
 function rollWorkspace(t){
  const d=draftFor(t);
  return '<div class="cf-roll-workspace"><div class="cf-roll-heading"><div><span class="eyebrow">MODO ROLAGEM</span>'+
-  '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.</p></div>'+
+  '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.'+
+  (stats(t).playerEquivalentLevel?' Grau 2 corresponde à ameaça de um jogador nível 5, mas a retenção usa o Grau.':'')+'</p></div>'+
   '<div class="cf-roll-resources"><span>Pavor local <b>'+t.pavorLocal+' / '+stats(t).limitLocal+'</b></span>'+
-  (t.kind==="humanoide"?'<span>Coragem <b>'+t.courage+' / 10</b>'+
+  (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / 10</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
   '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
@@ -349,7 +350,7 @@ function rollWorkspace(t){
 }
 
 function rollPane(t){
- const human=t.kind==="humanoide",r=creatureRoll?.id===t.id?creatureRoll:null,d=draftFor(t);
+ const human=isHumanoidKind(t.kind),r=creatureRoll?.id===t.id?creatureRoll:null,d=draftFor(t);
  const choice=(values,current)=>values.map(([key,name])=>
   '<option value="'+key+'"'+(key===current?' selected':'')+'>'+esc(name)+'</option>').join("");
  const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
@@ -437,7 +438,7 @@ function rollPane(t){
 function refreshRoll(){const e=el("cf-roll-panel"),t=selected();if(e&&t)e.outerHTML=rollPane(t);}
 function beginCreatureRoll(){
  const t=selected();if(!t)return;
- const d=draftFor(t),human=t.kind==="humanoide";
+ const d=draftFor(t),human=isHumanoidKind(t.kind);
  if(human){
   d.baseGroup=el("cf-roll-group")?.value||d.baseGroup;
   d.baseKey=el("cf-roll-base")?.value||d.baseKey;
@@ -471,7 +472,7 @@ function beginCreatureRoll(){
 function confirmCreatureRoll(){
  const t=selected(),r=creatureRoll;
  if(!t||!r||r.id!==t.id)return;
- const preview=(t.kind==="humanoide"?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{
+ const preview=(isHumanoidKind(t.kind)?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{
   de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,
   passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId});
  if(!preview.ok)return notice(preview.error);
@@ -490,20 +491,21 @@ function confirmCreatureRoll(){
  notice("Rolagem confirmada e registrada no histórico para playtest.");
 }
 function editorHTML(t){
- const x=stats(t),human=t.kind==="humanoide",extra=x.keepCostP,pLocal=x.limitLocal;
+ const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal;
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
- return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind])+'</span>'+
+ return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
   '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Modo Rolagem</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
   '<div class="cf-fields">'+field("Nome","name",{wide:true})+
-  field("Tipo de criatura","kind",{type:"select",choices:Object.entries(KINDS)})+
+  field("Tipo de criatura","kind",{type:"select",choices:Object.entries({...KINDS,...(t.kind==="criatura"?LEGACY_KINDS:{})})})+
   field("Grau da ameaça","threatGrade",{type:"number",min:1,max:6})+
   field("Conceito / origem","concept",{wide:true})+
   (human?field("Nível do humanoide","level",{type:"number",min:1,max:20}):"")+
-  field(human?"XP adicional (20 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
+  field(t.kind==="humanoide"?"XP adicional (20 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
   '<label class="cf-check"><input type="checkbox" data-field="leader"'+(t.leader?' checked':'')+'> É Líder</label></div>'+
+  (x.playerEquivalentLevel?'<p class="cf-note">Equivalência de ameaça: Grau 2 ≈ jogador de nível 5. O Grau define seu teto próprio de 4 dados mantidos; a equivalência não altera XP nem nível da ficha.</p>':'')+
   '<div class="cf-stat-grid">'+
   '<div class="cf-stat cf-stat-life"><small>VIDA ATUAL / MÁXIMA</small><strong>'+t.life+' / '+x.life+'</strong>'+
   '<div class="cf-life-actions"><button type="button" data-life="-1"'+(t.life<=0?' disabled':'')+' aria-label="Reduzir Vida em um">−</button>'+
@@ -511,24 +513,26 @@ function editorHTML(t){
   '<button type="button" data-life="1"'+(t.life>=x.life?' disabled':'')+' aria-label="Aumentar Vida em um">+</button></div>'+
   '<button type="button" class="cf-life-full" data-life-full'+(t.life>=x.life?' disabled':'')+'>Restaurar ao máximo</button>'+
   '<small>Máximo calculado pelos Atributos; aumentos não curam automaticamente.</small></div>'+
-  [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',t.keep+' / '+x.keepMax]]
+  [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',(human?x.keepMax:t.keep)+' / '+x.keepMax]]
    .map(([label,val],i)=>'<div class="cf-stat'+(i===2&&x.xp.remaining<0?' is-warning':i===3?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
   '</div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
   '<section class="cf-panel"><h3>Pavor local e retenção</h3>'+
   '<div class="cf-local-row"><strong>Pavor '+t.pavorLocal+' / '+pLocal+'</strong>'+
   '<button type="button" data-local="-1"'+(t.pavorLocal===0?' disabled':'')+'>− P local</button>'+
   '<button type="button" data-local="1"'+(t.pavorLocal>=pLocal?' disabled':'')+'>+ P local</button></div>'+
-  '<div class="cf-local-row"><span>Dados mantidos planejados: <b>'+t.keep+'</b></span>'+
-  '<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>'+
-  '<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button></div>'+
-  '<p class="cf-note">'+(human?'Humanoides mantêm até o limite gratuito do Marco (2 até nível 5; 3 a partir do nível 6). Retenção adicional mediante Coragem requer controle de recurso e fica fora deste rolador básico.':
+  '<div class="cf-local-row"><span>'+(human?'Limite de retenção pelo Grau':'Dados mantidos planejados')+': <b>'+(human?x.keepMax:t.keep)+'</b></span>'+
+  (human?'':'<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>')+
+  (human?'':'<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button>')+'</div>'+
+  '<p class="cf-note">'+(human?'Retenção de inimigo pelo Grau da ameaça (independente do nível): Grau 1 permite 2 naturais + 1 por Coragem; Grau 2+ permite 3 naturais + 1 por Coragem, total 4. A Coragem efetivamente gasta é descontada ao confirmar a rolagem.':
    'Ação básica: 2 dados. Cada dado adicional mantido custa 1P local, e somente com dados/capacidades disponíveis.')+
   (human?'':' Retenção planejada: '+extra+'P por oportunidade.')+'</p>'+
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
   (keepAvail<t.keep&&!human?'<p class="cf-note">Acumule Pavor antes de executar a retenção pretendida.</p>':"")+'</section>'+
 
   '<section class="cf-panel"><h3>Atributos · dados e graus</h3>'+
-  '<p>'+(t.kind==="monstro"?'Monstro extraordinário: grau 1 compra 1d10 por 2 XP; grau 6 atinge 3d12.':'Progressão comum: grau 1 compra 1d6 por 1 XP.')+
+  '<p>'+(t.kind==="monstro"?'Criatura/Monstro: Atributos usam a tabela de Conhecimentos/Práticas, com a escala de dados de criaturas extraordinárias.':
+  t.kind==="humanoide-monstro"?'Humanoide Monstro: Atributos, Conhecimentos e Práticas usam a tabela de treinamento; Perícias mantêm os próprios custos. Sua rolagem permanece no modelo humanoide até definição específica.':
+  'Humanoide: Atributo grau 1 custa 1 XP; Conhecimentos e Práticas seguem a tabela de treinamento.')+
   ' Fontes respeitam o máximo de nove dados rolados por ação.</p>'+
   gradeCards(t,"attr",ATTRIBUTES)+'</section>'+
   (human?'<section class="cf-panel"><h3>Conhecimentos</h3>'+gradeCards(t,"know",KNOWLEDGES)+'</section>'+
@@ -556,13 +560,19 @@ function update(field,value){
  if(field==="kind"){
   if(!Object.hasOwn(KINDS,value)||t.kind===value)return;
   if(!confirm("Mudar o tipo aplica outra tabela de XP e dados. Manter os graus, mas recalcular seus custos?"))return render();
-  t.kind=value;creatureRoll=null;
-  if(value!=="humanoide"){t.knowledges=blank().knowledges;t.practices=blank().practices;t.skills=[];}
+  const previousKind=t.kind;t.kind=value;creatureRoll=null;
+  if(!isHumanoidKind(value)){t.knowledges=blank().knowledges;t.practices=blank().practices;t.skills=[];}
+  else if(!isHumanoidKind(previousKind))t.courage=10;
  }else if(field==="leader")t.leader=!!value;
  else if(["name","concept","notes","abilities"].includes(field))t[field]=String(value).slice(0,field==="notes"||field==="abilities"?4000:160);
- else if(["threatGrade","level","xp","life","pavorLocal","keep"].includes(field))
+ else if(["threatGrade","level","xp","life","pavorLocal","keep"].includes(field)){
+  const oldGrade=t.threatGrade;
   t[field]=Math.floor(clamp(value,field==="keep"?2:field==="level"||field==="threatGrade"?1:0,
    field==="keep"?4:field==="level"?20:field==="threatGrade"?6:field==="xp"?50000:999));
+  if(field==="threatGrade"&&oldGrade!==t.threatGrade){
+   rollDraft=null;creatureRoll=null; // nunca reaproveitar uma prévia de Grau antigo
+  }
+ }
  t.pavorLocal=Math.min(t.pavorLocal,stats(t).limitLocal);
  t.keep=Math.min(t.keep,stats(t).keepMax);
  t.life=Math.min(t.life,stats(t).life);
@@ -571,7 +581,7 @@ function update(field,value){
 function gradeChange(group,key,delta){
  const t=selected();if(!t)return;
  const prop={attr:"attributes",know:"knowledges",practice:"practices"}[group];
- if(!prop||(group!=="attr"&&t.kind!=="humanoide")||!Object.hasOwn(t[prop],key))return;
+ if(!prop||(group!=="attr"&&!isHumanoidKind(t.kind))||!Object.hasOwn(t[prop],key))return;
  const prev=t[prop][key],next=Math.floor(clamp(prev+delta,0,6));if(prev===next)return;
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
@@ -613,7 +623,7 @@ function remove(id){
  save();render();
 }
 function toggleSkill(id,checked){
- const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||t.kind!=="humanoide"||!item)return;
+ const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
  if(checked&&(!skillPrerequisite({...t,monsterRules:false},id)))return notice("Requisitos não atendidos.");
  if(checked&&!t.skills.includes(id))t.skills.push(id);
  else if(!checked)t.skills=t.skills.filter(x=>x!==id);
@@ -665,7 +675,7 @@ document.addEventListener("click",event=>{
  if(b.id==="export-encounter")return exportJson();
  if(b.hasAttribute("data-open-roll")){conflictMode="roll";render();scrollToRoll();return;}
  if(b.dataset.conflictMode){conflictMode=b.dataset.conflictMode==="roll"?"roll":"edit";render();return;}
- if(b.dataset.courage){const t=selected();if(!t||t.kind!=="humanoide")return;
+ if(b.dataset.courage){const t=selected();if(!t||!isHumanoidKind(t.kind))return;
   t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,10));save();render();return;}
  if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
  if(b.hasAttribute("data-export-rolls")){exportRollHistory();return;}
@@ -678,12 +688,12 @@ document.addEventListener("click",event=>{
   if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de trocar as fontes.");
   const d=draftFor(t),group=b.dataset.rollSource,key=b.dataset.sourceKey;
   if(d.pickExtra){
-   const duplicate=t.kind==="humanoide"?
+   const duplicate=isHumanoidKind(t.kind)?
     (group==="attribute"&&d.attribute===key||group===d.baseGroup&&d.baseKey===key):
     (key===d.first||key===d.second);
    if(duplicate)return notice("Escolha uma terceira fonte diferente.");
    d.extra={group,key};d.contextOK=false;d.pickExtra=false;
-  }else if(t.kind==="humanoide"){
+  }else if(isHumanoidKind(t.kind)){
    if(group==="attribute")d.attribute=key;else{d.baseGroup=group;d.baseKey=key;
     d.mode=key==="armas_conjuracao"?"armas":"normal";}
   }else if(group==="attribute"){
@@ -713,7 +723,7 @@ document.addEventListener("click",event=>{
 document.addEventListener("change",event=>{
  const target=event.target;
  if(target.dataset.rollKeep&&creatureRoll){
-   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=t.kind==="humanoide"?stats(t).keepBase+Number(!!r.extraKeep):t.kind==="monstro"?t.keep:2;
+   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=isHumanoidKind(t.kind)?stats(t).keepBase+Number(!!r.extraKeep):t.kind==="monstro"?t.keep:2;
    if(target.checked){if(r.selected.length>=max){notice("Desmarque antes um dado.");return refreshRoll();}r.selected.push(id);}
    else r.selected=r.selected.filter(x=>x!==id);
    refreshRoll();return;

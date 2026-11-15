@@ -1218,3 +1218,9 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  padding:7px;background:transparent;color:var(--fp-text);cursor:pointer;font-size:11px}
 .fp-respec-row button:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:600px){.fp-respec-list{grid-template-columns:1fr}}
+
+/* Leitura opcional do verbete diretamente do nó do Codex Genético. */
+.fp-gene-verbete{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;box-sizing:border-box;
+ padding:10px 12px;margin:5px 0;border:1px solid var(--fp-gold);border-radius:8px;
+ background:transparent;color:var(--fp-gold);text-align:center;text-decoration:none;font-weight:700;font-size:12px}
+.fp-gene-verbete:hover,.fp-gene-verbete:focus-visible{background:var(--fp-surface);text-decoration:underline;outline-offset:2px}

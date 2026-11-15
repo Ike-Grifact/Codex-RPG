@@ -65,12 +65,6 @@ const SKILLS=[
   1
  ],
  [
-  "peritoconj",
-  "Perito Conjurador",
-  "Combinação pertinente à Conjuração.",
-  2
- ],
- [
   "improviso",
   "Improviso Elemental",
   "Requisitos Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
@@ -303,7 +297,7 @@ const SKILLS=[
 // IDs de Perícias legadas continuam nas fichas salvas e no cálculo de XP,
 // mas não aparecem nas opções novas de compra.
 const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);
-const RETIRED_PROTOTYPES=new Set(["marciais","combinacao"]);
+const RETIRED_PROTOTYPES=new Set(["marciais","combinacao","peritoconj"]);
 const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
@@ -335,9 +329,6 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:inteligencia",
   "attr:destreza"
- ],
- "peritoconj": [
-  "practice:armas_conjuracao"
  ],
  "improviso": [
   "practice:armas_conjuracao",
@@ -548,7 +539,6 @@ const SKILL_BRANCHES=[
   "criar-item-foco-magia",
   "escudo-arcano",
   "conjuracao-equilibrada",
-  "peritoconj",
   "improviso",
   "mestre",
   "fogo",
@@ -595,7 +585,6 @@ const SKILL_PERMALINKS={
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
  "conjuracao-equilibrada": "conjuracao-refinada",
- "peritoconj": "perito-conjurador",
  "improviso": "improviso-elemental",
  "mestre": "maestria-elemental",
  "fogo": "pericia-em-elemento-fogo",
@@ -950,12 +939,16 @@ const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,si
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:"",trevas:false});
 function load(){
- let migrated=false,legacyAvailable=false;
+ let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
   const saved=localStorage.getItem(SAVE_KEY);
   const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
-  if(saved)state=normalize(JSON.parse(saved));
+  if(saved){
+   const raw=JSON.parse(saved);
+   retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
+   state=normalize(raw);
+  }
   else if(oldRaw){
    const old=JSON.parse(oldRaw);
    const character=old?.character||old;
@@ -993,9 +986,12 @@ function load(){
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
  $("import-old-creator").hidden=!legacyAvailable;
- if(migrated){
+ if(migrated||retiredSkillMigrated){
+  // Persistir a migração somente quando houve Perícia revogada na ficha salva,
+  // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
+  toast(migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+   "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
 function normalize(v){
@@ -1017,8 +1013,8 @@ function normalize(v){
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
-  s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":"Combinação de Fontes").join(" e ")+
-   ". XP liberado automaticamente pela retirada; Artista Marcial não é adquirido sem requisitos.").trim().slice(0,5000);
+  s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":id==="combinacao"?"Combinação de Fontes":"Perito Conjurador").join(" e ")+
+   ". XP liberado automaticamente pela retirada; habilidades antigas não são concedidas sem requisitos.").trim().slice(0,5000);
  }
  if(shouldMigrateFocus)s.skills.push("criar-item-foco-magia");
  if(legacyCost>0&&!s.notes.includes("Migração conjuração 2026:")){
@@ -1195,7 +1191,6 @@ function skillReq(id,s=state){
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
  if(id==="transfusao")return"Compra ainda pendente de custo ou regras de aquisição.";
- if(id==="peritoconj"&&!has("criar-item-foco-magia"))return"Requer Criar Item de Foco e Magia.";
  return null;
 }
 function dependentsValid(testState){
@@ -1415,7 +1410,6 @@ const GENE_AUTO_REQUIREMENTS={
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
- "peritoconj":[["s:criar-item-foco-magia"]],
  "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
  "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
  "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
@@ -1617,6 +1611,8 @@ function geneDetailHTML(id,s=state){
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
+ const slug=SKILL_PERMALINKS[sid];
+ const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
  const skillButton=owned?
   '<button type="button" data-action="respec-skill" data-id="'+esc(sid)+'"'+(state.pending?' disabled':'')+'>Devolver '+(Number.isInteger(cost)?cost:"?")+' XP · testar build</button>':
   status==="potential"&&packagePlan&&geneCanAdjust()?
@@ -1632,7 +1628,7 @@ function geneDetailHTML(id,s=state){
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
-  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton;
+  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton+verbete;
 }
 function renderGenetic(){
  const preview=genePreviewState();
@@ -2054,8 +2050,7 @@ function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key
 function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
 function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&state.skills.includes("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
 function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
-function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive()||
- (usingDiscipline()&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));}
+function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive();}
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.

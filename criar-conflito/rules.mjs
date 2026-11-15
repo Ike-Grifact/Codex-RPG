@@ -10,13 +10,23 @@ const PLAYER_DNA_EXTRA_SKILLS=[
 ];
 export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};
-export const KINDS={criatura:"Criatura comum / animal",monstro:"Monstro extraordinário",humanoide:"Humanoide comum / NPC"};
+// Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
+export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};
+export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};
+export const isHumanoidKind=kind=>kind==="humanoide"||kind==="humanoide-monstro";
+export const monsterAttributeCost=kind=>kind==="monstro"||kind==="humanoide-monstro";
+// Decisão autoral posterior à v0.44: ameaças G2+ podem reter até 4 dados.
+// O custo adicional continua conforme a economia do tipo, sem retenção gratuita implícita.
+export const enemyKeepCap=grade=>Number(grade)>=2?4:3;
+export const enemyHumanoidFreeKeep=grade=>Number(grade)>=2?3:2;
+// Equivalência autoral conhecida: G2 ameaça ≈ nível 5 de jogador. Outros Graus pendentes.
+export const threatPlayerEquivalentLevel=grade=>Number(grade)===2?5:null;
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
 export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(n))?Number(n):min));
 export function blank(kind="monstro"){
- const humanoid=kind==="humanoide",monster=kind==="monstro";
- return {id:uid(),kind,name:humanoid?"Novo humanoide":monster?"Novo monstro":"Nova criatura",
+ const humanoid=isHumanoidKind(kind),monster=kind==="monstro";
+ return {id:uid(),kind,name:kind==="humanoide-monstro"?"Novo humanoide monstro":humanoid?"Novo humanoide":monster?"Novo monstro":"Nova criatura",
  concept:"",notes:"",leader:false,threatGrade:1,level:1,
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
@@ -40,21 +50,21 @@ export function toSystem(t){
   skills:[...t.skills],level:clamp(t.level,1,20),threatGrade:clamp(t.threatGrade,1,6)};
 }
 export function ledger(t){
- const s=toSystem(t),monster=t.kind==="monstro",humanoid=t.kind==="humanoide";
+ const s=toSystem(t),monster=monsterAttributeCost(t.kind),humanoid=isHumanoidKind(t.kind);
  const attrs=ATTRIBUTES.reduce((n,[k])=>n+(monster?XP_TRAINING:XP_ATTRIBUTE)[clamp(s.attributes[k],0,6)],0);
  const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges",x[0]]),...PRACTICES.map(x=>["practices",x[0]])]
   .reduce((n,[group,key])=>n+XP_TRAINING[clamp(s[group][key],0,6)],0):0;
  const skills=humanoid?s.skills.reduce((n,id)=>n+Number(SKILLS.find(x=>x.id===id)?.cost||0),0):0;
- const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(humanoid?20:0);
+ const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?20:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
- const s=toSystem(t),monster=t.kind==="monstro",human=t.kind==="humanoide",grade=clamp(t.threatGrade,1,6);
+ const s=toSystem(t),monster=t.kind==="monstro",human=isHumanoidKind(t.kind),grade=clamp(t.threatGrade,1,6);
  const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
- const maxKeep=human?keepLimit(s.level,false,false):grade>=5?4:3; // Retenção paga humana não é automatizada sem controle de Coragem.
- const naturalKeep=human?keepLimit(s.level,false,false):2;
- return {life,de:defense,limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
+ const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
+ const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
+ return {life,de:defense,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
 }
@@ -66,7 +76,7 @@ export function remainingKinds(t){
 }
 export function normalize(raw){
  if(!raw||typeof raw!=="object")return blank("monstro");
- const kind=Object.hasOwn(KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
+ const kind=Object.hasOwn(KINDS,raw.kind)||Object.hasOwn(LEGACY_KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
  for(const k of ["name","concept","notes","abilities"])t[k]=String(raw[k]||"").slice(0,k==="notes"||k==="abilities"?4000:160);
  t.leader=!!raw.leader;
  for(const k of ["level","threatGrade","xp","life","pavorLocal","keep","courage"]){
