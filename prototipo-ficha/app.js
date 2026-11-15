@@ -1409,7 +1409,17 @@ function renderOwnedPanel(){
   '<button type="button" data-action="small-companion-sacrifice">Registrar sacrifício</button>'+
   '<button type="button" data-action="small-companion-protect">Proteger criatura e deixá-la fugir</button>':"")+'</div>'+
   '<small>Com Criar Item de Foco e Magia, também pode domar criaturas mágicas pequenas. Ataque à criatura cancela o vínculo. Dano letal é resolvido na mesa.</small></article>':"";
- $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup;
+ const mediumOwned=state.skills.includes("domar-criatura-media");
+ const mediumHere=mediumCompanionPresent();
+ const mediumMarkup=mediumOwned?
+  '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro médio</strong><small>'+(
+   mediumHere?"Ficha independente · nível "+state.level:"Aguardando domesticação")+'</small></div>'+
+  '<p>'+(mediumHere?"Acesse a ficha abaixo para investir XP próprio, consultar Atributos e Vida. Quando ajudar em combate, concede +1A ao domador.":"Prepare Domar/Pacificar. Comprar a Perícia não cria automaticamente uma criatura.")+'</p>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
+  '<button type="button" data-action="medium-companion-toggle">'+(mediumHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
+  (mediumHere?'<button type="button" data-action="medium-companion-support">'+(state.mediumCompanion.inCombat?"Desativar apoio +1A":"Ativar apoio +1A em combate")+'</button>':"")+'</div>'+
+  '<small>A criatura média tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente.</small></article>':"";
+ $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup+mediumMarkup;
  const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
  $("owned-elements").innerHTML=
   (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
@@ -1421,6 +1431,33 @@ function renderOwnedPanel(){
   (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
+function renderMediumCompanion(){
+ const panel=$("medium-companion-sheet");if(!panel)return;
+ const owned=state.skills.includes("domar-criatura-media"),present=mediumCompanionPresent();
+ panel.hidden=!owned||!present||sheetPage!=="play"||viewMode!=="sheet";
+ if(panel.hidden)return;
+ const pet=state.mediumCompanion,spent=mediumCompanionSpent(pet),available=mediumCompanionAvailable(pet),total=pet.xpGranted;
+ const grid=A.map(([id,name])=>{
+  const grade=pet.attributes[id]||0,next=grade<6?AT_COST[grade+1]-AT_COST[grade]:null;
+  const dice=dataDice("attr",grade).map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("");
+  return '<div class="fp-medium-source"><div class="fp-medium-source-label"><strong>'+esc(name)+'</strong><span>'+dice+'</span></div>'+
+  '<div class="fp-medium-source-actions"><button type="button" data-action="medium-companion-grade" data-key="'+id+'" data-delta="-1"'+(!grade||state.pending?' disabled':'')+' aria-label="Reduzir '+esc(name)+'">−</button><b>'+grade+'</b>'+
+  '<button type="button" data-action="medium-companion-grade" data-key="'+id+'" data-delta="1"'+(next===null||available<next||state.pending||spent+next>MEDIUM_COMPANION_XP_CAP?' disabled':'')+' aria-label="Elevar '+esc(name)+'">+</button><small>'+(next===null?"MAX":"+"+next+" XP")+'</small></div></div>';
+ }).join("");
+ $("medium-companion-content").innerHTML=
+  '<div class="fp-medium-summary"><span><b>Nível '+state.level+'</b><small>mesmo nível do domador</small></span>'+
+  '<span><b>Vida '+pet.life+' / '+mediumCompanionMaxLife(pet)+'</b><small>criatura independente</small></span>'+
+  '<span><b>DE '+mediumCompanionDE(pet)+'</b><small>defesa própria no combate</small></span>'+
+  '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · teto '+MEDIUM_COMPANION_XP_CAP+'</small></span></div>'+
+  '<div class="fp-medium-fields"><label>Nome / espécie da criatura<input data-medium-field="name" maxlength="80" type="text" value="'+esc(pet.name)+'" placeholder="Ex.: lobo jovem"></label>'+
+  '<label>XP próprio concedido pelo Narrador (0–110)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
+  '<div class="fp-medium-sources">'+grid+'</div>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="medium-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
+  '<button type="button" data-action="medium-companion-life" data-delta="1"'+(pet.life>=mediumCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
+  '<button type="button" data-action="medium-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
+  '<label class="fp-medium-notes">Observações da criatura<textarea data-medium-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
+  '<p class="fp-caption">Ficha própria, no mesmo nível do domador. O Narrador define o XP disponível; a compra da Perícia não cria 110 XP gratuitos. Somente Atributos evoluem, pelos custos de jogadores: 0, 1, 3, 7, 15, 31, 55 XP acumulados. Não há Coragem, Conhecimentos ou Perícias humanas automáticos. Vida e DE abaixo usam as fórmulas comuns como referência de playtest. Rolagens e ações independentes são resolvidas na mesa.</p>';
+}
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
   '<div class="fp-gene-canvas-shell">'+
@@ -1788,7 +1825,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();renderMediumCompanion();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
@@ -2768,6 +2805,7 @@ function refundSkillForPlaytest(id){
   "Perícias dependentes precisam ser removidas primeiro. Esta ação não altera o XP total concedido."))return;
  state.skills=candidate.skills;
  if(id==="domar-criatura-pequena"){state.smallCompanion.present=false;state.smallCompanion.inCombat=false;}
+ if(id==="domar-criatura-media"){state.mediumCompanion.present=false;state.mediumCompanion.inCombat=false;}
  if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
  if(draft?.third&&!mayThird())draft.third=null;
  if(draft?.base?.key==="armas_conjuracao")draft.mode=modeDefault();
@@ -2849,6 +2887,38 @@ function onClick(event){
   }
   save();render();break;
  }
+ case "medium-companion-toggle":
+ case "medium-companion-support":
+ case "medium-companion-grade":
+ case "medium-companion-life":{
+  if(state.pending){toast("Finalize a rolagem antes de alterar o companheiro.");break;}
+  if(!state.skills.includes("domar-criatura-media"))break;
+  const pet=state.mediumCompanion;
+  if(action==="medium-companion-toggle"){
+   if(pet.present&&!confirm("Retirar a criatura média e suspender seu apoio? Os Atributos e XP da ficha serão preservados."))break;
+   pet.present=!pet.present;pet.inCombat=false;
+   if(pet.present&&pet.life<=0)pet.life=mediumCompanionMaxLife(pet);
+   toast(pet.present?"Companheiro médio registrado; sua ficha está disponível.":"Companheiro ausente; bônus suspenso.");
+  }else if(!pet.present){break;
+  }else if(action==="medium-companion-support"){
+   pet.inCombat=!pet.inCombat;
+  }else if(action==="medium-companion-grade"){
+   const id=button.dataset.key;
+   if(!A.some(x=>x[0]===id))break;
+   const current=pet.attributes[id]||0,d=Number(delta),next=current+d;
+   if(![-1,1].includes(d)||next<0||next>6)break;
+   const cost=AT_COST[next]-AT_COST[current];
+   if(d>0&&(mediumCompanionSpent(pet)+cost>pet.xpGranted||mediumCompanionSpent(pet)+cost>MEDIUM_COMPANION_XP_CAP)){
+    toast("XP próprio insuficiente para comprar o Atributo da criatura.");break;
+   }
+   pet.attributes[id]=next;pet.life=clamp(pet.life,0,mediumCompanionMaxLife(pet));
+  }else if(action==="medium-companion-life"){
+   pet.life=clamp(pet.life+Number(delta),0,mediumCompanionMaxLife(pet));
+   if(pet.life===0){pet.inCombat=false;toast("A criatura ficou com Vida 0; risco e incapacidade devem ser resolvidos na mesa.");}
+  }
+  save();render();break;
+ }
+ case "prepare-domar-media":prepareMediumCompanionTest();break;
  case "prepare-domar-criatura":prepareSmallCompanionTest();break;
  case "prepare-element":prepareElementSkill(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
@@ -2936,6 +3006,18 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.mediumField!==undefined){
+  const pet=state.mediumCompanion;if(!state.skills.includes("domar-criatura-media")||!pet.present||state.pending)return;
+  const key=el.dataset.mediumField;
+  if(key==="name")pet.name=String(el.value).slice(0,80);
+  else if(key==="notes")pet.notes=String(el.value).slice(0,1000);
+  else if(key==="xpGranted"){
+   const v=clamp(Math.floor(Number(el.value)),mediumCompanionSpent(pet),MEDIUM_COMPANION_XP_CAP);
+   pet.xpGranted=v;
+   if(String(v)!==String(el.value))toast("XP da criatura ajustado ao gasto já realizado e ao teto 110 XP.");
+  }else return;
+  save();renderMediumCompanion();return;
+ }
  if(el.dataset.wizardVtDraft!==undefined){
   if(state.trade.purchases.length||state.trade.collected)return;
   const k=el.dataset.wizardVtDraft;
