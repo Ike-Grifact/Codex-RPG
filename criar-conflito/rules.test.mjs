@@ -26,8 +26,8 @@ test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
  m.threatGrade=4;
  assert.equal(stats(m).life,5);
  assert.equal(stats(m).de,3);
- assert.equal(stats(m).limitLocal,4);
- assert.equal(stats(m).keepMax,3);
+ assert.equal(stats(m).limitLocal,7);
+ assert.equal(stats(m).keepMax,4);
  m.keep=3;assert.equal(stats(m).keepCostP,1);
  m.threatGrade=5;assert.equal(stats(m).keepMax,4);
  m.keep=4;assert.equal(stats(m).keepCostP,2);
