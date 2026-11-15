@@ -157,7 +157,8 @@ export function resolveRoll(rolled,selectedIds,options={}){
  const maxKeep=animal?2:keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
  if(!rolled.some(d=>d.group==="attribute"))errors.push("A pilha deve conter um Atributo rolado.");
- if(Number(extraKeep)+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
+ const extraKept=Math.max(0,kept.length-(animal?2:keepLimit(monster?threatGrade:level,0,monster)));
+  if(extraKept+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
  const raw=[0,0,0];for(const d of kept)faceSymbols(d.sides,d.face).forEach((v,i)=>raw[i]+=v);
  const crit=kept.length>=2&&kept.every(d=>d.face===d.sides);
  let convertedCrit=0,extraCritE=0,extraCritA=0;
