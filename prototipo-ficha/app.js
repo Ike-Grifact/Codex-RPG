@@ -1595,6 +1595,9 @@ function geneCommit(){
  state.knowledges={...preview.knowledges};
  state.practices={...preview.practices};
  state.skills=[...preview.skills];
+ if(!state.skills.includes("domar-criatura-pequena")){
+  state.smallCompanion.present=false;state.smallCompanion.inCombat=false;
+ }
  geneDraft.clear();genePendingSkills.clear();
  for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
  render();save();toast("Evolução confirmada. Saldo de XP: "+xp.free+".");
