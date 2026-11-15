@@ -129,10 +129,13 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0,enemyKeepLimit=null}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
- const maxKeep=keepLimit(monster?threatGrade:level,extraKeep,monster);
+ // O teto próprio do inimigo vem do Grau da ameaça, não de um nível fictício.
+ // Usar override somente na resolução hostil impede afetar Marcos de jogadores.
+ const enemyOverride=hostile&&Number.isInteger(enemyKeepLimit)&&enemyKeepLimit>=1&&enemyKeepLimit<=4;
+ const maxKeep=enemyOverride?enemyKeepLimit:keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
  if(!rolled.some(d=>d.group==="attribute"))errors.push("A pilha deve conter um Atributo rolado.");
  if(Number(extraKeep)+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
