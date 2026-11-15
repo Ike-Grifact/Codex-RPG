@@ -27,7 +27,7 @@ test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
  assert.equal(stats(m).life,5);
  assert.equal(stats(m).de,3);
  assert.equal(stats(m).limitLocal,7);
- assert.equal(stats(m).keepMax,3);
+ assert.equal(stats(m).keepMax,4); // Decisão posterior: quarto dado liberado desde G2.
  m.keep=3;assert.equal(stats(m).keepCostP,1);
  m.threatGrade=5;assert.equal(stats(m).keepMax,4);
  m.keep=4;assert.equal(stats(m).keepCostP,2);
@@ -126,4 +126,30 @@ test("Perito Conjurador não é mais comprável por qualquer tipo de ameaça",()
  assert.deepEqual(npc.skills,[]);
  assert.deepEqual(hybrid.skills,[]);
  assert.equal(SKILLS.some(x=>x.id==="peritoconj"),false);
+});
+test("Retenção por Grau do inimigo: G1 até 3, G2+ até 4; custos P não gratuitos",()=>{
+ const m=blank("monstro");
+ assert.equal(stats(m).keepBase,2);
+ assert.equal(stats(m).keepMax,3);
+ m.keep=4;
+ assert.equal(normalize(m).keep,3);
+ m.threatGrade=2;
+ assert.equal(stats(m).keepMax,4);
+ assert.equal(stats(m).limitLocal,5);
+ m.keep=4;
+ assert.equal(stats(m).keepCostP,2);
+ assert.equal(normalize(m).keep,4);
+ for(const g of [3,4,5,6]){m.threatGrade=g;assert.equal(stats(m).keepMax,4);}
+ const npc=blank("humanoide");
+ npc.level=20; // O nível do personagem não adianta o Grau da ameaça.
+ assert.equal(stats(npc).keepBase,2);
+ assert.equal(stats(npc).keepMax,3);
+ npc.level=1;npc.threatGrade=2;
+ assert.equal(stats(npc).keepBase,3);
+ assert.equal(stats(npc).keepMax,4);
+ const mixed=blank("humanoide-monstro");
+ mixed.threatGrade=2;
+ assert.equal(stats(mixed).keepBase,3);
+ assert.equal(stats(mixed).keepMax,4);
+ assert.equal(stats(mixed).keepCostP,0);
 });
