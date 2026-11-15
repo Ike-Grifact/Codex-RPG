@@ -49,7 +49,7 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
   await page.locator('[data-action-tab="skills"]').click();
   assert(await page.locator('[data-conflict-action="skill"][data-action-skill="montar"]').count()===1,
    "A Perícia comprada não está disponível no rolador de Conflito");
-  await page.locator('[data-conflict-action="skill"][data-action-skill="combate"]').click();
+  await page.locator('[data-conflict-action="skill"][data-action-skill="montar"]').click();
   assert((await page.locator(".cf-action-shortcuts").innerText()).includes("Montar Animal"),
    "A Perícia não foi declarada na ação");
   await page.locator("[data-roll-start]").click();
