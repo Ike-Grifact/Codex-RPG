@@ -45,7 +45,7 @@ export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.
 export const maxPP=level=>level>=20?3:level>=10?2:level>=5?1:0;
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
-export const monsterCap=grade=>Math.max(1,Math.min(6,Math.floor(Number(grade)||1)));
+export const monsterCap=grade=>Math.min(8,Math.max(1,Math.min(6,Math.floor(Number(grade)||1)))+3);
 export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.armas_conjuracao||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Fórmula da ficha vigente.
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
