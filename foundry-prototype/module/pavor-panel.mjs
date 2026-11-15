@@ -96,6 +96,28 @@ export function registerPublicPavor() {
   }
 }
 
+/* Preparação da reserva local no COMEÇO do confronto.
+ * Não repõe Pavor por rodada; reexecutar no mesmo Combat é vedado por flag.
+ * Operação manual da mesa antes de fazer as primeiras ações. */
+export async function prepareCombatPavor(combat=globalThis.game?.combat){
+ if(!game.user?.isActiveGM)throw Error("Somente o Narrador ativo prepara a reserva local.");
+ if(!combat?.started||Number(combat.round||0)>1)throw Error("Prepare apenas no começo do conflito.");
+ if(combat.getFlag(NS,"localPavorPrepared"))return {prepared:0,alreadyPrepared:true};
+ const actors=new Map();
+ for(const entry of combat.combatants??[]){
+  const actor=entry.actor;
+  if(!actor||!["humanoid","creature","animal"].includes(actor.type))continue;
+  actors.set(actor.uuid||entry.id,actor);
+ }
+ if(!actors.size)return {prepared:0,alreadyPrepared:false};
+ for(const actor of actors.values()){
+  await actor.update({"system.pavorLocal":monsterCap(actor.system.threatGrade)});
+ }
+ await combat.setFlag(NS,"localPavorPrepared",{at:Date.now(),count:actors.size});
+ refreshPublicPavor();
+ return {prepared:actors.size,alreadyPrepared:false};
+}
+
 export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "codex-pavor-hud",
@@ -104,6 +126,7 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
       adjust: CodexPavorHUD.adjust,
       adjustPlayers: CodexPavorHUD.adjustPlayers,
       useRegisteredPlayers: CodexPavorHUD.useRegisteredPlayers,
+      prepareLocal: CodexPavorHUD.prepareLocal,
     },
   };
 
@@ -130,6 +153,8 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
       canAddOne: reserve.room > 0,
       canRemovePlayer: reserve.players > 0,
       canAddPlayer: reserve.players < Number.MAX_SAFE_INTEGER - 2,
+      canPrepareLocal: !!(combat?.started&&Number(combat.round||0)<=1&&!combat.getFlag(NS,"localPavorPrepared")),
+      localPrepared:!!combat?.getFlag(NS,"localPavorPrepared"),
     };
   }
 
@@ -153,6 +178,17 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
   static async useRegisteredPlayers() {
     if (!game.user.isGM) return;
     await queueWrite(() => setPlayers(automaticPlayers));
+  }
+
+  static async prepareLocal(){
+    if(!game.user.isActiveGM||!game.combat?.started)return;
+    if(!confirm("Preencher uma única vez as reservas locais das ameaças deste combate? Use somente antes da primeira ação; não se repete por rodada."))return;
+    try{
+      const result=await queueWrite(()=>prepareCombatPavor());
+      if(result.alreadyPrepared)ui.notifications.info("Reservas deste combate já preparadas.");
+      else if(!result.prepared)ui.notifications.warn("Não há ameaças no combate para preparar.");
+      else ui.notifications.info(result.prepared+" ameaça(s) com reserva local inicial completa.");
+    }catch(e){ui.notifications.error("Codex: "+e.message);}
   }
 }
 
