@@ -42,7 +42,7 @@ function load(){
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
 }
-let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null;
+let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null,conflictActionTab="skills";
 function draftFor(t){
  if(rollDraft?.id!==t.id){
   const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
@@ -51,7 +51,7 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral"};
+   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
@@ -63,7 +63,7 @@ function selectionFor(t,d){
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
  const record={id:uid(),date:new Date().toISOString(),unitId:t.id,unit:t.name,kind:t.kind,
-  sources:r.sources||[],mode:r.mode||"normal",de:r.de,situation:r.situation,
+  sources:r.sources||[],mode:r.mode||"normal",declaredSkill:r.declaredSkill||"",declaredAction:r.declaredAction||"",de:r.de,situation:r.situation,
   dice:r.dice.map(d=>({group:d.group,key:d.key,sides:d.sides,baseSides:d.baseSides||d.sides,face:d.face,
    kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
   outcome:preview.result.outcome,reached:preview.result.reached,success:preview.result.success,
@@ -79,9 +79,9 @@ function downloadText(text,filename,mime){
  anchor.href=url;anchor.download=filename;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function exportRollHistory(){
- const cols=["Data","Ficha","Tipo","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
+ const cols=["Data","Ficha","Tipo","Ação declarada","Perícia declarada","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
  const csv=[cols,...(model.rollHistory||[]).map(x=>[
- x.date,x.unit,x.kind,(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
+ x.date,x.unit,x.kind,x.declaredAction||"",x.declaredSkill||"",(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
  x.e,x.a,x.p,x.damage,x.critical,x.courageSpent,x.pavorSpent,
  (x.dice||[]).map(d=>"d"+d.sides+":"+d.face+(d.kept?"(mantido)":"(descartado)")).join(" | ")
  ])].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
@@ -243,11 +243,11 @@ function rollSourceCards(t){
       !human&&d.first===key?"Base":!human&&d.second===key?"Segundo":""):
     human&&d.baseGroup===row.group&&d.baseKey===key?"Base":"";
    const group=row.group==="attribute"?"attribute":row.group;
-   const sides=group==="attribute"?dice(t,key):[6,10,10,10,10,12,12].length&&
+   const sides=group==="attribute"?dice(t,key):
     [[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade];
    return '<button type="button" class="cf-source-card'+(chosen?' is-selected':'')+'" data-roll-source="'+group+
     '" data-source-key="'+key+'" aria-pressed="'+Boolean(chosen)+'"><span class="cf-source-name">'+esc(name)+
-    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+(sides||[]).map(n=>'d'+n).join(" + ")+'</span>'+
+    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+dieIcons(sides||[])+'</span>'+
     (chosen?'<b>'+chosen+'</b>':'')+'</button>';
   }).join("")+'</div></section>').join("");
  const comp=composeActionPool(t,selectionFor(t,d),"");
@@ -275,7 +275,7 @@ function historyPanel(t){
   (records.length?records.map(x=>{
    const date=x.date?new Date(x.date).toLocaleString("pt-BR"):"Sem data";
    return '<details class="cf-history-entry"><summary><strong>'+esc(x.unit||"Sem nome")+'</strong>'+
-    '<span>'+esc(date)+'</span><span>'+esc(x.outcome||"Resultado")+
+    '<span>'+esc(date)+'</span><span>'+esc(x.declaredAction||"Teste básico")+' · '+esc(x.outcome||"Resultado")+
     ' · '+Number(x.reached||0)+'/DE '+Number(x.de||0)+'</span></summary>'+
     '<p>Fontes: '+esc((x.sources||[]).map(y=>y.group+":"+y.key).join(" + "))+'</p>'+
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
@@ -412,11 +412,11 @@ function beginCreatureRoll(){
  const count=Math.min(planned,generated.length);
  creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
   baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
-  sources:composed.sources,de:d.de,situation:d.situation,
+  sources:composed.sources,declaredSkill:d.declaredSkill||"",declaredAction:d.declaredAction||"",de:d.de,situation:d.situation,
   extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
   dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
- refreshRoll();scrollToRoll();
+ refreshRoll();if(innerWidth<760)scrollToRoll();
 }
 function confirmCreatureRoll(){
  const t=selected(),r=creatureRoll;
@@ -608,7 +608,7 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
- if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?modo=humanoide-rapido");return;}
+ if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?npc=1");return;}
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
@@ -641,10 +641,10 @@ document.addEventListener("click",event=>{
    else if(d.first!==key){d.second=key;d.firstClicked=false;}
    else return notice("Selecione outro Atributo distinto.");
   }
-  d.stepDieId="";render();scrollToRoll();return;
+  d.stepDieId="";render();return;
  }
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
- if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();scrollToRoll();return;}
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
  if(b.dataset.open){model.active=b.dataset.open;creatureRoll=null;rollDraft=null;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
