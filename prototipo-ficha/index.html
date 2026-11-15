@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.57-3">
+  <link rel="stylesheet" href="./styles.css?v=0.57-2">
   <script src="./catalog.js?v=0.44-1" defer></script>
   <script src="./gene-graph.js?v=0.57-1" defer></script>
-  <script src="./app.js?v=0.44-6" defer></script>
+  <script src="./app.js?v=0.44-5" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -129,10 +129,13 @@
       <button type="button" data-sheet-page="genetic">Codex Genético <small>Mapa de perícias</small></button>
       <button type="button" data-sheet-page="inventory">Inventário <small>Equipamentos e VT</small></button>
     </nav>
-    <section class="fp-tactical-bar" id="fp-tactical-bar" aria-label="Painel rápido de dados" hidden>
-      <div class="fp-tactical-head"><div><span class="fp-kicker">FICHA EM JOGO · DADOS SIMBÓLICOS</span><strong id="fp-tactical-status">Escolha duas fontes para formar a ação</strong></div><span class="fp-tactical-mode" id="fp-tactical-mode">Rolagem</span></div>
-      <div class="fp-tactical-attributes" id="fp-quick-attributes" role="group" aria-label="Atributos para uso rápido"></div>
-      <div class="fp-tactical-dice"><span>Até 9 dados rolados</span><div id="fp-quick-dice" class="fp-nine-dice" aria-label="Pilha visual de até nove dados"></div></div>
+    <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
+      <div class="fp-play-talent-grid">
+        <div><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
+        <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
+        <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+      </div>
     </section>
     <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
       <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div>
@@ -229,20 +232,6 @@
       </div>
 
       <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
-    <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
-      <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Perícias, conjurações e equipamentos · atalhos de preparação</small></div></div>
-      <div class="fp-action-tabs" role="group" aria-label="Categoria de ações">
-        <button type="button" data-action="action-tab" data-category="skills" aria-pressed="true">Perícias</button>
-        <button type="button" data-action="action-tab" data-category="elements" aria-pressed="false">Elementos</button>
-        <button type="button" data-action="action-tab" data-category="gear" aria-pressed="false">Armas e itens</button>
-      </div>
-      <div class="fp-play-talent-grid">
-        <div data-talent-group="skills"><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
-        <div data-talent-group="elements"><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
-        <div data-talent-group="gear"><h4>Armas e itens equipados</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
-      </div>
-    </section>
-
         <section class="fp-panel fp-composer" id="composer-panel">
           <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
           <div id="composer-content"></div>
