@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.45: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -39,6 +39,12 @@ const SKILLS=[
   "Montar Animal",
   "Requer Influência grau 2.",
   2
+ ],
+ [
+  "domar-criatura-pequena",
+  "Domar Criatura Pequena",
+  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 2 Coragens; teste com Influência contra DE para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
+  1
  ],
  [
   "provocacao-sofisticada",
@@ -311,6 +317,11 @@ const SKILL_AFFINITY={
  "montar": [
   "attr:influencia"
  ],
+ "domar-criatura-pequena": [
+  "attr:influencia",
+  "practice:apresentacao",
+  "attr:inteligencia"
+ ],
  "provocacao-sofisticada": [
   "attr:influencia",
   "practice:apresentacao"
@@ -557,6 +568,7 @@ const SKILL_BRANCHES=[
   "provocacao-sofisticada",
   "combate",
   "montar",
+  "domar-criatura-pequena",
   "recobrar-coragem"
  ],
  [
@@ -581,6 +593,7 @@ const SKILL_PERMALINKS={
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
+ "domar-criatura-pequena": "domar-criatura-pequena",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
@@ -625,6 +638,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -657,6 +671,7 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "domar-criatura-pequena": "+1A em combate e 1 Vida sacrificial com criatura pequena domesticada presente",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -689,6 +704,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "domar-criatura-pequena": "Teste com Influência contra DE, ativação 1 PP ou 2 Coragens. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. DE, quantidade acumulável e protocolo de letalidade pendentes.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -721,6 +737,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "domar-criatura-pequena": "1 PP ou 2 Coragens por tentativa",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -889,6 +906,7 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
+ smallCompanion:{present:false,inCombat:false},
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -1005,13 +1023,19 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
- const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string"))]:[];
+ const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string").map(x=>x==="domar-animal-pequeno"?"domar-criatura-pequena":x))]:[];
  const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
  const shouldMigrateFocus=legacyCost>0&&qualifiesForFocus&&!rawSkills.includes("criar-item-foco-magia");
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
+ // Domar Animal Pequeno é o nome anterior da mesma compra, nunca uma segunda Perícia.
+ // Companheiro só aparece após domesticação confirmada na mesa.
+ s.smallCompanion={
+  present:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present,
+  inCombat:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present&&!!v.smallCompanion?.inCombat
+ };
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
   s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":id==="combinacao"?"Combinação de Fontes":"Perito Conjurador").join(" e ")+
    ". XP liberado automaticamente pela retirada; habilidades antigas não são concedidas sem requisitos.").trim().slice(0,5000);
@@ -1109,6 +1133,7 @@ function save(){
  }
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
+function smallCompanionPresent(s=state){return !!s.skills.includes("domar-criatura-pequena")&&!!s.smallCompanion?.present;}
 function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
@@ -1324,7 +1349,18 @@ function renderOwnedPanel(){
   return '<article class="fp-owned-card"><div><strong>'+esc(name)+'</strong><small>'+esc(action)+'</small></div>'+
    '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
  };
- $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
+ const companionOwned=state.skills.includes("domar-criatura-pequena");
+ const companionHere=smallCompanionPresent();
+ const companionMarkup=companionOwned?
+  '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro pequeno</strong><small>'+(
+   companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial"):"Sem criatura domesticada presente")+'</small></div>'+
+  '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra a DE, pagando 1 PP ou 2 Coragens; o aprendizado não cria companheiro.")+'</p>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
+  (companionHere?'<button type="button" data-action="small-companion-combat">'+(state.smallCompanion.inCombat?"Desativar apoio de combate":"Ativar apoio de combate (+1A)")+'</button>'+
+  '<button type="button" data-action="small-companion-sacrifice">Registrar sacrifício</button>'+
+  '<button type="button" data-action="small-companion-protect">Proteger criatura e deixá-la fugir</button>':"")+'</div>'+
+  '<small>Com Criar Item de Foco e Magia, também pode domar criaturas mágicas pequenas. Ataque à criatura cancela o vínculo. Dano letal é resolvido na mesa.</small></article>':"";
+ $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup;
  const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
  $("owned-elements").innerHTML=
   (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
@@ -1396,6 +1432,7 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "domar-criatura-pequena":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
@@ -2008,6 +2045,9 @@ function renderWizard(){
 function renderVitals(){
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
+ const petLife=$("companion-life-slot");
+ if(petLife){petLife.hidden=!smallCompanionPresent();petLife.textContent=smallCompanionPresent()?
+  "Companheiro pequeno: +1 Vida sacrificial antes de Inconsciente (não altera a Vida máxima).":"";}
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
  $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
@@ -2154,6 +2194,7 @@ function renderComposer(){
    '</label>':'';
  const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
   .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
+ const companionHint=smallCompanionPresent()?'<p class="fp-caption">Companheiro pequeno presente: '+(state.smallCompanion.inCombat?'+1A será incluído neste teste marcado como combate na aba Jogar.':'ative “Em combate” no card da criatura para acrescentar +1A apenas quando ela estiver ajudando no combate.')+'</p>':"";
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
@@ -2167,7 +2208,7 @@ function renderComposer(){
  checks+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
- options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
+ options+companionHint+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
  (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com Disciplina Avançada, pode acrescentar inclusive outro Atributo quando a Base é Disciplina.</p>':
  '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, são duas fontes. Disciplina Avançada e Furtividade Avançada habilitam complemento em suas ações.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
@@ -2189,7 +2230,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:smallCompanionPresent()&&!!state.smallCompanion.inCombat,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2227,7 +2268,7 @@ function score(){
   (critTier&&properties.includes("Precisa")?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
- const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
+ const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+Number(!!p.opts.companionCombat)+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0));
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
@@ -2628,6 +2669,7 @@ function refundSkillForPlaytest(id){
  if(!confirm("Teste de build: remover "+row[1]+" e devolver "+row[3]+" XP ao saldo da Ficha?\n"+
   "Perícias dependentes precisam ser removidas primeiro. Esta ação não altera o XP total concedido."))return;
  state.skills=candidate.skills;
+ if(id==="domar-criatura-pequena"){state.smallCompanion.present=false;state.smallCompanion.inCombat=false;}
  if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
  if(draft?.third&&!mayThird())draft.third=null;
  if(draft?.base?.key==="armas_conjuracao")draft.mode=modeDefault();
@@ -2683,6 +2725,31 @@ function onClick(event){
  case "wizard-mode":{
   if(wizardStep!==2||!["list","genetic"].includes(button.dataset.mode))break;
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
+ }
+ case "small-companion-toggle":
+ case "small-companion-combat":
+ case "small-companion-sacrifice":
+ case "small-companion-protect":{
+  if(state.pending){toast("Finalize a rolagem antes de mudar o estado do companheiro.");break;}
+  if(!state.skills.includes("domar-criatura-pequena"))break;
+  const pet=state.smallCompanion;
+  if(action==="small-companion-toggle"){
+   pet.present=!pet.present;pet.inCombat=false;
+   toast(pet.present?"Companheiro registrado. Confirme a domesticação e o custo do teste na mesa.":"Criatura ausente: apoio e proteção retirados.");
+  }else if(action==="small-companion-combat"){
+   if(!pet.present)break;
+   pet.inCombat=!pet.inCombat;
+   toast(pet.inCombat?"Apoio da criatura ativo apenas para testes declarados em combate.":"Apoio de combate desativado.");
+  }else{
+   if(!pet.present)break;
+   const sacrifice=action==="small-companion-sacrifice";
+   if(!confirm(sacrifice?
+    "Confirmar que a criatura se sacrifica para impedir a morte do personagem? A aplicação do dano letal permanece com a mesa.":
+    "Confirmar que você protege a criatura e recebe o dano letal? A criatura foge ou fica com aliados; aplique o dano manualmente."))break;
+   pet.present=false;pet.inCombat=false;
+   toast(sacrifice?"Sacrifício registrado. Proteção e +1A encerrados.":"Criatura protegida e retirada. Resolva o dano letal com o Narrador.");
+  }
+  save();render();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
