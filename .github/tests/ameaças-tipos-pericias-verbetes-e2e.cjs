@@ -54,11 +54,29 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   player.once("dialog",d=>void d.accept());
   await player.locator("#demo-load").click();
   await player.locator('#sheet-navigation button[data-sheet-page="genetic"]').click();
-  const node=player.locator("#gene-map .fp-gene-skill").first();
-  assert(await node.count()===1,"DNA não exibe bolinhas de Perícias");
+  assert(await player.locator("#gene-map .fp-gene-skill").count()>0,"DNA não exibe bolinhas de Perícias");
+  // O Codex é um mapa com zoom e panorama: procurar um círculo visível,
+  // sem clicar em elementos fora da viewport/cobertos pelo painel de XP.
+  let skillId="";
+  for(let attempt=0;attempt<9&&!skillId;attempt++){
+   skillId=await player.locator("#gene-map").evaluate(root=>{
+    const frame=root.getBoundingClientRect();
+    for(const node of root.querySelectorAll(".fp-gene-skill")){
+     const circle=node.querySelector("circle.fp-gene-dot"),r=circle?.getBoundingClientRect();
+     if(!r)continue;
+     const x=r.left+r.width/2,y=r.top+r.height/2;
+     if(x<frame.left+28||x>frame.right-28||y<frame.top+28||y>frame.bottom-76)continue;
+     if(document.elementFromPoint(x,y)?.closest(".fp-gene-skill")===node)return node.dataset.geneId;
+    }
+    return "";
+   });
+   if(!skillId)await player.locator('#gene-map [data-gene-nav="-1"]').click();
+  }
+  assert(!!skillId,"Nenhuma bolinha da Perícia ficou visível após ajustar o zoom no mapa");
+  const node=player.locator('#gene-map .fp-gene-skill[data-gene-id="'+skillId+'"]');
   await node.locator("circle.fp-gene-dot").click();
   const link=player.locator('#gene-detail a.fp-gene-verbete');
-  assert(await link.count()===1,"Clique na bolinha não oferece verbete completo. Nó: "+(await node.getAttribute("data-gene-id"))+"; detalhe: "+(await player.locator("#gene-detail").innerText()).slice(0,240));
+  assert(await link.count()===1,"Clique na bolinha não oferece verbete completo. Nó: "+skillId+"; detalhe: "+(await player.locator("#gene-detail").innerText()).slice(0,240));
   assert((await link.getAttribute("href")||"").startsWith("../pericias/"),"Verbete deve apontar ao catálogo oficial");
   assert(await link.getAttribute("target")==="_blank","Verbete deve abrir sem interromper a edição no DNA");
   const slug=(await link.getAttribute("href")).replace("../","");
