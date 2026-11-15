@@ -26,8 +26,7 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   assert((await page.locator(".cf-stat-grid").innerText()).includes("14 / 20"),
    "Humanoide Monstro deve pagar Perícias por seu custo normal");
   await page.locator('[data-conflict-mode="roll"]').click();
-  assert(await page.locator(".cf-roll-source .cf-source-card").count()===0 ||
-   await page.locator(".cf-source-card").count()===18,"O rolador deve ter fontes humanoides completas");
+  assert(await page.locator(".cf-source-card").count()===18,"O rolador deve ter fontes humanoides completas");
   await page.locator('[data-action-tab="skills"]').click();
   assert(await page.locator('[data-conflict-action="skill"][data-action-skill="montar"]').count()===1,
    "Perícia adquirida ausente nas ações do Humanoide Monstro");
