@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,stats,quickHumanoid} from "./rules.mjs";
+import {blank,stats,quickHumanoid,normalize} from "./rules.mjs";
 import {creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,
  publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
 
