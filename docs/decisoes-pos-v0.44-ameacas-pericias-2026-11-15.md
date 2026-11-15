@@ -65,3 +65,17 @@ A progressão da Ficha de **Humanoide comum** conserva os **20 XP iniciais exper
 - Custos para manter dados extras permanecem aqueles documentados para o tipo de ameaça; a equivalência **não cria retenção gratuita**.
 - Os equivalentes de nível de jogador para os Graus 1, 3, 4, 5 e 6 estão **PENDENTES** e não devem ser extrapolados.
 - Esta decisão é posterior ao SRD v0.44 e ao registro acima; não modifica a progressão dos Aprendizes.
+
+## 6. Grau padrão das magias e opção sem dano [DEFINIDO, 15/11/2026 — decisão autoral mais recente]
+
+**Toda magia passa a começar no Grau 2, por padrão.** Quando for usada como ataque ofensivo, a magia de **Grau 2 causa o dano calculado normalmente** após atingir a DE, com as proteções, resistências, efeitos e custos pertinentes. O Grau 2 não concede bônus gratuito de Êxitos, dados ou dano fixo: utiliza a fórmula de dano já vigente.
+
+**O conjurador pode reduzir voluntariamente a magia para o Grau 1.** No **Grau 1, a magia não causa dano**, seja à Vida, seja à Integridade; a rolagem continua determinando sucesso, efeitos, condições e outras consequências autorizadas pela Perícia, pelo elemento e pelo Narrador. Mesmo que os símbolos resultassem em valor numérico positivo pela fórmula de dano, esse valor não é aplicado como dano mágico em G1. **Reduzir para G1 não custa Coragem**, mas também não dispensa requisitos, efeitos específicos, recarga e condições de foco.
+
+**A escolha G2 ou G1 é feita antes de resolver a magia**, não como conversão retroativa de uma rolagem já danosa. A nova diretriz é de **Grau de magia**; **não** altera automaticamente o *peso tático* (Leve/Médio/Pesado), o *peso mental* de slots, os valores de dados das fontes, os custos de XP de Perícias, o custo de ativação, as exigências de habilitação ou a duração/recarga do foco.
+
+**Especialidades mantidas:** Trevas conserva +2P válido antes da DE e transferência de Pavor; ao escolher G1, mesmo que alcance a DE, **essa magia não aplica dano** por E ou P. Ar G1 preserva controle/deslocamento habilitados e não gera dano físico por suposição de queda ou impacto. Efeitos de suporte (Escudo Arcano, apoio de Sagrado etc.) continuam suporte: a regra de dano do G2 é pertinente quando a magia é empregada como **ataque ofensivo legal**, não converte automaticamente uma proteção em ataque. Consequências não danosas podem seguir sendo aplicadas normalmente quando habilitadas.
+
+**SUBSTITUI:** a afirmação anterior do Livro do Jogador de que “todas as magias elementais começam ... Grau 1” e as permissões anteriores de dano direto por magias G1. **PENDENTE de harmonização:** o requisito anterior de Disciplina 2 para *criar/memorizar* magias G2 e G3, e a relação entre preparo e acesso ao Grau 2 padrão em personagens com Disciplina menor; não presumir novo custo ou dispensar uma habilitação sem definição. Os demais graus, técnicas especiais, geometrias e interações particulares não foram reescritos nesta decisão.
+
+**Playtest anterior:** os cenários de Ar que aplicavam dano aproximam-se da hipótese de conjuração G2; os cenários de Ar sem dano aproximam-se de G1, mas não automatizavam seus efeitos de controle. Os ataques de Trevas com dano devem ser lidos como G2. Os percentuais publicados anteriormente **não** incorporavam a seleção explícita de Grau e recarga da magia, portanto não são probabilidades definitivas desta nova versão.
