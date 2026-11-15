@@ -955,7 +955,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false});
+  contextOK:false,equipmentId:"",trevas:false,tameSmall:false,tamePayment:"courage",tameIntent:"domar"});
 function load(){
  let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
@@ -1357,7 +1357,7 @@ function renderOwnedPanel(){
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro pequeno</strong><small>'+(
    companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial"):"Sem criatura domesticada presente")+'</small></div>'+
   '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra a DE, pagando 1 PP ou 2 Coragens; o aprendizado não cria companheiro.")+'</p>'+
-  '<div class="fp-companion-actions"><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-criatura">Preparar teste de Domar / Pacificar</button><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (companionHere?'<button type="button" data-action="small-companion-combat">'+(state.smallCompanion.inCombat?"Desativar apoio de combate":"Ativar apoio de combate (+1A)")+'</button>'+
   '<button type="button" data-action="small-companion-sacrifice">Registrar sacrifício</button>'+
   '<button type="button" data-action="small-companion-protect">Proteger criatura e deixá-la fugir</button>':"")+'</div>'+
@@ -2130,9 +2130,30 @@ function selectSource(group,k){
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
 function modeDefault(){return "armas";}
+function canTameSmallDraft(d=draft){
+ return state.skills.includes("domar-criatura-pequena")&&
+  d.base?.group==="practice"&&d.base.key==="apresentacao"&&
+  d.attribute?.group==="attr"&&d.attribute.key==="influencia";
+}
+function prepareSmallCompanionTest(){
+ if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de preparar o teste.");return;}
+ if(!state.skills.includes("domar-criatura-pequena"))return;
+ draft=freshDraft();
+ draft.base={group:"practice",key:"apresentacao"};
+ draft.attribute={group:"attr",key:"influencia"};
+ draft.tameSmall=true;
+ draft.tamePayment=state.pp>=1?"pp":"courage";
+ renderSources();renderComposer();
+ toast("Teste com Influência + Apresentação preparado. Escolha a DE e o pagamento antes de rolar.");
+}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ if(draft.tameSmall){
+  if(!canTameSmallDraft())errors.push("Domar exige a Perícia, Influência e Apresentação como fontes pertinentes.");
+  if(draft.tamePayment==="pp"&&state.pp<1)errors.push("Domar exige 1 PP disponível.");
+  else if(draft.tamePayment!=="pp"&&state.courage<2)errors.push("Domar exige 2 Coragens disponíveis.");
+ }
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
   if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo exige Disciplina Avançada com Disciplina ou Furtividade Avançada com Furtividade.");
@@ -2200,6 +2221,10 @@ function renderComposer(){
  const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
   .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
  const companionHint=smallCompanionPresent()?'<p class="fp-caption">Companheiro pequeno presente: '+(state.smallCompanion.inCombat?'+1A será incluído neste teste marcado como combate na aba Jogar.':'ative “Em combate” no card da criatura para acrescentar +1A apenas quando ela estiver ajudando no combate.')+'</p>':"";
+ const tameFields=canTameSmallDraft()?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="tameSmall"'+(draft.tameSmall?" checked":"")+'> Usar Domar Criatura Pequena (ativação paga, contra DE da criatura)</label>'+
+  (draft.tameSmall?'<label class="fp-form-field">Objetivo '+select("tameIntent",[["domar","Domesticar"],["pacificar","Pacificar para depois domar"]],draft.tameIntent)+'</label>'+
+   '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","2 Coragens"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
@@ -2210,7 +2235,7 @@ function renderComposer(){
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso do ataque '+select("attackWeight",weight,draft.attackWeight)+'</label><label class="fp-form-field">Balanço do alvo '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
- checks+'</div>';
+ checks+tameFields+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+companionHint+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
@@ -2235,7 +2260,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:smallCompanionPresent()&&!!state.smallCompanion.inCombat,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:smallCompanionPresent()&&!!state.smallCompanion.inCombat,tameSmall:!!draft.tameSmall,tameIntent:draft.tameIntent,tamePayment:draft.tamePayment,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2283,6 +2308,11 @@ function score(){
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
+ if(p.opts.tameSmall){
+  if(!state.skills.includes("domar-criatura-pequena")||p.base?.group!=="practice"||p.base.key!=="apresentacao"||p.attribute?.group!=="attr"||p.attribute.key!=="influencia")
+   errs.push("Tentativa de Domar inválida: verifique Perícia e fontes.");
+  if(p.opts.tamePayment==="pp")ppCost+=1;else courageCost+=2;
+ }
  const active=[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -2327,6 +2357,9 @@ function renderPending(){
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
   '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
   '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>':"";
+ const tamePaymentNote=p.opts.tameSmall?'<p class="fp-caption"><strong>'+(p.opts.tameIntent==="pacificar"?"Pacificar":"Domar")+
+  ' criatura pequena:</strong> custo da tentativa '+(p.opts.tamePayment==="pp"?"1 PP":"2 Coragens")+
+  ' (cobrado na finalização mesmo se falhar). DE definida pelo Narrador. '+(p.opts.tameIntent==="pacificar"?"Em sucesso, faça domesticação depois.":"Em sucesso, o companheiro será registrado; atacar cancela o vínculo.")+'</p>':"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
  '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
  '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
@@ -2349,7 +2382,7 @@ function renderPending(){
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
- (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
+ tamePaymentNote+(s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
  '<div class="fp-composer-actions"><button class="fp-secondary" data-action="discard" type="button">Descartar teste...</button>'+
@@ -2366,13 +2399,18 @@ function finalize(){
  }
  const gainedCourage=state.courage-oldCourage,gainedPP=state.pp-oldPP;
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.opts.tameSmall?(p.opts.tameIntent==="pacificar"?"Pacificar criatura: ":"Domar criatura: "):"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
+ if(p.opts.tameSmall&&s.success&&p.opts.tameIntent==="domar"){
+  state.smallCompanion.present=true;
+  state.smallCompanion.inCombat=false;
+ }
  state.history=state.history.slice(0,20);state.pending=null;save();render();
- toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
+ toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de+
+  (p.opts.tameSmall&&s.success?(p.opts.tameIntent==="pacificar"?" · criatura pacificada; dome depois":" · criatura domesticada e registrada"):""));
 }
 function updateGrade(group,id,delta){
  if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
@@ -2756,6 +2794,7 @@ function onClick(event){
   }
   save();render();break;
  }
+ case "prepare-domar-criatura":prepareSmallCompanionTest();break;
  case "prepare-element":prepareElementSkill(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
