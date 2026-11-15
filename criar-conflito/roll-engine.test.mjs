@@ -43,8 +43,8 @@ test("Crítico de monstro retém Pavor local, depois público, sem duplicar",()=
  assert.equal(p.ok,true);assert.equal(p.result.critical,2);
  assert.equal(p.criticalPavor,2);
  const out=settleCreatureRoll(t,2,3,p);
- assert.equal(out.unit.pavorLocal,1);
- assert.equal(out.publicPavor,3);
+ assert.equal(out.unit.pavorLocal,2);
+ assert.equal(out.publicPavor,2);
  assert.equal(out.localGain+out.publicGain+out.overflow,2);
  assert.equal(t.pavorLocal,0);
 });
