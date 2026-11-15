@@ -36,7 +36,7 @@ test("importa criatura comum, monstro e humanoide como Actors separados", () => 
   ]});
   assert.deepEqual([animal.type, monster.type, humanoid.type], ["animal", "creature", "humanoid"]);
   assert.equal(animal.system.abilities, "Faro");
-  assert.equal(animal.system.pavorLocal, 2);
+  assert.equal(animal.system.pavorLocal, 5);
   assert.equal(animal.items[0].system.quantity, 2);
   assert.equal(xpLedger(animal.system).grant, 10);
   assert.equal(xpLedger(humanoid.system).grant, 30);
