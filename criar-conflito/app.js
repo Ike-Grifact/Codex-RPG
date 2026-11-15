@@ -51,7 +51,7 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
+   step:false,stepDieId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
@@ -511,17 +511,17 @@ function editorHTML(t){
   '<button type="button" data-life="1"'+(t.life>=x.life?' disabled':'')+' aria-label="Aumentar Vida em um">+</button></div>'+
   '<button type="button" class="cf-life-full" data-life-full'+(t.life>=x.life?' disabled':'')+'>Restaurar ao máximo</button>'+
   '<small>Máximo calculado pelos Atributos; aumentos não curam automaticamente.</small></div>'+
-  [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',t.keep+' / '+x.keepMax]]
+  [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',(human?x.keepMax:t.keep)+' / '+x.keepMax]]
    .map(([label,val],i)=>'<div class="cf-stat'+(i===2&&x.xp.remaining<0?' is-warning':i===3?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
   '</div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
   '<section class="cf-panel"><h3>Pavor local e retenção</h3>'+
   '<div class="cf-local-row"><strong>Pavor '+t.pavorLocal+' / '+pLocal+'</strong>'+
   '<button type="button" data-local="-1"'+(t.pavorLocal===0?' disabled':'')+'>− P local</button>'+
   '<button type="button" data-local="1"'+(t.pavorLocal>=pLocal?' disabled':'')+'>+ P local</button></div>'+
-  '<div class="cf-local-row"><span>Dados mantidos planejados: <b>'+t.keep+'</b></span>'+
-  '<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>'+
-  '<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button></div>'+
-  '<p class="cf-note">'+(human?'Humanoides mantêm até o limite gratuito do Marco (2 até nível 5; 3 a partir do nível 6). Retenção adicional mediante Coragem requer controle de recurso e fica fora deste rolador básico.':
+  '<div class="cf-local-row"><span>'+(human?'Limite de retenção pelo Grau':'Dados mantidos planejados')+': <b>'+(human?x.keepMax:t.keep)+'</b></span>'+
+  (human?'':'<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>')+
+  (human?'':'<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button>')+'</div>'+
+  '<p class="cf-note">'+(human?'Retenção de inimigo pelo Grau da ameaça (independente do nível): Grau 1 permite 2 naturais + 1 por Coragem; Grau 2+ permite 3 naturais + 1 por Coragem, total 4. A Coragem efetivamente gasta é descontada ao confirmar a rolagem.':
    'Ação básica: 2 dados. Cada dado adicional mantido custa 1P local, e somente com dados/capacidades disponíveis.')+
   (human?'':' Retenção planejada: '+extra+'P por oportunidade.')+'</p>'+
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
@@ -563,9 +563,15 @@ function update(field,value){
   else if(!isHumanoidKind(previousKind))t.courage=10;
  }else if(field==="leader")t.leader=!!value;
  else if(["name","concept","notes","abilities"].includes(field))t[field]=String(value).slice(0,field==="notes"||field==="abilities"?4000:160);
- else if(["threatGrade","level","xp","life","pavorLocal","keep"].includes(field))
+ else if(["threatGrade","level","xp","life","pavorLocal","keep"].includes(field)){
+  const oldGrade=t.threatGrade;
   t[field]=Math.floor(clamp(value,field==="keep"?2:field==="level"||field==="threatGrade"?1:0,
    field==="keep"?4:field==="level"?20:field==="threatGrade"?6:field==="xp"?50000:999));
+  if(field==="threatGrade"&&oldGrade!==t.threatGrade){
+   if(t.kind==="monstro"&&oldGrade<2&&t.threatGrade>=2)t.keep=4;
+   rollDraft=null;creatureRoll=null; // nunca reaproveitar uma prévia de Grau antigo
+  }
+ }
  t.pavorLocal=Math.min(t.pavorLocal,stats(t).limitLocal);
  t.keep=Math.min(t.keep,stats(t).keepMax);
  t.life=Math.min(t.life,stats(t).life);
