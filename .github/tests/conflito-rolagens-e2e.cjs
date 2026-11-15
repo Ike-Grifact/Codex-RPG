@@ -30,7 +30,7 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   await page.locator("[data-conflict-mode=roll]").click();
   assert((await page.locator("#cf-roll-panel").innerText()).includes("Última rolagem confirmada"),"Resultado confirmado sumiu depois de recarregar");
   // O primeiro monstro foi marcado como Líder pelo usuário (liderança é opcional).
-  await page.locator("#new-kind").selectOption("criatura");
+  await page.locator("#new-kind").selectOption("humanoide-monstro");
   await page.locator("#add-threat").click();
   assert(await page.locator('[data-joint="2"]').isEnabled(),"Não habilitou Líder + 1 com 2P público");
   page.once("dialog",d=>void d.accept());
