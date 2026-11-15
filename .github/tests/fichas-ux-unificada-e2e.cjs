@@ -6,6 +6,7 @@ const assert=(ok,msg)=>{if(!ok)throw Error(msg);};
   const player=await browser.newPage({viewport:{width:1350,height:900}});
   const playerErrors=[];player.on("pageerror",e=>playerErrors.push(e.message));
   await player.goto("http://127.0.0.1:8000/prototipo-ficha/",{waitUntil:"domcontentloaded"});
+  player.once("dialog",dialog=>void dialog.accept());
   await player.locator("#demo-load").click();
   assert(await player.locator("#fp-tactical-bar").isVisible(),"Painel tático do jogador não aparece");
   assert(await player.locator(".fp-quick-attribute").count()===6,"Jogador precisa de seis atalhos de Atributos");
