@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid} from "./rules.mjs";
+import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS} from "./rules.mjs";
 
 test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  const animal=blank("criatura"),monster=blank("monstro");
@@ -86,4 +86,44 @@ test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
  assert.equal(ledger(copy).skills,3);
  assert.equal(ledger(copy).spent,6);
  assert.equal(ledger(copy).remaining,14);
+});
+
+
+test("Os três tipos novos de ameaça possuem custos distintos sem alterar históricos",()=>{
+ assert.deepEqual(Object.keys(KINDS),["humanoide","monstro","humanoide-monstro"]);
+ const human=blank("humanoide"),beast=blank("monstro"),hybrid=blank("humanoide-monstro");
+ for(const unit of [human,beast,hybrid])unit.attributes.forca=1;
+ assert.equal(ledger(human).attrs,1);
+ assert.equal(ledger(beast).attrs,2);
+ assert.equal(ledger(hybrid).attrs,2);
+ assert.deepEqual(dice(beast,"forca"),[10]);
+ assert.deepEqual(dice(hybrid,"forca"),[6],"Tabela de XP não inventa dado extraordinário para Humanoide Monstro");
+ assert.equal(ledger(human).grant,20);
+ assert.equal(ledger(hybrid).grant,0,"Orçamento monstruoso é fornecido pelo Narrador, não gera 20 XP automáticos");
+ assert.equal(ledger(beast).grant,0);
+ human.practices.atletismo=1;hybrid.practices.atletismo=1;
+ human.knowledges.protecao=1;hybrid.knowledges.protecao=1;
+ assert.equal(ledger(hybrid).training,4);
+ assert.equal(ledger(human).training,4);
+ hybrid.skills=["montar"];hybrid.xp=20;hybrid.attributes.influencia=2;
+ assert.equal(ledger(hybrid).attrs,10);
+ assert.equal(ledger(hybrid).skills,2);
+ assert.equal(ledger(hybrid).spent,16);
+ assert.equal(ledger(hybrid).remaining,4);
+ const saved=normalize(hybrid);
+ assert.equal(saved.kind,"humanoide-monstro");
+ assert.deepEqual(saved.skills,["montar"]);
+ const legacy=normalize({...blank("criatura"),attributes:{forca:1}});
+ assert.equal(legacy.kind,"criatura");
+ assert.equal(ledger(legacy).attrs,1);
+ assert.deepEqual(dice(legacy,"forca"),[6]);
+ assert.equal(isHumanoidKind(saved.kind),true);
+ assert.equal(isHumanoidKind(beast.kind),false);
+});
+test("Perito Conjurador não é mais comprável por qualquer tipo de ameaça",()=>{
+ const npc=normalize({...blank("humanoide"),skills:["peritoconj"]});
+ const hybrid=normalize({...blank("humanoide-monstro"),skills:["peritoconj"]});
+ assert.deepEqual(npc.skills,[]);
+ assert.deepEqual(hybrid.skills,[]);
+ assert.equal(SKILLS.some(x=>x.id==="peritoconj"),false);
 });
