@@ -939,12 +939,16 @@ const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,si
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:"",trevas:false});
 function load(){
- let migrated=false,legacyAvailable=false;
+ let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
   const saved=localStorage.getItem(SAVE_KEY);
   const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
-  if(saved)state=normalize(JSON.parse(saved));
+  if(saved){
+   const raw=JSON.parse(saved);
+   retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
+   state=normalize(raw);
+  }
   else if(oldRaw){
    const old=JSON.parse(oldRaw);
    const character=old?.character||old;
@@ -982,9 +986,12 @@ function load(){
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
  $("import-old-creator").hidden=!legacyAvailable;
- if(migrated){
+ if(migrated||retiredSkillMigrated){
+  // Persistir a migração somente quando houve Perícia revogada na ficha salva,
+  // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
+  toast(migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+   "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
 function normalize(v){
