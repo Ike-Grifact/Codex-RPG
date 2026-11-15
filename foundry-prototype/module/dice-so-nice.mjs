@@ -22,13 +22,15 @@ export function registerCodexDice(dice3d) {
 export async function showCodexDice(roll) {
   const dice3d = game.dice3d;
   if (!dice3d?.showForRoll) return;
-  // The evaluated pool is private until the player confirms the kept dice.
+  // Os dados físicos são públicos; apenas a escolha dos mantidos e a confirmação seguem sob controle de quem rolou.
   try {
     for (const die of roll.dice) {
       die.options ??= {};
       die.options.appearance = {...die.options.appearance, system};
     }
-    await dice3d.showForRoll(roll, game.user, false);
+    // Decisão autoral: a animação física é compartilhada com toda a mesa
+    // antes da seleção e confirmação da rolagem. Não rerrolar no cliente receptor.
+    await dice3d.showForRoll(roll, game.user, true);
   } catch (error) {
     console.warn("Codex RPG | Animação do Dice So Nice indisponível.", error);
   }
