@@ -15,6 +15,10 @@ export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-
 export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};
 export const isHumanoidKind=kind=>kind==="humanoide"||kind==="humanoide-monstro";
 export const monsterAttributeCost=kind=>kind==="monstro"||kind==="humanoide-monstro";
+// Decisão autoral posterior à v0.44: ameaças G2+ podem reter até 4 dados.
+// O custo adicional continua conforme a economia do tipo, sem retenção gratuita implícita.
+export const enemyKeepCap=grade=>Number(grade)>=2?4:3;
+export const enemyHumanoidFreeKeep=grade=>Number(grade)>=2?3:2;
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
 export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(n))?Number(n):min));
@@ -56,8 +60,8 @@ export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
  const s=toSystem(t),monster=t.kind==="monstro",human=isHumanoidKind(t.kind),grade=clamp(t.threatGrade,1,6);
  const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
- const maxKeep=human?keepLimit(s.level,false,false):grade>=5?4:3; // Retenção paga humana não é automatizada sem controle de Coragem.
- const naturalKeep=human?keepLimit(s.level,false,false):2;
+ const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
+ const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
  return {life,de:defense,limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
