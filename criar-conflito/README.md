@@ -33,13 +33,13 @@ A ficha de humanoide usa o orçamento experimental de 20 XP (com saldo livre ap�
 - **Retenção monstruosa:** custa 1P **local** por dado mantido além de dois; desconto somente após confirmação explícita e desde que haja saldo. Críticos geram Pavor segundo o SRD, primeiro até o teto local do monstro, depois na reserva pública. Pavor descartado não conta.
 - **Ação conjunta hostil:** para Líder vivo com participantes disponíveis, gasto público de **1P para o Líder + 1 aliado** ou **2P para Líder + 2 aliados**, conforme seção 0-R.4 da v0.39. O histórico de custo fixo de 3P está **REVOGADO**. Os participantes, o alvo, os demais custos locais e a rolagem conjunta permanecem procedimentos manuais.
 - **Não automatizados:** iniciar um conflito com gasto público de custo **PENDENTE**, aplicar dano corporal à Vida, transferir Pavor residual por proximidade e distribuir Coragem entre alvos com empates. Não presumir que cliques manuais da reserva pública sejam uma ativação automática.
-- **Humanoides:** requerem o fluxo completo de fontes do jogador/Foundry, com Perícias e equipamento; não herdam as duas fontes monstruosas do simulador básico.
+- **Humanoides [IMPLEMENTADO no editor v0.44]:** rolagem básica própria com Atributo + Conhecimento ou Prática (inclui fontes no grau 0), uso dos símbolos oficiais, seleção dos dados mantidos do Marco, Anulação/Conversão de Antecipar, confirmação e registro do Pavor crítico. Disciplina armada/conjuração exige Perícia habilitadora; o botão informa quando faltar requisito. Efeitos próprios de Perícias, dados extras de equipamento e gastos de Coragem para retenção adicional não são automatizados; não existem bônus gratuitos.
 - **Limitação:** o resultado confirmado deve ser registrado pelo Narrador e verificado quanto a pertinência; até aqui não há sincronização da ferramenta web com Actors/combate no cliente Foundry.
 
 ## Testes
 
 `node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs foundry-prototype/tests/rules.test.mjs` para cálculos.
 
-`node .github/tests/conflito-e2e.cjs`, `node .github/tests/conflito-rolagens-e2e.cjs` e `node .github/tests/humanoide-rapido-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/criador-e2e.yml` faz a preparação automaticamente.
+`node .github/tests/conflito-e2e.cjs`, `node .github/tests/conflito-rolagens-e2e.cjs` e `node .github/tests/conflito-humanoides-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/conflitos-e2e.yml` executa essas verificações e os testes matemáticos automaticamente.
 
 **Importante**: a ferramenta é independente de autenticação; dados ficam no armazenamento do navegador. Exporte JSON antes de limpar o navegador ou compartilhar outro computador.
