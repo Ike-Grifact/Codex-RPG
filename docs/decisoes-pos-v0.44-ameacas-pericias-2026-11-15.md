@@ -55,3 +55,13 @@ A progressão da Ficha de **Humanoide comum** conserva os **20 XP iniciais exper
 - Não foram alteradas a tabela de XP, a quantidade/faces fornecidas por Grau de Atributo, os custos de elevação, a DE, o dano ou a reserva de Pavor local.
 
 **Observação de implementação:** os controles da ferramenta devem indicar o teto por Grau e o custo real; mudar de Grau descarta qualquer rolagem pendente construída sob limite anterior.
+
+## 5. Equivalência de ameaça, Grau 2 [DEFINIDO, 15/11/2026]
+
+**Grau 2 de ameaça equivale a enfrentar um personagem jogador de nível 5.**
+
+- Esta equivalência informa a **referência de poder/desafio**, não transfere automaticamente XP, equipamento, requisitos, faces de dados, quantidade de fontes ou estatísticas de nível 5 ao inimigo.
+- A regra própria da ameaça prevalece: **inimigos de Grau 2 em diante podem manter até 4 dados**, independentemente do nível numérico salvo na ficha.
+- Custos para manter dados extras permanecem aqueles documentados para o tipo de ameaça; a equivalência **não cria retenção gratuita**.
+- Os equivalentes de nível de jogador para os Graus 1, 3, 4, 5 e 6 estão **PENDENTES** e não devem ser extrapolados.
+- Esta decisão é posterior ao SRD v0.44 e ao registro acima; não modifica a progressão dos Aprendizes.
