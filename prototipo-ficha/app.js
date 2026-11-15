@@ -1107,6 +1107,8 @@ function normalize(v){
  s.courageUsedTurn=!!v.courageUsedTurn;
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
+  // Migração segura de rolagens em aberto com DE arbitrária da versão anterior.
+  if(s.pending.opts?.tameSmall)s.pending.opts.de=smallCreatureTargetDe(s);
  }
  return s;
 }
@@ -1268,6 +1270,9 @@ function armorDodgeBonus(s=state){
  return it?.weight==="muito_leve"?2:it?.weight==="leve"?1:0;
 }
 function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
+// A criatura pequena sem ficha usa a mesma DE defensiva exibida na ficha do domador.
+// Não altera o cálculo dos demais testes ou das categorias de criatura com ficha.
+function smallCreatureTargetDe(s=state){return deDefense(s);}
 function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
@@ -2142,13 +2147,15 @@ function prepareSmallCompanionTest(){
  draft.base={group:"practice",key:"apresentacao"};
  draft.attribute={group:"attr",key:"influencia"};
  draft.tameSmall=true;
+ draft.de=smallCreatureTargetDe();
  draft.tamePayment=state.pp>=1?"pp":"courage";
  renderSources();renderComposer();
- toast("Teste com Influência + Apresentação preparado. Escolha a DE e o pagamento antes de rolar.");
+ toast("Teste com Influência + Apresentação preparado. DE da criatura = sua DE atual ("+smallCreatureTargetDe()+"). Escolha o pagamento antes de rolar.");
 }
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ const effectiveDe=draft.tameSmall?smallCreatureTargetDe():draft.de;
  if(draft.tameSmall){
   if(!canTameSmallDraft())errors.push("Domar exige a Perícia, Influência e Apresentação como fontes pertinentes.");
   if(draft.tamePayment==="pp"&&state.pp<1)errors.push("Domar exige 1 PP disponível.");
@@ -2179,7 +2186,7 @@ function buildPool(){
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
- if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
+ if(effectiveDe<0||effectiveDe>30)errors.push("DE deve ficar entre 0 e 30.");
  return{errors,pool};
 }
 function renderComposer(){
@@ -2232,7 +2239,9 @@ function renderComposer(){
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
- '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
+ (draft.tameSmall?
+ '<label class="fp-form-field">DE da criatura pequena = sua DE atual <input type="number" min="0" max="30" value="'+smallCreatureTargetDe()+'" disabled aria-label="DE da criatura pequena, igual à DE defensiva atual do personagem"></label>':
+ '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>')+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso do ataque '+select("attackWeight",weight,draft.attackWeight)+'</label><label class="fp-form-field">Balanço do alvo '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
  checks+tameFields+'</div>';
@@ -2260,7 +2269,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:smallCompanionPresent()&&!!state.smallCompanion.inCombat,tameSmall:!!draft.tameSmall,tameIntent:draft.tameIntent,tamePayment:draft.tamePayment,equipmentId:draft.equipmentId,
+  opts:{de:draft.tameSmall?smallCreatureTargetDe():draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:smallCompanionPresent()&&!!state.smallCompanion.inCombat,tameSmall:!!draft.tameSmall,tameIntent:draft.tameIntent,tamePayment:draft.tamePayment,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2922,6 +2931,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;}
+  if(k==="tameSmall"&&draft.tameSmall)draft.de=smallCreatureTargetDe();
   renderSources();renderComposer();return;
  }
  if(el.dataset.pending&&state.pending){
