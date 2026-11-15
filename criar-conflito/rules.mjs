@@ -1,8 +1,15 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS,
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity}
  from "./codex-rules.mjs";
-export {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,sourceDice,narratorCap};
+// Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
+// Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
+const PLAYER_DNA_EXTRA_SKILLS=[
+ {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
+ {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2}
+];
+export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
+export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};
 export const KINDS={criatura:"Criatura comum / animal",monstro:"Monstro extraordinário",humanoide:"Humanoide comum / NPC"};
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
