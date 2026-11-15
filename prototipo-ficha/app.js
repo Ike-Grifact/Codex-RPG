@@ -1295,67 +1295,10 @@ function renderDiceLegend(){
 
 /* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
 const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
-let playActionTab="skills";
-function renderActionTabs(){
- const host=$("play-talents");if(!host)return;
- for(const button of host.querySelectorAll("[data-action='action-tab']")){
-  const yes=button.dataset.category===playActionTab;button.setAttribute("aria-pressed",String(yes));button.classList.toggle("is-active",yes);
- }
- for(const section of host.querySelectorAll("[data-talent-group]"))
-  section.hidden=section.dataset.talentGroup!==playActionTab;
-}
-function renderTacticalBar(){
- const host=$("fp-tactical-bar"),grid=$("fp-quick-attributes"),dice=$("fp-quick-dice");
- if(!host||!grid||!dice)return;
- const pending=state.pending,prepared=pending?pending.dice:buildPool().pool,shown=(prepared||[]).slice(0,9);
- grid.innerHTML=A.map(([key,name])=>{
-  const grade=state.attributes[key]||0,active=!!(pending?.attribute?.key===key||!pending&&draft.attribute?.key===key);
-  return '<button type="button" data-action="quick-attribute" data-key="'+key+'" aria-pressed="'+active+
-   '" class="fp-quick-attribute'+(active?" is-selected":"")+'" title="'+(editMode?"Localizar a capacidade na edição":"Preparar "+esc(name))+'">'+
-   '<span>'+esc(name)+' <small>G'+grade+'</small></span><span class="fp-quick-die-symbols">'+
-   dataDice("attr",grade).map(n=>'<span class="fp-mini-die fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("")+'</span></button>';
- }).join("");
- dice.innerHTML=Array.from({length:9},(_,i)=>{
-  const d=shown[i],kept=!!(d&&pending?.selected?.includes(d.id));
-  return '<span class="fp-nine-slot'+(d?" has-die":"")+(kept?" is-kept":"")+'" title="'+
-   (d?"d"+d.sides+" · "+esc(label(d.group,d.key)):"Espaço para o dado "+(i+1))+'">'+
-   (d?dieIcon(d.sides)+'<b>d'+d.sides+'</b>'+(d.face?'<small>'+d.face+'</small>':''):
-   '<span aria-hidden="true">◇</span>')+'</span>';
- }).join("");
- const declared=pending?.declaredSkill||draft.declaredSkill,entry=declared?SKILLS.find(x=>x[0]===declared):null;
- $("fp-tactical-status").textContent=pending?"Rolagem em andamento · selecione os dados no painel":
-  editMode?"Modo edição · dados e graus sempre visíveis":
-  (entry?"Perícia declarada: "+entry[1]+" · ":"")+
-  (draft.base&&draft.attribute?label(draft.base.group,draft.base.key)+" + "+label(draft.attribute.group,draft.attribute.key):
-   draft.attribute?"Escolha uma Prática ou Conhecimento para "+label(draft.attribute.group,draft.attribute.key):
-   draft.base?"Escolha o Atributo para "+label(draft.base.group,draft.base.key):"Clique em um Atributo e uma Base para compor sua ação");
- $("fp-tactical-mode").textContent=editMode?"Edição":"Rolagem";
- host.classList.toggle("is-editing",!!editMode);
-}
-function prepareOwnedSkill(id){
- if(!state.skills.includes(id))return;
- if(state.pending){toast("Finalize a rolagem em andamento.");return;}
- if(editMode){toast("Conclua a edição antes de usar sua Perícia.");return;}
- if(ELEMENT_SKILLS.some(([key])=>key===id)){prepareElementSkill(id);return;}
- draft.declaredSkill=id;sheetPage="play";render();
- toast("Perícia declarada nesta ação. Efeitos e custos de PP ou Coragem continuam dependentes da regra; não são concedidos automaticamente.");
-}
-function prepareEquippedShortcut(id){
- const item=state.items.find(x=>x.id===id&&x.equipped);
- if(!item||state.pending)return;
- if(editMode){toast("Conclua a edição antes de preparar a ação.");return;}
- if(!["arma","foco"].includes(item.type)){openSheetPage("inventory");return;}
- draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};
- draft.attribute={group:"attr",key:item.type==="foco"?"inteligencia":"forca"};
- draft.mode=item.type==="foco"?"conjuracao":"armas";draft.equipmentId=item.id;
- sheetPage="play";render();
- toast(item.name+" preparado. Confira a habilitação, os dados extras e os custos antes de rolar.");
-}
 function applySheetPage(){
  const show=viewMode==="sheet"&&!!state.creationLocked;
  const nav=$("sheet-navigation");if(!nav)return;
  nav.hidden=!show;
- const quickbar=$("fp-tactical-bar");if(quickbar)quickbar.hidden=!show||!(sheetPage==="play"||editMode);
  const chosen=sheetPage;
  const isEvolve=chosen==="evolution",isInv=chosen==="inventory",isGene=chosen==="genetic",isPlay=chosen==="play";
  $("play-talents").hidden=!show||!isPlay;
@@ -1382,7 +1325,7 @@ function renderOwnedPanel(){
  const markup=([id,name,detail,cost])=>{
   const text=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail.slice(0,130),action=CARD_ACTIVATIONS[id]||"Consultar";
   return '<article class="fp-owned-card"><div><strong>'+esc(name)+'</strong><small>'+esc(action)+'</small></div>'+
-   '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-use" data-action="prepare-skill" data-id="'+esc(id)+'">Preparar Perícia</button><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
+   '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
  };
  $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
  const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
@@ -1393,7 +1336,7 @@ function renderOwnedPanel(){
  const equipped=state.items.filter(it=>it.equipped);
  $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
   '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
-  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'<button type="button" class="fp-owned-use" data-action="prepare-equipped" data-id="'+esc(it.id)+'">'+(["arma","foco"].includes(it.type)?"Preparar ação":"Abrir Inventário")+'</button></article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
 function geneLayout(mapId,detailId){
@@ -1744,7 +1687,7 @@ function prepareElementSkill(id){
  if(state.pending){toast("Finalize a rolagem pendente antes de preparar a magia.");return;}
  if(!state.skills.includes("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
  sheetPage="play";editMode=false;
- draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";draft.declaredSkill=id;
+ draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";
  const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
   (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
  if(focus)draft.equipmentId=focus.id;
@@ -1752,7 +1695,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderActionTabs();renderTacticalBar();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
@@ -2117,7 +2060,6 @@ function canUseShared(){
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
  if(state.pending){toast("Finalize ou descarte a rolagem pendente primeiro.");return;}
- const declaredSkill=draft.declaredSkill||"";
  const source={group,key:k};
  if(group==="attr"){
   if(canSecondAttribute()&&draft.attribute&&!same(source,draft.attribute)){
@@ -2140,8 +2082,7 @@ function selectSource(group,k){
   if(!mayThird()){toast("Terceira fonte exige uma Perícia pertinente de combinação.");return;}
   draft.third=same(source,draft.third)?null:source;draft.contextOK=false;
  }
- if(declaredSkill&&!draft.declaredSkill)draft.declaredSkill=declaredSkill;
- renderSources();renderComposer();renderTacticalBar();
+ renderSources();renderComposer();
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
 function modeDefault(){return "armas";}
@@ -2251,7 +2192,7 @@ function roll(){
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
-  dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",declaredSkill:draft.declaredSkill||""};
+  dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
@@ -2326,8 +2267,7 @@ function score(){
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
- const desc=(p.declaredSkill?("Perícia declarada: "+esc(SKILLS.find(x=>x[0]===p.declaredSkill)?.[1]||p.declaredSkill)+" · "):"")+
-  esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
+ const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
  const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" title="Face '+d.face+' do d'+d.sides+'" aria-label="'+esc(label(d.group,d.key))+' · d'+d.sides+' · face '+d.face+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
   '<strong class="fp-face-runes" aria-hidden="true">'+faceRunesMarkup(face(d.sides,d.face),d.face===d.sides)+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
@@ -2385,7 +2325,7 @@ function finalize(){
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,trevas:!!p.opts.trevas,
-  declaredSkill:p.declaredSkill||"",faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
+  faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
@@ -2686,16 +2626,6 @@ function onClick(event){
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
- case "prepare-skill":prepareOwnedSkill(id);break;
- case "prepare-equipped":prepareEquippedShortcut(id);break;
- case "action-tab":playActionTab=["skills","elements","gear"].includes(button.dataset.category)?button.dataset.category:"skills";renderActionTabs();break;
- case "quick-attribute":{
-  if(viewMode!=="sheet"||state.pending)break;
-  if(editMode){document.querySelector('.fp-source-pick[data-group="attr"][data-key="'+source+'"]')?.scrollIntoView?.({behavior:"smooth",block:"nearest"});toast("Ajuste o Grau com + e − no modo edição.");break;}
-  selectSource("attr",source);renderTacticalBar();
-  if(window.innerWidth<880)$("composer-panel")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
-  break;
- }
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;

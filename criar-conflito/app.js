@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,sourceDice,toSystem,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
+ PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs?v=0.44-3";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -42,7 +42,7 @@ function load(){
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
 }
-let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null,conflictActionTab="weapons";
+let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null;
 function draftFor(t){
  if(rollDraft?.id!==t.id){
   const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
@@ -51,7 +51,7 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
+   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral"};
  }
  return rollDraft;
 }
@@ -63,7 +63,6 @@ function selectionFor(t,d){
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
  const record={id:uid(),date:new Date().toISOString(),unitId:t.id,unit:t.name,kind:t.kind,
-  declaredSkill:r.declaredSkill||"",declaredAction:r.declaredAction||"",
   sources:r.sources||[],mode:r.mode||"normal",de:r.de,situation:r.situation,
   dice:r.dice.map(d=>({group:d.group,key:d.key,sides:d.sides,baseSides:d.baseSides||d.sides,face:d.face,
    kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
@@ -80,9 +79,9 @@ function downloadText(text,filename,mime){
  anchor.href=url;anchor.download=filename;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function exportRollHistory(){
- const cols=["Data","Ficha","Tipo","Ação declarada","Perícia declarada","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
+ const cols=["Data","Ficha","Tipo","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
  const csv=[cols,...(model.rollHistory||[]).map(x=>[
- x.date,x.unit,x.kind,x.declaredAction||"",x.declaredSkill||"",(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
+ x.date,x.unit,x.kind,(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
  x.e,x.a,x.p,x.damage,x.critical,x.courageSpent,x.pavorSpent,
  (x.dice||[]).map(d=>"d"+d.sides+":"+d.face+(d.kept?"(mantido)":"(descartado)")).join(" | ")
  ])].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
@@ -227,80 +226,6 @@ function inventory(t,x){
 }
 
 
-const ELEMENT_ACTIONS=new Set(["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas","psiquico"]);
-function quickThreatPanel(t){
- const st=stats(t),armor=t.items.find(it=>it.kind==="armor"&&it.equipped)||t.items.find(it=>it.kind==="armor");
- const rolling=creatureRoll?.id===t.id?creatureRoll:null;
- const composed=composeActionPool(t,selectionFor(t,draftFor(t)),"");
- const preview=rolling?.dice|| (composed.ok?composed.pool:[]);
- const limit=9;
- return '<section class="cf-tactical-strip" aria-label="Painel de dados e recursos da ficha">'+
-  '<div class="cf-tactical-vitals"><div><small>VIDA</small><strong>'+t.life+' / '+st.life+'</strong></div>'+
-  '<div><small>INTEGRIDADE</small><strong>'+(armor?(armor.integrityMax?armor.integrity+" / "+armor.integrityMax:"0 · Sem Integridade"):"Sem armadura")+'</strong></div>'+
-  '<div><small>DE</small><strong>'+st.de+'</strong></div>'+
-  '<div><small>PAVOR LOCAL</small><strong>'+t.pavorLocal+' / '+st.limitLocal+'</strong></div>'+
-  (t.kind==="humanoide"?'<div><small>CORAGEM</small><strong>'+t.courage+' / 10</strong></div>':'')+
-  '</div><div class="cf-tactical-capacities" role="group" aria-label="Atributos da ficha">'+
-  ATTRIBUTES.map(([key,name])=>{
-   const grade=t.attributes[key],chosen=conflictMode==="roll"?
-    (t.kind==="humanoide"?draftFor(t).attribute===key:draftFor(t).first===key||draftFor(t).second===key):false;
-   return '<button type="button" data-quick-attr="'+key+'" class="cf-quick-capacity'+(chosen?' is-selected':'')+
-    '" aria-pressed="'+chosen+'"><span>'+esc(name)+' <small>G'+grade+'</small></span><span class="cf-capacity-dice">'+
-    dieIcons(dice(t,key))+'</span></button>';
-  }).join("")+'</div><div class="cf-tactical-pool"><span><b>Até 9 dados</b> por ação</span>'+
-  '<div class="cf-nine-slots" aria-label="Nove espaços de dados disponíveis">'+
-  Array.from({length:limit},(_,i)=>{
-   const d=preview[i],kept=rolling?.selected.includes(d?.id);
-   return '<span class="cf-nine-slot'+(d?' has-die':'')+(kept?' is-kept':'')+
-    '" title="'+(d?esc(d.group+" · "+d.key+" · d"+d.sides):"Espaço "+(i+1))+'">'+
-    (d?dieIcons([d.sides])+(d.face?'<strong>'+d.face+'</strong>':''):'◇')+'</span>';
-  }).join("")+'</div></div></section>';
-}
-function actionPanel(t){
- const isHuman=t.kind==="humanoide",d=draftFor(t);
- const weaponItems=t.items.filter(x=>x.kind==="weapon"||/arma|espada|arco|punhal|besta|lança|machado|cajado|foice|espingarda|pistola/i.test(x.name));
- const elements=t.skills.filter(id=>ELEMENT_ACTIONS.has(id));
- const otherSkills=t.skills.filter(id=>!ELEMENT_ACTIONS.has(id));
- const tabs=[["weapons","Armas"],["elements","Elementos"],["skills","Perícias"]];
- const cards=conflictActionTab==="weapons"?
-  '<button type="button" data-threat-action="basic" class="cf-action-card"><strong>Teste básico</strong><small>Fontes selecionadas · sem efeito gratuito</small></button>'+
-  weaponItems.map(it=>'<button type="button" data-threat-action="weapon" data-action-item="'+esc(it.id)+
-  '" class="cf-action-card"><strong>'+esc(it.name)+'</strong><small>Preparar Disciplina · arma; dados extras somente habilitados</small></button>').join("")+
-  (!weaponItems.length?'<p class="cf-note">Adicione armas no modo Edição para ver atalhos aqui.</p>':''):
-  conflictActionTab==="elements"?
-  (isHuman?elements.map(id=>'<button type="button" data-threat-action="element" data-action-skill="'+esc(id)+
-  '" class="cf-action-card"><strong>ᚨ '+esc(SKILLS.find(x=>x.id===id)?.name||id)+'</strong><small>Disciplina · Conjuração; foco e Perícia necessários</small></button>').join("")||'<p class="cf-note">Nenhuma Perícia elemental habilitada. Compre uma Perícia no modo Edição.</p>':
-  '<button type="button" data-threat-action="natural" class="cf-action-card"><strong>Ação natural</strong><small>Use Atributos pertinentes; efeito especial definido pelo Narrador</small></button>'):
-  (isHuman?otherSkills.map(id=>'<button type="button" data-threat-action="skill" data-action-skill="'+esc(id)+
-  '" class="cf-action-card"><strong>'+esc(SKILLS.find(x=>x.id===id)?.name||id)+
-  '</strong><small>Declarar Perícia na ação · consulte ativação e requisitos</small></button>').join("")||'<p class="cf-note">Nenhuma Perícia adquirida. Use Edição para comprar com XP e requisitos.</p>':
-  '<div class="cf-action-natural"><strong>Capacidades naturais</strong><p>'+esc(t.abilities||"Sem capacidades registradas. Descreva na Edição.")+
-  '</p><button type="button" data-threat-action="natural" class="cf-action-card">Preparar teste de capacidade</button></div>');
- return '<section class="cf-panel cf-action-panel" aria-label="Ações disponíveis"><h3>Ações</h3>'+
-  '<div class="cf-action-tabs" role="group" aria-label="Categorias de ações">'+
-  tabs.map(([key,name])=>'<button type="button" data-action-tab="'+key+'" aria-pressed="'+(conflictActionTab===key)+
-   '" class="'+(conflictActionTab===key?'is-active':'')+'">'+name+'</button>').join("")+'</div>'+
-  '<div class="cf-action-list">'+cards+'</div>'+
-  (d.declaredAction?'<p class="cf-action-selected"><strong>Preparada:</strong> '+esc(d.declaredAction)+
-   (d.declaredSkill?' · Perícia '+esc(SKILLS.find(x=>x.id===d.declaredSkill)?.name||d.declaredSkill):'')+'</p>':'')+
-  '<p class="cf-note">Atalhos escolhem fontes e identificam a ação; não concedem dados, efeitos ou pagamentos automáticos. O Narrador aplica o efeito específico.</p></section>';
-}
-function chooseThreatAction(kind,itemId,skillId){
- const t=selected();if(!t||creatureRoll?.id===t.id)return notice("Conclua ou descarte primeiro a rolagem em aberto.");
- const d=draftFor(t),item=t.items.find(x=>x.id===itemId),skill=t.skills.includes(skillId)?SKILLS.find(x=>x.id===skillId):null;
- if(kind==="element"&&!skill)return notice("O personagem não possui essa Perícia elemental.");
- if(kind==="skill"&&!skill)return notice("A Perícia deve ser adquirida antes de entrar em ação.");
- if(kind==="weapon"&&!item)return notice("Item não encontrado nesta ficha.");
- d.declaredSkill=skill?.id||"";d.declaredAction=skill?.name||item?.name||
-  (kind==="natural"?"Ação natural":"Teste básico");
- if(t.kind==="humanoide"&&["weapon","element"].includes(kind)){
-  d.baseGroup="practice";d.baseKey="armas_conjuracao";
-  d.attribute=kind==="element"?"inteligencia":"forca";
-  d.mode=kind==="element"?"conjuracao":"armas";
- }
- conflictMode="roll";render();
- if(window.innerWidth<800)el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"nearest"});
-}
 function rollSourceCards(t){
  const d=draftFor(t),human=t.kind==="humanoide";
  const rows=[
@@ -318,10 +243,11 @@ function rollSourceCards(t){
       !human&&d.first===key?"Base":!human&&d.second===key?"Segundo":""):
     human&&d.baseGroup===row.group&&d.baseKey===key?"Base":"";
    const group=row.group==="attribute"?"attribute":row.group;
-   const sides=sourceDice(group,key,toSystem(t));
+   const sides=group==="attribute"?dice(t,key):[6,10,10,10,10,12,12].length&&
+    [[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade];
    return '<button type="button" class="cf-source-card'+(chosen?' is-selected':'')+'" data-roll-source="'+group+
     '" data-source-key="'+key+'" aria-pressed="'+Boolean(chosen)+'"><span class="cf-source-name">'+esc(name)+
-    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+dieIcons(sides||[])+'</span>'+
+    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+(sides||[]).map(n=>'d'+n).join(" + ")+'</span>'+
     (chosen?'<b>'+chosen+'</b>':'')+'</button>';
   }).join("")+'</div></section>').join("");
  const comp=composeActionPool(t,selectionFor(t,d),"");
@@ -349,7 +275,7 @@ function historyPanel(t){
   (records.length?records.map(x=>{
    const date=x.date?new Date(x.date).toLocaleString("pt-BR"):"Sem data";
    return '<details class="cf-history-entry"><summary><strong>'+esc(x.unit||"Sem nome")+'</strong>'+
-    '<span>'+esc(date)+'</span><span>'+esc(x.declaredAction||"Teste")+' · '+esc(x.outcome||"Resultado")+
+    '<span>'+esc(date)+'</span><span>'+esc(x.outcome||"Resultado")+
     ' · '+Number(x.reached||0)+'/DE '+Number(x.de||0)+'</span></summary>'+
     '<p>Fontes: '+esc((x.sources||[]).map(y=>y.group+":"+y.key).join(" + "))+'</p>'+
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
@@ -369,7 +295,7 @@ function rollWorkspace(t){
   (t.kind==="humanoide"?'<span>Coragem <b>'+t.courage+' / 10</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div><div class="cf-play-grid"><div class="cf-play-left">'+rollSourceCards(t)+'</div><div class="cf-play-right">'+actionPanel(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
+  '</div></div>'+rollSourceCards(t)+rollPane(t)+historyPanel(t)+'</div>';
 }
 
 function rollPane(t){
@@ -486,7 +412,7 @@ function beginCreatureRoll(){
  const count=Math.min(planned,generated.length);
  creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
   baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
-  sources:composed.sources,declaredSkill:d.declaredSkill||"",declaredAction:d.declaredAction||"",de:d.de,situation:d.situation,
+  sources:composed.sources,de:d.de,situation:d.situation,
   extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
   dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
@@ -572,7 +498,7 @@ function render(){
    '" class="'+(conflictMode==="edit"?"is-active":"")+'">Edição</button>'+
   '<button type="button" data-conflict-mode="roll" aria-pressed="'+(conflictMode==="roll")+
    '" class="'+(conflictMode==="roll"?"is-active":"")+'">Rolagem</button></div>':"";
- el("editor").innerHTML=t?quickThreatPanel(t)+tabs+(conflictMode==="roll"?rollWorkspace(t):editorHTML(t)):
+ el("editor").innerHTML=t?tabs+(conflictMode==="roll"?rollWorkspace(t):editorHTML(t)):
   '<div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div>';
 }
 function update(field,value){
@@ -689,22 +615,6 @@ document.addEventListener("click",event=>{
  if(b.id==="export-encounter")return exportJson();
  if(b.hasAttribute("data-open-roll")){conflictMode="roll";render();scrollToRoll();return;}
  if(b.dataset.conflictMode){conflictMode=b.dataset.conflictMode==="roll"?"roll":"edit";render();return;}
- if(b.dataset.quickAttr){
-  const t=selected();if(!t)return;
-  if(conflictMode==="edit"){
-   const card=el("editor")?.querySelector('[data-grade="attr"][data-key="'+b.dataset.quickAttr+'"][data-delta="1"]');
-   card?.scrollIntoView({behavior:"smooth",block:"nearest"});return;
-  }
-  if(creatureRoll?.id===t.id)return notice("Conclua ou descarte os dados antes de mudar a ação.");
-  const d=draftFor(t),key=b.dataset.quickAttr;
-  if(t.kind==="humanoide")d.attribute=key;
-  else if(!d.firstClicked){d.first=key;d.firstClicked=true;}
-  else if(d.first!==key){d.second=key;d.firstClicked=false;}
-  render();return;
- }
- if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?
-  b.dataset.actionTab:"weapons";render();return;}
- if(b.dataset.threatAction)return chooseThreatAction(b.dataset.threatAction,b.dataset.actionItem,b.dataset.actionSkill);
  if(b.dataset.courage){const t=selected();if(!t||t.kind!=="humanoide")return;
   t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,10));save();render();return;}
  if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
@@ -731,10 +641,10 @@ document.addEventListener("click",event=>{
    else if(d.first!==key){d.second=key;d.firstClicked=false;}
    else return notice("Selecione outro Atributo distinto.");
   }
-  d.stepDieId="";render();if(window.innerWidth<800)el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"nearest"});return;
+  d.stepDieId="";render();scrollToRoll();return;
  }
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
- if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();if(window.innerWidth<800)scrollToRoll();return;}
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();scrollToRoll();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
  if(b.dataset.open){model.active=b.dataset.open;creatureRoll=null;rollDraft=null;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
