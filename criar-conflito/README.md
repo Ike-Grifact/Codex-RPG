@@ -74,3 +74,5 @@ Na aba **Rolagem**, fontes com SVGs aparecem à esquerda; Armas, Elementos, Per�
 ### Retenção de dados por Grau de ameaça (15/11/2026)
 
 **DEFINIDO:** Grau 1 preserva o limite anterior (até 3 dados); **Grau 2 a Grau 6** passa a poder manter **até 4 dados** em qualquer tipo de ameaça. O teto é do **Grau de ameaça**, não do nível do humanoide. Custos conhecidos continuam: Criatura/Monstro paga **1P local por dado além de dois**; humanoide inimigo mantém três naturalmente em Grau 2+ e paga **1 Coragem pelo quarto dado efetivamente mantido**. O limite não cria dados extras na pilha; é preciso tê-los rolado.
+
+**Referência de confronto [DEFINIDA]:** Grau 2 de ameaça equivale a um jogador de nível 5. Este dado orienta a ameaça relativa, sem alterar as tabelas de atributos, custos de XP, fontes e retenção. **Somente a equivalência do Grau 2 foi definida**; os demais Graus seguem sem tabela de nível correspondente.
