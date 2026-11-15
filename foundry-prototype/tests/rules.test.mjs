@@ -125,7 +125,7 @@ test("Retenção de jogadores e monstros e os tetos de Pavor",()=>{
  assert.equal(keepLimit(1,0,true),2);assert.equal(keepLimit(1,1,true),3);
  assert.equal(keepLimit(2,0,true),2);assert.equal(keepLimit(2,2,true),4);
  assert.equal(keepLimit(5,0,true),2);assert.equal(keepLimit(5,2,true),4);
- assert.equal(monsterCap(1),1);assert.equal(monsterCap(6),6);assert.equal(narratorCap(4),6);
+ assert.equal(monsterCap(1),4);assert.equal(monsterCap(2),5);assert.equal(monsterCap(5),8);assert.equal(monsterCap(6),8);assert.equal(narratorCap(4),6);
 });
 test("Não cobrar manutenção extra se o jogador escolher menos dados que o teto",()=>{
  const rolled=[{id:"a",group:"attribute",sides:6,face:6},
