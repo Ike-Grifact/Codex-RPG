@@ -34,7 +34,10 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  const de=Number(options.de),situation=String(options.situation||"neutral");
  const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
  const extraKeep=!!options.extraKeep;
- const limit=keepLimit(Number(unit.level||1),extraKeep,false);
+ // O Marco do jogador não determina a retenção da ameaça: G1 = 2 naturais;
+ // G2+ = 3 naturais. Um adicional custa 1 Coragem, até 4 dados.
+ const gradeLevel=Number(unit.threatGrade)>=2?6:1;
+ const limit=keepLimit(gradeLevel,extraKeep,false);
  const courageCost=Number(extraKeep)+Number(!!options.stepDieId);
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
@@ -46,7 +49,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  const cancelP=Number(options.cancelP||0),convertPairs=Number(options.convertPairs||0),passA=!!options.passA;
  if(!Number.isInteger(cancelP)||!Number.isInteger(convertPairs))
   return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
- const result=resolveRoll(rolled,kept,{de,situation,level:Number(unit.level||1),
+ const result=resolveRoll(rolled,kept,{de,situation,level:gradeLevel,
   monster:false,hostile:true,extraKeep,courage:Number(unit.courage??10),cancelP,convertPairs});
  if(!result.ok)return {ok:false,error:result.errors.join("; ")};
  if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
