@@ -3,6 +3,7 @@
    <img class="codex-logo" src="systems/codex-rpg-foundry/assets/codex-logo.svg" alt="">
    <div><span class="codex-overline">CODEX RPG · EQUIPAMENTO</span><strong>Equipar não altera as regras sem habilitação.</strong></div>
  </div>
+ {{#if equipment.canMigrateArmor}}<button type="button" data-action="migrateArmor">Atualizar Integridade G1 (SRD v0.44)</button>{{/if}}
  <div class="codex-item-form">
   <label>Nome<input type="text" value="{{equipment.name}}" data-field="name"></label>
   <label>Tipo<select data-field="system.kind">{{#each equipment.types}}

@@ -49,13 +49,13 @@ export const monsterCap=grade=>Math.min(8,Math.max(1,Math.min(6,Math.floor(Numbe
 export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.armas_conjuracao||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Fórmula da ficha vigente.
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
- const attr=ATTRIBUTES.reduce((n,[k])=>n+(s.monsterRules?XP_TRAINING:XP_ATTRIBUTE)[Number(s.attributes?.[k]||0)],0);
+ const attr=ATTRIBUTES.reduce((n,[k])=>n+(s.monsterRules||s.monsterHumanoidRules?XP_TRAINING:XP_ATTRIBUTE)[Number(s.attributes?.[k]||0)],0);
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules||s.animalRules?0:CREATION_REFERENCE.total);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules||s.animalRules||s.monsterHumanoidRules?0:CREATION_REFERENCE.total);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules||s.animalRules?"Orçamento definido pelo Narrador.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
+  state:s.monsterRules||s.animalRules||s.monsterHumanoidRules?"Orçamento definido pelo Narrador.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];

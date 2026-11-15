@@ -35,7 +35,7 @@ test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
 test("Texturas 3D do d10 não referenciam face histórica de Pavor",()=>{
  const labels=faceLabels(10);
  assert.equal(labels.length,10);
- assert.ok(labels[9].endsWith("/210.png"));
+ assert.ok(labels[9].endsWith("/210-max.png"));
  assert.ok(!labels[9].endsWith("/201-max.png"));
  assert.ok(faceLabels(12)[11].endsWith("/002-max.png"));
 });
@@ -230,7 +230,7 @@ test("Comparativo de mantidos oferece alternativas sem modificar a rolagem",()=>
  const dice=[
   {id:"forca",group:"attribute",sides:6,face:6},
   {id:"disciplina",group:"practice",sides:10,face:10},
-  {id:"arma",group:"equipment",sides:6,face:2}
+  {id:"arma",group:"equipment",sides:6,face:3}
  ];
  const original=structuredClone(dice);
  const options=compareKeptOptions(dice,{de:3,level:1,monster:false},5);

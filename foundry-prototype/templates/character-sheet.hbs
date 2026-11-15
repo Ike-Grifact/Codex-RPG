@@ -16,7 +16,7 @@
       <div class="codex-identity-fields">
         <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.isOwner}}readonly{{/unless}}></label>
         <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept" {{#unless codex.isOwner}}readonly{{/unless}}></label>
-        {{#if codex.attributesOnly}}
+        {{#if codex.isHostile}}
           <label>Grau <input type="number" min="1" max="6" value="{{codex.threatGrade}}" data-field="system.threatGrade" {{#unless codex.isOwner}}readonly{{/unless}}></label>
         {{else}}
           <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level" {{#unless codex.isOwner}}readonly{{/unless}}></label>
@@ -186,9 +186,14 @@
         {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
        </select></label>
        {{#if codex.prepare.inCombat}}
-        {{#if codex.prepare.hasTarget}}<p><strong>Alvo selecionado:</strong> {{codex.prepare.targetName}} — a DE do alvo será consultada no ataque.</p>
+        {{#if codex.prepare.hasTarget}}<p><strong>Alvo selecionado:</strong> {{codex.prepare.targetName}} — a DE do alvo será consultada no ataque.</p><label class="codex-check"><input type="checkbox" data-roll-option="targetDodges" {{#if codex.prepare.targetDodges}}checked{{/if}}> Alvo usa Esquiva</label>
         {{else}}<p>Sem Token selecionado como alvo. A rolagem usa DE informada e publica no chat.</p>{{/if}}
        {{/if}}
+        {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
+        <label>Ativação e aproximação confirmadas pelo Narrador<select data-roll-option="activationPavor">
+          {{#each codex.prepare.localCostOptions}}<option value="{{cost}}" {{#if selected}}selected{{/if}}>{{cost}}P local no total</option>{{/each}}
+        </select></label>
+        {{/unless}}{{/if}}{{/if}}
         {{#if codex.prepare.isShared}}
           <label>Uso da Prática compartilhada<select data-roll-option="mode">
             <option value="armas" {{#if codex.prepare.modeArmas}}selected{{/if}}>Armas</option>
@@ -206,10 +211,10 @@
           <option value="2" {{#if codex.prepare.extraTwo}}selected{{/if}}>+2 (4 dados, Graus 2–6)</option>
         </select></label>
         {{else}}
-        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>{{/unless}}
+        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>{{/unless}}
         {{/if}}
         {{#unless codex.isAnimal}}
-         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado elegível (d4→d6→d10→d12) por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>
+         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado elegível (d4→d6→d10→d12) por 1 Coragem</label>
          {{#if codex.prepare.step}}
          <label>Escolha o dado<select data-roll-option="stepDieId">
            <option value="">Selecione o dado que será elevado</option>
@@ -243,9 +248,12 @@
   {{/if}}
 
   {{#if codex.hasPending}}
+    {{#if codex.pending.publishing}}
+<section class="codex-block"><p>A ação já foi confirmada. Retome o envio do resultado ao chat.</p><button type="button" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Retomar publicação</button></section>
+    {{else}}
     <section class="codex-block codex-roll-results" aria-label="Dados rolados e escolha dos mantidos">
       <div class="codex-block-title"><h2>Resultado dos dados — escolha os mantidos</h2><span>Rolagem pendente preservada no personagem</span></div>
-      <p class="codex-tip">{{codex.pending.selectedCount}} / {{codex.pending.limit}} mantidos · custo previsto {{codex.pending.cost}} {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}.</p>
+      <p class="codex-tip">{{codex.pending.selectedCount}} / {{codex.pending.limit}} mantidos · na confirmação: {{codex.pending.courageCost}} Coragem e {{codex.pending.localCost}}P local, antes de técnicas.</p>
       <div class="codex-result-dice">
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
@@ -272,6 +280,12 @@
         {{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>
+        {{#if codex.pending.targetOptions.length}}
+        <label>Passar a oportunidade (1A)<select data-pending-option="passAllyId">
+          <option value="">Manter oportunidade</option>
+          {{#each codex.pending.targetOptions}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
+        </select></label>
+        {{/if}}
         <label>Converter Antecipar (2A → 1E)<input type="number" data-pending-option="convertPairs" min="0" value="{{codex.pending.convertPairs}}"></label>
       </div>
       {{#if codex.pending.summary}}
@@ -297,6 +311,7 @@
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
       <div class="codex-actions"><button type="button" data-action="discardRoll" {{#unless codex.isOwner}}disabled{{/unless}}>Descartar rolagem</button><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
     </section>
+    {{/if}}
   {{/if}}
 
   <div class="codex-bottom-layout">

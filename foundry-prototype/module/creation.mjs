@@ -4,8 +4,9 @@ import {G1_CATALOG} from "./catalog.mjs";
 export const actorKinds = {
   character: "Aprendiz / personagem",
   humanoid: "Humanoide / NPC",
+  monsterHumanoid: "Humanoide Monstro",
   animal: "Criatura comum / animal",
-  creature: "Monstro extraordinário",
+  creature: "Criatura / Monstro",
 };
 export const itemKinds = {
   weapon: "Arma", firearm: "Arma de fogo", armor: "Armadura", shield: "Escudo", focus: "Foco",
@@ -15,7 +16,7 @@ const resources = {ervas: "Ervas", espolios: "Espólios", couro: "Couro", comida
 const weights = {muito_leve: .0125, leve: .125, medio: .5, alto: 1, extremo: 2};
 const categories = {muito_leve: "muito-leve", leve: "leve", medio: "medio", alto: "pesado", extremo: "muito-pesado"};
 const webItemTypes = {arma: "weapon", armadura: "armor", escudo: "shield", foco: "focus", ferramenta: "tool", outro: "misc"};
-const encounterTypes = {criatura: "animal", monstro: "creature", humanoide: "humanoid"};
+const encounterTypes = {criatura: "animal", monstro: "creature", humanoide: "humanoid", humanoideMonstro: "monsterHumanoid", "humanoide-monstro": "monsterHumanoid", humanoide_monstro: "monsterHumanoid"};
 const supportedSkills = new Set(SKILLS.map(skill => skill.id));
 const text = (value, limit = 160) => typeof value === "string" ? value.trim().slice(0, limit) : "";
 const number = (value, min, max) => {
@@ -44,6 +45,7 @@ export function actorData(type, raw = {}, quick = false) {
     leader: raw.leader === true,
     animalRules: animal,
     monsterRules: monster,
+    monsterHumanoidRules: type === "monsterHumanoid",
     attributes: grades(ATTRIBUTES, raw.attributes),
     knowledges: animal || monster ? {} : grades(KNOWLEDGES, raw.knowledges),
     practices: animal || monster ? {} : grades(PRACTICES, raw.practices),

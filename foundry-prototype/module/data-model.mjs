@@ -4,7 +4,7 @@ const grade=()=>new F.NumberField({required:true,integer:true,min:0,max:6,initia
 const t=()=>new F.StringField({required:true,initial:""});
 const nn=(i=0)=>new F.NumberField({required:true,integer:true,min:0,initial:i});
 function grades(keys){return new F.SchemaField(Object.fromEntries(keys.map(k=>[k,grade()])));}
-const schema=(monster=false,animal=false)=>({
+const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  level:new F.NumberField({required:true,integer:true,min:1,max:20,initial:1}),
  concept:t(),origin:new F.StringField({required:true,initial:monster||animal?"Criatura":"Humano"}),
  virtue:t(),personality:t(),notes:t(),abilities:t(),leader:new F.BooleanField({initial:false}),
@@ -15,12 +15,13 @@ const schema=(monster=false,animal=false)=>({
  life:new F.SchemaField({value:nn(3),medical:new F.BooleanField({initial:false})}),
  courage:nn(10),pp:nn(0),xp:nn(0),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
- pavorLocal:nn(0),animalRules:new F.BooleanField({initial:animal}),monsterRules:new F.BooleanField({initial:monster}),
+ pavorLocal:nn(0),animalRules:new F.BooleanField({initial:animal}),monsterHumanoidRules:new F.BooleanField({initial:monsterHumanoid}),monsterRules:new F.BooleanField({initial:monster}),
  status:new F.SchemaField({hidden:new F.BooleanField({initial:false}),note:t()})
 });
 export class CodexCharacterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
 export class CodexHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
 export class CodexAnimalData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,true);}}
+export class CodexMonsterHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,false,true);}}
 export class CodexMonsterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(true);}}
 export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
  static defineSchema(){return{

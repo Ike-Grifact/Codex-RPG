@@ -1,8 +1,9 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,lifeMax,naturalDE,balance,maxPP,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
-import {rollPool,escapeHTML} from "./roll-engine.mjs";
+ sourceDice,sourceLabel,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
+ loadCapacity,mayComplement,xpLedger,monsterCap} from "./rules.mjs";
+import {requestRoll} from "./roll-workflow.mjs";
+import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,defenseDisplay} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
@@ -11,7 +12,7 @@ import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
-const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,stepDieId:"",contextApproved:false,
+const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
@@ -25,16 +26,10 @@ function cards(list,group,s,d){
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML = symbols => [["e","ᛋ"],["a","ᚨ"],["p","ᚦ"]]
  .map(([kind,rune],i)=>symbols[i]?`<b class="codex-rune codex-rune-${kind}">${rune.repeat(symbols[i])}</b>`:"").join("") || "Vazio";
-const activationCost = actor => actor.type !== "character" && !actor.system.animalRules && game.combat?.started ? 1 : 0;
-const rollKeep = (system, extra) => system.animalRules ? 2
- : keepLimit(system.monsterRules ? system.threatGrade : system.level, extra, system.monsterRules);
-const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
-const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
 const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
  .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
-const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
 function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
@@ -70,7 +65,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   ctx.codex={
    actorName:actor.name,portrait:actor.img,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
-   progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!(hasFirstAttribute&&hasTraining)),
+   progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
@@ -78,13 +73,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
-    xp:s.xp,xpLedger:ledger,hasCreationMinimum:hasFirstAttribute&&hasTraining,
+    xp:s.xp,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
     starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
     starterTraining:[
      ...KNOWLEDGES.map(([id,name])=>({value:"knowledge:"+id,name:"Conhecimento · "+name})),
      ...PRACTICES.map(([id,name])=>({value:"practice:"+id,name:"Prática · "+name}))
     ],
-   isMonster:monster,isAnimal:animal,attributesOnly,isHumanoid:actor.type==="humanoid",
+   isMonster:monster,isAnimal:animal,attributesOnly,isHumanoid:["humanoid","monsterHumanoid"].includes(actor.type),
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
    attributes:cards(ATTRIBUTES,"attribute",s,d),
@@ -111,7 +106,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
-    contextApproved:this._opts.contextApproved,de:this._opts.de,
+    contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,
+    localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
@@ -126,32 +122,32 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
     canExecute:plan.ok&&actor.isOwner,errors:plan.errors,
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
-    poolCount:plan.pool.length,keepNatural:rollKeep(s,false)
+    poolCount:plan.pool.length,keepNatural:keepForActor(actor,0)
    };
   }
   if(this._pending){
    const p=this._pending,item=selectedItem(actor,p.options);
    let summary=null;
-   if(p.selected.length)try{
-    summary=resolveRoll(p.dice,p.selected,{...p.options,level:s.level,courage:s.courage,monster,animal,
-     threatGrade:s.threatGrade,weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:actor.type!=="character"});
+   if(p.selected.length&&!p.publication)try{
+    summary=rollResult(actor,p);
    }catch(e){summary={ok:false,errors:[e.message]};}
-   ctx.codex.comparisons=compareKeptOptions(p.dice,{...p.options,level:s.level,monster,animal,threatGrade:s.threatGrade,
-     courage:s.courage,weight:situate(p.options),hostile:actor.type!=="character"},4)
+   ctx.codex.comparisons=p.publication?[]:alternativesFor(actor,p)
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
       .filter(Boolean).map(d=>({sides:d.sides,face:d.face,icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
       selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
-    selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
+    selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
+    publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
     hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
-    limit:rollKeep(s,p.options.extraKeep),extraKeep:p.options.extraKeep,
+    limit:keepForActor(actor,p.options.extraKeep),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
-    cost:Math.max(0,p.selected.length-rollKeep(s,false))+Number(p.options.step)+activationCost(actor)
+    localCost:(p.options.activationCost??0)+(usesLocal(actor)?Math.max(0,p.selected.length-keepForActor(actor,0)):0),
+    courageCost:Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
    };
   }
   return ctx;
@@ -166,7 +162,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    let value=el.type==="checkbox"?el.checked:el.value;
    if(el.dataset.field==="system.level")value=Math.max(1,Math.min(20,Math.floor(Number(value)||1)));
    if(el.dataset.field==="system.xp")value=Math.max(0,Math.floor(Number(value)||0));
-   if(el.dataset.field==="system.threatGrade")value=Math.max(1,Math.min(6,Math.floor(Number(value)||1)));
+   if(el.dataset.field==="system.threatGrade"){
+    value=Math.max(1,Math.min(6,Math.floor(Number(value)||1)));
+    return this._request({action:"grade",value});
+   }
    await this.actor.update({[el.dataset.field]:value});return;
   }
   if(el.dataset.rollOption){
@@ -179,9 +178,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(el.dataset.pendingOption&&this._pending){
    const key=el.dataset.pendingOption;
-   if(!["cancelP","convertPairs","characteristic","secondCharacteristic","activationPayment"].includes(key))return;
-   this._pending.options[key]=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
-   await this.actor.setFlag(NS,"pendingRoll",this._pending);this.render();
+   const value=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
+   await this._request({action:"option",key,value,id:this._pending.id});
   }
  }
  static async purchaseStarter(){
@@ -233,7 +231,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(!valid?.some(x=>x[0]===key)||![-1,1].includes(delta))return;
   const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group],current=Number(this.actor.system[field][key]||0),next=Math.min(6,Math.max(0,current+delta));
   if(next>current){
-   const scale=group==="attribute"&&!this.actor.system.monsterRules?XP_ATTRIBUTE:XP_TRAINING;
+   const scale=group==="attribute"&&!this.actor.system.monsterRules&&!this.actor.system.monsterHumanoidRules?XP_ATTRIBUTE:XP_TRAINING;
    if(!canSpendXP(this.actor.system,scale[next]-scale[current])){ui.notifications.warn("XP disponível insuficiente.");return;}
   }
   await this.actor.update({["system."+field+"."+key]:next});
@@ -259,125 +257,52 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await this.actor.update({"system.skills":list});
  }
  static clearDraft(){if(this._pending)return;this._draft=draft();this._opts=defaults();this.render();}
- static async executeRoll(){
-  if(this._busy||this._pending||!this.actor.isOwner)return;
+ async _request(request){
+  if(this._busy||!this.actor.isOwner)return;
   this._busy=true;
   try{
-   const s=this.actor.system,opts={...this._opts},item=selectedItem(this.actor,opts),die=item?equippedDie(this.actor,item,opts.mode):0;
-   if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
-   if(s.animalRules){opts.extraKeep=0;opts.step=false;}
-   // Opção de manter dado extra é apenas teto permitido; cobrar na confirmação
-   // conforme o número efetivo de dados mantidos (SRD pós-v0.44).
-   const cost=Number(opts.step)+activationCost(this.actor);
-   if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
-   const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
-   if(game.combat?.started&&targets.length&&targets[0].actor){
-    const target=targets[0].actor;opts.targetActorUuid=target.uuid;opts.targetName=target.name;opts.targetType=target.type;
-    opts.de=defenseDE(target);
+   const response=await requestRoll(this.actor,request);
+   if(request.action==="start"&&response?.started){
+    this._draft=draft();
+    this._opts=defaults();
+    await showCodexDice(foundry.dice.Roll.fromData(response.roll));
    }
-   opts.noisy=!!item?.system.properties?.includes("Barulhenta");
-   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,stepDieId:opts.stepDieId,equipmentDie:die});
-   if(!plan.ok)throw Error(plan.errors.join(" "));
-   const result=await rollPool(plan.pool),pending={version:2,id:crypto.randomUUID(),created:Date.now(),
-    base:this._draft.base,attribute:this._draft.attribute,complement:this._draft.complement,
-    formula:result.formula,dice:result.dice,selected:[],options:opts};
-   await this.actor.setFlag(NS,"pendingRoll",pending);
-   this._pending=pending;this._draft=draft();this._opts=defaults();
-   await showCodexDice(result.roll);
-   await this.render();
   }catch(e){ui.notifications.error("Codex: "+e.message);}
-  finally{this._busy=false;}
+  finally{
+   this._busy=false;
+   this.render();
+  }
+ }
+ static executeRoll(){
+  if(this._pending)return;
+  return this._request({
+   action:"start",selection:this._draft,options:this._opts,
+   sceneId:canvas.scene?.id,targetIds:[...game.user.targets].map(token=>token.id)
+  });
  }
  static async discardRoll(){
-  if(!this.actor.isOwner||!this._pending||this._busy)return;
+  const pending=this._pending;
+  if(!this.actor.isOwner||!pending||pending.publication||this._busy)return;
   const accepted=await foundry.applications.api.DialogV2.confirm({
-   window:{title:"Descartar rolagem"},content:"As faces atuais serão descartadas. Nenhum recurso será gasto.",rejectClose:false
+   window:{title:"Descartar rolagem"},content:"As faces serão descartadas. A Coragem já paga por elevação permanece gasta.",rejectClose:false
   });
-  if(!accepted||this._busy||!this._pending)return;
-  await this.actor.unsetFlag(NS,"pendingRoll");
-  this._pending=null;
-  this.render();
+  if(accepted)await this._request({action:"discard",id:pending.id});
  }
- static async toggleKept(event,target){
-  if(!this.actor.isOwner||!this._pending||this._busy)return;
-  const id=target.dataset.id,p=this._pending,s=this.actor.system;
-  if(!p.dice.some(x=>x.id===id))return;
-  const chosen=new Set(p.selected);
-  if(chosen.has(id))chosen.delete(id);
-  else{
-   if(chosen.size>=rollKeep(s,p.options.extraKeep)){ui.notifications.warn("Limite de retenção.");return;}
-   chosen.add(id);
-  }
-  p.selected=[...chosen];p.options.cancelP=0;p.options.convertPairs=0;
-  await this.actor.setFlag(NS,"pendingRoll",p);this.render();
+ static toggleKept(_event,target){
+  const p=this._pending;
+  if(!p||p.publication)return;
+  const id=target.dataset.id;
+  const ids=p.selected.includes(id)?p.selected.filter(kept=>kept!==id):[...p.selected,id];
+  return this._request({action:"keep",id:p.id,ids});
  }
- static async applyComparison(event,target){
-  if(!this.actor.isOwner||this._busy||!this._pending)return;
-  const p=this._pending,index=Number(target.dataset.index);
-  if(!Number.isInteger(index)||index<0||index>=4)return;
-  const s=this.actor.system,monster=!!s.monsterRules,animal=!!s.animalRules;
-  const options=compareKeptOptions(p.dice,{...p.options,level:s.level,monster,
-    threatGrade:s.threatGrade,courage:s.courage,weight:situate(p.options),
-    hostile:this.actor.type!=="character"},4);
-  const chosen=options[index];if(!chosen)return;
-  p.selected=[...chosen.ids];
-  p.options.cancelP=0;p.options.convertPairs=0;
-  // Seleção da mesma rolagem, sem lançar novamente nem descontar recursos.
-  await this.actor.setFlag(NS,"pendingRoll",p);this.render();
+ static applyComparison(_event,target){
+  const p=this._pending;
+  if(!p||p.publication)return;
+  const chosen=alternativesFor(this.actor,p)[Number(target.dataset.index)];
+  if(chosen)return this._request({action:"keep",id:p.id,ids:chosen.ids});
  }
- static async finalizeRoll(){
-  if(this._busy||!this._pending||!this.actor.isOwner)return;
-  this._busy=true;
-  try{
-   const p=this._pending,s=this.actor.system,item=selectedItem(this.actor,p.options);
-   const result=resolveRoll(p.dice,p.selected,{...p.options,level:s.level,courage:s.courage,monster:s.monsterRules,animal:s.animalRules,threatGrade:s.threatGrade,
-    weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type!=="character"});
-   if(!result.ok)throw Error(result.errors.join(" "));
-   // Cobrar retenção extra somente pelos dados efetivamente mantidos, não pela autorização de seleção.
-   const paidExtra=Math.max(0,p.selected.length-rollKeep(s,false));
-   let cost=paidExtra+Number(p.options.step)+activationCost(this.actor),payPP=0;
-   const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
-   if(result.success&&first){
-    if(!available.includes(first))throw Error("Característica não pertence à arma.");
-    active.push(first);
-    if(second){
-     if(!result.critical||!available.includes(second)||first===second)throw Error("Segunda característica exige crítico e opção distinta.");
-     active.push(second);
-    }
-    const activations=result.critical?(second?1:0):1;
-    if(activations){
-     if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=1;
-    }
-   }
-   if(payPP>s.pp)throw Error("PP insuficiente.");
-   if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
-   const kept=p.dice.filter(x=>p.selected.includes(x.id));
-   const detail=kept.map(x=>'<li><span class="codex-chat-die">'+dieSvg(x.sides)+'d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</span></li>').join("");
-   const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
-   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(result.outcome)+'</h3>'+
-    '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
-    (item?'<p><strong>Equipamento:</strong> '+escapeHTML(item.name)+'</p>':'')+
-    (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
-    '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
-    '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
-    (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
-    (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
-    '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
-    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
-   if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
-   else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
-    "system.pp":Math.min(maxPP(s.level),s.pp-payPP+result.criticalRefundPP)});
-   await ChatMessage.create({user:game.user.id,speaker:ChatMessage.getSpeaker({actor:this.actor}),content:text,
-    flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
-     transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
-      actorId:this.actor.id,targetUuid:p.options.targetActorUuid,targetType:p.options.targetType,
-      p:result.p,monsterCriticalPavor:s.animalRules?0:result.monsterCriticalPavor
-     }:null}}});
-   await this.actor.unsetFlag(NS,"pendingRoll");this._pending=null;this.render();
-  }catch(e){ui.notifications.error("Codex: "+e.message);}
-  finally{this._busy=false;}
+ static finalizeRoll(){
+  if(this._pending)return this._request({action:"finish",id:this._pending.id});
  }
  static async addEquipment(){
   return createCodexItem(this.actor);

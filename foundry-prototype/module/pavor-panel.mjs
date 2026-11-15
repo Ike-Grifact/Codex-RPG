@@ -1,3 +1,4 @@
+import {openJointPlan} from "./joint-attack.mjs";
 import {narratorCap,monsterCap} from "./rules.mjs";
 
 export const NS = "codex-rpg-foundry";
@@ -106,7 +107,7 @@ export async function prepareCombatPavor(combat=globalThis.game?.combat){
  const actors=new Map();
  for(const entry of combat.combatants??[]){
   const actor=entry.actor;
-  if(!actor||!["humanoid","creature","animal"].includes(actor.type))continue;
+  if(!actor||!["humanoid","creature","animal","monsterHumanoid"].includes(actor.type))continue;
   actors.set(actor.uuid||entry.id,actor);
  }
  if(!actors.size)return {prepared:0,alreadyPrepared:false};
@@ -125,6 +126,7 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
     actions: {
       adjust: CodexPavorHUD.adjust,
       adjustPlayers: CodexPavorHUD.adjustPlayers,
+      planJoint: CodexPavorHUD.planJoint,
       useRegisteredPlayers: CodexPavorHUD.useRegisteredPlayers,
       prepareLocal: CodexPavorHUD.prepareLocal,
     },
@@ -180,6 +182,14 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
     await queueWrite(() => setPlayers(automaticPlayers));
   }
 
+  static async planJoint(){
+    try {
+      await openJointPlan(game.combat, () => readReserve().value);
+    } catch (error) {
+      ui.notifications.error(error.message);
+    }
+  }
+
   static async prepareLocal(){
     if(!game.user.isActiveGM||!game.combat?.started)return;
     if(!confirm("Preencher uma única vez as reservas locais das ameaças deste combate? Use somente antes da primeira ação; não se repete por rodada."))return;
@@ -200,7 +210,7 @@ export async function transferCombatPavor(message){
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
  if(obj.targetUuid){
   const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","animal","creature"].includes(target.type)){
+  if(target&&["character","humanoid","animal","creature","monsterHumanoid"].includes(target.type)){
    const add=Math.max(0,obj.p);
    if(obj.targetType==="character")
     await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
@@ -211,7 +221,7 @@ export async function transferCombatPavor(message){
    }
   }
  }
- if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
+ if(obj.monsterCriticalPavor&&["creature","humanoid","monsterHumanoid"].includes(owner.type)){
   const cap=monsterCap(owner.system.threatGrade);
   const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
   const saved=Math.min(available,obj.monsterCriticalPavor);

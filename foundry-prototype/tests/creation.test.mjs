@@ -67,7 +67,7 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
     assert.equal(labels.length, Number(sides));
     labels.forEach((label, i) => {
       const isMax=i+1===faces.length;
-       const expected=faces[i].join("")+(isMax&&!(Number(sides)===10&&i===9)?"-max.png":".png");
+       const expected=faces[i].join("")+(isMax?"-max.png":".png");
        assert.ok(label.endsWith(expected),"Textura ausente ou incorreta para d"+sides+", face "+(i+1));
       const png = readFileSync(new URL("../" + label.split("/").slice(2).join("/"), import.meta.url));
       assert.equal(png.readUInt32BE(16), 256);

@@ -23,6 +23,7 @@
     <button type="button" data-action="adjust" data-delta="1" title="Adicionar 1 Pavor" aria-label="Adicionar 1 Pavor" {{#unless canAddOne}}disabled{{/unless}}>+</button>
   </div>
   {{#if round}}
+  <button type="button" class="codex-joint-plan" data-action="planJoint" title="Planejar golpe conjunto" aria-label="Planejar golpe conjunto"><i class="fa-solid fa-people-group" aria-hidden="true"></i></button>
     <span class="codex-pavor-round" title="Pavor que entrou na reserva pública nesta rodada" aria-live="polite">R{{round}} <strong>+{{roundPavor}}P</strong><span class="codex-pavor-sr"> adicionados à reserva nesta rodada</span></span>
     {{#if canPrepareLocal}}
     <button type="button" class="codex-pavor-prepare-local" data-action="prepareLocal" title="Pavor local cheio para cada ameaça deste confronto, somente uma vez">Preparar ameaças</button>

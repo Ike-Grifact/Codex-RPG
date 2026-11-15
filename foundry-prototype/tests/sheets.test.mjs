@@ -125,6 +125,7 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
   await hooks.get("deleteCombat")();
   assert.equal((await panel._prepareContext()).round, null);
 
+  await adjust(1);
   await Promise.all([adjustPlayers(-1), adjustPlayers(-1)]);
   info = await panel._prepareContext();
   assert.deepEqual([info.value, info.cap], [3, 3]);

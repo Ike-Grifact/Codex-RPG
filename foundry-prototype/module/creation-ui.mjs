@@ -31,7 +31,7 @@ function dialog(title, content, submit) {
 
 export async function createCodexActor() {
   if (!Actor.implementation.canUserCreate(game.user)) return;
-  const typeOptions = game.user.isGM ? actorKinds : {character: actorKinds.character};
+  const typeOptions = game.user.isGM ? Object.fromEntries(Object.entries(actorKinds).filter(([id])=>id!=="animal")) : {character: actorKinds.character};
   try {
     await dialog("Criar ficha Codex", [
       group("Ficha", select("kind", options(typeOptions))),
