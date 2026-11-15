@@ -144,7 +144,8 @@ function renderBoard(){
  let html="";
  for(let y=0;y<HEIGHT;y++)for(let x=0;x<WIDTH;x++){
   const spot=cellKey(x,y),unit=occupied.get(spot),kind=tileAt(state.terrain,x,y);
-  const cls="tc-cell "+(kind!=="livre"?(kind==="parede"?"wall":"cover"):"")+
+  const shieldArea=state.tokens.some(u=>u.shieldRound>=state.round&&distance(u,{x,y})<=1.5);
+  const cls="tc-cell "+(shieldArea?" shield-area ":"")+(kind!=="livre"?(kind==="parede"?"wall":"cover"):"")+
     (unit?" has-actor":"")+(unit?.id===state.selected?" is-selected":"")+(unit?.id===state.target?" is-target":"");
   const label="Linha "+(y+1)+", coluna "+(x+1)+(unit?", "+unit.name:"")+(kind!=="livre"?", "+kind:"");
   html+='<button class="'+cls+'" type="button" role="gridcell" aria-label="'+esc(label)+'" data-x="'+x+'" data-y="'+y+'">'+
