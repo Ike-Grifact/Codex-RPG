@@ -3,8 +3,8 @@ import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES
  PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs?v=0.44-3";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
-import {canDeclareJoint,creaturePool,humanoidPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=0.44-3";
+import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
+ from "./roll-engine.mjs?v=0.44-4";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -19,21 +19,74 @@ const diePath={
 };
 const dieIcons=values=>(values||[]).map(n=>'<span class="cf-die d'+n+'"><svg width="21" height="21" viewBox="0 0 42 42" fill="none" stroke="currentColor" stroke-width="1.7">'+(diePath[n]||diePath[4])+'</svg> d'+n+'</span>').join("");
 function load(){
- let s={players:4,publicPavor:2,partyXp:80,roster:[],active:null};
+ let s={players:4,publicPavor:2,partyXp:80,roster:[],active:null,rollHistory:[]};
  try{
   const raw=JSON.parse(localStorage.getItem(KEY)||"null");
   if(raw&&typeof raw==="object"){
    s.players=Math.floor(clamp(raw.players,0,30));
    s.partyXp=Math.floor(clamp(raw.partyXp,0,99999));
    s.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(s.players)));
-   s.roster=Array.isArray(raw.roster)?raw.roster.slice(0,80).map(normalize):[];
+    s.roster=Array.isArray(raw.roster)?raw.roster.slice(0,80).map(unit=>{
+    if(Array.isArray(unit?.items))unit.items=unit.items.map(item=>{
+      if(item.kind||item.integrityMax!==undefined)return item;
+      const entry=catalog.find(x=>x.name===item.name);
+      return entry?{...item,kind:entry.kind,integrityMax:entry.integrity?.max??0,
+       integrity:entry.integrity?.value??0,equipped:false}:item;
+    });
+    return normalize(unit);
+   }):[];
    s.active=s.roster.some(x=>x.id===raw.active)?raw.active:s.roster[0]?.id||null;
-   s.lastRoll=raw.lastRoll&&typeof raw.lastRoll==="object"?raw.lastRoll:null;
+    s.lastRoll=raw.lastRoll&&typeof raw.lastRoll==="object"?raw.lastRoll:null;
+   s.rollHistory=Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300).filter(e=>e&&typeof e==="object"):[];
   }
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
 }
-let model=load(),noticeTimer=null,creatureRoll=null;
+let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null;
+function draftFor(t){
+ if(rollDraft?.id!==t.id){
+  const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
+   ...PRACTICES.map(([key])=>({group:"practice",key,grade:t.practices[key]}))]
+   .find(x=>x.grade>0);
+  const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
+  rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
+   attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
+   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral"};
+ }
+ return rollDraft;
+}
+function selectionFor(t,d){
+ return t.kind==="humanoide"?
+  {baseGroup:d.baseGroup,baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,extra:d.extra,contextOK:d.contextOK}:
+  {first:d.first,second:d.second,extra:d.extra,contextOK:d.contextOK};
+}
+function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
+function storeHistory(t,r,preview,settlement){
+ const record={id:uid(),date:new Date().toISOString(),unitId:t.id,unit:t.name,kind:t.kind,
+  sources:r.sources||[],mode:r.mode||"normal",de:r.de,situation:r.situation,
+  dice:r.dice.map(d=>({group:d.group,key:d.key,sides:d.sides,baseSides:d.baseSides||d.sides,face:d.face,
+   kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
+  outcome:preview.result.outcome,reached:preview.result.reached,success:preview.result.success,
+  e:preview.result.e,a:preview.remainingA,p:preview.result.p,damage:preview.result.damage,
+  critical:preview.result.critical||0,extraKeep:!!r.extraKeep,stepDieId:r.stepDieId||"",
+  pavorSpent:settlement.spent||0,courageSpent:settlement.courageSpent||0,
+  localGain:settlement.localGain||0,publicGain:settlement.publicGain||0,
+  cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA};
+ model.rollHistory=[record,...(model.rollHistory||[])].slice(0,300);
+}
+function downloadText(text,filename,mime){
+ const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),anchor=document.createElement("a");
+ anchor.href=url;anchor.download=filename;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function exportRollHistory(){
+ const cols=["Data","Ficha","Tipo","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
+ const csv=[cols,...(model.rollHistory||[]).map(x=>[
+ x.date,x.unit,x.kind,(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
+ x.e,x.a,x.p,x.damage,x.critical,x.courageSpent,x.pavorSpent,
+ (x.dice||[]).map(d=>"d"+d.sides+":"+d.face+(d.kept?"(mantido)":"(descartado)")).join(" | ")
+ ])].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ downloadText("\uFEFF"+csv,"codex-conflito-playtest-rolagens.csv","text/csv;charset=utf-8");
+}
 function consumeQuickHumanoid(){
  let raw;
  try{raw=localStorage.getItem(HUMANOID_INBOX_KEY);}catch(e){return "";}
@@ -396,12 +449,20 @@ function toggleSkill(id,checked){
  if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
  save();render();
 }
+function adjustIntegrity(id,delta){
+ const t=selected(),item=t?.items.find(x=>x.id===id);
+ if(!item||item.integrityMax<=0)return;
+ item.integrity=Math.floor(clamp(item.integrity+delta,0,item.integrityMax));
+ save();render();
+}
 function addCatalogItem(){
  const t=selected(),idx=Math.floor(Number(el("catalog-choose")?.value)),it=catalog[idx];if(!t||!it)return;
  const qty=Math.floor(clamp(el("item-quantity")?.value,1,99)),weight=catalogWeight(it);
  const next=afterItem(t,{weight,qty}),limit=stats(t).capacity;
  if(next>limit+1e-9&&!confirm("ATENÇÃO: "+qty+" × "+it.name+" ultrapassam a carga ("+fmt(next)+" / "+fmt(limit)+" Alto). A penalidade por sobrecarga está PENDENTE. Adicionar mesmo assim?"))return;
- t.items.push({id:uid(),name:it.name,weight,qty});
+ t.items.push({id:uid(),name:it.name,weight,qty,kind:it.kind,
+ integrityMax:Math.max(0,Number(it.integrity?.max)||0),
+ integrity:Math.max(0,Number(it.integrity?.value)||0),equipped:false});
  save();render();notice("Item adicionado à ficha: "+it.name+".");
 }
 function exportJson(){
@@ -416,6 +477,7 @@ async function importJson(file){
   if(raw.schema!=="codex-conflito-v1"||!Array.isArray(raw.roster))throw Error("Formato inválido");
   if(!confirm("Substituir o conflito atual pelo arquivo importado?"))return;
   model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,lastRoll:raw.lastRoll||null,
+   rollHistory:Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300):[],
    partyXp:Math.floor(clamp(raw.partyXp,0,99999)),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
   model.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(model.players)));
   if(!model.roster.some(t=>t.id===model.active))model.active=model.roster[0]?.id||null;
