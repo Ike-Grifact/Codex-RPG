@@ -1,10 +1,22 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.43](srd-continuidade-v0.43.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.44](srd-continuidade-v0.44.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
+
+**Conjuração Refinada [DEFINIDO no nome e propósito]:** substitui Conjuração Equilibrada. Sua finalidade será **ampliar o alcance de disparos e efeitos mágicos**; metros, custo e procedimento serão reescritos pelo autor. Mantém o identificador de aquisição legado e histórico de XP. **A antiga alteração de peso tático Leve/Pesada por essa Perícia está revogada**. Amplificação de peso por 1 Coragem e redução gratuita com recarga são regras independentes da técnica, conforme SRD v0.43.
+
+**Integridade de armaduras G1 [DEFINIDO o abatimento; valores sujeitos a playtest]:** Muito Leve **0**, Leve **7**, Média **12**, Pesada **17**; redução de 3 em cada peça convencional. Escudos G1 **6/9/12** permanecem **PROPOSTOS e inalterados**. Escudo Arcano permanece **sem mudança**. **Não haverá nova regra de iniciativa.** Para G2–G4, aplicar −3 apenas sobre valores-base existentes; onde o valor anterior não foi aprovado, a Integridade permanece PENDENTE.
+
+**Pedras elementais [DEFINIDO]:** preço comum = **B VT**, preço de **Veneno, Sagrado e Trevas = 3B VT**. As comuns compartilham preço e Sangue/Pedra da Alma não se compra no nível 1. **B é PENDENTE** em VT oficial; a ficha aceita referência **EXPERIMENTAL de mesa** e calcula 3B automaticamente.
+
+**Conhecimento fora de combate [ANÁLISE, ainda não é regra de dispensa]:** DE 1–2 é desafio comum, **DE 3** exige treinamento e **DE 4** é excepcional na escala narrativa experimental. O resultado depende do Grau e dos dados concretos da build, não só do nível. Com Atributo 3 (3d6) + Formação 3 (3d10), mantendo 3 dados de escolha ótima e usando 2A→1E quando pertinente, a chance exata de alcançar DE 3 é **97,44%**; isso não é 100% nem garante acerto limpo. **Limiar 95% para não rolar está somente PROPOSTO**, pendente de aprovação e critérios narrativos. Detalhes no [SRD v0.44](srd-continuidade-v0.44.md), seção 0-AD.
+
+### Histórico de 14/11/2026 [SUBSTITUÍDO nas matérias acima]
 
 ## Atualização normativa — 14/11/2026: custos de Perícias e conjuração com foco [DEFINIDO / procedimentos PENDENTES]
 
@@ -16,7 +28,7 @@
 
 ## Atualização normativa — 13/11/2026: características e Perícias [HISTÓRICO nos custos]
 
-**Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **10/15/20 de Integridade são experimentais**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
+**Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **7/12/17 de Integridade são valores em playtest após redução de 3**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
 
 ## I. O que é Codex RPG?
 
@@ -390,11 +402,11 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 **PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
 
-### Conjuração Equilibrada [DEFINIDO / terminologia PENDENTE]
+### Conjuração Refinada [DEFINIDO no nome / alcance PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
+**Compra histórica: 1 XP. Requisitos mantidos enquanto a técnica não for reescrita: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
 
-**Ativação: 1 PP ou 2 Coragens.** Permite alterar a magia para **Pesada ou Leve**. A descrição autoral diz “alterar o grau da magia, para pesado ou leve”; **PENDENTE:** confirmar se é apenas a categoria de **peso tático**, sem alteração do **Grau numérico** ou do peso de armazenamento em spellslots. A ficha registra a Perícia sem inventar efeitos de Grau superior.
+Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu novo objetivo é **ampliar o alcance de disparos e efeitos de magias**. Os metros adicionais, custo e condições ainda serão escritos pelo autor. A antiga mudança de peso Leve/Pesada mediante esta Perícia está **revogada** e não habilita dados maiores automaticamente. **A amplificação comum de 1 Coragem da v0.43 não depende desta Perícia.** Consulte [verbete atual](../pericias/conjuracao-refinada.html).
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
@@ -496,7 +508,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 **Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
 
-**Conjuração Equilibrada (1 XP):** permite alterar a magia para **Pesada ou Leve** pagando **1 PP ou 2 Coragens**, com Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2. **PENDENTE:** esclarecer se isso altera somente o peso tático, preservando o Grau numérico e a ocupação do slot.
+**Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
 
 **Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
 
@@ -665,7 +677,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
-| **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
+| **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
 | **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
