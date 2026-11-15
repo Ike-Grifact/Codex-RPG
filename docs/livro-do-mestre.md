@@ -2,9 +2,11 @@
 
 **Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.43](srd-continuidade-v0.43.md), seção 0-AC para magia e custos, 0-AB para Trevas e 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.44](srd-continuidade-v0.44.md), seção 0-AC para magia e custos, 0-AB para Trevas e 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
+
+**Decisão de 15/11/2026 — [SRD v0.44](srd-continuidade-v0.44.md) [DEFINIDO / análise]:** Integridade nominal G1 de armaduras convencionais reduzida em 3: **Leve 7, Média 12 e Pesada 17**; Muito Leve 0. Escudos de equipamento **6/9/12** permanecem propostos e **não são reduzidos**. **Escudo Arcano não foi alterado**, nem se institui iniciativa por Agilidade. **Conjuração Equilibrada foi renomeada Conjuração Refinada**: futura ampliação de alcance de efeitos mágicos, sem números nem custo adicional definidos, não mantém automaticamente a antiga alteração de peso/dados. **Pedras de Veneno/Sagrado/Trevas custam 3× o preço comum**, com VT básico ainda pendente. A definição eventual de testes sem rolagem por percentuais é **PROPOSTA**, não regra vigente.
 
 **Atualização de Pavor [DEFINIDO, 14/11/2026]:** inimigos **começam cada conflito com a reserva local cheia**; o teto por Grau é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. Em ataque contra um único inimigo declarado, **somente o alvo atacado** recebe o Pavor mantido e não anulado, mesmo distante e mesmo que o ataque falhe. **Não** se transfere ao inimigo mais próximo. Ataque inimigo contra um jogador continua gerando Coragem segundo 1P→1 Coragem, destinada ao alvo atacado. Aumento de estoque **não** concede turnos extras nem altera custos. A regra de múltiplos alvos, área e ações sem alvo atacado continua **PENDENTE** e não duplica símbolos.
 
@@ -109,7 +111,7 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1). A partir de Disciplina 2, permite criar magias de Grau 2 e 3 fora de combate, 1 PP ou 2 Coragens por criação, memorizadas em slots para conjuração rápida. Pesos G1=1, G2=2, G3=3, G4=4; sem foco −1 peso (incidência e piso PENDENTES). A capacidade total de slots permanece PENDENTE em razão da divergência com histórico do SRD.
 
-**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Equilibrada** custa 1 XP, requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2, e custa 1 PP ou 2 Coragens para tornar uma magia Pesada ou Leve; distinção de Grau numérico pendente. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
+**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Refinada** substitui a antiga Equilibrada: compra histórica de 1 XP e requisitos preservados, mas agora se destina a **aumentar alcance de efeitos mágicos**; números e custo PENDENTES. A alteração antiga de peso Leve/Pesada por essa Perícia foi revogada. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
 
 ## Conjuração — nova decisão de slots e Ar (12/11/2026)
 
