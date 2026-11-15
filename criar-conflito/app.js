@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
+ PRACTICES,SKILLS,sourceDice,toSystem,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs?v=0.44-3";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -318,11 +318,10 @@ function rollSourceCards(t){
       !human&&d.first===key?"Base":!human&&d.second===key?"Segundo":""):
     human&&d.baseGroup===row.group&&d.baseKey===key?"Base":"";
    const group=row.group==="attribute"?"attribute":row.group;
-   const sides=group==="attribute"?dice(t,key):[6,10,10,10,10,12,12].length&&
-    [[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade];
+   const sides=sourceDice(group,key,toSystem(t));
    return '<button type="button" class="cf-source-card'+(chosen?' is-selected':'')+'" data-roll-source="'+group+
     '" data-source-key="'+key+'" aria-pressed="'+Boolean(chosen)+'"><span class="cf-source-name">'+esc(name)+
-    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+(sides||[]).map(n=>'d'+n).join(" + ")+'</span>'+
+    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+dieIcons(sides||[])+'</span>'+
     (chosen?'<b>'+chosen+'</b>':'')+'</button>';
   }).join("")+'</div></section>').join("");
  const comp=composeActionPool(t,selectionFor(t,d),"");
@@ -732,10 +731,10 @@ document.addEventListener("click",event=>{
    else if(d.first!==key){d.second=key;d.firstClicked=false;}
    else return notice("Selecione outro Atributo distinto.");
   }
-  d.stepDieId="";render();scrollToRoll();return;
+  d.stepDieId="";render();if(window.innerWidth<800)el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"nearest"});return;
  }
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
- if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();scrollToRoll();return;}
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();if(window.innerWidth<800)scrollToRoll();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
  if(b.dataset.open){model.active=b.dataset.open;creatureRoll=null;rollDraft=null;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
