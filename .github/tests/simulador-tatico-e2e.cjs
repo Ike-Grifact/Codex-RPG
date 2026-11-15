@@ -45,6 +45,23 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   assert(shield.history[0].kind==="escudo","Escudo precisa entrar no histórico");
   await page.locator("#next-round").click();
   assert(!(await page.locator("#actor-summary").innerText()).includes("Escudo Arcano declarado"),"Escudo deveria expirar em uma rodada");
+  const shooterId=shield.tokens.find(t=>t.name==="Atirador").id;
+  const mageId=shield.tokens.find(t=>t.name==="Mago").id;
+  await page.locator('[data-select="'+shooterId+'"]').click();
+  await page.locator('[data-target="'+mageId+'"]').click();
+  await page.locator("#dodge").check();
+  assert((await page.locator("#target-info").innerText()).includes("DE 2 (esquiva)"),
+   "Armadura Muito Leve deve conceder +2 DE somente quando o Mago esquiva");
+  await page.locator("#attribute-source").selectOption("destreza");
+  await page.locator("#discipline-mode").selectOption("armas");
+  await page.locator("#equipment-source").selectOption({label:"Revólver · d6"});
+  await page.locator("#extra-source").selectOption("attribute:agilidade");
+  await page.locator("#context-approved").check();
+  await page.locator("#range").fill("30");
+  await page.locator("#roll").click();
+  assert(await page.locator("#dice button.tc-die").count()===7,
+   "Atirador precisa rolar Disciplina G2 + Destreza G2 + Agilidade G2 pertinente + revólver G1");
+
   assert(errs.length===0,"Erros JS desktop: "+errs.join(" | "));
   console.log("PASS VTT desktop: fichas, LOS, alcance, magia G1, dados, escudo, histórico e duração");
 
