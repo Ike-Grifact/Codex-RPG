@@ -1450,21 +1450,22 @@ function renderMediumCompanion(){
   const dice=dataDice("attr",grade).map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("");
   return '<div class="fp-medium-source"><div class="fp-medium-source-label"><strong>'+esc(name)+'</strong><span>'+dice+'</span></div>'+
   '<div class="fp-medium-source-actions"><button type="button" data-action="medium-companion-grade" data-key="'+id+'" data-delta="-1"'+(!grade||state.pending?' disabled':'')+' aria-label="Reduzir '+esc(name)+'">−</button><b>'+grade+'</b>'+
-  '<button type="button" data-action="medium-companion-grade" data-key="'+id+'" data-delta="1"'+(next===null||available<next||state.pending||spent+next>MEDIUM_COMPANION_XP_CAP?' disabled':'')+' aria-label="Elevar '+esc(name)+'">+</button><small>'+(next===null?"MAX":"+"+next+" XP")+'</small></div></div>';
+  '<button type="button" data-action="medium-companion-grade" data-key="'+id+'" data-delta="1"'+(next===null||available<next||state.pending?' disabled':'')+' aria-label="Elevar '+esc(name)+'">+</button><small>'+(next===null?"MAX":"+"+next+" XP")+'</small></div></div>';
  }).join("");
  $("medium-companion-content").innerHTML=
-  '<div class="fp-medium-summary"><span><b>Nível '+state.level+'</b><small>mesmo nível do domador</small></span>'+
+  '<div class="fp-medium-summary"><span><b>Nível '+pet.level+'</b><small>até nível '+state.level+' do domador</small></span>'+
   '<span><b>Vida '+pet.life+' / '+mediumCompanionMaxLife(pet)+'</b><small>criatura independente</small></span>'+
   '<span><b>DE '+mediumCompanionDE(pet)+'</b><small>defesa própria no combate</small></span>'+
-  '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · teto '+MEDIUM_COMPANION_XP_CAP+'</small></span></div>'+
+  '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · XP do jogador '+playerTotalXp()+'</small></span></div>'+
   '<div class="fp-medium-fields"><label>Nome / espécie da criatura<input data-medium-field="name" maxlength="80" type="text" value="'+esc(pet.name)+'" placeholder="Ex.: lobo jovem"></label>'+
-  '<label>XP próprio concedido pelo Narrador (0–110)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
+  '<label>Nível da criatura (máximo: '+state.level+')<input data-medium-field="level" type="number" min="1" max="'+state.level+'" value="'+pet.level+'"></label>'+
+ '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
   '<div class="fp-medium-sources">'+grid+'</div>'+
-  '<div class="fp-companion-actions"><button type="button" data-action="medium-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="medium-companion-match-xp"'+(playerTotalXp()<spent||state.pending?' disabled':'')+'>Igualar XP ao jogador</button><button type="button" data-action="medium-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
   '<button type="button" data-action="medium-companion-life" data-delta="1"'+(pet.life>=mediumCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
   '<button type="button" data-action="medium-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
   '<label class="fp-medium-notes">Observações da criatura<textarea data-medium-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
-  '<p class="fp-caption">Ficha própria, no mesmo nível do domador. O Narrador define o XP disponível; a compra da Perícia não cria 110 XP gratuitos. Somente Atributos evoluem, pelos custos de jogadores: 0, 1, 3, 7, 15, 31, 55 XP acumulados. Não há Coragem, Conhecimentos ou Perícias humanas automáticos. Vida e DE abaixo usam as fórmulas comuns como referência de playtest. Rolagens e ações independentes são resolvidas na mesa.</p>';
+  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Somente Atributos evoluem pelos custos acumulados dos jogadores: 0, 1, 3, 7, 15, 31, 55 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
 }
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
