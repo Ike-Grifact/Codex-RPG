@@ -188,3 +188,46 @@ test("Perito Conjurador não concede terceira fonte em humanos antigos",()=>{
  h.skills.push("disciplina-avancada");
  assert.equal(composeActionPool(h,sources).ok,true);
 });
+test("Inimigo não humanoide Grau 2 mantém quatro dados por 2P; Grau 1 não mantém quatro",()=>{
+ const enemy=blank("monstro");
+ enemy.attributes.forca=2;enemy.attributes.agilidade=2;enemy.keep=4;
+ const pool=creaturePool(enemy,"forca","agilidade");
+ assert.equal(pool.ok,true);
+ assert.equal(pool.pool.length,4);
+ const rolled=rollCreatureFaces(pool.pool,()=>0.12),ids=rolled.map(d=>d.id);
+ assert.equal(previewCreatureRoll(enemy,rolled,ids,{de:0}).ok,false);
+ enemy.threatGrade=2;
+ const p=previewCreatureRoll(enemy,rolled,ids,{de:0});
+ assert.equal(p.ok,true);
+ assert.equal(p.cost,2);
+ const after=settleCreatureRoll(enemy,0,4,p);
+ assert.equal(after.ok,true);
+ assert.equal(after.spent,2);
+ assert.equal(after.unit.pavorLocal,enemy.pavorLocal-2);
+ assert.equal(enemy.pavorLocal,4,"Prévia não gasta Pavor");
+ enemy.pavorLocal=1;
+ assert.equal(previewCreatureRoll(enemy,rolled,ids,{de:0}).ok,false);
+});
+test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível sozinho não libera",()=>{
+ for(const kind of ["humanoide","humanoide-monstro"]){
+  const enemy=blank(kind);
+  enemy.level=20;enemy.threatGrade=1;
+  enemy.attributes.forca=2;enemy.practices.atletismo=2;
+  const pool=humanoidPool(enemy,"practice","atletismo","forca");
+  assert.equal(pool.ok,true);
+  const rolled=rollCreatureFaces(pool.pool,()=>0.13),ids=rolled.map(d=>d.id);
+  assert.equal(rolled.length,4);
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+  enemy.level=1;enemy.threatGrade=2;
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:false}).ok,false);
+  const p=previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true});
+  assert.equal(p.ok,true);
+  assert.equal(p.courageCost,1);
+  const post=settleCreatureRoll(enemy,0,4,p);
+  assert.equal(post.ok,true);
+  assert.equal(post.courageSpent,1);
+  assert.equal(post.unit.courage,enemy.courage-1);
+  enemy.courage=0;
+  assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+ }
+});
