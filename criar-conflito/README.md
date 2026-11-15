@@ -57,3 +57,5 @@ A ferramenta web continua experimental quanto ao fluxo e a recursos opcionais de
 
 ### Rolador lado a lado
 Na aba **Rolagem**, fontes com SVGs aparecem à esquerda; Armas, Elementos, Perícias compradas e controles de rolagem ficam à direita. A escolha de uma ação registra seu nome, sem conceder benefícios gratuitos; histórico/CSV/JSON guardam a declaração.
+
+**Compatibilidade de Perícias:** a Ficha apresenta Combate (1 XP) e Armas 1 (2 XP), custos já definidos e agora reconhecidos no Conflito para NPCs importados. Perícias de custo ainda PENDENTE não recebem valor nem efeito fictício.
