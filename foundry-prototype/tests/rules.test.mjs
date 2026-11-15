@@ -19,6 +19,8 @@ test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurado
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
  assert.ok(!SKILLS.some(s=>s.id==="peritoconj"));
  assert.equal(SKILLS.find(s=>s.id==="conjuracao-equilibrada")?.name,"Conjuração Refinada");
+ assert.match(SKILLS.find(s=>s.id==="armas-leves").detail,/1 PP\/1 Coragem/);
+ assert.doesNotMatch(SKILLS.find(s=>s.id==="armas-pesadas").detail,/2 Coragens/);
 });
 test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
  const skill=SKILLS.find(s=>s.id==="recuperacao-vigorosa");
