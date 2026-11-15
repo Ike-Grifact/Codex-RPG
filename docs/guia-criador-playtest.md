@@ -8,7 +8,7 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 
 **EXPERIMENTAL (montante):** a ferramenta usa **20 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 20 XP restam 17 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
 
-As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.39](srd-continuidade-v0.39.md), seção 0-Y.
+As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.44](srd-continuidade-v0.44.md), seção 0-AD (Conjuração Refinada, Integridade G1 7/12/17, pedras raras 3× comuns e cálculo probabilístico da DE), 0-AC (ativação e foco), 0-AB (Trevas), 0-AA (Pavor do alvo), 0-Z (dados e Coragem) e 0-Y (criação).
 
 Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**.
 
@@ -55,11 +55,11 @@ Clique **“Registrar como rascunho”**. Ela aparecerá em uma categoria separa
 
 ## Como testar no laboratório
 
-1. Crie e equipe conceitualmente um Aprendiz; o catálogo físico de equipamentos ainda não está disponível.
+1. Crie um Aprendiz e utilize o catálogo de equipamentos G1 do protótipo. Itens sem preço aprovado e focos de fabricação não podem ser comprados por zero VT.
 2. Escolha Atributo e fonte adicional. A terceira fonte, se habilitada pela Perícia de combinação, ainda depende de pertinência validada.
 3. Escolha DE de teste e balanço do alvo. Nos níveis 1–5, DE 2 é uma referência de confronto comum para playtest, DE 3 treinado e DE 4 excepcional — todas EXPERIMENTAIS, não obrigações.
-4. Se desejar, gaste Coragem para elevar o primeiro dado de Atributo **antes de rolar**.
-5. Role e **selecione os dados mantidos**. É obrigatório manter um dado de Atributo; o terceiro dado custa 1 Coragem.
+4. Se desejar, gaste **1 Coragem** para **escolher e elevar um dado elegível da pilha antes de rolar**, de Atributo, Conhecimento, Prática ou equipamento habilitado, inclusive complemento liberado por Perícia avançada (um passo comum por rodada, d4→d6→d10→d12).
+5. Role e **selecione livremente os dados mantidos**. É obrigatório **rolar** pelo menos um dado de Atributo, mas **não mantê-lo**. O terceiro dado mantido nos níveis 1–5 custa 1 Coragem.
 6. Declare, quando pertinente, +1E ou +2E de Perícias. O criador disponibiliza esse valor para testes e pressupõe que os requisitos foram cumpridos.
 7. Gaste Antecipar para cancelar Pavor e converter pares em Êxito. Não reutilize símbolos.
 8. Finalize a ação para atualizar a Coragem da ficha.
