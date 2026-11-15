@@ -37,7 +37,7 @@ test("Gasto local de retenção só acontece na confirmação",()=>{
  assert.equal(previewCreatureRoll(insufficient,rolled,ids,{de:2}).ok,false);
 });
 test("Crítico de monstro retém Pavor local, depois público, sem duplicar",()=>{
- const t=blank("monstro");t.attributes.forca=1;
+ const t=blank("monstro");t.attributes.forca=1;t.pavorLocal=0;
  const rolled=rollCreatureFaces(creaturePool(t,"forca","vigor").pool,()=>0.99999);
  const p=previewCreatureRoll(t,rolled,rolled.map(d=>d.id),{de:1});
  assert.equal(p.ok,true);assert.equal(p.result.critical,2);
