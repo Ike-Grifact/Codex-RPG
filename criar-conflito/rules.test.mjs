@@ -153,3 +153,19 @@ test("Retenção por Grau do inimigo: G1 até 3, G2+ até 4; custos P não gratu
  assert.equal(stats(mixed).keepMax,4);
  assert.equal(stats(mixed).keepCostP,0);
 });
+test("Grau 2 equivale ao nível 5 de jogador como referência, sem modificar o nível ou XP",()=>{
+ const npc=blank("humanoide-monstro");
+ npc.threatGrade=2;npc.level=1;npc.xp=30;
+ const st=stats(npc);
+ assert.equal(st.playerEquivalentLevel,5);
+ assert.equal(st.keepMax,4);
+ assert.equal(npc.level,1);
+ assert.equal(npc.xp,30);
+ const high=normalize({...npc,level:20});
+ assert.equal(stats(high).playerEquivalentLevel,5);
+ assert.equal(stats(high).keepMax,4);
+ for(const grade of [1,3,4,5,6]){
+  npc.threatGrade=grade;
+  assert.equal(stats(npc).playerEquivalentLevel,null);
+ }
+});
