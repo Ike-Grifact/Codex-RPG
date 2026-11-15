@@ -151,7 +151,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     limit:rollKeep(s,p.options.extraKeep),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
-    cost:Number(p.options.extraKeep)+Number(p.options.step)+activationCost(actor)
+    cost:Math.max(0,p.selected.length-rollKeep(s,false))+Number(p.options.step)+activationCost(actor)
    };
   }
   return ctx;
@@ -281,8 +281,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     formula:result.formula,dice:result.dice,selected:[],options:opts};
    await this.actor.setFlag(NS,"pendingRoll",pending);
    this._pending=pending;this._draft=draft();this._opts=defaults();
+   await showCodexDice(result.roll);
    await this.render();
-   void showCodexDice(result.roll);
   }catch(e){ui.notifications.error("Codex: "+e.message);}
   finally{this._busy=false;}
  }
@@ -331,7 +331,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const result=resolveRoll(p.dice,p.selected,{...p.options,level:s.level,courage:s.courage,monster:s.monsterRules,animal:s.animalRules,threatGrade:s.threatGrade,
     weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type!=="character"});
    if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+activationCost(this.actor),payPP=0;
+   // Cobrar retenção extra somente pelos dados efetivamente mantidos, não pela autorização de seleção.
+   const paidExtra=Math.max(0,p.selected.length-rollKeep(s,false));
+   let cost=paidExtra+Number(p.options.step)+activationCost(this.actor),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
    if(result.success&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
@@ -344,7 +346,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
      if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=2;
+     else cost+=1;
     }
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
