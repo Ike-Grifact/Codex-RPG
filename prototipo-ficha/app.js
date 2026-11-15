@@ -1,7 +1,9 @@
 /* Codex RPG — criador e ficha unificados. SRD v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
-const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
+const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
+const SAVE_KEY=NPC_MODE?"codex-html-ficha-npc-dna-v1":"codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY=NPC_MODE?"codex-html-ficha-npc-wizard-v1":"codex-html-ficha-wizard-v1";
+const CONFLICT_NPC_INBOX="codex-rpg-conflito-humanoide-inbox-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -763,11 +765,11 @@ const CARD_ACTIVATIONS={
 
 function skillCompactCard([id,name,detail,cost],wizard){
  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
- const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
+ const disabled=!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":"Passiva / consultar");
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
- const button=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"Pendente":"Comprar · "+cost+" XP";
+ const button=owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
@@ -1615,7 +1617,9 @@ function geneDetailHTML(id,s=state){
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const skillButton=status==="potential"&&packagePlan&&geneCanAdjust()?
+ const skillButton=owned?
+  '<button type="button" data-action="respec-skill" data-id="'+esc(sid)+'"'+(state.pending?' disabled':'')+'>Devolver '+(Number.isInteger(cost)?cost:"?")+' XP · testar build</button>':
+  status==="potential"&&packagePlan&&geneCanAdjust()?
   '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
    'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
    '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
@@ -2603,6 +2607,54 @@ function setWeaponFocus(selected){
  if(reason){state.weaponFocus=previous;toast("Especialização bloqueada: "+reason);render();return;}
  render();save();
 }
+/** Playtest: restituição somente da Perícia comprada, sem reembolsar requisitos mantidos. */
+function refundSkillForPlaytest(id){
+ if(state.pending){toast("Finalize ou descarte a rolagem antes de redistribuir XP.");return;}
+ const index=state.skills.indexOf(id),row=SKILLS.find(x=>x[0]===id);
+ if(index<0||!row||!Number.isInteger(row[3]))return;
+ const candidate=structuredClone(state);
+ candidate.skills=candidate.skills.filter(skill=>skill!==id);
+ const blocking=dependentsValid(candidate);
+ if(blocking){toast("Não é possível devolver: outra Perícia depende desta. "+blocking);return;}
+ const before=xpCosts().free,after=xpCosts(candidate).free;
+ if(after-before!==row[3]){toast("Verificação de XP inconsistente. Compra preservada.");return;}
+ if(!confirm("Teste de build: remover "+row[1]+" e devolver "+row[3]+" XP ao saldo da Ficha?\n"+
+  "Perícias dependentes precisam ser removidas primeiro. Esta ação não altera o XP total concedido."))return;
+ state.skills=candidate.skills;
+ if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
+ if(draft?.third&&!mayThird())draft.third=null;
+ if(draft?.base?.key==="armas_conjuracao")draft.mode=modeDefault();
+ render();save();toast("Playtest: "+row[3]+" XP devolvidos. Saldo atual: "+xpCosts().free+" XP.");
+}
+/** Transferir uma ficha NPC independente, feita pelo próprio Codex Genético, para o encontro. */
+function sendNpcToConflict(){
+ if(!NPC_MODE)return;
+ if(state.pending){toast("Finalize ou descarte a rolagem pendente.");return;}
+ if(!state.name.trim()){toast("Informe o nome do NPC.");return;}
+ if(!hasStarterSources(state)){toast("O NPC precisa de Atributo G1 e Conhecimento ou Prática G1.");return;}
+ if(xpCosts().free<0){toast("A ficha excede o XP disponível.");return;}
+ const blocking=dependentsValid(state);if(blocking){toast("Requisito pendente: "+blocking);return;}
+ const extra=Math.max(0,Math.floor(Number(state.xpEarned||0)+Number(state.legacyXPRefund||0)));
+ const character={
+  id:"npc-dna-"+Date.now()+"-"+Math.random().toString(36).slice(2,9),
+  kind:"humanoide",name:state.name.trim(),concept:state.concept||state.origin||"Humano comum",
+  notes:[state.notes,state.origin?"Origem: "+state.origin:"",state.virtue?"Virtude: "+state.virtue:"",
+   state.personality?"Personalidade: "+state.personality:""].filter(Boolean).join("\n").slice(0,4000),
+  leader:false,threatGrade:1,level:state.level||1,xp:extra,
+  attributes:{...state.attributes},knowledges:{...state.knowledges},
+  practices:{...state.practices},skills:[...state.skills],
+  life:Math.max(0,Number(state.life)||0),pavorLocal:4,keep:2,courage:state.courage??10,
+  abilities:"Construído no Codex Genético. Equipamentos e efeitos especiais devem ser conferidos pelo Narrador.",
+  items:[]
+ };
+ if(!confirm("Enviar o NPC "+character.name+" para Criar Conflito?\nA construção usa o mesmo DNA da Ficha e não substitui seu personagem de jogador.\nEquipamentos deverão ser conferidos e adicionados no encontro."))return;
+ try{
+  localStorage.setItem(CONFLICT_NPC_INBOX,JSON.stringify({schema:"codex-humanoide-rapido-v1",
+   exportedAt:new Date().toISOString(),source:"codex-genetico-npc-v1",character}));
+  save();location.href="../criar-conflito/";
+ }catch(e){toast("Não foi possível enviar o NPC: "+e.message);}
+}
+
 function onClick(event){
  const button=event.target.closest("button");if(!button)return;
  const action=button.dataset.action;
@@ -2671,6 +2723,7 @@ function onClick(event){
   if(confirm("Descartar a rolagem já revelada? Isso deve ocorrer apenas por decisão do Narrador; os dados não serão reaproveitados.")){
    state.pending=null;save();render();toast("Rolagem descartada por confirmação.");
   }break;
+ case "respec-skill":refundSkillForPlaytest(id);break;
  case "skill":{
   if(state.pending){toast("Finalize a rolagem antes de modificar Perícias.");return;}
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
@@ -2685,14 +2738,7 @@ function onClick(event){
     state.elementalCrystal.quantity=1;state.elementalCrystal.element="";
    }
    toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
-  }else{
-   if(state.creationLocked&&!editMode){toast("Ative Editar ficha para corrigir esta Perícia.");return;}
-   const tmp=structuredClone(state);tmp.skills=tmp.skills.filter(x=>x!==id);
-   const problem=dependentsValid(tmp);if(problem){toast("Outra Perícia depende desta: "+problem);return;}
-   state.skills.splice(existing,1);
-   if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
-   toast("Compra de criação desfeita.");
-  }
+  }else{refundSkillForPlaytest(id);break;}
   if(draft.third&&!mayThird())draft.third=null;
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
   render();save();break;
@@ -2885,6 +2931,13 @@ function bind(){
   state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
+ const sendNpc=$("send-to-conflito");
+ if(sendNpc&&NPC_MODE){
+  sendNpc.hidden=false;
+  sendNpc.addEventListener("click",sendNpcToConflict);
+  $("page-title").textContent="NPC humanoide · Codex Genético";
+  $("page-subtitle").textContent="Crie um NPC com o mesmo DNA do jogador, sem alterar sua Ficha principal. Depois envie ao conflito.";
+ }
  $("export-json").addEventListener("click",download);
  $("import-trigger").addEventListener("click",()=>$("import-json").click());
  $("import-old-creator").addEventListener("click",()=>{
