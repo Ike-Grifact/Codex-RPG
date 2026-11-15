@@ -617,3 +617,7 @@
 .codex-defense-armor-buttons{display:flex;justify-content:flex-end;gap:6px}
 .codex-defense-armor-buttons>button{min-height:30px;min-width:34px}
 .codex-defense-configure{padding:7px!important}
+
+/* Ação explícita de preparação do combate, visível somente na primeira rodada. */
+.codex-pavor-prepare-local{font-size:10px;font-weight:700;letter-spacing:.01em;white-space:nowrap;min-height:26px;padding:4px 9px;border:1px solid currentColor;border-radius:7px;cursor:pointer}
+.codex-pavor-prepare-local:focus-visible{outline:2px solid currentColor;outline-offset:2px}
