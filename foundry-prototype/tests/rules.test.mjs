@@ -13,9 +13,11 @@ function human(){return{
 };}
 test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurador",()=>{
  assert.equal(ATTRIBUTES.length,6);assert.equal(KNOWLEDGES.length,6);assert.equal(PRACTICES.length,6);
- assert.equal(SKILLS.length,40);
+ assert.equal(SKILLS.length,39);
  assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz"].includes(s.id)));
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
+ assert.ok(!SKILLS.some(s=>s.id==="peritoconj"));
+ assert.equal(SKILLS.find(s=>s.id==="conjuracao-equilibrada")?.name,"Conjuração Refinada");
 });
 test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
  const skill=SKILLS.find(s=>s.id==="recuperacao-vigorosa");
@@ -27,9 +29,24 @@ test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
  assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),true);
  assert.ok(!SKILLS.some(s=>s.id==="recuperacao-movimento"),"Maestria com XP pendente não pode ser comprada");
 });
+test("SRD v0.44: d10 máximo 2E + 1A sem Pavor em crítico",()=>{
+ const dice=[{id:"a",group:"attribute",sides:6,face:1},
+ {id:"b",group:"practice",sides:10,face:10},{id:"c",group:"practice",sides:10,face:10}];
+ const result=resolveRoll(dice,["b","c"],{de:4});
+ assert.equal(result.ok,true);assert.equal(result.critical,2);
+ assert.equal(result.reached,4);assert.equal(result.p,0);
+ assert.equal(result.aRemaining,2);assert.equal(result.damage,4);
+});
+test("Perícia revogada não consome XP e Conjuração Refinada mantém ID",()=>{
+ const old=human();old.skills=["peritoconj"];
+ assert.equal(xpLedger(old).skills,0);
+ const renamed=human();renamed.skills=["conjuracao-equilibrada"];
+ assert.equal(xpLedger(renamed).skills,1);
+ assert.match(SKILLS.find(x=>x.id==="conjuracao-equilibrada").detail,/PENDENTES/);
+});
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
- assert.deepEqual(faceSymbols(10,10),[2,0,1]);
+ assert.deepEqual(faceSymbols(10,10),[2,1,0]);
  assert.deepEqual(faceSymbols(12,12),[0,0,2]);
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
@@ -48,9 +65,9 @@ test("crítico usa somente dados mantidos, sem obrigar Atributo mantido",()=>{
  {id:"c",group:"practice",sides:10,face:10},
  {id:"descartado",group:"equipment",sides:12,face:12}
  ];
- const r=resolveRoll(dice,["b","c"],{de:5,level:1});
- assert.equal(r.ok,true);assert.equal(r.critical,2);assert.equal(r.e,5);assert.equal(r.p,1);
- assert.equal(r.outcome,"Acerto neutro (com Pavor mantido)");
+ const r=resolveRoll(dice,["b","c"],{de:4,level:1});
+ assert.equal(r.ok,true);assert.equal(r.critical,2);assert.equal(r.e,4);assert.equal(r.p,0);assert.equal(r.aRemaining,2);
+ assert.equal(r.outcome,"Acerto sem Pavor");
  assert.equal(r.freeCharacteristics,1);assert.equal(r.criticalRefundCourage,1);
 });
 test("dado descartado não gera Êxito, Antecipar nem Pavor",()=>{
@@ -81,6 +98,7 @@ test("Retenção de jogadores e monstros e os tetos de Pavor",()=>{
  assert.equal(keepLimit(1),2);assert.equal(keepLimit(1,true),3);
  assert.equal(keepLimit(6),3);assert.equal(keepLimit(6,true),4);
  assert.equal(keepLimit(1,0,true),2);assert.equal(keepLimit(1,1,true),3);
+ assert.equal(keepLimit(2,0,true),2);assert.equal(keepLimit(2,2,true),4);
  assert.equal(keepLimit(5,0,true),2);assert.equal(keepLimit(5,2,true),4);
  assert.equal(monsterCap(1),1);assert.equal(monsterCap(6),6);assert.equal(narratorCap(4),6);
 });
@@ -122,7 +140,9 @@ test("Catálogo experimental contém arma mista e armaduras G1",()=>{
  const rev=G1_CATALOG.find(x=>x.name==="Revólver");
  assert.deepEqual(montante.properties,["Cortante","Contundente","Longa"]);
  assert.deepEqual(rev.properties,["À Distância","Barulhenta"]);
- assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,20);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Leve").integrity.max,7);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Média").integrity.max,12);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,17);
  assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,12);
 });
 test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automaticamente",()=>{
