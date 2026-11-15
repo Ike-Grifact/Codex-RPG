@@ -209,7 +209,7 @@ function rollPane(t){
  const outcome=r?'<div class="cf-roll-outcome">'+(result.ok?
   '<strong>'+esc(result.result.outcome)+' · '+result.result.reached+' / DE '+r.de+'</strong>'+
   '<p>ᛋ '+result.result.e+'E · ᚨ '+result.remainingA+'A livre · ᚦ '+result.result.p+'P residual · Dano básico '+result.result.damage+'</p>'+
-  '<p>Retenção: '+result.cost+'P local'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
+  '<p>Gasto de retenção: '+result.cost+'P local'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
   '<p class="cf-warning">'+esc(result.error)+'</p>')+
   '<button type="button" data-roll-confirm class="cf-primary"'+(result.ok?'':' disabled')+'>Confirmar resultado e recursos</button></div>':"";
  const last=model.lastRoll?.id===t.id?'<p class="cf-note">Última rolagem confirmada: '+esc(model.lastRoll.outcome)+
