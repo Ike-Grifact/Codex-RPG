@@ -43,7 +43,7 @@ const SKILLS=[
  [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
-  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 2 Coragens; teste com Influência contra DE para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
+  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 2 Coragens; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
   1
  ],
  [
@@ -704,7 +704,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "domar-criatura-pequena": "Teste com Influência contra DE, ativação 1 PP ou 2 Coragens. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. DE, quantidade acumulável e protocolo de letalidade pendentes.",
+ "domar-criatura-pequena": "Teste com Influência contra a DE defensiva do próprio personagem, ativação 1 PP ou 2 Coragens. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. DE, quantidade acumulável e protocolo de letalidade pendentes.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -1361,7 +1361,7 @@ function renderOwnedPanel(){
  const companionMarkup=companionOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro pequeno</strong><small>'+(
    companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial"):"Sem criatura domesticada presente")+'</small></div>'+
-  '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra a DE, pagando 1 PP ou 2 Coragens; o aprendizado não cria companheiro.")+'</p>'+
+  '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra sua DE defensiva atual, pagando 1 PP ou 2 Coragens; o aprendizado não cria companheiro.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-criatura">Preparar teste de Domar / Pacificar</button><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (companionHere?'<button type="button" data-action="small-companion-combat">'+(state.smallCompanion.inCombat?"Desativar apoio de combate":"Ativar apoio de combate (+1A)")+'</button>'+
   '<button type="button" data-action="small-companion-sacrifice">Registrar sacrifício</button>'+
@@ -2229,7 +2229,7 @@ function renderComposer(){
   .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
  const companionHint=smallCompanionPresent()?'<p class="fp-caption">Companheiro pequeno presente: '+(state.smallCompanion.inCombat?'+1A será incluído neste teste marcado como combate na aba Jogar.':'ative “Em combate” no card da criatura para acrescentar +1A apenas quando ela estiver ajudando no combate.')+'</p>':"";
  const tameFields=canTameSmallDraft()?
-  '<label class="fp-checkline full"><input type="checkbox" data-option="tameSmall"'+(draft.tameSmall?" checked":"")+'> Usar Domar Criatura Pequena (ativação paga, contra DE da criatura)</label>'+
+  '<label class="fp-checkline full"><input type="checkbox" data-option="tameSmall"'+(draft.tameSmall?" checked":"")+'> Usar Domar Criatura Pequena (ativação paga, DE igual à sua DE defensiva)</label>'+
   (draft.tameSmall?'<label class="fp-form-field">Objetivo '+select("tameIntent",[["domar","Domesticar"],["pacificar","Pacificar para depois domar"]],draft.tameIntent)+'</label>'+
    '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","2 Coragens"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
@@ -2368,7 +2368,7 @@ function renderPending(){
   '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>':"";
  const tamePaymentNote=p.opts.tameSmall?'<p class="fp-caption"><strong>'+(p.opts.tameIntent==="pacificar"?"Pacificar":"Domar")+
   ' criatura pequena:</strong> custo da tentativa '+(p.opts.tamePayment==="pp"?"1 PP":"2 Coragens")+
-  ' (cobrado na finalização mesmo se falhar). DE definida pelo Narrador. '+(p.opts.tameIntent==="pacificar"?"Em sucesso, faça domesticação depois.":"Em sucesso, o companheiro será registrado; atacar cancela o vínculo.")+'</p>':"";
+  ' (cobrado na finalização mesmo se falhar). DE igual à DE defensiva do personagem ('+p.opts.de+'). '+(p.opts.tameIntent==="pacificar"?"Em sucesso, faça domesticação depois.":"Em sucesso, o companheiro será registrado; atacar cancela o vínculo.")+'</p>':"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
  '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
  '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
