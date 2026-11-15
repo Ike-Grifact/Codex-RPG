@@ -75,3 +75,6 @@
 @media(max-width:1320px){.tc-workspace{grid-template-columns:minmax(195px,.68fr) minmax(350px,1.5fr);grid-template-areas:"roster stage" "roller roller"}.tc-roller .tc-fields{grid-template-columns:repeat(3,minmax(0,1fr))}.tc-roller .tc-fields label:nth-child(-n+3){grid-column:auto}}
 @media(max-width:850px){.tc{padding-inline:12px}.tc-workspace{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "roster" "roller"}.tc-roller .tc-fields{grid-template-columns:1fr 1fr}.tc-roster-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:260px}.tc-intro-actions{justify-content:flex-start}.tc-intro{padding:20px 16px}}
 @media(max-width:500px){.tc-board{--tile:32px}.tc-stage,.tc-roller,.tc-roster{padding:10px}.tc-panel-head h2{font-size:21px}.tc-roster-list{grid-template-columns:1fr}.tc-fields{gap:7px}.tc-roller .tc-fields{grid-template-columns:1fr 1fr}.tc-roller .tc-fields label:nth-child(-n+3){grid-column:1/-1}.tc-stage-actions button,.tc-tools button{font-size:11px;padding:6px 7px}}
+
+/* Escudo circular 3×3 m é indicação visual de alcance, não regra de absorção. */
+.tc .tc-cell.shield-area:not(.wall):not(.cover){background:radial-gradient(circle,#2369bb38,#161918)!important;box-shadow:inset 0 0 0 1px #73a3dd7a}
