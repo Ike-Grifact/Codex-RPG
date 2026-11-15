@@ -5,7 +5,9 @@ const system = "codex-rpg-foundry";
 export function faceLabels(sides) {
   const faces = FACES[sides];
   return faces.map((symbols, index) => {
-    const name = symbols.join("") + (index === faces.length - 1 ? "-max" : "");
+    // A face 10 do d10 passou de 201 para 210 no SRD v0.44.
+    // Não há ainda textura 210-max; usar a textura existente 210, nunca a antiga 201-max.
+    const name = symbols.join("") + (index === faces.length - 1 && !(sides === "10" && index === 9) ? "-max" : "");
     return `systems/${system}/assets/dice/faces/${name}.png`;
   });
 }
