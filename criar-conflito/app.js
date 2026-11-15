@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
- from "./rules.mjs";
+ from "./rules.mjs?v=0.44-3";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
-import {canDeclareJoint,creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs";
+import {canDeclareJoint,creaturePool,humanoidPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
+ from "./roll-engine.mjs?v=0.44-3";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -164,17 +164,43 @@ function inventory(t,x){
 }
 
 function rollPane(t){
- if(t.kind==="humanoide")return '<section class="cf-panel cf-roll-panel"><h3>Rolagem do humanoide</h3><p>Para humanoides, use a ficha completa: Conhecimento ou Prática BASE + Atributo, habilitações e equipamentos.</p></section>';
- const r=creatureRoll?.id===t.id?creatureRoll:null,remaining=t.kind==="monstro"?t.keep:2;
- const choice=(current)=>ATTRIBUTES.map(([key,name])=>
-   '<option value="'+key+'"'+(key===current?' selected':'')+'>'+esc(name)+'</option>').join("");
- const sel=(r?.selected)||[],result=r?previewCreatureRoll(t,r.dice,sel,{
-  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA}):null;
+ const human=t.kind==="humanoide",r=creatureRoll?.id===t.id?creatureRoll:null;
+ const choice=(values,current)=>values.map(([key,name])=>
+  '<option value="'+key+'"'+(key===current?' selected':'')+'>'+esc(name)+'</option>').join("");
+ const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
+  ...PRACTICES.filter(([key])=>key!=="armas_conjuracao").map(([key])=>({group:"practice",key,grade:t.practices[key]}))]
+  .find(x=>x.grade>0);
+ const group=r?.group||trained?.group||"practice";
+ const baseKey=r?.baseKey||(trained?.group===group?trained.key:group==="practice"?"atletismo":"protecao");
+ const attrDefault=ATTRIBUTES.find(([key])=>Number(t.attributes[key]||0)>0)?.[0]||"forca";
+ const attrKey=r?.attribute||attrDefault;
+ const first=r?.first||"forca",second=r?.second||"vigor";
+ const sources=group==="knowledge"?KNOWLEDGES:PRACTICES;
+ const sourceConfig=human?(
+  '<label>Fonte base<select id="cf-roll-group"'+(r?' disabled':'')+'>'+
+   '<option value="knowledge"'+(group==="knowledge"?' selected':'')+'>Conhecimento</option>'+
+   '<option value="practice"'+(group==="practice"?' selected':'')+'>Prática</option></select></label>'+
+  '<label>Conhecimento ou Prática<select id="cf-roll-base"'+(r?' disabled':'')+'>'+choice(sources,baseKey)+'</select></label>'+
+  '<label>Atributo pertinente<select id="cf-roll-attr"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,attrKey)+'</select></label>'+
+  '<label>Aplicação da Disciplina<select id="cf-roll-mode"'+(r||baseKey!=="armas_conjuracao"?' disabled':'')+'>'+
+   '<option value="armas"'+((r?.mode||"armas")==="armas"?' selected':'')+'>Armas (Perícia necessária)</option>'+
+   '<option value="conjuracao"'+(r?.mode==="conjuracao"?' selected':'')+'>Conjuração (foco habilitado)</option>'+
+   '</select></label>'
+ ):(
+  '<label>Atributo base<select id="cf-roll-first"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,first)+'</select></label>'+
+  '<label>Outro Atributo<select id="cf-roll-second"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,second)+'</select></label>'
+ );
+ const sel=r?.selected||[];
+ const result=r?(human?previewHumanoidRoll(t,r.dice,sel,{
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA
+ }):previewCreatureRoll(t,r.dice,sel,{
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA
+ })):null;
  const runes=["ᛋ","ᚨ","ᚦ"],colors=["E","A","P"];
  const dice=r?'<div class="cf-roll-dice">'+r.dice.map(d=>{
   const kept=sel.includes(d.id);
   const marks=faceSymbols(d.sides,d.face).map((qty,i)=>
-   Array(qty).fill(0).map(()=>'<span class="cf-symbol cf-symbol-'+colors[i]+(d.face===d.sides?' is-max':'')+'">'+runes[i]+'</span>').join("")).join("")||'Vazio';
+   Array(qty).fill(0).map(()=>'<span class="cf-symbol cf-symbol-'+colors[i]+(d.face===d.sides?' is-max':'')+'">'+runes[i]+'</span>').join("")).join("")||"Vazio";
   return '<label class="cf-roll-die'+(kept?' is-kept':'')+'">'+
    '<input type="checkbox" data-roll-keep="'+esc(d.id)+'"'+(kept?' checked':'')+'>'+
    dieIcons([d.sides])+'<b>Face '+d.face+'</b><span>'+marks+'</span>'+
@@ -188,16 +214,20 @@ function rollPane(t){
   '<button type="button" data-roll-confirm class="cf-primary"'+(result.ok?'':' disabled')+'>Confirmar resultado e recursos</button></div>':"";
  const last=model.lastRoll?.id===t.id?'<p class="cf-note">Última rolagem confirmada: '+esc(model.lastRoll.outcome)+
   ' · '+model.lastRoll.e+'E / '+model.lastRoll.p+'P · custo local '+model.lastRoll.spent+'P.</p>':"";
- return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem básica da criatura</h3>'+
-  '<p class="cf-note">Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.</p>'+
-  '<div class="cf-roll-config">'+
-  '<label>Atributo base<select id="cf-roll-first"'+(r?' disabled':'')+'>'+choice(r?.first||"forca")+'</select></label>'+
-  '<label>Outro Atributo<select id="cf-roll-second"'+(r?' disabled':'')+'>'+choice(r?.second||"vigor")+'</select></label>'+
-  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??stats(t).de)+'"></label>'+
+ const help=human?
+  'Escolha uma Prática ou Conhecimento e um Atributo pertinente. Disciplina para Armas ou Conjuração exige a Perícia habilitadora. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. Retenção paga com Coragem ainda não está automatizada.':
+  'Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
+ const allowed=human?Math.min(t.keep,stats(t).keepBase):t.keep;
+ return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem de '+(human?'humanoide':'criatura')+'</h3>'+
+  '<p class="cf-note">'+help+'</p>'+
+  '<div class="cf-roll-config">'+sourceConfig+
+  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??Math.max(1,stats(t).de))+'"></label>'+
   '<label>Situação<select id="cf-roll-situation"'+(r?' disabled':'')+'>'+Object.entries(SITUATIONS).map(([key,v])=>
    '<option value="'+key+'"'+(r?.situation===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
-  '<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>Rolar novamente</button>'+(r?'<button type="button" data-roll-clear>Alterar fontes</button>':'')+
-   '<span>'+remaining+' dados mantidos planejados · '+(t.kind==="monstro"?Math.max(0,remaining-2):0)+'P local para retenção</span></div>'+
+  '<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
+  (r?'<button type="button" data-roll-clear>Alterar fontes</button>':"")+
+  '<span>Até '+allowed+' dados mantidos'+(human?' por Marco (sem gasto de Coragem)':
+   ' · '+Math.max(0,t.keep-2)+'P local se mantiver todos os planejados')+'</span></div>'+
   dice+(r?'<div class="cf-roll-config">'+
    '<label>Anular P (1A por P)<input type="number" data-roll-param="cancelP" min="0" max="9" value="'+r.cancelP+'"></label>'+
    '<label>2A → 1E<input type="number" data-roll-param="convertPairs" min="0" max="9" value="'+r.convertPairs+'"></label>'+
@@ -207,11 +237,21 @@ function rollPane(t){
 }
 function refreshRoll(){const e=el("cf-roll-panel"),t=selected();if(e&&t)e.outerHTML=rollPane(t);}
 function beginCreatureRoll(){
- const t=selected();if(!t||t.kind==="humanoide")return;
- const first=el("cf-roll-first").value,second=el("cf-roll-second").value;
- const pool=creaturePool(t,first,second);if(!pool.ok)return notice(pool.error);
- const dice=rollCreatureFaces(pool.pool),kept=t.kind==="monstro"?t.keep:2;
- creatureRoll={id:t.id,first,second,de:Math.floor(clamp(el("cf-roll-de").value,0,30)),
+ const t=selected();if(!t)return;
+ const human=t.kind==="humanoide";
+ const group=human?el("cf-roll-group")?.value:null;
+ const baseKey=human?el("cf-roll-base")?.value:null;
+ const attribute=human?el("cf-roll-attr")?.value:null;
+ const mode=human&&baseKey==="armas_conjuracao"?el("cf-roll-mode")?.value:"normal";
+ const first=human?null:el("cf-roll-first")?.value,second=human?null:el("cf-roll-second")?.value;
+ const pool=human?humanoidPool(t,group,baseKey,attribute,mode):creaturePool(t,first,second);
+ if(!pool.ok)return notice(pool.error);
+ const dice=rollCreatureFaces(pool.pool);
+ const planned=human?Math.min(t.keep,stats(t).keepBase):t.kind==="monstro"?t.keep:2;
+ const kept=Math.min(planned,dice.length);
+ if(kept<1)return notice("Nenhum dado válido para manter.");
+ creatureRoll={id:t.id,group,baseKey,attribute,mode,first,second,
+  de:Math.floor(clamp(el("cf-roll-de").value,0,30)),
   situation:el("cf-roll-situation").value,dice,selected:dice.slice(0,kept).map(d=>d.id),
   cancelP:0,convertPairs:0,passA:false};
  refreshRoll();
@@ -219,7 +259,7 @@ function beginCreatureRoll(){
 function confirmCreatureRoll(){
  const t=selected(),r=creatureRoll;
  if(!t||!r||r.id!==t.id)return;
- const preview=previewCreatureRoll(t,r.dice,r.selected,{de:r.de,situation:r.situation,
+ const preview=(t.kind==="humanoide"?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{de:r.de,situation:r.situation,
   cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA});
  if(!preview.ok)return notice(preview.error);
  const settlement=settleCreatureRoll(t,model.publicPavor,model.players,preview);
@@ -241,7 +281,7 @@ function editorHTML(t){
  return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind])+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
-  '<div class="cf-actions"><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
+  '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Rolar dados</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
   '<div class="cf-fields">'+field("Nome","name",{wide:true})+
   field("Tipo de criatura","kind",{type:"select",choices:Object.entries(KINDS)})+
@@ -267,7 +307,7 @@ function editorHTML(t){
   '<div class="cf-local-row"><span>Dados mantidos planejados: <b>'+t.keep+'</b></span>'+
   '<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>'+
   '<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button></div>'+
-  '<p class="cf-note">'+(human?'Humanoides seguem Marcos e custos de Coragem das fichas de jogadores; a retenção não é gratuita.':
+  '<p class="cf-note">'+(human?'Humanoides mantêm até o limite gratuito do Marco (2 até nível 5; 3 a partir do nível 6). Retenção adicional mediante Coragem requer controle de recurso e fica fora deste rolador básico.':
    'Ação básica: 2 dados. Cada dado adicional mantido custa 1P local, e somente com dados/capacidades disponíveis.')+
   (human?'':' Retenção planejada: '+extra+'P por oportunidade.')+'</p>'+
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
@@ -390,6 +430,7 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
  if(b.id==="export-encounter")return exportJson();
+ if(b.hasAttribute("data-open-roll")){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"center"});return;}
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
  if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
@@ -408,7 +449,7 @@ document.addEventListener("click",event=>{
 document.addEventListener("change",event=>{
  const target=event.target;
  if(target.dataset.rollKeep&&creatureRoll){
-   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=t.kind==="monstro"?t.keep:2;
+   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=t.kind==="humanoide"?Math.min(t.keep,stats(t).keepBase):t.kind==="monstro"?t.keep:2;
    if(target.checked){if(r.selected.length>=max){notice("Desmarque antes um dado.");return refreshRoll();}r.selected.push(id);}
    else r.selected=r.selected.filter(x=>x!==id);
    refreshRoll();return;
@@ -419,7 +460,22 @@ document.addEventListener("change",event=>{
    else if(k==="cancelP"||k==="convertPairs")creatureRoll[k]=Math.floor(clamp(target.value,0,9));
    refreshRoll();return;
   }
-  if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
+  if(target.id==="cf-roll-group"){
+  const group=target.value,list=el("cf-roll-base"),options=group==="knowledge"?KNOWLEDGES:PRACTICES;
+  const t=selected();
+  if(list&&t){
+   const field=group==="knowledge"?"knowledges":"practices";
+   const first=options.find(([key])=>key!=="armas_conjuracao"&&t[field][key]>0)?.[0]||
+    (group==="knowledge"?"protecao":"atletismo");
+   list.innerHTML=options.map(([key,name])=>'<option value="'+key+'"'+(key===first?' selected':'')+'>'+esc(name)+'</option>').join("");
+   const mode=el("cf-roll-mode");if(mode)mode.disabled=first!=="armas_conjuracao";
+  }
+  return;
+ }
+ if(target.id==="cf-roll-base"){
+  const mode=el("cf-roll-mode");if(mode)mode.disabled=target.value!=="armas_conjuracao";return;
+ }
+ if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
  if(target.id==="party-xp"){model.partyXp=Math.floor(clamp(target.value,0,99999));save();renderSummary();return;}
  if(target.id==="import-encounter"){void importJson(target.files?.[0]);target.value="";return;}
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}

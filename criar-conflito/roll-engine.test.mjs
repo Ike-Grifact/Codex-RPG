@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,stats} from "./rules.mjs";
+import {blank,stats,quickHumanoid} from "./rules.mjs";
 import {creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,
- publicJointCost,canDeclareJoint,faceSymbols} from "./roll-engine.mjs";
+ publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll} from "./roll-engine.mjs";
 
 test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
  const t=blank("monstro");t.attributes.forca=1;
@@ -67,4 +67,53 @@ test("Conversões de Antecipar não gastam o mesmo símbolo duas vezes",()=>{
  const ids=dice.slice(0,2).map(d=>d.id);
  const bad=previewCreatureRoll(t,dice,ids,{de:2,convertPairs:1,passA:true});
  assert.equal(bad.ok,false);
+});
+
+
+test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Perícia de graça",()=>{
+ const npc=quickHumanoid();
+ const valid=humanoidPool(npc,"practice","atletismo","forca");
+ assert.equal(valid.ok,true);
+ assert.deepEqual(valid.pool.map(d=>d.sides),[6,6]); // Atletismo G0 e Força G1
+ const failed=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
+ assert.equal(failed.ok,false);
+ assert.match(failed.error,/Perícia/);
+ npc.skills.push("armas-leves");
+ const trained=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
+ assert.equal(trained.ok,true);
+ assert.deepEqual(trained.pool.map(d=>d.sides),[10,6]);
+ const rolled=rollCreatureFaces(trained.pool,()=>0.9999);
+ const got=previewHumanoidRoll(npc,rolled,rolled.map(x=>x.id),{de:1});
+ assert.equal(got.ok,true);
+ assert.equal(got.cost,0);
+ assert.equal(got.result.critical,2);
+ const confirmed=settleCreatureRoll(npc,2,4,got);
+ assert.equal(confirmed.ok,true);
+ assert.equal(confirmed.unit.pavorLocal,4); // já no teto
+ assert.equal(confirmed.publicPavor,4); // excedente de crítico vai ao Pavor público
+});
+
+test("Retenção humana respeita Marco sem conceder quarto ou dado pago",()=>{
+ const npc=quickHumanoid();npc.practices.atletismo=2;
+ const pool=humanoidPool(npc,"practice","atletismo","forca");
+ assert.equal(pool.ok,true);
+ const dice=rollCreatureFaces(pool.pool,()=>0.5);
+ assert.equal(dice.length,3);
+ assert.equal(previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1}).ok,false);
+ npc.level=6;npc.keep=3;
+ const allowed=previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1});
+ assert.equal(allowed.ok,true);
+ assert.equal(allowed.cost,0);
+ npc.keep=4;
+ assert.equal(previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1}).ok,true);
+});
+
+test("Monstro com retenção planejada maior que a pilha não paga Pavor fictício",()=>{
+ const npc=blank("monstro");npc.keep=3;npc.pavorLocal=4;
+ const pool=creaturePool(npc,"forca","vigor");
+ const dice=rollCreatureFaces(pool.pool,()=>0.5);
+ assert.equal(dice.length,2);
+ const result=previewCreatureRoll(npc,dice,dice.map(d=>d.id),{de:1});
+ assert.equal(result.ok,true);
+ assert.equal(result.cost,0);
 });

@@ -1,8 +1,8 @@
 /* Rolagem básica de criaturas do Criar Conflito.
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
-import {sourceDice,faceSymbols,resolveRoll,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,toSystem,stats} from "./rules.mjs";
+import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
+import {ATTRIBUTES,toSystem,stats} from "./rules.mjs?v=0.44-3";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
@@ -17,6 +17,40 @@ export function creaturePool(unit,primary,secondary){
  if(pool.length<2||pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
  return {ok:true,pool};
 }
+/** A fonte base humana é Conhecimento/Prática + Atributo; Disciplina exige modo e habilitação. */
+export function humanoidPool(unit,baseGroup,baseKey,attributeKey,mode="normal"){
+ if(!unit||unit.kind!=="humanoide")return {ok:false,error:"Esta rolagem exige um NPC humanoide."};
+ if(!["knowledge","practice"].includes(baseGroup))
+  return {ok:false,error:"Escolha um Conhecimento ou uma Prática como fonte base."};
+ const result=buildPool({...unit,monsterRules:false},{
+  base:{group:baseGroup,key:baseKey},attribute:{group:"attribute",key:attributeKey}
+ },{mode});
+ return result.ok?{ok:true,pool:result.pool}:{ok:false,error:result.errors.join("; ")};
+}
+
+/** Versão básica do teste humanoide; efeitos de Perícias e dados de equipamento não são automáticos. */
+export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
+ if(!unit||unit.kind!=="humanoide")return {ok:false,error:"Selecione um humanoide."};
+ const de=Number(options.de),situation=String(options.situation||"neutral");
+ const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
+ const limit=Math.min(Number(unit.keep||2),keepLimit(Number(unit.level||1),false,false));
+ if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
+  return {ok:false,error:"Pilha de dados inválida."};
+ if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
+ if(!Object.hasOwn(SITUATIONS,situation))return {ok:false,error:"Modificador de situação desconhecido."};
+ if(kept.length<1||kept.length>limit)return {ok:false,error:"Escolha de 1 até "+limit+" dados mantidos neste Marco (sem retenção paga)."};
+ if(kept.some(id=>!rolled.some(d=>d.id===id)))return {ok:false,error:"Dado não pertence à pilha."};
+ const cancelP=Number(options.cancelP||0),convertPairs=Number(options.convertPairs||0),passA=!!options.passA;
+ if(!Number.isInteger(cancelP)||!Number.isInteger(convertPairs))
+  return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
+ const result=resolveRoll(rolled,kept,{de,situation,level:Number(unit.level||1),
+  monster:false,hostile:true,cancelP,convertPairs});
+ if(!result.ok)return {ok:false,error:result.errors.join("; ")};
+ if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
+ return {ok:true,cost:0,result,passA,remainingA:result.aRemaining-Number(passA),
+  criticalPavor:result.monsterCriticalPavor||0};
+}
+
 export function rollCreatureFaces(pool,random=Math.random){
  return pool.map(d=>{
   const n=Number(random());
@@ -27,7 +61,7 @@ export function rollCreatureFaces(pool,random=Math.random){
 export function previewCreatureRoll(unit,rolled,keptIds,options={}){
  const de=Number(options.de),situation=String(options.situation||"neutral");
  const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
- const count=unit?.kind==="monstro"?Number(unit.keep||2):2;
+ const count=kept.length;
  const cap=unit?.kind==="monstro"?stats(unit).keepMax:2;
  const cost=unit?.kind==="monstro"?Math.max(0,count-2):0;
  if(!unit||unit.kind==="humanoide")return {ok:false,error:"Este simulador é para criaturas não humanoides."};
@@ -35,7 +69,7 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
  if(!Object.hasOwn(SITUATIONS,situation))return {ok:false,error:"Modificador de situação desconhecido."};
- if(count>cap||kept.length!==count)return {ok:false,error:"Escolha exatamente "+count+" dados mantidos."};
+ if(count<1||count>Math.min(cap,Number(unit?.keep||2)))return {ok:false,error:"Selecione até "+Math.min(cap,Number(unit?.keep||2))+" dados mantidos."};
  if(kept.some(id=>!rolled.some(d=>d.id===id)))return {ok:false,error:"Um dado mantido não pertence à pilha."};
  if(cost>Number(unit.pavorLocal||0))return {ok:false,error:"Pavor local insuficiente: a retenção exige "+cost+"P."};
  const cancelP=Number(options.cancelP||0),convertPairs=Number(options.convertPairs||0),passA=!!options.passA;
@@ -48,7 +82,7 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
    criticalPavor:unit.kind==="monstro"?result.monsterCriticalPavor:0};
 }
 export function settleCreatureRoll(unit,publicPavor,players,preview){
- if(!preview?.ok||!unit||unit.kind==="humanoide")return {ok:false,error:"Rolagem não confirmável."};
+ if(!preview?.ok||!unit)return {ok:false,error:"Rolagem não confirmável."};
  const before=Number(unit.pavorLocal||0),spent=preview.cost;
  if(before<spent)return {ok:false,error:"Pavor local insuficiente."};
  const localCap=stats(unit).limitLocal,publicCap=narratorCap(players);

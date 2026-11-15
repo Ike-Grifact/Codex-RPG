@@ -1,0 +1,54 @@
+const {chromium}=require("playwright");
+const assert=(condition,message)=>{if(!condition)throw Error(message);};
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1280,height:900}});
+  const errors=[];page.on("pageerror",e=>errors.push(e.message));
+  await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await page.waitForSelector("[data-joint]");
+  await page.locator("#add-human-basic").click();
+  assert(await page.locator(".cf-threat-card").count()===1,"NPC não criado");
+  await page.locator("[data-open-roll]").click();
+  assert(await page.locator("#cf-roll-panel").isVisible(),"Atalho Rolar dados não abre painel");
+  assert(await page.locator("#cf-roll-group").count()===1,"Formação humanoide ausente");
+  await page.locator("#cf-roll-group").selectOption("practice");
+  await page.locator("#cf-roll-base").selectOption("armas_conjuracao");
+  await page.locator("#cf-roll-mode").selectOption("armas");
+  await page.locator("[data-roll-start]").click();
+  assert((await page.locator("#notice").innerText()).includes("Perícia"),"Disciplina sem habilitação foi aceita");
+  await page.locator("#cf-roll-base").selectOption("atletismo");
+  await page.evaluate(()=>{Math.random=()=>0.999999;});
+  await page.locator("[data-roll-start]").click();
+  assert(await page.locator(".cf-roll-die").count()===2,"NPC básico não rolou Formação G0 e Atributo G1");
+  assert(await page.locator(".cf-roll-outcome").count()===1,"Faltou resultado da rolagem humana");
+  assert(await page.locator("[data-roll-confirm]").isEnabled(),"Confirmação humanoide desabilitada");
+  page.once("dialog",dialog=>void dialog.accept());
+  await page.locator("[data-roll-confirm]").click();
+  assert((await page.locator("#cf-roll-panel").innerText()).includes("Última rolagem confirmada"),"Resultado do NPC não foi gravado");
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.waitForSelector("#cf-roll-panel");
+  assert((await page.locator("#cf-roll-panel").innerText()).includes("Última rolagem confirmada"),"Resultado do NPC não persistiu");
+  await page.locator("#cf-roll-group").selectOption("knowledge");
+  await page.locator("#cf-roll-base").selectOption("medicina");
+  await page.locator("#cf-roll-attr").selectOption("forca");
+  await page.locator("[data-roll-start]").click();
+  assert(await page.locator(".cf-roll-die").count()===2,"NPC não rola Conhecimento + Atributo");
+  assert(errors.length===0,"Erros Javascript do NPC: "+errors.join(" | "));
+  console.log("PASS: NPC pode rolar Conhecimento/Prática + Atributo, requisitos, confirmação e persistência");
+
+  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  const mobileErrors=[];mobile.on("pageerror",e=>mobileErrors.push(e.message));
+  await mobile.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await mobile.waitForSelector("[data-joint]");
+  await mobile.locator("#add-human-basic").click();
+  await mobile.locator("[data-open-roll]").click();
+  await mobile.locator("[data-roll-start]").click();
+  assert(await mobile.locator(".cf-roll-die").count()===2,"Rolagem do NPC não funciona em celular");
+  const overflow=await mobile.evaluate(()=>[...document.querySelectorAll("body,.cf-layout,.cf-editor,#cf-roll-panel")].filter(el=>el.getBoundingClientRect().right>innerWidth+3).map(el=>el.className||el.id));
+  assert(overflow.length===0,"Painel humanoide ultrapassa tela: "+overflow);
+  assert(mobileErrors.length===0,"Erros JS no celular: "+mobileErrors.join(" | "));
+  console.log("PASS: Rolagem humanoide e layout em celular");
+  await mobile.close();
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e.stack||e);process.exitCode=1;});

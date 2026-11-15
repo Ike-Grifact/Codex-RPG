@@ -45,7 +45,7 @@ export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
  const s=toSystem(t),monster=t.kind==="monstro",human=t.kind==="humanoide",grade=clamp(t.threatGrade,1,6);
  const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
- const maxKeep=human?keepLimit(s.level,true,false):grade>=5?4:3;
+ const maxKeep=human?keepLimit(s.level,false,false):grade>=5?4:3; // Retenção paga humana não é automatizada sem controle de Coragem.
  const naturalKeep=human?keepLimit(s.level,false,false):2;
  return {life,de:defense,limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
