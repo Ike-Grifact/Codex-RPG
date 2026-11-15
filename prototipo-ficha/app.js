@@ -2011,6 +2011,12 @@ function renderVitals(){
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
  $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
+ const protection=equippedArmor();
+ const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
+ if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 · Sem Integridade"):"Nenhuma";
+ if(integrityCaption)integrityCaption.textContent=protection?
+  (protection.name+" · "+(protection.max>0?"Integridade atual / máxima":"armadura sem Integridade")+
+   " · registro manual de dano"):"Equipe uma armadura no Inventário";
  $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada")+")":armorDodgeBonus()?"DE base "+deDefense()+" · Esquiva "+deDodge()+" (+"+armorDodgeBonus()+" da armadura)": "DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
@@ -2392,12 +2398,12 @@ function renderInventory(){
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade numérica pendente de balanceamento.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 0, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b>'+it.hp+'/'+it.max+'</b>'+
+  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+it.hp+' / '+it.max+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
