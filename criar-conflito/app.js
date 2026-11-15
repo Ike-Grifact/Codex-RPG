@@ -152,7 +152,9 @@ function renderRoster(){
    ' · Grau '+t.threatGrade+'</small></span><span aria-hidden="true">'+(t.leader?'★':'›')+'</span></button>'+
    '<div class="cf-threat-counts"><span>'+t.life+'/'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
    '<span class="is-purple">'+t.pavorLocal+'/'+x.limitLocal+' P</span>'+
-   '<span'+(over?' style="color:#e6a1a1"':'')+'>'+x.xp.spent+'/'+x.xp.grant+' XP</span></div>'+
+   '<span'+(over?' style="color:#e6a1a1"':'')+'>'+x.xp.spent+'/'+x.xp.grant+' XP</span>'+
+   (t.items.some(it=>it.kind==="armor")?'<span>Armadura '+t.items.filter(it=>it.kind==="armor").map(it=>it.integrity+"/"+it.integrityMax).join(", ")+'</span>':'')+
+   '</div>'+
    '<div class="cf-threat-actions"><button type="button" data-copy="'+esc(t.id)+'">Duplicar</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></article>';
  }).join(""):'<p class="cf-description">Nenhuma ficha neste conflito. Use “Criar ficha” para começar.</p>';
@@ -211,9 +213,16 @@ function inventory(t,x){
    '<button type="button" data-add-catalog>Adicionar ao inventário</button></div>':
    '<p class="cf-note">Catálogo indisponível nesta página.</p>')+
   '<div class="cf-items">'+(t.items.length?t.items.map(it=>
-   '<div class="cf-item"><span>'+esc(it.name)+' · '+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto</span>'+
+   '<div class="cf-item"><div class="cf-item-descriptor"><strong>'+esc(it.name)+'</strong>'+
+   '<small>'+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
+   (it.kind==="armor"||it.kind==="shield"?'<span class="cf-integrity-label">Integridade: <strong>'+
+    (it.integrityMax?it.integrity+" / "+it.integrityMax:"Sem Integridade definida")+'</strong></span>':'')+'</div>'+
+   ((it.kind==="armor"||it.kind==="shield")&&it.integrityMax?'<div class="cf-integrity-actions">'+
+    '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'">−</button>'+
+    '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="1" aria-label="Recuperar Integridade de '+esc(it.name)+'">+</button></div>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
-   '<p class="cf-note">Nenhum item cadastrado.</p>')+'</div></section>';
+   '<p class="cf-note">Nenhum item cadastrado.</p>')+
+  '<p class="cf-note">Integridades G1 conforme SRD v0.44: Muito Leve 0, Leve 7, Média 12, Pesada 17. Para Graus superiores sem valor documentado, o total permanece PENDENTE. O dano deve ser registrado manualmente.</p></div></section>';
 }
 
 
