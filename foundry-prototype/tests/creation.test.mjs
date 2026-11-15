@@ -52,7 +52,7 @@ test("importa criatura comum, monstro e humanoide como Actors separados", () => 
   assert.equal(equipmentData("misc", "", "0").name, "Faca");
 });
 
-test("Dice So Nice usa as faces do Codex e anima a pilha já avaliada só para quem rolou", async () => {
+test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", async () => {
   const calls = [];
   const presets = [];
   const dice3d = {
@@ -66,7 +66,9 @@ test("Dice So Nice usa as faces do Codex e anima a pilha já avaliada só para q
     const labels = faceLabels(sides);
     assert.equal(labels.length, Number(sides));
     labels.forEach((label, i) => {
-      assert.ok(label.endsWith(faces[i].join("") + (i + 1 === faces.length ? "-max.png" : ".png")));
+      const isMax=i+1===faces.length;
+       const expected=faces[i].join("")+(isMax&&!(Number(sides)===10&&i===9)?"-max.png":".png");
+       assert.ok(label.endsWith(expected),"Textura ausente ou incorreta para d"+sides+", face "+(i+1));
       const png = readFileSync(new URL("../" + label.split("/").slice(2).join("/"), import.meta.url));
       assert.equal(png.readUInt32BE(16), 256);
       assert.equal(png.readUInt32BE(20), 256);
@@ -76,7 +78,7 @@ test("Dice So Nice usa as faces do Codex e anima a pilha já avaliada só para q
   const roll = {dice: [{results: [{result: 6}]}]};
   globalThis.game = {user, dice3d};
   await showCodexDice(roll);
-  assert.deepEqual(calls, [[roll, user, false]]);
+  assert.deepEqual(calls, [[roll, user, true]]);
   assert.equal(roll.dice[0].options.appearance.system, "codex-rpg-foundry");
   assert.equal(roll.dice[0].results[0].result, 6);
   delete game.dice3d;
