@@ -24,5 +24,8 @@
   </div>
   {{#if round}}
     <span class="codex-pavor-round" title="Pavor que entrou na reserva pública nesta rodada" aria-live="polite">R{{round}} <strong>+{{roundPavor}}P</strong><span class="codex-pavor-sr"> adicionados à reserva nesta rodada</span></span>
+    {{#if canPrepareLocal}}
+    <button type="button" class="codex-pavor-prepare-local" data-action="prepareLocal" title="Pavor local cheio para cada ameaça deste confronto, somente uma vez">Preparar ameaças</button>
+    {{/if}}
   {{/if}}
 </section>
