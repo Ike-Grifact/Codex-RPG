@@ -36,7 +36,7 @@ updated: "2026-11-15"
 
 **[PENDENTE — sem novos números]** Fixar a DE conforme espécie, circunstância, hostilidade e magia; definir a duração e a eventual repetição de testes de pacificação/domesticação, o momento exato do custo por tentativa em combate, o limite de companheiros simultâneos e se múltiplos animais acumulam bônus. Até essa definição, **não acumular automaticamente +1A ou Vida por múltiplas criaturas**. Também falta integrar o gatilho de letalidade à resolução completa de ferimentos; o sacrifício e a opção de receber dano letal devem ser registrados e adjudicados na mesa, não convertidos em cura ou imunidade automática do simulador.
 
-**Implementação do criador [DOCUMENTADO]**: manter compra de 1 XP com requisitos; um estado independente registra presença, apoio em combate e o ponto sacrificial. O teste de Domar usa a rolagem normal de Influência; o custo de 1 PP/2 Coragens, a escolha do dano letal e a pacificação exigem registro manual enquanto não há procedimento automatizado completo.
+**Implementação do criador [DOCUMENTADO]**: a compra de 1 XP verifica os requisitos; um estado independente registra presença, apoio em combate e o ponto sacrificial. A opção de teste usa **Influência + Apresentação** como fontes pertinentes, permite escolher a **DE definida pelo Narrador** e o objetivo **Pacificar ou Domesticar**, e consome **1 PP ou 2 Coragens ao finalizar a tentativa, mesmo na falha**. Um sucesso em Domesticar registra o companheiro na ficha; um sucesso em Pacificar não o domestica automaticamente. O jogador ainda declara o combate para utilizar o +1A. O sacrifício e a opção de sofrer dano letal precisam ser adjudicados na mesa e registrados manualmente na ficha, sem assumir cura ou novos pontos permanentes de Vida.
 
 ---
 
