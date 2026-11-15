@@ -266,7 +266,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const s=this.actor.system,opts={...this._opts},item=selectedItem(this.actor,opts),die=item?equippedDie(this.actor,item,opts.mode):0;
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
    if(s.animalRules){opts.extraKeep=0;opts.step=false;}
-   const cost=Number(opts.extraKeep)+Number(opts.step)+activationCost(this.actor);
+   // Opção de manter dado extra é apenas teto permitido; cobrar na confirmação
+   // conforme o número efetivo de dados mantidos (SRD pós-v0.44).
+   const cost=Number(opts.step)+activationCost(this.actor);
    if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
    const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
    if(game.combat?.started&&targets.length&&targets[0].actor){
