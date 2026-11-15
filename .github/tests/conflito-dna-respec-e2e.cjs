@@ -19,8 +19,12 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
   await page.locator('#wizard-controls [data-action="wizard-next"]').click();
   await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').click();
   assert(await page.locator("#gene-builder-map .fp-gene-card").count()===18,"O mapa DNA verdadeiro não apareceu");
+  await page.locator('#gene-builder-map .fp-gene-skill.is-potential[data-gene-id="montar"]').press("Enter");
+  page.once("dialog",d=>void d.accept());
+  await page.locator('#gene-builder-detail [data-action="gene-auto-buy"][data-id="montar"]').click();
+  await page.locator('#gene-builder-detail [data-action="gene-close-detail"]').click();
   const npcState=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-html-ficha-npc-dna-v1")));
-  assert(npcState?.attributes?.forca===1&&npcState?.practices?.atletismo===1,
+  assert(npcState?.attributes?.forca===1&&npcState?.practices?.atletismo===1&&npcState?.attributes?.influencia===2&&npcState?.skills?.includes("montar"),
    "A ficha NPC não armazenou as compras mínimas do DNA");
   page.once("dialog",d=>void d.accept());
   await page.locator("#send-to-conflito").click();
@@ -36,25 +40,24 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
   assert(transferred.main.preservarJogador==="NUNCA_SUBSTITUIR","O personagem do jogador foi sobrescrito");
   assert(transferred.npc.attributes.forca===1,"O NPC não permaneceu salvo separadamente");
   assert(transferred.conflict.roster.some(t=>t.name==="NPC Teste DNA"&&
-    t.attributes.forca===1&&t.practices.atletismo===1&&t.xp===0),
+    t.attributes.forca===1&&t.practices.atletismo===1&&t.attributes.influencia===2&&t.skills.includes("montar")&&t.xp===0),
    "A conversão de graus e XP para o Conflito está incorreta");
-  await page.locator('#editor [data-skill="combate"]').check();
   await page.locator('[data-conflict-mode="roll"]').click();
   assert(await page.locator(".cf-roll-layout").count()===1,"Fontes e rolador não estão lado a lado");
   assert(await page.locator(".cf-roll-sources .cf-source-card svg").count()>=18,
    "O modo Rolagem precisa exibir os SVGs dos dados de todas as fontes");
   await page.locator('[data-action-tab="skills"]').click();
-  assert(await page.locator('[data-conflict-action="skill"][data-action-skill="combate"]').count()===1,
+  assert(await page.locator('[data-conflict-action="skill"][data-action-skill="montar"]').count()===1,
    "A Perícia comprada não está disponível no rolador de Conflito");
   await page.locator('[data-conflict-action="skill"][data-action-skill="combate"]').click();
-  assert((await page.locator(".cf-action-shortcuts").innerText()).includes("Combate"),
+  assert((await page.locator(".cf-action-shortcuts").innerText()).includes("Montar Animal"),
    "A Perícia não foi declarada na ação");
   await page.locator("[data-roll-start]").click();
   assert(await page.locator(".cf-roll-die").count()===2,"Rolagem do NPC não usa as duas fontes");
   page.once("dialog",d=>void d.accept());
   await page.locator("[data-roll-confirm]").click();
   assert(await page.locator(".cf-history-entry").count()===1,"A rolagem não entrou no histórico");
-  assert((await page.locator(".cf-history-entry").innerText()).includes("Combate"),
+  assert((await page.locator(".cf-history-entry").innerText()).includes("Montar Animal"),
    "Histórico não registrou a Perícia declarada");
   assert(errors.length===0,"Erros Javascript no fluxo DNA/Conflito: "+errors.join(" | "));
   console.log("PASS: NPC no DNA, isolamento de saves, ações por Perícia, dados SVG e histórico");
