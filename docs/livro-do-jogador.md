@@ -1,10 +1,16 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.44](srd-continuidade-v0.44.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.45](srd-continuidade-v0.45.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Atualização normativa — 15/11/2026: Domar Criatura Pequena [DEFINIDO / PENDENTE]
+
+**Domar Criatura Pequena** substitui **Domar Animal Pequeno** (não há duas compras). **Aquisição: 1 XP; requisitos: Influência 2, Apresentação 1 e Inteligência 1.** Ativar uma tentativa custa **1 PP ou 2 Coragens** e permite realizar teste com Influência contra a DE da criatura. Alvos são criaturas pequenas, como cães, gatos e aves. No acerto, a criatura é domesticada; **atacá-la cancela o efeito**. Em combate, o personagem pode tentar **pacificá-la primeiro, para posteriormente domesticá-la**.
+
+A criatura pequena **não possui ficha**: quando domesticada e presente, fornece **+1 Antecipar em combate** e **um ponto especial de Vida antes de Inconsciente**, usado para o sacrifício que evita a morte do dono. Ao sofrer dano letal, o personagem pode deixar a criatura sacrificar-se ou **salvá-la e sofrer o dano letal**, fazendo-a fugir ou ficar sob os cuidados de aliados. **Criar Item de Foco e Magia** amplia o alcance da Perícia para **criaturas mágicas pequenas**. Comprar a Perícia não concede companheiro automaticamente; a DE específica, limites de vários companheiros e procedimento de dano letal continuam **PENDENTES**, sem bônus cumulativo presumido. Para o texto normativo, consulte [SRD v0.45, seção 0-AE](srd-continuidade-v0.45.md).
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
 
@@ -688,6 +694,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
 | Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
+| **Domar Criatura Pequena** | **1** | **Influência 2 + Apresentação 1 + Inteligência 1**; ativação 1 PP ou 2 Coragens; permite companheiro pequeno, +1A em combate e ponto sacrificial antes de Inconsciente |
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
