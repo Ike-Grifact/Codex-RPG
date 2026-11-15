@@ -355,7 +355,7 @@ function rollPane(t){
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
  const originalPool=composeActionPool(t,selectionFor(t,d),"");
  const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
- const prepare=(!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
+ const prepare=!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
   (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
    '> Manter dado adicional (1 Coragem)</label>':'')+
   '<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-step"'+(d.step?' checked':'')+
@@ -363,7 +363,7 @@ function rollPane(t){
   (d.step?'<label>Escolher dado elegível<select id="cf-roll-step-die"><option value="">Selecione o dado</option>'+
    stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepDieId===x.id?' selected':'')+'>'+
    esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
-   '</option>').join("")+'</select></label>':'')+'</div>'):"";
+   '</option>').join("")+'</select></label>':'')+'</div>':"";
  const extraHint=d.extra?'<p class="cf-note">Terceira fonte: '+esc(d.extra.group+" / "+d.extra.key)+
   ' · pertinência '+(d.contextOK?"confirmada":"pendente")+'</p>':"";
 
