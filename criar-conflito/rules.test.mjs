@@ -78,3 +78,12 @@ test("Vida atual pode ser inferior ao máximo calculado sem alterar os graus",()
  assert.equal(normalize(monster).life,6);
  assert.equal(stats(monster).life,6);
 });
+
+test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
+ const n=quickHumanoid();n.skills=["combate","armas"];
+ const copy=normalize(n);
+ assert.deepEqual(copy.skills,["combate","armas"]);
+ assert.equal(ledger(copy).skills,3);
+ assert.equal(ledger(copy).spent,6);
+ assert.equal(ledger(copy).remaining,14);
+});
