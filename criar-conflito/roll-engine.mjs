@@ -54,7 +54,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  if(!Number.isInteger(cancelP)||!Number.isInteger(convertPairs))
   return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
  const result=resolveRoll(rolled,kept,{de,situation,level:gradeLevel,
-  monster:false,hostile:true,extraKeep,courage:Number(unit.courage??10),cancelP,convertPairs});
+  monster:false,hostile:true,extraKeep:paidExtraKeep,courage:Number(unit.courage??10),cancelP,convertPairs});
  if(!result.ok)return {ok:false,error:result.errors.join("; ")};
  if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
  return {ok:true,cost:0,courageCost,result,passA,remainingA:result.aRemaining-Number(passA),
