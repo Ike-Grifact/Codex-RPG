@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.57-2">
+  <link rel="stylesheet" href="./styles.css?v=0.57-4">
   <script src="./catalog.js?v=0.44-1" defer></script>
   <script src="./gene-graph.js?v=0.57-1" defer></script>
-  <script src="./app.js?v=0.44-5" defer></script>
+  <script src="./app.js?v=0.44-7" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -43,6 +43,7 @@
       <button type="button" class="fp-secondary" id="start-wizard" hidden>Novo personagem</button>
       <span class="fp-status-pill"><span class="fp-dot"></span> Ficha unificada</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
+      <button class="fp-secondary" id="send-to-conflito" type="button" hidden>Enviar NPC ao Conflito</button>
       <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
       <button class="fp-secondary" id="import-trigger" type="button">Importar JSON</button>
       <button class="fp-secondary" id="import-old-creator" type="button" hidden title="Recuperar ficha guardada no criador anterior">Importar ficha antiga</button>
@@ -197,8 +198,13 @@
         <div class="fp-award"><button id="level-up" type="button" class="fp-primary-btn">↑ Subir nível</button><span class="fp-muted">Nenhum XP automático ao subir de nível.</span></div>
         <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
       </div>
+      <section class="fp-respec-box" aria-label="Restituição experimental de Perícias para playtest">
+        <h4>Testar outras builds · Perícias compradas</h4>
+        <p>Devolva o custo de uma Perícia para experimentar outra combinação. Compras com Perícias dependentes são protegidas; o XP recebido não muda.</p>
+        <div id="respec-skills-list" class="fp-respec-list"></div>
+      </section>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
-      <p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>EXPERIMENTAL:</strong> orçamento inicial de 20 XP compartilhados. XP não gasto segue disponível após concluir; compras consolidadas não geram reembolso automático. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
+      <p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>EXPERIMENTAL:</strong> orçamento inicial de 20 XP compartilhados. XP não gasto segue disponível após concluir. <strong>EXPERIMENTAL (playtest):</strong> o painel acima permite desfazer Perícias com conferência de dependências e restituição do custo; não constitui regra de campanha. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
     </section>
 
     <div class="fp-workspace">

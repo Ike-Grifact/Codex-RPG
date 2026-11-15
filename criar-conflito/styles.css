@@ -265,3 +265,41 @@
  .cf-item{flex-wrap:wrap}
  .cf-history-actions{width:100%}
 }
+
+
+/* Rolagem de conflitos — organização paralela ao painel da Ficha do jogador.
+   Preserva a identidade visual da versão anterior ao redesign. */
+.cf-roll-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.95fr);
+ gap:12px;align-items:start}
+.cf-roll-layout>div{min-width:0}
+.cf-roll-sources .cf-click-sources,.cf-roll-primary .cf-roll-panel,.cf-roll-primary .cf-action-shortcuts{margin:0 0 12px}
+.cf-roll-sources .cf-click-sources{padding:13px}
+.cf-roll-sources .cf-source-section{margin-top:12px}
+.cf-roll-sources .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.cf-roll-sources .cf-source-card{min-height:72px}
+.cf-roll-sources .cf-source-dice{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.cf-roll-sources .cf-source-dice .cf-die{display:inline-flex;gap:2px;align-items:center;padding:2px 4px;font-size:10px}
+.cf-roll-sources .cf-source-dice svg{width:18px;height:18px}
+.cf-roll-primary .cf-roll-panel{padding:13px}
+.cf-roll-primary .cf-roll-config{gap:7px}
+.cf-roll-primary .cf-roll-config label{min-width:0}
+.cf-roll-primary .cf-roll-dice{gap:6px}
+.cf-roll-primary .cf-roll-die{min-width:0}
+.cf-action-shortcuts{padding:13px}
+.cf-action-shortcuts h3{margin:0 0 8px}
+.cf-action-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:8px}
+.cf-action-tabs button{padding:9px 6px;min-width:0;font-size:12px;font-weight:700}
+.cf-action-tabs button.is-active{border-color:var(--accent);color:var(--accent);background:var(--surface)}
+.cf-action-choice-list{display:grid;gap:6px;max-height:210px;overflow:auto;overscroll-behavior:contain}
+.cf-action-choice{width:100%;display:grid;gap:4px;text-align:left;padding:10px;border:1px solid var(--line);
+ border-radius:9px;background:var(--bg2);color:var(--ink);font:inherit;font-size:12px;cursor:pointer}
+.cf-action-choice strong{font-size:12px}
+.cf-action-choice small{color:var(--muted);font-size:11px;line-height:1.35}
+.cf-action-choice:hover,.cf-action-choice:focus-visible,.cf-action-choice.is-selected{
+ border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.cf-roll-primary .cf-roll-panel{scroll-margin-top:12px}
+@media(min-width:1100px){.cf-roll-primary{position:sticky;top:14px}}
+@media(max-width:1100px){.cf-roll-layout{grid-template-columns:minmax(0,1fr)}.cf-roll-primary{position:static}}
+@media(max-width:600px){.cf-roll-sources .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-roll-sources .cf-click-sources,.cf-roll-primary .cf-roll-panel,.cf-action-shortcuts{padding:10px}
+ .cf-action-choice-list{max-height:155px}}

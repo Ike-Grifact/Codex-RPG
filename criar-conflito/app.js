@@ -42,7 +42,7 @@ function load(){
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
 }
-let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null;
+let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null,conflictActionTab="skills";
 function draftFor(t){
  if(rollDraft?.id!==t.id){
   const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
@@ -51,7 +51,7 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral"};
+   step:false,stepDieId:"",extraKeep:false,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
@@ -63,7 +63,7 @@ function selectionFor(t,d){
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
  const record={id:uid(),date:new Date().toISOString(),unitId:t.id,unit:t.name,kind:t.kind,
-  sources:r.sources||[],mode:r.mode||"normal",de:r.de,situation:r.situation,
+  sources:r.sources||[],mode:r.mode||"normal",declaredSkill:r.declaredSkill||"",declaredAction:r.declaredAction||"",de:r.de,situation:r.situation,
   dice:r.dice.map(d=>({group:d.group,key:d.key,sides:d.sides,baseSides:d.baseSides||d.sides,face:d.face,
    kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
   outcome:preview.result.outcome,reached:preview.result.reached,success:preview.result.success,
@@ -79,9 +79,9 @@ function downloadText(text,filename,mime){
  anchor.href=url;anchor.download=filename;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function exportRollHistory(){
- const cols=["Data","Ficha","Tipo","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
+ const cols=["Data","Ficha","Tipo","Ação declarada","Perícia declarada","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
  const csv=[cols,...(model.rollHistory||[]).map(x=>[
- x.date,x.unit,x.kind,(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
+ x.date,x.unit,x.kind,x.declaredAction||"",x.declaredSkill||"",(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
  x.e,x.a,x.p,x.damage,x.critical,x.courageSpent,x.pavorSpent,
  (x.dice||[]).map(d=>"d"+d.sides+":"+d.face+(d.kept?"(mantido)":"(descartado)")).join(" | ")
  ])].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
@@ -186,7 +186,7 @@ function gradeCards(t,group,entries){
 function skillPanel(t){
  if(t.kind!=="humanoide")return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
-  '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)).map(it=>{
+  '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
    const valid=skillPrerequisite({...t,monsterRules:false},it.id);
    return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
     (valid?'':' disabled')+'><span>'+esc(it.name)+' · '+it.cost+' XP'+(valid?'':' (requisito pendente)')+'</span></label>';
@@ -243,11 +243,11 @@ function rollSourceCards(t){
       !human&&d.first===key?"Base":!human&&d.second===key?"Segundo":""):
     human&&d.baseGroup===row.group&&d.baseKey===key?"Base":"";
    const group=row.group==="attribute"?"attribute":row.group;
-   const sides=group==="attribute"?dice(t,key):[6,10,10,10,10,12,12].length&&
+   const sides=group==="attribute"?dice(t,key):
     [[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade];
    return '<button type="button" class="cf-source-card'+(chosen?' is-selected':'')+'" data-roll-source="'+group+
     '" data-source-key="'+key+'" aria-pressed="'+Boolean(chosen)+'"><span class="cf-source-name">'+esc(name)+
-    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+(sides||[]).map(n=>'d'+n).join(" + ")+'</span>'+
+    ' <small>G'+grade+'</small></span><span class="cf-source-dice">'+dieIcons(sides||[])+'</span>'+
     (chosen?'<b>'+chosen+'</b>':'')+'</button>';
   }).join("")+'</div></section>').join("");
  const comp=composeActionPool(t,selectionFor(t,d),"");
@@ -275,9 +275,10 @@ function historyPanel(t){
   (records.length?records.map(x=>{
    const date=x.date?new Date(x.date).toLocaleString("pt-BR"):"Sem data";
    return '<details class="cf-history-entry"><summary><strong>'+esc(x.unit||"Sem nome")+'</strong>'+
-    '<span>'+esc(date)+'</span><span>'+esc(x.outcome||"Resultado")+
+    '<span>'+esc(date)+'</span><span>'+esc(x.declaredAction||"Teste básico")+' · '+esc(x.outcome||"Resultado")+
     ' · '+Number(x.reached||0)+'/DE '+Number(x.de||0)+'</span></summary>'+
     '<p>Fontes: '+esc((x.sources||[]).map(y=>y.group+":"+y.key).join(" + "))+'</p>'+
+    (x.declaredSkill?'<p>Perícia declarada: '+esc(SKILLS.find(z=>z.id===x.declaredSkill)?.name||x.declaredSkill)+'</p>':'')+
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
     ' · Crítico '+Number(x.critical||0)+'</p>'+
     '<p>Coragem '+Number(x.courageSpent||0)+' · Pavor local '+Number(x.pavorSpent||0)+
@@ -287,6 +288,54 @@ function historyPanel(t){
   (list.length>50?'<p class="cf-note">Exibidas 50 entradas mais recentes; o CSV inclui todas as até 300 preservadas.</p>':'')+
   '</section>';
 }
+
+const ELEMENTAL_NPC_SKILLS=new Set(["fogo","agua","vento","terra","psiquico","veneno","sagrado","trevas","sangue"]);
+/** Atalhos declarativos: não concedem automaticamente efeitos especiais ou dados extras. */
+function threatActions(t){
+ const human=t.kind==="humanoide",d=draftFor(t),tabs=[["weapons","Armas"],["elements","Elementos"],["skills","Perícias"]];
+ const owned=(t.skills||[]).map(id=>SKILLS.find(row=>row.id===id)).filter(Boolean);
+ const skills=owned.filter(row=>conflictActionTab==="elements"?ELEMENTAL_NPC_SKILLS.has(row.id):!ELEMENTAL_NPC_SKILLS.has(row.id));
+ const weapons=(t.items||[]).filter(item=>item.kind==="weapon");
+ let cards="";
+ if(conflictActionTab==="skills"||conflictActionTab==="elements"){
+  cards=human?skills.map(row=>'<button type="button" class="cf-action-choice'+(d.declaredSkill===row.id?" is-selected":"")+
+   '" data-conflict-action="skill" data-action-skill="'+esc(row.id)+'"><strong>'+esc(row.name)+'</strong>'+
+   '<small>Declarar na ação · requisitos, ativação e efeitos conforme SRD</small></button>').join("")+
+   (!skills.length?'<p class="cf-note">Nenhuma Perícia desta categoria foi comprada.</p>':""):
+   '<p class="cf-note">Capacidades extraordinárias são registradas na Edição e resolvidas com o Narrador.</p>';
+ }else{
+  cards='<button type="button" class="cf-action-choice" data-conflict-action="basic">Teste básico com fontes selecionadas</button>'+
+   weapons.map(item=>'<button type="button" class="cf-action-choice" data-conflict-action="weapon" data-action-item="'+
+   esc(item.id)+'"><strong>'+esc(item.name)+'</strong><small>Preparar Disciplina; escolha Atributo pertinente</small></button>').join("")+
+   (!weapons.length?'<p class="cf-note">Armas cadastradas no Inventário aparecem aqui.</p>':"");
+ }
+ return '<section class="cf-panel cf-action-shortcuts"><h3>Ações da ficha</h3>'+
+  '<div class="cf-action-tabs" role="group" aria-label="Categorias de ações">'+tabs.map(([id,name])=>
+   '<button type="button" data-action-tab="'+id+'" aria-pressed="'+(conflictActionTab===id)+'"'+
+   (conflictActionTab===id?' class="is-active"':'')+'>'+name+'</button>').join("")+'</div>'+
+  '<div class="cf-action-choice-list">'+cards+'</div>'+
+  (d.declaredAction?'<p class="cf-note"><strong>Ação declarada:</strong> '+esc(d.declaredAction)+
+   ' · efeitos específicos continuam sujeitos à habilitação.</p>':'')+'</section>';
+}
+function prepareThreatAction(kind,skillId,itemId){
+ const t=selected();if(!t)return;
+ if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de escolher outra ação.");
+ const d=draftFor(t);
+ const row=SKILLS.find(x=>x.id===skillId&&t.skills.includes(x.id));
+ const item=t.items.find(x=>x.id===itemId);
+ if(kind==="skill"&&!row)return notice("A Perícia não foi adquirida neste NPC.");
+ if(kind==="weapon"&&!item)return notice("O equipamento não pertence à ficha.");
+ if(kind==="skill"&&ELEMENTAL_NPC_SKILLS.has(skillId)){
+  if(!t.skills.includes("criar-item-foco-magia"))return notice("Conjuração requer Criar Item de Foco e Magia e foco habilitado.");
+  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="conjuracao";
+ }else if(kind==="weapon"&&t.kind==="humanoide"){
+  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="armas";
+ }
+ d.declaredSkill=row?.id||"";
+ d.declaredAction=row?.name||item?.name||(kind==="basic"?"Teste básico":"Ação natural");
+ render();
+}
+
 function rollWorkspace(t){
  const d=draftFor(t);
  return '<div class="cf-roll-workspace"><div class="cf-roll-heading"><div><span class="eyebrow">MODO ROLAGEM</span>'+
@@ -295,7 +344,8 @@ function rollWorkspace(t){
   (t.kind==="humanoide"?'<span>Coragem <b>'+t.courage+' / 10</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div>'+rollSourceCards(t)+rollPane(t)+historyPanel(t)+'</div>';
+  '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
+  '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
 }
 
 function rollPane(t){
@@ -412,11 +462,11 @@ function beginCreatureRoll(){
  const count=Math.min(planned,generated.length);
  creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
   baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
-  sources:composed.sources,de:d.de,situation:d.situation,
+  sources:composed.sources,declaredSkill:d.declaredSkill||"",declaredAction:d.declaredAction||"",de:d.de,situation:d.situation,
   extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
   dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
- refreshRoll();scrollToRoll();
+ refreshRoll();if(innerWidth<760)scrollToRoll();
 }
 function confirmCreatureRoll(){
  const t=selected(),r=creatureRoll;
@@ -608,7 +658,7 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
- if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?modo=humanoide-rapido");return;}
+ if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?npc=1");return;}
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
@@ -641,10 +691,12 @@ document.addEventListener("click",event=>{
    else if(d.first!==key){d.second=key;d.firstClicked=false;}
    else return notice("Selecione outro Atributo distinto.");
   }
-  d.stepDieId="";render();scrollToRoll();return;
+  d.stepDieId="";render();return;
  }
+ if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?b.dataset.actionTab:"skills";render();return;}
+ if(b.dataset.conflictAction)return prepareThreatAction(b.dataset.conflictAction,b.dataset.actionSkill,b.dataset.actionItem);
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
- if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();scrollToRoll();return;}
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
  if(b.dataset.open){model.active=b.dataset.open;creatureRoll=null;rollDraft=null;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);

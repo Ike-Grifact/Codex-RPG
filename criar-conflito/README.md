@@ -18,11 +18,11 @@ Múltiplas fichas no mesmo encontro, duplicação, liderança, Vida atual/máxim
 
 **PENDENTE**: orçamento máximo monstruoso por Grau, procedimentos da ficha de animais pequenos, requisitos avançados de Perícias (verificar SRD antes da sessão), tabelas de recompensa e graduação do desafio, alocação automática de Pavor entre inimigos e Narrador. O sistema não preenche essas lacunas arbitrariamente.
 
-## Criação rápida de humanoides e integração pendente com o Codex Genético
+## Criação de humanoides integrada ao Codex Genético
 
 Em **Criar Conflito**, o botão **+ NPC básico imediato** cria um humanoide de forma rápida com os investimentos mínimos de criação e permite editar graus, Perícias e itens no painel da ameaça.
 
-**PENDENTE:** transferência automática do Codex Genético do criador de Aprendizes para a ficha do conflito. O botão correspondente fica desabilitado para não prometer uma integração que a versão pública do criador ainda não suporta. Fichas do conflito são salvas localmente e importadas/exportadas em JSON por um formato próprio.
+**IMPLEMENTADO (interface experimental de playtest):** o botão **Criar humano comum pelo DNA** abre `prototipo-ficha/?npc=1`, com o Codex Genético e salvamento separado da Ficha de jogador. Use **Enviar NPC ao Conflito** para transferir Atributos, Conhecimentos, Práticas, Perícias, nível, XP e recursos básicos. Equipamentos continuam manuais no conflito, assim como efeitos não automatizados.
 
 A ficha de humanoide usa o orçamento experimental de 20 XP (com saldo livre após as compras mínimas). Não usa a progressão extraordinária de monstros.
 
@@ -53,3 +53,9 @@ A ficha de humanoide usa o orçamento experimental de 20 XP (com saldo livre ap�
 - **Integridade:** armaduras e escudos do catálogo G1 mostram valor atual/máximo, com ajustes manuais e persistência. Armaduras G1 Leve 7, Média 12, Pesada 17, Muito Leve 0; graus não documentados permanecem PENDENTES.
 
 A ferramenta web continua experimental quanto ao fluxo e a recursos opcionais de playtest. Nenhuma das regras deste módulo substitui o SRD v0.44.
+
+
+### Rolador lado a lado
+Na aba **Rolagem**, fontes com SVGs aparecem à esquerda; Armas, Elementos, Perícias compradas e controles de rolagem ficam à direita. A escolha de uma ação registra seu nome, sem conceder benefícios gratuitos; histórico/CSV/JSON guardam a declaração.
+
+**Compatibilidade de Perícias:** a Ficha apresenta Combate (1 XP) e Armas 1 (2 XP), custos já definidos e agora reconhecidos no Conflito para NPCs importados. Perícias de custo ainda PENDENTE não recebem valor nem efeito fictício.
