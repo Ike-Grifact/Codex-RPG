@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'criar-conflito/**'
+      - 'simulador-combate/**'
+      - '.github/tests/simulador-tatico-e2e.cjs'
       - '.github/workflows/conflitos-e2e.yml'
       - '.github/tests/conflito-e2e.cjs'
       - '.github/tests/conflito-rolagens-e2e.cjs'
@@ -31,10 +33,12 @@ jobs:
       - name: Validar sintaxe da interface
         run: |
           node --check criar-conflito/app.js
+          node --check simulador-combate/app.mjs
+          node --check simulador-combate/logic.mjs
           node --check criar-conflito/roll-engine.mjs
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
-        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
       - name: Instalar Chromium de teste
         run: |
           npm install --no-save playwright@1.58.2
@@ -60,3 +64,5 @@ jobs:
         run: node .github/tests/conflito-dna-respec-e2e.cjs
       - name: Três tipos de ameaça, XP e leitura de verbetes no Codex Genético
         run: node .github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs
+      - name: Simulador tático com mapa, dados e escudo no desktop e celular
+        run: node .github/tests/simulador-tatico-e2e.cjs
