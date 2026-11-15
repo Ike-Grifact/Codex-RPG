@@ -40,6 +40,16 @@ A ficha de humanoide usa o orçamento experimental de 20 XP (com saldo livre ap�
 
 `node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs foundry-prototype/tests/rules.test.mjs` para cálculos.
 
-`node .github/tests/conflito-e2e.cjs`, `node .github/tests/conflito-rolagens-e2e.cjs` e `node .github/tests/conflito-humanoides-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/conflitos-e2e.yml` executa essas verificações e os testes matemáticos automaticamente.
+`node .github/tests/conflito-e2e.cjs`, `node .github/tests/conflito-rolagens-e2e.cjs`, `node .github/tests/conflito-humanoides-e2e.cjs` e `node .github/tests/conflito-playtest-historico-e2e.cjs` para os fluxos reais em navegador Playwright/Chromium. Requer servidor local na raiz do repositório e dependência Playwright com Chromium instalado. O workflow `.github/workflows/conflitos-e2e.yml` executa essas verificações e os testes matemáticos automaticamente.
 
 **Importante**: a ferramenta é independente de autenticação; dados ficam no armazenamento do navegador. Exporte JSON antes de limpar o navegador ou compartilhar outro computador.
+## Ficha de conflito: edição e rolagem (15/11/2026)
+
+- **Modo Edição:** ficha, capacidades e graus, Perícias, recursos, equipamentos e Integridade. O modo **Rolagem** apresenta fontes clicáveis; basta escolher uma Base (Conhecimento/Prática) e Atributo para humanoides, ou dois Atributos para criaturas/monstros. Os seletores abaixo permitem ajustes e conferência de pertinência.
+- **Elevar dado [DEFINIDO v0.40]:** escolher ANTES de rolar um dado elegível (d4→d6→d10→d12). Em humanoides: 1 Coragem, debitada ao confirmar; em monstros extraordinários: 1P local sob capacidade e aprovação do Narrador. Não há d12→d20 automático.
+- **Retenção [DEFINIDO]:** humanoide nível 1–5 mantém 2 normalmente ou 3 por 1 Coragem; nível 6+ mantém 3 ou 4 por 1 Coragem. Monstros preservam a retenção própria e gasto de Pavor local. Nenhum recurso é gasto durante a prévia.
+- **Terceira fonte:** exige Perícia/capacidade válida e confirmação do Narrador; clicar na seleção não concede Perícias nem fontes adicionais.
+- **Histórico de playtests:** até 300 rolagens confirmadas em armazenamento local, com data, fontes, DE, dados rolados/mantidos, E/A/P, crítico, dano básico e recursos gastos. Faz parte do JSON de conflito existente; CSV exportável. Dano e consequências sobre alvos continuam manuais.
+- **Integridade:** armaduras e escudos do catálogo G1 mostram valor atual/máximo, com ajustes manuais e persistência. Armaduras G1 Leve 7, Média 12, Pesada 17, Muito Leve 0; graus não documentados permanecem PENDENTES.
+
+A ferramenta web continua experimental quanto ao fluxo e a recursos opcionais de playtest. Nenhuma das regras deste módulo substitui o SRD v0.44.

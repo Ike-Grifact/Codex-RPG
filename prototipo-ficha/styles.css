@@ -237,7 +237,7 @@ html[data-theme="light"]{
 .fp-roll-die.fp-die-d10 .fp-face{color:var(--fp-d10)}
 .fp-roll-die.fp-die-d12 .fp-face{color:var(--fp-d12)}
 .fp-roll-die.fp-die-d20 .fp-face{color:var(--fp-d20)}
-.fp-vitals{grid-template-columns:repeat(7,minmax(0,1fr))}
+.fp-vitals{grid-template-columns:repeat(8,minmax(0,1fr))}
 .fp-vital.fp-movement-vital{border-color:color-mix(in srgb,var(--fp-a) 50%,var(--fp-stroke))}
 .fp-movement-vital>strong{font-size:26px}
 .fp-progression{padding:19px 21px;margin-bottom:25px;scroll-margin-top:15px}
@@ -1198,3 +1198,7 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 @media(prefers-reduced-motion:reduce){
  .fp-gene-canvas .fp-gene-viewport{transition:none}
 }
+
+.fp-armor-integrity-vital{border-color:color-mix(in srgb,var(--fp-accent) 48%,var(--fp-stroke))}
+.fp-armor-integrity-vital strong{font-size:clamp(16px,1.75vw,23px);line-height:1.2;overflow-wrap:anywhere}
+.fp-armor-integrity-vital small{font-size:10px;line-height:1.35}

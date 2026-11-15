@@ -4,11 +4,15 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
  const browser=await chromium.launch({headless:true});
  try{
   const page=await browser.newPage({viewport:{width:1280,height:870}}),errors=[];
-  page.on("pageerror",e=>errors.push(e.message));
+  page.on("pageerror",e=>errors.push(e.stack||e.message));
+  const cdp=await page.context().newCDPSession(page);
+  await cdp.send("Runtime.enable");
+  cdp.on("Runtime.exceptionThrown",({exceptionDetails:d})=>errors.push("CDP "+d.url+":"+(d.lineNumber+1)+":"+(d.columnNumber+1)+" "+d.text+" "+(d.exception?.description||"")));
+  page.on("console",m=>{if(m.type()==="error")errors.push("CONSOLE: "+m.text());});
   await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
   assert(await page.getByText("Criar Conflito").count()>0,"Não abriu a área Criar Conflito");
   await page.locator("#add-threat").click();
-  assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro");
+  assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro. Erros: "+errors.join(" | ")+" · editor: "+(await page.locator("#editor").innerText()).slice(0,250));
   assert((await page.locator("#public-count").innerText()).includes("2 / 6"),"Teto público incorreto");
   await page.locator('#editor [data-field="xp"]').fill("20");
   await page.locator('#editor [data-field="xp"]').dispatchEvent("change");

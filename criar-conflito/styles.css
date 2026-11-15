@@ -210,3 +210,58 @@
 .cf-roll-outcome p{margin:0;font-size:12px;line-height:1.5}
 .cf-roll-outcome button{justify-self:start}
 @media(max-width:560px){.cf-roll-config{grid-template-columns:1fr}.cf-roll-die{min-width:104px;flex:1 1 104px}}
+
+
+/* Ficha de conflito: seleção de fontes por clique, edição e rolagem. */
+.cf-mode-tabs{display:flex;align-items:center;gap:8px;max-width:380px;padding:5px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);margin-bottom:20px}
+.cf-mode-tabs button{flex:1;min-height:43px;font-weight:700;border:1px solid transparent}
+.cf-mode-tabs button.is-active{background:var(--accent);color:#171717;border-color:var(--accent)}
+.cf-roll-heading{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:4px 0 16px}
+.cf-roll-heading h2{margin:6px 0}
+.cf-roll-heading p{font-size:13px;color:var(--muted);margin:5px 0}
+.cf-roll-resources{display:flex;flex-wrap:wrap;gap:10px}
+.cf-roll-resources>span{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line);padding:8px 12px;border-radius:11px;font-size:12px}
+.cf-roll-resources b{font-size:17px}
+.cf-roll-resources button{padding:5px 8px;min-width:28px}
+.cf-click-sources{background:var(--surface)}
+.cf-source-section{margin-top:13px}
+.cf-source-section h3{font-size:13px;margin:0 0 8px;letter-spacing:.02em;color:var(--ink)}
+.cf-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cf-main button.cf-source-card{display:flex;flex-direction:column;text-align:left;gap:6px;min-height:88px;background:var(--bg2);border:1px solid var(--line);padding:10px 12px}
+.cf-main button.cf-source-card:hover,.cf-main button.cf-source-card:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.cf-main button.cf-source-card.is-selected{border-color:var(--accent);background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+.cf-source-name{width:100%;display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:13px;font-weight:700}
+.cf-source-name small{color:var(--muted);font-size:10px}
+.cf-source-dice{font-size:11px;color:var(--muted)}
+.cf-source-card b{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+.cf-context-toggle,.cf-extra-preview{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:13px;font-size:12px;color:var(--muted)}
+.cf-context-toggle input,.cf-extra-preview input{accent-color:var(--accent)}
+.cf-extra-preview{padding:10px;border-radius:9px;border:1px solid var(--line)}
+.cf-roll-preparation{border:1px solid var(--line);border-radius:11px;padding:13px;background:var(--surface)}
+.cf-roll-switch{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;font-weight:650;color:var(--ink)!important}
+.cf-roll-switch input{width:18px;height:18px;accent-color:var(--accent)}
+.cf-roll-workspace .cf-roll-panel{scroll-margin-top:14px}
+.cf-history-head{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cf-history-head h3{margin:0 0 4px}
+.cf-history-actions{display:flex;gap:7px;flex-wrap:wrap}
+.cf-history-actions button{font-size:11px;padding:8px 10px}
+.cf-history-entry{border:1px solid var(--line);border-radius:9px;margin-top:8px;background:var(--surface);padding:0 12px}
+.cf-history-entry summary{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:13px 0;cursor:pointer;font-size:12px}
+.cf-history-entry summary strong{color:var(--ink)}
+.cf-history-entry summary span{color:var(--muted)}
+.cf-history-entry p{font-size:11px;line-height:1.55;margin:9px 0;overflow-wrap:anywhere}
+.cf-item-descriptor{display:grid;gap:4px;min-width:0}
+.cf-item-descriptor strong{font-size:12px}
+.cf-item-descriptor small{color:var(--muted)}
+.cf-integrity-label{font-size:12px;color:var(--accent)}
+.cf-integrity-actions{display:flex;gap:6px;flex-shrink:0}
+.cf-integrity-actions button{min-width:30px}
+@media(max-width:1000px){.cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:510px){
+ .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-main button.cf-source-card{padding:9px;min-height:85px}
+ .cf-history-entry summary{display:grid;grid-template-columns:1fr}
+ .cf-roll-resources{width:100%}
+ .cf-item{flex-wrap:wrap}
+ .cf-history-actions{width:100%}
+}

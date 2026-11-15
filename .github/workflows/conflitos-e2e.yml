@@ -8,6 +8,8 @@ on:
       - '.github/tests/conflito-e2e.cjs'
       - '.github/tests/conflito-rolagens-e2e.cjs'
       - '.github/tests/conflito-humanoides-e2e.cjs'
+      - '.github/tests/conflito-playtest-historico-e2e.cjs'
+      - 'prototipo-ficha/**'
       - 'index.html'
       - 'narrador.html'
   workflow_dispatch:
@@ -24,6 +26,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validar sintaxe da interface
+        run: |
+          node --check criar-conflito/app.js
+          node --check criar-conflito/roll-engine.mjs
+          node --check prototipo-ficha/app.js
       - name: Testes matematicos
         run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs
       - name: Instalar Chromium de teste
@@ -45,3 +52,5 @@ jobs:
         run: node .github/tests/conflito-rolagens-e2e.cjs
       - name: Rolagens de humanoides no PC e celular
         run: node .github/tests/conflito-humanoides-e2e.cjs
+      - name: Modo Rolagem, histórico de playtest e Integridade
+        run: node .github/tests/conflito-playtest-historico-e2e.cjs

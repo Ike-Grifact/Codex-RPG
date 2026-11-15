@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,stats,quickHumanoid} from "./rules.mjs";
+import {blank,stats,quickHumanoid,normalize} from "./rules.mjs";
 import {creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,
- publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll} from "./roll-engine.mjs";
+ publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
 
 test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
  const t=blank("monstro");t.attributes.forca=1;
@@ -116,4 +116,49 @@ test("Monstro com retenção planejada maior que a pilha não paga Pavor fictíc
  const result=previewCreatureRoll(npc,dice,dice.map(d=>d.id),{de:1});
  assert.equal(result.ok,true);
  assert.equal(result.cost,0);
+});
+
+
+test("Composição por clique: Disciplina + Força, elevação escolhida e XP intacto",()=>{
+ const npc=quickHumanoid();
+ const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
+ const basic=composeActionPool(npc,selection);
+ assert.equal(basic.ok,true);
+ assert.deepEqual(basic.pool.map(d=>d.sides),[10,6]);
+ const step=composeActionPool(npc,selection,"practice.armas_conjuracao.0");
+ assert.equal(step.ok,true);
+ assert.deepEqual(step.pool.map(d=>d.sides),[12,6]);
+ assert.equal(composeActionPool(npc,selection,"practice.armas_conjuracao.99").ok,false);
+ assert.equal(composeActionPool(npc,selection,"attribute.forca.0").pool[1].sides,10);
+ assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"},contextOK:true}).ok,false,
+  "Terceira fonte não pode ser grátis");
+});
+test("Coragem é debitada somente ao confirmar: retenção mais elevação custa 2",()=>{
+ const npc=quickHumanoid();npc.attributes.forca=2;
+ const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
+ const pool=composeActionPool(npc,selection,"attribute.forca.0");
+ assert.equal(pool.ok,true);
+ assert.deepEqual(pool.pool.map(x=>x.sides),[10,10,6]);
+ const rolled=rollCreatureFaces(pool.pool,()=>0.999);
+ const kept=rolled.map(x=>x.id);
+ const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"});
+ assert.equal(preview.ok,true);
+ assert.equal(preview.courageCost,2);
+ assert.equal(npc.courage,10);
+ const result=settleCreatureRoll(npc,2,4,preview);
+ assert.equal(result.ok,true);
+ assert.equal(result.unit.courage,8);
+ assert.equal(npc.courage,10);
+ npc.courage=1;
+ assert.equal(previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"}).ok,false);
+});
+test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=>{
+ const m=blank("monstro");
+ m.items=[{id:"arm1",name:"Armadura Leve",kind:"armor",qty:1,weight:0.125,
+  integrityMax:7,integrity:5,equipped:true}];
+ const saved=normalize(m);
+ assert.equal(saved.items[0].integrityMax,7);
+ assert.equal(saved.items[0].integrity,5);
+ const restored=normalize(saved);
+ assert.equal(restored.items[0].integrity,5);
 });
