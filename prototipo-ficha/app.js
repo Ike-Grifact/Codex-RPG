@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.41: d10 crítico 2E+1A, elevação livre e Pavor enviado ao alvo atacado; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const SAVE_KEY="codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY="codex-html-ficha-wizard-v1";
@@ -58,8 +58,8 @@ const SKILLS=[
  ],
  [
   "conjuracao-equilibrada",
-  "Conjuração Equilibrada",
-  "1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Por 1 PP ou 1 Coragem altera a magia para Pesada ou Leve. PENDENTE: confirmar se é só peso tático, não mudança do Grau numérico nem dos pesos de slots.",
+  "Conjuração Refinada",
+  "1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Destinada a aumentar a distância de disparos e efeitos mágicos. PENDENTE: alcance adicional, custo e procedimento até a reescrita pelo autor. NÃO altera peso/dados automaticamente. ID de compra preservado.",
   1
  ],
  [
@@ -592,7 +592,7 @@ const SKILL_PERMALINKS={
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
- "conjuracao-equilibrada": "conjuracao-equilibrada",
+ "conjuracao-equilibrada": "conjuracao-refinada",
  "peritoconj": "perito-conjurador",
  "improviso": "improviso-elemental",
  "mestre": "maestria-elemental",
@@ -668,7 +668,7 @@ const CARD_REQUIREMENTS={
 const CARD_EFFECTS={
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
- "conjuracao-equilibrada": "Altera a categoria da magia para Leve ou Pesada.",
+ "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
  "improviso": "+1A e elemento disponível na cena sem efeito especial.",
  "mestre": "+1A cumulativo e dois efeitos de elementos habilitados.",
  "fogo": "Fogo leve, dano e manipulação de chamas.",
@@ -700,7 +700,7 @@ const CARD_EFFECTS={
 const CARD_BRIEFS={
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
- "conjuracao-equilibrada": "Ajusta uma magia à categoria Leve ou Pesada mediante gasto, sem liberar dados nem novos Graus gratuitamente.",
+ "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
  "improviso": "Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
@@ -732,7 +732,7 @@ const CARD_BRIEFS={
 const CARD_ACTIVATIONS={
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
- "conjuracao-equilibrada": "1 PP ou 1 Coragem",
+ "conjuracao-equilibrada": "PENDENTE",
  "improviso": "Passiva",
  "mestre": "1 PP ou 1 Coragem",
  "fogo": "1 PP ou 1 Coragem",
@@ -866,7 +866,7 @@ function combatItem(item,mode){
   const map={ar:"vento",água:"agua",agua:"agua",terra:"terra",fogo:"fogo",sagrado:"sagrado",sangue:"sangue",veneno:"veneno",trevas:"trevas"};
   if(!["psiquico","psíquico"].includes(element)&&!skills.includes(map[element]||element))return [];
   // O peso físico de um cetro G1 não habilita automaticamente magia Média/Pesada.
-  return [cat==="leve"||skills.includes("conjuracao-equilibrada")?die:6];
+  return [cat==="leve"?die:6]; // Conjuração Refinada não concede dado maior pelo peso físico do foco (SRD v0.44).
  }
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
@@ -1052,7 +1052,17 @@ function normalize(v){
  s.courage=clamp(Math.floor(v.courage??10),0,10);
  s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
- s.items=Array.isArray(v.items)?v.items.slice(0,150).map(item=>normalizeItem(item)):[];
+ // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
+ // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
+ s.items=Array.isArray(v.items)?v.items.slice(0,150).map(raw=>{
+  const item=normalizeItem(raw);
+  const old={"Armadura Leve":10,"Armadura Média":15,"Armadura Pesada":20};
+  const previous=old[item.catalogId];
+  if(item.type==="armadura"&&item.grade===1&&previous&&item.max===previous){
+   item.max=previous-3;item.hp=Math.min(item.max,Math.max(0,item.hp-3));
+  }
+  return item;
+ }):[];
  const rawTrade=v.trade&&typeof v.trade==="object"?v.trade:null;
  s.trade=tradeDefault();
  if(rawTrade){
