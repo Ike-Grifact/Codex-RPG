@@ -4,7 +4,8 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
  const browser=await chromium.launch({headless:true});
  try{
   const page=await browser.newPage({viewport:{width:1280,height:870}}),errors=[];
-  page.on("pageerror",e=>errors.push(e.message));
+  page.on("pageerror",e=>errors.push(e.stack||e.message));
+  page.on("console",m=>{if(m.type()==="error")errors.push("CONSOLE: "+m.text());});
   await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
   assert(await page.getByText("Criar Conflito").count()>0,"Não abriu a área Criar Conflito");
   await page.locator("#add-threat").click();
