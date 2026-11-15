@@ -278,6 +278,7 @@ function historyPanel(t){
     '<span>'+esc(date)+'</span><span>'+esc(x.declaredAction||"Teste básico")+' · '+esc(x.outcome||"Resultado")+
     ' · '+Number(x.reached||0)+'/DE '+Number(x.de||0)+'</span></summary>'+
     '<p>Fontes: '+esc((x.sources||[]).map(y=>y.group+":"+y.key).join(" + "))+'</p>'+
+    (x.declaredSkill?'<p>Perícia declarada: '+esc(SKILLS.find(z=>z.id===x.declaredSkill)?.name||x.declaredSkill)+'</p>':'')+
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
     ' · Crítico '+Number(x.critical||0)+'</p>'+
     '<p>Coragem '+Number(x.courageSpent||0)+' · Pavor local '+Number(x.pavorSpent||0)+
@@ -287,6 +288,54 @@ function historyPanel(t){
   (list.length>50?'<p class="cf-note">Exibidas 50 entradas mais recentes; o CSV inclui todas as até 300 preservadas.</p>':'')+
   '</section>';
 }
+
+const ELEMENTAL_NPC_SKILLS=new Set(["fogo","agua","vento","terra","psiquico","veneno","sagrado","trevas","sangue"]);
+/** Atalhos declarativos: não concedem automaticamente efeitos especiais ou dados extras. */
+function threatActions(t){
+ const human=t.kind==="humanoide",d=draftFor(t),tabs=[["weapons","Armas"],["elements","Elementos"],["skills","Perícias"]];
+ const owned=(t.skills||[]).map(id=>SKILLS.find(row=>row.id===id)).filter(Boolean);
+ const skills=owned.filter(row=>conflictActionTab==="elements"?ELEMENTAL_NPC_SKILLS.has(row.id):!ELEMENTAL_NPC_SKILLS.has(row.id));
+ const weapons=(t.items||[]).filter(item=>item.kind==="weapon");
+ let cards="";
+ if(conflictActionTab==="skills"||conflictActionTab==="elements"){
+  cards=human?skills.map(row=>'<button type="button" class="cf-action-choice'+(d.declaredSkill===row.id?" is-selected":"")+
+   '" data-conflict-action="skill" data-action-skill="'+esc(row.id)+'"><strong>'+esc(row.name)+'</strong>'+
+   '<small>Declarar na ação · requisitos, ativação e efeitos conforme SRD</small></button>').join("")+
+   (!skills.length?'<p class="cf-note">Nenhuma Perícia desta categoria foi comprada.</p>':""):
+   '<p class="cf-note">Capacidades extraordinárias são registradas na Edição e resolvidas com o Narrador.</p>';
+ }else{
+  cards='<button type="button" class="cf-action-choice" data-conflict-action="basic">Teste básico com fontes selecionadas</button>'+
+   weapons.map(item=>'<button type="button" class="cf-action-choice" data-conflict-action="weapon" data-action-item="'+
+   esc(item.id)+'"><strong>'+esc(item.name)+'</strong><small>Preparar Disciplina; escolha Atributo pertinente</small></button>').join("")+
+   (!weapons.length?'<p class="cf-note">Armas cadastradas no Inventário aparecem aqui.</p>':"");
+ }
+ return '<section class="cf-panel cf-action-shortcuts"><h3>Ações da ficha</h3>'+
+  '<div class="cf-action-tabs" role="group" aria-label="Categorias de ações">'+tabs.map(([id,name])=>
+   '<button type="button" data-action-tab="'+id+'" aria-pressed="'+(conflictActionTab===id)+'"'+
+   (conflictActionTab===id?' class="is-active"':'')+'>'+name+'</button>').join("")+'</div>'+
+  '<div class="cf-action-choice-list">'+cards+'</div>'+
+  (d.declaredAction?'<p class="cf-note"><strong>Ação declarada:</strong> '+esc(d.declaredAction)+
+   ' · efeitos específicos continuam sujeitos à habilitação.</p>':'')+'</section>';
+}
+function prepareThreatAction(kind,skillId,itemId){
+ const t=selected();if(!t)return;
+ if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de escolher outra ação.");
+ const d=draftFor(t);
+ const row=SKILLS.find(x=>x.id===skillId&&t.skills.includes(x.id));
+ const item=t.items.find(x=>x.id===itemId);
+ if(kind==="skill"&&!row)return notice("A Perícia não foi adquirida neste NPC.");
+ if(kind==="weapon"&&!item)return notice("O equipamento não pertence à ficha.");
+ if(kind==="skill"&&ELEMENTAL_NPC_SKILLS.has(skillId)){
+  if(!t.skills.includes("criar-item-foco-magia"))return notice("Conjuração requer Criar Item de Foco e Magia e foco habilitado.");
+  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="conjuracao";
+ }else if(kind==="weapon"&&t.kind==="humanoide"){
+  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="armas";
+ }
+ d.declaredSkill=row?.id||"";
+ d.declaredAction=row?.name||item?.name||(kind==="basic"?"Teste básico":"Ação natural");
+ render();
+}
+
 function rollWorkspace(t){
  const d=draftFor(t);
  return '<div class="cf-roll-workspace"><div class="cf-roll-heading"><div><span class="eyebrow">MODO ROLAGEM</span>'+
@@ -295,7 +344,8 @@ function rollWorkspace(t){
   (t.kind==="humanoide"?'<span>Coragem <b>'+t.courage+' / 10</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div>'+rollSourceCards(t)+rollPane(t)+historyPanel(t)+'</div>';
+  '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
+  '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
 }
 
 function rollPane(t){
@@ -643,6 +693,8 @@ document.addEventListener("click",event=>{
   }
   d.stepDieId="";render();return;
  }
+ if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?b.dataset.actionTab:"skills";render();return;}
+ if(b.dataset.conflictAction)return prepareThreatAction(b.dataset.conflictAction,b.dataset.actionSkill,b.dataset.actionItem);
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
  if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
