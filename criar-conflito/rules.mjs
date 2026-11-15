@@ -19,6 +19,8 @@ export const monsterAttributeCost=kind=>kind==="monstro"||kind==="humanoide-mons
 // O custo adicional continua conforme a economia do tipo, sem retenção gratuita implícita.
 export const enemyKeepCap=grade=>Number(grade)>=2?4:3;
 export const enemyHumanoidFreeKeep=grade=>Number(grade)>=2?3:2;
+// Equivalência autoral conhecida: G2 ameaça ≈ nível 5 de jogador. Outros Graus pendentes.
+export const threatPlayerEquivalentLevel=grade=>Number(grade)===2?5:null;
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
 export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(n))?Number(n):min));
@@ -62,7 +64,7 @@ export function stats(t){
  const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
  const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
- return {life,de:defense,limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
+ return {life,de:defense,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
 }
