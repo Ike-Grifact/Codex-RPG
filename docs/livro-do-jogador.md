@@ -506,11 +506,11 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 ### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
 
-**Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
+**DEFINIDO — atualização autoral de 15/11/2026:** toda magia começa **no Grau 2 por padrão**, incluindo magias elementais. Quando utilizada em ataque ofensivo habilitado, **Grau 2 causa dano normalmente** após alcançar a DE, calculado pelas regras existentes. O conjurador pode **reduzir a magia para o Grau 1**, sem gastar Coragem pela redução; **Grau 1 não causa dano à Vida nem à Integridade e ativa somente seus efeitos habilitados**, mediante o teste e suas condições. O peso tático **Leve/Médio/Pesado é distinto do Grau** e não é alterado automaticamente por esta decisão. Não há elemento “Raio”; manifestações elétricas são condições pertinentes. Habilitação, preparo G2, slots, ativação e recarga conservam seus requisitos conhecidos, com harmonização de acesso em Disciplina baixa ainda PENDENTE.
 
 **Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
 
-**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
+**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia **começa no Grau 2**, mas não ganha automaticamente peso tático Médio, dados extras ou outros efeitos de Graus superiores; ao reduzir voluntariamente para G1, apenas os efeitos habilitados subsistem, sem dano.
 
 **Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
 
