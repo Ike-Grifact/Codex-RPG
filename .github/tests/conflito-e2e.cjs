@@ -18,8 +18,7 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
   await page.locator('#editor [data-field="xp"]').dispatchEvent("change");
   await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
   await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
-  assert((await page.locator("#editor").innerText()).includes("2d10")||
-      await page.locator("#editor .cf-die.d10").count()===2,"Monstro grau 2 não rolou dois d10");
+  assert(await page.locator("#editor .cf-grade.is-attr").first().locator(".cf-die.d10").count()===2,"Monstro grau 2 não exibiu dois d10 na ficha");
   assert((await page.locator(".cf-stat-life strong").innerText()).includes("3 / 4"),"Vida atual não foi mantida após subir a Vida máxima");
   await page.locator("[data-life-full]").click();
   assert((await page.locator(".cf-stat-life strong").innerText()).includes("4 / 4"),"Restaurar Vida ao máximo falhou");

@@ -9,6 +9,7 @@ on:
       - '.github/tests/conflito-rolagens-e2e.cjs'
       - '.github/tests/conflito-humanoides-e2e.cjs'
       - '.github/tests/conflito-playtest-historico-e2e.cjs'
+      - '.github/tests/fichas-ux-unificada-e2e.cjs'
       - 'prototipo-ficha/**'
       - 'index.html'
       - 'narrador.html'
@@ -54,3 +55,5 @@ jobs:
         run: node .github/tests/conflito-humanoides-e2e.cjs
       - name: Modo Rolagem, histórico de playtest e Integridade
         run: node .github/tests/conflito-playtest-historico-e2e.cjs
+      - name: Validar UX unificada da Ficha e Conflito em PC e celular
+        run: node .github/tests/fichas-ux-unificada-e2e.cjs
