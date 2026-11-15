@@ -378,50 +378,65 @@ function rollPane(t){
 function refreshRoll(){const e=el("cf-roll-panel"),t=selected();if(e&&t)e.outerHTML=rollPane(t);}
 function beginCreatureRoll(){
  const t=selected();if(!t)return;
- const human=t.kind==="humanoide";
- const group=human?el("cf-roll-group")?.value:null;
- const baseKey=human?el("cf-roll-base")?.value:null;
- const attribute=human?el("cf-roll-attr")?.value:null;
- const mode=human&&baseKey==="armas_conjuracao"?el("cf-roll-mode")?.value:"normal";
- const first=human?null:el("cf-roll-first")?.value,second=human?null:el("cf-roll-second")?.value;
- const pool=human?humanoidPool(t,group,baseKey,attribute,mode):creaturePool(t,first,second);
- if(!pool.ok)return notice(pool.error);
- const dice=rollCreatureFaces(pool.pool);
- const planned=human?Math.min(t.keep,stats(t).keepBase):t.kind==="monstro"?t.keep:2;
- const kept=Math.min(planned,dice.length);
- if(kept<1)return notice("Nenhum dado válido para manter.");
- creatureRoll={id:t.id,group,baseKey,attribute,mode,first,second,
-  de:Math.floor(clamp(el("cf-roll-de").value,0,30)),
-  situation:el("cf-roll-situation").value,dice,selected:dice.slice(0,kept).map(d=>d.id),
+ const d=draftFor(t),human=t.kind==="humanoide";
+ if(human){
+  d.baseGroup=el("cf-roll-group")?.value||d.baseGroup;
+  d.baseKey=el("cf-roll-base")?.value||d.baseKey;
+  d.attribute=el("cf-roll-attr")?.value||d.attribute;
+  d.mode=d.baseKey==="armas_conjuracao"?(el("cf-roll-mode")?.value||"armas"):"normal";
+ }else{
+  d.first=el("cf-roll-first")?.value||d.first;d.second=el("cf-roll-second")?.value||d.second;
+ }
+ d.de=Math.floor(clamp(el("cf-roll-de")?.value??d.de,0,30));
+ d.situation=el("cf-roll-situation")?.value||d.situation;
+ if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que será elevado.");
+ if(t.kind==="criatura"&&d.step)return notice("Elevação especial de criaturas comuns não está habilitada.");
+ if(creatureRoll?.id===t.id&&!confirm("Descartar a rolagem não confirmada e gerar novos dados?"))return;
+ const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepDieId:"");
+ if(!composed.ok)return notice(composed.error);
+ const courageCost=human?Number(!!d.extraKeep)+Number(!!d.step):0;
+ const pavorCost=t.kind==="monstro"?Number(!!d.step):0;
+ if(human&&courageCost>t.courage)return notice("Coragem insuficiente para preparar a rolagem.");
+ if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para elevar o dado.");
+ const generated=rollCreatureFaces(composed.pool);
+ const planned=human?stats(t).keepBase+Number(!!d.extraKeep):t.kind==="monstro"?t.keep:2;
+ const count=Math.min(planned,generated.length);
+ creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
+  baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
+  sources:composed.sources,de:d.de,situation:d.situation,
+  extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
+  dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
- refreshRoll();
+ refreshRoll();scrollToRoll();
 }
 function confirmCreatureRoll(){
  const t=selected(),r=creatureRoll;
  if(!t||!r||r.id!==t.id)return;
- const preview=(t.kind==="humanoide"?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{de:r.de,situation:r.situation,
-  cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA});
+ const preview=(t.kind==="humanoide"?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,
+  passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId});
  if(!preview.ok)return notice(preview.error);
  const settlement=settleCreatureRoll(t,model.publicPavor,model.players,preview);
  if(!settlement.ok)return notice(settlement.error);
- if(!confirm("Confirmar? Retenção custa "+settlement.spent+"P local; crítico gera "+settlement.localGain+
-  "P local e "+settlement.publicGain+"P público. Dano básico "+preview.result.damage+
-  " e Pavor residual "+settlement.residualPavor+" devem ser aplicados manualmente."))return;
- const idx=model.roster.findIndex(x=>x.id===t.id);if(idx<0)return;
- model.roster[idx]=settlement.unit;model.publicPavor=settlement.publicPavor;
+ if(!confirm("Confirmar esta rolagem e registrar no playtest? "+
+  "Custo: "+(settlement.spent||0)+" Pavor local e "+(settlement.courageSpent||0)+" Coragem. "+
+  "Dano básico "+preview.result.damage+" e Pavor residual "+settlement.residualPavor+
+  " exigem interpretação/aplicação pelo Narrador."))return;
+ const index=model.roster.findIndex(x=>x.id===t.id);if(index<0)return;
+ storeHistory(t,r,preview,settlement);
+ model.roster[index]=settlement.unit;model.publicPavor=settlement.publicPavor;
  model.lastRoll={id:t.id,outcome:preview.result.outcome,e:preview.result.e,p:preview.result.p,
   a:preview.remainingA,spent:settlement.spent};
  creatureRoll=null;save();render();
- notice("Rolagem confirmada: dano, alvos e Coragem continuam manuais.");
+ notice("Rolagem confirmada e registrada no histórico para playtest.");
 }
-
 function editorHTML(t){
  const x=stats(t),human=t.kind==="humanoide",extra=x.keepCostP,pLocal=x.limitLocal;
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
  return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind])+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
-  '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Rolar dados</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
+  '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Modo Rolagem</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
   '<div class="cf-fields">'+field("Nome","name",{wide:true})+
   field("Tipo de criatura","kind",{type:"select",choices:Object.entries(KINDS)})+
@@ -452,7 +467,7 @@ function editorHTML(t){
   (human?'':' Retenção planejada: '+extra+'P por oportunidade.')+'</p>'+
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
   (keepAvail<t.keep&&!human?'<p class="cf-note">Acumule Pavor antes de executar a retenção pretendida.</p>':"")+'</section>'+
-  rollPane(t)+
+
   '<section class="cf-panel"><h3>Atributos · dados e graus</h3>'+
   '<p>'+(t.kind==="monstro"?'Monstro extraordinário: grau 1 compra 1d10 por 2 XP; grau 6 atinge 3d12.':'Progressão comum: grau 1 compra 1d6 por 1 XP.')+
   ' Fontes respeitam o máximo de nove dados rolados por ação.</p>'+
@@ -466,7 +481,17 @@ function editorHTML(t){
   '<textarea class="cf-note-input" data-field="notes" rows="4" maxlength="4000">'+esc(t.notes)+'</textarea></label>'+
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
 }
-function render(){renderSummary();renderRoster();const t=selected();el("editor").innerHTML=t?editorHTML(t):'<div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div>';}
+function render(){
+ renderSummary();renderRoster();
+ const t=selected();
+ const tabs=t?'<div class="cf-mode-tabs" role="group" aria-label="Modo da ficha">'+
+  '<button type="button" data-conflict-mode="edit" aria-pressed="'+(conflictMode==="edit")+
+   '" class="'+(conflictMode==="edit"?"is-active":"")+'">Edição</button>'+
+  '<button type="button" data-conflict-mode="roll" aria-pressed="'+(conflictMode==="roll")+
+   '" class="'+(conflictMode==="roll"?"is-active":"")+'">Rolagem</button></div>':"";
+ el("editor").innerHTML=t?tabs+(conflictMode==="roll"?rollWorkspace(t):editorHTML(t)):
+  '<div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div>';
+}
 function update(field,value){
  const t=selected();if(!t)return;
  if(field==="kind"){
