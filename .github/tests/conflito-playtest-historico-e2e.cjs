@@ -1,0 +1,66 @@
+const {chromium}=require("playwright");
+const assert=(ok,message)=>{if(!ok)throw Error(message);};
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1330,height:900},acceptDownloads:true});
+  const errors=[];page.on("pageerror",e=>errors.push(e.message));
+  await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await page.locator("#add-human-basic").click();
+  assert(await page.locator('[data-conflict-mode="edit"]').getAttribute("aria-pressed")==="true","Não começa no modo Edição");
+  await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
+  await page.locator('[data-conflict-mode="roll"]').click();
+  assert(await page.locator(".cf-source-card").count()===18,"Faltaram Atributos, Conhecimentos ou Práticas");
+  await page.locator('[data-roll-source="attribute"][data-source-key="forca"]').click();
+  await page.locator('[data-roll-source="practice"][data-source-key="armas_conjuracao"]').click();
+  assert(await page.locator("#cf-roll-panel").isVisible(),"Painel não abriu após clique nas fontes");
+  await page.locator("#cf-roll-extra").check();
+  await page.locator("#cf-roll-step").check();
+  assert(await page.locator("#cf-roll-step-die option").count()>1,"Faltam opções individuais para elevar dado");
+  await page.locator("#cf-roll-step-die").selectOption({index:1});
+  await page.evaluate(()=>{Math.random=()=>0.999999;});
+  await page.locator("[data-roll-start]").click();
+  assert(await page.locator(".cf-roll-die").count()===3,"Força G2 + Disciplina G1 não geraram 3 dados");
+  assert(await page.locator(".cf-roll-die.is-kept").count()===3,"Coragem não liberou o terceiro dado mantido");
+  assert((await page.locator(".cf-roll-outcome").innerText()).includes("2 Coragem"),"Custo de manter e elevar dado não está exibido");
+  assert((await page.locator(".cf-roll-resources").innerText()).includes("10 / 10"),"Coragem foi gasta antes da confirmação");
+  page.once("dialog",d=>void d.accept());
+  await page.locator("[data-roll-confirm]").click();
+  assert((await page.locator(".cf-roll-resources").innerText()).includes("8 / 10"),"Não debitou as 2 Coragens após a confirmação");
+  assert(await page.locator(".cf-history-entry").count()===1,"Histórico não registrou rolagem");
+  assert((await page.locator(".cf-history-entry").innerText()).includes("2"),"Histórico não contém custo de recursos");
+  const download=page.waitForEvent("download");
+  await page.locator("[data-export-rolls]").click();
+  assert((await download).suggestedFilename().endsWith(".csv"),"Não exportou histórico em CSV");
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.locator('[data-conflict-mode="roll"]').click();
+  assert(await page.locator(".cf-history-entry").count()===1,"Histórico não persistiu no navegador");
+  assert((await page.locator(".cf-roll-resources").innerText()).includes("8 / 10"),"Coragem não persistiu");
+  assert(errors.length===0,"Erros JS do painel: "+errors.join(" | "));
+  console.log("PASS modo Edição/Rolagem, fontes clicáveis, Coragem 2P, elevação, CSV e histórico");
+
+  const equip=await browser.newPage({viewport:{width:1220,height:800}});
+  const equipErrors=[];equip.on("pageerror",e=>equipErrors.push(e.message));
+  await equip.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await equip.locator("#add-threat").click();
+  const armorOpt=equip.locator("#catalog-choose option").filter({hasText:"Armadura Leve"}).first();
+  assert(await armorOpt.count()===1,"Armadura Leve não encontrada no catálogo");
+  await equip.locator("#catalog-choose").selectOption(await armorOpt.getAttribute("value"));
+  await equip.locator("[data-add-catalog]").click();
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 7 / 7"),"Integridade G1 não aparece");
+  await equip.locator('[data-integrity][data-delta="-1"]').click();
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Não reduziu integridade");
+  await equip.reload({waitUntil:"domcontentloaded"});
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Integridade não persistiu");
+  assert(equipErrors.length===0,"Erros JS do inventário: "+equipErrors.join(" | "));
+  console.log("PASS armadura G1 7/7, dano manual e persistência");
+
+  const player=await browser.newPage({viewport:{width:1290,height:900}});
+  const playerErrors=[];player.on("pageerror",e=>playerErrors.push(e.message));
+  await player.goto("http://127.0.0.1:8000/prototipo-ficha/",{waitUntil:"domcontentloaded"});
+  assert(await player.locator("#armor-integrity-text").count()===1,"Ficha do jogador sem resumo de Integridade");
+  assert((await player.title()).startsWith("Ficha de personagem"),"A ferramenta ainda usa o nome antigo");
+  assert(playerErrors.length===0,"Erros JS da Ficha: "+playerErrors.join(" | "));
+  console.log("PASS Ficha renomeada e Integridade visível no topo");
+ }finally{await browser.close();}
+})().catch(err=>{console.error(err.stack||err);process.exitCode=1;});
