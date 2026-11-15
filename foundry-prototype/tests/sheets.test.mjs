@@ -13,8 +13,35 @@ class ApplicationV2 {
 globalThis.foundry = {
   applications: {api: {ApplicationV2, HandlebarsApplicationMixin: Base => Base}},
 };
-const {CodexPavorHUD, openPublicPavor, registerPublicPavor, transferCombatPavor} = await import("../module/pavor-panel.mjs");
+const {CodexPavorHUD, openPublicPavor, registerPublicPavor, transferCombatPavor,prepareCombatPavor} = await import("../module/pavor-panel.mjs");
 
+test("Preparação do combate: cada ameaça começa cheia uma única vez",async()=>{
+ const actors=[
+  {uuid:"a1",type:"creature",system:{threatGrade:1,pavorLocal:0}},
+  {uuid:"a2",type:"humanoid",system:{threatGrade:2,pavorLocal:0}},
+  {uuid:"a3",type:"animal",system:{threatGrade:6,pavorLocal:0}},
+  {uuid:"p1",type:"character",system:{threatGrade:1,pavorLocal:0}}
+ ];
+ for(const a of actors)a.update=async update=>{a.system.pavorLocal=update["system.pavorLocal"];};
+ let stored=null,updateCount=0;
+ const combat={started:true,round:1,
+  combatants:actors.map((actor,i)=>({id:String(i),actor})),
+  getFlag:(_ns,key)=>key==="localPavorPrepared"?stored:null,
+  async setFlag(_ns,key,v){if(key==="localPavorPrepared")stored=v;}
+ };
+ for(const a of actors){const old=a.update;a.update=async v=>{updateCount++;await old(v);};}
+ globalThis.game={user:{isActiveGM:true}};
+ const first=await prepareCombatPavor(combat);
+ assert.equal(first.prepared,3);
+ assert.deepEqual(actors.map(a=>a.system.pavorLocal),[4,5,8,0]);
+ assert.equal(updateCount,3);
+ actors[0].system.pavorLocal=2;
+ const second=await prepareCombatPavor(combat);
+ assert.equal(second.alreadyPrepared,true);
+ assert.equal(actors[0].system.pavorLocal,2,"Não deve restaurar Pavor gasto em nova rodada");
+ combat.round=2;
+ await assert.rejects(()=>prepareCombatPavor(combat),/começo do conflito/);
+});
 test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da mesa", async () => {
   const stored = new Map();
   const config = new Map();
