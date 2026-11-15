@@ -613,11 +613,40 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
  if(b.id==="export-encounter")return exportJson();
- if(b.hasAttribute("data-open-roll")){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"center"});return;}
+ if(b.hasAttribute("data-open-roll")){conflictMode="roll";render();scrollToRoll();return;}
+ if(b.dataset.conflictMode){conflictMode=b.dataset.conflictMode==="roll"?"roll":"edit";render();return;}
+ if(b.dataset.courage){const t=selected();if(!t||t.kind!=="humanoide")return;
+  t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,10));save();render();return;}
+ if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
+ if(b.hasAttribute("data-export-rolls")){exportRollHistory();return;}
+ if(b.hasAttribute("data-clear-rolls")){if(confirm("Apagar todo o histórico de rolagens? Exporte CSV ou JSON antes de limpar.")){
+   model.rollHistory=[];save();render();}return;}
+ if(b.dataset.historyScope){model.historyScope=b.dataset.historyScope;save();render();return;}
+ if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.contextOK=false;d.stepDieId="";render();return;}
+ if(b.dataset.rollSource){
+  const t=selected();if(!t||conflictMode!=="roll")return;
+  if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de trocar as fontes.");
+  const d=draftFor(t),group=b.dataset.rollSource,key=b.dataset.sourceKey;
+  if(d.pickExtra){
+   const duplicate=t.kind==="humanoide"?
+    (group==="attribute"&&d.attribute===key||group===d.baseGroup&&d.baseKey===key):
+    (key===d.first||key===d.second);
+   if(duplicate)return notice("Escolha uma terceira fonte diferente.");
+   d.extra={group,key};d.contextOK=false;d.pickExtra=false;
+  }else if(t.kind==="humanoide"){
+   if(group==="attribute")d.attribute=key;else{d.baseGroup=group;d.baseKey=key;
+    d.mode=key==="armas_conjuracao"?"armas":"normal";}
+  }else if(group==="attribute"){
+   if(!d.firstClicked){d.first=key;d.firstClicked=true;}
+   else if(d.first!==key){d.second=key;d.firstClicked=false;}
+   else return notice("Selecione outro Atributo distinto.");
+  }
+  d.stepDieId="";render();scrollToRoll();return;
+ }
  if(b.hasAttribute("data-roll-start"))return beginCreatureRoll();
- if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();return;}
+ if(b.hasAttribute("data-roll-clear")){creatureRoll=null;render();scrollToRoll();return;}
  if(b.hasAttribute("data-roll-confirm"))return confirmCreatureRoll();
- if(b.dataset.open){model.active=b.dataset.open;save();render();return;}
+ if(b.dataset.open){model.active=b.dataset.open;creatureRoll=null;rollDraft=null;save();render();return;}
  if(b.dataset.copy)return duplicate(b.dataset.copy);
  if(b.dataset.delete)return remove(b.dataset.delete);
  if(b.hasAttribute("data-joint"))return publicJointSpend(Number(b.dataset.joint));
@@ -632,7 +661,7 @@ document.addEventListener("click",event=>{
 document.addEventListener("change",event=>{
  const target=event.target;
  if(target.dataset.rollKeep&&creatureRoll){
-   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=t.kind==="humanoide"?Math.min(t.keep,stats(t).keepBase):t.kind==="monstro"?t.keep:2;
+   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=t.kind==="humanoide"?stats(t).keepBase+Number(!!r.extraKeep):t.kind==="monstro"?t.keep:2;
    if(target.checked){if(r.selected.length>=max){notice("Desmarque antes um dado.");return refreshRoll();}r.selected.push(id);}
    else r.selected=r.selected.filter(x=>x!==id);
    refreshRoll();return;
@@ -643,19 +672,33 @@ document.addEventListener("change",event=>{
    else if(k==="cancelP"||k==="convertPairs")creatureRoll[k]=Math.floor(clamp(target.value,0,9));
    refreshRoll();return;
   }
-  if(target.id==="cf-roll-group"){
+  if(target.id==="cf-pick-extra"){const d=draftFor(selected());d.pickExtra=target.checked;render();return;}
+ if(target.id==="cf-context-ok"){const d=draftFor(selected());d.contextOK=target.checked;render();return;}
+ if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
+ if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
+ if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
+ if(target.id==="cf-roll-de"){draftFor(selected()).de=Math.floor(clamp(target.value,0,30));return;}
+ if(target.id==="cf-roll-situation"){draftFor(selected()).situation=target.value;return;}
+ if(target.id==="cf-roll-mode"){draftFor(selected()).mode=target.value;return;}
+ if(target.id==="cf-roll-attr"){draftFor(selected()).attribute=target.value;return;}
+ if(target.id==="cf-roll-first"){draftFor(selected()).first=target.value;return;}
+ if(target.id==="cf-roll-second"){draftFor(selected()).second=target.value;return;}
+ if(target.id==="cf-roll-group"){
   const group=target.value,list=el("cf-roll-base"),options=group==="knowledge"?KNOWLEDGES:PRACTICES;
+  const d=draftFor(selected());d.baseGroup=group;
   const t=selected();
   if(list&&t){
    const field=group==="knowledge"?"knowledges":"practices";
    const first=options.find(([key])=>key!=="armas_conjuracao"&&t[field][key]>0)?.[0]||
     (group==="knowledge"?"protecao":"atletismo");
    list.innerHTML=options.map(([key,name])=>'<option value="'+key+'"'+(key===first?' selected':'')+'>'+esc(name)+'</option>').join("");
+   d.baseKey=first;d.mode=first==="armas_conjuracao"?"armas":"normal";
    const mode=el("cf-roll-mode");if(mode)mode.disabled=first!=="armas_conjuracao";
   }
   return;
  }
  if(target.id==="cf-roll-base"){
+  const d=draftFor(selected());d.baseKey=target.value;d.mode=target.value==="armas_conjuracao"?"armas":"normal";
   const mode=el("cf-roll-mode");if(mode)mode.disabled=target.value!=="armas_conjuracao";return;
  }
  if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
