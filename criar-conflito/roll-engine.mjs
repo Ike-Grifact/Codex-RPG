@@ -2,13 +2,13 @@
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
 import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,toSystem,stats} from "./rules.mjs?v=0.44-3";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,toSystem,stats} from "./rules.mjs?v=20261115-kinds1";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
 
 export function creaturePool(unit,primary,secondary){
- if(!unit||unit.kind==="humanoide")return {ok:false,error:"Humanoides devem usar a rolagem com Prática/Conhecimento e Atributo na ficha completa."};
+ if(!unit||isHumanoidKind(unit.kind))return {ok:false,error:"Humanoides devem usar a rolagem com Prática/Conhecimento e Atributo na ficha completa."};
  if(!keys.has(primary)||!keys.has(secondary)||primary===secondary)return {ok:false,error:"Escolha dois Atributos diferentes e pertinentes."};
  const system=toSystem(unit);
  const pool=[primary,secondary].flatMap(key=>sourceDice("attribute",key,system).map((sides,i)=>({
@@ -19,7 +19,7 @@ export function creaturePool(unit,primary,secondary){
 }
 /** A fonte base humana é Conhecimento/Prática + Atributo; Disciplina exige modo e habilitação. */
 export function humanoidPool(unit,baseGroup,baseKey,attributeKey,mode="normal"){
- if(!unit||unit.kind!=="humanoide")return {ok:false,error:"Esta rolagem exige um NPC humanoide."};
+ if(!unit||!isHumanoidKind(unit.kind))return {ok:false,error:"Esta rolagem exige um NPC humanoide."};
  if(!["knowledge","practice"].includes(baseGroup))
   return {ok:false,error:"Escolha um Conhecimento ou uma Prática como fonte base."};
  const result=buildPool({...unit,monsterRules:false},{
@@ -30,7 +30,7 @@ export function humanoidPool(unit,baseGroup,baseKey,attributeKey,mode="normal"){
 
 /** Versão básica do teste humanoide; efeitos de Perícias e dados de equipamento não são automáticos. */
 export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
- if(!unit||unit.kind!=="humanoide")return {ok:false,error:"Selecione um humanoide."};
+ if(!unit||!isHumanoidKind(unit.kind))return {ok:false,error:"Selecione um humanoide."};
  const de=Number(options.de),situation=String(options.situation||"neutral");
  const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
  const extraKeep=!!options.extraKeep;
@@ -57,7 +57,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
 /** Composição por fontes escolhidas: terceira fonte exige habilidade e pertinência. */
 export function composeActionPool(unit,selection={},stepDieId=""){
  if(!unit)return {ok:false,error:"Selecione uma ficha."};
- const human=unit.kind==="humanoide",system=toSystem(unit),extra=selection.extra;
+ const human=isHumanoidKind(unit.kind),system=toSystem(unit),extra=selection.extra;
  const sources=human?[
   {group:selection.baseGroup,key:selection.baseKey},
   {group:"attribute",key:selection.attribute}
@@ -109,7 +109,7 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
  const count=kept.length;
  const cap=unit?.kind==="monstro"?stats(unit).keepMax:2;
  const cost=unit?.kind==="monstro"?Math.max(0,count-2)+Number(!!options.stepDieId):0;
- if(!unit||unit.kind==="humanoide")return {ok:false,error:"Este simulador é para criaturas não humanoides."};
+ if(!unit||isHumanoidKind(unit.kind))return {ok:false,error:"Este simulador é para criaturas não humanoides."};
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
