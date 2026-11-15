@@ -7,8 +7,11 @@ export function equippedDie(actor,item,mode){
  if(mode==="conjuracao"){
   if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
   if(!keys.includes("criar-item-foco-magia"))return 0;
-  const el=(item.system.element||"").toLowerCase().trim();
-  if(el&&el!=="psiquico"&&el!=="psíquico"&&!keys.some(x=>x.includes("elemento")&&x.includes(el)))return 0;
+  const el=(item.system.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+  const skill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",sagrado:"sagrado",
+   trevas:"trevas",veneno:"veneno",sangue:"sangue"}[el];
+  // Os IDs reais de Perícias são 'trevas', 'fogo', 'agua' etc.; não contêm 'elemento'.
+  if(el&&el!=="psiquico"&&(!skill||!keys.includes(skill)))return 0;
  }else if(mode==="armas"){
   if(!["weapon","firearm"].includes(k))return 0;
   if(k==="firearm"){if(!keys.includes("armas-fogo"))return 0;}
@@ -19,6 +22,8 @@ export function equippedDie(actor,item,mode){
   }
  }else return 0;
  const die=Number(item.system.die)||({leve:6,medio:10,pesado:12}[cat]||0);
+ // O peso físico de um cetro G1 não concede dado de magia Média/Pesada sem habilitação.
+ if(mode==="conjuracao"&&cat!=="leve")return 6; // Refinada não aumenta dados nem peso; alcance novo PENDENTE SRD v0.44.
  return [6,10,12].includes(die)?die:0;
 }
 export function skillPrerequisite(system,id){

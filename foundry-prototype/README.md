@@ -13,9 +13,23 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 ## Fichas disponíveis
 
-- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, PP, DE e Carga.
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; mínimo de um Atributo G1 e um Conhecimento OU Prática G1, demais XP livres conforme orçamento experimental vigente; Vida, Coragem, PP, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
-- **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
+- **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva local de Pavor **DEFINIDA no SRD v0.41**: G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
+
+## Armaduras G1 e Conjuração Refinada [SRD v0.44 — implementação parcial]
+
+A Integridade nominal dos itens de catálogo G1 mudou: **Armadura Leve 7, Média 12, Pesada 17; Muito Leve 0**. Os escudos G1 **6/9/12 não mudam**; Escudo Arcano e iniciativa também permanecem iguais. Os itens antigos já existentes em mundos Foundry requerem revisão/atualização manual dos valores atuais, preservando danos sofridos (não existe migração automática de atores neste protótipo).
+
+A antiga **Conjuração Equilibrada** é exibida como **Conjuração Refinada**, mas conserva o ID de aquisição `conjuracao-equilibrada`. Ela ampliará o alcance de efeitos mágicos; metros e custo permanecem **PENDENTES**, sem dados maiores, alteração de peso ou bônus automático por possuir a Perícia.
+
+As pedras comuns podem receber um preço **experimental B VT** no criador web; **Veneno/Sagrado/Trevas custam automaticamente 3B VT**. Não há preço-base oficial homologado. A proposta de dispensar testes rotineiros acima de 95% é apenas análise matemática, não regra.
+
+## Revisão de recursos e foco [SRD v0.43 — implementação parcial]
+
+A ativação paga comum de Perícias passa a **1 PP OU 1 Coragem**. Para conjuração com **foco equipado correspondente ao elemento + Perícia desse elemento + Criar Item de Foco e Magia**, o efeito elemental habilitado é **gratuito quanto à ativação-base**. O protótipo implementa esta isenção na técnica de **Trevas** e na característica **Elemental** do foco; outros efeitos especiais elementais continuam exigindo adjudicação manual até haver automação. Compras em XP não mudam. A amplificação para peso máximo de magia (**+1 Coragem**) e a redução gratuita com recarga **não estão automatizadas**, pois o limite de peso/Grau ainda precisa ser fechado.
+
+A validação do foco agora consulta os **IDs reais de Perícias** (Fogo, Água, Terra, Ar/Vento, Trevas, etc.) em vez de exigir que seus nomes internos contenham “elemento”. A compra de pedras com preços definidos pela mesa foi preparada **somente no criador web**, não neste protótipo Foundry.
 
 ## Rolagem
 
@@ -28,11 +42,30 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 As seis classificações de situação não são classes de ataque separadas. Quando a ação não supera a DE, o chat diferencia falha sem símbolos, falha com Êxito e falha com Pavor. Quando supera a DE, diferencia acerto limpo, acerto neutro com Pavor e acerto com Pavor predominante.
 
+## Pavor local de inimigos no início de um conflito [DEFINIDO — SRD v0.41]
+
+No início de um combate (`combatStart` do Foundry), o sistema preenche **uma única vez** o Pavor local de cada Actor de oposição (`humanoid` ou `creature`) incluído no conflito, com o teto do seu Grau. A escala aprovada é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. A ficha de Personagem (`character`) não é alterada.
+
+**Nenhuma outra regra muda:** ter Pavor não cria turnos adicionais nem dispensa oportunidade válida; ativação, deslocamento, elevação de dado, retenção, crítico, área, magia, progressão de Perícias e custos continuam iguais. A reserva não é restaurada automaticamente em cada turno nem rodada. Se uma ameaça dispõe de múltiplas capacidades habilitadas, pode gastar os pontos normais conforme suas regras. O teto da reserva **pública** do Narrador não muda.
+
+A escala e o preenchimento inicial são **DEFINIDOS no SRD v0.41**. A inicialização automática ainda exige **teste integrado em uma instância real do Foundry**; usa o hook oficial `combatStart` e é executada somente pelo cliente do GM que iniciou o combate. Inimigos adicionados ao combate após seu início não recebem esta inicialização automaticamente; o Narrador deve ajustá-los manualmente até haver decisão sobre reforços.
+
+## Técnica de Trevas: bônus e dois alvos [DEFINIDO — SRD v0.42]
+
+Com **Perícia em Elemento Trevas** adquirida e **Disciplina em Conjuração**, habilite a opção **Usar Trevas** na preparação da ação. O bônus de **+2P** integra a única rolagem **antes da DE**; conta para **acerto, dano e Pavor transferido** se não for anulado. O custo especial continua em **1 PP ou 2 Coragens no acerto**; a sequência de pagamento em falhas permanece PENDENTE, não são inventados custos extras.
+
+Selecione **um ou dois Tokens de alvos distintos**. Para dois, o resultado completo da rolagem é comparado com a **DE própria de cada alvo** e o Narrador vê o resultado individual no chat. Escolha antes da rolagem como atribuir o **Pavor residual**:
+- **Dividir:** metade para cada alvo; se o total for ímpar, o alvo escolhido na interface recebe o ponto adicional (distribuição mais equilibrada possível).
+- **Concentrar:** todo o Pavor num alvo escolhido, zero no outro.
+- **Um alvo:** a técnica não exige dois alvos; todo o Pavor vai ao único adversário escolhido.
+
+Os 2P da técnica **não são gerados duas vezes**. A transferência usa o UUID dos alvos selecionados e os tetos locais; nunca usa proximidade. Dano e proteção ainda exigem adjudicação do Narrador. Outras habilidades/ataques com múltiplos alvos continuam sujeitos a resolução manual até decisão própria. O site permite experimentar o +2P e orienta a distribuição, mas não possui duas fichas de alvos para transferência automática.
+
 ## Pavor do Narrador
 
 Ao entrar, o Narrador tem um **painel manual de Pavor público**. O teto é `2 + quantidade de jogadores cadastrados`; o saldo começa em 2 e não ultrapassa o teto. É possível adicionar/remover Pavor manualmente sem duplicar símbolos descartados.
 
-Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
+Com combate ativo e um único alvo selecionado, o sistema transfere **Pavor mantido e não anulado ao Actor declarado como alvo do ataque** — **não** ao inimigo mais próximo, mesmo para ataque à distância ou falho. Monstros e humanoides da oposição recebem Pavor local até o teto **Grau + 3, limitado a 8P**; personagens atacados por inimigos recebem Coragem (1 por Pavor, até 10). A operação é realizada no cliente do Narrador a partir de mensagem de chat. Em ações sem alvo selecionado, a transferência automática para uma reserva local não é realizada; selecione o Token correto para contabilizar Pavor de ataques contra um alvo. A distribuição em áreas/múltiplos alvos e em ações sem alvo segue PENDENTE. Pavor excedente de ataques não é automaticamente convertido em saldo público; a decisão de alocação permanece manual, conforme solicitado. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
 
 **Importante:** o mecanismo de transferência por chat ainda requer validação multijogador, especialmente de permissões, casos simultâneos e adversários pertencentes a jogadores. Não utilize como contabilidade oficial sem conferir a reserva na ficha.
 
@@ -45,7 +78,7 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 ## Limites da automação atual
 
-Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Combinações de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. A seleção de dois alvos e a divisão de Pavor foram automatizadas **apenas para a técnica de Trevas**. **Domar e Montar** continuam em revisão.
 
 ## Testes de regras
 

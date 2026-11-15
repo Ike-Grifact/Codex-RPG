@@ -1,5 +1,5 @@
 /* Painel manual do Narrador: Pavor público limitado a 2 + jogadores. */
-import {narratorCap} from "./rules.mjs";
+import {narratorCap,monsterCap} from "./rules.mjs";
 export const NS="codex-rpg-foundry";
 export const playerCount=()=>game.users.filter(u=>!u.isGM).length;
 export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
@@ -28,21 +28,29 @@ export async function transferCombatPavor(message){
  if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
  const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
- if(obj.targetUuid){
-  const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","creature"].includes(target.type)){
-   const add=Math.max(0,obj.p);
-   if(obj.targetType==="character")
-    await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
-   else {
-    const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
-    await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-    // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
-   }
+ // SRD v0.42: um ataque de Trevas pode transferir o Pavor não anulado a dois alvos,
+ // dividido ou concentrado; jamais duplicar nem recalcular pela distância.
+ const entries=Array.isArray(obj.targets)?obj.targets:
+   (obj.targetUuid?[{targetUuid:obj.targetUuid,p:obj.p}]:[]);
+ if(Array.isArray(obj.targets)){
+  if(entries.length!==2||entries.some(x=>!x||typeof x.targetUuid!=="string"
+   ||!Number.isInteger(x.p)||x.p<0)||new Set(entries.map(x=>x.targetUuid)).size!==2
+   ||entries.reduce((n,x)=>n+x.p,0)!==obj.p)return;
+ }
+ for(const entry of entries){
+  if(!entry.p)continue;
+  const target=await fromUuid(entry.targetUuid);
+  if(!target||!["character","humanoid","creature"].includes(target.type))continue;
+  if(target.type==="character")
+   await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+entry.p)});
+  else {
+   const cap=monsterCap(target.system.threatGrade);
+   await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+entry.p)});
+   // Excedente permanece para decisão do Narrador, nunca para o alvo mais próximo.
   }
  }
  if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
-  const cap=Math.max(1,Math.min(6,Number(owner.system.threatGrade||1)));
+  const cap=monsterCap(owner.system.threatGrade);
   const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
   const saved=Math.min(available,obj.monsterCriticalPavor);
   if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});

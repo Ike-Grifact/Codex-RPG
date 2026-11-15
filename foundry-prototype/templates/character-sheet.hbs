@@ -126,6 +126,19 @@
             <option value="conjuracao" {{#if codex.prepare.modeConjuracao}}selected{{/if}}>Conjuração</option>
           </select></label>
         {{/if}}
+        {{#if codex.prepare.hasTrevas}}
+        <label class="codex-check"><input type="checkbox" data-roll-option="trevasEnabled" {{#if codex.prepare.trevasEnabled}}checked{{/if}}> Usar Trevas: +2P para DE, dano e risco (1 PP ou 2 Coragens no acerto)</label>
+        {{#if codex.prepare.trevasEnabled}}
+        <p class="codex-tip">Trevas permite até dois alvos distintos. A mesma rolagem compara a DE de cada alvo, mas o Pavor só pode ser distribuído uma vez.</p>
+        {{#if codex.prepare.trevasMultipleTargets}}
+        <label>Destino do Pavor<select data-roll-option="trevasDistribution">
+          <option value="split" {{#if codex.prepare.trevasDistributionSplit}}selected{{/if}}>Dividir tão igualmente quanto possível</option>
+          <option value="focus" {{#if codex.prepare.trevasDistributionFocus}}selected{{/if}}>Concentrar todo o Pavor em um só alvo</option>
+        </select></label>
+        <label>Alvo prioritário para concentração ou Pavor indivisível<select data-roll-option="trevasPreferredUuid">
+          {{#each codex.prepare.trevasTargetOptions}}<option value="{{this.uuid}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
+        </select></label>
+        {{/if}}{{/if}}{{/if}}
         <label>DE (Dificuldade de Êxito)<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -139,7 +152,10 @@
         {{else}}
         <label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>
         {{/if}}
-        <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 Coragem</label>
+        <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado à escolha por 1 Coragem</label>
+        {{#if codex.prepare.step}}<label>Dado que recebe a elevação<select data-roll-option="stepDieId">
+          {{#each codex.prepare.stepChoices}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
+        </select></label>{{/if}}
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
         {{#if codex.prepare.weightEnabled}}
@@ -188,17 +204,23 @@
           <option value="{{this.name}}" {{#if this.selectedSecond}}selected{{/if}}>{{this.name}}</option>
          {{/each}}
         </select></label>
-        <label>Pagamento da característica paga<select data-pending-option="activationPayment">
-         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>2 Coragens (ou P local para monstro: em revisão)</option>
-         <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP</option>
-        </select></label>
+        
         {{/if}}
+        {{#if codex.pending.hasPaidEffect}}
+        <label>Pagamento de efeito especial no acerto<select data-pending-option="activationPayment">
+         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>1 Coragem por efeito (ou Pavor local da ameaça)</option>
+         <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP por efeito (personagens)</option>
+        </select></label>{{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
+        {{#if codex.pending.trevasEnabled}}<p class="codex-tip">Trevas: bônus de +2P já incluído na DE. Distribuição do Pavor: {{codex.pending.trevasDistribution}}. Com foco válido e Perícia do elemento, o efeito elemental não paga ativação base.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>
         <label>Converter Antecipar (2A → 1E)<input type="number" data-pending-option="convertPairs" min="0" value="{{codex.pending.convertPairs}}"></label>
       </div>
       {{#if codex.pending.summary}}
         {{#if codex.pending.summary.ok}}
+          {{#if codex.pending.trevasEnabled}}{{#each codex.pending.targetResults}}
+          <p><strong>{{this.name}}:</strong> DE {{this.de}} · resultado {{this.reached}} · {{#if this.success}}acerto{{else}}falha{{/if}}</p>
+          {{/each}}<p class="codex-tip">O quadro geral abaixo usa a DE do primeiro alvo; para dois alvos, os acertos são os resultados individuais acima.</p>{{/if}}
           <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}

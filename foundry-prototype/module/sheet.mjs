@@ -1,16 +1,17 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,affinity,xpLedger,monsterCap,distributeDarknessPavor} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {CodexPavorPanel} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
-const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
+const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage",
+ trevasEnabled:false,trevasDistribution:"split",trevasPreferredUuid:""});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
@@ -23,7 +24,18 @@ const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(
  .map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
 const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
 const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
-const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
+const bonusP=(dice,selected,opts)=>(opts.noisy?(isCrit(dice,selected)?2:1):0)+(opts.trevasEnabled?2:0);
+const mayUseTrevas=(actor,d,opts)=>opts.mode==="conjuracao"&&d.base?.group==="practice"&&d.base.key==="armas_conjuracao"&&(actor.system.skills||[]).includes("trevas");
+// SRD v0.43: foco equipado e Perícia elemental pertinente tornam um efeito habilitado gratuito.
+const freeFocusElement=(actor,item,opts,required="")=>{
+ if(opts.mode!=="conjuracao"||item?.system.kind!=="focus"||!item.system.equipped)return false;
+ const skills=actor.system.skills||[];
+ if(!skills.includes("criar-item-foco-magia"))return false;
+ const el=(item.system.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+ const ids={fogo:"fogo",agua:"agua",ar:"vento",vento:"vento",terra:"terra",veneno:"veneno",
+  sagrado:"sagrado",trevas:"trevas",sangue:"sangue"};
+ return !!ids[el]&&skills.includes(ids[el])&&(!required||required===el);
+};
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
 function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
@@ -69,9 +81,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   };
   if(ctx.codex.preparing){
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
-   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
+   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets],canTrevas=mayUseTrevas(actor,d,this._opts);
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,de:this._opts.de,
@@ -80,11 +92,25 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
-    step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+    step:this._opts.step,stepChoices:[{id:"",label:"Escolha o dado a elevar",selected:!this._opts.stepDieId},
+     ...plan.pool.filter(x=>Object.hasOwn({4:6,6:10,10:12},x.baseSides))
+       .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+" · dado "+(Number(x.id.split(".").at(-1))+1)+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]),selected:this._opts.stepDieId===x.id}))],
+     combatBonus:false,hasCombatSkill:false,
+     hasTrevas:canTrevas,trevasEnabled:canTrevas&&this._opts.trevasEnabled,
+     trevasMultipleTargets:targets.length===2,trevasDistributionSplit:this._opts.trevasDistribution==="split",
+     trevasDistributionFocus:this._opts.trevasDistribution==="focus",
+     trevasTargetOptions:[{uuid:"",label:"Escolha um dos alvos",selected:!this._opts.trevasPreferredUuid},
+       ...targets.filter(t=>t.actor).map(t=>({uuid:t.actor.uuid,label:t.actor.name,selected:this._opts.trevasPreferredUuid===t.actor.uuid}))],
+
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
-    targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
-    canExecute:plan.ok&&actor.isOwner,errors:plan.errors,
+    targetName:targets.map(t=>t.actor?.name).filter(Boolean).join(" e "),hasTarget:targets.length>0,inCombat:!!game.combat?.started,
+    canExecute:plan.ok&&actor.isOwner&&targets.length<=2&&(targets.length<2||(canTrevas&&this._opts.trevasEnabled
+       &&targets.some(t=>t.actor?.uuid===this._opts.trevasPreferredUuid)&&new Set(targets.map(t=>t.actor?.uuid)).size===2)),
+     errors:[...plan.errors,...(targets.length>2?["Selecione até dois alvos."]:[]),
+       ...(targets.length===2&&(!canTrevas||!this._opts.trevasEnabled)?["Dois alvos exigem a técnica habilitada de Trevas."]:[]),
+       ...(targets.length===2&&this._opts.trevasEnabled&&!this._opts.trevasPreferredUuid?["Escolha um alvo para a concentração ou o Pavor indivisível."]:[])],
+
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
     poolCount:plan.pool.length,keepNatural:keepLimit(monster?s.threatGrade:s.level,false,monster),
     keepWithCourage:keepLimit(monster?s.threatGrade:s.level,true,monster)
@@ -103,8 +129,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
+     targetResults:(p.options.targets||[]).map(t=>({name:t.name,de:t.de,
+       reached:summary?.reached||0,success:summary?.ok?(summary.reached>=t.de):false})),
+     trevasEnabled:!!p.options.trevasEnabled,trevasDistribution:p.options.trevasDistribution,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
-    hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
+    hasProperties:!!item?.system.properties?.length,hasPaidEffect:!!item?.system.properties?.length||
+     (!!p.options.trevasEnabled&&!freeFocusElement(actor,item,p.options,"trevas")),
+     freeElementalFocus:freeFocusElement(actor,item,p.options),
+     paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
@@ -130,7 +162,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
+   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.trevasEnabled=false;this._opts.trevasPreferredUuid="";}
    this.render();return;
   }
   if(el.dataset.pendingOption&&this._pending){
@@ -208,13 +240,22 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
    const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0);
    if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
-   const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
-   if(game.combat?.started&&targets.length&&targets[0].actor){
-    const target=targets[0].actor;opts.targetActorUuid=target.uuid;opts.targetName=target.name;opts.targetType=target.type;
-    opts.de=defenseDE(target);
+   const targets=[...game.user.targets],trevasEligible=mayUseTrevas(this.actor,this._draft,opts);
+   if(targets.length>2)throw Error("Selecione até dois alvos.");
+   if(opts.trevasEnabled&&!trevasEligible)throw Error("Trevas exige sua Perícia e Disciplina em Conjuração.");
+   if(targets.length===2&&!opts.trevasEnabled)throw Error("Dois alvos exigem a técnica habilitada de Trevas.");
+   if(targets.length===2&&(!opts.trevasPreferredUuid||!targets.some(t=>t.actor?.uuid===opts.trevasPreferredUuid)))
+    throw Error("Escolha um dos alvos para concentração ou o Pavor indivisível.");
+   if(targets.length===2&&new Set(targets.map(t=>t.actor?.uuid)).size!==2)
+    throw Error("Trevas exige dois alvos distintos.");
+   if(game.combat?.started&&targets.length){
+    opts.targets=targets.filter(t=>t.actor).map(t=>({uuid:t.actor.uuid,name:t.actor.name,type:t.actor.type,de:defenseDE(t.actor)}));
+    if(opts.targets.length!==targets.length)throw Error("Alvo selecionado sem ficha.");
+    const target=opts.targets[0];opts.targetActorUuid=target.uuid;opts.targetName=opts.targets.map(t=>t.name).join(" e ");
+    opts.targetType=target.type;opts.de=target.de;
    }
    opts.noisy=!!item?.system.properties?.includes("Barulhenta");
-   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,equipmentDie:die});
+   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,stepDieId:opts.stepDieId,equipmentDie:die});
    if(!plan.ok)throw Error(plan.errors.join(" "));
    const result=await rollPool(plan.pool),pending={version:2,id:crypto.randomUUID(),created:Date.now(),
     base:this._draft.base,attribute:this._draft.attribute,complement:this._draft.complement,
@@ -245,9 +286,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const result=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster:s.monsterRules,threatGrade:s.threatGrade,
     weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
+   const trevasOn=!!p.options.trevasEnabled;
+   if(trevasOn&&!mayUseTrevas(this.actor,{base:p.base},p.options))
+    throw Error("Trevas não habilitada para esta rolagem.");
+   const targetResults=(p.options.targets||[]).map(t=>({...t,success:result.reached>=t.de,
+    damage:result.reached>=t.de?(result.e+Math.floor(result.p/2))*(result.critical===4?2:1):0}));
+   const anyHit=targetResults.length?targetResults.some(t=>t.success):result.success;
    let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
-   if(result.success&&first){
+   if(anyHit&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
     active.push(first);
     if(second){
@@ -257,24 +304,34 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const activations=result.critical?(second?1:0):1;
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=2;
+     if(!(first==="Elemental"&&freeFocusElement(this.actor,item,p.options))){
+      if(p.options.activationPayment==="pp")payPP=1;
+      else cost+=1;
+     }
     }
+   }
+   // Trevas com foco e Perícia do elemento é gratuita; sem essa combinação, ativação 1 PP/1 Coragem.
+   // Falha não recebe cobrança inédita até solucionar a ordem de pagamento no SRD.
+   if(trevasOn&&anyHit&&!freeFocusElement(this.actor,item,p.options,"trevas")){
+    if(this.actor.type==="character"&&p.options.activationPayment==="pp")payPP++;
+    else cost+=this.actor.type==="character"?1:2; // Não alterar custo anterior em Pavor local dos adversários.
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
    const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
-   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(result.outcome)+'</h3>'+
+   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(trevasOn&&targetResults.length>1?(anyHit?'Acerto em pelo menos um alvo':'Falha contra ambos os alvos'):result.outcome)+'</h3>'+
     '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
     (item?'<p><strong>Equipamento:</strong> '+escapeHTML(item.name)+'</p>':'')+
     (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
+    (trevasOn?'<p><strong>Trevas:</strong> +2P para DE, dano e risco; transferência '+escapeHTML(p.options.trevasDistribution==="focus"?"concentrada":"dividida")+'.</p>':'')+
+    (targetResults.length>1?'<p><strong>DE por alvo:</strong> '+targetResults.map(t=>escapeHTML(t.name)+': DE '+t.de+' — '+(t.success?'acerto, dano básico '+t.damage:'falha')).join('; ')+'</p>':'')+
     '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
-    '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
+    '<p><strong>Dano básico:</strong> '+(targetResults.length>1?'ver cada alvo acima':result.damage)+' (proteção e aplicação de condições: adjudicação)</p>'+
     '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
    if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
    else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
@@ -283,6 +340,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
      transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
       actorId:this.actor.id,targetUuid:p.options.targetActorUuid,targetType:p.options.targetType,
+      targets:trevasOn&&targetResults.length===2
+       ?distributeDarknessPavor(result.p,targetResults.map(t=>t.uuid),
+         {mode:p.options.trevasDistribution,preferred:p.options.trevasPreferredUuid}).map(x=>({
+           targetUuid:x.uuid,targetType:targetResults.find(t=>t.uuid===x.uuid)?.type,p:x.p}))
+       :undefined,
       p:result.p,monsterCriticalPavor:result.monsterCriticalPavor
      }:null}}});
    await this.actor.unsetFlag(NS,"pendingRoll");this._pending=null;this.render();
