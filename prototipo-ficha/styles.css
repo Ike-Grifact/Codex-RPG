@@ -1202,3 +1202,77 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-armor-integrity-vital{border-color:color-mix(in srgb,var(--fp-accent) 48%,var(--fp-stroke))}
 .fp-armor-integrity-vital strong{font-size:clamp(16px,1.75vw,23px);line-height:1.2;overflow-wrap:anywhere}
 .fp-armor-integrity-vital small{font-size:10px;line-height:1.35}
+
+
+/* UX unificada: painel tático da Ficha. Ícones de dados permanecem em Edição e Rolagem. */
+#fp-tactical-bar[hidden],#play-talents[hidden],#play-talents [data-talent-group][hidden]{display:none!important}
+.fp-tactical-bar{position:sticky;top:0;z-index:12;margin:9px 0 14px;padding:11px 14px;
+ background:var(--fp-surface);border:1px solid var(--fp-stroke);border-radius:15px;
+ box-shadow:0 7px 22px rgba(0,0,0,.09)}
+.fp-tactical-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.fp-tactical-head>div{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;min-width:0}
+.fp-tactical-head strong{font-size:12px;color:var(--fp-text);font-weight:700}
+.fp-tactical-mode{font-size:11px;font-weight:800;border:1px solid var(--fp-gold);
+ border-radius:20px;padding:5px 10px;white-space:nowrap;color:var(--fp-gold)}
+.fp-tactical-bar.is-editing{border-color:var(--fp-gold);background:var(--fp-raised)}
+.fp-tactical-attributes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
+.fp-quick-attribute{display:grid;gap:5px;text-align:left;padding:8px 10px;min-width:0;
+ border:1px solid var(--fp-stroke);border-radius:10px;background:var(--fp-raised);
+ color:var(--fp-text);cursor:pointer}
+.fp-quick-attribute>span:first-child{display:flex;justify-content:space-between;align-items:center;gap:4px;
+ font-size:12px;font-weight:750}
+.fp-quick-attribute small{font-size:10px;color:var(--fp-muted);font-weight:550}
+.fp-quick-attribute:hover,.fp-quick-attribute:focus-visible,.fp-quick-attribute.is-selected{
+ border-color:var(--fp-gold);box-shadow:inset 0 2px 0 var(--fp-gold)}
+.fp-quick-die-symbols{display:flex;gap:4px;align-items:center;min-height:20px;flex-wrap:wrap}
+.fp-mini-die{display:inline-flex;gap:3px;align-items:center;color:var(--fp-muted);font-size:10px}
+.fp-mini-die svg{width:18px;height:18px}
+.fp-mini-die b{font-weight:650}
+.fp-tactical-dice{display:grid;grid-template-columns:max-content minmax(0,1fr);
+ align-items:center;gap:8px;margin-top:8px}
+.fp-tactical-dice>span{font-size:10px;font-weight:700;color:var(--fp-muted)}
+.fp-nine-dice{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:5px}
+.fp-nine-slot{display:flex;align-items:center;justify-content:center;gap:3px;min-width:0;height:33px;
+ border:1px dashed var(--fp-stroke);border-radius:7px;font-size:11px;color:var(--fp-muted)}
+.fp-nine-slot.has-die{border-style:solid;border-color:var(--fp-category-attr);background:var(--fp-raised);color:var(--fp-text)}
+.fp-nine-slot.is-kept{border-color:var(--fp-gold);box-shadow:inset 0 -2px 0 var(--fp-gold)}
+.fp-nine-slot svg{height:19px;width:19px;flex-shrink:0}
+.fp-nine-slot b{font-size:10px}
+.fp-nine-slot small{font-weight:750;color:var(--fp-gold)}
+.fp-workspace{align-items:start}
+#play-talents{margin:0 0 10px;padding:12px}
+#play-talents .fp-panel-heading{margin-bottom:8px}
+#play-talents .fp-play-talent-grid{display:block}
+#play-talents .fp-play-talent-grid>div{min-width:0}
+#play-talents .fp-play-talent-grid h4{font-size:12px;margin:8px 0}
+#play-talents .fp-owned-card,#play-talents .fp-owned-gear{padding:9px;display:grid;gap:5px}
+#play-talents .fp-owned-card p{font-size:11px;line-height:1.35;margin:0}
+#play-talents .fp-owned-list{display:grid;gap:7px;max-height:196px;overflow-y:auto}
+#play-talents .fp-owned-elements{max-height:196px;overflow:auto}
+.fp-action-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.fp-action-tabs button{font:inherit;font-size:11px;font-weight:750;border:1px solid var(--fp-stroke);
+ border-radius:8px;padding:9px 4px;color:var(--fp-text);background:var(--fp-raised);cursor:pointer}
+.fp-action-tabs button.is-active,.fp-action-tabs button:hover,.fp-action-tabs button:focus-visible{
+ border-color:var(--fp-gold);background:var(--fp-surface);color:var(--fp-gold)}
+.fp-owned-use{border-radius:7px;border:1px solid var(--fp-gold);background:var(--fp-surface);
+ color:var(--fp-text);font-size:11px;font-weight:750;padding:6px 8px;cursor:pointer}
+.fp-owned-use:hover,.fp-owned-use:focus-visible{background:var(--fp-raised)}
+#composer-panel{scroll-margin-top:150px}
+@media(max-width:1120px){
+ .fp-tactical-attributes{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .fp-tactical-bar{position:relative}
+}
+@media(max-width:620px){
+ .fp-tactical-bar{padding:10px;margin:8px 0 12px}
+ .fp-tactical-head{align-items:start}
+ .fp-tactical-head>div{display:grid;gap:5px}
+ .fp-tactical-attributes{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .fp-quick-attribute{padding:8px 6px}
+ .fp-quick-attribute>span:first-child{font-size:10px}
+ .fp-tactical-dice{display:block}
+ .fp-nine-dice{margin-top:5px;gap:3px}
+ .fp-nine-slot{height:33px;gap:0}
+ .fp-nine-slot b{font-size:9px}
+ .fp-nine-slot svg{width:15px;height:15px}
+ #composer-panel{scroll-margin-top:12px}
+}
