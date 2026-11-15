@@ -1224,3 +1224,38 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  padding:10px 12px;margin:5px 0;border:1px solid var(--fp-gold);border-radius:8px;
  background:transparent;color:var(--fp-gold);text-align:center;text-decoration:none;font-weight:700;font-size:12px}
 .fp-gene-verbete:hover,.fp-gene-verbete:focus-visible{background:var(--fp-surface);text-decoration:underline;outline-offset:2px}
+
+/* SRD v0.45 — criatura pequena, auxílio contextual e proteção sacrificial. */
+.fp-companion-vital{
+  display:block;
+  margin-top:2px;
+  border:1px solid color-mix(in srgb,var(--fp-a) 45%,var(--fp-stroke));
+  border-radius:7px;
+  padding:6px 8px;
+  background:var(--fp-deep);
+  color:var(--fp-a)!important;
+  font-size:10px;
+  line-height:1.45;
+}
+.fp-companion-vital[hidden]{display:none}
+.fp-small-companion{border-color:color-mix(in srgb,var(--fp-a) 38%,var(--fp-stroke));gap:10px}
+.fp-small-companion .fp-companion-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+}
+.fp-small-companion .fp-companion-actions button{
+  border:1px solid var(--fp-stroke);
+  background:var(--fp-surface);
+  border-radius:8px;
+  padding:7px 9px;
+  color:var(--fp-text);
+  font-size:10px;
+  cursor:pointer;
+  line-height:1.35;
+}
+.fp-small-companion .fp-companion-actions button:hover{
+  border-color:var(--fp-a);
+  color:var(--fp-a);
+}
