@@ -4,6 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabe
  buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
+import {faceLabels} from "../module/dice-so-nice.mjs";
 import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus,defenseDisplay} from "../module/equipment-logic.mjs";
 
 function human(){return{
@@ -28,6 +29,13 @@ test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
  actor.attributes.vigor=3;
  assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),true);
  assert.ok(!SKILLS.some(s=>s.id==="recuperacao-movimento"),"Maestria com XP pendente não pode ser comprada");
+});
+test("Texturas 3D do d10 não referenciam face histórica de Pavor",()=>{
+ const labels=faceLabels(10);
+ assert.equal(labels.length,10);
+ assert.ok(labels[9].endsWith("/210.png"));
+ assert.ok(!labels[9].endsWith("/201-max.png"));
+ assert.ok(faceLabels(12)[11].endsWith("/002-max.png"));
 });
 test("SRD v0.44: d10 máximo 2E + 1A sem Pavor em crítico",()=>{
  const dice=[{id:"a",group:"attribute",sides:6,face:1},
