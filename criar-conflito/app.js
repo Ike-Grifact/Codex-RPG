@@ -96,7 +96,7 @@ function consumeQuickHumanoid(){
   const incoming=JSON.parse(raw);
   if(incoming?.schema!=="codex-humanoide-rapido-v1"||incoming.character?.kind!=="humanoide")throw Error("Tipo de pacote inválido");
   const unit=normalize(incoming.character);
-  if(uni!isHumanoidKind(t.kind))throw Error("Tipo inválido");
+  if(!isHumanoidKind(unit.kind))throw Error("Tipo inválido");
   model.roster.push(unit);model.active=unit.id;
   save();
   localStorage.removeItem(HUMANOID_INBOX_KEY);
