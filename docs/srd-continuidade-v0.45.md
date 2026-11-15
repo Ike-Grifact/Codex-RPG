@@ -9,7 +9,31 @@ updated: "2026-11-15"
 
 **Decisões do autor — 15/11/2026:** renomear Conjuração Equilibrada para **Conjuração Refinada**, agora destinada a aumentar o alcance de efeitos mágicos (procedimento ainda a reescrever); **não modificar Escudo Arcano nem introduzir iniciativa**; reduzir **3 pontos de Integridade das armaduras**, preservando escudos; confirmar a economia elemental v0.43; fixar o **preço das pedras especiais de Veneno, Sagrado e Trevas em 3 vezes o preço das pedras elementais comuns**; abrir análise probabilística de Conhecimentos e Práticas para definir quando não rolar. Profissões/itens e especializações posteriores continuam em construção.
 
-**Precedência:** novas decisões explícitas > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+**Precedência:** novas decisões explícitas > **seção 0-AG (v0.45)** para XP/nível do companheiro e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+
+## 0-AG. XP de companheiros médios e custo único de ativação de Perícias [15/11/2026]
+
+**[DEFINIDO — decisão autoral mais recente, 15/11/2026]** Esta seção **substitui as pendências e divergências** das seções 0-AF, 0-AE, 0-AC e de descrições históricas anteriores nos assuntos abaixo. Nenhum valor de XP de compra de Perícia, requisito ou efeito fica alterado por essa padronização.
+
+### 0-AG.1. Ativações das Perícias: 1 Coragem [DEFINIDO]
+
+**Toda ativação paga de Perícia custa 1 Coragem, ou 1 PP quando essa alternativa está habilitada pela própria regra.** Não custa 2 Coragens para ativar Domar Pequena, Domar Média, armas, técnicas, magia elemental, efeitos especiais ou outras Perícias. Cada ativação adicional declarada é **outro pagamento de 1 Coragem (ou 1 PP, quando permitido)**, não um desconto no número de efeitos/ações. Permanecem os gatilhos gratuitos já definidos, como a característica de arma habilitada por crítico e os efeitos elementais gratuitos mediante foco e Perícia pertinente.
+
+**Distinguir ativação de outros recursos.** O custo adicional de **1 Coragem** para invocar Fogo sem foco permanece **adicional** à ativação, totalizando **2 Coragens** se não usar PP, ou **1 PP + 1 Coragem** com o PP permitido. Manter 1 dado extra, elevar um passo de dado, custos especiais de ação/ferimentos e **trocar 2 Coragens por 1 PP** com a capacidade de recuperação de PP **não são uma ativação convencional de Perícia** e conservam suas próprias regras. Custos de Vida, consumíveis, escudos e outros componentes adicionais também não são apagados; a parcela classificada como **ativação paga da Perícia** é 1 Coragem.
+
+**Domar Criatura Pequena e Média:** os custos de **1 PP ou 2 Coragens** das seções anteriores são revogados; cada tentativa válida custa **1 PP ou 1 Coragem**, mesmo quando falha, como já implementado no fluxo de finalização. A ativação é por tentativa de domesticação/pacificação, não pela mera compra ou presença da criatura.
+
+### 0-AG.2. XP e nível das criaturas médias domesticadas [DEFINIDO]
+
+- **Nível ao domar:** a criatura média pode ser de **nível igual ou inferior ao do personagem**. Não precisa ter exatamente o mesmo nível. Após a domesticação, seu nível próprio é mantido e nunca pode ultrapassar o nível do domador.
+- **XP ao domar:** a ficha conserva o **XP que a criatura já possuía**, quando essa informação está disponível; alternativamente, o Narrador pode iniciar a ficha com **XP total equivalente ao do personagem**. Se não existir XP prévio registrado, o criador adota o XP total do jogador como referência inicial. Não somar as duas reservas ou exigir que ele gaste o próprio XP para criar o animal.
+- **XP posteriormente recebido:** sempre que o jogador recebe **N XP**, seu companheiro médio domesticado recebe **os mesmos N XP na reserva própria**, sem descontar do XP do jogador. A criatura continua investindo XP **somente em Atributos**, conforme a tabela de custo de Atributos do jogador (graus 0–6: 0, 1, 3, 7, 15, 31, 55 XP acumulados).
+- **Teto antigo de 110 XP:** **REVOGADO para o companheiro médio domesticado**. Era incompatível com receber XP equivalente aos jogadores ao longo de toda a campanha. O número permanece nos documentos anteriores apenas como histórico, não como limite vigente da ficha do novo Domar Criatura Média. Não extrapolar esta mudança para animais Grandes/Exóticos ou monstros extraordinários sem nova decisão.
+- **Nível e XP são controles distintos:** receber XP não compra Atributos nem aumenta automaticamente o nível, assim como no fluxo do jogador. Evolução de nível da criatura pode ser registrada até o nível atual do domador. Preservar os graus comprados e o XP anterior ao importar fichas.
+
+**[PENDENTE]** Regras de associação de diversas criaturas simultâneas, ações conjuntas e automatização de ações próprias. Nenhum bônus +1A de companheiros diferentes é acumulado automaticamente. A Vida e a DE derivadas dos Atributos da criatura média são referências **EXPERIMENTAIS** no protótipo.
+
+---
 
 ## 0-AF. Domar Criatura Média — substituição de Domar Animal Médio [15/11/2026]
 
@@ -20,22 +44,22 @@ updated: "2026-11-15"
 | Perícia | **Domar Criatura Média** (substitui Domar Animal Médio) |
 | Aquisição | **1 XP** |
 | Pré-requisitos | **Influência 2 + Apresentação 1 + Inteligência 1**, como na Perícia equivalente para pequenas |
-| Ativação | **1 PP OU 2 Coragens**, por tentativa |
+| Ativação | **1 PP OU 1 Coragem**, por tentativa |
 | Ação | Teste com **Influência**, usando Apresentação como fonte pertinente, para **Pacificar** ou **Domesticar** |
 | DE da domesticação | **A mesma DE defensiva atual do domador**, como na versão equivalente para criaturas pequenas; a criatura possui **DE própria** apenas para resolver suas demais ações com sua ficha |
-| Companheiro obtido | **Ficha independente de criatura média**, **no mesmo nível atual do personagem domador**, vinculada à ficha dele |
+| Companheiro obtido | **Ficha independente de criatura média**, com **nível igual ou inferior ao do domador** e progressão própria, vinculada à ficha dele |
 | Evolução do animal | **Atributos somente**, com a **mesma tabela acumulada de custo de XP dos Atributos dos jogadores** (graus 0–6: **0, 1, 3, 7, 15, 31 e 55 XP**) |
-| Teto de XP próprio | Mantido o limite histórico **110 XP totais** em Atributos para categoria Média. Não é XP automaticamente concedido pela compra da Perícia |
+| Teto de XP próprio | Mantido o limite histórico **XP próprio sem teto de 110** em Atributos para categoria Média. Não é XP automaticamente concedido pela compra da Perícia |
 | Apoio | Quando a criatura média **está presente e ajuda em combate**, fornece **+1 Antecipar (A)** ao domador |
 | Ações e risco | A criatura média **tem Vida, DE, dados e ações próprios**, pode sofrer ferimentos e morrer; não possui Coragem ou habilitações humanas gratuitas |
 | Ataque e pacificação | A pacificação em combate precede domesticação; **atacar a criatura rompe a domesticação**, como na Perícia equivalente |
 | Múltiplos companheiros | Não acumular automaticamente +1A da criatura pequena com +1A da média sem uma regra futura explícita |
 
-**[DEFINIDO — distinção econômica]** O **preço de evolução de cada Atributo do animal** é o preço da ficha do jogador, **não** a tabela mais cara usada por monstros extraordinários. O animal usa uma reserva de XP **própria**, que não é cobrada do saldo de XP pessoal do domador; o orçamento próprio **não** nasce automaticamente da compra de 1 XP da Perícia. O **nível é sincronizado com o do personagem** e não pressupõe XP integral igual ao dele.
+**[DEFINIDO — distinção econômica]** O **preço de evolução de cada Atributo do animal** é o preço da ficha do jogador, **não** a tabela mais cara usada por monstros extraordinários. O animal usa uma reserva de XP **própria**, que não é cobrada do saldo de XP pessoal do domador; o orçamento próprio **não** nasce automaticamente da compra de 1 XP da Perícia. O **nível da criatura não ultrapassa o do personagem**, e a ficha preserva o XP anterior ou recebe XP igual ao do domador conforme 0-AG.
 
-**[PENDENTE]** Quantidade de XP do animal ao ser domesticado, ganho de XP por sessão/nível e eventuais novas regras de limite de companheiros, ações conjuntas e cumulação de bônus. Como o orçamento inicial permanece pendente, **o Narrador registra o XP próprio efetivamente concedido**, sem criar XP gratuito. Também estão pendentes condições exatas de pacificação, número de tentativas e detalhes de ataques/armaduras/equipamentos da espécie. A regra de extensão mágica **confirmada para pequenos** não é estendida automaticamente aos médios.
+**[DEFINIDO — conforme 0-AG]** XP prévio conservado ou XP total equivalente ao jogador; após domesticação recebe os mesmos XP concedidos ao personagem. **[PENDENTE]** Limite de companheiros, ações conjuntas e cumulação de bônus. Também estão pendentes condições exatas de pacificação, número de tentativas e detalhes de ataques/armaduras/equipamentos da espécie. A regra de extensão mágica **confirmada para pequenos** não é estendida automaticamente aos médios.
 
-**[IMPLEMENTAÇÃO DO PROTÓTIPO / EXPERIMENTAL NO CÁLCULO DA FICHA]** O criador compartilha cadastro, nível e exportação com o personagem, mas preserva os **Atributos, XP, Vida e DE** do médio em campos independentes. O jogador pode registrar a domesticação bem-sucedida e distribuir XP **até 110**, apenas dentro do montante previamente registrado pelo Narrador. Para visualização de playtest, Vida usa a referência de personagem **3 + Vigor + ⌊Força/2⌋** e DE usa **mínimo(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋)**, sem Atletismo (o animal não compra Práticas). Essas fórmulas são **EXPERIMENTAIS para a criatura** e **não** substituem uma definição específica futura de vida/defesa animal. Ações e rolagens independentes permanecem resolvidas na mesa; ao realizar uma rolagem do domador, o apoio A é aplicado **uma única vez**, mesmo com companheiros de portes diferentes.
+**[IMPLEMENTAÇÃO DO PROTÓTIPO / EXPERIMENTAL NO CÁLCULO DA FICHA]** O criador compartilha cadastro, nível e exportação com o personagem, mas preserva os **Atributos, XP, Vida e DE** do médio em campos independentes. O jogador pode registrar a domesticação bem-sucedida e investir o XP próprio da criatura **sem teto de 110**; ela começa com XP anterior ou igual ao jogador e recebe automaticamente os mesmos ganhos futuros. Para visualização de playtest, Vida usa a referência de personagem **3 + Vigor + ⌊Força/2⌋** e DE usa **mínimo(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋)**, sem Atletismo (o animal não compra Práticas). Essas fórmulas são **EXPERIMENTAIS para a criatura** e **não** substituem uma definição específica futura de vida/defesa animal. Ações e rolagens independentes permanecem resolvidas na mesa; ao realizar uma rolagem do domador, o apoio A é aplicado **uma única vez**, mesmo com companheiros de portes diferentes.
 
 ---
 
@@ -48,7 +72,7 @@ updated: "2026-11-15"
 | Nome | **Domar Criatura Pequena** (antigo: Domar Animal Pequeno) |
 | Aquisição | **1 XP** |
 | Pré-requisitos cumulativos | **Influência 2 + Apresentação 1 + Inteligência 1** |
-| Custo para ativar a tentativa | **1 PP OU 2 pontos de Coragem** |
+| Custo para ativar a tentativa | **1 PP OU 1 ponto de Coragem** |
 | Teste | Rolagem com **Influência** contra a **Dificuldade de Êxito (DE)** da criatura, respeitando fontes pertinentes e limites normais do sistema |
 | **DE da criatura pequena** | **Igual à DE defensiva atual do personagem que faz a tentativa**. Usa o mesmo número exibido na ficha do jogador; não existe DE especial por espécie, hostilidade ou origem mágica. |
 | Alvos | Criaturas pequenas, como cães, gatos, aves e outras semelhantes |
@@ -67,7 +91,7 @@ updated: "2026-11-15"
 
 **[PENDENTE — sem alterar a DE definida]** Definir a duração e a eventual repetição de testes de pacificação/domesticação, o limite de companheiros simultâneos e se múltiplos animais acumulam bônus. Até essa definição, **não acumular automaticamente +1A ou Vida por múltiplas criaturas**. Também falta integrar o gatilho de letalidade à resolução completa de ferimentos; o sacrifício e a opção de receber dano letal devem ser registrados e adjudicados na mesa, não convertidos em cura ou imunidade automática do simulador.
 
-**Implementação do criador [DOCUMENTADO]**: a compra de 1 XP verifica os requisitos; um estado independente registra presença, apoio em combate e o ponto sacrificial. A opção de teste usa **Influência + Apresentação** como fontes pertinentes, usa **automaticamente a DE atual do próprio personagem**, sem edição manual para essa Perícia, e permite escolher o objetivo **Pacificar ou Domesticar**, e consome **1 PP ou 2 Coragens ao finalizar a tentativa, mesmo na falha**. Um sucesso em Domesticar registra o companheiro na ficha; um sucesso em Pacificar não o domestica automaticamente. O jogador ainda declara o combate para utilizar o +1A. O sacrifício e a opção de sofrer dano letal precisam ser adjudicados na mesa e registrados manualmente na ficha, sem assumir cura ou novos pontos permanentes de Vida.
+**Implementação do criador [DOCUMENTADO]**: a compra de 1 XP verifica os requisitos; um estado independente registra presença, apoio em combate e o ponto sacrificial. A opção de teste usa **Influência + Apresentação** como fontes pertinentes, usa **automaticamente a DE atual do próprio personagem**, sem edição manual para essa Perícia, e permite escolher o objetivo **Pacificar ou Domesticar**, e consome **1 PP ou 1 Coragem ao finalizar a tentativa, mesmo na falha**. Um sucesso em Domesticar registra o companheiro na ficha; um sucesso em Pacificar não o domestica automaticamente. O jogador ainda declara o combate para utilizar o +1A. O sacrifício e a opção de sofrer dano letal precisam ser adjudicados na mesa e registrados manualmente na ficha, sem assumir cura ou novos pontos permanentes de Vida.
 
 ---
 
