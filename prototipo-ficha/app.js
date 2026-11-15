@@ -2530,7 +2530,10 @@ function finalize(){
  if((p.opts.tameSmall||p.opts.tameMedium)&&s.success&&p.opts.tameIntent==="domar"){
   if(p.opts.tameSmall){state.smallCompanion.present=true;state.smallCompanion.inCombat=false;}
   if(p.opts.tameMedium){
+   const freshCreature=!state.mediumCompanion.present&&state.mediumCompanion.xpGranted===0&&mediumCompanionSpent(state.mediumCompanion)===0;
    state.mediumCompanion.present=true;state.mediumCompanion.inCombat=false;
+   if(freshCreature){state.mediumCompanion.level=state.level;state.mediumCompanion.xpGranted=playerTotalXp();}
+   state.mediumCompanion.level=clamp(state.mediumCompanion.level,1,state.level);
    if(state.mediumCompanion.life===0)state.mediumCompanion.life=mediumCompanionMaxLife(state.mediumCompanion);
   }
  }
@@ -2924,16 +2927,25 @@ function onClick(event){
  case "medium-companion-toggle":
  case "medium-companion-support":
  case "medium-companion-grade":
- case "medium-companion-life":{
+ case "medium-companion-life":
+ case "medium-companion-match-xp":{
   if(state.pending){toast("Finalize a rolagem antes de alterar o companheiro.");break;}
   if(!state.skills.includes("domar-criatura-media"))break;
   const pet=state.mediumCompanion;
   if(action==="medium-companion-toggle"){
    if(pet.present&&!confirm("Retirar a criatura média e suspender seu apoio? Os Atributos e XP da ficha serão preservados."))break;
+   const freshCreature=!pet.present&&pet.xpGranted===0&&mediumCompanionSpent(pet)===0;
    pet.present=!pet.present;pet.inCombat=false;
+   if(freshCreature){pet.level=state.level;pet.xpGranted=playerTotalXp();}
+   pet.level=clamp(pet.level,1,state.level);
    if(pet.present&&pet.life<=0)pet.life=mediumCompanionMaxLife(pet);
    toast(pet.present?"Companheiro médio registrado; sua ficha está disponível.":"Companheiro ausente; bônus suspenso.");
   }else if(!pet.present){break;
+  }else if(action==="medium-companion-match-xp"){
+   const currentXp=playerTotalXp();
+   if(currentXp<mediumCompanionSpent(pet)){toast("XP do jogador é menor que o total já investido na criatura; preserve o XP anterior.");break;}
+   if(!confirm("Igualar XP da criatura aos "+currentXp+" XP atuais do jogador? O nível e os Atributos permanecem."))break;
+   pet.xpGranted=currentXp;
   }else if(action==="medium-companion-support"){
    pet.inCombat=!pet.inCombat;
   }else if(action==="medium-companion-grade"){
@@ -2942,7 +2954,7 @@ function onClick(event){
    const current=pet.attributes[id]||0,d=Number(delta),next=current+d;
    if(![-1,1].includes(d)||next<0||next>6)break;
    const cost=AT_COST[next]-AT_COST[current];
-   if(d>0&&(mediumCompanionSpent(pet)+cost>pet.xpGranted||mediumCompanionSpent(pet)+cost>MEDIUM_COMPANION_XP_CAP)){
+   if(d>0&&mediumCompanionSpent(pet)+cost>pet.xpGranted){
     toast("XP próprio insuficiente para comprar o Atributo da criatura.");break;
    }
    pet.attributes[id]=next;pet.life=clamp(pet.life,0,mediumCompanionMaxLife(pet));
@@ -3045,10 +3057,11 @@ function onChange(event){
   const key=el.dataset.mediumField;
   if(key==="name")pet.name=String(el.value).slice(0,80);
   else if(key==="notes")pet.notes=String(el.value).slice(0,1000);
+  else if(key==="level")pet.level=clamp(Math.floor(Number(el.value)),1,state.level);
   else if(key==="xpGranted"){
    const v=clamp(Math.floor(Number(el.value)),mediumCompanionSpent(pet),MEDIUM_COMPANION_XP_CAP);
    pet.xpGranted=v;
-   if(String(v)!==String(el.value))toast("XP da criatura ajustado ao gasto já realizado e ao teto 110 XP.");
+   if(String(v)!==String(el.value))toast("XP da criatura ajustado para respeitar o XP já investido.");
   }else return;
   save();renderMediumCompanion();return;
  }
@@ -3178,10 +3191,14 @@ function bind(){
   if(!Number.isSafeInteger(amount)||amount<1||amount>9999){toast("Informe de 1 a 9999 XP.");return;}
   if(state.xpEarned+amount>1000000){toast("XP acumulado acima do limite desta ferramenta.");return;}
   if(!state.creationLocked){lockCreation();toast("Criação concluída com saldo inicial não gasto livre.");}
+  if(mediumCompanionPresent()&&state.mediumCompanion.xpGranted+amount>MEDIUM_COMPANION_XP_CAP){
+   toast("XP do companheiro excede o limite técnico do arquivo. Exporte sua ficha.");return;
+  }
   state.xpEarned+=amount;
+  const companionGain=mediumCompanionGrantXp(amount);
   state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
   state.xpHistory=state.xpHistory.slice(0,60);
-  render();save();toast("+"+amount+" XP de evolução disponíveis para compra.");
+  render();save();toast("+"+amount+" XP concedidos ao jogador"+(companionGain>0?" e +"+companionGain+" XP à criatura média domesticada":"")+".");
  });
  $("lock-creation").addEventListener("click",()=>{
   if(state.pending||state.creationLocked||xpCosts().free<0)return;
