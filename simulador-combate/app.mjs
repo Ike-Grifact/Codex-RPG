@@ -268,22 +268,24 @@ function previewAction(){
  pending.preview=preview;
  if(!preview.ok){$("roll-result").textContent=preview.error||"Escolha uma retenção válida.";return;}
  const result=preview.result,spell=pending.mode==="conjuracao";
- const damage=spell&&$("spell-grade").value==="1"?0:result.damage;
+ const damage=pending.shield||spell&&$("spell-grade").value==="1"?0:result.damage;
  pending.damage=damage;
  $("roll-result").innerHTML='<strong>'+esc(result.outcome)+'</strong> · <span class="tc-e">'+result.e+'E</span> + '+
   '<span class="tc-p">'+result.p+'P</span> · <span class="tc-a">'+result.aRemaining+'A livre</span>'+
   '<div>DE '+result.de+' · '+result.reached+' pontos · dano ofensivo potencial '+damage+
-  (spell&&$("spell-grade").value==="1"?" (G1: somente efeitos)":"")+
+  (pending.shield?" (Escudo: DE de ruptura igual "+result.reached+"; sem dano)":spell&&$("spell-grade").value==="1"?" (G1: somente efeitos)":"")+
   ' · '+(preview.courageCost||0)+' Coragem / '+(preview.cost||0)+' Pavor para retenção</div>'+
   '<small>Não aplica dano, efeitos de área nem Escudo Arcano automaticamente.</small>';
 }
-function startRoll(){
- const a=selected(),t=target();
+function startRoll({shield=false}={}){
+ const a=selected(),t=shield?a:target();
  if(!a||!t)return notice("Selecione origem e alvo.");
- if(a.id===t.id)return notice("Escolha um alvo distinto.");
- const los=lineOfSight(a,t,state.terrain),d=distance(a,t),maxRange=Number($("range").value);
+ if(a.id===t.id&&!shield)return notice("Escolha um alvo distinto.");
+ const los=shield?{clear:true,cover:false}:lineOfSight(a,t,state.terrain);
+ const d=shield?0:distance(a,t),maxRange=Number($("range").value);
  if(!los.clear)return notice("Parede bloqueia o ataque. Mova-se para obter linha de visão.");
- if(!Number.isFinite(maxRange)||maxRange<0||d>maxRange+0.001)return notice("Alvo além do alcance declarado ("+d.toFixed(1)+" m).");
+ if(!shield&&(!Number.isFinite(maxRange)||maxRange<0||d>maxRange+0.001))
+  return notice("Alvo além do alcance declarado ("+d.toFixed(1)+" m).");
  const [group,key]=($("base-source").value||"").split(":");
  const human=isHumanoidKind(a.kind),attr=$("attribute-source").value;
  const extra=$("extra-source").value;const [extraGroup,extraKey]=(extra||"").split(":");
@@ -303,7 +305,7 @@ function startRoll(){
   equipmentName=weapon.name;
  }
  const rolled=rollCreatureFaces(pool.pool),kept=rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id);
- pending={actor:a.id,target:t.id,rolled,kept,mode:selection.mode,sources:pool.sources,
+ pending={actor:a.id,target:t.id,rolled,kept,mode:selection.mode,shield,sources:pool.sources,
   distance:d,cover:los.cover,situation:$("situation").value,equipmentName,preview:null};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderPending();$("action-state").textContent="Em rolagem";
@@ -341,7 +343,7 @@ function confirmRoll(){
  const pre=previewFor(a,p.rolled,p.kept,currentOptions());
  if(!pre.ok)return notice(pre.error);
  const r=pre.result,spell=p.mode==="conjuracao",grade=spell?Number($("spell-grade").value):null;
- const possibleDamage=spell&&grade===1?0:r.damage;
+ const possibleDamage=p.shield||spell&&grade===1?0:r.damage;
  if(a.side==="jogadores"){
   a.courage=Math.max(0,a.courage-(pre.courageCost||0));
   a.courage=Math.min(10,a.courage+Number(r.criticalRefundCourage||0));
@@ -350,7 +352,12 @@ function confirmRoll(){
   if(!done.ok)return notice(done.error);
   a.courage=done.unit.courage;a.pavorLocal=done.unit.pavorLocal;
  }
- record("rolagem",a.name+" contra "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.aRemaining+"A, "+r.p+
+ if(p.shield){
+  a.shieldRound=state.round;a.shieldDe=r.reached;
+  record("escudo",a.name+" rolou Escudo Arcano (DE de ruptura "+r.reached+") para a rodada "+state.round+
+   ". Custo de ativação e proteção corporal permanecem sob controle do Narrador.",{
+   actor:a.id,rolled:p.rolled,kept:p.kept,raw:r,damagePotential:0,barrierDe:r.reached});
+ }else record("rolagem",a.name+" contra "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.aRemaining+"A, "+r.p+
   "P). Dano potencial "+possibleDamage+". "+(spell?"Magia G"+grade+". ":"")+"Aplicação manual.",{
    actor:a.id,target:t.id,rolled:p.rolled,kept:p.kept,raw:r,damagePotential:possibleDamage,
    distance:p.distance,cover:p.cover,spellGrade:grade,equipment:p.equipmentName||"",
@@ -395,6 +402,21 @@ function applyResource(){
  }else return;
  record("recurso",t.name+": -"+num+" "+field+" aplicado manualmente pelo Narrador.");
  persist();renderAll(false);
+}
+function rollShield(){
+ const a=selected();
+ if(!a||!Array.isArray(a.skills)||!a.skills.includes("escudo-arcano")||
+  !a.skills.includes("criar-item-foco-magia")||Number(a.attributes?.inteligencia)<2)
+  return notice("O conjurador precisa de Escudo Arcano, Foco/Magia e Inteligência 2.");
+ if(!confirm("Escudo Arcano usa uma rolagem de Conjuração para a DE de ruptura. Confirme que pagará o custo de ativação conforme o SRD (recurso contabilizado manualmente)."))return;
+ $("base-source").value="practice:armas_conjuracao";
+ $("attribute-source").value="inteligencia";
+ $("discipline-mode").value="conjuracao";
+ $("equipment-source").value="";
+ $("extra-source").value="";
+ $("difficulty").value="0";
+ $("cancel-p").value="0";$("convert-a").value="0";
+ startRoll({shield:true});
 }
 function declareShield(){
  const a=selected();if(!a)return notice("Selecione quem conjura Escudo Arcano.");
@@ -487,7 +509,8 @@ function bind(){
   record("ficha",t.name+" adicionada; ajuste os graus na Ficha ou importe um JSON.");
   persist();renderAll();
  });
- $("roll").addEventListener("click",startRoll);
+ $("roll").addEventListener("click",()=>startRoll());
+ $("roll-shield").addEventListener("click",rollShield);
  $("suggest").addEventListener("click",suggestKept);
  $("preview").addEventListener("click",previewAction);
  $("confirm").addEventListener("click",confirmRoll);
