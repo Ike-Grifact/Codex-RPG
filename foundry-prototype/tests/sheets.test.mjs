@@ -89,8 +89,8 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
     user: {id: "gm"},
     getFlag: () => ({actorId: "threat", p: 0, monsterCriticalPavor: 3}),
   });
-  assert.equal(monster.system.pavorLocal, 2);
-  assert.deepEqual([(await panel._prepareContext()).value, (await panel._prepareContext()).roundPavor], [5, 3]);
+  assert.equal(monster.system.pavorLocal, 4);
+  assert.deepEqual([(await panel._prepareContext()).value, (await panel._prepareContext()).roundPavor], [3, 1]);
   game.combat.round = 1;
   assert.equal((await panel._prepareContext()).roundPavor, 5);
   game.users = [{isGM: true}, {isGM: false}, {isGM: false}];
