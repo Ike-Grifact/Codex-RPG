@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=0.1">
 <script src="../assets/site.js" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
-<script type="module" src="./app.mjs?v=0.2"></script>
+<script type="module" src="./app.mjs?v=0.3"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -110,7 +110,7 @@
     <label>Quantidade <input id="resource-amount" type="number" value="1" min="1" max="100"></label>
     <button id="apply-resource" type="button">Aplicar ao alvo</button>
    </div>
-   <button id="arcane-shield" type="button">Declarar Escudo Arcano (custo e DE manuais)</button>
+   <div class="tc-inline"><button id="roll-shield" class="tc-primary" type="button">Rolar Escudo Arcano em si</button><button id="arcane-shield" type="button">Declarar Escudo Arcano (custo e DE manuais)</button></div>
    <p class="tc-small">Escudo dura 1 rodada e exige Perícia e preparação adequadas. A barreira fica indicada no mapa, mas não bloqueia balas nem soma Integridade automaticamente.</p>
   </aside>
  </section>
