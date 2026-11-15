@@ -67,7 +67,7 @@ export function mayComplement(system,base,mode){
   return sk.includes("disciplina-avancada");
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,equipmentDie=0}={}){
+export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
  const attributesOnly=monster||!!system.animalRules;
  if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(attributesOnly!==(b.group==="attribute")))
@@ -91,14 +91,15 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  if(!errors.length){
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
     pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides});
-  if(step){
-   const d=pool.find(x=>x.group==="attribute"),next={4:6,6:10,10:12}[d?.sides];
-   if(!next)errors.push("Não é possível elevar o dado.");
-   else d.sides=next;
-  }
   if(equipmentDie){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
    else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
+  }
+  if(step){
+   // Elevação do SRD 0-Z.2: selecionar um dado específico da pilha.
+   const d=pool.find(x=>x.id===stepDieId),next={4:6,6:10,10:12}[d?.sides];
+   if(!next)errors.push("Escolha um dado da pilha d4, d6 ou d10 para elevar.");
+   else d.sides=next;
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");
