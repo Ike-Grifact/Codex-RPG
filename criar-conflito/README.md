@@ -70,3 +70,7 @@ A ferramenta web continua experimental quanto ao fluxo e a recursos opcionais de
 Na aba **Rolagem**, fontes com SVGs aparecem à esquerda; Armas, Elementos, Perícias compradas e controles de rolagem ficam à direita. A escolha de uma ação registra seu nome, sem conceder benefícios gratuitos; histórico/CSV/JSON guardam a declaração.
 
 **Compatibilidade de Perícias:** a Ficha apresenta Combate (1 XP) e Armas 1 (2 XP), custos já definidos e agora reconhecidos no Conflito para NPCs importados. Perícias de custo ainda PENDENTE não recebem valor nem efeito fictício.
+
+### Retenção de dados por Grau de ameaça (15/11/2026)
+
+**DEFINIDO:** Grau 1 preserva o limite anterior (até 3 dados); **Grau 2 a Grau 6** passa a poder manter **até 4 dados** em qualquer tipo de ameaça. O teto é do **Grau de ameaça**, não do nível do humanoide. Custos conhecidos continuam: Criatura/Monstro paga **1P local por dado além de dois**; humanoide inimigo mantém três naturalmente em Grau 2+ e paga **1 Coragem pelo quarto dado efetivamente mantido**. O limite não cria dados extras na pilha; é preciso tê-los rolado.
