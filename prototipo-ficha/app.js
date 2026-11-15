@@ -43,13 +43,13 @@ const SKILLS=[
  [
   "domar-criatura-media",
   "Domar Criatura Média",
-  "Substitui Domar Animal Médio. 1 XP, Influência 2 + Apresentação 1 + Inteligência 1. Domar/Pacificar custa 1 PP ou 2 Coragens contra a DE do domador. Companheiro médio no mesmo nível do personagem, com ficha e XP próprios. Só compra Atributos pelos custos normais do jogador, até o teto vigente de 110 XP; o orçamento inicial e a taxa de ganho dependem da mesa. Presente e ajudando em combate: +1A ao domador. Tem Vida e ações próprias, sem Vida sacrificial da criatura pequena.",
+  "Substitui Domar Animal Médio. 1 XP, Influência 2 + Apresentação 1 + Inteligência 1. Domar/Pacificar custa 1 PP ou 1 Coragem contra a DE do domador. Companheiro médio de nível igual ou inferior ao domador, com ficha e XP próprios. Só compra Atributos pelos custos do jogador; mantém seu XP anterior ou recebe o mesmo XP do personagem e seus ganhos futuros. Presente e ajudando em combate: +1A ao domador. Tem Vida e ações próprias, sem Vida sacrificial da criatura pequena.",
   1
  ],
  [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
-  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 2 Coragens; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
+  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 1 Coragem; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
   1
  ],
  [
@@ -91,7 +91,7 @@ const SKILLS=[
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/1 Coragem ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 3 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/1 Coragem ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 2 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",
   1
  ],
  [
@@ -719,8 +719,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "domar-criatura-media": "Por 1 PP ou 2 Coragens, Influência + Apresentação contra a DE do próprio personagem; pode pacificar em combate e depois domar. Com sucesso, recebe a ficha de um companheiro médio no mesmo nível. Custo dos Atributos idêntico ao do jogador; XP próprio não é concedido gratuitamente e respeita o teto 110 XP. Auxilia em combate com +1A, ou age com sua ficha independente. Não recebe a Vida sacrificial do companheiro pequeno.",
- "domar-criatura-pequena": "Teste com Influência contra a DE defensiva do próprio personagem, ativação 1 PP ou 2 Coragens. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. Quantidade acumulável e protocolo de letalidade pendentes; a DE é igual à DE defensiva do jogador.",
+ "domar-criatura-media": "Por 1 PP ou 1 Coragem, Influência + Apresentação contra a DE do próprio personagem; pode pacificar em combate e depois domar. Com sucesso, recebe a ficha de um companheiro médio de nível igual ou inferior. Custo dos Atributos igual ao jogador; mantém o XP anterior ou recebe o mesmo XP total do personagem e seus ganhos seguintes. Auxilia em combate com +1A, ou age com sua ficha independente. Não recebe a Vida sacrificial do companheiro pequeno.",
+ "domar-criatura-pequena": "Teste com Influência contra a DE defensiva do próprio personagem, ativação 1 PP ou 1 Coragem. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. Quantidade acumulável e protocolo de letalidade pendentes; a DE é igual à DE defensiva do jogador.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -753,8 +753,8 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
- "domar-criatura-pequena": "1 PP ou 2 Coragens por tentativa",
- "domar-criatura-media": "1 PP ou 2 Coragens por tentativa",
+ "domar-criatura-pequena": "1 PP ou 1 Coragem por tentativa",
+ "domar-criatura-media": "1 PP ou 1 Coragem por tentativa",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -789,7 +789,7 @@ const CARD_ACTIVATIONS={
 function skillCompactCard([id,name,detail,cost],wizard){
  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
  const disabled=!!state.pending||(!owned&&(!!req||!affordable));
- const act=CARD_ACTIVATIONS[id]||(/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":"Passiva / consultar");
+ const act=CARD_ACTIVATIONS[id]||(/1 PP|1 Coragem/i.test(detail)?"1 PP/1 Coragem":"Passiva / consultar");
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
@@ -924,7 +924,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  smallCompanion:{present:false,inCombat:false},
- mediumCompanion:{present:false,inCombat:false,name:"",xpGranted:0,attributes:{},life:3,notes:""},
+ mediumCompanion:{present:false,inCombat:false,name:"",level:1,xpGranted:0,attributes:{},life:3,notes:""},
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -1060,7 +1060,8 @@ function normalize(v){
   present:mediumOwned&&!!m.present,
   inCombat:mediumOwned&&!!m.present&&!!m.inCombat,
   name:String(m.name||"").slice(0,80),notes:String(m.notes||"").slice(0,1000),
-  xpGranted:clamp(Math.floor(m.xpGranted||0),0,110),
+  level:clamp(Math.floor(m.level??s.level),1,s.level),
+  xpGranted:clamp(Math.floor(m.xpGranted||0),0,1000000000),
   attributes:Object.fromEntries(A.map(([k])=>[k,clamp(Math.floor(m.attributes?.[k]||0),0,6)])),
   life:0
  };
@@ -1167,7 +1168,7 @@ function save(){
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
 function smallCompanionPresent(s=state){return !!s.skills.includes("domar-criatura-pequena")&&!!s.smallCompanion?.present;}
 function mediumCompanionPresent(s=state){return !!s.skills.includes("domar-criatura-media")&&!!s.mediumCompanion?.present;}
-const MEDIUM_COMPANION_XP_CAP=110; // SRD existente; orçamento de entrada e ganho ainda pendentes.
+const MEDIUM_COMPANION_XP_CAP=1000000000; // Limite técnico de armazenamento, não teto de XP da regra.
 function mediumCompanionSpent(m=state.mediumCompanion){
  return A.reduce((sum,[id])=>sum+AT_COST[clamp(Math.floor(m?.attributes?.[id]||0),0,6)],0);
 }
@@ -1178,6 +1179,13 @@ function mediumCompanionDE(m=state.mediumCompanion){
  return Math.min(9,(m?.attributes?.agilidade||0)+Math.floor((m?.attributes?.destreza||0)/2)+Math.floor((m?.attributes?.vigor||0)/2));
 }
 function mediumCompanionAvailable(m=state.mediumCompanion){return Math.max(0,(m?.xpGranted||0)-mediumCompanionSpent(m));}
+function playerTotalXp(s=state){return CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0);}
+function mediumCompanionGrantXp(amount,s=state){
+ if(!mediumCompanionPresent(s))return 0;
+ const gain=Math.max(0,Math.floor(Number(amount)||0));
+ if(s.mediumCompanion.xpGranted+gain>MEDIUM_COMPANION_XP_CAP)return -1;
+ s.mediumCompanion.xpGranted+=gain;return gain;
+}
 function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
@@ -1403,7 +1411,7 @@ function renderOwnedPanel(){
  const companionMarkup=companionOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro pequeno</strong><small>'+(
    companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial"):"Sem criatura domesticada presente")+'</small></div>'+
-  '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra sua DE defensiva atual, pagando 1 PP ou 2 Coragens; o aprendizado não cria companheiro.")+'</p>'+
+  '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra sua DE defensiva atual, pagando 1 PP ou 1 Coragem; o aprendizado não cria companheiro.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-criatura">Preparar teste de Domar / Pacificar</button><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (companionHere?'<button type="button" data-action="small-companion-combat">'+(state.smallCompanion.inCombat?"Desativar apoio de combate":"Ativar apoio de combate (+1A)")+'</button>'+
   '<button type="button" data-action="small-companion-sacrifice">Registrar sacrifício</button>'+
@@ -2260,7 +2268,7 @@ function buildPool(){
  if(tameCreature){
   if((draft.tameSmall&&!canTameSmallDraft())||(draft.tameMedium&&!canTameMediumDraft()))errors.push("Domar exige a Perícia do porte escolhido, Influência e Apresentação como fontes pertinentes.");
   if(draft.tamePayment==="pp"&&state.pp<1)errors.push("Domar exige 1 PP disponível.");
-  else if(draft.tamePayment!=="pp"&&state.courage<2)errors.push("Domar exige 2 Coragens disponíveis.");
+  else if(draft.tamePayment!=="pp"&&state.courage<1)errors.push("Domar exige 1 Coragem disponível.");
  }
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
@@ -2332,11 +2340,11 @@ function renderComposer(){
  const tameFields=canTameSmallDraft()?
   '<label class="fp-checkline full"><input type="checkbox" data-option="tameSmall"'+(draft.tameSmall?" checked":"")+'> Usar Domar Criatura Pequena (ativação paga, DE igual à sua DE defensiva)</label>'+
   (draft.tameSmall?'<label class="fp-form-field">Objetivo '+select("tameIntent",[["domar","Domesticar"],["pacificar","Pacificar para depois domar"]],draft.tameIntent)+'</label>'+
-   '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","2 Coragens"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
+   '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","1 Coragem"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
  const mediumTameFields=canTameMediumDraft()?
   '<label class="fp-checkline full"><input type="checkbox" data-option="tameMedium"'+(draft.tameMedium?" checked":"")+'> Usar Domar Criatura Média (1 XP; teste contra sua DE defensiva)</label>'+
   (draft.tameMedium?'<label class="fp-form-field">Objetivo '+select("tameIntent",[["domar","Domesticar"],["pacificar","Pacificar para depois domar"]],draft.tameIntent)+'</label>'+
-   '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","2 Coragens"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
+   '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","1 Coragem"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
@@ -2425,7 +2433,7 @@ function score(){
  if(p.opts.tameSmall||p.opts.tameMedium){
   if((p.opts.tameSmall&&p.opts.tameMedium)||(!state.skills.includes(p.opts.tameSmall?"domar-criatura-pequena":"domar-criatura-media"))||p.base?.group!=="practice"||p.base.key!=="apresentacao"||p.attribute?.group!=="attr"||p.attribute.key!=="influencia")
    errs.push("Tentativa de Domar inválida: verifique Perícia e fontes.");
-  if(p.opts.tamePayment==="pp")ppCost+=1;else courageCost+=2;
+  if(p.opts.tamePayment==="pp")ppCost+=1;else courageCost+=1;
  }
  const active=[];
  if(success&&p.characteristic){
@@ -2472,7 +2480,7 @@ function renderPending(){
   '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
   '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>':"";
  const tamePaymentNote=p.opts.tameSmall||p.opts.tameMedium?'<p class="fp-caption"><strong>'+(p.opts.tameIntent==="pacificar"?"Pacificar":"Domar")+
-  ' criatura '+(p.opts.tameMedium?"média":"pequena")+':</strong> custo da tentativa '+(p.opts.tamePayment==="pp"?"1 PP":"2 Coragens")+
+  ' criatura '+(p.opts.tameMedium?"média":"pequena")+':</strong> custo da tentativa '+(p.opts.tamePayment==="pp"?"1 PP":"1 Coragem")+
   ' (cobrado na finalização mesmo se falhar). DE igual à DE defensiva do personagem ('+p.opts.de+'). '+(p.opts.tameIntent==="pacificar"?"Em sucesso, faça domesticação depois.":"Em sucesso, o companheiro será registrado; atacar cancela o vínculo.")+'</p>':"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
  '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
