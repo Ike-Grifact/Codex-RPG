@@ -93,14 +93,14 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  assert.equal(confirmed.publicPavor,4); // excedente de crítico vai ao Pavor público
 });
 
-test("Retenção humana respeita Marco sem conceder quarto ou dado pago",()=>{
+test("Retenção humana inimiga respeita Grau da ameaça sem conceder quarto gratuito",()=>{
  const npc=quickHumanoid();npc.practices.atletismo=2;
  const pool=humanoidPool(npc,"practice","atletismo","forca");
  assert.equal(pool.ok,true);
  const dice=rollCreatureFaces(pool.pool,()=>0.5);
  assert.equal(dice.length,3);
  assert.equal(previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1}).ok,false);
- npc.level=6;npc.keep=3;
+ npc.threatGrade=2;npc.keep=3;
  const allowed=previewHumanoidRoll(npc,dice,dice.map(d=>d.id),{de:1});
  assert.equal(allowed.ok,true);
  assert.equal(allowed.cost,0);
@@ -169,7 +169,7 @@ test("Humanoide Monstro rola com Formação + Atributo e permite Perícias, mant
  h.attributes.forca=1;h.practices.atletismo=1;h.skills=["montar"];
  const pool=humanoidPool(h,"practice","atletismo","forca");
  assert.equal(pool.ok,true);
- assert.deepEqual(pool.pool.map(x=>x.sides),[6,6]);
+ assert.deepEqual(pool.pool.map(x=>x.sides),[10,6]); // Formação G1 d10, Atributo G1 d6
  assert.equal(creaturePool(h,"forca","vigor").ok,false);
  const combined=composeActionPool(h,{baseGroup:"practice",baseKey:"atletismo",attribute:"forca"});
  assert.equal(combined.ok,true);
