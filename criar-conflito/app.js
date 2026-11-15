@@ -318,9 +318,9 @@ function rollPane(t){
  );
  const sel=r?.selected||[];
  const result=r?(human?previewHumanoidRoll(t,r.dice,sel,{
-  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId,extraKeep:r.extraKeep,stepDieId:r.stepDieId
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId
  }):previewCreatureRoll(t,r.dice,sel,{
-  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,stepDieId:r.stepDieId
  })):null;
  const runes=["ᛋ","ᚨ","ᚦ"],colors=["E","A","P"];
  const dice=r?'<div class="cf-roll-dice">'+r.dice.map(d=>{
@@ -335,7 +335,7 @@ function rollPane(t){
  const outcome=r?'<div class="cf-roll-outcome">'+(result.ok?
   '<strong>'+esc(result.result.outcome)+' · '+result.result.reached+' / DE '+r.de+'</strong>'+
   '<p>ᛋ '+result.result.e+'E · ᚨ '+result.remainingA+'A livre · ᚦ '+result.result.p+'P residual · Dano básico '+result.result.damage+'</p>'+
-  '<p>Gasto de retenção: '+result.cost+'P local'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
+  '<p>Gasto de retenção: '+result.cost+'P local · '+(result.courageCost||0)+' Coragem'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
   '<p class="cf-warning">'+esc(result.error)+'</p>')+
   '<button type="button" data-roll-confirm class="cf-primary"'+(result.ok?'':' disabled')+'>Confirmar resultado e recursos</button></div>':"";
  const last=model.lastRoll?.id===t.id?'<p class="cf-note">Última rolagem confirmada: '+esc(model.lastRoll.outcome)+
@@ -343,16 +343,30 @@ function rollPane(t){
  const help=human?
   'Escolha uma Prática ou Conhecimento e um Atributo pertinente. Disciplina para Armas ou Conjuração exige a Perícia habilitadora. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. Retenção paga com Coragem ainda não está automatizada.':
   'Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
- const allowed=human?Math.min(t.keep,stats(t).keepBase):t.keep;
+ const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
+ const originalPool=composeActionPool(t,selectionFor(t,d),"");
+ const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
+ const prepare=(!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
+  (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
+   '> Manter dado adicional (1 Coragem)</label>':'')+
+  '<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-step"'+(d.step?' checked':'')+
+  '> Elevar dado antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
+  (d.step?'<label>Escolher dado elegível<select id="cf-roll-step-die"><option value="">Selecione o dado</option>'+
+   stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepDieId===x.id?' selected':'')+'>'+
+   esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
+   '</option>').join("")+'</select></label>':'')+'</div>'):"";
+ const extraHint=d.extra?'<p class="cf-note">Terceira fonte: '+esc(d.extra.group+" / "+d.extra.key)+
+  ' · pertinência '+(d.contextOK?"confirmada":"pendente")+'</p>':"";
+
  return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem de '+(human?'humanoide':'criatura')+'</h3>'+
   '<p class="cf-note">'+help+'</p>'+
   '<div class="cf-roll-config">'+sourceConfig+
-  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??Math.max(1,stats(t).de))+'"></label>'+
+  '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??d.de)+'"></label>'+
   '<label>Situação<select id="cf-roll-situation"'+(r?' disabled':'')+'>'+Object.entries(SITUATIONS).map(([key,v])=>
-   '<option value="'+key+'"'+(r?.situation===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
-  '<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
+   '<option value="'+key+'"'+((r?.situation||d.situation)===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
+  prepare+extraHint+'<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
   (r?'<button type="button" data-roll-clear>Alterar fontes</button>':"")+
-  '<span>Até '+allowed+' dados mantidos'+(human?' por Marco (sem gasto de Coragem)':
+  '<span>Até '+allowed+' dados mantidos'+(human?' · Coragem '+t.courage+'/10':
    ' · '+Math.max(0,t.keep-2)+'P local se mantiver todos os planejados')+'</span></div>'+
   dice+(r?'<div class="cf-roll-config">'+
    '<label>Anular P (1A por P)<input type="number" data-roll-param="cancelP" min="0" max="9" value="'+r.cancelP+'"></label>'+
