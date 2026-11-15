@@ -47,7 +47,7 @@ export const lifeMax=s=>3+Number(s.attributes?.vigor||0)+Math.floor(Number(s.att
 export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor(Number(s.attributes?.destreza||0)/2)+Math.floor(Number(s.attributes?.vigor||0)/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxPP=level=>level>=20?3:level>=10?2:level>=5?1:0;
-export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
+export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
 // SRD v0.41 [DEFINIDO]: G1=4P; progressão +1/Grau até atingir 8P (G5=8P, G6=8P).
 // A reserva inicial é cheia; oportunidades, custos e retenção não são alterados.
