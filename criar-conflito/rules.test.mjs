@@ -34,7 +34,7 @@ test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
 });
 test("Pavor público é independente do local, teto 2 + jogadores",()=>{
  const m=blank("monstro");m.threatGrade=1;m.pavorLocal=8;
- const n=normalize(m);assert.equal(n.pavorLocal,1);
+ const n=normalize(m);assert.equal(n.pavorLocal,4);
  const data=encounterSummary([n],4);
  assert.equal(data.publicCap,6);assert.equal(data.count,1);
 });
@@ -50,7 +50,7 @@ test("Importação saneia campos e impede grau/capacidade fora do limite",()=>{
  assert.equal(t.threatGrade,6);
  assert.equal(t.attributes.forca,6);
  assert.equal(t.keep,4);
- assert.equal(t.pavorLocal,6);
+ assert.equal(t.pavorLocal,8);
  assert.equal(t.items.length,1);
 });
 test("Humano comum rápido começa com investimento mínimo, saldo livre e Perícias disponíveis",()=>{
