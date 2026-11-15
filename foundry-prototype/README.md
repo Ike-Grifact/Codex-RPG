@@ -1,5 +1,7 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
+> **Retomada de playtest — 15/11/2026:** consultar [PLAYTEST-SRD-044-2026-11-15.md](./PLAYTEST-SRD-044-2026-11-15.md) antes de criar personagens e rolar. A branch está em migração ao SRD v0.44; alguns trechos antigos deste README e do sistema ainda descrevem regras históricas. Não instalar a branch sobre um mundo sem backup nem tratar alterações não homologadas como release estável.
+
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
 ## Desenvolvimento local
