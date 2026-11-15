@@ -162,3 +162,29 @@ test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=
  const restored=normalize(saved);
  assert.equal(restored.items[0].integrity,5);
 });
+
+
+test("Humanoide Monstro rola com Formação + Atributo e permite Perícias, mantendo o limite humanoide",()=>{
+ const h=blank("humanoide-monstro");
+ h.attributes.forca=1;h.practices.atletismo=1;h.skills=["montar"];
+ const pool=humanoidPool(h,"practice","atletismo","forca");
+ assert.equal(pool.ok,true);
+ assert.deepEqual(pool.pool.map(x=>x.sides),[6,6]);
+ assert.equal(creaturePool(h,"forca","vigor").ok,false);
+ const combined=composeActionPool(h,{baseGroup:"practice",baseKey:"atletismo",attribute:"forca"});
+ assert.equal(combined.ok,true);
+ const rolled=rollCreatureFaces(combined.pool,()=>0.999);
+ const preview=previewHumanoidRoll(h,rolled,rolled.map(x=>x.id),{de:1});
+ assert.equal(preview.ok,true);
+ assert.equal(preview.courageCost,0);
+ assert.equal(previewCreatureRoll(h,rolled,rolled.map(x=>x.id),{de:1}).ok,false);
+});
+test("Perito Conjurador não concede terceira fonte em humanos antigos",()=>{
+ const h=blank("humanoide");h.skills=["peritoconj","criar-item-foco-magia"];
+ h.practices.armas_conjuracao=2;h.attributes.inteligencia=1;h.attributes.destreza=1;
+ const sources={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"inteligencia",
+  mode:"conjuracao",extra:{group:"attribute",key:"destreza"},contextOK:true};
+ assert.equal(composeActionPool(h,sources).ok,false);
+ h.skills.push("disciplina-avancada");
+ assert.equal(composeActionPool(h,sources).ok,true);
+});
