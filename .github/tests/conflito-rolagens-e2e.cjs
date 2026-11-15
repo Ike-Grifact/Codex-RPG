@@ -6,6 +6,7 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   const page=await browser.newPage({viewport:{width:1420,height:920}});
   const errors=[];page.on("pageerror",e=>errors.push(e.message));
   await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
+  await page.locator("#new-kind").selectOption("monstro");
   await page.locator("#add-threat").click();
   await page.locator('#editor [data-field="leader"]').check();
   assert(await page.locator("[data-conflict-mode=edit]").getAttribute("aria-pressed")==="true","Início não está em Edição");
