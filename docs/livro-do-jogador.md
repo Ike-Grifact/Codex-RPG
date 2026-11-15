@@ -6,6 +6,16 @@
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
+## Atualização normativa — 15/11/2026: Domar Criatura Média [DEFINIDO / PENDENTE / EXPERIMENTAL]
+
+**Domar Criatura Média** substitui **Domar Animal Médio**, com **custo de aquisição de 1 XP**, sem compra duplicada. Pela equivalência com a versão pequena, exige **Influência 2 + Apresentação 1 + Inteligência 1** e custa **1 PP ou 2 Coragens por tentativa** de pacificação/domesticação, com Influência + Apresentação contra **a DE defensiva atual do próprio personagem**.
+
+Em caso de domesticação bem-sucedida, o personagem passa a ter uma **ficha separada de criatura média, no mesmo nível do domador**. A criatura dispõe de **Atributos, dados, Vida e DE próprios e realiza ações independentes**, sofrendo ferimentos e morte; não ganha o ponto de Vida sacrificial dos pequenos. Quando acompanha e auxilia o personagem em combate, fornece **+1 Antecipar (A)**. A presença de criaturas de dois portes não concede automaticamente +2A ao mesmo teste. Atacar a criatura encerra a domesticação.
+
+**XP do companheiro:** ele possui uma reserva **própria**, comprando **somente Atributos** pelos **mesmos custos acumulados do jogador**: grau 0: 0 XP; 1: 1; 2: 3; 3: 7; 4: 15; 5: 31; 6: 55 XP. Mantém-se o teto de **110 XP investidos** para categoria Média, já previsto no histórico. **O custo de 1 XP compra a Perícia, não 110 XP gratuitos para a criatura.** A quantidade inicial e o ganho posterior de XP permanecem **PENDENTES**, definidos pela mesa para o playtest.
+
+O criador vincula o nível e conserva a ficha do companheiro na exportação do personagem, permitindo cadastrar os Atributos, XP, Vida, DE e apoio. Para visualização, utiliza provisoriamente a Vida e a DE derivadas dos Atributos conforme a referência da ficha do jogador, sem Prática Atletismo; essas fórmulas para criaturas são **EXPERIMENTAIS**. Consulte o [SRD v0.45, seção 0-AF](srd-continuidade-v0.45.md).
+
 ## Atualização normativa — 15/11/2026: Domar Criatura Pequena [DEFINIDO / PENDENTE]
 
 **Domar Criatura Pequena** substitui **Domar Animal Pequeno** (não há duas compras). **Aquisição: 1 XP; requisitos: Influência 2, Apresentação 1 e Inteligência 1.** Ativar uma tentativa custa **1 PP ou 2 Coragens** e permite realizar teste com Influência contra a **DE defensiva atual do próprio personagem**, a mesma exibida em sua ficha. Essa DE é usada tanto para Domar quanto para Pacificar, sem cálculo separado por espécie ou origem mágica. Alvos são criaturas pequenas, como cães, gatos e aves. No acerto, a criatura é domesticada; **atacá-la cancela o efeito**. Em combate, o personagem pode tentar **pacificá-la primeiro, para posteriormente domesticá-la**.
