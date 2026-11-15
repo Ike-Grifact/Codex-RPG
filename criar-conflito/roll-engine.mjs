@@ -38,7 +38,11 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  // G2+ = 3 naturais. Um adicional custa 1 Coragem, até 4 dados.
  const gradeLevel=Number(unit.threatGrade)>=2?6:1;
  const limit=keepLimit(gradeLevel,extraKeep,false);
- const courageCost=Number(extraKeep)+Number(!!options.stepDieId);
+ // Pagar só pelo quarto dado efetivamente mantido: ativar o controle sem usá-lo
+ // não consome Coragem. A autorização ainda é necessária para passar do limite natural.
+ const naturalKeep=Number(unit.threatGrade)>=2?3:2;
+ const paidExtraKeep=extraKeep&&kept.length>naturalKeep;
+ const courageCost=Number(paidExtraKeep)+Number(!!options.stepDieId);
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
