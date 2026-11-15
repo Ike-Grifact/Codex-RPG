@@ -8,7 +8,7 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
   await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
   assert(await page.getByText("Criar Conflito").count()>0,"Não abriu a área Criar Conflito");
   await page.locator("#add-threat").click();
-  assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro");
+  assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro. Erros: "+errors.join(" | ")+" · editor: "+(await page.locator("#editor").innerText()).slice(0,250));
   assert((await page.locator("#public-count").innerText()).includes("2 / 6"),"Teto público incorreto");
   await page.locator('#editor [data-field="xp"]').fill("20");
   await page.locator('#editor [data-field="xp"]').dispatchEvent("change");
