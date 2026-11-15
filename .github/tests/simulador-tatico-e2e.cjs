@@ -15,6 +15,14 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   assert(snap.tokens.find(t=>t.name==="Lobo pesado").threatGrade===2,"Lobo pesado deve ser Grau 2");
   assert(snap.tokens.find(t=>t.name==="Lobo pesado").xp===40,"Lobo pesado deve possuir 40 XP");
   assert(snap.tokens.find(t=>t.name==="Mago").armor.integrity===0,"Muito Leve não possui Integridade");
+  const spent=await page.evaluate(async()=>{
+   const {ledger}=await import("/criar-conflito/rules.mjs?v=20261115-kinds1");
+   const state=JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1"));
+   return Object.fromEntries(state.tokens.map(t=>[t.name,ledger(t).spent]));
+  });
+  for(const name of ["Mago","Guerreiro","Tank","Atirador","Lobo ágil"])
+   assert(spent[name]===20,name+" deveria ter 20 XP: "+JSON.stringify(spent));
+  assert(spent["Lobo pesado"]===40,"Lobo pesado precisa de 40 XP: "+JSON.stringify(spent));
   assert((await page.locator("#distance").innerText()).includes("m"),"Distância entre mago e atirador não foi medida");
   await page.locator("#range").fill("30");
   await page.locator("#roll").click();
@@ -64,6 +72,7 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   await page.locator("#attribute-source").selectOption("destreza");
   await page.locator("#discipline-mode").selectOption("armas");
   await page.locator("#equipment-source").selectOption({label:"Revólver · d6"});
+  assert(await page.locator("#range").inputValue()==="16","Revólver G1 tem alcance de 16 m no catálogo");
   await page.locator("#extra-source").selectOption("attribute:agilidade");
   await page.locator("#context-approved").check();
   await page.locator("#range").fill("30");
