@@ -1069,10 +1069,9 @@ function normalize(v){
   s.trade.resources=Object.fromEntries(RESOURCES.map(([k])=>[k,clamp(Math.floor(rawTrade.resources?.[k]||0),0,100000)]));
    s.trade.collected=!!rawTrade.collected;
   // Valores introduzidos pela mesa: experimentais; sem preço oficial presumido.
-  for(const kind of ["common","rare"]){
-   const raw=rawTrade.stonePrices?.[kind];
-   s.trade.stonePrices[kind]=raw===null||raw===undefined||raw===""?null:clamp(Math.floor(raw),1,10000);
-  }
+  const raw=rawTrade.stonePrices?.common;
+  const B=raw===null||raw===undefined||raw===""?null:clamp(Math.floor(raw),1,3333);
+  s.trade.stonePrices.common=B;s.trade.stonePrices.rare=B===null?null:3*B; // Proporção homologada; preservar preços de compras históricas.
   s.trade.stones=Array.isArray(rawTrade.stones)?rawTrade.stones.slice(0,150)
    .filter(x=>x&&STONE_CATALOG.some(row=>row[0]===x.element))
    .map(x=>({element:x.element,price:clamp(Math.floor(x.price||0),0,10000)})):[];
@@ -2448,7 +2447,8 @@ function renderTrade(){
 }
 function renderStoneShop(){
  const select=$("stone-element");if(!select)return;
- const previous=select.value,common=state.trade.stonePrices.common,rare=state.trade.stonePrices.rare;
+ const previous=select.value,common=state.trade.stonePrices.common,rare=common===null?null:3*common;
+ state.trade.stonePrices.rare=rare;
  select.innerHTML='<option value="">Escolha uma pedra</option>'+STONE_CATALOG.map(([element,kind])=>
   '<option value="'+esc(element)+'">'+esc(element)+' · '+(state.trade.stonePrices[kind]??"VT pendente")+(state.trade.stonePrices[kind]==null?"":" VT")+(kind==="rare"?" · rara":"")+'</option>').join("");
  if(STONE_CATALOG.some(row=>row[0]===previous))select.value=previous;
@@ -2456,9 +2456,9 @@ function renderStoneShop(){
  if(cp&&document.activeElement!==cp)cp.value=common??"";
  if(rp&&document.activeElement!==rp)rp.value=rare??"";
  const row=STONE_CATALOG.find(x=>x[0]===select.value),valid=Number.isInteger(common)&&common>0&&
-  Number.isInteger(rare)&&rare>common,price=row?state.trade.stonePrices[row[1]]:null;
+  Number.isInteger(rare)&&rare===3*common,price=row?state.trade.stonePrices[row[1]]:null;
  $("stone-buy").disabled=!row||!valid||!Number.isInteger(price)||price>walletValue();
- $("stone-buy").title=valid?"Compra com VT restante.":"Defina valores de playtest: pedra rara precisa custar mais que comum.";
+ $("stone-buy").title=valid?"Compra com VT restante.":"Defina o preço comum em VT; Veneno, Sagrado e Trevas custam automaticamente 3× este valor.";
  $("stone-owned").textContent=(state.trade.stones.length?
   "Pedras compradas nesta ficha: "+state.trade.stones.map(x=>x.element+" ("+x.price+" VT)").join(", ")+". ":"")+
   (valid?"Valores definidos pela mesa, não oficiais.":"Preços oficiais PENDENTES. Sangue/Pedra da Alma não comprável no nível 1.");
@@ -2466,8 +2466,8 @@ function renderStoneShop(){
 function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-preferred")?.value){
  const row=STONE_CATALOG.find(x=>x[0]===element);if(!row){toast("Escolha uma pedra disponível.");return;}
  const common=state.trade.stonePrices.common,rare=state.trade.stonePrices.rare;
- if(!Number.isInteger(common)||!Number.isInteger(rare)||common<1||rare<=common){
-  toast("Defina preços de playtest: pedra rara precisa custar mais que comum.");return;
+ if(!Number.isInteger(common)||!Number.isInteger(rare)||common<1||rare!==3*common){
+  toast("Defina o preço comum de playtest em VT; pedras especiais custam exatamente 3×.");return;
  }
  const price=state.trade.stonePrices[row[1]];
  if(price>walletValue()){toast("VT insuficiente para a pedra escolhida.");return;}
@@ -2728,9 +2728,10 @@ function onChange(event){
   renderTrade();return;
  }
  if(el.dataset.stonePrice){
-  const kind=el.dataset.stonePrice;if(!["common","rare"].includes(kind))return;
+  const kind=el.dataset.stonePrice;if(kind!=="common")return;
   const raw=String(el.value).trim();
-  state.trade.stonePrices[kind]=raw===""?null:clamp(Math.floor(Number(raw)),1,10000);
+  const common=raw===""?null:clamp(Math.floor(Number(raw)),1,3333);
+  state.trade.stonePrices.common=common;state.trade.stonePrices.rare=common===null?null:3*common;
   save();renderStoneShop();return;
  }
  if(el.id==="stone-element"){renderStoneShop();return;}
