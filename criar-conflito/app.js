@@ -80,9 +80,9 @@ function downloadText(text,filename,mime){
  anchor.href=url;anchor.download=filename;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function exportRollHistory(){
- const cols=["Data","Ficha","Tipo","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
+ const cols=["Data","Ficha","Tipo","Ação declarada","Perícia declarada","Fontes","DE","Resultado","E","A livre","P","Dano","Crítico","Coragem gasta","Pavor gasto","Dados rolados"];
  const csv=[cols,...(model.rollHistory||[]).map(x=>[
- x.date,x.unit,x.kind,(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
+ x.date,x.unit,x.kind,x.declaredAction||"",x.declaredSkill||"",(x.sources||[]).map(y=>y.group+":"+y.key).join(" + "),x.de,x.outcome,
  x.e,x.a,x.p,x.damage,x.critical,x.courageSpent,x.pavorSpent,
  (x.dice||[]).map(d=>"d"+d.sides+":"+d.face+(d.kept?"(mantido)":"(descartado)")).join(" | ")
  ])].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
@@ -349,7 +349,7 @@ function historyPanel(t){
   (records.length?records.map(x=>{
    const date=x.date?new Date(x.date).toLocaleString("pt-BR"):"Sem data";
    return '<details class="cf-history-entry"><summary><strong>'+esc(x.unit||"Sem nome")+'</strong>'+
-    '<span>'+esc(date)+'</span><span>'+esc(x.outcome||"Resultado")+
+    '<span>'+esc(date)+'</span><span>'+esc(x.declaredAction||"Teste")+' · '+esc(x.outcome||"Resultado")+
     ' · '+Number(x.reached||0)+'/DE '+Number(x.de||0)+'</span></summary>'+
     '<p>Fontes: '+esc((x.sources||[]).map(y=>y.group+":"+y.key).join(" + "))+'</p>'+
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
