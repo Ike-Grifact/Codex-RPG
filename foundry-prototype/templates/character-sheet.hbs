@@ -208,7 +208,15 @@
         {{else}}
         {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>{{/unless}}
         {{/if}}
-        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>{{/unless}}
+        {{#unless codex.isAnimal}}
+         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado elegível (d4→d6→d10→d12) por 1 {{#if codex.isHostile}}Pavor local{{else}}Coragem{{/if}}</label>
+         {{#if codex.prepare.step}}
+         <label>Escolha o dado<select data-roll-option="stepDieId">
+           <option value="">Selecione o dado que será elevado</option>
+           {{#each codex.prepare.stepOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
+         </select></label>
+         {{/if}}
+         {{/unless}}
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
         {{#if codex.prepare.weightEnabled}}
