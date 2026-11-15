@@ -9,11 +9,39 @@ updated: "2026-11-15"
 
 **Decisões do autor — 15/11/2026:** renomear Conjuração Equilibrada para **Conjuração Refinada**, agora destinada a aumentar o alcance de efeitos mágicos (procedimento ainda a reescrever); **não modificar Escudo Arcano nem introduzir iniciativa**; reduzir **3 pontos de Integridade das armaduras**, preservando escudos; confirmar a economia elemental v0.43; fixar o **preço das pedras especiais de Veneno, Sagrado e Trevas em 3 vezes o preço das pedras elementais comuns**; abrir análise probabilística de Conhecimentos e Práticas para definir quando não rolar. Profissões/itens e especializações posteriores continuam em construção.
 
-**Precedência:** novas decisões explícitas > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+**Precedência:** novas decisões explícitas > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+
+## 0-AF. Domar Criatura Média — substituição de Domar Animal Médio [15/11/2026]
+
+**[DEFINIDO — decisão autoral de 15/11/2026]** **Domar Criatura Média** é a atualização de **Domar Animal Médio**, não uma segunda compra. Sua aquisição passa de **3 XP para 1 XP**, por equivalência com **Domar Criatura Pequena**. O porte médio mantém ficha própria e ações independentes; não recebe o ponto sacrificial de Vida das criaturas pequenas. As regras de Domar Animal Grande, Exótico/Gigante/Alado e Montar continuam inalteradas.
+
+| Campo | Regra atual |
+|---|---|
+| Perícia | **Domar Criatura Média** (substitui Domar Animal Médio) |
+| Aquisição | **1 XP** |
+| Pré-requisitos | **Influência 2 + Apresentação 1 + Inteligência 1**, como na Perícia equivalente para pequenas |
+| Ativação | **1 PP OU 2 Coragens**, por tentativa |
+| Ação | Teste com **Influência**, usando Apresentação como fonte pertinente, para **Pacificar** ou **Domesticar** |
+| DE da domesticação | **A mesma DE defensiva atual do domador**, como na versão equivalente para criaturas pequenas; a criatura possui **DE própria** apenas para resolver suas demais ações com sua ficha |
+| Companheiro obtido | **Ficha independente de criatura média**, **no mesmo nível atual do personagem domador**, vinculada à ficha dele |
+| Evolução do animal | **Atributos somente**, com a **mesma tabela acumulada de custo de XP dos Atributos dos jogadores** (graus 0–6: **0, 1, 3, 7, 15, 31 e 55 XP**) |
+| Teto de XP próprio | Mantido o limite histórico **110 XP totais** em Atributos para categoria Média. Não é XP automaticamente concedido pela compra da Perícia |
+| Apoio | Quando a criatura média **está presente e ajuda em combate**, fornece **+1 Antecipar (A)** ao domador |
+| Ações e risco | A criatura média **tem Vida, DE, dados e ações próprios**, pode sofrer ferimentos e morrer; não possui Coragem ou habilitações humanas gratuitas |
+| Ataque e pacificação | A pacificação em combate precede domesticação; **atacar a criatura rompe a domesticação**, como na Perícia equivalente |
+| Múltiplos companheiros | Não acumular automaticamente +1A da criatura pequena com +1A da média sem uma regra futura explícita |
+
+**[DEFINIDO — distinção econômica]** O **preço de evolução de cada Atributo do animal** é o preço da ficha do jogador, **não** a tabela mais cara usada por monstros extraordinários. O animal usa uma reserva de XP **própria**, que não é cobrada do saldo de XP pessoal do domador; o orçamento próprio **não** nasce automaticamente da compra de 1 XP da Perícia. O **nível é sincronizado com o do personagem** e não pressupõe XP integral igual ao dele.
+
+**[PENDENTE]** Quantidade de XP do animal ao ser domesticado, ganho de XP por sessão/nível e eventuais novas regras de limite de companheiros, ações conjuntas e cumulação de bônus. Como o orçamento inicial permanece pendente, **o Narrador registra o XP próprio efetivamente concedido**, sem criar XP gratuito. Também estão pendentes condições exatas de pacificação, número de tentativas e detalhes de ataques/armaduras/equipamentos da espécie. A regra de extensão mágica **confirmada para pequenos** não é estendida automaticamente aos médios.
+
+**[IMPLEMENTAÇÃO DO PROTÓTIPO / EXPERIMENTAL NO CÁLCULO DA FICHA]** O criador compartilha cadastro, nível e exportação com o personagem, mas preserva os **Atributos, XP, Vida e DE** do médio em campos independentes. O jogador pode registrar a domesticação bem-sucedida e distribuir XP **até 110**, apenas dentro do montante previamente registrado pelo Narrador. Para visualização de playtest, Vida usa a referência de personagem **3 + Vigor + ⌊Força/2⌋** e DE usa **mínimo(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋)**, sem Atletismo (o animal não compra Práticas). Essas fórmulas são **EXPERIMENTAIS para a criatura** e **não** substituem uma definição específica futura de vida/defesa animal. Ações e rolagens independentes permanecem resolvidas na mesa; ao realizar uma rolagem do domador, o apoio A é aplicado **uma única vez**, mesmo com companheiros de portes diferentes.
+
+---
 
 ## 0-AE. Domar Criatura Pequena — substituição de Domar Animal Pequeno [15/11/2026]
 
-**[DEFINIDO — decisão autoral de 15/11/2026]** A Perícia **Domar Criatura Pequena** é a nova versão de **Domar Animal Pequeno**, não uma Perícia acumulativa. Substitui o nome, o custo de **2 XP** e o requisito histórico **Influência 1** nas seções 0-B.6 e “Domar animais, montarias e Maestrias associadas”, preservadas abaixo apenas como histórico. A mudança **não altera** Domar Animal Médio, Grande, Exótico/Gigante/Alado ou as Perícias de Montaria.
+**[DEFINIDO — decisão autoral de 15/11/2026]** A Perícia **Domar Criatura Pequena** é a nova versão de **Domar Animal Pequeno**, não uma Perícia acumulativa. Substitui o nome, o custo de **2 XP** e o requisito histórico **Influência 1** nas seções 0-B.6 e “Domar animais, montarias e Maestrias associadas”, preservadas abaixo apenas como histórico. A mudança de porte pequeno **não altera diretamente** o Grande, Exótico/Gigante/Alado ou as Perícias de Montaria; **Domar Animal Médio é atualizado separadamente na seção 0-AF**.
 
 | Campo | Regra vigente |
 |---|---|
