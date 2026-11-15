@@ -47,6 +47,21 @@ function standardArmor(raw){
  return {equipped:true,weight:w,integrity:Math.floor(clamp(it.integrity??it.hp??it.integrityMax??it.max,0,999)),
   max:Math.floor(clamp(it.integrityMax??it.max,0,999)),name:String(it.name||"Armadura")};
 }
+function equippedWeapons(actor){
+ const catalog=Array.isArray(window.CODEX_G1_CATALOG)?window.CODEX_G1_CATALOG:[];
+ const skills=actor?.skills||[];
+ return (actor?.items||[]).filter(it=>it.equipped&&(it.type==="arma"||it.kind==="weapon"||it.kind==="firearm"))
+  .map(it=>{
+   const entry=catalog.find(row=>row.name?.toLowerCase()===String(it.name||"").toLowerCase());
+   const category=String(entry?.category||it.category||"leve");
+   const firearm=!!it.firearm||it.kind==="firearm"||entry?.kind==="firearm";
+   const expected=firearm?"armas-fogo":category==="medio"?"armas-medias":
+    category==="pesado"?"armas-pesadas":"armas-leves";
+   const die=Number(it.die||entry?.die||0);
+   return {id:String(it.id||it.name),name:String(it.name||"Arma"),die,expected,
+    allowed:skills.includes(expected)&&[6,10,12].includes(die)};
+  });
+}
 function formatPlayer(raw){
  const t=blank("humanoide");t.kind="humanoide";
  t.name=String(raw.name||raw.nome||"Jogador").slice(0,100);
@@ -105,6 +120,10 @@ function preset(){
  unit("Atirador","humanoide","inimigos",{destreza:2,agilidade:2,vigor:1},{armas_conjuracao:2},
   ["armas-fogo","disciplina-avancada"],0,1,{equipped:true,name:"Armadura Leve G1",weight:"leve",max:7,integrity:7});
  unit("Lobo pesado","monstro","inimigos",{agilidade:3,vigor:3},{},[],40,2);
+ for(const [name,weapon,die] of [["Guerreiro","Espada Longa",10],["Tank","Espada Longa",10],["Atirador","Revólver",6]]){
+  const actor=state.tokens.find(t=>t.name===name);
+  actor.items.push({id:freshId(),name:weapon,kind:"weapon",die,equipped:true,qty:1,weight:0});
+ }
  state.target=state.tokens.find(t=>t.name==="Atirador").id;
  record("cenário","Confronto 3×3 preparado. Magia G2 causa dano; G1 só efeitos. Mago começa ativo, com Muito Leve.");
  persist();renderAll();notice("Confronto carregado. Mago começa; distância, paredes e cobertura importam.");
@@ -167,6 +186,16 @@ function renderSourceOptions(force=false){
   $("discipline-mode").value=t.skills?.includes("criar-item-foco-magia")?"conjuracao":"armas";
  }else $("discipline-mode").value="normal";
  $("spell-grade").value="2";
+ const extras=[];
+ if(t)for(const [g,rows,field] of [["attribute",ATTRIBUTES,"attributes"],["practice",PRACTICES,"practices"],["knowledge",KNOWLEDGES,"knowledges"]])
+  for(const [k,name] of rows)if(Number(t[field]?.[k])>0)extras.push({value:g+":"+k,label:name+" G"+t[field][k]});
+ $("extra-source").innerHTML='<option value="">Sem terceira fonte</option>'+extras.map(o=>
+  '<option value="'+esc(o.value)+'">'+esc(o.label)+'</option>').join("");
+ $("context-approved").checked=false;
+ const weapons=t?equippedWeapons(t):[];
+ $("equipment-source").innerHTML='<option value="">Sem dado de equipamento</option>'+
+  weapons.map(w=>'<option value="'+esc(w.id)+'"'+(!w.allowed?' disabled':'')+'>'+esc(w.name)+
+   ' · '+(w.die?'d'+w.die:'dado pendente')+(w.allowed?'':' · requer '+w.expected)+'</option>').join("");
  $("extra-keep").checked=false;
 }
 function targetInfo(resetDE=false){
@@ -257,13 +286,25 @@ function startRoll(){
  if(!Number.isFinite(maxRange)||maxRange<0||d>maxRange+0.001)return notice("Alvo além do alcance declarado ("+d.toFixed(1)+" m).");
  const [group,key]=($("base-source").value||"").split(":");
  const human=isHumanoidKind(a.kind),attr=$("attribute-source").value;
+ const extra=$("extra-source").value;const [extraGroup,extraKey]=(extra||"").split(":");
  const selection=human?{baseGroup:group,baseKey:key,attribute:attr,mode:$("discipline-mode").value}:
   {first:key,second:attr,mode:"normal"};
+ if(extra){selection.extra={group:extraGroup,key:extraKey};selection.contextOK=$("context-approved").checked;}
  const pool=composeActionPool(a,selection);
  if(!pool.ok)return notice(pool.error);
+ const chosenWeapon=$("equipment-source").value;
+ let equipmentName="";
+ if(chosenWeapon){
+  const weapon=equippedWeapons(a).find(w=>w.id===chosenWeapon&&w.allowed);
+  if(!weapon||selection.mode!=="armas"||!human||selection.baseKey!=="armas_conjuracao")
+   return notice("Dado de arma exige Disciplina em modo Armas e Perícia correspondente.");
+  if(pool.pool.length>=9)return notice("O dado de equipamento ultrapassaria os 9 rolados.");
+  pool.pool.push({id:"equipment.0",group:"equipment",key:weapon.id,sides:weapon.die,baseSides:weapon.die});
+  equipmentName=weapon.name;
+ }
  const rolled=rollCreatureFaces(pool.pool),kept=rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id);
  pending={actor:a.id,target:t.id,rolled,kept,mode:selection.mode,sources:pool.sources,
-  distance:d,cover:los.cover,situation:$("situation").value,preview:null};
+  distance:d,cover:los.cover,situation:$("situation").value,equipmentName,preview:null};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderPending();$("action-state").textContent="Em rolagem";
 }
@@ -312,7 +353,7 @@ function confirmRoll(){
  record("rolagem",a.name+" contra "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.aRemaining+"A, "+r.p+
   "P). Dano potencial "+possibleDamage+". "+(spell?"Magia G"+grade+". ":"")+"Aplicação manual.",{
    actor:a.id,target:t.id,rolled:p.rolled,kept:p.kept,raw:r,damagePotential:possibleDamage,
-   distance:p.distance,cover:p.cover,spellGrade:grade,
+   distance:p.distance,cover:p.cover,spellGrade:grade,equipment:p.equipmentName||"",
    courageCost:pre.courageCost||0,pavorCost:pre.cost||0});
  pending=null;persist();renderAll(false);notice("Rolagem registrada. Aplique dano e efeitos manualmente após confirmar alcance e proteção.");
 }
@@ -452,7 +493,7 @@ function bind(){
  $("confirm").addEventListener("click",confirmRoll);
  $("apply-resource").addEventListener("click",applyResource);
  $("arcane-shield").addEventListener("click",declareShield);
- for(const id of ["difficulty","situation","extra-keep","cancel-p","convert-a","spell-grade"])
+ for(const id of ["difficulty","situation","extra-keep","cancel-p","convert-a","spell-grade","extra-source","context-approved","equipment-source"])
   $(id).addEventListener("change",()=>{if(pending)previewAction();});
  $("dodge").addEventListener("change",()=>{targetInfo(true);if(pending)previewAction();});
  $("narrator-cover").addEventListener("change",()=>{if(pending)previewAction();});
