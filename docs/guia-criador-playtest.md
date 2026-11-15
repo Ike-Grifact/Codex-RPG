@@ -8,7 +8,7 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 
 **EXPERIMENTAL (montante):** a ferramenta usa **20 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 20 XP restam 17 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
 
-As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.43](srd-continuidade-v0.43.md), seção 0-AC (ativação, foco e pedras com VT de playtest), 0-AB (Trevas), 0-AA (Pavor do alvo), 0-Z (dados e Coragem) e 0-Y (criação).
+As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.44](srd-continuidade-v0.44.md), seção 0-AD (Conjuração Refinada, Integridade G1 7/12/17, pedras raras 3× comuns e cálculo probabilístico da DE), 0-AC (ativação e foco), 0-AB (Trevas), 0-AA (Pavor do alvo), 0-Z (dados e Coragem) e 0-Y (criação).
 
 Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pertinente em grau 0 fornece **1d6 gratuito individual**.
 
