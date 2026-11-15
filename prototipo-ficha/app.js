@@ -41,6 +41,12 @@ const SKILLS=[
   2
  ],
  [
+  "domar-criatura-media",
+  "Domar Criatura Média",
+  "Substitui Domar Animal Médio. 1 XP, Influência 2 + Apresentação 1 + Inteligência 1. Domar/Pacificar custa 1 PP ou 2 Coragens contra a DE do domador. Companheiro médio no mesmo nível do personagem, com ficha e XP próprios. Só compra Atributos pelos custos normais do jogador, até o teto vigente de 110 XP; o orçamento inicial e a taxa de ganho dependem da mesa. Presente e ajudando em combate: +1A ao domador. Tem Vida e ações próprias, sem Vida sacrificial da criatura pequena.",
+  1
+ ],
+ [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
   "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 2 Coragens; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
@@ -317,6 +323,11 @@ const SKILL_AFFINITY={
  "montar": [
   "attr:influencia"
  ],
+ "domar-criatura-media": [
+  "attr:influencia",
+  "practice:apresentacao",
+  "attr:inteligencia"
+ ],
  "domar-criatura-pequena": [
   "attr:influencia",
   "practice:apresentacao",
@@ -569,6 +580,7 @@ const SKILL_BRANCHES=[
   "combate",
   "montar",
   "domar-criatura-pequena",
+  "domar-criatura-media",
   "recobrar-coragem"
  ],
  [
@@ -594,6 +606,7 @@ const SKILL_PERMALINKS={
  "armas": "armas-1",
  "montar": "montar-animal",
  "domar-criatura-pequena": "domar-criatura-pequena",
+ "domar-criatura-media": "domar-criatura-media",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
@@ -639,6 +652,7 @@ const SKILL_PERMALINKS={
 };
 const CARD_REQUIREMENTS={
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-media": "Influência 2 + Apresentação 1 + Inteligência 1",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -672,6 +686,7 @@ const CARD_REQUIREMENTS={
 
 const CARD_EFFECTS={
  "domar-criatura-pequena": "+1A em combate e 1 Vida sacrificial com criatura pequena domesticada presente",
+ "domar-criatura-media": "+1A em combate com criatura média presente; ficha própria, nível do domador e Atributos por XP",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -704,6 +719,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "domar-criatura-media": "Por 1 PP ou 2 Coragens, Influência + Apresentação contra a DE do próprio personagem; pode pacificar em combate e depois domar. Com sucesso, recebe a ficha de um companheiro médio no mesmo nível. Custo dos Atributos idêntico ao do jogador; XP próprio não é concedido gratuitamente e respeita o teto 110 XP. Auxilia em combate com +1A, ou age com sua ficha independente. Não recebe a Vida sacrificial do companheiro pequeno.",
  "domar-criatura-pequena": "Teste com Influência contra a DE defensiva do próprio personagem, ativação 1 PP ou 2 Coragens. Em combate pode pacificar para depois domar. Atacar a criatura cancela a domesticação. Presente, concede +1A em combate e 1 ponto especial de Vida antes de Inconsciente. Pode sacrificar-se ou ser protegida enquanto o dono recebe dano letal. Com Criar Item de Foco e Magia permite criaturas mágicas pequenas. DE, quantidade acumulável e protocolo de letalidade pendentes.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
@@ -738,6 +754,7 @@ const CARD_BRIEFS={
 
 const CARD_ACTIVATIONS={
  "domar-criatura-pequena": "1 PP ou 2 Coragens por tentativa",
+ "domar-criatura-media": "1 PP ou 2 Coragens por tentativa",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -907,6 +924,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  smallCompanion:{present:false,inCombat:false},
+ mediumCompanion:{present:false,inCombat:false,name:"",xpGranted:0,attributes:{},life:3,notes:""},
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -955,7 +973,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false,tameSmall:false,tamePayment:"courage",tameIntent:"domar"});
+  contextOK:false,equipmentId:"",trevas:false,tameSmall:false,tameMedium:false,tamePayment:"courage",tameIntent:"domar"});
 function load(){
  let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
@@ -1023,7 +1041,7 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
- const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string").map(x=>x==="domar-animal-pequeno"?"domar-criatura-pequena":x))]:[];
+ const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string").map(x=>x==="domar-animal-pequeno"?"domar-criatura-pequena":x==="domar-animal-medio"?"domar-criatura-media":x))]:[];
  const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
  const shouldMigrateFocus=legacyCost>0&&qualifiesForFocus&&!rawSkills.includes("criar-item-foco-magia");
@@ -1036,6 +1054,18 @@ function normalize(v){
   present:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present,
   inCombat:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present&&!!v.smallCompanion?.inCombat
  };
+ const m=v.mediumCompanion&&typeof v.mediumCompanion==="object"?v.mediumCompanion:{};
+ const mediumOwned=s.skills.includes("domar-criatura-media");
+ s.mediumCompanion={
+  present:mediumOwned&&!!m.present,
+  inCombat:mediumOwned&&!!m.present&&!!m.inCombat,
+  name:String(m.name||"").slice(0,80),notes:String(m.notes||"").slice(0,1000),
+  xpGranted:clamp(Math.floor(m.xpGranted||0),0,110),
+  attributes:Object.fromEntries(A.map(([k])=>[k,clamp(Math.floor(m.attributes?.[k]||0),0,6)])),
+  life:0
+ };
+ // XP é próprio da criatura. O saldo não pode ser inventado ao comprar a Perícia.
+ s.mediumCompanion.life=clamp(Math.floor(m.life??mediumCompanionMaxLife(s.mediumCompanion)),0,mediumCompanionMaxLife(s.mediumCompanion));
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
   s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":id==="combinacao"?"Combinação de Fontes":"Perito Conjurador").join(" e ")+
    ". XP liberado automaticamente pela retirada; habilidades antigas não são concedidas sem requisitos.").trim().slice(0,5000);
@@ -1108,7 +1138,7 @@ function normalize(v){
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
   // Migração segura de rolagens em aberto com DE arbitrária da versão anterior.
-  if(s.pending.opts?.tameSmall)s.pending.opts.de=smallCreatureTargetDe(s);
+  if(s.pending.opts?.tameSmall||s.pending.opts?.tameMedium)s.pending.opts.de=smallCreatureTargetDe(s);
  }
  return s;
 }
@@ -1136,6 +1166,18 @@ function save(){
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
 function smallCompanionPresent(s=state){return !!s.skills.includes("domar-criatura-pequena")&&!!s.smallCompanion?.present;}
+function mediumCompanionPresent(s=state){return !!s.skills.includes("domar-criatura-media")&&!!s.mediumCompanion?.present;}
+const MEDIUM_COMPANION_XP_CAP=110; // SRD existente; orçamento de entrada e ganho ainda pendentes.
+function mediumCompanionSpent(m=state.mediumCompanion){
+ return A.reduce((sum,[id])=>sum+AT_COST[clamp(Math.floor(m?.attributes?.[id]||0),0,6)],0);
+}
+function mediumCompanionMaxLife(m=state.mediumCompanion){
+ return 3+(m?.attributes?.vigor||0)+Math.floor((m?.attributes?.forca||0)/2);
+}
+function mediumCompanionDE(m=state.mediumCompanion){
+ return Math.min(9,(m?.attributes?.agilidade||0)+Math.floor((m?.attributes?.destreza||0)/2)+Math.floor((m?.attributes?.vigor||0)/2));
+}
+function mediumCompanionAvailable(m=state.mediumCompanion){return Math.max(0,(m?.xpGranted||0)-mediumCompanionSpent(m));}
 function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
@@ -1210,7 +1252,7 @@ function skillReq(id,s=state){
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
 
- if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.practices.apresentacao||0)<1||intelligence<1))
+ if(["domar-criatura-pequena","domar-criatura-media"].includes(id)&&((s.attributes.influencia||0)<2||(s.practices.apresentacao||0)<1||intelligence<1))
   return"Requer Influência 2, Apresentação 1 e Inteligência 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
@@ -1440,6 +1482,7 @@ function geneStageGrade(id,delta){
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
  "domar-criatura-pequena":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
+ "domar-criatura-media":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
@@ -1602,6 +1645,9 @@ function geneCommit(){
  state.skills=[...preview.skills];
  if(!state.skills.includes("domar-criatura-pequena")){
   state.smallCompanion.present=false;state.smallCompanion.inCombat=false;
+ }
+ if(!state.skills.includes("domar-criatura-media")){
+  state.mediumCompanion.present=false;state.mediumCompanion.inCombat=false;
  }
  geneDraft.clear();genePendingSkills.clear();
  for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
