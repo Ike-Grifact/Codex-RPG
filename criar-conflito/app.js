@@ -339,7 +339,8 @@ function prepareThreatAction(kind,skillId,itemId){
 function rollWorkspace(t){
  const d=draftFor(t);
  return '<div class="cf-roll-workspace"><div class="cf-roll-heading"><div><span class="eyebrow">MODO ROLAGEM</span>'+
-  '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.</p></div>'+
+  '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.'+
+  (stats(t).playerEquivalentLevel?' Grau 2 corresponde à ameaça de um jogador nível 5, mas a retenção usa o Grau.':'')+'</p></div>'+
   '<div class="cf-roll-resources"><span>Pavor local <b>'+t.pavorLocal+' / '+stats(t).limitLocal+'</b></span>'+
   (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / 10</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
@@ -504,6 +505,7 @@ function editorHTML(t){
   (human?field("Nível do humanoide","level",{type:"number",min:1,max:20}):"")+
   field(t.kind==="humanoide"?"XP adicional (20 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
   '<label class="cf-check"><input type="checkbox" data-field="leader"'+(t.leader?' checked':'')+'> É Líder</label></div>'+
+  (x.playerEquivalentLevel?'<p class="cf-note">Equivalência de ameaça: Grau 2 ≈ jogador de nível 5. O Grau define seu teto próprio de 4 dados mantidos; a equivalência não altera XP nem nível da ficha.</p>':'')+
   '<div class="cf-stat-grid">'+
   '<div class="cf-stat cf-stat-life"><small>VIDA ATUAL / MÁXIMA</small><strong>'+t.life+' / '+x.life+'</strong>'+
   '<div class="cf-life-actions"><button type="button" data-life="-1"'+(t.life<=0?' disabled':'')+' aria-label="Reduzir Vida em um">−</button>'+
