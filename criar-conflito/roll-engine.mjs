@@ -77,8 +77,7 @@ export function composeActionPool(unit,selection={},stepDieId=""){
  if(extra){
   const advanced=human&&(
     selection.baseKey==="armas_conjuracao"&&unit.skills.includes("disciplina-avancada")&&Number(unit.practices.armas_conjuracao)>=2||
-    selection.baseKey==="furtividade"&&unit.skills.includes("furtividade-avancada")&&Number(unit.practices.furtividade)>=2||
-    selection.baseKey==="armas_conjuracao"&&selection.mode==="conjuracao"&&unit.skills.includes("peritoconj")
+    selection.baseKey==="furtividade"&&unit.skills.includes("furtividade-avancada")&&Number(unit.practices.furtividade)>=2
   );
   if(!(advanced||!human&&Number(unit.threatGrade)>=5))errors.push("Terceira fonte exige habilitação apropriada.");
   if(!selection.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
