@@ -59,7 +59,7 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
   assert(errors.length===0,"Erros Javascript no fluxo DNA/Conflito: "+errors.join(" | "));
   console.log("PASS: NPC no DNA, isolamento de saves, ações por Perícia, dados SVG e histórico");
 
-  const player=await page.context().newPage();
+  const player=page; // reaproveita a mesma aba e seu localStorage
   await player.setViewportSize({width:1300,height:900});
   const playerErrors=[];player.on("pageerror",e=>playerErrors.push(e.stack||e.message));
   await player.goto("http://127.0.0.1:8000/prototipo-ficha/",{waitUntil:"domcontentloaded"});
