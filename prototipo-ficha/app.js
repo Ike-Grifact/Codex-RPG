@@ -1699,7 +1699,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
@@ -2608,6 +2608,18 @@ function setWeaponFocus(selected){
  render();save();
 }
 /** Playtest: restituição somente da Perícia comprada, sem reembolsar requisitos mantidos. */
+/** Lista completa das Perícias adquiridas, inclusive IDs legados ocultos no grafo. */
+function renderRespecSkills(){
+ const box=$("respec-skills-list");if(!box)return;
+ const owned=SKILLS.filter(([id])=>state.skills.includes(id));
+ box.innerHTML=owned.length?owned.map(([id,name,,cost])=>
+  '<div class="fp-respec-row"><span><strong>'+esc(name)+'</strong><small>'+
+  (Number.isInteger(cost)?cost+" XP investidos":"Custo pendente — conferir ficha")+'</small></span>'+
+  '<button type="button" data-action="respec-skill" data-id="'+esc(id)+'"'+
+  (!Number.isInteger(cost)||state.pending?' disabled':'')+'>'+
+  (Number.isInteger(cost)?"Devolver "+cost+" XP":"Reembolso pendente")+'</button></div>').join(""):
+  '<p class="fp-muted">Nenhuma Perícia comprada nesta Ficha.</p>';
+}
 function refundSkillForPlaytest(id){
  if(state.pending){toast("Finalize ou descarte a rolagem antes de redistribuir XP.");return;}
  const index=state.skills.indexOf(id),row=SKILLS.find(x=>x[0]===id);
