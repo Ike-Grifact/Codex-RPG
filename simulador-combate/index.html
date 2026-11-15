@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="../assets/theme.css">
 <link rel="stylesheet" href="./styles.css?v=0.1">
 <script src="../assets/site.js" defer></script>
-<script type="module" src="./app.mjs?v=0.1"></script>
+<script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
+<script type="module" src="./app.mjs?v=0.2"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -77,6 +78,9 @@
    <div class="tc-fields">
     <label>Base (Conhecimento/Prática ou Atributo)<select id="base-source"></select></label>
     <label>Atributo de apoio<select id="attribute-source"></select></label>
+    <label>Terceira fonte pertinente (opcional)<select id="extra-source"><option value="">Não usar terceira fonte</option></select></label>
+    <label class="tc-check"><input id="context-approved" type="checkbox"> Narrador aprovou a pertinência da terceira fonte</label>
+    <label>Equipamento equipado e habilitado<select id="equipment-source"><option value="">Sem dado de equipamento</option></select></label>
     <label>Modo de Disciplina<select id="discipline-mode"><option value="normal">Normal</option><option value="armas">Armas</option><option value="conjuracao">Conjuração</option></select></label>
     <label>Situação (confirmada pelo Narrador)<select id="situation"><option value="neutral">Normal</option><option value="advantage">Vantagem</option><option value="disadvantage">Desvantagem</option><option value="superior">Vantagem absoluta</option><option value="inferior">Desvantagem absoluta</option></select></label>
     <label>DE da rolagem <input type="number" id="difficulty" min="0" max="30" value="1"></label>
