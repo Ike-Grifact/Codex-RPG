@@ -42,3 +42,16 @@ A progressão da Ficha de **Humanoide comum** conserva os **20 XP iniciais exper
 - Arquivos impactados: `prototipo-ficha/app.js`, `criar-conflito/rules.mjs`, `criar-conflito/codex-rules.mjs`, `criar-conflito/roll-engine.mjs`, `criar-conflito/app.js`, `foundry-prototype/module/rules.mjs`, catálogo de Perícias e controles do site.
 - Testes automatizados devem confirmar os três orçamentos, a devolução de Perito Conjurador em fichas antigas, a remoção da terceira fonte exclusiva e a abertura de verbete pelo DNA.
 - Nenhum custo novo, Perícia nova ou efeito especial extra foi autorizado por este registro.
+
+## 4. Retenção das ameaças por Grau [DEFINIDO, 15/11/2026]
+
+**Decisão explícita mais recente:** inimigos de **Grau 2 ou superior podem manter até 4 dados**. O Grau da ameaça, e não o nível do personagem, rege o teto da retenção inimiga. Continua o limite geral de até 9 rolados e 4 mantidos; jamais se mantêm dados não presentes na pilha.
+
+- **Grau 1:** preservado o máximo anterior de 3 mantidos nos inimigos extraordinários e o modelo humanoide de 2 naturais + 1 mediante Coragem.
+- **Graus 2–6:** novo teto **4 mantidos** para todos os três tipos: Humanoide, Criatura/Monstro e Humanoide Monstro.
+- **Economia anterior preservada:** Criatura/Monstro mantém 2 dados sem custo e paga 1P local por cada dado extra efetivamente mantido (3º/4º: até 2P). Humanoides inimigos têm 3 dados sem custo em Grau 2+ e podem manter o quarto mediante 1 Coragem, descontada **apenas se o quarto for mantido**. Não se pode alegar que o novo limite oferece gastos gratuitos.
+- O máximo de 4 depende de **disponibilidade de dados da rolagem**. Um Grau 2 que rolou só 2 dados mantém somente 2.
+- **SUBSTITUÍDO:** o teto histórico de apenas 3 dados para monstros extraordinários Graus 1–4 e o quarto a partir do Grau 5 na seção histórica da v0.44.
+- Não foram alteradas a tabela de XP, a quantidade/faces fornecidas por Grau de Atributo, os custos de elevação, a DE, o dano ou a reserva de Pavor local.
+
+**Observação de implementação:** os controles da ferramenta devem indicar o teto por Grau e o custo real; mudar de Grau descarta qualquer rolagem pendente construída sob limite anterior.
