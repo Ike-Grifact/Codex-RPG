@@ -570,7 +570,6 @@ function update(field,value){
   t[field]=Math.floor(clamp(value,field==="keep"?2:field==="level"||field==="threatGrade"?1:0,
    field==="keep"?4:field==="level"?20:field==="threatGrade"?6:field==="xp"?50000:999));
   if(field==="threatGrade"&&oldGrade!==t.threatGrade){
-   if(t.kind==="monstro"&&oldGrade<2&&t.threatGrade>=2)t.keep=4;
    rollDraft=null;creatureRoll=null; // nunca reaproveitar uma prévia de Grau antigo
   }
  }
