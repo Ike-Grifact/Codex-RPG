@@ -119,6 +119,15 @@ test("Retenção de jogadores e monstros e os tetos de Pavor",()=>{
  assert.equal(keepLimit(5,0,true),2);assert.equal(keepLimit(5,2,true),4);
  assert.equal(monsterCap(1),1);assert.equal(monsterCap(6),6);assert.equal(narratorCap(4),6);
 });
+test("Não cobrar manutenção extra se o jogador escolher menos dados que o teto",()=>{
+ const rolled=[{id:"a",group:"attribute",sides:6,face:6},
+  {id:"b",group:"practice",sides:10,face:7},
+  {id:"c",group:"practice",sides:10,face:8}];
+ const noExtra=resolveRoll(rolled,["a","b"],{level:1,extraKeep:true,courage:0,de:2});
+ assert.equal(noExtra.ok,true,"Reservar +1 não cobra se não foi usado");
+ const extra=resolveRoll(rolled,["a","b","c"],{level:1,extraKeep:true,courage:0,de:2});
+ assert.equal(extra.ok,false,"3º dado pago exige Coragem");
+});
 test("Criatura não humanoide usa d4 no grau 0, d10 no G1, 2d10 no G2",()=>{
  const s={monsterRules:true,attributes:{forca:0,agilidade:1,vigor:2}};
  assert.deepEqual(sourceDice("attribute","forca",s),[4]);
