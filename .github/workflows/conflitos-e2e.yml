@@ -14,6 +14,8 @@ on:
       - '.github/tests/conflito-dna-respec-e2e.cjs'
       - '.github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs'
       - 'prototipo-ficha/**'
+      - 'foundry-prototype/**'
+      - '.github/tests/ativacoes-domar.test.cjs'
       - 'index.html'
       - 'narrador.html'
   workflow_dispatch:
@@ -39,6 +41,11 @@ jobs:
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
         run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+      - name: Testar ativação de Perícias, Domar Média e Foundry
+        run: |
+          node --check foundry-prototype/module/sheet.mjs
+          node --check foundry-prototype/module/equipment-logic.mjs
+          node --test foundry-prototype/tests/rules.test.mjs .github/tests/ativacoes-domar.test.cjs
       - name: Instalar Chromium de teste
         run: |
           npm install --no-save playwright@1.58.2
