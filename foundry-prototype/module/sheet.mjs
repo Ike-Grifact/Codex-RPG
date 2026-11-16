@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINI
  loadCapacity,mayComplement,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
-import {dieSvg} from "./dice-icons.mjs";
+import {dieSvg,faceIcons} from "./dice-icons.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,defenseDisplay} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
@@ -24,8 +24,7 @@ function cards(list,group,s,d){
  isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key})}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
-const markerHTML = symbols => [["e","ᛋ"],["a","ᚨ"],["p","ᚦ"]]
- .map(([kind,rune],i)=>symbols[i]?`<b class="codex-rune codex-rune-${kind}">${rune.repeat(symbols[i])}</b>`:"").join("") || "Vazio";
+const markerHTML = faceIcons;
 const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
  .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
@@ -35,7 +34,7 @@ function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).include
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
- chooseSource:CodexCharacterSheet.chooseSource,adjustGrade:CodexCharacterSheet.adjustGrade,
+ chooseSource:CodexCharacterSheet.chooseSource,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
  toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
@@ -46,7 +45,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs"}};
- constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;}
+ constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;}
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal,ledger=xpLedger(s),
    used=carriedItems(actor),carryMax=loadCapacity(s),
@@ -63,7 +62,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    percent:armorMax?Math.round(100*armorCurrent/armorMax):0
   }:null;
   ctx.codex={
-   actorName:actor.name,portrait:actor.img,
+   actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
@@ -133,7 +132,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    }catch(e){summary={ok:false,errors:[e.message]};}
    ctx.codex.comparisons=p.publication?[]:alternativesFor(actor,p)
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
-      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,icon:dieSvg(d.sides)}))}));
+      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(d.symbols),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
       selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
@@ -156,7 +155,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _change(event){
   const el=event.target;
   if(el.dataset.field){
-   if(!this.actor.isOwner)return;
+   if(!this.actor.isOwner||!this._editing)return;
    const fields=["name","system.concept","system.origin","system.virtue","system.personality","system.notes","system.abilities","system.leader","system.level","system.xp","system.threatGrade"];
    if(!fields.includes(el.dataset.field))return;
    let value=el.type==="checkbox"?el.checked:el.value;
@@ -183,7 +182,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
  }
  static async purchaseStarter(){
-  if(!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
+  if(!this._editing||!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
   const attr=this.element?.querySelector("[data-starter-attr]")?.value;
   const picked=this.element?.querySelector("[data-starter-training]")?.value||"";
   const [group,key]=picked.split(":");
@@ -197,8 +196,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await this.actor.update(plan.changes);
   ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
  }
+ static async toggleEditing(){
+  if(!this.actor.isOwner)return;
+  if(this._pending){ui.notifications.info("Finalize ou descarte a rolagem antes de editar.");return;}
+  this._editing=!this._editing;
+  this._draft=draft();this._opts=defaults();
+  return this.render();
+ }
  static async chooseSource(event,target){
-  if(this._busy)return;
+  if(this._busy||this._editing)return;
   if(this._pending){
    ui.notifications.info("Finalize ou descarte a rolagem pendente antes de escolher novas fontes.");
    this.element?.querySelector(".codex-roll-results")?.scrollIntoView?.({block:"start",behavior:"smooth"});
@@ -234,7 +240,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(this._draft.base&&this._draft.attribute)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView?.({block:"start",behavior:"smooth"});
  }
  static async adjustGrade(event,target){
-  if(!this.actor.isOwner||this._pending)return;
+  if(!this._editing||!this.actor.isOwner||this._pending)return;
   const group=target.dataset.group,key=target.dataset.key,delta=Number(target.dataset.delta),valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
   if(!valid?.some(x=>x[0]===key)||![-1,1].includes(delta))return;
   const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group],current=Number(this.actor.system[field][key]||0),next=Math.min(6,Math.max(0,current+delta));
@@ -253,7 +259,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
  }
  static async toggleSkill(event,target){
-  if(!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
+  if(!this._editing||!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
   const id=target.dataset.key,entry=SKILLS.find(x=>x.id===id);if(!entry)return;
   const list=[...this.actor.system.skills],index=list.indexOf(id);
   if(index>=0)list.splice(index,1);
@@ -313,10 +319,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(this._pending)return this._request({action:"finish",id:this._pending.id});
  }
  static async addEquipment(){
+  if(!this._editing||!this.actor.isOwner)return;
   return createCodexItem(this.actor);
  }
  static async addCatalogEquipment(){
-  if(!this.actor.isOwner)return;
+  if(!this._editing||!this.actor.isOwner)return;
   const n=Number(this.element?.querySelector("[data-catalog-choice]")?.value),row=G1_CATALOG[n];
   if(!row)return;
   const {name,...system}=structuredClone(row);
@@ -339,10 +346,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  static async removeEquipment(event,target){
   const item=this.actor.items.get(target.dataset.id);
-  if(item&&this.actor.isOwner&&confirm('Excluir "'+item.name+'"?'))await item.delete();
+  if(item&&this._editing&&this.actor.isOwner&&confirm('Excluir "'+item.name+'"?'))await item.delete();
  }
  static async editPortrait(){
-  if(!this.actor.isOwner)return;
+  if(!this._editing||!this.actor.isOwner)return;
   const picker=new foundry.applications.apps.FilePicker.implementation({
    type:"image",current:this.actor.img,document:this.actor,
    callback:img=>this.actor.update({img})
