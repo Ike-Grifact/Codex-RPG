@@ -1,10 +1,11 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
+ PRACTICES,SKILLS,toSystem,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
  from "./rules.mjs?v=20261115-kinds1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261115-kinds1";
+ from "./roll-engine.mjs?v=20261115-aptidoes2";
+import {elevationChoices} from "./codex-rules.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -50,13 +51,13 @@ function draftFor(t){
    .find(x=>x.grade>0);
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
-   attribute,first:"forca",second:"vigor",firstSource:null,secondSource:null,mode:"normal",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
+   attribute,first:"forca",second:"vigor",firstSource:null,secondSource:null,mode:"normal",extra:null,
+   step:false,stepSourceId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
 function selectionFor(t,d){
- return {firstSource:d.firstSource,secondSource:d.secondSource,mode:d.mode,extra:d.extra,contextOK:d.contextOK};
+ return {firstSource:d.firstSource,secondSource:d.secondSource,mode:d.mode,extra:d.extra};
 }
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
@@ -66,7 +67,7 @@ function storeHistory(t,r,preview,settlement){
    kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
   outcome:preview.result.outcome,reached:preview.result.reached,success:preview.result.success,
   e:preview.result.e,a:preview.remainingA,p:preview.result.p,damage:preview.result.damage,
-  critical:preview.result.critical||0,extraKeep:!!r.extraKeep,stepDieId:r.stepDieId||"",
+  critical:preview.result.critical||0,extraKeep:!!r.extraKeep,stepSourceId:r.stepSourceId||"",
   pavorSpent:settlement.spent||0,courageSpent:settlement.courageSpent||0,
   localGain:settlement.localGain||0,publicGain:settlement.publicGain||0,
   cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA};
@@ -253,8 +254,7 @@ function rollSourceCards(t){
    "Duas fontes básicas de categorias diferentes, em qualquer ordem; terceira fonte com Perícia habilitada.":"Dois ou três Atributos diferentes e pertinentes, independentemente do Grau.")+
    ' A escolha não compra graus e não gasta recursos.</p>'+cards+
   '<label class="cf-context-toggle"><input type="checkbox" id="cf-pick-extra"'+(d.pickExtra?' checked':'')+'> Selecionar a terceira fonte (Perícia ou criatura)</label>'+
-  (d.extra?'<div class="cf-extra-preview"><span>Complemento: '+esc(d.extra.group+" · "+d.extra.key)+'</span>'+
-   '<label><input type="checkbox" id="cf-context-ok"'+(d.contextOK?' checked':'')+'> Narrador confirma a pertinência</label>'+
+  (d.extra?'<div class="cf-extra-preview"><span>3ª aptidão: '+esc(d.extra.group+" · "+d.extra.key)+'</span>'+
    '<button type="button" data-clear-extra>Retirar complemento</button></div>':'')+
   (!comp.ok?'<p class="cf-note">Preparação: '+esc(comp.error)+'</p>':
    '<p class="cf-note">Pilha inicial: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste Coragem, dado elevado e DE no painel abaixo.</p>')+
@@ -279,7 +279,7 @@ function historyPanel(t){
     '<p>ᛋ '+Number(x.e||0)+'E · ᚨ '+Number(x.a||0)+'A · ᚦ '+Number(x.p||0)+'P · Dano básico '+Number(x.damage||0)+
     ' · Crítico '+Number(x.critical||0)+'</p>'+
     '<p>Coragem '+Number(x.courageSpent||0)+' · Pavor local '+Number(x.pavorSpent||0)+
-    ' · Elevação '+esc(x.stepDieId||"nenhuma")+'</p>'+
+    ' · Elevação '+esc(x.stepSourceId||"nenhuma")+'</p>'+
     '<p>Faces: '+esc((x.dice||[]).map(d=>'d'+d.sides+' face '+d.face+(d.kept?' (mantido)':' (descartado)')).join(" · "))+'</p></details>';
   }).join(""):'<p class="cf-note">Nenhuma rolagem confirmada neste filtro. Faça um teste e confirme para documentar o playtest.</p>')+
   (list.length>50?'<p class="cf-note">Exibidas 50 entradas mais recentes; o CSV inclui todas as até 300 preservadas.</p>':'')+
@@ -372,9 +372,9 @@ function rollPane(t){
    '</select></label>':'');
  const sel=r?.selected||[];
  const result=r?(human?previewHumanoidRoll(t,r.dice,sel,{
-  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,extraKeep:r.extraKeep,stepSourceId:r.stepSourceId
  }):previewCreatureRoll(t,r.dice,sel,{
-  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,stepDieId:r.stepDieId
+  de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,stepSourceId:r.stepSourceId
  })):null;
  const runes=["ᛋ","ᚨ","ᚦ"],colors=["E","A","P"];
  const dice=r?'<div class="cf-roll-dice">'+r.dice.map(d=>{
@@ -398,19 +398,20 @@ function rollPane(t){
   'Selecione duas categorias diferentes, em qualquer ordem. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. A retenção adicional por Coragem é registrada e descontada ao confirmar a rolagem.':
   'Selecione dois ou três Atributos diferentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
- const originalPool=composeActionPool(t,selectionFor(t,d),"");
- const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
+ const sources=[d.firstSource,d.secondSource,...(d.extra?[d.extra]:[])];
+ const stepOptions=elevationChoices(toSystem(t),{base:sources[0],attribute:sources[1],complement:sources[2]||null});
  const prepare=!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
   (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
    '> Manter dado adicional (1 Coragem)</label>':'')+
   '<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-step"'+(d.step?' checked':'')+
-  '> Elevar dado antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
-  (d.step?'<label>Escolher dado elegível<select id="cf-roll-step-die"><option value="">Selecione o dado</option>'+
-   stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepDieId===x.id?' selected':'')+'>'+
-   esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
+  '> Elevar 1 Grau da aptidão antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
+  (d.step?'<label>Escolha a aptidão a elevar<select id="cf-roll-step-source"><option value="">Selecione a aptidão</option>'+
+   stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepSourceId===x.id?' selected':'')+'>'+
+   esc((x.group==="attribute"?"Atributo":x.group==="knowledge"?"Conhecimento":"Prática")+
+    " · "+x.key+" (G"+x.grade+" → G"+(x.grade+1)+") · "+x.before.map(n=>"d"+n).join("+")+
+    " → "+x.after.map(n=>"d"+n).join("+"))+
    '</option>').join("")+'</select></label>':'')+'</div>':"";
- const extraHint=d.extra?'<p class="cf-note">Terceira fonte: '+esc(d.extra.group+" / "+d.extra.key)+
-  ' · pertinência '+(d.contextOK?"confirmada":"pendente")+'</p>':"";
+ const extraHint=d.extra?'<p class="cf-note">3ª aptidão habilitada: '+esc(d.extra.group+" / "+d.extra.key)+'</p>':"";
 
  return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem de '+(human?'humanoide':'criatura')+'</h3>'+
   '<p class="cf-note">'+help+'</p>'+
@@ -437,10 +438,10 @@ function beginCreatureRoll(){
  d.mode=human&&usingDiscipline?(el("cf-roll-mode")?.value||d.mode||"armas"):"normal";
  d.de=Math.floor(clamp(el("cf-roll-de")?.value??d.de,0,30));
  d.situation=el("cf-roll-situation")?.value||d.situation;
- if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que será elevado.");
+ if(d.step&&!d.stepSourceId)return notice("Escolha a aptidão que receberá um Grau temporário.");
  if(t.kind==="criatura"&&d.step)return notice("Elevação especial de criaturas comuns não está habilitada.");
  if(creatureRoll?.id===t.id&&!confirm("Descartar a rolagem não confirmada e gerar novos dados?"))return;
- const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepDieId:"");
+ const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepSourceId:"");
  if(!composed.ok)return notice(composed.error);
  const courageCost=human?Number(!!d.extraKeep)+Number(!!d.step):0;
  const pavorCost=t.kind==="monstro"?Number(!!d.step):0;
@@ -452,7 +453,7 @@ function beginCreatureRoll(){
  creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
   baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
   sources:composed.sources,declaredSkill:d.declaredSkill||"",declaredAction:d.declaredAction||"",de:d.de,situation:d.situation,
-  extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
+  extraKeep:human&&!!d.extraKeep,stepSourceId:d.step?d.stepSourceId:"",
   dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
  refreshRoll();if(innerWidth<760)scrollToRoll();
@@ -462,7 +463,7 @@ function confirmCreatureRoll(){
  if(!t||!r||r.id!==t.id)return;
  const preview=(isHumanoidKind(t.kind)?previewHumanoidRoll:previewCreatureRoll)(t,r.dice,r.selected,{
   de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,
-  passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId});
+  passA:r.passA,extraKeep:r.extraKeep,stepSourceId:r.stepSourceId});
  if(!preview.ok)return notice(preview.error);
  const settlement=settleCreatureRoll(t,model.publicPavor,model.players,preview);
  if(!settlement.ok)return notice(settlement.error);
@@ -670,7 +671,7 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-clear-rolls")){if(confirm("Apagar todo o histórico de rolagens? Exporte CSV ou JSON antes de limpar.")){
    model.rollHistory=[];save();render();}return;}
  if(b.dataset.historyScope){model.historyScope=b.dataset.historyScope;save();render();return;}
- if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.contextOK=false;d.stepDieId="";render();return;}
+ if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.stepSourceId="";render();return;}
  if(b.dataset.rollSource){
   const t=selected();if(!t||conflictMode!=="roll")return;
   if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de trocar as fontes.");
@@ -689,7 +690,7 @@ document.addEventListener("click",event=>{
    if(count&&!(dual&&disc(candidate)&&count===1))
     return notice("Não repita a mesma aptidão; apenas Manejo Duplo permite duas Disciplina.");
    if(monster&&candidate.group!=="attribute")return notice("Criaturas combinam somente Atributos.");
-   d.extra=candidate;d.contextOK=false;d.pickExtra=false;
+   d.extra=candidate;d.pickExtra=false;
   }else if(!d.firstSource){
    d.firstSource=candidate;d.secondSource=null;d.extra=null;
   }else if(!d.secondSource){
@@ -708,7 +709,7 @@ document.addEventListener("click",event=>{
   if([d.firstSource,d.secondSource,d.extra].some(disc)){
    if(!["armas","conjuracao"].includes(d.mode))d.mode="armas";
   }else d.mode="normal";
-  d.stepDieId="";render();return;
+  d.stepSourceId="";render();return;
  }
  if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?b.dataset.actionTab:"skills";render();return;}
  if(b.dataset.conflictAction)return prepareThreatAction(b.dataset.conflictAction,b.dataset.actionSkill,b.dataset.actionItem);
@@ -742,10 +743,9 @@ document.addEventListener("change",event=>{
    refreshRoll();return;
   }
   if(target.id==="cf-pick-extra"){const d=draftFor(selected());d.pickExtra=target.checked;render();return;}
- if(target.id==="cf-context-ok"){const d=draftFor(selected());d.contextOK=target.checked;render();return;}
  if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
- if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
- if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
+ if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepSourceId="";render();return;}
+ if(target.id==="cf-roll-step-source"){draftFor(selected()).stepSourceId=target.value;return;}
  if(target.id==="cf-roll-de"){draftFor(selected()).de=Math.floor(clamp(target.value,0,30));return;}
  if(target.id==="cf-roll-situation"){draftFor(selected()).situation=target.value;return;}
  if(target.id==="cf-roll-mode"){draftFor(selected()).mode=target.value;return;}
