@@ -8,6 +8,42 @@ updated: "2026-11-16"
 # Codex RPG — SRD de Continuidade v0.47
 
 
+## 0-AH. Vida e Saúde: quatro estados e distribuição por Vigor [DEFINIDO — 16/11/2026; compatibilizações PENDENTES]
+
+**Decisão explícita do autor:** substitui as antigas três caixas `Saudável / Machucado / Incapacitado` por **quatro caixas** com **1 ponto inicial cada**: **Saudável / Ferido / Incapacitado / Inconsciente**, exatamente nessa ordem. As caixas **Incapacitado e Inconsciente têm sempre 1 ponto**. Os pontos de **Vigor** são distribuídos **alternadamente** entre as duas primeiras caixas: primeiro em Saudável, depois em Ferido, repetindo o ciclo. As penalidades de cada estado são **alternativas, não cumulativas**.
+
+| Estado | Penalidade ao agir | Requisito para agir | Vida mínima da caixa |
+|---|---|---|---:|
+| **Saudável (1ª)** | nenhuma | nenhum custo de Saúde | 1 |
+| **Ferido (2ª)** | **−1 Antecipar (−1A)** | não paga Coragem para agir só por Saúde | 1 |
+| **Incapacitado (3ª)** | **−1 Êxito (−1E) e +1 Pavor (+1P)** | **1 Coragem por ação** | **1, fixo** |
+| **Inconsciente (4ª)** | **−2 Êxitos (−2E) e +2 Pavor (+2P)** | **2 Coragens por ação** | **1, fixo** |
+| **Morto (Vida 0)** | não age | — | 0 |
+
+**Vida de referência sob a distribuição informada:** 4 pontos de base + 1 ponto por Grau de **Vigor**. Para `V = Vigor`: `Saudável = 1 + teto(V/2)`, `Ferido = 1 + piso(V/2)`, `Incapacitado = 1`, `Inconsciente = 1`; total `4 + V`. Esta é a interpretação operacional **PROPOSTA** para calcular o máximo, já que a regra anterior acrescentava também `piso(Força/2)` ao total `3+Vigor`; o autor não explicitou o destino do bônus antigo de **Força**. **PENDENTE:** confirmação de se o bônus da Força foi revogado ou, se continua, em qual faixa entra. **Não misturar automaticamente os dois modelos de Vida máxima.**
+
+| Vigor | Saudável | Ferido | Incapacitado | Inconsciente | Total provisório, sem bônus de Força |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 1 | 1 | 1 | 1 | 4 |
+| 1 | 2 | 1 | 1 | 1 | 5 |
+| 2 | 2 | 2 | 1 | 1 | 6 |
+| 3 | 3 | 2 | 1 | 1 | 7 |
+| 4 | 3 | 3 | 1 | 1 | 8 |
+| 5 | 4 | 3 | 1 | 1 | 9 |
+| 6 | 4 | 4 | 1 | 1 | 10 |
+
+**Determinação do estado por Vida atual** conforme essa distribuição: Vida 0 = morto; Vida 1 = Inconsciente; Vida 2 = Incapacitado; Vida entre 3 e `2+Ferido` = Ferido; Vida acima disso = Saudável. Assim, um personagem com Vigor 3 e Vida máxima 7 possui caixas 3/2/1/1: com 7–5 Vida está Saudável, 4–3 Ferido, 2 Incapacitado, 1 Inconsciente. **Estar Inconsciente não impede agir automaticamente** nesta nova decisão: a ação exige **2 Coragens** e sofre **−2E +2P**, conforme especificação autoral.
+
+**Sobre os bônus e malus [DEFINIDO / ANÁLISE]:** conforme regra vigente, **Pavor não anulado também contribui para alcançar a DE** (`E+P`). Portanto **−1E+1P** ou **−2E+2P** podem conservar ou até melhorar a pontuação bruta contra DE quando há menos Êxitos a subtrair; isso aumenta riscos de Pavor, mas não é penalidade estrita de chance de acerto. **Não remover P da DE sem aprovação**, não inventar outras restrições. O estado Ferido tira Antecipar, reduzindo opções de anulação/conversão.
+
+**Compatibilidade em aberto [PENDENTE]:** reavaliar tempos de recuperação do antigo Machucado/Incapacitado na nova faixa Ferido/Incapacitado/Inconsciente; interação com Recuperação Vigorosa e Instinto de Sobrevivência (a descrição antiga remove −1A de Incapacitado, penalidade agora inexistente nesse estado), Veneno e outros estados aplicados por efeito; se 1 ou 2 Coragens apenas permitem agir ou se gastos extras ainda poderiam remover penalidades, como previa a regra antiga. Não há aprovação automática para essa remoção. A aplicação de modificadores nas rolagens, migração da Vida de fichas salvas e conversão de dano Druídico necessitam de validação separada.
+
+**Implementação segura:** o cálculo puro das quatro faixas e dos estados foi adicionado em `prototipo-ficha/health-stages.mjs` com testes exatos. Enquanto o bônus da Força não for decidido, o protótipo de ficha e os demais motores não devem trocar a Vida máxima consolidada por uma fórmula especulativa; a seção documenta a nova distribuição, mas diferencia o **modelo puro de 4+Vigor PROPOSTO** da regra antiga com bônus de Força ainda exigindo decisão.
+
+**Precedência:** a decisão de 16/11/2026 e esta seção **0-AH** substituem as antigas três caixas e suas penalidades. As seções **0-AG.1** (Druídica, conversão histórica de três faixas) e **0-K.2** (três caixas) permanecem como histórico nos pontos incompatíveis. As demais regras do SRD v0.46 e v0.45 não são modificadas.
+
+---
+
 ## 0-AG. Perícia Druídica: preço único, formas e Vida [DEFINIDO / PENDENTE — 15/11/2026]
 
 **Retificação expressa do autor:** a aquisição da **Perícia Druídica custa apenas 2 XP ao todo**, e **NÃO 2 XP por Grau**. Esse custo único dá acesso à progressão completa de três formas, **sem comprar G1, G2 e G3 novamente**. O custo dos requisitos de Domar criaturas é pago nas respectivas Perícias e justifica não cobrar novamente cada Grau Druídico. Qualquer redação provisória anterior com **4 XP ou 6 XP acumulados na Druídica** está **SUBSTITUÍDA**. O identificador único de aquisição `pericia-druidica` é preservado para fichas já salvas.
@@ -24,37 +60,13 @@ updated: "2026-11-16"
 
 **Atributos e XP das fichas animais [DEFINIDO nos valores]:** formas **médias e grandes** recebem **a mesma quantidade de XP que o jogador**, para seus **Atributos animais**, cuja compra obedece à tabela de custos de **Conhecimentos/Práticas**, e não à tabela de Atributos humanos: custo acumulado por Grau **G1=2, G2=8, G3=20, G4=38, G5=66, G6=102 XP** (incrementos 2/6/12/18/28/36). O total de referência é o XP do jogador; ainda **PENDENTE** distinguir com precisão XP total obtido versus XP efetivamente gasto e quais limitações de criação se aplicam a cada ficha animal. A forma pequena conserva o orçamento de **19 XP**, com distribuição específica pendente. Não conceder dados ou Graus gratuitos em razão da tabela.
 
-### 0-AG.1. Vida na transformação e no retorno [DEFINIDO na distribuição e conversão por faixas — 16/11/2026]
+### 0-AG.1. Vida de transformações e nova estrutura de Saúde [DEFINIDO / PENDENTE — 16/11/2026]
 
-**Regra autoral DEFINIDA:** dividir a **Vida máxima** de cada forma em **três faixas ordenadas**, distribuindo qualquer ponto excedente **primeiro na primeira faixa, depois na segunda e, por último, na terceira**. As faixas são do maior tamanho para o menor, com diferença máxima de um ponto entre elas. **Não se trata de aplicar uma fração exata da Vida humana a cada dano:** cada faixa concluída na forma animal corresponde à perda integral da faixa de mesma posição da forma humana.
+O autor definiu em 16/11/2026 que a Vida do sistema passa a ter **quatro faixas**, não três. Aplicar a distribuição da seção **0-AH** às fichas de humanoides e criaturas que usam essa estrutura de Vida. A tabela e o procedimento de transferência por **três terços**, antes propostos para o Druida, ficam **SUBSTITUÍDOS** no que conflitam com a nova estrutura. **Não continuar aplicando a antiga tabela 2/1/1 para humano de Vida 4**: na nova estrutura ele tem **1/1/1/1**.
 
-**Algoritmo matemático:** para Vida máxima inteira positiva `V`, calcular `q = piso(V/3)` e `r = V módulo 3`. As três faixas, da primeira à terceira, são `[q+(r>=1?1:0), q+(r>=2?1:0), q]`. Para Vida 1 e 2, as faixas sem pontos são `0` e não criam Vida artificial.
+**A transferência dos ferimentos de uma forma animal para a humana necessita de compatibilização com as quatro faixas [PENDENTE].** Uma extensão possível, **PROPOSTA e não automaticamente vigente**, é converter cada faixa animal inteiramente perdida na faixa humana de mesma posição. Nesse modelo, humano Vida 4 (1/1/1/1) e urso Vida 6 (2/2/1/1) sofreriam: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morte. **Isso substitui os números históricos do exemplo com três faixas; não misturar resultados das duas versões.**
 
-| Vida máxima | 1ª faixa | 2ª faixa | 3ª faixa |
-|---:|---:|---:|---:|
-| 3 | 1 | 1 | 1 |
-| 4 | **2** | 1 | 1 |
-| 5 | **2** | **2** | 1 |
-| 6 | 2 | 2 | 2 |
-| 7 | **3** | 2 | 2 |
-| 8 | **3** | **3** | 2 |
-| 9 | 3 | 3 | 3 |
-| 10 | **4** | 3 | 3 |
-
-**Transferência no retorno:** tomar o **dano acumulado sofrido pela forma animal** e verificar quantas faixas animais estão **completamente perdidas**, na ordem 1ª → 2ª → 3ª. Ao voltar à forma humana, descontar **essas mesmas faixas completas da distribuição de Vida humana**. Dano que ainda não completa a próxima faixa animal não desconta antecipadamente a faixa humana seguinte nesta conversão por limiares. **Perder todos os pontos da Vida animal provoca morte definitiva também na forma humana**, sem depender de arredondamento. Ao reverter, o druida usa novamente seus Atributos humanos.
-
-**Exemplo autoral confirmado:** humano de Vida máxima **4**, com faixas humanas `[2,1,1]`; urso de Vida máxima **6**, com faixas animais `[2,2,2]`.
-
-| Dano acumulado ao urso | Faixas animais inteiramente perdidas | Perda na Vida humana | Vida humana após retorno (se estava íntegro) |
-|---:|---:|---:|---:|
-| **0 ou 1** | 0 | 0 | **4/4** |
-| **2 ou 3** | 1 | 2 | **2/4** |
-| **4 ou 5** | 2 | 2+1=3 | **1/4** |
-| **6 ou mais** | 3, Vida animal esgotada | 2+1+1=4 | **0/4 — morte** |
-
-**Aplicação geral:** para um animal com distribuição `[A1,A2,A3]`, as faixas completas são determinadas pelos marcos de dano `A1`, `A1+A2` e `A1+A2+A3`. Para um humano com `[H1,H2,H3]`, perder `k` faixas animais acarreta perda humana igual à soma dos primeiros `k` blocos humanos. O algoritmo reproduz 4→2/1/1, 5→2/2/1, 6→2/2/2, 7→3/2/2, bem como o exemplo 4/6; **substitui expressamente a antiga pendência de arredondamento geral**. As distribuições são calculadas sobre a Vida **máxima**, não sobre uma Vida atual já reduzida.
-
-**PENDENTE — estados e continuidade dos ferimentos, não a fórmula dos terços:** como combinar esta perda com ferimentos **humanos preexistentes**, como conservar o **dano animal parcial que não completou um terço** através de diferentes transformações, curas em forma animal, nova transformação e duração. Não apagar ferimentos preexistentes, não permitir que alternar formas gere cura gratuita, nem automatizar esses casos até sua definição. A função matemática de referência pode calcular a **perda humana correspondente** e a Vida humana **apenas se inicialmente íntegro**, sem presumir o estado completo da ficha.
+A morte do animal significa morte humana conforme a decisão já aprovada. Dano humano anterior, cura e alternância de formas continuam PENDENTES para automação segura. O arquivo de cálculo experimental pode ilustrar uma conversão em quatro faixas, mas não deve alterar a Vida de fichas existentes até que a regra de transferência seja aprovada.
 
 **Regras anteriores preservadas:** transformação/reversão não exigem testes; custos de ativação e gatilhos de Pavor permanecem distintos em G2 e G3; a forma animal usa seu conjunto de Atributos e Vida. Os dados mantidos em G2/G3 e seu encaixe nos Marcos continuam pendentes de compatibilização específica, sem concessões adicionais.
 
