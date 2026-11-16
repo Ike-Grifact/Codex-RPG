@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.46 (d4 faces 1E, 1A, 1P, vazio); histórico v0.45 (Perícia Druídica documental; formas não automatizadas), base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica 2 XP única; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -199,7 +199,7 @@ const SKILLS=[
  [
   "recuperacao-vigorosa",
   "Recuperação Vigorosa",
-  "Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",
+  "Vigor 3; adaptação da recuperação à nova Saúde em quatro estados PENDENTE. Custo XP PENDENTE.",
   null
  ],
  [
@@ -223,7 +223,7 @@ const SKILLS=[
  [
   "instinto-sobrevivencia",
   "Instinto de Sobrevivência",
-  "Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",
+  "Vigor 3; antigo efeito de remover −1A em Incapacitado está incompatível com −1E/+1P. Novo efeito PENDENTE, sem aplicar bônus automático.",
   null
  ],
  [
@@ -293,9 +293,15 @@ const SKILLS=[
   1
  ],
  [
+  "domar-criatura-pequena",
+  "Domar Criatura Pequena",
+  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 2 Coragens e teste de Influência contra a DE da criatura pequena. A Perícia não domestica automaticamente. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  1
+ ],
+ [
   "pericia-druidica",
   "Perícia Druídica",
-  "2 XP · Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra. Memoriza formas de criaturas domadas. G1 pequena: transformação gratuita, 19 XP de ficha (distribuição pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP/1 Coragem, XP igual ao personagem para Atributos, mantém 2 dados, Vantagem em Agilidade/Destreza, Leve, falha com Pavor cancela forma. G3 grande: 1 PP/1 Coragem, mantém 3 dados, Leve, manter Pavor realiza ação e cancela forma. Em todas: transformação e reversão sem teste, Vida da criatura; morrer na forma animal mata o personagem; ao reverter perde Atributos da criatura. Atributos animais usam custo de Conhecimentos/Práticas. Progressão, conversão de Vida e ficha completa PENDENTES; não automatizada.",
+  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Conversão de ferimentos da Druídica para as novas quatro caixas ainda PENDENTE; o exemplo anterior com três terços está substituído. Morrer em forma animal mata o druida; transformação não automatizada.",
   2
  ]
 ];
@@ -308,6 +314,7 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "domar-criatura-pequena": ["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
   "practice:armas_conjuracao"
@@ -509,7 +516,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["criar-item-foco-magia","terra","pericia-druidica"],
+ ["criar-item-foco-magia","terra","domar-criatura-pequena","pericia-druidica"],
  [
   "armas",
   "armas-leves",
@@ -586,6 +593,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "domar-criatura-pequena": "domar-criatura-pequena",
  "pericia-druidica": "pericia-druidica",
  "combate": "combate",
  "armas": "armas-1",
@@ -634,6 +642,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
  "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
@@ -667,7 +676,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
- "pericia-druidica": "Memoriza formas domadas: G1 pequena, G2 média, G3 grande. Vida animal; Pavor pode cancelar a forma.",
+ "domar-criatura-pequena": "Um companheiro Pequeno por personagem; +1A em combate, +1 Vida, opção de sacrifício; XP soma ao grupo no conflito.",
+ "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -700,7 +710,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "pericia-druidica": "Transformação em formas domadas. Pequena: Furtividade Absoluta; média: Agilidade/Destreza; grande: três dados naturais. Progressão e fichas animais pendentes.",
+ "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 2 Coragens e teste de Influência. Compra não é domesticação.",
+ "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -733,6 +744,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "domar-criatura-pequena": "1 PP ou 2 Coragens + teste de Influência",
  "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
@@ -902,7 +914,7 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1122,7 +1134,27 @@ function save(){
  }
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
-function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
+// SRD v0.47: quatro estados; Vigor e a contribuição histórica de Força
+// repartem pontos extras alternadamente entre Saudável e Ferido.
+const LIFE_STATES={
+ saudavel:{id:"saudavel",label:"Saudável",e:0,a:0,p:0,coragem:0},
+ ferido:{id:"ferido",label:"Ferido",e:0,a:-1,p:0,coragem:0},
+ incapacitado:{id:"incapacitado",label:"Incapacitado",e:-1,a:0,p:1,coragem:1},
+ inconsciente:{id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2},
+ morto:{id:"morto",label:"Morto",e:0,a:0,p:0,coragem:Infinity}
+};
+function lifeBands(s=state){
+ const vigor=Math.max(0,Math.floor(s.attributes.vigor||0));
+ const forca=Math.max(0,Math.floor(s.attributes.forca||0));
+ const extras=vigor+Math.floor(forca/2);
+ return [1+Math.ceil(extras/2),1+Math.floor(extras/2),1,1];
+}
+function maxLife(s=state){return lifeBands(s).reduce((n,k)=>n+k,0);}
+function lifeStage(s=state){
+ const bands=lifeBands(s),life=clamp(s.life,0,maxLife(s));
+ const id=life===0?"morto":life===1?"inconsciente":life===2?"incapacitado":life<=2+bands[1]?"ferido":"saudavel";
+ return {...LIFE_STATES[id],bands,life};
+}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0),
@@ -1160,7 +1192,8 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
- if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Requer Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. As Perícias de Domar ainda não estão cadastradas no criador; compra bloqueada até sua inclusão.";
+ if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena pode ser comprada; custos e requisitos de Domar Média/Grande ainda pendentes, portanto a Druídica continua bloqueada.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
@@ -2036,10 +2069,19 @@ function renderVitals(){
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
- const ratio=lifeMaxValue?state.life/lifeMaxValue:0;
- const tier=ratio>2/3?3:ratio>1/3?2:1;
- $("life-boxes").innerHTML=[1,2,3].map(i=>'<span class="'+(i<=tier?"filled":"")+(tier===1?" critical":"")+'"></span>').join("");
- $("life-recovery").textContent=state.life===0?"Vida zerada · procedimento pendente":tier===3?"Faixa 3/3 · 1 Vida por dia":tier===2?"Faixa 2/3 · 1 semana por Vida":"Faixa 1/3 · Medicina + 1 semana por Vida";
+ const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
+ const bands=health.bands;
+ $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
+ $("life-boxes").innerHTML=bands.map((amount,i)=>{
+  const lower=bands.slice(i+1).reduce((total,n)=>total+n,0);
+  const current=clamp(state.life-lower,0,amount);
+  return '<span title="'+names[i]+': '+current+'/'+amount+'" class="'+(current>0?"filled":"")+
+   ((i===2&&health.id==="incapacitado")||(i===3&&health.id==="inconsciente")?" critical":"")+'"></span>';
+ }).join("");
+ const effects=(health.e?health.e+"E ":"")+(health.a?health.a+"A ":"")+(health.p?"+"+health.p+"P ":"");
+ $("life-recovery").textContent=health.label+" · "+(effects.trim()||"sem penalidade")+
+  (health.coragem&&Number.isFinite(health.coragem)?" · "+health.coragem+" Coragem para agir":"")+
+  " · Cura: revisão pendente";
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -2198,13 +2240,17 @@ function randomFace(n){
  return Math.floor(Math.random()*n)+1;
 }
 function roll(){
+ const health=lifeStage();
+ if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0);
+ if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2216,6 +2262,7 @@ function affinity(attack,target){
 }
 function score(){
  const p=state.pending;if(!p)return null;
+ const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
  if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&state.skills.includes("trevas")))
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
@@ -2235,7 +2282,7 @@ function score(){
  const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
   &&state.skills.includes("criar-item-foco-magia")&&!!elementSkill&&state.skills.includes(elementSkill);
  const pBonus=properties.includes("Barulhenta")?(critTier?2:1):0;
- const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted);
+ const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
@@ -2243,15 +2290,16 @@ function score(){
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0));
+  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
- const E=eBase+pairs,P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
+ const E=Math.max(0,eBase+pairs+health.e),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem,ppCost=0;
  const active=[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -2276,7 +2324,7 @@ function score(){
  if(ppCost>state.pp)errs.push("PP insuficiente para a ativação.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
- return{dice,raw,E,P,remainingA,reached,success,outcome,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?item.range+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
@@ -2317,7 +2365,9 @@ function renderPending(){
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
- '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
+ '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
+  ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
+  '). Custo total previsto: '+cost+' Coragem.</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -2338,7 +2388,7 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);

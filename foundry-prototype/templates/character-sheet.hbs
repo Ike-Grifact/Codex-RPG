@@ -30,7 +30,7 @@
     <div class="codex-resource">
       <span>VIDA</span><strong>{{codex.life}} / {{codex.lifeMax}}</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
-      <small>3/3: 1 dia · 2/3: 1 semana · 1/3: requer Medicina</small>
+      <small>{{codex.healthLabel}} · {{codex.healthEffect}} · Faixas {{codex.lifeBandsText}} (cura em revisão)</small>
     </div>
     {{#unless codex.isMonster}}<div class="codex-resource">
       <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>

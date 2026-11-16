@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
@@ -43,10 +43,16 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=actor.type==="creature",ledger=xpLedger(s);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
+  const health=healthByLife(s,Math.max(0,Math.min(lifeMax(s),Number(s.life.value)||0)));
+  const healthLabels={saudavel:"Saudável",ferido:"Ferido",incapacitado:"Incapacitado",inconsciente:"Inconsciente",morto:"Morto"};
+  const healthEffect=health.id==="ferido"?"−1A":health.id==="incapacitado"?"−1E +1P":health.id==="inconsciente"?"−2E +2P":health.id==="morto"?"Não pode agir":"Sem penalidade";
+  const healthCost=actor.type==="character"&&health.coragem?health.coragem:0;
   ctx.codex={
    actorName:actor.name,portrait:actor.img,logo:"systems/codex-rpg-foundry/assets/codex-logo.svg",
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
+   healthLabel:healthLabels[health.id],healthEffect:healthEffect+(actor.type==="character"&&healthCost?" · "+healthCost+" Coragem/ação":""),
+   lifeBandsText:healthBands(s).join(" / "),
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
    balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
@@ -71,6 +77,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
    const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
+   if(actor.type==="character"&&(health.id==="morto"||s.courage<healthCost+Number(this._opts.extraKeep)+Number(this._opts.step))){
+    plan.errors.push(health.id==="morto"?"Vida zero: não pode agir.":"Coragem insuficiente para atuar em "+healthLabels[health.id]+".");plan.ok=false;
+   }
    const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
@@ -95,7 +104,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    let summary=null;
    if(p.selected.length)try{
     summary=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster,
-     threatGrade:s.threatGrade,weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:actor.type==="humanoid"});
+     threatGrade:s.threatGrade,weight:situate(p.options),
+     bonusP:bonusP(p.dice,p.selected,p.options)+Number(p.options.health?.p||0),
+     bonusA:Number(p.options.bonusA||0)+Number(p.options.health?.a||0),
+     skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
+     hostile:actor.type==="humanoid"});
    }catch(e){summary={ok:false,errors:[e.message]};}
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
@@ -108,7 +121,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
-    cost:Number(p.options.extraKeep)+Number(p.options.step)+(monster&&game.combat?.started?1:0)
+    cost:Number(p.options.extraKeep)+Number(p.options.step)+(monster&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0)
    };
   }
   return ctx;
@@ -206,7 +219,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   try{
    const s=this.actor.system,opts={...this._opts},item=selectedItem(this.actor,opts),die=item?equippedDie(this.actor,item,opts.mode):0;
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
-   const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0);
+   opts.health=this.actor.type==="character"?healthByLife(s,Math.max(0,Math.min(lifeMax(s),Number(s.life.value)||0))):null;
+   if(opts.health?.id==="morto")throw Error("Vida zero: personagem não pode agir.");
+   const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(opts.health?.coragem||0);
    if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
    const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
    if(game.combat?.started&&targets.length&&targets[0].actor){
@@ -243,9 +258,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   try{
    const p=this._pending,s=this.actor.system,item=selectedItem(this.actor,p.options);
    const result=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster:s.monsterRules,threatGrade:s.threatGrade,
-    weight:situate(p.options),bonusP:bonusP(p.dice,p.selected,p.options),hostile:this.actor.type==="humanoid"});
+    weight:situate(p.options),
+    bonusP:bonusP(p.dice,p.selected,p.options)+Number(p.options.health?.p||0),
+    bonusA:Number(p.options.bonusA||0)+Number(p.options.health?.a||0),
+    skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
+    hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0),payPP=0;
+   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0),payPP=0;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
    if(result.success&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");

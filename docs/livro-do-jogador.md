@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.46](srd-continuidade-v0.46.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.47](srd-continuidade-v0.47.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -14,17 +14,64 @@
 
 **Importante:** o d4 novo reduz a ocorrência de Pavor de 50% para **25%** por dado e acrescenta 25% de Êxito direto, mas pode perder resultados extremos oferecidos anteriormente pelo ᚨ+ᚦ da face 4. Não há alteração de XP, distribuição de fontes ou limites de Marcos. [SRD de Continuidade v0.46](srd-continuidade-v0.46.md).
 
-## Perícia Druídica — 15/11/2026 [DEFINIDO / PENDENTE]
+## Revisão de Vida e Saúde — quatro estados e Força mantida [DEFINIDO — 16/11/2026]
 
-**Aquisição: 2 XP. Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. O druida pode memorizar formas de criaturas que efetivamente domou, para assumir tais formas. **Custos de Atributos da ficha animal:** os mesmos de Conhecimentos e Práticas (G1 = 2 XP; demais avanços seguem a tabela da Formação).
+A Vida máxima do personagem agora é **4 + Grau de Vigor + piso(Grau de Força/2)**. Assim, **Força continua aumentando a Vida** como antes, e a base muda de 3 para **4 pontos**, um em cada estado: **Saudável, Ferido, Incapacitado e Inconsciente**. Incapacitado e Inconsciente têm sempre **1 ponto**. Para distribuir os demais, some `X = Vigor + piso(Força/2)` e aloque os `X` pontos alternadamente entre **Saudável** e **Ferido**, começando por Saudável.
 
-| Grau | Forma e ativação | Benefícios e risco |
+**Divisão das caixas:** `Saudável = 1 + teto(X/2)`; `Ferido = 1 + piso(X/2)`; `Incapacitado = 1`; `Inconsciente = 1`.
+
+| Vigor | Força | Saudável | Ferido | Incapacitado | Inconsciente | Vida máxima |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 1 | 1 | 1 | 1 | 4 |
+| 1 | 0 | 2 | 1 | 1 | 1 | 5 |
+| 2 | 0 | 2 | 2 | 1 | 1 | 6 |
+| 3 | 0 | 3 | 2 | 1 | 1 | 7 |
+| 3 | 2 | **3** | **3** | 1 | 1 | **8** |
+| 4 | 4 | **4** | **4** | 1 | 1 | **10** |
+
+| Estado | Efeito na rolagem | Custo por ação |
 |---|---|---|
-| 1 | Pequena; 0 PP / 0 Coragem, sem teste para transformar ou reverter | Ficha da criatura com **19 XP** (distribuição pendente); **Vantagem Absoluta em Furtividade**; forma **Leve**. |
-| 2 | Média; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | XP equivalente ao do personagem para distribuir nos **Atributos** da criatura (referência exata pendente); **mantém 2 dados naturalmente**, Vantagem em ações com Agilidade ou Destreza, considerada **Leve**. **Falha com Pavor cancela a forma**. |
-| 3 | Grande; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | **Mantém 3 dados naturalmente**, considerada **Leve**. Se **mantiver Pavor**, resolve a ação e depois **perde a forma**. XP da ficha grande pendente. |
+| **Saudável** | nenhum | gratuito |
+| **Ferido** | **−1A** | gratuito |
+| **Incapacitado** | **−1E e +1P** | **1 Coragem** |
+| **Inconsciente** | **−2E e +2P** | **2 Coragens** |
+| **Morto (0 Vida)** | não age | — |
 
-**Nos três Graus:** enquanto transformado usa a **Vida da ficha animal**. Ao voltar à própria forma, perde os Atributos da criatura e recupera os Atributos próprios; **morrer transformado significa morrer também na forma original**. A transformação e a reversão não exigem testes. **PENDENTE:** custo de avançar Graus, total de formas memorizadas, acesso/compra das Perícias de Domar Média/Grande, conversão de Vida e ferimentos, limites de dados mantidos por Marco e demais procedimentos de ficha. Não automatizar lacunas como benefícios gratuitos. [Ver Perícia Druídica no catálogo](../pericias/pericia-druidica.html) e [SRD v0.45](srd-continuidade-v0.45.md).
+As penalidades **não se acumulam entre estados**. Os custos de Coragem são necessários **para agir** e não anulam os modificadores. Eles se somam a outros custos da ação. Se não houver Coragem suficiente, a ação não é permitida por essa regra — não há exceção gratuita implícita.
+
+**DEFINIDO — risco como escolha narrativa:** o Pavor vindo do estado de Saúde **conta na soma da DE** exatamente como o Pavor dos dados mantidos. Um personagem Inconsciente pode alcançar DE usando Pavor, mesmo com seus Êxitos reduzidos, mas deve pagar **2 Coragens por ação** e aceitar as consequências do Pavor não anulado. **Não excluir esse Pavor da DE:** o autor manteve expressamente o benefício arriscado para preservar agência na adversidade. Um acerto com Pavor não é um acerto limpo. [Análise probabilística exata](playtests/analise-saude-quatro-estados-2026-11-16.md).
+
+**Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e conversão de ferimentos da Druídica ainda exigem revisão nas novas faixas. As rolagens de **personagens no protótipo Foundry** também incluem custos e modificadores de Saúde. Em **Criar Conflito**, a Vida máxima e o cálculo do estado foram atualizados; os custos automáticos dos NPCs e monstros permanecem pendentes.
+
+## Domar Criaturas e Pavor Druídico — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequena, Média e Grande**. Elas aumentam o **XP do grupo no conflito**, usando o XP da criatura quando conhecido ou valor informado pelo Narrador. Não é XP novo para gastar no personagem.
+
+**Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 PP ou 2 Coragens**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
+
+**Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
+
+**Druídica Grau 3:** ao transformar, pagar **1 PP ou 1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. A memória de formas permanece ilimitada, independentemente do limite de companheiros.
+
+## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
+
+**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.
+
+| Grau de transformação | Aquisição e requisitos | Forma e características |
+|---|---|---|
+| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** (distribuição pendente) |
+| **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
+| **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
+
+**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+
+### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
+
+A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1/1 e urso 6 = 2/2/2, foi **substituída** pela nova decisão de Saúde em **quatro estados**. Na nova distribuição de base + Vigor, humano com Vida 4 teria **1/1/1/1** e urso com Vida 6 teria **2/2/1/1**. A morte em forma animal continua implicando morte do druida.
+
+**PROPOSTO (não aprovado para transferência automática):** cada faixa animal completamente perdida descontaria a faixa humana de mesma posição. Com 4/6, o novo exemplo seria: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morto. Este é **um efeito diferente do exemplo antigo de três terços**. A transferência entre as novas faixas precisa de aprovação autoral; não combinar as duas tabelas e não automatizar cura, ferimentos prévios ou alternância de formas.
+
+**Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
 
@@ -303,7 +350,7 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
 
-### Caixas de Vida, penalidades e Coragem [DEFINIDO]
+### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
 
 A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
 
@@ -316,7 +363,7 @@ A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a
 
 As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
 
-### Recuperação natural de Vida [DEFINIDO]
+### Histórico de recuperação em três caixas [PENDENTE DE ADAPTAÇÃO]
 
 | Caixa em recuperação | Tempo por ponto de Vida |
 |---|---|

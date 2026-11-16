@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid}
+ PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
  from "./rules.mjs?v=20261115-kinds1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -19,12 +19,13 @@ const diePath={
 };
 const dieIcons=values=>(values||[]).map(n=>'<span class="cf-die d'+n+'"><svg width="21" height="21" viewBox="0 0 42 42" fill="none" stroke="currentColor" stroke-width="1.7">'+(diePath[n]||diePath[4])+'</svg> d'+n+'</span>').join("");
 function load(){
- let s={players:4,publicPavor:2,partyXp:80,roster:[],active:null,rollHistory:[]};
+ let s={players:4,publicPavor:2,partyXp:80,companions:normalizeCompanions({},4),roster:[],active:null,rollHistory:[]};
  try{
   const raw=JSON.parse(localStorage.getItem(KEY)||"null");
   if(raw&&typeof raw==="object"){
    s.players=Math.floor(clamp(raw.players,0,30));
    s.partyXp=Math.floor(clamp(raw.partyXp,0,99999));
+   s.companions=normalizeCompanions(raw.companions,s.players);
    s.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(s.players)));
     s.roster=Array.isArray(raw.roster)?raw.roster.slice(0,80).map(unit=>{
     if(Array.isArray(unit?.items))unit.items=unit.items.map(item=>{
@@ -116,6 +117,7 @@ function notice(text){
 function pavorDelta(value){model.publicPavor=Math.floor(clamp(model.publicPavor+value,0,narratorCap(model.players)));save();renderSummary();}
 function renderSummary(){
  const summary=encounterSummary(model.roster,model.players),total=summary.totalXP,party=model.partyXp;
+ const allies=companionEncounterXP(model.companions,model.players),effectiveParty=party+allies.xp;
  el("player-count").value=model.players;
  el("public-count").textContent=model.publicPavor+" / "+summary.publicCap+" P";
  const joint=el("public-joint-actions");
@@ -130,10 +132,20 @@ function renderSummary(){
   summary.count?"Sem líder — permitido para inimigos comuns.":"Liderança opcional.";
  el("encounter-xp").textContent=fmt(total)+" XP";
  el("party-xp").value=party;
- el("xp-compare").textContent=summary.overbudget?"Há "+summary.overbudget+" ficha(s) acima do XP autorizado.":
+ el("companion-xp-total").textContent=allies.missing.length?
+  fmt(allies.xp)+" XP informados; sem XP definido: "+allies.missing.join(", "):
+  fmt(allies.xp)+" XP de "+allies.count+" companheiro(s)";
+ el("party-effective-xp").textContent=(allies.missing.length?"Orçamento parcial: ":"Grupo + companheiros: ")+fmt(effectiveParty)+" XP";
+ for(const type of COMPANION_TYPES){
+  const record=allies.normalized[type],count=el("companion-count-"+type),xp=el("companion-xp-"+type);
+  if(count){count.value=record.count;count.max=model.players;}
+  if(xp)xp.value=record.xpTotal===null?"":record.xpTotal;
+ }
+ el("xp-compare").textContent=allies.missing.length?"XP pendente de companheiros: "+allies.missing.join(", ")+". Informe para concluir a comparação.":
+  summary.overbudget?"Há "+summary.overbudget+" ficha(s) acima do XP autorizado.":
   !summary.count?"Grau não determina desafio automaticamente.":
-  total<party?"XP das ameaças inferior ao grupo: não há XP por enfrentamento, conforme o SRD.":
-  total===party?"XP igual: recompensa-base elegível; fórmula pendente.":
+  total<effectiveParty?"XP das ameaças inferior ao grupo: não há XP por enfrentamento, conforme o SRD.":
+  total===effectiveParty?"XP igual: recompensa-base elegível; fórmula pendente.":
   "XP das ameaças superior ao grupo: potencial de recompensa maior; fórmula pendente.";
 }
 function publicJointSpend(n){
@@ -183,11 +195,16 @@ function gradeCards(t,group,entries){
    '<small>'+note+'</small></div>';
  }).join("")+'</div>';
 }
+function canBuySkill(t,id){
+ if(id==="domar-criatura-pequena")
+  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
+ return skillPrerequisite({...t,monsterRules:false},id);
+}
 function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
   '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
-   const valid=skillPrerequisite({...t,monsterRules:false},it.id);
+   const valid=canBuySkill(t,it.id);
    return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
     (valid?'':' disabled')+'><span>'+esc(it.name)+' · '+it.cost+' XP'+(valid?'':' (requisito pendente)')+'</span></label>';
   }).join("")+'</div></details>';
@@ -624,7 +641,7 @@ function remove(id){
 }
 function toggleSkill(id,checked){
  const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
- if(checked&&(!skillPrerequisite({...t,monsterRules:false},id)))return notice("Requisitos não atendidos.");
+ if(checked&&!canBuySkill(t,id))return notice("Requisitos não atendidos.");
  if(checked&&!t.skills.includes(id))t.skills.push(id);
  else if(!checked)t.skills=t.skills.filter(x=>x!==id);
  if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
@@ -659,7 +676,7 @@ async function importJson(file){
   if(!confirm("Substituir o conflito atual pelo arquivo importado?"))return;
   model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,lastRoll:raw.lastRoll||null,
    rollHistory:Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300):[],
-   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
+   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),companions:normalizeCompanions(raw.companions,raw.players),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
   model.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(model.players)));
   if(!model.roster.some(t=>t.id===model.active))model.active=model.roster[0]?.id||null;
   save();render();notice("Conflito importado com "+model.roster.length+" fichas.");
@@ -712,7 +729,7 @@ document.addEventListener("click",event=>{
  if(b.dataset.copy)return duplicate(b.dataset.copy);
  if(b.dataset.delete)return remove(b.dataset.delete);
  if(b.hasAttribute("data-joint"))return publicJointSpend(Number(b.dataset.joint));
- if(b.dataset.players){model.players=Math.floor(clamp(model.players+Number(b.dataset.players),0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
+ if(b.dataset.players){model.players=Math.floor(clamp(model.players+Number(b.dataset.players),0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));model.companions=normalizeCompanions(model.companions,model.players);save();renderSummary();return;}
  if(b.dataset.public)return pavorDelta(Number(b.dataset.public));
  if(b.dataset.grade)return gradeChange(b.dataset.grade,b.dataset.key,Number(b.dataset.delta));
  if(b.dataset.local){const t=selected();if(!t)return;t.pavorLocal=Math.floor(clamp(t.pavorLocal+Number(b.dataset.local),0,stats(t).limitLocal));save();render();return;}
@@ -763,8 +780,16 @@ document.addEventListener("change",event=>{
   const d=draftFor(selected());d.baseKey=target.value;d.mode=target.value==="armas_conjuracao"?"armas":"normal";
   const mode=el("cf-roll-mode");if(mode)mode.disabled=target.value!=="armas_conjuracao";return;
  }
- if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));save();renderSummary();return;}
+ if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));model.companions=normalizeCompanions(model.companions,model.players);save();renderSummary();return;}
  if(target.id==="party-xp"){model.partyXp=Math.floor(clamp(target.value,0,99999));save();renderSummary();return;}
+  if(target.dataset.companion){
+   const type=target.dataset.companion,field=target.dataset.companionField;
+   if(!COMPANION_TYPES.includes(type)||!["count","xpTotal"].includes(field))return;
+   const data=normalizeCompanions(model.companions,model.players);
+   data[type][field]=field==="xpTotal"&&target.value===""?null:target.value;
+   model.companions=normalizeCompanions(data,model.players);
+   save();renderSummary();return;
+  }
  if(target.id==="import-encounter"){void importJson(target.files?.[0]);target.value="";return;}
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}
  if(target.dataset.field)update(target.dataset.field,target.type==="checkbox"?target.checked:target.value);

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS} from "./rules.mjs";
+import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS,normalizeCompanions,companionEncounterXP} from "./rules.mjs";
 
 test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  const animal=blank("criatura"),monster=blank("monstro");
@@ -24,7 +24,7 @@ test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
  const m=blank("monstro");m.attributes.forca=2;m.attributes.vigor=1;
  m.attributes.agilidade=2;m.attributes.destreza=2;
  m.threatGrade=4;
- assert.equal(stats(m).life,5);
+ assert.equal(stats(m).life,6);
  assert.equal(stats(m).de,3);
  assert.equal(stats(m).limitLocal,7);
  assert.equal(stats(m).keepMax,4); // Decisão posterior: quarto dado liberado desde G2.
@@ -72,11 +72,11 @@ test("Vida atual pode ser inferior ao máximo calculado sem alterar os graus",()
  const monster=blank("monstro");
  monster.attributes.forca=5;
  monster.attributes.vigor=1;
- assert.equal(stats(monster).life,6);
- assert.equal(monster.life,3);
+ assert.equal(stats(monster).life,7);
+ assert.equal(monster.life,4);
  monster.life=6;
  assert.equal(normalize(monster).life,6);
- assert.equal(stats(monster).life,6);
+ assert.equal(stats(monster).life,7);
 });
 
 test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
@@ -168,4 +168,15 @@ test("Grau 2 equivale ao nível 5 de jogador como referência, sem modificar o n
   npc.threatGrade=grade;
   assert.equal(stats(npc).playerEquivalentLevel,null);
  }
+});
+
+test("XP de companheiros domesticados preserva limites e valores pendentes",()=>{
+ const given={pequena:{count:2,xpTotal:19},media:{count:1,xpTotal:""},grande:{count:7,xpTotal:44}};
+ const x=companionEncounterXP(given,4);
+ assert.deepEqual([x.count,x.xp],[7,63]);
+ assert.deepEqual(x.missing,["media"]);
+ assert.equal(x.normalized.grande.count,4);
+ assert.equal(companionEncounterXP(given,0).count,0);
+ assert.deepEqual(companionEncounterXP({pequena:{count:1,xpTotal:0}},2).missing,["pequena"]);
+ assert.equal(SKILLS.find(s=>s.id==="domar-criatura-pequena")?.cost,1);
 });
