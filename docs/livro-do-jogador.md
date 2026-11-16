@@ -1,10 +1,16 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.45](srd-continuidade-v0.45.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.46](srd-continuidade-v0.46.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Atualização normativa — 15/11/2026: revisão das faces do d4 [DEFINIDO]
+
+**Nova distribuição vinculante:** d4 face **1 = 1 Êxito (ᛋ)**; face **2 = 1 Antecipar + 1 Pavor (ᚨ+ᚦ)**; face **3 = 1 Pavor (ᚦ)**; face **4 = vazia (○)**. Este texto substitui a distribuição d4 anterior (faces 1 e 2 vazias, 3 Pavor, 4 Antecipar+Pavor) sem alterar o d6, d10, d12 ou d20. **Crítico ainda depende da face numérica máxima**: 4 no d4, mesmo vazia. Dados descartados não geram símbolos, Pavor ou Pressão conforme decisões mais recentes.
+
+**Balanceamento de nível 1 [ANÁLISE]:** considerando uma fonte de Atributo e uma de Formação, manutenção de até dois dados, 2A→1E quando vantajoso, sem equipamento, técnica, Vantagem ou gasto de Coragem, **Atributo G0 + Formação G0 (d4+d6)** passa de **83,33% a 91,67%** de superar DE 1 e de **33,33% a 50,00%** em DE 2. Para **Atributo G0 + Formação G1 (d4+d10)**, DE 1 passa de 90% a 95%, DE 2 de 55% a 67,5% e DE 3 de 20% a 27,5%. A combinação treinada **Atributo G1 + Formação G1 (d6+d10)** não muda: 93,33%, 63,33% e 23,33% para DE 1–3. **Atenção:** o d4 gratuito supera o d6 em taxa de Êxito direto (25% contra 16,67%); esta inversão de incentivo é um **alerta de balanceamento**, não uma alteração dos custos ou dos dados por Grau. Consulte [análise completa do d4 no nível 1](playtests/rebalanceamento-d4-nivel-1-2026-11-15.md) e [SRD v0.46](srd-continuidade-v0.46.md).
 
 ## Perícia Druídica — 15/11/2026 [DEFINIDO / PENDENTE]
 
@@ -127,10 +133,10 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 
 | Face | d4 | d6 | d10 | d12 | d20 |
 |---:|---|---|---|---|---|
-| 1 | ○ | ○ | ○ | ○ | ○ |
-| 2 | ○ | ○ | ○ | ○ | ○ |
+| 1 | ᛋ | ○ | ○ | ○ | ○ |
+| 2 | ᚨ+ᚦ | ○ | ○ | ○ | ○ |
 | 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
-| 4 | ᚨ+ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
 | 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
 | 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
 | 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ+ᚨ |
@@ -148,7 +154,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autoral **DEFINIDA em 14/11/2026**; ela é a face numérica máxima do d10. As faces 10 do d12 e d20 mantêm seus valores próprios, não alterados por esta decisão. A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 são vazias. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
+A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autoral **DEFINIDA em 14/11/2026**; ela é a face numérica máxima do d10. As faces 10 do d12 e d20 mantêm seus valores próprios, não alterados por esta decisão. A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 dos dados **d6, d10, d12 e d20** são vazias. No **d4 revisado**, a face 1 é ᛋ (Êxito), a face 2 é ᚨ+ᚦ (Antecipar e Pavor), a face 3 é ᚦ (Pavor) e a face 4 é vazia; **a face 4 continua sendo a máxima numérica para crítico, embora não contenha símbolos**. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
 
 
 ## IV. Resolver ações
