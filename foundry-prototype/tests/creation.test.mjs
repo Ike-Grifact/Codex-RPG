@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {actorData, equipmentData, importSiteData} from "../module/creation.mjs";
-import {faceLabels, registerCodexDice, showCodexDice} from "../module/dice-so-nice.mjs";
+import {faceLabels, faceImageLabels, registerCodexDice, showCodexDice} from "../module/dice-so-nice.mjs";
+import {generateRuneFaces} from "../scripts/rune-faces-generator.mjs";
+import {mkdtempSync,readdirSync,readFileSync,rmSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
 import {buildPool, FACES, resolveRoll, xpLedger} from "../module/rules.mjs";
 
 test("converte a ficha exportada com seu inventário e recursos de troca", () => {
@@ -64,6 +68,8 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   assert.deepEqual(presets.map(preset => preset.type), ["d4","d6","d10","d12","d20"]);
   assert.equal(presets.find(preset => preset.type === "d4").fontScale, 0.82);
   assert.equal(presets.find(preset => preset.type === "d10").fontScale, 1.02);
+   assert.equal(presets.find(preset => preset.type === "d4").labelScale, 1.22);
+   assert.deepEqual(presets.find(preset => preset.type === "d10").labels,faceImageLabels(10));
   assert.equal(colorsets.length,1);
   assert.equal(colorsets[0].background,"#181a1d");
   assert.deepEqual(faceLabels(10)[9],"ᛋᛋ ᚨ");
@@ -73,7 +79,8 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
     labels.forEach((label, i) => {
       const [e,a,p]=faces[i];
       assert.equal(label, ["ᛋ".repeat(e),"ᚨ".repeat(a),"ᚦ".repeat(p)].filter(Boolean).join(" ")||" ");
-      assert.ok(!label.endsWith(".png"),"As faces 3D devem conter apenas runas, sem polígonos duplicados");
+      assert.ok(!label.endsWith(".png"),"Rótulos rúnicos Unicode continuam disponíveis para depuração");
+       assert.match(faceImageLabels(sides)[i],/assets\/dice\/runas\/e\d+-a\d+-p\d+\.png$/);
     });
   }
   const user = {id: "player"};
@@ -92,4 +99,19 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   delete game.dice3d;
   await showCodexDice(roll);
   assert.equal(calls.length, 1);
+});
+
+test("o empacotamento gera 20 faces PNG distintas com a paleta oficial",()=>{
+ const target=mkdtempSync(join(tmpdir(),"codex-runas-"));
+ try{
+  assert.equal(generateRuneFaces(target),20);
+  const files=readdirSync(target);
+  assert.equal(files.length,20);
+  assert.ok(files.includes("e2-a1-p0.png"));
+  const image=readFileSync(join(target,"e2-a1-p0.png"));
+  assert.deepEqual([...image.subarray(0,8)],[137,80,78,71,13,10,26,10]);
+  assert.equal(image.readUInt32BE(16),256);
+  assert.equal(image.readUInt32BE(20),256);
+  assert.ok(image.includes(Buffer.from([38,122,69,35,105,187,84,33,118])));
+ }finally{rmSync(target,{recursive:true,force:true});}
 });
