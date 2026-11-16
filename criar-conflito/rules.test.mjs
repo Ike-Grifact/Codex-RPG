@@ -187,3 +187,14 @@ test("Domar Pequena, Média e Grande custam 1 XP cada",()=>{
  humanoid.skills=names;
  assert.equal(ledger(humanoid).skills,3);
 });
+
+test("Invocação Elemental comprável por 1 XP, sem compra de elementos ou Domar implícita",()=>{
+ const summon=SKILLS.filter(s=>s.id==="invocacao-elemental");
+ assert.equal(summon.length,1);
+ assert.equal(summon[0].cost,1);
+ const h=blank("humanoide");
+ h.skills=["invocacao-elemental"];
+ assert.equal(ledger(h).skills,1);
+ // A elegibilidade é validada no criador e na ficha de Criar Conflito;
+ // ledger apenas registra custo da Perícia existente.
+});

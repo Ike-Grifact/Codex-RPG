@@ -1,10 +1,36 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.48](srd-continuidade-v0.48.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.49](srd-continuidade-v0.49.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Improviso Elemental, Maestria e separação de invocações — decisão posterior de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Combinação de elementos:** exige **Improviso Elemental + Maestria Elemental** (as Perícias já existentes), mais a habilitação de cada elemento. Invocar com dois elementos custa **+1 Coragem** além da invocação normal. Aplicar Maestria para os efeitos especiais da criatura custa **+1 PP ou +1 Coragem** adicional, respeitando seus gatilhos. Não comprar uma terceira Perícia chamada Combinar Magia Elemental.
+
+**Tokens de uma mesma invocação:** podem ficar juntos, usando **uma ficha**, ou ser **separados**, distribuindo o XP e a Vida da invocação pela quantidade de tokens. Cada token separado mantém o **mesmo nível de DE da ficha original** e resolve como ficha individual quando for escolhido para agir. **Dano de área funciona normalmente** nos tokens atingidos. Ex.: uma ficha Grande com **60 XP/12 Vida** repartida em três zumbis Médios gera **20 XP/4 Vida para cada token**, sem criar XP ou Vida. Se XP e Vida não forem divisíveis igualmente, a distribuição dos restos é **PENDENTE**; não arredondar silenciosamente.
+
+**Dados e ação conjunta [DEFINIDO]:** Pequena rola **1 dado de Atributo** (mantém até 1); Média **2 dados**, um por parte (mantém até 2); Grande **3 dados**, um por parte (mantém até 3). O jogador escolhe quais dados de Atributo utilizar e quais resultados manter. A invocação pode agir por conta própria ou **ajudar somente um personagem por ação conjunta**: o conjurador ou outro aliado. Ao escolher ajudar, **todos os dados mantidos selecionados são passados ao mesmo personagem como contribuição à resolução normal de uma única ação conjunta**. Assim, uma invocação Grande pode ajudar o mesmo personagem com **os três dados mantidos**, sem dividi-los entre aliados e sem criar três ataques ou três turnos. Os dados mantêm seus símbolos e não podem ser reutilizados; os limites e custos normais da ação conjunta continuam válidos para cada participante. Uma parte isolada usa apenas seu dado. Registre dado, parte, face, símbolos e destinatário único. Divisão inexata de XP/Vida e recombinação continuam **PENDENTES**.
+
+**Um turno antecipável:** o conjurador **só antecipa um único turno da invocação**, ainda que existam vários tokens. Pode usar uma parte isolada ou concentrar todas as partes na **mesma ação conjunta com um único personagem**, passando até três dados se a invocação for Grande. Seguem válidos os custos normais de Antecipar e da ação conjunta, sem turnos gratuitos para as outras partes.
+
+## Limites de controle — decisão mais recente de 16/11/2026 [DEFINIDO]
+
+**Invocação:** cada conjurador controla no máximo **uma invocação ativa e uma ficha mecânica**, qualquer que seja o porte. **Uma ficha pode conter várias criaturas reais na cena**. Exemplo: **três zumbis Médios** coexistem e são controlados como uma única invocação de porte Grande, compartilhando **uma ficha Grande**, a Vida e os recursos mecânicos dessa ficha e **um orçamento de XP contado uma vez**. Isso exige Domar Grande; não concede três ações ou três fichas. Dano de área nos tokens separados é normal, conforme a atualização acima. Como dividir restos não inteiros de XP/Vida e recombinar os tokens continua PENDENTE.
+
+**Domar:** cada domador pode controlar diretamente **até duas fichas de criaturas domesticadas**, ainda respeitando **uma criatura por porte**. Uma eventual terceira criatura já domesticada não passa a ter ficha sob controle direto; seu procedimento de participação é PENDENTE. O limite de uma invocação não consome automaticamente vaga de Domar.
+
+## Invocação Elemental — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Custo: 1 XP. Requisitos:** Criar Item de Foco e Magia, Domar Criatura Pequena e um elemento habilitado. **Criar Item de Foco e Magia é a própria Perícia de Psique**, então já permite invocações de Psique, sem outra Perícia elemental. Para Fogo, Água, Ar, Terra, Sagrado, Veneno, Sangue e Trevas, possuir a Perícia específica continua obrigatório. A invocação custa **1 PP ou 1 Coragem**. O tamanho é limitado a **Pequena**, **Média** ou **Grande** conforme a correspondente Perícia Domar. A criatura temporária possui ficha com **XP total igual ao do invocador**, é imune ao próprio elemento e causa dano desse elemento. Ao ficar **Incapacitado (debilitado)** ou **Inconsciente**, o conjurador perde a invocação.
+
+O invocador também pode **imbuir uma criatura domesticada**, concedendo **resistência** ao elemento escolhido (diferente da imunidade da criatura invocada). Se possuir **Improviso Elemental + Maestria Elemental** e as habilitações dos dois elementos, pode invocar com **dois elementos por +1 Coragem**. Com **Maestria Elemental**, pode pagar **+1 PP ou +1 Coragem** para permitir que a invocação ative efeitos especiais elementais, sem dispensar seus gatilhos.
+
+**Necromancia:** Sangue e Trevas, com corpo portador de Vida que não se regenera e imune a Trevas, reinvocável até destruição definitiva por **Sagrado ou Fogo levando a Vida a 0**. **Psique:** a invocação é a **projeção da mente do próprio conjurador**, cujo **corpo físico permanece parado enquanto a projeção está ativa**. A projeção pode manifestar-se como fantasma imune a elementos neutros e sem dano neutro; com Maestria pode assombrar/possuir um corpo, provocando **Desvantagem Absoluta**. **Psique + Trevas:** assombrações; **Psique + Sagrado:** seres angelicais e fantásticos, como fadas e unicórnios.
+
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia; invocar Psique deixa o corpo físico do conjurador parado enquanto a mente se projeta. **PENDENTE:** resolver ataques contra o corpo, interrupção e retorno da mente; condições de controle, duração, possessão e resistência. **DEFINIDO:** Combinar Elementos usa Improviso + Maestria, não uma terceira Perícia. O verbete completo está em [Invocação Elemental](../pericias/invocacao-elemental.html). Norma mais recente: [SRD v0.49](srd-continuidade-v0.49.md), seção 0-AL.
 
 ## Decisões recentes — 16/11/2026 [DEFINIDO / PENDENTE]
 

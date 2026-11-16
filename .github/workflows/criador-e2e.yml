@@ -41,6 +41,8 @@ jobs:
         run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel
         run: node .github/tests/pequena-ficha-e2e.cjs
+      - name: Validar requisitos da Invocação Elemental e os portes de Domar
+        run: node --test prototipo-ficha/elemental-summoning.test.mjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular

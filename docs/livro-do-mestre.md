@@ -1,5 +1,31 @@
 # Codex RPG — Livro do Mestre
 
+## Improviso + Maestria, área e tokens separados [DEFINIDO / PENDENTE]
+
+A capacidade de Combinar Elementos na invocação é **Improviso Elemental + Maestria Elemental**, ambas adquiridas. Com elementos habilitados, invocar criatura de dois elementos custa +1 Coragem além do custo base; efeitos especiais via Maestria custam +1 PP ou +1 Coragem adicional.
+
+Várias criaturas podem permanecer na mesma ficha. Se o jogador **separa os tokens**, divide o **XP total e a Vida total** entre eles e cada token passa a resolver como **ficha individual do nível de DE original**, mantendo a DE e o orçamento somado. **Dano de área funciona normalmente**: cada token que estiver dentro da área é afetado conforme as regras de área, sem multiplicar XP ou ações. Exemplo: **60 XP/12 Vida em três tokens => 20 XP/4 Vida para cada**, todos mantendo a DE original.
+
+**Invocação em ação conjunta [DEFINIDO]:** Pequena rola 1 dado de Atributo (mantém até 1), Média 2 (mantém até 2), Grande 3 (mantém até 3), um dado por parte participante. O jogador escolhe os dados de Atributo e quais manter. Uma invocação **só pode ajudar um personagem na mesma ação conjunta**, seja o conjurador ou outro aliado. **Todos os dados mantidos destinados ao apoio passam para esse mesmo personagem**, seguindo a resolução normal da ação conjunta; a Grande pode entregar os **3 dados mantidos**. Não repartir o resultado entre guerreiro e mago, nem combinar ataque próprio com auxílio a outro na mesma atuação. A invocação inteira conta como **uma participante**, mesmo com três corpos/tokens, e não recebe três turnos. Respeitam-se custos, dados e limites aplicáveis a cada participante. Dados, faces, Antecipar e Pavor não se duplicam. As pendências numéricas sobre divisão de XP/Vida e recombinação permanecem.
+
+O conjurador pode **Antecipar apenas um turno da invocação** no total. Pode escolher uma parte para agir isoladamente ou fazer as partes contribuírem com até três dados (Grande) para **um único personagem em uma ação conjunta**. Não conceder três turnos por dividir a ficha. **PENDENTE:** restos de divisão e recombinação de danos/recursos; não arredondar nem duplicar.
+
+## Limites de fichas — decisão autoral posterior [DEFINIDO]
+
+**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Uma ficha Grande pode conter **três zumbis Médios reais na cena**, compartilhando **uma única Vida mecânica, uma economia de ações, XP contado uma vez e os dados da ficha Grande**. São vários corpos, mas não possuem fichas, turnos ou recursos independentes. Requer Domar Grande. Dano de área segue normalmente; a divisão em tokens separados é permitida, conforme acima. Restos de XP/Vida e recombinação seguem PENDENTES.
+
+**Domar permite até duas fichas domesticadas sob controle direto por domador**, respeitando uma criatura por categoria; um vínculo extra não desaparece automaticamente, mas suas ações sob controle direto não são liberadas. A contagem de criaturas presentes por categoria no orçamento do conflito não equivale à quantidade de fichas controladas; o Narrador verifica o domador de cada ficha.
+
+## Invocação Elemental — orientações ao Narrador (16/11/2026)
+
+A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e elemento habilitado; **Criar Item de Foco e Magia já habilita Psique**, sem Perícia própria adicional; outros elementos exigem Perícia específica; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
+
+**Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** e exige **Improviso Elemental + Maestria Elemental** já adquiridos; Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
+
+**Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** a invocação é a **projeção da mente do conjurador** e seu **corpo físico permanece parado** enquanto ela está ativa, inclusive em combinações Psique+Trevas ou Psique+Sagrado. As formas manifestadas incluem fantasmas imunes a neutro e sem dano neutro; Maestria pode habilitar assombrar/possuir com Desvantagem Absoluta. Ataques ao corpo e interrupção da projeção ainda são PENDENTES. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
+
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, aplicar os requisitos já definidos de Improviso + Maestria, definir manutenção/controle pormenorizado, resistência/DE de possessão, posição dos corpos narrativos e as regras de ações especiais de invocações no conflito. O limite simultâneo já é DEFINIDO: uma invocação e ficha por conjurador. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
+
 ## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
 
 Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande requer Influência 2/3/4, Apresentação 1, Inteligência 1; custo 1 XP na compra e 1 PP ou 1 Coragem na tentativa. Uma de cada porte. Cada companheiro presente aumenta o orçamento de XP do grupo e concede +1 Vida ao domador. Pequena sem ficha desenvolvida tem 1 Vida própria quando enviada a risco próprio. Com ficha independente opcional, a Vida máxima aumenta por `1 + Vigor + piso(Força/2)`, com **Força e Vigor custando o dobro desde o Grau 1**. A criatura recebe orçamento próprio igual ao XP total atualizado do jogador, sem consumir seu XP; subir Vida máxima não cura ferimentos. Aplicação de quatro faixas quando a Pequena tem menos de 4 Vida segue PENDENTE.
