@@ -1,10 +1,22 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.44](srd-continuidade-v0.44.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.45](srd-continuidade-v0.45.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Perícia Druídica — 15/11/2026 [DEFINIDO / PENDENTE]
+
+**Aquisição: 2 XP. Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. O druida pode memorizar formas de criaturas que efetivamente domou, para assumir tais formas. **Custos de Atributos da ficha animal:** os mesmos de Conhecimentos e Práticas (G1 = 2 XP; demais avanços seguem a tabela da Formação).
+
+| Grau | Forma e ativação | Benefícios e risco |
+|---|---|---|
+| 1 | Pequena; 0 PP / 0 Coragem, sem teste para transformar ou reverter | Ficha da criatura com **19 XP** (distribuição pendente); **Vantagem Absoluta em Furtividade**; forma **Leve**. |
+| 2 | Média; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | XP equivalente ao do personagem para distribuir nos **Atributos** da criatura (referência exata pendente); **mantém 2 dados naturalmente**, Vantagem em ações com Agilidade ou Destreza, considerada **Leve**. **Falha com Pavor cancela a forma**. |
+| 3 | Grande; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | **Mantém 3 dados naturalmente**, considerada **Leve**. Se **mantiver Pavor**, resolve a ação e depois **perde a forma**. XP da ficha grande pendente. |
+
+**Nos três Graus:** enquanto transformado usa a **Vida da ficha animal**. Ao voltar à própria forma, perde os Atributos da criatura e recupera os Atributos próprios; **morrer transformado significa morrer também na forma original**. A transformação e a reversão não exigem testes. **PENDENTE:** custo de avançar Graus, total de formas memorizadas, acesso/compra das Perícias de Domar Média/Grande, conversão de Vida e ferimentos, limites de dados mantidos por Marco e demais procedimentos de ficha. Não automatizar lacunas como benefícios gratuitos. [Ver Perícia Druídica no catálogo](../pericias/pericia-druidica.html) e [SRD v0.45](srd-continuidade-v0.45.md).
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
 
