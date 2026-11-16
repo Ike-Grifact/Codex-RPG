@@ -58,7 +58,7 @@ updated: "2026-11-16"
 
 **Regras anteriores preservadas:** transformação/reversão não exigem testes; custos de ativação e gatilhos de Pavor permanecem distintos em G2 e G3; a forma animal usa seu conjunto de Atributos e Vida. Os dados mantidos em G2/G3 e seu encaixe nos Marcos continuam pendentes de compatibilização específica, sem concessões adicionais.
 
-**Implementação e compatibilidade:** o criador lista **uma única aquisição `pericia-druidica` de 2 XP**, conservando fichas antigas; os três Graus são conteúdo da Perícia. As Perícias de Domar Pequena/Média/Grande ainda não estão cadastradas no catálogo do criador. **Não liberar compra contornando requisitos ausentes**; a transformação e conversão de Vida permanecem documentais enquanto as fichas animais e fórmulas pendentes não estiverem definidas.
+**Implementação e compatibilidade:** o criador lista **uma única aquisição `pericia-druidica` de 2 XP**, conservando fichas antigas; os três Graus são conteúdo da Perícia. As Perícias de Domar Pequena/Média/Grande ainda não estão cadastradas no catálogo do criador. **Não liberar compra contornando requisitos ausentes**; a divisão de Vida por terços e os limiares de conversão já estão **DEFINIDOS**, com algoritmo matemático isolado e testado em `prototipo-ficha/druid-life.mjs`. A aplicação automática sobre a ficha permanece pendente de fichas animais, ferimentos humanos preexistentes e controle de transformações sucessivas.
 
 **Precedência:** decisão mais recente do autor > **0-AG (v0.47)** sobre Druídica > **0-AF (v0.46)** sobre d4 > **0-AE (v0.45)** apenas nos pontos não substituídos > demais normas vigentes. Preservar a v0.46 integral abaixo como histórico.
 
