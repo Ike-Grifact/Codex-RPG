@@ -1,3 +1,4 @@
+import {SUMMON_PARTS_BY_SIZE,summonDiceLimit,summonPartRoll} from "./elemental-summoning.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ELEMENT_SKILL_IDS,INVOCACAO_ELEMENTAL_XP,MAX_INVOCATION_SHEETS,MAX_DIRECT_TAMED_SHEETS,GROUPED_ZOMBIE_EXAMPLE,psychicProjectionRequiresStillBody,eligibleElementalSkills,canBuyElementalSummoning,summonableElementalSizes,canSummonElemental,COMBINATION_SKILLS,DUAL_ELEMENT_EXTRA_COURAGE,MASTERED_SUMMON_EXTRA_ACTIVATION,ANTICIPATED_SUMMON_TURNS,canCombineSummonedElements,splitSummonTokens,summonAnticipatedTurn} from "./elemental-summoning.mjs";
@@ -90,4 +91,36 @@ test("A invocação inteira só fornece um turno antecipável entre todos os tok
  }
  assert.throws(()=>summonAnticipatedTurn({tokenCount:3,selectedToken:3}),RangeError);
  assert.throws(()=>summonAnticipatedTurn({tokenCount:3,selectedToken:1,mode:"dois-turnos"}),RangeError);
+});
+
+
+test("Invocação Pequena/Média/Grande rola um dado de Atributo por parte, mantém até 1/2/3",()=>{
+ assert.deepEqual([SUMMON_PARTS_BY_SIZE.pequena,SUMMON_PARTS_BY_SIZE.media,SUMMON_PARTS_BY_SIZE.grande],[1,2,3]);
+ for(const [size,n] of [["pequena",1],["media",2],["grande",3]]){
+  assert.deepEqual(summonDiceLimit(size),{size,parts:n,rolled:n,maxKept:n,dicePerPart:1,source:"attribute",sheets:1});
+  const dice=Array.from({length:n},(_,i)=>({part:i+1,attribute:["forca","destreza","vigor"][i],sides:6,face:i+1}));
+  const outcome=summonPartRoll({size,dice});
+  assert.equal(outcome.results.length,n);
+  assert.equal(outcome.keptCount,n);
+  assert.equal(outcome.extraTurns,0);
+  assert.equal(outcome.automaticDEAggregation,false);
+  assert.equal(outcome.sheets,1);
+  assert.deepEqual(outcome.results.map(d=>d.part),dice.map(d=>d.part));
+ }
+});
+test("Invocação Grande separa cada face e permite manter menos de três sem transformar em ações",()=>{
+ const rolled=summonPartRoll({size:"grande",dice:[
+  {part:3,attribute:"forca",sides:10,face:10},
+  {part:1,attribute:"forca",sides:6,face:6},
+  {part:2,attribute:"vigor",sides:12,face:12}
+ ],keptParts:[1,3]});
+ assert.deepEqual(rolled.results.map(x=>[x.part,x.face,x.kept]),[[1,6,true],[2,12,false],[3,10,true]]);
+ assert.equal(rolled.keptCount,2);
+ assert.equal(rolled.automaticDEAggregation,false);
+ assert.throws(()=>summonDiceLimit("gigante"),RangeError);
+ assert.throws(()=>summonPartRoll({size:"media",dice:[{part:1,attribute:"forca",sides:6,face:2}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"media",dice:[{part:1,attribute:"forca",sides:6,face:2},{part:1,attribute:"vigor",sides:6,face:1}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,attribute:"disciplina",sides:10,face:3}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,attribute:"forca",sides:6,face:7}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"grande",dice:[{part:1,attribute:"forca",sides:6,face:1},{part:2,attribute:"forca",sides:6,face:2},{part:3,attribute:"vigor",sides:6,face:3}],keptParts:[1,1]}),RangeError);
 });
