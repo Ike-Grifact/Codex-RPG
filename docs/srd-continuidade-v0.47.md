@@ -8,41 +8,66 @@ updated: "2026-11-16"
 # Codex RPG — SRD de Continuidade v0.47
 
 
-## 0-AH. Vida e Saúde: quatro estados e distribuição por Vigor [DEFINIDO — 16/11/2026; compatibilizações PENDENTES]
+## 0-AH. Vida e Saúde em quatro estados — bônus de Força e risco deliberado [DEFINIDO — 16/11/2026]
 
-**Decisão explícita do autor:** substitui as antigas três caixas `Saudável / Machucado / Incapacitado` por **quatro caixas** com **1 ponto inicial cada**: **Saudável / Ferido / Incapacitado / Inconsciente**, exatamente nessa ordem. As caixas **Incapacitado e Inconsciente têm sempre 1 ponto**. Os pontos de **Vigor** são distribuídos **alternadamente** entre as duas primeiras caixas: primeiro em Saudável, depois em Ferido, repetindo o ciclo. As penalidades de cada estado são **alternativas, não cumulativas**.
+**Decisão autoral mais recente:** substitui a antiga estrutura de três caixas por **quatro caixas**, na ordem **Saudável / Ferido / Incapacitado / Inconsciente**. Cada caixa começa com **1 ponto**, e as duas últimas sempre permanecem com **1 ponto**. Os pontos excedentes distribuem-se alternadamente nas duas primeiras caixas, começando por **Saudável** e depois **Ferido**. **Força continua aumentando a Vida normalmente** pela contribuição histórica de `piso(Força/2)`. Essa contribuição se soma à de Vigor na distribuição alternada, para que as duas caixas finais permaneçam fixas.
 
-| Estado | Penalidade ao agir | Requisito para agir | Vida mínima da caixa |
-|---|---|---|---:|
-| **Saudável (1ª)** | nenhuma | nenhum custo de Saúde | 1 |
-| **Ferido (2ª)** | **−1 Antecipar (−1A)** | não paga Coragem para agir só por Saúde | 1 |
-| **Incapacitado (3ª)** | **−1 Êxito (−1E) e +1 Pavor (+1P)** | **1 Coragem por ação** | **1, fixo** |
-| **Inconsciente (4ª)** | **−2 Êxitos (−2E) e +2 Pavor (+2P)** | **2 Coragens por ação** | **1, fixo** |
-| **Morto (Vida 0)** | não age | — | 0 |
+**Fórmula da Vida máxima DEFINIDA:**
 
-**Vida de referência sob a distribuição informada:** 4 pontos de base + 1 ponto por Grau de **Vigor**. Para `V = Vigor`: `Saudável = 1 + teto(V/2)`, `Ferido = 1 + piso(V/2)`, `Incapacitado = 1`, `Inconsciente = 1`; total `4 + V`. Esta é a interpretação operacional **PROPOSTA** para calcular o máximo, já que a regra anterior acrescentava também `piso(Força/2)` ao total `3+Vigor`; o autor não explicitou o destino do bônus antigo de **Força**. **PENDENTE:** confirmação de se o bônus da Força foi revogado ou, se continua, em qual faixa entra. **Não misturar automaticamente os dois modelos de Vida máxima.**
+`Vida máxima = 4 + Grau de Vigor + piso(Grau de Força / 2)`.
 
-| Vigor | Saudável | Ferido | Incapacitado | Inconsciente | Total provisório, sem bônus de Força |
-|---:|---:|---:|---:|---:|---:|
-| 0 | 1 | 1 | 1 | 1 | 4 |
-| 1 | 2 | 1 | 1 | 1 | 5 |
-| 2 | 2 | 2 | 1 | 1 | 6 |
-| 3 | 3 | 2 | 1 | 1 | 7 |
-| 4 | 3 | 3 | 1 | 1 | 8 |
-| 5 | 4 | 3 | 1 | 1 | 9 |
-| 6 | 4 | 4 | 1 | 1 | 10 |
+Para `X = Vigor + piso(Força/2)`, a capacidade das quatro caixas é:
 
-**Determinação do estado por Vida atual** conforme essa distribuição: Vida 0 = morto; Vida 1 = Inconsciente; Vida 2 = Incapacitado; Vida entre 3 e `2+Ferido` = Ferido; Vida acima disso = Saudável. Assim, um personagem com Vigor 3 e Vida máxima 7 possui caixas 3/2/1/1: com 7–5 Vida está Saudável, 4–3 Ferido, 2 Incapacitado, 1 Inconsciente. **Estar Inconsciente não impede agir automaticamente** nesta nova decisão: a ação exige **2 Coragens** e sofre **−2E +2P**, conforme especificação autoral.
+- **Saudável** = `1 + teto(X/2)`.
+- **Ferido** = `1 + piso(X/2)`.
+- **Incapacitado** = `1`, fixo.
+- **Inconsciente** = `1`, fixo.
 
-**Sobre os bônus e malus [DEFINIDO / ANÁLISE]:** conforme regra vigente, **Pavor não anulado também contribui para alcançar a DE** (`E+P`). Portanto **−1E+1P** ou **−2E+2P** podem conservar ou até melhorar a pontuação bruta contra DE quando há menos Êxitos a subtrair; isso aumenta riscos de Pavor, mas não é penalidade estrita de chance de acerto. **Não remover P da DE sem aprovação**, não inventar outras restrições. O estado Ferido tira Antecipar, reduzindo opções de anulação/conversão.
+| Vigor | Força | Saudável | Ferido | Incapacitado | Inconsciente | Vida máxima |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 1 | 1 | 1 | 1 | **4** |
+| 1 | 0 | 2 | 1 | 1 | 1 | **5** |
+| 2 | 0 | 2 | 2 | 1 | 1 | **6** |
+| 3 | 0 | 3 | 2 | 1 | 1 | **7** |
+| 4 | 0 | 3 | 3 | 1 | 1 | **8** |
+| 0 | 2 | 2 | 1 | 1 | 1 | **5** |
+| 2 | 2 | 3 | 2 | 1 | 1 | **7** |
+| 3 | 2 | 3 | 3 | 1 | 1 | **8** |
+| 4 | 4 | 4 | 4 | 1 | 1 | **10** |
 
-**Relatório probabilístico completo [ANÁLISE]:** [análise exata da Saúde em quatro estados](playtests/analise-saude-quatro-estados-2026-11-16.md) compara DE 1–4, acertos limpos e com Pavor, mantendo fixas as distribuições de d6+d10 e registrando o efeito paradoxal dos +P. A hipótese de impedir que o Pavor de Estado pontue na DE continua **PROPOSTA**, não aprovada.
+### 0-AH.1. Penalidades e possibilidade de agir [DEFINIDO]
 
-**Compatibilidade em aberto [PENDENTE]:** reavaliar tempos de recuperação do antigo Machucado/Incapacitado na nova faixa Ferido/Incapacitado/Inconsciente; interação com Recuperação Vigorosa e Instinto de Sobrevivência (a descrição antiga remove −1A de Incapacitado, penalidade agora inexistente nesse estado), Veneno e outros estados aplicados por efeito; se 1 ou 2 Coragens apenas permitem agir ou se gastos extras ainda poderiam remover penalidades, como previa a regra antiga. Não há aprovação automática para essa remoção. A aplicação de modificadores nas rolagens, migração da Vida de fichas salvas e conversão de dano Druídico necessitam de validação separada.
+| Estado | Penalidade aplicada à rolagem | Coragem necessária para agir |
+|---|---|---:|
+| **Saudável** | nenhuma | 0 |
+| **Ferido** | **−1A** | 0 |
+| **Incapacitado** | **−1E e +1P** | **1 Coragem por ação** |
+| **Inconsciente** | **−2E e +2P** | **2 Coragens por ação** |
+| **Morto — Vida 0** | não pode agir | — |
 
-**Implementação segura:** o cálculo puro das quatro faixas e dos estados foi adicionado em `prototipo-ficha/health-stages.mjs` com testes exatos. Enquanto o bônus da Força não for decidido, o protótipo de ficha e os demais motores não devem trocar a Vida máxima consolidada por uma fórmula especulativa; a seção documenta a nova distribuição, mas diferencia o **modelo puro de 4+Vigor PROPOSTO** da regra antiga com bônus de Força ainda exigindo decisão.
+As penalidades da Saúde **não acumulam** entre estados; vale somente a do estado em que a ação começou. A Coragem exigida é **custo para agir**, **não para remover a penalidade**. Essa exigência se soma aos custos de reter dados extras, elevar dados e ativar efeitos, quando aplicáveis. A cobrança ocorre uma vez por ação. Se faltar Coragem para pagar o custo obrigatório, o personagem **não pode executar essa ação pelas regras descritas**; não existe liberação automática de ação sem custo de Coragem por estar inconsciente. Uma exceção futura dependeria de decisão expressa do autor. **Vida zero continua sendo morte.**
 
-**Precedência:** a decisão de 16/11/2026 e esta seção **0-AH** substituem as antigas três caixas e suas penalidades. As seções **0-AG.1** (Druídica, conversão histórica de três faixas) e **0-K.2** (três caixas) permanecem como histórico nos pontos incompatíveis. As demais regras do SRD v0.46 e v0.45 não são modificadas.
+**DEFINIDO — Pavor do estado conta para a DE.** O autor escolheu expressamente **manter +1P/+2P na soma dos símbolos da rolagem, inclusive ao verificar `E + P ≥ DE`**. Não criar uma exceção que exclua o Pavor de Saúde da DE. Esse Pavor continua ocasionando risco e consequências, pode ser anulado/gasto somente pelos usos oficiais de Antecipar e segue as regras vigentes de transferência/dano onde pertinentes. **Um acerto com Pavor não se torna acerto limpo**. O objetivo declarado é permitir ações relevantes quando o personagem está debilitado, mediante custo e perigo, em vez de torná-lo automaticamente ineficaz.
+
+**O aumento estatístico da chance de superar a DE é intencional e aceito como custo de risco**, não um erro pendente de correção automática. Na enumeração exata de d6+d10 (até 2 dados mantidos), DE 2: Saudável **63,33%**, Ferido **63,33%**, Incapacitado **83,33%** e Inconsciente **100%** *desde que o personagem tenha a Coragem para agir*. Em Inconsciente, neste cenário, os **100% são acertos com Pavor**, não limpos. Consulte o [relatório matemático](playtests/analise-saude-quatro-estados-2026-11-16.md).
+
+### 0-AH.2. Determinação do estado
+
+A caixa atual é determinada pela **Vida atual** (não pela proporção da Vida máxima). Para quaisquer valores válidos de Força e Vigor:
+
+- Vida **0** = morto; Vida **1** = Inconsciente; Vida **2** = Incapacitado.
+- Vida atual de **3 até `2 + capacidade de Ferido`** = Ferido.
+- Vida acima desse limite = Saudável.
+
+Por exemplo, Vigor 3 e Força 2 dão **8 de Vida** (3/3/1/1). Com **8–6** de Vida está Saudável; com **5–3** Ferido; com **2** Incapacitado; com **1** Inconsciente; com **0** morto.
+
+### 0-AH.3. Integração e pontos pendentes
+
+**Implementado na branch de revisão:** cálculo `4 + Vigor + piso(Força/2)`, quatro caixas visuais e custos/modificadores nas rolagens do criador web. Os motores de Criar Conflito e do protótipo Foundry receberam a fórmula de Vida e funções para identificar estado; a aplicação automática dos modificadores de estado nas ações desses outros motores precisa de integração própria. Ao abrir ficha antiga, preservar o valor **numérico de Vida atual**, sem recuperar gratuitamente o ponto de base recém-adicionado. Nenhuma regra de XP, outros dados ou DE foi alterada.
+
+**PENDENTE:** revisão dos prazos de cura das antigas três caixas; efeitos da Perícia Recuperação Vigorosa e Instinto de Sobrevivência (a versão anterior ignorava um −1A de Incapacitado que já não existe); compatibilidade com Veneno, tratamentos, estados causados por efeitos externos, migração visual/funcional de fichas em outros clientes e dano entre formas Druídicas. A antiga conversão da Druídica por três terços foi substituída pela estrutura nova de quatro caixas; **a equivalência de dano entre forma animal e humana ainda é PROPOSTA, não aprovada**, conforme 0-AG.1.
+
+**Precedência:** decisão autoral mais recente e esta seção 0-AH > antigas três caixas da seção 0-K.2 e textos históricos conflitantes; decisões da v0.46 sobre dados e a aquisição única da Perícia Druídica permanecem vigentes. A hipótese anterior de **excluir Pavor de Saúde da DE foi rejeitada pelo autor** e não deve voltar como regra vigente.
 
 ---
 
