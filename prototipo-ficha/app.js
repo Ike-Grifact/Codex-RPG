@@ -281,6 +281,12 @@ const SKILLS=[
   3
  ],
  [
+  "olhos-de-aguia",
+  "Olhos de Águia",
+  "1 XP. Destreza 3 + Disciplina 3 + (Perícia em Armas de Longo Alcance OU Perícia em Armas de Fogo). Aumenta em 8 m o alcance efetivo de armas à distância e armas de fogo habilitadas, sem alterar alcance de arremessos comuns ou magia. Benefício passivo, sem custo adicional de ativação.",
+  1
+ ],
+ [
   "golpe-baixo",
   "Golpe Baixo",
   "Técnica somática: chutar ponto vulnerável, jogar terra nos olhos e outros golpes desleais. Ao acertar aplica Desvantagem (−1A) por 1 rodada. Contra inimigos com Inteligência grau ZERO, o inimigo ignora Provocar e fixa quem aplicou Golpe Baixo como alvo até que um dos dois seja eliminado, mesmo após terminar a rodada de Desvantagem. Não concede movimentação ou turno gratuito.",
@@ -935,7 +941,14 @@ function combatItem(item,mode){
  const id={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
  return id&&skills.includes(id)?[die]:[];
 }
-function normalizedCatalogItem(entry){
+function effectiveWeaponRange(item,skills=state.skills||[]){
+  const base=Math.max(0,Number(item?.range)||0);
+  if(!base||item?.type!=="arma"||!skills.includes("olhos-de-aguia"))return base;
+  const eligible=item.firearm?skills.includes("armas-fogo"):
+   (item.properties||[]).includes("À Distância")&&skills.includes("armas-longo-alcance");
+  return base+(eligible?8:0);
+ }
+ function normalizedCatalogItem(entry){
  const type=entry.kind==="armor"?"armadura":entry.kind==="shield"?"escudo":entry.kind==="focus"?"foco":"arma";
  const weight=entry.category==="muito-leve"?"muito_leve":entry.category==="pesado"?"alto":entry.category==="medio"?"medio":"leve";
  return normalizeItem({name:entry.name,type,weight,category:entry.category,grade:entry.grade,qty:1,
@@ -1249,6 +1262,7 @@ function skillReq(id,s=state){
  const rangedSpecialty=has("armas-longo-alcance")||has("maestria-arremesso-armas");
  const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;
  if(id==="armas-longo-alcance"&&(disc<1||dex<2))return"Requer Disciplina 1 e Destreza 2.";
+ if(id==="olhos-de-aguia"&&(dex<3||disc<3||!(has("armas-longo-alcance")||has("armas-fogo"))))return"Requer Destreza 3, Disciplina 3 e Armas de Longo Alcance OU Armas de Fogo.";
  if(id==="armas-fogo"&&(disc<2||dex<2))return"Requer Disciplina 2 e Destreza 2.";
  if(id==="disparo-fulminante"&&(disc<2||dex<2||strength<1||!rangedSpecialty))return"Requer Disciplina 2, Destreza 2, Força 1 e Armas Longo Alcance OU Arremesso.";
  if(id==="disparo-multiplo"&&(disc<2||dex<2||agi<2||!has("disparo-fulminante")||!rangedSpecialty))return"Requer Disciplina 2, Destreza 2, Agilidade 2, Disparo Fulminante e Longo Alcance OU Arremesso.";
@@ -1524,6 +1538,7 @@ const GENE_AUTO_REQUIREMENTS={
  "criar-antidoto":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2","s:criar-veneno"]],
  "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
  "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
+  "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
  "maestria-arremesso-armas":[
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
@@ -2378,7 +2393,7 @@ function score(){
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
  return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
-  aPool,courageCost,ppCost,active,range:item?.range?item.range+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
+  aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
@@ -2529,7 +2544,7 @@ function renderInventory(){
   '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+(it.type==="armadura"&&it.weight==="muito_leve"?"disabled":"")+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
-   ' · <b>Alcance:</b> '+it.range+' m</div>':'')+
+   ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   armorFields+'</div>';
