@@ -12,7 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| **SRD de Continuidade v0.51 (atual)** | [docs/srd-continuidade-v0.51.md](docs/srd-continuidade-v0.51.md) | **Olhos de Águia:** 1 XP, Destreza 3 + Disciplina 3 + (Armas de Longo Alcance ou Armas de Fogo), +8 m de alcance efetivo; **Antecipação, Êxito guardado e Vantagem** expiram no uso, após ação subsequente ou descanso longo. |
+| **SRD de Continuidade v0.52 (atual)** | [docs/srd-continuidade-v0.52.md](docs/srd-continuidade-v0.52.md) | **Ativações comuns 1 PP ou 1 Coragem**, Olhos de Águia passiva, e **Domar Média exige Domar Pequena** além dos requisitos anteriores. Exceções e preparação de magia não são alteradas automaticamente. |
+| **SRD de Continuidade v0.51 (histórico)** | [docs/srd-continuidade-v0.51.md](docs/srd-continuidade-v0.51.md) | **Olhos de Águia:** 1 XP, Destreza 3 + Disciplina 3 + (Armas de Longo Alcance ou Armas de Fogo), +8 m de alcance efetivo; **Antecipação, Êxito guardado e Vantagem** expiram no uso, após ação subsequente ou descanso longo. |
 | **SRD de Continuidade v0.50 (histórico)** | [docs/srd-continuidade-v0.50.md](docs/srd-continuidade-v0.50.md) | **Antecipação** e **Concentração Refinada (1 XP, Disciplina 2, Vantagem, inimigo a até 8 m)**, com pendências de timing/duração; versão completa com histórico preservado. |
 | **SRD de Continuidade v0.49 (histórico)** | [docs/srd-continuidade-v0.49.md](docs/srd-continuidade-v0.49.md) | **Invocação Elemental, criaturas temporárias, necromancia, Psique e custos especiais**, com pendências técnicas explícitas. |
 | **SRD de Continuidade v0.48 (histórico)** | [docs/srd-continuidade-v0.48.md](docs/srd-continuidade-v0.48.md) | **Domar e ficha opcional da Pequena, Saúde e recuperação, Pavor excedente, Muito Leve G1 com 3 Integridade**. Prevalece sobre versões anteriores. |
@@ -28,6 +29,12 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 - [Concentração Refinada — Perícia](pericias/concentracao-refinada.html): 1 XP, Disciplina 2. Ao reservar 1A, converte em 1E e recebe Vantagem, desde que não haja inimigo a até 8 metros. No SRD v0.51, a conversão acontece ao guardar e o 1E e a Vantagem são válidos até uso, ação posterior ou descanso longo.
 
 [Olhos de Águia](pericias/olhos-de-aguia.html) acrescenta +8 m ao alcance efetivo de armas à distância ou de fogo habilitadas, com requisitos de compra verificados na ficha. Os alcances iniciais do catálogo continuam referências de playtest.
+
+## Atualização de requisitos e recursos — 16/11/2026
+
+- [Domar Criatura Média](pericias/domar-criatura-media.html) requer **Domar Pequena já adquirida**, Influência 3, Inteligência 1 e Apresentação 1. A ficha e o Codex Genético verificam a dependência.
+- [Olhos de Águia](pericias/olhos-de-aguia.html) é **passiva**, sem custo de ativação: +8 m de alcance efetivo.
+- Todas as ativações comuns das Perícias usam **1 PP ou 1 Coragem** nos verbetes atuais, inclusive as características pagas no protótipo Foundry. Custos de preparação e exceções permanecem distintos.
 
 ## Usar o criador
 
