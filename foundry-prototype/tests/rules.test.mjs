@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabe
  buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,healthBands,healthByLife,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
-import {equippedDie,skillPrerequisite,defenseDE,characteristicActivationPayment} from "../module/equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
 
 function human(){return{
  monsterRules:false,level:1,xp:0,skills:["armas-leves"],
@@ -152,9 +152,4 @@ test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automati
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
  assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
  assert.equal(defenseDE({system:s,items:[light]}),4);
-});
-
-test("Ativação paga comum no Foundry consome 1 PP OU 1 Coragem",()=>{
- assert.deepEqual(characteristicActivationPayment("pp"),{pp:1,courage:0});
- assert.deepEqual(characteristicActivationPayment("courage"),{pp:0,courage:1});
 });

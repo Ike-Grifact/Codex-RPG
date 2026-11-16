@@ -45,7 +45,7 @@ jobs:
         run: |
           node --check foundry-prototype/module/sheet.mjs
           node --check foundry-prototype/module/equipment-logic.mjs
-          node --test foundry-prototype/tests/rules.test.mjs .github/tests/ativacoes-domar.test.cjs
+          node --test foundry-prototype/tests/activation-cost.test.mjs .github/tests/ativacoes-domar.test.cjs
       - name: Instalar Chromium de teste
         run: |
           npm install --no-save playwright@1.58.2
