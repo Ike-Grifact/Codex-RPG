@@ -12,7 +12,7 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.45 | [docs/srd-continuidade-v0.45.md](docs/srd-continuidade-v0.45.md) | **Domar Criatura Pequena, Média e Grande (1 XP cada). Pequena: +1A e Vida sacrificial. Média/Grande: ficha e XP próprios; Média evolui Atributos pelo custo de Atributos, Grande pelo custo de Conhecimentos/Práticas; +1A em combate, sem acumulação automática. Ativações por 1 Coragem ou 1 PP.** |
+| SRD de Continuidade v0.45 | [docs/srd-continuidade-v0.45.md](docs/srd-continuidade-v0.45.md) | **Domar Criatura Pequena, Média e Grande (1 XP cada; Influência progressiva G1/G2/G3, com Apresentação 1 e Inteligência 1). Pequena: +1A e Vida sacrificial. Média/Grande: ficha e XP próprios; Média evolui Atributos pelo custo de Atributos, Grande pelo custo de Conhecimentos/Práticas; +1A em combate, sem acumulação automática. Ativações por 1 Coragem ou 1 PP.** |
 | Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras do Mestre complementadas pela seção 0-AA do SRD v0.41 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
