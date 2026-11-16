@@ -4,7 +4,10 @@ export const SMALL_ATTR_LABELS=Object.freeze(["Força","Agilidade","Destreza","I
 /** EXPERIMENTAL: tabela-base de Atributos para a ficha opcional da Pequena; multiplicador 2x DEFINIDO. */
 export const SMALL_ATTR_CUMULATIVE=Object.freeze([0,1,3,7,15,31,55]);
 export const SMALL_FORCE_VIGOR_MULTIPLIER=2;
-export const SMALL_INDEPENDENT_LIFE=1;
+/** Vida inicial da Pequena sem desenvolvimento; compras podem elevar sua Vida máxima. */
+export const SMALL_BASE_LIFE=1;
+/** Alias histórico para o valor base; não é teto máximo da ficha desenvolvida. */
+export const SMALL_INDEPENDENT_LIFE=SMALL_BASE_LIFE;
 export function independentSmallCost(attributes={}){
  let xp=0;
  for(const key of SMALL_ATTR_KEYS){
@@ -14,9 +17,14 @@ export function independentSmallCost(attributes={}){
  }
  return xp;
 }
+/** Pequena: 1 Vida base + bônus de Vigor e de cada 2 Graus de Força. */
+export function independentSmallLife(attributes={}){
+ independentSmallCost(attributes); // também valida os Graus de Atributos
+ return SMALL_BASE_LIFE+(attributes.vigor??0)+Math.floor((attributes.forca??0)/2);
+}
 export function smallCompanionBudget(playerTotalXP,attributes={}){
  if(!Number.isSafeInteger(playerTotalXP)||playerTotalXP<0)throw new RangeError("XP total do domador inválido");
  const spent=independentSmallCost(attributes);
  return {total:playerTotalXP,spent,remaining:playerTotalXP-spent,valid:spent<=playerTotalXP,
-  ownLife:SMALL_INDEPENDENT_LIFE,lifeBonusToTamer:1};
+  ownLife:independentSmallLife(attributes),baseLife:SMALL_BASE_LIFE,lifeBonusToTamer:1};
 }

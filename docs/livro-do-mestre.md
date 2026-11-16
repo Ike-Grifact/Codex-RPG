@@ -2,7 +2,7 @@
 
 ## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
 
-Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande requer Influência 2/3/4, Apresentação 1, Inteligência 1; custo 1 XP na compra e 1 PP ou 1 Coragem na tentativa. Uma de cada porte. Cada companheiro presente aumenta o orçamento de XP do grupo e concede +1 Vida ao domador. Pequena tem 1 Vida quando enviada a risco próprio, com ficha opcional de mesmo orçamento XP do jogador e custo dobrado de Força/Vigor.
+Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande requer Influência 2/3/4, Apresentação 1, Inteligência 1; custo 1 XP na compra e 1 PP ou 1 Coragem na tentativa. Uma de cada porte. Cada companheiro presente aumenta o orçamento de XP do grupo e concede +1 Vida ao domador. Pequena sem ficha desenvolvida tem 1 Vida própria quando enviada a risco próprio. Com ficha independente opcional, a Vida máxima aumenta por `1 + Vigor + piso(Força/2)`, com **Força e Vigor custando o dobro desde o Grau 1**. A criatura recebe orçamento próprio igual ao XP total atualizado do jogador, sem consumir seu XP; subir Vida máxima não cura ferimentos. Aplicação de quatro faixas quando a Pequena tem menos de 4 Vida segue PENDENTE.
 
 Armadura Muito Leve G1 agora tem 3 de Integridade; demais armaduras G1 continuam 7/12/17. Dano prévio do druida reduz ponto por ponto a Vida atual inicial da forma animal. Pavor de ação sem alvo de ataque alimenta reserva pública; excedente permite intervenção da ameaça mais próxima do último jogador ativo, desempate por DE e Vida, salvo circunstância da cena. Múltiplos excedentes e custo exato ainda pendentes.
 
