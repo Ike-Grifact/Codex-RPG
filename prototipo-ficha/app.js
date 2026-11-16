@@ -295,7 +295,7 @@ const SKILLS=[
  [
   "pericia-druidica",
   "Perícia Druídica",
-  "2 XP · Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra. Memoriza formas de criaturas domadas. G1 pequena: transformação gratuita, 19 XP de ficha (distribuição pendente), Vantagem Absoluta em Furtividade. G2 média: 1 PP/2 Coragens, XP igual ao personagem para Atributos, mantém 2 dados, Vantagem em Agilidade/Destreza, Leve, falha com Pavor cancela forma. G3 grande: 1 PP/2 Coragens, mantém 3 dados, Leve, manter Pavor realiza ação e cancela forma. Em todas: transformação e reversão sem teste, Vida da criatura; morrer na forma animal mata o personagem; ao reverter perde Atributos da criatura. Atributos animais usam custo de Conhecimentos/Práticas. Progressão, conversão de Vida e ficha completa PENDENTES; não automatizada.",
+  "2 XP · Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra. Memoriza formas de criaturas domadas. G1 pequena: transformação gratuita, 19 XP de ficha (distribuição pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP/2 Coragens, XP igual ao personagem para Atributos, mantém 2 dados, Vantagem em Agilidade/Destreza, Leve, falha com Pavor cancela forma. G3 grande: 1 PP/2 Coragens, mantém 3 dados, Leve, manter Pavor realiza ação e cancela forma. Em todas: transformação e reversão sem teste, Vida da criatura; morrer na forma animal mata o personagem; ao reverter perde Atributos da criatura. Atributos animais usam custo de Conhecimentos/Práticas. Progressão, conversão de Vida e ficha completa PENDENTES; não automatizada.",
   2
  ]
 ];
