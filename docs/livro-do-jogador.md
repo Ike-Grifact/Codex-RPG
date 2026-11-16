@@ -43,6 +43,16 @@ As penalidades **não se acumulam entre estados**. Os custos de Coragem são nec
 
 **Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e conversão de ferimentos da Druídica ainda exigem revisão nas novas faixas. As rolagens de **personagens no protótipo Foundry** também incluem custos e modificadores de Saúde. Em **Criar Conflito**, a Vida máxima e o cálculo do estado foram atualizados; os custos automáticos dos NPCs e monstros permanecem pendentes.
 
+## Domar Criaturas e Pavor Druídico — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequena, Média e Grande**. Elas aumentam o **XP do grupo no conflito**, usando o XP da criatura quando conhecido ou valor informado pelo Narrador. Não é XP novo para gastar no personagem.
+
+**Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 PP ou 2 Coragens**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
+
+**Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
+
+**Druídica Grau 3:** ao transformar, pagar **1 PP ou 1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. A memória de formas permanece ilimitada, independentemente do limite de companheiros.
+
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
 **Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.

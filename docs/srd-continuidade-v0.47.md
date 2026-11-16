@@ -8,6 +8,30 @@ updated: "2026-11-16"
 # Codex RPG — SRD de Continuidade v0.47
 
 
+## 0-AI. Companheiros domesticados e Druídica Grande [DEFINIDO / PENDENTE — 16/11/2026]
+
+**Limite DEFINIDO:** cada personagem pode ter simultaneamente **uma criatura domesticada Pequena, uma Média e uma Grande**, no máximo uma por categoria. O limite de criaturas aliadas não limita as formas que a Perícia Druídica já memorizou: a memória de formas domadas é ilimitada.
+
+**XP do conflito DEFINIDO:** as criaturas domesticadas presentes **acrescentam seu XP ao orçamento do grupo** para o Narrador equilibrar o conflito; isso não concede XP para gastar na ficha do jogador. Usar XP de ficha quando existir. **PENDENTE:** o valor de XP de criaturas pequenas sem ficha e valores de criaturas ainda não definidos; a ferramenta Criar Conflito permite registrar a quantidade e o **XP total dos companheiros informado pelo Narrador**, sem atribuir valor fictício.
+
+### Domar Criatura Pequena [DEFINIDO]
+
+Custo **1 XP**, requisitos **Influência 2 + Apresentação 1 + Inteligência 1**. Para domar criatura pequena (cães, gatos, aves etc.), pagar **1 PP ou 2 Coragens** e rolar teste de Influência contra a DE da criatura. Passando, a criatura é domesticada; **atacá-la cancela a domesticação**. Durante combate pode-se tentar pacificar uma criatura antes de domá-la; procedimento de pacificação **PENDENTE**.
+
+Uma criatura Pequena domesticada não possui ficha de combate própria, mas concede **+1A em combate e +1 ponto de Vida na ficha do domador** enquanto o efeito for aplicável. Pode sacrificar-se para impedir a morte do domador; ele pode decidir protegê-la e sofrer o dano letal, fazendo-a fugir. **PENDENTE:** adaptação exata do ponto extra e do sacrifício aos quatro estados de Saúde. Com **Criar Item de Foco e Magia**, permite domesticar criaturas pequenas mágicas. A compra da Perícia não domestica automaticamente uma criatura.
+
+### Domar Criatura Média e Domar Criatura Grande [PENDENTE]
+
+Estas duas Perícias são requisitos expressos da Druídica. O limite de uma criatura de cada categoria e sua contribuição de XP ao conflito estão DEFINIDOS. **PENDENTES:** custos de compra, requisitos completos, testes, ativações e efeitos individuais; não atribuir custo zero nem permitir compras que contornem estas lacunas.
+
+### Druídica Grau 3 — Transformação Grande [DEFINIDO]
+
+A ativação custa **1 PP ou 1 Coragem**; permite **combinar três Atributos pertinentes da criatura e manter até três dados naturalmente**, sem pagar Coragem extra pela terceira retenção. Após escolher dados mantidos, pode gastar **1 Antecipar para cancelar 1 Pavor**, conforme uso normal. **A forma só termina após resolver a ação se restar Pavor nos dados mantidos NÃO cancelado por Antecipar**. Pavor totalmente cancelado preserva a forma; Pavor de dados descartados não conta. Mantêm-se limites globais de rolados e mantidos.
+
+**Precedência:** esta seção substitui a descrição anterior ambígua de Pavor mantido encerrando a transformação, sem revogar as demais condições Druídicas. Conversão de Vida animal/humana segue PENDENTE.
+
+---
+
 ## 0-AH. Vida e Saúde em quatro estados — bônus de Força e risco deliberado [DEFINIDO — 16/11/2026]
 
 **Decisão autoral mais recente:** substitui a antiga estrutura de três caixas por **quatro caixas**, na ordem **Saudável / Ferido / Incapacitado / Inconsciente**. Cada caixa começa com **1 ponto**, e as duas últimas sempre permanecem com **1 ponto**. Os pontos excedentes distribuem-se alternadamente nas duas primeiras caixas, começando por **Saudável** e depois **Ferido**. **Força continua aumentando a Vida normalmente** pela contribuição histórica de `piso(Força/2)`. Essa contribuição se soma à de Vigor na distribuição alternada, para que as duas caixas finais permaneçam fixas.
