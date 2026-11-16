@@ -6,6 +6,12 @@
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
+## Limites de controle — decisão mais recente de 16/11/2026 [DEFINIDO]
+
+**Invocação:** cada conjurador controla no máximo **uma invocação ativa e uma ficha mecânica**, qualquer que seja o porte. **Um zumbi Grande pode ser representado por três zumbis Médios apenas narrativamente**: todos usam a **mesma ficha Grande**, uma Vida, uma ação, os mesmos recursos e **um orçamento de XP contado uma vez**. Isso exige Domar Grande; não concede três ações ou três fichas. A posição dos corpos na cena e a substituição antecipada são PENDENTES.
+
+**Domar:** cada domador pode controlar diretamente **até duas fichas de criaturas domesticadas**, ainda respeitando **uma criatura por porte**. Uma eventual terceira criatura já domesticada não passa a ter ficha sob controle direto; seu procedimento de participação é PENDENTE. O limite de uma invocação não consome automaticamente vaga de Domar.
+
 ## Invocação Elemental — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
 
 **Custo: 1 XP. Requisitos:** Criar Item de Foco e Magia, Domar Criatura Pequena e um elemento habilitado. **Criar Item de Foco e Magia é a própria Perícia de Psique**, então já permite invocações de Psique, sem outra Perícia elemental. Para Fogo, Água, Ar, Terra, Sagrado, Veneno, Sangue e Trevas, possuir a Perícia específica continua obrigatório. A invocação custa **1 PP ou 1 Coragem**. O tamanho é limitado a **Pequena**, **Média** ou **Grande** conforme a correspondente Perícia Domar. A criatura temporária possui ficha com **XP total igual ao do invocador**, é imune ao próprio elemento e causa dano desse elemento. Ao ficar **Incapacitado (debilitado)** ou **Inconsciente**, o conjurador perde a invocação.

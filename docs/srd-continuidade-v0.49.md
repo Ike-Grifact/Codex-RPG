@@ -11,6 +11,16 @@ updated: "2026-11-16"
 
 **Precedência:** esta seção é posterior à v0.48 e trata especificamente da Perícia nova **Invocação Elemental**. Não modifica o funcionamento anterior da Druídica, das Perícias Domar, da Maestria Elemental, do Escudo Arcano nem dos dados simbólicos, salvo nas aplicações explicitamente descritas. Interpretações operacionais ainda indefinidas não viram efeitos automáticos.
 
+### 0-AL.0. Uma invocação, uma ficha; Domar até duas fichas [DEFINIDO — decisão posterior de 16/11/2026]
+
+**Invocação Elemental:** cada conjurador mantém **uma única invocação ativa por vez**, independentemente de seu porte, elemento, Maestria ou aparência. Ela usa **uma única ficha mecânica**, uma única Vida, um único orçamento de XP, uma única reserva de recursos e sua economia normal de ações. Dividi-la em várias figuras narrativas **não cria múltiplos agentes, ações, ataques, fichas ou orçamentos de XP**.
+
+**Exemplo autoral de necromancia:** um **zumbi Grande** pode aparecer narrativamente como **três zumbis Médios**. O conjunto é **uma única invocação Grande**: usa **somente a ficha do Grande**, requer **Domar Criatura Grande** e entra **uma vez** no XP de aliados do conflito. Não são três fichas de Médio, nem três turnos, nem três barras de Vida. **PENDENTE:** posicionamento independente dos corpos narrativos, efeitos de área, alcance, como dispensar/substituir uma invocação ainda ativa e autonomia detalhada; não inventar múltiplos alvos mecânicos.
+
+**Domar é diferente:** cada domador pode controlar **diretamente até duas fichas de criaturas domesticadas ao mesmo tempo**, sem gerar ações adicionais gratuitas. O limite prévio de **uma criatura por porte** (Pequena, Média, Grande) permanece; as três categorias de vínculos podem existir, mas o controle direto está limitado a **duas fichas**. Como participa uma eventual terceira domesticada fora das duas fichas controladas é **PENDENTE**. Não confundir vínculos existentes, criaturas presentes para XP do conflito e fichas sob controle.
+
+**Por conjurador/domador, não por grupo:** múltiplos conjuradores podem manter uma invocação cada. Um único conjurador não pode ativar a segunda enquanto sustenta a primeira; não presumir substituição gratuita. Uma invocação e criaturas domesticadas são efeitos distintos, sem anular uma à outra automaticamente.
+
 ### 0-AL.1. Compra, habilitação e ativação [DEFINIDO]
 
 - **Custo de compra: 1 XP**, pago uma única vez.
@@ -19,7 +29,7 @@ updated: "2026-11-16"
 - **Porte da criatura:** pode conjurar criatura **Pequena, Média ou Grande apenas se possuir a respectiva Perícia Domar**. Domar Pequena concede o porte inicial; para Médio/Grande é indispensável a Perícia específica. Isso não obriga adquirir Domar Média/Grande para comprar Invocação Elemental.
 - **Elemento da criatura:** o conjurador precisa **possuir a Perícia do elemento escolhido**, não basta conhecer sua existência ou ter um cristal de outro elemento. A lista de Perícias elementais atualmente compráveis no criador abrange Fogo, Água, Ar/Vento, Terra, Sagrado, Veneno, Sangue e Trevas. **Psique/Psíquico [DEFINIDO]:** sua habilitação é **Criar Item de Foco e Magia** (ID `criar-item-foco-magia`), sem Perícia de Psique separada. Com Criar Item de Foco e Magia, Domar Pequena e Invocação Elemental, é permitido invocar um **fantasma Pequeno de Psique** pelo custo-base de **1 PP ou 1 Coragem**; para portes Médio/Grande requer a respectiva Perícia Domar. Esta habilitação vale **apenas para Psique**, sem liberar Fogo, Água, Terra e demais elementos sem suas Perícias.
 - **Ficha da invocação:** orçamento próprio de XP **igual ao XP total do invocador**, acompanhando sua progressão; não subtrair XP da ficha do invocador nem conceder XP gratuito ao personagem. Usar a regra de ficha de criaturas aplicável ao porte; não importar automaticamente o custo dobrado de Força/Vigor da ficha opcional de Pequena domesticada para todos os tipos de invocação, sem decisão específica.
-- **Duração:** a criatura invocada é **temporária**. Se o conjurador ficar **Incapacitado (debilitado)** ou **Inconsciente**, a magia que mantém a invocação **se dissipa**. A morte do conjurador também não sustenta a magia. **PENDENTE** duração regular, limite simultâneo, distância de controle, ação para invocar, deslocamento e resolução de ordem/ação própria.
+- **Duração:** a criatura invocada é **temporária**. Se o conjurador ficar **Incapacitado (debilitado)** ou **Inconsciente**, a magia que mantém a invocação **se dissipa**. A morte do conjurador também não sustenta a magia. **DEFINIDO:** apenas uma invocação ativa por conjurador (0-AL.0). **PENDENTE:** duração regular, distância de controle, ação para invocar, deslocamento e resolução de ordem/ação própria.
 
 ### 0-AL.2. Propriedades elementais e imbuir criaturas [DEFINIDO / PENDENTE]
 
@@ -50,7 +60,7 @@ Invocações feitas **com Sangue e Trevas** são classificadas como **Necromanci
 
 ### 0-AL.6. Orçamento de conflitos e estados de aprovação
 
-As invocações que participarem efetivamente de um conflito representam força adicional para o grupo e devem ter seu **XP contabilizado pelo Narrador** para comparação com as ameaças, assim como criaturas acompanhantes. O XP igual ao do invocador é a referência de orçamento individual da **ficha da invocação**, não uma licença para comprar todas as Perícias do invocador nem duplicar ações gratuitamente. O ajuste automatizado de presença simultânea, autonomia e Pressão/Pavor continua **PENDENTE**.
+As invocações que participarem efetivamente de um conflito representam força adicional para o grupo e devem ter seu **XP contabilizado pelo Narrador** para comparação com as ameaças, assim como criaturas acompanhantes. O XP igual ao do invocador é a referência de orçamento individual da **ficha da invocação**, não uma licença para comprar todas as Perícias do invocador nem duplicar ações gratuitamente. O limite de uma invocação ativa por conjurador está **DEFINIDO**. Autonomia e integração detalhada de ações, Pressão e Pavor permanecem **PENDENTES**.
 
 **Estados:** Psique habilitada por Criar Item de Foco e Magia, custo de compra, requisitos básicos, porte limitado por Domar, elemento habilitado, custo da invocação, ficha equivalente ao XP do invocador, imunidade e dano do elemento, imbuir resistência, dissipação por Incapacitado/Inconsciente, custos dos dois elementos/Maestria, e categorias de Necromancia/Psique **DEFINIDOS** nas declarações autorais. Procedimentos técnicos expressamente listados como **PENDENTES** não devem ser inventados para implementar uma automação.
 
