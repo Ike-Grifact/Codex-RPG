@@ -85,7 +85,7 @@ test("Divisão inexata sinaliza restos, sem inventar arredondamentos",()=>{
 test("A invocação inteira só fornece um turno antecipável entre todos os tokens",()=>{
  assert.equal(ANTICIPATED_SUMMON_TURNS,1);
  for(const mode of ["individual","ajudar-conjurador","ajudar-aliado"]){
-  const action=summonAnticipatedTurn({tokenCount:3,selectedToken:2,mode});
+  const action=summonAnticipatedTurn({tokenCount:3,selectedToken:2,mode,...(mode==="ajudar-aliado"?{targetId:"aliado-1"}:{})});
   assert.deepEqual([action.selectedToken,action.turns,action.otherTokensReceiveTurns,action.normalAnticipationAndJointCostsApply],
    [2,1,false,true]);
  }
@@ -134,7 +134,7 @@ test("Token isolado de uma Grande rola um único dado da parte escolhida",()=>{
 });
 
 
-test("Jogador escolhe os dados mantidos e distribui seus resultados entre si, conjurador e aliados",()=>{
+test("Uma invocação Grande transfere seus três dados mantidos para UM aliado em ação conjunta",()=>{
  const dice=[
   {part:1,attribute:"forca",sides:6,face:6},
   {part:2,attribute:"inteligencia",sides:10,face:8},
@@ -143,17 +143,22 @@ test("Jogador escolhe os dados mantidos e distribui seus resultados entre si, co
  const result=summonPartRoll({size:"grande",dice,keptParts:[3,1,2],
   assignments:[
    {part:3,mode:"ajudar-aliado",targetId:"aliado-2"},
-   {part:1,mode:"individual"},
-   {part:2,mode:"ajudar-conjurador"}
+   {part:1,mode:"ajudar-aliado",targetId:"aliado-2"},
+   {part:2,mode:"ajudar-aliado",targetId:"aliado-2"}
   ]});
  assert.deepEqual(result.results.map(d=>d.allocation),[
-  {mode:"individual",targetId:null},
-  {mode:"ajudar-conjurador",targetId:null},
+  {mode:"ajudar-aliado",targetId:"aliado-2"},
+  {mode:"ajudar-aliado",targetId:"aliado-2"},
   {mode:"ajudar-aliado",targetId:"aliado-2"}
  ]);
  assert.equal(result.playerChoosesDice,true);
  assert.equal(result.playerChoosesKept,true);
  assert.equal(result.playerChoosesRecipients,true);
+ assert.equal(result.oneRecipientPerJointAction,true);
+ assert.equal(result.isJointAction,true);
+ assert.deepEqual(result.jointRecipient,{mode:"ajudar-aliado",targetId:"aliado-2"});
+ assert.equal(result.transferredDice.length,3);
+ assert.deepEqual(result.transferredDice.map(d=>d.face),[6,8,11]);
  assert.equal(result.allocationPending,false);
  assert.equal(result.extraTurns,0);
  assert.equal(result.automaticDEAggregation,false);
@@ -180,7 +185,7 @@ test("A distribuição não duplica dados, não permite usar descartados nem cri
  assert.throws(()=>summonPartRoll({...base,assignments:[{part:2,mode:"dar-acao-extra"}]}),RangeError);
  assert.throws(()=>summonPartRoll({...base,assignments:[{part:2,mode:"individual",targetId:"aliado-3"}]}),RangeError);
 });
-test("O mesmo beneficiário pode receber resultados diferentes sem replicar os dados",()=>{
+test("A invocação Média passa dois dados ao mesmo personagem, sem dividir a ajuda",()=>{
  const result=summonPartRoll({size:"media",dice:[
   {part:1,attribute:"forca",sides:10,face:7},
   {part:2,attribute:"destreza",sides:10,face:8}
@@ -189,18 +194,57 @@ test("O mesmo beneficiário pode receber resultados diferentes sem replicar os d
   {part:2,mode:"ajudar-aliado",targetId:"aliado-unico"}
  ]});
  assert.equal(result.results.filter(x=>x.allocation?.targetId==="aliado-unico").length,2);
+ assert.equal(result.transferredDice.length,2);
  assert.equal(result.keptCount,2);
  assert.equal(result.extraTurns,0);
 });
-
-
-test("A distribuição do conjunto usa somente UM turno antecipável mesmo ajudando várias pessoas",()=>{
- const turn=summonAnticipatedTurn({tokenCount:3,groupAction:true});
+test("Não pode repartir dados da mesma invocação entre dois aliados nem misturar apoio e ação própria",()=>{
+ const dice=[
+  {part:1,attribute:"forca",sides:6,face:6},
+  {part:2,attribute:"destreza",sides:10,face:8},
+  {part:3,attribute:"vigor",sides:10,face:7}
+ ];
+ const base={size:"grande",dice};
+ assert.throws(()=>summonPartRoll({...base,assignments:[
+  {part:1,mode:"ajudar-aliado",targetId:"guerreiro"},
+  {part:2,mode:"ajudar-aliado",targetId:"mago"},
+  {part:3,mode:"ajudar-aliado",targetId:"guerreiro"}]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[
+  {part:1,mode:"ajudar-conjurador"},
+  {part:2,mode:"ajudar-aliado",targetId:"guerreiro"},
+  {part:3,mode:"ajudar-conjurador"}]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[
+  {part:1,mode:"individual"},
+  {part:2,mode:"ajudar-aliado",targetId:"guerreiro"},
+  {part:3,mode:"individual"}]}),RangeError);
+ const focused=summonPartRoll({...base,assignments:[
+  {part:1,mode:"ajudar-conjurador"},
+  {part:2,mode:"ajudar-conjurador"},
+  {part:3,mode:"ajudar-conjurador"}]});
+ assert.deepEqual(focused.jointRecipient,{mode:"ajudar-conjurador",targetId:null});
+ assert.equal(focused.transferredDice.length,3);
+ assert.equal(focused.extraTurns,0);
+ const ownAction=summonPartRoll({...base,assignments:[
+  {part:1,mode:"individual"},
+  {part:2,mode:"individual"},
+  {part:3,mode:"individual"}]});
+ assert.equal(ownAction.isJointAction,false);
+ assert.equal(ownAction.transferredDice.length,0);
+});
+test("Ação conjunta: uma invocação só apoia um personagem e antecipa um turno",()=>{
+ const turn=summonAnticipatedTurn({tokenCount:3,groupAction:true,mode:"ajudar-aliado",targetId:"aliado-1"});
  assert.equal(turn.turns,1);
- assert.equal(turn.mode,"distribuir");
+ assert.equal(turn.mode,"ajudar-aliado");
+ assert.equal(turn.targetId,"aliado-1");
+ assert.equal(turn.isJointAction,true);
  assert.equal(turn.selectedToken,null);
  assert.equal(turn.groupAction,true);
  assert.equal(turn.otherTokensReceiveTurns,false);
  assert.equal(turn.normalAnticipationAndJointCostsApply,true);
  assert.throws(()=>summonAnticipatedTurn({tokenCount:3,groupAction:"sim"}),RangeError);
+ assert.throws(()=>summonAnticipatedTurn({tokenCount:3,groupAction:true,mode:"ajudar-aliado"}),RangeError);
+ assert.throws(()=>summonAnticipatedTurn({tokenCount:3,groupAction:true,mode:"individual",targetId:"outro"}),RangeError);
+ const self=summonAnticipatedTurn({tokenCount:3,groupAction:true,mode:"individual"});
+ assert.equal(self.isJointAction,false);
+ assert.equal(self.turns,1);
 });
