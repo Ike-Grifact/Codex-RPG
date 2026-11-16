@@ -198,3 +198,19 @@ test("Invocação Elemental comprável por 1 XP, sem compra de elementos ou Doma
  // A elegibilidade é validada no criador e na ficha de Criar Conflito;
  // ledger apenas registra custo da Perícia existente.
 });
+
+
+test("Concentração Refinada custa 1 XP no catálogo de humanoides, sem nova compra de Antecipação",()=>{
+ const item=SKILLS.filter(x=>x.id==="concentracao-refinada");
+ assert.equal(item.length,1);
+ assert.equal(item[0].cost,1);
+ assert.ok(item[0].detail.includes("Disciplina 2"));
+ assert.ok(item[0].detail.includes("8 metros"));
+ assert.equal(SKILLS.some(x=>x.id==="antecipacao"),false);
+ const npc=blank("humanoide");npc.practices.armas_conjuracao=2;
+ npc.skills=["concentracao-refinada"];
+ assert.equal(ledger(npc).skills,1);
+ assert.equal(ledger(npc).spent,9); // Disciplina 2 (8 XP acumulados) + Perícia 1 XP.
+ const restored=normalize(npc);
+ assert.ok(restored.skills.includes("concentracao-refinada"));
+});
