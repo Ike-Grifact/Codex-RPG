@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.57-5">
+  <link rel="stylesheet" href="./styles.css?v=0.61-domar-grande">
   <script src="./catalog.js?v=0.44-1" defer></script>
   <script src="./gene-graph.js?v=0.57-1" defer></script>
-  <script src="./app.js?v=0.45-1" defer></script>
+  <script src="./app.js?v=0.63-influencia134-magia" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -98,6 +98,7 @@
         <div class="fp-vital-label">VIDA <span>atual / máxima</span></div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">3 / 3</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
         <div class="fp-life-boxes" id="life-boxes" aria-label="Três caixas de Vida"><span></span><span></span><span></span></div>
+        <small id="companion-life-slot" class="fp-companion-vital" hidden></small>
         <small id="life-recovery">Faixa superior · 1 Vida por dia</small>
       </div>
       <div class="fp-vital">
@@ -137,6 +138,20 @@
         <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
         <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
       </div>
+    </section>
+    <section class="fp-panel fp-medium-companion-panel" id="medium-companion-sheet" hidden aria-label="Ficha do companheiro médio">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">ᚨ</span><div>
+        <h3>Ficha de Criatura Média</h3>
+        <small>Companheiro domesticado · nível do personagem · Atributos, Vida, DE e XP próprios</small>
+      </div></div>
+      <div id="medium-companion-content"></div>
+    </section>
+    <section class="fp-panel fp-large-companion-panel" id="large-companion-sheet" hidden aria-label="Ficha do companheiro médio">
+      <div class="fp-panel-heading"><span class="fp-panel-icon">ᚨ</span><div>
+        <h3>Ficha de Criatura Grande</h3>
+        <small>Companheiro domesticado · até o nível do personagem · Atributos, Vida, DE e XP próprios · Atributos com custos de Conhecimentos/Práticas</small>
+      </div></div>
+      <div id="large-companion-content"></div>
     </section>
     <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
       <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div>
