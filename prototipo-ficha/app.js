@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.45 (Perícia Druídica documental; formas não automatizadas), base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -291,6 +291,12 @@ const SKILLS=[
   "Furtividade Avançada",
   "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
   1
+ ],
+ [
+  "pericia-druidica",
+  "Perícia Druídica",
+  "2 XP · Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra. Memoriza formas de criaturas domadas. G1 pequena: transformação gratuita, 19 XP de ficha (distribuição pendente), Vantagem Absoluta em Furtividade. G2 média: 1 PP/2 Coragens, XP igual ao personagem para Atributos, mantém 2 dados, Vantagem em Agilidade/Destreza, Leve, falha com Pavor cancela forma. G3 grande: 1 PP/2 Coragens, mantém 3 dados, Leve, manter Pavor realiza ação e cancela forma. Em todas: transformação e reversão sem teste, Vida da criatura; morrer na forma animal mata o personagem; ao reverter perde Atributos da criatura. Atributos animais usam custo de Conhecimentos/Práticas. Progressão, conversão de Vida e ficha completa PENDENTES; não automatizada.",
+  2
  ]
 ];
 
@@ -302,6 +308,7 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
   "practice:armas_conjuracao"
  ],
@@ -502,6 +509,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["criar-item-foco-magia","terra","pericia-druidica"],
  [
   "armas",
   "armas-leves",
@@ -578,6 +586,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "pericia-druidica": "pericia-druidica",
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
@@ -625,6 +634,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -657,6 +667,7 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "pericia-druidica": "Memoriza formas domadas: G1 pequena, G2 média, G3 grande. Vida animal; Pavor pode cancelar a forma.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -689,6 +700,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "pericia-druidica": "Transformação em formas domadas. Pequena: Furtividade Absoluta; média: Agilidade/Destreza; grande: três dados naturais. Progressão e fichas animais pendentes.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -721,6 +733,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 2 Coragens",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -1147,6 +1160,8 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Requer Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. As Perícias de Domar ainda não estão cadastradas no criador; compra bloqueada até sua inclusão.";
+
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
  const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
