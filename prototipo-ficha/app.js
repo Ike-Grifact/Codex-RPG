@@ -1470,7 +1470,17 @@ function renderOwnedPanel(){
   '<button type="button" data-action="medium-companion-toggle">'+(mediumHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (mediumHere?'<button type="button" data-action="medium-companion-support">'+(state.mediumCompanion.inCombat?"Desativar apoio +1A":"Ativar apoio +1A em combate")+'</button>':"")+'</div>'+
   '<small>A criatura média tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente.</small></article>':"";
- $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup+mediumMarkup;
+ const largeOwned=state.skills.includes("domar-criatura-grande");
+ const largeHere=largeCompanionPresent();
+ const largeMarkup=largeOwned?
+  '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro grande</strong><small>'+(
+   largeHere?"Ficha independente · nível "+state.largeCompanion.level:"Aguardando domesticação")+'</small></div>'+
+  '<p>'+(largeHere?"Acesse a ficha abaixo para investir XP próprio (custos de Conhecimentos/Práticas), consultar Atributos e Vida. Quando ajudar em combate, concede +1A ao domador.":"Prepare Domar/Pacificar. Comprar a Perícia não cria automaticamente uma criatura.")+'</p>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
+  '<button type="button" data-action="large-companion-toggle">'+(largeHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
+  (largeHere?'<button type="button" data-action="large-companion-support">'+(state.largeCompanion.inCombat?"Desativar apoio +1A":"Ativar apoio +1A em combate")+'</button>':"")+'</div>'+
+  '<small>A criatura grande tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente.</small></article>':"";
+ $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup+mediumMarkup+largeMarkup;
  const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
  $("owned-elements").innerHTML=
   (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
@@ -1509,6 +1519,34 @@ function renderMediumCompanion(){
   '<button type="button" data-action="medium-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
   '<label class="fp-medium-notes">Observações da criatura<textarea data-medium-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
   '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Somente Atributos evoluem pelos custos acumulados dos jogadores: 0, 1, 3, 7, 15, 31, 55 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
+}
+function renderLargeCompanion(){
+ const panel=$("large-companion-sheet");if(!panel)return;
+ const owned=state.skills.includes("domar-criatura-grande"),present=largeCompanionPresent();
+ panel.hidden=!owned||!present||sheetPage!=="play"||viewMode!=="sheet";
+ if(panel.hidden)return;
+ const pet=state.largeCompanion,spent=largeCompanionSpent(pet),available=largeCompanionAvailable(pet),total=pet.xpGranted;
+ const grid=A.map(([id,name])=>{
+  const grade=pet.attributes[id]||0,next=grade<6?TRAIN_COST[grade+1]-TRAIN_COST[grade]:null;
+  const dice=dataDice("attr",grade).map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("");
+  return '<div class="fp-medium-source"><div class="fp-medium-source-label"><strong>'+esc(name)+'</strong><span>'+dice+'</span></div>'+
+  '<div class="fp-medium-source-actions"><button type="button" data-action="large-companion-grade" data-key="'+id+'" data-delta="-1"'+(!grade||state.pending?' disabled':'')+' aria-label="Reduzir '+esc(name)+'">−</button><b>'+grade+'</b>'+
+  '<button type="button" data-action="large-companion-grade" data-key="'+id+'" data-delta="1"'+(next===null||available<next||state.pending?' disabled':'')+' aria-label="Elevar '+esc(name)+'">+</button><small>'+(next===null?"MAX":"+"+next+" XP")+'</small></div></div>';
+ }).join("");
+ $("large-companion-content").innerHTML=
+  '<div class="fp-medium-summary"><span><b>Nível '+pet.level+'</b><small>até nível '+state.level+' do domador</small></span>'+
+  '<span><b>Vida '+pet.life+' / '+largeCompanionMaxLife(pet)+'</b><small>criatura independente</small></span>'+
+  '<span><b>DE '+largeCompanionDE(pet)+'</b><small>defesa própria no combate</small></span>'+
+  '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · XP do jogador '+playerTotalXp()+'</small></span></div>'+
+  '<div class="fp-medium-fields"><label>Nome / espécie da criatura<input data-medium-field="name" maxlength="80" type="text" value="'+esc(pet.name)+'" placeholder="Ex.: lobo jovem"></label>'+
+  '<label>Nível da criatura (máximo: '+state.level+')<input data-medium-field="level" type="number" min="1" max="'+state.level+'" value="'+pet.level+'"></label>'+
+ '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
+  '<div class="fp-medium-sources">'+grid+'</div>'+
+  '<div class="fp-companion-actions"><button type="button" data-action="large-companion-match-xp"'+(playerTotalXp()<spent||state.pending?' disabled':'')+'>Igualar XP ao jogador</button><button type="button" data-action="large-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
+  '<button type="button" data-action="large-companion-life" data-delta="1"'+(pet.life>=largeCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
+  '<button type="button" data-action="large-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
+  '<label class="fp-medium-notes">Observações da criatura<textarea data-medium-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
+  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Os Atributos evoluem usando os custos acumulados de Conhecimentos e Práticas: 0, 2, 8, 20, 38, 66, 102 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
 }
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
@@ -1881,7 +1919,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();renderMediumCompanion();soundUI();}
+function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();renderMediumCompanion();renderLargeCompanion();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
