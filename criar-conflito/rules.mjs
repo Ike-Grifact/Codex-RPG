@@ -6,7 +6,8 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
  {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
- {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2}
+ {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
+ {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1}
 ];
 export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};
@@ -98,6 +99,27 @@ export function normalize(raw){
  const st=stats(t);t.pavorLocal=Math.min(t.pavorLocal,st.limitLocal);
  t.keep=Math.min(t.keep,st.keepMax);
  return t;
+}
+
+export const COMPANION_TYPES=Object.freeze(["pequena","media","grande"]);
+/** Registro de XP efetivo das criaturas presentes, sem presumir XP de criatura sem ficha. */
+export function normalizeCompanions(value={},players=0){
+ const limit=Math.floor(clamp(players,0,30));
+ return Object.fromEntries(COMPANION_TYPES.map(type=>{
+  const record=value&&typeof value==="object"?value[type]:null;
+  const count=Math.floor(clamp(record?.count??0,0,limit));
+  const raw=record?.xpTotal,n=Number(raw);
+  const xpTotal=raw===undefined||raw===null||raw===""||!Number.isSafeInteger(n)||n<=0?null:Math.floor(clamp(n,1,999999));
+  return [type,{count,xpTotal}];
+ }));
+}
+export function companionEncounterXP(value={},players=0){
+ const normalized=normalizeCompanions(value,players);
+ const entries=Object.entries(normalized);
+ return {normalized,
+  count:entries.reduce((s,[,v])=>s+v.count,0),
+  xp:entries.reduce((s,[,v])=>s+(v.count&&v.xpTotal!==null?v.xpTotal:0),0),
+  missing:entries.filter(([,v])=>v.count>0&&v.xpTotal===null).map(([t])=>t)};
 }
 export function encounterSummary(roster,players){
  const units=roster.map(normalize),publicCap=narratorCap(players);

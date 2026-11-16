@@ -7,10 +7,10 @@
  <title>Criar Conflito — Codex RPG</title>
  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
  <link rel="stylesheet" href="../assets/theme.css">
- <link rel="stylesheet" href="./styles.css?v=0.44-7">
+ <link rel="stylesheet" href="./styles.css?v=0.44-domar1">
  <script src="../assets/site.js" defer></script>
  <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
- <script type="module" src="./app.js?v=20261115-kinds1"></script>
+ <script type="module" src="./app.js?v=20261116-domar1"></script>
 </head>
 <body>
  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -31,7 +31,7 @@
  </header>
  <main class="cf-main shell" id="conteudo">
   <section class="cf-hero">
-   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.44</span>
+   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.47 (em revisão)</span>
    <h1>Criar <em>Conflito.</em></h1>
    <p>Prepare um encontro com Humanoides, Criaturas/Monstros e Humanoides Monstros. Controle graus, dados, recursos e liderança sem trocar de página.</p>
    <div class="cf-hero-actions">
@@ -82,7 +82,18 @@
     <small id="xp-compare">XP total não determina sozinho a dificuldade.</small>
    </div>
   </section>
-  <section class="cf-layout">
+  <section class="cf-top-dashboard" aria-label="Orçamento de criaturas domesticadas"><div class="cf-dash cf-companion-budget">
+ <span>COMPANHEIROS DOMESTICADOS</span><small>Uma Pequena, Média e Grande por personagem. Informe o <strong>XP total por categoria</strong>, não o custo da Perícia. Sem valor de ficha, deixe o XP vazio: comparação pendente.</small>
+ <div class="cf-companions">
+ <label>Pequenas · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-pequena" data-companion="pequena" data-companion-field="count"></label>
+ <label>XP total das Pequenas<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-pequena" data-companion="pequena" data-companion-field="xpTotal"></label>
+ <label>Médias · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-media" data-companion="media" data-companion-field="count"></label>
+ <label>XP total das Médias<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-media" data-companion="media" data-companion-field="xpTotal"></label>
+ <label>Grandes · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-grande" data-companion="grande" data-companion-field="count"></label>
+ <label>XP total das Grandes<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-grande" data-companion="grande" data-companion-field="xpTotal"></label>
+ </div><strong id="companion-xp-total">0 XP dos companheiros</strong><small id="party-effective-xp">Grupo + companheiros: 80 XP</small>
+ </div></section>
+<section class="cf-layout">
    <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
     <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Suas ameaças</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
     <p class="cf-description">Selecione uma ficha para alternar entre Edição e Rolagem. Clique nas capacidades e registre os resultados de playtest.</p>

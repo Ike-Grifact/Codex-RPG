@@ -303,3 +303,10 @@
 @media(max-width:600px){.cf-roll-sources .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .cf-roll-sources .cf-click-sources,.cf-roll-primary .cf-roll-panel,.cf-action-shortcuts{padding:10px}
  .cf-action-choice-list{max-height:155px}}
+
+/* XP de aliados domesticados, sem inferir XP de criatura sem ficha. */
+.cf-companion-budget{width:100%;max-width:100%}
+.cf-companions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.cf-companions label{display:flex;flex-direction:column;gap:4px;font-size:.8rem}
+.cf-companions input{width:100%;min-width:0}
+@media(max-width:620px){.cf-companions{grid-template-columns:1fr}}

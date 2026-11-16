@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS} from "./rules.mjs";
+import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS,normalizeCompanions,companionEncounterXP} from "./rules.mjs";
 
 test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  const animal=blank("criatura"),monster=blank("monstro");
@@ -168,4 +168,15 @@ test("Grau 2 equivale ao nível 5 de jogador como referência, sem modificar o n
   npc.threatGrade=grade;
   assert.equal(stats(npc).playerEquivalentLevel,null);
  }
+});
+
+test("XP de companheiros domesticados preserva limites e valores pendentes",()=>{
+ const given={pequena:{count:2,xpTotal:19},media:{count:1,xpTotal:""},grande:{count:7,xpTotal:44}};
+ const x=companionEncounterXP(given,4);
+ assert.deepEqual([x.count,x.xp],[7,63]);
+ assert.deepEqual(x.missing,["media"]);
+ assert.equal(x.normalized.grande.count,4);
+ assert.equal(companionEncounterXP(given,0).count,0);
+ assert.deepEqual(companionEncounterXP({pequena:{count:1,xpTotal:0}},2).missing,["pequena"]);
+ assert.equal(SKILLS.find(s=>s.id==="domar-criatura-pequena")?.cost,1);
 });
