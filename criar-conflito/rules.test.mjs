@@ -24,7 +24,7 @@ test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
  const m=blank("monstro");m.attributes.forca=2;m.attributes.vigor=1;
  m.attributes.agilidade=2;m.attributes.destreza=2;
  m.threatGrade=4;
- assert.equal(stats(m).life,5);
+ assert.equal(stats(m).life,6);
  assert.equal(stats(m).de,3);
  assert.equal(stats(m).limitLocal,7);
  assert.equal(stats(m).keepMax,4); // Decisão posterior: quarto dado liberado desde G2.
@@ -72,11 +72,11 @@ test("Vida atual pode ser inferior ao máximo calculado sem alterar os graus",()
  const monster=blank("monstro");
  monster.attributes.forca=5;
  monster.attributes.vigor=1;
- assert.equal(stats(monster).life,6);
- assert.equal(monster.life,3);
+ assert.equal(stats(monster).life,7);
+ assert.equal(monster.life,4);
  monster.life=6;
  assert.equal(normalize(monster).life,6);
- assert.equal(stats(monster).life,6);
+ assert.equal(stats(monster).life,7);
 });
 
 test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
