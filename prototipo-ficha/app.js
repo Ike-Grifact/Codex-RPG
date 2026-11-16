@@ -940,9 +940,9 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- smallCompanion:{present:false,inCombat:false},
- mediumCompanion:{present:false,inCombat:false,name:"",level:1,xpGranted:0,attributes:{},life:3,notes:""},
- largeCompanion:{present:false,inCombat:false,name:"",level:1,xpGranted:0,attributes:{},life:3,notes:""},
+ smallCompanion:{present:false,inCombat:false,magical:false},
+ mediumCompanion:{present:false,inCombat:false,magical:false,name:"",level:1,xpGranted:0,attributes:{},life:3,notes:""},
+ largeCompanion:{present:false,inCombat:false,magical:false,name:"",level:1,xpGranted:0,attributes:{},life:3,notes:""},
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
@@ -991,7 +991,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false,tameSmall:false,tameMedium:false,tameLarge:false,tamePayment:"courage",tameIntent:"domar"});
+  contextOK:false,equipmentId:"",trevas:false,tameSmall:false,tameMedium:false,tameLarge:false,tameMagical:false,tamePayment:"courage",tameIntent:"domar"});
 function load(){
  let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
@@ -1070,13 +1070,15 @@ function normalize(v){
  // Companheiro só aparece após domesticação confirmada na mesa.
  s.smallCompanion={
   present:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present,
-  inCombat:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present&&!!v.smallCompanion?.inCombat
+  inCombat:s.skills.includes("domar-criatura-pequena")&&!!v.smallCompanion?.present&&!!v.smallCompanion?.inCombat,
+  magical:!!v.smallCompanion?.magical
  };
  const m=v.mediumCompanion&&typeof v.mediumCompanion==="object"?v.mediumCompanion:{};
  const mediumOwned=s.skills.includes("domar-criatura-media");
  s.mediumCompanion={
   present:mediumOwned&&!!m.present,
   inCombat:mediumOwned&&!!m.present&&!!m.inCombat,
+  magical:!!m.magical,
   name:String(m.name||"").slice(0,80),notes:String(m.notes||"").slice(0,1000),
   level:clamp(Math.floor(m.level??s.level),1,s.level),
   xpGranted:clamp(Math.floor(m.xpGranted||0),0,1000000000),
@@ -1090,6 +1092,7 @@ function normalize(v){
  s.largeCompanion={
   present:largeOwned&&!!g.present,
   inCombat:largeOwned&&!!g.present&&!!g.inCombat,
+  magical:!!g.magical,
   name:String(g.name||"").slice(0,80),notes:String(g.notes||"").slice(0,1000),
   level:clamp(Math.floor(g.level??s.level),1,s.level),
   xpGranted:clamp(Math.floor(g.xpGranted||0),0,1000000000),
@@ -2369,6 +2372,7 @@ function buildPool(){
  const effectiveDe=tameCreature?smallCreatureTargetDe():draft.de;
  if([draft.tameSmall,draft.tameMedium,draft.tameLarge].filter(Boolean).length>1)errors.push("Escolha apenas um porte de criatura por tentativa.");
  if(tameCreature){
+  if(draft.tameMagical&&!state.skills.includes("criar-item-foco-magia"))errors.push("Domar uma criatura mágica exige Criar Item de Foco e Magia.");
   if((draft.tameSmall&&!canTameSmallDraft())||(draft.tameMedium&&!canTameMediumDraft())||(draft.tameLarge&&!canTameLargeDraft()))errors.push("Domar exige a Perícia do porte escolhido, Influência e Apresentação como fontes pertinentes.");
   if(draft.tamePayment==="pp"&&state.pp<1)errors.push("Domar exige 1 PP disponível.");
   else if(draft.tamePayment!=="pp"&&state.courage<1)errors.push("Domar exige 1 Coragem disponível.");
@@ -2452,6 +2456,9 @@ function renderComposer(){
   '<label class="fp-checkline full"><input type="checkbox" data-option="tameLarge"'+(draft.tameLarge?" checked":"")+'> Usar Domar Criatura Grande (1 XP; DE igual à sua DE defensiva)</label>'+
   (draft.tameLarge?'<label class="fp-form-field">Objetivo '+select("tameIntent",[["domar","Domesticar"],["pacificar","Pacificar para depois domar"]],draft.tameIntent)+'</label>'+
    '<label class="fp-form-field">Custo da tentativa '+select("tamePayment",[["courage","1 Coragem"],["pp","1 PP"]],draft.tamePayment)+'</label>':''):"";
+ const magicalTameFields=(draft.tameSmall||draft.tameMedium||draft.tameLarge)?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="tameMagical"'+(draft.tameMagical?" checked":"")+'> Alvo mágico (exige Criar Item de Foco e Magia, sem alterar a DE nem o custo)</label>'+
+  (draft.tameMagical&&!state.skills.includes("criar-item-foco-magia")?'<p class="fp-caption full">Falta a Perícia Criar Item de Foco e Magia para tentar domesticar uma criatura mágica.</p>':''):"";
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
@@ -2464,7 +2471,7 @@ function renderComposer(){
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>')+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso do ataque '+select("attackWeight",weight,draft.attackWeight)+'</label><label class="fp-form-field">Balanço do alvo '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
- checks+tameFields+mediumTameFields+largeTameFields+'</div>';
+ checks+tameFields+mediumTameFields+largeTameFields+magicalTameFields+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+companionHint+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
@@ -2489,7 +2496,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.tameSmall||draft.tameMedium||draft.tameLarge?smallCreatureTargetDe():draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:!!(smallCompanionPresent()&&state.smallCompanion.inCombat||mediumCompanionPresent()&&state.mediumCompanion.inCombat&&state.mediumCompanion.life>0||largeCompanionPresent()&&state.largeCompanion.inCombat&&state.largeCompanion.life>0),tameSmall:!!draft.tameSmall,tameMedium:!!draft.tameMedium,tameLarge:!!draft.tameLarge,tameIntent:draft.tameIntent,tamePayment:draft.tamePayment,equipmentId:draft.equipmentId,
+  opts:{de:draft.tameSmall||draft.tameMedium||draft.tameLarge?smallCreatureTargetDe():draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,companionCombat:!!(smallCompanionPresent()&&state.smallCompanion.inCombat||mediumCompanionPresent()&&state.mediumCompanion.inCombat&&state.mediumCompanion.life>0||largeCompanionPresent()&&state.largeCompanion.inCombat&&state.largeCompanion.life>0),tameSmall:!!draft.tameSmall,tameMedium:!!draft.tameMedium,tameLarge:!!draft.tameLarge,tameMagical:!!draft.tameMagical,tameIntent:draft.tameIntent,tamePayment:draft.tamePayment,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2538,6 +2545,7 @@ function score(){
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
  if(p.opts.tameSmall||p.opts.tameMedium||p.opts.tameLarge){
+  if(p.opts.tameMagical&&!state.skills.includes("criar-item-foco-magia"))errs.push("Criaturas mágicas exigem Criar Item de Foco e Magia.");
   if([p.opts.tameSmall,p.opts.tameMedium,p.opts.tameLarge].filter(Boolean).length!==1||(!state.skills.includes(p.opts.tameSmall?"domar-criatura-pequena":p.opts.tameMedium?"domar-criatura-media":"domar-criatura-grande"))||p.base?.group!=="practice"||p.base.key!=="apresentacao"||p.attribute?.group!=="attr"||p.attribute.key!=="influencia")
    errs.push("Tentativa de Domar inválida: verifique Perícia e fontes.");
   if(p.opts.tamePayment==="pp")ppCost+=1;else courageCost+=1;
@@ -2634,17 +2642,17 @@ function finalize(){
   ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  if((p.opts.tameSmall||p.opts.tameMedium||p.opts.tameLarge)&&s.success&&p.opts.tameIntent==="domar"){
-  if(p.opts.tameSmall){state.smallCompanion.present=true;state.smallCompanion.inCombat=false;}
+  if(p.opts.tameSmall){state.smallCompanion.present=true;state.smallCompanion.inCombat=false;state.smallCompanion.magical=!!p.opts.tameMagical;}
   if(p.opts.tameMedium){
    const freshCreature=!state.mediumCompanion.present&&state.mediumCompanion.xpGranted===0&&mediumCompanionSpent(state.mediumCompanion)===0;
-   state.mediumCompanion.present=true;state.mediumCompanion.inCombat=false;
+   state.mediumCompanion.present=true;state.mediumCompanion.inCombat=false;state.mediumCompanion.magical=!!p.opts.tameMagical;
    if(freshCreature){state.mediumCompanion.level=state.level;state.mediumCompanion.xpGranted=playerTotalXp();}
    state.mediumCompanion.level=clamp(state.mediumCompanion.level,1,state.level);
    if(state.mediumCompanion.life===0)state.mediumCompanion.life=mediumCompanionMaxLife(state.mediumCompanion);
   }
   if(p.opts.tameLarge){
    const fresh=!state.largeCompanion.present&&state.largeCompanion.xpGranted===0&&largeCompanionSpent(state.largeCompanion)===0;
-   state.largeCompanion.present=true;state.largeCompanion.inCombat=false;
+   state.largeCompanion.present=true;state.largeCompanion.inCombat=false;state.largeCompanion.magical=!!p.opts.tameMagical;
    if(fresh){state.largeCompanion.level=state.level;state.largeCompanion.xpGranted=playerTotalXp();}
    state.largeCompanion.level=clamp(state.largeCompanion.level,1,state.level);
    if(state.largeCompanion.life===0)state.largeCompanion.life=largeCompanionMaxLife(state.largeCompanion);
@@ -3274,6 +3282,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;}
+  if(["tameSmall","tameMedium","tameLarge"].includes(k)&&![draft.tameSmall,draft.tameMedium,draft.tameLarge].some(Boolean))draft.tameMagical=false;
   if(k==="tameSmall"&&draft.tameSmall){draft.tameMedium=false;draft.tameLarge=false;draft.de=smallCreatureTargetDe();}
   if(k==="tameMedium"&&draft.tameMedium){draft.tameSmall=false;draft.tameLarge=false;draft.de=smallCreatureTargetDe();}
   if(k==="tameLarge"&&draft.tameLarge){draft.tameSmall=false;draft.tameMedium=false;draft.de=smallCreatureTargetDe();}
