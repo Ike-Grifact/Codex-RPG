@@ -47,30 +47,46 @@ function position(nodes,branches=[]){
  for(const [i,key] of baseAttr.entries()){const n=byId.get("attr:"+key);if(n){n.x=800;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of baseKnow.entries()){const n=byId.get("know:"+key);if(n){n.x=265;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of basePractice.entries()){const n=byId.get("practice:"+key);if(n){n.x=1335;n.y=BASE_Y+i*ROW;}}
- // Grafo de afinidades temáticas já registrado no visualizador clássico.
- // Posições estáveis, inclusive quando nós bloqueados são ocultados.
- const groups=[
-  {name:"COMBATE E ARMAS",branch:[0,1,2,3,7,8],xs:[125,358,591,824],y:955},
-  {name:"CONJURAÇÃO E ELEMENTOS",branch:[5],xs:[1130,1400],y:955},
-  {name:"RECUPERAÇÃO",branch:[4],xs:[180,410],y:2060},
-  {name:"SOCIAL E AÇÕES",branch:[6],xs:[670,905],y:2060},
-  {name:"FURTIVIDADE",branch:[9],xs:[1170,1410],y:2060}
- ];
+ // Só nós visíveis: bloqueados e filtrados não reservam espaços vazios.
  const assigned=new Set();
- for(const group of groups){
-  const ids=[...new Set(group.branch.flatMap(i=>branches[i]||[]))]
-    .filter(id=>byId.has(id)&&!assigned.has(id));
-  ids.forEach((id,i)=>{
-   const n=byId.get(id);
-   n.x=group.xs[i%group.xs.length];
-   n.y=group.y+Math.floor(i/group.xs.length)*112;
-   assigned.add(id);
+ function collect(indices){
+  const picked=[];
+  for(const index of indices)for(const id of branches[index]||[]){
+   const node=byId.get(id);
+   if(node?.type==="skill"&&!assigned.has(id)){assigned.add(id);picked.push(node);}
+  }
+  return picked;
+ }
+ const combat=collect([0,1,2,3,7,8]),magic=collect([5]);
+ const support=collect([4,6]),stealth=collect([9]);
+ const other=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.id))
+  .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ const capacity=5,left=[...combat.slice(0,5)],right=[...magic.slice(0,5)];
+ const usedSupport=Math.min(support.length,capacity-left.length);
+ const usedStealth=Math.min(stealth.length,capacity-right.length);
+ left.push(...support.slice(0,usedSupport));
+ right.push(...stealth.slice(0,usedStealth));
+ const remaining=[...combat.slice(5),...magic.slice(5),
+  ...support.slice(usedSupport),...stealth.slice(usedStealth),...other];
+ while(remaining.length&&(left.length<capacity||right.length<capacity)){
+  const side=left.length<=right.length&&left.length<capacity?left:right;
+  side.push(remaining.shift());
+ }
+ const lateralY=[184,312,440,568,696];
+ for(const [i,n] of left.entries()){n.x=530;n.y=lateralY[i];n.geneSide=true;}
+ for(const [i,n] of right.entries()){n.x=1070;n.y=lateralY[i];n.geneSide=true;}
+ // Um arco de faixas abaixo do núcleo; linhas têm até 8 vagas e não se cruzam.
+ const columns=8,spacing=192,rowSpacing=124;
+ const rows=Math.ceil(remaining.length/columns);
+ for(let row=0;row<rows;row++){
+  const rowNodes=remaining.slice(row*columns,(row+1)*columns),count=rowNodes.length;
+  rowNodes.forEach((n,i)=>{
+   const centered=(i-(count-1)/2)*spacing;
+   const arc=count>1?18*Math.sin(Math.PI*i/(count-1)):0;
+   n.x=800+centered;n.y=922+row*rowSpacing+Math.round(arc);n.geneSide=false;
   });
  }
- const rest=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.id))
-  .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
- rest.forEach((n,i)=>{n.x=160+(i%6)*255;n.y=2500+Math.floor(i/6)*112;});
- return Math.max(1170,...nodes.filter(n=>n.type==="skill").map(n=>n.y+110));
+ return Math.max(1170,...nodes.filter(n=>n.type==="skill").map(n=>n.y+94));
 }
 function edge(a,b,cls){
  if(!a||!b)return"";
@@ -112,7 +128,11 @@ function card(n,edit){
   control+dice+'</g>';
 }
 function skill(n){
- const shortened=n.name.length>22?n.name.slice(0,21)+"…":n.name;
+ // Identificar o elemento ou especialização sem o prefixo repetitivo.
+ const compact=n.name.replace(/^Perícia em Elemento\s+/i,"Elemento ")
+  .replace(/^Perícia em\s+/i,"").replace(/^Perícia\s+/i,"");
+ const limit=n.geneSide?17:22;
+ const shortened=compact.length>limit?compact.slice(0,limit-1)+"…":compact;
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
@@ -120,7 +140,7 @@ function skill(n){
 }
 function draw(nodes,height,selected,affinity,branches,edit,camera){
  const byId=new Map(nodes.map(n=>[n.id,n]));
- let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e ramificações disponíveis abaixo.">'+
+ let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e Perícias organizadas ao redor e abaixo das fontes.">'+
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
   '<rect width="'+W+'" height="'+height+'" fill="url(#codex-gene-dots)"/>'+
   '<g class="fp-gene-viewport" transform="translate('+camera.x+' '+camera.y+') scale('+camera.zoom+')">'+
@@ -367,7 +387,7 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
   visible=visible.filter(n=>n.type!=="skill"||filter==="all"||filter==="related"||(
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
- const height=position(all,branches),cam=getCamera(root);
+ const height=position(visible,branches),cam=getCamera(root);
  root.innerHTML=draw(visible,height,selected,affinity,branches,edit,cam)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
