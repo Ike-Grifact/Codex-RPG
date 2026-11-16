@@ -43,7 +43,7 @@ const SKILLS=[
  [
   "domar-criatura-grande",
   "Domar Criatura Grande",
-  "Substitui Domar Animal Grande. Aquisição 1 XP; requer Influência 2, Apresentação 1 e Inteligência 1. Domar/Pacificar por 1 PP ou 1 Coragem, com DE igual à DE defensiva do domador. Companheiro grande com ficha própria e nível igual ou inferior ao domador, XP próprio anterior ou equivalente ao jogador e ganhos iguais aos dele. Investe somente em Atributos, mas com custos acumulados de Conhecimentos/Práticas (0, 2, 8, 20, 38, 66, 102 XP). Dados continuam os de Atributos. Presente e ajudando em combate: +1A ao domador, sem Vida sacrificial.",
+  "Substitui Domar Animal Grande. Aquisição 1 XP; requer Influência 3, Apresentação 1 e Inteligência 1. Domar/Pacificar por 1 PP ou 1 Coragem, com DE igual à DE defensiva do domador. Companheiro grande com ficha própria e nível igual ou inferior ao domador, XP próprio anterior ou equivalente ao jogador e ganhos iguais aos dele. Investe somente em Atributos, mas com custos acumulados de Conhecimentos/Práticas (0, 2, 8, 20, 38, 66, 102 XP). Dados continuam os de Atributos. Presente e ajudando em combate: +1A ao domador, sem Vida sacrificial.",
   1
  ],
  [
@@ -55,7 +55,7 @@ const SKILLS=[
  [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
-  "Substitui Domar Animal Pequeno. Influência 2 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 1 Coragem; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
+  "Substitui Domar Animal Pequeno. Influência 1 + Apresentação 1 + Inteligência 1. Ativação: 1 PP ou 1 Coragem; teste com Influência contra DE igual à DE defensiva do próprio personagem para pacificar ou domesticar criatura pequena. Atacá-la cancela a domesticação. Companheiro presente: +1A em combate e 1 ponto de Vida sacrificial antes de Inconsciente. Pode proteger a criatura e receber o dano letal, fazendo-a fugir ou ficar com aliados. Com Criar Item de Foco e Magia, também permite criaturas mágicas pequenas.",
   1
  ],
  [
@@ -664,9 +664,9 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
- "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-pequena": "Influência 1 + Apresentação 1 + Inteligência 1",
  "domar-criatura-media": "Influência 2 + Apresentação 1 + Inteligência 1",
- "domar-criatura-grande": "Influência 2 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-grande": "Influência 3 + Apresentação 1 + Inteligência 1",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -1303,8 +1303,9 @@ function skillReq(id,s=state){
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
 
- if(["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande"].includes(id)&&((s.attributes.influencia||0)<2||(s.practices.apresentacao||0)<1||intelligence<1))
-  return"Requer Influência 2, Apresentação 1 e Inteligência 1.";
+ const tameInfluenceRequired={"domar-criatura-pequena":1,"domar-criatura-media":2,"domar-criatura-grande":3}[id];
+ if(tameInfluenceRequired&&((s.attributes.influencia||0)<tameInfluenceRequired||(s.practices.apresentacao||0)<1||intelligence<1))
+  return"Requer Influência "+tameInfluenceRequired+", Apresentação 1 e Inteligência 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
@@ -1608,9 +1609,9 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
- "domar-criatura-pequena":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
+ "domar-criatura-pequena":[["a:influencia:1","p:apresentacao:1","a:inteligencia:1"]],
  "domar-criatura-media":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
- "domar-criatura-grande":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
+ "domar-criatura-grande":[["a:influencia:3","p:apresentacao:1","a:inteligencia:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
