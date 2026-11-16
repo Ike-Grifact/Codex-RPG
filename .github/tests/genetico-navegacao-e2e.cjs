@@ -12,6 +12,34 @@ const pointInSvg=async(map,x,y)=>map.evaluate((root,coord)=>{
  const out=point.matrixTransform(svg.getScreenCTM().inverse());
  return {x:out.x,y:out.y};
 },{x,y});
+const checkGeneSpacing=async(map,phase)=>map.evaluate(root=>{
+ const svg=root.querySelector(".fp-gene-overview"),vb=svg.viewBox.baseVal;
+ const nodes=[...root.querySelectorAll(".fp-gene-skill,.fp-gene-card")].map(node=>{
+  const b=node.getBBox();
+  return {id:node.getAttribute("data-gene-id"),skill:node.classList.contains("fp-gene-skill"),
+   x:b.x,y:b.y,right:b.x+b.width,bottom:b.y+b.height};
+ });
+ const collisions=[],outside=[];
+ for(let i=0;i<nodes.length;i++){
+  const a=nodes[i];
+  if(a.x<-.5||a.right>vb.width+.5||a.y<-.5||a.bottom>vb.height+.5)outside.push(a.id);
+  for(let j=i+1;j<nodes.length;j++){
+   const b=nodes[j];
+   if(!(a.skill||b.skill))continue;
+   const xx=Math.min(a.right,b.right)-Math.max(a.x,b.x);
+   const yy=Math.min(a.bottom,b.bottom)-Math.max(a.y,b.y);
+   if(xx>2&&yy>2)collisions.push(a.id+" × "+b.id);
+  }
+ }
+ const skills=nodes.filter(x=>x.skill);
+ return {skills:skills.length,collisions:collisions.slice(0,10),outside,
+  furthest:Math.max(0,...skills.map(x=>x.bottom)),width:vb.width,height:vb.height};
+}).then(result=>{
+ assert(result.skills>0,phase+": nenhum nó de Perícia visível");
+ assert(!result.collisions.length,phase+": Perícias sobrepostas "+result.collisions.join(", "));
+ assert(!result.outside.length,phase+": Perícias fora do SVG "+result.outside.join(", "));
+ return result;
+});
 const create=async page=>{
  await page.goto('http://127.0.0.1:8000/prototipo-ficha/',{waitUntil:'domcontentloaded'});
  await page.locator('[data-wizard-field="name"]').fill('Navegador do Codex');
@@ -30,6 +58,14 @@ const create=async page=>{
   desktop.on('pageerror',e=>errors.push(e.message));
   await create(desktop);
   const map=desktop.locator('#gene-builder-map');
+  // Não reservar lacunas para Perícias bloqueadas, nem sobrepor nós.
+  const normal=await checkGeneSpacing(map,"Caminhos atuais");
+  assert(normal.furthest<1150,"Perícias atuais excessivamente distantes: "+JSON.stringify(normal));
+  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  const all=await checkGeneSpacing(map,"Ramificações futuras");
+  assert(all.skills>normal.skills,"Alternar ramificações futuras não revelou novos nós");
+  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  await checkGeneSpacing(map,"Caminhos restaurados");
   await map.scrollIntoViewIfNeeded();
   const box=await map.boundingBox();
   assert(box&&box.height>=450&&box.height<=730,'Mapa não é uma janela fixa: '+JSON.stringify(box));
@@ -75,6 +111,7 @@ const create=async page=>{
   mobile.on('pageerror',e=>merrors.push(e.message));
   await create(mobile);
   const m=mobile.locator('#gene-builder-map');
+  await checkGeneSpacing(m,"Layout móvel");
   await m.scrollIntoViewIfNeeded();
   const rect=await m.boundingBox();
   assert(rect&&rect.width<=390&&rect.height>=390&&rect.height<600,
