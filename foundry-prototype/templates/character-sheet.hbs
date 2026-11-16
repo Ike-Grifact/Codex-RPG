@@ -130,7 +130,7 @@
 
   <div class="codex-source-layout {{#if codex.attributesOnly}}is-attributes-only{{/if}}">
     <section class="codex-block codex-attributes">
-      <div class="codex-block-title"><h2>Atributos</h2><span>{{#if codex.attributesOnly}}Escolha 1ª e 2ª fontes clicando no nome{{else}}Segunda fonte: clique no nome{{/if}}</span></div>
+      <div class="codex-block-title"><h2>Atributos</h2><span>{{#if codex.attributesOnly}}Escolha a 1ª e a 2ª fonte por cartão{{else}}Segunda fonte: clique no cartão{{/if}}</span></div>
       {{#each codex.attributes}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isAttribute}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -151,7 +151,7 @@
 
     {{#unless codex.attributesOnly}}
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Conhecimentos</h2><span>Base ou complemento</span></div>
+      <div class="codex-block-title"><h2>Conhecimentos</h2><span>Base ou complemento: clique no cartão</span></div>
       {{#each codex.knowledges}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
