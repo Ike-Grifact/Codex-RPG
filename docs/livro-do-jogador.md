@@ -1,10 +1,18 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.51](srd-continuidade-v0.51.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.52](srd-continuidade-v0.52.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Domar Média e ativações de Perícias — decisão de 16/11/2026 [DEFINIDO, SRD v0.52]
+
+**Ativação comum de Perícia:** **1 PP OU 1 Coragem**, escolhendo o recurso disponível. Isto substitui os antigos valores de 2 Coragens em verbetes de golpes, disparos, manobras, Perícias de armas, Domar e conjurações com ativação paga. O custo de compra em XP não mudou. **Custos que não são ativações comuns**, incluindo conversão de Coragem em PP, despesas para agir Inconsciente, preparação de magias fora de combate e exceções explicitamente declaradas, não são reduzidos automaticamente. Para efeito elemental com foco/habilitação completos, continua válida a gratuidade específica da v0.43.
+
+**Domar Criatura Média:** compra por **1 XP**; exige **Influência 3 + Apresentação 1 + Inteligência 1 + Perícia Domar Criatura Pequena já comprada**. A tentativa de domesticação custa **1 PP ou 1 Coragem**. Domar Grande não recebeu requisito adicional nesta decisão. [Ver Domar Média](../pericias/domar-criatura-media.html).
+
+**Olhos de Águia:** é passiva; paga **1 XP somente na compra**, nunca PP ou Coragem para aplicar os +8 m. O SRD histórico permanece preservado em [v0.51](srd-continuidade-v0.51.md), e o vigente é a [v0.52](srd-continuidade-v0.52.md).
 
 ## Olhos de Águia e validade da concentração — decisão de 16/11/2026 [DEFINIDO]
 
@@ -103,7 +111,7 @@ As penalidades **não se acumulam entre estados**. Os custos de Coragem são nec
 
 Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequena, Média e Grande**. Elas aumentam o **XP do grupo no conflito**, usando o XP da criatura quando conhecido ou valor informado pelo Narrador. Não é XP novo para gastar no personagem.
 
-**Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 PP ou 2 Coragens**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
+**Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 PP ou 1 Coragem**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
 
 **Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
 
@@ -147,11 +155,11 @@ A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1
 
 **Pedras elementais:** poderão ser compradas usando VT restante no criador. Fogo/Água/Terra/Ar/Psique compartilham faixa comum; Veneno/Sagrado/Trevas compartilham faixa mais cara; Sangue/Pedra da Alma não é comprável no nível 1. **PENDENTE:** preços oficiais em VT, carga e relação com Cristal inicial. A ficha pode registrar preços de mesa explicitamente EXPERIMENTAIS.
 
-**Regra anterior abaixo permanece como histórico no ponto em que disser 2 Coragens**; esta atualização de 14/11 substitui a ativação-base, não os requisitos da Perícia nem as taxas excepcionais não revisadas.
+**As versões anteriores do SRD guardam o histórico de 2 Coragens; os custos apresentados nesta edição de leitura estão atualizados para 1 Coragem**; esta atualização de 14/11 substitui a ativação-base, não os requisitos da Perícia nem as taxas excepcionais não revisadas.
 
 ## Atualização normativa — 13/11/2026: características e Perícias [HISTÓRICO nos custos]
 
-**Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **7/12/17 de Integridade são valores em playtest após redução de 3**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
+**Ativação:** ataque comum acertado pode gastar **1 PP ou 1 Coragem para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **7/12/17 de Integridade são valores em playtest após redução de 3**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
 
 ## I. O que é Codex RPG?
 
@@ -472,7 +480,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita os efeitos iniciais de **Psíquico**, magias **Leves**, criação de itens de foco e moldagem de magias segundo a capacidade de conjuração.
 
-**Efeitos especiais de Psíquico:** **ao acertar um ataque**, independentemente de crítico, pode gastar **1 PP OU 2 Coragens** para aplicar **um efeito escolhido** do elemento, dentro do Grau habilitado. Não presumir gratuidade no crítico.
+**Efeitos especiais de Psíquico:** **ao acertar um ataque**, independentemente de crítico, pode gastar **1 PP ou 1 Coragem** para aplicar **um efeito escolhido** do elemento, dentro do Grau habilitado. Não presumir gratuidade no crítico.
 
 | Grau | Exemplos do elemento Psíquico, neutro e não físico |
 |---|---|
@@ -519,9 +527,9 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Custo: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
 
-**Ativação:** **1 PP ou 2 Coragens** cria escudo sobre si mesmo ou uma **área circular de 3×3 metros**, que **dura 1 rodada**. Uma rolagem com **Conjuração** estabelece a **DE para quebrar o escudo**, que funciona como Integridade de armadura.
+**Ativação:** **1 PP ou 1 Coragem** cria escudo sobre si mesmo ou uma **área circular de 3×3 metros**, que **dura 1 rodada**. Uma rolagem com **Conjuração** estabelece a **DE para quebrar o escudo**, que funciona como Integridade de armadura.
 
-Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um inimigo entrar na área e atacar ou conjurar magia **corpo a corpo**, ignora o escudo para essa interação. Por cada **1 PP ou 2 Coragens adicional**, a área circular é ampliada em **mais 3×3 metros**.
+Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um inimigo entrar na área e atacar ou conjurar magia **corpo a corpo**, ignora o escudo para essa interação. Por cada **1 PP ou 1 Coragem adicional**, a área circular é ampliada em **mais 3×3 metros**.
 
 **PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
 
@@ -533,7 +541,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. Em ataques acertados, independentemente de crítico, **1 PP ou 2 Coragens** ativa **um efeito especial escolhido**.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. Em ataques acertados, independentemente de crítico, **1 PP ou 1 Coragem** ativa **um efeito especial escolhido**.
 
 | Grau | Efeitos e formas |
 |---|---|
@@ -549,15 +557,15 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. Ao acertar um ataque, independentemente de crítico, **1 PP ou 2 Coragens** permite aplicar **um efeito escolhido** de Água; G2 também possui gatilho alternativo de crítico para Perfurar.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. Ao acertar um ataque, independentemente de crítico, **1 PP ou 1 Coragem** permite aplicar **um efeito escolhido** de Água; G2 também possui gatilho alternativo de crítico para Perfurar.
 
 | Grau | Efeitos |
 |---|---|
 | **G1** | **Congelar por 1 rodada**, **sem causar dano** na forma Leve; extrair água do ar, mover água, molhar ou limpar |
-| **G2** | **Perfurar** ao obter **crítico nos dados** **ou** por ativação paga de efeito (1 PP ou 2 Coragens); causa dano à **Vida e armadura** |
+| **G2** | **Perfurar** ao obter **crítico nos dados** **ou** por ativação paga de efeito (1 PP ou 1 Coragem); causa dano à **Vida e armadura** |
 | **G3** | **Conjurar ao final do turno dos aliados**; efeitos **Empurrar, Perfurar e Congelar**, com dano à Vida e armadura e preservação das propriedades menores pertinentes |
 
-**Perfurar no crítico** pode ser ativado por esse gatilho sem exigir o gasto alternativo de 1 PP ou 2 Coragens. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
+**Perfurar no crítico** pode ser ativado por esse gatilho sem exigir o gasto alternativo de 1 PP ou 1 Coragem. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
 
 **Nome atualizado:** a antiga entrada **Elemento: Água** da ficha corresponde à mesma habilidade, agora denominada **Perícia em Elemento Água**, sem segunda compra nem exclusão de personagens anteriores.
 
@@ -565,7 +573,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. Ao acertar um ataque, **independentemente de crítico**, pode pagar **1 PP ou 2 Coragens** para ativar **um efeito especial escolhido**, respeitando o Grau de conjuração habilitado.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. Ao acertar um ataque, **independentemente de crítico**, pode pagar **1 PP ou 1 Coragem** para ativar **um efeito especial escolhido**, respeitando o Grau de conjuração habilitado.
 
 | Grau | Efeitos de Terra |
 |---|---|
@@ -581,7 +589,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. Em ataques que acertem, **independentemente de crítico**, gastar **1 PP ou 2 Coragens** permite aplicar **um efeito especial escolhido** do elemento, conforme o Grau habilitado.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. Em ataques que acertem, **independentemente de crítico**, gastar **1 PP ou 1 Coragem** permite aplicar **um efeito especial escolhido** do elemento, conforme o Grau habilitado.
 
 | Grau | Efeitos e manifestações de Fogo |
 |---|---|
@@ -591,19 +599,19 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 **Estratégia de um mago de Fogo:** produzir ou carregar **uma pequena faísca** e **ampliá-la magicamente** pode gerar grandes incêndios e devastação. Isso descreve o potencial narrativo do elemento; danos persistentes, propagação e duração dos incêndios **não recebem regras automáticas** sem aprovação.
 
-**Custo adicional de Fogo G2 [DEFINIDO]:** invocar fogo sem item de foco custa **1 Coragem ADICIONAL** à ativação normal de efeito especial: **1 PP + 1 Coragem** ou **3 Coragens** (2 Coragens da ativação + 1 adicional). Não cobrar esse acréscimo em magias de Fogo que não invocam fogo sem foco. **PENDENTE:** unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados.
+**Custo adicional de Fogo G2 [DEFINIDO]:** invocar fogo sem item de foco custa **1 Coragem ADICIONAL** à ativação normal de efeito especial: **1 PP + 1 Coragem** ou **2 Coragens** (1 Coragem da ativação + 1 adicional). Não cobrar esse acréscimo em magias de Fogo que não invocam fogo sem foco. **PENDENTE:** unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados.
 
 **Continuidade:** a entrada antiga da ficha **Elemento: Fogo** foi renomeada **Perícia em Elemento Fogo**, preservando a compra existente. Não cria uma segunda habilidade de Fogo.
 
 ### Perícia em Elemento Sagrado [DEFINIDO / procedimentos PENDENTES]
 
-**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. Ao acertar um ataque, **mesmo sem crítico**, permite pagar **1 PP ou 2 Coragens** para ativar **um efeito especial escolhido** do elemento.
+**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. Ao acertar um ataque, **mesmo sem crítico**, permite pagar **1 PP ou 1 Coragem** para ativar **um efeito especial escolhido** do elemento.
 
 **Grau 1:** acalmar, purificar, apoiar e recuperar Coragem. **Um Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante, uma vez por conjuração/turno.** Esse **Êxito é consumido** e **não conta para atingir a DE nem para causar dano**. Não se concede um Êxito gratuito para financiar a conversão, nem se convertem vários Êxitos no mesmo turno/conjuração.
 
 **Graus 2 e 3:** são obtidos **a partir de combinações com outros elementos**. A compra de Sagrado isoladamente não fornece poderes G2/G3 prontos nem dispensa habilitações de combinação.
 
-**PENDENTE:** procedimento de acalmar/purificar/apoiar sem ataque; momento da escolha de converter um Êxito e o que ocorre se o acerto deixar de alcançar a DE após o gasto; alcance/beneficiários e limites da recuperação de Coragem; exigência de pagamento de ativação (1 PP ou 2 Coragens) para a conversão de Êxito em ações não ofensivas; quais combinações habilitam efeitos de Grau 2 e 3.
+**PENDENTE:** procedimento de acalmar/purificar/apoiar sem ataque; momento da escolha de converter um Êxito e o que ocorre se o acerto deixar de alcançar a DE após o gasto; alcance/beneficiários e limites da recuperação de Coragem; exigência de pagamento de ativação (1 PP ou 1 Coragem) para a conversão de Êxito em ações não ofensivas; quais combinações habilitam efeitos de Grau 2 e 3.
 
 **Continuidade:** substitui a antiga entrada **Magia Sagrada** (custo histórico 3 XP) por **Perícia em Elemento Sagrado** (**2 XP**), preservando a Perícia existente no cadastro de personagens.
 
@@ -622,7 +630,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 - **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
 - **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
-- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2P válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Pavor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Pavor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1P a mais) **ou concentrado integralmente num alvo**. Não duplicar Pavor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 PP/2 Coragens no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
+- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2P válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Pavor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Pavor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1P a mais) **ou concentrado integralmente num alvo**. Não duplicar Pavor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 PP ou 1 Coragem no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
 - **Sangue:** manipular sangue/efeitos ligados à Vida; especialização custa **1 Vida do conjurador**, mesmo em falha, e acrescenta **1 Pavor**; um acerto pode retirar **1 Vida** de alvo com sangue, contornando integridade.
 - **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
 **Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
@@ -699,7 +707,7 @@ Os patamares **se substituem**; não se aplica −1A e depois −1E e depois −
 
 ### Maestria em Arremesso de Armas [DEFINIDO / detalhes PENDENTES]
 
-**Nome corrigido:** Maestria em Arremesso de Armas, não “Arremesso de Armas Leves”. **Compra: 1 XP. Requisitos: Perícia em Armas Leves, Força 2, Destreza 2, Agilidade 1. Ativação: 1 PP ou 2 Coragens.** Arremessa **Armas Leves a 24 m**, causando dano e efeitos habilitados, e a arma fica alojada no alvo. Usa os patamares de armas à distância além do alcance, **sem Desvantagem por arremessar próximo do alvo**; aliados próximos do inimigo impõem Desvantagem.
+**Nome corrigido:** Maestria em Arremesso de Armas, não “Arremesso de Armas Leves”. **Compra: 1 XP. Requisitos: Perícia em Armas Leves, Força 2, Destreza 2, Agilidade 1. Ativação: 1 PP ou 1 Coragem.** Arremessa **Armas Leves a 24 m**, causando dano e efeitos habilitados, e a arma fica alojada no alvo. Usa os patamares de armas à distância além do alcance, **sem Desvantagem por arremessar próximo do alvo**; aliados próximos do inimigo impõem Desvantagem.
 
 - **Acerto sem Pavor:** pode realizar nova jogada, avançar até o inimigo, retirar a arma e atacar novamente corpo a corpo.
 - **Acerto com Pavor:** o inimigo pode tentar pegar a arma alojada e utilizá-la ou arremessá-la.
@@ -734,15 +742,15 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 | Perícia | XP | Requisitos (decisões mais recentes) | Função |
 |---|---:|---|---|
-| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 PP/2 Coragens** |
+| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 PP ou 1 Coragem** |
 | **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente médio |
 | **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente leve |
 | **Disciplina Avançada** | **1** | **Disciplina 2** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
 | **Manejo Perfeito — Armas Corpo a Corpo** | **PENDENTE** | **Disciplina Avançada + Destreza 2** | Arma certa aplica Vantagem Absoluta; se já possui, Golpe Certo (definição pendente) |
-| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | Em acerto, 1 PP/2 Coragens altera Pavor de ½ para **1 dano por Pavor mantido e não anulado** |
-| **Espalhar Golpe** | **1** | **Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo** | **1 PP/2 Coragens por alvo adicional** no **raio de 2 m ao redor do atacante**; cada adicional recebe **metade do dano de Êxitos arredondada para baixo**; **sem +1E** |
-| **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Desarmado: 1 PP/2 Coragens permite mudar o peso do soco; limites pendentes |
-| **Artista Marcial** | **1** | **Disciplina 2 + Pugilismo + Destreza 2** | Crítico que ativa Pugilismo ou 1 PP/2 Coragens por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
+| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | Em acerto, 1 PP ou 1 Coragem altera Pavor de ½ para **1 dano por Pavor mantido e não anulado** |
+| **Espalhar Golpe** | **1** | **Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo** | **1 PP ou 1 Coragem por alvo adicional** no **raio de 2 m ao redor do atacante**; cada adicional recebe **metade do dano de Êxitos arredondada para baixo**; **sem +1E** |
+| **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Desarmado: 1 PP ou 1 Coragem permite mudar o peso do soco; limites pendentes |
+| **Artista Marcial** | **1** | **Disciplina 2 + Pugilismo + Destreza 2** | Crítico que ativa Pugilismo ou 1 PP ou 1 Coragem por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado para disparos/arremessos; detalhes de ativação e custo aguardam decisão |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
@@ -752,7 +760,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
 | **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
 
-**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. Os benefícios por crítico e o custo de 1 PP/2 Coragens em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
+**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. Os benefícios por crítico e o custo de 1 PP ou 1 Coragem em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
 
 **Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia de armas adicional**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Disciplina Avançada (1 XP, Disciplina 2)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
 
@@ -760,18 +768,18 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 17 XP do orçamento experimental de 19, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
 
-**Espalhar Golpe [DEFINIDO]:** o inimigo principal já é atingido pelo ataque normal, sem pagamento de Espalhar Golpe. A cada **1 PP ou 2 Coragens**, **um inimigo adicional** dentro de um círculo de **2 m de raio centrado no personagem atacante** recebe metade do **dano dos Êxitos**. O primeiro pagamento já cobre o primeiro adicional; cada novo pagamento cobre mais um. **DEFINIDO: cada pagamento é consumido mesmo quando a rolagem não atinge a DE do alvo adicional escolhido.** Paga-se pela tentativa de incluí-lo no golpe, não pelo acerto. Essa regra de custo vale para Espalhar Golpe; os custos de Disparo Múltiplo continuam PENDENTES. **Não acrescenta +1 Êxito**. **“Golpe Colossal” era o nome anterior de Espalhar Golpe**, não técnica separada. **DEFINIDO:** a metade do dano dos Êxitos é **sempre arredondada para baixo** (⌊dano dos Êxitos ÷ 2⌋); com 5 de dano de Êxitos, cada alvo adicional recebe 2, antes das defesas. **DEFINIDO:** usa-se **o mesmo resultado da rolagem do ataque principal** contra a **DE de cada alvo adicional**, sem rolar novamente; se ficar **abaixo da DE de um alvo**, esse alvo **não é atingido**. Só os alvos cuja DE foi alcançada podem receber o dano reduzido. A mesma regra de comparação vale para **Disparo Múltiplo**, mas sua área é medida ao redor do alvo principal. **Ordem das defesas [DEFINIDO]:** primeiro obter a metade do dano dos Êxitos e arredondar para baixo, **depois** aplicar Integridade, resistências, imunidades e demais defesas **individualmente para cada alvo atingido**. Não aplicar automaticamente componente de dano de Pavor sobre os adicionais.
+**Espalhar Golpe [DEFINIDO]:** o inimigo principal já é atingido pelo ataque normal, sem pagamento de Espalhar Golpe. A cada **1 PP ou 1 Coragem**, **um inimigo adicional** dentro de um círculo de **2 m de raio centrado no personagem atacante** recebe metade do **dano dos Êxitos**. O primeiro pagamento já cobre o primeiro adicional; cada novo pagamento cobre mais um. **DEFINIDO: cada pagamento é consumido mesmo quando a rolagem não atinge a DE do alvo adicional escolhido.** Paga-se pela tentativa de incluí-lo no golpe, não pelo acerto. Essa regra de custo vale para Espalhar Golpe; os custos de Disparo Múltiplo continuam PENDENTES. **Não acrescenta +1 Êxito**. **“Golpe Colossal” era o nome anterior de Espalhar Golpe**, não técnica separada. **DEFINIDO:** a metade do dano dos Êxitos é **sempre arredondada para baixo** (⌊dano dos Êxitos ÷ 2⌋); com 5 de dano de Êxitos, cada alvo adicional recebe 2, antes das defesas. **DEFINIDO:** usa-se **o mesmo resultado da rolagem do ataque principal** contra a **DE de cada alvo adicional**, sem rolar novamente; se ficar **abaixo da DE de um alvo**, esse alvo **não é atingido**. Só os alvos cuja DE foi alcançada podem receber o dano reduzido. A mesma regra de comparação vale para **Disparo Múltiplo**, mas sua área é medida ao redor do alvo principal. **Ordem das defesas [DEFINIDO]:** primeiro obter a metade do dano dos Êxitos e arredondar para baixo, **depois** aplicar Integridade, resistências, imunidades e demais defesas **individualmente para cada alvo atingido**. Não aplicar automaticamente componente de dano de Pavor sobre os adicionais.
 
 | Alvos totais | Adicionais | Gastos de Espalhar Golpe | Equivalente só em Coragem |
 |---|---:|---:|---:|
 | 1 | 0 | 0 | 0 |
-| 2 | 1 | 1 PP ou 2 Coragens | 2 |
-| 3 | 2 | 2 PP ou 4 Coragens | 4 |
-| 4 | 3 | 3 PP ou 6 Coragens | 6 |
+| 2 | 1 | 1 PP ou 1 Coragem | 1 |
+| 3 | 2 | 2 PP ou 2 Coragens | 2 |
+| 4 | 3 | 3 PP ou 3 Coragens | 3 |
 
-**Golpe Fulminante:** além do requisito de **Força 2**, custa separadamente **1 PP ou 2 Coragens** para aprimorar dano de Pavor no alvo atingido. **Espalhar Golpe** custa seus próprios recursos por alvo adicional. A combinação pressiona a reserva de Coragem e não ignora Pavor, Pressão ou Apavorado.
+**Golpe Fulminante:** além do requisito de **Força 2**, custa separadamente **1 PP ou 1 Coragem** para aprimorar dano de Pavor no alvo atingido. **Espalhar Golpe** custa seus próprios recursos por alvo adicional. A combinação pressiona a reserva de Coragem e não ignora Pavor, Pressão ou Apavorado.
 
-**Custo-padrão de ativação:** **1 PP ou 2 Coragens** quando explicitamente definido para a Perícia. **Exceção informada:** **Amplificar Atributo custa 2 PP ou 4 Coragens**; seus demais requisitos/efeitos não são introduzidos nesta seção.
+**Custo-padrão de ativação:** **1 PP ou 1 Coragem** quando explicitamente definido para a Perícia. **Exceção informada:** **Amplificar Atributo custa 2 PP ou 4 Coragens**; seus demais requisitos/efeitos não são introduzidos nesta seção.
 
 **Disparo Múltiplo [DEFINIDO em geometria e DE / PENDENTE no restante]:** o círculo para os outros atingidos terá **2 metros de raio ao redor do alvo principal**; **o resultado do primeiro disparo é comparado à DE de cada alvo adicional, e erro ocorre se o resultado for inferior à DE individual**, sem nova rolagem. O ramo de arremesso é separado para evitar autorizar implicitamente que uma única arma arremessada produza ataques simultâneos; possibilidades como duas armas lançadas ou uma arma grande aguardam o detalhamento de requisitos pelo autor. A Maestria em Arremesso de Armas continua com seus próprios efeitos de alojamento e recuperação.
 
@@ -801,7 +809,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
-| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP ou 1 Coragem ao acertar |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
 | **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; disparo e conduzir chamas G1, área/dano à Vida no G2, área 8 × 8 e atuação no fim do turno dos aliados G3 |
@@ -815,7 +823,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
 | **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
-| **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
+| **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 1 Coragem |
 
 **A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
 
@@ -850,27 +858,27 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 - **Perícia em Furtividade:** compra 1 XP; Furtividade 2 + Destreza 2 + Agilidade 1. Vantagem passiva +1A em testes que usam Furtividade, cumulativa com outras Vantagens (como Concentrado). Inimigos imunes a Furtividade não são afetados pela ocultação.
 - **Furtividade Avançada:** compra 1 XP; Furtividade 2 + Perícia em Furtividade. Pode incluir mais um Atributo, Conhecimento ou Prática pertinente no teste com Furtividade, respeitando pilha, limites e pertinência da fonte.
-- **Golpe Baixo:** compra 1 XP; Destreza 2 + Força 1 + Agilidade 1; custa 1 PP ou 2 Coragens ao acertar, aplica Desvantagem (−1A) por 1 rodada. Contra alvo de Inteligência grau 0, ignora Provocar e fixa o agressor até eliminação de um dos envolvidos; sem ações ou movimentos gratuitos.
+- **Golpe Baixo:** compra 1 XP; Destreza 2 + Força 1 + Agilidade 1; custa 1 PP ou 1 Coragem ao acertar, aplica Desvantagem (−1A) por 1 rodada. Contra alvo de Inteligência grau 0, ignora Provocar e fixa o agressor até eliminação de um dos envolvidos; sem ações ou movimentos gratuitos.
 
 ### Ramo corpo a corpo [DEFINIDO / área PENDENTE]
 
-- **Golpe Fulminante:** Disciplina 2 + Força 2 + especialização corpo a corpo (Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Ao acertar, por 1 PP ou 2 Coragens, Pavor não anulado passa a causar 1 dano por P; crítico não dispensa ativação. Maestria/Perícia em Arremesso não satisfaz esse requisito.
-- **Golpe Colossal:** substitui Espalhar Golpe (nome novo, mesmo ID de ficha). Compra 1 XP; Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo. Cada 1 PP ou 2 Coragens permite atingir até 2 alvos adicionais dentro de 3 m, com a mesma rolagem contra DE individual e metade do dano dos Êxitos arredondada para baixo; custo consumido ainda que erre alvo adicional. Alvo principal recebe dano integral. Não fornece +1E. Não transmite dano de Pavor de Golpe Fulminante aos adicionais. **PENDENTE:** centro exato da área.
-- **Perícia em Manejo Duplo:** compra 1 XP, Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 e pelo menos uma das Perícias Leves, Médias, Pesadas, Arremesso, Armas de Fogo ou Armas de Longo Alcance. Permite equipar duas armas, rolar Armas + Armas + Atributo em um único golpe; dano básico não é duplicado. Crítico habilita UMA característica escolhida entre as armas da ação combinada gratuitamente; mediante mais 1 PP ou 2 Coragens pode habilitar outra. Acerto normal por 1 PP ou 2 Coragens habilita UMA característica escolhida.
+- **Golpe Fulminante:** Disciplina 2 + Força 2 + especialização corpo a corpo (Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Ao acertar, por 1 PP ou 1 Coragem, Pavor não anulado passa a causar 1 dano por P; crítico não dispensa ativação. Maestria/Perícia em Arremesso não satisfaz esse requisito.
+- **Golpe Colossal:** substitui Espalhar Golpe (nome novo, mesmo ID de ficha). Compra 1 XP; Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo. Cada 1 PP ou 1 Coragem permite atingir até 2 alvos adicionais dentro de 3 m, com a mesma rolagem contra DE individual e metade do dano dos Êxitos arredondada para baixo; custo consumido ainda que erre alvo adicional. Alvo principal recebe dano integral. Não fornece +1E. Não transmite dano de Pavor de Golpe Fulminante aos adicionais. **PENDENTE:** centro exato da área.
+- **Perícia em Manejo Duplo:** compra 1 XP, Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 e pelo menos uma das Perícias Leves, Médias, Pesadas, Arremesso, Armas de Fogo ou Armas de Longo Alcance. Permite equipar duas armas, rolar Armas + Armas + Atributo em um único golpe; dano básico não é duplicado. Crítico habilita UMA característica escolhida entre as armas da ação combinada gratuitamente; mediante mais 1 PP ou 1 Coragem pode habilitar outra. Acerto normal por 1 PP ou 1 Coragem habilita UMA característica escolhida.
 
 ### Ramo de longa distância, arremesso e técnicas somáticas [DEFINIDO / ressalvas]
 
-- **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2; crítico ativa efeitos da arma gratuitamente, acerto normal custa 1 PP ou 2 Coragens. Ignora Desvantagens naturais por peso, mantendo Vantagens. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta pequena neutra em todos; besta de duas mãos −1A/neutro/+1A.
-- **Arremesso é ação geral:** qualquer personagem pode arremessar armas, passar armas a aliados e lançar armas inimigas para longe. **Perícia em Arremesso de Armas** (antiga Maestria; ID salvo preservado) custa 1 XP, exige Força 2 + Destreza 2 + Agilidade 1 e Perícia em Armas Leves OU Médias OU Pesadas. Por 1 PP ou 2 Coragens no acerto, ativa os efeitos especiais da arma arremessada além do dano básico. Alcance efetivo leve 12 m, médio 8 m, pesado 4 m; exceder 1 m dá Desvantagem (−1A), 2 m Desvantagem Absoluta (−1E), 3 m Acerto de Sorte (−2E); além do terceiro metro, escalonamento PENDENTE. Não sofre Desvantagem por proximidade, mas aliados próximos do alvo geram Desvantagem. Arma se aloja no alvo com penalidade pertinente. Acerto limpo pode permitir nova jogada, avanço, retirada e ataque corpo a corpo; acerto com Pavor pode permitir ao inimigo utilizar a arma. Falha limpa: cai no caminho, pode gastar 1A para correr e recuperar; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Distância da queda em falha (metros) = E mantidos + P mantidos NÃO anulados + 1E por 2A convertidos; A restante não soma. Retirar arma alojada testa Armas + Força + Atletismo contra resistência Força + Vigor + Atletismo do alvo; conversão da dificuldade ainda PENDENTE.
-- **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Ao acertar, pagando 1 PP/2 Coragens, Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
-- **Disparo Múltiplo:** compra 1 XP; Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Longo Alcance OU Arremesso). Cada 1 PP/2 Coragens cobre até dois alvos adicionais num raio de 3 m ao redor do ALVO PRINCIPAL; rolagem única vs DE individual, custo pago mesmo se errar. Alvo principal dano integral; adicionais metade dos Êxitos arredondada para baixo e 0,5 por Pavor válido, mesmo se Fulminante estiver ativado no principal.
-- **Disparo Violento:** compra 1 XP, Destreza 2 + Disciplina 2 + (Força 2 OU Força 1 + Atletismo 1) + (Longo Alcance OU Arremesso). 1 PP/2 Coragens no acerto derruba e empurra o inimigo 4 m. Arco longo ou besta de duas mãos; com Arremesso precisa arma MÉDIA ou PESADA. Crítico não dispensa.
+- **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2; crítico ativa efeitos da arma gratuitamente, acerto normal custa 1 PP ou 1 Coragem. Ignora Desvantagens naturais por peso, mantendo Vantagens. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta pequena neutra em todos; besta de duas mãos −1A/neutro/+1A.
+- **Arremesso é ação geral:** qualquer personagem pode arremessar armas, passar armas a aliados e lançar armas inimigas para longe. **Perícia em Arremesso de Armas** (antiga Maestria; ID salvo preservado) custa 1 XP, exige Força 2 + Destreza 2 + Agilidade 1 e Perícia em Armas Leves OU Médias OU Pesadas. Por 1 PP ou 1 Coragem no acerto, ativa os efeitos especiais da arma arremessada além do dano básico. Alcance efetivo leve 12 m, médio 8 m, pesado 4 m; exceder 1 m dá Desvantagem (−1A), 2 m Desvantagem Absoluta (−1E), 3 m Acerto de Sorte (−2E); além do terceiro metro, escalonamento PENDENTE. Não sofre Desvantagem por proximidade, mas aliados próximos do alvo geram Desvantagem. Arma se aloja no alvo com penalidade pertinente. Acerto limpo pode permitir nova jogada, avanço, retirada e ataque corpo a corpo; acerto com Pavor pode permitir ao inimigo utilizar a arma. Falha limpa: cai no caminho, pode gastar 1A para correr e recuperar; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Distância da queda em falha (metros) = E mantidos + P mantidos NÃO anulados + 1E por 2A convertidos; A restante não soma. Retirar arma alojada testa Armas + Força + Atletismo contra resistência Força + Vigor + Atletismo do alvo; conversão da dificuldade ainda PENDENTE.
+- **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Ao acertar, pagando 1 PP ou 1 Coragem, Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
+- **Disparo Múltiplo:** compra 1 XP; Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Longo Alcance OU Arremesso). Cada 1 PP ou 1 Coragem cobre até dois alvos adicionais num raio de 3 m ao redor do ALVO PRINCIPAL; rolagem única vs DE individual, custo pago mesmo se errar. Alvo principal dano integral; adicionais metade dos Êxitos arredondada para baixo e 0,5 por Pavor válido, mesmo se Fulminante estiver ativado no principal.
+- **Disparo Violento:** compra 1 XP, Destreza 2 + Disciplina 2 + (Força 2 OU Força 1 + Atletismo 1) + (Longo Alcance OU Arremesso). 1 PP ou 1 Coragem no acerto derruba e empurra o inimigo 4 m. Arco longo ou besta de duas mãos; com Arremesso precisa arma MÉDIA ou PESADA. Crítico não dispensa.
 - **Disparo Tático:** compatível com Arremesso, demais regras de compra/ativação PENDENTES.
 - Técnicas somáticas independentes podem ser ativadas na mesma oportunidade pagando cada custo.
 
 ### Armas de Fogo [DEFINIDO / dependência PENDENTE]
 
-- **Perícia em Armas de Fogo:** 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente efeitos da arma e acerto normal custa 1 PP/2 Coragens. Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
+- **Perícia em Armas de Fogo:** 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente efeitos da arma e acerto normal custa 1 PP ou 1 Coragem. Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
 - **Descarregar Tambor:** modalidade de Disparo Múltiplo exclusivamente com arma automática ou semiautomática, alvo ÚNICO, um teste, consome todas as munições disponíveis, custa **1 PP OU 1 Coragem por tiro**. Primeiro tiro dano integral de Êxitos; demais metade dos Êxitos cada (arredondar para baixo). Pavor NÃO causa dano. Um Pavor mantido e não anulado provoca travamento em arma sujeita; P anulado por A ou descartado não trava. O revólver não trava e não é automático. Disparo Fulminante não se aplica a armas de fogo. **PENDENTE:** exceção de acesso a Disparo Múltiplo para especialistas só em armas de fogo, pois seu requisito atual exige Fulminante/Longo Alcance/Arremesso.
 
 ### Veneno e Antídoto [DEFINIDO / evolução PENDENTE]

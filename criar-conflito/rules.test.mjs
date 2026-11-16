@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS,normalizeCompanions,companionEncounterXP} from "./rules.mjs";
+import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS,canBuyDomarMedium,normalizeCompanions,companionEncounterXP} from "./rules.mjs";
 
 test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  const animal=blank("criatura"),monster=blank("monstro");
@@ -231,4 +231,16 @@ test("Olhos de Águia: custo 1 XP e descrição exige Destreza 3, Disciplina 3 e
  const actual=ledger(npc);
  assert.equal(actual.skills,4); // 3 XP em Armas de Fogo + 1 XP em Olhos de Águia.
  assert.equal(normalize(npc).skills.includes("olhos-de-aguia"),true);
+});
+
+test("Domar Média exige Domar Pequena e Influência 3, Inteligência 1, Apresentação 1",()=>{
+ const t=blank("humanoide");
+ t.attributes.influencia=3;t.attributes.inteligencia=1;t.practices.apresentacao=1;
+ assert.equal(canBuyDomarMedium(t),false);
+ t.skills=["domar-criatura-pequena"];
+ assert.equal(canBuyDomarMedium(t),true);
+ assert.equal(SKILLS.find(x=>x.id==="domar-criatura-media")?.cost,1);
+ assert.match(SKILLS.find(x=>x.id==="domar-criatura-media")?.detail||"",/Domar Criatura Pequena/);
+ t.attributes.influencia=2;assert.equal(canBuyDomarMedium(t),false);
+ t.attributes.influencia=3;t.practices.apresentacao=0;assert.equal(canBuyDomarMedium(t),false);
 });
