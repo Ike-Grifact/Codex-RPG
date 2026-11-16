@@ -57,46 +57,83 @@ export function xpLedger(s){
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
   state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
 }
-export function mayComplement(system,base,mode){
- const sk=system.skills||[];
- if(system.monsterRules)return Number(system.threatGrade||1)>=5;
- if(sk.includes("combinacao"))return true;
- if(base?.group==="practice"&&base.key==="furtividade")return sk.includes("furtividade-avancada");
- if(base?.group==="practice"&&base.key==="armas_conjuracao")
-  return sk.includes("disciplina-avancada");
+// A ordem de escolha não determina a categoria da fonte (decisão de 15/11/2026).
+const isDiscipline=src=>src?.group==="practice"&&src.key==="armas_conjuracao";
+const isFurtividade=src=>src?.group==="practice"&&src.key==="furtividade";
+const hasDualHandling=system=>(system.skills||[]).some(id=>["maestria-manejo-duplo","manejo-duplo"].includes(id));
+export function mayComplement(system,first,mode="normal",second=null){
+ const skills=system.skills||[];
+ if(system.monsterRules)return true; // Criaturas só têm Atributos: 2 ou 3 fontes, em qualquer Grau.
+ const chosen=[first,second];
+ if(skills.includes("combinacao"))return true; // compatibilidade com fichas antigas
+ if(chosen.some(isDiscipline)&&skills.includes("disciplina-avancada")&&Number(system.practices?.armas_conjuracao||0)>=2)return true;
+ if(chosen.some(isDiscipline)&&hasDualHandling(system))return true;
+ if(chosen.some(isFurtividade)&&skills.includes("furtividade-avancada")&&Number(system.practices?.furtividade||0)>=2)return true;
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,equipmentDie=0}={}){
- const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
- if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(monster&&b.group!=="attribute")||(!monster&&b.group==="attribute"))
-  errors.push(monster?"Monstro: selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
- if(!a||a.group!=="attribute"||!ATTRIBUTES.some(x=>x[0]===a.key))
-  errors.push("Inclua um Atributo pertinente.");
- if(b&&a&&b.group===a.group&&b.key===a.key)errors.push("Fontes duplicadas.");
- if(c){
-  if(!(GROUPS[c.group]||[]).some(x=>x[0]===c.key)||(monster&&c.group!=="attribute"))errors.push("Complemento inválido.");
-  if((b&&b.group===c.group&&b.key===c.key)||(a&&a.group===c.group&&a.key===c.key))errors.push("Complemento duplicado.");
-  if(!mayComplement(system,b,mode))errors.push("Complemento exige Perícia ou capacidade de monstro.");
-  if(!contextApproved)errors.push("Confirme pertinência do complemento.");
+// Uma elevação comum compra temporariamente o GRAU seguinte da aptidão escolhida.
+// Não altera XP nem a ficha, e não troca um único dado isolado.
+export function elevationChoices(system,selection){
+ const chosen=[selection?.base,selection?.attribute,...(selection?.complement?[selection.complement]:[])];
+ const counts=new Map(),result=[];
+ for(const src of chosen){
+  if(!src||( !GROUPS[src.group] || !GROUPS[src.group].some(([key])=>key===src.key)))continue;
+  const code=src.group+"."+src.key,copy=counts.get(code)||0;counts.set(code,copy+1);
+  const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[src.group];
+  const grade=Number(system?.[field]?.[src.key]||0);
+  if(!Number.isInteger(grade)||grade<0||grade>=6)continue;
+  const table=src.group==="attribute"?(system.monsterRules?MONSTER_DICE:ATTRIBUTE_DICE):TRAINING_DICE;
+  result.push({id:code+(copy?".duplo":""),group:src.group,key:src.key,
+   grade,before:[...table[grade]],after:[...table[grade+1]]});
  }
- if(b?.key==="armas_conjuracao"&&!monster){
+ return result;
+}
+export function buildPool(system,selection,{mode="normal",step=false,stepSourceId="",equipmentDie=0}={}){
+ const errors=[],pool=[],first=selection?.base,second=selection?.attribute,third=selection?.complement;
+ const monster=!!system.monsterRules,selected=[first,second,...(third?[third]:[])];
+ const valid=src=>!!src&&(GROUPS[src.group]||[]).some(([key])=>key===src.key);
+ const discipline=selected.filter(isDiscipline).length,dual=hasDualHandling(system);
+ if(!valid(first)||!valid(second))errors.push("Selecione duas fontes válidas.");
+ if(monster&&selected.some(src=>src?.group!=="attribute"))errors.push("Criaturas/monstros não humanoides combinam apenas Atributos.");
+ if(!monster&&valid(first)&&valid(second)&&first.group===second.group&&
+   !(isDiscipline(first)&&isDiscipline(second)&&dual))
+   errors.push("As duas fontes básicas devem ser de categorias diferentes (Atributo, Conhecimento ou Prática).");
+ if(valid(first)&&valid(second)&&first.group===second.group&&first.key===second.key&&
+   !(isDiscipline(first)&&dual))errors.push("Aptidão duplicada na combinação básica.");
+ if(third){
+  if(!valid(third))errors.push("Terceira fonte inválida.");
+  if(!mayComplement(system,first,mode,second))errors.push("Terceira fonte exige Perícia ou capacidade da criatura.");
+ }
+ for(let i=0;i<selected.length;i++){
+  const src=selected[i];
+  if(!valid(src))continue;
+  if(selected.slice(0,i).some(other=>other?.group===src.group&&other.key===src.key)&&
+    !(isDiscipline(src)&&dual&&discipline===2))
+   errors.push("Não repita a mesma aptidão (exceto Disciplina com Manejo Duplo).");
+ }
+ if(discipline>2)errors.push("Manejo Duplo permite no máximo duas seleções de Disciplina.");
+ if(discipline&&!monster){
   const skills=system.skills||[];
-  const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","manejo-duplo"];
-  if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
-  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))errors.push("Conjuração exige Criar Item de Foco e Magia.");
-  if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
+  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))
+   errors.push("Conjuração exige Criar Item de Foco e Magia.");
+  if(!["armas","conjuracao"].includes(mode))errors.push("Escolha Armas ou Conjuração para Disciplina.");
  }
+ const elevations=elevationChoices(system,selection);
+ if(step&&(!stepSourceId||!elevations.some(x=>x.id===stepSourceId)))
+  errors.push("Selecione uma aptidão elegível para elevar um Grau temporário.");
  if(!errors.length){
-  for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
-    pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides});
-  if(step){
-   const d=pool.find(x=>x.group==="attribute"),next={4:6,6:10,10:12}[d?.sides];
-   if(!next)errors.push("Não é possível elevar o dado.");
-   else d.sides=next;
+  const counts=new Map();
+  for(const src of selected){
+   const code=src.group+"."+src.key,copy=counts.get(code)||0;counts.set(code,copy+1);
+   const slot=code+(copy?".duplo":"");
+   const elevated=step&&elevations.find(x=>x.id===slot);
+   const sidesList=elevated?elevated.after:sourceDice(src.group,src.key,system);
+   for(const [i,sides] of sidesList.entries())
+    pool.push({id:slot+"."+i,group:src.group,key:src.key,sides,baseSides:sides,temporaryGrade:!!elevated});
   }
   if(equipmentDie){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
-   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
+   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie),baseSides:Number(equipmentDie)});
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");
@@ -110,7 +147,7 @@ export function resolveRoll(rolled,selectedIds,options={}){
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  const maxKeep=keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
- if(!rolled.some(d=>d.group==="attribute"))errors.push("A pilha deve conter um Atributo rolado.");
+ if(monster&&!rolled.some(d=>d.group==="attribute"))errors.push("Monstros precisam de Atributo na pilha.");
  if(Number(extraKeep)+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
  const raw=[0,0,0];for(const d of kept)faceSymbols(d.sides,d.face).forEach((v,i)=>raw[i]+=v);
  const crit=kept.length>=2&&kept.every(d=>d.face===d.sides);

@@ -41,7 +41,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  // Pagar só pelo quarto dado efetivamente mantido: ativar o controle sem usá-lo
  // não consome Coragem. A autorização ainda é necessária para passar do limite natural.
  const paidExtraKeep=extraKeep&&kept.length>naturalKeep;
- const courageCost=Number(paidExtraKeep)+Number(!!options.stepDieId);
+ const courageCost=Number(paidExtraKeep)+Number(!!options.stepSourceId);
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
@@ -61,46 +61,23 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
   criticalPavor:result.monsterCriticalPavor||0};
 }
 
-/** Composição por fontes escolhidas: terceira fonte exige habilidade e pertinência. */
-export function composeActionPool(unit,selection={},stepDieId=""){
+/** Composição com duas fontes livres e terceira habilitada; a validação é a mesma do motor de rolagens. */
+export function composeActionPool(unit,selection={},stepSourceId=""){
  if(!unit)return {ok:false,error:"Selecione uma ficha."};
- const human=isHumanoidKind(unit.kind),system=toSystem(unit),extra=selection.extra;
- const sources=human?[
-  {group:selection.baseGroup,key:selection.baseKey},
-  {group:"attribute",key:selection.attribute}
- ]:[{group:"attribute",key:selection.first},{group:"attribute",key:selection.second}];
- if(extra)sources.push(extra);
- const errors=[],ids=new Set();
- for(const src of sources){
-  const defs=src.group==="attribute"?ATTRIBUTES:src.group==="knowledge"?KNOWLEDGES:src.group==="practice"?PRACTICES:[];
-  if(!defs.some(([key])=>key===src.key))errors.push("Selecione fontes válidas.");
-  const id=src.group+":"+src.key;
-  if(ids.has(id))errors.push("Não repita a mesma fonte.");
-  ids.add(id);
- }
- if(human&&!["knowledge","practice"].includes(selection.baseGroup))errors.push("Escolha Conhecimento ou Prática como Base.");
- if(human&&selection.baseKey==="armas_conjuracao"&&selection.mode==="conjuracao"&&!unit.skills.includes("criar-item-foco-magia"))
-  errors.push("Conjuração exige Criar Item de Foco e Magia.");
- if(extra){
-  const advanced=human&&(
-    selection.baseKey==="armas_conjuracao"&&unit.skills.includes("disciplina-avancada")&&Number(unit.practices.armas_conjuracao)>=2||
-    selection.baseKey==="furtividade"&&unit.skills.includes("furtividade-avancada")&&Number(unit.practices.furtividade)>=2
-  );
-  if(!(advanced||!human&&Number(unit.threatGrade)>=5))errors.push("Terceira fonte exige habilitação apropriada.");
-  if(!selection.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
- }
- if(errors.length)return {ok:false,error:errors.join(" ")};
- const pool=[];
- for(const src of sources)for(const [index,sides] of sourceDice(src.group,src.key,system).entries())
-  pool.push({id:src.group+"."+src.key+"."+index,group:src.group,key:src.key,sides,baseSides:sides});
- if(pool.length<2||pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
- if(stepDieId){
-  const d=pool.find(x=>x.id===stepDieId);
-  const next={4:6,6:10,10:12}[d?.baseSides];
-  if(!next)return {ok:false,error:"Selecione um dado elegível para elevar (d4→d6→d10→d12)."};
-  d.sides=next;
- }
- return {ok:true,pool,sources};
+ const human=isHumanoidKind(unit.kind),system=toSystem(unit);
+ const first=selection.firstSource||(human?
+  {group:selection.baseGroup,key:selection.baseKey}:{group:"attribute",key:selection.first});
+ const second=selection.secondSource||(human?
+  {group:"attribute",key:selection.attribute}:{group:"attribute",key:selection.second});
+ const extra=selection.extra||null,sources=[first,second,...(extra?[extra]:[])];
+ const discipline=sources.some(src=>src.group==="practice"&&src.key==="armas_conjuracao");
+ const mode=discipline?(selection.mode||"armas"):"normal";
+ const result=buildPool(system,{base:first,attribute:second,complement:extra},{
+  mode,step:!!stepSourceId,stepSourceId
+ });
+ if(!result.ok)return {ok:false,error:result.errors.join(" ")};
+ if(result.pool.length<2||result.pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
+ return {ok:true,pool:result.pool,sources};
 }
 
 export function rollCreatureFaces(pool,random=Math.random){
@@ -115,7 +92,7 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
  const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
  const count=kept.length;
  const cap=unit?.kind==="monstro"?stats(unit).keepMax:2;
- const cost=unit?.kind==="monstro"?Math.max(0,count-2)+Number(!!options.stepDieId):0;
+ const cost=unit?.kind==="monstro"?Math.max(0,count-2)+Number(!!options.stepSourceId):0;
  if(!unit||isHumanoidKind(unit.kind))return {ok:false,error:"Este simulador é para criaturas não humanoides."};
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};

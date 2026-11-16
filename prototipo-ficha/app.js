@@ -949,8 +949,8 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false});
+  extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  equipmentId:"",trevas:false});
 function load(){
  let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
@@ -2078,10 +2078,10 @@ function selectSource(group,k){
  if(group==="attr"){
   if(canSecondAttribute()&&draft.attribute&&!same(source,draft.attribute)){
    draft.third=same(source,draft.third)?null:source;
-   draft.contextOK=false;
+   
   }else{
    draft.attribute=same(source,draft.attribute)?null:source;
-   if(!draft.attribute){draft.third=null;draft.contextOK=false;}
+   if(!draft.attribute){draft.third=null;}
   }
  }else if(!draft.base){
   const selectedAttribute=draft.attribute;
@@ -2094,12 +2094,25 @@ function selectSource(group,k){
   draft.base=source;draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
  }else{
   if(!mayThird()){toast("Terceira fonte exige uma Perícia pertinente de combinação.");return;}
-  draft.third=same(source,draft.third)?null:source;draft.contextOK=false;
+  draft.third=same(source,draft.third)?null:source;
  }
  renderSources();renderComposer();
  if(draft.base&&draft.attribute&&!draft.third)toast("Combinação básica pronta. Revise a preparação antes de rolar.");
 }
 function modeDefault(){return "armas";}
+// A elevação substitui temporariamente a sequência completa de dados da fonte por seu Grau seguinte.
+function elevationSources(){
+ const seen=new Map(),options=[];
+ for(const src of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
+  if(!src||!SOURCE_PROPS[src.group])continue;
+  const id=key(src),copy=seen.get(id)||0;seen.set(id,copy+1);
+  const grade=Number(state[SOURCE_PROPS[src.group]]?.[src.key]||0);
+  if(!Number.isInteger(grade)||grade<0||grade>=6)continue;
+  options.push({id:id+(copy?":duplo":""),src,grade,
+   before:dataDice(src.group,grade),after:dataDice(src.group,grade+1)});
+ }
+ return options;
+}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
@@ -2107,24 +2120,25 @@ function buildPool(){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
   if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo exige Disciplina Avançada com Disciplina ou Furtividade Avançada com Furtividade.");
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
-  else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
+  
  }
  if(!canUseShared())errors.push("Conjuração exige Criar Item de Foco e Magia (a Perícia substitui Aprendiz de Conjurador e Magia Única). Uso marcial básico de Disciplina é livre.");
- for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
-  const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
-  dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides,baseSides:sides}));
+ const elevations=elevationSources();
+ if(draft.step&&(!draft.stepSourceId||!elevations.some(x=>x.id===draft.stepSourceId)))
+  errors.push("Escolha uma aptidão elegível para elevar um Grau temporário.");
+ const seen=new Map();
+ for(const src of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
+  const raw=key(src),copy=seen.get(raw)||0;seen.set(raw,copy+1);
+  const id=raw+(copy?":duplo":""),grade=Number(state[SOURCE_PROPS[src.group]][src.key]||0);
+  const raised=draft.step&&elevations.some(x=>x.id===id&&x.id===draft.stepSourceId);
+  const dice=raised?dataDice(src.group,grade+1):dataDice(src.group,grade);
+  dice.forEach((sides,index)=>pool.push({id:id+":"+index,group:src.group,key:src.key,sides,baseSides:sides,temporaryGrade:!!raised}));
  }
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
   const dice=combatItem(item,draft.mode);
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
- }
- if(draft.step){
-  const target=pool.find(d=>d.id===draft.stepDieId);
-  const next={4:6,6:10,10:12}[target?.baseSides];
-  if(next)target.sides=next;
-  else errors.push("Selecione um dado elegível da pilha para elevar por 1 Coragem (d4→d6→d10→d12).");
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
@@ -2167,14 +2181,14 @@ function renderComposer(){
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':'';
- const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
-  .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
+ const stepOptions=elevationSources().map(x=>[x.id,
+  label(x.src.group,x.src.key)+" (G"+x.grade+" → G"+(x.grade+1)+") · "+
+  x.before.map(n=>"d"+n).join("+")+" → "+x.after.map(n=>"d"+n).join("+")]);
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
- '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
- (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
+ '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar aptidão em 1 Grau temporário (1 Coragem)</label>'+
+ (draft.step?'<label class="fp-form-field full">Aptidão a elevar '+select("stepSourceId",[["","Selecione a aptidão"],...stepOptions],draft.stepSourceId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × balanço do alvo (se pertinente)</label>'+
- (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
- (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
+ (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
@@ -2184,7 +2198,7 @@ function renderComposer(){
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
  (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com Disciplina Avançada, pode acrescentar inclusive outro Atributo quando a Base é Disciplina.</p>':
- '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, são duas fontes. Disciplina Avançada e Furtividade Avançada habilitam complemento em suas ações.")+'</p>')+
+ '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação da Perícia.":"Sem Perícia de combinação, são duas fontes. Disciplina Avançada e Furtividade Avançada habilitam complemento em suas ações.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  '<div class="fp-composer-actions"><button class="fp-secondary" type="button" data-action="clear">Limpar</button>'+
  '<button class="fp-primary-btn" type="button" data-action="roll"'+(errors.length?" disabled":"")+'>Rolar dados →</button></div>';
@@ -2204,7 +2218,7 @@ function roll(){
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2825,7 +2839,7 @@ function onChange(event){
   const k=el.dataset.option;
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;}
+  if(k==="mode"){draft.third=null;draft.equipmentId="";draft.trevas=false;}
   renderSources();renderComposer();return;
  }
  if(el.dataset.pending&&state.pending){

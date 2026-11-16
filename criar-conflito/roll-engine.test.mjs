@@ -75,9 +75,8 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  const valid=humanoidPool(npc,"practice","atletismo","forca");
  assert.equal(valid.ok,true);
  assert.deepEqual(valid.pool.map(d=>d.sides),[6,6]); // Atletismo G0 e Força G1
- const failed=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
- assert.equal(failed.ok,false);
- assert.match(failed.error,/Perícia/);
+ const basicDiscipline=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
+ assert.equal(basicDiscipline.ok,true,"Disciplina marcial básica não exige Perícia de arma");
  npc.skills.push("armas-leves");
  const trained=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
  assert.equal(trained.ok,true);
@@ -119,38 +118,31 @@ test("Monstro com retenção planejada maior que a pilha não paga Pavor fictíc
 });
 
 
-test("Composição por clique: Disciplina + Força, elevação escolhida e XP intacto",()=>{
+test("Composição por clique: Disciplina + Força, elevação de Grau e XP intacto",()=>{
  const npc=quickHumanoid();
  const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
  const basic=composeActionPool(npc,selection);
- assert.equal(basic.ok,true);
- assert.deepEqual(basic.pool.map(d=>d.sides),[10,6]);
- const step=composeActionPool(npc,selection,"practice.armas_conjuracao.0");
- assert.equal(step.ok,true);
- assert.deepEqual(step.pool.map(d=>d.sides),[12,6]);
+ assert.equal(basic.ok,true);assert.deepEqual(basic.pool.map(d=>d.sides),[10,6]);
+ const step=composeActionPool(npc,selection,"practice.armas_conjuracao");
+ assert.equal(step.ok,true);assert.deepEqual(step.pool.map(d=>d.sides),[10,10,6]);
  assert.equal(composeActionPool(npc,selection,"practice.armas_conjuracao.99").ok,false);
- assert.equal(composeActionPool(npc,selection,"attribute.forca.0").pool[1].sides,10);
- assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"},contextOK:true}).ok,false,
+ assert.deepEqual(composeActionPool(npc,selection,"attribute.forca").pool.map(d=>d.sides),[10,6,6]);
+ assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"}}).ok,false,
   "Terceira fonte não pode ser grátis");
 });
 test("Coragem é debitada somente ao confirmar: retenção mais elevação custa 2",()=>{
  const npc=quickHumanoid();npc.attributes.forca=2;
  const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
- const pool=composeActionPool(npc,selection,"attribute.forca.0");
- assert.equal(pool.ok,true);
- assert.deepEqual(pool.pool.map(x=>x.sides),[10,10,6]);
- const rolled=rollCreatureFaces(pool.pool,()=>0.999);
- const kept=rolled.map(x=>x.id);
- const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"});
- assert.equal(preview.ok,true);
- assert.equal(preview.courageCost,2);
+ const pool=composeActionPool(npc,selection,"attribute.forca");
+ assert.equal(pool.ok,true);assert.deepEqual(pool.pool.map(x=>x.sides),[10,6,6,6]);
+ const rolled=rollCreatureFaces(pool.pool,()=>0.999),kept=rolled.slice(0,3).map(x=>x.id);
+ const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepSourceId:"attribute.forca"});
+ assert.equal(preview.ok,true);assert.equal(preview.courageCost,2);
  assert.equal(npc.courage,10);
  const result=settleCreatureRoll(npc,2,4,preview);
- assert.equal(result.ok,true);
- assert.equal(result.unit.courage,8);
- assert.equal(npc.courage,10);
+ assert.equal(result.ok,true);assert.equal(result.unit.courage,8);assert.equal(npc.courage,10);
  npc.courage=1;
- assert.equal(previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"}).ok,false);
+ assert.equal(previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepSourceId:"attribute.forca"}).ok,false);
 });
 test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=>{
  const m=blank("monstro");
@@ -230,4 +222,74 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível soz
   enemy.courage=0;
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
  }
+});
+
+test("cliques de humanoides: A+K, A+P e K+P, sem duas fontes da mesma categoria",()=>{
+ for(const kind of ["humanoide","humanoide-monstro"]){
+  const unit=blank(kind);
+  const a={group:"attribute",key:"forca"},k={group:"knowledge",key:"medicina"},p={group:"practice",key:"atletismo"};
+  for(const [firstSource,secondSource] of [[a,k],[p,a],[k,p],[p,k]]){
+   const r=composeActionPool(unit,{firstSource,secondSource});
+   assert.equal(r.ok,true,r.error);
+   assert.equal(r.pool.length,2);
+  }
+  for(const [firstSource,secondSource] of [
+   [a,{group:"attribute",key:"vigor"}],[k,{group:"knowledge",key:"protecao"}],[p,{group:"practice",key:"furtividade"}]
+  ])assert.equal(composeActionPool(unit,{firstSource,secondSource}).ok,false);
+ }
+});
+test("Disciplina Avançada e Manejo Duplo autorizam apenas suas próprias combinações",()=>{
+ const h=blank("humanoide");
+ const d={group:"practice",key:"armas_conjuracao"},a={group:"attribute",key:"forca"},k={group:"knowledge",key:"medicina"};
+ h.practices.armas_conjuracao=2;
+ const sel={firstSource:a,secondSource:d,mode:"armas",extra:k,contextOK:true};
+ assert.equal(composeActionPool(h,sel).ok,false);
+ h.skills.push("disciplina-avancada");
+ assert.equal(composeActionPool(h,sel).ok,true);
+ assert.equal(composeActionPool(h,{...sel,extra:d}).ok,false);
+ h.skills.push("maestria-manejo-duplo");
+ const r=composeActionPool(h,{...sel,extra:d});
+ assert.equal(r.ok,true,r.error);
+ assert.equal(new Set(r.pool.map(x=>x.id)).size,r.pool.length);
+ const pair=composeActionPool(h,{firstSource:d,secondSource:d,mode:"armas"});
+ assert.equal(pair.ok,true);
+ assert.equal(composeActionPool(h,{firstSource:d,secondSource:d,mode:"armas",extra:d,contextOK:true}).ok,false);
+});
+test("monstros só de Atributos têm três fontes desde Grau 1, sem repetir",()=>{
+ const m=blank("monstro");
+ const trio={firstSource:{group:"attribute",key:"forca"},secondSource:{group:"attribute",key:"agilidade"},
+  extra:{group:"attribute",key:"vigor"},contextOK:true};
+ const r=composeActionPool(m,trio);
+ assert.equal(r.ok,true,r.error);assert.equal(r.pool.length,3);
+ assert.equal(composeActionPool(m,{...trio,extra:trio.firstSource}).ok,false);
+ assert.equal(composeActionPool(m,{...trio,extra:{group:"practice",key:"atletismo"}}).ok,false);
+});
+
+test("elevação temporária usa progressão completa por Grau e não altera XP",()=>{
+ const npc=blank("humanoide");
+ const a={group:"attribute",key:"forca"},k={group:"knowledge",key:"medicina"};
+ for(const [grade,expected] of [[0,[6]],[1,[6,6]],[2,[6,6,6]],[3,[6,6,10]],[4,[6,10,10]],[5,[10,10,10]]]){
+  npc.attributes.forca=grade;
+  const r=composeActionPool(npc,{firstSource:a,secondSource:k},"attribute.forca");
+  assert.equal(r.ok,true,r.error);
+  assert.deepEqual(r.pool.map(x=>x.sides).slice(0,expected.length),expected);
+  assert.equal(npc.attributes.forca,grade,"Grau permanente não mudou");
+ }
+ for(const [grade,expected] of [[0,[10]],[1,[10,10]],[2,[10,10,10]],[3,[10,10,12]],[4,[10,12,12]],[5,[12,12,12]]]){
+  npc.knowledges.medicina=grade;
+  const r=composeActionPool(npc,{firstSource:k,secondSource:a},"knowledge.medicina");
+  assert.equal(r.ok,true,r.error);
+  assert.deepEqual(r.pool.map(x=>x.sides).slice(0,expected.length),expected);
+  assert.equal(npc.knowledges.medicina,grade);
+ }
+ npc.knowledges.medicina=6;
+ assert.equal(composeActionPool(npc,{firstSource:k,secondSource:a},"knowledge.medicina").ok,false);
+ assert.equal(composeActionPool(npc,{firstSource:k,secondSource:a},"knowledge.medicina.0").ok,false);
+});
+test("elevação não permite ultrapassar nove dados rolados",()=>{
+ const m=blank("monstro");m.attributes.forca=3;m.attributes.agilidade=3;m.attributes.vigor=3;
+ const src={firstSource:{group:"attribute",key:"forca"},secondSource:{group:"attribute",key:"agilidade"},extra:{group:"attribute",key:"vigor"}};
+ assert.equal(composeActionPool(m,src).pool.length,9);
+ const r=composeActionPool(m,src,"attribute.forca");
+ assert.equal(r.ok,false);assert.match(r.error,/nove/);
 });

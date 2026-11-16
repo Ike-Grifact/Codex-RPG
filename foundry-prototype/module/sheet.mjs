@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,elevationChoices,resolveRoll,lifeMax,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
@@ -8,7 +8,7 @@ import {G1_CATALOG} from "./catalog.mjs";
 import {CodexPavorPanel} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
-const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
+const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,stepSourceId:"",
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
@@ -16,7 +16,8 @@ function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
  grade:Number(s[{attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group]]?.[key]||0),
  dice:sourceDice(group,key,s).map(sides=>({sides,icon:dieSvg(sides)})),
- isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key})}));
+ isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key}),
+  selected:[d.base,d.attribute,d.complement].some(src=>eq(src,{group,key}))}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(x=>x[2]>0)
@@ -69,18 +70,23 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   };
   if(ctx.codex.preparing){
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
-   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
+   const plan=buildPool(s,d,{mode:this._opts.mode,step:this._opts.step,stepSourceId:this._opts.stepSourceId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   const isShared=[d.base,d.attribute,d.complement].some(src=>src?.group==="practice"&&src.key==="armas_conjuracao"),targets=[...game.user.targets];
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
-    contextApproved:this._opts.contextApproved,de:this._opts.de,
+    de:this._opts.de,
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
-    step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+    step:this._opts.step,stepSourceId:this._opts.stepSourceId,
+     elevationOptions:elevationChoices(s,d).map(x=>({id:x.id,
+      name:sourceLabel(x.group,x.key,s)+(x.id.endsWith(".duplo")?" (2ª Disciplina)":""),
+      before:x.before.map(n=>"d"+n).join(" + "),after:x.after.map(n=>"d"+n).join(" + "),
+      selected:this._opts.stepSourceId===x.id})),
+     combatBonus:false,hasCombatSkill:false,
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
@@ -130,7 +136,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
+   if(key==="mode"){this._draft.complement=null;this._opts.equipmentId="";}
    this.render();return;
   }
   if(el.dataset.pendingOption&&this._pending){
@@ -143,29 +149,36 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async chooseSource(event,target){
   if(this._busy||this._pending)return;
   const group=target.dataset.group,key=target.dataset.key,valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key))return;
-  const s=this.actor.system,d=this._draft,candidate={group,key};
-  if(s.monsterRules){
-   if(group!=="attribute")return;
-   if(!d.base){this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();}
-   else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else if(!d.attribute)d.attribute=candidate;
-   else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
-   else {d.attribute=candidate;d.complement=null;}
-   this.render();return;
+  if(!valid?.some(([id])=>id===key))return;
+  const s=this.actor.system,d=this._draft,candidate={group,key},monster=!!s.monsterRules;
+  if(monster&&group!=="attribute")return;
+  const isDisc=src=>src?.group==="practice"&&src.key==="armas_conjuracao";
+  const hasDual=!monster&&(s.skills||[]).some(id=>["maestria-manejo-duplo","manejo-duplo"].includes(id));
+  const reset=()=>{this._draft=draft();this._opts=defaults();};
+  if(!d.base){
+   d.base=candidate;d.attribute=null;d.complement=null;
+  }else if(!d.attribute){
+   if(eq(d.base,candidate)&&hasDual&&isDisc(candidate))d.attribute={...candidate};
+   else if(eq(d.base,candidate))reset();
+   else if(!monster&&d.base.group===group){ui.notifications.warn("A combinação básica exige categorias diferentes.");return;}
+   else d.attribute=candidate;
+  }else if(eq(d.complement,candidate)){
+   d.complement=null;
+  }else if(hasDual&&isDisc(candidate)&&[d.base,d.attribute].filter(isDisc).length===1&&
+     (eq(d.base,candidate)||eq(d.attribute,candidate))){
+   d.complement={...candidate};
+  }else if(eq(d.base,candidate))reset();
+  else if(eq(d.attribute,candidate)){d.attribute=null;d.complement=null;}
+  else if(mayComplement(s,d.base,this._opts.mode,d.attribute)){
+   d.complement=candidate;
+  }else if(!monster&&d.base.group===group){
+   ui.notifications.warn("Não combine duas fontes básicas da mesma categoria.");return;
+  }else{
+   d.attribute=candidate;d.complement=null;
   }
-  if(group==="attribute"){
-   if(!d.base){ui.notifications.info("Selecione a Prática ou Conhecimento de base.");return;}
-   d.attribute=eq(d.attribute,candidate)?null:candidate;
-   if(!d.attribute)d.complement=null;
-  }else if(!d.base||!d.attribute){
-   if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else {this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();this._opts.mode=modeFor(s,candidate);}
-  }else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-  else {
-   if(!mayComplement(s,d.base,this._opts.mode)){ui.notifications.warn("Terceira fonte exige habilitação pertinente.");return;}
-   d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;
-  }
+  const active=[this._draft.base,this._draft.attribute,this._draft.complement];
+  const discipline=active.find(isDisc);
+  this._opts.mode=discipline?((this._opts.mode==="armas"||this._opts.mode==="conjuracao")?this._opts.mode:modeFor(s,discipline)):"normal";
   this.render();
  }
  static async adjustGrade(event,target){
@@ -214,7 +227,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     opts.de=defenseDE(target);
    }
    opts.noisy=!!item?.system.properties?.includes("Barulhenta");
-   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,equipmentDie:die});
+   const plan=buildPool(s,this._draft,{mode:opts.mode,step:opts.step,stepSourceId:opts.stepSourceId,equipmentDie:die});
    if(!plan.ok)throw Error(plan.errors.join(" "));
    const result=await rollPool(plan.pool),pending={version:2,id:crypto.randomUUID(),created:Date.now(),
     base:this._draft.base,attribute:this._draft.attribute,complement:this._draft.complement,

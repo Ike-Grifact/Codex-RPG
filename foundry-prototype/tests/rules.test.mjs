@@ -13,7 +13,7 @@ function human(){return{
 };}
 test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurador",()=>{
  assert.equal(ATTRIBUTES.length,6);assert.equal(KNOWLEDGES.length,6);assert.equal(PRACTICES.length,6);
- assert.equal(SKILLS.length,39);
+ assert.equal(SKILLS.length,38); // catálogo existente na main: o fluxo de rolagem não altera Perícias
  assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz"].includes(s.id)));
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
 });
@@ -121,4 +121,48 @@ test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automati
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
  assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
  assert.equal(defenseDE({system:s,items:[light]}),4);
+});
+
+test("seleção livre: categorias diferentes nas duas fontes básicas",()=>{
+ const s=human();
+ for(const pair of [
+  [{group:"attribute",key:"forca"},{group:"knowledge",key:"medicina"}],
+  [{group:"knowledge",key:"medicina"},{group:"attribute",key:"forca"}],
+  [{group:"attribute",key:"forca"},{group:"practice",key:"atletismo"}],
+  [{group:"knowledge",key:"medicina"},{group:"practice",key:"atletismo"}],
+  [{group:"practice",key:"atletismo"},{group:"knowledge",key:"medicina"}]
+ ])assert.equal(buildPool(s,{base:pair[0],attribute:pair[1]}).ok,true);
+ for(const pair of [
+  [{group:"attribute",key:"forca"},{group:"attribute",key:"agilidade"}],
+  [{group:"knowledge",key:"medicina"},{group:"knowledge",key:"protecao"}],
+  [{group:"practice",key:"atletismo"},{group:"practice",key:"furtividade"}]
+ ])assert.equal(buildPool(s,{base:pair[0],attribute:pair[1]}).ok,false);
+ const noAttribute=buildPool(s,{base:{group:"knowledge",key:"medicina"},attribute:{group:"practice",key:"atletismo"}});
+ const dice=noAttribute.pool.map(d=>({...d,face:1}));
+ assert.equal(resolveRoll(dice,dice.map(d=>d.id),{de:0}).ok,true);
+});
+test("Disciplina Avançada habilita terceira fonte sem repetir Disciplina",()=>{
+ const s=human();s.skills.push("disciplina-avancada");s.practices.armas_conjuracao=2;
+ const discipline={group:"practice",key:"armas_conjuracao"};
+ const strength={group:"attribute",key:"forca"};
+ const knowledge={group:"knowledge",key:"medicina"};
+ assert.equal(buildPool(s,{base:strength,attribute:discipline,complement:knowledge},{mode:"armas",contextApproved:true}).ok,true);
+ assert.equal(buildPool(s,{base:discipline,attribute:strength,complement:strength},{mode:"armas",contextApproved:true}).ok,false);
+ assert.equal(buildPool(s,{base:discipline,attribute:strength,complement:discipline},{mode:"armas",contextApproved:true}).ok,false);
+ assert.equal(buildPool(s,{base:strength,attribute:knowledge,complement:{group:"practice",key:"furtividade"}},{mode:"normal",contextApproved:true}).ok,false);
+});
+test("Manejo Duplo é a exceção para exatamente duas Disciplina",()=>{
+ const s=human();s.skills.push("maestria-manejo-duplo");
+ const d={group:"practice",key:"armas_conjuracao"},a={group:"attribute",key:"forca"};
+ const pair=buildPool(s,{base:d,attribute:d},{mode:"armas"});
+ assert.equal(pair.ok,true);assert.equal(new Set(pair.pool.map(x=>x.id)).size,pair.pool.length);
+ const triple=buildPool(s,{base:d,attribute:a,complement:d},{mode:"armas",contextApproved:true});
+ assert.equal(triple.ok,true);assert.equal(new Set(triple.pool.map(x=>x.id)).size,triple.pool.length);
+ assert.equal(buildPool(s,{base:d,attribute:d,complement:d},{mode:"armas",contextApproved:true}).ok,false);
+});
+test("criatura de Grau 1 pode compor três Atributos distintos",()=>{
+ const s={monsterRules:true,threatGrade:1,skills:[],attributes:{forca:1,agilidade:1,vigor:1}};
+ const pool=buildPool(s,{base:{group:"attribute",key:"forca"},attribute:{group:"attribute",key:"agilidade"},complement:{group:"attribute",key:"vigor"}},{contextApproved:true});
+ assert.equal(pool.ok,true);assert.equal(pool.pool.length,3);
+ assert.equal(buildPool(s,{base:{group:"attribute",key:"forca"},attribute:{group:"attribute",key:"agilidade"},complement:{group:"attribute",key:"forca"}},{contextApproved:true}).ok,false);
 });
