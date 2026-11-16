@@ -92,7 +92,7 @@
 .codex-result-die{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:103px;min-height:131px;flex:1;max-width:170px;text-align:center;padding:10px!important}
 .codex-result-die .codex-die-svg{width:41px;height:41px}
 .codex-result-die strong{font-size:21px}
-.codex-result-die span{font:11px/1.3 system-ui,sans-serif}
+
 .codex-result-die small{font-size:13px}
 .codex-result-die.is-kept{border:2px solid var(--cx-gold);background:color-mix(in srgb,var(--cx-gold) 15%,var(--cx-panel2))}
 .codex-outcome{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:10px;background:var(--cx-panel2);padding:12px;border-radius:7px}
@@ -725,6 +725,7 @@
 .codex-face-symbol-e{color:#267A45}
 .codex-face-symbol-a{color:#2369BB}
 .codex-face-symbol-p{color:#542176}
+.codex-face-symbol .codex-face-rune{font:inherit}
 .codex-face-symbol .codex-face-count{
  font:800 13px Inter,"Segoe UI",sans-serif;align-self:flex-end;padding-bottom:3px
 }

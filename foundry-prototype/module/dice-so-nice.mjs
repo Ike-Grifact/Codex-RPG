@@ -31,7 +31,7 @@ export function registerCodexDice(dice3d){
  });
  for(const sides of Object.keys(FACES)){
   dice3d.addDicePreset({type:`d${sides}`,system,labels:faceImageLabels(sides),
-    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides],labelScale:sides==="4"?1.22:1.06});
+    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides],labelScale:sides==="4"?0.9:1.06});
  }
 }
 

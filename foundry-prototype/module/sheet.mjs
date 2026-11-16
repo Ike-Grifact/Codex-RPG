@@ -53,6 +53,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
+  if(this._pending)this._editing=false;
   const defense=defenseDisplay(actor);
   const wornArmor=actor.items.find(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
   const armorSys=wornArmor?.system,armorMax=Math.max(0,Number(armorSys?.integrity?.max)||0);
@@ -94,7 +95,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    selectedBase:d.base?sourceLabel(d.base.group,d.base.key,s):"",
    selectedAttribute:d.attribute?sourceLabel(d.attribute.group,d.attribute.key,s):"",
    selectedComplement:d.complement?sourceLabel(d.complement.group,d.complement.key,s):"",
-   selecting:!!d.base&&!d.attribute,preparing:!!d.base&&!!d.attribute&&!this._pending,
+   selecting:!!d.base&&!d.attribute,preparing:!!d.base&&!!d.attribute&&!this._editing&&!this._pending,
    hasPending:!!this._pending,isOwner:actor.isOwner,canKeep:!this._busy
   };
   if(ctx.codex.preparing){
@@ -198,8 +199,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
  }
  static async toggleEditing(){
-  if(!this.actor.isOwner)return;
-  if(this._pending){ui.notifications.info("Finalize ou descarte a rolagem antes de editar.");return;}
+  if(!this.actor.isOwner||this._busy||this._pending)return;
   this._editing=!this._editing;
   this._draft=draft();this._opts=defaults();
   return this.render();
@@ -218,6 +218,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(group!=="attribute")return;
    if(!d.base){this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();}
    else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
+   else if(eq(d.attribute,candidate)){
+    d.attribute=null;
+    d.complement=null;
+    this._opts.contextApproved=false;
+   }
    else if(!d.attribute)d.attribute=candidate;
    else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
    else {d.attribute=candidate;d.complement=null;}
@@ -289,7 +294,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
  }
  static executeRoll(){
-  if(this._pending)return;
+  if(this._pending||this._editing)return;
   return this._request({
    action:"start",selection:this._draft,options:this._opts,
    sceneId:canvas.scene?.id,targetIds:[...game.user.targets].map(token=>token.id)
@@ -335,7 +340,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     " Alto). As penalidades exatas por sobrecarga ainda são PENDENTES no SRD.");
   await this.actor.createEmbeddedDocuments("Item",[{name,type:"equipment",system}]);
  }
- static async openEquipment(event,target){this.actor.items.get(target.dataset.id)?.sheet.render({force:true});}
+ static async openEquipment(event,target){
+  if(!this._editing)return;
+  this.actor.items.get(target.dataset.id)?.sheet.render({force:true});
+ }
  static async toggleEquip(event,target){
   const item=this.actor.items.get(target.dataset.id);
   if(item&&this.actor.isOwner)await item.update({"system.equipped":!item.system.equipped});
@@ -363,5 +371,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(Math.abs(delta)!==1)return;
   await this.actor.update({"system.pavorLocal":Math.max(0,Math.min(monsterCap(s.threatGrade),s.pavorLocal+delta))});
  }
- async close(options={}){this._draft=draft();this._opts=defaults();return super.close(options);}
+ async close(options={}){
+  this._draft=draft();
+  this._opts=defaults();
+  this._editing=false;
+  return super.close(options);
+ }
 }

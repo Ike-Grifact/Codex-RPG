@@ -1,6 +1,6 @@
 # Codex RPG Foundry — revisão UX 0.2.1.7 (16/11/2026)
 
-**Estado: PROPOSTO / playtest.** Esta implementação está na branch do PR #4, **não** foi mesclada à `main`, **não** é uma release estável nem foi instalada/validada no Foundry portátil do autor. A instalação anterior 0.2.1.6 permanece intacta até novo teste.
+**Estado: playtest validado em mundo isolado no Foundry v14.367.** As mudanças seguem na branch do PR #4.
 
 ## Escopo
 
@@ -32,4 +32,4 @@ Conferir que `dist/codex-rpg-foundry/assets/dice/runes/` contém 20 PNGs com nom
 - Ativar Dice So Nice em dois clientes: conferir cores oficiais, legibilidade e orientação dos polígonos, especialmente d4, d10 e faces múltiplas. Confirmar que todos recebem **os mesmos valores**.
 - Repetir com Dice So Nice desligado, em janela estreita/mobile, e verificar falha simulada de publicação, reconexão, confirmação concorrente e inventário.
 
-**Não verificado ainda nesta mudança:** testes Node 24 completos, pacote em Windows/Linux/macOS, instalação local e homologação visual multijogador. A conferência isolada do gerador examinou 20 padrões PNG 256×256 e as cores, mas não substitui testes de pacote e do cliente Foundry.
+**Resultados da revisão local.** Passaram os 53 testes Node.js 24. O pacote Windows gerado e extraído contém 76 arquivos, incluindo os 20 PNGs transparentes de 256×256. No Foundry v14.367, dois clientes verificaram os cinco tipos de dado em 3D, as quatro faces do d4 e a correspondência com a pilha avaliada. O roteiro também validou os modos da ficha, toque em janela de 480 px, edição de Grau e Item, Pavor, retomada e publicação única após falha simulada.

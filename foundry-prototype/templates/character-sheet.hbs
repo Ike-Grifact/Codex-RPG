@@ -12,7 +12,7 @@
           <span class="codex-overline">{{codex.actorTypeLabel}}</span>
           <h2>{{codex.actorName}}</h2>
         </div>
-        {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
+        {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
       </div>
       <div class="codex-identity-fields">
         <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.editing}}readonly{{/unless}}></label>
@@ -73,7 +73,7 @@
           </div>
           {{else}}
           <small>Integridade máxima não definida.</small>
-          <button type="button" class="codex-defense-configure" data-action="openEquipment" data-id="{{codex.armorCard.id}}">Configurar equipamento</button>
+          {{#if codex.editing}}<button type="button" class="codex-defense-configure" data-action="openEquipment" data-id="{{codex.armorCard.id}}">Configurar equipamento</button>{{/if}}
           {{/if}}
         {{/unless}}
       </div>
@@ -117,7 +117,7 @@
   <div class="codex-help">
     <strong>{{#if codex.editing}}Editar personagem{{else}}Componha a ação pela ficha{{/if}}</strong>
     {{#if codex.editing}}<span>Use −/+ para comprar ou ajustar graus. Clique em <b>Concluir edição · Jogar</b> quando terminar.</span>{{else}}{{#if codex.attributesOnly}}<span><b>1.</b> Clique em qualquer lugar do cartão de um Atributo. <b>2.</b> Clique em outro cartão para combinar as fontes. {{#if codex.isMonster}}No Grau 5+, um terceiro Atributo pode ser habilitado.{{/if}}</span>{{else}}<span><b>1.</b> Clique em qualquer lugar do cartão do Conhecimento ou Prática de base. <b>2.</b> Clique no cartão de um Atributo. Complemento exige habilitação.</span>{{/if}}{{/if}}
-     {{#if codex.selectedBase}}<span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedAttribute}} · <b>2ª fonte:</b> {{codex.selectedAttribute}} · Role os dados abaixo.{{else}} · Escolha a 2ª fonte.{{/if}}</span>{{/if}}
+     {{#if codex.selectedBase}}<span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedAttribute}} · <b>2ª fonte:</b> {{codex.selectedAttribute}}{{#if codex.selectedComplement}} · <b>Complemento:</b> {{codex.selectedComplement}}{{/if}}.{{else}} · Escolha a 2ª fonte.{{/if}}</span>{{/if}}
      {{#if codex.hasPending}}<span class="codex-live-note codex-source-pending-note">Rolagem pendente: finalize ou descarte antes de preparar outra ação.</span>{{/if}}
 
   </div>
@@ -130,7 +130,7 @@
 
   <div class="codex-source-layout {{#if codex.attributesOnly}}is-attributes-only{{/if}}">
     <section class="codex-block codex-attributes">
-      <div class="codex-block-title"><h2>Atributos</h2><span>{{#if codex.attributesOnly}}Escolha a 1ª e a 2ª fonte por cartão{{else}}Segunda fonte: clique no cartão{{/if}}</span></div>
+      <div class="codex-block-title"><h2>Atributos</h2>{{#unless codex.editing}}<span>{{#if codex.attributesOnly}}Escolha a 1ª e a 2ª fonte por cartão{{else}}Segunda fonte: clique no cartão{{/if}}</span>{{/unless}}</div>
       {{#each codex.attributes}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isAttribute}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -139,7 +139,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE</small>{{/if}}{{#if this.isAttribute}}<small class="codex-source-role">ATRIBUTO</small>{{/if}}{{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
           <span class="codex-source-grade-tag">G{{this.grade}}</span>
@@ -151,7 +151,7 @@
 
     {{#unless codex.attributesOnly}}
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Conhecimentos</h2><span>Base ou complemento: clique no cartão</span></div>
+      <div class="codex-block-title"><h2>Conhecimentos</h2>{{#unless codex.editing}}<span>Base ou complemento: clique no cartão</span>{{/unless}}</div>
       {{#each codex.knowledges}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -160,7 +160,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isBase}}true{{else}}{{#if this.isComplement}}true{{else}}false{{/if}}{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE DA AÇÃO</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
@@ -172,7 +172,7 @@
     </section>
 
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Práticas</h2><span>Base ou complemento</span></div>
+      <div class="codex-block-title"><h2>Práticas</h2>{{#unless codex.editing}}<span>Base ou complemento</span>{{/unless}}</div>
       {{#each codex.practices}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -181,7 +181,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isBase}}true{{else}}{{#if this.isComplement}}true{{else}}false{{/if}}{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE DA AÇÃO</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
@@ -334,7 +334,7 @@
        </div>
       </details>
       {{#each codex.pending.errors}}<p class="codex-error">{{this}}</p>{{/each}}
-      <div class="codex-actions"><button type="button" data-action="discardRoll" {{#unless codex.editing}}disabled{{/unless}}>Descartar rolagem</button><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
+      <div class="codex-actions"><button type="button" data-action="discardRoll" {{#unless codex.isOwner}}disabled{{/unless}}>Descartar rolagem</button><button type="button" class="codex-primary" data-action="finalizeRoll" {{#unless codex.pending.canFinalize}}disabled{{/unless}}>Finalizar ação</button></div>
     </section>
     {{/if}}
   {{/if}}
@@ -356,7 +356,7 @@
       <div class="codex-block-title"><h2>Inventário e proteção</h2><span>Itens persistidos como documentos Foundry</span></div>
       {{#each codex.gear}}
       <div class="codex-gear">
-        <div><button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button><small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
+        <div>{{#if @root.codex.editing}}<button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button>{{else}}<strong>{{this.name}}</strong>{{/if}}<small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
         <div class="codex-gear-actions">
           <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
           <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>

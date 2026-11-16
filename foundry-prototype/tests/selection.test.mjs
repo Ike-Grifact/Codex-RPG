@@ -33,6 +33,9 @@ test("Criatura: selecionar dois Atributos distintos sem comprar Grau",async()=>{
  await pick(ctx.s,"attribute","agilidade");
  assert.equal(ctx.s._draft.attribute.key,"agilidade","Segunda fonte pode ser trocada sem rerrolar");
  assert.equal(ctx.rendered(),3);
+ await pick(ctx.s,"attribute","agilidade");
+ assert.equal(ctx.s._draft.attribute,null,"Clicar novamente retira a segunda fonte");
+ assert.equal(ctx.s._draft.base.key,"forca");
 });
 
 test("Aprendiz: Conhecimento ou Prática como Base, Atributo como segunda fonte",async()=>{

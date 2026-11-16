@@ -68,7 +68,7 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   assert.deepEqual(presets.map(preset => preset.type), ["d4","d6","d10","d12","d20"]);
   assert.equal(presets.find(preset => preset.type === "d4").fontScale, 0.82);
   assert.equal(presets.find(preset => preset.type === "d10").fontScale, 1.02);
-   assert.equal(presets.find(preset => preset.type === "d4").labelScale, 1.22);
+   assert.equal(presets.find(preset => preset.type === "d4").labelScale, 0.9);
    assert.deepEqual(presets.find(preset => preset.type === "d10").labels,faceImageLabels(10));
   assert.equal(colorsets.length,1);
   assert.equal(colorsets[0].background,"#181a1d");
@@ -80,7 +80,7 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
       const [e,a,p]=faces[i];
       assert.equal(label, ["ᛋ".repeat(e),"ᚨ".repeat(a),"ᚦ".repeat(p)].filter(Boolean).join(" ")||" ");
       assert.ok(!label.endsWith(".png"),"Rótulos rúnicos Unicode continuam disponíveis para depuração");
-       assert.match(faceImageLabels(sides)[i],/assets\/dice\/runas\/e\d+-a\d+-p\d+\.png$/);
+       assert.match(faceImageLabels(sides)[i],/assets\/dice\/runes\/e\d+-a\d+-p\d+\.png$/);
     });
   }
   const user = {id: "player"};
