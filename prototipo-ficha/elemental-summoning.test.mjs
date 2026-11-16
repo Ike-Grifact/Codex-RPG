@@ -125,3 +125,10 @@ test("Invocação Grande separa cada face e permite manter menos de três sem tr
  assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,attribute:"forca",sides:6,face:7}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"grande",dice:[{part:1,attribute:"forca",sides:6,face:1},{part:2,attribute:"forca",sides:6,face:2},{part:3,attribute:"vigor",sides:6,face:3}],keptParts:[1,1]}),RangeError);
 });
+
+test("Token isolado de uma Grande rola um único dado da parte escolhida",()=>{
+ const result=summonPartRoll({size:"grande",activePart:2,dice:[{part:2,attribute:"agilidade",sides:10,face:8}]});
+ assert.deepEqual([result.rolled,result.maxKept,result.keptCount,result.activePart,result.results[0].part,result.extraTurns],[1,1,1,2,2,0]);
+ assert.throws(()=>summonPartRoll({size:"grande",activePart:2,dice:[{part:1,attribute:"forca",sides:10,face:8}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"grande",activePart:4,dice:[{part:1,attribute:"forca",sides:10,face:8}]}),RangeError);
+});
