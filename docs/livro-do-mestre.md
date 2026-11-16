@@ -1,8 +1,16 @@
 # Codex RPG — Livro do Mestre
 
+## Improviso + Maestria, área e tokens separados [DEFINIDO / PENDENTE]
+
+A capacidade de Combinar Elementos na invocação é **Improviso Elemental + Maestria Elemental**, ambas adquiridas. Com elementos habilitados, invocar criatura de dois elementos custa +1 Coragem além do custo base; efeitos especiais via Maestria custam +1 PP ou +1 Coragem adicional.
+
+Várias criaturas podem permanecer na mesma ficha. Se o jogador **separa os tokens**, divide o **XP total e a Vida total** entre eles e cada token passa a resolver como **ficha individual do nível de DE original**, mantendo a DE e o orçamento somado. **Dano de área funciona normalmente**: cada token que estiver dentro da área é afetado conforme as regras de área, sem multiplicar XP ou ações. Exemplo: **60 XP/12 Vida em três tokens => 20 XP/4 Vida para cada**, todos mantendo a DE original.
+
+O conjurador pode **Antecipar apenas um turno da invocação** no total, escolhendo um token para agir, sozinho ou em ação conjunta para ajudar o próprio conjurador ou um aliado. Não conceder três turnos por dividir a ficha. **PENDENTE:** restos de divisão e recombinação de danos/recursos; não arredondar nem duplicar.
+
 ## Limites de fichas — decisão autoral posterior [DEFINIDO]
 
-**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Uma ficha Grande pode conter **três zumbis Médios reais na cena**, compartilhando **uma única Vida mecânica, uma economia de ações, XP contado uma vez e os dados da ficha Grande**. São vários corpos, mas não possuem fichas, turnos ou recursos independentes. Requer Domar Grande. A representação no terreno e as áreas de efeito estão PENDENTES.
+**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Uma ficha Grande pode conter **três zumbis Médios reais na cena**, compartilhando **uma única Vida mecânica, uma economia de ações, XP contado uma vez e os dados da ficha Grande**. São vários corpos, mas não possuem fichas, turnos ou recursos independentes. Requer Domar Grande. Dano de área segue normalmente; a divisão em tokens separados é permitida, conforme acima. Restos de XP/Vida e recombinação seguem PENDENTES.
 
 **Domar permite até duas fichas domesticadas sob controle direto por domador**, respeitando uma criatura por categoria; um vínculo extra não desaparece automaticamente, mas suas ações sob controle direto não são liberadas. A contagem de criaturas presentes por categoria no orçamento do conflito não equivale à quantidade de fichas controladas; o Narrador verifica o domador de cada ficha.
 
@@ -10,11 +18,11 @@
 
 A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e elemento habilitado; **Criar Item de Foco e Magia já habilita Psique**, sem Perícia própria adicional; outros elementos exigem Perícia específica; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
 
-**Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** (habilitação Combinar Magia Elemental ainda sem entrada própria no catálogo); Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
+**Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** e exige **Improviso Elemental + Maestria Elemental** já adquiridos; Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
 
 **Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** a invocação é a **projeção da mente do conjurador** e seu **corpo físico permanece parado** enquanto ela está ativa, inclusive em combinações Psique+Trevas ou Psique+Sagrado. As formas manifestadas incluem fantasmas imunes a neutro e sem dano neutro; Maestria pode habilitar assombrar/possuir com Desvantagem Absoluta. Ataques ao corpo e interrupção da projeção ainda são PENDENTES. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
 
-**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, identificar a habilitação Combinar Magia Elemental, definir manutenção/controle pormenorizado, resistência/DE de possessão, posição dos corpos narrativos e as regras de ações especiais de invocações no conflito. O limite simultâneo já é DEFINIDO: uma invocação e ficha por conjurador. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, aplicar os requisitos já definidos de Improviso + Maestria, definir manutenção/controle pormenorizado, resistência/DE de possessão, posição dos corpos narrativos e as regras de ações especiais de invocações no conflito. O limite simultâneo já é DEFINIDO: uma invocação e ficha por conjurador. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
 
 ## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
 
