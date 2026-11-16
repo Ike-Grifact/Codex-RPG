@@ -45,13 +45,13 @@ const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,in
 // Famílias visuais com identificadores estáveis para futuros ícones.
 // Afinidade temática não substitui os requisitos de skillReq().
 const GENE_CONSTELLATIONS=[
- {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","concentracao-refinada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
  {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},
  {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
  {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
- {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo"]},
+ {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","olhos-de-aguia"]},
  {id:"alquimia",label:"ALQUIMIA E TRANSFUSÃO",column:2,skills:["criar-veneno","criar-antidoto","transfusao"]},
  {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
  {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar"]}
@@ -107,7 +107,7 @@ function card(n,edit){
    '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
  const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
- const canDown=edit&&n.previewGrade>0;
+ const canDown=edit&&n.previewGrade>0&&n.canLower!==false;
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
  const makeButton=(delta,enabled,posX,text,aria)=>
   '<g role="button" tabindex="'+(enabled?'0':'-1')+'" class="fp-gene-grade-button'+(enabled?'':' is-disabled')+

@@ -1,26 +1,47 @@
-/* Codex RPG — sistema Foundry VTT v14, protótipo 0.2.0. */
-import {CodexCharacterData,CodexHumanoidData,CodexMonsterData,CodexEquipmentData} from "./data-model.mjs";
+/* Codex RPG — sistema Foundry VTT v14. */
+import {CodexCharacterData,CodexHumanoidData,CodexAnimalData,CodexMonsterData,CodexMonsterHumanoidData,CodexEquipmentData} from "./data-model.mjs";
+import {registerCombatAdjudication} from "./combat-adjudication.mjs";
+import {registerDefenseSettings} from "./roll-targets.mjs";
+import {registerRollQueries} from "./roll-workflow.mjs";
 import {CodexCharacterSheet} from "./sheet.mjs";
 import {CodexEquipmentSheet} from "./item-sheet.mjs";
-import {CodexPavorPanel,transferCombatPavor,NS} from "./pavor-panel.mjs";
+import {registerCodexCreation} from "./creation-ui.mjs";
+import {registerCodexDice} from "./dice-so-nice.mjs";
+import {openPublicPavor,registerPublicPavor,transferCombatPavor} from "./pavor-panel.mjs";
+Hooks.once("diceSoNiceReady",registerCodexDice);
+registerCodexCreation();
+registerCombatAdjudication();
 Hooks.once("init",()=>{
  CONFIG.Actor.dataModels.character=CodexCharacterData;
  CONFIG.Actor.dataModels.humanoid=CodexHumanoidData;
  CONFIG.Actor.dataModels.creature=CodexMonsterData;
+ CONFIG.Actor.dataModels.animal=CodexAnimalData;
+ CONFIG.Actor.dataModels.monsterHumanoid=CodexMonsterHumanoidData;
  CONFIG.Item.dataModels.equipment=CodexEquipmentData;
  const sheet=foundry.applications.apps.DocumentSheetConfig;
  sheet.registerSheet(foundry.documents.Actor,game.system.id,CodexCharacterSheet,{
-  types:["character","humanoid","creature"],makeDefault:true,label:"Codex RPG — Ficha do Actor"
+  types:["character","humanoid","animal","creature","monsterHumanoid"],makeDefault:true,label:"Codex RPG — Ficha do Actor"
  });
  sheet.registerSheet(foundry.documents.Item,game.system.id,CodexEquipmentSheet,{
   types:["equipment"],makeDefault:true,label:"Codex RPG — Item e equipamento"
  });
- game.settings.register(NS,"publicPavor",{name:"Pavor público do Narrador",hint:"Saldo, com teto dinâmico de 2 + jogadores.",
-  scope:"world",config:false,type:Number,default:2});
- console.info("Codex RPG | Foundry 0.2.0: Personagem, Humanoide, Criatura.");
+ registerPublicPavor();
+ registerRollQueries();
+ registerDefenseSettings();
 });
 Hooks.once("ready",()=>{
- game.codex={openPavorPanel:()=>new CodexPavorPanel().render({force:true})};
+ game.codex={openPavorPanel:openPublicPavor};
  if(game.user.isGM)game.codex.openPavorPanel();
 });
 Hooks.on("createChatMessage",(message)=>{transferCombatPavor(message).catch(e=>console.error("Codex RPG: Pavor",e));});
+
+Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
+ if(game.users.get(userId)?.isGM)return;
+ const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
+ const protectedPath=/^(system\.(xp|attributes|knowledges|practices|skills)|flags\.codex-rpg-foundry\.(xpHistory|creationPending|pendingRoll))(\.|$)/;
+ if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
+   (options.recursive===false&&("system" in changes||"flags" in changes))){
+  ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");
+  return false;
+ }
+});

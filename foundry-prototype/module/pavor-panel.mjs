@@ -1,55 +1,234 @@
-/* Painel manual do Narrador: Pavor público limitado a 2 + jogadores. */
-import {narratorCap} from "./rules.mjs";
-export const NS="codex-rpg-foundry";
-export const playerCount=()=>game.users.filter(u=>!u.isGM).length;
-export class CodexPavorPanel extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
- static DEFAULT_OPTIONS={
-  id:"codex-pavor-panel",classes:["codex-rpg","codex-pavor-panel"],position:{width:430,height:305},
-  window:{title:"Codex RPG · Pavor público",resizable:false},
-  actions:{adjust:CodexPavorPanel.adjust}
- };
- static PARTS={body:{template:"systems/codex-rpg-foundry/templates/pavor-panel.hbs"}};
- async _prepareContext(){
-  const cap=narratorCap(playerCount()),value=game.settings.get(NS,"publicPavor");
-  return {value,cap,room:cap-value,players:playerCount(),isGM:game.user.isGM};
- }
- static async adjust(event,target){
-  if(!game.user.isGM)return;
-  const val=Number(target.dataset.delta),cap=narratorCap(playerCount());
-  if(!Number.isInteger(val)||Math.abs(val)>6)return;
-  const cur=game.settings.get(NS,"publicPavor");
-  await game.settings.set(NS,"publicPavor",Math.max(0,Math.min(cap,cur+val)));
-  this.render();
- }
+import {openJointPlan} from "./joint-attack.mjs";
+import {narratorCap,monsterCap} from "./rules.mjs";
+
+export const NS = "codex-rpg-foundry";
+export const publicPavorDefault = 2;
+const automaticPlayers = -1;
+let pendingWrite = Promise.resolve();
+let hud;
+
+export function publicPavorState(players, value) {
+  const cap = narratorCap(players);
+  const balance = Math.max(0, Math.min(cap, Math.trunc(Number(value)) || 0));
+  return {players, cap, value: balance, room: cap - balance};
 }
+
+function readReserve() {
+  const configured = game.settings.get(NS, "publicPavorPlayers");
+  const automatic = configured === automaticPlayers;
+  const players = automatic ? game.users.filter(user => !user.isGM).length : configured;
+  return {
+    ...publicPavorState(players, game.settings.get(NS, "publicPavor")),
+    automatic,
+  };
+}
+
+function queueWrite(update) {
+  const job = pendingWrite.then(update);
+  pendingWrite = job.catch(() => {});
+  return job;
+}
+
+async function changeReserve(delta) {
+  const {value, players} = readReserve();
+  const next = publicPavorState(players, value + delta);
+  if (next.value === value) return;
+
+  const combat = game.combat;
+  const round = combat?.started ? combat.round : null;
+  await game.settings.set(NS, "publicPavor", next.value);
+  if (round && next.value > value) {
+    const credits = combat.getFlag(NS, "publicPavorCredits") ?? {};
+    await combat.setFlag(NS, "publicPavorCredits", {
+      ...credits, [round]: (credits[round] ?? 0) + next.value - value,
+    });
+  }
+}
+
+async function setPlayers(players) {
+  const current = readReserve();
+  const count = players === automaticPlayers ? game.users.filter(user => !user.isGM).length : players;
+  const next = publicPavorState(count, current.value);
+  const stored = game.settings.get(NS, "publicPavor");
+  if (stored !== next.value) await game.settings.set(NS, "publicPavor", next.value);
+  await game.settings.set(NS, "publicPavorPlayers", players);
+  const discarded = Math.max(0, current.value - next.value);
+  if (discarded) ui.notifications.info(`Teto ajustado para ${next.cap}P. Excedente removido: ${discarded}P.`);
+}
+
+export function refreshPublicPavor() {
+  if (hud?.rendered) return hud.render();
+}
+
+export function openPublicPavor() {
+  if (!game.user.isGM) return;
+  hud ??= new CodexPavorHUD();
+  return hud.render({force: true});
+}
+
+export function registerPublicPavor() {
+  game.settings.register(NS, "publicPavor", {
+    name: "Saldo do Pavor público",
+    scope: "world", config: false, type: Number, default: publicPavorDefault,
+    onChange: refreshPublicPavor,
+  });
+  game.settings.register(NS, "publicPavorPlayers", {
+    name: "Jogadores para o teto de Pavor público",
+    scope: "world", config: false, type: Number, default: automaticPlayers,
+    onChange: refreshPublicPavor,
+  });
+
+  function syncPlayerCount() {
+    refreshPublicPavor();
+    if (!game.user.isActiveGM) return;
+    return queueWrite(async () => {
+      const reserve = readReserve();
+      if (game.settings.get(NS, "publicPavor") !== reserve.value) {
+        await game.settings.set(NS, "publicPavor", reserve.value);
+      }
+    }).catch(error => console.error("Codex RPG: limite de Pavor", error));
+  }
+
+  for (const hook of ["ready", "createUser", "updateUser", "deleteUser"]) {
+    Hooks.on(hook, syncPlayerCount);
+  }
+  for (const hook of ["createCombat", "updateCombat", "deleteCombat", "renderCombatTracker", "canvasReady"]) {
+    Hooks.on(hook, refreshPublicPavor);
+  }
+}
+
+/* Preparação da reserva local no COMEÇO do confronto.
+ * Não repõe Pavor por rodada; reexecutar no mesmo Combat é vedado por flag.
+ * Operação manual da mesa antes de fazer as primeiras ações. */
+export async function prepareCombatPavor(combat=globalThis.game?.combat){
+ if(!game.user?.isActiveGM)throw Error("Somente o Narrador ativo prepara a reserva local.");
+ if(!combat?.started||Number(combat.round||0)>1)throw Error("Prepare apenas no começo do conflito.");
+ if(combat.getFlag(NS,"localPavorPrepared"))return {prepared:0,alreadyPrepared:true};
+ const actors=new Map();
+ for(const entry of combat.combatants??[]){
+  const actor=entry.actor;
+  if(!actor||!["humanoid","creature","animal","monsterHumanoid"].includes(actor.type))continue;
+  actors.set(actor.uuid||entry.id,actor);
+ }
+ if(!actors.size)return {prepared:0,alreadyPrepared:false};
+ for(const actor of actors.values()){
+  await actor.update({"system.pavorLocal":monsterCap(actor.system.threatGrade)});
+ }
+ await combat.setFlag(NS,"localPavorPrepared",{at:Date.now(),count:actors.size});
+ refreshPublicPavor();
+ return {prepared:actors.size,alreadyPrepared:false};
+}
+
+export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+  static DEFAULT_OPTIONS = {
+    id: "codex-pavor-hud",
+    window: {frame: false, positioned: false},
+    actions: {
+      adjust: CodexPavorHUD.adjust,
+      adjustPlayers: CodexPavorHUD.adjustPlayers,
+      planJoint: CodexPavorHUD.planJoint,
+      useRegisteredPlayers: CodexPavorHUD.useRegisteredPlayers,
+      prepareLocal: CodexPavorHUD.prepareLocal,
+    },
+  };
+
+  static PARTS = {body: {template: "systems/codex-rpg-foundry/templates/pavor-panel.hbs"}};
+
+  async _insertElement(element, options) {
+    const top = element.ownerDocument.getElementById("ui-top");
+    if (top) top.append(element);
+    else await super._insertElement(element, options);
+  }
+
+  async _prepareContext() {
+    const reserve = readReserve();
+    const combat = game.combat;
+    const round = combat?.started ? combat.round : null;
+    const roundPavor = round ? combat.getFlag(NS, "publicPavorCredits")?.[round] ?? 0 : 0;
+    return {
+      ...reserve,
+      slots: Array.from({length: Math.min(12, reserve.cap)}, (_, index) => ({filled: index < reserve.value})),
+      overflow: Math.max(0, reserve.cap - 12),
+      round,
+      roundPavor,
+      canRemoveOne: reserve.value > 0,
+      canAddOne: reserve.room > 0,
+      canRemovePlayer: reserve.players > 0,
+      canAddPlayer: reserve.players < Number.MAX_SAFE_INTEGER - 2,
+      canPrepareLocal: !!(combat?.started&&Number(combat.round||0)<=1&&!combat.getFlag(NS,"localPavorPrepared")),
+      localPrepared:!!combat?.getFlag(NS,"localPavorPrepared"),
+    };
+  }
+
+  static async adjust(_event, target) {
+    if (!game.user.isGM) return;
+    const delta = Number(target.dataset.delta);
+    if (delta !== -1 && delta !== 1) return;
+    await queueWrite(() => changeReserve(delta));
+  }
+
+  static async adjustPlayers(_event, target) {
+    if (!game.user.isGM) return;
+    const delta = Number(target.dataset.delta);
+    if (delta !== -1 && delta !== 1) return;
+    await queueWrite(() => {
+      const players = readReserve().players + delta;
+      if (players >= 0 && players <= Number.MAX_SAFE_INTEGER - 2) return setPlayers(players);
+    });
+  }
+
+  static async useRegisteredPlayers() {
+    if (!game.user.isGM) return;
+    await queueWrite(() => setPlayers(automaticPlayers));
+  }
+
+  static async planJoint(){
+    try {
+      await openJointPlan(game.combat, () => readReserve().value);
+    } catch (error) {
+      ui.notifications.error(error.message);
+    }
+  }
+
+  static async prepareLocal(){
+    if(!game.user.isActiveGM||!game.combat?.started)return;
+    if(!confirm("Preencher uma única vez as reservas locais das ameaças deste combate? Use somente antes da primeira ação; não se repete por rodada."))return;
+    try{
+      const result=await queueWrite(()=>prepareCombatPavor());
+      if(result.alreadyPrepared)ui.notifications.info("Reservas deste combate já preparadas.");
+      else if(!result.prepared)ui.notifications.warn("Não há ameaças no combate para preparar.");
+      else ui.notifications.info(result.prepared+" ameaça(s) com reserva local inicial completa.");
+    }catch(e){ui.notifications.error("Codex: "+e.message);}
+  }
+}
+
 export async function transferCombatPavor(message){
- if(!game.user.isGM||!game.combat?.started)return;
+ if(!game.user.isActiveGM||!game.combat?.started)return;
  const obj=message.getFlag(NS,"transfer");
  if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
  const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
  if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
  if(obj.targetUuid){
   const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","creature"].includes(target.type)){
+  if(target&&["character","humanoid","animal","creature","monsterHumanoid"].includes(target.type)){
    const add=Math.max(0,obj.p);
    if(obj.targetType==="character")
     await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
    else {
-    const cap=Math.max(1,Math.min(6,Number(target.system.threatGrade||1)));
+    const cap=monsterCap(target.system.threatGrade);
     await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
     // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
    }
   }
  }
- if(obj.monsterCriticalPavor&&["creature","humanoid"].includes(owner.type)){
-  const cap=Math.max(1,Math.min(6,Number(owner.system.threatGrade||1)));
+ if(obj.monsterCriticalPavor&&["creature","humanoid","monsterHumanoid"].includes(owner.type)){
+  const cap=monsterCap(owner.system.threatGrade);
   const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
   const saved=Math.min(available,obj.monsterCriticalPavor);
   if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});
   const overflow=obj.monsterCriticalPavor-saved;
   if(overflow){
-   const publicCap=narratorCap(playerCount()),cur=game.settings.get(NS,"publicPavor");
-   await game.settings.set(NS,"publicPavor",Math.min(publicCap,cur+overflow));
+   await queueWrite(() => changeReserve(overflow));
   }
  }
 }

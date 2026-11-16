@@ -1,0 +1,94 @@
+.codex-dna-root [hidden]{display:none!important}
+.codex-dna-header,.codex-dna-stages,.codex-dna-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.codex-dna-header{justify-content:space-between;margin-bottom:10px}
+.codex-dna-header strong{color:var(--cx-gold)}
+.codex-dna-root button[aria-pressed="true"]{border-color:var(--cx-gold);background:var(--cx-panel2)}
+.codex-dna-panel,.codex-dna-workspace{margin-top:12px}
+.codex-dna-panel{display:grid;gap:10px;max-width:600px}
+.codex-dna-panel p,.codex-dna-detail p{margin:5px 0}
+.codex-dna-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,250px);gap:12px;align-items:start}
+.codex-dna-map,.codex-dna-detail{border:1px solid var(--cx-line);border-radius:10px;background:var(--cx-panel)}
+.codex-dna-map{height:510px;position:relative;overflow:hidden;touch-action:none;user-select:none;cursor:grab}
+.codex-dna-map.is-dragging{cursor:grabbing}
+.codex-dna-map svg{display:block;width:100%;height:100%;color:var(--cx-gold)}
+.codex-dna-map text{fill:var(--cx-text);font-family:Inter,system-ui,sans-serif}
+.codex-dna-map .fp-gene-column-title{fill:var(--cx-gold);font-size:24px;font-weight:750}
+.codex-dna-map .fp-gene-card-title,.codex-dna-map .fp-gene-node-label{font-size:17px;font-weight:650}
+.codex-dna-map .fp-gene-card-grade,.codex-dna-map .fp-gene-die-name{font-size:13px}
+.codex-dna-map .fp-gene-node{cursor:pointer}
+.codex-dna-map .fp-gene-card-fill{fill:var(--cx-panel2);stroke:var(--cx-line);stroke-width:2px}
+.codex-dna-map .fp-gene-dot{fill:#514a56;stroke:var(--cx-muted);stroke-width:2px}
+.codex-dna-map .is-available .fp-gene-dot{fill:#267a45}
+.codex-dna-map .is-owned .fp-gene-dot{fill:var(--cx-gold)}
+.codex-dna-map .is-selected :is(.fp-gene-card-fill,.fp-gene-dot),
+.codex-dna-map .fp-gene-node:focus-visible :is(.fp-gene-card-fill,.fp-gene-dot){stroke:var(--cx-gold);stroke-width:4px}
+.codex-dna-map :is(.fp-gene-card-separator,.fp-gene-branch-rule,.fp-gene-dna-rung){stroke:var(--cx-line);stroke-width:2px}
+.codex-dna-map .fp-gene-dna-strand,.codex-dna-map .fp-gene-relation{fill:none;stroke:var(--cx-gold);stroke-width:3px;opacity:.45}
+.codex-dna-map .fp-gene-relation.is-related{opacity:1}
+.codex-dna-map .fp-gene-die-poly{fill:none;stroke:currentColor;stroke-width:2px}
+.codex-dna-map .fp-gene-die-inline text{fill:currentColor}
+.codex-dna-map .is-d4{color:var(--codex-d4)}
+.codex-dna-map .is-d6{color:var(--codex-d6)}
+.codex-dna-map .is-d10{color:var(--codex-d10)}
+.codex-dna-map .is-d12{color:var(--codex-d12)}
+.codex-dna-map .is-d20{color:var(--codex-d20)}
+.codex-dna-map .codex-dna-requirement{stroke:#78aef1;stroke-width:4px;stroke-dasharray:10 8}
+.codex-dna-map .codex-dna-requirement.unmet{stroke:#dc948d}
+.codex-dna-map .fp-gene-gesture-hint,.codex-dna-map .fp-gene-nav-float{position:absolute;bottom:8px;padding:4px 7px;border-radius:6px;background:var(--cx-bg);font-size:11px}
+.codex-dna-map .fp-gene-gesture-hint{left:8px;max-width:48%}
+.codex-dna-map .fp-gene-nav-float{right:8px;display:flex;gap:4px;align-items:center}
+.codex-dna-map .fp-gene-nav-float button{min-width:34px;min-height:34px}
+.codex-dna-detail{padding:12px;max-height:510px;overflow:auto}
+.codex-dna-detail ul{padding-left:18px}
+.codex-dna-detail .met{color:#7cc896}
+.codex-dna-footer{margin-top:12px}
+.codex-dna-footer span{flex:1 1 160px;color:var(--cx-muted)}
+@container (max-width:620px){
+ .codex-dna-workspace{grid-template-columns:1fr}
+ .codex-dna-map{height:360px}
+ .codex-dna-detail{max-height:none}
+}
+
+.codex-dna-map .fp-gene-constellation {pointer-events:none}
+.codex-dna-map .fp-gene-constellation-border {fill:var(--cx-panel2);fill-opacity:.8;stroke:var(--cx-line);stroke-width:2;stroke-dasharray:6 7}
+.codex-dna-map .fp-gene-constellation-cap {stroke:var(--cx-gold);stroke-width:3}
+.codex-dna-map .fp-gene-constellation-title {fill:var(--cx-gold);font-size:17px;font-weight:800;letter-spacing:.05em}
+.codex-dna-map [data-gene-family="elementos"] .fp-gene-constellation-border,
+.codex-dna-map [data-gene-family="natureza"] .fp-gene-constellation-border {stroke:var(--cx-gold);stroke-opacity:.6}
+.codex-dna-map .fp-gene-skill-link {fill:none;stroke:var(--cx-gold);stroke-opacity:.35;stroke-width:2;pointer-events:none}
+.codex-dna-map .fp-gene-skill-link.is-related {stroke-opacity:.86;stroke-width:3}
+.codex-dna-map .is-potential .fp-gene-dot {fill:#542176;stroke:#a779d9}
+.codex-dna-map .is-locked .fp-gene-dot {fill:var(--cx-panel);stroke:var(--cx-muted)}
+.codex-dna-map .is-locked .fp-gene-node-label {fill:var(--cx-muted)}
+.codex-dna-map .codex-dna-requirement {pointer-events:none}
+
+.codex-summon-plan {display:grid;gap:5px;margin-top:12px;padding-top:8px;border-top:1px solid var(--cx-line)}
+.codex-summon-plan h4 {margin:0 0 5px;color:var(--cx-gold)}
+.codex-summon-plan label {display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px}
+.codex-summon-plan :is(select,input) {flex:0 1 100%;min-width:0;max-width:100%}
+.codex-summon-plan [data-summon-split] {display:grid;gap:5px}
+
+.codex-dna-budget {display:flex;flex-wrap:wrap;gap:5px 15px;margin:0}
+.codex-dna-budget dt {color:var(--cx-muted);font-size:.78rem}
+.codex-dna-budget dd {margin:0;color:var(--cx-gold);font-weight:700;font-variant-numeric:tabular-nums}
+.codex-dna-xp-management {margin-bottom:9px;padding:7px 10px;border:1px solid var(--cx-line);border-radius:8px}
+.codex-dna-xp-management summary {cursor:pointer}
+.codex-dna-xp-management details {margin-top:8px}
+.codex-dna-xp-management ul {margin-bottom:4px;max-height:145px;overflow:auto}
+.codex-dna-xp-actions {display:flex;flex-wrap:wrap;gap:6px;align-items:end;margin-top:8px}
+.codex-dna-xp-actions input {width:9rem}
+.codex-dna-grade {display:grid;grid-template-columns:auto minmax(4.4em,1fr) auto;gap:6px;align-items:center;text-align:center;margin:8px 0}
+.codex-dna-grade button {min-width:36px;min-height:36px}
+.codex-dna-note {color:var(--cx-muted);font-size:.84rem}
+.codex-dna-map {container-type:inline-size}
+.codex-dna-map .fp-gene-grade-button {cursor:pointer}
+.codex-dna-map .fp-gene-grade-button rect {fill:var(--cx-bg);stroke:var(--cx-gold);stroke-width:2px}
+.codex-dna-map .fp-gene-grade-button text {fill:var(--cx-gold);font-size:23px;font-weight:750}
+.codex-dna-map .fp-gene-grade-button:is(:hover,:focus-visible) rect {stroke-width:4px}
+.codex-dna-map .fp-gene-grade-button.is-disabled {opacity:.35;cursor:default}
+@container (max-width:619px){
+ .codex-dna-map .fp-gene-grade-button {display:none}
+}
+@media (hover:none){
+ .codex-dna-map .fp-gene-grade-button {display:none}
+}

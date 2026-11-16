@@ -1,7 +1,11 @@
 {
   "TYPES": {
     "Actor": {
-      "character": "Personagem"
+      "character": "Aprendiz / personagem",
+      "humanoid": "Humanoide / NPC",
+      "animal": "Criatura comum / animal",
+      "creature": "Criatura / Monstro",
+      "monsterHumanoid": "Humanoide Monstro"
     },
     "Item": {
       "equipment": "Equipamento"

@@ -1,14 +1,20 @@
+import {showSkill} from "./skill-catalog.mjs";
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxPP,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
-import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
+ sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,healthByLife,balance,maxPP,
+ loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
+import {requestRoll} from "./roll-workflow.mjs";
+import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
+import {dieSvg,faceIcons} from "./dice-icons.mjs";
+import {equippedDie,defenseDisplay,effectiveWeaponRange} from "./equipment-logic.mjs";
+import {actorKinds} from "./creation.mjs";
+import {createCodexItem} from "./creation-ui.mjs";
+import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
-import {CodexPavorPanel} from "./pavor-panel.mjs";
+import {skillDetails} from "./advancement.mjs";
 const NS="codex-rpg-foundry";
-const draft=()=>({base:null,attribute:null,complement:null});
-const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
+const draft=()=>({base:null,second:null,complement:null});
+const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
@@ -16,181 +22,316 @@ function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
  grade:Number(s[{attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group]]?.[key]||0),
  dice:sourceDice(group,key,s).map(sides=>({sides,icon:dieSvg(sides)})),
- isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key})}));
+ isSelected:[d.base,d.second,d.complement].some(source=>eq(source,{group,key})),
+ isBase:eq(d.base,{group,key}),isSecond:eq(d.second,{group,key}),isComplement:eq(d.complement,{group,key})&&!isRepeat(d)}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
-const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(x=>x[2]>0)
- .map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
-const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
-const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
-const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
+const markerHTML = faceIcons;
+const symbolsFor = die => die.symbols ?? faceSymbols(die.sides,die.face);
+const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
+ .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
+const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
+ .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
-function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
+const hasDiscipline=d=>[d.base,d.second,d.complement].some(isDiscipline);
+const isRepeat=d=>isDiscipline(d.complement)&&[d.base,d.second].some(isDiscipline);
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
- chooseSource:CodexCharacterSheet.chooseSource,adjustGrade:CodexCharacterSheet.adjustGrade,
+ openDNA:CodexCharacterSheet.openDNA,chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
- toggleKept:CodexCharacterSheet.toggleKept,finalizeRoll:CodexCharacterSheet.finalizeRoll,
+ toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
+ purchaseStarter:CodexCharacterSheet.purchaseStarter,finalizeRoll:CodexCharacterSheet.finalizeRoll,
  addEquipment:CodexCharacterSheet.addEquipment,openEquipment:CodexCharacterSheet.openEquipment,
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
- openPavorPanel:CodexCharacterSheet.openPavorPanel,adjustPavor:CodexCharacterSheet.adjustPavor
+ editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
  }};
- static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs"}};
- constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;}
+ static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs",scrollable:[""]}};
+ constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;}
  async _prepareContext(options){
-  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=actor.type==="creature",ledger=xpLedger(s);
+  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal,ledger=xpLedger(s),
+   used=carriedItems(actor),carryMax=loadCapacity(s),
+   hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
+   hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=actor.getFlag(NS,"pendingRoll")||null;
-  const health=healthByLife(s,Math.max(0,Math.min(lifeMax(s),Number(s.life.value)||0)));
-  const healthLabels={saudavel:"Saudável",ferido:"Ferido",incapacitado:"Incapacitado",inconsciente:"Inconsciente",morto:"Morto"};
-  const healthEffect=health.id==="ferido"?"−1A":health.id==="incapacitado"?"−1E +1P":health.id==="inconsciente"?"−2E +2P":health.id==="morto"?"Não pode agir":"Sem penalidade";
-  const healthCost=actor.type==="character"&&health.coragem?health.coragem:0;
+  if(this._pending)this._editing=false;
+  const defense=defenseDisplay(actor);
+  const wornArmor=actor.items.find(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+  const armorSys=wornArmor?.system,armorMax=Math.max(0,Number(armorSys?.integrity?.max)||0);
+  const armorCurrent=Math.min(armorMax,Math.max(0,Number(armorSys?.integrity?.value)||0));
+  const armorCard=wornArmor?{
+   id:wornArmor.id,name:wornArmor.name,integrity:armorCurrent,maximum:armorMax,
+   noIntegrity:armorSys.category==="muito-leve",hasMaximum:armorMax>0,
+   percent:armorMax?Math.round(100*armorCurrent/armorMax):0
+  }:null;
   ctx.codex={
-   actorName:actor.name,portrait:actor.img,logo:"systems/codex-rpg-foundry/assets/codex-logo.svg",
+   actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
+   canOpenDNA:actor.isOwner&&!attributesOnly&&!this._pending,
+   identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
+   progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
+   actorTypeLabel:actorKinds[actor.type],
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
+   notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
-   healthLabel:healthLabels[health.id],healthEffect:healthEffect+(actor.type==="character"&&healthCost?" · "+healthCost+" Coragem/ação":""),
-   lifeBandsText:healthBands(s).join(" / "),
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
-   balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
-   isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
+   health:healthByLife(s,s.life.value),healthApplied:actor.type==="character",
+   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
+   balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
+    carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
+    xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
+    starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
+    starterTraining:[
+     ...KNOWLEDGES.map(([id,name])=>({value:"knowledge:"+id,name:"Conhecimento · "+name})),
+     ...PRACTICES.map(([id,name])=>({value:"practice:"+id,name:"Prática · "+name}))
+    ],
+   isMonster:monster,isAnimal:animal,attributesOnly,isHumanoid:["humanoid","monsterHumanoid"].includes(actor.type),
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
    attributes:cards(ATTRIBUTES,"attribute",s,d),
-   knowledges:monster?[]:cards(KNOWLEDGES,"knowledge",s,d),
-   practices:monster?[]:cards(PRACTICES,"practice",s,d),
-   skills:monster?[]:SKILLS.map(k=>({...k,detail:k.detail.slice(0,190),owned:s.skills.includes(k.id)})),
+   knowledges:attributesOnly?[]:cards(KNOWLEDGES,"knowledge",s,d),
+   practices:attributesOnly?[]:cards(PRACTICES,"practice",s,d),
+   skills:attributesOnly?[]:SKILLS.filter(row=>showSkill(row,s)).map(k=>skillDetails(s,k.id)),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
-    quantity:i.system.quantity,equipped:i.system.equipped,
-    integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,priceVT:i.system.priceVT
+    quantity:i.system.quantity,equipped:i.system.equipped,range:effectiveWeaponRange(s,i.system),
+    integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,dieIcon:dieSvg(i.system.die),priceVT:i.system.priceVT
    })),
    selectedBase:d.base?sourceLabel(d.base.group,d.base.key,s):"",
-   selectedAttribute:d.attribute?sourceLabel(d.attribute.group,d.attribute.key,s):"",
+   selectedSecond:d.second?sourceLabel(d.second.group,d.second.key,s):"",
    selectedComplement:d.complement?sourceLabel(d.complement.group,d.complement.key,s):"",
-   selecting:!!d.base&&!d.attribute,preparing:!!d.base&&!!d.attribute&&!this._pending,
+   selecting:!!d.base&&!d.second,preparing:!!d.base&&!!d.second&&!this._editing&&!this._pending,
    hasPending:!!this._pending,isOwner:actor.isOwner,canKeep:!this._busy
   };
   if(ctx.codex.preparing){
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
-   const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
-   if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   if(actor.type==="character"&&(health.id==="morto"||s.courage<healthCost+Number(this._opts.extraKeep)+Number(this._opts.step))){
-    plan.errors.push(health.id==="morto"?"Vida zero: não pode agir.":"Coragem insuficiente para atuar em "+healthLabels[health.id]+".");plan.ok=false;
+   const rawPlan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,equipmentDie:die});
+    const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,
+     step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
+   if(actor.type==="character"&&(ctx.codex.health.id==="morto"||s.courage<ctx.codex.health.coragem+Number(this._opts.step))){
+    plan.errors.push(ctx.codex.health.id==="morto"?"Vida zero: o personagem não pode agir.":"Coragem insuficiente para agir neste estado de Saúde.");plan.ok=false;
    }
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
+      const isShared=hasDiscipline(d),targets=[...game.user.targets];
+   let target=null,targetError="";
+   if(targets.length===1){
+    this._lastTargetId=targets[0].document?.uuid;
+    try{
+     target=await requestRoll(actor,{action:"target",sceneId:canvas.scene?.id,targetIds:targets.map(token=>token.id),dodges:this._opts.targetDodges});
+    }catch(error){targetError=error.message;}
+   }else if(targets.length>1)targetError="Selecione apenas um alvo para esta ação.";
+   else if(this._targetLost)targetError="O alvo saiu do mapa. Selecione outro Token.";
+   if(targetError)plan.errors.push(targetError);
    ctx.codex.prepare={
-    isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
-    contextApproved:this._opts.contextApproved,de:this._opts.de,
+    isShared,repeatedDiscipline:isRepeat(d),canRepeatDisc:canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
+    contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,
+    localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
     attackWeightLeve:this._opts.attackWeight==="leve",attackWeightMedio:this._opts.attackWeight==="medio",attackWeightPesado:this._opts.attackWeight==="pesado",
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
     step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+     stepOptions:rawPlan.pool.filter(x=>[4,6,10].includes(x.sides))
+      .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+(x.id.endsWith(".1")&&x.id.split(".").length===4?" (2ª)":"")+" · dado "+(Number(x.id.split(".")[2]??0)+1)+" · d"+x.sides,
+       selected:x.id===this._opts.stepDieId})),
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
-    targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
-    canExecute:plan.ok&&actor.isOwner,errors:plan.errors,
+    targetName:target?.name??"",targetDE:target?.de??"Reservada",hasTarget:Boolean(target),inCombat:!!game.combat?.started,
+    canExecute:plan.ok&&!targetError&&actor.isOwner&&!actor.getFlag(NS,"creationPending"),errors:plan.errors,
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
-    poolCount:plan.pool.length,keepNatural:keepLimit(monster?s.threatGrade:s.level,false,monster),
-    keepWithCourage:keepLimit(monster?s.threatGrade:s.level,true,monster)
+    effectiveRange:die&&this._opts.mode==="armas"?effectiveWeaponRange(s,item.system):0,
+    poolCount:plan.pool.length,keepNatural:keepForActor(actor,0)
    };
   }
   if(this._pending){
    const p=this._pending,item=selectedItem(actor,p.options);
-   let summary=null;
-   if(p.selected.length)try{
-    summary=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster,
-     threatGrade:s.threatGrade,weight:situate(p.options),
-     bonusP:bonusP(p.dice,p.selected,p.options)+Number(p.options.health?.p||0),
-     bonusA:Number(p.options.bonusA||0)+Number(p.options.health?.a||0),
-     skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
-     hostile:actor.type==="humanoid"});
+   let summary=null,comparisons=[];
+   if(!p.publication)try{
+    if(p.options.privateDefense){
+     const preview=await requestRoll(actor,{action:"preview",id:p.id});
+     summary=preview?.summary;
+     comparisons=preview?.comparisons??[];
+    }else{
+     if(p.selected.length)summary=rollResult(actor,p);
+     comparisons=alternativesFor(actor,p);
+    }
    }catch(e){summary={ok:false,errors:[e.message]};}
+   this._comparisonIds=comparisons.map(option=>option.ids);
+   ctx.codex.comparisons=comparisons
+     .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
+      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(symbolsFor(d)),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
-      selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
-    selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
-    de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
+      selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(symbolsFor(x))})),
+    selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
+    publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
+    de:p.options.privateDefense?"Reservada":p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetName,
     critical:summary?.critical||0,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
     hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
-    limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
+    limit:keepForActor(actor,p.options.extraKeep),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
-    cost:Number(p.options.extraKeep)+Number(p.options.step)+(monster&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0)
+    localCost:(p.options.activationCost??0)+(usesLocal(actor)?Math.max(0,p.selected.length-keepForActor(actor,0)):0),
+    courageCost:(p.options.health?.coragem??0)+Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
    };
   }
   return ctx;
  }
- async _onRender(ctx,options){await super._onRender(ctx,options);this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",e=>this._change(e));}
+ _preSyncPartState(partId,newElement,priorElement,state){
+  super._preSyncPartState(partId,newElement,priorElement,state);
+  state.contentScroll=priorElement.closest(".window-content")?.scrollTop;
+ }
+ _syncPartState(partId,newElement,priorElement,state){
+  super._syncPartState(partId,newElement,priorElement,state);
+  const content=newElement.closest(".window-content");
+  if(content&&state.contentScroll!=null)content.scrollTop=state.contentScroll;
+ }
+ async _onRender(ctx,options){
+  await super._onRender(ctx,options);
+  this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",event=>this._change(event));
+  this._targetHooks??=[
+   ["targetToken",Hooks.on("targetToken",(user,token,targeted)=>{
+    if(user.id!==game.user.id||this._pending)return;
+    if(targeted){this._targetLost=false;this._lastTargetId=token.document?.uuid;}
+    else if(token.document?.parent?.tokens.has(token.id)&&this._lastTargetId===token.document.uuid)this._lastTargetId=null;
+    if(this._draft.second)void this.render();
+   })],
+   ["deleteToken",Hooks.on("deleteToken",token=>{
+    if(this._pending||token.uuid!==this._lastTargetId)return;
+    this._targetLost=true;
+    if(this._draft.second)void this.render();
+   })],
+   ["canvasReady",Hooks.on("canvasReady",()=>{
+    this._lastTargetId=null;
+    this._targetLost=false;
+    if(this._draft.second&&!this._pending)void this.render();
+   })],
+  ];
+ }
  async _change(event){
   const el=event.target;
   if(el.dataset.field){
-   if(!this.actor.isOwner)return;
-   const fields=["name","system.concept","system.origin","system.virtue","system.personality","system.level","system.xp","system.threatGrade"];
+   if(!this.actor.isOwner||!this._editing)return;
+   const fields=["name","system.concept","system.origin","system.virtue","system.personality","system.notes","system.abilities","system.leader","system.level","system.xp","system.threatGrade"];
    if(!fields.includes(el.dataset.field))return;
-   let value=el.value;
+   let value=el.type==="checkbox"?el.checked:el.value;
    if(el.dataset.field==="system.level")value=Math.max(1,Math.min(20,Math.floor(Number(value)||1)));
-   if(el.dataset.field==="system.xp")value=Math.max(0,Math.floor(Number(value)||0));
-   if(el.dataset.field==="system.threatGrade")value=Math.max(1,Math.min(6,Math.floor(Number(value)||1)));
+   if(el.dataset.field==="system.xp"){
+    if(!game.user.isGM||this._pending)return;
+    const expectedXP=this.actor.system.xp,delta=el.value!==""?Number(el.value)-expectedXP:NaN;
+    if(delta===0)return;
+    return this._request({action:"adjustXP",delta,expectedXP});
+   }
+   if(el.dataset.field==="system.threatGrade"){
+    value=Math.max(1,Math.min(6,Math.floor(Number(value)||1)));
+    return this._request({action:"grade",value});
+   }
    await this.actor.update({[el.dataset.field]:value});return;
   }
   if(el.dataset.rollOption){
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
+   if(key==="mode"){if(this._opts.mode!=="armas"&&isRepeat(this._draft))this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.stepDieId="";}
+    if(key==="equipmentId"||(key==="step"&&!this._opts.step))this._opts.stepDieId="";
    this.render();return;
   }
   if(el.dataset.pendingOption&&this._pending){
    const key=el.dataset.pendingOption;
-   if(!["cancelP","convertPairs","characteristic","secondCharacteristic","activationPayment"].includes(key))return;
-   this._pending.options[key]=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
-   await this.actor.setFlag(NS,"pendingRoll",this._pending);this.render();
+   const value=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
+   await this._request({action:"option",key,value,id:this._pending.id});
   }
  }
- static async chooseSource(event,target){
-  if(this._busy||this._pending)return;
-  const group=target.dataset.group,key=target.dataset.key,valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key))return;
-  const s=this.actor.system,d=this._draft,candidate={group,key};
-  if(s.monsterRules){
-   if(group!=="attribute")return;
-   if(!d.base){this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();}
-   else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else if(!d.attribute)d.attribute=candidate;
-   else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
-   else {d.attribute=candidate;d.complement=null;}
-   this.render();return;
-  }
-  if(group==="attribute"){
-   if(!d.base){ui.notifications.info("Selecione a Prática ou Conhecimento de base.");return;}
-   d.attribute=eq(d.attribute,candidate)?null:candidate;
-   if(!d.attribute)d.complement=null;
-  }else if(!d.base||!d.attribute){
-   if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else {this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();this._opts.mode=modeFor(s,candidate);}
-  }else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-  else {
-   if(!mayComplement(s,d.base,this._opts.mode)){ui.notifications.warn("Terceira fonte exige habilitação pertinente.");return;}
-   d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;
-  }
-  this.render();
+ static async purchaseStarter(){
+  if(!this._editing||!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
+  const attr=this.element?.querySelector("[data-starter-attr]")?.value;
+  const picked=this.element?.querySelector("[data-starter-training]")?.value||"";
+  const [group,key]=picked.split(":");
+  const plan=starterPurchasePlan(this.actor.system,attr,group,key);
+  if(!plan.ok){ui.notifications.warn(plan.error);return;}
+  if(plan.complete){ui.notifications.info("Compras mínimas atendidas. XP restante livre.");return;}
+  const message="Comprar as capacidades iniciais em falta por "+plan.cost+" XP?\n"+
+   "Um Atributo G1 e um Conhecimento ou Prática G1.\n"+
+   "XP disponível: "+plan.available+" → "+plan.remaining+".";
+  if(!confirm(message))return;
+  await this._request({action:"advance",advance:{kind:"starter",attribute:attr,group,key}});
  }
- static async adjustGrade(event,target){
-  if(!this.actor.isOwner||this._pending)return;
-  const group=target.dataset.group,key=target.dataset.key,delta=Number(target.dataset.delta),valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key)||![-1,1].includes(delta))return;
-  const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group],current=Number(this.actor.system[field][key]||0),next=Math.min(6,Math.max(0,current+delta));
-  if(next>current){
-   const scale=group==="attribute"&&!this.actor.system.monsterRules?XP_ATTRIBUTE:XP_TRAINING;
-   if(!canSpendXP(this.actor.system,scale[next]-scale[current])){ui.notifications.warn("XP disponível insuficiente.");return;}
+ static async openDNA(){
+  if(!this.actor.isOwner)return;
+  const {openCodexDNA}=await import("./dna.mjs");
+  await openCodexDNA(this.actor,this.actor.getFlag(NS,"creationPending")?"development":"map");
+ }
+ static async toggleEditing(){
+  if(!this.actor.isOwner||this._busy||this._pending)return;
+  this._editing=!this._editing;
+  this._draft=draft();this._opts=defaults();
+  return this.render();
+ }
+ static showRoll(_event,target){
+  const section=target.dataset.section==="pending"?".codex-roll-results":".codex-roll-prep";
+  this.element?.querySelector(section)?.scrollIntoView({block:"start"});
+ }
+ static async chooseSource(_event,target){
+  if(this._busy||this._editing)return;
+  if(this._pending){ui.notifications.info("Finalize ou descarte a rolagem pendente antes de escolher novas fontes.");return;}
+  const {group,key}=target.dataset;
+  const list={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
+  if(!Object.hasOwn(list,group)||!list[group].some(([id])=>id===key))return;
+  const system=this.actor.system,d=this._draft,candidate={group,key};
+  const present=[d.base,d.second,d.complement].filter(Boolean);
+  const index=present.findIndex(source=>eq(source,candidate));
+  const previousDiscipline=hasDiscipline(d);
+  if(index>=0){
+   const rest=present.filter((source,i)=>i!==index&&(!isRepeat(d)||!isDiscipline(candidate)||i!==2));
+   const [base=null,second=null,complement=null]=rest;
+   d.base=base;
+   d.second=second&&!sourcePairError(system,base,second)?second:null;
+   d.complement=d.second?complement:null;
+  }else if(!d.base){
+   if(attributesOnly(system)&&group!=="attribute")return;
+   d.base=candidate;
+  }else if(!d.second){
+   const error=sourcePairError(system,d.base,candidate);
+   if(error){ui.notifications.info(error);return;}
+   d.second=candidate;
+  }else if(!d.complement&&mayComplement(system,d.base,d.second)){
+   if(disciplineNeedsAttribute([d.base,d.second,candidate])){
+    ui.notifications.info("Disciplina deve ser combinada com um Atributo.");
+    return;
+   }
+   d.complement=candidate;
+  }else{
+   ui.notifications.info(d.complement?"Retire uma fonte para escolher outra.":"As duas fontes desta ação estão selecionadas.");
+   return;
   }
-  await this.actor.update({["system."+field+"."+key]:next});
+  if(hasDiscipline(d)!==previousDiscipline){
+   this._opts.mode=hasDiscipline(d)?(system.skills?.includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";
+   this._opts.equipmentId="";
+  }
+  this._opts.contextApproved=false;
+  this._opts.stepDieId="";
+  return this.render();
+ }
+ static async repeatDiscipline(){
+  if(this._busy||this._pending||this._editing)return;
+  const d=this._draft;
+  if(!d.second||!canRepeatDiscipline(this.actor.system,d.base,d.second))return;
+  if(d.complement&&!isRepeat(d))return;
+  d.complement=isRepeat(d)?null:[d.base,d.second].find(isDiscipline);
+  if(d.complement&&this._opts.mode!=="armas"){
+   this._opts.mode="armas";
+   this._opts.equipmentId="";
+  }
+  this._opts.contextApproved=false;
+  this._opts.stepDieId="";
+  return this.render();
+ }
+ static adjustGrade(_event,target){
+  if(!this._editing||!this.actor.isOwner||this._pending)return;
+  const {group,key,delta,grade}=target.dataset;
+  return this._request({action:"advance",advance:{kind:"grade",group,key,delta:Number(delta),expectedGrade:Number(grade)}});
  }
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;
@@ -200,126 +341,79 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const current=field==="system.life.value"?s.life.value:field==="system.courage"?s.courage:s.pp;
   await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
  }
- static async toggleSkill(event,target){
-  if(!this.actor.isOwner||this._pending||this.actor.system.monsterRules)return;
-  const id=target.dataset.key,entry=SKILLS.find(x=>x.id===id);if(!entry)return;
-  const list=[...this.actor.system.skills],index=list.indexOf(id);
-  if(index>=0)list.splice(index,1);
-  else{
-   if(!skillPrerequisite(this.actor.system,id)){ui.notifications.warn("Pré-requisito da Perícia não atendido.");return;}
-   if(!canSpendXP(this.actor.system,entry.cost)){ui.notifications.warn("XP insuficiente.");return;}
-   list.push(id);
-  }
-  await this.actor.update({"system.skills":list});
+ static toggleSkill(_event,target){
+  if(!this._editing||!this.actor.isOwner||this._pending)return;
+  const key=target.dataset.key;
+  return this._request({action:"advance",advance:{kind:"skill",key,remove:skillDetails(this.actor.system,key).owned}});
  }
  static clearDraft(){if(this._pending)return;this._draft=draft();this._opts=defaults();this.render();}
- static async executeRoll(){
-  if(this._busy||this._pending||!this.actor.isOwner)return;
+ async _request(request){
+  if(this._busy||!this.actor.isOwner)return;
   this._busy=true;
   try{
-   const s=this.actor.system,opts={...this._opts},item=selectedItem(this.actor,opts),die=item?equippedDie(this.actor,item,opts.mode):0;
-   if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
-   opts.health=this.actor.type==="character"?healthByLife(s,Math.max(0,Math.min(lifeMax(s),Number(s.life.value)||0))):null;
-   if(opts.health?.id==="morto")throw Error("Vida zero: personagem não pode agir.");
-   const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(opts.health?.coragem||0);
-   if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
-   const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
-   if(game.combat?.started&&targets.length&&targets[0].actor){
-    const target=targets[0].actor;opts.targetActorUuid=target.uuid;opts.targetName=target.name;opts.targetType=target.type;
-    opts.de=defenseDE(target);
+   const response=await requestRoll(this.actor,request);
+   if(request.action==="start"&&response?.started){
+    this._draft=draft();
+    this._opts=defaults();
+    void showCodexDice(foundry.dice.Roll.fromData(response.roll));
    }
-   opts.noisy=!!item?.system.properties?.includes("Barulhenta");
-   const plan=buildPool(s,this._draft,{mode:opts.mode,contextApproved:opts.contextApproved,step:opts.step,equipmentDie:die});
-   if(!plan.ok)throw Error(plan.errors.join(" "));
-   const result=await rollPool(plan.pool),pending={version:2,id:crypto.randomUUID(),created:Date.now(),
-    base:this._draft.base,attribute:this._draft.attribute,complement:this._draft.complement,
-    formula:result.formula,dice:result.dice,selected:[],options:opts};
-   await this.actor.setFlag(NS,"pendingRoll",pending);
-   this._pending=pending;this._draft=draft();this._opts=defaults();this.render();
   }catch(e){ui.notifications.error("Codex: "+e.message);}
-  finally{this._busy=false;}
- }
- static async toggleKept(event,target){
-  if(!this.actor.isOwner||!this._pending||this._busy)return;
-  const id=target.dataset.id,p=this._pending,s=this.actor.system;
-  if(!p.dice.some(x=>x.id===id))return;
-  const chosen=new Set(p.selected);
-  if(chosen.has(id))chosen.delete(id);
-  else{
-   if(chosen.size>=keepLimit(s.monsterRules?s.threatGrade:s.level,p.options.extraKeep,s.monsterRules)){ui.notifications.warn("Limite de retenção.");return;}
-   chosen.add(id);
+  finally{
+   this._busy=false;
+   this.render();
   }
-  p.selected=[...chosen];p.options.cancelP=0;p.options.convertPairs=0;
-  await this.actor.setFlag(NS,"pendingRoll",p);this.render();
  }
- static async finalizeRoll(){
-  if(this._busy||!this._pending||!this.actor.isOwner)return;
-  this._busy=true;
-  try{
-   const p=this._pending,s=this.actor.system,item=selectedItem(this.actor,p.options);
-   const result=resolveRoll(p.dice,p.selected,{...p.options,courage:s.courage,monster:s.monsterRules,threatGrade:s.threatGrade,
-    weight:situate(p.options),
-    bonusP:bonusP(p.dice,p.selected,p.options)+Number(p.options.health?.p||0),
-    bonusA:Number(p.options.bonusA||0)+Number(p.options.health?.a||0),
-    skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
-    hostile:this.actor.type==="humanoid"});
-   if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0),payPP=0;
-   const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
-   if(result.success&&first){
-    if(!available.includes(first))throw Error("Característica não pertence à arma.");
-    active.push(first);
-    if(second){
-     if(!result.critical||!available.includes(second)||first===second)throw Error("Segunda característica exige crítico e opção distinta.");
-     active.push(second);
-    }
-    const activations=result.critical?(second?1:0):1;
-    if(activations){
-     if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=2;
-    }
-   }
-   if(payPP>s.pp)throw Error("PP insuficiente.");
-   if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
-   const kept=p.dice.filter(x=>p.selected.includes(x.id));
-   const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
-   const mode=p.options.mode==="conjuracao"?"Conjuração":p.options.mode==="armas"?"Armas":sourceLabel(p.base.group,p.base.key,s);
-   const text='<div class="codex-chat-result"><h3>Codex RPG · '+escapeHTML(mode)+' · '+escapeHTML(result.outcome)+'</h3>'+
-    '<p><strong>Composição:</strong> '+escapeHTML(sourceLabel(p.base.group,p.base.key,s))+' + '+escapeHTML(sourceLabel(p.attribute.group,p.attribute.key,s))+'</p>'+
-    (item?'<p><strong>Equipamento:</strong> '+escapeHTML(item.name)+'</p>':'')+
-    (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
-    '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
-    '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
-    (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
-    (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
-    '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
-    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
-   if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
-   else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
-    "system.pp":Math.min(maxPP(s.level),s.pp-payPP+result.criticalRefundPP)});
-   await ChatMessage.create({user:game.user.id,speaker:ChatMessage.getSpeaker({actor:this.actor}),content:text,
-    flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
-     transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
-      actorId:this.actor.id,targetUuid:p.options.targetActorUuid,targetType:p.options.targetType,
-      p:result.p,monsterCriticalPavor:result.monsterCriticalPavor
-     }:null}}});
-   await this.actor.unsetFlag(NS,"pendingRoll");this._pending=null;this.render();
-  }catch(e){ui.notifications.error("Codex: "+e.message);}
-  finally{this._busy=false;}
+ static executeRoll(){
+  if(this._pending||this._editing||(this._targetLost&&!game.user.targets.size))return;
+  return this._request({
+   action:"start",selection:this._draft,options:this._opts,
+   sceneId:canvas.scene?.id,targetIds:[...game.user.targets].map(token=>token.id)
+  });
+ }
+ static async discardRoll(){
+  const pending=this._pending;
+  if(!this.actor.isOwner||!pending||pending.publication||this._busy)return;
+  const accepted=await foundry.applications.api.DialogV2.confirm({
+   window:{title:"Descartar rolagem"},content:"As faces serão descartadas. A Coragem já paga por elevação permanece gasta.",rejectClose:false
+  });
+  if(accepted)await this._request({action:"discard",id:pending.id});
+ }
+ static toggleKept(_event,target){
+  const p=this._pending;
+  if(!p||p.publication)return;
+  const id=target.dataset.id;
+  const ids=p.selected.includes(id)?p.selected.filter(kept=>kept!==id):[...p.selected,id];
+  return this._request({action:"keep",id:p.id,ids});
+ }
+ static applyComparison(_event,target){
+  const p=this._pending;
+  if(!p||p.publication)return;
+  const ids=this._comparisonIds?.[Number(target.dataset.index)];
+  if(ids)return this._request({action:"keep",id:p.id,ids});
+ }
+ static finalizeRoll(){
+  if(this._pending)return this._request({action:"finish",id:this._pending.id});
  }
  static async addEquipment(){
-  if(!this.actor.isOwner)return;
-  await this.actor.createEmbeddedDocuments("Item",[{name:"Novo Equipamento",type:"equipment",system:{kind:"weapon",category:"leve",grade:1}}]);
+  if(!this._editing||!this.actor.isOwner)return;
+  return createCodexItem(this.actor);
  }
  static async addCatalogEquipment(){
-  if(!this.actor.isOwner)return;
+  if(!this._editing||!this.actor.isOwner)return;
   const n=Number(this.element?.querySelector("[data-catalog-choice]")?.value),row=G1_CATALOG[n];
   if(!row)return;
   const {name,...system}=structuredClone(row);
+  const projected=carriedItems(this.actor)+(Number(system.weight)||0)*Math.max(1,Number(system.quantity)||1),
+    capacity=loadCapacity(this.actor.system);
+  if(projected>capacity+1e-9)
+   ui.notifications.warn("ATENÇÃO: "+name+" excederá a capacidade de carga ("+projected.toFixed(3)+" / "+capacity+
+    " Alto). As penalidades exatas por sobrecarga ainda são PENDENTES no SRD.");
   await this.actor.createEmbeddedDocuments("Item",[{name,type:"equipment",system}]);
  }
- static async openEquipment(event,target){this.actor.items.get(target.dataset.id)?.sheet.render({force:true});}
+ static async openEquipment(event,target){
+  if(!this._editing)return;
+  this.actor.items.get(target.dataset.id)?.sheet.render({force:true});
+ }
  static async toggleEquip(event,target){
   const item=this.actor.items.get(target.dataset.id);
   if(item&&this.actor.isOwner)await item.update({"system.equipped":!item.system.equipped});
@@ -331,14 +425,30 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  static async removeEquipment(event,target){
   const item=this.actor.items.get(target.dataset.id);
-  if(item&&this.actor.isOwner&&confirm('Excluir "'+item.name+'"?'))await item.delete();
+  if(item&&this._editing&&this.actor.isOwner&&confirm('Excluir "'+item.name+'"?'))await item.delete();
  }
- static openPavorPanel(){if(game.user.isGM)new CodexPavorPanel().render({force:true});}
+ static async editPortrait(){
+  if(!this._editing||!this.actor.isOwner)return;
+  const picker=new foundry.applications.apps.FilePicker.implementation({
+   type:"image",current:this.actor.img,document:this.actor,
+   callback:img=>this.actor.update({img})
+  });
+  await picker.browse();
+ }
  static async adjustPavor(event,target){
   if(!game.user.isGM)return;
   const delta=Number(target.dataset.delta),s=this.actor.system;
   if(Math.abs(delta)!==1)return;
   await this.actor.update({"system.pavorLocal":Math.max(0,Math.min(monsterCap(s.threatGrade),s.pavorLocal+delta))});
  }
- async close(options={}){this._draft=draft();this._opts=defaults();return super.close(options);}
+ async close(options={}){
+  this._draft=draft();
+  this._opts=defaults();
+  this._editing=false;
+  this._lastTargetId=null;
+  this._targetLost=false;
+  for(const [event,id] of this._targetHooks??[])Hooks.off(event,id);
+  this._targetHooks=null;
+  return super.close(options);
+ }
 }

@@ -1,0 +1,54 @@
+<div class="codex-foundry-root codex-dna-root">
+  <header class="codex-dna-header">
+    <h2 data-dna-name>{{actorName}}</h2>
+    <dl class="codex-dna-budget" aria-label="Experiência do personagem" aria-live="polite">
+      <div><dt>Formação</dt><dd data-dna-xp="formation"></dd></div>
+      <div><dt>Adicional</dt><dd data-dna-xp="additional"></dd></div>
+      <div><dt>Total</dt><dd data-dna-xp="grant"></dd></div>
+      <div><dt>Investido</dt><dd data-dna-xp="spent"></dd></div>
+      <div><dt>Disponível</dt><dd data-dna-xp="left"></dd></div>
+    </dl>
+  </header>
+  {{#if canManageXP}}
+  <details class="codex-dna-xp-management" data-dna-xp-management>
+    <summary>Gerenciar XP</summary>
+    <div class="codex-dna-xp-actions">
+      <label>Quantidade de XP<input type="number" min="1" step="1" data-dna-xp-amount></label>
+      <button type="button" data-action="adjustXP" data-delta="1">Conceder XP</button>
+      <button type="button" data-action="adjustXP" data-delta="-1">Retirar XP</button>
+    </div>
+    <p data-dna-xp-locked hidden>O XP pode ser ajustado após a rolagem ou alteração em andamento.</p>
+    <details>
+      <summary>Histórico de XP</summary>
+      <p data-dna-xp-empty>Nenhum ajuste registrado.</p>
+      <ul data-dna-xp-history></ul>
+    </details>
+  </details>
+  {{/if}}
+  <nav class="codex-dna-stages" aria-label="Etapas de desenvolvimento">
+    <button type="button" data-action="stage" data-stage="identity">Identidade</button>
+    <button type="button" data-action="stage" data-stage="development">Desenvolvimento</button>
+    <button type="button" data-action="stage" data-stage="map">Codex Genético</button>
+  </nav>
+  <p class="codex-dna-note" data-dna-status role="status" hidden>Aguardando autorização do Narrador.</p>
+  <section data-dna-panel="identity" class="codex-dna-panel">
+    <label>Nome<input data-identity="name" value="{{actorName}}"></label>
+    <label>Conceito<input data-identity="system.concept" value="{{concept}}"></label>
+    <label>Origem<input data-identity="system.origin" value="{{origin}}"></label>
+    <button type="button" data-action="stage" data-stage="development">Continuar</button>
+  </section>
+  <section data-dna-panel="development" class="codex-dna-panel">
+    {{#each categories}}<div><strong>{{label}}</strong><p>{{description}}</p></div>{{/each}}
+    <div><strong>Perícias</strong><p>Habilitações adquiridas com XP conforme seus requisitos.</p></div>
+    <button type="button" data-action="stage" data-stage="map">Abrir mapa</button>
+  </section>
+  <section data-dna-panel="map" class="codex-dna-workspace">
+    <div class="codex-dna-map" data-dna-map tabindex="0" aria-label="Mapa genético interativo"></div>
+    <aside class="codex-dna-detail" data-dna-detail aria-live="polite"></aside>
+  </section>
+  <footer class="codex-dna-footer">
+    <span data-dna-creation></span>
+    <button type="button" data-action="classic">Ficha clássica</button>
+    <button type="button" data-action="complete">Concluir criação</button>
+  </footer>
+</div>

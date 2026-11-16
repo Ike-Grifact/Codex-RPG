@@ -1,5 +1,18 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
-import {SKILLS,xpLedger} from "./rules.mjs";
+import {xpLedger} from "./rules.mjs";
+
+const isRangedWeapon = item => item?.properties?.some(property=>property.toLowerCase()==="à distância");
+const elementalSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
+ sagrado:"sagrado",veneno:"veneno",sangue:"sangue",trevas:"trevas"};
+export function effectiveWeaponRange(system,item){
+ if(!["weapon","firearm"].includes(item?.kind))return 0;
+ const base=Math.max(0,Number(item.range)||0);
+ const skills=system.skills??[];
+ if(!base||!skills.includes("olhos-de-aguia"))return base;
+ const eligible=item.kind==="firearm"?skills.includes("armas-fogo"):
+  isRangedWeapon(item)&&skills.includes("armas-longo-alcance");
+ return base+(eligible?8:0);
+}
 export function equippedDie(actor,item,mode){
  if(!item||!item.system.equipped)return 0;
  const s=actor.system,k=item.system.kind,cat=item.system.category;
@@ -7,13 +20,13 @@ export function equippedDie(actor,item,mode){
  if(mode==="conjuracao"){
   if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
   if(!keys.includes("criar-item-foco-magia"))return 0;
-  const el=(item.system.element||"").toLowerCase().trim();
-  if(el&&el!=="psiquico"&&el!=="psíquico"&&!keys.some(x=>x.includes("elemento")&&x.includes(el)))return 0;
+  const el=(item.system.element||"").toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+  if(el&&!["psiquico","psique"].includes(el)&&!keys.includes(elementalSkill[el]))return 0;
  }else if(mode==="armas"){
   if(!["weapon","firearm"].includes(k))return 0;
   if(k==="firearm"){if(!keys.includes("armas-fogo"))return 0;}
   else {
-   const long=Array.isArray(item.system.properties)&&item.system.properties.some(x=>x.toLowerCase()==="à distância");
+   const long=isRangedWeapon(item.system);
    const categorySkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
    if(!(keys.includes(categorySkill)||(long&&keys.includes("armas-longo-alcance"))))return 0;
   }
@@ -33,13 +46,38 @@ export function skillPrerequisite(system,id){
   "armas-fogo":disc>=2&&dex>=2,
   "criar-item-foco-magia":disc>=1&&intel>=1&&arts>=1,
   "disciplina-avancada":disc>=2,
+  "recuperacao-vigorosa":Number(a.vigor||0)>=3,
   "manejo-duplo":s.includes("disciplina-avancada")&&force>=2&&dex>=2&&agil>=1&&["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo"].some(x=>s.includes(x))
  };
  return req[id]??true;
 }
 export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
- return !!system.monsterRules||ledger.spent+delta<=ledger.grant;
+ return Number.isFinite(delta)&&delta>=0&&ledger.spent+delta<=ledger.grant;
+}
+/* Modificador exclusivo de Esquiva; não altera DE geral nem empilha armaduras. */
+export function dodgeBonus(actor){
+ const armor=actor?.items?.find?.(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+ return armor?.system?.category==="muito-leve"?2:armor?.system?.category==="leve"?1:0;
+}
+export function dodgeDE(actor){return defenseDE(actor)+dodgeBonus(actor);}
+/* Um único valor final é apresentado. O bônus positivo de armadura
+ * segue condicionado à Esquiva; alvos sem esquiva usam defenseDE(actor). */
+export function defenseDisplay(actor){
+ const worn=actor?.items?.find?.(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+ const cat=worn?.system?.category||"";
+ const natural=defenseDE({system:actor.system,items:[]});
+ const penalty=cat==="pesado"?1:cat==="muito-pesado"?2:0;
+ const bonus=dodgeBonus(actor);
+ const de=dodgeDE(actor),modifier=bonus-penalty;
+ const types={"muito-leve":"Muito Leve","leve":"Leve","medio":"Média",
+  "pesado":"Pesada","muito-pesado":"Muito Pesada"};
+ const source=types[cat]||"Armadura";
+ const calculation=modifier?"Natural "+natural+" "+(modifier>0?"+":"−")+" "+Math.abs(modifier)+" ("+source+") = "+de+
+  (natural-penalty<0?" (mínimo 0)":""):"Natural "+natural+" · sem modificador = "+de;
+ const condition=bonus?"Bônus de armadura aplicável somente ao esquivar.":
+  penalty?"Penalidade da armadura aplicada à defesa.":worn?"Armadura sem modificador de DE.":"Sem armadura equipada.";
+ return {de,natural,modifier,calculation,condition};
 }
 export function defenseDE(actor){
  const natural=actor?.system?Math.max(0,Number(actor.system.monsterRules?Number(actor.system.attributes?.agilidade||0)+Math.floor(Number(actor.system.attributes?.destreza||0)/2):0)):0;
