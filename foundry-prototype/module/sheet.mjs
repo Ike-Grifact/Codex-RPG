@@ -273,7 +273,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(request.action==="start"&&response?.started){
     this._draft=draft();
     this._opts=defaults();
-    await showCodexDice(foundry.dice.Roll.fromData(response.roll));
+    void showCodexDice(foundry.dice.Roll.fromData(response.roll));
    }
   }catch(e){ui.notifications.error("Codex: "+e.message);}
   finally{

@@ -669,12 +669,12 @@
  font-family:Inter,"Segoe UI",system-ui,sans-serif
 }
 .chat-message .codex-chat-die.is-kept,.codex-chat-die.is-kept{border:2px solid #b99756;background:#b997561f}
-.chat-message .codex-chat-die.is-discarded,.codex-chat-die.is-discarded{opacity:.6}
+.chat-message .codex-chat-die.is-discarded,.codex-chat-die.is-discarded{border-style:dashed}
 .codex-chat-die-kind{font-size:10px;line-height:1.3;overflow-wrap:anywhere}
 .codex-chat-die-face{font-size:25px;font-weight:850;line-height:1.1}
 .codex-chat-die-marks{min-height:23px;font:750 20px/1.25 "Segoe UI Symbol",Georgia,serif}
-.codex-chat-die-marks .codex-chat-rune-e{color:#267a45}
-.codex-chat-die-marks .codex-chat-rune-a{color:#2369bb}
-.codex-chat-die-marks .codex-chat-rune-p{color:#8345a8}
+.codex-chat-die-marks .codex-chat-rune-e{color:light-dark(#1d6637,#80d796)}
+.codex-chat-die-marks .codex-chat-rune-a{color:light-dark(#1b559c,#8cbcff)}
+.codex-chat-die-marks .codex-chat-rune-p{color:light-dark(#70378f,#d6a2f4)}
 .codex-chat-die small{font-size:9px;letter-spacing:.045em;font-weight:800;margin-top:auto}
 .codex-chat-dice-heading{font-weight:750;margin-top:11px!important}

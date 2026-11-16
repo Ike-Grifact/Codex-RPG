@@ -62,6 +62,8 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   };
   registerCodexDice(dice3d);
   assert.deepEqual(presets.map(preset => preset.type), ["d4","d6","d10","d12","d20"]);
+  assert.equal(presets.find(preset => preset.type === "d4").fontScale, 0.82);
+  assert.equal(presets.find(preset => preset.type === "d10").fontScale, 1.02);
   assert.equal(colorsets.length,1);
   assert.equal(colorsets[0].background,"#181a1d");
   assert.deepEqual(faceLabels(10)[9],"ᛋᛋ ᚨ");
@@ -77,7 +79,12 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   const user = {id: "player"};
   const roll = {dice: [{results: [{result: 6}]}]};
   globalThis.game = {user, dice3d};
-  await showCodexDice(roll);
+  const box = Promise.withResolvers();
+  dice3d._boxReady = box.promise;
+  const animation = showCodexDice(roll);
+  assert.equal(calls.length, 0);
+  box.resolve();
+  await animation;
   assert.deepEqual(calls, [[roll, user, true]]);
   assert.equal(roll.dice[0].options.appearance.system, "codex-rpg-foundry");
   assert.equal(roll.dice[0].options.appearance.colorset, "codex-runas");

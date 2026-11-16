@@ -2,6 +2,8 @@ import {FACES} from "./rules.mjs";
 
 const system="codex-rpg-foundry";
 const colorset="codex-runas";
+// No d4, o Dice So Nice repete as marcas junto a cada vértice.
+const fontScale={4:0.82,6:1.35,10:1.02,12:1.1,20:1};
 
 /* Dados 3D exibem SOMENTE as runas da face. O PNG antigo desenhava
    grafismos de poliedros dentro do rótulo e ficava minúsculo no d4/d10.
@@ -20,12 +22,11 @@ export function registerCodexDice(dice3d){
  dice3d.addColorset?.({
   name:colorset,description:"Codex RPG · runas sem bordas",category:"Codex RPG",
   foreground:"#e8d6aa",background:"#181a1d",outline:"none",edge:"#181a1d",
-  texture:"none",material:"plastic",font:"Segoe UI Symbol",
-  fontScale:{d4:1.2,d6:1.35,d10:1.15,d12:1.1,d20:1}
+  texture:"none",material:"plastic",font:"Segoe UI Symbol"
  });
  for(const sides of Object.keys(FACES)){
   dice3d.addDicePreset({type:`d${sides}`,system,labels:faceLabels(sides),
-    colorset,font:"Segoe UI Symbol"});
+    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides]});
  }
 }
 
@@ -33,6 +34,8 @@ export async function showCodexDice(roll){
  const dice3d=game.dice3d;
  if(!dice3d?.showForRoll)return;
  try{
+  // O Dice So Nice 6 pode expor showForRoll antes de concluir a inicialização da mesa.
+  await dice3d._boxReady;
   for(const die of roll.dice){
    die.options??={};
    die.options.appearance={
