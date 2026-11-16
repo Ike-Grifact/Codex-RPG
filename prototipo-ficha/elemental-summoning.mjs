@@ -125,7 +125,7 @@ export function summonPartRoll({size,dice=[],keptParts}={}){
   if(!item||!Number.isInteger(item.part)||item.part<1||item.part>rule.parts||parts.has(item.part))
    throw new RangeError("Identificação das partes inválida");
   parts.add(item.part);
-  if(!SUMMON_ATTRIBUTE_KEYS.includes(item.attribute)||![4,6,10,12].includes(item.sides))
+  if((item.source!==undefined&&item.source!=="attribute")||!SUMMON_ATTRIBUTE_KEYS.includes(item.attribute)||![4,6,10,12].includes(item.sides))
    throw new RangeError("Cada parte precisa de um dado de Atributo válido");
   if(!Number.isInteger(item.face)||item.face<1||item.face>item.sides)
    throw new RangeError("Face de dado inválida");
