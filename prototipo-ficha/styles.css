@@ -968,6 +968,17 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 .fp-gene-grade-button:hover:not(.is-disabled) rect,
 .fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke-width:3}
 .fp-gene-branch-rule{stroke:var(--fp-stroke);stroke-width:2}
+/* Grupos orbitais do Codex Genético. Ícones individuais podem ocupar o nó
+   sem modificar os IDs nem a lógica de compra das Perícias. */
+.fp-gene-constellation{pointer-events:none}
+.fp-gene-constellation-border{fill:var(--fp-raised);fill-opacity:.22;stroke:var(--fp-muted);stroke-width:1.6;stroke-opacity:.26;stroke-dasharray:5 8}
+.fp-gene-constellation-cap{stroke:var(--fp-gold);stroke-width:2.5;stroke-opacity:.66}
+.fp-gene-constellation-title{fill:var(--fp-text);font-size:17px;font-weight:800;letter-spacing:.055em;paint-order:stroke;stroke:var(--fp-deep);stroke-width:3}
+.fp-gene-constellation[data-gene-family="elementos"] .fp-gene-constellation-border,
+.fp-gene-constellation[data-gene-family="natureza"] .fp-gene-constellation-border{stroke-opacity:.37}
+.fp-gene-constellation[data-gene-family="disparos"] .fp-gene-constellation-border{stroke-dasharray:3 7}
+.fp-gene-skill[data-gene-family] .fp-gene-dot{transition:stroke-width .15s ease}
+
 .fp-gene-skill .fp-gene-dot{stroke-width:3}
 .fp-gene-skill.is-owned .fp-gene-dot{fill:#267A45;stroke:#5ab57c}
 .fp-gene-skill.is-available .fp-gene-dot{fill:#2369BB;stroke:#80b9ff}
