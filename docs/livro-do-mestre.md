@@ -2,13 +2,13 @@
 
 ## Invocação Elemental — orientações ao Narrador (16/11/2026)
 
-A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e uma Perícia elemental; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
+A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e elemento habilitado; **Criar Item de Foco e Magia já habilita Psique**, sem Perícia própria adicional; outros elementos exigem Perícia específica; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
 
 **Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** (habilitação Combinar Magia Elemental ainda sem entrada própria no catálogo); Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
 
 **Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** fantasmas imunes a elemento neutro, sem dano neutro; Maestria habilita assombrar/possuir com Desvantagem Absoluta. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
 
-**PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, identificar habilitação de Psique e Combinar Magia Elemental, definir manutenção/controle, resistência/DE de possessão, limites simultâneos e as regras de XP/ação de invocações no conflito. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, identificar a habilitação Combinar Magia Elemental, definir manutenção/controle, resistência/DE de possessão, limites simultâneos e as regras de XP/ação de invocações no conflito. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
 
 ## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
 

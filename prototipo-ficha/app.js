@@ -311,7 +311,7 @@ const SKILLS=[
  [
   "invocacao-elemental",
   "Invocação Elemental",
-  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e ao menos uma Perícia elemental. Invoca por 1 PP ou 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem com habilitação Combinar Magia Elemental (identidade da Perícia PENDENTE); Maestria Elemental na invocação custa +1 PP ou +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Habilitação Psique PENDENTE; não automatizar possessão, duração nem imunidades sem procedimento.",
+  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 PP ou 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem com habilitação Combinar Magia Elemental (identidade da Perícia PENDENTE); Maestria Elemental na invocação custa +1 PP ou +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; não automatizar possessão, duração nem imunidades sem procedimento.",
   1
  ],
  [
@@ -665,7 +665,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
- "invocacao-elemental":"Criar Item de Foco e Magia + Domar Criatura Pequena + qualquer Perícia elemental habilitada",
+ "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
@@ -739,7 +739,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "invocacao-elemental":"Compra 1 XP; requer Criar Item de Foco e Magia, Domar Pequena e pelo menos uma Perícia elemental. Cada invocação custa 1 PP ou 1 Coragem.",
+ "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 PP ou 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1 e Inteligência 1.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1 e Inteligência 1.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
@@ -1231,11 +1231,8 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
- if(id==="invocacao-elemental"){
-  const habilitados=["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"];
-  if(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")||!habilitados.some(has))
-   return"Requer Criar Item de Foco e Magia, Domar Criatura Pequena e pelo menos uma Perícia elemental (Fogo, Água, Ar, Terra, Sagrado, Veneno, Sangue ou Trevas). Psique e Combinar Magia Elemental ainda pendentes de habilitação específica.";
- }
+ if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
+  return"Requer Criar Item de Foco e Magia e Domar Criatura Pequena. O próprio foco habilita Psique; os demais elementos exigem suas Perícias.";
  if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
  if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
  if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena, Média e Grande podem ser compradas com 1 XP cada, respeitando seus requisitos.";
@@ -1489,16 +1486,7 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
- "invocacao-elemental":[
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:fogo"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:agua"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:vento"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:terra"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:sagrado"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:veneno"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:sangue"],
- ["s:criar-item-foco-magia","s:domar-criatura-pequena","s:trevas"]
- ],
+ "invocacao-elemental":[["s:criar-item-foco-magia","s:domar-criatura-pequena"]],
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1"]],

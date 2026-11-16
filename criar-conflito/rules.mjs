@@ -10,7 +10,7 @@ const PLAYER_DNA_EXTRA_SKILLS=[
  {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1},
  {id:"domar-criatura-media",name:"Domar Criatura Média",detail:"1 XP; Influência 3 + Apresentação 1 + Inteligência 1.",cost:1},
  {id:"domar-criatura-grande",name:"Domar Criatura Grande",detail:"1 XP; Influência 4 + Apresentação 1 + Inteligência 1.",cost:1},
- {id:"invocacao-elemental",name:"Invocação Elemental",detail:"1 XP; Criar Item de Foco e Magia, Domar Pequena e qualquer Perícia elemental. Invocação: 1 PP ou 1 Coragem; XP do invocador; porte por Domar.",cost:1}
+ {id:"invocacao-elemental",name:"Invocação Elemental",detail:"1 XP; Criar Item de Foco e Magia (habilita Psique) e Domar Pequena. Demais elementos exigem Perícia específica. Invocação: 1 PP ou 1 Coragem; XP do invocador; porte por Domar.",cost:1}
 ];
 export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};
