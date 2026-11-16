@@ -6,6 +6,22 @@ export const DOMAR_BY_SIZE=Object.freeze({pequena:"domar-criatura-pequena",media
 export const INVOCACAO_ELEMENTAL_XP=1;
 export const PSIQUE_HABILITATION_SKILL="criar-item-foco-magia";
 export const PSIQUE_ELEMENT="psique";
+/** Limites aprovados: apenas uma ficha de invocação ativa por conjurador;
+ * duas fichas domesticadas sob controle direto por domador. */
+export const MAX_INVOCATION_SHEETS=1;
+export const MAX_DIRECT_TAMED_SHEETS=2;
+/** Múltiplos corpos reais podem compartilhar uma única ficha de Grande.
+ * Os procedimentos para dano/posicionamento de cada corpo são pendentes. */
+export const GROUPED_ZOMBIE_EXAMPLE=Object.freeze({
+ realMediumBodies:3,mechanicalSize:"grande",controlledSheets:1,
+ xpEntries:1,sharedMechanicalLife:true,sharedActionBudget:true
+});
+/** Invocação de Psique (pura ou combinada) projeta a mente do conjurador:
+ * o corpo físico permanece parado enquanto a manifestação é sustentada. */
+export function psychicProjectionRequiresStillBody(elements){
+ const list=Array.isArray(elements)?elements:[elements];
+ return list.some(element=>normalizeElement(element)===PSIQUE_ELEMENT);
+}
 const normalizeElement=element=>element==="psiquico"||element==="psíquico"?PSIQUE_ELEMENT:element;
 export function eligibleElementalSkills(skills=[]){
  const s=new Set(Array.isArray(skills)?skills:[]);
