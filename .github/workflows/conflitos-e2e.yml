@@ -36,9 +36,11 @@ jobs:
           node --check simulador-combate/app.mjs
           node --check simulador-combate/logic.mjs
           node --check criar-conflito/roll-engine.mjs
+          node --check foundry-prototype/module/rules.mjs
+          node --check foundry-prototype/module/sheet.mjs
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
-        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs foundry-prototype/tests/rules.test.mjs simulador-combate/logic.test.mjs
       - name: Instalar Chromium de teste
         run: |
           npm install --no-save playwright@1.58.2
