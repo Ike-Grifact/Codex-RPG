@@ -196,6 +196,7 @@ function gradeCards(t,group,entries){
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
+ if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
  if(id==="invocacao-elemental"){
   const skills=new Set(t?.skills||[]);
   // Criar Item de Foco e Magia também é a Perícia de Psique.

@@ -1,5 +1,11 @@
 # Codex RPG — Livro do Mestre
 
+## Antecipação e Concentração Refinada — 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Antecipação é uma mecânica, não Perícia:** uma rolagem com Disciplina permite guardar **1A de dado mantido** para a próxima rolagem, sem duplicar o símbolo nem aplicá-lo duas vezes. **Concentração Refinada** custa **1 XP**, exige **Disciplina 2** e, ao guardar 1A por Antecipação, o transforma em **1E** e concede **Vantagem** ao próprio personagem. **Não pode ativar Concentração Refinada se algum inimigo estiver a até 8 metros.**
+
+A condição é **Vantagem**, não Vantagem Absoluta. **PENDENTE:** momento exato de crédito do 1E (na concentração ou na rolagem seguinte) e duração da condição. O Narrador anota a escolha até que haja procedimento definido; não autorizar automatismos para consumo/crédito em ambos os momentos. Não confundir com a passagem de protagonismo por Antecipar, que permanece regida pelas mecânicas gerais. Consulte [SRD v0.50](srd-continuidade-v0.50.md), seção 0-AM.
+
 ## Improviso + Maestria, área e tokens separados [DEFINIDO / PENDENTE]
 
 A capacidade de Combinar Elementos na invocação é **Improviso Elemental + Maestria Elemental**, ambas adquiridas. Com elementos habilitados, invocar criatura de dois elementos custa +1 Coragem além do custo base; efeitos especiais via Maestria custam +1 PP ou +1 Coragem adicional.
