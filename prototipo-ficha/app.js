@@ -2272,7 +2272,7 @@ function score(){
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Precisa")?1:0)+health.e);
+  (critTier&&properties.includes("Precisa")?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
@@ -2280,7 +2280,8 @@ function score(){
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
- const E=eBase+pairs,P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
+ const E=Math.max(0,eBase+pairs+health.e),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
