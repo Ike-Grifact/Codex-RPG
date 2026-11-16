@@ -8,61 +8,67 @@ updated: "2026-11-15"
 # Codex RPG — SRD de Continuidade v0.46
 
 
-## 0-AF. Rebalanceamento das quatro faces do d4 [DEFINIDO — 15/11/2026]
+## 0-AF. Rebalanceamento definitivo das quatro faces do d4 [DEFINIDO — 15/11/2026]
 
-**Decisão do autor, corrigida na mesma conversa em 15/11/2026:** o d4 passa a ter exatamente **1 = Êxito (ᛋ)**, **2 = Antecipar + Pavor (ᚨ + ᚦ)**, **3 = Pavor (ᚦ)** e **4 = face vazia (○)**. A formulação inicial de face 2 como Êxito + Pavor foi corrigida pelo autor e **não** é a regra. Esta alteração é **DEFINIDA**; as avaliações de desempenho abaixo são **ANÁLISE** e nenhuma alteração de XP, dos Graus ou de outros dados foi autorizada.
+**Decisão autoral mais recente (15/11/2026):** o d4 passa a ter exatamente **face 1 = Êxito (ᛋ)**, **face 2 = Antecipar (ᚨ)**, **face 3 = Pavor (ᚦ)** e **face 4 = vazia (○)**. **A face 2 NÃO contém Pavor.** As formulações intermediárias da mesma conversa (face 2 E+P, depois A+P) estão **SUBSTITUÍDAS** e não devem ser implementadas nem citadas como vigentes.
 
-| Face numérica do d4 | Êxito (E) | Antecipar (A) | Pavor (P) | Representação |
+| Face numérica do d4 | E | A | P | Resultado |
 |---:|---:|---:|---:|---|
-| **1** | 1 | 0 | 0 | ᛋ |
-| **2** | 0 | 1 | 1 | ᚨ+ᚦ |
-| **3** | 0 | 0 | 1 | ᚦ |
-| **4** | 0 | 0 | 0 | ○ |
+| 1 | 1 | 0 | 0 | ᛋ Êxito |
+| 2 | 0 | 1 | 0 | ᚨ Antecipar |
+| 3 | 0 | 0 | 1 | ᚦ Pavor |
+| 4 | 0 | 0 | 0 | ○ Vazia |
 
 **Regras preservadas:**
 
-- As distribuições e faces do **d6, d10, d12 e d20 especial não são alteradas**.
-- A **face numérica máxima do d4 continua sendo a 4**, mesmo vazia. Para crítico, contam as faces máximas de todos os dados mantidos, em número mínimo de dois; uma face 4 vazia não ganha Êxito por si só. O crítico de dois mantidos converte até **1P próprio em 1E**, se houver Pavor; não concede automaticamente um novo Êxito se não houver Pavor. Os demais benefícios críticos vigentes são preservados.
-- O personagem de nível 1 mantém **2 dados naturalmente** e pode pagar **1 Coragem** para manter um terceiro, dentro do limite e com dado elegível; o Atributo precisa ser **rolado**, não necessariamente mantido.
-- Somente os dados **mantidos** fornecem E/A/P. **Dados descartados não geram Pavor nem Pressão** na continuidade vigente; textos históricos que digam o contrário ficam substituídos. Antecipar pode anular Pavor ou ser convertido na taxa de **2A → 1E**, sem reutilizar o mesmo símbolo.
-- O custo de Atributo G1 permanece **1 XP** e seu dado permanece **d6**; Atributo G0 continua oferecendo d4. Conhecimento/Prática G0 continua oferecendo d6; G1, d10. O orçamento inicial compartilhado do criador permanece **20 XP EXPERIMENTAIS**; a distribuição livre após as compras mínimas segue DEFINIDA.
-- Esta seção substitui **somente a tabela de faces do d4** em todas as edições anteriores, incluindo tabela antiga do Livro do Jogador; os exemplos matemáticos antigos envolvendo d4 passam a ser **históricos**.
+- d6, d10, d12 e d20 especial mantêm **todas as suas faces atuais**, sem redistribuição. O d4 **continua sendo o dado gratuito de Atributo grau 0**; Atributo grau 1 continua custando **1 XP** e fornecendo **1d6**. Conhecimento ou Prática grau 0 oferece 1d6; grau 1 custa 2 XP e oferece d10. Não trocar progressão, custos ou limites por consequência automática.
+- A **face numérica máxima do d4 é 4**, agora sem símbolos. Para crítico contam os dados mantidos em suas respectivas faces máximas (mínimo dois); em crítico com dois dados, converter até **1P próprio em 1E** não cria E se não houver P. Preservam-se os demais benefícios de crítico já vigentes.
+- Nos níveis 1–5 mantêm-se **2 dados gratuitamente**; um terceiro mantido autorizado pode exigir **1 Coragem**, conforme regra atual. A pilha precisa **rolar** um Atributo, mas não precisa **manter** esse dado. O teto geral de 9 rolados e 4 mantidos continua.
+- Só dados **mantidos** fornecem E/A/P. Dados descartados **não geram Pavor ou Pressão**; leituras históricas incompatíveis não têm precedência. **1A pode anular 1P** ou **2A podem produzir 1E**, respeitado o uso único de cada A. Um resultado **E + P não anulado** alcança a DE, mas Pavor residual acarreta risco; acerto com Pavor não equivale a acerto limpo.
+- O criador conserva **20 XP iniciais compartilhados EXPERIMENTAIS** na implementação atual e a liberdade de distribuição após as compras mínimas DEFINIDA. Não mexer no orçamento por causa desta decisão.
 
-### 0-AF.1. Efeito esperado por um d4 [ANÁLISE, probabilidades exatas]
+### 0-AF.1. Mudança de distribuição [ANÁLISE exata]
 
-| Métrica por dado | d4 anterior | **Novo d4** | d6 vigente |
+| Indicador por dado | d4 antigo | **d4 definitivo** | d6 atual |
 |---|---:|---:|---:|
-| Êxitos diretos esperados | 0,0000 | **0,2500** | 0,1667 |
-| Antecipar esperado | 0,2500 | **0,2500** | 0,1667 |
-| Pavor esperado | 0,5000 | **0,5000** | 0,5000 |
+| Êxitos esperados por rolagem | 0 | **0,2500** | 0,1667 |
+| Antecipar esperado por rolagem | 0,2500 | **0,2500** | 0,1667 |
+| Pavor esperado por rolagem | 0,5000 | **0,2500** | 0,5000 |
 | Chance de face vazia | 50,00% | **25,00%** | 33,33% |
-| Probabilidade de E+P ≥ 1 num dado | 50,00% | **75,00%** | 66,67% |
+| Chance de obter 1 ou mais E+P no dado, sem usar A | 50,00% | **50,00%** | 66,67% |
 
-**Ponto de atenção de progressão:** o d4 gratuito supera o d6 de Atributo G1 em ocorrência de E e A, e possui menos faces vazias, mantendo a mesma frequência de Pavor. **Não presumir que subir de Atributo 0 para 1 seja vantajoso em todo teste**. Os dados diferem ainda no valor da face máxima/crítico e na escala das fontes avançadas. Esta questão fica sinalizada como **PENDENTE de decisão de balanceamento**, mas nenhum custo ou dado muda além das faces solicitadas.
+O d4 definitivo **reduz pela metade o Pavor esperado** e habilita Êxito sem depender de outros dados. Isso **não** torna o d4 superior ao d6 em todas as DE: a face 2 do d4 só concede A; as faces de P do d6 podem ajudar a alcançar DE, com risco correspondente. A face 4 vazia ainda conta para crítico por ser numérica máxima.
 
-### 0-AF.2. Revisão do nível 1 [ANÁLISE exata, sem mudança adicional de regras]
+### 0-AF.2. Nível 1: chances exatas de atingir DE [ANÁLISE, não novas regras]
 
-Nas comparações, todas as faces de cada pilha são enumeradas com probabilidades equiprováveis, escolhe-se livremente até **2 dados mantidos** e pode-se gastar **2A por 1E**, ou **1A para anular 1P**. A avaliação das quatro categorias de resultado adota a **política de decisão declarada**: primeiro maximizar a chance de alcançar a DE; dentre as opções de igual condição de sucesso, priorizar Pavor residual zero e depois minimizar Pavor. Isso não pressupõe que todo jogador faria a mesma escolha. **Não** incluem Vantagem/Desvantagem, Coragem paga, equipamento, terceira fonte/perícia, elevação de dado ou intervenção externa. Para as pilhas usadas, o crítico de dois mantidos não adiciona Êxito gratuito e não altera a chance de alcançar a DE; pode alterar recursos recuperados quando ocorrer.
+A tabela considera **somente um Atributo e um Conhecimento ou Prática pertinente**, escolhendo livremente **até dois dados mantidos**, sem Coragem gasta, equipamento, Vantagem/Desvantagem, Perícia ou dado elevado. Todas as faces são **enumeradas exatamente**, com opções de gastar Antecipar (2A→1E ou 1A→anular 1P), respeitando custos e crítico. O jogador pode descartar qualquer dado (inclusive o Atributo rolado). Para cada combinação de faces, a política de avaliação busca **alcançar a DE primeiro** e, entre escolhas com igual condição de acerto, **evitar Pavor**. O percentual de chance de acerto pode diferir de acerto limpo, dano e risco.
 
-| Pilha (uma fonte Atributo + uma Formação) | Faces consideradas | DE 1 | DE 2 | DE 3 | DE 4 |
+| Duas fontes pertinentes | Distribuição | DE 1 | DE 2 | DE 3 | DE 4 |
 |---|---|---:|---:|---:|---:|
-| G0+G0: d4+d6 | **d4 anterior** | 83,33% | 33,33% | 4,17% | 0,00% |
-| G0+G0: d4+d6 | **d4 revisado** | **91,67%** | **50,00%** | **4,17%** | 0,00% |
-| G0+G1: d4+d10 | **d4 anterior** | 90,00% | 55,00% | 20,00% | 5,00% |
-| G0+G1: d4+d10 | **d4 revisado** | **95,00%** | **67,50%** | **27,50%** | **5,00%** |
-| G1+G1: d6+d10 | Sem alteração | 93,33% | 63,33% | 23,33% | 3,33% |
-| G2+G2: 2d6+2d10 | Sem alteração, **2 mantidos** | 99,56% | 95,56% | 60,47% | 23,11% |
-| G3+G2: 3d6+2d10 | Sem alteração, **2 mantidos** | 99,85% | 98,22% | 64,83% | 25,43% |
+| Atributo G0 + Formação G0 (d4+d6) | Anterior | 83,33% | 33,33% | 4,17% | 0% |
+| Atributo G0 + Formação G0 (d4+d6) | **Definitiva** | **83,33%** | **37,50%** | **0%** | **0%** |
+| Atributo G0 + Formação G1 (d4+d10) | Anterior | 90,00% | 55,00% | 20,00% | 5,00% |
+| Atributo G0 + Formação G1 (d4+d10) | **Definitiva** | **90,00%** | **60,00%** | **20,00%** | **0%** |
+| Atributo G1 + Formação G1 (d6+d10) | Inalterada | 93,33% | 63,33% | 23,33% | 3,33% |
+| Atributo G0 + Formação G2 (d4+2d10), 2 mantidos | Anterior | 98,00% | 86,00% | 54,00% | 22,00% |
+| Atributo G0 + Formação G2 (d4+2d10), 2 mantidos | **Definitiva** | **98,00%** | **88,00%** | **51,00%** | **17,00%** |
+| Atributo G1 + Formação G2 (d6+2d10), 2 mantidos | Inalterada | 98,67% | 89,33% | 54,33% | 20,33% |
 
-**Acerto não significa acerto limpo.** Com d4+d6 revisado na **DE 2**, a política descrita produz exatamente **4,17% acertos sem Pavor + 45,83% acertos com Pavor + 50,00% falhas limpas + 0% falhas com Pavor**. Com d4+d10 revisado na **DE 2**, são **27,50% / 40,00% / 32,50% / 0%**. Os riscos de Pavor mantido não anulado, seus efeitos sobre as reservas e as consequências de falha continuam válidos.
+Em **d4+d6, DE 1**, o êxito total permanece 83,33%, mas o **acerto limpo passa de 16,67% para 37,50%** e o acerto com Pavor cai de 66,67% para 45,83%. Em **d4+d10, DE 2**, o acerto total passa de 55% para 60%; acertos limpos passam de 20% para **30%**, enquanto acertos com Pavor caem de 35% para **30%**. Essas proporções dependem da política de dados mantidos e gasto de Antecipar descrita acima; não representam comportamento obrigatório de todos os jogadores.
 
-**Condição de criação:** os G0+G0/G0+G1 nas linhas não são personagens que ignoram as compras iniciais obrigatórias: representam ações pertinentes usando fontes **não treinadas** de um personagem que já comprou ao menos um Atributo G1 e um Conhecimento/Prática G1 em outras fontes. Fontes não podem ser escolhidas sem pertinência à ação.
+**Recursos, não só acerto:** se o nível 1 **gastar 1 Coragem** para manter um terceiro dado já rolado em d4+2d10, a chance de DE 3 com o d4 definitivo sobe de **51% (até 2 mantidos gratuitos)** para **64,50% (até 3 mantidos pagos)**; DE 4 vai de 17% para **34%**. Com o d4 antigo, esses dois percentuais pagos eram 61,50% e 35%. Tal gasto **não é gratuito**, não adiciona novo dado rolado e deve ser avaliado na economia de Coragem.
 
-**Recomendação técnica [ANÁLISE / não aprovada como regra]:** testar o d4 revisado quanto ao incentivo para **não investir o primeiro grau de um Atributo**, especialmente em DE 1–3. A mera diferença de taxa de sucesso não resolve o balanceamento: avaliar também acertos com Pavor, fluxo de protagonismo, dano, crítico na face 4 vazia, oportunidade de gasto de Coragem e vantagens de múltiplos dados nos Graus maiores. Não ajustar d6, XP ou Marcos sem nova decisão do autor.
+**Validade da ficha:** as linhas com Atributo G0 **não** dispensam a compra inicial obrigatória de pelo menos um Atributo G1 e um Conhecimento/Prática G1 em outras fontes. São testes de fontes pouco treinadas de um Aprendiz legalmente criado, nunca construção de personagem inicial exclusivamente G0.
 
-**Registro detalhado de cálculo e premissas:** [docs/playtests/rebalanceamento-d4-nivel-1-2026-11-15.md](playtests/rebalanceamento-d4-nivel-1-2026-11-15.md).
+### 0-AF.3. Recomendação para playtest [ANÁLISE / PROPOSTO]
 
-**Ordem de precedência:** decisão autoral mais recente > seção **0-AF (v0.46)** para o d4 > seção **0-AE (v0.45)** para Druídica > seção **0-AD (v0.44)** para os demais assuntos > demais seções historicamente vigentes. A v0.45 integral está preservada abaixo.
+**Ponto positivo:** menos Pavor residual e mais êxitos limpos em várias DE baixas, com menor risco para personagens que usam fontes gratuitas. **Ponto crítico:** a troca da antiga face A+P por A isolado e a face máxima vazia **eliminam alguns acertos extremos**, como DE 4 em d4+d10 (5%→0%). A progressão de Atributo G0 para G1 **aumenta a chance de acerto** em DE 1–4 ao lado do mesmo d10 (90→93,33%, 60→63,33%, 20→23,33%, 0→3,33%), mas o d4 recém-balanceado ainda pode entregar **maior proporção absoluta de acertos limpos** em DE 1–2. Não considerar só o total de sucessos nem assumir dominância estrita.
+
+**PROPOSTO:** observar acertos limpos/riscosos, falhas, Pavor transferido, Coragem/PP, efeitos de dano, equilíbrio de builds puras/híbridas e oportunidade de protagonismo antes de alterar qualquer outro dado ou XP. Nenhum novo ajuste numérico entra em vigor sem decisão posterior do autor.
+
+**Relatório completo, contagens exatas e hipóteses:** [docs/playtests/rebalanceamento-d4-nivel-1-2026-11-15.md](playtests/rebalanceamento-d4-nivel-1-2026-11-15.md).
+
+**Ordem de precedência:** esta decisão autoral > **0-AF (v0.46)** para as faces do d4 > **0-AE (v0.45)** para Druídica > **0-AD (v0.44)** nos demais assuntos não modificados > demais regras vigentes. O histórico integral da v0.45 permanece abaixo.
 
 ---
 
