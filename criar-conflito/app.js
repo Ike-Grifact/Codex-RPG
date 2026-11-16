@@ -398,8 +398,8 @@ function rollPane(t){
   'Selecione duas categorias diferentes, em qualquer ordem. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. A retenção adicional por Coragem é registrada e descontada ao confirmar a rolagem.':
   'Selecione dois ou três Atributos diferentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
- const sources=[d.firstSource,d.secondSource,...(d.extra?[d.extra]:[])];
- const stepOptions=elevationChoices(toSystem(t),{base:sources[0],attribute:sources[1],complement:sources[2]||null});
+ const pickedSources=[d.firstSource,d.secondSource,...(d.extra?[d.extra]:[])];
+ const stepOptions=elevationChoices(toSystem(t),{base:pickedSources[0],attribute:pickedSources[1],complement:pickedSources[2]||null});
  const prepare=!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
   (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
    '> Manter dado adicional (1 Coragem)</label>':'')+
