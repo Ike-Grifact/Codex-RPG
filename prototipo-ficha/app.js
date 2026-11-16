@@ -1457,7 +1457,7 @@ function renderOwnedPanel(){
  const companionHere=smallCompanionPresent();
  const companionMarkup=companionOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro pequeno</strong><small>'+(
-   companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial"):"Sem criatura domesticada presente")+'</small></div>'+
+   companionHere?(state.smallCompanion.inCombat?"Presente em combate · +1A":"Presente · +1 Vida sacrificial")+(state.smallCompanion.magical?" · mágica":""):"Sem criatura domesticada presente")+'</small></div>'+
   '<p>'+ (companionHere?"O companheiro protege antes de Inconsciente. Em combate, pode fornecer +1A.":"Primeiro vença o teste de Influência contra sua DE defensiva atual, pagando 1 PP ou 1 Coragem; o aprendizado não cria companheiro.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-criatura">Preparar teste de Domar / Pacificar</button><button type="button" data-action="small-companion-toggle">'+(companionHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (companionHere?'<button type="button" data-action="small-companion-combat">'+(state.smallCompanion.inCombat?"Desativar apoio de combate":"Ativar apoio de combate (+1A)")+'</button>'+
@@ -1468,7 +1468,7 @@ function renderOwnedPanel(){
  const mediumHere=mediumCompanionPresent();
  const mediumMarkup=mediumOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro médio</strong><small>'+(
-   mediumHere?"Ficha independente · nível "+state.mediumCompanion.level:"Aguardando domesticação")+'</small></div>'+
+   mediumHere?"Ficha independente · nível "+state.mediumCompanion.level+(state.mediumCompanion.magical?" · mágica":""):"Aguardando domesticação")+'</small></div>'+
   '<p>'+(mediumHere?"Acesse a ficha abaixo para investir XP próprio, consultar Atributos e Vida. Quando ajudar em combate, concede +1A ao domador.":"Prepare Domar/Pacificar. Comprar a Perícia não cria automaticamente uma criatura.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
   '<button type="button" data-action="medium-companion-toggle">'+(mediumHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
@@ -1478,7 +1478,7 @@ function renderOwnedPanel(){
  const largeHere=largeCompanionPresent();
  const largeMarkup=largeOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro grande</strong><small>'+(
-   largeHere?"Ficha independente · nível "+state.largeCompanion.level:"Aguardando domesticação")+'</small></div>'+
+   largeHere?"Ficha independente · nível "+state.largeCompanion.level+(state.largeCompanion.magical?" · mágica":""):"Aguardando domesticação")+'</small></div>'+
   '<p>'+(largeHere?"Acesse a ficha abaixo para investir XP próprio (custos de Conhecimentos/Práticas), consultar Atributos e Vida. Quando ajudar em combate, concede +1A ao domador.":"Prepare Domar/Pacificar. Comprar a Perícia não cria automaticamente uma criatura.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
   '<button type="button" data-action="large-companion-toggle">'+(largeHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
@@ -1516,7 +1516,8 @@ function renderMediumCompanion(){
   '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · XP do jogador '+playerTotalXp()+'</small></span></div>'+
   '<div class="fp-medium-fields"><label>Nome / espécie da criatura<input data-medium-field="name" maxlength="80" type="text" value="'+esc(pet.name)+'" placeholder="Ex.: lobo jovem"></label>'+
   '<label>Nível da criatura (máximo: '+state.level+')<input data-medium-field="level" type="number" min="1" max="'+state.level+'" value="'+pet.level+'"></label>'+
- '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
+ '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-medium-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label>'+
+  '<label><input data-medium-field="magical" type="checkbox"'+(pet.magical?' checked':'')+(!state.skills.includes("criar-item-foco-magia")&&!pet.magical?' disabled':'')+'> Criatura mágica média (exige Criar Item de Foco e Magia)</label></div>'+
   '<div class="fp-medium-sources">'+grid+'</div>'+
   '<div class="fp-companion-actions"><button type="button" data-action="medium-companion-match-xp"'+(playerTotalXp()<spent||state.pending?' disabled':'')+'>Igualar XP ao jogador</button><button type="button" data-action="medium-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
   '<button type="button" data-action="medium-companion-life" data-delta="1"'+(pet.life>=mediumCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
@@ -1544,7 +1545,8 @@ function renderLargeCompanion(){
   '<span><b>'+spent+' / '+total+' XP</b><small>'+available+' disponíveis · XP do jogador '+playerTotalXp()+'</small></span></div>'+
   '<div class="fp-large-fields"><label>Nome / espécie da criatura<input data-large-field="name" maxlength="80" type="text" value="'+esc(pet.name)+'" placeholder="Ex.: urso da montanha"></label>'+
   '<label>Nível da criatura (máximo: '+state.level+')<input data-large-field="level" type="number" min="1" max="'+state.level+'" value="'+pet.level+'"></label>'+
- '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-large-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label></div>'+
+ '<label>XP da criatura (igual ao jogador ou XP anterior)<input data-large-field="xpGranted" type="number" min="'+spent+'" max="'+MEDIUM_COMPANION_XP_CAP+'" value="'+total+'"></label>'+
+  '<label><input data-large-field="magical" type="checkbox"'+(pet.magical?' checked':'')+(!state.skills.includes("criar-item-foco-magia")&&!pet.magical?' disabled':'')+'> Criatura mágica grande (exige Criar Item de Foco e Magia)</label></div>'+
   '<div class="fp-large-sources">'+grid+'</div>'+
   '<div class="fp-companion-actions"><button type="button" data-action="large-companion-match-xp"'+(playerTotalXp()<spent||state.pending?' disabled':'')+'>Igualar XP ao jogador</button><button type="button" data-action="large-companion-life" data-delta="-1"'+(pet.life<=0||state.pending?' disabled':'')+'>−1 Vida</button>'+
   '<button type="button" data-action="large-companion-life" data-delta="1"'+(pet.life>=largeCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
@@ -3220,6 +3222,10 @@ function onChange(event){
   const key=el.dataset.mediumField;
   if(key==="name")pet.name=String(el.value).slice(0,80);
   else if(key==="notes")pet.notes=String(el.value).slice(0,1000);
+  else if(key==="magical"){
+   if(el.checked&&!state.skills.includes("criar-item-foco-magia")){toast("Criaturas mágicas exigem Criar Item de Foco e Magia.");renderMediumCompanion();return;}
+   pet.magical=!!el.checked;
+  }
   else if(key==="level")pet.level=clamp(Math.floor(Number(el.value)),1,state.level);
   else if(key==="xpGranted"){
    const v=clamp(Math.floor(Number(el.value)),mediumCompanionSpent(pet),MEDIUM_COMPANION_XP_CAP);
@@ -3233,6 +3239,10 @@ function onChange(event){
   const key=el.dataset.largeField;
   if(key==="name")pet.name=String(el.value).slice(0,80);
   else if(key==="notes")pet.notes=String(el.value).slice(0,1000);
+  else if(key==="magical"){
+   if(el.checked&&!state.skills.includes("criar-item-foco-magia")){toast("Criaturas mágicas exigem Criar Item de Foco e Magia.");renderLargeCompanion();return;}
+   pet.magical=!!el.checked;
+  }
   else if(key==="level")pet.level=clamp(Math.floor(Number(el.value)),1,state.level);
   else if(key==="xpGranted"){
    const v=clamp(Math.floor(Number(el.value)),largeCompanionSpent(pet),MEDIUM_COMPANION_XP_CAP);
