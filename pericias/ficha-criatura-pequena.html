@@ -64,8 +64,13 @@ function redraw(){
 }
 function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch{}redraw()}
 $("small-name").addEventListener("input",e=>{state.name=e.target.value;save()});
-$("small-total").addEventListener("change",e=>{const n=Number(e.target.value);if(Number.isSafeInteger(n)&&n>=0&&n<=100000){state.playerTotalXP=n;save()}else redraw()});
-root.addEventListener("change",e=>{if(!e.target.dataset.attr)return;state.attributes[e.target.dataset.attr]=Number(e.target.value);save()});
+$("small-total").addEventListener("change",e=>{const n=Number(e.target.value);
+ if(Number.isSafeInteger(n)&&n>=0&&n<=100000&&smallCompanionBudget(n,state.attributes).valid){state.playerTotalXP=n;save()}
+ else{redraw();$("small-status").textContent="XP insuficiente para as compras já feitas; reduza algum Grau antes de baixar o orçamento."}});
+root.addEventListener("change",e=>{if(!e.target.dataset.attr)return;const key=e.target.dataset.attr;
+ const temp={...state.attributes,[key]:Number(e.target.value)};
+ if(smallCompanionBudget(state.playerTotalXP,temp).valid){state.attributes=temp;save()}
+ else{redraw();$("small-status").textContent="Sem XP para essa compra. Reduza outro Atributo ou ajuste o XP do domador."}});
 $("small-export").addEventListener("click",()=>{
  const data=JSON.stringify({system:"Codex RPG",type:"ficha-pequena-v1",...state,ownLife:1},null,2);
  const u=URL.createObjectURL(new Blob([data],{type:"application/json"}));
@@ -79,7 +84,7 @@ $("small-file").addEventListener("change",async e=>{
  if(val.type!=="ficha-pequena-v1")throw Error("Não é uma ficha Pequena compatível");
  const temp={name:String(val.name||"").slice(0,80),playerTotalXP:Number(val.playerTotalXP),attributes:{}};
  for(const k of SMALL_ATTR_KEYS)temp.attributes[k]=Number(val.attributes?.[k]??0);
- smallCompanionBudget(temp.playerTotalXP,temp.attributes);
+ if(!smallCompanionBudget(temp.playerTotalXP,temp.attributes).valid)throw Error("XP da criatura excede XP do domador");
  state=temp;save();
  }catch(err){$("small-status").textContent="Importação recusada: "+err.message}
  e.target.value="";
