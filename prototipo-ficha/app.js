@@ -294,20 +294,8 @@ const SKILLS=[
  ],
  [
   "pericia-druidica",
-  "Perícia Druídica · Grau 1",
-  "2 XP para G1: Influência 2 + Criar Item de Foco e Magia + Perícia em Elemento Terra + Domar Criatura Pequena. Forma pequena: 19 XP de atributos (distribuição pendente), transformação gratuita, Vantagem Absoluta em Furtividade, Leve. Memoriza sem limite formas já domadas. Usa Vida animal e retorna com perdas por terços conforme SRD v0.47. Não automatizada.",
-  2
- ],
- [
-  "pericia-druidica-g2",
-  "Perícia Druídica · Grau 2",
-  "2 XP adicionais, 4 XP acumulados. Requer Grau 1 e Domar Criatura Média. Forma média com XP igual ao do jogador para Atributos animais, seguindo tabela de Formação; ativação 1 PP ou 1 Coragem, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve. Falha com Pavor cancela a forma. Vida por terços.",
-  2
- ],
- [
-  "pericia-druidica-g3",
-  "Perícia Druídica · Grau 3",
-  "2 XP adicionais, 6 XP acumulados. Requer Grau 2 e Domar Criatura Grande. Forma grande com XP igual ao do jogador para Atributos animais, seguindo tabela de Formação; ativação 1 PP ou 1 Coragem, mantém 3 dados naturalmente, Leve. Pavor mantido resolve ação e cancela forma. Vida por terços.",
+  "Perícia Druídica",
+  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 3 dados naturalmente, Leve; Pavor mantido resolve ação e encerra forma. Vida animal enquanto transformado; no retorno aplicar faixas de terços conforme SRD v0.47. Para humano 4 e urso 6: perdas de 2 ou 3 de Vida animal deixam humano com 2 Vida; perda de 4 deixa humano com 1; morte animal mata humano. Outros arredondamentos pendentes; não automatizado.",
   2
  ]
 ];
@@ -321,8 +309,6 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
  "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
- "pericia-druidica-g2": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
- "pericia-druidica-g3": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
   "practice:armas_conjuracao"
  ],
@@ -523,7 +509,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["criar-item-foco-magia","terra","pericia-druidica","pericia-druidica-g2","pericia-druidica-g3"],
+ ["criar-item-foco-magia","terra","pericia-druidica"],
  [
   "armas",
   "armas-leves",
@@ -601,8 +587,6 @@ const SKILL_BRANCHES=[
 
 const SKILL_PERMALINKS={
  "pericia-druidica": "pericia-druidica",
- "pericia-druidica-g2": "pericia-druidica",
- "pericia-druidica-g3": "pericia-druidica",
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
@@ -650,9 +634,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
- "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Perícia em Elemento Terra + Domar Criatura Pequena",
- "pericia-druidica-g2": "Perícia Druídica G1 + Domar Criatura Média",
- "pericia-druidica-g3": "Perícia Druídica G2 + Domar Criatura Grande",
+ "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -685,9 +667,7 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
- "pericia-druidica": "G1: pequena, memória ilimitada de formas domadas, Vida por terços.",
- "pericia-druidica-g2": "G2: média, 2 dados naturais, Vida por terços.",
- "pericia-druidica-g3": "G3: grande, 3 dados naturais, Vida por terços.",
+ "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada de formas domadas; Vida por faixas de terços no retorno.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -720,9 +700,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "pericia-druidica": "G1 custa 2 XP, exige Domar Criatura Pequena. Memória ilimitada, Furtividade Absoluta, Leve, Vida por terços. Transformação ainda não automatizada.",
- "pericia-druidica-g2": "G2 custa mais 2 XP, exige G1 e Domar Criatura Média; 2 dados, Vantagem em Agilidade/Destreza, Leve.",
- "pericia-druidica-g3": "G3 custa mais 2 XP, exige G2 e Domar Criatura Grande; 3 dados, Leve; Pavor mantido encerra a forma.",
+ "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas memorizadas sem limite; Vida por terços ao retornar.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -755,9 +733,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
- "pericia-druidica": "G1 pequena: gratuita",
- "pericia-druidica-g2": "G2 média: 1 PP ou 1 Coragem",
- "pericia-druidica-g3": "G3 grande: 1 PP ou 1 Coragem",
+ "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -1184,9 +1160,7 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
- if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","terra"].every(has)))return"Para Grau 1, requer Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena. Domar Criatura Pequena ainda não está cadastrada; compra bloqueada.";
- if(id==="pericia-druidica-g2" && (!has("pericia-druidica") || !has("domar-criatura-media")))return"Para Grau 2, requer Perícia Druídica G1 e Domar Criatura Média. Domar Criatura Média ainda não está cadastrada.";
- if(id==="pericia-druidica-g3" && (!has("pericia-druidica-g2") || !has("domar-criatura-grande")))return"Para Grau 3, requer Perícia Druídica G2 e Domar Criatura Grande. Domar Criatura Grande ainda não está cadastrada.";
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. As Perícias de Domar ainda não constam do criador; compra bloqueada até sua inclusão.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
