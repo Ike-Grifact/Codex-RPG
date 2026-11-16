@@ -33,6 +33,24 @@ updated: "2026-11-16"
 
 **PENDENTE para divisão matemática:** como distribuir **restos não divisíveis de XP ou Vida** entre tokens sem criar nem descartar pontos; e qual é a forma exata de recombinar tokens e dano parcial numa ficha única. Até resolver, o protótipo só oferece **repartição igual quando XP e Vida são divisíveis pelo número de tokens** e alerta para repartições inexatas; não arredondar automaticamente. O valor de DE permanece copiado da ficha original, não é calculado pela divisão de XP.
 
+### 0-AL.0-B. Dados por parte da invocação — decisão autoral posterior de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**DEFINIDO — regra específica de Invocação Elemental:** o porte determina quantos **dados de Atributo** a invocação rola e pode manter, independentemente da quantidade de dados que os graus da ficha normalmente colocariam na pilha:
+
+| Porte da invocação | Partes de rolagem | Dados rolados | Dados mantidos |
+|---|---:|---:|---:|
+| **Pequena** | 1 | **1 dado de Atributo** | **até 1** |
+| **Média** | 2 | **2 dados de Atributos** | **até 2** |
+| **Grande** | 3 | **3 dados de Atributos** | **até 3** |
+
+Cada dado pertence a **uma parte identificada** da mesma invocação (parte 1, 2 ou 3). **Registrar e apresentar separadamente** a face e os símbolos de cada parte, mesmo quando as partes estiverem próximas ou realizarem uma ação da ficha compartilhada. A ficha continua sendo **uma só**: Atributos, XP total, recursos e orçamento de ações não são multiplicados. O número máximo de dados **mantidos** é o da tabela, sem conceder quatro dados à invocação Grande nem alterar o teto de outras criaturas. O porte também **não transforma** cada parte em uma ação, ataque, turno ou fonte de XP independente.
+
+**Exemplo de leitura:** uma Grande pode rolar um dado para cada um de três zumbis e registrar separadamente `parte 1: 1E`, `parte 2: 1P`, `parte 3: 1A`. É uma ficha Grande com três dados identificados e, no máximo, três mantidos — **não** três turnos antecipados. Ao agir isoladamente, uma parte possui apenas sua contribuição de **um dado de Atributo**, respeitando a oportunidade única da invocação. O registro não soma automaticamente os três resultados para produzir três acertos.
+
+**Compatibilidade com tokens [DEFINIDO]:** as regras anteriores de repartição de XP/Vida, preservação da DE original, dano de área normal e **um único turno antecipável** permanecem. O dado identifica a parte da invocação, esteja ela desenhada como corpo separado ou dentro de um grupo; separar os resultados de dados não cria outra ficha.
+
+**PENDENTE — sem automatização inventada:** critério para escolher qual dado usar quando um Atributo possui vários dados ou passos diferentes; forma exata de agregar ou não resultados de partes distintas numa ação conjunta/agrupada contra uma DE, e interação de gastos de retenção e efeitos que acrescentam dados. Até a decisão, o protótipo **separa os registros e aplica os limites por porte**, mas não declara resolução automática de múltiplos ataques, DE ou custos.
+
 ### 0-AL.1. Compra, habilitação e ativação [DEFINIDO]
 
 - **Custo de compra: 1 XP**, pago uma única vez.
