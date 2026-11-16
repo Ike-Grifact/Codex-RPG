@@ -198,7 +198,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
  }
  static async chooseSource(event,target){
-  if(this._busy||this._pending)return;
+  if(this._busy)return;
+  if(this._pending){
+   ui.notifications.info("Finalize ou descarte a rolagem pendente antes de escolher novas fontes.");
+   this.element?.querySelector(".codex-roll-results")?.scrollIntoView?.({block:"start",behavior:"smooth"});
+   return;
+  }
   const group=target.dataset.group,key=target.dataset.key,valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
   if(!valid?.some(x=>x[0]===key))return;
   const s=this.actor.system,d=this._draft,candidate={group,key};
@@ -209,7 +214,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    else if(!d.attribute)d.attribute=candidate;
    else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
    else {d.attribute=candidate;d.complement=null;}
-   this.render();return;
+   await this.render();
+   if(this._draft.base&&this._draft.attribute)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView?.({block:"start",behavior:"smooth"});
+   return;
   }
   if(group==="attribute"){
    if(!d.base){ui.notifications.info("Selecione a Prática ou Conhecimento de base.");return;}
@@ -223,7 +230,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(!mayComplement(s,d.base,this._opts.mode)){ui.notifications.warn("Terceira fonte exige habilitação pertinente.");return;}
    d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;
   }
-  this.render();
+  await this.render();
+  if(this._draft.base&&this._draft.attribute)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView?.({block:"start",behavior:"smooth"});
  }
  static async adjustGrade(event,target){
   if(!this.actor.isOwner||this._pending)return;
