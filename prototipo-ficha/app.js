@@ -1464,7 +1464,7 @@ function renderOwnedPanel(){
  const mediumHere=mediumCompanionPresent();
  const mediumMarkup=mediumOwned?
   '<article class="fp-owned-card fp-small-companion"><div><strong>Companheiro médio</strong><small>'+(
-   mediumHere?"Ficha independente · nível "+state.level:"Aguardando domesticação")+'</small></div>'+
+   mediumHere?"Ficha independente · nível "+state.mediumCompanion.level:"Aguardando domesticação")+'</small></div>'+
   '<p>'+(mediumHere?"Acesse a ficha abaixo para investir XP próprio, consultar Atributos e Vida. Quando ajudar em combate, concede +1A ao domador.":"Prepare Domar/Pacificar. Comprar a Perícia não cria automaticamente uma criatura.")+'</p>'+
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
   '<button type="button" data-action="medium-companion-toggle">'+(mediumHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
@@ -3362,11 +3362,15 @@ function bind(){
   if(mediumCompanionPresent()&&state.mediumCompanion.xpGranted+amount>MEDIUM_COMPANION_XP_CAP){
    toast("XP do companheiro excede o limite técnico do arquivo. Exporte sua ficha.");return;
   }
+  if(largeCompanionPresent()&&state.largeCompanion.xpGranted+amount>MEDIUM_COMPANION_XP_CAP){
+   toast("XP do companheiro grande excede o limite técnico do arquivo. Exporte sua ficha.");return;
+  }
   state.xpEarned+=amount;
   const companionGain=mediumCompanionGrantXp(amount);
+  const largeGain=largeCompanionGrantXp(amount);
   state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
   state.xpHistory=state.xpHistory.slice(0,60);
-  render();save();toast("+"+amount+" XP concedidos ao jogador"+(companionGain>0?" e +"+companionGain+" XP à criatura média domesticada":"")+".");
+  render();save();toast("+"+amount+" XP concedidos ao jogador"+(companionGain>0?" e +"+companionGain+" XP à criatura média domesticada":"")+(largeGain>0?" e +"+largeGain+" XP à criatura grande domesticada":"")+".");
  });
  $("lock-creation").addEventListener("click",()=>{
   if(state.pending||state.creationLocked||xpCosts().free<0)return;
