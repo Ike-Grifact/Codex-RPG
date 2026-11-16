@@ -86,16 +86,20 @@ export function splitSummonTokens({xpTotal,lifeTotal,tokenCount,defenseDE=null}=
 }
 
 /** DEFINIDO: o conjurador só antecipa um turno da invocação por oportunidade.
- * Com tokens separados, escolhe o único token que efetivamente participa.
- * Não executa Antecipar, rolagens nem ações conjuntas automaticamente.
+ * Uma parte pode atuar isoladamente, ou o conjunto pode distribuir os dados
+ * mantidos conforme a cena em uma ÚNICA atuação. Os beneficiários são validados
+ * em summonPartRoll; aqui não se concedem ações conjuntas gratuitas.
  */
-export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="individual"}={}){
- if(!Number.isSafeInteger(tokenCount)||tokenCount<1||
-    !Number.isSafeInteger(selectedToken)||selectedToken<0||selectedToken>=tokenCount)
+export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="individual",groupAction=false}={}){
+ if(!Number.isSafeInteger(tokenCount)||tokenCount<1)
+  throw new RangeError("Quantidade de tokens inválida");
+ if(!groupAction&&(!Number.isSafeInteger(selectedToken)||selectedToken<0||selectedToken>=tokenCount))
   throw new RangeError("Token selecionado inválido");
+ if(typeof groupAction!=="boolean")throw new RangeError("Participação conjunta inválida");
  if(!SUMMON_ACTION_MODES.includes(mode))throw new RangeError("Modalidade inválida");
- return {tokenCount,selectedToken,mode,turns:ANTICIPATED_SUMMON_TURNS,
-  otherTokensReceiveTurns:false,
+ return {tokenCount,selectedToken:groupAction?null:selectedToken,
+  mode:groupAction?"distribuir":mode,groupAction,
+  turns:ANTICIPATED_SUMMON_TURNS,otherTokensReceiveTurns:false,
   normalAnticipationAndJointCostsApply:true};
 }
 
