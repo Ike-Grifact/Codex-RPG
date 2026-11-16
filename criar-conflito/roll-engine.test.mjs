@@ -14,6 +14,7 @@ test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
 test("Faces simbólicas corretas, descarte sem Pavor e máximo de dados",()=>{
  const t=blank("monstro");t.attributes.forca=2;t.keep=2;
  const rolled=creaturePool(t,"forca","vigor").pool.map((d,i)=>({...d,face:i===2?3:1}));
+ assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(4,3),[0,0,1]);
  const r=previewCreatureRoll(t,rolled,rolled.slice(0,2).map(d=>d.id),{de:1});
  assert.equal(r.ok,true);
