@@ -127,16 +127,31 @@ function card(n,edit){
   '<line class="fp-gene-card-separator" x1="'+(x+17)+'" x2="'+(x+width-17)+'" y1="'+(y+38)+'" y2="'+(y+38)+'"/>'+
   control+dice+'</g>';
 }
-function skill(n){
- // Identificar o elemento ou especialização sem o prefixo repetitivo.
- const compact=n.name.replace(/^Perícia em Elemento\s+/i,"Elemento ")
+function splitSkillLabel(name,maxChars){
+ const compact=String(name||"").trim()
+  .replace(/^Perícia em Elemento\s+/i,"Elemento ")
   .replace(/^Perícia em\s+/i,"").replace(/^Perícia\s+/i,"");
- const limit=n.geneSide?17:22;
- const shortened=compact.length>limit?compact.slice(0,limit-1)+"…":compact;
+ const parts=compact.split(/\s+/),lines=[];let current="";
+ for(const word of parts){
+  const next=current?current+" "+word:word;
+  if(current&&next.length>maxChars){lines.push(current);current=word;}
+  else current=next;
+ }
+ if(current)lines.push(current);
+ if(lines.length>2){
+  const tail=lines.slice(1).join(" ");
+  lines.splice(1,lines.length-1,tail.length>maxChars?tail.slice(0,maxChars-1)+"…":tail);
+ }
+ return lines.length?lines:[""];
+}
+function skill(n){
+ // Letras pequenas e em até duas linhas; full name no title e aria-label.
+ const lines=splitSkillLabel(n.name,n.geneSide?16:20);
+ const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
-  '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+esc(shortened)+'</text></g>';
+  '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
 function draw(nodes,height,selected,affinity,branches,edit,camera){
  const byId=new Map(nodes.map(n=>[n.id,n]));
