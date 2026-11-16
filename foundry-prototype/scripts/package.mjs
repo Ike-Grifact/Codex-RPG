@@ -97,6 +97,7 @@ export function preparePackage(destination, tag) {
   mkdirSync(destination);
   for (const name of content) copyDirectory(join(source, name), join(destination, name));
   cpSync(join(source, "..", "prototipo-ficha", "gene-graph.js"), join(destination, "module", "codex-gene-graph.js"));
+  cpSync(join(source, "..", "prototipo-ficha", "elemental-summoning.mjs"), join(destination, "module", "elemental-summoning.mjs"));
   generateRuneFaces(join(destination, "assets", "dice", "runes"));
   cpSync(join(source, "README.md"), join(destination, "README.md"), {
     errorOnExist: true, force: false,

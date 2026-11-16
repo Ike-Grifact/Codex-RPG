@@ -39,7 +39,7 @@
     <div class="codex-resource">
       <span>VIDA</span><strong>{{codex.life}} / {{codex.lifeMax}}</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
-      <small>3/3: 1 dia · 2/3: 1 semana · 1/3: requer Medicina</small>
+      <small>{{codex.health.label}}{{#if codex.healthApplied}}{{#if codex.health.coragem}} · {{codex.health.coragem}} Coragem por ação{{/if}}{{/if}}</small>
     </div>
     {{#unless codex.attributesOnly}}<div class="codex-resource">
       <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
@@ -344,11 +344,10 @@
   <div class="codex-bottom-layout">
     {{#unless codex.attributesOnly}}
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Perícias / habilitações</h2><span>Compra experimental por XP disponível; requisitos principais validados</span></div>
-      <p class="codex-tip">Compra de Perícias consome o orçamento de XP calculado, respeitando os requisitos principais. Requisitos avançados ainda dependem da validação do Narrador.</p>
+      <div class="codex-block-title"><h2>Perícias / habilitações</h2><span>XP e requisitos por Perícia</span></div>
       {{#each codex.skills}}
       <div class="codex-skill {{#if this.owned}}is-owned{{/if}}">
-        <div><strong>{{this.name}}</strong><small>{{this.detail}} · {{this.cost}} XP</small></div>
+        <div><strong>{{this.name}}</strong><small>{{this.detail}} · {{#if this.pending}}XP de aquisição pendente{{else}}{{this.cost}} XP{{/if}}</small></div>
                 {{#if @root.codex.editing}}
           {{#unless this.owned}}{{#if this.blocker}}<small>{{this.blocker}}</small>{{/if}}{{/unless}}
           <button type="button" data-action="toggleSkill" data-key="{{this.id}}" {{#unless this.owned}}{{#unless this.canBuy}}disabled{{/unless}}{{/unless}}>{{#if this.owned}}Adquirida{{else}}Comprar{{/if}}</button>

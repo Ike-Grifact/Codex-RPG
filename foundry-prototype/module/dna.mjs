@@ -4,84 +4,11 @@ import {requestRoll} from "./roll-workflow.mjs";
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 
+import {summonPlan} from "./summon-planning.mjs";
+import {showSkill} from "./skill-catalog.mjs";
+
 const ns="codex-rpg-foundry";
 const applications=new Map();
-const graphBranches = [
- [
-  "armas",
-  "armas-leves",
-  "maestria-arremesso-armas",
-  "disparo-fulminante",
-  "disparo-multiplo"
- ],
- [
-  "armas",
-  "armas-leves",
-  "armas-medias",
-  "armas-pesadas",
-  "golpe-fulminante",
-  "espalhar-golpe",
-  "manejo-perfeito",
-  "maestria-manejo-duplo"
- ],
- [
-  "pugilismo",
-  "artista-marcial",
-  "golpe-fulminante",
-  "espalhar-golpe"
- ],
- [
-  "disciplina-avancada",
-  "manejo-perfeito",
-  "maestria-manejo-duplo"
- ],
- [
-  "recuperacao-vigorosa",
-  "recuperacao-movimento",
-  "instinto-sobrevivencia"
- ],
- [
-  "criar-item-foco-magia",
-  "escudo-arcano",
-  "conjuracao-equilibrada",
-  "peritoconj",
-  "improviso",
-  "mestre",
-  "fogo",
-  "agua",
-  "vento",
-  "terra",
-  "sagrado",
-  "veneno",
-  "sangue",
-  "trevas",
-  "criar-veneno",
-  "criar-antidoto",
-  "transfusao"
- ],
- [
-  "provocacao-sofisticada",
-  "combate",
-  "montar",
-  "recobrar-coragem"
- ],
- [
-  "armas-longo-alcance",
-  "maestria-arremesso-armas",
-  "disparo-fulminante",
-  "disparo-multiplo",
-  "disparo-violento",
-  "disparo-tatico"
- ],
- [
-  "armas-fogo",
-  "disparo-multiplo"
- ],
- [
-  "furtividade",
-  "furtividade-avancada"
- ]
-];
 const groups=Object.entries(developmentGroups);
 const graphGroups=Object.fromEntries(groups.map(([key,group])=>[group.graph,key]));
 
@@ -90,10 +17,10 @@ function graphicalNodes(system){
   type:group.graph, id:group.graph+":"+key, key, name,
   grade:system[group.field]?.[key]??0, dice:sourceDice(kind,key,system).map(n=>"d"+n)
  })));
- const skills=SKILLS.map(skill=>{
+ const skills=SKILLS.filter(row=>showSkill(row,system)).map(skill=>{
   const row=skillDetails(system,skill.id);
   return {type:"skill",id:skill.id,name:row.name,label:row.blocker||row.cost+" XP",
-   state:row.owned?"owned":row.canBuy?"available":"locked"};
+   state:row.owned?"owned":row.canBuy?"available":!row.pending&&row.affordable&&!row.met?"potential":"locked"};
  });
  return [...sources,...skills];
 }
@@ -112,7 +39,7 @@ function detailMarkup(system,id,pendingRoll){
  const row=skillDetails(system,id);
  const alternativeMarkup=row.alternatives.map(branch=>"<ul>"+branch.map(item=>
   '<li class="'+(item.met?"met":"unmet")+'">'+(item.met?"✓ ":"○ ")+esc(item.name)+'</li>').join("")+"</ul>").join("<p>ou</p>");
- return '<h3>'+esc(row.name)+'</h3><p>'+row.cost+' XP</p><p>'+esc(row.detail)+'</p>'+
+ return '<h3>'+esc(row.name)+'</h3><p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p><p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
   (row.owned?'<p>Adquirida</p>':'<button type="button" data-action="buy"'+(!row.canBuy?" disabled":disabled)+'>Comprar Perícia</button>')+
   (!row.owned&&row.blocker?'<p>'+esc(row.blocker)+'</p>':'');
@@ -140,8 +67,32 @@ function markRequirements(root,selected,system){
   line.setAttribute("class","codex-dna-requirement "+(item.met?"met":"unmet"));
   line.setAttribute("x1",String(from[0]));line.setAttribute("y1",String(from[1]));
   line.setAttribute("x2",String(to[0]));line.setAttribute("y2",String(to[1]));
-  viewport.prepend(line);
+  viewport.insertBefore(line,viewport.querySelector(".fp-gene-node"));
  }
+}
+
+
+const sizeLabels={pequena:"Pequeno",media:"Médio",grande:"Grande"};
+const elementLabels={psique:"Psique",fogo:"Fogo",agua:"Água",vento:"Ar",terra:"Terra",sagrado:"Sagrado",veneno:"Veneno",sangue:"Sangue",trevas:"Trevas"};
+function optionList(keys, labels){
+ return keys.map(id=>'<option value="'+esc(id)+'">'+esc(labels[id])+'</option>').join("");
+}
+function summoningMarkup(rules,system){
+ const sizes=optionList(rules.summonableElementalSizes(system.skills),sizeLabels);
+ const elements=optionList(rules.eligibleElementalSkills(system.skills),elementLabels);
+ if(!sizes||!elements)return "";
+ const payment='<option value="courage">Coragem</option><option value="pp">PP</option>';
+ const mastery=system.skills.includes("mestre");
+ return '<section class="codex-summon-plan" data-summon-plan><h4>Planejar invocação</h4>'+
+  '<label>Porte <select name="size">'+sizes+'</select></label>'+
+  '<label>Elemento <select name="first">'+elements+'</select></label>'+
+  (mastery&&system.skills.includes("improviso")?'<label>Segundo elemento <select name="second"><option value="">Nenhum</option>'+elements+'</select></label>':'')+
+  '<label>Custo-base <select name="base">'+payment+'</select></label>'+
+  (mastery?'<label>Ativar Maestria <select name="mastery"><option value="">Sem Maestria</option>'+payment+'</select></label>':'')+
+  '<label>Tokens <input name="count" type="number" min="1" step="1" value="1"></label>'+
+  '<div data-summon-split hidden><label>Vida total <input name="life" type="number" min="1" step="1"></label>'+
+  '<label>DE da ficha <input name="de" type="number" min="0" step="1"></label></div>'+
+  '<p data-summon-summary role="status"></p><small>O Narrador confirma a ativação, mantém uma única ficha ativa por conjurador e aplica efeitos, ações e dissipação.</small></section>';
 }
 
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
@@ -166,6 +117,8 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   await super._onRender(context,options);
   const root=this.element.querySelector(".codex-dna-root");
   root.addEventListener("change",async event=>{
+   const planner=event.target.closest("[data-summon-plan]");
+   if(planner){this.updateSummonPlan(planner);return;}
    const field=event.target.dataset.identity;
    if(!["name","system.concept","system.origin"].includes(field)||!this.actor.isOwner)return;
    const value=event.target.value.trim();
@@ -196,7 +149,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const map=root.querySelector("[data-dna-map]");
   const focused=map.contains(map.ownerDocument.activeElement);
   window.CodexGeneGraph.render(map,{
-   skills:graphicalNodes(system),branches:graphBranches,selected:this.selected,showFuture:true,onSelect:id=>{
+   skills:graphicalNodes(system),selected:this.selected,showFuture:true,onSelect:id=>{
     this.selected=id;
     this.refresh();
    },
@@ -205,6 +158,28 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(focused)map.querySelector('[data-gene-id="'+CSS.escape(this.selected)+'"]')?.focus({preventScroll:true});
   const detail=root.querySelector("[data-dna-detail]");
   detail.innerHTML=detailMarkup(system,this.selected,pendingRoll);
+  if(this.selected==="invocacao-elemental"&&system.skills.includes(this.selected)){
+   detail.insertAdjacentHTML("beforeend",summoningMarkup(this.summonRules,system));
+   const planner=detail.querySelector("[data-summon-plan]");
+   if(planner)this.updateSummonPlan(planner);
+  }
+ }
+ updateSummonPlan(planner){
+  const inputs=Object.fromEntries([...planner.querySelectorAll("select,input")].map(el=>[el.name,el.value]));
+  const count=Number(inputs.count),summary=planner.querySelector("[data-summon-summary]");
+  planner.querySelector("[data-summon-split]").hidden=count<=1;
+  try{
+   if(count>1&&(inputs.life===""||inputs.de===""))throw Error("Informe a Vida total e a DE da ficha da invocação.");
+   const de=Number(inputs.de);
+   if(count>1&&(!Number.isSafeInteger(de)||de<0))throw Error("Informe uma DE inteira a partir de zero.");
+   const plan=summonPlan(this.summonRules,this.actor.system,{...inputs,count,life:Number(inputs.life),de});
+   const lines=[plan.xpTotal+" XP próprios · "+plan.courage+" Coragem · "+plan.pp+" PP.",
+    plan.dice.rolled+" dado(s) de Atributo, até "+plan.dice.maxKept+" mantido(s). Um turno antecipável e um beneficiário por ação conjunta."];
+   if(plan.split)lines.push(plan.split.exact?plan.split.xpPerToken+" XP e "+plan.split.lifePerToken+" Vida por token · DE "+plan.split.defenseDE+" preservada.": "Divisão com restos. A distribuição exige decisão do Narrador.");
+   if(plan.stillBody)lines.push("Projeção de Psique: o corpo do conjurador permanece imóvel.");
+   if(plan.necromancy)lines.push("Sangue + Trevas: Necromancia.");
+   summary.textContent=lines.join(" ");
+  }catch(error){summary.textContent=error.message;}
  }
  static stage(_event,target){
   this.stageName=target.dataset.stage;
@@ -245,6 +220,7 @@ export async function openCodexDNA(actor,stage="map"){
  try{
   if(!window.CodexGeneGraph)await import("./codex-gene-graph.js");
   const app=applications.get(actor.uuid)??new CodexDNA(actor,stage);
+  app.summonRules??=await import("./elemental-summoning.mjs");
   applications.set(actor.uuid,app);
   return await app.render({force:true});
  }catch(error){ui.notifications.error("Codex Genético: "+error.message);}

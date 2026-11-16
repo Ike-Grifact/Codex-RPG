@@ -1,4 +1,4 @@
-import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols} from "./rules.mjs";
+import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols, healthByLife} from "./rules.mjs";
 import {equippedDie} from "./equipment-logic.mjs";
 import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
@@ -26,6 +26,9 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (![stepDieId, equipmentId].every(id => typeof id === "string")) throw Error("Fonte de dado inválida.");
   const step = !system.animalRules && input.step === true;
   const extraKeep = system.animalRules ? 0 : Math.max(0, Math.min(system.monsterRules ? 2 : 1, Math.trunc(Number(input.extraKeep)) || 0));
+  const health = actor.type==="character" && system.life ? healthByLife(system,system.life.value) : null;
+  if(health?.id==="morto")throw Error("Vida zero: o personagem não pode agir.");
+  if((health?.coragem??0)+Number(step)>system.courage)throw Error("Coragem insuficiente para agir neste estado de Saúde.");
   const scene = game.scenes.get(sceneId);
   const combat = game.combats.find(entry => entry.started && entry.scene?.id === scene?.id);
   const target = lookupTarget(game, user, sceneId, targetIds, input.targetDodges === true);
@@ -47,10 +50,10 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (activationCost > (system.pavorLocal ?? 0)) throw Error("Pavor local insuficiente para a ativação.");
   const {dice, formula, roll} = await rollPool(plan.pool);
   const pending = {
-    version: 3, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
+    version: 4, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
     base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
-      mode, equipmentId, de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,
+      health, mode, equipmentId, de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
       attackWeight, targetWeight, weightEnabled: input.weightEnabled === true,
       noisy: Boolean(item?.system.properties?.includes("Barulhenta")),
@@ -69,18 +72,18 @@ export async function preparePendingRoll(actor, request, user, game) {
 function optionsFor(actor, options) {
   const s = actor.system;
   return {
-    ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage, monster: s.monsterRules,
+    ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage - (options.health?.coragem??0), monster: s.monsterRules,
     animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character",
     weight: options.weightEnabled ? affinity(options.attackWeight, options.targetWeight) : 0,
   };
 }
 
 export function alternativesFor(actor, pending, de = pending.options.de) {
-  return compareKeptOptions(pending.dice, {...optionsFor(actor, pending.options), de}, 4);
+  return compareKeptOptions(pending.dice, {...optionsFor(actor, pending.options), legacyD4Faces:pending.version!=null&&pending.version<4, de}, 4);
 }
 
 export function rollResult(actor, pending, de = pending.options.de) {
-  const options = {...optionsFor(actor, pending.options), de};
+  const options = {...optionsFor(actor, pending.options), legacyD4Faces:pending.version!=null&&pending.version<4, de};
   const kept = pending.dice.filter(die => pending.selected.includes(die.id));
   const critical = kept.length >= 2 && kept.every(die => die.face === die.sides);
   const bonusP = options.noisy ? (critical ? 2 : 1) : 0;
@@ -97,7 +100,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   if (!result.ok) throw Error(result.errors.join(" "));
 
   const extra = Math.max(0, pending.selected.length - keepForActor(actor, 0));
-  let courage = Number(Boolean(o.step && !o.stepPaid)) + (usesLocal(actor) ? 0 : extra);
+  let courage = (o.health?.coragem??0) + Number(Boolean(o.step && !o.stepPaid)) + (usesLocal(actor) ? 0 : extra);
   const pavor = (o.activationCost ?? costToActivate(actor, game.combat?.started)) + (usesLocal(actor) ? extra : 0);
   let pp = 0;
   const item = actor.items.get(o.equipmentId);
@@ -134,7 +137,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   // Dados rolados uma única vez; o chat informa a face e as runas de cada dado.
   const chosenIds=new Set(pending.selected);
   const cards=pending.dice.map(die=>{
-    const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face);
+    const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face,pending.version<4);
     const marks=faceIcons(symbols);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
       '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+'</div>'+
@@ -152,6 +155,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     ${result.critical ? `<p>Crítico · ${result.critical} faces máximas mantidas.</p>` : ""}
     ${active.length ? `<p>Características · ${active.map(escapeHTML).join(", ")}.</p>` : ""}
     <p>Dano básico ${result.damage} · Narrador aplica à Integridade/Vida e decide condições.</p>
+    ${o.health ? `<p>Saúde ao agir · ${o.health.label}.</p>` : ""}
     <p>Custo · ${courage + Number(Boolean(o.stepPaid))} Coragem, ${pp} PP, ${pavor} Pavor local.</p>
     ${ally ? `<p>1A para passar a oportunidade a ${escapeHTML(ally.name)} · validação do Narrador.</p>` : ""}
     ${result.p ? `<p>Pavor residual · ${result.p}P para o Narrador encaminhar conforme o alvo.</p>` : ""}

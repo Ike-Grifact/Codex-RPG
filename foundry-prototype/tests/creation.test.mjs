@@ -101,12 +101,12 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   assert.equal(calls.length, 1);
 });
 
-test("o empacotamento gera 20 faces PNG distintas com a paleta oficial",()=>{
+test("o empacotamento gera 21 faces PNG distintas com a paleta oficial",()=>{
  const target=mkdtempSync(join(tmpdir(),"codex-runas-"));
  try{
-  assert.equal(generateRuneFaces(target),20);
+  assert.equal(generateRuneFaces(target),21);
   const files=readdirSync(target);
-  assert.equal(files.length,20);
+  assert.equal(files.length,21);
   assert.ok(files.includes("e2-a1-p0.png"));
   const image=readFileSync(join(target,"e2-a1-p0.png"));
   assert.deepEqual([...image.subarray(0,8)],[137,80,78,71,13,10,26,10]);

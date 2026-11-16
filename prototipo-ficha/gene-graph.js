@@ -45,7 +45,7 @@ const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,in
 // Famílias visuais com identificadores estáveis para futuros ícones.
 // Afinidade temática não substitui os requisitos de skillReq().
 const GENE_CONSTELLATIONS=[
- {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","concentracao-refinada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
  {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},

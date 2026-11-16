@@ -1,6 +1,7 @@
+import {showSkill} from "./skill-catalog.mjs";
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
- sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
+ sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,healthByLife,balance,maxPP,
  loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
@@ -74,6 +75,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
+   health:healthByLife(s,s.life.value),healthApplied:actor.type==="character",
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
@@ -89,7 +91,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    attributes:cards(ATTRIBUTES,"attribute",s,d),
    knowledges:attributesOnly?[]:cards(KNOWLEDGES,"knowledge",s,d),
    practices:attributesOnly?[]:cards(PRACTICES,"practice",s,d),
-   skills:attributesOnly?[]:SKILLS.map(k=>({...skillDetails(s,k.id),detail:k.detail.slice(0,190)})),
+   skills:attributesOnly?[]:SKILLS.filter(row=>showSkill(row,s)).map(k=>skillDetails(s,k.id)),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
     quantity:i.system.quantity,equipped:i.system.equipped,
@@ -106,6 +108,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const rawPlan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,equipmentDie:die});
     const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,
      step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
+   if(actor.type==="character"&&(ctx.codex.health.id==="morto"||s.courage<ctx.codex.health.coragem+Number(this._opts.step))){
+    plan.errors.push(ctx.codex.health.id==="morto"?"Vida zero: o personagem não pode agir.":"Coragem insuficiente para agir neste estado de Saúde.");plan.ok=false;
+   }
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
       const isShared=hasDiscipline(d),targets=[...game.user.targets];
    let target=null,targetError="";
@@ -168,7 +173,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
     localCost:(p.options.activationCost??0)+(usesLocal(actor)?Math.max(0,p.selected.length-keepForActor(actor,0)):0),
-    courageCost:Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
+    courageCost:(p.options.health?.coragem??0)+Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
    };
   }
   return ctx;

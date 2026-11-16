@@ -12,7 +12,7 @@ const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  knowledges:grades(["protecao","astronomia","medicina","alquimia","engenharia","erudicao"]),
  practices:grades(["armas_conjuracao","atletismo","furtividade","artesao","apresentacao","coleta"]),
  skills:new F.ArrayField(new F.StringField({required:true}),{required:true,initial:[]}),
- life:new F.SchemaField({value:nn(3),medical:new F.BooleanField({initial:false})}),
+ life:new F.SchemaField({value:nn(4),medical:new F.BooleanField({initial:false})}),
  courage:nn(10),pp:nn(0),xp:nn(0),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
  pavorLocal:nn(0),animalRules:new F.BooleanField({initial:animal}),monsterHumanoidRules:new F.BooleanField({initial:monsterHumanoid}),monsterRules:new F.BooleanField({initial:monster}),

@@ -17,7 +17,7 @@ const weights = {muito_leve: .0125, leve: .125, medio: .5, alto: 1, extremo: 2};
 const categories = {muito_leve: "muito-leve", leve: "leve", medio: "medio", alto: "pesado", extremo: "muito-pesado"};
 const webItemTypes = {arma: "weapon", armadura: "armor", escudo: "shield", foco: "focus", ferramenta: "tool", outro: "misc"};
 const encounterTypes = {criatura: "animal", monstro: "creature", humanoide: "humanoid", humanoideMonstro: "monsterHumanoid", "humanoide-monstro": "monsterHumanoid", humanoide_monstro: "monsterHumanoid"};
-const supportedSkills = new Set(SKILLS.map(skill => skill.id));
+const supportedSkills = new Set([...SKILLS.map(skill => skill.id),"manejo-duplo"]);
 const text = (value, limit = 160) => typeof value === "string" ? value.trim().slice(0, limit) : "";
 const number = (value, min, max) => {
   const n = Number(value);

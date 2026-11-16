@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {enqueueRoll} from "../module/roll-workflow.mjs";
-import {keepForActor, rollNamespace as NS} from "../module/roll-resolution.mjs";
+import {keepForActor, rollResult, alternativesFor, rollNamespace as NS} from "../module/roll-resolution.mjs";
 
 const flag = `flags.${NS}.pendingRoll`;
 const user = {id: "player"};
@@ -150,4 +150,15 @@ test("Humanoide Monstro usa custo elevado, orçamento informado e dados provisó
   assert.equal(xpLedger(system).grant,14);
   assert.equal(xpLedger(system).spent,4);
   assert.deepEqual(sourceDice("attribute","forca",system),[6]);
+});
+
+test("Estado de Saúde reserva Coragem também no comparador de dados mantidos",()=>{
+ const {actor}=fixture();
+ actor.system.courage=1;
+ const pending={version:4,dice:[1,2,3].map(n=>({id:String(n),sides:6,face:2})),
+  selected:["1","2","3"],options:{extraKeep:1,de:1,health:{id:"incapacitado",e:-1,a:0,p:1,coragem:1}}};
+ assert.equal(rollResult(actor,pending).ok,false);
+ assert.equal(alternativesFor(actor,pending).some(result=>result.ids.length===3),false);
+ pending.selected.pop();
+ assert.equal(rollResult(actor,pending).ok,true);
 });

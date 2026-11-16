@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
- buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
+ buildPool,resolveRoll,compareKeptOptions,starterPurchasePlan,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,healthByLife,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {faceLabels} from "../module/dice-so-nice.mjs";
@@ -14,23 +14,24 @@ function human(){return{
 };}
 test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurador",()=>{
  assert.equal(ATTRIBUTES.length,6);assert.equal(KNOWLEDGES.length,6);assert.equal(PRACTICES.length,6);
- assert.equal(SKILLS.length,39);
- assert.ok(!SKILLS.some(s=>["combate","armas","aprendiz"].includes(s.id)));
+
+ assert.ok(!SKILLS.some(s=>!s.legacy&&["combate","armas","aprendiz"].includes(s.id)));
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
  assert.ok(!SKILLS.some(s=>s.id==="peritoconj"));
  assert.equal(SKILLS.find(s=>s.id==="conjuracao-equilibrada")?.name,"Conjuração Refinada");
  assert.match(SKILLS.find(s=>s.id==="armas-leves").detail,/1 PP\/1 Coragem/);
  assert.doesNotMatch(SKILLS.find(s=>s.id==="armas-pesadas").detail,/2 Coragens/);
 });
-test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
+test("Recuperação Vigorosa preserva o XP de fichas antigas e aguarda custo definitivo",()=>{
  const skill=SKILLS.find(s=>s.id==="recuperacao-vigorosa");
- assert.equal(skill?.cost,1);
+ assert.equal(skill?.cost,null);
+ assert.equal(xpLedger({...human(),skills:[skill.id]}).skills,1);
  const actor=human();
  actor.attributes.vigor=2;
  assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),false);
  actor.attributes.vigor=3;
  assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),true);
- assert.ok(!SKILLS.some(s=>s.id==="recuperacao-movimento"),"Maestria com XP pendente não pode ser comprada");
+ assert.equal(SKILLS.find(s=>s.id==="recuperacao-movimento").cost,null);
 });
 test("Runas 3D do d10 não exibem polígonos nem Pavor na face máxima",()=>{
  const labels=faceLabels(10);
@@ -53,7 +54,7 @@ test("Perícia revogada não consome XP e Conjuração Refinada mantém ID",()=>
  assert.equal(xpLedger(old).skills,0);
  const renamed=human();renamed.skills=["conjuracao-equilibrada"];
  assert.equal(xpLedger(renamed).skills,1);
- assert.match(SKILLS.find(x=>x.id==="conjuracao-equilibrada").detail,/PENDENTES/);
+ assert.match(SKILLS.find(x=>x.id==="conjuracao-equilibrada").detail,/PENDENTE/i);
 });
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
@@ -155,7 +156,7 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.skills,2);
  assert.equal(xp.grant,20);
  assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
- assert.equal(lifeMax(s),4);
+ assert.equal(lifeMax(s),5);
  assert.equal(maxPP(1),0);assert.equal(maxPP(5),1);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
 });
@@ -304,4 +305,25 @@ test("Disciplina Avançada permite um complemento e Manejo Duplo permite duas Di
  assert.equal(new Set(plan.pool.map(d=>d.id)).size,plan.pool.length);
  assert.equal(buildPool(dual,duplicate,{mode:"conjuracao"}).ok,false);
  assert.equal(buildPool(dual,{base:discipline,second:discipline},{mode:"armas"}).ok,false);
+});
+
+test("v0.46 usa d4 E/A/P/vazio e rolagens anteriores mantêm o d4 original",()=>{
+ assert.deepEqual(FACES[4],[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
+ const die=[{id:"d",sides:4,face:4}];
+ assert.equal(resolveRoll(die,["d"]).reached,0);
+ assert.equal(resolveRoll(die,["d"],{legacyD4Faces:true}).reached,1);
+ const crit=resolveRoll([...die,{id:"outro",sides:4,face:4}],["d","outro"]);
+ assert.equal(crit.critical,2);
+ assert.equal(crit.e,0);
+});
+test("Saúde distribui Vida e conta Pavor do estado para DE e anulação",()=>{
+ const s=human();s.attributes.forca=2;s.attributes.vigor=2;
+ assert.equal(lifeMax(s),7);
+ assert.deepEqual(healthByLife(s,3).bands,[3,2,1,1]);
+ assert.deepEqual([0,1,2,3,5].map(n=>healthByLife(s,n).id),["morto","inconsciente","incapacitado","ferido","saudavel"]);
+ const health=healthByLife(s,2),die=[{id:"d",sides:4,face:2}];
+ const risk=resolveRoll(die,["d"],{de:1,health});
+ assert.deepEqual([risk.e,risk.p,risk.success,health.coragem],[0,1,true,1]);
+ const safe=resolveRoll(die,["d"],{de:1,health,cancelP:1});
+ assert.deepEqual([safe.p,safe.success],[0,false]);
 });

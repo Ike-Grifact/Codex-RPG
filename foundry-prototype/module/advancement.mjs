@@ -1,5 +1,7 @@
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, XP_ATTRIBUTE, XP_TRAINING, xpLedger, starterPurchasePlan} from "./rules.mjs";
 
+import {requirements} from "./skill-catalog.mjs";
+
 export const developmentGroups = {
   attribute: {field:"attributes", label:"Atributos", graph:"attr", list:ATTRIBUTES, description:"Capacidades naturais que entram na pilha de dados."},
   knowledge: {field:"knowledges", label:"Conhecimentos", graph:"know", list:KNOWLEDGES, description:"Formações que fornecem dados conforme o Grau."},
@@ -7,65 +9,6 @@ export const developmentGroups = {
 };
 const groupsByPrefix = {a:"attribute", k:"knowledge", p:"practice"};
 const entries = new Map(SKILLS.map(skill=>[skill.id,skill]));
-// Alternativas de aquisição do Codex Genético web. Cada linha é uma combinação cumulativa.
-const requirements = {
- "montar":[["a:influencia:2"]],
- "provocacao-sofisticada":[["a:influencia:2"]],
- "armas-leves":[["p:armas_conjuracao:1"]],
- "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
- "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
- "disciplina-avancada":[["p:armas_conjuracao:2"]],
- "recuperacao-vigorosa":[["a:vigor:3"]],
- "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
- "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
- "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
- "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
- "furtividade-avancada":[["p:furtividade:2","s:furtividade"]],
- "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
- "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
- "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
- "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
- "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "vento":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "terra":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "sagrado":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
- "sangue":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
- "trevas":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
- "veneno":[["p:armas_conjuracao:2","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
- "criar-veneno":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
- "criar-antidoto":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2","s:criar-veneno"]],
- "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
- "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
- "maestria-arremesso-armas":[
-  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
-  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
-  ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-pesadas"]],
- "golpe-fulminante":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
-   ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
- "espalhar-golpe":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
-   ["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante","s:"+id])],
- "disparo-fulminante":[
-  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
-   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","s:"+id])],
- "disparo-multiplo":[
-  ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
-   ["p:armas_conjuracao:2","a:destreza:2","a:agilidade:2","s:"+id,"s:disparo-fulminante"])],
- "disparo-violento":[
-  ...["armas-longo-alcance","maestria-arremesso-armas"].flatMap(id=>[
-   ["p:armas_conjuracao:2","a:destreza:2","a:forca:2","s:"+id],
-   ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","p:atletismo:1","s:"+id]])],
- "maestria-manejo-duplo":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].map(id=>
-   ["a:forca:2","a:destreza:2","a:agilidade:1","s:disciplina-avancada","s:"+id])],
- "mestre":[
-  ...["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].map(id=>
-   ["p:armas_conjuracao:3","a:inteligencia:3","a:destreza:3","s:criar-item-foco-magia","s:improviso","s:"+id])]
-};
-requirements.marciais=[["p:armas_conjuracao:1"]];
-const pendingRules = new Set(["maestria-manejo-duplo"]);
 
 function requirement(system,value){
   const [kind,key,grade] = value.split(":");
@@ -82,11 +25,11 @@ export function skillDetails(system,id){
   const alternatives=(requirements[id]??[]).map(branch=>branch.map(entry=>requirement(system,entry)));
   const owned=system.skills?.includes(id) || (id==="maestria-manejo-duplo"&&system.skills?.includes("manejo-duplo"));
   const met=!alternatives.length||alternatives.some(branch=>branch.every(item=>item.met));
-  const pending=pendingRules.has(id)||!Number.isInteger(skill.cost);
+  const pending=!Number.isInteger(skill.cost);
   const left=xpLedger(system).left;
   const missing=alternatives.filter(branch=>branch.some(item=>!item.met)).map(branch=>branch.filter(item=>!item.met).map(item=>item.name).join(" + "));
-  const blocker=pending?"Requisitos completos pendentes de decisão autoral.":!met?"Falta "+missing.join(" ou ")+".":left<skill.cost?"XP insuficiente.": "";
-  return {...skill, alternatives, owned:Boolean(owned), canBuy:!owned&&!blocker, blocker};
+  const blocker=skill.legacy?"Compra encerrada. Perícia preservada em fichas existentes.":pending?"Compra pendente de custo ou regra de aquisição.":!met?"Falta "+missing.join(" ou ")+".":left<skill.cost?"XP insuficiente.": "";
+  return {...skill, alternatives, owned:Boolean(owned), canBuy:!owned&&!blocker, pending, met, affordable:left>=skill.cost, blocker};
 }
 
 export function gradeDetails(system,group,key){

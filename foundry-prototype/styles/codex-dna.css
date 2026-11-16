@@ -48,3 +48,22 @@
  .codex-dna-map{height:360px}
  .codex-dna-detail{max-height:none}
 }
+
+.codex-dna-map .fp-gene-constellation {pointer-events:none}
+.codex-dna-map .fp-gene-constellation-border {fill:var(--cx-panel2);fill-opacity:.8;stroke:var(--cx-line);stroke-width:2;stroke-dasharray:6 7}
+.codex-dna-map .fp-gene-constellation-cap {stroke:var(--cx-gold);stroke-width:3}
+.codex-dna-map .fp-gene-constellation-title {fill:var(--cx-gold);font-size:17px;font-weight:800;letter-spacing:.05em}
+.codex-dna-map [data-gene-family="elementos"] .fp-gene-constellation-border,
+.codex-dna-map [data-gene-family="natureza"] .fp-gene-constellation-border {stroke:var(--cx-gold);stroke-opacity:.6}
+.codex-dna-map .fp-gene-skill-link {fill:none;stroke:var(--cx-gold);stroke-opacity:.35;stroke-width:2;pointer-events:none}
+.codex-dna-map .fp-gene-skill-link.is-related {stroke-opacity:.86;stroke-width:3}
+.codex-dna-map .is-potential .fp-gene-dot {fill:#542176;stroke:#a779d9}
+.codex-dna-map .is-locked .fp-gene-dot {fill:var(--cx-panel);stroke:var(--cx-muted)}
+.codex-dna-map .is-locked .fp-gene-node-label {fill:var(--cx-muted)}
+.codex-dna-map .codex-dna-requirement {pointer-events:none}
+
+.codex-summon-plan {display:grid;gap:5px;margin-top:12px;padding-top:8px;border-top:1px solid var(--cx-line)}
+.codex-summon-plan h4 {margin:0 0 5px;color:var(--cx-gold)}
+.codex-summon-plan label {display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px}
+.codex-summon-plan :is(select,input) {flex:0 1 100%;min-width:0;max-width:100%}
+.codex-summon-plan [data-summon-split] {display:grid;gap:5px}
