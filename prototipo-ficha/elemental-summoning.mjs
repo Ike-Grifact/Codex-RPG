@@ -102,8 +102,9 @@ export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="indivi
 
 /** DEFINIDO 16/11/2026: uma contribuição de Atributo por parte da invocação.
  * Os resultados permanecem identificados por parte; nenhum turno novo é criado.
- * A escolha do dado dentro de Atributos com vários dados e a agregação para DE
- * coletiva continuam PENDENTES e não são inferidas por esta função.
+ * O jogador escolhe quais dados de Atributo rolar e manter, e distribui os dados
+ * mantidos por intenção na cena. A aplicação à DE de ações conjuntas ainda exige
+ * o procedimento vigente; esta função não inventa bônus nem turnos extras.
  */
 export const SUMMON_PARTS_BY_SIZE=Object.freeze({pequena:1,media:2,grande:3});
 export const SUMMON_ATTRIBUTE_KEYS=Object.freeze(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
@@ -116,8 +117,10 @@ export function summonDiceLimit(size){
  * dice: [{part:1,attribute:"forca",sides:6,face:6}, ...].
  * keptParts é opcional: por padrão, mantém todos os dados rolados do porte.
  * A origem/passos do dado deverão ser conferidos com os Atributos da ficha.
+ * assignments, quando fornecido, é decidido depois da rolagem e só aceita
+ * dados mantidos: {part, mode:individual|ajudar-conjurador|ajudar-aliado, targetId?}.
  */
-export function summonPartRoll({size,dice=[],keptParts,activePart=null}={}){
+export function summonPartRoll({size,dice=[],keptParts,activePart=null,assignments}={}){
  const rule=summonDiceLimit(size);
  if(activePart!==null&&(!Number.isInteger(activePart)||activePart<1||activePart>rule.parts))
   throw new RangeError("Parte ativa inválida");
@@ -138,6 +141,27 @@ export function summonPartRoll({size,dice=[],keptParts,activePart=null}={}){
  const kept=keptParts===undefined?results.map(x=>x.part):keptParts;
  if(!Array.isArray(kept)||new Set(kept).size!==kept.length||kept.some(x=>!parts.has(x))||
     kept.length>rolledCount)throw new RangeError("Dados mantidos precisam corresponder às partes roladas");
- return {...rule,rolled:rolledCount,maxKept:rolledCount,activePart,keptCount:kept.length,results:results.map(x=>({...x,kept:kept.includes(x.part)})),
+ // A distribuição ocorre sobre os resultados JÁ mantidos, sem dividir a face
+ // entre múltiplos beneficiários nem reutilizar um dado em outro destino.
+ if(assignments!==undefined&&!Array.isArray(assignments))
+  throw new RangeError("Distribuição precisa ser uma lista de dados mantidos");
+ const allocationMap=new Map();
+ for(const entry of assignments||[]){
+  if(!entry||!Number.isInteger(entry.part)||!kept.includes(entry.part)||allocationMap.has(entry.part)||
+     !SUMMON_ACTION_MODES.includes(entry.mode))
+   throw new RangeError("Cada dado mantido pode ser destinado uma só vez");
+  const targetId=entry.targetId;
+  if(entry.mode==="ajudar-aliado"&&(typeof targetId!=="string"||!targetId.trim()))
+   throw new RangeError("Identifique qual aliado recebe esse dado");
+  if(entry.mode!=="ajudar-aliado"&&targetId!==undefined&&targetId!==null)
+   throw new RangeError("Só ajuda a aliado requer identificador do alvo");
+  allocationMap.set(entry.part,{mode:entry.mode,targetId:entry.mode==="ajudar-aliado"?targetId.trim():null});
+ }
+ if(assignments!==undefined&&allocationMap.size!==kept.length)
+  throw new RangeError("Distribua cada dado mantido uma única vez");
+ return {...rule,rolled:rolledCount,maxKept:rolledCount,activePart,keptCount:kept.length,
+  playerChoosesDice:true,playerChoosesKept:true,playerChoosesRecipients:true,
+  allocationPending:assignments===undefined&&kept.length>0,
+  results:results.map(x=>({...x,kept:kept.includes(x.part),allocation:allocationMap.get(x.part)||null})),
   automaticDEAggregation:false,extraTurns:0,requiresGroupResolutionDecision:true};
 }
