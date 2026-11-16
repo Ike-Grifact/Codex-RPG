@@ -121,6 +121,7 @@ test("Invocação Grande separa cada face e permite manter menos de três sem tr
  assert.throws(()=>summonPartRoll({size:"media",dice:[{part:1,attribute:"forca",sides:6,face:2}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"media",dice:[{part:1,attribute:"forca",sides:6,face:2},{part:1,attribute:"vigor",sides:6,face:1}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,attribute:"disciplina",sides:10,face:3}]}),RangeError);
+ assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,source:"practice",attribute:"forca",sides:10,face:3}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"pequena",dice:[{part:1,attribute:"forca",sides:6,face:7}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"grande",dice:[{part:1,attribute:"forca",sides:6,face:1},{part:2,attribute:"forca",sides:6,face:2},{part:3,attribute:"vigor",sides:6,face:3}],keptParts:[1,1]}),RangeError);
 });
