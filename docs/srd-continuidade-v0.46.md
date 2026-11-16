@@ -60,6 +60,8 @@ Em **d4+d6, DE 1**, o êxito total permanece 83,33%, mas o **acerto limpo passa 
 
 **Validade da ficha:** as linhas com Atributo G0 **não** dispensam a compra inicial obrigatória de pelo menos um Atributo G1 e um Conhecimento/Prática G1 em outras fontes. São testes de fontes pouco treinadas de um Aprendiz legalmente criado, nunca construção de personagem inicial exclusivamente G0.
 
+**Divergência de código [PENDENTE DE SINCRONIZAÇÃO, não regra nova]:** a distribuição vigente do **d10 face 10 = 2E+1A**, aplicada no criador principal e Criar Conflito, ainda aparece como **2E+1P** no módulo de regras do Foundry antigo. Isso gera diferenças de probabilidades nas rolagens que também usem d10. **Esta revisão modifica exclusivamente as faces do d4**, portanto os resultados exatos acima usam a face oficial de d10 e **não representam a saída do Foundry desatualizado**. Corrigir o módulo Foundry requer alteração própria e validação independente, sem confundir esta diferença com efeito do novo d4.
+
 ### 0-AF.3. Recomendação para playtest [ANÁLISE / PROPOSTO]
 
 **Ponto positivo:** menos Pavor residual e mais êxitos limpos em várias DE baixas, com menor risco para personagens que usam fontes gratuitas. **Ponto crítico:** a troca da antiga face A+P por A isolado e a face máxima vazia **eliminam alguns acertos extremos**, como DE 4 em d4+d10 (5%→0%). A progressão de Atributo G0 para G1 **aumenta a chance de acerto** em DE 1–4 ao lado do mesmo d10 (90→93,33%, 60→63,33%, 20→23,33%, 0→3,33%), mas o d4 recém-balanceado ainda pode entregar **maior proporção absoluta de acertos limpos** em DE 1–2. Não considerar só o total de sucessos nem assumir dominância estrita.
