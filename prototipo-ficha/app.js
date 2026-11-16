@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.45 (Perícia Druídica documental; formas não automatizadas), base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.46 (d4 faces 1E, A+P, P, vazio); histórico v0.45 (Perícia Druídica documental; formas não automatizadas), base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -11,7 +11,7 @@ const GROUPS={attr:A,know:K,practice:P},SOURCE_PROPS={attr:"attributes",know:"kn
 const DICE_ATTR=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]];
 const DICE_FORM=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 const FACES={
- 4:[[0,0,0],[0,0,0],[0,0,1],[0,1,1]],
+ 4:[[1,0,0],[0,1,1],[0,0,1],[0,0,0]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
  10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,1,0]],
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
