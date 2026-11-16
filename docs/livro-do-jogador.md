@@ -12,7 +12,7 @@
 
 **Antecipação e Concentração Refinada — validade DEFINIDA:** o **1A guardado**, ou o **1E convertido e a Vantagem** concedidos pela Concentração Refinada, persistem até **serem usados, até o personagem realizar outra ação ou até terminar um descanso longo — o que ocorrer primeiro**. O A vira E **ao ser guardado**, mas o E não altera a rolagem que o gerou: fica reservado para a ação seguinte. Ao terminar a próxima ação, os benefícios não utilizados expiram. Não duplicar o símbolo original nem acumular reservas indefinidamente.
 
-## Antecipação e Concentração Refinada — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+## Antecipação e Concentração Refinada — decisão de 16/11/2026 [DEFINIDO, atualizado na v0.51]
 
 **Antecipação — mecânica, sem custo de XP.** Em uma rolagem que use **Disciplina**, você pode se concentrar para **guardar 1 Antecipar (1A) de um dado mantido para a sua próxima rolagem**. Esse símbolo não pode ser gasto duas vezes: se foi guardado, não pode também anular Pavor, ser convertido por outro uso ou passar o turno na ação atual. Leia a [regra de Antecipação](../mecanicas/antecipacao.html).
 
