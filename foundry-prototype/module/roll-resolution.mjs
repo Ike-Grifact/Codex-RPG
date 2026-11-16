@@ -1,7 +1,6 @@
-import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel} from "./rules.mjs";
+import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols} from "./rules.mjs";
 import {defenseDE, dodgeDE, equippedDie} from "./equipment-logic.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
-import {dieSvg} from "./dice-icons.mjs";
 
 export const rollNamespace = "codex-rpg-foundry";
 const humanoid = actor => ["humanoid", "monsterHumanoid"].includes(actor.type);
@@ -131,7 +130,22 @@ export function resolvePendingRoll(actor, pending, game) {
   if (courage || result.criticalRefundCourage) changes["system.courage"] = Math.min(10, s.courage - courage + result.criticalRefundCourage);
   if (pp || result.criticalRefundPP) changes["system.pp"] = Math.min(maxPP(s.level), s.pp - pp + result.criticalRefundPP);
   if (pavor || localReward) changes["system.pavorLocal"] = localAfterCost + localReward;
-  const kept = result.selected.map(die => `<li><span class="codex-chat-die">${dieSvg(die.sides)}d${die.sides} · face ${die.face}</span></li>`).join("");
+  // Dados rolados uma única vez; o chat informa a face e as runas de cada dado.
+  const chosenIds=new Set(pending.selected);
+  const cards=pending.dice.map(die=>{
+    const chosen=chosenIds.has(die.id),[e,a,p]=die.symbols??faceSymbols(die.sides,die.face);
+    const marks=[
+      e?'<b class="codex-chat-rune-e" aria-label="'+e+' Êxitos">'+('ᛋ'.repeat(e))+'</b>':"",
+      a?'<b class="codex-chat-rune-a" aria-label="'+a+' Antecipar">'+('ᚨ'.repeat(a))+'</b>':"",
+      p?'<b class="codex-chat-rune-p" aria-label="'+p+' Pavor">'+('ᚦ'.repeat(p))+'</b>':""
+    ].filter(Boolean).join(" ");
+    return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
+      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+'</div>'+
+      '<strong class="codex-chat-die-face">'+die.face+'</strong>'+
+      '<div class="codex-chat-die-marks">'+(marks||'<span>Vazio</span>')+'</div>'+
+      '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
+  }).join("");
+  const kept='<div class="codex-chat-dice" role="list">'+cards+'</div>';
   const sources = [pending.base, pending.attribute, pending.complement].filter(Boolean)
     .map(source => escapeHTML(sourceLabel(source.group, source.key))).join(" + ");
   const overflow = result.monsterCriticalPavor - localReward;
@@ -145,7 +159,7 @@ export function resolvePendingRoll(actor, pending, game) {
     ${ally ? `<p>1A para passar a oportunidade a ${escapeHTML(ally.name)} · validação do Narrador.</p>` : ""}
     ${result.p ? `<p>Pavor residual · ${result.p}P para o Narrador encaminhar conforme o alvo.</p>` : ""}
     ${overflow ? `<p>Crítico · ${overflow}P excedentes para a reserva pública, até o teto.</p>` : ""}
-    <ul>${kept}</ul></div>`;
+    <p class="codex-chat-dice-heading">Dados rolados · ${pending.selected.length} de ${pending.dice.length} mantidos</p>\n    ${kept}</div>`;
   const {selected, ...summary} = result;
   const combat = game.combats.get(o.combatId);
   const adjudication = {
