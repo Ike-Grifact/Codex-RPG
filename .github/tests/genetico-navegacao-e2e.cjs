@@ -14,6 +14,8 @@ const pointInSvg=async(map,x,y)=>map.evaluate((root,coord)=>{
 },{x,y});
 const checkGeneSpacing=async(map,phase)=>map.evaluate(root=>{
  const svg=root.querySelector(".fp-gene-overview"),vb=svg.viewBox.baseVal;
+ // A janela de zoom usa viewBox reduzido; o plano virtual inteiro fica no rect de fundo.
+ const canvasHeight=Number(svg.querySelector(":scope > rect")?.getAttribute("height"))||vb.height;
  const nodes=[...root.querySelectorAll(".fp-gene-skill,.fp-gene-card")].map(node=>{
   const b=node.getBBox();
   return {id:node.getAttribute("data-gene-id"),skill:node.classList.contains("fp-gene-skill"),
@@ -22,7 +24,7 @@ const checkGeneSpacing=async(map,phase)=>map.evaluate(root=>{
  const collisions=[],outside=[];
  for(let i=0;i<nodes.length;i++){
   const a=nodes[i];
-  if(a.x<-.5||a.right>vb.width+.5||a.y<-.5||a.bottom>vb.height+.5)outside.push(a.id);
+  if(a.x<-.5||a.right>vb.width+.5||a.y<-.5||a.bottom>canvasHeight+.5)outside.push(a.id);
   for(let j=i+1;j<nodes.length;j++){
    const b=nodes[j];
    if(!(a.skill||b.skill))continue;
@@ -33,7 +35,7 @@ const checkGeneSpacing=async(map,phase)=>map.evaluate(root=>{
  }
  const skills=nodes.filter(x=>x.skill);
  return {skills:skills.length,collisions:collisions.slice(0,10),outside,
-  furthest:Math.max(0,...skills.map(x=>x.bottom)),width:vb.width,height:vb.height};
+  furthest:Math.max(0,...skills.map(x=>x.bottom)),width:vb.width,height:canvasHeight};
 }).then(result=>{
  assert(result.skills>0,phase+": nenhum nó de Perícia visível");
  assert(!result.collisions.length,phase+": Perícias sobrepostas "+result.collisions.join(", "));
