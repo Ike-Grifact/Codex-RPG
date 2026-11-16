@@ -9,7 +9,29 @@ updated: "2026-11-15"
 
 **Decisões do autor — 15/11/2026:** renomear Conjuração Equilibrada para **Conjuração Refinada**, agora destinada a aumentar o alcance de efeitos mágicos (procedimento ainda a reescrever); **não modificar Escudo Arcano nem introduzir iniciativa**; reduzir **3 pontos de Integridade das armaduras**, preservando escudos; confirmar a economia elemental v0.43; fixar o **preço das pedras especiais de Veneno, Sagrado e Trevas em 3 vezes o preço das pedras elementais comuns**; abrir análise probabilística de Conhecimentos e Práticas para definir quando não rolar. Profissões/itens e especializações posteriores continuam em construção.
 
-**Precedência:** novas decisões explícitas > **seção 0-AI (v0.45)** para a progressão de Influência dos três portes > **seção 0-AH (v0.45)** para Domar criaturas grandes > **seção 0-AG (v0.45)** para XP/nível de criaturas médias e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+**Precedência:** novas decisões explícitas > **seção 0-AJ (v0.45)** para Influência progressiva 1/3/4 e extensão mágica dos portes Médio e Grande > **seção 0-AI (v0.45, histórica para 1/2/3)** > **seção 0-AH (v0.45)** para Domar criaturas grandes > **seção 0-AG (v0.45)** para XP/nível de criaturas médias e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+
+## 0-AJ. Domar Criaturas — Influência 1/3/4 e extensão mágica dos portes Médio e Grande [15/11/2026]
+
+**[DEFINIDO — decisão autoral mais recente em 15/11/2026]** Esta seção **substitui a progressão 1/2/3** documentada em **0-AI** somente quanto aos pré-requisitos de Influência para as Perícias Média e Grande. Corrige os requisitos anteriores de **0-AF/0-AH**, e **autoriza explicitamente criaturas mágicas médias e grandes** quando o domador possui **Criar Item de Foco e Magia**, substituindo as restrições antigas de 0-AF e 0-AH. A Perícia Pequena e seus requisitos permanecem inalterados. Os textos anteriores ficam preservados abaixo como histórico.
+
+| Perícia | Influência mínima | Outros requisitos cumulativos | Aquisição | Domar/Pacificar |
+|---|---:|---|---:|---|
+| **Domar Criatura Pequena** | **1** | Apresentação 1 + Inteligência 1 | **1 XP** | **1 Coragem OU 1 PP**, por tentativa |
+| **Domar Criatura Média** | **3** | Apresentação 1 + Inteligência 1 | **1 XP** | **1 Coragem OU 1 PP**, por tentativa |
+| **Domar Criatura Grande** | **4** | Apresentação 1 + Inteligência 1 | **1 XP** | **1 Coragem OU 1 PP**, por tentativa |
+
+**[DEFINIDO — custo da Influência do domador]** Influência é comprada pela tabela normal de **Atributos do jogador**. Custo acumulado: **G1 = 1 XP, G2 = 3 XP, G3 = 7 XP, G4 = 15 XP**. Portanto, passar de Influência G2 para G3 custa mais **4 XP**, e de G3 para G4 custa mais **8 XP**. O custo de **1 XP** da respectiva Perícia e os requisitos de Apresentação 1 e Inteligência 1 são independentes e não substituem essas compras.
+
+**[DEFINIDO — habilitação mágica condicional]** Quando o domador possui **Domar Criatura Média + Criar Item de Foco e Magia**, pode **domesticar criaturas mágicas médias**; quando possui **Domar Criatura Grande + Criar Item de Foco e Magia**, pode **domesticar criaturas mágicas grandes**. **Criar Item de Foco e Magia não é pré-requisito para domesticar criaturas comuns dos mesmos portes**. A extensão já existente para criaturas pequenas mágicas permanece válida. O porte **não** muda em razão de a criatura ser mágica, e a extensão **não** concede automaticamente Perícias, ações mágicas, dados, custos extras ou habilidades específicas não definidas.
+
+**[DEFINIDO — todas as demais regras preservadas]** Domar e Pacificar continuam como testes com **Influência + Apresentação contra a DE defensiva atual do próprio domador**. O sucesso em Pacificar durante conflito não domestica automaticamente. Companheiros médios e grandes têm ficha e XP próprios, nível igual ou inferior ao do domador; preservam XP anterior OU recebem XP total equivalente ao jogador e, após domesticados, recebem a mesma quantidade de XP posteriormente concedida ao jogador. Evoluem **somente Atributos**: **Média** usa custos acumulados comuns de Atributos **0/1/3/7/15/31/55 XP**; **Grande** usa custos acumulados de Conhecimentos/Práticas **0/2/8/20/38/66/102 XP**, **mantendo dados de Atributo**. Apoio em combate **+1 Antecipar**, sem empilhamento automático com outros companheiros. Sem Vida sacrificial para médias/grandes. Os tetos históricos de 110 e 165 XP seguem revogados **para companheiros domesticados** desses portes, respectivamente.
+
+**[EXPERIMENTAL]** Vida e DE das criaturas médias e grandes no protótipo continuam com fórmulas de referência provisórias, independentemente de terem origem mágica.
+
+**[PENDENTE]** Regras próprias de espécies mágicas, magias e habilidades específicas das criaturas, pacificação sucessiva, múltiplos companheiros, ações independentes automatizadas e equipamentos. A extensão mágica por porte não altera **Montar**, nem habilita automaticamente **Domar Exótico/Gigante/Alado**, que permanece categoria distinta.
+
+---
 
 ## 0-AI. Progressão de Influência para Domar Criaturas [15/11/2026]
 
