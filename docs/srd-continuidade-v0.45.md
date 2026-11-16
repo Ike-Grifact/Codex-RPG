@@ -9,7 +9,38 @@ updated: "2026-11-15"
 
 **Decisões do autor — 15/11/2026:** renomear Conjuração Equilibrada para **Conjuração Refinada**, agora destinada a aumentar o alcance de efeitos mágicos (procedimento ainda a reescrever); **não modificar Escudo Arcano nem introduzir iniciativa**; reduzir **3 pontos de Integridade das armaduras**, preservando escudos; confirmar a economia elemental v0.43; fixar o **preço das pedras especiais de Veneno, Sagrado e Trevas em 3 vezes o preço das pedras elementais comuns**; abrir análise probabilística de Conhecimentos e Práticas para definir quando não rolar. Profissões/itens e especializações posteriores continuam em construção.
 
-**Precedência:** novas decisões explícitas > **seção 0-AG (v0.45)** para XP/nível do companheiro e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+**Precedência:** novas decisões explícitas > **seção 0-AH (v0.45)** para Domar criaturas grandes > **seção 0-AG (v0.45)** para XP/nível de criaturas médias e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+
+## 0-AH. Domar Criatura Grande — ficha própria e Atributos pelo custo de Formação [15/11/2026]
+
+**[DEFINIDO — decisão autoral de 15/11/2026]** A Perícia **Domar Criatura Grande** substitui o nome **Domar Animal Grande** e passa a custar **1 XP** de aquisição, em vez dos **4 XP históricos**. Por equivalência às Perícias de Domar criaturas pequenas e médias, aplica seus **requisitos Influência 2 + Apresentação 1 + Inteligência 1**, substituindo o requisito antigo de Influência 3. A categoria Exótica/Gigante/Alada e as habilitações de Montar não foram modificadas.
+
+| Regra | Domar Criatura Grande |
+|---|---|
+| Custo de aquisição | **1 XP**, compra única, sem duplicação do antigo Domar Animal Grande |
+| Requisitos | **Influência 2 + Apresentação 1 + Inteligência 1** |
+| Ativação por tentativa | **1 Coragem OU 1 PP** (se houver PP), mesmo em falha |
+| Domar ou Pacificar | Teste **Influência + Apresentação**, contra **a DE defensiva atual do próprio domador** |
+| Durante conflito | Pode **Pacificar** para tentar Domesticar depois; um sucesso ao Pacificar não cria vínculo automaticamente |
+| Companheiro grande | Tem **ficha própria**, nome, nível, XP próprio, Atributos, dados, Vida, DE e ações independentes |
+| Nível | **Igual ou inferior ao nível atual do domador**; se já possuir nível anterior, conservar sem ultrapassar o dono |
+| XP inicial | **Manter XP anterior** da criatura ou, quando não houver registro, **iniciar com XP total equivalente ao jogador**; não somar ambos |
+| Ganhos posteriores | Cada concessão de **N XP ao jogador** concede **N XP à criatura grande domesticada**, em reserva separada, sem descontar do jogador |
+| O que pode evoluir | **Somente os seis Atributos**, sem adquirir Conhecimentos, Práticas, Perícias humanas ou Coragem automaticamente |
+| **Tabela de XP para Atributos da criatura grande** | **A mesma tabela acumulada de Conhecimentos OU Práticas:** G0 = 0; G1 = 2; G2 = 8; G3 = 20; G4 = 38; G5 = 66; G6 = 102 XP |
+| Dados | **Continuam dados de Atributo** (graus 0–6 conforme a escala vigente), **não** os dados de Conhecimento/Prática: só o **custo em XP** foi equiparado |
+| Apoio | Quando a criatura está presente, apta a ajudar e efetivamente auxilia em combate: **+1 Antecipar (A)** ao domador |
+| Dano e morte | Possui Vida, DE e ações próprias e pode sofrer ferimentos ou morrer; **não fornece o ponto de Vida sacrificial exclusivo das pequenas** |
+| Vínculo | Atacar a criatura cancela a domesticação, conforme o modelo equivalente |
+| Acúmulos | Companheiros pequenos, médios e grandes **não somam automaticamente seus bônus de +1A** na mesma rolagem |
+
+**[DEFINIDO — economia / revogação delimitada]** O teto histórico de **165 XP** para animais grandes **domesticados pela nova Perícia** é revogado: limitar essa reserva impediria os ganhos de XP iguais aos do jogador definidos acima. **A alteração não afeta** o teto histórico de criaturas Exóticas/Gigantes/Aladas nem os limites próprios de monstros extraordinários. A antiga tabela de 165 XP e os requisitos/custos anteriores são preservados nas seções históricas apenas para consulta, não prevalecem sobre esta decisão.
+
+**[EXPERIMENTAL — referência de implementação da ficha]** Para exibir Vida e DE da criatura grande no protótipo, utilizar provisoriamente as referências de personagem **Vida = 3 + Vigor + ⌊Força/2⌋** e **DE = mínimo(9, Agilidade + ⌊Destreza/2⌋ + ⌊Vigor/2⌋)**, sem Atletismo (a criatura não compra Práticas). **Não** assumir que o custo de Formação implica dados d10/d12 para o animal. Rolagens e ações independentes permanecem resolvidas na mesa.
+
+**[PENDENTE]** Número máximo e coexistência de companheiros, procedimento exato de pacificação e tentativas sucessivas, ações conjuntas, equipamentos e especificidades anatômicas, eventuais benefícios de Montar e método de fichas de criaturas extraordinárias. **Não ampliar automaticamente para criaturas grandes mágicas** a habilitação de magia prevista especificamente para pequenas.
+
+---
 
 ## 0-AG. XP de companheiros médios e custo único de ativação de Perícias [15/11/2026]
 
@@ -28,7 +59,7 @@ updated: "2026-11-15"
 - **Nível ao domar:** a criatura média pode ser de **nível igual ou inferior ao do personagem**. Não precisa ter exatamente o mesmo nível. Após a domesticação, seu nível próprio é mantido e nunca pode ultrapassar o nível do domador.
 - **XP ao domar:** a ficha conserva o **XP que a criatura já possuía**, quando essa informação está disponível; alternativamente, o Narrador pode iniciar a ficha com **XP total equivalente ao do personagem**. Se não existir XP prévio registrado, o criador adota o XP total do jogador como referência inicial. Não somar as duas reservas ou exigir que ele gaste o próprio XP para criar o animal.
 - **XP posteriormente recebido:** sempre que o jogador recebe **N XP**, seu companheiro médio domesticado recebe **os mesmos N XP na reserva própria**, sem descontar do XP do jogador. A criatura continua investindo XP **somente em Atributos**, conforme a tabela de custo de Atributos do jogador (graus 0–6: 0, 1, 3, 7, 15, 31, 55 XP acumulados).
-- **Teto antigo de 110 XP:** **REVOGADO para o companheiro médio domesticado**. Era incompatível com receber XP equivalente aos jogadores ao longo de toda a campanha. O número permanece nos documentos anteriores apenas como histórico, não como limite vigente da ficha do novo Domar Criatura Média. Não extrapolar esta mudança para animais Grandes/Exóticos ou monstros extraordinários sem nova decisão.
+- **Teto antigo de 110 XP:** **REVOGADO para o companheiro médio domesticado**. Era incompatível com receber XP equivalente aos jogadores ao longo de toda a campanha. O número permanece nos documentos anteriores apenas como histórico, não como limite vigente da ficha do novo Domar Criatura Média. A categoria Grande tem regra própria mais recente na seção 0-AH; não extrapolar esta mudança para Exóticos/Gigantes/Alados ou monstros extraordinários sem nova decisão.
 - **Nível e XP são controles distintos:** receber XP não compra Atributos nem aumenta automaticamente o nível, assim como no fluxo do jogador. Evolução de nível da criatura pode ser registrada até o nível atual do domador. Preservar os graus comprados e o XP anterior ao importar fichas.
 
 **[PENDENTE]** Regras de associação de diversas criaturas simultâneas, ações conjuntas e automatização de ações próprias. Nenhum bônus +1A de companheiros diferentes é acumulado automaticamente. A Vida e a DE derivadas dos Atributos da criatura média são referências **EXPERIMENTAIS** no protótipo.
@@ -37,7 +68,7 @@ updated: "2026-11-15"
 
 ## 0-AF. Domar Criatura Média — substituição de Domar Animal Médio [15/11/2026]
 
-**[DEFINIDO — decisão autoral de 15/11/2026]** **Domar Criatura Média** é a atualização de **Domar Animal Médio**, não uma segunda compra. Sua aquisição passa de **3 XP para 1 XP**, por equivalência com **Domar Criatura Pequena**. O porte médio mantém ficha própria e ações independentes; não recebe o ponto sacrificial de Vida das criaturas pequenas. As regras de Domar Animal Grande, Exótico/Gigante/Alado e Montar continuam inalteradas.
+**[DEFINIDO — decisão autoral de 15/11/2026]** **Domar Criatura Média** é a atualização de **Domar Animal Médio**, não uma segunda compra. Sua aquisição passa de **3 XP para 1 XP**, por equivalência com **Domar Criatura Pequena**. O porte médio mantém ficha própria e ações independentes; não recebe o ponto sacrificial de Vida das criaturas pequenas. Domar Animal Grande foi atualizado separadamente pela seção 0-AH; a categoria Exótica/Gigante/Alada e Montar continuam inalteradas.
 
 | Campo | Regra atual |
 |---|---|
@@ -65,7 +96,7 @@ updated: "2026-11-15"
 
 ## 0-AE. Domar Criatura Pequena — substituição de Domar Animal Pequeno [15/11/2026]
 
-**[DEFINIDO — decisão autoral de 15/11/2026]** A Perícia **Domar Criatura Pequena** é a nova versão de **Domar Animal Pequeno**, não uma Perícia acumulativa. Substitui o nome, o custo de **2 XP** e o requisito histórico **Influência 1** nas seções 0-B.6 e “Domar animais, montarias e Maestrias associadas”, preservadas abaixo apenas como histórico. A mudança de porte pequeno **não altera diretamente** o Grande, Exótico/Gigante/Alado ou as Perícias de Montaria; **Domar Animal Médio é atualizado separadamente na seção 0-AF**.
+**[DEFINIDO — decisão autoral de 15/11/2026]** A Perícia **Domar Criatura Pequena** é a nova versão de **Domar Animal Pequeno**, não uma Perícia acumulativa. Substitui o nome, o custo de **2 XP** e o requisito histórico **Influência 1** nas seções 0-B.6 e “Domar animais, montarias e Maestrias associadas”, preservadas abaixo apenas como histórico. A mudança de porte pequeno **não altera as Perícias de Montaria ou Exótico/Gigante/Alado**; **Domar Animal Médio e Grande foram atualizados separadamente nas seções 0-AF e 0-AH**.
 
 | Campo | Regra vigente |
 |---|---|
