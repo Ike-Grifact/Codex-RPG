@@ -197,6 +197,7 @@ function gradeCards(t,group,entries){
 }
 function canBuySkill(t,id){
  if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
+ if(id==="olhos-de-aguia")return Number(t?.attributes?.destreza||0)>=3&&Number(t?.practices?.armas_conjuracao||0)>=3&&(t?.skills||[]).some(s=>s==="armas-longo-alcance"||s==="armas-fogo");
  if(id==="invocacao-elemental"){
   const skills=new Set(t?.skills||[]);
   // Criar Item de Foco e Magia também é a Perícia de Psique.
@@ -222,6 +223,15 @@ function catalogWeight(it){
  const base=Number(it.weight)||WEIGHT[it.category==="pesado"?"pesado":it.category==="medio"?"medio":"leve"];
  return (it.properties||[]).includes("Muito Leve")?base*.5:base;
 }
+function rangedInventoryRange(t,it){
+ const entry=catalog.find(e=>e.name===it.name);
+ if(!entry||!(entry.kind==="firearm"||(entry.properties||[]).includes("À Distância")))return null;
+ const base=Number(entry.range)||0;
+ if(base<=0)return null;
+ const qualified=entry.kind==="firearm"?(t.skills||[]).includes("armas-fogo"):(t.skills||[]).includes("armas-longo-alcance");
+ const bonus=(t.skills||[]).includes("olhos-de-aguia")&&qualified?8:0;
+ return {base,effective:base+bonus,bonus};
+}
 function inventory(t,x){
  const free=x.capacity-x.used,counts=remainingKinds(t);
  return '<section class="cf-panel"><h3>Equipamento e carga</h3>'+
@@ -238,6 +248,7 @@ function inventory(t,x){
   '<div class="cf-items">'+(t.items.length?t.items.map(it=>
    '<div class="cf-item"><div class="cf-item-descriptor"><strong>'+esc(it.name)+'</strong>'+
    '<small>'+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
+   (rangedInventoryRange(t,it)?'<small>Alcance efetivo: '+rangedInventoryRange(t,it).effective+' m'+(rangedInventoryRange(t,it).bonus?' (base '+rangedInventoryRange(t,it).base+' m + Olhos de Águia)':'')+'</small>':'')+
    (it.kind==="armor"||it.kind==="shield"?'<span class="cf-integrity-label">Integridade: <strong>'+
     (it.integrityMax?it.integrity+" / "+it.integrityMax:"Sem Integridade definida")+'</strong></span>':'')+'</div>'+
    ((it.kind==="armor"||it.kind==="shield")&&it.integrityMax?'<div class="cf-integrity-actions">'+

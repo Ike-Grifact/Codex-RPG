@@ -1,5 +1,12 @@
 # Codex RPG — Livro do Mestre
 
+## Novas decisões de 16/11/2026 — validade e Olhos de Águia [DEFINIDO]
+
+- **Símbolos guardados e Vantagem de Concentração Refinada:** o 1A armazenado, ou o 1E convertido e a condição Vantagem, expiram ao serem utilizados, após realizar outra ação ou após completar um descanso longo — o que ocorrer primeiro. A conversão para 1E ocorre no momento de guardar, sem conferir Êxito à rolagem já resolvida. Na próxima ação, o personagem usa os benefícios cabíveis; após essa ação, qualquer efeito não utilizado expira.
+- **Olhos de Águia:** compra 1 XP; exige Destreza 3, Disciplina 3 e Perícia em Armas de Longo Alcance ou Perícia em Armas de Fogo. Concede **+8 metros ao alcance efetivo** de armas à distância e de fogo habilitadas, sem custo extra de ativação. Use **R + 8 m** como referência para penalidades por ultrapassar o alcance. Não aumentar automaticamente alcance de arremessos comuns nem de conjurações.
+
+A regra posterior prevalece sobre menções históricas de duração PENDENTE na v0.50. Consulte [SRD v0.51](srd-continuidade-v0.51.md), seção 0-AN.
+
 ## Antecipação e Concentração Refinada — 16/11/2026 [DEFINIDO / PENDENTE]
 
 **Antecipação é uma mecânica, não Perícia:** uma rolagem com Disciplina permite guardar **1A de dado mantido** para a próxima rolagem, sem duplicar o símbolo nem aplicá-lo duas vezes. **Concentração Refinada** custa **1 XP**, exige **Disciplina 2** e, ao guardar 1A por Antecipação, o transforma em **1E** e concede **Vantagem** ao próprio personagem. **Não pode ativar Concentração Refinada se algum inimigo estiver a até 8 metros.**
