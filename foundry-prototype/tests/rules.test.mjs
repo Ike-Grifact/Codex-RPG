@@ -106,6 +106,25 @@ test("Vida 4+Vigor+piso(Força/2) e quatro estados com Coragem/Pavor",()=>{
  assert.deepEqual(healthByLife(s,0),{id:"morto",e:0,a:0,p:0,coragem:null});
 });
 
+test("estado Inconsciente permite alcançar DE por +2P sem Êxito, sob custo de 2 Coragens",()=>{
+ const s=human();const hp=healthByLife(s,1);
+ assert.equal(hp.coragem,2);
+ const rolled=[
+  {id:"a",group:"attribute",key:"vigor",sides:4,face:4},
+  {id:"t",group:"practice",key:"atletismo",sides:6,face:1}
+ ];
+ const base=resolveRoll(rolled,["a","t"],{de:2,level:1});
+ const risky=resolveRoll(rolled,["a","t"],{
+  de:2,level:1,courage:2,bonusP:hp.p,bonusA:hp.a,skillBonusE:hp.e
+ });
+ assert.equal(base.success,false);
+ assert.equal(risky.ok,true);
+ assert.equal(risky.success,true);
+ assert.equal(risky.e,0);
+ assert.equal(risky.p,2);
+ assert.equal(risky.reached,2);
+});
+
 test("Disciplina com arma habilitada adiciona dado extra, sem aumentar retenção",()=>{
  const s=human(),actor={system:s};
  const item={system:{kind:"weapon",category:"leve",equipped:true,die:6,properties:["Cortante"]}};
