@@ -96,7 +96,7 @@
       <span>{{codex.xpLedger.left}} XP disponíveis · {{codex.xpLedger.spent}} / {{codex.xpLedger.grant}} gastos</span>
     </summary>
     <label>{{#if codex.attributesOnly}}Orçamento de XP{{else}}XP adicional{{/if}}
-      <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp" {{#unless codex.editing}}readonly{{/unless}}>
+      <input type="number" min="0" value="{{codex.xp}}" data-field="system.xp" {{#unless codex.canAdjustXP}}readonly{{/unless}}>
     </label>
      {{#unless codex.attributesOnly}}{{#unless codex.hasCreationMinimum}}
        <details class="codex-starter-guide" open>
@@ -135,7 +135,7 @@
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
           <div class="codex-source-static"><strong class="codex-source-name">{{this.label}}</strong><span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span></div>
-          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
+          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
@@ -155,7 +155,7 @@
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
           <div class="codex-source-static"><strong class="codex-source-name">{{this.label}}</strong><span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span></div>
-          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
+          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
@@ -174,7 +174,7 @@
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
           <div class="codex-source-static"><strong class="codex-source-name">{{this.label}}</strong><span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span></div>
-          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
+          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>

@@ -2,9 +2,13 @@ import { rollNamespace as NS, preparePendingRoll, resolvePendingRoll, keepForAct
 
 import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
-import {advancementPlan, creationMissing} from "./advancement.mjs";
+import {xpLedger} from "./rules.mjs";
+import {escapeHTML} from "./roll-engine.mjs";
+import {advancementPlan, creationMissing, gradeDetails, xpAdjustmentPlan} from "./advancement.mjs";
 
 const query = `${NS}.roll`;
+const xpHistory = "xpHistory";
+const approvalTimeout = 45000;
 const flag = `flags.${NS}.pendingRoll`;
 const queues = new Map();
 const options = ["cancelP", "convertPairs", "characteristic", "secondCharacteristic", "activationPayment", "passAllyId"];
@@ -18,10 +22,39 @@ export function enqueueRoll(actor, user, request, dependencies = {}) {
   });
 }
 
-async function mutateRoll(actor, user, request, {game = globalThis.game, chat = globalThis.ChatMessage} = {}) {
+async function confirmAdvancement({title,content}){
+  let timer;
+  try{
+    return await foundry.applications.api.DialogV2.confirm({
+      window:{title}, content, rejectClose:false,
+      yes:{label:"Confirmar"}, no:{label:"Cancelar"},
+      render:(_event,dialog)=>{timer??=setTimeout(()=>void dialog.close(),approvalTimeout);},
+    });
+  }finally{clearTimeout(timer);}
+}
+
+const buildOf = actor => actor.system.toObject?.() ?? actor.system;
+
+async function mutateRoll(actor, user, request, {game = globalThis.game, chat = globalThis.ChatMessage, confirm = confirmAdvancement} = {}) {
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if (request.action === "adjustXP") {
+    if (!user.isGM) throw Error("Somente o Narrador pode ajustar XP adicional.");
+    if (pending) throw Error("Finalize ou descarte a rolagem antes de editar.");
+    let plan=xpAdjustmentPlan(buildOf(actor),request);
+    if(plan.delta<0){
+      const accepted=await confirm({title:"Retirar XP adicional",
+        content:"<p>Retirar "+(-plan.delta)+" XP de "+escapeHTML(actor.name)+"? O XP adicional passará de "+plan.previous+" para "+plan.next+".</p>"});
+      if(!accepted)throw Error("A retirada de XP foi cancelada.");
+      verifyAuthority(game);
+      if(actor.getFlag(NS,"pendingRoll"))throw Error("Finalize ou descarte a rolagem antes de editar.");
+      plan=xpAdjustmentPlan(buildOf(actor),request);
+    }
+    const entry={userId:user.id,userName:user.name,at:Date.now(),...plan};
+    await actor.update({"system.xp":plan.next,["flags."+NS+"."+xpHistory]:[...(actor.getFlag(NS,xpHistory)??[]),entry]});
+    return;
+  }
   if (request.action === "advance" || request.action === "completeCreation") {
     if (pending) throw Error("Finalize ou descarte a rolagem antes de editar.");
     const creationPending = Boolean(actor.getFlag(NS, "creationPending"));
@@ -29,11 +62,24 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
       if (!creationPending) return;
       const missing = creationMissing(actor.system);
       if (missing.attr || missing.training) throw Error("Adquira um Atributo G1 e um Conhecimento ou uma Prática G1.");
+      if(xpLedger(actor.system).left<0)throw Error("O XP investido excede o total da ficha.");
       await actor.unsetFlag(NS, "creationPending");
       return;
     }
-    const system = actor.system.toObject?.() ?? actor.system;
-    await actor.update(advancementPlan(system, request.advance ?? {}, creationPending));
+    const advance=request.advance??{};
+    if(advance.kind==="grade"&&!Number.isInteger(advance.expectedGrade))throw Error("Confira o Grau atual antes de alterar.");
+    let changes=advancementPlan(buildOf(actor),advance,creationPending);
+    if(advance.kind==="grade"&&advance.delta===-1&&!creationPending&&!user.isGM){
+      const row=gradeDetails(buildOf(actor),advance.group,advance.key);
+      const accepted=await confirm({title:"Autorizar redução de Grau",
+        content:"<p>"+escapeHTML(user.name)+" pede para reduzir "+escapeHTML(row.name)+" de "+escapeHTML(actor.name)+
+          " de G"+row.grade+" para G"+(row.grade-1)+", liberando "+row.refund+" XP.</p>"});
+      if(!accepted)throw Error("A redução de Grau não foi autorizada pelo Narrador.");
+      verifyAuthority(game);
+      if(!actor.testUserPermission(user,"OWNER")||actor.getFlag(NS,"pendingRoll"))throw Error("A ficha não está disponível para edição.");
+      changes=advancementPlan(buildOf(actor),advance,Boolean(actor.getFlag(NS,"creationPending")));
+    }
+    await actor.update(changes);
     return;
   }
   if (request.action === "target") {
@@ -151,5 +197,7 @@ export async function requestRoll(actor, request) {
   if (!game.user.hasPermission("QUERY_USER")) {
     throw Error("O Narrador precisa habilitar Consultar Usuário nas permissões do Foundry para sincronizar rolagens.");
   }
-  return gm.query(query, {...request, actorUuid: actor.uuid});
+  const needsApproval=request.action==="adjustXP"&&request.delta<0||
+    request.action==="advance"&&request.advance?.delta===-1;
+  return gm.query(query,{...request,actorUuid:actor.uuid},needsApproval?{timeout:approvalTimeout+15000}:undefined);
 }

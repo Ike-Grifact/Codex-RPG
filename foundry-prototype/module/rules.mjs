@@ -66,8 +66,9 @@ export function xpLedger(s){
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(skillCosts.get(id)??0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules||s.animalRules||s.monsterHumanoidRules?0:CREATION_REFERENCE.total);
- return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
+ const formation=s.monsterRules||s.animalRules||s.monsterHumanoidRules?0:CREATION_REFERENCE.total;
+ const additional=Number(s.xp||0),spent=attr+knowledge+practices+perks,grant=formation+additional;
+ return {attributes:attr,training:knowledge+practices,skills:perks,formation,additional,spent,grant,left:grant-spent,
   state:s.monsterRules||s.animalRules||s.monsterHumanoidRules?"Orçamento definido pelo Narrador.":"20 XP iniciais compartilhados EXPERIMENTAIS; sem reservas por categoria."};
 }
 export const isDiscipline = source => source?.group === "practice" && source.key === "armas_conjuracao";

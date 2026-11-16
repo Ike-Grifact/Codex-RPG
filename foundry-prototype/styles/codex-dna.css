@@ -67,3 +67,28 @@
 .codex-summon-plan label {display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px}
 .codex-summon-plan :is(select,input) {flex:0 1 100%;min-width:0;max-width:100%}
 .codex-summon-plan [data-summon-split] {display:grid;gap:5px}
+
+.codex-dna-budget {display:flex;flex-wrap:wrap;gap:5px 15px;margin:0}
+.codex-dna-budget dt {color:var(--cx-muted);font-size:.78rem}
+.codex-dna-budget dd {margin:0;color:var(--cx-gold);font-weight:700;font-variant-numeric:tabular-nums}
+.codex-dna-xp-management {margin-bottom:9px;padding:7px 10px;border:1px solid var(--cx-line);border-radius:8px}
+.codex-dna-xp-management summary {cursor:pointer}
+.codex-dna-xp-management details {margin-top:8px}
+.codex-dna-xp-management ul {margin-bottom:4px;max-height:145px;overflow:auto}
+.codex-dna-xp-actions {display:flex;flex-wrap:wrap;gap:6px;align-items:end;margin-top:8px}
+.codex-dna-xp-actions input {width:9rem}
+.codex-dna-grade {display:grid;grid-template-columns:auto minmax(4.4em,1fr) auto;gap:6px;align-items:center;text-align:center;margin:8px 0}
+.codex-dna-grade button {min-width:36px;min-height:36px}
+.codex-dna-note {color:var(--cx-muted);font-size:.84rem}
+.codex-dna-map {container-type:inline-size}
+.codex-dna-map .fp-gene-grade-button {cursor:pointer}
+.codex-dna-map .fp-gene-grade-button rect {fill:var(--cx-bg);stroke:var(--cx-gold);stroke-width:2px}
+.codex-dna-map .fp-gene-grade-button text {fill:var(--cx-gold);font-size:23px;font-weight:750}
+.codex-dna-map .fp-gene-grade-button:is(:hover,:focus-visible) rect {stroke-width:4px}
+.codex-dna-map .fp-gene-grade-button.is-disabled {opacity:.35;cursor:default}
+@container (max-width:619px){
+ .codex-dna-map .fp-gene-grade-button {display:none}
+}
+@media (hover:none){
+ .codex-dna-map .fp-gene-grade-button {display:none}
+}

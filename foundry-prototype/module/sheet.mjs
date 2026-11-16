@@ -68,7 +68,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }:null;
   ctx.codex={
    actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
-   canOpenDNA:actor.isOwner&&!attributesOnly&&(this._editing||actor.getFlag(NS,"creationPending")),
+   canOpenDNA:actor.isOwner&&!attributesOnly&&!this._pending,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
@@ -79,7 +79,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
-    xp:s.xp,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
+    xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
     starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
     starterTraining:[
      ...KNOWLEDGES.map(([id,name])=>({value:"knowledge:"+id,name:"Conhecimento · "+name})),
@@ -218,7 +218,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(!fields.includes(el.dataset.field))return;
    let value=el.type==="checkbox"?el.checked:el.value;
    if(el.dataset.field==="system.level")value=Math.max(1,Math.min(20,Math.floor(Number(value)||1)));
-   if(el.dataset.field==="system.xp")value=Math.max(0,Math.floor(Number(value)||0));
+   if(el.dataset.field==="system.xp"){
+    if(!game.user.isGM||this._pending)return;
+    const expectedXP=this.actor.system.xp,delta=el.value!==""?Number(el.value)-expectedXP:NaN;
+    if(delta===0)return;
+    return this._request({action:"adjustXP",delta,expectedXP});
+   }
    if(el.dataset.field==="system.threatGrade"){
     value=Math.max(1,Math.min(6,Math.floor(Number(value)||1)));
     return this._request({action:"grade",value});
@@ -251,8 +256,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    "Um Atributo G1 e um Conhecimento ou Prática G1.\n"+
    "XP disponível: "+plan.available+" → "+plan.remaining+".";
   if(!confirm(message))return;
-  await this.actor.update(plan.changes);
-  ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
+  await this._request({action:"advance",advance:{kind:"starter",attribute:attr,group,key}});
  }
  static async openDNA(){
   if(!this.actor.isOwner)return;
@@ -326,8 +330,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  static adjustGrade(_event,target){
   if(!this._editing||!this.actor.isOwner||this._pending)return;
-  const {group,key,delta}=target.dataset;
-  return this._request({action:"advance",advance:{kind:"grade",group,key,delta:Number(delta)}});
+  const {group,key,delta,grade}=target.dataset;
+  return this._request({action:"advance",advance:{kind:"grade",group,key,delta:Number(delta),expectedGrade:Number(grade)}});
  }
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;

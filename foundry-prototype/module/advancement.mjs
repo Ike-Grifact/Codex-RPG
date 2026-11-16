@@ -32,14 +32,19 @@ export function skillDetails(system,id){
   return {...skill, alternatives, owned:Boolean(owned), canBuy:!owned&&!blocker, pending, met, affordable:left>=skill.cost, blocker};
 }
 
-export function gradeDetails(system,group,key){
+export function gradeDetails(system,group,key,creationPending=false){
   const meta=Object.hasOwn(developmentGroups,group)?developmentGroups[group]:null;
   const name=meta?.list.find(([id])=>id===key)?.[1];
   if(!name)throw Error("Fonte indisponível.");
   const grade=Number(system[meta.field]?.[key]??0);
   const scale=group==="attribute"&&!system.monsterRules&&!system.monsterHumanoidRules?XP_ATTRIBUTE:XP_TRAINING;
   const cost=grade<6?scale[grade+1]-scale[grade]:null;
-  return {name, grade, cost, field:meta.field, canBuy:cost!==null&&xpLedger(system).left>=cost};
+  const refund=grade>0?scale[grade]-scale[grade-1]:null;
+  const withGrade=value=>({...system,[meta.field]:{...system[meta.field],[key]:value}});
+  const raiseBlocker=cost===null?"Grau máximo (G6).":xpLedger(system).left<cost?"XP insuficiente.":
+    creationPending?starterReserveBlocker(withGrade(grade+1)):"";
+  const lowerBlocker=refund===null?"Grau mínimo (G0).":gradeRemovalBlocker(system,withGrade(grade-1));
+  return {name,grade,cost,refund,field:meta.field,canBuy:!raiseBlocker,canLower:!lowerBlocker,raiseBlocker,lowerBlocker};
 }
 
 export function creationMissing(system){
@@ -49,22 +54,43 @@ export function creationMissing(system){
   };
 }
 
-function reserveStarter(system,creationPending){
-  if(!creationPending)return;
+function starterReserveBlocker(system){
   const missing=creationMissing(system);
   const reserve=(missing.attr?XP_ATTRIBUTE[1]:0)+(missing.training?XP_TRAINING[1]:0);
-  if(reserve>xpLedger(system).left)throw Error("Reserve "+reserve+" XP para a formação mínima do Aprendiz.");
+  return reserve>xpLedger(system).left?"Reserve "+reserve+" XP para a formação mínima do Aprendiz.":"";
 }
 
-function checkDependents(previous,next){
+function lostRequirement(previous,next){
   for(const id of next.skills??[]){
     if(!entries.has(id))continue;
-    const before=skillDetails(previous,id).alternatives;
-    const after=skillDetails(next,id).alternatives;
-    if(before.some(branch=>branch.every(item=>item.met))&&!after.some(branch=>branch.every(item=>item.met))){
-      throw Error("A alteração retiraria um requisito de "+entries.get(id).name+".");
+    const trained=system=>(requirements[id]??[]).some(branch=>branch.every(entry=>requirement(system,entry).met));
+    if(trained(previous)&&!trained(next)){
+      return "A alteração retiraria um requisito de "+entries.get(id).name+".";
     }
   }
+  return "";
+}
+
+function gradeRemovalBlocker(previous,next){
+  const prerequisite=lostRequirement(previous,next);
+  if(prerequisite)return prerequisite;
+  if(previous.monsterRules||previous.animalRules||previous.monsterHumanoidRules)return "";
+  const before=creationMissing(previous),after=creationMissing(next);
+  if(!before.attr&&after.attr)return "Adquira outro Atributo G1 antes de remover o último.";
+  if(!before.training&&after.training)return "Adquira outro Conhecimento ou Prática G1 antes de remover o último.";
+  return "";
+}
+
+export function xpAdjustmentPlan(system,request){
+  const ledger=xpLedger(system),{delta,expectedXP}=request;
+  if(!Number.isSafeInteger(delta)||delta===0)throw Error("Informe uma quantidade inteira de XP.");
+  if(expectedXP!==ledger.additional)throw Error("O saldo de XP mudou. Confira o valor atual e tente novamente.");
+  const next=ledger.additional+delta;
+  if(!Number.isSafeInteger(next)||!Number.isSafeInteger(ledger.formation+next)||next<0){
+    throw Error("O XP adicional deve ser um inteiro não negativo.");
+  }
+  if(delta<0&&ledger.formation+next<ledger.spent)throw Error("O XP total ficaria abaixo do XP já investido.");
+  return {previous:ledger.additional,next,delta};
 }
 
 export function advancementPlan(system,request,creationPending=false){
@@ -72,14 +98,13 @@ export function advancementPlan(system,request,creationPending=false){
     const {group,key,delta}=request;
     if(![-1,1].includes(delta))throw Error("Alteração de Grau inválida.");
     if((system.monsterRules||system.animalRules)&&group!=="attribute")throw Error("Esta ficha só evolui Atributos.");
-    const row=gradeDetails(system,group,key);
-    const nextGrade=row.grade+delta;
-    if(nextGrade<0||nextGrade>6)throw Error("Grau fora do limite.");
-    if(delta>0&&!row.canBuy)throw Error("XP insuficiente.");
-    const next={...system,[row.field]:{...system[row.field],[key]:nextGrade}};
-    if(delta>0)reserveStarter(next,creationPending);
-    else checkDependents(system,next);
-    return {["system."+row.field+"."+key]:nextGrade};
+    const row=gradeDetails(system,group,key,creationPending);
+    if(request.expectedGrade!==undefined&&row.grade!==request.expectedGrade){
+      throw Error("Este Grau mudou. Confira o valor atual e tente novamente.");
+    }
+    const blocker=delta>0?row.raiseBlocker:row.lowerBlocker;
+    if(blocker)throw Error(blocker);
+    return {["system."+row.field+"."+key]:row.grade+delta};
   }
   if(system.monsterRules||system.animalRules)throw Error("Este tipo de ficha não usa formação humana.");
   if(request.kind==="skill"){
@@ -87,12 +112,14 @@ export function advancementPlan(system,request,creationPending=false){
     if(request.remove===true){
       if(!row.owned)throw Error("Perícia ainda não adquirida.");
       const skills=(system.skills??[]).filter(id=>id!==request.key&&!(request.key==="maestria-manejo-duplo"&&id==="manejo-duplo"));
-      checkDependents(system,{...system,skills});
+      const blocker=lostRequirement(system,{...system,skills});
+      if(blocker)throw Error(blocker);
       return {"system.skills":skills};
     }
     if(!row.canBuy)throw Error(row.owned?"Perícia já adquirida.":row.blocker);
     const skills=[...(system.skills??[]),request.key];
-    reserveStarter({...system,skills},creationPending);
+    const blocker=creationPending&&starterReserveBlocker({...system,skills});
+    if(blocker)throw Error(blocker);
     return {"system.skills":skills};
   }
   if(request.kind==="starter"){

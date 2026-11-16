@@ -9,14 +9,19 @@ import {showSkill} from "./skill-catalog.mjs";
 
 const ns="codex-rpg-foundry";
 const applications=new Map();
+const dateFormat=new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"short"});
 const groups=Object.entries(developmentGroups);
 const graphGroups=Object.fromEntries(groups.map(([key,group])=>[group.graph,key]));
 
-function graphicalNodes(system){
- const sources=groups.flatMap(([kind,group])=>group.list.map(([key,name])=>({
-  type:group.graph, id:group.graph+":"+key, key, name,
-  grade:system[group.field]?.[key]??0, dice:sourceDice(kind,key,system).map(n=>"d"+n)
- })));
+function graphicalNodes(system,creationPending,locked){
+ const sources=groups.flatMap(([kind,group])=>group.list.map(([key])=>{
+  const row=gradeDetails(system,kind,key,creationPending);
+  return {
+   type:group.graph,id:group.graph+":"+key,key,name:row.name,
+   grade:row.grade,previewGrade:row.grade,canRaise:!locked&&row.canBuy,canLower:!locked&&row.canLower,
+   dice:sourceDice(kind,key,system).map(n=>"d"+n)
+  };
+ }));
  const skills=SKILLS.filter(row=>showSkill(row,system)).map(skill=>{
   const row=skillDetails(system,skill.id);
   return {type:"skill",id:skill.id,name:row.name,label:row.blocker||row.cost+" XP",
@@ -25,16 +30,24 @@ function graphicalNodes(system){
  return [...sources,...skills];
 }
 
-function detailMarkup(system,id,pendingRoll){
+function detailMarkup(system,id,{locked,creationPending,requiresApproval}){
  const [type,key] = id.split(":");
- const disabled=pendingRoll?" disabled":"";
+ const disabled=locked?" disabled":"";
  if(graphGroups[type]){
-  const group=graphGroups[type],row=gradeDetails(system,group,key);
+  const group=graphGroups[type],row=gradeDetails(system,group,key,creationPending);
   const dice=sourceDice(group,key,system).map(sides=>'<span class="codex-small-die">'+dieSvg(sides)+'<b>d'+sides+'</b></span>').join("");
   const tier=row.cost!==null?"<p>Próximo Grau: "+row.cost+" XP.</p>":"<p>Grau máximo.</p>";
-  const upgrade=row.cost!==null?'<button type="button" data-action="buy"'+(!row.canBuy?" disabled":disabled)+'>Comprar Grau '+(row.grade+1)+'</button>':"";
-  return '<h3>'+esc(row.name)+'</h3><p>Grau '+row.grade+'</p><div class="codex-dice-strip">'+dice+'</div>'+tier+upgrade+
-   (row.cost!==null&&!row.canBuy?"<p>XP insuficiente.</p>":"");
+  const button=(delta,label,enabled)=>
+   '<button type="button" data-action="adjustGrade" data-delta="'+delta+'" data-grade="'+row.grade+
+   '" aria-label="'+label+'"'+(!enabled?" disabled":disabled)+'>'+(delta>0?"+":"−")+'</button>';
+  const controls='<div class="codex-dna-grade">'+button(-1,"Diminuir Grau",row.canLower)+
+   '<strong>Grau '+row.grade+'</strong>'+button(1,"Aumentar Grau",row.canBuy)+'</div>';
+  const notes=[row.raiseBlocker&&row.cost!==null?row.raiseBlocker:"",
+   row.lowerBlocker,requiresApproval&&row.canLower?"A redução solicita autorização ao Narrador.":"",
+   locked?"Evolução indisponível durante uma rolagem ou alteração em andamento.":""].filter(Boolean);
+  return '<h3>'+esc(row.name)+'</h3>'+controls+'<div class="codex-dice-strip">'+dice+'</div>'+tier+
+   (row.canLower?'<p>Redução libera '+row.refund+' XP.</p>':'')+
+   notes.map(note=>'<p class="codex-dna-note">'+esc(note)+'</p>').join("");
  }
  const row=skillDetails(system,id);
  const alternativeMarkup=row.alternatives.map(branch=>"<ul>"+branch.map(item=>
@@ -98,7 +111,7 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,complete:CodexDNA.complete,classic:CodexDNA.classic}
+  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
@@ -109,7 +122,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   this.selected="attr:forca";
  }
  async _prepareContext(){
-  return {actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
+  return {canManageXP:game.user.isGM,actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
    categories:groups.map(([key,group])=>({label:group.label,description:group.description})),
   };
  }
@@ -134,30 +147,62 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(!root)return;
   const system=this.actor.system,ledger=xpLedger(system);
   const pendingRoll=Boolean(this.actor.getFlag(ns,"pendingRoll"));
+  const locked=pendingRoll||Boolean(this.busy);
   const creationPending=Boolean(this.actor.getFlag(ns,"creationPending"));
   const missing=creationMissing(system);
   root.querySelector("[data-dna-name]").textContent=this.actor.name;
-  root.querySelector("[data-dna-budget]").textContent=ledger.spent+" XP gastos · "+ledger.left+" XP disponíveis";
+  for(const field of ["formation","additional","grant","spent","left"]){
+   root.querySelector('[data-dna-xp="'+field+'"]').textContent=ledger[field]+" XP";
+  }
+  const panel=root.querySelector("[data-dna-xp-management]");
+  if(panel){
+   panel.querySelectorAll("button,input").forEach(el=>{el.disabled=locked;});
+   const list=panel.querySelector("[data-dna-xp-history]");
+   const history=this.actor.getFlag(ns,"xpHistory")??[];
+   list.replaceChildren(...history.slice().reverse().map(entry=>{
+    const item=root.ownerDocument.createElement("li");
+    item.textContent=dateFormat.format(entry.at)+" · "+(entry.userName||entry.userId)+" · "+
+     (entry.delta>0?"+":"")+entry.delta+" XP ("+entry.previous+" → "+entry.next+")";
+    return item;
+   }));
+   panel.querySelector("[data-dna-xp-empty]").hidden=history.length>0;
+   panel.querySelector("[data-dna-xp-locked]").hidden=!locked;
+  }
   for(const stage of root.querySelectorAll("[data-dna-panel]"))stage.hidden=stage.dataset.dnaPanel!==this.stageName;
   for(const element of root.querySelectorAll('[data-action="stage"]'))element.setAttribute("aria-pressed",String(element.dataset.stage===this.stageName));
   root.querySelector('[data-action="complete"]').hidden=!creationPending;
-  root.querySelector('[data-action="complete"]').disabled=missing.attr||missing.training||ledger.left<0;
+  root.querySelector('[data-action="complete"]').disabled=locked||missing.attr||missing.training||ledger.left<0;
   root.querySelector("[data-dna-creation]").textContent=creationPending
    ? [missing.attr?"Falta um Atributo G1.":"",missing.training?"Falta um Conhecimento ou uma Prática G1.":""].filter(Boolean).join(" ")
    : "";
   if(this.stageName!=="map")return;
   const map=root.querySelector("[data-dna-map]");
-  const focused=map.contains(map.ownerDocument.activeElement);
+  const active=map.ownerDocument.activeElement;
+  const mapFocus=map.contains(active)?active.closest("[data-gene-id]")?.dataset:null;
+  const nodes=graphicalNodes(system,creationPending,locked);
   window.CodexGeneGraph.render(map,{
-   skills:graphicalNodes(system),selected:this.selected,showFuture:true,onSelect:id=>{
+   skills:nodes,selected:this.selected,showFuture:true,edit:true,
+   onAdjust:(id,delta)=>{
+    const row=nodes.find(node=>node.id===id);
+    if(!row||(delta>0?!row.canRaise:!row.canLower))return;
+    this.selected=id;
+    void this.changeGrade(id,delta,row.grade);
+   },
+   onSelect:id=>{
     this.selected=id;
     this.refresh();
    },
   });
   markRequirements(map,this.selected,system);
-  if(focused)map.querySelector('[data-gene-id="'+CSS.escape(this.selected)+'"]')?.focus({preventScroll:true});
+  if(mapFocus){
+   const card=map.querySelector('.fp-gene-node[data-gene-id="'+CSS.escape(mapFocus.geneId)+'"]');
+   const control=mapFocus.geneGrade&&card?.querySelector('[data-gene-grade="'+mapFocus.geneGrade+'"][aria-disabled="false"]');
+   (control||card)?.focus({preventScroll:true});
+  }
   const detail=root.querySelector("[data-dna-detail]");
-  detail.innerHTML=detailMarkup(system,this.selected,pendingRoll);
+  const gradeFocus=detail.contains(active)?active.dataset.delta:null;
+  detail.innerHTML=detailMarkup(system,this.selected,{locked,creationPending,requiresApproval:!game.user.isGM&&!creationPending});
+  if(gradeFocus)detail.querySelector('[data-delta="'+gradeFocus+'"]:enabled')?.focus({preventScroll:true});
   if(this.selected==="invocacao-elemental"&&system.skills.includes(this.selected)){
    detail.insertAdjacentHTML("beforeend",summoningMarkup(this.summonRules,system));
    const planner=detail.querySelector("[data-summon-plan]");
@@ -185,16 +230,40 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   this.stageName=target.dataset.stage;
   this.refresh();
  }
- static async buy(){
-  if(this.busy)return;
+ static buy(){
+  return this.submit({action:"advance",advance:{kind:"skill",key:this.selected}});
+ }
+ static adjustGrade(_event,target){
+  return this.changeGrade(this.selected,Number(target.dataset.delta),Number(target.dataset.grade));
+ }
+ changeGrade(id,delta,expectedGrade){
+  const [type,key]=id.split(":");
+  return this.submit({action:"advance",advance:{kind:"grade",group:graphGroups[type],key,delta,expectedGrade}});
+ }
+ static async adjustXP(_event,target){
+  if(!game.user.isGM)return;
+  const input=this.element.querySelector("[data-dna-xp-amount]");
+  const amount=Number(input.value);
+  if(!Number.isSafeInteger(amount)||amount<=0){
+   ui.notifications.warn("Informe uma quantidade inteira de XP maior que zero.");
+   input.focus();
+   return;
+  }
+  const delta=Number(target.dataset.delta)*amount;
+  if(await this.submit({action:"adjustXP",delta,expectedXP:this.actor.system.xp}))input.value="";
+ }
+ async submit(request){
+  if(this.busy||this.actor.getFlag(ns,"pendingRoll"))return false;
   this.busy=true;
+  const status=this.element?.querySelector("[data-dna-status]");
+  const asksNarrator=request.advance?.kind==="grade"&&request.advance.delta===-1&&
+   !game.user.isGM&&!this.actor.getFlag(ns,"creationPending");
+  if(status&&asksNarrator)status.hidden=false;
   try{
-   const [type,key]=this.selected.split(":");
-   const group=graphGroups[type];
-   const advance=group?{kind:"grade",group,key,delta:1}:{kind:"skill",key:this.selected};
-   await requestRoll(this.actor,{action:"advance",advance});
-  }catch(error){ui.notifications.warn(error.message);}
-  finally{this.busy=false;this.refresh();}
+   await requestRoll(this.actor,request);
+   return true;
+  }catch(error){ui.notifications.warn(error.message);return false;}
+  finally{if(status)status.hidden=true;this.busy=false;this.refresh();}
  }
  static async complete(){
   try{

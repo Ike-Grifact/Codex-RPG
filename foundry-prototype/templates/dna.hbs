@@ -1,12 +1,36 @@
 <div class="codex-foundry-root codex-dna-root">
   <header class="codex-dna-header">
-    <h2 data-dna-name>{{actorName}}</h2><strong data-dna-budget></strong>
+    <h2 data-dna-name>{{actorName}}</h2>
+    <dl class="codex-dna-budget" aria-label="Experiência do personagem" aria-live="polite">
+      <div><dt>Formação</dt><dd data-dna-xp="formation"></dd></div>
+      <div><dt>Adicional</dt><dd data-dna-xp="additional"></dd></div>
+      <div><dt>Total</dt><dd data-dna-xp="grant"></dd></div>
+      <div><dt>Investido</dt><dd data-dna-xp="spent"></dd></div>
+      <div><dt>Disponível</dt><dd data-dna-xp="left"></dd></div>
+    </dl>
   </header>
+  {{#if canManageXP}}
+  <details class="codex-dna-xp-management" data-dna-xp-management>
+    <summary>Gerenciar XP</summary>
+    <div class="codex-dna-xp-actions">
+      <label>Quantidade de XP<input type="number" min="1" step="1" data-dna-xp-amount></label>
+      <button type="button" data-action="adjustXP" data-delta="1">Conceder XP</button>
+      <button type="button" data-action="adjustXP" data-delta="-1">Retirar XP</button>
+    </div>
+    <p data-dna-xp-locked hidden>O XP pode ser ajustado após a rolagem ou alteração em andamento.</p>
+    <details>
+      <summary>Histórico de XP</summary>
+      <p data-dna-xp-empty>Nenhum ajuste registrado.</p>
+      <ul data-dna-xp-history></ul>
+    </details>
+  </details>
+  {{/if}}
   <nav class="codex-dna-stages" aria-label="Etapas de desenvolvimento">
     <button type="button" data-action="stage" data-stage="identity">Identidade</button>
     <button type="button" data-action="stage" data-stage="development">Desenvolvimento</button>
     <button type="button" data-action="stage" data-stage="map">Codex Genético</button>
   </nav>
+  <p class="codex-dna-note" data-dna-status role="status" hidden>Aguardando autorização do Narrador.</p>
   <section data-dna-panel="identity" class="codex-dna-panel">
     <label>Nome<input data-identity="name" value="{{actorName}}"></label>
     <label>Conceito<input data-identity="system.concept" value="{{concept}}"></label>

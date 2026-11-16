@@ -107,7 +107,7 @@ function card(n,edit){
    '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
  const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
- const canDown=edit&&n.previewGrade>0;
+ const canDown=edit&&n.previewGrade>0&&n.canLower!==false;
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
  const makeButton=(delta,enabled,posX,text,aria)=>
   '<g role="button" tabindex="'+(enabled?'0':'-1')+'" class="fp-gene-grade-button'+(enabled?'':' is-disabled')+
