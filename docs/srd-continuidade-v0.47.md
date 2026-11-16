@@ -107,7 +107,7 @@ Por exemplo, Vigor 3 e Força 2 dão **8 de Vida** (3/3/1/1). Com **8–6** de V
 |---|---|---|---|---|
 | **1 — Pequena** | **2 XP uma vez para a Perícia inteira** | Domar Criatura Pequena | **Gratuita**, sem teste | Forma **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** com distribuição ainda pendente |
 | **2 — Média** | **Sem XP adicional** | Domar Criatura Média | **1 PP ou 1 Coragem**, sem teste | Forma **Leve**, **2 dados mantidos naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor encerra a forma** |
-| **3 — Grande** | **Sem XP adicional** | Domar Criatura Grande | **1 PP ou 1 Coragem**, sem teste | Forma **Leve**, **3 dados mantidos naturalmente**; **Pavor mantido resolve a ação e encerra a forma** |
+| **3 — Grande** | **Sem XP adicional** | Domar Criatura Grande | **1 PP ou 1 Coragem**, sem teste | Forma **Leve**, **3 dados mantidos naturalmente, combinando três Atributos pertinentes**; **somente Pavor mantido não cancelado por Antecipar encerra a forma após a resolução da ação** |
 
 **Atributos e XP das fichas animais [DEFINIDO nos valores]:** formas **médias e grandes** recebem **a mesma quantidade de XP que o jogador**, para seus **Atributos animais**, cuja compra obedece à tabela de custos de **Conhecimentos/Práticas**, e não à tabela de Atributos humanos: custo acumulado por Grau **G1=2, G2=8, G3=20, G4=38, G5=66, G6=102 XP** (incrementos 2/6/12/18/28/36). O total de referência é o XP do jogador; ainda **PENDENTE** distinguir com precisão XP total obtido versus XP efetivamente gasto e quais limitações de criação se aplicam a cada ficha animal. A forma pequena conserva o orçamento de **19 XP**, com distribuição específica pendente. Não conceder dados ou Graus gratuitos em razão da tabela.
 
