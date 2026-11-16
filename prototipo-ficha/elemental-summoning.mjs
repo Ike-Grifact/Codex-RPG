@@ -117,12 +117,16 @@ export function summonDiceLimit(size){
  * keptParts é opcional: por padrão, mantém todos os dados rolados do porte.
  * A origem/passos do dado deverão ser conferidos com os Atributos da ficha.
  */
-export function summonPartRoll({size,dice=[],keptParts}={}){
+export function summonPartRoll({size,dice=[],keptParts,activePart=null}={}){
  const rule=summonDiceLimit(size);
- if(!Array.isArray(dice)||dice.length!==rule.parts)throw new RangeError("A invocação exige exatamente um dado por parte");
+ if(activePart!==null&&(!Number.isInteger(activePart)||activePart<1||activePart>rule.parts))
+  throw new RangeError("Parte ativa inválida");
+ const rolledCount=activePart===null?rule.parts:1;
+ if(!Array.isArray(dice)||dice.length!==rolledCount)throw new RangeError("A invocação exige um dado por parte ativa");
  const parts=new Set();
  const results=dice.map(item=>{
-  if(!item||!Number.isInteger(item.part)||item.part<1||item.part>rule.parts||parts.has(item.part))
+  if(!item||!Number.isInteger(item.part)||item.part<1||item.part>rule.parts||parts.has(item.part)||
+     (activePart!==null&&item.part!==activePart))
    throw new RangeError("Identificação das partes inválida");
   parts.add(item.part);
   if((item.source!==undefined&&item.source!=="attribute")||!SUMMON_ATTRIBUTE_KEYS.includes(item.attribute)||![4,6,10,12].includes(item.sides))
@@ -133,7 +137,7 @@ export function summonPartRoll({size,dice=[],keptParts}={}){
  }).sort((a,b)=>a.part-b.part);
  const kept=keptParts===undefined?results.map(x=>x.part):keptParts;
  if(!Array.isArray(kept)||new Set(kept).size!==kept.length||kept.some(x=>!parts.has(x))||
-    kept.length>rule.maxKept)throw new RangeError("Dados mantidos precisam corresponder às partes roladas");
- return {...rule,keptCount:kept.length,results:results.map(x=>({...x,kept:kept.includes(x.part)})),
+    kept.length>rolledCount)throw new RangeError("Dados mantidos precisam corresponder às partes roladas");
+ return {...rule,rolled:rolledCount,maxKept:rolledCount,activePart,keptCount:kept.length,results:results.map(x=>({...x,kept:kept.includes(x.part)})),
   automaticDEAggregation:false,extraTurns:0,requiresGroupResolutionDecision:true};
 }
