@@ -132,3 +132,63 @@ test("Token isolado de uma Grande rola um único dado da parte escolhida",()=>{
  assert.throws(()=>summonPartRoll({size:"grande",activePart:2,dice:[{part:1,attribute:"forca",sides:10,face:8}]}),RangeError);
  assert.throws(()=>summonPartRoll({size:"grande",activePart:4,dice:[{part:1,attribute:"forca",sides:10,face:8}]}),RangeError);
 });
+
+
+test("Jogador escolhe os dados mantidos e distribui seus resultados entre si, conjurador e aliados",()=>{
+ const dice=[
+  {part:1,attribute:"forca",sides:6,face:6},
+  {part:2,attribute:"inteligencia",sides:10,face:8},
+  {part:3,attribute:"destreza",sides:12,face:11}
+ ];
+ const result=summonPartRoll({size:"grande",dice,keptParts:[3,1,2],
+  assignments:[
+   {part:3,mode:"ajudar-aliado",targetId:"aliado-2"},
+   {part:1,mode:"individual"},
+   {part:2,mode:"ajudar-conjurador"}
+  ]});
+ assert.deepEqual(result.results.map(d=>d.allocation),[
+  {mode:"individual",targetId:null},
+  {mode:"ajudar-conjurador",targetId:null},
+  {mode:"ajudar-aliado",targetId:"aliado-2"}
+ ]);
+ assert.equal(result.playerChoosesDice,true);
+ assert.equal(result.playerChoosesKept,true);
+ assert.equal(result.playerChoosesRecipients,true);
+ assert.equal(result.allocationPending,false);
+ assert.equal(result.extraTurns,0);
+ assert.equal(result.automaticDEAggregation,false);
+ assert.equal(result.sheets,1);
+});
+test("A distribuição não duplica dados, não permite usar descartados nem cria bônus automáticos",()=>{
+ const dice=[
+  {part:1,attribute:"forca",sides:6,face:4},
+  {part:2,attribute:"vigor",sides:10,face:8}
+ ];
+ const base={size:"media",dice,keptParts:[2]};
+ const pending=summonPartRoll(base);
+ assert.equal(pending.allocationPending,true);
+ assert.equal(pending.results[0].kept,false);
+ assert.equal(pending.results[1].kept,true);
+ const allocated=summonPartRoll({...base,assignments:[{part:2,mode:"ajudar-aliado",targetId:"aliado-1"}]});
+ assert.deepEqual(allocated.results.map(x=>x.allocation),[null,{mode:"ajudar-aliado",targetId:"aliado-1"}]);
+ assert.throws(()=>summonPartRoll({...base,assignments:[{part:1,mode:"individual"}]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[
+  {part:2,mode:"individual"},{part:2,mode:"ajudar-conjurador"}
+ ]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[{part:2,mode:"ajudar-aliado"}]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[{part:2,mode:"dar-acao-extra"}]}),RangeError);
+ assert.throws(()=>summonPartRoll({...base,assignments:[{part:2,mode:"individual",targetId:"aliado-3"}]}),RangeError);
+});
+test("O mesmo beneficiário pode receber resultados diferentes sem replicar os dados",()=>{
+ const result=summonPartRoll({size:"media",dice:[
+  {part:1,attribute:"forca",sides:10,face:7},
+  {part:2,attribute:"destreza",sides:10,face:8}
+ ],assignments:[
+  {part:1,mode:"ajudar-aliado",targetId:"aliado-unico"},
+  {part:2,mode:"ajudar-aliado",targetId:"aliado-unico"}
+ ]});
+ assert.equal(result.results.filter(x=>x.allocation?.targetId==="aliado-unico").length,2);
+ assert.equal(result.keptCount,2);
+ assert.equal(result.extraTurns,0);
+});
