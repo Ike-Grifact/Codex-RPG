@@ -192,3 +192,15 @@ test("O mesmo beneficiário pode receber resultados diferentes sem replicar os d
  assert.equal(result.keptCount,2);
  assert.equal(result.extraTurns,0);
 });
+
+
+test("A distribuição do conjunto usa somente UM turno antecipável mesmo ajudando várias pessoas",()=>{
+ const turn=summonAnticipatedTurn({tokenCount:3,groupAction:true});
+ assert.equal(turn.turns,1);
+ assert.equal(turn.mode,"distribuir");
+ assert.equal(turn.selectedToken,null);
+ assert.equal(turn.groupAction,true);
+ assert.equal(turn.otherTokensReceiveTurns,false);
+ assert.equal(turn.normalAnticipationAndJointCostsApply,true);
+ assert.throws(()=>summonAnticipatedTurn({tokenCount:3,groupAction:"sim"}),RangeError);
+});
