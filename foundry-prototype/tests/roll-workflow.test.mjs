@@ -59,11 +59,14 @@ test("O chat preserva faces e runas de todos os dados e distingue descarte", asy
   assert.match(content,/codex-chat-dice/);
   assert.match(content,/d6 · Força/);
   assert.match(content,/d6 · Vigor/);
-  assert.match(content,/codex-chat-rune-e/);
-  assert.match(content,/codex-chat-rune-p/);
+  assert.match(content,/codex-face-symbol-e/);
+  assert.match(content,/codex-face-symbol-p/);
   assert.match(content,/MANTIDO/);
   assert.match(content,/DESCARTADO/);
   assert.match(content,/Dados rolados · 1 de 2 mantidos/);
+   assert.match(content,/aria-label="Face 6"/);
+   assert.doesNotMatch(content,/codex-chat-die-face">6<\/strong>/);
+   assert.ok(messages.get(id).source.flags[NS].dice[0].face===6,"O motor ainda registra a face numérica");
 });
 test("duas confirmações concorrentes de um rollId fazem um débito e uma publicação", async () => {
   const {actor,messages,send,sends}=fixture();
