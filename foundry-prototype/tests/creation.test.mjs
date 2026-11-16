@@ -112,6 +112,6 @@ test("o empacotamento gera 20 faces PNG distintas com a paleta oficial",()=>{
   assert.deepEqual([...image.subarray(0,8)],[137,80,78,71,13,10,26,10]);
   assert.equal(image.readUInt32BE(16),256);
   assert.equal(image.readUInt32BE(20),256);
-  assert.ok(image.includes(Buffer.from([38,122,69,35,105,187,84,33,118])));
+  assert.ok(image.includes(Buffer.from([38,122,69,35,105,187,84,33,118,221,225,232])));
  }finally{rmSync(target,{recursive:true,force:true});}
 });

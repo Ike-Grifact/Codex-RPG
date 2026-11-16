@@ -265,3 +265,39 @@ test("Compra inicial guiada cobra apenas os graus obrigatórios ainda ausentes",
  const monster={...fresh,monsterRules:true};
  assert.equal(starterPurchasePlan(monster,"forca","practice","atletismo").ok,false);
 });
+
+test("Pilha aceita categorias diferentes em qualquer ordem e resolve sem Atributo",()=>{
+ const pc={attributes:{forca:1},practices:{atletismo:1},knowledges:{medicina:1},skills:[]};
+ const attribute={group:"attribute",key:"forca"}, practice={group:"practice",key:"atletismo"}, knowledge={group:"knowledge",key:"medicina"};
+ for(const base of [attribute,practice,knowledge]){
+  for(const second of [attribute,practice,knowledge]){
+   const plan=buildPool(pc,{base,second});
+   assert.equal(plan.ok,base.group!==second.group);
+   if(plan.ok){
+    const rolled=plan.pool.map(die=>({...die,face:die.sides}));
+    assert.equal(resolveRoll(rolled,[rolled[0].id]).ok,true);
+   }
+  }
+ }
+ assert.equal(buildPool({...pc,monsterHumanoidRules:true},{base:practice,second:knowledge}).ok,true);
+ assert.equal(buildPool({...pc,monsterRules:true},{base:practice,second:knowledge}).ok,false);
+ assert.equal(buildPool({...pc,monsterRules:true,threatGrade:6},{base:attribute,second:{group:"attribute",key:"vigor"},complement:{group:"attribute",key:"agilidade"}},{contextApproved:true}).ok,false);
+});
+
+test("Disciplina Avançada permite um complemento e Manejo Duplo permite duas Disciplinas distintas na pilha",()=>{
+ const practice={group:"practice",key:"atletismo"}, knowledge={group:"knowledge",key:"medicina"};
+ const discipline={group:"practice",key:"armas_conjuracao"};
+ const pc={attributes:{vigor:1},practices:{armas_conjuracao:2,atletismo:1},knowledges:{medicina:1},skills:["disciplina-avancada","armas-leves"]};
+ const three={base:practice,second:knowledge,complement:discipline};
+ assert.equal(buildPool(pc,three,{mode:"armas",contextApproved:true}).ok,true);
+ assert.equal(buildPool(pc,three,{mode:"normal",contextApproved:true}).ok,false);
+ const duplicate={base:knowledge,second:discipline,complement:discipline};
+ assert.equal(buildPool(pc,duplicate,{mode:"armas",contextApproved:true}).ok,false);
+ const dual={...pc,skills:["maestria-manejo-duplo","criar-item-foco-magia"]};
+ const plan=buildPool(dual,duplicate,{mode:"armas"});
+ assert.equal(plan.ok,true);
+ assert.equal(plan.pool.filter(d=>d.key===discipline.key).length,4);
+ assert.equal(new Set(plan.pool.map(d=>d.id)).size,plan.pool.length);
+ assert.equal(buildPool(dual,duplicate,{mode:"conjuracao"}).ok,false);
+ assert.equal(buildPool(dual,{base:discipline,second:discipline},{mode:"armas"}).ok,false);
+});

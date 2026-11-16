@@ -752,3 +752,5 @@
 .codex-rune-legend .legend-a b{color:#2369BB;background:#f7f1e7;border-radius:4px;padding:0 3px}
 .codex-rune-legend .legend-p b{color:#542176;background:#f7f1e7;border-radius:4px;padding:0 3px}
 @container (max-width:420px){.codex-face-symbol{font-size:25px;padding:4px 5px}}
+
+.codex-character-sheet .window-content{overflow-anchor:none}

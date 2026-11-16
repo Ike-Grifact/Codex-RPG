@@ -1,7 +1,7 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
- loadCapacity,mayComplement,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
@@ -11,7 +11,7 @@ import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 const NS="codex-rpg-foundry";
-const draft=()=>({base:null,attribute:null,complement:null});
+const draft=()=>({base:null,second:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
@@ -20,8 +20,8 @@ function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
  grade:Number(s[{attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group]]?.[key]||0),
  dice:sourceDice(group,key,s).map(sides=>({sides,icon:dieSvg(sides)})),
- isSelected:[d.base,d.attribute,d.complement].some(source=>eq(source,{group,key})),
- isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key})}));
+ isSelected:[d.base,d.second,d.complement].some(source=>eq(source,{group,key})),
+ isBase:eq(d.base,{group,key}),isSecond:eq(d.second,{group,key}),isComplement:eq(d.complement,{group,key})&&!isRepeat(d)}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML = faceIcons;
@@ -31,11 +31,12 @@ const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
-function modeFor(s,b){return b?.key==="armas_conjuracao"?((s.skills||[]).includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";}
+const hasDiscipline=d=>[d.base,d.second,d.complement].some(isDiscipline);
+const isRepeat=d=>isDiscipline(d.complement)&&[d.base,d.second].some(isDiscipline);
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
- chooseSource:CodexCharacterSheet.chooseSource,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
+ chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
  toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
@@ -93,9 +94,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,dieIcon:dieSvg(i.system.die),priceVT:i.system.priceVT
    })),
    selectedBase:d.base?sourceLabel(d.base.group,d.base.key,s):"",
-   selectedAttribute:d.attribute?sourceLabel(d.attribute.group,d.attribute.key,s):"",
+   selectedSecond:d.second?sourceLabel(d.second.group,d.second.key,s):"",
    selectedComplement:d.complement?sourceLabel(d.complement.group,d.complement.key,s):"",
-   selecting:!!d.base&&!d.attribute,preparing:!!d.base&&!!d.attribute&&!this._editing&&!this._pending,
+   selecting:!!d.base&&!d.second,preparing:!!d.base&&!!d.second&&!this._editing&&!this._pending,
    hasPending:!!this._pending,isOwner:actor.isOwner,canKeep:!this._busy
   };
   if(ctx.codex.preparing){
@@ -104,9 +105,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,
      step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   const isShared=hasDiscipline(d),targets=[...game.user.targets];
    ctx.codex.prepare={
-    isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
+    isShared,repeatedDiscipline:isRepeat(d),canRepeatDisc:canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,
     localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
@@ -116,7 +117,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
     step:this._opts.step,combatBonus:false,hasCombatSkill:false,
      stepOptions:rawPlan.pool.filter(x=>[4,6,10].includes(x.sides))
-      .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+" · dado "+(Number(x.id.split(".").at(-1))+1)+" · d"+x.sides,
+      .map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+(x.id.endsWith(".1")&&x.id.split(".").length===4?" (2ª)":"")+" · dado "+(Number(x.id.split(".")[2]??0)+1)+" · d"+x.sides,
        selected:x.id===this._opts.stepDieId})),
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
@@ -153,6 +154,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   return ctx;
  }
+ _preSyncPartState(partId,newElement,priorElement,state){
+  super._preSyncPartState(partId,newElement,priorElement,state);
+  state.contentScroll=priorElement.closest(".window-content")?.scrollTop;
+ }
+ _syncPartState(partId,newElement,priorElement,state){
+  super._syncPartState(partId,newElement,priorElement,state);
+  const content=newElement.closest(".window-content");
+  if(content&&state.contentScroll!=null)content.scrollTop=state.contentScroll;
+ }
  async _onRender(ctx,options){await super._onRender(ctx,options);this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",e=>this._change(e));}
  async _change(event){
   const el=event.target;
@@ -173,7 +183,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.stepDieId="";}
+   if(key==="mode"){if(this._opts.mode!=="armas"&&isRepeat(this._draft))this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.stepDieId="";}
     if(key==="equipmentId"||(key==="step"&&!this._opts.step))this._opts.stepDieId="";
    this.render();return;
   }
@@ -204,46 +214,60 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._draft=draft();this._opts=defaults();
   return this.render();
  }
- static async chooseSource(event,target){
+ static showRoll(_event,target){
+  const section=target.dataset.section==="pending"?".codex-roll-results":".codex-roll-prep";
+  this.element?.querySelector(section)?.scrollIntoView({block:"start"});
+ }
+ static async chooseSource(_event,target){
   if(this._busy||this._editing)return;
-  if(this._pending){
-   ui.notifications.info("Finalize ou descarte a rolagem pendente antes de escolher novas fontes.");
-   this.element?.querySelector(".codex-roll-results")?.scrollIntoView?.({block:"start",behavior:"smooth"});
+  if(this._pending){ui.notifications.info("Finalize ou descarte a rolagem pendente antes de escolher novas fontes.");return;}
+  const {group,key}=target.dataset;
+  const list={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
+  if(!Object.hasOwn(list,group)||!list[group].some(([id])=>id===key))return;
+  const system=this.actor.system,d=this._draft,candidate={group,key};
+  const present=[d.base,d.second,d.complement].filter(Boolean);
+  const index=present.findIndex(source=>eq(source,candidate));
+  const previousDiscipline=hasDiscipline(d);
+  if(index>=0){
+   const rest=present.filter((source,i)=>i!==index&&(!isRepeat(d)||!isDiscipline(candidate)||i!==2));
+   const [base=null,second=null,complement=null]=rest;
+   d.base=base;
+   d.second=second&&!sourcePairError(system,base,second)?second:null;
+   d.complement=d.second?complement:null;
+  }else if(!d.base){
+   if(attributesOnly(system)&&group!=="attribute")return;
+   d.base=candidate;
+  }else if(!d.second){
+   const error=sourcePairError(system,d.base,candidate);
+   if(error){ui.notifications.info(error);return;}
+   d.second=candidate;
+  }else if(!d.complement&&mayComplement(system,d.base,d.second)){
+   d.complement=candidate;
+  }else{
+   ui.notifications.info(d.complement?"Retire uma fonte para escolher outra.":"As duas fontes desta ação estão selecionadas.");
    return;
   }
-  const group=target.dataset.group,key=target.dataset.key,valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key))return;
-  const s=this.actor.system,d=this._draft,candidate={group,key};
-  if(s.monsterRules||s.animalRules){
-   if(group!=="attribute")return;
-   if(!d.base){this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();}
-   else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else if(eq(d.attribute,candidate)){
-    d.attribute=null;
-    d.complement=null;
-    this._opts.contextApproved=false;
-   }
-   else if(!d.attribute)d.attribute=candidate;
-   else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
-   else {d.attribute=candidate;d.complement=null;}
-   await this.render();
-   if(this._draft.base&&this._draft.attribute)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView?.({block:"start",behavior:"smooth"});
-   return;
+  if(hasDiscipline(d)!==previousDiscipline){
+   this._opts.mode=hasDiscipline(d)?(system.skills?.includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";
+   this._opts.equipmentId="";
   }
-  if(group==="attribute"){
-   if(!d.base){ui.notifications.info("Selecione a Prática ou Conhecimento de base.");return;}
-   d.attribute=eq(d.attribute,candidate)?null:candidate;
-   if(!d.attribute)d.complement=null;
-  }else if(!d.base||!d.attribute){
-   if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else {this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();this._opts.mode=modeFor(s,candidate);}
-  }else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-  else {
-   if(!mayComplement(s,d.base,this._opts.mode)){ui.notifications.warn("Terceira fonte exige habilitação pertinente.");return;}
-   d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;
+  this._opts.contextApproved=false;
+  this._opts.stepDieId="";
+  return this.render();
+ }
+ static async repeatDiscipline(){
+  if(this._busy||this._pending||this._editing)return;
+  const d=this._draft;
+  if(!d.second||!canRepeatDiscipline(this.actor.system,d.base,d.second))return;
+  if(d.complement&&!isRepeat(d))return;
+  d.complement=isRepeat(d)?null:[d.base,d.second].find(isDiscipline);
+  if(d.complement&&this._opts.mode!=="armas"){
+   this._opts.mode="armas";
+   this._opts.equipmentId="";
   }
-  await this.render();
-  if(this._draft.base&&this._draft.attribute)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView?.({block:"start",behavior:"smooth"});
+  this._opts.contextApproved=false;
+  this._opts.stepDieId="";
+  return this.render();
  }
  static async adjustGrade(event,target){
   if(!this._editing||!this.actor.isOwner||this._pending)return;

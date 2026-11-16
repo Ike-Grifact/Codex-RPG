@@ -11,7 +11,7 @@ const COLORS=Buffer.from([
  38,122,69,   // Êxito: #267A45
  35,105,187,  // Antecipar: #2369BB
  84,33,118,   // Pavor: #542176
- 244,225,190  // contorno para leitura sobre o dado escuro
+ 221,225,232  // círculo da face vazia
 ]);
 function crc32(bytes){
  let value=0xffffffff;
@@ -43,9 +43,9 @@ function raster(symbols){
   }
  }
  function path(points,x,y,w,h,color){
-  for(const weight of [21,12])for(let j=1;j<points.length;j++){
+  for(let j=1;j<points.length;j++){
    const u=points[j-1],v=points[j];
-   stroke(x+(u[0]-.5)*w,y+(u[1]-.5)*h,x+(v[0]-.5)*w,y+(v[1]-.5)*h,weight,weight===21?4:color);
+   stroke(x+(u[0]-.5)*w,y+(u[1]-.5)*h,x+(v[0]-.5)*w,y+(v[1]-.5)*h,17,color);
   }
  }
  const forms={
@@ -58,9 +58,9 @@ function raster(symbols){
    4:[5,6,1,2],5:[0,5,6,2,3],6:[0,5,6,2,3,4],7:[0,1,2],8:[0,1,2,3,4,5,6],9:[0,1,2,3,5,6]};
   const segments=[[-9,-12,9,-12],[9,-12,9,0],[9,0,9,12],[-9,12,9,12],
    [-9,0,-9,12],[-9,-12,-9,0],[-9,0,9,0]];
-  for(const weight of [9,5])for(const i of glyphs[n]||[]){
+  for(const i of glyphs[n]||[]){
    const [x1,y1,x2,y2]=segments[i];
-   stroke(x+x1,y+y1,x+x2,y+y2,weight,weight===9?4:color);
+   stroke(x+x1,y+y1,x+x2,y+y2,7,color);
   }
  }
  const active=[{key:"e",n:e,color:1},{key:"a",n:a,color:2},{key:"p",n:p,color:3}].filter(x=>x.n>0);
@@ -77,10 +77,8 @@ function raster(symbols){
    const cy=item.n>1?105:127,cx=positions[i];
    for(const segments of forms[item.key])path(segments,cx,cy,width,height,item.color);
    if(item.n>1){
-    for(const weight of [9,5]){
-     stroke(cx-27,215,cx-14,230,weight,weight===9?4:item.color);
-     stroke(cx-27,230,cx-14,215,weight,weight===9?4:item.color);
-    }
+    stroke(cx-27,215,cx-14,230,7,item.color);
+    stroke(cx-27,230,cx-14,215,7,item.color);
     digit(item.n,cx+13,221,item.color);
    }
   });

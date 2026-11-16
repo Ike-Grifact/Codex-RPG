@@ -48,7 +48,7 @@ export async function preparePendingRoll(actor, request, user, game) {
   const {dice, formula, roll} = await rollPool(plan.pool);
   const pending = {
     version: 3, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
-    base: selection.base, attribute: selection.attribute, complement: selection.complement ?? null,
+    base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
       mode, equipmentId, de: target ? (input.targetDodges === true ? dodgeDE(target) : defenseDE(target)) : de, situation, step, extraKeep,
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
@@ -143,7 +143,7 @@ export function resolvePendingRoll(actor, pending, game) {
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
   }).join("");
   const kept='<div class="codex-chat-dice" role="list">'+cards+'</div>';
-  const sources = [pending.base, pending.attribute, pending.complement].filter(Boolean)
+  const sources = [pending.base, pending.second ?? pending.attribute, pending.complement].filter(Boolean)
     .map(source => escapeHTML(sourceLabel(source.group, source.key))).join(" + ");
   const overflow = result.monsterCriticalPavor - localReward;
   const content = `<div class="codex-chat-result"><h3>Codex RPG · ${escapeHTML(result.outcome)}</h3>
