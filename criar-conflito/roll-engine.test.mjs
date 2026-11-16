@@ -286,10 +286,11 @@ test("elevação temporária usa progressão completa por Grau e não altera XP"
  assert.equal(composeActionPool(npc,{firstSource:k,secondSource:a},"knowledge.medicina").ok,false);
  assert.equal(composeActionPool(npc,{firstSource:k,secondSource:a},"knowledge.medicina.0").ok,false);
 });
-test("elevação não permite ultrapassar nove dados rolados",()=>{
+test("monstro não excede o teto de nove dados e elevação preserva a quantidade quando G3→G4",()=>{
  const m=blank("monstro");m.attributes.forca=3;m.attributes.agilidade=3;m.attributes.vigor=3;
  const src={firstSource:{group:"attribute",key:"forca"},secondSource:{group:"attribute",key:"agilidade"},extra:{group:"attribute",key:"vigor"}};
  assert.equal(composeActionPool(m,src).pool.length,9);
  const r=composeActionPool(m,src,"attribute.forca");
- assert.equal(r.ok,false);assert.match(r.error,/nove/);
+ assert.equal(r.ok,true,r.error);assert.equal(r.pool.length,9);
+ assert.deepEqual(r.pool.slice(0,3).map(x=>x.sides),[10,10,12]);
 });
