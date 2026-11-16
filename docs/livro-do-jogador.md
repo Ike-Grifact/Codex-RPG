@@ -6,9 +6,15 @@
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
+## Retificação normativa — 15/11/2026: Influência progressiva para Domar Criaturas [DEFINIDO]
+
+Os pré-requisitos de Influência seguem **o porte**: **Pequena = Influência 1**, **Média = Influência 2**, **Grande = Influência 3**, sempre com **Apresentação 1 + Inteligência 1**. Cada Perícia continua custando **1 XP de aquisição** e cada tentativa custa **1 Coragem ou 1 PP**. Esta decisão retifica exclusivamente a exigência de Influência nas seções 0-AE/0-AF/0-AH do SRD v0.45; **a seção 0-AI prevalece** onde essas descrições anteriores ainda citam Influência 2 para todos.
+
+Os custos acumulados normais para comprar o Atributo Influência do **domador** são: **G1 = 1 XP, G2 = 3 XP, G3 = 7 XP**. A aquisição da Perícia custa **mais 1 XP** e os demais requisitos continuam sendo compras independentes. A tabela especial de Conhecimentos/Práticas aplica-se **apenas aos Atributos da criatura grande domesticada**, não à Influência do jogador.
+
 ## Atualização normativa — 15/11/2026: Domar Criatura Grande [DEFINIDO / EXPERIMENTAL / PENDENTE]
 
-**Domar Criatura Grande** substitui a compra histórica **Domar Animal Grande**, que custava 4 XP e exigia Influência 3. Por equivalência às versões pequena e média, a **aquisição custa 1 XP**, exige **Influência 2 + Apresentação 1 + Inteligência 1**, e cada Domar/Pacificar custa **1 Coragem OU 1 PP**. Teste **Influência + Apresentação**, com DE igual à **DE defensiva atual do próprio domador**. Pacificar em combate não domestica automaticamente; atacar rompe a domesticação.
+**Domar Criatura Grande** substitui a compra histórica **Domar Animal Grande**, que custava 4 XP e exigia Influência 3. Por equivalência às versões pequena e média, a **aquisição custa 1 XP**, exige **Influência 3 + Apresentação 1 + Inteligência 1**, e cada Domar/Pacificar custa **1 Coragem OU 1 PP**. Teste **Influência + Apresentação**, com DE igual à **DE defensiva atual do próprio domador**. Pacificar em combate não domestica automaticamente; atacar rompe a domesticação.
 
 Quando domesticada, a criatura recebe **ficha própria** com seis Atributos, dados, Vida, DE, ações independentes, nível e XP próprios. O **nível pode ser igual ou inferior ao do domador**; o animal mantém o nível anterior quando existir. Conserva o **XP que já possuía** ou inicia com o **XP total do personagem**, sem somar as duas referências. **A cada N XP concedidos ao jogador, o companheiro grande domesticado recebe N XP na própria reserva.** A tabela de custos é **a dos Conhecimentos e Práticas**, porém aplicada **somente às compras dos seis Atributos da criatura grande**: graus 0–6 custam **0, 2, 8, 20, 38, 66 e 102 XP acumulados**. Os **dados rolados continuam sendo os de Atributo**, sem se transformar nos dados de Conhecimento/Prática. A criatura não recebe Conhecimentos, Práticas, Perícias humanas ou Coragem automática.
 
@@ -34,7 +40,7 @@ O criador limita o nível da criatura ao do domador e conserva a ficha do compan
 
 ## Atualização normativa — 15/11/2026: Domar Criatura Pequena [DEFINIDO / PENDENTE]
 
-**Domar Criatura Pequena** substitui **Domar Animal Pequeno** (não há duas compras). **Aquisição: 1 XP; requisitos: Influência 2, Apresentação 1 e Inteligência 1.** Ativar uma tentativa custa **1 PP ou 1 Coragem** e permite realizar teste com Influência contra a **DE defensiva atual do próprio personagem**, a mesma exibida em sua ficha. Essa DE é usada tanto para Domar quanto para Pacificar, sem cálculo separado por espécie ou origem mágica. Alvos são criaturas pequenas, como cães, gatos e aves. No acerto, a criatura é domesticada; **atacá-la cancela o efeito**. Em combate, o personagem pode tentar **pacificá-la primeiro, para posteriormente domesticá-la**.
+**Domar Criatura Pequena** substitui **Domar Animal Pequeno** (não há duas compras). **Aquisição: 1 XP; requisitos: Influência 1, Apresentação 1 e Inteligência 1.** Ativar uma tentativa custa **1 PP ou 1 Coragem** e permite realizar teste com Influência contra a **DE defensiva atual do próprio personagem**, a mesma exibida em sua ficha. Essa DE é usada tanto para Domar quanto para Pacificar, sem cálculo separado por espécie ou origem mágica. Alvos são criaturas pequenas, como cães, gatos e aves. No acerto, a criatura é domesticada; **atacá-la cancela o efeito**. Em combate, o personagem pode tentar **pacificá-la primeiro, para posteriormente domesticá-la**.
 
 A criatura pequena **não possui ficha**: quando domesticada e presente, fornece **+1 Antecipar em combate** e **um ponto especial de Vida antes de Inconsciente**, usado para o sacrifício que evita a morte do dono. Ao sofrer dano letal, o personagem pode deixar a criatura sacrificar-se ou **salvá-la e sofrer o dano letal**, fazendo-a fugir ou ficar sob os cuidados de aliados. **Criar Item de Foco e Magia** amplia o alcance da Perícia para **criaturas mágicas pequenas**. Comprar a Perícia não concede companheiro automaticamente; os limites de vários companheiros e o procedimento de dano letal continuam **PENDENTES**, sem bônus cumulativo presumido. Para o texto normativo, consulte [SRD v0.45, seção 0-AE](srd-continuidade-v0.45.md).
 
@@ -720,7 +726,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
 | Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
-| **Domar Criatura Pequena** | **1** | **Influência 2 + Apresentação 1 + Inteligência 1**; ativação 1 PP ou 1 Coragem; permite companheiro pequeno, +1A em combate e ponto sacrificial antes de Inconsciente |
+| **Domar Criatura Pequena** | **1** | **Influência 1 + Apresentação 1 + Inteligência 1**; ativação 1 PP ou 1 Coragem; permite companheiro pequeno, +1A em combate e ponto sacrificial antes de Inconsciente |
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
