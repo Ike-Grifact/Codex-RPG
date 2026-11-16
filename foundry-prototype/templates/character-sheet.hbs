@@ -53,7 +53,7 @@
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
     {{#if codex.isMonster}}<span>Criatura ou monstro: selecione dois ou três Atributos diferentes e pertinentes; a terceira fonte exige confirmação da pertinência.</span>{{else}}<span>Comece em qualquer seção: combine duas categorias diferentes. A terceira fonte exige habilitação; Manejo Duplo permite repetir Disciplina.</span>{{/if}}
-    {{#if codex.selecting}}<span class="codex-live-note">Primeira fonte: <b>{{codex.selectedBase}}</b>. Escolha agora o Atributo.</span>{{/if}}
+    {{#if codex.selecting}}<span class="codex-live-note">Primeira fonte: <b>{{codex.selectedBase}}</b>. Escolha agora uma fonte de outra categoria.</span>{{/if}}
   </div>
 
   <div class="codex-source-layout">
@@ -64,7 +64,9 @@
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
+            {{#if this.isBase}}<small class="codex-source-role">1ª FONTE</small>{{/if}}
             {{#if this.isAttribute}}<small class="codex-source-role">2ª FONTE</small>{{/if}}
+            {{#if this.isComplement}}<small class="codex-source-role">3ª FONTE</small>{{/if}}
           </button>
           <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
         </div>
@@ -79,6 +81,7 @@
             <span class="codex-source-name">{{this.label}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">1ª FONTE</small>{{/if}}
+            {{#if this.isAttribute}}<small class="codex-source-role">2ª FONTE</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">3ª FONTE</small>{{/if}}
           </button>
           <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
@@ -94,6 +97,7 @@
             <span class="codex-source-name">{{this.label}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">1ª FONTE</small>{{/if}}
+            {{#if this.isAttribute}}<small class="codex-source-role">2ª FONTE</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">3ª FONTE</small>{{/if}}
           </button>
           <div class="codex-grade"><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
