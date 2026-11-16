@@ -16,7 +16,8 @@ function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
  grade:Number(s[{attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group]]?.[key]||0),
  dice:sourceDice(group,key,s).map(sides=>({sides,icon:dieSvg(sides)})),
- isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key})}));
+ isBase:eq(d.base,{group,key}),isAttribute:eq(d.attribute,{group,key}),isComplement:eq(d.complement,{group,key}),
+  selected:[d.base,d.attribute,d.complement].some(src=>eq(src,{group,key}))}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(x=>x[2]>0)
@@ -71,7 +72,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
    const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=d.base.group==="practice"&&d.base.key==="armas_conjuracao",targets=[...game.user.targets];
+   const isShared=[d.base,d.attribute,d.complement].some(src=>src?.group==="practice"&&src.key==="armas_conjuracao"),targets=[...game.user.targets];
    ctx.codex.prepare={
     isShared,mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,de:this._opts.de,
@@ -143,29 +144,36 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async chooseSource(event,target){
   if(this._busy||this._pending)return;
   const group=target.dataset.group,key=target.dataset.key,valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key))return;
-  const s=this.actor.system,d=this._draft,candidate={group,key};
-  if(s.monsterRules){
-   if(group!=="attribute")return;
-   if(!d.base){this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();}
-   else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else if(!d.attribute)d.attribute=candidate;
-   else if(mayComplement(s,d.base,"normal")){d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;}
-   else {d.attribute=candidate;d.complement=null;}
-   this.render();return;
+  if(!valid?.some(([id])=>id===key))return;
+  const s=this.actor.system,d=this._draft,candidate={group,key},monster=!!s.monsterRules;
+  if(monster&&group!=="attribute")return;
+  const isDisc=src=>src?.group==="practice"&&src.key==="armas_conjuracao";
+  const hasDual=!monster&&(s.skills||[]).some(id=>["maestria-manejo-duplo","manejo-duplo"].includes(id));
+  const reset=()=>{this._draft=draft();this._opts=defaults();};
+  if(!d.base){
+   d.base=candidate;d.attribute=null;d.complement=null;
+  }else if(!d.attribute){
+   if(eq(d.base,candidate)&&hasDual&&isDisc(candidate))d.attribute={...candidate};
+   else if(eq(d.base,candidate))reset();
+   else if(!monster&&d.base.group===group){ui.notifications.warn("A combinação básica exige categorias diferentes.");return;}
+   else d.attribute=candidate;
+  }else if(eq(d.complement,candidate)){
+   d.complement=null;this._opts.contextApproved=false;
+  }else if(hasDual&&isDisc(candidate)&&[d.base,d.attribute].filter(isDisc).length===1&&
+     (eq(d.base,candidate)||eq(d.attribute,candidate))){
+   d.complement={...candidate};this._opts.contextApproved=false;
+  }else if(eq(d.base,candidate))reset();
+  else if(eq(d.attribute,candidate)){d.attribute=null;d.complement=null;}
+  else if(mayComplement(s,d.base,this._opts.mode,d.attribute)){
+   d.complement=candidate;this._opts.contextApproved=false;
+  }else if(!monster&&d.base.group===group){
+   ui.notifications.warn("Não combine duas fontes básicas da mesma categoria.");return;
+  }else{
+   d.attribute=candidate;d.complement=null;
   }
-  if(group==="attribute"){
-   if(!d.base){ui.notifications.info("Selecione a Prática ou Conhecimento de base.");return;}
-   d.attribute=eq(d.attribute,candidate)?null:candidate;
-   if(!d.attribute)d.complement=null;
-  }else if(!d.base||!d.attribute){
-   if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-   else {this._draft={base:candidate,attribute:null,complement:null};this._opts=defaults();this._opts.mode=modeFor(s,candidate);}
-  }else if(eq(d.base,candidate)){this._draft=draft();this._opts=defaults();}
-  else {
-   if(!mayComplement(s,d.base,this._opts.mode)){ui.notifications.warn("Terceira fonte exige habilitação pertinente.");return;}
-   d.complement=eq(d.complement,candidate)?null:candidate;this._opts.contextApproved=false;
-  }
+  const active=[this._draft.base,this._draft.attribute,this._draft.complement];
+  const discipline=active.find(isDisc);
+  this._opts.mode=discipline?((this._opts.mode==="armas"||this._opts.mode==="conjuracao")?this._opts.mode:modeFor(s,discipline)):"normal";
   this.render();
  }
  static async adjustGrade(event,target){
