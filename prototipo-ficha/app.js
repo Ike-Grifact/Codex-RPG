@@ -2229,7 +2229,8 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- if(health.coragem>state.courage){toast("Ação em "+health.label+" exige "+health.coragem+" Coragem.");return;}
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0);
+ if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
