@@ -2,11 +2,11 @@
 
 **Data:** 16/11/2026  
 **Base:** SRD v0.47, seção 0-AH, com a nova distribuição de Saúde informada pelo autor.  
-**Estado:** quatro estados e modificadores **DEFINIDOS**; cálculo de Vida máxima incluindo antigo bônus de Força **PENDENTE**; alternativa de Pavor sem pontuar DE **PROPOSTA**, não aprovada.
+**Estado:** quatro estados, custos, Pavor contando na DE e fórmula de Vida com bônus de Força **DEFINIDOS**. A hipótese anterior de retirar Pavor de Saúde da DE foi **REJEITADA** pelo autor em 16/11/2026.
 
 ## 1. Regra de estados
 
-Vida de referência = quatro pontos básicos, um em cada estado; cada Grau de Vigor acrescenta um ponto, alternadamente em **Saudável**, depois **Ferido**, repetindo. Os dois últimos estados têm sempre um ponto. A contribuição da Força ainda precisa de decisão, portanto **4+Vigor é a parte de Vida especificada**, não a revisão completa e definitiva da antiga fórmula `3+Vigor+piso(Força/2)`.
+**Vida máxima DEFINIDA = 4 + Vigor + piso(Força/2).** Os quatro pontos básicos distribuem-se 1/1/1/1 em Saudável/Ferido/Incapacitado/Inconsciente. Cada ponto adicional de **Vigor** e **piso(Força/2)** entra alternadamente em Saudável, depois Ferido. Incapacitado e Inconsciente permanecem com 1 ponto. Seja `X=Vigor+piso(Força/2)`: a distribuição completa é `[1+teto(X/2), 1+piso(X/2), 1, 1]`.
 
 | Estado | ΔE | ΔA | ΔP | Coragem para agir |
 |---|---:|---:|---:|---:|
@@ -39,17 +39,19 @@ Para cada combinação de faces, avalia-se o melhor subconjunto de até dois dad
 
 **Resultado de balanceamento:** os estados não penalizam estritamente a chance de sucesso: o Pavor adicional contribui numericamente para `E + P` e em alguns resultados aumenta a pontuação total. Exemplo extremo: sem E/P naturais, `Inconsciente` gera +2P e pode superar DE 2, embora somente mediante **2 Coragens** e com riscos de Pavor. O aumento de acertos arriscados e possíveis efeitos sobre Pavor transferido, dano, Coragem e protagonismo pode ou não compensar esse ganho — isso precisa de playtest.
 
-## 3. Alternativa PROPOSTA, sem aplicação
+## 3. Decisão autoral: aceitar a eficiência arriscada [DEFINIDO]
 
-**Separar Pavor de Estado de Pavor obtido nos dados para a soma da DE**, mantendo +1P/+2P como risco/consequência depois da comparação, mas **sem pontuá-lo para alcançar a DE**. É apenas uma possível resolução do incentivo paradoxal. Não aprovada; não implementada. Outra possibilidade a analisar seria ajustar a penalidade de Êxito sem alterar Pavor, mas nenhum número alternativo deve ser aplicado sem autorização.
+Em 16/11/2026, o autor decidiu **não excluir o Pavor adicional de Saúde da DE**. A vantagem aritmética em alcançar dificuldades enquanto Incapacitado ou Inconsciente é deliberada e contrabalançada pelo **custo por ação** (1 ou 2 Coragens) e pelas consequências de Pavor. A mecânica visa preservar a possibilidade de agir sob extrema pressão, sem transformar automaticamente falhas em acertos limpos. **A alternativa anteriormente sugerida — contar o Pavor de estado somente como consequência, sem pontuar DE — foi REJEITADA, não está pendente.**
+
+**Limite prático:** os percentuais da tabela são condicionais ao pagamento do custo. Com menos de 2 Coragens, um personagem Inconsciente não consegue agir por essa regra, ainda que o Pavor pudesse atingir a DE. Não presumir uma ação gratuita, nem criar uma exceção de desespero sem autorização posterior. Com 2 Coragens, o jogador pode agir com todos os riscos; depois do gasto, ficará sem reservas suficientes para uma segunda ação nessas condições, salvo recuperação ou intervenção.
 
 ## 4. Consequências de integração
 
-- **Força:** a antiga fórmula de Vida máxima inclui `piso(Força/2)`; a decisão nova especifica Vigor, mas não o destino da contribuição de Força.
+- **Força:** o bônus `piso(Força/2)` foi expressamente mantido. Vida total = `4+Vigor+piso(Força/2)`, com pontos adicionais alocados alternadamente nas duas primeiras faixas.
 - **Cura:** quatro estados exigem reatribuir procedimentos antes vinculados às três caixas.
 - **Instinto de Sobrevivência:** anulava −1A do antigo Incapacitado; agora esse estado recebe −1E/+1P, tornando a habilidade anterior sem efeito tal como escrita.
 - **Efeitos de Veneno:** estados provocados por condições não são automaticamente equivalentes a entrar numa caixa de Vida.
 - **Druídica:** a conversão histórica por três terços está superada. Mapear quatro faixas entre criatura e humano ainda é hipótese não aprovada.
-- **Implementação:** o módulo matemático `prototipo-ficha/health-stages.mjs` documenta e testa a distribuição, mas a Vida máxima e a interface antiga de três caixas não foram alteradas em produção por causa das incompatibilidades acima.
+- **Implementação:** o módulo `prototipo-ficha/health-stages.mjs` testa a distribuição com Vigor e Força; a ficha web agora exibe quatro faixas e aplica os modificadores de Saúde e respectivos gastos de Coragem nas rolagens. O Foundry e o Criar Conflito receberam o máximo de Vida atualizado e utilitários para identificar o estado; ainda não aplicam automaticamente esses modificadores em todos os fluxos de rolagem.
 
-**Status das regras:** os quatro estados, penalidades e a distribuição de Vigor estão **DEFINIDOS**. O destino do antigo bônus de Força, integração na ficha, compatibilidade de Perícias e a possibilidade de Pavor de estado não contar para DE permanecem **PENDENTES/PROPOSTOS** conforme descrito.
+**Status das regras:** quatro estados, penalidades, Coragem, Força na Vida e Pavor contando DE estão **DEFINIDOS**. Integração em todos os motores, compatibilidade de Perícias, cura e transformação Druídica ainda têm pontos **PENDENTES**. A exclusão do Pavor de Saúde da DE está **REJEITADA**.
