@@ -1,5 +1,15 @@
 # Codex RPG — Livro do Mestre
 
+## Invocação Elemental — orientações ao Narrador (16/11/2026)
+
+A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e uma Perícia elemental; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
+
+**Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** (habilitação Combinar Magia Elemental ainda sem entrada própria no catálogo); Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
+
+**Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** fantasmas imunes a elemento neutro, sem dano neutro; Maestria habilita assombrar/possuir com Desvantagem Absoluta. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
+
+**PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, identificar habilitação de Psique e Combinar Magia Elemental, definir manutenção/controle, resistência/DE de possessão, limites simultâneos e as regras de XP/ação de invocações no conflito. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
+
 ## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
 
 Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande requer Influência 2/3/4, Apresentação 1, Inteligência 1; custo 1 XP na compra e 1 PP ou 1 Coragem na tentativa. Uma de cada porte. Cada companheiro presente aumenta o orçamento de XP do grupo e concede +1 Vida ao domador. Pequena sem ficha desenvolvida tem 1 Vida própria quando enviada a risco próprio. Com ficha independente opcional, a Vida máxima aumenta por `1 + Vigor + piso(Força/2)`, com **Força e Vigor custando o dobro desde o Grau 1**. A criatura recebe orçamento próprio igual ao XP total atualizado do jogador, sem consumir seu XP; subir Vida máxima não cura ferimentos. Aplicação de quatro faixas quando a Pequena tem menos de 4 Vida segue PENDENTE.
