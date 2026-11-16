@@ -14,33 +14,34 @@
 
 **Importante:** o d4 novo reduz a ocorrência de Pavor de 50% para **25%** por dado e acrescenta 25% de Êxito direto, mas pode perder resultados extremos oferecidos anteriormente pelo ᚨ+ᚦ da face 4. Não há alteração de XP, distribuição de fontes ou limites de Marcos. [SRD de Continuidade v0.46](srd-continuidade-v0.46.md).
 
-## Revisão de Vida e Saúde — quatro estados [DEFINIDO / PENDENTE — 16/11/2026]
+## Revisão de Vida e Saúde — quatro estados e Força mantida [DEFINIDO — 16/11/2026]
 
-**DEFINIDO:** substituem-se as três caixas de Vida pela sequência **Saudável / Ferido / Incapacitado / Inconsciente**, começando com **1 ponto em cada caixa**. Incapacitado e Inconsciente ficam sempre com **1 ponto**. Os pontos de Vigor são acrescentados um por vez, alternadamente: **Saudável, Ferido, Saudável, Ferido...**, sempre começando em Saudável.
+A Vida máxima do personagem agora é **4 + Grau de Vigor + piso(Grau de Força/2)**. Assim, **Força continua aumentando a Vida** como antes, e a base muda de 3 para **4 pontos**, um em cada estado: **Saudável, Ferido, Incapacitado e Inconsciente**. Incapacitado e Inconsciente têm sempre **1 ponto**. Para distribuir os demais, some `X = Vigor + piso(Força/2)` e aloque os `X` pontos alternadamente entre **Saudável** e **Ferido**, começando por Saudável.
 
-| Estado | Efeito na rolagem | Custo para agir |
+**Divisão das caixas:** `Saudável = 1 + teto(X/2)`; `Ferido = 1 + piso(X/2)`; `Incapacitado = 1`; `Inconsciente = 1`.
+
+| Vigor | Força | Saudável | Ferido | Incapacitado | Inconsciente | Vida máxima |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 1 | 1 | 1 | 1 | 4 |
+| 1 | 0 | 2 | 1 | 1 | 1 | 5 |
+| 2 | 0 | 2 | 2 | 1 | 1 | 6 |
+| 3 | 0 | 3 | 2 | 1 | 1 | 7 |
+| 3 | 2 | **3** | **3** | 1 | 1 | **8** |
+| 4 | 4 | **4** | **4** | 1 | 1 | **10** |
+
+| Estado | Efeito na rolagem | Custo por ação |
 |---|---|---|
-| Saudável | nenhum | gratuito |
-| Ferido | **−1A** | gratuito |
-| Incapacitado | **−1E, +1P** | **1 Coragem** |
-| Inconsciente | **−2E, +2P** | **2 Coragens** |
-| Vida 0 (morto) | não pode agir | — |
+| **Saudável** | nenhum | gratuito |
+| **Ferido** | **−1A** | gratuito |
+| **Incapacitado** | **−1E e +1P** | **1 Coragem** |
+| **Inconsciente** | **−2E e +2P** | **2 Coragens** |
+| **Morto (0 Vida)** | não age | — |
 
-As penalidades não se acumulam entre estados. O custo de Coragem indicado habilita a ação, **não remove a penalidade** sem uma regra adicional aprovada.
+As penalidades **não se acumulam entre estados**. Os custos de Coragem são necessários **para agir** e não anulam os modificadores. Eles se somam a outros custos da ação. Se não houver Coragem suficiente, a ação não é permitida por essa regra — não há exceção gratuita implícita.
 
-| Vigor | Saudável | Ferido | Incapacitado | Inconsciente | Vida de referência |
-|---:|---:|---:|---:|---:|---:|
-| 0 | 1 | 1 | 1 | 1 | 4 |
-| 1 | 2 | 1 | 1 | 1 | 5 |
-| 2 | 2 | 2 | 1 | 1 | 6 |
-| 3 | 3 | 2 | 1 | 1 | 7 |
-| 4 | 3 | 3 | 1 | 1 | 8 |
-| 5 | 4 | 3 | 1 | 1 | 9 |
-| 6 | 4 | 4 | 1 | 1 | 10 |
+**DEFINIDO — risco como escolha narrativa:** o Pavor vindo do estado de Saúde **conta na soma da DE** exatamente como o Pavor dos dados mantidos. Um personagem Inconsciente pode alcançar DE usando Pavor, mesmo com seus Êxitos reduzidos, mas deve pagar **2 Coragens por ação** e aceitar as consequências do Pavor não anulado. **Não excluir esse Pavor da DE:** o autor manteve expressamente o benefício arriscado para preservar agência na adversidade. Um acerto com Pavor não é um acerto limpo. [Análise probabilística exata](playtests/analise-saude-quatro-estados-2026-11-16.md).
 
-**PENDENTE:** a regra anterior também somava `piso(Força/2)` à Vida máxima. O autor não esclareceu se esse bônus foi revogado, portanto a coluna de Vida mostra **somente a parcela base + Vigor**, não uma nova fórmula global confirmada. A migração de fichas e a aplicação automática ficam pendentes. Recuperação Vigorosa, Instinto de Sobrevivência e Veneno precisam de compatibilização.
-
-**Atenção de balanceamento:** Pavor contribui para superar a DE nas regras atuais. Assim, **−1E+1P** e **−2E+2P** não são redutores garantidos de chance de acerto; podem trocar sucesso limpo por sucesso arriscado e, em alguns resultados, **aumentar o alcance de DE**. Esse efeito não foi corrigido à revelia do autor. [Veja as probabilidades exatas por estado](playtests/analise-saude-quatro-estados-2026-11-16.md).
+**Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e conversão de ferimentos da Druídica ainda exigem revisão nas novas faixas. A integração automática dos efeitos de Saúde nos outros motores continua pendente.
 
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
