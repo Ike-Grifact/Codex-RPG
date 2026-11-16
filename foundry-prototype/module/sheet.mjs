@@ -277,7 +277,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
      if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=2;
+     else cost+=1;
     }
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");

@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
+ PRACTICES,SKILLS,canBuyDomarMedium,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
  from "./rules.mjs?v=20261115-kinds1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -203,7 +203,8 @@ function canBuySkill(t,id){
   // Criar Item de Foco e Magia também é a Perícia de Psique.
   return skills.has("criar-item-foco-magia")&&skills.has("domar-criatura-pequena");
  }
- if(["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande"].includes(id))
+ if(id==="domar-criatura-media")return canBuyDomarMedium(t);
+ if(["domar-criatura-pequena","domar-criatura-grande"].includes(id))
   return Number(t?.attributes?.influencia||0)>=(id==="domar-criatura-pequena"?2:id==="domar-criatura-media"?3:4)&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
  return skillPrerequisite({...t,monsterRules:false},id);
 }
