@@ -199,7 +199,7 @@ const SKILLS=[
  [
   "recuperacao-vigorosa",
   "Recuperação Vigorosa",
-  "Vigor 3; acelera últimos pontos da caixa Machucado. Custo XP PENDENTE.",
+  "Vigor 3; adaptação da recuperação à nova Saúde em quatro estados PENDENTE. Custo XP PENDENTE.",
   null
  ],
  [
@@ -223,7 +223,7 @@ const SKILLS=[
  [
   "instinto-sobrevivencia",
   "Instinto de Sobrevivência",
-  "Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",
+  "Vigor 3; antigo efeito de remover −1A em Incapacitado está incompatível com −1E/+1P. Novo efeito PENDENTE, sem aplicar bônus automático.",
   null
  ],
  [
