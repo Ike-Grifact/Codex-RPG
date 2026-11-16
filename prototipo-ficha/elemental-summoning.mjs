@@ -85,30 +85,34 @@ export function splitSummonTokens({xpTotal,lifeTotal,tokenCount,defenseDE=null}=
  };
 }
 
-/** DEFINIDO: o conjurador só antecipa um turno da invocação por oportunidade.
- * Uma parte pode atuar isoladamente, ou o conjunto pode distribuir os dados
- * mantidos conforme a cena em uma ÚNICA atuação. Os beneficiários são validados
- * em summonPartRoll; aqui não se concedem ações conjuntas gratuitas.
+/** DEFINIDO: a invocação possui um único turno antecipável, mesmo quando
+ * suas partes atuam juntas. Uma ação conjunta apoia apenas UM personagem.
+ * O cálculo de DE, limites e gastos usa o procedimento geral de ação conjunta.
  */
-export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="individual",groupAction=false}={}){
+export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="individual",groupAction=false,targetId=null}={}){
  if(!Number.isSafeInteger(tokenCount)||tokenCount<1)
   throw new RangeError("Quantidade de tokens inválida");
+ if(typeof groupAction!=="boolean")throw new RangeError("Participação conjunta inválida");
  if(!groupAction&&(!Number.isSafeInteger(selectedToken)||selectedToken<0||selectedToken>=tokenCount))
   throw new RangeError("Token selecionado inválido");
- if(typeof groupAction!=="boolean")throw new RangeError("Participação conjunta inválida");
  if(!SUMMON_ACTION_MODES.includes(mode))throw new RangeError("Modalidade inválida");
+ if(mode==="ajudar-aliado"&&(typeof targetId!=="string"||!targetId.trim()))
+  throw new RangeError("Ação conjunta precisa identificar um único aliado");
+ if(mode!=="ajudar-aliado"&&targetId!==null&&targetId!==undefined)
+  throw new RangeError("Alvo extra não permitido nessa modalidade");
+ const isJointAction=mode!=="individual";
  return {tokenCount,selectedToken:groupAction?null:selectedToken,
-  mode:groupAction?"distribuir":mode,groupAction,
+  mode,groupAction,isJointAction,
+  targetId:mode==="ajudar-aliado"?targetId.trim():null,
   turns:ANTICIPATED_SUMMON_TURNS,otherTokensReceiveTurns:false,
   normalAnticipationAndJointCostsApply:true};
 }
 
 
 /** DEFINIDO 16/11/2026: uma contribuição de Atributo por parte da invocação.
- * Os resultados permanecem identificados por parte; nenhum turno novo é criado.
- * O jogador escolhe quais dados de Atributo rolar e manter, e distribui os dados
- * mantidos por intenção na cena. A aplicação à DE de ações conjuntas ainda exige
- * o procedimento vigente; esta função não inventa bônus nem turnos extras.
+ * O jogador escolhe os dados de Atributo e os mantidos. Em ação conjunta,
+ * TODOS os dados mantidos da invocação são passados a UM único personagem,
+ * para a resolução normal de ação conjunta, sem acrescentar turnos ou bônus.
  */
 export const SUMMON_PARTS_BY_SIZE=Object.freeze({pequena:1,media:2,grande:3});
 export const SUMMON_ATTRIBUTE_KEYS=Object.freeze(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
@@ -123,6 +127,7 @@ export function summonDiceLimit(size){
  * A origem/passos do dado deverão ser conferidos com os Atributos da ficha.
  * assignments, quando fornecido, é decidido depois da rolagem e só aceita
  * dados mantidos: {part, mode:individual|ajudar-conjurador|ajudar-aliado, targetId?}.
+ * Todas as atribuições devem ter o MESMO modo e beneficiário.
  */
 export function summonPartRoll({size,dice=[],keptParts,activePart=null,assignments}={}){
  const rule=summonDiceLimit(size);
@@ -145,8 +150,8 @@ export function summonPartRoll({size,dice=[],keptParts,activePart=null,assignmen
  const kept=keptParts===undefined?results.map(x=>x.part):keptParts;
  if(!Array.isArray(kept)||new Set(kept).size!==kept.length||kept.some(x=>!parts.has(x))||
     kept.length>rolledCount)throw new RangeError("Dados mantidos precisam corresponder às partes roladas");
- // A distribuição ocorre sobre os resultados JÁ mantidos, sem dividir a face
- // entre múltiplos beneficiários nem reutilizar um dado em outro destino.
+ // A atribuição ocorre sobre dados JÁ mantidos: todos precisam participar
+ // da mesma ação (individual ou conjunta com UM beneficiário), sem duplicação.
  if(assignments!==undefined&&!Array.isArray(assignments))
   throw new RangeError("Distribuição precisa ser uma lista de dados mantidos");
  const allocationMap=new Map();
@@ -162,10 +167,21 @@ export function summonPartRoll({size,dice=[],keptParts,activePart=null,assignmen
   allocationMap.set(entry.part,{mode:entry.mode,targetId:entry.mode==="ajudar-aliado"?targetId.trim():null});
  }
  if(assignments!==undefined&&allocationMap.size!==kept.length)
-  throw new RangeError("Distribua cada dado mantido uma única vez");
+  throw new RangeError("Atribua cada dado mantido uma única vez");
+ // A invocação não pode distribuir dados entre dois personagens nem
+ // dividir a mesma atuação entre ataque próprio e apoio a alguém.
+ const destinations=new Set([...allocationMap.values()].map(x=>x.mode+"|"+(x.targetId||"")));
+ if(destinations.size>1)
+  throw new RangeError("A mesma invocação só pode ajudar um único personagem na ação conjunta");
+ const destination=allocationMap.values().next().value||null;
+ const isJointAction=destination!==null&&destination.mode!=="individual";
+ const keptDice=results.filter(x=>kept.includes(x.part));
  return {...rule,rolled:rolledCount,maxKept:rolledCount,activePart,keptCount:kept.length,
   playerChoosesDice:true,playerChoosesKept:true,playerChoosesRecipients:true,
   allocationPending:assignments===undefined&&kept.length>0,
+  oneRecipientPerJointAction:true,isJointAction,
+  jointRecipient:isJointAction?destination:null,
+  transferredDice:isJointAction?keptDice.map(x=>({...x})):[],
   results:results.map(x=>({...x,kept:kept.includes(x.part),allocation:allocationMap.get(x.part)||null})),
-  automaticDEAggregation:false,extraTurns:0,requiresGroupResolutionDecision:true};
+  automaticDEAggregation:false,extraTurns:0,requiresGroupResolutionDecision:false};
 }
