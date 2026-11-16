@@ -158,3 +158,19 @@ test("dados do Foundry reutilizam exatamente as formas e o viewBox do criador we
   }
   assert.equal(dieSvg(0), "");
 });
+
+test("seleção visual de duas fontes e cartas sem polígonos flutuantes",()=>{
+ const html=readFileSync(new URL("../templates/character-sheet.hbs",import.meta.url),"utf8");
+ const css=readFileSync(new URL("../styles/codex-sheet.css",import.meta.url),"utf8");
+ assert.match(html,/is-attributes-only/);
+ assert.match(html,/1ª fonte/);
+ assert.match(html,/2ª fonte/);
+ assert.match(html,/Selecionar fonte/);
+ assert.match(html,/data-action="chooseSource"/);
+ assert.match(html,/class="codex-result-face"/);
+ assert.match(html,/class="codex-result-symbols/);
+ assert.doesNotMatch(html,/<strong>\{\{this.face\}\}<\/strong><span>d/,"Layout antigo de face deve ser revogado");
+ assert.match(css,/\.codex-source-layout\.is-attributes-only/);
+ assert.match(css,/\.codex-result-die-head/);
+ assert.match(css,/\.codex-chat-dice/);
+});
