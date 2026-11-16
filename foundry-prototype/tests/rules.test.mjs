@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
- buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
+ buildPool,elevationChoices,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
@@ -165,4 +165,35 @@ test("criatura de Grau 1 pode compor três Atributos distintos",()=>{
  const pool=buildPool(s,{base:{group:"attribute",key:"forca"},attribute:{group:"attribute",key:"agilidade"},complement:{group:"attribute",key:"vigor"}},{contextApproved:true});
  assert.equal(pool.ok,true);assert.equal(pool.pool.length,3);
  assert.equal(buildPool(s,{base:{group:"attribute",key:"forca"},attribute:{group:"attribute",key:"agilidade"},complement:{group:"attribute",key:"forca"}},{contextApproved:true}).ok,false);
+});
+
+test("grau temporário na aptidão: sequência completa, sem alterar compras ou custo",()=>{
+ const s=human(),a={group:"attribute",key:"forca"},p={group:"practice",key:"atletismo"};
+ const sel={base:a,attribute:p};
+ for(const [grade,expected] of [[0,[6]],[1,[6,6]],[2,[6,6,6]],[3,[6,6,10]],[4,[6,10,10]],[5,[10,10,10]]]){
+  s.attributes.forca=grade;
+  const r=buildPool(s,sel,{step:true,stepSourceId:"attribute.forca"});
+  assert.equal(r.ok,true,r.errors.join(" "));
+  assert.deepEqual(r.pool.slice(0,expected.length).map(x=>x.sides),expected);
+  assert.equal(s.attributes.forca,grade);
+ }
+ for(const [grade,expected] of [[0,[10]],[1,[10,10]],[2,[10,10,10]],[3,[10,10,12]],[4,[10,12,12]],[5,[12,12,12]]]){
+  s.practices.atletismo=grade;
+  const r=buildPool(s,sel,{step:true,stepSourceId:"practice.atletismo"});
+  assert.equal(r.ok,true,r.errors.join(" "));
+  assert.deepEqual(r.pool.slice(-expected.length).map(x=>x.sides),expected);
+  assert.equal(s.practices.atletismo,grade);
+ }
+ s.practices.atletismo=6;
+ assert.equal(elevationChoices(s,sel).some(x=>x.id==="practice.atletismo"),false);
+ assert.equal(buildPool(s,sel,{step:true,stepSourceId:"practice.atletismo"}).ok,false);
+ assert.equal(buildPool(s,sel,{step:true}).ok,false);
+});
+test("terceira fonte habilitada não exige confirmação extra do narrador",()=>{
+ const s=human();s.skills.push("disciplina-avancada");s.practices.armas_conjuracao=2;
+ const sel={base:{group:"attribute",key:"forca"},attribute:{group:"practice",key:"armas_conjuracao"},
+  complement:{group:"knowledge",key:"medicina"}};
+ assert.equal(buildPool(s,sel,{mode:"armas"}).ok,true);
+ s.skills=s.skills.filter(id=>id!=="disciplina-avancada");
+ assert.equal(buildPool(s,sel,{mode:"armas"}).ok,false);
 });
