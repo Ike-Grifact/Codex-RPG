@@ -1,10 +1,24 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.47](srd-continuidade-v0.47.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.48](srd-continuidade-v0.48.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Decisões recentes — 16/11/2026 [DEFINIDO / PENDENTE]
+
+A [continuidade v0.48](srd-continuidade-v0.48.md), seção 0-AK, prevalece sobre os quadros históricos abaixo.
+
+**Domar Pequena/Média/Grande:** Influência mínima **2/3/4**, Apresentação 1, Inteligência 1; aquisição de **1 XP cada** e ativação de **1 PP ou 1 Coragem**. Testes com Influência + Apresentação contra a DE defensiva do domador. Uma criatura de cada porte por personagem, com XP próprio somado ao orçamento do grupo em conflitos.
+
+**Pequena:** enquanto apoio comum não exige ficha completa de combate. Em missão separada ou outro perigo independente possui **1 ponto de Vida próprio**, além de conceder +1 Vida ao domador. **Ficha independente opcional:** XP total igual ao do jogador, com **Força e Vigor custando o dobro da tabela normal de Atributos**. Os demais Atributos seguem a escala normal. A Pequena tem **1 Vida base**, mas a ficha desenvolvida pode ampliar a Vida própria por `1 + Vigor + piso(Força/2)`; os custos de **Força e Vigor são dobrados desde o Grau 1**. O orçamento de XP da criatura acompanha o **XP total atualizado do jogador**. Aumento de Vida máxima não cura ferimentos automaticamente. A aplicação das quatro faixas a criaturas de menos de 4 Vida permanece PENDENTE. Médias/Grandes têm Vida conforme a ficha; cada porte concede +1 Vida ao domador. A alocação do bônus nas quatro faixas permanece pendente.
+
+**Armadura Muito Leve G1:** **3 de Integridade**, preservando o bônus de esquiva, Leve 7, Média 12 e Pesada 17. **Druídica:** danos sofridos antes da transformação reduzem ponto por ponto a Vida atual inicial da forma animal; ferimentos novos no retorno exigem definição.
+
+**Pavor sem alvo**, como em Escudo Arcano, vai para a reserva pública do Narrador até o teto. O excedente ativa intervenção inimiga, selecionando preferencialmente o mais próximo do último jogador ativo; em empate, maior DE, depois maior Vida, a critério da cena. Tarifa de múltiplos excedentes ainda pendente.
+
+**Recuperação:** Saudável 1 dia/vida; Ferido tempos progressivos 1, 2, 3... dias conforme os pontos da faixa; Incapacitado 1 semana e tratamento avançado; Inconsciente 1 semana e transfusão de 1 Sangue. 1 Êxito em tratamento reduz 1 dia exigido. **Exemplo aprovado:** 7 Êxitos e transfusão de 1 Sangue levam alguém Inconsciente a Ferido após um descanso longo. A aplicação de casos parciais continua pendente.
 
 ## Atualização normativa — 15/11/2026: revisão definitiva das faces do d4 [DEFINIDO]
 

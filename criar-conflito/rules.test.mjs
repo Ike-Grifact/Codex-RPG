@@ -180,3 +180,10 @@ test("XP de companheiros domesticados preserva limites e valores pendentes",()=>
  assert.deepEqual(companionEncounterXP({pequena:{count:1,xpTotal:0}},2).missing,["pequena"]);
  assert.equal(SKILLS.find(s=>s.id==="domar-criatura-pequena")?.cost,1);
 });
+test("Domar Pequena, Média e Grande custam 1 XP cada",()=>{
+ const names=["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande"];
+ for(const id of names)assert.equal(SKILLS.find(s=>s.id===id)?.cost,1);
+ const humanoid=blank("humanoide");
+ humanoid.skills=names;
+ assert.equal(ledger(humanoid).skills,3);
+});

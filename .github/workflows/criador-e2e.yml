@@ -7,6 +7,7 @@ on:
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
+      - '.github/tests/pequena-ficha-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,10 @@ jobs:
           done
           cat /tmp/codex-http.log
           exit 1
+      - name: Testar custo de XP da criatura Pequena independente
+        run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs
+      - name: Testar ficha opcional de criatura Pequena no navegador móvel
+        run: node .github/tests/pequena-ficha-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular

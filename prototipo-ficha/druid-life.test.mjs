@@ -50,3 +50,12 @@ test("entradas inválidas não são interpretadas como Vida real",()=>{
     vidaMaximaHumana:4,vidaMaximaAnimal:6,danoAnimal:n
   }),RangeError);
 });
+
+test("dano preexistente reduz Vida atual animal ponto a ponto",async()=>{
+ const {vidaAnimalAoTransformar}=await import("./druid-life.mjs");
+ const x=vidaAnimalAoTransformar({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6});
+ assert.deepEqual(x,{vidaAnimalMaxima:6,vidaAnimalAtual:4,danoPrevio:2,formaSemVida:false});
+ const y=vidaAnimalAoTransformar({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:1});
+ assert.deepEqual([y.vidaAnimalAtual,y.formaSemVida],[0,true]);
+ assert.throws(()=>vidaAnimalAoTransformar({vidaMaximaHumana:7,vidaAtualHumana:8,vidaMaximaAnimal:6}),RangeError);
+});
