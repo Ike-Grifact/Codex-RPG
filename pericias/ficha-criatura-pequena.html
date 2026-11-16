@@ -68,7 +68,7 @@ function redraw(){
  $("small-status").style.color=x.valid?"inherit":"#e8b35a";
  }catch(e){$("small-status").textContent=e.message;}
 }
-function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch{}redraw()}
+function save(){redraw();try{localStorage.setItem(key,JSON.stringify(state))}catch{}}
 $("small-name").addEventListener("input",e=>{state.name=e.target.value;save()});
 $("small-life-current").addEventListener("change",e=>{
  const n=Number(e.target.value),max=smallCompanionBudget(state.playerTotalXP,state.attributes).ownLife;

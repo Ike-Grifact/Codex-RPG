@@ -25,6 +25,14 @@ const assert=require('node:assert/strict');
   assert.match(await page.locator('#small-balance').innerText(),/Gastos: 11 XP/);
   assert.match(await page.locator('#small-life-total').innerText(),/Vida máxima própria: 3/);
   assert.equal(await page.locator('#small-life-current').inputValue(),'2');
+  // Revender Graus reduz o máximo, sem curar nem manter Vida atual inválida.
+  await page.locator('select[data-attr="forca"]').selectOption('0');
+  await page.locator('select[data-attr="vigor"]').selectOption('0');
+  assert.match(await page.locator('#small-life-total').innerText(),/Vida máxima própria: 1/);
+  assert.equal(await page.locator('#small-life-current').inputValue(),'1');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.getElementById('small-life-total')?.textContent.includes('1'));
+  assert.equal(await page.locator('#small-life-current').inputValue(),'1');
   assert.deepEqual(errors,[]);
   console.log('Ficha Pequena: XP, custo dobrado desde G1, Vida escalável, bloqueio, dano sem cura gratuita e salvamento OK');
  }finally{await browser.close()}
