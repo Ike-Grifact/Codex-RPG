@@ -14,6 +14,34 @@
 
 **Importante:** o d4 novo reduz a ocorrência de Pavor de 50% para **25%** por dado e acrescenta 25% de Êxito direto, mas pode perder resultados extremos oferecidos anteriormente pelo ᚨ+ᚦ da face 4. Não há alteração de XP, distribuição de fontes ou limites de Marcos. [SRD de Continuidade v0.46](srd-continuidade-v0.46.md).
 
+## Revisão de Vida e Saúde — quatro estados [DEFINIDO / PENDENTE — 16/11/2026]
+
+**DEFINIDO:** substituem-se as três caixas de Vida pela sequência **Saudável / Ferido / Incapacitado / Inconsciente**, começando com **1 ponto em cada caixa**. Incapacitado e Inconsciente ficam sempre com **1 ponto**. Os pontos de Vigor são acrescentados um por vez, alternadamente: **Saudável, Ferido, Saudável, Ferido...**, sempre começando em Saudável.
+
+| Estado | Efeito na rolagem | Custo para agir |
+|---|---|---|
+| Saudável | nenhum | gratuito |
+| Ferido | **−1A** | gratuito |
+| Incapacitado | **−1E, +1P** | **1 Coragem** |
+| Inconsciente | **−2E, +2P** | **2 Coragens** |
+| Vida 0 (morto) | não pode agir | — |
+
+As penalidades não se acumulam entre estados. O custo de Coragem indicado habilita a ação, **não remove a penalidade** sem uma regra adicional aprovada.
+
+| Vigor | Saudável | Ferido | Incapacitado | Inconsciente | Vida de referência |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 1 | 1 | 1 | 1 | 4 |
+| 1 | 2 | 1 | 1 | 1 | 5 |
+| 2 | 2 | 2 | 1 | 1 | 6 |
+| 3 | 3 | 2 | 1 | 1 | 7 |
+| 4 | 3 | 3 | 1 | 1 | 8 |
+| 5 | 4 | 3 | 1 | 1 | 9 |
+| 6 | 4 | 4 | 1 | 1 | 10 |
+
+**PENDENTE:** a regra anterior também somava `piso(Força/2)` à Vida máxima. O autor não esclareceu se esse bônus foi revogado, portanto a coluna de Vida mostra **somente a parcela base + Vigor**, não uma nova fórmula global confirmada. A migração de fichas e a aplicação automática ficam pendentes. Recuperação Vigorosa, Instinto de Sobrevivência e Veneno precisam de compatibilização.
+
+**Atenção de balanceamento:** Pavor contribui para superar a DE nas regras atuais. Assim, **−1E+1P** e **−2E+2P** não são redutores garantidos de chance de acerto; podem trocar sucesso limpo por sucesso arriscado e, em alguns resultados, **aumentar o alcance de DE**. Esse efeito não foi corrigido à revelia do autor.
+
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
 **Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.
@@ -26,30 +54,11 @@
 
 **XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
 
-### Vida ao voltar da forma animal [DEFINIDO — 16/11/2026]
+### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
 
-A **Vida máxima humana e a Vida máxima animal** são divididas cada uma em três faixas. Os pontos que sobram após dividir por três vão primeiro para a **primeira faixa**, depois para a **segunda**. Exemplo de distribuição:
+A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1/1 e urso 6 = 2/2/2, foi **substituída** pela nova decisão de Saúde em **quatro estados**. Na nova distribuição de base + Vigor, humano com Vida 4 teria **1/1/1/1** e urso com Vida 6 teria **2/2/1/1**. A morte em forma animal continua implicando morte do druida.
 
-| Vida máxima | 1ª faixa | 2ª faixa | 3ª faixa |
-|---:|---:|---:|---:|
-| 4 | **2** | 1 | 1 |
-| 5 | **2** | **2** | 1 |
-| 6 | 2 | 2 | 2 |
-| 7 | **3** | 2 | 2 |
-| 8 | **3** | **3** | 2 |
-
-**Regra de transferência:** contar quantas faixas foram **inteiramente perdidas** na forma animal e, ao reverter, descontar as **mesmas faixas (primeira, depois segunda, depois terceira)** da Vida humana. Só uma faixa animal completamente perdida aciona a perda de sua faixa humana correspondente. **Perder toda a Vida animal significa morrer também na forma humana.** Transformar e reverter não exige teste.
-
-**Exemplo DEFINIDO:** humano de **4 Vida** (2/1/1) e urso de **6 Vida** (2/2/2).
-
-| Dano acumulado no urso | Faixas perdidas | Vida humana ao retornar, se íntegro antes |
-|---:|---:|---:|
-| 0–1 | 0 | **4/4** |
-| 2–3 | 1 | **2/4** |
-| 4–5 | 2 | **1/4** |
-| 6 | 3 | **Morte** |
-
-**Cálculo para qualquer Vida máxima:** `q = piso(V/3)`, `r = V módulo 3`; as faixas são `[q+(r≥1), q+(r≥2), q]`. A perda humana é a soma das primeiras faixas humanas correspondentes às faixas animais completamente perdidas. Para Vida máxima 1 ou 2, faixas sem pontos são zero. **PENDENTE:** interação com Vida humana previamente ferida, dano parcial acumulado entre diferentes transformações, cura e estados; a distribuição e os limiares de terços, porém, estão **DEFINIDOS**. Não permitir cura gratuita por alternância de formas.
+**PROPOSTO (não aprovado para transferência automática):** cada faixa animal completamente perdida descontaria a faixa humana de mesma posição. Com 4/6, o novo exemplo seria: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morto. Este é **um efeito diferente do exemplo antigo de três terços**. A transferência entre as novas faixas precisa de aprovação autoral; não combinar as duas tabelas e não automatizar cura, ferimentos prévios ou alternância de formas.
 
 **Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
@@ -330,7 +339,7 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
 
-### Caixas de Vida, penalidades e Coragem [DEFINIDO]
+### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
 
 A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
 
@@ -343,7 +352,7 @@ A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a
 
 As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
 
-### Recuperação natural de Vida [DEFINIDO]
+### Histórico de recuperação em três caixas [PENDENTE DE ADAPTAÇÃO]
 
 | Caixa em recuperação | Tempo por ponto de Vida |
 |---|---|
