@@ -26,18 +26,30 @@
 
 **XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
 
-### Vida ao voltar da forma animal [DEFINIDO no exemplo / PENDENTE na fórmula geral]
+### Vida ao voltar da forma animal [DEFINIDO — 16/11/2026]
 
-Dano animal é transferido por **faixas de terços** ao voltar à forma humana. Exemplo definido: humano de **4 Vida máxima** e urso de **6 Vida máxima**.
+A **Vida máxima humana e a Vida máxima animal** são divididas cada uma em três faixas. Os pontos que sobram após dividir por três vão primeiro para a **primeira faixa**, depois para a **segunda**. Exemplo de distribuição:
 
-| Dano sofrido pelo urso | Vida do urso restante | Vida humana ao retornar |
+| Vida máxima | 1ª faixa | 2ª faixa | 3ª faixa |
+|---:|---:|---:|---:|
+| 4 | **2** | 1 | 1 |
+| 5 | **2** | **2** | 1 |
+| 6 | 2 | 2 | 2 |
+| 7 | **3** | 2 | 2 |
+| 8 | **3** | **3** | 2 |
+
+**Regra de transferência:** contar quantas faixas foram **inteiramente perdidas** na forma animal e, ao reverter, descontar as **mesmas faixas (primeira, depois segunda, depois terceira)** da Vida humana. Só uma faixa animal completamente perdida aciona a perda de sua faixa humana correspondente. **Perder toda a Vida animal significa morrer também na forma humana.** Transformar e reverter não exige teste.
+
+**Exemplo DEFINIDO:** humano de **4 Vida** (2/1/1) e urso de **6 Vida** (2/2/2).
+
+| Dano acumulado no urso | Faixas perdidas | Vida humana ao retornar, se íntegro antes |
 |---:|---:|---:|
-| **2** | 4/6 | **2/4** |
-| **3** | 3/6 | **2/4** |
-| **4** | 2/6 | **1/4** |
-| **6** | 0/6 | **Morte do druida** |
+| 0–1 | 0 | **4/4** |
+| 2–3 | 1 | **2/4** |
+| 4–5 | 2 | **1/4** |
+| 6 | 3 | **Morte** |
 
-Atenção: no exemplo, perder 2 de 6 (um terço) reduz a Vida humana de 4 para 2 (metade), portanto **o arredondamento proporcional não está definido** para outras Vidas máximas nem para danos de 1 ou 5 no urso. Preservar o resultado explícito do autor e deixar esses casos **PENDENTES**, sem cura por alternância de formas. Transformar ou reverter não exige teste. G2 cancela por falha com Pavor e G3 por Pavor mantido; não unificar gatilhos.
+**Cálculo para qualquer Vida máxima:** `q = piso(V/3)`, `r = V módulo 3`; as faixas são `[q+(r≥1), q+(r≥2), q]`. A perda humana é a soma das primeiras faixas humanas correspondentes às faixas animais completamente perdidas. Para Vida máxima 1 ou 2, faixas sem pontos são zero. **PENDENTE:** interação com Vida humana previamente ferida, dano parcial acumulado entre diferentes transformações, cura e estados; a distribuição e os limiares de terços, porém, estão **DEFINIDOS**. Não permitir cura gratuita por alternância de formas.
 
 **Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
