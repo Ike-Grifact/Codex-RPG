@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Simulador tático experimental do Codex RPG: fichas, terreno, distância e rolagens simbólicas em um tabuleiro.">
+<title>Simulador de Combate — Codex RPG</title>
+<link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="./styles.css?v=0.2">
+<script src="../assets/site.js" defer></script>
+<script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
+<script type="module" src="./app.mjs?v=0.4"></script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header">
+ <a class="brand" href="../index.html" aria-label="Codex RPG, início"><img class="brand-logo" src="../assets/codex-logo.svg" alt="" width="54" height="51"><span class="brand-text">CODEX <strong>RPG</strong></span></a>
+ <nav class="site-nav" aria-label="Menu principal">
+  <a href="../index.html">Início</a><a href="../livro.html">Livro do Jogador</a><a href="../pericias/">Perícias</a><a href="../narrador.html">Livro do Mestre</a><a href="../prototipo-ficha/">Ficha</a><a href="../criar-conflito/">Criar Conflito</a><a href="./" class="active">Simulador</a>
+ </nav>
+ <button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu" aria-expanded="false">☰</button>
+</header>
+<main id="conteudo" class="tc shell">
+ <section class="tc-intro">
+  <div><span class="eyebrow">FERRAMENTA EXPERIMENTAL DE PLAYTEST · SRD v0.44</span>
+   <h1>Simulador de <em>Combate.</em></h1>
+   <p>Tabuleiro, fichas e rolagens em uma só tela. Teste alcance, paredes, cobertura, esquivas e recursos antes de tirar conclusões sobre balanceamento.</p>
+  </div>
+  <div class="tc-intro-actions">
+   <button id="preset" type="button" class="tc-primary">Carregar confronto 3×3</button>
+   <button id="load-saves" type="button">Importar fichas deste navegador</button>
+   <label class="tc-upload" for="json-import">Importar JSON <input id="json-import" type="file" accept=".json,application/json"></label>
+   <button id="export" type="button">Exportar playtest</button>
+   <button id="export-csv" type="button">Histórico CSV</button>
+  </div>
+ </section>
+ <div class="tc-rules-note" role="note">
+  <strong>Sem regras inventadas:</strong> cada quadrado é uma referência visual de <strong>1 m</strong>; percursos usam quatro direções nesta experiência. Parede bloqueia visada; cobertura parcial é indicada, mas <strong>não fornece DE automática</strong>. Escudo Arcano e dano à Vida exigem validação do Narrador. Não existe iniciativa automática.
+ </div>
+ <section class="tc-workspace" aria-label="Tabuleiro e ações">
+  <aside class="tc-panel tc-roster" aria-label="Fichas do combate">
+   <div class="tc-panel-head"><h2>Combatentes</h2><span id="counter">0 fichas</span></div>
+   <div id="roster" class="tc-roster-list"></div>
+   <div class="tc-inline">
+    <label>Nova ficha de teste
+     <select id="new-side"><option value="jogadores">Jogadores</option><option value="inimigos">Inimigos</option></select>
+    </label>
+    <button id="add-token" type="button">+ Adicionar</button>
+   </div>
+   <div id="actor-summary" class="tc-actor-info" aria-live="polite">Selecione um combatente para conferir recursos e deslocamento.</div>
+  </aside>
+  <section class="tc-panel tc-stage" aria-label="Mapa tático">
+   <div class="tc-stage-top">
+    <div><h2>Mapa tático</h2><p><span id="round">Rodada 1</span> · <span id="distance">Selecione dois combatentes</span></p></div>
+    <div class="tc-stage-actions">
+     <button id="next-round" type="button" class="tc-primary">Nova rodada</button>
+     <button id="clear-map" type="button">Limpar terreno</button>
+    </div>
+   </div>
+   <div class="tc-tools" role="group" aria-label="Ferramentas do tabuleiro">
+    <button data-tool="mover" aria-pressed="true" type="button">Mover / escolher</button>
+    <button data-tool="alvo" aria-pressed="false" type="button">Marcar alvo</button>
+    <button data-tool="parede" aria-pressed="false" type="button">Parede</button>
+    <button data-tool="cobertura" aria-pressed="false" type="button">Cobertura</button>
+    <button data-tool="apagar" aria-pressed="false" type="button">Apagar terreno</button>
+   </div>
+   <div class="tc-map-scroll" tabindex="0" aria-label="Mapa rolável horizontalmente">
+    <div id="board" class="tc-board" role="grid" aria-label="Mapa de 20 por 12 metros"></div>
+   </div>
+   <div class="tc-map-key"><span><i class="tc-key-ally"></i> Aliado</span><span><i class="tc-key-enemy"></i> Ameaça</span><span><i class="tc-key-wall"></i> Parede</span><span><i class="tc-key-cover"></i> Cobertura parcial</span><span><i class="tc-key-shield"></i> Escudo Arcano declarado</span></div>
+   <p class="tc-small" id="map-status" aria-live="polite">Clique em um combatente e depois no destino. O deslocamento e a linha de visão serão verificados.</p>
+  </section>
+  <aside class="tc-panel tc-roller" aria-label="Rolador e resolução">
+   <div class="tc-panel-head"><h2>Ação e rolagem</h2><span id="action-state">Pendente</span></div>
+   <div class="tc-versus"><div><small>Origem</small><strong id="actor-name">—</strong></div><span>contra</span><div><small>Alvo</small><strong id="target-name">—</strong></div></div>
+   <div id="target-info" class="tc-small">Selecione um alvo para ver DE, distância e cobertura.</div>
+   <div class="tc-fields">
+    <label>Base (Conhecimento/Prática ou Atributo)<select id="base-source"></select></label>
+    <label>Atributo de apoio<select id="attribute-source"></select></label>
+    <label>Terceira fonte pertinente (opcional)<select id="extra-source"><option value="">Não usar terceira fonte</option></select></label>
+    <label class="tc-check"><input id="context-approved" type="checkbox"> Narrador aprovou a pertinência da terceira fonte</label>
+    <label>Equipamento equipado e habilitado<select id="equipment-source"><option value="">Sem dado de equipamento</option></select></label>
+    <label>Modo de Disciplina<select id="discipline-mode"><option value="normal">Normal</option><option value="armas">Armas</option><option value="conjuracao">Conjuração</option></select></label>
+    <label>Situação (confirmada pelo Narrador)<select id="situation"><option value="neutral">Normal</option><option value="advantage">Vantagem</option><option value="disadvantage">Desvantagem</option><option value="superior">Vantagem absoluta</option><option value="inferior">Desvantagem absoluta</option></select></label>
+    <label>DE da rolagem <input type="number" id="difficulty" min="0" max="30" value="1"></label>
+    <label>Alcance declarado (metros) <input id="range" type="number" min="0" max="300" step="1" value="12"></label>
+    <label>Grau da magia<select id="spell-grade"><option value="2" selected>Grau 2 · ataque pode causar dano</option><option value="1">Grau 1 · apenas efeitos, sem dano</option></select></label>
+    <label class="tc-check"><input type="checkbox" id="extra-keep"> Autorizar retenção extra (Coragem)</label>
+    <label class="tc-check"><input type="checkbox" id="dodge"> Alvo esquivando (bônus somente neste teste)</label>
+    <label class="tc-check"><input type="checkbox" id="narrator-cover"> Cobertura: situação já adjudicada pelo Narrador</label>
+   </div>
+   <div class="tc-inline tc-roll-actions">
+    <button id="roll" type="button" class="tc-primary">Rolar dados</button>
+    <button id="suggest" type="button" disabled>Sugerir mantidos</button>
+   </div>
+   <div id="dice" class="tc-dice" aria-live="polite"><p>Prepare uma pilha antes de rolar.</p></div>
+   <div class="tc-inline tc-antecipar">
+    <label>Anular P <input id="cancel-p" type="number" min="0" max="9" value="0"></label>
+    <label>2A → 1E (pares) <input id="convert-a" type="number" min="0" max="4" value="0"></label>
+    <button id="preview" type="button" disabled>Prévia</button>
+   </div>
+   <div id="roll-result" class="tc-result">Nenhum resultado ainda.</div>
+   <button id="confirm" class="tc-primary tc-full" type="button" disabled>Confirmar e registrar rolagem</button>
+   <div class="tc-break"></div>
+   <h3>Resolução tática</h3>
+   <p class="tc-small">Dano à Integridade/Vida e consequências de cobertura são aplicados manualmente até haver procedimento completo aprovado.</p>
+   <div class="tc-inline">
+    <label>Recurso a reduzir <select id="resource"><option value="integridade">Integridade</option><option value="vida">Vida</option><option value="coragem">Coragem</option><option value="pavorLocal">Pavor local</option></select></label>
+    <label>Quantidade <input id="resource-amount" type="number" value="1" min="1" max="100"></label>
+    <button id="apply-resource" type="button">Aplicar ao alvo</button>
+   </div>
+   <div class="tc-inline"><button id="roll-shield" class="tc-primary" type="button">Rolar Escudo Arcano em si</button><button id="arcane-shield" type="button">Declarar Escudo Arcano (custo e DE manuais)</button></div>
+   <p class="tc-small">Escudo dura 1 rodada e exige Perícia e preparação adequadas. A barreira fica indicada no mapa, mas não bloqueia balas nem soma Integridade automaticamente.</p>
+  </aside>
+ </section>
+ <section class="tc-panel tc-history-panel">
+  <div class="tc-panel-head"><h2>Histórico do playtest</h2><button id="clear-history" type="button">Limpar histórico</button></div>
+  <div id="history" class="tc-history" aria-live="polite"><p>Movimentos, ataques e alterações serão registrados aqui.</p></div>
+ </section>
+</main>
+<div id="notice" class="tc-notice" role="status" aria-live="polite" hidden></div>
+<footer class="footer shell"><div class="footer-inner"><p>Codex RPG · Simulador experimental · Não altera o SRD</p><a href="../criar-conflito/">Voltar ao Criar Conflito</a></div></footer>
+</body>
+</html>

@@ -1,14 +1,151 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa está consolidada no [SRD de Continuidade v0.39](srd-continuidade-v0.39.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.50](srd-continuidade-v0.50.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
-## Atualização normativa — 13/11/2026: características e Perícias [DEFINIDO / em playtest]
+## Antecipação e Concentração Refinada — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
 
-**Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **10/15/20 de Integridade são experimentais**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
+**Antecipação — mecânica, sem custo de XP.** Em uma rolagem que use **Disciplina**, você pode se concentrar para **guardar 1 Antecipar (1A) de um dado mantido para a sua próxima rolagem**. Esse símbolo não pode ser gasto duas vezes: se foi guardado, não pode também anular Pavor, ser convertido por outro uso ou passar o turno na ação atual. Leia a [regra de Antecipação](../mecanicas/antecipacao.html).
+
+**Concentração Refinada — Perícia, custa 1 XP, requer Disciplina 2.** Quando usa Antecipação para guardar 1A, o símbolo guardado **vira automaticamente 1 Êxito (1E)** e você ganha a **condição Vantagem** (a condição comum, não Vantagem Absoluta). **Não pode usar a Perícia com inimigos a até 8 metros de você.** Os usos normais de Antecipar e a Antecipação básica permanecem permitidos nessas situações. Leia o [verbete da Perícia](../pericias/concentracao-refinada.html).
+
+**PENDENTE:** momento de aplicar o Êxito convertido (ao guardar ou na próxima rolagem) e duração da condição Vantagem. O criador verifica custo e requisito de compra, mas não credita automaticamente 1E nem define duração para Vantagem sem nova decisão.
+
+**Invocação Elemental:** a [página da Perícia](../pericias/invocacao-elemental.html) foi reescrita como orientação ao jogador: escolher elemento e porte, pagar a ativação, preparar ficha, agir ou ajudar um personagem, e só depois consultar tipos especiais e pendências. Não houve alteração mecânica na seção 0-AL.
+
+## Improviso Elemental, Maestria e separação de invocações — decisão posterior de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Combinação de elementos:** exige **Improviso Elemental + Maestria Elemental** (as Perícias já existentes), mais a habilitação de cada elemento. Invocar com dois elementos custa **+1 Coragem** além da invocação normal. Aplicar Maestria para os efeitos especiais da criatura custa **+1 PP ou +1 Coragem** adicional, respeitando seus gatilhos. Não comprar uma terceira Perícia chamada Combinar Magia Elemental.
+
+**Tokens de uma mesma invocação:** podem ficar juntos, usando **uma ficha**, ou ser **separados**, distribuindo o XP e a Vida da invocação pela quantidade de tokens. Cada token separado mantém o **mesmo nível de DE da ficha original** e resolve como ficha individual quando for escolhido para agir. **Dano de área funciona normalmente** nos tokens atingidos. Ex.: uma ficha Grande com **60 XP/12 Vida** repartida em três zumbis Médios gera **20 XP/4 Vida para cada token**, sem criar XP ou Vida. Se XP e Vida não forem divisíveis igualmente, a distribuição dos restos é **PENDENTE**; não arredondar silenciosamente.
+
+**Dados e ação conjunta [DEFINIDO]:** Pequena rola **1 dado de Atributo** (mantém até 1); Média **2 dados**, um por parte (mantém até 2); Grande **3 dados**, um por parte (mantém até 3). O jogador escolhe quais dados de Atributo utilizar e quais resultados manter. A invocação pode agir por conta própria ou **ajudar somente um personagem por ação conjunta**: o conjurador ou outro aliado. Ao escolher ajudar, **todos os dados mantidos selecionados são passados ao mesmo personagem como contribuição à resolução normal de uma única ação conjunta**. Assim, uma invocação Grande pode ajudar o mesmo personagem com **os três dados mantidos**, sem dividi-los entre aliados e sem criar três ataques ou três turnos. Os dados mantêm seus símbolos e não podem ser reutilizados; os limites e custos normais da ação conjunta continuam válidos para cada participante. Uma parte isolada usa apenas seu dado. Registre dado, parte, face, símbolos e destinatário único. Divisão inexata de XP/Vida e recombinação continuam **PENDENTES**.
+
+**Um turno antecipável:** o conjurador **só antecipa um único turno da invocação**, ainda que existam vários tokens. Pode usar uma parte isolada ou concentrar todas as partes na **mesma ação conjunta com um único personagem**, passando até três dados se a invocação for Grande. Seguem válidos os custos normais de Antecipar e da ação conjunta, sem turnos gratuitos para as outras partes.
+
+## Limites de controle — decisão mais recente de 16/11/2026 [DEFINIDO]
+
+**Invocação:** cada conjurador controla no máximo **uma invocação ativa e uma ficha mecânica**, qualquer que seja o porte. **Uma ficha pode conter várias criaturas reais na cena**. Exemplo: **três zumbis Médios** coexistem e são controlados como uma única invocação de porte Grande, compartilhando **uma ficha Grande**, a Vida e os recursos mecânicos dessa ficha e **um orçamento de XP contado uma vez**. Isso exige Domar Grande; não concede três ações ou três fichas. Dano de área nos tokens separados é normal, conforme a atualização acima. Como dividir restos não inteiros de XP/Vida e recombinar os tokens continua PENDENTE.
+
+**Domar:** cada domador pode controlar diretamente **até duas fichas de criaturas domesticadas**, ainda respeitando **uma criatura por porte**. Uma eventual terceira criatura já domesticada não passa a ter ficha sob controle direto; seu procedimento de participação é PENDENTE. O limite de uma invocação não consome automaticamente vaga de Domar.
+
+## Invocação Elemental — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Custo: 1 XP. Requisitos:** Criar Item de Foco e Magia, Domar Criatura Pequena e um elemento habilitado. **Criar Item de Foco e Magia é a própria Perícia de Psique**, então já permite invocações de Psique, sem outra Perícia elemental. Para Fogo, Água, Ar, Terra, Sagrado, Veneno, Sangue e Trevas, possuir a Perícia específica continua obrigatório. A invocação custa **1 PP ou 1 Coragem**. O tamanho é limitado a **Pequena**, **Média** ou **Grande** conforme a correspondente Perícia Domar. A criatura temporária possui ficha com **XP total igual ao do invocador**, é imune ao próprio elemento e causa dano desse elemento. Ao ficar **Incapacitado (debilitado)** ou **Inconsciente**, o conjurador perde a invocação.
+
+O invocador também pode **imbuir uma criatura domesticada**, concedendo **resistência** ao elemento escolhido (diferente da imunidade da criatura invocada). Se possuir **Improviso Elemental + Maestria Elemental** e as habilitações dos dois elementos, pode invocar com **dois elementos por +1 Coragem**. Com **Maestria Elemental**, pode pagar **+1 PP ou +1 Coragem** para permitir que a invocação ative efeitos especiais elementais, sem dispensar seus gatilhos.
+
+**Necromancia:** Sangue e Trevas, com corpo portador de Vida que não se regenera e imune a Trevas, reinvocável até destruição definitiva por **Sagrado ou Fogo levando a Vida a 0**. **Psique:** a invocação é a **projeção da mente do próprio conjurador**, cujo **corpo físico permanece parado enquanto a projeção está ativa**. A projeção pode manifestar-se como fantasma imune a elementos neutros e sem dano neutro; com Maestria pode assombrar/possuir um corpo, provocando **Desvantagem Absoluta**. **Psique + Trevas:** assombrações; **Psique + Sagrado:** seres angelicais e fantásticos, como fadas e unicórnios.
+
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia; invocar Psique deixa o corpo físico do conjurador parado enquanto a mente se projeta. **PENDENTE:** resolver ataques contra o corpo, interrupção e retorno da mente; condições de controle, duração, possessão e resistência. **DEFINIDO:** Combinar Elementos usa Improviso + Maestria, não uma terceira Perícia. O verbete completo está em [Invocação Elemental](../pericias/invocacao-elemental.html). Norma mais recente: [SRD v0.49](srd-continuidade-v0.49.md), seção 0-AL.
+
+## Decisões recentes — 16/11/2026 [DEFINIDO / PENDENTE]
+
+A [continuidade v0.48](srd-continuidade-v0.48.md), seção 0-AK, prevalece sobre os quadros históricos abaixo.
+
+**Domar Pequena/Média/Grande:** Influência mínima **2/3/4**, Apresentação 1, Inteligência 1; aquisição de **1 XP cada** e ativação de **1 PP ou 1 Coragem**. Testes com Influência + Apresentação contra a DE defensiva do domador. Uma criatura de cada porte por personagem, com XP próprio somado ao orçamento do grupo em conflitos.
+
+**Pequena:** enquanto apoio comum não exige ficha completa de combate. Em missão separada ou outro perigo independente possui **1 ponto de Vida próprio**, além de conceder +1 Vida ao domador. **Ficha independente opcional:** XP total igual ao do jogador, com **Força e Vigor custando o dobro da tabela normal de Atributos**. Os demais Atributos seguem a escala normal. A Pequena tem **1 Vida base**, mas a ficha desenvolvida pode ampliar a Vida própria por `1 + Vigor + piso(Força/2)`; os custos de **Força e Vigor são dobrados desde o Grau 1**. O orçamento de XP da criatura acompanha o **XP total atualizado do jogador**. Aumento de Vida máxima não cura ferimentos automaticamente. A aplicação das quatro faixas a criaturas de menos de 4 Vida permanece PENDENTE. Médias/Grandes têm Vida conforme a ficha; cada porte concede +1 Vida ao domador. A alocação do bônus nas quatro faixas permanece pendente.
+
+**Armadura Muito Leve G1:** **3 de Integridade**, preservando o bônus de esquiva, Leve 7, Média 12 e Pesada 17. **Druídica:** danos sofridos antes da transformação reduzem ponto por ponto a Vida atual inicial da forma animal; ferimentos novos no retorno exigem definição.
+
+**Pavor sem alvo**, como em Escudo Arcano, vai para a reserva pública do Narrador até o teto. O excedente ativa intervenção inimiga, selecionando preferencialmente o mais próximo do último jogador ativo; em empate, maior DE, depois maior Vida, a critério da cena. Tarifa de múltiplos excedentes ainda pendente.
+
+**Recuperação:** Saudável 1 dia/vida; Ferido tempos progressivos 1, 2, 3... dias conforme os pontos da faixa; Incapacitado 1 semana e tratamento avançado; Inconsciente 1 semana e transfusão de 1 Sangue. 1 Êxito em tratamento reduz 1 dia exigido. **Exemplo aprovado:** 7 Êxitos e transfusão de 1 Sangue levam alguém Inconsciente a Ferido após um descanso longo. A aplicação de casos parciais continua pendente.
+
+## Atualização normativa — 15/11/2026: revisão definitiva das faces do d4 [DEFINIDO]
+
+**Faces do d4:** **1 = 1 Êxito (ᛋ)**; **2 = 1 Antecipar (ᚨ)**; **3 = 1 Pavor (ᚦ)**; **4 = vazia (○)**. A face 2 **não possui Pavor**, conforme a decisão autoral mais recente. Essa distribuição substitui integralmente as versões anteriores do d4; **d6, d10, d12 e d20 não mudam**. A face 4 continua sendo a face numérica máxima para identificação de crítico, embora vazia.
+
+**Análise exata de nível 1:** usando d4+d6, a chance de alcançar DE 1 permanece **83,33%**, DE 2 muda de **33,33% para 37,50%** e DE 3 muda de **4,17% para 0%**; o acerto limpo em DE 1 sobe de **16,67% para 37,50%**. Com d4+d10, DE 1 continua **90,00%**, DE 2 aumenta de **55,00% para 60,00%**, DE 3 permanece **20,00%** e DE 4 cai de **5,00% para 0%**. A progressão d6+d10 não muda. São cenários de fontes pertinentes, mantendo até dois dados, sem equipamento ou Coragem gasta, com escolha estratégica de Antecipar. A tabela completa por acerto limpo, acerto com Pavor e falha está no [relatório de rebalanceamento](playtests/rebalanceamento-d4-nivel-1-2026-11-15.md).
+
+**Importante:** o d4 novo reduz a ocorrência de Pavor de 50% para **25%** por dado e acrescenta 25% de Êxito direto, mas pode perder resultados extremos oferecidos anteriormente pelo ᚨ+ᚦ da face 4. Não há alteração de XP, distribuição de fontes ou limites de Marcos. [SRD de Continuidade v0.46](srd-continuidade-v0.46.md).
+
+## Revisão de Vida e Saúde — quatro estados e Força mantida [DEFINIDO — 16/11/2026]
+
+A Vida máxima do personagem agora é **4 + Grau de Vigor + piso(Grau de Força/2)**. Assim, **Força continua aumentando a Vida** como antes, e a base muda de 3 para **4 pontos**, um em cada estado: **Saudável, Ferido, Incapacitado e Inconsciente**. Incapacitado e Inconsciente têm sempre **1 ponto**. Para distribuir os demais, some `X = Vigor + piso(Força/2)` e aloque os `X` pontos alternadamente entre **Saudável** e **Ferido**, começando por Saudável.
+
+**Divisão das caixas:** `Saudável = 1 + teto(X/2)`; `Ferido = 1 + piso(X/2)`; `Incapacitado = 1`; `Inconsciente = 1`.
+
+| Vigor | Força | Saudável | Ferido | Incapacitado | Inconsciente | Vida máxima |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 1 | 1 | 1 | 1 | 4 |
+| 1 | 0 | 2 | 1 | 1 | 1 | 5 |
+| 2 | 0 | 2 | 2 | 1 | 1 | 6 |
+| 3 | 0 | 3 | 2 | 1 | 1 | 7 |
+| 3 | 2 | **3** | **3** | 1 | 1 | **8** |
+| 4 | 4 | **4** | **4** | 1 | 1 | **10** |
+
+| Estado | Efeito na rolagem | Custo por ação |
+|---|---|---|
+| **Saudável** | nenhum | gratuito |
+| **Ferido** | **−1A** | gratuito |
+| **Incapacitado** | **−1E e +1P** | **1 Coragem** |
+| **Inconsciente** | **−2E e +2P** | **2 Coragens** |
+| **Morto (0 Vida)** | não age | — |
+
+As penalidades **não se acumulam entre estados**. Os custos de Coragem são necessários **para agir** e não anulam os modificadores. Eles se somam a outros custos da ação. Se não houver Coragem suficiente, a ação não é permitida por essa regra — não há exceção gratuita implícita.
+
+**DEFINIDO — risco como escolha narrativa:** o Pavor vindo do estado de Saúde **conta na soma da DE** exatamente como o Pavor dos dados mantidos. Um personagem Inconsciente pode alcançar DE usando Pavor, mesmo com seus Êxitos reduzidos, mas deve pagar **2 Coragens por ação** e aceitar as consequências do Pavor não anulado. **Não excluir esse Pavor da DE:** o autor manteve expressamente o benefício arriscado para preservar agência na adversidade. Um acerto com Pavor não é um acerto limpo. [Análise probabilística exata](playtests/analise-saude-quatro-estados-2026-11-16.md).
+
+**Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e conversão de ferimentos da Druídica ainda exigem revisão nas novas faixas. As rolagens de **personagens no protótipo Foundry** também incluem custos e modificadores de Saúde. Em **Criar Conflito**, a Vida máxima e o cálculo do estado foram atualizados; os custos automáticos dos NPCs e monstros permanecem pendentes.
+
+## Domar Criaturas e Pavor Druídico — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequena, Média e Grande**. Elas aumentam o **XP do grupo no conflito**, usando o XP da criatura quando conhecido ou valor informado pelo Narrador. Não é XP novo para gastar no personagem.
+
+**Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 PP ou 2 Coragens**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
+
+**Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
+
+**Druídica Grau 3:** ao transformar, pagar **1 PP ou 1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. A memória de formas permanece ilimitada, independentemente do limite de companheiros.
+
+## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
+
+**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.
+
+| Grau de transformação | Aquisição e requisitos | Forma e características |
+|---|---|---|
+| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** (distribuição pendente) |
+| **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
+| **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
+
+**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+
+### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
+
+A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1/1 e urso 6 = 2/2/2, foi **substituída** pela nova decisão de Saúde em **quatro estados**. Na nova distribuição de base + Vigor, humano com Vida 4 teria **1/1/1/1** e urso com Vida 6 teria **2/2/1/1**. A morte em forma animal continua implicando morte do druida.
+
+**PROPOSTO (não aprovado para transferência automática):** cada faixa animal completamente perdida descontaria a faixa humana de mesma posição. Com 4/6, o novo exemplo seria: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morto. Este é **um efeito diferente do exemplo antigo de três terços**. A transferência entre as novas faixas precisa de aprovação autoral; não combinar as duas tabelas e não automatizar cura, ferimentos prévios ou alternância de formas.
+
+**Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
+
+## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
+
+**Conjuração Refinada [DEFINIDO no nome e propósito]:** substitui Conjuração Equilibrada. Sua finalidade será **ampliar o alcance de disparos e efeitos mágicos**; metros, custo e procedimento serão reescritos pelo autor. Mantém o identificador de aquisição legado e histórico de XP. **A antiga alteração de peso tático Leve/Pesada por essa Perícia está revogada**. Amplificação de peso por 1 Coragem e redução gratuita com recarga são regras independentes da técnica, conforme SRD v0.43.
+
+**Integridade de armaduras G1 [DEFINIDO o abatimento; valores sujeitos a playtest]:** Muito Leve **0**, Leve **7**, Média **12**, Pesada **17**; redução de 3 em cada peça convencional. Escudos G1 **6/9/12** permanecem **PROPOSTOS e inalterados**. Escudo Arcano permanece **sem mudança**. **Não haverá nova regra de iniciativa.** Para G2–G4, aplicar −3 apenas sobre valores-base existentes; onde o valor anterior não foi aprovado, a Integridade permanece PENDENTE.
+
+**Pedras elementais [DEFINIDO]:** preço comum = **B VT**, preço de **Veneno, Sagrado e Trevas = 3B VT**. As comuns compartilham preço e Sangue/Pedra da Alma não se compra no nível 1. **B é PENDENTE** em VT oficial; a ficha aceita referência **EXPERIMENTAL de mesa** e calcula 3B automaticamente.
+
+**Conhecimento fora de combate [ANÁLISE, ainda não é regra de dispensa]:** DE 1–2 é desafio comum, **DE 3** exige treinamento e **DE 4** é excepcional na escala narrativa experimental. O resultado depende do Grau e dos dados concretos da build, não só do nível. Com Atributo 3 (3d6) + Formação 3 (3d10), mantendo 3 dados de escolha ótima e usando 2A→1E quando pertinente, a chance exata de alcançar DE 3 é **97,44%**; isso não é 100% nem garante acerto limpo. **Limiar 95% para não rolar está somente PROPOSTO**, pendente de aprovação e critérios narrativos. Detalhes no [SRD v0.44](srd-continuidade-v0.44.md), seção 0-AD.
+
+### Histórico de 14/11/2026 [SUBSTITUÍDO nas matérias acima]
+
+## Atualização normativa — 14/11/2026: custos de Perícias e conjuração com foco [DEFINIDO / procedimentos PENDENTES]
+
+**Ativação paga de Perícia: 1 PP OU 1 Coragem** como custo-base; **não** modificar custos de compra em XP. Com **Criar Item de Foco e Magia + foco equipado válido + Perícia do elemento**, a escolha de **um efeito elemental habilitado é gratuita** (0 PP/0 Coragem), sem eliminar DE, Pavor, condições, limites de Grau ou requisitos. Amplificar até o maior peso **já permitido** custa **+1 Coragem**; reduzir Grau/intensidade é gratuito mas **preserva a recarga**. **PENDENTE:** distinção exata entre Grau, peso tático e slot, teto de amplificação e recarga em redução; papel de Conjuração Equilibrada.
+
+**Pedras elementais:** poderão ser compradas usando VT restante no criador. Fogo/Água/Terra/Ar/Psique compartilham faixa comum; Veneno/Sagrado/Trevas compartilham faixa mais cara; Sangue/Pedra da Alma não é comprável no nível 1. **PENDENTE:** preços oficiais em VT, carga e relação com Cristal inicial. A ficha pode registrar preços de mesa explicitamente EXPERIMENTAIS.
+
+**Regra anterior abaixo permanece como histórico no ponto em que disser 2 Coragens**; esta atualização de 14/11 substitui a ativação-base, não os requisitos da Perícia nem as taxas excepcionais não revisadas.
+
+## Atualização normativa — 13/11/2026: características e Perícias [HISTÓRICO nos custos]
+
+**Ativação:** ataque comum acertado pode gastar **1 PP ou 2 Coragens para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **7/12/17 de Integridade são valores em playtest após redução de 3**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
 
 ## I. O que é Codex RPG?
 
@@ -85,7 +222,7 @@ O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, ro
 | 1–5 | 2 | 3 |
 | 6–20 | 3 | 4 |
 
-Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem para elevar um passo permitido de um dado antes da rolagem segue d4→d6→d10→d12, em suas condições normais.
+Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem permite escolher **qual dado elegível da pilha** elevar em um passo antes da rolagem, incluindo Atributo, Conhecimento, Prática ou dado adicional habilitado de equipamento. A cadeia comum é d4→d6→d10→d12, com uma elevação comum por rodada e sem alterar limites de rolagem ou retenção.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
@@ -95,16 +232,16 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 
 | Face | d4 | d6 | d10 | d12 | d20 |
 |---:|---|---|---|---|---|
-| 1 | ○ | ○ | ○ | ○ | ○ |
-| 2 | ○ | ○ | ○ | ○ | ○ |
+| 1 | ᛋ | ○ | ○ | ○ | ○ |
+| 2 | ᚨ | ○ | ○ | ○ | ○ |
 | 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
-| 4 | ᚨ+ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
 | 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
 | 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
 | 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ+ᚨ |
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | 2ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | 2ᛋ+ᚨ+ᚦ |
-| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
+| 10 | — | — | 2ᛋ+ᚨ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
 | 11 | — | — | — | ᛋ+2ᚨ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
 | 12 | — | — | — | 2ᚦ | 2ᚦ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
@@ -116,7 +253,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 são vazias. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
+A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autoral **DEFINIDA em 14/11/2026**; ela é a face numérica máxima do d10. As faces 10 do d12 e d20 mantêm seus valores próprios, não alterados por esta decisão. A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 dos dados **d6, d10, d12 e d20** são vazias. No **d4 revisado**, a face 1 é ᛋ (Êxito), a face 2 é ᚨ (Antecipar), a face 3 é ᚦ (Pavor) e a face 4 é vazia; **a face 4 continua sendo a máxima numérica para crítico, embora não contenha símbolos**. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
 
 
 ## IV. Resolver ações
@@ -149,7 +286,7 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 
 **Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
 
-**Exemplo:** um d6 com face **6** (1E) e um d10 com face **10** (2E + 1P), ambos mantidos, formam o crítico de dois: o resultado passa de **3E + 1P** a **4E sem Pavor**, recuperando até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
+**Exemplo:** um d6 na face **6** (1E) e um d10 na face **10** (2E + 1A), ambos mantidos, formam o crítico de dois com **3E + 1A e nenhum Pavor**. Como não há Pavor próprio, o benefício crítico de converter 1P em 1E não é aplicado. A rolagem recupera até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
 
 **Reservas:** a Coragem individual tem teto normal 10. O máximo de PP é **0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**. Recuperação que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
 
@@ -163,7 +300,7 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 - **Falha limpa:** não alcança DE e não tem consequência negativa automática.
 - **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
 
-Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html).
+Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. **Em ataque contra um adversário declarado como alvo, o Pavor dos dados mantidos que não foi anulado entra na reserva local do próprio adversário atacado, mesmo que ele esteja distante e mesmo se o ataque falhar — nunca na reserva do inimigo mais próximo.** O alvo só pode aproveitar esse recurso quando tiver uma oportunidade válida. O teto local do inimigo começa em **4P no Grau 1**, e sobe até **8P nos Graus 5–6**; inimigos começam o conflito com saldo cheio. Ataques contra vários alvos/área e ações sem adversário atacado ainda têm distribuição PENDENTE. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html) e no [SRD v0.41](srd-continuidade-v0.41.md).
 
 ### Rodadas, oportunidades e protagonismo [DEFINIDO]
 
@@ -175,7 +312,7 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar um passo de um dado de Atributo antes de rolar (d4 → d6 → d10 → d12, quando pertinente).
+- **Gastar 1 Coragem** para escolher e elevar um passo de **um dado elegível da pilha** antes de rolar (d4 → d6 → d10 → d12), inclusive um dado de Conhecimento ou Prática e uma fonte complementar habilitada por Perícia avançada. Uma elevação comum por rodada.
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Pavor também retira 1 Coragem**.
 - A partir do nível 5, o Talento automático **Perícia em Coragem** permite gastar **2 Coragens para recuperar 1 PP**, uma vez por turno e sem ultrapassar o máximo de PP.
 
@@ -263,7 +400,7 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
 
-### Caixas de Vida, penalidades e Coragem [DEFINIDO]
+### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
 
 A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
 
@@ -276,7 +413,7 @@ A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a
 
 As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
 
-### Recuperação natural de Vida [DEFINIDO]
+### Histórico de recuperação em três caixas [PENDENTE DE ADAPTAÇÃO]
 
 | Caixa em recuperação | Tempo por ponto de Vida |
 |---|---|
@@ -288,7 +425,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 ### Perícia Recuperação Vigorosa [DEFINIDO]
 
-**Requisito: Vigor 3. Compra: 1 XP [DEFINIDO — reafirmado pelo autor em 13/11/2026].** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
+**Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
 
 **Exemplo com 6 Vida:** Vigor 3, Força 0 → caixas **2 / 2 / 2**. Se a ficha está em **0 / 1 / 2**, a Perícia permite passar a **0 / 2 / 2 em 1 dia**.
 
@@ -382,11 +519,11 @@ Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um ini
 
 **PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
 
-### Conjuração Equilibrada [DEFINIDO / terminologia PENDENTE]
+### Conjuração Refinada [DEFINIDO no nome / alcance PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
+**Compra histórica: 1 XP. Requisitos mantidos enquanto a técnica não for reescrita: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
 
-**Ativação: 1 PP ou 2 Coragens.** Permite alterar a magia para **Pesada ou Leve**. A descrição autoral diz “alterar o grau da magia, para pesado ou leve”; **PENDENTE:** confirmar se é apenas a categoria de **peso tático**, sem alteração do **Grau numérico** ou do peso de armazenamento em spellslots. A ficha registra a Perícia sem inventar efeitos de Grau superior.
+Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu novo objetivo é **ampliar o alcance de disparos e efeitos de magias**. Os metros adicionais, custo e condições ainda serão escritos pelo autor. A antiga mudança de peso Leve/Pesada mediante esta Perícia está **revogada** e não habilita dados maiores automaticamente. **A amplificação comum de 1 Coragem da v0.43 não depende desta Perícia.** Consulte [verbete atual](../pericias/conjuracao-refinada.html).
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
@@ -479,7 +616,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 - **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
 - **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
-- **Trevas:** escuridão, maldições e Pavor; técnica habilitada pode acrescentar **2 Pavor em uma rolagem**, com até dois alvos distintos sob condições ainda detalhadas no catálogo.
+- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2P válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Pavor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Pavor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1P a mais) **ou concentrado integralmente num alvo**. Não duplicar Pavor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 PP/2 Coragens no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
 - **Sangue:** manipular sangue/efeitos ligados à Vida; especialização custa **1 Vida do conjurador**, mesmo em falha, e acrescenta **1 Pavor**; um acerto pode retirar **1 Vida** de alvo com sangue, contornando integridade.
 - **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
 **Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
@@ -488,7 +625,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 **Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
 
-**Conjuração Equilibrada (1 XP):** permite alterar a magia para **Pesada ou Leve** pagando **1 PP ou 2 Coragens**, com Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2. **PENDENTE:** esclarecer se isso altera somente o peso tático, preservando o Grau numérico e a ocupação do slot.
+**Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
 
 **Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
 
@@ -603,7 +740,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado para disparos/arremessos; detalhes de ativação e custo aguardam decisão |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
-| **Recuperação Vigorosa** | **1 XP — DEFINIDO** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
+| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
 | **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
 | **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
@@ -634,7 +771,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **Artista Marcial:** cada manobra adicional requer ativação própria e só se aplica uma por vez; o crítico de Pugilismo conserva sua condição anterior. **Recuperação em Movimento:** dano reinicia a contagem de 8 horas e não transforma automaticamente prazos semanais em 8h. **Maestria em Manejo Duplo:** além de DES 2 e AGI 1 agora definidos, falta determinar os requisitos combinados de Maestrias/Disciplina Avançada. **Manejo Perfeito:** requer DES 2, mas custo XP/Golpe Certo continuam pendentes.
 
-**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; custo de Manejo Perfeito e Golpe Certo; limites de Pugilismo; retirada de armas lançadas e riscos a aliados; custos da Maestria em Recuperação Vigorosa em Movimento e de Instinto de Sobrevivência (Recuperação Vigorosa já custa 1 XP); Disciplina Avançada; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
+**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; custo de Manejo Perfeito e Golpe Certo; limites de Pugilismo; retirada de armas lançadas e riscos a aliados; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; Disciplina Avançada; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
 
 ### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
 
@@ -657,7 +794,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
-| **Conjuração Equilibrada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; 1 PP/2 Coragens para Leve ou Pesada |
+| **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
 | **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP/2 Coragens ao acertar |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
@@ -671,7 +808,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Montar Animal | 2 | Montaria comum, requer Influência 2 |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **1 XP — DEFINIDO** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
 | **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 PP ou 2 Coragens |
 
 **A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.

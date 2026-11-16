@@ -1,11 +1,9 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.39: fontes mínimas e XP livre; total de 20 XP experimental. */
+/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica 2 XP única; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
-const QUICK_HUMANOID=new URLSearchParams(window.location.search).get("modo")==="humanoide-rapido";
-const SAVE_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-v1":"codex-html-ficha-prototipo-v1";
-const OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1";
-const WIZARD_KEY=QUICK_HUMANOID?"codex-html-humanoide-rapido-wizard-v1":"codex-html-ficha-wizard-v1";
-const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
+const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
+const SAVE_KEY=NPC_MODE?"codex-html-ficha-npc-dna-v1":"codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY=NPC_MODE?"codex-html-ficha-npc-wizard-v1":"codex-html-ficha-wizard-v1";
+const CONFLICT_NPC_INBOX="codex-rpg-conflito-humanoide-inbox-v1";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -13,9 +11,9 @@ const GROUPS={attr:A,know:K,practice:P},SOURCE_PROPS={attr:"attributes",know:"kn
 const DICE_ATTR=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]];
 const DICE_FORM=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 const FACES={
- 4:[[0,0,0],[0,0,0],[0,0,1],[0,1,1]],
+ 4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
- 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
+ 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,1,0]],
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
  20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
@@ -51,26 +49,20 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/2 Coragens; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/2 Coragens e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",
+  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/1 Coragem; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/1 Coragem e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",
   1
  ],
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 2 Coragens. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/2 Coragens amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa.",
+  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa.",
   1
  ],
  [
   "conjuracao-equilibrada",
-  "Conjuração Equilibrada",
-  "1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Por 1 PP ou 2 Coragens altera a magia para Pesada ou Leve. PENDENTE: confirmar se é só peso tático, não mudança do Grau numérico nem dos pesos de slots.",
+  "Conjuração Refinada",
+  "1 XP · Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2. Destinada a aumentar a distância de disparos e efeitos mágicos. PENDENTE: alcance adicional, custo e procedimento até a reescrita pelo autor. NÃO altera peso/dados automaticamente. ID de compra preservado.",
   1
- ],
- [
-  "peritoconj",
-  "Perito Conjurador",
-  "Combinação pertinente à Conjuração.",
-  2
  ],
  [
   "improviso",
@@ -81,79 +73,85 @@ const SKILLS=[
  [
   "mestre",
   "Maestria Elemental",
-  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. Custo 1 PP ou 2 Coragens para mesclar dois elementos e ativar simultaneamente as propriedades especiais dos dois, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
+  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. Custo 1 PP ou 1 Coragem para mesclar dois elementos e ativar simultaneamente as propriedades especiais dos dois, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
   1
  ],
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 3 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Permite conjurar magias Leves de Fogo. Em ataque acertado, mesmo sem crítico, 1 PP/1 Coragem ativa UM efeito especial. G1: disparo a distância causa dano à armadura, sem queimadura direta à Vida; iluminar e conduzir chamas com fonte/faísca disponível (lamparina, isqueiro, foco pequeno encantado ou luvas de faísca); não invoca fogo do nada. G2: área 4×4, cone/linha/círculo, dano à Vida e armadura; SEM FOCO invocar fogo custa 1 Coragem ADICIONAL à ativação normal: 1 PP + 1 Coragem ou 3 Coragens. G3: conjurar no final do turno dos aliados, área 8×8, círculo/cone/linha. Pode amplificar pequena faísca em incêndios; dano persistente, unidade das áreas e alcance pendentes. Não automatizado.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/2 Coragens ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/1 Coragem ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 2 Coragens para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 1 Coragem para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, 1 PP ou 2 Coragens ativa UM efeito escolhido. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, 1 PP ou 1 Coragem ativa UM efeito escolhido. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 1 Coragem. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
   2
  ],
  [
   "veneno",
   "Perícia em Elemento Veneno",
-  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 2 Coragens para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
+  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
   2
  ],
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens. Conjurar sem Sangramento próprio custa inicialmente 2 Vida mesmo em falha; autoaplicar Sangramento na conjuração reduz esse custo para 1 Vida; se já estava em Sangramento, o custo inicial é zero. +1P comum na conjuração. Ao acertar alvo em Sangramento ou já danificado na Vida, escolher 2 Vida diretos (não comba com colossal) OU dano convencional de Integridade com sangue coagulado, consumido no uso. Sangue fluido pode ser remanipulado sem aumento de dano, mas alvo único sem mescla. Transfusão é outra Perícia. G2/G3 por combinação.",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 1 Coragem. Conjurar sem Sangramento próprio custa inicialmente 2 Vida mesmo em falha; autoaplicar Sangramento na conjuração reduz esse custo para 1 Vida; se já estava em Sangramento, o custo inicial é zero. +1P comum na conjuração. Ao acertar alvo em Sangramento ou já danificado na Vida, escolher 2 Vida diretos (não comba com colossal) OU dano convencional de Integridade com sangue coagulado, consumido no uso. Sangue fluido pode ser remanipulado sem aumento de dano, mas alvo único sem mescla. Transfusão é outra Perícia. G2/G3 por combinação.",
   2
  ],
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 2 Coragens após acerto mesmo sem crítico. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra até dois alvos distintos, comparada à DE de cada alvo; depois de acertar soma +2P só ao cálculo do dano, nunca à DE, sem gerar Pavor ou intervenção extras. G2/G3 por combinação.",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 1 Coragem após acerto mesmo sem crítico. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
   2
  ],
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 PP/2 Coragens. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 PP/1 Coragem. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra médios. Não automatizado.",
+  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/1 Coragem. Ignora Desvantagem de peso contra médios. Não automatizado.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/2 Coragens. Ignora Desvantagem de peso contra leves. Não automatizado.",
+  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/1 Coragem. Ignora Desvantagem de peso contra leves. Não automatizado.",
   2
  ],
  [
   "disciplina-avancada",
   "Disciplina Avançada",
   "Disciplina 2; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
+  1
+ ],
+ [
+  "concentracao-refinada",
+  "Concentração Refinada",
+  "1 XP. Requisito: Disciplina 2. Ao usar a mecânica Antecipação para guardar 1A de uma rolagem com Disciplina para a próxima rolagem, o A reservado converte-se em 1E e você recebe a condição Vantagem. Não pode usar Concentração Refinada com inimigo a 8 m ou menos. Momento exato de crédito do 1E e duração da Vantagem PENDENTES; por enquanto apenas a compra é automatizada.",
   1
  ],
  [
@@ -177,19 +175,19 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/2 Coragens para mudar peso do soco. Pesos disponíveis PENDENTES.",
+  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/1 Coragem para mudar peso do soco. Pesos disponíveis PENDENTES.",
   1
  ],
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Pugilismo + Destreza 2. 1 PP/2 Coragens por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Disciplina 2 + Pugilismo + Destreza 2. 1 PP/1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
   1
  ],
  [
   "maestria-arremesso-armas",
   "Perícia em Arremesso de Armas",
-  "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 2 Coragens, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
+  "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
   1
  ],
  [
@@ -201,14 +199,14 @@ const SKILLS=[
  [
   "disparo-multiplo",
   "Disparo Múltiplo",
-  "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 2 Coragens permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e somente 0,5 de dano por Pavor válido mesmo se Disparo Fulminante for ativado no principal. Cada técnica é paga separadamente; crítico não dispensa custo. Armas de fogo usam apenas a modalidade especial Descarregar Tambor, nunca o efeito de Disparo Fulminante.",
+  "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e somente 0,5 de dano por Pavor válido mesmo se Disparo Fulminante for ativado no principal. Cada técnica é paga separadamente; crítico não dispensa custo. Armas de fogo usam apenas a modalidade especial Descarregar Tambor, nunca o efeito de Disparo Fulminante.",
   1
  ],
  [
   "recuperacao-vigorosa",
   "Recuperação Vigorosa",
-  "Requer Vigor 3. A cada 3 graus completos de Vigor acelera a recuperação de um dos últimos pontos da caixa Machucado de uma semana para um dia por ponto. Não substitui tratamento médico. Custa 1 XP.",
-  1
+  "Vigor 3; adaptação da recuperação à nova Saúde em quatro estados PENDENTE. Custo XP PENDENTE.",
+  null
  ],
  [
   "recuperacao-movimento",
@@ -225,13 +223,13 @@ const SKILLS=[
  [
   "maestria-manejo-duplo",
   "Perícia em Manejo Duplo",
-  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 PP ou 2 Coragens para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 PP ou 2 Coragens. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
+  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 PP ou 1 Coragem para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 PP ou 1 Coragem. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
   1
  ],
  [
   "instinto-sobrevivencia",
   "Instinto de Sobrevivência",
-  "Vigor 3; ao ficar Incapacitado ignora −1A; −2E permanece. Custo XP PENDENTE.",
+  "Vigor 3; antigo efeito de remover −1A em Incapacitado está incompatível com −1E/+1P. Novo efeito PENDENTE, sem aplicar bônus automático.",
   null
  ],
  [
@@ -261,7 +259,7 @@ const SKILLS=[
  [
   "armas-longo-alcance",
   "Perícia em Armas de Longo Alcance",
-  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 PP ou 2 Coragens ativa uma segunda; acerto normal exige 1 PP ou 2 Coragens.",
+  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 PP ou 1 Coragem ativa uma segunda; acerto normal exige 1 PP ou 1 Coragem.",
   2
  ],
  [
@@ -279,7 +277,7 @@ const SKILLS=[
  [
   "armas-fogo",
   "Perícia em Armas de Fogo",
-  "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 PP ou 2 Coragens. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 PP OU 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
+  "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 PP ou 1 Coragem. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 PP OU 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
   3
  ],
  [
@@ -299,17 +297,50 @@ const SKILLS=[
   "Furtividade Avançada",
   "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
   1
+ ],
+ [
+  "domar-criatura-pequena",
+  "Domar Criatura Pequena",
+  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  1
+ ],
+ [
+  "domar-criatura-media","Domar Criatura Média",
+  "1 XP. Influência 3, Apresentação 1, Inteligência 1. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  1
+ ],
+ [
+  "domar-criatura-grande","Domar Criatura Grande",
+  "1 XP. Influência 4, Apresentação 1, Inteligência 1. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  1
+ ],
+ [
+  "invocacao-elemental",
+  "Invocação Elemental",
+  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 PP ou 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Uma ficha de invocação pode conter várias criaturas reais; três zumbis Médios podem compartilhar uma ficha Grande sem multiplicar Vida mecânica, ações ou XP. Dados da invocação: Pequena rola um dado de Atributo e mantém até 1; Média rola dois dados, um por parte, mantém até 2; Grande rola três dados, um por parte, mantém até 3. Registrar resultados das partes separadamente, sem conceder turnos extras. O jogador escolhe os dados de Atributo e quais manter. A invocação age sozinha ou ajuda um ÚNICO personagem (o conjurador ou um aliado) em ação conjunta normal, passando TODOS os dados mantidos para esse mesmo personagem (até 3 dados na Grande). Não distribuir entre dois personagens nem multiplicar ações, dados, Pavor ou símbolos. Uma única ficha e um único turno antecipável; limites individuais e regras normais da ação conjunta aplicam-se. Em Psique, a mente é projetada e o corpo do conjurador permanece parado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem e exigem Improviso Elemental + Maestria Elemental adquiridos, além das habilitações de ambos os elementos; Maestria Elemental na invocação custa +1 PP ou +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; pode projetar a mente com corpo parado. Separar tokens divide XP/Vida e mantém a DE da invocação. Dano de área é normal. Apenas um turno antecipável para uma ficha, mesmo com vários tokens: agir sozinho ou ajudar conjurador/aliado em ação conjunta. Não automatizar possessão e divisões inexatas.",
+  1
+ ],
+ [
+  "pericia-druidica",
+  "Perícia Druídica",
+  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Conversão de ferimentos da Druídica para as novas quatro caixas ainda PENDENTE; o exemplo anterior com três terços está substituído. Morrer em forma animal mata o druida; transformação não automatizada.",
+  2
  ]
 ];
 
 // IDs de Perícias legadas continuam nas fichas salvas e no cálculo de XP,
 // mas não aparecem nas opções novas de compra.
 const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);
-const RETIRED_PROTOTYPES=new Set(["marciais","combinacao"]);
+const RETIRED_PROTOTYPES=new Set(["marciais","combinacao","peritoconj"]);
 const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "invocacao-elemental":["attr:influencia","attr:inteligencia","practice:apresentacao","practice:armas_conjuracao"],
+ "domar-criatura-media":["attr:influencia","attr:inteligencia","practice:apresentacao"],
+ "domar-criatura-grande":["attr:influencia","attr:inteligencia","practice:apresentacao"],
+ "domar-criatura-pequena": ["attr:influencia","attr:inteligencia","practice:apresentacao"],
+ "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
   "practice:armas_conjuracao"
  ],
@@ -337,9 +368,6 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:inteligencia",
   "attr:destreza"
- ],
- "peritoconj": [
-  "practice:armas_conjuracao"
  ],
  "improviso": [
   "practice:armas_conjuracao",
@@ -513,6 +541,8 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental","pericia-druidica"],
+ ["criar-item-foco-magia","terra","domar-criatura-pequena","pericia-druidica"],
  [
   "armas",
   "armas-leves",
@@ -550,7 +580,6 @@ const SKILL_BRANCHES=[
   "criar-item-foco-magia",
   "escudo-arcano",
   "conjuracao-equilibrada",
-  "peritoconj",
   "improviso",
   "mestre",
   "fogo",
@@ -590,14 +619,18 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "invocacao-elemental":"invocacao-elemental",
+ "domar-criatura-media":"domar-criatura-media",
+ "domar-criatura-grande":"domar-criatura-grande",
+ "domar-criatura-pequena": "domar-criatura-pequena",
+ "pericia-druidica": "pericia-druidica",
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
- "conjuracao-equilibrada": "conjuracao-equilibrada",
- "peritoconj": "perito-conjurador",
+ "conjuracao-equilibrada": "conjuracao-refinada",
  "improviso": "improviso-elemental",
  "mestre": "maestria-elemental",
  "fogo": "pericia-em-elemento-fogo",
@@ -638,6 +671,11 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
+ "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
+ "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -670,9 +708,14 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
+ "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
+ "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
+ "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
+ "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
- "conjuracao-equilibrada": "Altera a categoria da magia para Leve ou Pesada.",
+ "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
  "improviso": "+1A e elemento disponível na cena sem efeito especial.",
  "mestre": "+1A cumulativo e dois efeitos de elementos habilitados.",
  "fogo": "Fogo leve, dano e manipulação de chamas.",
@@ -682,7 +725,7 @@ const CARD_EFFECTS={
  "sagrado": "Êxitos excedentes recuperam Coragem; P anula recuperação.",
  "veneno": "Magia de Veneno: 1 acúmulo em alvo com Sangramento; limiares por Vida atual",
  "sangue": "Manipula Sangue: 2 Vida diretos ou dano à Integridade.",
- "trevas": "Até dois alvos; +2P exclusivamente para dano após acerto.",
+ "trevas": "Até dois alvos; +2P válidos para DE, dano e risco; dividir ou concentrar Pavor.",
  "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
  "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
@@ -702,15 +745,20 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 PP ou 1 Coragem.",
+ "domar-criatura-media":"1 XP. Influência 3, Apresentação 1 e Inteligência 1.",
+ "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1 e Inteligência 1.",
+ "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
+ "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
- "conjuracao-equilibrada": "Ajusta uma magia à categoria Leve ou Pesada mediante gasto, sem liberar dados nem novos Graus gratuitamente.",
+ "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
  "improviso": "Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
- "trevas": "Escolhe até dois alvos usando a mesma rolagem; +2 Pavor são exclusivos para dano após o acerto, não para atingir DE nem gerar reserva.",
+ "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
  "sangue": "Sacrifício depende do Sangramento próprio: 2 Vida sem o estado, 1 ao autoaplicar e zero se já estiver Sangrando. Dano direto à Vida ou Integridade.",
- "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 2 Coragens para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
+ "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
  "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
@@ -721,12 +769,12 @@ const CARD_BRIEFS={
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
  "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
  "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
- "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 2 Coragens, e exige possuir a especialização corpo a corpo do peso usado. Al…",
+ "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
  "disparo-fulminante": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.…",
- "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 2 Coragens permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
+ "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
  "disparo-violento": "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crític…",
  "disparo-tatico": "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.…",
- "armas-fogo": "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 PP ou 2 Coragens. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escope…",
+ "armas-fogo": "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 PP ou 1 Coragem. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escope…",
  "golpe-baixo": "Técnica somática: chutar ponto vulnerável, jogar terra nos olhos e outros golpes desleais. Ao acertar aplica Desvantagem (−1A) por 1 rodada. Contra inimigos com Inteligência grau ZERO, o inimigo ignora Provocar e fixa quem aplicou Golpe Baixo como alvo até que um dos dois seja eliminado, m…",
  "maestria-manejo-duplo": "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica das duas armas sem custo; acerto comum ativa ambo…",
  "furtividade": "Ao usar Furtividade como fonte do teste, recebe +1A automaticamente e sem custo. Cumulativa com outras Vantagens legítimas como Concentrado, mas cada símbolo A só pode ser gasto uma vez. Alguns inimigos são IMUNES a Furtividade; vantagens não anulam essa imunidade nem garantem ocultação.…",
@@ -734,44 +782,49 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
- "criar-item-foco-magia": "1 PP ou 2 Coragens para efeito Psíquico",
- "escudo-arcano": "1 PP ou 2 Coragens (+ custo por expansão)",
- "conjuracao-equilibrada": "1 PP ou 2 Coragens",
+ "invocacao-elemental":"1 PP ou 1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 PP ou +1 Coragem",
+ "domar-criatura-media":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-grande":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-pequena": "1 PP ou 1 Coragem + teste de Influência + Apresentação",
+ "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
+ "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
+ "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
+ "conjuracao-equilibrada": "PENDENTE",
  "improviso": "Passiva",
- "mestre": "1 PP ou 2 Coragens",
- "fogo": "1 PP ou 2 Coragens",
- "agua": "1 PP ou 2 Coragens",
- "vento": "1 PP ou 2 Coragens",
- "terra": "1 PP ou 2 Coragens",
- "sagrado": "1 PP ou 2 Coragens",
- "veneno": "1 PP ou 2 Coragens após acerto",
- "sangue": "1 PP ou 2 Coragens; Vida se aplicável",
- "trevas": "1 PP ou 2 Coragens",
+ "mestre": "1 PP ou 1 Coragem",
+ "fogo": "1 PP ou 1 Coragem",
+ "agua": "1 PP ou 1 Coragem",
+ "vento": "1 PP ou 1 Coragem",
+ "terra": "1 PP ou 1 Coragem",
+ "sagrado": "1 PP ou 1 Coragem",
+ "veneno": "1 PP ou 1 Coragem após acerto",
+ "sangue": "1 PP ou 1 Coragem; Vida se aplicável",
+ "trevas": "1 PP ou 1 Coragem",
  "criar-veneno": "Preparação alquímica; ativação conforme arma",
  "criar-antidoto": "1 dose remove 1 acúmulo",
  "transfusao": "Custo de Vida; PP/Coragem a confirmar",
- "armas-longo-alcance": "1 PP ou 2 Coragens no acerto comum; crítico gratuito",
- "golpe-fulminante": "1 PP ou 2 Coragens; crítico não dispensa",
- "espalhar-golpe": "1 PP ou 2 Coragens por até 2 alvos adicionais",
- "maestria-arremesso-armas": "1 PP ou 2 Coragens ao acertar para ativar efeitos",
- "disparo-fulminante": "1 PP ou 2 Coragens; crítico não dispensa",
- "disparo-multiplo": "1 PP ou 2 Coragens a cada até 2 alvos adicionais",
- "disparo-violento": "1 PP ou 2 Coragens; crítico não dispensa",
+ "armas-longo-alcance": "1 PP ou 1 Coragem no acerto comum; crítico gratuito",
+ "golpe-fulminante": "1 PP ou 1 Coragem; crítico não dispensa",
+ "espalhar-golpe": "1 PP ou 1 Coragem por até 2 alvos adicionais",
+ "maestria-arremesso-armas": "1 PP ou 1 Coragem ao acertar para ativar efeitos",
+ "disparo-fulminante": "1 PP ou 1 Coragem; crítico não dispensa",
+ "disparo-multiplo": "1 PP ou 1 Coragem a cada até 2 alvos adicionais",
+ "disparo-violento": "1 PP ou 1 Coragem; crítico não dispensa",
  "disparo-tatico": "PENDENTE",
- "armas-fogo": "1 PP ou 2 Coragens no acerto comum; crítico gratuito para efeitos da arma",
- "golpe-baixo": "1 PP ou 2 Coragens",
- "maestria-manejo-duplo": "1 PP ou 2 Coragens no acerto normal; crítico gratuito",
+ "armas-fogo": "1 PP ou 1 Coragem no acerto comum; crítico gratuito para efeitos da arma",
+ "golpe-baixo": "1 PP ou 1 Coragem",
+ "maestria-manejo-duplo": "1 PP ou 1 Coragem no acerto normal; crítico gratuito",
  "furtividade": "Passiva",
  "furtividade-avancada": "Passiva"
 };
 
 function skillCompactCard([id,name,detail,cost],wizard){
  const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
- const disabled=!!state.pending||(!owned&&(!!req||!affordable))||(owned&&state.creationLocked&&!editMode);
+ const disabled=!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(/1 PP|2 Coragens/i.test(detail)?"1 PP / 2 Coragens":"Passiva / consultar");
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
- const button=owned?(state.creationLocked&&!editMode?"Adquirida ✓":"Desfazer"):cost===null?"Pendente":"Comprar · "+cost+" XP";
+ const button=owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
@@ -827,6 +880,9 @@ const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio
 const CATALOG=(window.CODEX_G1_CATALOG||[]).filter(x=>x.grade===1);
 const RESOURCES=[["ervas","Ervas"],["espolios","Espólios"],["couro","Couro"],["comida","Comida"],["minerios","Minérios"]];
 const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT não é moeda física.
+// SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
+const STONE_CATALOG=[["Fogo","common"],["Água","common"],["Ar","common"],["Terra","common"],["Psíquico","common"],
+ ["Veneno","rare"],["Sagrado","rare"],["Trevas","rare"]];
 const ACTIVE_PROPERTIES=new Set(["Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]);
 const SOUND_KEY="codex-roll-sound-v1";
 let soundEnabled=true,audioContext=null,tradeDraft=null,tradeOwner=null;
@@ -850,7 +906,8 @@ function playRollSound(){
   }
  }catch(err){console.warn("Codex: áudio indisponível",err);}
 }
-function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries(RESOURCES.map(([k])=>[k,4])),purchases:[],collected:false};}
+function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries(RESOURCES.map(([k])=>[k,4])),purchases:[],collected:false,
+ stonePrices:{common:null,rare:null},stones:[]};}
 function walletValue(s=state){return RESOURCES.reduce((n,[k])=>n+Number(s.trade?.resources?.[k]||0),0);}
 function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // Lotes G1 pequenos: 10 unidades = 1 Leve (proposta).
 function combatItem(item,mode){
@@ -865,7 +922,8 @@ function combatItem(item,mode){
   const element=(item.element||"psiquico").toLowerCase();
   const map={ar:"vento",água:"agua",agua:"agua",terra:"terra",fogo:"fogo",sagrado:"sagrado",sangue:"sangue",veneno:"veneno",trevas:"trevas"};
   if(!["psiquico","psíquico"].includes(element)&&!skills.includes(map[element]||element))return [];
-  return [die];
+  // O peso físico de um cetro G1 não habilita automaticamente magia Média/Pesada.
+  return [cat==="leve"?die:6]; // Conjuração Refinada não concede dado maior pelo peso físico do foco (SRD v0.44).
  }
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
@@ -896,17 +954,11 @@ const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
- level:1,attributes:{},knowledges:{},practices:{},skills:[],genePackages:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
+ level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
-function quickHumanoidDefault(){
- const s=defaultState();
- s.name="Humano comum";s.concept="Oponente humanoide";s.origin="Humano";
- s.attributes.forca=1;s.practices.armas_conjuracao=1;
- return s;
-}
-let state=QUICK_HUMANOID?quickHumanoidDefault():defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
@@ -950,15 +1002,19 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:""});
+  extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  contextOK:false,equipmentId:"",trevas:false});
 function load(){
- let migrated=false,legacyAvailable=false;
+ let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
  try{
   const saved=localStorage.getItem(SAVE_KEY);
-  const oldRaw=QUICK_HUMANOID?null:localStorage.getItem(OLD_SAVE_KEY);
+  const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
-  if(saved)state=normalize(JSON.parse(saved));
+  if(saved){
+   const raw=JSON.parse(saved);
+   retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
+   state=normalize(raw);
+  }
   else if(oldRaw){
    const old=JSON.parse(oldRaw);
    const character=old?.character||old;
@@ -983,7 +1039,7 @@ function load(){
   wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
   wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
   wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
-  wizardMode=w.mode==="genetic"?"genetic":QUICK_HUMANOID&&w.mode!=="list"?"genetic":"list";
+  wizardMode=w.mode==="genetic"?"genetic":"list";
   wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
   wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
   wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
@@ -992,14 +1048,16 @@ function load(){
   if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
   if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
  }catch(e){wizardStep=0;wizardReached=0;}
- if(QUICK_HUMANOID){wizardStep=2;wizardReached=2;viewMode="builder";state.creationLocked=false;}
- else viewMode=state.creationLocked?"sheet":"builder";
+ viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
- $("import-old-creator").hidden=QUICK_HUMANOID||!legacyAvailable;
- if(migrated){
+ $("import-old-creator").hidden=!legacyAvailable;
+ if(migrated||retiredSkillMigrated){
+  // Persistir a migração somente quando houve Perícia revogada na ficha salva,
+  // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast("Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.");
+  toast(migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+   "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
 function normalize(v){
@@ -1020,20 +1078,9 @@ function normalize(v){
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))))];
- // Registra exclusivamente compras conjuntas feitas pelas esferas roxas.
- // Fichas anteriores não têm histórico: nunca supor quais requisitos eram próprios.
- s.genePackages=Array.isArray(v.genePackages)?v.genePackages.slice(-120).filter(r=>
-  r&&SKILLS.some(([id])=>id===r.root)&&Array.isArray(r.skills)&&Array.isArray(r.sources)
- ).map(r=>({
-  root:r.root,active:r.active!==false,
-  skills:[...new Set(r.skills.filter(id=>SKILLS.some(([key])=>key===id)))].slice(0,30),
-  sources:r.sources.filter(x=>x&&SOURCE_PROPS[x.group]&&GROUPS[x.group].some(([k])=>k===x.key)&&
-   Number.isInteger(x.from)&&Number.isInteger(x.to)&&x.from>=0&&x.to<=6&&x.to>x.from
-  ).slice(0,20).map(x=>({group:x.group,key:x.key,from:x.from,to:x.to}))
- })):[];
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
-  s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":"Combinação de Fontes").join(" e ")+
-   ". XP liberado automaticamente pela retirada; Artista Marcial não é adquirido sem requisitos.").trim().slice(0,5000);
+  s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":id==="combinacao"?"Combinação de Fontes":"Perito Conjurador").join(" e ")+
+   ". XP liberado automaticamente pela retirada; habilidades antigas não são concedidas sem requisitos.").trim().slice(0,5000);
  }
  if(shouldMigrateFocus)s.skills.push("criar-item-foco-magia");
  if(legacyCost>0&&!s.notes.includes("Migração conjuração 2026:")){
@@ -1069,12 +1116,33 @@ function normalize(v){
  s.courage=clamp(Math.floor(v.courage??10),0,10);
  s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
- s.items=Array.isArray(v.items)?v.items.slice(0,150).map(item=>normalizeItem(item)):[];
+ // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
+ // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
+ s.items=Array.isArray(v.items)?v.items.slice(0,150).map(raw=>{
+  const item=normalizeItem(raw);
+  const old={"Armadura Leve":10,"Armadura Média":15,"Armadura Pesada":20};
+  if(item.type==="armadura"&&item.grade===1&&item.catalogId==="Roupas Simples"&&item.max===0){
+   // Anteriormente não havia Integridade; G1 agora tem 3. Item de catálogo apenas.
+   item.max=3;item.hp=3;
+  }
+  const previous=old[item.catalogId];
+  if(item.type==="armadura"&&item.grade===1&&previous&&item.max===previous){
+   item.max=previous-3;item.hp=Math.min(item.max,Math.max(0,item.hp-3));
+  }
+  return item;
+ }):[];
  const rawTrade=v.trade&&typeof v.trade==="object"?v.trade:null;
  s.trade=tradeDefault();
  if(rawTrade){
   s.trade.resources=Object.fromEntries(RESOURCES.map(([k])=>[k,clamp(Math.floor(rawTrade.resources?.[k]||0),0,100000)]));
-  s.trade.collected=!!rawTrade.collected;
+   s.trade.collected=!!rawTrade.collected;
+  // Valores introduzidos pela mesa: experimentais; sem preço oficial presumido.
+  const raw=rawTrade.stonePrices?.common;
+  const B=raw===null||raw===undefined||raw===""?null:clamp(Math.floor(raw),1,3333);
+  s.trade.stonePrices.common=B;s.trade.stonePrices.rare=B===null?null:3*B; // Proporção homologada; preservar preços de compras históricas.
+  s.trade.stones=Array.isArray(rawTrade.stones)?rawTrade.stones.slice(0,150)
+   .filter(x=>x&&STONE_CATALOG.some(row=>row[0]===x.element))
+   .map(x=>({element:x.element,price:clamp(Math.floor(x.price||0),0,10000)})):[];
   s.trade.purchases=Array.isArray(rawTrade.purchases)?rawTrade.purchases.slice(0,150).filter(x=>x&&typeof x.name==="string")
    .map(x=>({name:x.name.slice(0,90),price:clamp(Math.floor(x.price||0),0,99999)})):[];
  }
@@ -1092,7 +1160,7 @@ function normalizeItem(it={}){
  const type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(it.type)?it.type:"outro";
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
  const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
- const max=type==="armadura"&&weight==="muito_leve"?0:clamp(Math.floor(it.max??0),0,999);
+ const max=clamp(Math.floor(it.max??0),0,999);
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
@@ -1111,7 +1179,27 @@ function save(){
  }
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
-function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
+// SRD v0.47: quatro estados; Vigor e a contribuição histórica de Força
+// repartem pontos extras alternadamente entre Saudável e Ferido.
+const LIFE_STATES={
+ saudavel:{id:"saudavel",label:"Saudável",e:0,a:0,p:0,coragem:0},
+ ferido:{id:"ferido",label:"Ferido",e:0,a:-1,p:0,coragem:0},
+ incapacitado:{id:"incapacitado",label:"Incapacitado",e:-1,a:0,p:1,coragem:1},
+ inconsciente:{id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2},
+ morto:{id:"morto",label:"Morto",e:0,a:0,p:0,coragem:Infinity}
+};
+function lifeBands(s=state){
+ const vigor=Math.max(0,Math.floor(s.attributes.vigor||0));
+ const forca=Math.max(0,Math.floor(s.attributes.forca||0));
+ const extras=vigor+Math.floor(forca/2);
+ return [1+Math.ceil(extras/2),1+Math.floor(extras/2),1,1];
+}
+function maxLife(s=state){return lifeBands(s).reduce((n,k)=>n+k,0);}
+function lifeStage(s=state){
+ const bands=lifeBands(s),life=clamp(s.life,0,maxLife(s));
+ const id=life===0?"morto":life===1?"inconsciente":life===2?"incapacitado":life<=2+bands[1]?"ferido":"saudavel";
+ return {...LIFE_STATES[id],bands,life};
+}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0),
@@ -1123,8 +1211,7 @@ function xpCosts(s=state){
  const spent=rawCreationCosts(s),attributes=spent.attr,training=spent.training,skills=spent.skills,total=attributes+training+skills;
  const initialCarryover=s.creationLocked&&s.creationBudgetSnapshot?unusedInitialXP(s.creationBudgetSnapshot):
   Math.max(0,CREATE_BUDGET.total-total);
- const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:
-  CREATE_BUDGET.total+(QUICK_HUMANOID?Math.max(0,Number(s.xpEarned)||0):0)-total;
+ const free=s.creationLocked?CREATE_BUDGET.total+(s.xpEarned||0)+(s.legacyXPRefund||0)-total:CREATE_BUDGET.total-total;
  const generalSpent=Math.max(0,total-CREATE_BUDGET.total);
  return {attributes,training,skills,total,generalSpent,free,initialCarryover,
   initialRemaining:Math.max(0,initialCarryover-generalSpent),
@@ -1150,6 +1237,12 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
+ if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
+  return"Requer Criar Item de Foco e Magia e Domar Criatura Pequena. O próprio foco habilita Psique; os demais elementos exigem suas Perícias.";
+ if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
+ if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena, Média e Grande podem ser compradas com 1 XP cada, respeitando seus requisitos.";
+
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
  const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
@@ -1170,6 +1263,7 @@ function skillReq(id,s=state){
  if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
  if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
+ if(id==="concentracao-refinada"&&disc<2)return"Requer Disciplina 2.";
  if(id==="criar-item-foco-magia"&&(disc<1||(s.attributes.inteligencia||0)<1||art<1))return"Requer Disciplina 1, Inteligência 1 e Artesão 1.";
  if(["vento","agua","terra","fogo"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Criar Item de Foco e Magia e Inteligência 1.";
  if(id==="sagrado"&&(disc<2||(s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia e Inteligência 2.";
@@ -1180,8 +1274,7 @@ function skillReq(id,s=state){
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
- if(id==="recuperacao-vigorosa"&&vig<3)return"Requer Vigor 3.";
- if(id==="instinto-sobrevivencia"&&vig<3)return"Requer Vigor 3; custo XP pendente.";
+ if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
  if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
@@ -1195,7 +1288,6 @@ function skillReq(id,s=state){
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
  if(id==="transfusao")return"Compra ainda pendente de custo ou regras de aquisição.";
- if(id==="peritoconj"&&!has("criar-item-foco-magia"))return"Requer Criar Item de Foco e Magia.";
  return null;
 }
 function dependentsValid(testState){
@@ -1248,20 +1340,8 @@ function armorDodgeBonus(s=state){
 function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
 function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
-function capacity(s=state){return 1+Math.floor((s.attributes.forca||0)/3)+Math.floor((s.attributes.vigor||0)/3)+Math.floor((s.practices.armas_conjuracao||0)/3)+Math.floor((s.practices.atletismo||0)/3);}
-function loadUsed(s=state){return s.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(s); /* Recursos de troca também ocupam Carga. */}
-function itemLoad(item){const normalized=normalizedCatalogItem(item);return WEIGHTS[normalized.weight][1]*((normalized.properties||[]).includes("Muito Leve")?0.5:1);}
-function itemLoadAfterPurchase(item,s=state){return loadUsed(s)+itemLoad(item)-Number(item.priceVT||0)/10*WEIGHTS.leve[1];}
-function freeLoad(s=state){return Math.max(0,capacity(s)-loadUsed(s));}
-function carryCounts(s=state){const free=freeLoad(s);return {leve:Math.floor((free+1e-9)/WEIGHTS.leve[1]),medio:Math.floor((free+1e-9)/WEIGHTS.medio[1]),pesado:Math.floor((free+1e-9)/WEIGHTS.alto[1])};}
-function carryGuide(s=state){
- const count=carryCounts(s),left=capacity(s)-loadUsed(s);
- return '<div class="fp-carry-guide'+(left<0?' is-overloaded':'')+'" aria-live="polite">'+
- '<strong>'+(left<0?'Carga excedida por '+pad(-left)+' Alto!':'Carga disponível: '+pad(left)+' Alto')+'</strong>'+
- '<span>Uso atual '+pad(loadUsed(s))+' / '+capacity(s)+' Alto (itens + recursos VT).</span>'+
- '<div class="fp-carry-limits"><span><b>'+count.leve+'</b> leves</span><span><b>'+count.medio+'</b> médios</span><span><b>'+count.pesado+'</b> pesados</span></div>'+
- '<small>Quantidades alternativas, não cumulativas. Comprar com VT reduz também a carga dos recursos usados.</small></div>';
-}
+function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
+function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
@@ -1348,21 +1428,9 @@ function renderOwnedPanel(){
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
     '<span class="fp-element-icon">ᚨ</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
  const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
-  const isArmor=it.type==="armadura",noIntegrity=isArmor&&it.weight==="muito_leve";
-  const integrity=!isArmor?"":noIntegrity?
-   '<div class="fp-owned-integrity is-none"><span>Integridade</span><strong>Sem Integridade (Muito Leve)</strong></div>':
-   '<div class="fp-owned-integrity'+(it.hp<=0?' is-depleted':'')+'">'+
-    '<div class="fp-owned-integrity-header"><span>Integridade atual / máxima</span><b>'+it.hp+' / '+it.max+'</b></div>'+
-    '<div class="fp-owned-integrity-meter" role="meter" aria-label="Integridade de '+esc(it.name)+'" aria-valuemin="0" aria-valuemax="'+Math.max(0,it.max)+'" aria-valuenow="'+it.hp+'">'+
-     '<span style="width:'+(it.max>0?Math.max(0,Math.min(100,100*it.hp/it.max)):0)+'%"></span></div>'+
-    '<div class="fp-owned-integrity-actions">'+
-     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'"'+(it.hp<=0?' disabled':'')+'>−</button>'+
-     '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Restaurar um ponto de Integridade de '+esc(it.name)+'"'+(it.hp>=it.max?' disabled':'')+'>+</button>'+
-    '</div>'+(it.max===0?'<small>Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>':'')+'</div>';
-  return '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
-   integrity+(it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>';
- }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+ $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
+  '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
+  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
 function geneLayout(mapId,detailId){
@@ -1425,13 +1493,16 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "invocacao-elemental":[["s:criar-item-foco-magia","s:domar-criatura-pequena"]],
+ "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
+ "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1"]],
+ "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
  "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
  "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
  "disciplina-avancada":[["p:armas_conjuracao:2"]],
- "recuperacao-vigorosa":[["a:vigor:3"]],
  "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
  "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
  "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
@@ -1440,7 +1511,6 @@ const GENE_AUTO_REQUIREMENTS={
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
- "peritoconj":[["s:criar-item-foco-magia"]],
  "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
  "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
  "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
@@ -1541,16 +1611,8 @@ function geneAutoBuy(id){
    if(to>from)levels.push(name+" "+from+" → "+to);
   }
  }
- const addedSkillIds=plan.state.skills.filter(sid=>!base.skills.includes(sid));
- const newSkills=addedSkillIds.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
- const receipt={root:id,active:true,skills:addedSkillIds,sources:[]};
- for(const group of ["attr","know","practice"]){
-  const field=SOURCE_PROPS[group];
-  for(const [key] of GROUPS[group]){
-   const from=Number(base[field][key]||0),to=Number(plan.state[field][key]||0);
-   if(to>from)receipt.sources.push({group,key,from,to});
-  }
- }
+ const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
+  .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
  const before=xpCosts(base).free,after=xpCosts(plan.state).free;
  const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
   (levels.length?"Graus:\n• "+levels.join("\n• ")+"\n\n":"")+
@@ -1567,7 +1629,7 @@ function geneAutoBuy(id){
   }
  }
  for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
- geneCommit(receipt);
+ geneCommit();
 }
 function geneStageSkill(id){
  if(!geneCanAdjust())return;
@@ -1585,7 +1647,7 @@ function geneStageSkill(id){
 function geneDiscard(){
  geneDraft.clear();genePendingSkills.clear();geneRefresh();
 }
-function geneCommit(receipt=null){
+function geneCommit(){
  if(!geneCanAdjust()||!genePendingCount())return;
  const preview=genePreviewState(),xp=xpCosts(preview),problem=dependentsValid(preview);
  if(xp.free<0||problem||(!state.creationLocked&&!hasStarterSources(preview))){
@@ -1595,10 +1657,6 @@ function geneCommit(receipt=null){
  state.knowledges={...preview.knowledges};
  state.practices={...preview.practices};
  state.skills=[...preview.skills];
- if(receipt?.root&&receipt.skills.includes(receipt.root)){
-  state.genePackages.push(receipt);
-  state.genePackages=state.genePackages.slice(-120);
- }
  geneDraft.clear();genePendingSkills.clear();
  for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
  render();save();toast("Evolução confirmada. Saldo de XP: "+xp.free+".");
@@ -1634,108 +1692,6 @@ function geneSkillStatus([id,,,cost],s=state){
  // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
  return geneAutoPlan(id,s)?"potential":"locked";
 }
-
-/* Reversão de compras da ficha, não concessão de XP de campanha.
- * Só os investimentos registrados como parte de um pacote roxo são elegíveis
- * à redução automática; fontes adquiridas antes da compra são preservadas. */
-function geneCanRemoveSkill(){
- return !state.pending&&((viewMode==="builder"&&!state.creationLocked)||editMode);
-}
-function geneRefundPlan(id){
- if(!state.skills.includes(id))return {error:"Perícia não adquirida."};
- if(genePendingCount())return {error:"Confirme ou descarte os ajustes pendentes antes de remover uma Perícia."};
- const candidate=geneCandidateCopy(state);
- candidate.skills=candidate.skills.filter(sid=>sid!==id);
- const invalid=candidate.skills.find(sid=>skillReq(sid,candidate));
- if(invalid){
-  const name=SKILLS.find(([sid])=>sid===invalid)?.[1]||invalid;
-  return {error:"A Perícia "+name+" ainda depende desta compra. "+skillReq(invalid,candidate)};
- }
- const receipts=(state.genePackages||[]).map(r=>({...r,
-  skills:[...r.skills],sources:r.sources.map(x=>({...x}))}));
- const receiptIndex=receipts.findLastIndex(r=>r.root===id&&r.active);
- if(receiptIndex>=0)receipts[receiptIndex].active=false;
- const inactive=receipts.filter(r=>!r.active);
- const activeRoots=new Set(receipts.filter(r=>r.active).map(r=>r.root));
- // Retira Perícias intermediárias exclusivas, mas preserva as compartilhadas.
- const eligible=new Set(inactive.flatMap(r=>r.skills.filter(sid=>sid!==r.root)));
- let changed=true;
- while(changed){
-  changed=false;
-  for(const sid of eligible){
-   if(!candidate.skills.includes(sid)||activeRoots.has(sid))continue;
-   const next={...candidate,skills:candidate.skills.filter(key=>key!==sid)};
-   if(!dependentsValid(next)){candidate.skills=next.skills;changed=true;}
-  }
- }
- // Histórico inativo continua guardado: quando a última dependência compartilhada
- // for removida numa edição posterior, o XP correspondente ainda pode ser liberado.
- const sources=new Map();
- for(const r of inactive)for(const x of r.sources){
-  const id=x.group+":"+x.key,old=sources.get(id);
-  sources.set(id,{group:x.group,key:x.key,
-   from:old?Math.min(old.from,x.from):x.from,
-   maxTo:old?Math.max(old.maxTo,x.to):x.to});
- }
- for(const x of sources.values()){
-  const field=SOURCE_PROPS[x.group],current=candidate[field][x.key]||0;
-  // Grau maior que qualquer pacote registrado: pode ter aumento manual posterior.
-  // Sem proveniência desse aumento, é mais seguro não reduzi-lo automaticamente.
-  if(current>x.maxTo)continue;
-  for(let grade=current-1;grade>=x.from;grade--){
-   const next={...candidate,[field]:{...candidate[field],[x.key]:grade}};
-   if(!hasStarterSources(next)||dependentsValid(next))break;
-   candidate[field][x.key]=grade;
-  }
- }
- if(!hasStarterSources(candidate)||dependentsValid(candidate))
-  return {error:"A remoção deixaria a ficha sem os requisitos mínimos ou invalidaria outra Perícia."};
- const removed=state.skills.filter(sid=>!candidate.skills.includes(sid));
- const levels=[];
- for(const group of ["attr","know","practice"]){
-  const field=SOURCE_PROPS[group];
-  for(const [key,name] of GROUPS[group]){
-   const from=Number(state[field][key]||0),to=Number(candidate[field][key]||0);
-   if(to<from)levels.push({group,key,name,from,to});
-  }
- }
- const refund=xpCosts(state).total-xpCosts(candidate).total;
- if(refund<0)return {error:"A correção não pode aumentar o XP gasto."};
- return {candidate,receipts,removed,levels,refund,tracked:receiptIndex>=0};
-}
-function geneRemoveSkill(id){
- if(!geneCanRemoveSkill()){
-  toast(state.creationLocked?"Ative Editar ficha e abra o Codex Genético para remover Perícias.":"Finalize a rolagem antes de editar.");return;
- }
- const plan=geneRefundPlan(id);
- if(plan.error){toast(plan.error);return;}
- const name=SKILLS.find(([sid])=>sid===id)?.[1]||id;
- const skills=plan.removed.map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
- const levelText=plan.levels.map(x=>x.name+" G"+x.from+" → G"+x.to);
- const summary="Remover "+name+" e corrigir os investimentos?\n\n"+
-  "Perícias removidas:\n• "+skills.join("\n• ")+
-  (levelText.length?"\n\nGraus devolvidos:\n• "+levelText.join("\n• "):"")+
-  "\n\nXP devolvido à ficha: "+plan.refund+" XP"+
-  "\nSaldo livre: "+xpCosts(state).free+" → "+xpCosts(plan.candidate).free+" XP."+
-  (plan.tracked?"":"\n\nEsta compra não tem histórico de pacote: somente compras identificadas podem ser revertidas automaticamente.")+
-  "\nGraus necessários a outras Perícias ou à criação mínima permanecem."+
-  "\nEsta é uma correção da ficha, não um ganho de XP de campanha.";
- if(!confirm(summary))return;
- state.attributes={...plan.candidate.attributes};
- state.knowledges={...plan.candidate.knowledges};
- state.practices={...plan.candidate.practices};
- state.skills=[...plan.candidate.skills];
- state.genePackages=plan.receipts;
- state.life=clamp(state.life,0,maxLife(state));
- if(!state.skills.includes("criar-item-foco-magia")){
-  state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
- }
- for(const item of state.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(state,item))item.equipped=false;
- if(draft.third&&!mayThird())draft.third=null;
- if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
- render();save();toast("Correção confirmada. "+plan.refund+" XP retornaram ao saldo da ficha.");
-}
-
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
  if(src){
@@ -1756,32 +1712,24 @@ function geneDetailHTML(id,s=state){
  const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const canRemove=geneCanRemoveSkill();
- const refundPlan=owned&&canRemove?geneRefundPlan(sid):null;
+ const slug=SKILL_PERMALINKS[sid];
+ const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
  const skillButton=owned?
-  '<button type="button" class="fp-gene-remove-skill" data-action="gene-remove-skill" data-id="'+esc(sid)+'"'+
-   (!canRemove||refundPlan?.error?' disabled':'')+'>'+
-   (canRemove&&refundPlan&&!refundPlan.error?
-    'Remover Perícia e reembolsar · '+refundPlan.refund+' XP':
-    canRemove?'Remoção bloqueada por requisitos':'Ative Editar ficha para remover')+'</button>'+
-   (refundPlan?.error?'<p class="fp-gene-auto-note">'+esc(refundPlan.error)+'</p>':"")+
-   (refundPlan&&!refundPlan.tracked&&!refundPlan.error?
-    '<p class="fp-gene-auto-note">Compra antiga ou individual: não há registro dos requisitos adquiridos em pacote; apenas investimentos identificados serão revertidos.</p>':""):
+  '<button type="button" data-action="respec-skill" data-id="'+esc(sid)+'"'+(state.pending?' disabled':'')+'>Devolver '+(Number.isInteger(cost)?cost:"?")+' XP · testar build</button>':
   status==="potential"&&packagePlan&&geneCanAdjust()?
-   '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
-    'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
-    '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
-  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+
-    (status!=="available"&&!staged?' disabled':'')+'>'+
-    (staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
-    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+
-    (status!=="available"?' disabled':'')+'>'+(status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
+  '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
+   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>'+
+   '<p class="fp-gene-auto-note">Compra conjunta: os graus e Perícias exigidos serão adquiridos automaticamente após confirmar o custo.</p>':
+  geneCanAdjust()?'<button type="button" class="fp-primary-btn" data-action="gene-skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"&&!staged?' disabled':'')+'>'+
+   (owned?"Adquirida ✓":staged?"Remover da evolução":"Adicionar à evolução · "+cost+" XP")+'</button>':
+   '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
+   (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
-  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton;
+  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton+verbete;
 }
 function renderGenetic(){
  const preview=genePreviewState();
@@ -1848,7 +1796,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
@@ -1921,46 +1869,6 @@ function wizardConfirmStarterPicks(){
  wizardPersist();save();render();
  toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
-}
-function quickHumanoidGuide(){
- return '<section class="fp-quick-human" aria-label="Criação rápida de humanoide comum">'+
-  '<div><span class="fp-kicker">HUMANOIDE COMUM · MODO RÁPIDO</span><h3>Distribua XP diretamente no DNA.</h3>'+
-  '<p>Sem assistente de identidade: começa com Força 1 e Disciplina 1 (3 XP), graus que você pode ajustar. Clique numa <strong>bolinha roxa</strong> para comprar a Perícia e todos os requisitos pagos com XP; a compra exige confirmação.</p></div>'+
-  '<div class="fp-quick-human-fields"><label>Nome (opcional)<input type="text" maxlength="70" data-quick-name value="'+esc(state.name)+'"></label>'+
-  '<label>XP adicional autorizado pelo Mestre<input type="number" min="0" max="50000" step="1" data-quick-xp value="'+(state.xpEarned||0)+'"></label></div>'+
-  '<div class="fp-quick-human-footer"><span>20 XP iniciais compartilhados (EXPERIMENTAL), sem progressão de monstro. O saldo é livre após os mínimos.</span>'+
-  '<button type="button" class="fp-secondary" data-action="quick-human-reset">Novo humanoide</button></div></section>';
-}
-function quickHumanoidToConflict(){
- if(!QUICK_HUMANOID||state.pending)return;
- if(genePendingCount()){toast("Confirme ou descarte a evolução pendente antes de adicionar ao conflito.");return;}
- if(!hasStarterSources()){toast("A ficha exige Atributo G1 e Conhecimento ou Prática G1.");return;}
- if(xpCosts().free<0||dependentsValid(state)){toast("Confira XP e requisitos das Perícias.");return;}
- const attrs=Object.fromEntries(A.map(([k])=>[k,Number(state.attributes[k]||0)]));
- const know=Object.fromEntries(K.map(([k])=>[k,Number(state.knowledges[k]||0)]));
- const practices=Object.fromEntries(P.map(([k])=>[k,Number(state.practices[k]||0)]));
- const items=state.items.map(it=>{
-  const base=WEIGHTS[it.weight]?.[1]||0;
-  return {name:String(it.name||"Item"),qty:Math.max(1,Math.floor(Number(it.qty)||1)),
-   weight:base*(Array.isArray(it.properties)&&it.properties.includes("Muito Leve")?0.5:1)};
- });
- const payload={schema:"codex-humanoide-rapido-v1",character:{
-  kind:"humanoide",name:state.name.trim()||"Humano comum",concept:state.concept||"Oponente humanoide",
-  level:state.level,threatGrade:1,xp:Math.floor(Number(state.xpEarned)||0),
-  attributes:attrs,knowledges:know,practices,skills:[...state.skills],
-  life:Math.floor(clamp(state.life,0,maxLife())),items
- }};
- try{localStorage.setItem(HUMANOID_INBOX_KEY,JSON.stringify(payload));save();}
- catch(e){toast("Falha ao salvar a ficha para o conflito. Tente exportar o JSON.");return;}
- window.location.assign("../criar-conflito/?adicionar-humanoide=1");
-}
-function quickHumanoidReset(){
- if(!QUICK_HUMANOID)return;
- if(xpCosts().total>3&&!confirm("Criar outro humanoide? A construção rápida atual será substituída."))return;
- state=quickHumanoidDefault();draft=freshDraft();editMode=false;viewMode="builder";
- wizardStep=2;wizardReached=2;wizardMode="genetic";wizardTab="attr";
- geneSelected="";geneDraft.clear();genePendingSkills.clear();geneInspectorOpen=false;
- wizardPersist();syncFields();render();save();toast("Novo humanoide comum preparado para distribuir XP.");
 }
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
@@ -2086,16 +1994,14 @@ function wizardEquipment(){
  const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
  const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
- const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"]];
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
- const items=CATALOG.filter(it=>it.kind!=="focus"&&Number(it.priceVT)>0&&(wizardShopCategory==="all"||it.kind===wizardShopCategory))
- .map(it=>{const price=Number(it.priceVT),projected=itemLoadAfterPurchase(it),over=projected>capacity()+1e-9,details=[it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+' · Carga '+pad(itemLoad(it))+' Alto</p>'+
- (over?'<p class="fp-carry-warning">Esta compra ultrapassa a carga ('+pad(projected)+' / '+capacity()+' Alto).</p>':'')+
- '<footer><b>'+price+' VT</b><button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button></footer></article>';}).join("");
+ const items=CATALOG.filter(it=>wizardShopCategory==="all"||it.kind===wizardShopCategory)
+ .map(it=>{const purchasable=it.kind!=="focus"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?"Fabricação por Artesão":"Preço pendente")+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 20 XP.</p></div>'+
- carryGuide()+'<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
+ '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
@@ -2126,10 +2032,10 @@ function wizardReview(){
 }
 function wizardOverview(){
  const x=xpCosts();
- return '<div class="fp-wiz-summary-top"><small>'+(QUICK_HUMANOID?"HUMANOIDE COMUM":"SEU PERSONAGEM")+'</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
+ return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / '+(20+(QUICK_HUMANOID?Number(state.xpEarned||0):0))+' XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
@@ -2154,18 +2060,10 @@ function renderWizard(){
  $("edit-sheet-help").hidden=show||!editMode;
  $("source-grid").classList.toggle("fp-edit-mode",editMode);
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
- $("wizard-steps").hidden=QUICK_HUMANOID;
- $("page-title").innerHTML=QUICK_HUMANOID?'Crie um <span>humanoide comum.</span>':show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
- $("page-subtitle").textContent=QUICK_HUMANOID?
-  "Sem etapas: distribua XP, compre Perícias roxas no DNA e envie a ficha ao Criar Conflito.":
-  show?"Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
+ $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
+ $("page-subtitle").textContent=show?
+  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
- if(QUICK_HUMANOID){
-  const intro=builder.querySelector(".fp-wizard-intro");
-  intro.querySelector(".fp-kicker").textContent="CRIAÇÃO RÁPIDA · HUMANOIDE COMUM";
-  intro.querySelector("h2").textContent="Um inimigo comum, sem formulário inicial.";
-  intro.querySelector("p").textContent="Use a progressão humana normal: distribua XP pelo DNA e compre Perícias roxas com seus requisitos, sem preencher as etapas do Aprendiz.";
- }
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
   const canConfirmStarter=wizardStep===1&&wizardStarterPhase==="confirm"&&!!wizardStarterAttribute&&!!wizardStarterTraining;
@@ -2199,15 +2097,8 @@ function renderWizard(){
   }else if(stage===3){
    content=wizardEquipment();
   }else content=wizardReview();
- $("wizard-content").innerHTML=(QUICK_HUMANOID?quickHumanoidGuide():"")+content;
+ $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
- if(QUICK_HUMANOID){
-  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>HUMANOIDE COMUM</span><small>Graus e Perícias no Codex Genético</small></div>'+
-   '<div class="fp-wiz-footer-buttons"><a class="fp-secondary" href="../criar-conflito/">Voltar ao conflito</a>'+
-   '<button type="button" class="fp-primary-btn" data-action="quick-human-send">Adicionar ao conflito →</button></div>';
-  if(stage===2&&wizardMode==="genetic")renderGenetic();
-  return;
- }
  if(stage===2&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
@@ -2220,32 +2111,30 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- const natural=deNatural(),armor=equippedArmor(),bonus=armorDodgeBonus(),penalty=armorDePenalty();
- const modifier=bonus-penalty,finalDE=deDodge();
- $("de-text").textContent=finalDE;$("balance-text").textContent=balance();
- const source=bonus?(armor.weight==="muito_leve"?"Muito Leve":"Leve"):(penalty===2?"Muito Pesada":penalty?"Pesada":"");
- $("de-caption").textContent="Natural "+natural+(modifier?" "+(modifier>0?"+":"−")+" "+Math.abs(modifier)+" ("+source+") = "+finalDE:" · sem modificador = "+finalDE);
- $("de-condition").textContent=bonus?"O bônus da armadura só se aplica ao esquivar.":
-  penalty?"Penalidade da armadura aplicada à defesa.":armor?"Armadura equipada sem modificador de DE.":"Sem armadura equipada.";
- const armorPanel=$("de-armor-panel");
- armorPanel.hidden=!armor;
- if(armor){
-  const noIntegrity=armor.weight==="muito_leve",maximum=Number(armor.max)||0,life=Number(armor.hp)||0;
-  const badge=noIntegrity?"Sem Integridade":life+" / "+maximum;
-  armorPanel.innerHTML='<div class="fp-defense-armor-head"><span>INTEGRIDADE · '+esc(armor.name)+'</span><strong>'+badge+'</strong></div>'+
-   (noIntegrity?'<small>Tipo Muito Leve: não possui Integridade.</small>':
-    maximum>0?'<div class="fp-defense-armor-meter" role="progressbar" aria-label="Integridade da armadura" aria-valuemin="0" aria-valuemax="'+maximum+'" aria-valuenow="'+life+'"><span style="width:'+Math.min(100,Math.max(0,100*life/maximum))+'%"></span></div>'+
-     '<div class="fp-defense-armor-actions"><button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(armor.name)+'"'+(life<=0?' disabled':'')+'>−</button>'+
-      '<button type="button" data-action="integrity" data-id="'+esc(armor.id)+'" data-delta="1" aria-label="Restaurar Integridade de '+esc(armor.name)+'"'+(life>=maximum?' disabled':'')+'>+</button></div>':
-    '<small class="fp-integrity-unset">Integridade máxima não definida.</small><button type="button" class="fp-defense-inventory-link" data-sheet-page="inventory">Configurar no Inventário</button>');
- }
+ $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
+ const protection=equippedArmor();
+ const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
+ if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 · Sem Integridade"):"Nenhuma";
+ if(integrityCaption)integrityCaption.textContent=protection?
+  (protection.name+" · "+(protection.max>0?"Integridade atual / máxima":"armadura sem Integridade")+
+   " · registro manual de dano"):"Equipe uma armadura no Inventário";
+ $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada")+")":armorDodgeBonus()?"DE base "+deDefense()+" · Esquiva "+deDodge()+" (+"+armorDodgeBonus()+" da armadura)": "DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
- const ratio=lifeMaxValue?state.life/lifeMaxValue:0;
- const tier=ratio>2/3?3:ratio>1/3?2:1;
- $("life-boxes").innerHTML=[1,2,3].map(i=>'<span class="'+(i<=tier?"filled":"")+(tier===1?" critical":"")+'"></span>').join("");
- $("life-recovery").textContent=state.life===0?"Vida zerada · procedimento pendente":tier===3?"Faixa 3/3 · 1 Vida por dia":tier===2?"Faixa 2/3 · 1 semana por Vida":"Faixa 1/3 · Medicina + 1 semana por Vida";
+ const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
+ const bands=health.bands;
+ $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
+ $("life-boxes").innerHTML=bands.map((amount,i)=>{
+  const lower=bands.slice(i+1).reduce((total,n)=>total+n,0);
+  const current=clamp(state.life-lower,0,amount);
+  return '<span title="'+names[i]+': '+current+'/'+amount+'" class="'+(current>0?"filled":"")+
+   ((i===2&&health.id==="incapacitado")||(i===3&&health.id==="inconsciente")?" critical":"")+'"></span>';
+ }).join("");
+ const effects=(health.e?health.e+"E ":"")+(health.a?health.a+"A ":"")+(health.p?"+"+health.p+"P ":"");
+ $("life-recovery").textContent=health.label+" · "+(effects.trim()||"sem penalidade")+
+  (health.coragem&&Number.isFinite(health.coragem)?" · "+health.coragem+" Coragem para agir":"")+
+  " · Cura: revisão pendente";
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -2271,8 +2160,7 @@ function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key
 function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
 function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&state.skills.includes("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
 function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
-function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive()||
- (usingDiscipline()&&draft.mode==="conjuracao"&&state.skills.includes("peritoconj"));}
+function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive();}
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
@@ -2319,18 +2207,19 @@ function buildPool(){
  if(!canUseShared())errors.push("Conjuração exige Criar Item de Foco e Magia (a Perícia substitui Aprendiz de Conjurador e Magia Única). Uso marcial básico de Disciplina é livre.");
  for(const s of [draft.base,draft.attribute,...(draft.third?[draft.third]:[])]){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
-  dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides}));
- }
- if(draft.step){
-  const attr=pool.find(d=>d.group==="attr");const next={4:6,6:10,10:12}[attr?.sides];
-  if(next)attr.sides=next;
-  else errors.push("Esse dado de Atributo não permite elevação comum.");
+  dataDice(s.group,grade).forEach((sides,index)=>pool.push({id:key(s)+":"+index,group:s.group,key:s.key,sides,baseSides:sides}));
  }
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
   const dice=combatItem(item,draft.mode);
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
-  else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides}));
+  else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
+ }
+ if(draft.step){
+  const target=pool.find(d=>d.id===draft.stepDieId);
+  const next={4:6,6:10,10:12}[target?.baseSides];
+  if(next)target.sides=next;
+  else errors.push("Selecione um dado elegível da pilha para elevar por 1 Coragem (d4→d6→d10→d12).");
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
@@ -2364,6 +2253,7 @@ function renderComposer(){
  const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
  const isShared=draft.base.group==="practice"&&draft.base.key==="armas_conjuracao";
  const usage=isShared?(draft.mode==="conjuracao"?"Disciplina · Conjuração":"Disciplina · Armas"):label(draft.base.group,draft.base.key);
+ const canTrevas=isShared&&draft.mode==="conjuracao"&&state.skills.includes("trevas");
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]];
@@ -2372,10 +2262,13 @@ function renderComposer(){
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':'';
+ const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
+  .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
- '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar o primeiro dado de Atributo (1 Coragem)</label>'+
- ""+
+ '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
+ (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × balanço do alvo (se pertinente)</label>'+
+ (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
@@ -2400,14 +2293,18 @@ function randomFace(n){
  return Math.floor(Math.random()*n)+1;
 }
 function roll(){
+ const health=lifeStage();
+ if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0);
+ if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,combatBonus:false,equipmentId:draft.equipmentId,
-    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight},
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
@@ -2418,7 +2315,10 @@ function affinity(attack,target){
 }
 function score(){
  const p=state.pending;if(!p)return null;
+ const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
+ if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&state.skills.includes("trevas")))
+  errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
  if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
@@ -2428,8 +2328,14 @@ function score(){
  const criticalConverted=critTier&&raw[2]>0?1:0;
  const item=state.items.find(x=>x.id===p.opts.equipmentId);
  const properties=item?.equipped?(item.properties||[]):[];
+ const el=(item?.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+ const elementSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
+  veneno:"veneno",sagrado:"sagrado",trevas:"trevas",sangue:"sangue"}[el];
+ // SRD v0.43: foco válido + Perícia do elemento + Criar Item de Foco e Magia.
+ const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
+  &&state.skills.includes("criar-item-foco-magia")&&!!elementSkill&&state.skills.includes(elementSkill);
  const pBonus=properties.includes("Barulhenta")?(critTier?2:1):0;
- const pAvailable=Math.max(0,raw[2]+pBonus-criticalConverted);
+ const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
@@ -2437,15 +2343,16 @@ function score(){
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0));
+  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
- const E=eBase+pairs,P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
+ const E=Math.max(0,eBase+pairs+health.e),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem,ppCost=0;
  const active=[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -2457,15 +2364,21 @@ function score(){
    else active.push(p.secondCharacteristic);
   }
   if(critTier?p.secondCharacteristic:true){
-   if(p.payment==="pp")ppCost=1;else courageCost+=2;
+   // Com foco e Perícia do elemento, a propriedade Elemental já habilitada é gratuita.
+   const paidFeature=critTier?p.secondCharacteristic:p.characteristic;
+   if(!(freeElementEffect&&paidFeature==="Elemental")){
+    if(p.payment==="pp")ppCost+=1;else courageCost+=1;
+   }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
+ // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
+ if(p.opts.trevas&&success&&!freeElementEffect){if(p.payment==="pp")ppCost+=1;else courageCost+=1;}
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  if(ppCost>state.pp)errs.push("PP insuficiente para a ativação.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
- return{dice,raw,E,P,remainingA,reached,success,outcome,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
-  aPool,courageCost,ppCost,active,range:item?.range?item.range+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted};
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
+  aPool,courageCost,ppCost,active,range:item?.range?item.range+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
@@ -2482,12 +2395,15 @@ function renderPending(){
  const effects=specials.length?'<div class="fp-form-grid">'+
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
-  '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>2 Coragens</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 2 Coragens/1 PP. Crítico: uma grátis e outra paga. Efeitos de dano/condição são aplicados pelo Narrador.</p>':"";
+  '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
+  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>':"";
+ const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
+ '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
+ '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
  const controls='<div class="fp-form-grid">'+
  selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
- selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects;
+ selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment;
  const criticalNote=s.critTier?'<div class="fp-alert"><strong>Crítico de '+s.critTier+' dados mantidos!</strong> '+
   (s.criticalConverted?'1P convertido em 1E. ':'Sem Pavor próprio para converter. ')+
   (s.critTier>=3?'+1E e +1A. ':'')+
@@ -2499,9 +2415,12 @@ function renderPending(){
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-a">Antecipar ᚨ</span><b>'+s.remainingA+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-p">Pavor ᚦ</span><b>'+s.P+'</b></div></div>'+
  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'+
+ (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
- '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
+ '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
+  ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
+  '). Custo total previsto: '+cost+' Coragem.</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -2522,7 +2441,7 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
@@ -2564,10 +2483,15 @@ function inventorySelect(field,value,values,id){
  return'<select data-item-field="'+field+'" data-id="'+esc(id)+'">'+values.map(([k,v])=>'<option value="'+k+'"'+(k===value?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select>';
 }
 function renderInventory(){
+ const focusSelector=$("focus-test-model");
+ if(focusSelector){
+  const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1);
+  focusSelector.innerHTML=models.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join("");
+  if(models.some(x=>x.name===previous))focusSelector.value=previous;
+ }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · ATENÇÃO: capacidade excedida":"")+". Recursos VT e focos usam carga convencional.";
- const guide=$("inventory-carry-guide");if(guide)guide.innerHTML=carryGuide();
+ $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
  const mental=$("mental-slot-caption");
  if(mental){
   const points=mentalSlotCapacity();
@@ -2591,12 +2515,12 @@ function renderInventory(){
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade numérica pendente de balanceamento.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 0, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b>'+it.hp+'/'+it.max+'</b>'+
+  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+it.hp+' / '+it.max+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
@@ -2618,7 +2542,9 @@ function renderTrade(){
  $("trade-total").textContent=total+" VT";
  $("trade-spent").textContent=spent+" VT";
  if($("crystal-summary")){
-  const elements=["","Fogo","Água","Ar","Terra","Sangue","Veneno","Sagrado","Trevas"];
+  // Não permitir nova seleção de Sangue no nível 1, mas preservar fichas legadas em leitura.
+  const elements=["","Fogo","Água","Ar","Terra","Psíquico","Veneno","Sagrado","Trevas",
+   ...(state.elementalCrystal.element==="Sangue"?["Sangue"]:[])];
   $("crystal-summary").innerHTML=state.elementalCrystal.quantity?
    '<label>Cristal Elemental inicial (Criar Magia): <select id="crystal-element">'+
    elements.map(x=>'<option value="'+esc(x)+'"'+(x===state.elementalCrystal.element?" selected":"")+'>'+esc(x||"Escolha o elemento")+'</option>').join("")+
@@ -2636,21 +2562,56 @@ function renderTrade(){
  const currentShop=$("shop-items").value,currentPreferred=$("shop-preferred").value;
  $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>
   '<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+(x.die?"d"+x.die:x.integrity?.max+" Integridade")+'</option>').join("");
- const buyHint=$("trade-carry-guide");if(buyHint)buyHint.innerHTML=carryGuide();
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
+ renderStoneShop();
  // Seleção do navegador é preservada quando possível para evitar reset do formulário.
+}
+function renderStoneShop(){
+ const select=$("stone-element");if(!select)return;
+ const previous=select.value,common=state.trade.stonePrices.common,rare=common===null?null:3*common;
+ state.trade.stonePrices.rare=rare;
+ select.innerHTML='<option value="">Escolha uma pedra</option>'+STONE_CATALOG.map(([element,kind])=>
+  '<option value="'+esc(element)+'">'+esc(element)+' · '+(state.trade.stonePrices[kind]??"VT pendente")+(state.trade.stonePrices[kind]==null?"":" VT")+(kind==="rare"?" · rara":"")+'</option>').join("");
+ if(STONE_CATALOG.some(row=>row[0]===previous))select.value=previous;
+ const cp=$("stone-price-common"),rp=$("stone-price-rare");
+ if(cp&&document.activeElement!==cp)cp.value=common??"";
+ if(rp&&document.activeElement!==rp)rp.value=rare??"";
+ const row=STONE_CATALOG.find(x=>x[0]===select.value),valid=Number.isInteger(common)&&common>0&&
+  Number.isInteger(rare)&&rare===3*common,price=row?state.trade.stonePrices[row[1]]:null;
+ $("stone-buy").disabled=!row||!valid||!Number.isInteger(price)||price>walletValue();
+ $("stone-buy").title=valid?"Compra com VT restante.":"Defina o preço comum em VT; Veneno, Sagrado e Trevas custam automaticamente 3× este valor.";
+ $("stone-owned").textContent=(state.trade.stones.length?
+  "Pedras compradas nesta ficha: "+state.trade.stones.map(x=>x.element+" ("+x.price+" VT)").join(", ")+". ":"")+
+  (valid?"Valores definidos pela mesa, não oficiais.":"Preços oficiais PENDENTES. Sangue/Pedra da Alma não comprável no nível 1.");
+}
+function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-preferred")?.value){
+ const row=STONE_CATALOG.find(x=>x[0]===element);if(!row){toast("Escolha uma pedra disponível.");return;}
+ const common=state.trade.stonePrices.common,rare=state.trade.stonePrices.rare;
+ if(!Number.isInteger(common)||!Number.isInteger(rare)||common<1||rare!==3*common){
+  toast("Defina o preço comum de playtest em VT; pedras especiais custam exatamente 3×.");return;
+ }
+ const price=state.trade.stonePrices[row[1]];
+ if(price>walletValue()){toast("VT insuficiente para a pedra escolhida.");return;}
+ if(state.trade.stones.length>=150||state.trade.purchases.length>=150){toast("Limite de registros do comércio atingido.");return;}
+ if(!confirm("Comprar Pedra Elemental de "+element+" por "+price+" VT? Preço experimental da mesa; esta compra não concede Perícia, magia ou efeito automaticamente."))return;
+ const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([k])=>k)].filter((x,i,a)=>a.indexOf(x)===i);
+ let due=price;
+ for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
+ if(due)throw Error("Saldo de recursos inconsistente; compra cancelada.");
+ state.trade.resources=res;
+ state.trade.stones.push({element,price});
+ state.trade.purchases.push({name:"Pedra Elemental de "+element,price});
+ save();render();toast("Pedra de "+element+" adquirida por "+price+" VT. Efeitos seguem requisitos de Perícia e foco.");
 }
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
+ if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
- const projected=itemLoadAfterPurchase(item),limit=capacity(),exceeded=projected>limit+1e-9;
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- const weightNotice="\nCarga: "+pad(loadUsed())+" → "+pad(projected)+" / "+limit+" Alto. "+(exceeded?"ATENÇÃO: ultrapassará o limite!":"Dentro da capacidade.");
- if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"+weightNotice+
-  (exceeded?"\n\nConsequências mecânicas da sobrecarga PENDENTES. Confirmar mesmo assim?":"")))return;
+ if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
  for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
@@ -2659,7 +2620,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  state.trade.resources=res;
  state.trade.purchases.push({name:item.name,price});
  state.items.push(normalizedCatalogItem(item));
- render();save();toast(item.name+" adquirido por "+price+" VT. "+(loadUsed()>capacity()?"ATENÇÃO: carga excedida!":"Equipe no inventário."));
+ render();save();toast(item.name+" adquirido por "+price+" VT. Equipe no inventário.");
 }
 function addTestFocus(){
  if(!state.skills.includes("criar-item-foco-magia")||
@@ -2669,11 +2630,14 @@ function addTestFocus(){
  }
  if(state.items.length>=150){toast("Inventário cheio.");return;}
  if(!confirm("Adicionar Foco G1 somente para simulação? A fabricação real exige teste com Artesão e recursos ainda não automatizados."))return;
- const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
+ const model=$("focus-test-model")?.value;
+ const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1&&x.name===model)||CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
  if(!row){toast("Foco de teste não cadastrado.");return;}
+ const isElementalModel=row.name!=="Foco de Magia Leve G1";
+ if(isElementalModel&&!state.elementalCrystal.element){toast("Escolha o elemento do Cristal Elemental antes de simular varinha ou cetro.");return;}
  const item=normalizedCatalogItem(row);
  item.element=String(state.elementalCrystal.element||"psiquico").toLowerCase();
- item.name="Foco G1 de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
+ item.name=row.name+" de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
  state.items.push(item);render();save();
  toast("Foco de teste adicionado; fabricação com Artesão continua pendente.");
 }
@@ -2756,14 +2720,72 @@ function setWeaponFocus(selected){
  if(reason){state.weaponFocus=previous;toast("Especialização bloqueada: "+reason);render();return;}
  render();save();
 }
+/** Playtest: restituição somente da Perícia comprada, sem reembolsar requisitos mantidos. */
+/** Lista completa das Perícias adquiridas, inclusive IDs legados ocultos no grafo. */
+function renderRespecSkills(){
+ const box=$("respec-skills-list");if(!box)return;
+ const owned=SKILLS.filter(([id])=>state.skills.includes(id));
+ box.innerHTML=owned.length?owned.map(([id,name,,cost])=>
+  '<div class="fp-respec-row"><span><strong>'+esc(name)+'</strong><small>'+
+  (Number.isInteger(cost)?cost+" XP investidos":"Custo pendente — conferir ficha")+'</small></span>'+
+  '<button type="button" data-action="respec-skill" data-id="'+esc(id)+'"'+
+  (!Number.isInteger(cost)||state.pending?' disabled':'')+'>'+
+  (Number.isInteger(cost)?"Devolver "+cost+" XP":"Reembolso pendente")+'</button></div>').join(""):
+  '<p class="fp-muted">Nenhuma Perícia comprada nesta Ficha.</p>';
+}
+function refundSkillForPlaytest(id){
+ if(state.pending){toast("Finalize ou descarte a rolagem antes de redistribuir XP.");return;}
+ const index=state.skills.indexOf(id),row=SKILLS.find(x=>x[0]===id);
+ if(index<0||!row||!Number.isInteger(row[3]))return;
+ const candidate=structuredClone(state);
+ candidate.skills=candidate.skills.filter(skill=>skill!==id);
+ const blocking=dependentsValid(candidate);
+ if(blocking){toast("Não é possível devolver: outra Perícia depende desta. "+blocking);return;}
+ const before=xpCosts().free,after=xpCosts(candidate).free;
+ if(after-before!==row[3]){toast("Verificação de XP inconsistente. Compra preservada.");return;}
+ if(!confirm("Teste de build: remover "+row[1]+" e devolver "+row[3]+" XP ao saldo da Ficha?\n"+
+  "Perícias dependentes precisam ser removidas primeiro. Esta ação não altera o XP total concedido."))return;
+ state.skills=candidate.skills;
+ if(id==="criar-item-foco-magia"){state.elementalCrystal.quantity=0;state.elementalCrystal.element="";}
+ if(draft?.third&&!mayThird())draft.third=null;
+ if(draft?.base?.key==="armas_conjuracao")draft.mode=modeDefault();
+ render();save();toast("Playtest: "+row[3]+" XP devolvidos. Saldo atual: "+xpCosts().free+" XP.");
+}
+/** Transferir uma ficha NPC independente, feita pelo próprio Codex Genético, para o encontro. */
+function sendNpcToConflict(){
+ if(!NPC_MODE)return;
+ if(state.pending){toast("Finalize ou descarte a rolagem pendente.");return;}
+ if(!state.name.trim()){toast("Informe o nome do NPC.");return;}
+ if(!hasStarterSources(state)){toast("O NPC precisa de Atributo G1 e Conhecimento ou Prática G1.");return;}
+ if(xpCosts().free<0){toast("A ficha excede o XP disponível.");return;}
+ const blocking=dependentsValid(state);if(blocking){toast("Requisito pendente: "+blocking);return;}
+ const extra=Math.max(0,Math.floor(Number(state.xpEarned||0)+Number(state.legacyXPRefund||0)));
+ const character={
+  id:"npc-dna-"+Date.now()+"-"+Math.random().toString(36).slice(2,9),
+  kind:"humanoide",name:state.name.trim(),concept:state.concept||state.origin||"Humano comum",
+  notes:[state.notes,state.origin?"Origem: "+state.origin:"",state.virtue?"Virtude: "+state.virtue:"",
+   state.personality?"Personalidade: "+state.personality:""].filter(Boolean).join("\n").slice(0,4000),
+  leader:false,threatGrade:1,level:state.level||1,xp:extra,
+  attributes:{...state.attributes},knowledges:{...state.knowledges},
+  practices:{...state.practices},skills:[...state.skills],
+  life:Math.max(0,Number(state.life)||0),pavorLocal:4,keep:2,courage:state.courage??10,
+  abilities:"Construído no Codex Genético. Equipamentos e efeitos especiais devem ser conferidos pelo Narrador.",
+  items:[]
+ };
+ if(!confirm("Enviar o NPC "+character.name+" para Criar Conflito?\nA construção usa o mesmo DNA da Ficha e não substitui seu personagem de jogador.\nEquipamentos deverão ser conferidos e adicionados no encontro."))return;
+ try{
+  localStorage.setItem(CONFLICT_NPC_INBOX,JSON.stringify({schema:"codex-humanoide-rapido-v1",
+   exportedAt:new Date().toISOString(),source:"codex-genetico-npc-v1",character}));
+  save();location.href="../criar-conflito/";
+ }catch(e){toast("Não foi possível enviar o NPC: "+e.message);}
+}
+
 function onClick(event){
  const button=event.target.closest("button");if(!button)return;
  const action=button.dataset.action;
  if(!action)return;
  const {group,key:source,delta,id}=button.dataset;
  switch(action){
- case "quick-human-send":quickHumanoidToConflict();break;
- case "quick-human-reset":quickHumanoidReset();break;
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
  case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
  case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
@@ -2790,7 +2812,6 @@ function onClick(event){
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
   case "gene-skill":geneStageSkill(id);break;
   case "gene-auto-buy":geneAutoBuy(id);break;
-   case "gene-remove-skill":geneRemoveSkill(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
   case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
@@ -2805,6 +2826,7 @@ function onClick(event){
   state.trade.resources={...tradeDraft};render();save();toast("Composição dos recursos iniciais atualizada.");break;
  }
  case "trade-buy":buyCatalogItem();break;
+ case "stone-buy":buyElementalStone();break;
  case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
  case "wizard-shop-category":{
   if(viewMode!=="builder"||wizardStep!==3||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
@@ -2826,6 +2848,7 @@ function onClick(event){
   if(confirm("Descartar a rolagem já revelada? Isso deve ocorrer apenas por decisão do Narrador; os dados não serão reaproveitados.")){
    state.pending=null;save();render();toast("Rolagem descartada por confirmação.");
   }break;
+ case "respec-skill":refundSkillForPlaytest(id);break;
  case "skill":{
   if(state.pending){toast("Finalize a rolagem antes de modificar Perícias.");return;}
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
@@ -2840,15 +2863,13 @@ function onClick(event){
     state.elementalCrystal.quantity=1;state.elementalCrystal.element="";
    }
    toast("Perícia comprada: "+skill[1]+" · "+skill[3]+" XP.");
-  }else{
-   geneRemoveSkill(id);return;
-  }
+  }else{refundSkillForPlaytest(id);break;}
   if(draft.third&&!mayThird())draft.third=null;
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
   render();save();break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderOwnedPanel();renderVitals();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
@@ -2857,11 +2878,11 @@ function onClick(event){
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderOwnedPanel();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
+  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
  }
  case "delete-item":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
-  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderOwnedPanel();renderVitals();renderComposer();save();}break;
+  if(confirm('Excluir "'+it.name+'"?')){state.items=state.items.filter(x=>x.id!==id);renderInventory();renderVitals();renderComposer();save();}break;
  }
  }
 }
@@ -2883,8 +2904,19 @@ function onChange(event){
   tradeDraft[k]=clamp(Math.floor(el.value),0,STARTING_VT);
   renderTrade();return;
  }
+ if(el.dataset.stonePrice){
+  const kind=el.dataset.stonePrice;if(kind!=="common")return;
+  const raw=String(el.value).trim();
+  const common=raw===""?null:clamp(Math.floor(Number(raw)),1,3333);
+  state.trade.stonePrices.common=common;state.trade.stonePrices.rare=common===null?null:3*common;
+  save();renderStoneShop();return;
+ }
+ if(el.id==="stone-element"){renderStoneShop();return;}
  if(el.id==="crystal-element"){
-  if(state.elementalCrystal.quantity)state.elementalCrystal.element=String(el.value).slice(0,30);
+  if(state.elementalCrystal.quantity){
+   if(el.value==="Sangue"){toast("Sangue exige Pedra da Alma; não é opção nova no nível 1.");renderTrade();return;}
+   state.elementalCrystal.element=String(el.value).slice(0,30);
+  }
   renderTrade();save();return;
  }
  if(el.dataset.skillScope!==undefined||el.dataset.skillReady!==undefined){
@@ -2896,7 +2928,7 @@ function onChange(event){
   const k=el.dataset.option;
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";}
+  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;}
   renderSources();renderComposer();return;
  }
  if(el.dataset.pending&&state.pending){
@@ -2921,7 +2953,7 @@ function onChange(event){
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
   if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
-  renderInventory();renderOwnedPanel();renderVitals();save();return;
+  renderInventory();renderVitals();save();return;
  }
 }
 function bind(){
@@ -2954,19 +2986,8 @@ function bind(){
  document.addEventListener("click",event=>{
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
- document.addEventListener("change",event=>{
-  if(!QUICK_HUMANOID||!event.target?.matches?.("[data-quick-xp]"))return;
-  const amount=Math.floor(Number(event.target.value));
-  if(!Number.isSafeInteger(amount)||amount<0||amount>50000){toast("XP adicional deve estar entre 0 e 50000.");event.target.value=state.xpEarned||0;return;}
-  const prev=state.xpEarned;state.xpEarned=amount;
-  if(xpCosts().free<0){state.xpEarned=prev;toast("O orçamento não cobre as compras realizadas.");event.target.value=prev;return;}
-  geneDraft.clear();genePendingSkills.clear();render();save();
- });
  document.addEventListener("change",onChange);
  document.addEventListener("input",event=>{
-  if(QUICK_HUMANOID&&event.target?.matches?.("[data-quick-name]")){
-   state.name=event.target.value.slice(0,70);save();return;
-  }
   if(event.target?.dataset?.skillSearch!==undefined){
    skillFilter.query=String(event.target.value).slice(0,100);
    renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;
@@ -3035,6 +3056,13 @@ function bind(){
   state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
   wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
  });
+ const sendNpc=$("send-to-conflito");
+ if(sendNpc&&NPC_MODE){
+  sendNpc.hidden=false;
+  sendNpc.addEventListener("click",sendNpcToConflict);
+  $("page-title").textContent="NPC humanoide · Codex Genético";
+  $("page-subtitle").textContent="Crie um NPC com o mesmo DNA do jogador, sem alterar sua Ficha principal. Depois envie ao conflito.";
+ }
  $("export-json").addEventListener("click",download);
  $("import-trigger").addEventListener("click",()=>$("import-json").click());
  $("import-old-creator").addEventListener("click",()=>{

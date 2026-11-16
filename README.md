@@ -12,10 +12,19 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| SRD de Continuidade v0.39 | [docs/srd-continuidade-v0.39.md](docs/srd-continuidade-v0.39.md) | **Atualização normativa vigente (13/11/2026)** |
-| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras de Mestre preservadas; referências à criação atualizadas conforme SRD v0.39 |
+| **SRD de Continuidade v0.50 (atual)** | [docs/srd-continuidade-v0.50.md](docs/srd-continuidade-v0.50.md) | **Antecipação** e **Concentração Refinada (1 XP, Disciplina 2, Vantagem, inimigo a até 8 m)**, com pendências de timing/duração; versão completa com histórico preservado. |
+| **SRD de Continuidade v0.49 (histórico)** | [docs/srd-continuidade-v0.49.md](docs/srd-continuidade-v0.49.md) | **Invocação Elemental, criaturas temporárias, necromancia, Psique e custos especiais**, com pendências técnicas explícitas. |
+| **SRD de Continuidade v0.48 (histórico)** | [docs/srd-continuidade-v0.48.md](docs/srd-continuidade-v0.48.md) | **Domar e ficha opcional da Pequena, Saúde e recuperação, Pavor excedente, Muito Leve G1 com 3 Integridade**. Prevalece sobre versões anteriores. |
+| SRD de Continuidade v0.44 (histórico) | [docs/srd-continuidade-v0.44.md](docs/srd-continuidade-v0.44.md) | **Conjuração Refinada (alcance pendente), armaduras G1 7/12/17, pedras especiais 3× comuns e análise exata de DE** |
+| Livro do Mestre — Provocação e Liderança | [docs/livro-do-mestre.md](docs/livro-do-mestre.md) · [Ler no site](narrador.html) | Regras do Mestre complementadas pela seção 0-AA do SRD v0.41 |
 | Livro anterior, para histórico | [docs/arquivo/livro-do-jogador-v0.5-legado.md](docs/arquivo/livro-do-jogador-v0.5-legado.md) | Arquivo histórico |
 | Ícones oficiais dos símbolos | [assets/icons/](assets/icons/) | SVG vetoriais |
+
+## Atualização de concentração e Invocação (16/11/2026)
+
+- [Invocação Elemental — explicação para jogadores](pericias/invocacao-elemental.html): passos de compra, ativação, porte, dados, ajuda conjunta e variações.
+- [Antecipação — mecânica](mecanicas/antecipacao.html): em rolagem com Disciplina, guardar 1A mantido para o próximo teste.
+- [Concentração Refinada — Perícia](pericias/concentracao-refinada.html): 1 XP, Disciplina 2. Ao reservar 1A, converte em 1E e recebe Vantagem, desde que não haja inimigo a até 8 metros. Momento de crédito do 1E e duração da Vantagem ainda pendentes de decisão.
 
 ## Usar o criador
 
@@ -66,10 +75,10 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-A fonte normativa atual é o **[SRD de Continuidade v0.39](docs/srd-continuidade-v0.39.md)**. A seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11; as seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
+Na branch revisável, a referência mais recente é o **[SRD de Continuidade v0.49](docs/srd-continuidade-v0.49.md)**. A seção **0-AD** fecha armaduras −3, renomeação da Conjuração Refinada, preço relativo 3× e análise probabilística sem regra automática; a seção **0-AC** revê custos e conjuração com foco e registra a compra de pedras com valores VT pendentes; a seção **0-AB** homologa Trevas +2P para DE/dano/risco e a distribuição ou concentração de Pavor entre até dois alvos; a seção **0-AA** define o Pavor local inicial cheio (G1=4P a G6=8P) e o destino do Pavor no alvo atacado, sem turnos adicionais; a seção **0-Z** homologa a face crítica do d10 (**2E+1A**) e a escolha livre do dado elevado com Coragem; a seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11. As seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
 
 1. Decisão explícita mais recente do autor.
-2. Seção 0-Y da v0.39 para a criação; depois as seções 0-X, 0-W, 0-V e demais capítulos recentes, nos assuntos pertinentes.
+2. Seção 0-AD da v0.44 para Conjuração Refinada, armaduras, pedras 3× e DE de competência; depois 0-AC para custo e elementos, 0-AB para Trevas, 0-AA para Pavor local, 0-Z para faces e elevação com Coragem, 0-Y para criação e 0-X para armas.
 3. Seções históricas somente onde não haja decisão mais recente conflitante.
 4. Livro de leitura e implementação, que não aprovam por si sós regras novas.
 

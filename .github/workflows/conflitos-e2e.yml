@@ -1,0 +1,68 @@
+name: Codex RPG - Criar Conflito v0.44
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'criar-conflito/**'
+      - 'simulador-combate/**'
+      - '.github/tests/simulador-tatico-e2e.cjs'
+      - '.github/workflows/conflitos-e2e.yml'
+      - '.github/tests/conflito-e2e.cjs'
+      - '.github/tests/conflito-rolagens-e2e.cjs'
+      - '.github/tests/conflito-humanoides-e2e.cjs'
+      - '.github/tests/conflito-playtest-historico-e2e.cjs'
+      - '.github/tests/conflito-dna-respec-e2e.cjs'
+      - '.github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs'
+      - 'prototipo-ficha/**'
+      - 'index.html'
+      - 'narrador.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  conflito-e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Baixar branch
+        uses: actions/checkout@v4
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe da interface
+        run: |
+          node --check criar-conflito/app.js
+          node --check simulador-combate/app.mjs
+          node --check simulador-combate/logic.mjs
+          node --check criar-conflito/roll-engine.mjs
+          node --check prototipo-ficha/app.js
+      - name: Testes matematicos
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+      - name: Instalar Chromium de teste
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install chromium --with-deps
+      - name: Servir site local
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/codex-conflito-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/criar-conflito/ -o /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/codex-conflito-http.log
+          exit 1
+      - name: Criacao e responsividade
+        run: node .github/tests/conflito-e2e.cjs
+      - name: Rolagens e persistencia
+        run: node .github/tests/conflito-rolagens-e2e.cjs
+      - name: Rolagens de humanoides no PC e celular
+        run: node .github/tests/conflito-humanoides-e2e.cjs
+      - name: Modo Rolagem, histórico de playtest e Integridade
+        run: node .github/tests/conflito-playtest-historico-e2e.cjs
+      - name: NPC pelo DNA, perícias no rolador e restituição de XP
+        run: node .github/tests/conflito-dna-respec-e2e.cjs
+      - name: Três tipos de ameaça, XP e leitura de verbetes no Codex Genético
+        run: node .github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs
+      - name: Simulador tático com mapa, dados e escudo no desktop e celular
+        run: node .github/tests/simulador-tatico-e2e.cjs

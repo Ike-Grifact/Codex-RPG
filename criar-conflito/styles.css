@@ -210,3 +210,103 @@
 .cf-roll-outcome p{margin:0;font-size:12px;line-height:1.5}
 .cf-roll-outcome button{justify-self:start}
 @media(max-width:560px){.cf-roll-config{grid-template-columns:1fr}.cf-roll-die{min-width:104px;flex:1 1 104px}}
+
+
+/* Ficha de conflito: seleção de fontes por clique, edição e rolagem. */
+.cf-mode-tabs{display:flex;align-items:center;gap:8px;max-width:380px;padding:5px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);margin-bottom:20px}
+.cf-mode-tabs button{flex:1;min-height:43px;font-weight:700;border:1px solid transparent}
+.cf-mode-tabs button.is-active{background:var(--accent);color:#171717;border-color:var(--accent)}
+.cf-roll-heading{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:4px 0 16px}
+.cf-roll-heading h2{margin:6px 0}
+.cf-roll-heading p{font-size:13px;color:var(--muted);margin:5px 0}
+.cf-roll-resources{display:flex;flex-wrap:wrap;gap:10px}
+.cf-roll-resources>span{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line);padding:8px 12px;border-radius:11px;font-size:12px}
+.cf-roll-resources b{font-size:17px}
+.cf-roll-resources button{padding:5px 8px;min-width:28px}
+.cf-click-sources{background:var(--surface)}
+.cf-source-section{margin-top:13px}
+.cf-source-section h3{font-size:13px;margin:0 0 8px;letter-spacing:.02em;color:var(--ink)}
+.cf-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cf-main button.cf-source-card{display:flex;flex-direction:column;text-align:left;gap:6px;min-height:88px;background:var(--bg2);border:1px solid var(--line);padding:10px 12px}
+.cf-main button.cf-source-card:hover,.cf-main button.cf-source-card:focus-visible{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.cf-main button.cf-source-card.is-selected{border-color:var(--accent);background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+.cf-source-name{width:100%;display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:13px;font-weight:700}
+.cf-source-name small{color:var(--muted);font-size:10px}
+.cf-source-dice{font-size:11px;color:var(--muted)}
+.cf-source-card b{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+.cf-context-toggle,.cf-extra-preview{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:13px;font-size:12px;color:var(--muted)}
+.cf-context-toggle input,.cf-extra-preview input{accent-color:var(--accent)}
+.cf-extra-preview{padding:10px;border-radius:9px;border:1px solid var(--line)}
+.cf-roll-preparation{border:1px solid var(--line);border-radius:11px;padding:13px;background:var(--surface)}
+.cf-roll-switch{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;font-weight:650;color:var(--ink)!important}
+.cf-roll-switch input{width:18px;height:18px;accent-color:var(--accent)}
+.cf-roll-workspace .cf-roll-panel{scroll-margin-top:14px}
+.cf-history-head{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cf-history-head h3{margin:0 0 4px}
+.cf-history-actions{display:flex;gap:7px;flex-wrap:wrap}
+.cf-history-actions button{font-size:11px;padding:8px 10px}
+.cf-history-entry{border:1px solid var(--line);border-radius:9px;margin-top:8px;background:var(--surface);padding:0 12px}
+.cf-history-entry summary{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:13px 0;cursor:pointer;font-size:12px}
+.cf-history-entry summary strong{color:var(--ink)}
+.cf-history-entry summary span{color:var(--muted)}
+.cf-history-entry p{font-size:11px;line-height:1.55;margin:9px 0;overflow-wrap:anywhere}
+.cf-item-descriptor{display:grid;gap:4px;min-width:0}
+.cf-item-descriptor strong{font-size:12px}
+.cf-item-descriptor small{color:var(--muted)}
+.cf-integrity-label{font-size:12px;color:var(--accent)}
+.cf-integrity-actions{display:flex;gap:6px;flex-shrink:0}
+.cf-integrity-actions button{min-width:30px}
+@media(max-width:1000px){.cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:510px){
+ .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-main button.cf-source-card{padding:9px;min-height:85px}
+ .cf-history-entry summary{display:grid;grid-template-columns:1fr}
+ .cf-roll-resources{width:100%}
+ .cf-item{flex-wrap:wrap}
+ .cf-history-actions{width:100%}
+}
+
+
+/* Rolagem de conflitos — organização paralela ao painel da Ficha do jogador.
+   Preserva a identidade visual da versão anterior ao redesign. */
+.cf-roll-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.95fr);
+ gap:12px;align-items:start}
+.cf-roll-layout>div{min-width:0}
+.cf-roll-sources .cf-click-sources,.cf-roll-primary .cf-roll-panel,.cf-roll-primary .cf-action-shortcuts{margin:0 0 12px}
+.cf-roll-sources .cf-click-sources{padding:13px}
+.cf-roll-sources .cf-source-section{margin-top:12px}
+.cf-roll-sources .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.cf-roll-sources .cf-source-card{min-height:72px}
+.cf-roll-sources .cf-source-dice{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.cf-roll-sources .cf-source-dice .cf-die{display:inline-flex;gap:2px;align-items:center;padding:2px 4px;font-size:10px}
+.cf-roll-sources .cf-source-dice svg{width:18px;height:18px}
+.cf-roll-primary .cf-roll-panel{padding:13px}
+.cf-roll-primary .cf-roll-config{gap:7px}
+.cf-roll-primary .cf-roll-config label{min-width:0}
+.cf-roll-primary .cf-roll-dice{gap:6px}
+.cf-roll-primary .cf-roll-die{min-width:0}
+.cf-action-shortcuts{padding:13px}
+.cf-action-shortcuts h3{margin:0 0 8px}
+.cf-action-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:8px}
+.cf-action-tabs button{padding:9px 6px;min-width:0;font-size:12px;font-weight:700}
+.cf-action-tabs button.is-active{border-color:var(--accent);color:var(--accent);background:var(--surface)}
+.cf-action-choice-list{display:grid;gap:6px;max-height:210px;overflow:auto;overscroll-behavior:contain}
+.cf-action-choice{width:100%;display:grid;gap:4px;text-align:left;padding:10px;border:1px solid var(--line);
+ border-radius:9px;background:var(--bg2);color:var(--ink);font:inherit;font-size:12px;cursor:pointer}
+.cf-action-choice strong{font-size:12px}
+.cf-action-choice small{color:var(--muted);font-size:11px;line-height:1.35}
+.cf-action-choice:hover,.cf-action-choice:focus-visible,.cf-action-choice.is-selected{
+ border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.cf-roll-primary .cf-roll-panel{scroll-margin-top:12px}
+@media(min-width:1100px){.cf-roll-primary{position:sticky;top:14px}}
+@media(max-width:1100px){.cf-roll-layout{grid-template-columns:minmax(0,1fr)}.cf-roll-primary{position:static}}
+@media(max-width:600px){.cf-roll-sources .cf-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-roll-sources .cf-click-sources,.cf-roll-primary .cf-roll-panel,.cf-action-shortcuts{padding:10px}
+ .cf-action-choice-list{max-height:155px}}
+
+/* XP de aliados domesticados, sem inferir XP de criatura sem ficha. */
+.cf-companion-budget{width:100%;max-width:100%}
+.cf-companions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.cf-companions label{display:flex;flex-direction:column;gap:4px;font-size:.8rem}
+.cf-companions input{width:100%;min-width:0}
+@media(max-width:620px){.cf-companions{grid-template-columns:1fr}}

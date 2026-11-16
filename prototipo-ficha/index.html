@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Codex RPG: criador e ficha unificados para personagens, XP, Perícias, equipamentos e rolagens.">
-  <title>Criador de ficha e personagem — Codex RPG</title>
+  <meta name="description" content="Codex RPG: ficha unificada para personagens, XP, Perícias, equipamentos e rolagens.">
+  <title>Ficha de personagem — Codex RPG</title>
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/styles.css?v=0.60-8">
+  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=0.60-5">
-  <script src="./catalog.js?v=0.43-1" defer></script>
-  <script src="./gene-graph.js?v=20261116-orbit-1" defer></script>
-  <script src="./app.js?v=0.60-8" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=20261116-constellation-1">
+  <script src="./catalog.js?v=0.48-armour3" defer></script>
+  <script src="./gene-graph.js?v=20261116-constellation-1" defer></script>
+  <script src="./app.js?v=0.50-concentracao" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -24,7 +24,7 @@
     <div class="fp-nav">
       <a href="../index.html" class="fp-text-link">Início</a>
       <a href="../livro.html" class="fp-text-link">Jogador</a><a href="../pericias/" class="fp-text-link">Perícias</a>
-      <a href="../narrador.html" class="fp-text-link">Narrador</a>
+      <a href="../narrador.html" class="fp-text-link">Narrador</a><a href="../criar-conflito/" class="fp-text-link">Criar Conflito</a>
       <button class="fp-secondary fp-sound-toggle" type="button" id="sound-toggle" aria-pressed="true" aria-label="Silenciar rolagens" title="Som da rolagem; também funciona sem áudio externo">Som: ligado</button>
       <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
@@ -33,7 +33,7 @@
   </header>
 
   <div class="fp-page-label">
-    <div><span class="fp-kicker">CRIADOR E FICHA · CODEX RPG</span>
+    <div><span class="fp-kicker">FICHA · CODEX RPG</span>
       <h1 id="page-title">Ficha de personagem <span>jogável.</span></h1>
       <p id="page-subtitle">Crie, edite, evolua e jogue com seu personagem no mesmo lugar.</p>
     </div>
@@ -41,8 +41,9 @@
       <a class="fp-secondary" href="#progressao" id="xp-shortcut">XP e evolução</a>
       <button type="button" class="fp-secondary fp-edit-toggle" id="edit-sheet" aria-pressed="false" hidden>Editar ficha</button>
       <button type="button" class="fp-secondary" id="start-wizard" hidden>Novo personagem</button>
-      <span class="fp-status-pill"><span class="fp-dot"></span> Criador e ficha unificados</span>
+      <span class="fp-status-pill"><span class="fp-dot"></span> Ficha unificada</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
+      <button class="fp-secondary" id="send-to-conflito" type="button" hidden>Enviar NPC ao Conflito</button>
       <button class="fp-secondary" id="export-json" type="button">Exportar ficha</button>
       <button class="fp-secondary" id="import-trigger" type="button">Importar JSON</button>
       <button class="fp-secondary" id="import-old-creator" type="button" hidden title="Recuperar ficha guardada no criador anterior">Importar ficha antiga</button>
@@ -95,9 +96,9 @@
     <section class="fp-vitals" aria-label="Recursos e defesas">
       <div class="fp-vital fp-life-vital">
         <div class="fp-vital-label">VIDA <span>atual / máxima</span></div>
-        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">3 / 3</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
-        <div class="fp-life-boxes" id="life-boxes" aria-label="Três caixas de Vida"><span></span><span></span><span></span></div>
-        <small id="life-recovery">Faixa superior · 1 Vida por dia</small>
+        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">4 / 4</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
+        <div class="fp-life-boxes" id="life-boxes" aria-label="Quatro estados de Saúde"><span></span><span></span><span></span><span></span></div>
+        <small id="life-recovery">Saudável · sem penalidade · Cura em revisão</small>
       </div>
       <div class="fp-vital">
         <div class="fp-vital-label">CORAGEM <span>reserva</span></div>
@@ -109,13 +110,10 @@
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="pp" data-delta="-1" aria-label="Gastar PP">−</button><strong id="pp-text">0 / 0</strong><button type="button" class="fp-counter" data-resource="pp" data-delta="1" aria-label="Recuperar PP">+</button></div>
         <small>Reserva global do personagem</small>
       </div>
-      <div class="fp-vital fp-vital-basic fp-de-vital">
-        <div class="fp-vital-label">DE DEFENSIVA <span>valor final</span></div>
-        <strong id="de-text">0</strong>
-        <small id="de-caption" class="fp-de-breakdown">Natural 0 · sem modificador</small>
-        <small id="de-condition" class="fp-de-condition">A armadura só modifica a DE nas condições descritas.</small>
-        <div id="de-armor-panel" class="fp-defense-armor" aria-label="Integridade da armadura equipada" hidden></div>
+      <div class="fp-vital fp-vital-basic">
+        <div class="fp-vital-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">Teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋</small>
       </div>
+      <div class="fp-vital fp-vital-basic fp-armor-integrity-vital"><div class="fp-vital-label">INTEGRIDADE <span>armadura equipada</span></div><strong id="armor-integrity-text">Sem armadura</strong><small id="armor-integrity-caption">Confira a proteção no Inventário</small></div>
       <div class="fp-vital fp-vital-basic">
         <div class="fp-vital-label">BALANÇO</div><strong id="balance-text">Médio</strong><small>Agilidade × Vigor</small>
       </div>
@@ -163,7 +161,7 @@
       </div>
       <div id="gene-sheet-budget"></div>
       <div class="fp-gene-map-tools"><button type="button" data-action="gene-future" id="gene-sheet-future">Mostrar futuras ramificações</button>
-        <span>Perícias bloqueadas ficam ocultas até você pedir para ver as futuras ramificações.</span></div>
+        <span>Clique numa bolinha para consultar requisitos, comprar ou abrir o verbete completo da Perícia. As opções bloqueadas ficam ocultas até você solicitar ramificações futuras.</span></div>
       <div class="fp-gene-layout">
         <div class="fp-gene-canvas-shell">
           <div class="fp-gene-canvas" id="gene-map" tabindex="0" aria-label="Rede interativa de perícias, arraste para explorar"></div>
@@ -200,8 +198,13 @@
         <div class="fp-award"><button id="level-up" type="button" class="fp-primary-btn">↑ Subir nível</button><span class="fp-muted">Nenhum XP automático ao subir de nível.</span></div>
         <button id="lock-creation" type="button" class="fp-secondary">Concluir criação</button>
       </div>
+      <section class="fp-respec-box" aria-label="Restituição experimental de Perícias para playtest">
+        <h4>Testar outras builds · Perícias compradas</h4>
+        <p>Devolva o custo de uma Perícia para experimentar outra combinação. Compras com Perícias dependentes são protegidas; o XP recebido não muda.</p>
+        <div id="respec-skills-list" class="fp-respec-list"></div>
+      </section>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
-      <p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>EXPERIMENTAL:</strong> orçamento inicial de 20 XP compartilhados. XP não gasto segue disponível após concluir; compras consolidadas não geram reembolso automático. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
+      <p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>EXPERIMENTAL:</strong> orçamento inicial de 20 XP compartilhados. XP não gasto segue disponível após concluir. <strong>EXPERIMENTAL (playtest):</strong> o painel acima permite desfazer Perícias com conferência de dependências e restituição do custo; não constitui regra de campanha. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
     </section>
 
     <div class="fp-workspace">
@@ -267,7 +270,6 @@
         <div class="fp-panel-heading"><span class="fp-panel-icon">▣</span><div><h3>Equipamento e proteção</h3><small>Integridade, carga e peças equipadas</small></div><button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Item</button></div>
         <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
         <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
-        <div id="inventory-carry-guide"></div>
         <p class="fp-muted fp-load-caption" id="mental-slot-caption">Slots mentais: 1 ponto de capacidade mental por Grau investido em Disciplina. Magias criadas e memorizadas reduzem 1 ponto de peso.</p>
         <section class="fp-trade-panel" id="trade-panel" aria-label="Patrimônio em recursos e comércio">
           <div class="fp-trade-heading">
@@ -276,7 +278,7 @@
             <div class="fp-trade-balance"><span>Disponível</span><strong id="trade-total">20 VT</strong></div>
           </div>
           <p class="fp-muted">VT não é moeda física. Ervas, Espólios, Couro, Comida e Minérios possuem valor de troca equivalente no mesmo Grau; todos ocupam Carga.</p>
-          <div id="trade-carry-guide"></div><div class="fp-trade-wallet" id="trade-wallet"></div>
+          <div class="fp-trade-wallet" id="trade-wallet"></div>
           <details class="fp-trade-distribute">
             <summary>Escolher recursos iniciais (antes da primeira compra ou coleta)</summary>
             <div class="fp-trade-allocate" id="trade-allocate"></div>
@@ -290,6 +292,18 @@
             </div>
             <small>Preços e alcances sugeridos para playtest. A compra usa recursos reais na ficha, descontando primeiro o recurso escolhido e depois os demais.</small>
           </div>
+          <div class="fp-trade-shop" id="stone-shop" aria-label="Pedras elementais">
+            <h4>Pedras Elementais — compra por VT restante</h4>
+            <p class="fp-muted">DEFINIDO: pedras comuns custam igualmente; Veneno, Sagrado e Trevas custam exatamente 3× o valor de cada pedra comum. Sangue (Pedra da Alma) não pode ser comprado no nível 1. Valores exatos de VT ainda PENDENTES.</p>
+            <div class="fp-trade-shop-grid">
+              <label>Pedra <select id="stone-element"><option value="">Escolha uma pedra</option></select></label>
+              <label>Preço-base comum de playtest em VT <input type="number" id="stone-price-common" data-stone-price="common" min="1" max="3333" placeholder="Definir em mesa"></label>
+              <label>Preço especial: 3× comum (automático) <input type="number" id="stone-price-rare" min="1" max="9999" placeholder="3× preço comum" readonly aria-label="Preço especial calculado automaticamente"></label>
+              <button type="button" class="fp-primary-btn" data-action="stone-buy" id="stone-buy">Comprar pedra com VT</button>
+            </div>
+            <small>Preços preenchidos pela mesa são <strong>EXPERIMENTAIS, não oficiais</strong>. A compra usa o saldo e a preferência de pagamento do comércio. A pedra adquirida fica registrada em compras, sem efeito mágico ou carga física automáticos até haver regra.</small>
+            <div class="fp-muted" id="stone-owned"></div>
+          </div>
           <div class="fp-trade-collect">
             <h4>Registrar coleta durante a aventura</h4>
             <label>Recurso <select id="collect-type"><option value="ervas">Ervas</option><option value="espolios">Espólios</option><option value="couro">Couro</option><option value="comida">Comida</option><option value="minerios">Minérios</option></select></label>
@@ -299,9 +313,12 @@
           <p class="fp-trade-meta">Total gasto em compras deste catálogo: <strong id="trade-spent">0 VT</strong>. Descontos e sobrepreços por Perícias de Comércio ainda não foram definidos.</p>
           <div class="fp-crystal-summary" id="crystal-summary"></div>
         </section>
-        <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Foco G1 para simulação (Artesão obrigatório na campanha)</button>
+        <div class="fp-trade-shop-grid">
+          <label>Modelo de foco G1 (simulação; fabricação com Artesão) <select id="focus-test-model"><option value="Foco de Magia Leve G1">Foco de Magia Leve G1</option></select></label>
+          <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Simular foco escolhido</button>
+        </div>
         <div id="inventory-list" class="fp-inventory-list"></div>
-        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve não tem Integridade e dá +2 DE na esquiva; Leve +1 na esquiva; Média 0; Pesada −1 DE; Muito Pesada −2 DE, requer Vigor 6 e Atletismo 6 e possui imunidade física natural em qualquer Grau. G2 exige nível 5, G3 nível 10 e G4 nível 20. Muito Pesada G4 pode acumular resistência elemental de G2 e imunidade elemental adicional. Integridades G1 de 10/15/20 são experimentais; escudos 6/9/12 são propostos. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
+        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve não tem Integridade e dá +2 DE na esquiva; Leve +1 na esquiva; Média 0; Pesada −1 DE; Muito Pesada −2 DE, requer Vigor 6 e Atletismo 6 e possui imunidade física natural em qualquer Grau. G2 exige nível 5, G3 nível 10 e G4 nível 20. Muito Pesada G4 pode acumular resistência elemental de G2 e imunidade elemental adicional. Integridades G1 de 7/12/17 após redução de 3 são valores de playtest; escudos 6/9/12 permanecem propostos. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
       </section>
     </section>
 
@@ -314,7 +331,7 @@
       </div>
     </section>
   </main>
-  <footer class="fp-footer">CODEX RPG · Criador e ficha jogável unificados · Regras experimentais e pendentes identificadas</footer>
+  <footer class="fp-footer">CODEX RPG · Ficha jogável unificados · Regras experimentais e pendentes identificadas</footer>
 </div>
 <div id="toast" role="status" aria-live="polite" class="fp-toast"></div>
 </body>

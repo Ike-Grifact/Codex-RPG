@@ -1,10 +1,58 @@
 # Codex RPG — Livro do Mestre
 
-**Capítulo inicial | 11 de novembro de 2026 | SRD de Continuidade v0.38**
+## Antecipação e Concentração Refinada — 16/11/2026 [DEFINIDO / PENDENTE]
 
-Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.39](srd-continuidade-v0.39.md). Em caso de divergência, prevalece a última decisão autoral.
+**Antecipação é uma mecânica, não Perícia:** uma rolagem com Disciplina permite guardar **1A de dado mantido** para a próxima rolagem, sem duplicar o símbolo nem aplicá-lo duas vezes. **Concentração Refinada** custa **1 XP**, exige **Disciplina 2** e, ao guardar 1A por Antecipação, o transforma em **1E** e concede **Vantagem** ao próprio personagem. **Não pode ativar Concentração Refinada se algum inimigo estiver a até 8 metros.**
+
+A condição é **Vantagem**, não Vantagem Absoluta. **PENDENTE:** momento exato de crédito do 1E (na concentração ou na rolagem seguinte) e duração da condição. O Narrador anota a escolha até que haja procedimento definido; não autorizar automatismos para consumo/crédito em ambos os momentos. Não confundir com a passagem de protagonismo por Antecipar, que permanece regida pelas mecânicas gerais. Consulte [SRD v0.50](srd-continuidade-v0.50.md), seção 0-AM.
+
+## Improviso + Maestria, área e tokens separados [DEFINIDO / PENDENTE]
+
+A capacidade de Combinar Elementos na invocação é **Improviso Elemental + Maestria Elemental**, ambas adquiridas. Com elementos habilitados, invocar criatura de dois elementos custa +1 Coragem além do custo base; efeitos especiais via Maestria custam +1 PP ou +1 Coragem adicional.
+
+Várias criaturas podem permanecer na mesma ficha. Se o jogador **separa os tokens**, divide o **XP total e a Vida total** entre eles e cada token passa a resolver como **ficha individual do nível de DE original**, mantendo a DE e o orçamento somado. **Dano de área funciona normalmente**: cada token que estiver dentro da área é afetado conforme as regras de área, sem multiplicar XP ou ações. Exemplo: **60 XP/12 Vida em três tokens => 20 XP/4 Vida para cada**, todos mantendo a DE original.
+
+**Invocação em ação conjunta [DEFINIDO]:** Pequena rola 1 dado de Atributo (mantém até 1), Média 2 (mantém até 2), Grande 3 (mantém até 3), um dado por parte participante. O jogador escolhe os dados de Atributo e quais manter. Uma invocação **só pode ajudar um personagem na mesma ação conjunta**, seja o conjurador ou outro aliado. **Todos os dados mantidos destinados ao apoio passam para esse mesmo personagem**, seguindo a resolução normal da ação conjunta; a Grande pode entregar os **3 dados mantidos**. Não repartir o resultado entre guerreiro e mago, nem combinar ataque próprio com auxílio a outro na mesma atuação. A invocação inteira conta como **uma participante**, mesmo com três corpos/tokens, e não recebe três turnos. Respeitam-se custos, dados e limites aplicáveis a cada participante. Dados, faces, Antecipar e Pavor não se duplicam. As pendências numéricas sobre divisão de XP/Vida e recombinação permanecem.
+
+O conjurador pode **Antecipar apenas um turno da invocação** no total. Pode escolher uma parte para agir isoladamente ou fazer as partes contribuírem com até três dados (Grande) para **um único personagem em uma ação conjunta**. Não conceder três turnos por dividir a ficha. **PENDENTE:** restos de divisão e recombinação de danos/recursos; não arredondar nem duplicar.
+
+## Limites de fichas — decisão autoral posterior [DEFINIDO]
+
+**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Uma ficha Grande pode conter **três zumbis Médios reais na cena**, compartilhando **uma única Vida mecânica, uma economia de ações, XP contado uma vez e os dados da ficha Grande**. São vários corpos, mas não possuem fichas, turnos ou recursos independentes. Requer Domar Grande. Dano de área segue normalmente; a divisão em tokens separados é permitida, conforme acima. Restos de XP/Vida e recombinação seguem PENDENTES.
+
+**Domar permite até duas fichas domesticadas sob controle direto por domador**, respeitando uma criatura por categoria; um vínculo extra não desaparece automaticamente, mas suas ações sob controle direto não são liberadas. A contagem de criaturas presentes por categoria no orçamento do conflito não equivale à quantidade de fichas controladas; o Narrador verifica o domador de cada ficha.
+
+## Invocação Elemental — orientações ao Narrador (16/11/2026)
+
+A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente. **Comprar 1 XP** requer Criar Item de Foco e Magia, Domar Pequena e elemento habilitado; **Criar Item de Foco e Magia já habilita Psique**, sem Perícia própria adicional; outros elementos exigem Perícia específica; cada invocação custa **1 PP ou 1 Coragem**. Porte limitado por Domar Pequena/Média/Grande. Cada criatura invocada recebe ficha com XP total igual ao invocador e é imune ao elemento usado, causando dano daquele elemento, sem inventar efeitos automáticos especiais.
+
+**Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** e exige **Improviso Elemental + Maestria Elemental** já adquiridos; Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
+
+**Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** a invocação é a **projeção da mente do conjurador** e seu **corpo físico permanece parado** enquanto ela está ativa, inclusive em combinações Psique+Trevas ou Psique+Sagrado. As formas manifestadas incluem fantasmas imunes a neutro e sem dano neutro; Maestria pode habilitar assombrar/possuir com Desvantagem Absoluta. Ataques ao corpo e interrupção da projeção ainda são PENDENTES. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
+
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, aplicar os requisitos já definidos de Improviso + Maestria, definir manutenção/controle pormenorizado, resistência/DE de possessão, posição dos corpos narrativos e as regras de ações especiais de invocações no conflito. O limite simultâneo já é DEFINIDO: uma invocação e ficha por conjurador. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
+
+## Atualização de 16/11/2026 — Narrador, companheiros e recuperação [DEFINIDO / PENDENTE]
+
+Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande requer Influência 2/3/4, Apresentação 1, Inteligência 1; custo 1 XP na compra e 1 PP ou 1 Coragem na tentativa. Uma de cada porte. Cada companheiro presente aumenta o orçamento de XP do grupo e concede +1 Vida ao domador. Pequena sem ficha desenvolvida tem 1 Vida própria quando enviada a risco próprio. Com ficha independente opcional, a Vida máxima aumenta por `1 + Vigor + piso(Força/2)`, com **Força e Vigor custando o dobro desde o Grau 1**. A criatura recebe orçamento próprio igual ao XP total atualizado do jogador, sem consumir seu XP; subir Vida máxima não cura ferimentos. Aplicação de quatro faixas quando a Pequena tem menos de 4 Vida segue PENDENTE.
+
+Armadura Muito Leve G1 agora tem 3 de Integridade; demais armaduras G1 continuam 7/12/17. Dano prévio do druida reduz ponto por ponto a Vida atual inicial da forma animal. Pavor de ação sem alvo de ataque alimenta reserva pública; excedente permite intervenção da ameaça mais próxima do último jogador ativo, desempate por DE e Vida, salvo circunstância da cena. Múltiplos excedentes e custo exato ainda pendentes.
+
+Cura: Saudável 1 dia/ponto, Ferido prazos progressivos 1/2/3... dias por posição, Incapacitado 1 semana mais tratamento avançado, Inconsciente 1 semana mais 1 Sangue transfundido. 1 Êxito médico válido reduz 1 dia; 7 Êxitos + transfusão 1 Sangue permitem passagem de Inconsciente a Ferido após um descanso longo. Os casos parciais permanecem pendentes.
+
+**Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
+
+Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Liderança e resolução de conflitos. Ele complementa o [Guia do Narrador](guia-do-narrador.md), mas não altera o [Livro do Jogador](livro-do-jogador.md). As regras vigentes e suas pendências são registradas em [SRD v0.44](srd-continuidade-v0.44.md), seção 0-AC para magia e custos, 0-AB para Trevas e 0-AA para Pavor. Em caso de divergência, prevalece a última decisão autoral.
 
 **DEFINIDO** significa regra aprovada. **PENDENTE** indica procedimento ainda não fechado. **PROPOSTO** e **EXPERIMENTAL** nunca substituem regras aprovadas.
+
+**Decisão de 15/11/2026 — [SRD v0.44](srd-continuidade-v0.44.md) [DEFINIDO / análise]:** Integridade nominal G1 de armaduras convencionais reduzida em 3: **Leve 7, Média 12 e Pesada 17**; Muito Leve 0. Escudos de equipamento **6/9/12** permanecem propostos e **não são reduzidos**. **Escudo Arcano não foi alterado**, nem se institui iniciativa por Agilidade. **Conjuração Equilibrada foi renomeada Conjuração Refinada**: futura ampliação de alcance de efeitos mágicos, sem números nem custo adicional definidos, não mantém automaticamente a antiga alteração de peso/dados. **Pedras de Veneno/Sagrado/Trevas custam 3× o preço comum**, com VT básico ainda pendente. A definição eventual de testes sem rolagem por percentuais é **PROPOSTA**, não regra vigente.
+
+**Atualização de Pavor [DEFINIDO, 14/11/2026]:** inimigos **começam cada conflito com a reserva local cheia**; o teto por Grau é **G1=4P, G2=5P, G3=6P, G4=7P, G5=8P, G6=8P**. Em ataque contra um único inimigo declarado, **somente o alvo atacado** recebe o Pavor mantido e não anulado, mesmo distante e mesmo que o ataque falhe. **Não** se transfere ao inimigo mais próximo. Ataque inimigo contra um jogador continua gerando Coragem segundo 1P→1 Coragem, destinada ao alvo atacado. Aumento de estoque **não** concede turnos extras nem altera custos. A regra de múltiplos alvos, área e ações sem alvo atacado continua **PENDENTE** e não duplica símbolos.
+
+**Trevas [DEFINIDO, 14/11/2026]:** a técnica de +2P conta **antes da DE** para acerto, dano e risco de intervenção, sem criar símbolos extras por haver dois alvos. Com dois alvos, a **mesma rolagem inteira** é comparada à DE individual de cada um. O **Pavor total não anulado** é dividido tão igualmente quanto possível entre as reservas dos dois (ponto ímpar atribuído ao alvo escolhido) ou concentrado inteiramente num deles. Pode optar por um único alvo. Manter os requisitos e custo **1 PP/2 Coragens no acerto**, sem nova cobrança inventada; o detalhe do pagamento em falha é PENDENTE.
+
+**Economia de Perícias e foco [DEFINIDO — 14/11/2026]:** custo-base de ativação paga **1 PP ou 1 Coragem**; efeito elemental habilitado com foco válido e Perícia do elemento **não paga ativação-base**. Amplificar o peso até o máximo permitido custa **1 Coragem adicional** e reduzir Grau/intensidade não paga Coragem, mas conserva recarga. **PENDENTE:** correspondências de Grau/peso, casos de magias mistas, escudos, e preços oficiais de pedras; não estender essa revisão aos custos em Pavor local da oposição sem decisão própria.
 
 **Ideia central:** provocar atrai o perigo; antecipar faz os turnos individuais fluírem; um Líder usa Pavor público para montar um golpe coordenado. Ao cair a liderança, o conflito pode virar disputa por adesão, fuga ou rendição — sem exigir extermínio.
 
@@ -103,7 +151,7 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1). A partir de Disciplina 2, permite criar magias de Grau 2 e 3 fora de combate, 1 PP ou 2 Coragens por criação, memorizadas em slots para conjuração rápida. Pesos G1=1, G2=2, G3=3, G4=4; sem foco −1 peso (incidência e piso PENDENTES). A capacidade total de slots permanece PENDENTE em razão da divergência com histórico do SRD.
 
-**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Equilibrada** custa 1 XP, requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2, e custa 1 PP ou 2 Coragens para tornar uma magia Pesada ou Leve; distinção de Grau numérico pendente. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
+**Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Refinada** substitui a antiga Equilibrada: compra histórica de 1 XP e requisitos preservados, mas agora se destina a **aumentar alcance de efeitos mágicos**; números e custo PENDENTES. A alteração antiga de peso Leve/Pesada por essa Perícia foi revogada. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
 
 ## Conjuração — nova decisão de slots e Ar (12/11/2026)
 

@@ -237,7 +237,7 @@ html[data-theme="light"]{
 .fp-roll-die.fp-die-d10 .fp-face{color:var(--fp-d10)}
 .fp-roll-die.fp-die-d12 .fp-face{color:var(--fp-d12)}
 .fp-roll-die.fp-die-d20 .fp-face{color:var(--fp-d20)}
-.fp-vitals{grid-template-columns:repeat(7,minmax(0,1fr))}
+.fp-vitals{grid-template-columns:repeat(8,minmax(0,1fr))}
 .fp-vital.fp-movement-vital{border-color:color-mix(in srgb,var(--fp-a) 50%,var(--fp-stroke))}
 .fp-movement-vital>strong{font-size:26px}
 .fp-progression{padding:19px 21px;margin-bottom:25px;scroll-margin-top:15px}
@@ -968,6 +968,17 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 .fp-gene-grade-button:hover:not(.is-disabled) rect,
 .fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke-width:3}
 .fp-gene-branch-rule{stroke:var(--fp-stroke);stroke-width:2}
+/* Grupos orbitais do Codex Genético. Ícones individuais podem ocupar o nó
+   sem modificar os IDs nem a lógica de compra das Perícias. */
+.fp-gene-constellation{pointer-events:none}
+.fp-gene-constellation-border{fill:var(--fp-raised);fill-opacity:.22;stroke:var(--fp-muted);stroke-width:1.6;stroke-opacity:.26;stroke-dasharray:5 8}
+.fp-gene-constellation-cap{stroke:var(--fp-gold);stroke-width:2.5;stroke-opacity:.66}
+.fp-gene-constellation-title{fill:var(--fp-text);font-size:17px;font-weight:800;letter-spacing:.055em;paint-order:stroke;stroke:var(--fp-deep);stroke-width:3}
+.fp-gene-constellation[data-gene-family="elementos"] .fp-gene-constellation-border,
+.fp-gene-constellation[data-gene-family="natureza"] .fp-gene-constellation-border{stroke-opacity:.37}
+.fp-gene-constellation[data-gene-family="disparos"] .fp-gene-constellation-border{stroke-dasharray:3 7}
+.fp-gene-skill[data-gene-family] .fp-gene-dot{transition:stroke-width .15s ease}
+
 .fp-gene-skill .fp-gene-dot{stroke-width:3}
 .fp-gene-skill.is-owned .fp-gene-dot{fill:#267A45;stroke:#5ab57c}
 .fp-gene-skill.is-available .fp-gene-dot{fill:#2369BB;stroke:#80b9ff}
@@ -1199,93 +1210,28 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  .fp-gene-canvas .fp-gene-viewport{transition:none}
 }
 
-/* Carga na compra: limites e capacidade livre por categoria. */
-.fp-carry-guide{border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:12px;
- padding:15px;display:grid;gap:8px;margin:12px 0;color:var(--fp-text);font-size:12px}
-.fp-carry-guide strong{font-size:14px;color:var(--fp-gold)}
-.fp-carry-guide>span,.fp-carry-guide small{color:var(--fp-muted);line-height:1.5}
-.fp-carry-guide.is-overloaded{border-color:#bd7474;background:color-mix(in srgb,#bd7474 9%,var(--fp-deep))}
-.fp-carry-guide.is-overloaded strong{color:#e7aaaa}
-.fp-carry-limits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
-.fp-carry-limits span{display:flex;gap:5px;align-items:center;justify-content:center;
- background:var(--fp-raised);border:1px solid var(--fp-stroke);border-radius:9px;padding:10px 4px;font-size:11px}
-.fp-carry-limits b{color:var(--fp-gold);font-size:17px}
-.fp-carry-warning{border-left:3px solid #c76f77;color:#e7a4a9!important;padding:7px 9px;
- background:color-mix(in srgb,#c76f77 9%,var(--fp-deep));font-size:11px!important}
-@media(max-width:430px){.fp-carry-limits span{font-size:10px}.fp-carry-limits b{font-size:14px}}
+.fp-armor-integrity-vital{border-color:color-mix(in srgb,var(--fp-accent) 48%,var(--fp-stroke))}
+.fp-armor-integrity-vital strong{font-size:clamp(16px,1.75vw,23px);line-height:1.2;overflow-wrap:anywhere}
+.fp-armor-integrity-vital small{font-size:10px;line-height:1.35}
 
-/* Humanoide rápido usa o mesmo Codex Genético, sem alterar a criação guiada do jogador. */
-.fp-quick-human{
- display:grid;gap:13px;margin:10px 0 20px;padding:clamp(13px,2vw,20px);
- border:1px solid var(--fp-gold);border-radius:14px;
- background:linear-gradient(120deg,var(--fp-raised),var(--fp-deep));
-}
-.fp-quick-human h3{font-family:Georgia,serif;font-size:clamp(19px,2.4vw,24px);margin:6px 0 8px}
-.fp-quick-human p{font-size:13px;line-height:1.55;margin:0}
-.fp-quick-human-fields{display:grid;grid-template-columns:2fr minmax(150px,1fr);gap:12px}
-.fp-quick-human-fields label{display:grid;gap:6px;font-size:12px;color:var(--fp-muted)}
-.fp-quick-human-fields input{width:100%;min-height:42px;padding:10px 12px;border-radius:9px;border:1px solid var(--fp-stroke);background:var(--fp-deep);color:var(--fp-text)}
-.fp-quick-human-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--fp-muted)}
-.fp-quick-human-footer span{flex:1}
-@media(max-width:600px){.fp-quick-human-fields{grid-template-columns:1fr}.fp-quick-human-footer{align-items:stretch}}
+/* Playtest: devolução de Perícias no mesmo painel de evolução, sem alterar o restante da Ficha. */
+.fp-respec-box{margin:12px 0;padding:14px;border:1px solid var(--fp-stroke);
+ border-radius:12px;background:var(--fp-raised)}
+.fp-respec-box h4{margin:0 0 6px;font-size:14px;color:var(--fp-text)}
+.fp-respec-box>p{margin:0 0 12px;color:var(--fp-muted);font-size:11px;line-height:1.45}
+.fp-respec-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.fp-respec-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px;
+ background:var(--fp-surface);border:1px solid var(--fp-stroke);border-radius:9px}
+.fp-respec-row>span{display:grid;gap:3px;min-width:0}
+.fp-respec-row strong{font-size:12px;color:var(--fp-text)}
+.fp-respec-row small{font-size:10px;color:var(--fp-muted)}
+.fp-respec-row button{white-space:nowrap;border:1px solid var(--fp-gold);border-radius:7px;
+ padding:7px;background:transparent;color:var(--fp-text);cursor:pointer;font-size:11px}
+.fp-respec-row button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){.fp-respec-list{grid-template-columns:1fr}}
 
-.fp-wizard-steps[hidden]{display:none!important}
-
-/* Resumo do modo Jogar: Integridade real da armadura equipada, compartilhada com o Inventário. */
-.fp-owned-integrity{display:grid;gap:7px;margin-top:5px;padding-top:9px;border-top:1px solid var(--fp-stroke)}
-.fp-owned-integrity-header{display:flex;justify-content:space-between;gap:7px;align-items:center;flex-wrap:wrap}
-.fp-owned-integrity-header span,.fp-owned-integrity.is-none span{font-size:11px;color:var(--fp-muted)}
-.fp-owned-integrity-header b{font:700 16px Georgia,serif;color:var(--fp-text)}
-.fp-owned-integrity-meter{height:7px;border-radius:20px;background:var(--fp-stroke);overflow:hidden}
-.fp-owned-integrity-meter>span{display:block;height:100%;background:var(--fp-gold);border-radius:inherit}
-.fp-owned-integrity.is-depleted .fp-owned-integrity-header b{color:#b85c55}
-.fp-owned-integrity-actions{display:flex;gap:7px}
-.fp-owned-integrity-actions button{min-width:36px;min-height:35px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);font-size:17px;cursor:pointer}
-.fp-owned-integrity-actions button:hover:not(:disabled){border-color:var(--fp-gold)}
-.fp-owned-integrity-actions button:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
-.fp-owned-integrity-actions button:disabled{opacity:.5;cursor:not-allowed}
-.fp-owned-integrity.is-none{gap:4px}
-.fp-owned-integrity.is-none strong{font-size:11px;font-weight:650}
-
-/* Rótulos de Perícias: nomes completos em várias linhas, sem reticências. */
-.fp-gene-skill .fp-gene-node-label{font-size:14px;font-weight:650;letter-spacing:0;paint-order:stroke;stroke-width:3;pointer-events:none}
-.fp-gene-skill .fp-gene-node-label tspan{dominant-baseline:alphabetic}
-
-/* Remoção de Perícias diretamente no nó do Codex Genético. */
-.fp-gene-remove-skill{
- display:inline-flex;align-items:center;justify-content:center;
- width:100%;min-height:42px;padding:11px 14px;
- background:var(--fp-raised);color:var(--fp-text);
- border:1px solid var(--fp-gold);border-radius:9px;
- font-family:inherit;font-weight:700;font-size:12px;line-height:1.4;
- white-space:normal;text-align:center;cursor:pointer;
-}
-.fp-gene-remove-skill:hover:not(:disabled){background:var(--fp-deep);border-color:var(--fp-gold)}
-.fp-gene-remove-skill:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
-.fp-gene-remove-skill:disabled{opacity:.65;cursor:not-allowed}
-
-/* Esquiva é defesa específica; bônus da armadura Muito Leve (+2) ou Leve (+1) não altera DE geral. */
-.fp-vital.fp-de-vital{gap:8px}
-.fp-de-dodge{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 10px;border:1px solid var(--fp-gold);border-radius:9px;background:var(--fp-raised)}
-.fp-de-dodge>span{font-size:10px;font-weight:800;letter-spacing:.045em;color:var(--fp-gold)}
-.fp-de-dodge>strong{font:normal 25px/1 Georgia,serif;color:var(--fp-text);white-space:nowrap}
-.fp-de-vital #de-dodge-caption{font-size:10px;line-height:1.45;margin-top:2px;color:var(--fp-muted)}
-
-/* Um único valor final de DE, com origem do modificador e Integridade visível. */
-.fp-de-vital #de-text{font-size:clamp(31px,2.2vw,37px);line-height:1.1}
-.fp-de-vital .fp-de-breakdown{font-size:11px;font-weight:700;color:var(--fp-text);line-height:1.45}
-.fp-de-vital .fp-de-condition{font-size:10px;line-height:1.4;color:var(--fp-muted)}
-.fp-defense-armor{display:grid;gap:6px;padding:9px 10px;margin-top:5px;border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised);min-width:0}
-.fp-defense-armor[hidden]{display:none!important}
-.fp-defense-armor-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:5px}
-.fp-defense-armor-head>span{font-size:10px;font-weight:750;color:var(--fp-muted);overflow-wrap:anywhere}
-.fp-defense-armor-head>strong{font-size:18px;font-weight:800;color:var(--fp-text);white-space:nowrap;font-variant-numeric:tabular-nums}
-.fp-defense-armor>small{font-size:10px;line-height:1.35;color:var(--fp-muted)}
-.fp-defense-armor-meter{height:7px;background:var(--fp-stroke);border-radius:10px;overflow:hidden}
-.fp-defense-armor-meter span{display:block;height:100%;border-radius:inherit;background:var(--fp-gold)}
-.fp-defense-armor-actions{display:flex;justify-content:flex-end;gap:7px}
-.fp-defense-armor-actions button{min-width:35px;min-height:32px;padding:3px 9px;border:1px solid var(--fp-stroke);border-radius:7px;background:var(--fp-deep);color:var(--fp-text);cursor:pointer}
-.fp-defense-armor-actions button:disabled{opacity:.42;cursor:not-allowed}
-.fp-defense-armor-actions button:focus-visible,.fp-defense-inventory-link:focus-visible{outline:2px solid var(--fp-gold);outline-offset:2px}
-.fp-defense-inventory-link{border:1px solid var(--fp-gold);background:var(--fp-deep);color:var(--fp-text);border-radius:7px;padding:7px;font:600 11px/1.25 inherit;cursor:pointer}
-.fp-defense-inventory-link:hover{border-color:var(--fp-text)}
+/* Leitura opcional do verbete diretamente do nó do Codex Genético. */
+.fp-gene-verbete{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;box-sizing:border-box;
+ padding:10px 12px;margin:5px 0;border:1px solid var(--fp-gold);border-radius:8px;
+ background:transparent;color:var(--fp-gold);text-align:center;text-decoration:none;font-weight:700;font-size:12px}
+.fp-gene-verbete:hover,.fp-gene-verbete:focus-visible{background:var(--fp-surface);text-decoration:underline;outline-offset:2px}
