@@ -43,7 +43,22 @@ export function sourceDice(group,key,system){
  if(!Number.isInteger(grade)||grade<0||grade>6)throw Error("Grau inválido.");
  return [...(group==="attribute"?(system?.monsterRules?MONSTER_DICE:ATTRIBUTE_DICE):TRAINING_DICE)[grade]];
 }
-export const lifeMax=s=>3+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.forca||0)/2);
+// Vida: base 4, +Vigor e +piso(Força/2), preservando a contribuição de Força.
+export const lifeMax=s=>4+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.forca||0)/2);
+export const healthBands=s=>{
+ const extra=Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.forca||0)/2);
+ return [1+Math.ceil(extra/2),1+Math.floor(extra/2),1,1];
+};
+// A aplicação automática de bônus/malus depende do fluxo de rolagem de cada interface.
+export const healthByLife=(s,currentLife)=>{
+ const bands=healthBands(s),max=bands.reduce((n,k)=>n+k,0);
+ if(!Number.isInteger(currentLife)||currentLife<0||currentLife>max)throw Error("Vida atual inválida.");
+ if(currentLife===0)return {id:"morto",e:0,a:0,p:0,coragem:null};
+ if(currentLife===1)return {id:"inconsciente",e:-2,a:0,p:2,coragem:2};
+ if(currentLife===2)return {id:"incapacitado",e:-1,a:0,p:1,coragem:1};
+ if(currentLife<=2+bands[1])return {id:"ferido",e:0,a:-1,p:0,coragem:0};
+ return {id:"saudavel",e:0,a:0,p:0,coragem:0};
+};
 export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor(Number(s.attributes?.destreza||0)/2)+Math.floor(Number(s.attributes?.vigor||0)/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxPP=level=>level>=20?3:level>=10?2:level>=5?1:0;
