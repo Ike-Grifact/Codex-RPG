@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {SMALL_ATTR_CUMULATIVE,independentSmallCost,smallCompanionBudget} from "./companion-small.mjs";
 
-test("custo cumulativo de Força e Vigor dobra a tabela de Atributos",()=>{
+test("custo cumulativo de Força e Vigor dobra a tabela-base experimental de Atributos",()=>{
  for(let grade=0;grade<=6;grade++){
   assert.equal(independentSmallCost({forca:grade}),2*SMALL_ATTR_CUMULATIVE[grade]);
   assert.equal(independentSmallCost({vigor:grade}),2*SMALL_ATTR_CUMULATIVE[grade]);

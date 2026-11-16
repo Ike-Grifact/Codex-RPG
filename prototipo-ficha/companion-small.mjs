@@ -1,6 +1,7 @@
 /** SRD v0.48: ficha independente OPCIONAL de criatura Pequena domesticada. */
 export const SMALL_ATTR_KEYS=Object.freeze(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
 export const SMALL_ATTR_LABELS=Object.freeze(["Força","Agilidade","Destreza","Inteligência","Influência","Vigor"]);
+/** EXPERIMENTAL: tabela-base de Atributos para a ficha opcional da Pequena; multiplicador 2x DEFINIDO. */
 export const SMALL_ATTR_CUMULATIVE=Object.freeze([0,1,3,7,15,31,55]);
 export const SMALL_FORCE_VIGOR_MULTIPLIER=2;
 export const SMALL_INDEPENDENT_LIFE=1;
