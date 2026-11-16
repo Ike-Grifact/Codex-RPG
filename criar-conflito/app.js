@@ -50,15 +50,13 @@ function draftFor(t){
    .find(x=>x.grade>0);
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
-   attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
+   attribute,first:"forca",second:"vigor",firstSource:null,secondSource:null,mode:"normal",extra:null,contextOK:false,
    step:false,stepDieId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
 function selectionFor(t,d){
- return isHumanoidKind(t.kind)?
-  {baseGroup:d.baseGroup,baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,extra:d.extra,contextOK:d.contextOK}:
-  {first:d.first,second:d.second,extra:d.extra,contextOK:d.contextOK};
+ return {firstSource:d.firstSource,secondSource:d.secondSource,mode:d.mode,extra:d.extra,contextOK:d.contextOK};
 }
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
@@ -238,10 +236,9 @@ function rollSourceCards(t){
  const cards=rows.map(row=>'<section class="cf-source-section"><h3>'+row.title+'</h3>'+
   '<div class="cf-source-grid">'+row.defs.map(([key,name])=>{
    const grade=Number(t[row.field][key]||0);
-   const chosen=d.extra?.group===row.group&&d.extra?.key===key?"Complemento":
-    row.group==="attribute"?(human&&d.attribute===key?"Atributo":
-      !human&&d.first===key?"Base":!human&&d.second===key?"Segundo":""):
-    human&&d.baseGroup===row.group&&d.baseKey===key?"Base":"";
+   const roles=[[d.firstSource,"1ª fonte"],[d.secondSource,"2ª fonte"],[d.extra,"3ª fonte"]]
+    .filter(([src])=>src?.group===row.group&&src?.key===key).map(([,label])=>label);
+   const chosen=roles.join(" + ");
    const group=row.group==="attribute"?"attribute":row.group;
    const sides=group==="attribute"?dice(t,key):
     [[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade];
@@ -253,9 +250,9 @@ function rollSourceCards(t){
  const comp=composeActionPool(t,selectionFor(t,d),"");
  return '<section class="cf-panel cf-click-sources"><h3>Componha a ação com um clique</h3>'+
   '<p class="cf-note">Selecione as fontes na ficha. '+(human?
-   "Uma Base de Conhecimento ou Prática + um Atributo; a terceira fonte só com habilitação.":"Dois Atributos diferentes e pertinentes; Grau 5+ pode habilitar uma terceira fonte conforme regra.")+
+   "Duas fontes básicas de categorias diferentes, em qualquer ordem; terceira fonte com Perícia habilitada.":"Dois ou três Atributos diferentes e pertinentes, independentemente do Grau.")+
    ' A escolha não compra graus e não gasta recursos.</p>'+cards+
-  '<label class="cf-context-toggle"><input type="checkbox" id="cf-pick-extra"'+(d.pickExtra?' checked':'')+'> Clicar para escolher a terceira fonte (se habilitada)</label>'+
+  '<label class="cf-context-toggle"><input type="checkbox" id="cf-pick-extra"'+(d.pickExtra?' checked':'')+'> Selecionar a terceira fonte (Perícia ou criatura)</label>'+
   (d.extra?'<div class="cf-extra-preview"><span>Complemento: '+esc(d.extra.group+" · "+d.extra.key)+'</span>'+
    '<label><input type="checkbox" id="cf-context-ok"'+(d.contextOK?' checked':'')+'> Narrador confirma a pertinência</label>'+
    '<button type="button" data-clear-extra>Retirar complemento</button></div>':'')+
@@ -327,9 +324,9 @@ function prepareThreatAction(kind,skillId,itemId){
  if(kind==="weapon"&&!item)return notice("O equipamento não pertence à ficha.");
  if(kind==="skill"&&ELEMENTAL_NPC_SKILLS.has(skillId)){
   if(!t.skills.includes("criar-item-foco-magia"))return notice("Conjuração requer Criar Item de Foco e Magia e foco habilitado.");
-  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="conjuracao";
+  d.firstSource={group:"practice",key:"armas_conjuracao"};d.secondSource={group:"attribute",key:d.secondSource?.group==="attribute"?d.secondSource.key:"forca"};d.extra=null;d.mode="conjuracao";
  }else if(kind==="weapon"&&isHumanoidKind(t.kind)){
-  d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="armas";
+  d.firstSource={group:"practice",key:"armas_conjuracao"};d.secondSource={group:"attribute",key:d.secondSource?.group==="attribute"?d.secondSource.key:"forca"};d.extra=null;d.mode="armas";
  }
  d.declaredSkill=row?.id||"";
  d.declaredAction=row?.name||item?.name||(kind==="basic"?"Teste básico":"Ação natural");
@@ -362,20 +359,17 @@ function rollPane(t){
  const attrKey=r?.attribute||d.attribute||attrDefault;
  const first=r?.first||d.first||"forca",second=r?.second||d.second||"vigor";
  const sources=group==="knowledge"?KNOWLEDGES:PRACTICES;
- const sourceConfig=human?(
-  '<label>Fonte base<select id="cf-roll-group"'+(r?' disabled':'')+'>'+
-   '<option value="knowledge"'+(group==="knowledge"?' selected':'')+'>Conhecimento</option>'+
-   '<option value="practice"'+(group==="practice"?' selected':'')+'>Prática</option></select></label>'+
-  '<label>Conhecimento ou Prática<select id="cf-roll-base"'+(r?' disabled':'')+'>'+choice(sources,baseKey)+'</select></label>'+
-  '<label>Atributo pertinente<select id="cf-roll-attr"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,attrKey)+'</select></label>'+
-  '<label>Aplicação da Disciplina<select id="cf-roll-mode"'+(r||baseKey!=="armas_conjuracao"?' disabled':'')+'>'+
-   '<option value="armas"'+((r?.mode||d.mode||"armas")==="armas"?' selected':'')+'>Armas (Disciplina básica livre)</option>'+
+ const sourcesSelected=r?.sources||[d.firstSource,d.secondSource,...(d.extra?[d.extra]:[])].filter(Boolean);
+ const describe=src=>(src?.group==="attribute"?ATTRIBUTES:src?.group==="knowledge"?KNOWLEDGES:PRACTICES)
+  .find(([key])=>key===src?.key)?.[1]||"Não selecionada";
+ const usesDiscipline=sourcesSelected.some(src=>src.group==="practice"&&src.key==="armas_conjuracao");
+ const sourceConfig='<div class="cf-selected-sources"><strong>Fontes selecionadas:</strong> '+
+  (sourcesSelected.length?sourcesSelected.map((src,i)=>(i+1)+"ª "+esc(describe(src))).join(" + "):"Clique nas aptidões da ficha")+
+  '</div>'+(human&&usesDiscipline?
+   '<label>Aplicação da Disciplina<select id="cf-roll-mode"'+(r?' disabled':'')+'>'+
+   '<option value="armas"'+((r?.mode||d.mode||"armas")==="armas"?' selected':'')+'>Armas</option>'+
    '<option value="conjuracao"'+((r?.mode||d.mode)==="conjuracao"?' selected':'')+'>Conjuração (foco habilitado)</option>'+
-   '</select></label>'
- ):(
-  '<label>Atributo base<select id="cf-roll-first"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,first)+'</select></label>'+
-  '<label>Outro Atributo<select id="cf-roll-second"'+(r?' disabled':'')+'>'+choice(ATTRIBUTES,second)+'</select></label>'
- );
+   '</select></label>':'');
  const sel=r?.selected||[];
  const result=r?(human?previewHumanoidRoll(t,r.dice,sel,{
   de:r.de,situation:r.situation,cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA,extraKeep:r.extraKeep,stepDieId:r.stepDieId
@@ -401,8 +395,8 @@ function rollPane(t){
  const last=model.lastRoll?.id===t.id?'<p class="cf-note">Última rolagem confirmada: '+esc(model.lastRoll.outcome)+
   ' · '+model.lastRoll.e+'E / '+model.lastRoll.p+'P · custo local '+model.lastRoll.spent+'P.</p>':"";
  const help=human?
-  'Escolha uma Prática ou Conhecimento e um Atributo pertinente. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. A retenção adicional por Coragem é registrada e descontada ao confirmar a rolagem.':
-  'Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
+  'Selecione duas categorias diferentes, em qualquer ordem. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. A retenção adicional por Coragem é registrada e descontada ao confirmar a rolagem.':
+  'Selecione dois ou três Atributos diferentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
  const originalPool=composeActionPool(t,selectionFor(t,d),"");
  const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
@@ -439,14 +433,8 @@ function refreshRoll(){const e=el("cf-roll-panel"),t=selected();if(e&&t)e.outerH
 function beginCreatureRoll(){
  const t=selected();if(!t)return;
  const d=draftFor(t),human=isHumanoidKind(t.kind);
- if(human){
-  d.baseGroup=el("cf-roll-group")?.value||d.baseGroup;
-  d.baseKey=el("cf-roll-base")?.value||d.baseKey;
-  d.attribute=el("cf-roll-attr")?.value||d.attribute;
-  d.mode=d.baseKey==="armas_conjuracao"?(el("cf-roll-mode")?.value||"armas"):"normal";
- }else{
-  d.first=el("cf-roll-first")?.value||d.first;d.second=el("cf-roll-second")?.value||d.second;
- }
+ const usingDiscipline=[d.firstSource,d.secondSource,d.extra].some(src=>src?.group==="practice"&&src.key==="armas_conjuracao");
+ d.mode=human&&usingDiscipline?(el("cf-roll-mode")?.value||d.mode||"armas"):"normal";
  d.de=Math.floor(clamp(el("cf-roll-de")?.value??d.de,0,30));
  d.situation=el("cf-roll-situation")?.value||d.situation;
  if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que será elevado.");
@@ -686,21 +674,40 @@ document.addEventListener("click",event=>{
  if(b.dataset.rollSource){
   const t=selected();if(!t||conflictMode!=="roll")return;
   if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de trocar as fontes.");
-  const d=draftFor(t),group=b.dataset.rollSource,key=b.dataset.sourceKey;
+  const d=draftFor(t),candidate={group:b.dataset.rollSource,key:b.dataset.sourceKey};
+  const same=(a,b)=>a?.group===b?.group&&a?.key===b?.key;
+  const disc=src=>src?.group==="practice"&&src.key==="armas_conjuracao";
+  const dual=isHumanoidKind(t.kind)&&t.skills.some(id=>["maestria-manejo-duplo","manejo-duplo"].includes(id));
+  const monster=!isHumanoidKind(t.kind);
+  const pairOK=(left,right)=>{
+   if(monster)return left.group==="attribute"&&right.group==="attribute"&&!same(left,right);
+   return left.group!==right.group||(dual&&disc(left)&&disc(right));
+  };
   if(d.pickExtra){
-   const duplicate=isHumanoidKind(t.kind)?
-    (group==="attribute"&&d.attribute===key||group===d.baseGroup&&d.baseKey===key):
-    (key===d.first||key===d.second);
-   if(duplicate)return notice("Escolha uma terceira fonte diferente.");
-   d.extra={group,key};d.contextOK=false;d.pickExtra=false;
-  }else if(isHumanoidKind(t.kind)){
-   if(group==="attribute")d.attribute=key;else{d.baseGroup=group;d.baseKey=key;
-    d.mode=key==="armas_conjuracao"?"armas":"normal";}
-  }else if(group==="attribute"){
-   if(!d.firstClicked){d.first=key;d.firstClicked=true;}
-   else if(d.first!==key){d.second=key;d.firstClicked=false;}
-   else return notice("Selecione outro Atributo distinto.");
+   if(!d.firstSource||!d.secondSource)return notice("Escolha as duas fontes básicas antes da terceira.");
+   const count=[d.firstSource,d.secondSource].filter(src=>same(src,candidate)).length;
+   if(count&&!(dual&&disc(candidate)&&count===1))
+    return notice("Não repita a mesma aptidão; apenas Manejo Duplo permite duas Disciplina.");
+   if(monster&&candidate.group!=="attribute")return notice("Criaturas combinam somente Atributos.");
+   d.extra=candidate;d.contextOK=false;d.pickExtra=false;
+  }else if(!d.firstSource){
+   d.firstSource=candidate;d.secondSource=null;d.extra=null;
+  }else if(!d.secondSource){
+   if(same(d.firstSource,candidate)&&!(dual&&disc(candidate))){d.firstSource=null;d.extra=null;}
+   else if(!pairOK(d.firstSource,candidate))return notice("As fontes básicas devem ser de categorias diferentes.");
+   else d.secondSource=candidate;
+  }else if(same(d.firstSource,candidate)&&!same(d.secondSource,candidate)){
+   d.firstSource=d.secondSource;d.secondSource=null;d.extra=null;
+  }else if(same(d.secondSource,candidate)){
+   d.secondSource=null;d.extra=null;
+  }else if(!pairOK(d.firstSource,candidate)){
+   return notice("As duas fontes básicas precisam de categorias diferentes (exceto Manejo Duplo).");
+  }else{
+   d.secondSource=candidate;d.extra=null;
   }
+  if([d.firstSource,d.secondSource,d.extra].some(disc)){
+   if(!["armas","conjuracao"].includes(d.mode))d.mode="armas";
+  }else d.mode="normal";
   d.stepDieId="";render();return;
  }
  if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?b.dataset.actionTab:"skills";render();return;}
