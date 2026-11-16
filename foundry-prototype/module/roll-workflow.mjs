@@ -68,6 +68,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     }
     const advance=request.advance??{};
     if(advance.kind==="grade"&&!Number.isInteger(advance.expectedGrade))throw Error("Confira o Grau atual antes de alterar.");
+    // A fila valida a compra e o orçamento no estado atual do Actor.
     let changes=advancementPlan(buildOf(actor),advance,creationPending);
     if(advance.kind==="grade"&&advance.delta===-1&&!creationPending&&!user.isGM){
       const row=gradeDetails(buildOf(actor),advance.group,advance.key);

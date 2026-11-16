@@ -1,5 +1,5 @@
 import {SKILLS, sourceDice, xpLedger} from "./rules.mjs";
-import {creationMissing, developmentGroups, gradeDetails, skillDetails} from "./advancement.mjs";
+import {creationMissing, developmentGroups, gradeDetails, planSkillPackage, skillDetails} from "./advancement.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
@@ -13,7 +13,7 @@ const dateFormat=new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"s
 const groups=Object.entries(developmentGroups);
 const graphGroups=Object.fromEntries(groups.map(([key,group])=>[group.graph,key]));
 
-function graphicalNodes(system,creationPending,locked){
+function graphicalNodes(system,creationPending,locked,plans){
  const sources=groups.flatMap(([kind,group])=>group.list.map(([key])=>{
   const row=gradeDetails(system,kind,key,creationPending);
   return {
@@ -23,14 +23,14 @@ function graphicalNodes(system,creationPending,locked){
   };
  }));
  const skills=SKILLS.filter(row=>showSkill(row,system)).map(skill=>{
-  const row=skillDetails(system,skill.id);
-  return {type:"skill",id:skill.id,name:row.name,label:row.blocker||row.cost+" XP",
-   state:row.owned?"owned":row.canBuy?"available":!row.pending&&row.affordable&&!row.met?"potential":"locked"};
+  const plan=plans.get(skill.id);
+  return {type:"skill",id:skill.id,name:skill.name,label:plan.blocker||(plan.cost!=null?plan.cost+" XP":"Adquirida"),
+   state:locked&&plan.status!=="owned"?"locked":plan.status};
  });
  return [...sources,...skills];
 }
 
-function detailMarkup(system,id,{locked,creationPending,requiresApproval}){
+function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
  const [type,key] = id.split(":");
  const disabled=locked?" disabled":"";
  if(graphGroups[type]){
@@ -49,13 +49,36 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval}){
    (row.canLower?'<p>Redução libera '+row.refund+' XP.</p>':'')+
    notes.map(note=>'<p class="codex-dna-note">'+esc(note)+'</p>').join("");
  }
+ if(!plan)return "<p>Selecione uma capacidade do mapa.</p>";
  const row=skillDetails(system,id);
  const alternativeMarkup=row.alternatives.map(branch=>"<ul>"+branch.map(item=>
   '<li class="'+(item.met?"met":"unmet")+'">'+(item.met?"✓ ":"○ ")+esc(item.name)+'</li>').join("")+"</ul>").join("<p>ou</p>");
+ const packageButton=plan.status==="potential"
+  ?'<button type="button" data-action="buyPackage"'+disabled+'>Comprar Perícia + requisitos — '+plan.cost+' XP</button>'
+  :'<button type="button" data-action="buy"'+(plan.status!=="available"?" disabled":disabled)+'>Comprar Perícia</button>';
+ const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
  return '<h3>'+esc(row.name)+'</h3><p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p><p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
-  (row.owned?'<p>Adquirida</p>':'<button type="button" data-action="buy"'+(!row.canBuy?" disabled":disabled)+'>Comprar Perícia</button>')+
-  (!row.owned&&row.blocker?'<p>'+esc(row.blocker)+'</p>':'');
+  (plan.status==="owned"?'<p>Adquirida</p>':packageButton)+
+  (plan.blocker?'<p class="codex-dna-note">'+esc(plan.blocker+requiredXP)+'</p>':'')+
+  (locked&&plan.status!=="owned"?'<p class="codex-dna-note">Compra indisponível durante uma rolagem ou alteração em andamento.</p>':'');
+}
+
+function confirmPackage(plan){
+ const list=(title,items)=>items.length?"<p><strong>"+title+"</strong></p><ul>"+
+  items.map(line=>"<li>"+esc(line)+"</li>").join("")+"</ul>":"";
+ const grades=plan.increases.map(row=>row.name+" G"+row.from+" → G"+row.to);
+ const skills=plan.intermediates.map(row=>row.name);
+ const alternatives=plan.alternatives.map(row=>row.name+" · "+row.requirements.join(" + "));
+ return foundry.applications.api.DialogV2.confirm({
+  window:{title:"Comprar Perícia + requisitos"},
+  content:"<p><strong>"+esc(plan.name)+"</strong></p>"+
+   list("Graus que serão aumentados",grades)+list("Perícias intermediárias",skills)+
+   list("Alternativa escolhida",alternatives)+
+   "<p>Custo total <strong>"+plan.cost+" XP</strong></p><p>XP disponível "+plan.before+" → "+plan.after+
+   " XP</p>",
+  yes:{label:"Confirmar compra"},no:{label:"Cancelar"},rejectClose:false,
+ });
 }
 
 function center(shape){
@@ -73,6 +96,7 @@ function markRequirements(root,selected,system){
  if(!viewport||!from)return;
  const requirements=new Map(skillDetails(system,selected).alternatives.flat().map(item=>[item.node,item]));
  for(const [key,item] of requirements){
+  if(!key)continue;
   const target=node(key.replace(/^skill:/,""));
   const to=center(target?.querySelector("rect,circle"));
   if(!to)continue;
@@ -111,7 +135,7 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
+  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
@@ -179,7 +203,9 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const map=root.querySelector("[data-dna-map]");
   const active=map.ownerDocument.activeElement;
   const mapFocus=map.contains(active)?active.closest("[data-gene-id]")?.dataset:null;
-  const nodes=graphicalNodes(system,creationPending,locked);
+  this.skillPlans=new Map(SKILLS.filter(row=>showSkill(row,system))
+   .map(row=>[row.id,planSkillPackage(system,row.id,{creationPending})]));
+  const nodes=graphicalNodes(system,creationPending,locked,this.skillPlans);
   window.CodexGeneGraph.render(map,{
    skills:nodes,selected:this.selected,showFuture:true,edit:true,
    onAdjust:(id,delta)=>{
@@ -201,7 +227,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   }
   const detail=root.querySelector("[data-dna-detail]");
   const gradeFocus=detail.contains(active)?active.dataset.delta:null;
-  detail.innerHTML=detailMarkup(system,this.selected,{locked,creationPending,requiresApproval:!game.user.isGM&&!creationPending});
+  detail.innerHTML=detailMarkup(system,this.selected,{locked,creationPending,requiresApproval:!game.user.isGM&&!creationPending,plan:this.skillPlans.get(this.selected)});
   if(gradeFocus)detail.querySelector('[data-delta="'+gradeFocus+'"]:enabled')?.focus({preventScroll:true});
   if(this.selected==="invocacao-elemental"&&system.skills.includes(this.selected)){
    detail.insertAdjacentHTML("beforeend",summoningMarkup(this.summonRules,system));
@@ -233,6 +259,12 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  static buy(){
   return this.submit({action:"advance",advance:{kind:"skill",key:this.selected}});
  }
+ static buyPackage(){
+  const plan=this.skillPlans?.get(this.selected);
+  if(plan?.status!=="potential")return;
+  return this.submit({action:"advance",advance:{kind:"skillPackage",key:this.selected,expectedPlan:plan.quote}},
+   ()=>confirmPackage(plan));
+ }
  static adjustGrade(_event,target){
   return this.changeGrade(this.selected,Number(target.dataset.delta),Number(target.dataset.grade));
  }
@@ -252,7 +284,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const delta=Number(target.dataset.delta)*amount;
   if(await this.submit({action:"adjustXP",delta,expectedXP:this.actor.system.xp}))input.value="";
  }
- async submit(request){
+ async submit(request,confirmation){
   if(this.busy||this.actor.getFlag(ns,"pendingRoll"))return false;
   this.busy=true;
   const status=this.element?.querySelector("[data-dna-status]");
@@ -260,6 +292,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    !game.user.isGM&&!this.actor.getFlag(ns,"creationPending");
   if(status&&asksNarrator)status.hidden=false;
   try{
+   if(confirmation&&!await confirmation())return false;
    await requestRoll(this.actor,request);
    return true;
   }catch(error){ui.notifications.warn(error.message);return false;}
