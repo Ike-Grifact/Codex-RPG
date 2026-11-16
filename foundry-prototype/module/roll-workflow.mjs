@@ -55,7 +55,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const { pending: draft, roll, changes, privateDE } = await preparePendingRoll(actor, request, user, game);
     verifyAuthority(game);
     if(draft.options.privateDefense)draft.options.sealedDE=await sealDefense(game,draft,privateDE);
-    await actor.update({...changes, [flag]: draft}, {recursive: false});
+    await actor.update({...changes, [flag]: draft});
     return {started: true, roll: roll.toJSON()};
   }
   if (!pending || pending.id !== request.id) return;
@@ -91,7 +91,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     config[key] = value;
     if (key === "characteristic") config.secondCharacteristic = "";
   } else return;
-  await actor.update({[flag]: {...pending, selected, options: config}}, {recursive: false});
+  await actor.update({[flag]: {...pending, selected, options: config}});
 }
 
 function verifyAuthority(game) {
@@ -109,7 +109,7 @@ async function publish(actor, user, pending, game, chat) {
     const publication = {id, author: user.id, content, result, adjudication};
     pending = {...pending, publication};
     // Persist costs and the recoverable publication in a single Actor update.
-    await actor.update({...changes, [flag]: pending}, {recursive: false});
+    await actor.update({...changes, [flag]: pending});
   }
 
   const publication = pending.publication;

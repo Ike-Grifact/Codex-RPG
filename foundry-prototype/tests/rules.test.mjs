@@ -5,7 +5,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabe
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {faceLabels} from "../module/dice-so-nice.mjs";
-import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus,defenseDisplay} from "../module/equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,defenseDE,dodgeDE,dodgeBonus,defenseDisplay,effectiveWeaponRange} from "../module/equipment-logic.mjs";
 
 function human(){return{
  monsterRules:false,level:1,xp:0,skills:["armas-leves"],
@@ -326,4 +326,26 @@ test("Saúde distribui Vida e conta Pavor do estado para DE e anulação",()=>{
  assert.deepEqual([risk.e,risk.p,risk.success,health.coragem],[0,1,true,1]);
  const safe=resolveRoll(die,["d"],{de:1,health,cancelP:1});
  assert.deepEqual([safe.p,safe.success],[0,false]);
+});
+
+test("Olhos de Águia amplia apenas alcance de arma elegível e habilitada",()=>{
+ const bow={kind:"weapon",range:24,properties:["À Distância"]},shot={kind:"firearm",range:16};
+ const s={skills:["olhos-de-aguia","armas-longo-alcance"]};
+ assert.equal(effectiveWeaponRange(s,bow),32);
+ assert.equal(effectiveWeaponRange(s,shot),16);
+ s.skills=["olhos-de-aguia","armas-fogo"];
+ assert.equal(effectiveWeaponRange(s,bow),24);
+ assert.equal(effectiveWeaponRange(s,shot),24);
+ assert.equal(effectiveWeaponRange(s,{kind:"weapon",range:8,properties:["Arremesso"]}),8);
+ assert.equal(effectiveWeaponRange(s,{kind:"focus",range:8}),0);
+});
+test("Foco usa IDs de habilitações elementais sem liberar elementos por analogia",()=>{
+ const actor={system:{skills:["criar-item-foco-magia","agua","vento"]}};
+ const focus={system:{equipped:true,kind:"focus",die:6}};
+ for(const element of ["Psique","Psíquico","Água","Ar","vento"]){
+  focus.system.element=element;
+  assert.equal(equippedDie(actor,focus,"conjuracao"),6);
+ }
+ focus.system.element="Terra";
+ assert.equal(equippedDie(actor,focus,"conjuracao"),0);
 });

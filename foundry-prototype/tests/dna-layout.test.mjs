@@ -57,7 +57,7 @@ test("constelações incluem todo o catálogo visível sem colisões no plano vi
   if(count===skills.length){
    assert.equal(groups.length,10);
    const byId=new Map(nodes.map(n=>[n.id,n]));
-   for(const [id,family] of [["invocacao-elemental","conjuracao"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","armas"]])
+   for(const [id,family] of [["invocacao-elemental","conjuracao"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","armas"],["olhos-de-aguia","disparos"]])
     assert.equal(byId.get(id)?.geneFamily,family);
   }
   const boxes=nodes.map(n=>{

@@ -211,7 +211,7 @@
        <label>Equipamento equipado / fonte extra<select data-roll-option="equipmentId">
         <option value="">Sem dado de equipamento</option>
         {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
-       </select></label>
+       </select>{{#if codex.prepare.effectiveRange}}<small>Alcance efetivo {{codex.prepare.effectiveRange}} m</small>{{/if}}</label>
        {{#if codex.prepare.hasTarget}}<label class="codex-check"><input type="checkbox" data-roll-option="targetDodges" {{#if codex.prepare.targetDodges}}checked{{/if}}> Alvo usa Esquiva</label>{{/if}}
         {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
         <label>Ativação e aproximação confirmadas pelo Narrador<select data-roll-option="activationPavor">
@@ -360,7 +360,7 @@
       <div class="codex-block-title"><h2>Inventário e proteção</h2><span>Itens persistidos como documentos Foundry</span></div>
       {{#each codex.gear}}
       <div class="codex-gear">
-        <div>{{#if @root.codex.editing}}<button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button>{{else}}<strong>{{this.name}}</strong>{{/if}}<small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
+        <div>{{#if @root.codex.editing}}<button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button>{{else}}<strong>{{this.name}}</strong>{{/if}}<small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}{{#if this.range}} · alcance efetivo {{this.range}} m{{/if}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
         <div class="codex-gear-actions">
           <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
           <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>
@@ -388,5 +388,5 @@
     {{/if}}
     <label>Notas <textarea data-field="system.notes" {{#unless codex.editing}}readonly{{/unless}}>{{codex.notes}}</textarea></label>
   </details>
-  <footer class="codex-footer">Protótipo Foundry v14 · Continuidade v0.39 · orçamento experimental compartilhado · automação de Pavor sob validação.</footer>
+  <footer class="codex-footer">Protótipo Foundry v14 · Referência SRD v0.51 · orçamento experimental compartilhado · automação de Pavor sob validação.</footer>
 </section>

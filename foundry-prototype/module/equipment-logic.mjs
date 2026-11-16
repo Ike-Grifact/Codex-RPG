@@ -1,5 +1,18 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
-import {SKILLS,xpLedger} from "./rules.mjs";
+import {xpLedger} from "./rules.mjs";
+
+const isRangedWeapon = item => item?.properties?.some(property=>property.toLowerCase()==="à distância");
+const elementalSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
+ sagrado:"sagrado",veneno:"veneno",sangue:"sangue",trevas:"trevas"};
+export function effectiveWeaponRange(system,item){
+ if(!["weapon","firearm"].includes(item?.kind))return 0;
+ const base=Math.max(0,Number(item.range)||0);
+ const skills=system.skills??[];
+ if(!base||!skills.includes("olhos-de-aguia"))return base;
+ const eligible=item.kind==="firearm"?skills.includes("armas-fogo"):
+  isRangedWeapon(item)&&skills.includes("armas-longo-alcance");
+ return base+(eligible?8:0);
+}
 export function equippedDie(actor,item,mode){
  if(!item||!item.system.equipped)return 0;
  const s=actor.system,k=item.system.kind,cat=item.system.category;
@@ -7,13 +20,13 @@ export function equippedDie(actor,item,mode){
  if(mode==="conjuracao"){
   if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
   if(!keys.includes("criar-item-foco-magia"))return 0;
-  const el=(item.system.element||"").toLowerCase().trim();
-  if(el&&el!=="psiquico"&&el!=="psíquico"&&!keys.some(x=>x.includes("elemento")&&x.includes(el)))return 0;
+  const el=(item.system.element||"").toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+  if(el&&!["psiquico","psique"].includes(el)&&!keys.includes(elementalSkill[el]))return 0;
  }else if(mode==="armas"){
   if(!["weapon","firearm"].includes(k))return 0;
   if(k==="firearm"){if(!keys.includes("armas-fogo"))return 0;}
   else {
-   const long=Array.isArray(item.system.properties)&&item.system.properties.some(x=>x.toLowerCase()==="à distância");
+   const long=isRangedWeapon(item.system);
    const categorySkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
    if(!(keys.includes(categorySkill)||(long&&keys.includes("armas-longo-alcance"))))return 0;
   }

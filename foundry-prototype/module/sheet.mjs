@@ -6,7 +6,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
-import {equippedDie,defenseDisplay} from "./equipment-logic.mjs";
+import {equippedDie,defenseDisplay,effectiveWeaponRange} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
@@ -94,7 +94,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    skills:attributesOnly?[]:SKILLS.filter(row=>showSkill(row,s)).map(k=>skillDetails(s,k.id)),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
-    quantity:i.system.quantity,equipped:i.system.equipped,
+    quantity:i.system.quantity,equipped:i.system.equipped,range:effectiveWeaponRange(s,i.system),
     integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,dieIcon:dieSvg(i.system.die),priceVT:i.system.priceVT
    })),
    selectedBase:d.base?sourceLabel(d.base.group,d.base.key,s):"",
@@ -140,6 +140,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     targetName:target?.name??"",targetDE:target?.de??"Reservada",hasTarget:Boolean(target),inCombat:!!game.combat?.started,
     canExecute:plan.ok&&!targetError&&actor.isOwner&&!actor.getFlag(NS,"creationPending"),errors:plan.errors,
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
+    effectiveRange:die&&this._opts.mode==="armas"?effectiveWeaponRange(s,item.system):0,
     poolCount:plan.pool.length,keepNatural:keepForActor(actor,0)
    };
   }

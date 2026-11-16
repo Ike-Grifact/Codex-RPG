@@ -19,7 +19,8 @@ function fixture(behavior = {}) {
     pending: pendingRoll, debits:0, items:new Map(),
     testUserPermission: u => u.id === user.id,
     getFlag: () => actor.pending,
-    async update(changes) {
+    async update(changes, options = {}) {
+      assert.notEqual(options.recursive, false, "A atualização deve preservar campos irmãos do Actor");
       if (Object.hasOwn(changes, "system.courage")) {
         actor.system.courage = changes["system.courage"];
         actor.debits++;
