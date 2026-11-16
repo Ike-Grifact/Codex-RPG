@@ -2,7 +2,7 @@
 title: "Codex RPG — SRD de Continuidade v0.47"
 version: "0.47"
 system: "Codex RPG"
-updated: "2026-11-15"
+updated: "2026-11-16"
 ---
 
 # Codex RPG — SRD de Continuidade v0.47
@@ -24,20 +24,37 @@ updated: "2026-11-15"
 
 **Atributos e XP das fichas animais [DEFINIDO nos valores]:** formas **médias e grandes** recebem **a mesma quantidade de XP que o jogador**, para seus **Atributos animais**, cuja compra obedece à tabela de custos de **Conhecimentos/Práticas**, e não à tabela de Atributos humanos: custo acumulado por Grau **G1=2, G2=8, G3=20, G4=38, G5=66, G6=102 XP** (incrementos 2/6/12/18/28/36). O total de referência é o XP do jogador; ainda **PENDENTE** distinguir com precisão XP total obtido versus XP efetivamente gasto e quais limitações de criação se aplicam a cada ficha animal. A forma pequena conserva o orçamento de **19 XP**, com distribuição específica pendente. Não conceder dados ou Graus gratuitos em razão da tabela.
 
-### 0-AG.1. Vida na transformação e no retorno [DEFINIDO no exemplo; PENDENTE na fórmula geral]
+### 0-AG.1. Vida na transformação e no retorno [DEFINIDO na distribuição e conversão por faixas — 16/11/2026]
 
-Enquanto transformado, o druida usa os **pontos de Vida da ficha animal**. Ao reverter, recupera **seus próprios Atributos** e passa a usar sua Vida humana, sofrendo a transferência do dano animal por **faixas de terços**, conforme a decisão do autor. **A morte na forma animal implica morte da pessoa na forma humana**, sem nova rolagem.
+**Regra autoral DEFINIDA:** dividir a **Vida máxima** de cada forma em **três faixas ordenadas**, distribuindo qualquer ponto excedente **primeiro na primeira faixa, depois na segunda e, por último, na terceira**. As faixas são do maior tamanho para o menor, com diferença máxima de um ponto entre elas. **Não se trata de aplicar uma fração exata da Vida humana a cada dano:** cada faixa concluída na forma animal corresponde à perda integral da faixa de mesma posição da forma humana.
 
-**Exemplo obrigatório, fornecido pelo autor:** personagem humano com **Vida máxima 4**, forma de urso com **Vida máxima 6**. Os números indicam **dano acumulado sofrido pelo urso** desde a referência da transformação:
+**Algoritmo matemático:** para Vida máxima inteira positiva `V`, calcular `q = piso(V/3)` e `r = V módulo 3`. As três faixas, da primeira à terceira, são `[q+(r>=1?1:0), q+(r>=2?1:0), q]`. Para Vida 1 e 2, as faixas sem pontos são `0` e não criam Vida artificial.
 
-| Dano sofrido pelo urso | Proporção de 6 | Vida humana restante ao reverter |
-|---:|---:|---:|
-| **2** | **1/3** | **2 de 4** |
-| **3** | **1/2** | **2 de 4** |
-| **4** | **2/3** | **1 de 4** |
-| **6** | **3/3** | **0 — morte** |
+| Vida máxima | 1ª faixa | 2ª faixa | 3ª faixa |
+|---:|---:|---:|---:|
+| 3 | 1 | 1 | 1 |
+| 4 | **2** | 1 | 1 |
+| 5 | **2** | **2** | 1 |
+| 6 | 2 | 2 | 2 |
+| 7 | **3** | 2 | 2 |
+| 8 | **3** | **3** | 2 |
+| 9 | 3 | 3 | 3 |
+| 10 | **4** | 3 | 3 |
 
-**Atenção matemática [PENDENTE]:** a frase “se perder 1/3 na forma animal, perde 1/3 na forma humana” **não coincide literalmente com o exemplo**, pois passar de 4/4 para 2/4 representa **perder 2/4 = 1/2 da Vida humana**, não 1/3. A decisão sobre quais arredondamentos/limiares reproduzem o exemplo em Vida máxima 3, 5, 7 etc., e o efeito de **1/6** ou **5/6** no exemplo, permanece **PENDENTE**. **Preservar o exemplo numérico acima sem inventar arredondamentos universais**. Também permanecem PENDENTES a interação com Vida humana previamente ferida, cura durante a forma, múltiplas transformações e estados/ferimentos. Não implementar conversão automática que possa curar dano preexistente por alternância de formas.
+**Transferência no retorno:** tomar o **dano acumulado sofrido pela forma animal** e verificar quantas faixas animais estão **completamente perdidas**, na ordem 1ª → 2ª → 3ª. Ao voltar à forma humana, descontar **essas mesmas faixas completas da distribuição de Vida humana**. Dano que ainda não completa a próxima faixa animal não desconta antecipadamente a faixa humana seguinte nesta conversão por limiares. **Perder todos os pontos da Vida animal provoca morte definitiva também na forma humana**, sem depender de arredondamento. Ao reverter, o druida usa novamente seus Atributos humanos.
+
+**Exemplo autoral confirmado:** humano de Vida máxima **4**, com faixas humanas `[2,1,1]`; urso de Vida máxima **6**, com faixas animais `[2,2,2]`.
+
+| Dano acumulado ao urso | Faixas animais inteiramente perdidas | Perda na Vida humana | Vida humana após retorno (se estava íntegro) |
+|---:|---:|---:|---:|
+| **0 ou 1** | 0 | 0 | **4/4** |
+| **2 ou 3** | 1 | 2 | **2/4** |
+| **4 ou 5** | 2 | 2+1=3 | **1/4** |
+| **6 ou mais** | 3, Vida animal esgotada | 2+1+1=4 | **0/4 — morte** |
+
+**Aplicação geral:** para um animal com distribuição `[A1,A2,A3]`, as faixas completas são determinadas pelos marcos de dano `A1`, `A1+A2` e `A1+A2+A3`. Para um humano com `[H1,H2,H3]`, perder `k` faixas animais acarreta perda humana igual à soma dos primeiros `k` blocos humanos. O algoritmo reproduz 4→2/1/1, 5→2/2/1, 6→2/2/2, 7→3/2/2, bem como o exemplo 4/6; **substitui expressamente a antiga pendência de arredondamento geral**. As distribuições são calculadas sobre a Vida **máxima**, não sobre uma Vida atual já reduzida.
+
+**PENDENTE — estados e continuidade dos ferimentos, não a fórmula dos terços:** como combinar esta perda com ferimentos **humanos preexistentes**, como conservar o **dano animal parcial que não completou um terço** através de diferentes transformações, curas em forma animal, nova transformação e duração. Não apagar ferimentos preexistentes, não permitir que alternar formas gere cura gratuita, nem automatizar esses casos até sua definição. A função matemática de referência pode calcular a **perda humana correspondente** e a Vida humana **apenas se inicialmente íntegro**, sem presumir o estado completo da ficha.
 
 **Regras anteriores preservadas:** transformação/reversão não exigem testes; custos de ativação e gatilhos de Pavor permanecem distintos em G2 e G3; a forma animal usa seu conjunto de Atributos e Vida. Os dados mantidos em G2/G3 e seu encaixe nos Marcos continuam pendentes de compatibilização específica, sem concessões adicionais.
 
