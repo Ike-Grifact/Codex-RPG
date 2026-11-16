@@ -672,6 +672,7 @@ const SKILL_PERMALINKS={
  "disparo-violento": "disparo-violento",
  "disparo-tatico": "disparo-tatico",
  "armas-fogo": "pericia-em-armas-de-fogo",
+ "olhos-de-aguia": "olhos-de-aguia",
  "golpe-baixo": "golpe-baixo",
  "furtividade": "pericia-em-furtividade",
  "furtividade-avancada": "furtividade-avancada"
@@ -697,6 +698,7 @@ const CARD_REQUIREMENTS={
  "trevas": "Disciplina 2, Inteligência 2, Criar Foco",
  "criar-antidoto": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno",
  "armas-longo-alcance": "Disciplina 1 + Destreza 2",
+ "olhos-de-aguia": "Destreza 3 + Disciplina 3 + Armas de Longo Alcance OU Armas de Fogo",
  "golpe-fulminante": "Disciplina 2 + Força 2 + uma especialização corpo a corpo",
  "espalhar-golpe": "Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo",
  "maestria-arremesso-armas": "Força 2 + Destreza 2 + Agilidade 1 + Armas Leves OU Médias OU Pesadas",
