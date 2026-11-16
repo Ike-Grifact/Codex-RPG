@@ -42,3 +42,17 @@ export function converterPerdaDeVidaDruidica({ vidaMaximaHumana, vidaMaximaAnima
     morteAnimal: danoAnimal >= vidaMaximaAnimal
   };
 }
+
+/**
+ * DEFINIDO no SRD v0.48: dano já sofrido na forma original se aplica ponto
+ * por ponto à Vida atual inicial da forma animal. Não decide o dano de retorno.
+ */
+export function vidaAnimalAoTransformar({vidaMaximaHumana,vidaAtualHumana,vidaMaximaAnimal}){
+ if(!Number.isSafeInteger(vidaMaximaHumana)||vidaMaximaHumana<4||
+    !Number.isSafeInteger(vidaAtualHumana)||vidaAtualHumana<0||vidaAtualHumana>vidaMaximaHumana||
+    !Number.isSafeInteger(vidaMaximaAnimal)||vidaMaximaAnimal<1)
+  throw new RangeError("Valores de Vida inválidos para transformação");
+ const danoPrevio=vidaMaximaHumana-vidaAtualHumana;
+ const vidaAnimalAtual=Math.max(0,vidaMaximaAnimal-danoPrevio);
+ return {vidaAnimalMaxima:vidaMaximaAnimal,vidaAnimalAtual,danoPrevio,formaSemVida:vidaAnimalAtual===0};
+}
