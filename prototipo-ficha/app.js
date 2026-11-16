@@ -43,13 +43,13 @@ const SKILLS=[
  [
   "domar-criatura-grande",
   "Domar Criatura Grande",
-  "Substitui Domar Animal Grande. Aquisição 1 XP; requer Influência 3, Apresentação 1 e Inteligência 1. Domar/Pacificar por 1 PP ou 1 Coragem, com DE igual à DE defensiva do domador. Companheiro grande com ficha própria e nível igual ou inferior ao domador, XP próprio anterior ou equivalente ao jogador e ganhos iguais aos dele. Investe somente em Atributos, mas com custos acumulados de Conhecimentos/Práticas (0, 2, 8, 20, 38, 66, 102 XP). Dados continuam os de Atributos. Presente e ajudando em combate: +1A ao domador, sem Vida sacrificial.",
+  "Substitui Domar Animal Grande. Aquisição 1 XP; requer Influência 4, Apresentação 1 e Inteligência 1. Domar/Pacificar por 1 PP ou 1 Coragem, com DE igual à DE defensiva do domador. Companheiro grande com ficha própria e nível igual ou inferior ao domador, XP próprio anterior ou equivalente ao jogador e ganhos iguais aos dele. Investe somente em Atributos, mas com custos acumulados de Conhecimentos/Práticas (0, 2, 8, 20, 38, 66, 102 XP). Dados continuam os de Atributos. Presente e ajudando em combate: +1A ao domador, sem Vida sacrificial. Com Criar Item de Foco e Magia, também permite domesticar criaturas mágicas grandes.",
   1
  ],
  [
   "domar-criatura-media",
   "Domar Criatura Média",
-  "Substitui Domar Animal Médio. 1 XP, Influência 2 + Apresentação 1 + Inteligência 1. Domar/Pacificar custa 1 PP ou 1 Coragem contra a DE do domador. Companheiro médio de nível igual ou inferior ao domador, com ficha e XP próprios. Só compra Atributos pelos custos do jogador; mantém seu XP anterior ou recebe o mesmo XP do personagem e seus ganhos futuros. Presente e ajudando em combate: +1A ao domador. Tem Vida e ações próprias, sem Vida sacrificial da criatura pequena.",
+  "Substitui Domar Animal Médio. 1 XP, Influência 3 + Apresentação 1 + Inteligência 1. Domar/Pacificar custa 1 PP ou 1 Coragem contra a DE do domador. Companheiro médio de nível igual ou inferior ao domador, com ficha e XP próprios. Só compra Atributos pelos custos do jogador; mantém seu XP anterior ou recebe o mesmo XP do personagem e seus ganhos futuros. Presente e ajudando em combate: +1A ao domador. Tem Vida e ações próprias, sem Vida sacrificial da criatura pequena. Com Criar Item de Foco e Magia, também permite domesticar criaturas mágicas médias.",
   1
  ],
  [
@@ -665,8 +665,8 @@ const SKILL_PERMALINKS={
 };
 const CARD_REQUIREMENTS={
  "domar-criatura-pequena": "Influência 1 + Apresentação 1 + Inteligência 1",
- "domar-criatura-media": "Influência 2 + Apresentação 1 + Inteligência 1",
- "domar-criatura-grande": "Influência 3 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-media": "Influência 3 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-grande": "Influência 4 + Apresentação 1 + Inteligência 1",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -700,8 +700,8 @@ const CARD_REQUIREMENTS={
 
 const CARD_EFFECTS={
  "domar-criatura-pequena": "+1A em combate e 1 Vida sacrificial com criatura pequena domesticada presente",
- "domar-criatura-media": "+1A em combate com criatura média presente; ficha própria, nível do domador e Atributos por XP",
- "domar-criatura-grande": "+1A em combate com criatura grande presente; ficha própria e Atributos por XP ao custo de Conhecimentos e Práticas",
+ "domar-criatura-media": "+1A com criatura média, ficha e XP próprios; Atributos pelo custo do jogador; mágicas com Criar Foco",
+ "domar-criatura-grande": "+1A com criatura grande, ficha e XP próprios; Atributos ao custo de Conhecimentos/Práticas; mágicas com Criar Foco",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -1303,7 +1303,7 @@ function skillReq(id,s=state){
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
 
- const tameInfluenceRequired={"domar-criatura-pequena":1,"domar-criatura-media":2,"domar-criatura-grande":3}[id];
+ const tameInfluenceRequired={"domar-criatura-pequena":1,"domar-criatura-media":3,"domar-criatura-grande":4}[id];
  if(tameInfluenceRequired&&((s.attributes.influencia||0)<tameInfluenceRequired||(s.practices.apresentacao||0)<1||intelligence<1))
   return"Requer Influência "+tameInfluenceRequired+", Apresentação 1 e Inteligência 1.";
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
@@ -1470,7 +1470,7 @@ function renderOwnedPanel(){
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
   '<button type="button" data-action="medium-companion-toggle">'+(mediumHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (mediumHere?'<button type="button" data-action="medium-companion-support">'+(state.mediumCompanion.inCombat?"Desativar apoio +1A":"Ativar apoio +1A em combate")+'</button>':"")+'</div>'+
-  '<small>A criatura média tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente.</small></article>':"";
+  '<small>A criatura média tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente. Com Criar Item de Foco e Magia, também domestica criaturas mágicas médias.</small></article>':"";
  const largeOwned=state.skills.includes("domar-criatura-grande");
  const largeHere=largeCompanionPresent();
  const largeMarkup=largeOwned?
@@ -1480,7 +1480,7 @@ function renderOwnedPanel(){
   '<div class="fp-companion-actions"><button type="button" data-action="prepare-domar-media">Preparar Domar / Pacificar</button>'+
   '<button type="button" data-action="large-companion-toggle">'+(largeHere?"Retirar criatura (ausência ou vínculo perdido)":"Registrar domesticação após teste")+'</button>'+
   (largeHere?'<button type="button" data-action="large-companion-support">'+(state.largeCompanion.inCombat?"Desativar apoio +1A":"Ativar apoio +1A em combate")+'</button>':"")+'</div>'+
-  '<small>A criatura grande tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente.</small></article>':"";
+  '<small>A criatura grande tem Vida, DE e ações próprias; não concede Vida sacrificial. A soma de Apoios não é cumulativa automaticamente. Com Criar Item de Foco e Magia, também domestica criaturas mágicas grandes.</small></article>':"";
  $("owned-skills").innerHTML=(basic.length?basic.map(markup).join(""):empty)+companionMarkup+mediumMarkup+largeMarkup;
  const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
  $("owned-elements").innerHTML=
@@ -1519,7 +1519,7 @@ function renderMediumCompanion(){
   '<button type="button" data-action="medium-companion-life" data-delta="1"'+(pet.life>=mediumCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
   '<button type="button" data-action="medium-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
   '<label class="fp-medium-notes">Observações da criatura<textarea data-medium-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
-  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Somente Atributos evoluem pelos custos acumulados dos jogadores: 0, 1, 3, 7, 15, 31, 55 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
+  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Somente Atributos evoluem pelos custos acumulados dos jogadores: 0, 1, 3, 7, 15, 31, 55 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Com Criar Item de Foco e Magia, também pode domesticar criaturas mágicas médias. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
 }
 function renderLargeCompanion(){
  const panel=$("large-companion-sheet");if(!panel)return;
@@ -1547,7 +1547,7 @@ function renderLargeCompanion(){
   '<button type="button" data-action="large-companion-life" data-delta="1"'+(pet.life>=largeCompanionMaxLife(pet)||state.pending?' disabled':'')+'>+1 Vida</button>'+
   '<button type="button" data-action="large-companion-support"'+(state.pending?' disabled':'')+'>'+(pet.inCombat?"Desativar apoio em combate":"Ativar apoio em combate (+1A)")+'</button></div>'+
   '<label class="fp-large-notes">Observações da criatura<textarea data-large-field="notes" rows="2" maxlength="1000" placeholder="Ações, ferimentos e comportamento para o playtest">'+esc(pet.notes)+'</textarea></label>'+
-  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Os Atributos evoluem usando os custos acumulados de Conhecimentos e Práticas: 0, 2, 8, 20, 38, 66, 102 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
+  '<p class="fp-caption">Ficha própria em nível igual ou inferior ao domador. A criatura conserva o XP anterior informado ou, sem XP anterior, inicia com o XP total do domador. A cada concessão de XP ao jogador, o companheiro domesticado recebe o mesmo ganho. Os Atributos evoluem usando os custos acumulados de Conhecimentos e Práticas: 0, 2, 8, 20, 38, 66, 102 XP. Não há teto de 110 XP, Coragem, Conhecimentos ou Perícias humanas automáticas. Com Criar Item de Foco e Magia, também pode domesticar criaturas mágicas grandes. Vida e DE são referências experimentais; ações independentes permanecem na mesa.</p>';
 }
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
@@ -1610,8 +1610,8 @@ function geneStageGrade(id,delta){
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
  "domar-criatura-pequena":[["a:influencia:1","p:apresentacao:1","a:inteligencia:1"]],
- "domar-criatura-media":[["a:influencia:2","p:apresentacao:1","a:inteligencia:1"]],
- "domar-criatura-grande":[["a:influencia:3","p:apresentacao:1","a:inteligencia:1"]],
+ "domar-criatura-media":[["a:influencia:3","p:apresentacao:1","a:inteligencia:1"]],
+ "domar-criatura-grande":[["a:influencia:4","p:apresentacao:1","a:inteligencia:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
