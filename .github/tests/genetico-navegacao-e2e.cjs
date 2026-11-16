@@ -34,7 +34,10 @@ const checkGeneSpacing=async(map,phase)=>map.evaluate(root=>{
   }
  }
  const skills=nodes.filter(x=>x.skill);
- return {skills:skills.length,collisions:collisions.slice(0,10),outside,
+ const families=[...root.querySelectorAll(".fp-gene-constellation")].map(n=>n.getAttribute("data-gene-family"));
+ const placements=Object.fromEntries([...root.querySelectorAll(".fp-gene-skill")].map(n=>
+  [n.getAttribute("data-gene-id"),n.getAttribute("data-gene-family")]));
+ return {skills:skills.length,collisions:collisions.slice(0,10),outside,families,placements,
   furthest:Math.max(0,...skills.map(x=>x.bottom)),width:vb.width,height:canvasHeight};
 }).then(result=>{
  assert(result.skills>0,phase+": nenhum nó de Perícia visível");
@@ -62,10 +65,16 @@ const create=async page=>{
   const map=desktop.locator('#gene-builder-map');
   // Não reservar lacunas para Perícias bloqueadas, nem sobrepor nós.
   const normal=await checkGeneSpacing(map,"Caminhos atuais");
-  if(normal.skills<=18)assert(normal.furthest<1150,"Perícias visíveis excessivamente distantes: "+JSON.stringify(normal));
+  if(normal.skills<=18)assert(normal.furthest<1850,"Constelações visíveis excessivamente distantes: "+JSON.stringify(normal));
   await desktop.locator('#wizard-content [data-action="gene-future"]').click();
   const all=await checkGeneSpacing(map,"Ramificações futuras");
   assert(all.skills>=normal.skills,"Alternar ramificações futuras reduziu os nós");
+  assert(all.families.length>=10,"Constelações temáticas ausentes: "+JSON.stringify(all.families));
+  const expected={terra:"elementos","pericia-druidica":"natureza",
+   "domar-criatura-grande":"natureza","disparo-tatico":"disparos",
+   "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"conjuracao"};
+  for(const [id,family] of Object.entries(expected))
+   assert(all.placements[id]===family,"Constelação incorreta: "+id+" -> "+all.placements[id]);
   await desktop.locator('#wizard-content [data-action="gene-future"]').click();
   await checkGeneSpacing(map,"Caminhos restaurados");
   await map.scrollIntoViewIfNeeded();
