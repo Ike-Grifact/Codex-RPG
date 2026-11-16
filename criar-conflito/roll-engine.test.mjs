@@ -231,3 +231,44 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível soz
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
  }
 });
+
+test("cliques de humanoides: A+K, A+P e K+P, sem duas fontes da mesma categoria",()=>{
+ for(const kind of ["humanoide","humanoide-monstro"]){
+  const unit=blank(kind);
+  const a={group:"attribute",key:"forca"},k={group:"knowledge",key:"medicina"},p={group:"practice",key:"atletismo"};
+  for(const [firstSource,secondSource] of [[a,k],[p,a],[k,p],[p,k]]){
+   const r=composeActionPool(unit,{firstSource,secondSource});
+   assert.equal(r.ok,true,r.error);
+   assert.equal(r.pool.length,2);
+  }
+  for(const [firstSource,secondSource] of [
+   [a,{group:"attribute",key:"vigor"}],[k,{group:"knowledge",key:"protecao"}],[p,{group:"practice",key:"furtividade"}]
+  ])assert.equal(composeActionPool(unit,{firstSource,secondSource}).ok,false);
+ }
+});
+test("Disciplina Avançada e Manejo Duplo autorizam apenas suas próprias combinações",()=>{
+ const h=blank("humanoide");
+ const d={group:"practice",key:"armas_conjuracao"},a={group:"attribute",key:"forca"},k={group:"knowledge",key:"medicina"};
+ h.practices.armas_conjuracao=2;
+ const sel={firstSource:a,secondSource:d,mode:"armas",extra:k,contextOK:true};
+ assert.equal(composeActionPool(h,sel).ok,false);
+ h.skills.push("disciplina-avancada");
+ assert.equal(composeActionPool(h,sel).ok,true);
+ assert.equal(composeActionPool(h,{...sel,extra:d}).ok,false);
+ h.skills.push("maestria-manejo-duplo");
+ const r=composeActionPool(h,{...sel,extra:d});
+ assert.equal(r.ok,true,r.error);
+ assert.equal(new Set(r.pool.map(x=>x.id)).size,r.pool.length);
+ const pair=composeActionPool(h,{firstSource:d,secondSource:d,mode:"armas"});
+ assert.equal(pair.ok,true);
+ assert.equal(composeActionPool(h,{firstSource:d,secondSource:d,mode:"armas",extra:d,contextOK:true}).ok,false);
+});
+test("monstros só de Atributos têm três fontes desde Grau 1, sem repetir",()=>{
+ const m=blank("monstro");
+ const trio={firstSource:{group:"attribute",key:"forca"},secondSource:{group:"attribute",key:"agilidade"},
+  extra:{group:"attribute",key:"vigor"},contextOK:true};
+ const r=composeActionPool(m,trio);
+ assert.equal(r.ok,true,r.error);assert.equal(r.pool.length,3);
+ assert.equal(composeActionPool(m,{...trio,extra:trio.firstSource}).ok,false);
+ assert.equal(composeActionPool(m,{...trio,extra:{group:"practice",key:"atletismo"}}).ok,false);
+});
