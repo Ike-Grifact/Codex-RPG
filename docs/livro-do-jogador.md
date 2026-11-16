@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.46](srd-continuidade-v0.46.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.47](srd-continuidade-v0.47.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -14,17 +14,32 @@
 
 **Importante:** o d4 novo reduz a ocorrência de Pavor de 50% para **25%** por dado e acrescenta 25% de Êxito direto, mas pode perder resultados extremos oferecidos anteriormente pelo ᚨ+ᚦ da face 4. Não há alteração de XP, distribuição de fontes ou limites de Marcos. [SRD de Continuidade v0.46](srd-continuidade-v0.46.md).
 
-## Perícia Druídica — 15/11/2026 [DEFINIDO / PENDENTE]
+## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
-**Aquisição: 2 XP. Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. O druida pode memorizar formas de criaturas que efetivamente domou, para assumir tais formas. **Custos de Atributos da ficha animal:** os mesmos de Conhecimentos e Práticas (G1 = 2 XP; demais avanços seguem a tabela da Formação).
+**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.
 
-| Grau | Forma e ativação | Benefícios e risco |
+| Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
-| 1 | Pequena; 0 PP / 0 Coragem, sem teste para transformar ou reverter | Ficha da criatura com **19 XP** (distribuição pendente); **Vantagem Absoluta em Furtividade**; forma **Leve**. |
-| 2 | Média; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | XP equivalente ao do personagem para distribuir nos **Atributos** da criatura (referência exata pendente); **mantém 2 dados naturalmente**, Vantagem em ações com Agilidade ou Destreza, considerada **Leve**. **Falha com Pavor cancela a forma**. |
-| 3 | Grande; **1 PP ou 1 Coragem**, sem teste para transformar ou reverter | **Mantém 3 dados naturalmente**, considerada **Leve**. Se **mantiver Pavor**, resolve a ação e depois **perde a forma**. XP da ficha grande pendente. |
+| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** (distribuição pendente) |
+| **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
+| **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **3 dados naturalmente**; **manter Pavor** permite realizar a ação, mas cancela a forma em seguida |
 
-**Nos três Graus:** enquanto transformado usa a **Vida da ficha animal**. Ao voltar à própria forma, perde os Atributos da criatura e recupera os Atributos próprios; **morrer transformado significa morrer também na forma original**. A transformação e a reversão não exigem testes. **PENDENTE:** custo de avançar Graus, total de formas memorizadas, acesso/compra das Perícias de Domar Média/Grande, conversão de Vida e ferimentos, limites de dados mantidos por Marco e demais procedimentos de ficha. Não automatizar lacunas como benefícios gratuitos. [Ver Perícia Druídica no catálogo](../pericias/pericia-druidica.html) e [SRD v0.45](srd-continuidade-v0.45.md).
+**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+
+### Vida ao voltar da forma animal [DEFINIDO no exemplo / PENDENTE na fórmula geral]
+
+Dano animal é transferido por **faixas de terços** ao voltar à forma humana. Exemplo definido: humano de **4 Vida máxima** e urso de **6 Vida máxima**.
+
+| Dano sofrido pelo urso | Vida do urso restante | Vida humana ao retornar |
+|---:|---:|---:|
+| **2** | 4/6 | **2/4** |
+| **3** | 3/6 | **2/4** |
+| **4** | 2/6 | **1/4** |
+| **6** | 0/6 | **Morte do druida** |
+
+Atenção: no exemplo, perder 2 de 6 (um terço) reduz a Vida humana de 4 para 2 (metade), portanto **o arredondamento proporcional não está definido** para outras Vidas máximas nem para danos de 1 ou 5 no urso. Preservar o resultado explícito do autor e deixar esses casos **PENDENTES**, sem cura por alternância de formas. Transformar ou reverter não exige teste. G2 cancela por falha com Pavor e G3 por Pavor mantido; não unificar gatilhos.
+
+**Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
 
