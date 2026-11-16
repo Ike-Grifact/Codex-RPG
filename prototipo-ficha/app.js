@@ -902,7 +902,7 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:3,courage:10,pp:0,xp:0,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1122,7 +1122,27 @@ function save(){
  }
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
-function maxLife(s=state){return 3+(s.attributes.vigor||0)+Math.floor((s.attributes.forca||0)/2);}
+// SRD v0.47: quatro estados; Vigor e a contribuição histórica de Força
+// repartem pontos extras alternadamente entre Saudável e Ferido.
+const LIFE_STATES={
+ saudavel:{id:"saudavel",label:"Saudável",e:0,a:0,p:0,coragem:0},
+ ferido:{id:"ferido",label:"Ferido",e:0,a:-1,p:0,coragem:0},
+ incapacitado:{id:"incapacitado",label:"Incapacitado",e:-1,a:0,p:1,coragem:1},
+ inconsciente:{id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2},
+ morto:{id:"morto",label:"Morto",e:0,a:0,p:0,coragem:Infinity}
+};
+function lifeBands(s=state){
+ const vigor=Math.max(0,Math.floor(s.attributes.vigor||0));
+ const forca=Math.max(0,Math.floor(s.attributes.forca||0));
+ const extras=vigor+Math.floor(forca/2);
+ return [1+Math.ceil(extras/2),1+Math.floor(extras/2),1,1];
+}
+function maxLife(s=state){return lifeBands(s).reduce((n,k)=>n+k,0);}
+function lifeStage(s=state){
+ const bands=lifeBands(s),life=clamp(s.life,0,maxLife(s));
+ const id=life===0?"morto":life===1?"inconsciente":life===2?"incapacitado":life<=2+bands[1]?"ferido":"saudavel";
+ return {...LIFE_STATES[id],bands,life};
+}
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0),
@@ -2036,12 +2056,19 @@ function renderVitals(){
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
- // LEGADO: a UI de três caixas permanece até resolver o bônus antigo de Força
- // e a migração das fichas. Não aparentar que quatro estados já estão automatizados.
- const ratio=lifeMaxValue?state.life/lifeMaxValue:0;
- const tier=ratio>2/3?3:ratio>1/3?2:1;
- $("life-boxes").innerHTML=[1,2,3].map(i=>'<span class="'+(i<=tier?"filled":"")+(tier===1?" critical":"")+'"></span>').join("");
- $("life-recovery").textContent=state.life===0?"Vida zerada · procedimento pendente":tier===3?"Faixa 3/3 · 1 Vida por dia":tier===2?"Faixa 2/3 · 1 semana por Vida":"Faixa 1/3 · Medicina + 1 semana por Vida";
+ const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
+ const bands=health.bands;
+ $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
+ $("life-boxes").innerHTML=bands.map((amount,i)=>{
+  const lower=bands.slice(i+1).reduce((total,n)=>total+n,0);
+  const current=clamp(state.life-lower,0,amount);
+  return '<span title="'+names[i]+': '+current+'/'+amount+'" class="'+(current>0?"filled":"")+
+   ((i===2&&health.id==="incapacitado")||(i===3&&health.id==="inconsciente")?" critical":"")+'"></span>';
+ }).join("");
+ const effects=(health.e?health.e+"E ":"")+(health.a?health.a+"A ":"")+(health.p?"+"+health.p+"P ":"");
+ $("life-recovery").textContent=health.label+" · "+(effects.trim()||"sem penalidade")+
+  (health.coragem&&Number.isFinite(health.coragem)?" · "+health.coragem+" Coragem para agir":"")+
+  " · Cura: revisão pendente";
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -2200,13 +2227,16 @@ function randomFace(n){
  return Math.floor(Math.random()*n)+1;
 }
 function roll(){
+ const health=lifeStage();
+ if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
+ if(health.coragem>state.courage){toast("Ação em "+health.label+" exige "+health.coragem+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage"};
  playRollSound();draft=freshDraft();save();render();
@@ -2218,6 +2248,7 @@ function affinity(attack,target){
 }
 function score(){
  const p=state.pending;if(!p)return null;
+ const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
  if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&state.skills.includes("trevas")))
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
@@ -2237,15 +2268,15 @@ function score(){
  const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
   &&state.skills.includes("criar-item-foco-magia")&&!!elementSkill&&state.skills.includes(elementSkill);
  const pBonus=properties.includes("Barulhenta")?(critTier?2:1):0;
- const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted);
+ const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Precisa")?1:0));
+  (critTier&&properties.includes("Precisa")?1:0)+health.e);
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0));
+  (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
@@ -2253,7 +2284,7 @@ function score(){
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem,ppCost=0;
  const active=[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -2278,7 +2309,7 @@ function score(){
  if(ppCost>state.pp)errs.push("PP insuficiente para a ativação.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
- return{dice,raw,E,P,remainingA,reached,success,outcome,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage:damageBasic*(critTier===4?2:1),damageBasic,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?item.range+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
@@ -2319,7 +2350,9 @@ function renderPending(){
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
- '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Custo previsto: '+cost+' Coragem.</p>'+dice+controls+
+ '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
+  ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
+  '). Custo total previsto: '+cost+' Coragem.</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -2340,7 +2373,7 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
