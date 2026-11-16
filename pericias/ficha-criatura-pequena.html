@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Ficha opcional de criatura Pequena domesticada, com custo dobrado de Força/Vigor e 1 Vida própria.">
+<title>Ficha independente de Criatura Pequena — Codex RPG</title>
+<link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="../assets/theme.css"><link rel="stylesheet" href="./pericias.css">
+<script src="../assets/site.js" defer></script>
+<style>
+.small-sheet{display:grid;gap:1rem;max-width:720px}
+.small-sheet label{display:flex;flex-direction:column;gap:.3rem}
+.small-sheet input,.small-sheet select{min-width:0;width:100%;padding:.65rem;border:1px solid #59616b;border-radius:.4rem;background:#181d26;color:#fff}
+.small-attrs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+.small-note{font-size:.9rem}
+.small-actions{display:flex;flex-wrap:wrap;gap:.65rem}
+.small-actions button{padding:.6rem .85rem;cursor:pointer;border-radius:.4rem}
+#small-status{min-height:1.5rem}
+@media(max-width:520px){.small-attrs{grid-template-columns:1fr}}
+</style></head>
+<body><a class="skip-link" href="#conteudo">Pular para conteúdo</a>
+<header class="site-header"><a class="brand" href="../index.html"><img class="brand-logo" src="../assets/codex-logo.svg" width="64" height="58" alt=""><span class="brand-text">CODEX <strong>RPG</strong></span></a><nav class="site-nav"><a href="../index.html">Início</a><a href="../livro.html">Livro do Jogador</a><a class="active" href="./">Perícias</a><a href="../prototipo-ficha/">Ficha</a><a href="../criar-conflito/">Criar Conflito</a></nav><button class="mobile-toggle" data-menu aria-label="Abrir menu">Menu</button></header>
+<main class="skill-shell" id="conteudo"><nav class="skill-breadcrumbs"><a href="domar-criatura-pequena.html">Domar Criatura Pequena</a><span>›</span><span>Ficha opcional</span></nav>
+<section class="skill-hero"><p class="skill-eyebrow">Playtest · SRD v0.48</p><h1>Ficha independente de Criatura Pequena</h1><p class="skill-description">Opcional. Use para missões separadas ou situações em que o animal corre risco próprio. Esta ficha não substitui o criador do domador nem ativa uma criatura automaticamente.</p></section>
+<article class="skill-article small-sheet">
+<label>Nome da criatura <input id="small-name" maxlength="80" placeholder="Ex.: Corvo, Cão, Gato" autocomplete="off"></label>
+<label>XP total do domador (a criatura tem orçamento equivalente) <input id="small-total" type="number" min="0" max="100000" step="1" value="20"></label>
+<p class="small-note"><strong>XP inicial 20 é EXPERIMENTAL.</strong> Informe o XP total realmente disponível no personagem. Força e Vigor usam o dobro do custo acumulado normal de Atributos. Graus disponíveis: 0–6. A Vida própria da Pequena permanece sempre 1, mesmo com Vigor alto.</p>
+<div class="small-attrs" id="small-attrs"></div>
+<p><strong id="small-balance">XP</strong></p><p id="small-status" role="status" aria-live="polite"></p>
+<p><strong>Vida própria da Pequena: 1.</strong> O bônus de +1 Vida ao domador é separado e sua colocação nas quatro faixas ainda está pendente. O XP dessa ficha deve entrar no orçamento de Criar Conflito se o companheiro participar.</p>
+<div class="small-actions"><button id="small-export" type="button">Exportar JSON</button><button id="small-import" type="button">Importar JSON</button><input id="small-file" type="file" accept=".json,application/json" hidden></div>
+<p class="small-note">Dados, ações, equipamentos, efeitos de espécie e penalidades específicas não são automatizados nesta ficha simplificada; utilize as regras vigentes para resolver os testes na mesa. <a href="../docs/srd-continuidade-v0.48.md">Consultar SRD v0.48</a>.</p>
+</article><nav class="skill-navlinks"><a href="domar-criatura-pequena.html">← Domar Criatura Pequena</a></nav></main>
+<script type="module">
+import {SMALL_ATTR_KEYS,SMALL_ATTR_LABELS,SMALL_ATTR_CUMULATIVE,smallCompanionBudget} from "../prototipo-ficha/companion-small.mjs";
+const key="codex-rpg-ficha-criatura-pequena-v1";
+const $=id=>document.getElementById(id);
+const starter=()=>({name:"",playerTotalXP:20,attributes:Object.fromEntries(SMALL_ATTR_KEYS.map(k=>[k,0]))});
+let state=starter();
+try{const saved=JSON.parse(localStorage.getItem(key)||"null");if(saved){state={...starter(),...saved,attributes:{...starter().attributes,...(saved.attributes||{})}}}}catch{}
+const root=$("small-attrs");
+SMALL_ATTR_KEYS.forEach((k,i)=>{
+ const label=document.createElement("label");
+ label.textContent=SMALL_ATTR_LABELS[i]+" (Grau)";
+ const select=document.createElement("select");
+ select.dataset.attr=k;
+ for(let g=0;g<=6;g++){
+  const option=document.createElement("option");
+  option.value=String(g);
+  option.textContent="G"+g+" · "+SMALL_ATTR_CUMULATIVE[g]*(k==="forca"||k==="vigor"?2:1)+" XP acumulados";
+  select.appendChild(option);
+ }
+ label.appendChild(select);root.appendChild(label);
+});
+function redraw(){
+ $("small-name").value=state.name||"";
+ $("small-total").value=state.playerTotalXP;
+ root.querySelectorAll("select").forEach(select=>{select.value=String(state.attributes[select.dataset.attr]??0)});
+ try{
+ const x=smallCompanionBudget(state.playerTotalXP,state.attributes);
+ $("small-balance").textContent="Gastos: "+x.spent+" XP · Saldo: "+x.remaining+" XP · Vida própria: "+x.ownLife;
+ $("small-status").textContent=x.valid?"Ficha dentro do orçamento.":"Compras excedem o XP total do domador.";
+ $("small-status").style.color=x.valid?"inherit":"#e8b35a";
+ }catch(e){$("small-status").textContent=e.message;}
+}
+function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch{}redraw()}
+$("small-name").addEventListener("input",e=>{state.name=e.target.value;save()});
+$("small-total").addEventListener("change",e=>{const n=Number(e.target.value);if(Number.isSafeInteger(n)&&n>=0&&n<=100000){state.playerTotalXP=n;save()}else redraw()});
+root.addEventListener("change",e=>{if(!e.target.dataset.attr)return;state.attributes[e.target.dataset.attr]=Number(e.target.value);save()});
+$("small-export").addEventListener("click",()=>{
+ const data=JSON.stringify({system:"Codex RPG",type:"ficha-pequena-v1",...state,ownLife:1},null,2);
+ const u=URL.createObjectURL(new Blob([data],{type:"application/json"}));
+ const a=document.createElement("a");a.href=u;a.download="codex-criatura-pequena.json";a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);
+});
+$("small-import").addEventListener("click",()=>$("small-file").click());
+$("small-file").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+ const val=JSON.parse(await file.text());
+ if(val.type!=="ficha-pequena-v1")throw Error("Não é uma ficha Pequena compatível");
+ const temp={name:String(val.name||"").slice(0,80),playerTotalXP:Number(val.playerTotalXP),attributes:{}};
+ for(const k of SMALL_ATTR_KEYS)temp.attributes[k]=Number(val.attributes?.[k]??0);
+ smallCompanionBudget(temp.playerTotalXP,temp.attributes);
+ state=temp;save();
+ }catch(err){$("small-status").textContent="Importação recusada: "+err.message}
+ e.target.value="";
+});
+redraw();
+</script></body></html>
