@@ -17,6 +17,8 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   await page.locator('[data-keep="1"]').click();
   await page.locator("[data-conflict-mode=roll]").click();
   assert(await page.locator("#cf-roll-panel").isVisible(),"Painel não abriu ao selecionar Rolagem");
+  await page.locator('[data-roll-source="attribute"][data-source-key="forca"]').click();
+  await page.locator('[data-roll-source="attribute"][data-source-key="vigor"]').click();
   await page.evaluate(()=>{Math.random=()=>0});
   await page.locator('[data-roll-start]').click();
   assert(await page.locator('.cf-roll-die').count()===3,"Não rolou 2d10 + 1d4");
