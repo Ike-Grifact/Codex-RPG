@@ -98,3 +98,42 @@ export function summonAnticipatedTurn({tokenCount=1,selectedToken=0,mode="indivi
   otherTokensReceiveTurns:false,
   normalAnticipationAndJointCostsApply:true};
 }
+
+
+/** DEFINIDO 16/11/2026: uma contribuição de Atributo por parte da invocação.
+ * Os resultados permanecem identificados por parte; nenhum turno novo é criado.
+ * A escolha do dado dentro de Atributos com vários dados e a agregação para DE
+ * coletiva continuam PENDENTES e não são inferidas por esta função.
+ */
+export const SUMMON_PARTS_BY_SIZE=Object.freeze({pequena:1,media:2,grande:3});
+export const SUMMON_ATTRIBUTE_KEYS=Object.freeze(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
+export function summonDiceLimit(size){
+ const parts=SUMMON_PARTS_BY_SIZE[size];
+ if(!parts)throw new RangeError("Porte de invocação inválido");
+ return {size,parts,rolled:parts,maxKept:parts,dicePerPart:1,source:"attribute",sheets:1};
+}
+/** Registra UM dado de Atributo por parte, sem resolver DE nem fundir símbolos.
+ * dice: [{part:1,attribute:"forca",sides:6,face:6}, ...].
+ * keptParts é opcional: por padrão, mantém todos os dados rolados do porte.
+ * A origem/passos do dado deverão ser conferidos com os Atributos da ficha.
+ */
+export function summonPartRoll({size,dice=[],keptParts}={}){
+ const rule=summonDiceLimit(size);
+ if(!Array.isArray(dice)||dice.length!==rule.parts)throw new RangeError("A invocação exige exatamente um dado por parte");
+ const parts=new Set();
+ const results=dice.map(item=>{
+  if(!item||!Number.isInteger(item.part)||item.part<1||item.part>rule.parts||parts.has(item.part))
+   throw new RangeError("Identificação das partes inválida");
+  parts.add(item.part);
+  if(!SUMMON_ATTRIBUTE_KEYS.includes(item.attribute)||![4,6,10,12].includes(item.sides))
+   throw new RangeError("Cada parte precisa de um dado de Atributo válido");
+  if(!Number.isInteger(item.face)||item.face<1||item.face>item.sides)
+   throw new RangeError("Face de dado inválida");
+  return {part:item.part,attribute:item.attribute,sides:item.sides,face:item.face};
+ }).sort((a,b)=>a.part-b.part);
+ const kept=keptParts===undefined?results.map(x=>x.part):keptParts;
+ if(!Array.isArray(kept)||new Set(kept).size!==kept.length||kept.some(x=>!parts.has(x))||
+    kept.length>rule.maxKept)throw new RangeError("Dados mantidos precisam corresponder às partes roladas");
+ return {...rule,keptCount:kept.length,results:results.map(x=>({...x,kept:kept.includes(x.part)})),
+  automaticDEAggregation:false,extraTurns:0,requiresGroupResolutionDecision:true};
+}
