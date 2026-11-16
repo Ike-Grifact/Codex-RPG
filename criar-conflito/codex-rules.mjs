@@ -149,7 +149,7 @@ export function buildPool(system,selection,{mode="normal",step=false,stepSourceI
   for(const src of selected){
    const code=src.group+"."+src.key,copy=counts.get(code)||0;counts.set(code,copy+1);
    const slot=code+(copy?".duplo":"");
-   const elevated=step&&elevations.find(x=>x.id===slot);
+   const elevated=step&&stepSourceId===slot&&elevations.find(x=>x.id===slot);
    const sidesList=elevated?elevated.after:sourceDice(src.group,src.key,system);
    for(const [i,sides] of sidesList.entries())
     pool.push({id:slot+"."+i,group:src.group,key:src.key,sides,baseSides:sides,temporaryGrade:!!elevated});
