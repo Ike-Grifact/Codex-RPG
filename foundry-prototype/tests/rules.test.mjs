@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
- buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,naturalDE,
+ buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,healthBands,healthByLife,naturalDE,
  maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
@@ -91,10 +91,21 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.skills,2);
  assert.equal(xp.grant,19);
  assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
- assert.equal(lifeMax(s),4);
+ assert.equal(lifeMax(s),5);
  assert.equal(maxPP(1),0);assert.equal(maxPP(5),1);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
 });
+test("Vida 4+Vigor+piso(Força/2) e quatro estados com Coragem/Pavor",()=>{
+ const s=human();s.attributes.forca=2;s.attributes.vigor=3;
+ assert.equal(lifeMax(s),8);
+ assert.deepEqual(healthBands(s),[3,3,1,1]);
+ assert.deepEqual(healthByLife(s,8),{id:"saudavel",e:0,a:0,p:0,coragem:0});
+ assert.deepEqual(healthByLife(s,5),{id:"ferido",e:0,a:-1,p:0,coragem:0});
+ assert.deepEqual(healthByLife(s,2),{id:"incapacitado",e:-1,a:0,p:1,coragem:1});
+ assert.deepEqual(healthByLife(s,1),{id:"inconsciente",e:-2,a:0,p:2,coragem:2});
+ assert.deepEqual(healthByLife(s,0),{id:"morto",e:0,a:0,p:0,coragem:null});
+});
+
 test("Disciplina com arma habilitada adiciona dado extra, sem aumentar retenção",()=>{
  const s=human(),actor={system:s};
  const item={system:{kind:"weapon",category:"leve",equipped:true,die:6,properties:["Cortante"]}};
