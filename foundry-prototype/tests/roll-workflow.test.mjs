@@ -48,6 +48,23 @@ function fixture(behavior = {}) {
   return {actor, messages, send, sends:()=>sends};
 }
 
+test("O chat preserva faces e runas de todos os dados e distingue descarte", async()=>{
+  const {actor,messages,send}=fixture();
+  actor.pending.dice=[
+    {id:"a",group:"attribute",key:"forca",sides:6,face:6},
+    {id:"b",group:"attribute",key:"vigor",sides:6,face:3}
+  ];
+  await send();
+  const content=messages.get(id).source.content;
+  assert.match(content,/codex-chat-dice/);
+  assert.match(content,/d6 · Força/);
+  assert.match(content,/d6 · Vigor/);
+  assert.match(content,/codex-chat-rune-e/);
+  assert.match(content,/codex-chat-rune-p/);
+  assert.match(content,/MANTIDO/);
+  assert.match(content,/DESCARTADO/);
+  assert.match(content,/Dados rolados · 1 de 2 mantidos/);
+});
 test("duas confirmações concorrentes de um rollId fazem um débito e uma publicação", async () => {
   const {actor,messages,send,sends}=fixture();
   await Promise.all([send(),send()]);
