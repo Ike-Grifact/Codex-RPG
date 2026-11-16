@@ -31,7 +31,7 @@ export function blank(kind="monstro"){
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
- skills:[],life:3,pavorLocal:4,keep:2,courage:humanoid?10:0,abilities:"",items:[]};
+ skills:[],life:4,pavorLocal:4,keep:2,courage:humanoid?10:0,abilities:"",items:[]};
 }
 /* Criação rápida de NPC: mínimo humano aprovado (1 XP atributo + 2 XP prática).
    Sem habilidades, itens ou XP adicionais gratuitos. */
