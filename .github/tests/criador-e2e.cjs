@@ -162,6 +162,21 @@ const { chromium } = require('playwright');
       page.once('dialog', dialog => dialog.accept());
       await page.locator('#wizard-controls [data-action="wizard-finish"]').click();
       await page.waitForSelector('#full-sheet:not([hidden])');
+      // Elevar a Formação G1 equivale a G2 temporário: 1d10 -> 2d10, sem comprar Grau.
+      await page.locator('#sheet-navigation button[data-sheet-page="play"]').click();
+      await page.locator('#attribute-list [data-action="source"][data-group="attr"][data-key="forca"]').click();
+      await page.locator('#'+(testCase.group==="know"?"knowledge-list":"practice-list")+
+        ' [data-action="source"][data-group="'+testCase.group+'"][data-key="'+testCase.id+'"]').click();
+      await page.locator('#composer-content [data-option="step"]').check();
+      await page.locator('#composer-content [data-option="stepSourceId"]').selectOption(testCase.group+"."+testCase.id);
+      const degreeDice=await page.locator('#composer-content .fp-pool-die').allTextContents();
+      if(degreeDice.length!==3||degreeDice.filter(x=>/d10/.test(x)).length!==2)
+        throw new Error('Formação G1 elevada deveria ter 2d10 + Atributo: '+JSON.stringify(degreeDice));
+      if(await page.locator('#composer-content [data-option="contextOK"]').count())
+        throw new Error('Checkbox de permissão do Narrador reapareceu');
+      const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-html-ficha-prototipo-v1")));
+      if(Number(saved[testCase.group==="know"?"knowledges":"practices"][testCase.id])!==1)
+        throw new Error('Elevação temporária alterou Grau permanente da aptidão');
       await page.locator('#sheet-navigation button[data-sheet-page="genetic"]').click();
       await page.waitForSelector('#genetic-view:not([hidden])');
       if (!await page.locator('#gene-sheet-budget .fp-gene-dashboard').count()||
