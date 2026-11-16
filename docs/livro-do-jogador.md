@@ -1,10 +1,20 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.49](srd-continuidade-v0.49.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.50](srd-continuidade-v0.50.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+## Antecipação e Concentração Refinada — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
+
+**Antecipação — mecânica, sem custo de XP.** Em uma rolagem que use **Disciplina**, você pode se concentrar para **guardar 1 Antecipar (1A) de um dado mantido para a sua próxima rolagem**. Esse símbolo não pode ser gasto duas vezes: se foi guardado, não pode também anular Pavor, ser convertido por outro uso ou passar o turno na ação atual. Leia a [regra de Antecipação](../mecanicas/antecipacao.html).
+
+**Concentração Refinada — Perícia, custa 1 XP, requer Disciplina 2.** Quando usa Antecipação para guardar 1A, o símbolo guardado **vira automaticamente 1 Êxito (1E)** e você ganha a **condição Vantagem** (a condição comum, não Vantagem Absoluta). **Não pode usar a Perícia com inimigos a até 8 metros de você.** Os usos normais de Antecipar e a Antecipação básica permanecem permitidos nessas situações. Leia o [verbete da Perícia](../pericias/concentracao-refinada.html).
+
+**PENDENTE:** momento de aplicar o Êxito convertido (ao guardar ou na próxima rolagem) e duração da condição Vantagem. O criador verifica custo e requisito de compra, mas não credita automaticamente 1E nem define duração para Vantagem sem nova decisão.
+
+**Invocação Elemental:** a [página da Perícia](../pericias/invocacao-elemental.html) foi reescrita como orientação ao jogador: escolher elemento e porte, pagar a ativação, preparar ficha, agir ou ajudar um personagem, e só depois consultar tipos especiais e pendências. Não houve alteração mecânica na seção 0-AL.
 
 ## Improviso Elemental, Maestria e separação de invocações — decisão posterior de 16/11/2026 [DEFINIDO / PENDENTE]
 
