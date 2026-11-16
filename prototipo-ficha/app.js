@@ -2320,16 +2320,19 @@ function selectSource(group,k){
 function modeDefault(){return "armas";}
 function canTameSmallDraft(d=draft){
  return state.skills.includes("domar-criatura-pequena")&&
+  !skillReq("domar-criatura-pequena")&&
   d.base?.group==="practice"&&d.base.key==="apresentacao"&&
   d.attribute?.group==="attr"&&d.attribute.key==="influencia";
 }
 function canTameMediumDraft(d=draft){
  return state.skills.includes("domar-criatura-media")&&
+  !skillReq("domar-criatura-media")&&
   d.base?.group==="practice"&&d.base.key==="apresentacao"&&
   d.attribute?.group==="attr"&&d.attribute.key==="influencia";
 }
 function canTameLargeDraft(d=draft){
  return state.skills.includes("domar-criatura-grande")&&
+  !skillReq("domar-criatura-grande")&&
   d.base?.group==="practice"&&d.base.key==="apresentacao"&&
   d.attribute?.group==="attr"&&d.attribute.key==="influencia";
 }
@@ -2548,6 +2551,9 @@ function score(){
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step),ppCost=0;
  if(p.opts.tameSmall||p.opts.tameMedium||p.opts.tameLarge){
   if(p.opts.tameMagical&&!state.skills.includes("criar-item-foco-magia"))errs.push("Criaturas mágicas exigem Criar Item de Foco e Magia.");
+  const tamePerk=p.opts.tameSmall?"domar-criatura-pequena":p.opts.tameMedium?"domar-criatura-media":"domar-criatura-grande";
+  const tameReqError=skillReq(tamePerk);
+  if(tameReqError)errs.push("Domar exige requisitos do porte: "+tameReqError);
   if([p.opts.tameSmall,p.opts.tameMedium,p.opts.tameLarge].filter(Boolean).length!==1||(!state.skills.includes(p.opts.tameSmall?"domar-criatura-pequena":p.opts.tameMedium?"domar-criatura-media":"domar-criatura-grande"))||p.base?.group!=="practice"||p.base.key!=="apresentacao"||p.attribute?.group!=="attr"||p.attribute.key!=="influencia")
    errs.push("Tentativa de Domar inválida: verifique Perícia e fontes.");
   if(p.opts.tamePayment==="pp")ppCost+=1;else courageCost+=1;
