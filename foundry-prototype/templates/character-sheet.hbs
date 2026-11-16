@@ -52,7 +52,7 @@
 
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
-    {{#if codex.isMonster}}<span>Criatura ou monstro: selecione dois ou três Atributos diferentes e pertinentes; a terceira fonte exige confirmação da pertinência.</span>{{else}}<span>Comece em qualquer seção: combine duas categorias diferentes. A terceira fonte exige habilitação; Manejo Duplo permite repetir Disciplina.</span>{{/if}}
+    {{#if codex.isMonster}}<span>Criatura ou monstro: selecione dois ou três Atributos diferentes e pertinentes; a terceira fonte segue as regras do tipo de criatura.</span>{{else}}<span>Comece em qualquer seção: combine duas categorias diferentes. A terceira fonte exige habilitação; Manejo Duplo permite repetir Disciplina.</span>{{/if}}
     {{#if codex.selecting}}<span class="codex-live-note">Primeira fonte: <b>{{codex.selectedBase}}</b>. Escolha agora uma fonte de outra categoria.</span>{{/if}}
   </div>
 
@@ -143,7 +143,13 @@
         {{else}}
         <label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>
         {{/if}}
-        <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar primeiro dado de Atributo por 1 Coragem</label>
+        <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar uma aptidão em 1 Grau temporário ({{#if codex.isMonster}}1 Pavor local{{else}}1 Coragem{{/if}})</label>
+        {{#if codex.prepare.step}}
+        <label>Aptidão a elevar<select data-roll-option="stepSourceId">
+          <option value="">Selecione a aptidão</option>
+          {{#each codex.prepare.elevationOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}: {{this.before}} → {{this.after}}</option>{{/each}}
+        </select></label>
+        {{/if}}
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
         <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
         {{#if codex.prepare.weightEnabled}}
@@ -158,12 +164,11 @@
             <option value="pesado" {{#if codex.prepare.targetWeightPesado}}selected{{/if}}>Pesado</option>
           </select></label>
         {{/if}}
-        {{#if codex.selectedComplement}}<label class="codex-check codex-warn"><input type="checkbox" data-roll-option="contextApproved" {{#if codex.prepare.contextApproved}}checked{{/if}}> Narrador confirmou a pertinência da Perícia e do complemento (regra de combinação ainda incompleta)</label>{{/if}}
       </div>
       <div class="codex-pool"><strong>Pilha prevista · {{codex.prepare.poolCount}}/9 dados</strong>
         {{#each codex.prepare.pool}}<span class="codex-pool-die">{{{this.icon}}} <b>d{{this.sides}}</b><small>{{this.label}}</small></span>{{/each}}
       </div>
-      <p class="codex-tip">Retenção natural: {{codex.prepare.keepNatural}} · com Coragem: {{codex.prepare.keepWithCourage}} · ao menos um dado mantido deve ser de Atributo.</p>
+      <p class="codex-tip">Retenção natural: {{codex.prepare.keepNatural}} · com Coragem: {{codex.prepare.keepWithCourage}} · a terceira fonte exige a habilitação correspondente.</p>
       {{#each codex.prepare.errors}}<p class="codex-error">{{this}}</p>{{/each}}
       <div class="codex-actions"><button type="button" data-action="clearDraft">Cancelar preparação</button><button type="button" class="codex-primary" data-action="executeRoll" {{#unless codex.prepare.canExecute}}disabled{{/unless}}>Rolar dados</button></div>
     </section>
