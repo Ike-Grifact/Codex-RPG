@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import test from "node:test";
-import {dieSvg} from "../module/dice-icons.mjs";
+import {dieSvg,faceIcons} from "../module/dice-icons.mjs";
 
 class ApplicationV2 {
   rendered = false;
@@ -167,10 +167,26 @@ test("seleção visual de duas fontes e cartas sem polígonos flutuantes",()=>{
  assert.match(html,/2ª fonte/);
  assert.match(html,/Selecionar fonte/);
  assert.match(html,/data-action="chooseSource"/);
- assert.match(html,/class="codex-result-face"/);
+ assert.match(html,/class="codex-result-face codex-face-icons"/);
  assert.match(html,/class="codex-result-symbols/);
  assert.doesNotMatch(html,/<strong>\{\{this.face\}\}<\/strong><span>d/,"Layout antigo de face deve ser revogado");
  assert.match(css,/\.codex-source-layout\.is-attributes-only/);
  assert.match(css,/\.codex-result-die-head/);
  assert.match(css,/\.codex-chat-dice/);
+  assert.match(html,/data-action="toggleEditing"/);
+  assert.match(html,/@root\.codex\.editing/);
+  assert.match(html,/is-playing/);
+  assert.match(html,/is-editing/);
+  assert.doesNotMatch(html,/<strong class="codex-result-face">\{\{this.face\}\}<\/strong>/);
+  assert.match(css,/user-select:none/);
+});
+
+test("face visual apresenta todas as runas coloridas sem trocar o indice interno",()=>{
+ const two=faceIcons([2,1,1]);
+ assert.match(two,/codex-face-symbol-e/);
+ assert.match(two,/codex-face-symbol-a/);
+ assert.match(two,/codex-face-symbol-p/);
+ assert.match(two,/×2/);
+ assert.match(faceIcons([0,0,0]),/Face vazia/);
+ assert.doesNotMatch(two,/>10<\/strong>/);
 });
