@@ -293,9 +293,15 @@ const SKILLS=[
   1
  ],
  [
+  "domar-criatura-pequena",
+  "Domar Criatura Pequena",
+  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 2 Coragens e teste de Influência contra a DE da criatura pequena. A Perícia não domestica automaticamente. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  1
+ ],
+ [
   "pericia-druidica",
   "Perícia Druídica",
-  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 3 dados naturalmente, Leve; Pavor mantido resolve ação e encerra forma. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Conversão de ferimentos da Druídica para as novas quatro caixas ainda PENDENTE; o exemplo anterior com três terços está substituído. Morrer em forma animal mata o druida; transformação não automatizada.",
+  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Conversão de ferimentos da Druídica para as novas quatro caixas ainda PENDENTE; o exemplo anterior com três terços está substituído. Morrer em forma animal mata o druida; transformação não automatizada.",
   2
  ]
 ];
@@ -308,6 +314,7 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "domar-criatura-pequena": ["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
   "practice:armas_conjuracao"
@@ -509,7 +516,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["criar-item-foco-magia","terra","pericia-druidica"],
+ ["criar-item-foco-magia","terra","domar-criatura-pequena","pericia-druidica"],
  [
   "armas",
   "armas-leves",
@@ -586,6 +593,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "domar-criatura-pequena": "domar-criatura-pequena",
  "pericia-druidica": "pericia-druidica",
  "combate": "combate",
  "armas": "armas-1",
@@ -634,6 +642,7 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
  "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
@@ -667,6 +676,7 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "domar-criatura-pequena": "Um companheiro Pequeno por personagem; +1A em combate, +1 Vida, opção de sacrifício; XP soma ao grupo no conflito.",
  "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
@@ -700,6 +710,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 2 Coragens e teste de Influência. Compra não é domesticação.",
  "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
@@ -733,6 +744,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "domar-criatura-pequena": "1 PP ou 2 Coragens + teste de Influência",
  "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
@@ -1180,7 +1192,8 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
- if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. As Perícias de Domar ainda não constam do criador; compra bloqueada até sua inclusão.";
+ if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena pode ser comprada; custos e requisitos de Domar Média/Grande ainda pendentes, portanto a Druídica continua bloqueada.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
