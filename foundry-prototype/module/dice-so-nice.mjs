@@ -26,7 +26,7 @@ export function registerCodexDice(dice3d){
  dice3d.addSystem({id:system,name:"Codex RPG"});
  dice3d.addColorset?.({
   name:colorset,description:"Codex RPG · runas sem bordas",category:"Codex RPG",
-  foreground:"#e8d6aa",background:"#181a1d",outline:"none",edge:"#181a1d",
+  foreground:"#ffffff",background:"#181a1d",outline:"none",edge:"#181a1d",
   texture:"none",material:"plastic",font:"Segoe UI Symbol"
  });
  for(const sides of Object.keys(FACES)){
@@ -45,7 +45,7 @@ export async function showCodexDice(roll){
    die.options??={};
    die.options.appearance={
     ...die.options.appearance,system,colorset,
-    foreground:"#e8d6aa",background:"#181a1d",outline:"none",
+    foreground:"#ffffff",background:"#181a1d",outline:"none",
     edge:"#181a1d",material:"plastic",font:"Segoe UI Symbol"
    };
   }
