@@ -9,7 +9,25 @@ updated: "2026-11-15"
 
 **Decisões do autor — 15/11/2026:** renomear Conjuração Equilibrada para **Conjuração Refinada**, agora destinada a aumentar o alcance de efeitos mágicos (procedimento ainda a reescrever); **não modificar Escudo Arcano nem introduzir iniciativa**; reduzir **3 pontos de Integridade das armaduras**, preservando escudos; confirmar a economia elemental v0.43; fixar o **preço das pedras especiais de Veneno, Sagrado e Trevas em 3 vezes o preço das pedras elementais comuns**; abrir análise probabilística de Conhecimentos e Práticas para definir quando não rolar. Profissões/itens e especializações posteriores continuam em construção.
 
-**Precedência:** novas decisões explícitas > **seção 0-AH (v0.45)** para Domar criaturas grandes > **seção 0-AG (v0.45)** para XP/nível de criaturas médias e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+**Precedência:** novas decisões explícitas > **seção 0-AI (v0.45)** para a progressão de Influência dos três portes > **seção 0-AH (v0.45)** para Domar criaturas grandes > **seção 0-AG (v0.45)** para XP/nível de criaturas médias e ativações de todas as Perícias > **seções 0-AF e 0-AE (v0.45)** para Domar > **seção 0-AD (v0.44)** nos assuntos alterados > **0-AC (v0.43)** para economia elemental e demais condições não substituídas > **0-AB (v0.42)** para Trevas > **0-AA (v0.41)** para Pavor das criaturas > **0-Z (v0.40)** para d10/elevação > outras regras vigentes por matéria. **A v0.43 integral, com histórico anterior, está preservada abaixo**.
+
+## 0-AI. Progressão de Influência para Domar Criaturas [15/11/2026]
+
+**[DEFINIDO — retificação autoral de 15/11/2026]** Os três portes domesticáveis possuem **pré-requisito progressivo de Influência**, restaurando a escala do SRD histórico (seção 0-B.6) sem restaurar os custos antigos de aquisição. Esta seção **substitui exclusivamente os requisitos de Influência** estabelecidos nas seções 0-AE (Pequena), 0-AF (Média) e 0-AH (Grande). O custo de aquisição permanece **1 XP por Perícia**, e o custo por tentativa de Domar/Pacificar permanece **1 Coragem ou 1 PP**.
+
+| Perícia | Influência mínima | Outros pré-requisitos | XP de aquisição | Ativação por tentativa |
+|---|---:|---|---:|---|
+| **Domar Criatura Pequena** | **Grau 1** | **Apresentação 1 + Inteligência 1** | **1 XP** | **1 Coragem OU 1 PP** |
+| **Domar Criatura Média** | **Grau 2** | **Apresentação 1 + Inteligência 1** | **1 XP** | **1 Coragem OU 1 PP** |
+| **Domar Criatura Grande** | **Grau 3** | **Apresentação 1 + Inteligência 1** | **1 XP** | **1 Coragem OU 1 PP** |
+
+**[DEFINIDO — custo do Atributo Influência, sem descontos especiais]** Os graus de Influência usam a tabela normal de Atributos: G1 = **1 XP acumulado**, G2 = **3 XP acumulados**, G3 = **7 XP acumulados**. Esses custos são compras de Atributo e **não incluem** o **1 XP de compra da Perícia**. Assim, progredir de Influência G1 para G2 custa mais 2 XP; de G2 para G3, mais 4 XP. A exigência cumulativa de **Apresentação 1 e Inteligência 1** é a mesma nos três portes.
+
+**[DEFINIDO]** Domar Criatura Grande continua usando os custos de Conhecimento/Prática para **comprar os Atributos da criatura grande** (G0–G6: 0, 2, 8, 20, 38, 66 e 102 XP acumulados). Isso **não** altera o custo do próprio Atributo Influência **do domador**, nem transforma os dados de Atributo da criatura em dados de Formação. Domar Criatura Média continua usando o custo comum dos Atributos dos personagens.
+
+**[PENDENTE]** As dúvidas sobre número de companheiros, ações simultâneas, acúmulo de bônus e pacificação permanecem inalteradas. Esta retificação não atinge Montar Animal nem Domar Exótico/Gigante/Alado.
+
+---
 
 ## 0-AH. Domar Criatura Grande — ficha própria e Atributos pelo custo de Formação [15/11/2026]
 
