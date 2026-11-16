@@ -113,8 +113,10 @@
 
   <div class="codex-help">
     <strong>Componha a ação pela ficha</strong>
-    {{#if codex.attributesOnly}}<span>Selecione dois Atributos. {{#if codex.isMonster}}No Grau 5+, valide um terceiro Atributo pertinente.{{/if}}</span>{{else}}<span>1. Conhecimento ou Prática <b>BASE</b> → 2. Atributo → complemento pertinente habilitado. Os cliques apenas preparam a rolagem.</span>{{/if}}
-    {{#if codex.selecting}}<span class="codex-live-note">Base selecionada: <b>{{codex.selectedBase}}</b>. Escolha agora o Atributo.</span>{{/if}}
+    {{#if codex.attributesOnly}}<span><b>1.</b> Clique no nome de um Atributo para a primeira fonte. <b>2.</b> Clique em outro Atributo. Os botões −/+ mudam o Grau, não selecionam fontes. {{#if codex.isMonster}}No Grau 5+, um terceiro Atributo pode ser habilitado.{{/if}}</span>{{else}}<span><b>1.</b> Clique no Conhecimento ou Prática para a BASE. <b>2.</b> Clique em um Atributo. Os botões −/+ alteram Grau; complemento exige habilitação.</span>{{/if}}
+     {{#if codex.selectedBase}}<span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedAttribute}} · <b>2ª fonte:</b> {{codex.selectedAttribute}} · Role os dados abaixo.{{else}} · Escolha a 2ª fonte.{{/if}}</span>{{/if}}
+     {{#if codex.hasPending}}<span class="codex-live-note codex-source-pending-note">Rolagem pendente: finalize ou descarte antes de preparar outra ação.</span>{{/if}}
+
   </div>
 
   <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
@@ -123,13 +125,14 @@
     <span class="legend-p"><b aria-hidden="true">ᚦ</b> Pavor</span>
   </div>
 
-  <div class="codex-source-layout">
+  <div class="codex-source-layout {{#if codex.attributesOnly}}is-attributes-only{{/if}}">
     <section class="codex-block codex-attributes">
-      <div class="codex-block-title"><h2>Atributos</h2><span>Segunda fonte</span></div>
+      <div class="codex-block-title"><h2>Atributos</h2><span>{{#if codex.attributesOnly}}Escolha 1ª e 2ª fontes clicando no nome{{else}}Segunda fonte: clique no nome{{/if}}</span></div>
       {{#each codex.attributes}}
         <div class="codex-source {{#if this.isAttribute}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE</small>{{/if}}{{#if this.isAttribute}}<small class="codex-source-role">ATRIBUTO</small>{{/if}}{{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
           </button>
@@ -145,6 +148,7 @@
         <div class="codex-source {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isBase}}true{{else}}{{#if this.isComplement}}true{{else}}false{{/if}}{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE DA AÇÃO</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
@@ -160,6 +164,7 @@
         <div class="codex-source {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isBase}}true{{else}}{{#if this.isComplement}}true{{else}}false{{/if}}{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
+             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isAttribute}}2ª fonte escolhida{{else}}Selecionar fonte{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
             {{#if this.isBase}}<small class="codex-source-role">BASE DA AÇÃO</small>{{/if}}
             {{#if this.isComplement}}<small class="codex-source-role">COMPLEMENTO</small>{{/if}}
@@ -257,7 +262,9 @@
       <div class="codex-result-dice">
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
-          {{{this.icon}}}<strong>{{this.face}}</strong><span>d{{this.sides}} · {{this.label}}</span><small class="codex-symbols codex-roll-marks" aria-label="{{this.symbolsText}}">{{{this.symbolsHTML}}}</small>
+          <span class="codex-result-die-head"><span>d{{this.sides}} · {{this.label}}</span>{{#if this.selected}}<span class="codex-kept-tag">MANTIDO</span>{{else}}<span class="codex-kept-tag">SELECIONAR</span>{{/if}}</span>
+           <strong class="codex-result-face">{{this.face}}</strong>
+           <span class="codex-result-symbols codex-roll-marks" aria-label="{{this.symbolsText}}">{{{this.symbolsHTML}}}</span>
         </button>
       {{/each}}
       </div>
