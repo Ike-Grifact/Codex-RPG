@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import {readFileSync} from "node:fs";
 import test from "node:test";
 import {actorData, equipmentData, importSiteData} from "../module/creation.mjs";
 import {faceLabels, registerCodexDice, showCodexDice} from "../module/dice-so-nice.mjs";
@@ -54,24 +53,25 @@ test("importa criatura comum, monstro e humanoide como Actors separados", () => 
 
 test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", async () => {
   const calls = [];
-  const presets = [];
+  const presets = [],colorsets=[];
   const dice3d = {
     addSystem(system) { assert.equal(system.id, "codex-rpg-foundry"); },
+    addColorset(colorset) { colorsets.push(colorset); },
     addDicePreset(preset) { presets.push(preset); },
     async showForRoll(...args) { calls.push(args); },
   };
   registerCodexDice(dice3d);
   assert.deepEqual(presets.map(preset => preset.type), ["d4","d6","d10","d12","d20"]);
+  assert.equal(colorsets.length,1);
+  assert.equal(colorsets[0].background,"#181a1d");
+  assert.deepEqual(faceLabels(10)[9],"ᛋᛋ ᚨ");
   for (const [sides, faces] of Object.entries(FACES)) {
     const labels = faceLabels(sides);
     assert.equal(labels.length, Number(sides));
     labels.forEach((label, i) => {
-      const isMax=i+1===faces.length;
-       const expected=faces[i].join("")+(isMax?"-max.png":".png");
-       assert.ok(label.endsWith(expected),"Textura ausente ou incorreta para d"+sides+", face "+(i+1));
-      const png = readFileSync(new URL("../" + label.split("/").slice(2).join("/"), import.meta.url));
-      assert.equal(png.readUInt32BE(16), 256);
-      assert.equal(png.readUInt32BE(20), 256);
+      const [e,a,p]=faces[i];
+      assert.equal(label, ["ᛋ".repeat(e),"ᚨ".repeat(a),"ᚦ".repeat(p)].filter(Boolean).join(" ")||" ");
+      assert.ok(!label.endsWith(".png"),"As faces 3D devem conter apenas runas, sem polígonos duplicados");
     });
   }
   const user = {id: "player"};
@@ -80,6 +80,7 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   await showCodexDice(roll);
   assert.deepEqual(calls, [[roll, user, true]]);
   assert.equal(roll.dice[0].options.appearance.system, "codex-rpg-foundry");
+  assert.equal(roll.dice[0].options.appearance.colorset, "codex-runas");
   assert.equal(roll.dice[0].results[0].result, 6);
   delete game.dice3d;
   await showCodexDice(roll);
