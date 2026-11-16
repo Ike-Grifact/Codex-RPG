@@ -1,6 +1,7 @@
 import { cpSync, lstatSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {generateRuneFaces} from "./rune-faces-generator.mjs";
 
 export const systemId = "codex-rpg-foundry";
 export const source = fileURLToPath(new URL("../", import.meta.url));
@@ -95,6 +96,7 @@ export function preparePackage(destination, tag) {
   mkdirSync(dirname(destination), { recursive: true });
   mkdirSync(destination);
   for (const name of content) copyDirectory(join(source, name), join(destination, name));
+  generateRuneFaces(join(destination, "assets", "dice", "runes"));
   cpSync(join(source, "README.md"), join(destination, "README.md"), {
     errorOnExist: true, force: false,
   });
