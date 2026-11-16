@@ -37,6 +37,9 @@ export function skillPrerequisite(system,id){
  };
  return req[id]??true;
 }
+export function characteristicActivationPayment(payment){
+ return payment==="pp"?{pp:1,courage:0}:{pp:0,courage:1};
+}
 export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
  return !!system.monsterRules||ledger.spent+delta<=ledger.grant;

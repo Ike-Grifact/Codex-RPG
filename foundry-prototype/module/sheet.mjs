@@ -3,7 +3,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINI
  sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxPP,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE} from "./equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {CodexPavorPanel} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
@@ -276,8 +276,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const activations=result.critical?(second?1:0):1;
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     if(p.options.activationPayment==="pp")payPP=1;
-     else cost+=1;
+     const activation=characteristicActivationPayment(p.options.activationPayment);
+     payPP+=activation.pp;cost+=activation.courage;
     }
    }
    if(payPP>s.pp)throw Error("PP insuficiente.");
