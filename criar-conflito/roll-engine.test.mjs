@@ -75,9 +75,8 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  const valid=humanoidPool(npc,"practice","atletismo","forca");
  assert.equal(valid.ok,true);
  assert.deepEqual(valid.pool.map(d=>d.sides),[6,6]); // Atletismo G0 e Força G1
- const failed=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
- assert.equal(failed.ok,false);
- assert.match(failed.error,/Perícia/);
+ const basicDiscipline=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
+ assert.equal(basicDiscipline.ok,true,"Disciplina marcial básica não exige Perícia de arma");
  npc.skills.push("armas-leves");
  const trained=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
  assert.equal(trained.ok,true);
