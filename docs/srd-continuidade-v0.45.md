@@ -18,7 +18,7 @@ updated: "2026-11-15"
 
 | Grau da Perícia | Forma permitida | Ativação | Dados mantidos e outras propriedades |
 |---|---|---|---|
-| **1** | **Pequena** | **0 PP / 0 Coragem** | Transformar ou reverter **não exige teste**. **Vantagem Absoluta nos testes de Furtividade** durante a forma pequena. A ficha de criatura pequena dispõe de **19 XP**; a distribuição específica está **PENDENTE** porque o autor não concluiu quais investimentos são permitidos. **PENDENTE** se esse grau altera o número normal de dados mantidos. |
+| **1** | **Pequena** | **0 PP / 0 Coragem** | Transformar ou reverter **não exige teste**. **Vantagem Absoluta nos testes de Furtividade** durante a forma pequena, que é considerada **Leve**. A ficha de criatura pequena dispõe de **19 XP**; a distribuição específica está **PENDENTE** porque o autor não concluiu quais investimentos são permitidos. **PENDENTE** se esse grau altera o número normal de dados mantidos. |
 | **2** | **Média** | **1 PP ou 2 Coragens** | Transformar ou reverter **não exige teste**. A ficha da criatura média recebe **a mesma quantidade de XP que o personagem**, para distribuir em **Atributos** (base do total ainda **PENDENTE**). Mantém **2 dados naturalmente**, tem **Vantagem em ações pertinentes com Agilidade ou Destreza** e a forma é considerada **Leve**. **Falhar com Pavor cancela a transformação**. |
 | **3** | **Grande** | **1 PP ou 2 Coragens** | Transformar ou reverter **não exige teste**. Mantém **3 dados naturalmente**; a forma é considerada **Leve**, conforme enunciado do autor. **Manter Pavor** faz a ação ser realizada/resolvida, mas **cancela a forma depois da ação**, inclusive em acerto. **PENDENTE** o orçamento de XP da ficha de criatura grande. |
 
