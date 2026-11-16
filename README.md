@@ -12,7 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| **SRD de Continuidade v0.50 (atual)** | [docs/srd-continuidade-v0.50.md](docs/srd-continuidade-v0.50.md) | **Antecipação** e **Concentração Refinada (1 XP, Disciplina 2, Vantagem, inimigo a até 8 m)**, com pendências de timing/duração; versão completa com histórico preservado. |
+| **SRD de Continuidade v0.51 (atual)** | [docs/srd-continuidade-v0.51.md](docs/srd-continuidade-v0.51.md) | **Olhos de Águia:** 1 XP, Destreza 3 + Disciplina 3 + (Armas de Longo Alcance ou Armas de Fogo), +8 m de alcance efetivo; **Antecipação, Êxito guardado e Vantagem** expiram no uso, após ação subsequente ou descanso longo. |
+| **SRD de Continuidade v0.50 (histórico)** | [docs/srd-continuidade-v0.50.md](docs/srd-continuidade-v0.50.md) | **Antecipação** e **Concentração Refinada (1 XP, Disciplina 2, Vantagem, inimigo a até 8 m)**, com pendências de timing/duração; versão completa com histórico preservado. |
 | **SRD de Continuidade v0.49 (histórico)** | [docs/srd-continuidade-v0.49.md](docs/srd-continuidade-v0.49.md) | **Invocação Elemental, criaturas temporárias, necromancia, Psique e custos especiais**, com pendências técnicas explícitas. |
 | **SRD de Continuidade v0.48 (histórico)** | [docs/srd-continuidade-v0.48.md](docs/srd-continuidade-v0.48.md) | **Domar e ficha opcional da Pequena, Saúde e recuperação, Pavor excedente, Muito Leve G1 com 3 Integridade**. Prevalece sobre versões anteriores. |
 | SRD de Continuidade v0.44 (histórico) | [docs/srd-continuidade-v0.44.md](docs/srd-continuidade-v0.44.md) | **Conjuração Refinada (alcance pendente), armaduras G1 7/12/17, pedras especiais 3× comuns e análise exata de DE** |
@@ -24,7 +25,9 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 
 - [Invocação Elemental — explicação para jogadores](pericias/invocacao-elemental.html): passos de compra, ativação, porte, dados, ajuda conjunta e variações.
 - [Antecipação — mecânica](mecanicas/antecipacao.html): em rolagem com Disciplina, guardar 1A mantido para o próximo teste.
-- [Concentração Refinada — Perícia](pericias/concentracao-refinada.html): 1 XP, Disciplina 2. Ao reservar 1A, converte em 1E e recebe Vantagem, desde que não haja inimigo a até 8 metros. Momento de crédito do 1E e duração da Vantagem ainda pendentes de decisão.
+- [Concentração Refinada — Perícia](pericias/concentracao-refinada.html): 1 XP, Disciplina 2. Ao reservar 1A, converte em 1E e recebe Vantagem, desde que não haja inimigo a até 8 metros. No SRD v0.51, a conversão acontece ao guardar e o 1E e a Vantagem são válidos até uso, ação posterior ou descanso longo.
+
+[Olhos de Águia](pericias/olhos-de-aguia.html) acrescenta +8 m ao alcance efetivo de armas à distância ou de fogo habilitadas, com requisitos de compra verificados na ficha. Os alcances iniciais do catálogo continuam referências de playtest.
 
 ## Usar o criador
 

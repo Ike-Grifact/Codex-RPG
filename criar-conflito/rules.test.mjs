@@ -214,3 +214,21 @@ test("Concentração Refinada custa 1 XP no catálogo de humanoides, sem nova co
  const restored=normalize(npc);
  assert.ok(restored.skills.includes("concentracao-refinada"));
 });
+
+
+test("Olhos de Águia: custo 1 XP e descrição exige Destreza 3, Disciplina 3 e especialização alternativa",()=>{
+ const perks=SKILLS.filter(s=>s.id==="olhos-de-aguia");
+ assert.equal(perks.length,1);
+ assert.equal(perks[0].cost,1);
+ assert.match(perks[0].detail,/Destreza 3/);
+ assert.match(perks[0].detail,/Disciplina 3/);
+ assert.match(perks[0].detail,/OU Armas de Fogo/);
+ assert.match(perks[0].detail,/8 m/);
+ const npc=blank("humanoide");
+ npc.attributes.destreza=3;
+ npc.practices.armas_conjuracao=3;
+ npc.skills=["armas-fogo","olhos-de-aguia"];
+ const actual=ledger(npc);
+ assert.equal(actual.skills,4); // 3 XP em Armas de Fogo + 1 XP em Olhos de Águia.
+ assert.equal(normalize(npc).skills.includes("olhos-de-aguia"),true);
+});
