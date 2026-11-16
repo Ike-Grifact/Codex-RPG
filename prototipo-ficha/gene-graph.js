@@ -57,8 +57,17 @@ function position(nodes,branches=[]){
   }
   return picked;
  }
- const combat=collect([0,1,2,3,7,8]),magic=collect([5]);
- const support=collect([4,6]),stealth=collect([9]);
+ // Identificar famílias pelo conteúdo, não por índices fixos:
+ // versões mais recentes inserem ramos (ex.: Druídica) no início da lista.
+ const groupIndices=kind=>branches.flatMap((items,i)=>{
+  const first=items?.[0]||"";
+  const section=first==="criar-item-foco-magia"||first==="escudo-arcano"?"magic":
+   first==="furtividade"||first==="furtividade-avancada"?"stealth":
+   ["recuperacao-vigorosa","provocacao-sofisticada","recobrar-coragem"].includes(first)?"support":"combat";
+  return section===kind?[i]:[];
+ });
+ const combat=collect(groupIndices("combat")),magic=collect(groupIndices("magic"));
+ const support=collect(groupIndices("support")),stealth=collect(groupIndices("stealth"));
  const other=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.id))
   .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
  const capacity=5,left=[...combat.slice(0,5)],right=[...magic.slice(0,5)];
@@ -76,7 +85,7 @@ function position(nodes,branches=[]){
  for(const [i,n] of left.entries()){n.x=530;n.y=lateralY[i];n.geneSide=true;}
  for(const [i,n] of right.entries()){n.x=1070;n.y=lateralY[i];n.geneSide=true;}
  // Um arco de faixas abaixo do núcleo; linhas têm até 8 vagas e não se cruzam.
- const columns=8,spacing=192,rowSpacing=124;
+ const columns=8,spacing=200,rowSpacing=124;
  const rows=Math.ceil(remaining.length/columns);
  for(let row=0;row<rows;row++){
   const rowNodes=remaining.slice(row*columns,(row+1)*columns),count=rowNodes.length;
