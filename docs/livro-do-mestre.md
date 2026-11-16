@@ -2,7 +2,7 @@
 
 ## Limites de fichas — decisão autoral posterior [DEFINIDO]
 
-**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Se um zumbi Grande aparecer como **três zumbis Médios**, mantém **uma só Vida, uma ação, XP contado uma vez e os dados da ficha Grande**. Os corpos narrativos não podem receber ações ou recursos independentes. Requer Domar Grande. A representação no terreno e as áreas de efeito estão PENDENTES.
+**Uma invocação ativa por conjurador**, com **uma ficha** de qualquer porte. Uma ficha Grande pode conter **três zumbis Médios reais na cena**, compartilhando **uma única Vida mecânica, uma economia de ações, XP contado uma vez e os dados da ficha Grande**. São vários corpos, mas não possuem fichas, turnos ou recursos independentes. Requer Domar Grande. A representação no terreno e as áreas de efeito estão PENDENTES.
 
 **Domar permite até duas fichas domesticadas sob controle direto por domador**, respeitando uma criatura por categoria; um vínculo extra não desaparece automaticamente, mas suas ações sob controle direto não são liberadas. A contagem de criaturas presentes por categoria no orçamento do conflito não equivale à quantidade de fichas controladas; o Narrador verifica o domador de cada ficha.
 
@@ -12,7 +12,7 @@ A [seção 0-AL do SRD v0.49](srd-continuidade-v0.49.md) é a regra mais recente
 
 **Perda de sustentação:** conjurador Incapacitado (debilitado) ou Inconsciente dissipa a magia. **Imbuir domesticada:** resistência elemental, não imunidade. Combinar dois elementos custa **+1 Coragem** (habilitação Combinar Magia Elemental ainda sem entrada própria no catálogo); Maestria ativada na invocação custa **+1 PP ou +1 Coragem** e permite efeitos elementais especiais conforme gatilhos existentes.
 
-**Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** fantasmas imunes a elemento neutro, sem dano neutro; Maestria habilita assombrar/possuir com Desvantagem Absoluta. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
+**Sangue e Trevas:** Necromancia, criatura com Vida que não regenera, imune a Trevas; corpo reinvocável até dano de Fogo ou Sagrado reduzir Vida a zero. **Psique:** a invocação é a **projeção da mente do conjurador** e seu **corpo físico permanece parado** enquanto ela está ativa, inclusive em combinações Psique+Trevas ou Psique+Sagrado. As formas manifestadas incluem fantasmas imunes a neutro e sem dano neutro; Maestria pode habilitar assombrar/possuir com Desvantagem Absoluta. Ataques ao corpo e interrupção da projeção ainda são PENDENTES. Psique + Trevas = assombrações; Psique + Sagrado = seres angelicais e fantásticos.
 
 **DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** distinguir Sangue isolado/Trevas isolado de combinação dos dois, identificar a habilitação Combinar Magia Elemental, definir manutenção/controle pormenorizado, resistência/DE de possessão, posição dos corpos narrativos e as regras de ações especiais de invocações no conflito. O limite simultâneo já é DEFINIDO: uma invocação e ficha por conjurador. Incluir XP de invocações efetivamente presentes no orçamento do grupo para balanceamento, sem supor ações extras gratuitas.
 

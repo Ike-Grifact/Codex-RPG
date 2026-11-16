@@ -8,7 +8,7 @@
 
 ## Limites de controle — decisão mais recente de 16/11/2026 [DEFINIDO]
 
-**Invocação:** cada conjurador controla no máximo **uma invocação ativa e uma ficha mecânica**, qualquer que seja o porte. **Um zumbi Grande pode ser representado por três zumbis Médios apenas narrativamente**: todos usam a **mesma ficha Grande**, uma Vida, uma ação, os mesmos recursos e **um orçamento de XP contado uma vez**. Isso exige Domar Grande; não concede três ações ou três fichas. A posição dos corpos na cena e a substituição antecipada são PENDENTES.
+**Invocação:** cada conjurador controla no máximo **uma invocação ativa e uma ficha mecânica**, qualquer que seja o porte. **Uma ficha pode conter várias criaturas reais na cena**. Exemplo: **três zumbis Médios** coexistem e são controlados como uma única invocação de porte Grande, compartilhando **uma ficha Grande**, a Vida e os recursos mecânicos dessa ficha e **um orçamento de XP contado uma vez**. Isso exige Domar Grande; não concede três ações ou três fichas. A posição dos corpos na cena e a substituição antecipada são PENDENTES.
 
 **Domar:** cada domador pode controlar diretamente **até duas fichas de criaturas domesticadas**, ainda respeitando **uma criatura por porte**. Uma eventual terceira criatura já domesticada não passa a ter ficha sob controle direto; seu procedimento de participação é PENDENTE. O limite de uma invocação não consome automaticamente vaga de Domar.
 
@@ -18,9 +18,9 @@
 
 O invocador também pode **imbuir uma criatura domesticada**, concedendo **resistência** ao elemento escolhido (diferente da imunidade da criatura invocada). Se possuir a habilitação **Combinar Magia Elemental** e ambas as Perícias de elemento, pode invocar com **dois elementos por +1 Coragem**. Com **Maestria Elemental**, pode pagar **+1 PP ou +1 Coragem** para permitir que a invocação ative efeitos especiais elementais, sem dispensar seus gatilhos.
 
-**Necromancia:** Sangue e Trevas, com corpo portador de Vida que não se regenera e imune a Trevas, reinvocável até destruição definitiva por **Sagrado ou Fogo levando a Vida a 0**. **Psique:** fantasmas imunes a elementos neutros e sem dano neutro; com Maestria podem assombrar/possuir um corpo, provocando **Desvantagem Absoluta**. **Psique + Trevas:** assombrações; **Psique + Sagrado:** seres angelicais e fantásticos, como fadas e unicórnios.
+**Necromancia:** Sangue e Trevas, com corpo portador de Vida que não se regenera e imune a Trevas, reinvocável até destruição definitiva por **Sagrado ou Fogo levando a Vida a 0**. **Psique:** a invocação é a **projeção da mente do próprio conjurador**, cujo **corpo físico permanece parado enquanto a projeção está ativa**. A projeção pode manifestar-se como fantasma imune a elementos neutros e sem dano neutro; com Maestria pode assombrar/possuir um corpo, provocando **Desvantagem Absoluta**. **Psique + Trevas:** assombrações; **Psique + Sagrado:** seres angelicais e fantásticos, como fadas e unicórnios.
 
-**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia. **PENDENTE:** identificar se “Combinar Magia Elemental” é distinta ou equivalente à Maestria, e resolver condições de controle, duração, dano, possessão e resistência antes da automação. O verbete completo está em [Invocação Elemental](../pericias/invocacao-elemental.html). Norma mais recente: [SRD v0.49](srd-continuidade-v0.49.md), seção 0-AL.
+**DEFINIDO:** Psique é habilitada por Criar Item de Foco e Magia; invocar Psique deixa o corpo físico do conjurador parado enquanto a mente se projeta. **PENDENTE:** resolver ataques contra o corpo, interrupção e retorno da mente; identificar se “Combinar Magia Elemental” é distinta ou equivalente à Maestria, e resolver condições de controle, duração, dano, possessão e resistência antes da automação. O verbete completo está em [Invocação Elemental](../pericias/invocacao-elemental.html). Norma mais recente: [SRD v0.49](srd-continuidade-v0.49.md), seção 0-AL.
 
 ## Decisões recentes — 16/11/2026 [DEFINIDO / PENDENTE]
 
