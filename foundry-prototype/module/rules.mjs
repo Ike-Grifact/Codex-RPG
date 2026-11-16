@@ -71,12 +71,28 @@ export function mayComplement(system,first,mode="normal",second=null){
  if(chosen.some(isFurtividade)&&skills.includes("furtividade-avancada")&&Number(system.practices?.furtividade||0)>=2)return true;
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,equipmentDie=0}={}){
+// Uma elevação comum compra temporariamente o GRAU seguinte da aptidão escolhida.
+// Não altera XP nem a ficha, e não troca um único dado isolado.
+export function elevationChoices(system,selection){
+ const chosen=[selection?.base,selection?.attribute,...(selection?.complement?[selection.complement]:[])];
+ const counts=new Map(),result=[];
+ for(const src of chosen){
+  if(!src||( !GROUPS[src.group] || !GROUPS[src.group].some(([key])=>key===src.key)))continue;
+  const code=src.group+"."+src.key,copy=counts.get(code)||0;counts.set(code,copy+1);
+  const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[src.group];
+  const grade=Number(system?.[field]?.[src.key]||0);
+  if(!Number.isInteger(grade)||grade<0||grade>=6)continue;
+  const table=src.group==="attribute"?(system.monsterRules?MONSTER_DICE:ATTRIBUTE_DICE):TRAINING_DICE;
+  result.push({id:code+(copy?".duplo":""),group:src.group,key:src.key,
+   grade,before:[...table[grade]],after:[...table[grade+1]]});
+ }
+ return result;
+}
+export function buildPool(system,selection,{mode="normal",step=false,stepSourceId="",equipmentDie=0}={}){
  const errors=[],pool=[],first=selection?.base,second=selection?.attribute,third=selection?.complement;
  const monster=!!system.monsterRules,selected=[first,second,...(third?[third]:[])];
  const valid=src=>!!src&&(GROUPS[src.group]||[]).some(([key])=>key===src.key);
- const discipline=selected.filter(isDiscipline).length;
- const dual=hasDualHandling(system);
+ const discipline=selected.filter(isDiscipline).length,dual=hasDualHandling(system);
  if(!valid(first)||!valid(second))errors.push("Selecione duas fontes válidas.");
  if(monster&&selected.some(src=>src?.group!=="attribute"))errors.push("Criaturas/monstros não humanoides combinam apenas Atributos.");
  if(!monster&&valid(first)&&valid(second)&&first.group===second.group&&
@@ -87,12 +103,11 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  if(third){
   if(!valid(third))errors.push("Terceira fonte inválida.");
   if(!mayComplement(system,first,mode,second))errors.push("Terceira fonte exige Perícia ou capacidade da criatura.");
-  if(!contextApproved)errors.push("Confirme pertinência da terceira fonte.");
  }
  for(let i=0;i<selected.length;i++){
   const src=selected[i];
   if(!valid(src))continue;
-  if(selected.slice(0,i).some(other=>other?.group===src.group&&other.key===src.key) &&
+  if(selected.slice(0,i).some(other=>other?.group===src.group&&other.key===src.key)&&
     !(isDiscipline(src)&&dual&&discipline===2))
    errors.push("Não repita a mesma aptidão (exceto Disciplina com Manejo Duplo).");
  }
@@ -103,22 +118,22 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
    errors.push("Conjuração exige Criar Item de Foco e Magia.");
   if(!["armas","conjuracao"].includes(mode))errors.push("Escolha Armas ou Conjuração para Disciplina.");
  }
+ const elevations=elevationChoices(system,selection);
+ if(step&&(!stepSourceId||!elevations.some(x=>x.id===stepSourceId)))
+  errors.push("Selecione uma aptidão elegível para elevar um Grau temporário.");
  if(!errors.length){
   const counts=new Map();
   for(const src of selected){
    const code=src.group+"."+src.key,copy=counts.get(code)||0;counts.set(code,copy+1);
-   for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
-    pool.push({id:code+(copy?".duplo":"")+"."+i,group:src.group,key:src.key,sides});
-  }
-  if(step){
-   const d=pool.find(x=>x.group==="attribute")||pool.find(x=>[4,6,10].includes(x.sides));
-   const next={4:6,6:10,10:12}[d?.sides];
-   if(!next)errors.push("Não é possível elevar o dado.");
-   else d.sides=next;
+   const slot=code+(copy?".duplo":"");
+   const elevated=step&&elevations.find(x=>x.id===slot);
+   const sidesList=elevated?elevated.after:sourceDice(src.group,src.key,system);
+   for(const [i,sides] of sidesList.entries())
+    pool.push({id:slot+"."+i,group:src.group,key:src.key,sides,baseSides:sides,temporaryGrade:!!elevated});
   }
   if(equipmentDie){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
-   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
+   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie),baseSides:Number(equipmentDie)});
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");
