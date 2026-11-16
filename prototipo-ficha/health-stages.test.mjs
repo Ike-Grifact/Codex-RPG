@@ -13,6 +13,21 @@ test("quatro estados: 1/1/1/1 e pontos de Vigor alternados", () => {
   });
 });
 
+test("Força preserva +1 Vida a cada dois graus e distribui nas duas primeiras faixas", () => {
+  const cases = [
+    [0,0,[1,1,1,1]],[0,1,[1,1,1,1]],[0,2,[2,1,1,1]],
+    [0,4,[2,2,1,1]],[1,2,[2,2,1,1]],[2,2,[3,2,1,1]],
+    [3,4,[4,3,1,1]],[6,6,[6,5,1,1]]
+  ];
+  for (const [vigor,forca,expected] of cases) {
+    assert.deepEqual(distribuicaoVidaPorVigor(vigor,forca), expected);
+    assert.equal(vidaMaximaPorVigor(vigor,forca), 4 + vigor + Math.floor(forca/2));
+  }
+  assert.equal(estadoSaudePorVida(2,3,2).id,"ferido");
+  assert.equal(estadoSaudePorVida(2,2,2).id,"incapacitado");
+  assert.equal(estadoSaudePorVida(2,1,2).id,"inconsciente");
+});
+
 test("penalidades e custos correspondem aos quatro estados",()=>{
   const max=7; // Vigor 3: saudável 3, ferido 2, incapacitado 1, inconsciente 1
   assert.deepEqual(distribuicaoVidaPorVigor(3),[3,2,1,1]);
@@ -48,6 +63,9 @@ test("propriedade geral para Vigor 0 a 60 e todas as Vidas",()=>{
 test("validação das entradas",()=>{
   for(const value of [-1,0.5,NaN,Infinity]){
     assert.throws(()=>distribuicaoVidaPorVigor(value),RangeError);
+  }
+  for(const value of [-1,1.5]) {
+    assert.throws(()=>distribuicaoVidaPorVigor(2,value),RangeError);
   }
   for(const value of [-1,8,1.5]){
     assert.throws(()=>estadoSaudePorVida(3,value),RangeError);
