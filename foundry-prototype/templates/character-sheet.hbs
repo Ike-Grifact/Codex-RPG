@@ -117,12 +117,10 @@
   <div class="codex-help">
     <strong>{{#if codex.editing}}Editar personagem{{else}}Componha a ação pela ficha{{/if}}</strong>
     {{#if codex.editing}}<span>Use −/+ para comprar ou ajustar graus. Clique em <b>Concluir edição · Jogar</b> quando terminar.</span>{{else}}{{#if codex.attributesOnly}}<span><b>1.</b> Escolha um Atributo. <b>2.</b> Escolha outro Atributo.</span>{{else}}<span>Escolha duas fontes de categorias diferentes, em qualquer ordem. Clique no cartão novamente para retirar a fonte.</span>{{/if}}{{/if}}
-     {{#if codex.selectedBase}}<span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedSecond}} · <b>2ª fonte:</b> {{codex.selectedSecond}}{{#if codex.selectedComplement}} · <b>Complemento:</b> {{codex.selectedComplement}}{{/if}}.{{else}} · Escolha a 2ª fonte.{{/if}}</span>{{/if}}
-     {{#if codex.hasPending}}<span class="codex-live-note codex-source-pending-note">Rolagem pendente. <button type="button" data-action="showRoll" data-section="pending">Ver dados rolados</button></span>{{/if}}
 
   </div>
 
-{{#if codex.preparing}}<div class="codex-actions"><button type="button" data-action="showRoll" data-section="prep">Ver preparação</button></div>{{/if}}
+  {{#unless codex.editing}}<div class="codex-actions"><button type="button" data-action="showRoll" data-section="{{#if codex.hasPending}}pending{{else}}prep{{/if}}" {{#unless codex.hasPending}}{{#unless codex.preparing}}disabled{{/unless}}{{/unless}}>Ver rolagem</button></div>{{/unless}}
   <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
     <span class="legend-e"><b aria-hidden="true">ᛋ</b> Êxito</span>
     <span class="legend-a"><b aria-hidden="true">ᚨ</b> Antecipar</span>
@@ -189,6 +187,15 @@
     </section>
     {{/unless}}
   </div>
+
+  {{#if codex.selectedBase}}
+    <div class="codex-help" aria-live="polite">
+      <span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedSecond}} · <b>2ª fonte:</b> {{codex.selectedSecond}}{{#if codex.selectedComplement}} · <b>Complemento:</b> {{codex.selectedComplement}}{{/if}}.{{else}} · Escolha a 2ª fonte.{{/if}}</span>
+    </div>
+  {{/if}}
+  {{#if codex.hasPending}}
+    <p class="codex-tip codex-source-pending-note">Rolagem pendente. Finalize ou descarte para escolher novas fontes.</p>
+  {{/if}}
 
   {{#if codex.preparing}}
     <section class="codex-block codex-roll-prep" aria-label="Preparação da rolagem">

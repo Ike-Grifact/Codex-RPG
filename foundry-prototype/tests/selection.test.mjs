@@ -59,3 +59,7 @@ test("Uma rolagem pendente preserva fontes e posição ao clicar nos cartões",a
  assert.match(notices.at(-1),/Finalize ou descarte/);
  assert.equal(ctx.scrolled(),0);
 });
+
+test("A ficha conserva o scroll da raiz ao renderizar seus cartões",()=>{
+ assert.deepEqual(CodexCharacterSheet.PARTS.body.scrollable,[""]);
+});

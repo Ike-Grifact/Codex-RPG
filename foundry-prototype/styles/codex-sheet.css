@@ -691,7 +691,7 @@
  box-shadow:none!important;color:var(--cx-text)!important;cursor:default
 }
 .codex-foundry-root .codex-source.is-playing{
- display:block!important;grid-template-columns:none!important;min-height:76px;
+ display:block!important;grid-template-columns:none!important;min-height:76px;border-width:2px;
  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent
 }
 .codex-foundry-root .codex-source.is-playing .codex-source-pick{
@@ -753,4 +753,5 @@
 .codex-rune-legend .legend-p b{color:#542176;background:#f7f1e7;border-radius:4px;padding:0 3px}
 @container (max-width:420px){.codex-face-symbol{font-size:25px;padding:4px 5px}}
 
-.codex-character-sheet .window-content{overflow-anchor:none}
+.codex-character-sheet .window-content,
+.codex-character-sheet .codex-foundry-root{overflow-anchor:none}
