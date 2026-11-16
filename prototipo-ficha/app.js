@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica: aquisição única 2 XP e Vida por terços, formas ainda não automatizadas); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica 2 XP única; nova Saúde de 4 estados documental, ainda sem migração de Vida da ficha); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -667,7 +667,7 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
- "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada de formas domadas; Vida por faixas de terços no retorno.",
+ "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -700,7 +700,7 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas memorizadas sem limite; Vida por terços ao retornar.",
+ "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -2036,6 +2036,8 @@ function renderVitals(){
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
+ // LEGADO: a UI de três caixas permanece até resolver o bônus antigo de Força
+ // e a migração das fichas. Não aparentar que quatro estados já estão automatizados.
  const ratio=lifeMaxValue?state.life/lifeMaxValue:0;
  const tier=ratio>2/3?3:ratio>1/3?2:1;
  $("life-boxes").innerHTML=[1,2,3].map(i=>'<span class="'+(i<=tier?"filled":"")+(tier===1?" critical":"")+'"></span>').join("");
