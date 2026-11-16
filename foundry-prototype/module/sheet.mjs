@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
+ sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
  loadCapacity,mayComplement,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
@@ -25,6 +25,7 @@ function cards(list,group,s,d){
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML = faceIcons;
+const symbolsFor = die => die.symbols ?? faceSymbols(die.sides,die.face);
 const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
  .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
@@ -132,10 +133,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    }catch(e){summary={ok:false,errors:[e.message]};}
    ctx.codex.comparisons=p.publication?[]:alternativesFor(actor,p)
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
-      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(d.symbols),icon:dieSvg(d.sides)}))}));
+      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(symbolsFor(d)),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s),
-      selected:p.selected.includes(x.id),symbolsText:markerText(x.symbols),symbolsHTML:markerHTML(x.symbols)})),
+      selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(symbolsFor(x))})),
     selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
     publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
