@@ -68,7 +68,7 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   assert.deepEqual(presets.map(preset => preset.type), ["d4","d6","d10","d12","d20"]);
   assert.equal(presets.find(preset => preset.type === "d4").fontScale, 0.82);
   assert.equal(presets.find(preset => preset.type === "d10").fontScale, 1.02);
-   assert.equal(presets.find(preset => preset.type === "d4").labelScale, 0.9);
+   assert.equal(presets.find(preset => preset.type === "d4").labelScale, 0.66);
    assert.deepEqual(presets.find(preset => preset.type === "d10").labels,faceImageLabels(10));
   assert.equal(colorsets.length,1);
   assert.equal(colorsets[0].background,"#181a1d");

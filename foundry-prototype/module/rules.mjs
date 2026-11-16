@@ -59,6 +59,7 @@ export function xpLedger(s){
 }
 export const isDiscipline = source => source?.group === "practice" && source.key === "armas_conjuracao";
 export const attributesOnly = system => Boolean(system.monsterRules || system.animalRules);
+export const disciplineNeedsAttribute = sources => sources.some(isDiscipline) && !sources.some(source=>source?.group==="attribute");
 
 function validSource(source) {
  return source && Object.hasOwn(GROUPS,source.group) && GROUPS[source.group].some(([key])=>key===source.key);
@@ -69,6 +70,7 @@ export function sourcePairError(system,base,second){
  if(attributesOnly(system)){
   if(base.group!=="attribute"||second.group!=="attribute"||base.key===second.key)return "Escolha dois Atributos diferentes.";
  }else if(base.group===second.group)return "As duas primeiras fontes devem ser de categorias diferentes.";
+ if(disciplineNeedsAttribute([base,second]))return "Disciplina deve ser combinada com um Atributo.";
  return "";
 }
 
@@ -94,6 +96,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   const duplicate=[b,a].some(source=>source?.group===c.group&&source.key===c.key);
   const repeatedDiscipline=duplicate&&isDiscipline(c);
   if(!validSource(c)||attributesOnly(system))errors.push("Complemento inválido para esta ficha.");
+  else if(!pairError&&disciplineNeedsAttribute(sources))errors.push("Disciplina deve ser combinada com um Atributo.");
   else if(repeatedDiscipline&&(!canRepeatDiscipline(system,b,a)||mode!=="armas"))errors.push("Repetir Disciplina exige Manejo Duplo e o modo Armas.");
   else if(duplicate&&!repeatedDiscipline)errors.push("O complemento deve ser uma fonte diferente.");
   else if(!repeatedDiscipline&&!mayComplement(system,b,a))errors.push("O complemento exige uma Perícia que o habilite.");

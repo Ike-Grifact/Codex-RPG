@@ -13,6 +13,7 @@
           <h2>{{codex.actorName}}</h2>
         </div>
         {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
+        {{#if codex.canOpenDNA}}<button type="button" data-action="openDNA">Codex Genético</button>{{/if}}
       </div>
       <div class="codex-identity-fields">
         <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.editing}}readonly{{/unless}}></label>
@@ -129,7 +130,7 @@
 
   <div class="codex-source-layout {{#if codex.attributesOnly}}is-attributes-only{{/if}}">
     <section class="codex-block codex-attributes">
-      <div class="codex-block-title"><h2>Atributos</h2>{{#unless codex.editing}}<span>{{#if codex.attributesOnly}}Escolha a 1ª e a 2ª fonte por cartão{{else}}Qualquer ordem{{/if}}</span>{{/unless}}</div>
+      <div class="codex-block-title"><h2>Atributos</h2></div>
       {{#each codex.attributes}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -138,7 +139,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isSecond}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
+             <span class="codex-source-order" aria-hidden="true">{{#if this.isBase}}1ª{{else}}{{#if this.isSecond}}2ª{{else}}{{#if this.isComplement}}3ª{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
           <span class="codex-source-grade-tag">G{{this.grade}}</span>
            </button>
@@ -149,7 +150,7 @@
 
     {{#unless codex.attributesOnly}}
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Conhecimentos</h2>{{#unless codex.editing}}<span>Qualquer ordem</span>{{/unless}}</div>
+      <div class="codex-block-title"><h2>Conhecimentos</h2></div>
       {{#each codex.knowledges}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -158,7 +159,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isSecond}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
+             <span class="codex-source-order" aria-hidden="true">{{#if this.isBase}}1ª{{else}}{{#if this.isSecond}}2ª{{else}}{{#if this.isComplement}}3ª{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
           <span class="codex-source-grade-tag">G{{this.grade}}</span>
            </button>
@@ -168,7 +169,7 @@
     </section>
 
     <section class="codex-block">
-      <div class="codex-block-title"><h2>Práticas</h2>{{#unless codex.editing}}<span>Qualquer ordem</span>{{/unless}}</div>
+      <div class="codex-block-title"><h2>Práticas</h2></div>
       {{#each codex.practices}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
           {{#if @root.codex.editing}}
@@ -177,7 +178,7 @@
           {{else}}
           <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
             <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-hint">{{#if this.isBase}}1ª fonte escolhida{{else}}{{#if this.isSecond}}2ª fonte escolhida{{else}}{{#if this.isComplement}}Complemento escolhido{{else}}Selecionar fonte{{/if}}{{/if}}{{/if}}</span>
+             <span class="codex-source-order" aria-hidden="true">{{#if this.isBase}}1ª{{else}}{{#if this.isSecond}}2ª{{else}}{{#if this.isComplement}}3ª{{/if}}{{/if}}{{/if}}</span>
             <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
           <span class="codex-source-grade-tag">G{{this.grade}}</span>
            </button>
@@ -190,7 +191,7 @@
 
   {{#if codex.selectedBase}}
     <div class="codex-help" aria-live="polite">
-      <span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedSecond}} · <b>2ª fonte:</b> {{codex.selectedSecond}}{{#if codex.selectedComplement}} · <b>Complemento:</b> {{codex.selectedComplement}}{{/if}}.{{else}} · Escolha a 2ª fonte.{{/if}}</span>
+      <span class="codex-live-note"><b>1ª fonte:</b> {{codex.selectedBase}}{{#if codex.selectedSecond}} · <b>2ª fonte:</b> {{codex.selectedSecond}}{{#if codex.selectedComplement}} · <b>Complemento:</b> {{codex.selectedComplement}}{{/if}}.{{else}}{{/if}}</span>
     </div>
   {{/if}}
   {{#if codex.hasPending}}
@@ -205,16 +206,13 @@
         <div><small>2ª FONTE</small><strong>{{codex.selectedSecond}}</strong></div>
         <div><small>COMPLEMENTO</small><strong>{{#if codex.selectedComplement}}{{codex.selectedComplement}}{{else}}Opcional{{/if}}</strong></div>
       </div>
-      <p class="codex-tip">Para acrescentar ou trocar o complemento, clique em outro Conhecimento/Prática na ficha. A terceira fonte exige Perícia e pertinência confirmada.</p>
+      <p class="codex-tip">Atacante: <strong>{{codex.actorName}}</strong>{{#if codex.prepare.hasTarget}} · Alvo: <strong>{{codex.prepare.targetName}}</strong> · DE: <strong>{{codex.prepare.targetDE}}</strong>{{/if}}</p>
       <div class="codex-prep-controls">
        <label>Equipamento equipado / fonte extra<select data-roll-option="equipmentId">
         <option value="">Sem dado de equipamento</option>
         {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
        </select></label>
-       {{#if codex.prepare.inCombat}}
-        {{#if codex.prepare.hasTarget}}<p><strong>Alvo selecionado:</strong> {{codex.prepare.targetName}} — a DE do alvo será consultada no ataque.</p><label class="codex-check"><input type="checkbox" data-roll-option="targetDodges" {{#if codex.prepare.targetDodges}}checked{{/if}}> Alvo usa Esquiva</label>
-        {{else}}<p>Sem Token selecionado como alvo. A rolagem usa DE informada e publica no chat.</p>{{/if}}
-       {{/if}}
+       {{#if codex.prepare.hasTarget}}<label class="codex-check"><input type="checkbox" data-roll-option="targetDodges" {{#if codex.prepare.targetDodges}}checked{{/if}}> Alvo usa Esquiva</label>{{/if}}
         {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
         <label>Ativação e aproximação confirmadas pelo Narrador<select data-roll-option="activationPavor">
           {{#each codex.prepare.localCostOptions}}<option value="{{cost}}" {{#if selected}}selected{{/if}}>{{cost}}P local no total</option>{{/each}}
@@ -226,7 +224,7 @@
             <option value="conjuracao" {{#if codex.prepare.modeConjuracao}}selected{{/if}}>Conjuração</option>
           </select></label>
         {{/if}}
-        <label>DE (Dificuldade de Êxito)<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>
+        {{#unless codex.prepare.hasTarget}}<label>DE manual<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>{{/unless}}
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
         {{/each}}</select></label>
@@ -319,7 +317,7 @@
       </div>
       {{#if codex.pending.summary}}
         {{#if codex.pending.summary.ok}}
-          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>DE: {{codex.pending.summary.reached}} / {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
+          <div class="codex-outcome"><strong>{{codex.pending.summary.outcome}}</strong>{{#if codex.pending.critical}}<span><strong>Crítico automático — {{codex.pending.critical}} dados máximos</strong></span>{{/if}}<span>Total: {{codex.pending.summary.reached}} · DE: {{codex.pending.de}}</span><span><b class="codex-rune codex-rune-e">ᛋ {{codex.pending.summary.e}}</b> · <b class="codex-rune codex-rune-a">ᚨ {{codex.pending.summary.aRemaining}}</b> · <b class="codex-rune codex-rune-p">ᚦ {{codex.pending.summary.p}}</b></span><span>Dano básico: {{codex.pending.summary.damage}}</span></div>
         {{/if}}
       {{/if}}
       <details data-sync="comparisons" class="codex-compare-rolls">
@@ -330,7 +328,7 @@
         <div class="codex-compare-option">
          <div><strong>Alternativa {{this.position}}</strong><span class="codex-dice-strip">{{#each this.keptDice}}<span class="codex-small-die">{{{this.icon}}}<b>d{{this.sides}}</b><span class="codex-face-icons">{{{this.symbolsHTML}}}</span></span>{{/each}}</span></div>
          <b>{{this.outcome}}</b>
-         <span>DE {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
+         <span>Total {{this.reached}} · <em class="codex-rune-e">ᛋ {{this.e}}</em> · <em class="codex-rune-a">ᚨ {{this.a}}</em> · <em class="codex-rune-p">ᚦ {{this.p}}</em></span>
          <small>Dano básico {{this.damage}} {{#if this.critical}}· crítico {{this.critical}}{{/if}}</small>
          <button type="button" data-action="applyComparison" data-index="{{@index}}">Usar estes dados mantidos</button>
         </div>
@@ -351,7 +349,10 @@
       {{#each codex.skills}}
       <div class="codex-skill {{#if this.owned}}is-owned{{/if}}">
         <div><strong>{{this.name}}</strong><small>{{this.detail}} · {{this.cost}} XP</small></div>
-        {{#if @root.codex.editing}}<button type="button" data-action="toggleSkill" data-key="{{this.id}}">{{#if this.owned}}Adquirida{{else}}Selecionar{{/if}}</button>{{/if}}
+                {{#if @root.codex.editing}}
+          {{#unless this.owned}}{{#if this.blocker}}<small>{{this.blocker}}</small>{{/if}}{{/unless}}
+          <button type="button" data-action="toggleSkill" data-key="{{this.id}}" {{#unless this.owned}}{{#unless this.canBuy}}disabled{{/unless}}{{/unless}}>{{#if this.owned}}Adquirida{{else}}Comprar{{/if}}</button>
+        {{/if}}
       </div>
       {{/each}}
     </section>

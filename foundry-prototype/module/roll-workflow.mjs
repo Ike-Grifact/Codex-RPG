@@ -1,4 +1,8 @@
-import { rollNamespace as NS, preparePendingRoll, resolvePendingRoll, keepForActor } from "./roll-resolution.mjs";
+import { rollNamespace as NS, preparePendingRoll, resolvePendingRoll, keepForActor, alternativesFor, rollResult, publicRollResult } from "./roll-resolution.mjs";
+
+import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
+
+import {advancementPlan, creationMissing} from "./advancement.mjs";
 
 const query = `${NS}.roll`;
 const flag = `flags.${NS}.pendingRoll`;
@@ -18,6 +22,24 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if (request.action === "advance" || request.action === "completeCreation") {
+    if (pending) throw Error("Finalize ou descarte a rolagem antes de editar.");
+    const creationPending = Boolean(actor.getFlag(NS, "creationPending"));
+    if (request.action === "completeCreation") {
+      if (!creationPending) return;
+      const missing = creationMissing(actor.system);
+      if (missing.attr || missing.training) throw Error("Adquira um Atributo G1 e um Conhecimento ou uma Prática G1.");
+      await actor.unsetFlag(NS, "creationPending");
+      return;
+    }
+    const system = actor.system.toObject?.() ?? actor.system;
+    await actor.update(advancementPlan(system, request.advance ?? {}, creationPending));
+    return;
+  }
+  if (request.action === "target") {
+    const target = lookupTarget(game, user, request.sceneId, request.targetIds, request.dodges === true);
+    return target && {name: target.name, de: target.canInspect ? target.de : null};
+  }
   if (request.action === "grade") {
     if (!Number.isInteger(request.value) || request.value < 1 || request.value > 6) throw Error("Grau inválido.");
     if (request.value === actor.system.threatGrade) return;
@@ -29,13 +51,22 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   }
   if (request.action === "start") {
     if (pending) return {started: false};
-    const { pending: draft, roll, changes } = await preparePendingRoll(actor, request, user, game);
+    if (actor.getFlag(NS, "creationPending")) throw Error("Conclua a criação do Aprendiz antes de rolar.");
+    const { pending: draft, roll, changes, privateDE } = await preparePendingRoll(actor, request, user, game);
     verifyAuthority(game);
+    if(draft.options.privateDefense)draft.options.sealedDE=await sealDefense(game,draft,privateDE);
     await actor.update({...changes, [flag]: draft}, {recursive: false});
     return {started: true, roll: roll.toJSON()};
   }
   if (!pending || pending.id !== request.id) return;
   if (request.action === "finish") return publish(actor, user, pending, game, chat);
+  if (request.action === "preview" && pending.options.privateDefense && !pending.publication) {
+    const de = await readDefense(game, pending);
+    return {
+      summary: pending.selected.length ? publicRollResult(rollResult(actor, pending, de), true) : null,
+      comparisons: alternativesFor(actor, pending, de).map(result => publicRollResult(result, true)),
+    };
+  }
   if (pending.publication) throw Error("A ação foi confirmada. Retome a publicação no chat.");
   if (request.action === "discard") {
     await actor.unsetFlag(NS, "pendingRoll");
@@ -73,7 +104,7 @@ async function publish(actor, user, pending, game, chat) {
       await actor.unsetFlag(NS, "pendingRoll");
       return;
     }
-    const {changes, content, result, adjudication} = resolvePendingRoll(actor, pending, game);
+    const {changes, content, result, adjudication} = resolvePendingRoll(actor, pending, game, await readDefense(game, pending));
     const id = pending.id.replaceAll("-", "").slice(0, 16);
     const publication = {id, author: user.id, content, result, adjudication};
     pending = {...pending, publication};

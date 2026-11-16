@@ -4,6 +4,7 @@ const system="codex-rpg-foundry";
 const colorset="codex-runas";
 // No d4, o Dice So Nice repete as marcas junto a cada vértice.
 const fontScale={4:0.82,6:1.35,10:1.02,12:1.1,20:1};
+const labelScale={4:0.66,6:0.82,10:0.72,12:0.76,20:0.68};
 
 /* PNGs transparentes coloridos são gerados ao empacotar. Cada arquivo contém
    apenas runas e multiplicadores, sem polígonos; o resultado numérico não muda. */
@@ -31,7 +32,7 @@ export function registerCodexDice(dice3d){
  });
  for(const sides of Object.keys(FACES)){
   dice3d.addDicePreset({type:`d${sides}`,system,labels:faceImageLabels(sides),
-    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides],labelScale:sides==="4"?0.9:1.06});
+    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides],labelScale:labelScale[sides]});
  }
 }
 

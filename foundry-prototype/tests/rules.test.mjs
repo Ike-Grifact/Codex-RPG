@@ -288,10 +288,14 @@ test("Disciplina Avançada permite um complemento e Manejo Duplo permite duas Di
  const practice={group:"practice",key:"atletismo"}, knowledge={group:"knowledge",key:"medicina"};
  const discipline={group:"practice",key:"armas_conjuracao"};
  const pc={attributes:{vigor:1},practices:{armas_conjuracao:2,atletismo:1},knowledges:{medicina:1},skills:["disciplina-avancada","armas-leves"]};
- const three={base:practice,second:knowledge,complement:discipline};
+ const attribute={group:"attribute",key:"vigor"};
+ const three={base:discipline,second:attribute,complement:knowledge};
  assert.equal(buildPool(pc,three,{mode:"armas",contextApproved:true}).ok,true);
  assert.equal(buildPool(pc,three,{mode:"normal",contextApproved:true}).ok,false);
- const duplicate={base:knowledge,second:discipline,complement:discipline};
+ const duplicate={base:attribute,second:discipline,complement:discipline};
+ assert.match(buildPool(pc,{base:discipline,second:{group:"knowledge",key:"alquimia"}},{mode:"armas"}).errors.join(" "),/Disciplina deve ser combinada com um Atributo/);
+ assert.equal(buildPool(pc,{base:knowledge,second:discipline},{mode:"armas"}).ok,false);
+ assert.equal(buildPool(pc,{base:practice,second:knowledge,complement:discipline},{mode:"armas",contextApproved:true}).ok,false);
  assert.equal(buildPool(pc,duplicate,{mode:"armas",contextApproved:true}).ok,false);
  const dual={...pc,skills:["maestria-manejo-duplo","criar-item-foco-magia"]};
  const plan=buildPool(dual,duplicate,{mode:"armas"});

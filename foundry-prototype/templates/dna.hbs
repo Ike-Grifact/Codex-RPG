@@ -1,0 +1,30 @@
+<div class="codex-foundry-root codex-dna-root">
+  <header class="codex-dna-header">
+    <h2 data-dna-name>{{actorName}}</h2><strong data-dna-budget></strong>
+  </header>
+  <nav class="codex-dna-stages" aria-label="Etapas de desenvolvimento">
+    <button type="button" data-action="stage" data-stage="identity">Identidade</button>
+    <button type="button" data-action="stage" data-stage="development">Desenvolvimento</button>
+    <button type="button" data-action="stage" data-stage="map">Codex Genético</button>
+  </nav>
+  <section data-dna-panel="identity" class="codex-dna-panel">
+    <label>Nome<input data-identity="name" value="{{actorName}}"></label>
+    <label>Conceito<input data-identity="system.concept" value="{{concept}}"></label>
+    <label>Origem<input data-identity="system.origin" value="{{origin}}"></label>
+    <button type="button" data-action="stage" data-stage="development">Continuar</button>
+  </section>
+  <section data-dna-panel="development" class="codex-dna-panel">
+    {{#each categories}}<div><strong>{{label}}</strong><p>{{description}}</p></div>{{/each}}
+    <div><strong>Perícias</strong><p>Habilitações adquiridas com XP conforme seus requisitos.</p></div>
+    <button type="button" data-action="stage" data-stage="map">Abrir mapa</button>
+  </section>
+  <section data-dna-panel="map" class="codex-dna-workspace">
+    <div class="codex-dna-map" data-dna-map tabindex="0" aria-label="Mapa genético interativo"></div>
+    <aside class="codex-dna-detail" data-dna-detail aria-live="polite"></aside>
+  </section>
+  <footer class="codex-dna-footer">
+    <span data-dna-creation></span>
+    <button type="button" data-action="classic">Ficha clássica</button>
+    <button type="button" data-action="complete">Concluir criação</button>
+  </footer>
+</div>

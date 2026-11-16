@@ -41,6 +41,7 @@ export async function createCodexActor() {
       group("XP adicional / orçamento", '<input name="xp" type="number" min="0" max="10000000" step="1" value="0">'),
       ...(game.user.isGM ? [group("Grau da ameaça", '<input name="threatGrade" type="number" min="1" max="6" step="1" value="1">')] : []),
       group("Formação inicial", select("build", options({
+        dna: "Criar pelo Codex Genético",
         guided: "Escolher Atributo e Formação",
         quick: "Força G1 + Disciplina G1",
         empty: "Começar com a ficha em branco",
@@ -51,21 +52,27 @@ export async function createCodexActor() {
         ...PRACTICES.map(([id, name]) => ["practice:" + id, "Prática · " + name]),
       ])))),
       '<p class="codex-tip">A formação inicial se aplica às fichas humanas. Continue a criação na ficha para distribuir XP e escolher itens.</p>',
-      `<p><a href="${portal}/prototipo-ficha/" target="_blank" rel="noopener">Abrir o Criador com Codex Genético</a></p>`,
+
     ].join(""), async form => {
       const data = Object.fromEntries(new FormData(form));
       if (!Object.hasOwn(typeOptions, data.kind)) throw new Error("Tipo de ficha indisponível.");
       const human = ["character", "humanoid"].includes(data.kind);
+      const dna = data.build === "dna" && human;
       const actor = actorData(data.kind, data, data.build === "quick");
-      if (human && data.build !== "empty" && (data.kind !== "humanoid" || data.build !== "quick")) {
+      if (human && !dna && data.build !== "empty" && (data.kind !== "humanoid" || data.build !== "quick")) {
         const [trainingGroup, trainingId] = (data.build === "quick" ? "practice:armas_conjuracao" : data.training).split(":");
         const plan = starterPurchasePlan(actor.system, data.build === "quick" ? "forca" : data.attribute, trainingGroup, trainingId);
         if (!plan.ok) throw new Error(plan.error);
         for (const [path, value] of Object.entries(plan.changes)) foundry.utils.setProperty(actor, path, value);
         actor.system.life.value = lifeMax(actor.system);
       }
+      if(dna)actor.flags={"codex-rpg-foundry":{creationPending:true}};
       const created = await Actor.implementation.create(actor);
-      created?.sheet.render({force: true});
+      if(!created)return;
+      if(dna){
+        const {openCodexDNA}=await import("./dna.mjs");
+        await openCodexDNA(created,"identity");
+      }else await created.sheet.render({force:true});
     });
   } catch (error) {
     ui.notifications.error(error.message);

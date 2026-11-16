@@ -1,15 +1,16 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
  sourceDice,sourceLabel,faceSymbols,buildPool,starterPurchasePlan,lifeMax,balance,maxPP,
- loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,defenseDisplay} from "./equipment-logic.mjs";
+import {equippedDie,defenseDisplay} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
+import {skillDetails} from "./advancement.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
@@ -36,7 +37,7 @@ const isRepeat=d=>isDiscipline(d.complement)&&[d.base,d.second].some(isDisciplin
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
- chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
+ openDNA:CodexCharacterSheet.openDNA,chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
  toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
@@ -66,6 +67,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }:null;
   ctx.codex={
    actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
+   canOpenDNA:actor.isOwner&&!attributesOnly&&(this._editing||actor.getFlag(NS,"creationPending")),
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
@@ -87,7 +89,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    attributes:cards(ATTRIBUTES,"attribute",s,d),
    knowledges:attributesOnly?[]:cards(KNOWLEDGES,"knowledge",s,d),
    practices:attributesOnly?[]:cards(PRACTICES,"practice",s,d),
-   skills:attributesOnly?[]:SKILLS.map(k=>({...k,detail:k.detail.slice(0,190),owned:s.skills.includes(k.id)})),
+   skills:attributesOnly?[]:SKILLS.map(k=>({...skillDetails(s,k.id),detail:k.detail.slice(0,190)})),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
     quantity:i.system.quantity,equipped:i.system.equipped,
@@ -105,7 +107,16 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,
      step:this._opts.step,stepDieId:this._opts.stepDieId,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
-   const isShared=hasDiscipline(d),targets=[...game.user.targets];
+      const isShared=hasDiscipline(d),targets=[...game.user.targets];
+   let target=null,targetError="";
+   if(targets.length===1){
+    this._lastTargetId=targets[0].document?.uuid;
+    try{
+     target=await requestRoll(actor,{action:"target",sceneId:canvas.scene?.id,targetIds:targets.map(token=>token.id),dodges:this._opts.targetDodges});
+    }catch(error){targetError=error.message;}
+   }else if(targets.length>1)targetError="Selecione apenas um alvo para esta ação.";
+   else if(this._targetLost)targetError="O alvo saiu do mapa. Selecione outro Token.";
+   if(targetError)plan.errors.push(targetError);
    ctx.codex.prepare={
     isShared,repeatedDiscipline:isRepeat(d),canRepeatDisc:canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,
@@ -121,19 +132,27 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
        selected:x.id===this._opts.stepDieId})),
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
-    targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
-    canExecute:plan.ok&&actor.isOwner,errors:plan.errors,
+    targetName:target?.name??"",targetDE:target?.de??"Reservada",hasTarget:Boolean(target),inCombat:!!game.combat?.started,
+    canExecute:plan.ok&&!targetError&&actor.isOwner&&!actor.getFlag(NS,"creationPending"),errors:plan.errors,
     pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s),icon:dieSvg(x.sides)})),
     poolCount:plan.pool.length,keepNatural:keepForActor(actor,0)
    };
   }
   if(this._pending){
    const p=this._pending,item=selectedItem(actor,p.options);
-   let summary=null;
-   if(p.selected.length&&!p.publication)try{
-    summary=rollResult(actor,p);
+   let summary=null,comparisons=[];
+   if(!p.publication)try{
+    if(p.options.privateDefense){
+     const preview=await requestRoll(actor,{action:"preview",id:p.id});
+     summary=preview?.summary;
+     comparisons=preview?.comparisons??[];
+    }else{
+     if(p.selected.length)summary=rollResult(actor,p);
+     comparisons=alternativesFor(actor,p);
+    }
    }catch(e){summary={ok:false,errors:[e.message]};}
-   ctx.codex.comparisons=p.publication?[]:alternativesFor(actor,p)
+   this._comparisonIds=comparisons.map(option=>option.ids);
+   ctx.codex.comparisons=comparisons
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
       .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(symbolsFor(d)),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
@@ -141,7 +160,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
       selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(symbolsFor(x))})),
     selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
     publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
-    de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
+    de:p.options.privateDefense?"Reservada":p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetName,
     critical:summary?.critical||0,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
     hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
@@ -163,7 +182,28 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const content=newElement.closest(".window-content");
   if(content&&state.contentScroll!=null)content.scrollTop=state.contentScroll;
  }
- async _onRender(ctx,options){await super._onRender(ctx,options);this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",e=>this._change(e));}
+ async _onRender(ctx,options){
+  await super._onRender(ctx,options);
+  this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",event=>this._change(event));
+  this._targetHooks??=[
+   ["targetToken",Hooks.on("targetToken",(user,token,targeted)=>{
+    if(user.id!==game.user.id||this._pending)return;
+    if(targeted){this._targetLost=false;this._lastTargetId=token.document?.uuid;}
+    else if(token.document?.parent?.tokens.has(token.id)&&this._lastTargetId===token.document.uuid)this._lastTargetId=null;
+    if(this._draft.second)void this.render();
+   })],
+   ["deleteToken",Hooks.on("deleteToken",token=>{
+    if(this._pending||token.uuid!==this._lastTargetId)return;
+    this._targetLost=true;
+    if(this._draft.second)void this.render();
+   })],
+   ["canvasReady",Hooks.on("canvasReady",()=>{
+    this._lastTargetId=null;
+    this._targetLost=false;
+    if(this._draft.second&&!this._pending)void this.render();
+   })],
+  ];
+ }
  async _change(event){
   const el=event.target;
   if(el.dataset.field){
@@ -208,6 +248,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await this.actor.update(plan.changes);
   ui.notifications.info("Compras iniciais aplicadas. Restam "+plan.remaining+" XP.");
  }
+ static async openDNA(){
+  if(!this.actor.isOwner)return;
+  const {openCodexDNA}=await import("./dna.mjs");
+  await openCodexDNA(this.actor,this.actor.getFlag(NS,"creationPending")?"development":"map");
+ }
  static async toggleEditing(){
   if(!this.actor.isOwner||this._busy||this._pending)return;
   this._editing=!this._editing;
@@ -242,6 +287,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(error){ui.notifications.info(error);return;}
    d.second=candidate;
   }else if(!d.complement&&mayComplement(system,d.base,d.second)){
+   if(disciplineNeedsAttribute([d.base,d.second,candidate])){
+    ui.notifications.info("Disciplina deve ser combinada com um Atributo.");
+    return;
+   }
    d.complement=candidate;
   }else{
    ui.notifications.info(d.complement?"Retire uma fonte para escolher outra.":"As duas fontes desta ação estão selecionadas.");
@@ -269,16 +318,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._opts.stepDieId="";
   return this.render();
  }
- static async adjustGrade(event,target){
+ static adjustGrade(_event,target){
   if(!this._editing||!this.actor.isOwner||this._pending)return;
-  const group=target.dataset.group,key=target.dataset.key,delta=Number(target.dataset.delta),valid={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES}[group];
-  if(!valid?.some(x=>x[0]===key)||![-1,1].includes(delta))return;
-  const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group],current=Number(this.actor.system[field][key]||0),next=Math.min(6,Math.max(0,current+delta));
-  if(next>current){
-   const scale=group==="attribute"&&!this.actor.system.monsterRules&&!this.actor.system.monsterHumanoidRules?XP_ATTRIBUTE:XP_TRAINING;
-   if(!canSpendXP(this.actor.system,scale[next]-scale[current])){ui.notifications.warn("XP disponível insuficiente.");return;}
-  }
-  await this.actor.update({["system."+field+"."+key]:next});
+  const {group,key,delta}=target.dataset;
+  return this._request({action:"advance",advance:{kind:"grade",group,key,delta:Number(delta)}});
  }
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;
@@ -288,17 +331,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const current=field==="system.life.value"?s.life.value:field==="system.courage"?s.courage:s.pp;
   await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
  }
- static async toggleSkill(event,target){
-  if(!this._editing||!this.actor.isOwner||this._pending||this.actor.system.monsterRules||this.actor.system.animalRules)return;
-  const id=target.dataset.key,entry=SKILLS.find(x=>x.id===id);if(!entry)return;
-  const list=[...this.actor.system.skills],index=list.indexOf(id);
-  if(index>=0)list.splice(index,1);
-  else{
-   if(!skillPrerequisite(this.actor.system,id)){ui.notifications.warn("Pré-requisito da Perícia não atendido.");return;}
-   if(!canSpendXP(this.actor.system,entry.cost)){ui.notifications.warn("XP insuficiente.");return;}
-   list.push(id);
-  }
-  await this.actor.update({"system.skills":list});
+ static toggleSkill(_event,target){
+  if(!this._editing||!this.actor.isOwner||this._pending)return;
+  const key=target.dataset.key;
+  return this._request({action:"advance",advance:{kind:"skill",key,remove:skillDetails(this.actor.system,key).owned}});
  }
  static clearDraft(){if(this._pending)return;this._draft=draft();this._opts=defaults();this.render();}
  async _request(request){
@@ -318,7 +354,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
  }
  static executeRoll(){
-  if(this._pending||this._editing)return;
+  if(this._pending||this._editing||(this._targetLost&&!game.user.targets.size))return;
   return this._request({
    action:"start",selection:this._draft,options:this._opts,
    sceneId:canvas.scene?.id,targetIds:[...game.user.targets].map(token=>token.id)
@@ -342,8 +378,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static applyComparison(_event,target){
   const p=this._pending;
   if(!p||p.publication)return;
-  const chosen=alternativesFor(this.actor,p)[Number(target.dataset.index)];
-  if(chosen)return this._request({action:"keep",id:p.id,ids:chosen.ids});
+  const ids=this._comparisonIds?.[Number(target.dataset.index)];
+  if(ids)return this._request({action:"keep",id:p.id,ids});
  }
  static finalizeRoll(){
   if(this._pending)return this._request({action:"finish",id:this._pending.id});
@@ -399,6 +435,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._draft=draft();
   this._opts=defaults();
   this._editing=false;
+  this._lastTargetId=null;
+  this._targetLost=false;
+  for(const [event,id] of this._targetHooks??[])Hooks.off(event,id);
+  this._targetHooks=null;
   return super.close(options);
  }
 }

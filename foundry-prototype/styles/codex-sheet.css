@@ -755,3 +755,40 @@
 
 .codex-character-sheet .window-content,
 .codex-character-sheet .codex-foundry-root{overflow-anchor:none}
+
+.codex-rpg {
+  --codex-d4:#a277cc; --codex-d6:#78aef1; --codex-d10:#60b781;
+  --codex-d12:#aab4c0; --codex-d20:#d7bc88;
+}
+.theme-light .codex-rpg,.theme-light.codex-rpg {
+  --codex-d4:#542176; --codex-d6:#2369bb; --codex-d10:#267a45;
+  --codex-d12:#687583; --codex-d20:#a27b35;
+}
+.codex-die-svg {
+  display:inline-block;
+  background:currentColor;
+  mask:var(--codex-die-art) center/contain no-repeat;
+}
+.codex-die-svg[data-die="4"],.codex-die-svg[data-die="4"]+b {color:var(--codex-d4)}
+.codex-die-svg[data-die="6"],.codex-die-svg[data-die="6"]+b {color:var(--codex-d6)}
+.codex-die-svg[data-die="10"],.codex-die-svg[data-die="10"]+b {color:var(--codex-d10)}
+.codex-die-svg[data-die="12"],.codex-die-svg[data-die="12"]+b {color:var(--codex-d12)}
+.codex-die-svg[data-die="20"],.codex-die-svg[data-die="20"]+b {color:var(--codex-d20)}
+.codex-source-layout>.codex-block{padding:9px}
+.codex-source-layout .codex-block-title{padding-bottom:6px;margin-bottom:6px}
+.codex-foundry-root .codex-source.is-playing{min-height:0;margin:4px 0}
+.codex-foundry-root .codex-source.is-playing .codex-source-pick{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;
+  min-height:48px;gap:2px 6px;padding:6px 8px!important;align-items:center
+}
+.codex-source-pick .codex-source-name{grid-area:1/1;overflow-wrap:anywhere}
+.codex-source-pick .codex-source-order{grid-area:1/2;text-align:right;color:var(--cx-gold);font-size:11px;font-weight:800}
+.codex-source-pick .codex-dice-strip{grid-area:2/1;min-width:0}
+.codex-foundry-root .codex-source.is-playing .codex-source-grade-tag{grid-area:2/2;position:static;padding:1px 4px}
+.codex-source-pick .codex-small-die .codex-die-svg{width:16px;height:16px}
+.codex-source-pick .codex-small-die b{font-size:10px}
+.codex-foundry-root .codex-source.is-editing{min-height:46px;margin:4px 0}
+.codex-foundry-root .codex-source.is-editing .codex-source-static{gap:2px;padding:5px 8px}
+.codex-source.is-editing .codex-grade{padding:4px;gap:3px}
+@media(pointer:fine){.codex-source.is-editing .codex-grade button{min-height:27px}}
+@media(pointer:coarse){.codex-source.is-editing .codex-grade button{min-height:44px;min-width:34px}}

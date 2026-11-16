@@ -1,5 +1,6 @@
 import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols} from "./rules.mjs";
-import {defenseDE, dodgeDE, equippedDie} from "./equipment-logic.mjs";
+import {equippedDie} from "./equipment-logic.mjs";
+import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
 import {faceIcons} from "./dice-icons.mjs";
 
@@ -27,8 +28,7 @@ export async function preparePendingRoll(actor, request, user, game) {
   const extraKeep = system.animalRules ? 0 : Math.max(0, Math.min(system.monsterRules ? 2 : 1, Math.trunc(Number(input.extraKeep)) || 0));
   const scene = game.scenes.get(sceneId);
   const combat = game.combats.find(entry => entry.started && entry.scene?.id === scene?.id);
-  const target = combat && targetIds.length ? scene?.tokens.get(targetIds[0])?.actor : null;
-  if (combat && targetIds.length && !target?.system.attributes) throw Error("Token alvo sem ficha válida.");
+  const target = lookupTarget(game, user, sceneId, targetIds, input.targetDodges === true);
   const item = actor.items.get(equipmentId);
   const equipmentDie = item ? equippedDie(actor, item, mode) : 0;
   if (equipmentId && !equipmentDie) throw Error("Equipamento não habilitado por Perícia ou elemento.");
@@ -50,11 +50,11 @@ export async function preparePendingRoll(actor, request, user, game) {
     version: 3, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
     base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
-      mode, equipmentId, de: target ? (input.targetDodges === true ? dodgeDE(target) : defenseDE(target)) : de, situation, step, extraKeep,
+      mode, equipmentId, de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
       attackWeight, targetWeight, weightEnabled: input.weightEnabled === true,
       noisy: Boolean(item?.system.properties?.includes("Barulhenta")),
-      targetActorUuid: target?.uuid ?? null, targetName: target?.name ?? "",
+      targetActorUuid: target?.actorUuid ?? null, targetTokenUuid: target?.tokenUuid ?? null, targetName: target?.name ?? "",
       cancelP: 0, convertPairs: 0, characteristic: "", secondCharacteristic: "", activationPayment: "courage",
     },
   };
@@ -63,7 +63,7 @@ export async function preparePendingRoll(actor, request, user, game) {
     changes["system.courage"] = system.courage - 1;
     if (elevation) changes[`flags.${rollNamespace}.lastElevation`] = elevation;
   }
-  return {pending, roll, changes};
+  return {pending, roll, changes, privateDE: target?.de};
 }
 
 function optionsFor(actor, options) {
@@ -75,25 +75,25 @@ function optionsFor(actor, options) {
   };
 }
 
-export function alternativesFor(actor, pending) {
-  return compareKeptOptions(pending.dice, optionsFor(actor, pending.options), 4);
+export function alternativesFor(actor, pending, de = pending.options.de) {
+  return compareKeptOptions(pending.dice, {...optionsFor(actor, pending.options), de}, 4);
 }
 
-export function rollResult(actor, pending) {
-  const options = optionsFor(actor, pending.options);
+export function rollResult(actor, pending, de = pending.options.de) {
+  const options = {...optionsFor(actor, pending.options), de};
   const kept = pending.dice.filter(die => pending.selected.includes(die.id));
   const critical = kept.length >= 2 && kept.every(die => die.face === die.sides);
   const bonusP = options.noisy ? (critical ? 2 : 1) : 0;
   return resolveRoll(pending.dice, pending.selected, {...options, bonusP});
 }
 
-export function resolvePendingRoll(actor, pending, game) {
+export function resolvePendingRoll(actor, pending, game, de = pending.options.de) {
   const s = actor.system;
   const o = pending.options;
   if (o.threatGrade != null && actor.type !== "character" && o.threatGrade !== s.threatGrade) {
     throw Error("O Grau mudou. Descarte esta rolagem e prepare outra.");
   }
-  const result = rollResult(actor, pending);
+  const result = rollResult(actor, pending, de);
   if (!result.ok) throw Error(result.errors.join(" "));
 
   const extra = Math.max(0, pending.selected.length - keepForActor(actor, 0));
@@ -148,7 +148,7 @@ export function resolvePendingRoll(actor, pending, game) {
   const overflow = result.monsterCriticalPavor - localReward;
   const content = `<div class="codex-chat-result"><h3>Codex RPG · ${escapeHTML(result.outcome)}</h3>
     <p>${sources}${o.targetName ? ` · Alvo ${escapeHTML(o.targetName)}` : ""}</p>
-    <p>DE ${result.reached}/${result.de} · ᛋ ${result.e} · ᚨ ${result.aRemaining} · ᚦ ${result.p}</p>
+    <p>Total ${result.reached} · DE ${o.privateDefense ? "reservada" : result.de} · ᛋ ${result.e} · ᚨ ${result.aRemaining} · ᚦ ${result.p}</p>
     ${result.critical ? `<p>Crítico · ${result.critical} faces máximas mantidas.</p>` : ""}
     ${active.length ? `<p>Características · ${active.map(escapeHTML).join(", ")}.</p>` : ""}
     <p>Dano básico ${result.damage} · Narrador aplica à Integridade/Vida e decide condições.</p>
@@ -157,11 +157,17 @@ export function resolvePendingRoll(actor, pending, game) {
     ${result.p ? `<p>Pavor residual · ${result.p}P para o Narrador encaminhar conforme o alvo.</p>` : ""}
     ${overflow ? `<p>Crítico · ${overflow}P excedentes para a reserva pública, até o teto.</p>` : ""}
     <p class="codex-chat-dice-heading">Dados rolados · ${pending.selected.length} de ${pending.dice.length} mantidos</p>\n    ${kept}</div>`;
-  const {selected, ...summary} = result;
+  const {selected, ...summary} = publicRollResult(result, o.privateDefense);
   const combat = game.combats.get(o.combatId);
   const adjudication = {
     combatId: combat?.id ?? null, round: o.combatRound ?? combat?.round ?? null, allyId: ally?.id ?? null,
     targetUuid: o.targetActorUuid, p: result.p,
   };
   return {changes, content, result: {...summary, costs: {courage, pp, pavor}, localReward, overflow}, adjudication};
+}
+
+export function publicRollResult(result, privateDefense) {
+  if (!privateDefense) return result;
+  const {de, ...visible} = result;
+  return visible;
 }

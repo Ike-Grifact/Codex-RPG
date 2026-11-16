@@ -165,7 +165,7 @@ test("seleção visual de duas fontes e cartas sem polígonos flutuantes",()=>{
  assert.match(html,/is-attributes-only/);
  assert.match(html,/1ª fonte/);
  assert.match(html,/2ª fonte/);
- assert.match(html,/Selecionar fonte/);
+ assert.doesNotMatch(html,/Selecionar fonte/);
  assert.match(html,/data-action="chooseSource"/);
  assert.match(html,/class="codex-result-face codex-face-icons"/);
  assert.match(html,/class="codex-result-symbols/);

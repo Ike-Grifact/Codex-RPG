@@ -1,6 +1,7 @@
 /* Codex RPG — sistema Foundry VTT v14. */
 import {CodexCharacterData,CodexHumanoidData,CodexAnimalData,CodexMonsterData,CodexMonsterHumanoidData,CodexEquipmentData} from "./data-model.mjs";
 import {registerCombatAdjudication} from "./combat-adjudication.mjs";
+import {registerDefenseSettings} from "./roll-targets.mjs";
 import {registerRollQueries} from "./roll-workflow.mjs";
 import {CodexCharacterSheet} from "./sheet.mjs";
 import {CodexEquipmentSheet} from "./item-sheet.mjs";
@@ -26,6 +27,7 @@ Hooks.once("init",()=>{
  });
  registerPublicPavor();
  registerRollQueries();
+ registerDefenseSettings();
 });
 Hooks.once("ready",()=>{
  game.codex={openPavorPanel:openPublicPavor};

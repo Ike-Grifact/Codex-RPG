@@ -3,7 +3,8 @@ const supportedDice = new Set([4, 6, 10, 12, 20]);
 export function dieSvg(sides) {
   const size = Number(sides);
   if (!supportedDice.has(size)) return "";
-  return `<img class="codex-die-svg" src="systems/codex-rpg-foundry/assets/dice/d${size}.svg" alt="" aria-hidden="true">`;
+  const art = new URL(`../assets/dice/d${size}.svg`, import.meta.url).href;
+  return `<span class="codex-die-svg" data-die="${size}" style="--codex-die-art:url(${art})" aria-hidden="true"></span>`;
 }
 
 /** Representação da face sem substituir o número persistido na rolagem. */
