@@ -196,6 +196,10 @@ function gradeCards(t,group,entries){
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
+ if(id==="invocacao-elemental"){
+  const skills=new Set(t?.skills||[]);
+  return skills.has("criar-item-foco-magia")&&skills.has("domar-criatura-pequena")&&["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].some(x=>skills.has(x));
+ }
  if(["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande"].includes(id))
   return Number(t?.attributes?.influencia||0)>=(id==="domar-criatura-pequena"?2:id==="domar-criatura-media"?3:4)&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
  return skillPrerequisite({...t,monsterRules:false},id);
