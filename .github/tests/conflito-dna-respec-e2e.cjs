@@ -52,6 +52,8 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
   await page.locator('[data-conflict-action="skill"][data-action-skill="montar"]').click();
   assert((await page.locator(".cf-action-shortcuts").innerText()).includes("Montar Animal"),
    "A Perícia não foi declarada na ação");
+  await page.locator('[data-roll-source="attribute"][data-source-key="forca"]').click();
+  await page.locator('[data-roll-source="practice"][data-source-key="atletismo"]').click();
   await page.locator("[data-roll-start]").click();
   assert(await page.locator(".cf-roll-die").count()===2,"Rolagem do NPC não usa as duas fontes");
   page.once("dialog",d=>void d.accept());
