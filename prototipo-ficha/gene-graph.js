@@ -42,60 +42,49 @@ const sourcesAffinity={
 };
 const cameras=new WeakMap(),listeners=new WeakSet();
 const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,initialized:false});return cameras.get(root);};
+// Famílias visuais com identificadores estáveis para futuros ícones.
+// Afinidade temática não substitui os requisitos de skillReq().
+const GENE_CONSTELLATIONS=[
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
+ {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
+ {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
+ {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","improviso","mestre"]},
+ {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
+ {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
+ {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo"]},
+ {id:"alquimia",label:"ALQUIMIA E TRANSFUSÃO",column:2,skills:["criar-veneno","criar-antidoto","transfusao"]},
+ {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
+ {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar"]}
+];
 function position(nodes,branches=[]){
  const byId=new Map(nodes.map(n=>[n.id,n]));
  for(const [i,key] of baseAttr.entries()){const n=byId.get("attr:"+key);if(n){n.x=800;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of baseKnow.entries()){const n=byId.get("know:"+key);if(n){n.x=265;n.y=BASE_Y+i*ROW;}}
  for(const [i,key] of basePractice.entries()){const n=byId.get("practice:"+key);if(n){n.x=1335;n.y=BASE_Y+i*ROW;}}
- // Só nós visíveis: bloqueados e filtrados não reservam espaços vazios.
- const assigned=new Set();
- function collect(indices){
-  const picked=[];
-  for(const index of indices)for(const id of branches[index]||[]){
-   const node=byId.get(id);
-   if(node?.type==="skill"&&!assigned.has(id)){assigned.add(id);picked.push(node);}
-  }
-  return picked;
- }
- // Identificar famílias pelo conteúdo, não por índices fixos:
- // versões mais recentes inserem ramos (ex.: Druídica) no início da lista.
- const groupIndices=kind=>branches.flatMap((items,i)=>{
-  const first=items?.[0]||"";
-  const section=first==="criar-item-foco-magia"||first==="escudo-arcano"?"magic":
-   first==="furtividade"||first==="furtividade-avancada"?"stealth":
-   ["recuperacao-vigorosa","provocacao-sofisticada","recobrar-coragem"].includes(first)?"support":"combat";
-  return section===kind?[i]:[];
- });
- const combat=collect(groupIndices("combat")),magic=collect(groupIndices("magic"));
- const support=collect(groupIndices("support")),stealth=collect(groupIndices("stealth"));
- const other=nodes.filter(n=>n.type==="skill"&&!assigned.has(n.id))
-  .sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
- const capacity=5,left=[...combat.slice(0,5)],right=[...magic.slice(0,5)];
- const usedSupport=Math.min(support.length,capacity-left.length);
- const usedStealth=Math.min(stealth.length,capacity-right.length);
- left.push(...support.slice(0,usedSupport));
- right.push(...stealth.slice(0,usedStealth));
- const remaining=[...combat.slice(5),...magic.slice(5),
-  ...support.slice(usedSupport),...stealth.slice(usedStealth),...other];
- while(remaining.length&&(left.length<capacity||right.length<capacity)){
-  const side=left.length<=right.length&&left.length<capacity?left:right;
-  side.push(remaining.shift());
- }
- const lateralY=[184,312,440,568,696];
- for(const [i,n] of left.entries()){n.x=530;n.y=lateralY[i];n.geneSide=true;}
- for(const [i,n] of right.entries()){n.x=1070;n.y=lateralY[i];n.geneSide=true;}
- // Um arco de faixas abaixo do núcleo; linhas têm até 8 vagas e não se cruzam.
- const columns=8,spacing=200,rowSpacing=124;
- const rows=Math.ceil(remaining.length/columns);
- for(let row=0;row<rows;row++){
-  const rowNodes=remaining.slice(row*columns,(row+1)*columns),count=rowNodes.length;
-  rowNodes.forEach((n,i)=>{
-   const centered=(i-(count-1)/2)*spacing;
-   const arc=count>1?18*Math.sin(Math.PI*i/(count-1)):0;
-   n.x=800+centered;n.y=922+row*rowSpacing+Math.round(arc);n.geneSide=false;
+ // Disposição temática independente da ordem do catálogo e da ordem dos ramos.
+ // Apenas Perícias visíveis ocupam espaço: bloqueadas/filtradas não deixam buracos.
+ const seen=new Set();
+ const defs=GENE_CONSTELLATIONS.map(def=>({...def,nodes:def.skills
+  .filter(id=>!seen.has(id)&&byId.get(id)?.type==="skill")
+  .map(id=>{seen.add(id);return byId.get(id);})})).filter(def=>def.nodes.length);
+ const extra=nodes.filter(n=>n.type==="skill"&&!seen.has(n.id)).sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ if(extra.length)defs.push({id:"outros",label:"OUTRAS PERÍCIAS",column:2,nodes:extra});
+ const margin=34,gap=18,width=(W-2*margin-2*gap)/3;
+ const top=892,verticalGap=25,rowStep=120;
+ const ends=[top,top,top],groups=[];
+ for(const family of defs){
+  const x=margin+family.column*(width+gap),y=ends[family.column];
+  const rows=Math.ceil(family.nodes.length/3),height=185+(rows-1)*rowStep;
+  family.nodes.forEach((n,i)=>{
+   const row=Math.floor(i/3),count=Math.min(3,family.nodes.length-row*3),inRow=i-row*3;
+   n.x=Math.round(x+width/2+(inRow-(count-1)/2)*160);
+   n.y=y+92+row*rowStep;
+   n.geneFamily=family.id;
   });
+  groups.push({id:family.id,label:family.label,x,y,width,height,nodes:family.nodes});
+  ends[family.column]=y+height+verticalGap;
  }
- return Math.max(1170,...nodes.filter(n=>n.type==="skill").map(n=>n.y+94));
+ return {height:Math.max(1170,...ends.map(v=>v-verticalGap+12)),groups};
 }
 function edge(a,b,cls){
  if(!a||!b)return"";
@@ -155,14 +144,14 @@ function splitSkillLabel(name,maxChars){
 }
 function skill(n){
  // Letras pequenas e em até duas linhas; full name no title e aria-label.
- const lines=splitSkillLabel(n.name,n.geneSide?16:20);
+ const lines=splitSkillLabel(n.name,16);
  const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
- return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
+ return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
-function draw(nodes,height,selected,affinity,branches,edit,camera){
+function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  const byId=new Map(nodes.map(n=>[n.id,n]));
  let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e Perícias organizadas ao redor e abaixo das fontes.">'+
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
@@ -172,18 +161,24 @@ function draw(nodes,height,selected,affinity,branches,edit,camera){
   '<text class="fp-gene-column-title is-attr" x="800" y="66" text-anchor="middle">ATRIBUTOS</text>'+
   '<text class="fp-gene-column-title is-practice" x="1335" y="66" text-anchor="middle">PRÁTICAS</text>'+
   dnaStrands();
- // Ligações de ramificações vindas do mesmo grafo temático usado no modo Obsidian.
- // NÃO equivalem a requisitos, que seguem exclusivamente skillReq().
- const connected=new Set();
- for(const branch of branches){
-  for(let i=1;i<branch.length;i++){
-   const a=byId.get(branch[i-1]),b=byId.get(branch[i]);
-   if(!a||!b)continue;
-   const signature=[a.id,b.id].sort().join("|");
-   if(connected.has(signature))continue;connected.add(signature);
-   const highlighted=selected===a.id||selected===b.id;
-   svg+=edge(a,b,"fp-gene-skill-link"+(highlighted?" is-related":""));
-  }
+ // Regiões da constelação e seus traços internos. Conexões são afinidades,
+ // não uma exigência de comprar a Perícia anterior.
+ for(const family of groups){
+  svg+='<g class="fp-gene-constellation" data-gene-family="'+esc(family.id)+'" aria-hidden="true">'+
+   '<rect class="fp-gene-constellation-border" x="'+(family.x+6)+'" y="'+(family.y+4)+'" width="'+(family.width-12)+'" height="'+(family.height-10)+'" rx="26"/>'+
+   '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+46)+'" y2="'+(family.y+46)+'"/>'+
+   '<text class="fp-gene-constellation-title" x="'+(family.x+26)+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
+  const members=family.nodes;
+  members.forEach((n,i)=>{
+   if(i%3>0&&Math.floor(i/3)===Math.floor((i-1)/3)){
+    const prev=members[i-1],active=selected===prev.id||selected===n.id;
+    svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
+   }
+   if(i>=3){
+    const prev=members[i-3],active=selected===prev.id||selected===n.id;
+    svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
+   }
+  });
  }
  // As afinidades aparecem apenas ao selecionar a fonte — sem rede de cruzamentos.
  const active=byId.get(selected);
@@ -411,8 +406,8 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
   visible=visible.filter(n=>n.type!=="skill"||filter==="all"||filter==="related"||(
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
- const height=position(visible,branches),cam=getCamera(root);
- root.innerHTML=draw(visible,height,selected,affinity,branches,edit,cam)+
+ const {height,groups}=position(visible,branches),cam=getCamera(root);
+ root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
   '<button type="button" data-gene-nav="-1" aria-label="Afastar o mapa">−</button>'+
