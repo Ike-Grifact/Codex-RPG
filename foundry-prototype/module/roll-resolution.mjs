@@ -1,6 +1,7 @@
 import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols} from "./rules.mjs";
 import {defenseDE, dodgeDE, equippedDie} from "./equipment-logic.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
+import {faceIcons} from "./dice-icons.mjs";
 
 export const rollNamespace = "codex-rpg-foundry";
 const humanoid = actor => ["humanoid", "monsterHumanoid"].includes(actor.type);
@@ -133,16 +134,12 @@ export function resolvePendingRoll(actor, pending, game) {
   // Dados rolados uma única vez; o chat informa a face e as runas de cada dado.
   const chosenIds=new Set(pending.selected);
   const cards=pending.dice.map(die=>{
-    const chosen=chosenIds.has(die.id),[e,a,p]=die.symbols??faceSymbols(die.sides,die.face);
-    const marks=[
-      e?'<b class="codex-chat-rune-e" aria-label="'+e+' Êxitos">'+('ᛋ'.repeat(e))+'</b>':"",
-      a?'<b class="codex-chat-rune-a" aria-label="'+a+' Antecipar">'+('ᚨ'.repeat(a))+'</b>':"",
-      p?'<b class="codex-chat-rune-p" aria-label="'+p+' Pavor">'+('ᚦ'.repeat(p))+'</b>':""
-    ].filter(Boolean).join(" ");
+    const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face);
+    const marks=faceIcons(symbols);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
       '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+'</div>'+
-      '<strong class="codex-chat-die-face">'+die.face+'</strong>'+
-      '<div class="codex-chat-die-marks">'+(marks||'<span>Vazio</span>')+'</div>'+
+      '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+'">'+marks+'</div>'+
+      '<div class="codex-chat-die-marks">'+(chosen?'Mantido na ação':'Não mantido')+'</div>'+
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
   }).join("");
   const kept='<div class="codex-chat-dice" role="list">'+cards+'</div>';
