@@ -32,12 +32,13 @@ test("Recuperação Vigorosa custa 1 XP e requer Vigor 3 no Foundry",()=>{
  assert.equal(skillPrerequisite(actor,"recuperacao-vigorosa"),true);
  assert.ok(!SKILLS.some(s=>s.id==="recuperacao-movimento"),"Maestria com XP pendente não pode ser comprada");
 });
-test("Texturas 3D do d10 não referenciam face histórica de Pavor",()=>{
+test("Runas 3D do d10 não exibem polígonos nem Pavor na face máxima",()=>{
  const labels=faceLabels(10);
  assert.equal(labels.length,10);
- assert.ok(labels[9].endsWith("/210-max.png"));
- assert.ok(!labels[9].endsWith("/201-max.png"));
- assert.ok(faceLabels(12)[11].endsWith("/002-max.png"));
+ assert.equal(labels[9],"ᛋᛋ ᚨ");
+ assert.ok(!labels[9].includes("ᚦ"));
+ assert.ok(labels.every(label=>!label.includes(".png")));
+ assert.equal(faceLabels(4).length,4);
 });
 test("SRD v0.44: d10 máximo 2E + 1A sem Pavor em crítico",()=>{
  const dice=[{id:"a",group:"attribute",sides:6,face:1},
