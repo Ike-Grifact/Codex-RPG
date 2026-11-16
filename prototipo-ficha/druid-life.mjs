@@ -1,50 +1,43 @@
 /**
- * Codex RPG — transferência de perda de Vida Druídica por três faixas.
- * Referência: SRD v0.47, seção 0-AG.1 (decisão autoral de 16/11/2026).
+ * PROPOSTO — conversão Druídica na nova Vida de QUATRO faixas.
+ * O autor aprovou a estrutura de quatro estados; ainda não aprovou
+ * expressamente a equivalência de dano entre faixas animal/humana.
+ * Portanto este utilitário É EXPERIMENTAL, não altera fichas reais.
  *
- * Funções puras: não transformam a ficha, não curam dano humano anterior
- * e não automatizam Vida atual, estados, mudanças de forma ou recuperação.
+ * As vidas máximas desta hipótese partem de 4, com excedentes
+ * alternando entre Saudável/Ferido; Incapacitado e Inconsciente têm 1.
  */
-export function distribuirVidaEmTercos(vidaMaxima) {
-  if (!Number.isSafeInteger(vidaMaxima) || vidaMaxima < 1) {
-    throw new RangeError("Vida máxima deve ser um inteiro positivo.");
+export function distribuirVidaEmQuatroFaixas(vidaMaxima) {
+  if (!Number.isSafeInteger(vidaMaxima) || vidaMaxima < 4) {
+    throw new RangeError("Vida máxima deste modelo deve ser inteiro >= 4.");
   }
-  const base = Math.floor(vidaMaxima / 3);
-  const excedentes = vidaMaxima % 3;
-  return [0, 1, 2].map((faixa) => base + (faixa < excedentes ? 1 : 0));
+  const pontosExtras = vidaMaxima - 4;
+  return [1 + Math.ceil(pontosExtras / 2), 1 + Math.floor(pontosExtras / 2), 1, 1];
 }
 
 /**
- * Converte o dano total SOFRIDO em forma animal em perda humana por faixas
- * integralmente consumidas, na ordem da maior faixa para a menor.
- *
- * Ex.: humano 4 [2,1,1], urso 6 [2,2,2]:
- * dano animal 2/3 -> perda humana 2; dano 4/5 -> perda humana 3;
- * dano >= 6 -> morte. Os resultados consideram humano inicialmente íntegro,
- * apenas para referência. Aplicação sobre ferimentos anteriores fica PENDENTE.
+ * HIPÓTESE (não aprovada): cada faixa animal INTEIRAMENTE perdida
+ * transfere a perda da faixa humana na mesma posição.
+ * A morte animal continua fatal. Não considera dano humano anterior.
  */
 export function converterPerdaDeVidaDruidica({ vidaMaximaHumana, vidaMaximaAnimal, danoAnimal }) {
-  const faixasHumanas = distribuirVidaEmTercos(vidaMaximaHumana);
-  const faixasAnimais = distribuirVidaEmTercos(vidaMaximaAnimal);
+  const faixasHumanas = distribuirVidaEmQuatroFaixas(vidaMaximaHumana);
+  const faixasAnimais = distribuirVidaEmQuatroFaixas(vidaMaximaAnimal);
   if (!Number.isSafeInteger(danoAnimal) || danoAnimal < 0) {
-    throw new RangeError("Dano animal deve ser um inteiro não negativo.");
+    throw new RangeError("Dano animal deve ser inteiro não negativo.");
   }
   const danoEfetivo = Math.min(danoAnimal, vidaMaximaAnimal);
-  let acumuladoAnimal = 0;
-  let faixasPerdidas = 0;
+  let acumuladoAnimal = 0, faixasPerdidas = 0;
   for (const faixa of faixasAnimais) {
     acumuladoAnimal += faixa;
     if (danoEfetivo >= acumuladoAnimal) faixasPerdidas++;
     else break;
   }
-  const danoHumanoCorrespondente = faixasHumanas
-    .slice(0, faixasPerdidas)
-    .reduce((acumulado, pontos) => acumulado + pontos, 0);
+  const danoHumanoCorrespondente = faixasHumanas.slice(0,faixasPerdidas)
+    .reduce((acc,x)=>acc+x,0);
   return {
-    faixasHumanas,
-    faixasAnimais,
-    faixasPerdidas,
-    danoHumanoCorrespondente,
+    hipoteseNaoAprovada: true,
+    faixasHumanas,faixasAnimais,faixasPerdidas,danoHumanoCorrespondente,
     vidaHumanaRestanteSeIntegro: vidaMaximaHumana - danoHumanoCorrespondente,
     morteAnimal: danoAnimal >= vidaMaximaAnimal
   };
