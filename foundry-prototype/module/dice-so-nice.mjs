@@ -5,15 +5,20 @@ const colorset="codex-runas";
 // No d4, o Dice So Nice repete as marcas junto a cada vértice.
 const fontScale={4:0.82,6:1.35,10:1.02,12:1.1,20:1};
 
-/* Dados 3D exibem SOMENTE as runas da face. O PNG antigo desenhava
-   grafismos de poliedros dentro do rótulo e ficava minúsculo no d4/d10.
-   A geometria 3D pertence ao Dice So Nice; não duplicar no label. */
+/* PNGs transparentes coloridos são gerados ao empacotar. Cada arquivo contém
+   apenas runas e multiplicadores, sem polígonos; o resultado numérico não muda. */
 export function faceLabels(sides){
  const faces=FACES[sides];
  if(!faces)return [];
  return faces.map(([e,a,p])=>
   ["ᛋ".repeat(e),"ᚨ".repeat(a),"ᚦ".repeat(p)].filter(Boolean).join(" ") || " "
  );
+}
+
+export function faceImageLabels(sides){
+ const faces=FACES[sides];
+ if(!faces)return [];
+ return faces.map(([e,a,p])=>`systems/codex-rpg-foundry/assets/dice/runes/e${e}-a${a}-p${p}.png`);
 }
 
 export function registerCodexDice(dice3d){
@@ -25,8 +30,8 @@ export function registerCodexDice(dice3d){
   texture:"none",material:"plastic",font:"Segoe UI Symbol"
  });
  for(const sides of Object.keys(FACES)){
-  dice3d.addDicePreset({type:`d${sides}`,system,labels:faceLabels(sides),
-    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides]});
+  dice3d.addDicePreset({type:`d${sides}`,system,labels:faceImageLabels(sides),
+    colorset,font:"Segoe UI Symbol",fontScale:fontScale[sides],labelScale:sides==="4"?1.22:1.06});
  }
 }
 
