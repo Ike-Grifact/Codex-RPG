@@ -3050,6 +3050,46 @@ function onClick(event){
   }
   save();render();break;
  }
+ case "large-companion-toggle":
+ case "large-companion-support":
+ case "large-companion-grade":
+ case "large-companion-life":
+ case "large-companion-match-xp":{
+  if(state.pending){toast("Finalize a rolagem antes de alterar o companheiro.");break;}
+  if(!state.skills.includes("domar-criatura-grande"))break;
+  const pet=state.largeCompanion;
+  if(action==="large-companion-toggle"){
+   if(pet.present&&!confirm("Retirar a criatura grande e suspender seu apoio? Os Atributos e XP da ficha serão preservados."))break;
+   const freshCreature=!pet.present&&pet.xpGranted===0&&largeCompanionSpent(pet)===0;
+   pet.present=!pet.present;pet.inCombat=false;
+   if(freshCreature){pet.level=state.level;pet.xpGranted=playerTotalXp();}
+   pet.level=clamp(pet.level,1,state.level);
+   if(pet.present&&pet.life<=0)pet.life=largeCompanionMaxLife(pet);
+   toast(pet.present?"Companheiro grande registrado; sua ficha está disponível.":"Companheiro ausente; bônus suspenso.");
+  }else if(!pet.present){break;
+  }else if(action==="large-companion-match-xp"){
+   const currentXp=playerTotalXp();
+   if(currentXp<largeCompanionSpent(pet)){toast("XP do jogador é menor que o total já investido na criatura; preserve o XP anterior.");break;}
+   if(!confirm("Igualar XP da criatura aos "+currentXp+" XP atuais do jogador? O nível e os Atributos permanecem."))break;
+   pet.xpGranted=currentXp;
+  }else if(action==="large-companion-support"){
+   pet.inCombat=!pet.inCombat;
+  }else if(action==="large-companion-grade"){
+   const id=button.dataset.key;
+   if(!A.some(x=>x[0]===id))break;
+   const current=pet.attributes[id]||0,d=Number(delta),next=current+d;
+   if(![-1,1].includes(d)||next<0||next>6)break;
+   const cost=TRAIN_COST[next]-TRAIN_COST[current];
+   if(d>0&&largeCompanionSpent(pet)+cost>pet.xpGranted){
+    toast("XP próprio insuficiente para comprar o Atributo da criatura.");break;
+   }
+   pet.attributes[id]=next;pet.life=clamp(pet.life,0,largeCompanionMaxLife(pet));
+  }else if(action==="large-companion-life"){
+   pet.life=clamp(pet.life+Number(delta),0,largeCompanionMaxLife(pet));
+   if(pet.life===0){pet.inCombat=false;toast("A criatura ficou com Vida 0; risco e incapacidade devem ser resolvidos na mesa.");}
+  }
+  save();render();break;
+ }
  case "prepare-domar-media":prepareMediumCompanionTest();break;
  case "prepare-domar-criatura":prepareSmallCompanionTest();break;
  case "prepare-element":prepareElementSkill(id);break;
@@ -3150,6 +3190,19 @@ function onChange(event){
    if(String(v)!==String(el.value))toast("XP da criatura ajustado para respeitar o XP já investido.");
   }else return;
   save();renderMediumCompanion();return;
+ }
+ if(el.dataset.largeField!==undefined){
+  const pet=state.largeCompanion;if(!state.skills.includes("domar-criatura-grande")||!pet.present||state.pending)return;
+  const key=el.dataset.largeField;
+  if(key==="name")pet.name=String(el.value).slice(0,80);
+  else if(key==="notes")pet.notes=String(el.value).slice(0,1000);
+  else if(key==="level")pet.level=clamp(Math.floor(Number(el.value)),1,state.level);
+  else if(key==="xpGranted"){
+   const v=clamp(Math.floor(Number(el.value)),largeCompanionSpent(pet),MEDIUM_COMPANION_XP_CAP);
+   pet.xpGranted=v;
+   if(String(v)!==String(el.value))toast("XP da criatura ajustado para respeitar o XP já investido.");
+  }else return;
+  save();renderLargeCompanion();return;
  }
  if(el.dataset.wizardVtDraft!==undefined){
   if(state.trade.purchases.length||state.trade.collected)return;
