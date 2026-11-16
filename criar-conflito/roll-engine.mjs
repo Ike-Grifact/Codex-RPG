@@ -41,7 +41,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  // Pagar só pelo quarto dado efetivamente mantido: ativar o controle sem usá-lo
  // não consome Coragem. A autorização ainda é necessária para passar do limite natural.
  const paidExtraKeep=extraKeep&&kept.length>naturalKeep;
- const courageCost=Number(paidExtraKeep)+Number(!!options.stepDieId);
+ const courageCost=Number(paidExtraKeep)+Number(!!options.stepSourceId);
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
@@ -62,7 +62,7 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
 }
 
 /** Composição com duas fontes livres e terceira habilitada; a validação é a mesma do motor de rolagens. */
-export function composeActionPool(unit,selection={},stepDieId=""){
+export function composeActionPool(unit,selection={},stepSourceId=""){
  if(!unit)return {ok:false,error:"Selecione uma ficha."};
  const human=isHumanoidKind(unit.kind),system=toSystem(unit);
  const first=selection.firstSource||(human?
@@ -73,7 +73,7 @@ export function composeActionPool(unit,selection={},stepDieId=""){
  const discipline=sources.some(src=>src.group==="practice"&&src.key==="armas_conjuracao");
  const mode=discipline?(selection.mode||"armas"):"normal";
  const result=buildPool(system,{base:first,attribute:second,complement:extra},{
-  mode,contextApproved:!!selection.contextOK,step:!!stepDieId,stepDieId
+  mode,step:!!stepSourceId,stepSourceId
  });
  if(!result.ok)return {ok:false,error:result.errors.join(" ")};
  if(result.pool.length<2||result.pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
@@ -92,7 +92,7 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
  const kept=Array.isArray(keptIds)?[...new Set(keptIds)]:[];
  const count=kept.length;
  const cap=unit?.kind==="monstro"?stats(unit).keepMax:2;
- const cost=unit?.kind==="monstro"?Math.max(0,count-2)+Number(!!options.stepDieId):0;
+ const cost=unit?.kind==="monstro"?Math.max(0,count-2)+Number(!!options.stepSourceId):0;
  if(!unit||isHumanoidKind(unit.kind))return {ok:false,error:"Este simulador é para criaturas não humanoides."};
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
