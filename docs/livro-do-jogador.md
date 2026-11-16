@@ -40,7 +40,7 @@ As penalidades não se acumulam entre estados. O custo de Coragem indicado habil
 
 **PENDENTE:** a regra anterior também somava `piso(Força/2)` à Vida máxima. O autor não esclareceu se esse bônus foi revogado, portanto a coluna de Vida mostra **somente a parcela base + Vigor**, não uma nova fórmula global confirmada. A migração de fichas e a aplicação automática ficam pendentes. Recuperação Vigorosa, Instinto de Sobrevivência e Veneno precisam de compatibilização.
 
-**Atenção de balanceamento:** Pavor contribui para superar a DE nas regras atuais. Assim, **−1E+1P** e **−2E+2P** não são redutores garantidos de chance de acerto; podem trocar sucesso limpo por sucesso arriscado e, em alguns resultados, **aumentar o alcance de DE**. Esse efeito não foi corrigido à revelia do autor.
+**Atenção de balanceamento:** Pavor contribui para superar a DE nas regras atuais. Assim, **−1E+1P** e **−2E+2P** não são redutores garantidos de chance de acerto; podem trocar sucesso limpo por sucesso arriscado e, em alguns resultados, **aumentar o alcance de DE**. Esse efeito não foi corrigido à revelia do autor. [Veja as probabilidades exatas por estado](playtests/analise-saude-quatro-estados-2026-11-16.md).
 
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
