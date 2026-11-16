@@ -7,7 +7,9 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_
 const PLAYER_DNA_EXTRA_SKILLS=[
  {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
  {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
- {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1}
+ {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1},
+ {id:"domar-criatura-media",name:"Domar Criatura Média",detail:"1 XP; Influência 3 + Apresentação 1 + Inteligência 1.",cost:1},
+ {id:"domar-criatura-grande",name:"Domar Criatura Grande",detail:"1 XP; Influência 4 + Apresentação 1 + Inteligência 1.",cost:1}
 ];
 export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};

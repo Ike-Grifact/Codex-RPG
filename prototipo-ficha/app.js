@@ -295,7 +295,17 @@ const SKILLS=[
  [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
-  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 2 Coragens e teste de Influência contra a DE da criatura pequena. A Perícia não domestica automaticamente. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena pode ter ficha independente opcional com o mesmo XP do domador, gastando 2x em Força/Vigor, e tem 1 Vida quando exposta a risco próprio. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  1
+ ],
+ [
+  "domar-criatura-media","Domar Criatura Média",
+  "1 XP. Influência 3, Apresentação 1, Inteligência 1. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  1
+ ],
+ [
+  "domar-criatura-grande","Domar Criatura Grande",
+  "1 XP. Influência 4, Apresentação 1, Inteligência 1. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
   1
  ],
  [
@@ -314,6 +324,8 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "domar-criatura-media":["attr:influencia","attr:inteligencia","practice:apresentacao"],
+ "domar-criatura-grande":["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "domar-criatura-pequena": ["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
  "combate": [
@@ -593,6 +605,8 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "domar-criatura-media":"domar-criatura-media",
+ "domar-criatura-grande":"domar-criatura-grande",
  "domar-criatura-pequena": "domar-criatura-pequena",
  "pericia-druidica": "pericia-druidica",
  "combate": "combate",
@@ -642,6 +656,8 @@ const SKILL_PERMALINKS={
  "furtividade-avancada": "furtividade-avancada"
 };
 const CARD_REQUIREMENTS={
+ "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1",
+ "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
  "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
@@ -676,7 +692,9 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
- "domar-criatura-pequena": "Um companheiro Pequeno por personagem; +1A em combate, +1 Vida, opção de sacrifício; XP soma ao grupo no conflito.",
+ "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
+ "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
+ "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria em risco independente, ficha opcional, sacrifício protetor.",
  "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
@@ -710,7 +728,9 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 2 Coragens e teste de Influência. Compra não é domesticação.",
+ "domar-criatura-media":"1 XP. Influência 3, Apresentação 1 e Inteligência 1.",
+ "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1 e Inteligência 1.",
+ "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
  "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
@@ -744,7 +764,9 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
- "domar-criatura-pequena": "1 PP ou 2 Coragens + teste de Influência",
+ "domar-criatura-media":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-grande":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-pequena": "1 PP ou 1 Coragem + teste de Influência + Apresentação",
  "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
  "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
  "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
@@ -1080,6 +1102,10 @@ function normalize(v){
  s.items=Array.isArray(v.items)?v.items.slice(0,150).map(raw=>{
   const item=normalizeItem(raw);
   const old={"Armadura Leve":10,"Armadura Média":15,"Armadura Pesada":20};
+  if(item.type==="armadura"&&item.grade===1&&item.catalogId==="Roupas Simples"&&item.max===0){
+   // Anteriormente não havia Integridade; G1 agora tem 3. Item de catálogo apenas.
+   item.max=3;item.hp=3;
+  }
   const previous=old[item.catalogId];
   if(item.type==="armadura"&&item.grade===1&&previous&&item.max===previous){
    item.max=previous-3;item.hp=Math.min(item.max,Math.max(0,item.hp-3));
@@ -1115,7 +1141,7 @@ function normalizeItem(it={}){
  const type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(it.type)?it.type:"outro";
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
  const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
- const max=type==="armadura"&&weight==="muito_leve"?0:clamp(Math.floor(it.max??0),0,999);
+ const max=clamp(Math.floor(it.max??0),0,999);
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
@@ -1192,8 +1218,9 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  const has=x=>s.skills.includes(x);
+ if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
  if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
- if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena pode ser comprada; custos e requisitos de Domar Média/Grande ainda pendentes, portanto a Druídica continua bloqueada.";
+ if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena, Média e Grande podem ser compradas com 1 XP cada, respeitando seus requisitos.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
@@ -1444,6 +1471,9 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
+ "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1"]],
+ "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
