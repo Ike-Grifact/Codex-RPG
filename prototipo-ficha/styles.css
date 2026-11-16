@@ -1287,3 +1287,31 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
 .fp-medium-notes{margin:8px 0 14px}
 .fp-medium-companion-panel .fp-caption{line-height:1.55;color:var(--fp-muted)}
 @media(max-width:600px){.fp-medium-sources{grid-template-columns:1fr}.fp-medium-companion-panel{padding:12px}}
+
+/* SRD v0.45 — ficha de companheiro grande: atributos comprados por XP próprio. */
+.fp-large-companion-panel{margin-block:12px 20px;border:1px solid color-mix(in srgb,var(--fp-a) 32%,var(--fp-stroke))}
+.fp-large-companion-panel[hidden]{display:none}
+.fp-large-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin:0 0 16px}
+.fp-large-summary>span{display:grid;gap:4px;padding:11px;border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised)}
+.fp-large-summary b{font-size:15px;color:var(--fp-text)}
+.fp-large-summary small{font-size:10px;color:var(--fp-muted);line-height:1.4}
+.fp-large-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:15px}
+.fp-large-fields label,.fp-large-notes{display:grid;gap:6px;font-size:11px;color:var(--fp-muted)}
+.fp-large-fields input,.fp-large-notes textarea{width:100%;box-sizing:border-box;border:1px solid var(--fp-stroke);border-radius:8px;padding:10px;
+ background:var(--fp-surface);color:var(--fp-text);font:inherit;font-size:13px}
+.fp-large-sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.fp-large-source{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;background:var(--fp-raised);
+ border:1px solid var(--fp-stroke);border-radius:9px;min-width:0}
+.fp-large-source-label{display:grid;gap:5px;min-width:0}
+.fp-large-source-label strong{font-size:12px;color:var(--fp-text)}
+.fp-large-source-label>span{display:flex;flex-wrap:wrap;gap:3px}
+.fp-large-source-actions{display:flex;align-items:center;gap:6px}
+.fp-large-source-actions button,.fp-large-companion-panel .fp-companion-actions button{border:1px solid var(--fp-stroke);border-radius:7px;
+ padding:7px 9px;background:var(--fp-surface);color:var(--fp-text);cursor:pointer}
+.fp-large-source-actions button:disabled,.fp-large-companion-panel .fp-companion-actions button:disabled{opacity:.4;cursor:not-allowed}
+.fp-large-source-actions b{min-width:12px;text-align:center}
+.fp-large-source-actions small{font-size:10px;min-width:35px;color:var(--fp-muted)}
+.fp-large-companion-panel .fp-companion-actions{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.fp-large-notes{margin:8px 0 14px}
+.fp-large-companion-panel .fp-caption{line-height:1.55;color:var(--fp-muted)}
+@media(max-width:600px){.fp-large-sources{grid-template-columns:1fr}.fp-large-companion-panel{padding:12px}}
