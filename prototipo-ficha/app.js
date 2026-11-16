@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.46 (d4 faces 1E, 1A, 1P, vazio); histórico v0.45 (Perícia Druídica documental; formas não automatizadas), base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
+/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica: aquisição única 2 XP e Vida por terços, formas ainda não automatizadas); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 20 XP iniciais experimentais. */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
