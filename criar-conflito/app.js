@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
+ PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
  from "./rules.mjs?v=20261116-domar52";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -204,8 +204,9 @@ function canBuySkill(t,id){
   return skills.has("criar-item-foco-magia")&&skills.has("domar-criatura-pequena");
  }
  if(id==="domar-criatura-media")return canBuyDomarMedium(t);
- if(["domar-criatura-pequena","domar-criatura-grande"].includes(id))
-  return Number(t?.attributes?.influencia||0)>=(id==="domar-criatura-pequena"?2:id==="domar-criatura-media"?3:4)&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
+ if(id==="domar-criatura-grande")return canBuyDomarGrande(t);
+ if(id==="domar-criatura-pequena")
+  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
  return skillPrerequisite({...t,monsterRules:false},id);
 }
 function skillPanel(t){
@@ -660,6 +661,10 @@ function remove(id){
 function toggleSkill(id,checked){
  const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
  if(checked&&!canBuySkill(t,id))return notice("Requisitos não atendidos.");
+ if(!checked&&id==="domar-criatura-pequena"&&t.skills.some(s=>s==="domar-criatura-media"||s==="domar-criatura-grande"))
+  return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
+ if(!checked&&id==="domar-criatura-media"&&t.skills.includes("domar-criatura-grande"))
+  return notice("Domar Criatura Média é requisito de Domar Criatura Grande. Remova Grande primeiro.");
  if(checked&&!t.skills.includes(id))t.skills.push(id);
  else if(!checked)t.skills=t.skills.filter(x=>x!==id);
  if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
