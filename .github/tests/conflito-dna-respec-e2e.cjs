@@ -70,21 +70,27 @@ const assert=(yes,msg)=>{if(!yes)throw Error(msg);};
    const s=JSON.parse(localStorage.getItem("codex-html-ficha-npc-dna-v1"));
    s.creationLocked=true;s.skills=["combate"];
    s.creationBudgetSnapshot={attr:1,training:2,skills:1};
-   localStorage.setItem("codex-html-ficha-prototipo-v1",JSON.stringify(s));
+   const index=JSON.parse(localStorage.getItem("codex-rpg-jogadores-index-v1"));
+   const slotKey="codex-rpg-jogador-ficha-v1:"+index.activeId;
+   localStorage.setItem(slotKey,JSON.stringify({
+    schema:"codex-jogador-ficha-v1",character:s,wizard:{version:4,step:4,reached:4}
+   }));
   });
   await player.reload({waitUntil:"domcontentloaded"});
   await player.locator('#sheet-navigation button[data-sheet-page="evolution"]').click();
   assert(await player.locator('#respec-skills-list [data-action="respec-skill"][data-id="combate"]').count()===1,
    "A Perícia legada adquirida não oferece restituição no painel de evolução");
   const xpBefore=await player.evaluate(()=>{
-   const s=JSON.parse(localStorage.getItem("codex-html-ficha-prototipo-v1"));
-   return s.skills.length;
+   const index=JSON.parse(localStorage.getItem("codex-rpg-jogadores-index-v1"));
+   const slot=JSON.parse(localStorage.getItem("codex-rpg-jogador-ficha-v1:"+index.activeId));
+   return slot.character.skills.length;
   });
   assert(xpBefore===1,"O cenário de XP de teste precisa ter uma Perícia");
   player.once("dialog",d=>void d.accept());
   await player.locator('#respec-skills-list [data-action="respec-skill"][data-id="combate"]').click();
   const xpAfter=await player.evaluate(()=>{
-   const s=JSON.parse(localStorage.getItem("codex-html-ficha-prototipo-v1"));
+   const index=JSON.parse(localStorage.getItem("codex-rpg-jogadores-index-v1"));
+   const s=JSON.parse(localStorage.getItem("codex-rpg-jogador-ficha-v1:"+index.activeId)).character;
    return {skills:s.skills,xpEarned:s.xpEarned,attrs:s.attributes.forca,practice:s.practices.atletismo};
   });
   assert(xpAfter.skills.length===0&&xpAfter.xpEarned===0&&xpAfter.attrs===1&&xpAfter.practice===1,
