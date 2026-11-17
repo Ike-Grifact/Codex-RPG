@@ -12,7 +12,8 @@ Este repositório é o **novo lar independente** das regras, do Livro do Jogador
 | Livro do Jogador (página navegável) | [livro.html](livro.html) | Primeira edição do novo portal |
 | Criador de Aprendizes nível 1 | [criador.html](criador.html) | **Protótipo de playtest funcional** |
 | Livro do Jogador (Markdown editável) | [docs/livro-do-jogador.md](docs/livro-do-jogador.md) | Primeira edição de leitura |
-| **SRD de Continuidade v0.59 (atual)** | [docs/srd-continuidade-v0.59.md](docs/srd-continuidade-v0.59.md) | **Origem = Raça** na Etapa 1, sem campo de origem narrativa nem seletor racial duplicado. |
+| **SRD de Continuidade v0.60 (atual)** | [docs/srd-continuidade-v0.60.md](docs/srd-continuidade-v0.60.md) | **Múltiplas fichas independentes** de Aprendizes, com criação, duplicação, alternância, importação e exclusão segura. |
+| **SRD de Continuidade v0.59 (identidade vigente)** | [docs/srd-continuidade-v0.59.md](docs/srd-continuidade-v0.59.md) | **Origem = Raça** na Etapa 1, sem campo de origem narrativa nem seletor racial duplicado. |
 | **SRD de Continuidade v0.58 (histórico de XP vigente)** | [docs/srd-continuidade-v0.58.md](docs/srd-continuidade-v0.58.md) | **18 XP iniciais [EXPERIMENTAL]** mantidos, custos compactos preservados e 260 XP totais no nível 20. |
 | **SRD de Continuidade v0.57 (histórico)** | [docs/srd-continuidade-v0.57.md](docs/srd-continuidade-v0.57.md) | Orçamento anterior de 15 XP, substituído após teste de builds. |
 | **SRD de Continuidade v0.52 (histórico)** | [docs/srd-continuidade-v0.52.md](docs/srd-continuidade-v0.52.md) | **Ativações comuns 1 PP ou 1 Coragem**, Olhos de Águia passiva, e **Domar Média exige Domar Pequena** além dos requisitos anteriores. Exceções e preparação de magia não são alteradas automaticamente. |
@@ -73,7 +74,7 @@ Para testar as páginas e o armazenamento local com uma origem HTTP (recomendado
 
 Depois abra: http://localhost:8000/
 
-O projeto não coleta nem envia a ficha a um servidor; o navegador armazena o progresso em localStorage. Exporte JSON se quiser preservar ou compartilhar a ficha.
+O projeto não coleta nem envia as fichas a um servidor; o navegador armazena cada personagem em uma chave própria de localStorage. É possível criar, duplicar, alternar e excluir personagens pelo seletor **Minhas fichas de jogadores**. Fichas antigas individuais são recuperadas automaticamente sem apagar a chave original. Exporte JSON para fazer backup, transportar fichas ou contornar limites de espaço do navegador.
 
 ## Publicar com GitHub Pages
 
@@ -88,7 +89,7 @@ Endereço normalmente usado para este nome de repositório: https://ike-grifact.
 
 ## Regras, estados e precedência
 
-Na versão atual para playtest, a referência mais recente é o **[SRD de Continuidade v0.59](docs/srd-continuidade-v0.59.md)** (identidade), mantendo o **[SRD v0.58](docs/srd-continuidade-v0.58.md)** para XP; as versões anteriores permanecem preservadas como histórico. A seção **0-AD** fecha armaduras −3, renomeação da Conjuração Refinada, preço relativo 3× e análise probabilística sem regra automática; a seção **0-AC** revê custos e conjuração com foco e registra a compra de pedras com valores VT pendentes; a seção **0-AB** homologa Trevas +2P para DE/dano/risco e a distribuição ou concentração de Pavor entre até dois alvos; a seção **0-AA** define o Pavor local inicial cheio (G1=4P a G6=8P) e o destino do Pavor no alvo atacado, sem turnos adicionais; a seção **0-Z** homologa a face crítica do d10 (**2E+1A**) e a escolha livre do dado elevado com Coragem; a seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11. As seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
+Na versão atual para playtest, a referência mais recente é o **[SRD de Continuidade v0.60](docs/srd-continuidade-v0.60.md)** (múltiplas fichas), mantendo o **[SRD v0.59](docs/srd-continuidade-v0.59.md)** para identidade e o **[SRD v0.58](docs/srd-continuidade-v0.58.md)** para XP; as versões anteriores permanecem preservadas como histórico. A seção **0-AD** fecha armaduras −3, renomeação da Conjuração Refinada, preço relativo 3× e análise probabilística sem regra automática; a seção **0-AC** revê custos e conjuração com foco e registra a compra de pedras com valores VT pendentes; a seção **0-AB** homologa Trevas +2P para DE/dano/risco e a distribuição ou concentração de Pavor entre até dois alvos; a seção **0-AA** define o Pavor local inicial cheio (G1=4P a G6=8P) e o destino do Pavor no alvo atacado, sem turnos adicionais; a seção **0-Z** homologa a face crítica do d10 (**2E+1A**) e a escolha livre do dado elevado com Coragem; a seção **0-Y** define a distribuição livre de XP na criação; **0-X** rege características de armas e outras decisões de 13/11. As seções **0-W** e **0-V** continuam vigentes nos assuntos não modificados. Ordem de precedência:
 
 1. Decisão explícita mais recente do autor.
 2. Seção 0-AD da v0.44 para Conjuração Refinada, armaduras, pedras 3× e DE de competência; depois 0-AC para custo e elementos, 0-AB para Trevas, 0-AA para Pavor local, 0-Z para faces e elevação com Coragem, 0-Y para criação e 0-X para armas.
