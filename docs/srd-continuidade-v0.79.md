@@ -58,7 +58,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 **DEFINIDO — retirada de Cravar (complementa e corrige v0.78):** exige rolagem combinada pertinente que inclua **Força, Atletismo ou Vigor**, junto de outra fonte válida. Não vale rolar uma fonte isolada. A **DE depende da categoria de peso da arma cravada**: **Leve 1; Média 2; Pesada 3**, com **teto geral 4**. Acertar a DE retira a arma; falhar mantém a condição. Nenhum custo de PP/Coragem ou Perícia de arma foi acrescentado à retirada.
 
-**DEFINIDO — destino após retirada bem-sucedida (opção A, 17/11/2026):** a arma retirada **fica imediatamente na mão da pessoa que a retirou, desde que essa pessoa tenha uma mão disponível**. A arma deixa de contar como peso preso ao escudo e passa a estar em posse de quem a retirou. **Não cai no chão automaticamente** e não se exige outra ação de coleta apenas para recebê-la após essa retirada bem-sucedida. Cada arma removida elimina somente seu próprio −1E em Levantar Escudo. **PENDENTE:** procedimento quando não há mão disponível; não inventar descarte automático, troca de equipamento ou ação grátis.
+**DEFINIDO — destino após retirada bem-sucedida (opções A e B, 17/11/2026):** o personagem **pode tentar retirar uma arma cravada mesmo sem mão livre**, usando o teste e a DE de retirada já definidos. **Se tiver uma mão livre e obtiver sucesso**, a arma **vai imediatamente para essa mão**, sem exigir outra ação de coleta. **Se estiver com as duas mãos ocupadas e obtiver sucesso**, a arma **se desprende e cai no chão**; não fica equipada nem passa automaticamente ao inventário. **Em falha**, permanece cravada no escudo. Em ambos os sucessos, a arma deixa de acrescentar peso ao escudo e elimina somente seu próprio −1E em Levantar Escudo. Não criar penalidade de rolagem, ação ou custo adicional para o caso sem mão livre.
 
 **IMPORTANTE:** v0.77/v0.78 só autorizam a **aplicação de Cravar** com arma **Média ou Pesada** e seus gatilhos já aprovados; a existência de uma DE de retirada para arma Leve **não libera, por si só, armas Leves para cravar**. Conservar a restrição até decisão explícita.
 
@@ -66,7 +66,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 **DEFINIDO — Sobrecarga:** a condição de Sobrecarga aplica **−1E em todos os testes**. O peso natural, a dimensão e as proteções de criaturas devem aproveitar as regras já existentes para o porte, sem criar novas tabelas ou algoritmos.
 
-**DEFINIDO:** múltiplas armas cravadas no mesmo escudo acumulam −1E por arma em Levantar Escudo; ao retirar uma arma com sucesso e **mão disponível**, quem a retirou recebe-a diretamente na mão. **PENDENTE:** situação de retirada sem mão livre e outros procedimentos não expressamente aprovados. **PENDENTE DE IMPLEMENTAÇÃO:** interfaces podem ainda usar −2E fixos, DE manual ou posse antiga da arma; devem ser reconciliadas com estas decisões.
+**DEFINIDO:** múltiplas armas cravadas acumulam −1E por arma em Levantar Escudo. Retirada bem-sucedida: **com mão livre → arma na mão de quem retirou; sem mão livre → arma no chão**. **PENDENTE:** duração exata da ação de retirada e outros procedimentos ainda não expressamente aprovados. **PENDENTE DE IMPLEMENTAÇÃO:** interfaces podem usar −2E fixos, DE manual ou posse antiga da arma; reconciliar com estas decisões.
 
 ### 3. Conjuração: graus e preparação
 
@@ -183,7 +183,7 @@ Não cobrar as três formas cumulativamente.
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **DEFINIDO:** quando o foco comum esgota durante a rodada, recupera 1 carga **no fim dessa mesma rodada**, depois do fluxo de jogadores e inimigos; Pedra da Alma é exceção |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
-| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: aplicar **−1E cumulativo por arma cravada somente em Levantar Escudo**, retirar a penalidade por arma removida, calcular DE por peso, transferir arma retirada com sucesso para a **mão livre de quem a retirou** e aplicar −1E geral independente da Sobrecarga |
+| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: aplicar **−1E cumulativo por arma cravada somente em Levantar Escudo**, retirar a penalidade por arma removida, calcular DE por peso e colocar arma removida com sucesso **na mão livre de quem retirou ou no chão quando não houver mão livre**, além do −1E geral independente da Sobrecarga |
 | 15 XP iniciais | **EXPERIMENTAL**: revisar balanceamento; ainda não alterar a progressão fora do início |
 
 ### 7.1. Auditoria de pendências deste checkpoint (17/11/2026)
@@ -193,7 +193,7 @@ Não cobrar as três formas cumulativamente.
 **7 frentes de regras ou procedimentos PENDENTES:**
 
 1. **Combinações para monstros:** detalhamento de fontes, dados e Grau quando a ficha usa somente Atributos, inclusive exceções de criaturas.
-2. **Cravar — retirada sem mão livre:** acumulação **−1E por arma cravada** e transferência imediata à mão livre de quem remove a arma já estão **DEFINIDAS**. **PENDENTE** o resultado quando quem tenta retirar não possui uma mão disponível e procedimentos de inventário específicos.
+2. **Cravar — duração e procedimento da ação:** penalidade acumulativa **−1E por arma** e destino da arma retirada (**mão livre do retirante, ou chão se sem mão disponível**) estão **DEFINIDOS**. **PENDENTE** especificar a duração/encaixe da ação de retirada no turno e outros detalhes procedimentais ainda não expressamente aprovados.
 3. **Conjuração G4:** tempo geral de preparação e limites de aceleração ainda não definidos para esse Grau.
 4. **Magias memorizadas e cronologia de conjuração:** compatibilidade de preparação, memorização e exceções de Sangue com os novos tempos elementais e efeitos históricos.
 5. **Pedra da Alma — Fixar Alma:** requisitos, XP, procedimento, custo, recuperação de cargas e riscos desta futura Perícia.
@@ -203,7 +203,7 @@ Não cobrar as três formas cumulativamente.
 **4 frentes de implementação/validação**, distintas de regras aprovadas:
 
 1. **Condições e alvos no criador/Foundry:** automatizar tratamento de Sangrando por Medicina Avançada e remoção de Congelamento por Água/Queimar.
-2. **Cravar e Sobrecarga nas interfaces:** aplicar retirada por DE/peso e, em sucesso com mão livre, transferir a arma **à mão de quem a retirou**; aplicar **−1E por arma cravada** em Levantar Escudo (cumulativo) e −1E geral da Sobrecarga, preservando demais funcionalidades.
+2. **Cravar e Sobrecarga nas interfaces:** aplicar retirada por DE/peso e, em sucesso, transferir a arma **à mão livre de quem retirou ou ao chão quando não houver mão livre**; aplicar **−1E por arma cravada** em Levantar Escudo (cumulativo) e −1E geral da Sobrecarga, preservando demais funcionalidades.
 3. **Conjuração, focos e Hemomancia:** implementar contagem de turnos, gasto de múltiplas cargas, recarga no encerramento da mesma rodada, interrupção e seus recursos; respeitar a exceção da Pedra da Alma.
 4. **Fluxo de criaturas/combinações e testes de regressão:** validar o compositor, fichas de monstros e humanoides, versões móvel e clássica e compatibilidade com Foundry.
 
@@ -223,8 +223,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Se alguém tenta **retirar uma arma cravada** mas **não possui mão disponível**, o teste de retirada fica **impedido até liberar uma mão**, ou é permitido retirar e **deixar a arma cair no chão**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Para retirar uma arma cravada, o personagem precisa **gastar uma ação completa do próprio turno**, ou pode fazer a retirada como parte de outra ação, como **Levantar Escudo**?”
 
-**Depois da resposta**, decidir apenas o procedimento de retirada quando nenhuma mão estiver disponível. Não reabrir que, com uma mão livre e sucesso, a arma fica na mão de quem a retirou, nem o acúmulo de −1E por arma cravada. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar apenas quanto tempo/que tipo de ação a retirada de Cravar exige. Não reabrir que, em sucesso, a arma fica na mão de quem retirou se houver mão livre, **ou cai no chão se não houver**, nem o acúmulo de −1E por arma cravada. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
