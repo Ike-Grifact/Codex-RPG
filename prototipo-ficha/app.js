@@ -17,14 +17,18 @@ const FACES={
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
  20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
-const AT_COST=[0,1,3,7,15,31,55];
-const TRAIN_COST=[0,2,8,20,38,66,102];
-// SRD v0.55: descontos raciais sem valores homologados permanecem explícitos.
+// SRD v0.56: XP acumulado por Grau G0–G6 (avanço = diferença).
+const AT_COST=[0,1,3,6,9,18,32];
+const AT_DISCOUNT=[0,0,2,4,7,12,24];
+const AT_ELEVATED=[0,2,4,8,16,32,64];
+const TRAIN_COST=[0,2,4,8,16,32,64];
+const TRAIN_DISCOUNT=[0,1,3,6,9,18,32];
+const TRAIN_ELEVATED=[0,3,6,12,24,48,96];
 const RACES={
  humano:["Humano","Perseverança Humana: rerrolar qualquer teste uma vez por descanso longo.","Sem custos raciais adicionais."],
- lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue inicial gratuita.","Vigor/Agilidade: desconto PENDENTE; Influência/Apresentação: custo dobrado."],
- lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Influência: desconto PENDENTE; Força/Atletismo: aumento PENDENTE."],
- runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia e dois elementos distintos gratuitos.","Vigor/Força: desconto PENDENTE; Agilidade/Destreza: aumento PENDENTE."]
+ lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue inicial gratuita.","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
+ lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Influência: desconto; Força/Atletismo: faixa elevada."],
+ runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia e dois elementos distintos gratuitos.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
 const PURE_ELEMENTS=[["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]];
 const RUNE_ELEMENTS=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"]];
@@ -37,19 +41,31 @@ function racialGrants(s=state){
 function ownsSkill(id,s=state){return !!s.skills?.includes(id)||racialGrants(s).includes(id);}
 function allOwnedSkills(s=state){return [...new Set([...(s.skills||[]),...racialGrants(s)])];}
 function racialCostTable(group,key,s=state){
- const table=group==="attr"?AT_COST:TRAIN_COST;
- return s.race==="lucker_sangue"&&((group==="attr"&&key==="influencia")||(group==="practice"&&key==="apresentacao"))?
-  table.map(n=>n*2):table;
+ const normal=group==="attr"?AT_COST:TRAIN_COST;
+ const discount=group==="attr"?AT_DISCOUNT:TRAIN_DISCOUNT;
+ const elevated=group==="attr"?AT_ELEVATED:TRAIN_ELEVATED;
+ if(s.race==="lucker_sangue"){
+  if(group==="attr"&&["vigor","agilidade"].includes(key))return discount;
+  if((group==="attr"&&key==="influencia")||(group==="practice"&&key==="apresentacao"))return elevated;
+ }else if(s.race==="lucker_puro"){
+  if(group==="attr"&&["inteligencia","influencia"].includes(key))return discount;
+  if((group==="attr"&&key==="forca")||(group==="practice"&&key==="atletismo"))return elevated;
+ }else if(s.race==="runa_espinhos"&&group==="attr"){
+  if(["vigor","forca"].includes(key))return discount;
+  if(["agilidade","destreza"].includes(key))return elevated;
+ }
+ return normal;
 }
 function raceChoicesComplete(s=state){
  return s.race==="lucker_puro"?PURE_ELEMENTS.some(([id])=>id===s.pureElement):
  s.race==="runa_espinhos"?(s.runeElements||[]).length===2&&s.runeElements[0]!==s.runeElements[1]&&
   s.runeElements.every(id=>RUNE_ELEMENTS.some(([k])=>k===id)):true;
 }
-function raceCaution(s=state){return s.race==="humano"?"":"Descontos raciais ainda sem tabela aprovada; somente o dobro de Influência e Apresentação do Lucker de Sangue foi calculado.";}
+function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendente na v0.56.
 
 const CREATE_BUDGET={attr:20,training:20,skills:20,total:20}; // EXPERIMENTAL: total 20 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
-const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
+const XP_LEVEL_REFERENCE=[0,20,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // EXPERIMENTAL: XP total com 20 iniciais; nível manual.
+const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 240 XP novos concedíveis.
 const SKILLS=[
  [
   "combate",
@@ -1358,7 +1374,7 @@ function renderXP(){
  $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0||!hasStarterSources()||!raceChoicesComplete();
  $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
  $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
- $("xp-award").disabled=!!state.pending;
+ $("xp-award").disabled=!!state.pending||(state.xpEarned||0)>=MAX_EARNED_XP;
  $("xp-next-level").textContent=state.level>=20?"Nível máximo":XP_LEVEL_REFERENCE[state.level+1]+" XP*";
  for(const [type,used,id] of [["attr",x.attributes,"xp-attr"],["training",x.training,"xp-training"],["skills",x.skills,"xp-skill"]]){
   const cap=CREATE_BUDGET.total;
@@ -1366,8 +1382,9 @@ function renderXP(){
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
  $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
- "20 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
- (raceCaution()?raceCaution()+" ":"")+(editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
+ "20 XP iniciais compartilhados; referência experimental: até "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 (240 XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
+  ((state.xpEarned||0)>MAX_EARNED_XP?"Ficha legada acima do teto: XP preservado, novas concessões bloqueadas. ":"")+
+  (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
@@ -3138,7 +3155,7 @@ function bind(){
   if(state.pending){toast("Finalize a rolagem antes de conceder XP.");return;}
   const amount=Math.floor(Number($("xp-award-amount").value));
   if(!Number.isSafeInteger(amount)||amount<1||amount>9999){toast("Informe de 1 a 9999 XP.");return;}
-  if(state.xpEarned+amount>1000000){toast("XP acumulado acima do limite desta ferramenta.");return;}
+  if(state.xpEarned+amount>MAX_EARNED_XP){toast("Teto experimental: 260 XP totais, com até 240 XP após a criação. Fichas antigas preservadas.");return;}
   if(!state.creationLocked){lockCreation();toast("Criação concluída com saldo inicial não gasto livre.");}
   state.xpEarned+=amount;
   state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
