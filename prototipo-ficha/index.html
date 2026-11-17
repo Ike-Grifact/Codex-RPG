@@ -157,13 +157,13 @@
         </div>
         <div class="fp-hemo-counters">
           <div class="fp-hemo-counter">
-            <strong>Sangue derramado elegível</strong>
-            <p>Dano direto à Vida registrado na cena. Pode financiar Transfusão Sanguinária; quantidade gerada por evento está pendente.</p>
+            <strong>Sangue derramado na cena</strong>
+            <p>Dano direto à Vida registrado na cena. Pode financiar Transfusão Sanguinária. Não anote aqui o mesmo sangue já registrado como extraído.</p>
             <div class="fp-hemo-counter-row"><button type="button" data-action="hemo-adjust" data-pool="spilled" data-delta="-1" aria-label="Riscar uma marca de sangue derramado">−</button><output id="hemo-spilled" aria-live="polite">0</output><button type="button" data-action="hemo-adjust" data-pool="spilled" data-delta="1" aria-label="Anotar uma marca de sangue derramado">+</button></div>
           </div>
           <div class="fp-hemo-counter">
             <strong>Sangue extraído por magia</strong>
-            <p>Reserva separada para Hemomancia. <strong>Não pode financiar Transfusão Sanguinária.</strong></p>
+            <p>Reserva separada para Hemomancia, inclusive mesclas com Trevas. <strong>Também pode financiar Transfusão Sanguinária.</strong> Extração custa Vida própria e não gera marcas extras.</p>
             <div class="fp-hemo-counter-row"><button type="button" data-action="hemo-adjust" data-pool="extracted" data-delta="-1" aria-label="Riscar uma marca de sangue extraído">−</button><output id="hemo-extracted" aria-live="polite">0</output><button type="button" data-action="hemo-adjust" data-pool="extracted" data-delta="1" aria-label="Anotar uma marca de sangue extraído">+</button></div>
           </div>
         </div>
@@ -172,10 +172,10 @@
           <div><strong>Amplificação de Sangue</strong><small>Uma substituição de Coragem por turno: amplificar magia, manter dado OU elevar dado. Pagamento pendente.</small><button type="button" id="hemo-boost-status" data-action="hemo-boost" aria-pressed="false">Marcar amplificação do turno</button></div>
         </div>
         <div class="fp-hemo-transfusion">
-          <div><strong>Transfusão Sanguinária</strong><small id="hemo-transfusion-state">Protótipo · 1 XP · requisitos: Transfusão + Elemento Sangue</small><p>Potencial: <strong id="hemo-transfusion-potential">0</strong> Vida por marcas elegíveis (3 marcas = 1 Vida). Sangue extraído não entra no cálculo.</p></div>
+          <div><strong>Transfusão Sanguinária</strong><small id="hemo-transfusion-state">Protótipo · 1 XP · requisitos: Transfusão + Elemento Sangue</small><p>Potencial: <strong id="hemo-transfusion-potential">0</strong> Vida por todas as marcas elegíveis somadas (3 marcas = 1 Vida). Não conte uma mesma perda de Vida em dois contadores.</p></div>
           <button type="button" id="hemo-transfusion-record" data-action="hemo-transfusion" disabled>Registrar conjuração: −3 marcas / +1 Vida</button>
         </div>
-        <p class="fp-hemo-footnote">A ficha não gera sangue automaticamente ao sofrer ou causar dano, não altera a rolagem e não cobra custos ainda não definidos. Registre somente eventos validados pelo Narrador.</p>
+        <p class="fp-hemo-footnote">A ficha não gera sangue automaticamente ao sofrer ou causar dano, não altera a rolagem e não cobra custos ainda não definidos. Sangue derramado e extraído são elegíveis, mas uma ocorrência nunca deve ser registrada duas vezes. Registre somente eventos validados pelo Narrador.</p>
       </section>
     </section>
     <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
