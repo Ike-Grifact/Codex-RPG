@@ -85,13 +85,18 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   assert(await player.locator("#gene-detail button[data-action]").count()>=1,"O nó perdeu a ação de compra/evolução");
   assert(await player.locator('[data-gene-id="peritoconj"]').count()===0,"A Perícia removida aparece no DNA");
   await player.evaluate(()=>{
-   const key="codex-html-ficha-prototipo-v1",s=JSON.parse(localStorage.getItem(key));
-   s.skills=[...new Set([...(s.skills||[]),"peritoconj"])];
-   localStorage.setItem(key,JSON.stringify(s));
+   const index=JSON.parse(localStorage.getItem("codex-rpg-jogadores-index-v1"));
+   const key="codex-rpg-jogador-ficha-v1:"+index.activeId;
+   const payload=JSON.parse(localStorage.getItem(key));
+   payload.character.skills=[...new Set([...(payload.character.skills||[]),"peritoconj"])];
+   localStorage.setItem(key,JSON.stringify(payload));
   });
   await player.reload({waitUntil:"domcontentloaded"});
-  const persisted=await player.evaluate(()=>JSON.parse(localStorage.getItem("codex-html-ficha-prototipo-v1")));
-  assert(!persisted.skills.includes("peritoconj"),"Salvamento legado manteve Perito Conjurador");
+  const persisted=await player.evaluate(()=>{
+   const index=JSON.parse(localStorage.getItem("codex-rpg-jogadores-index-v1"));
+   return JSON.parse(localStorage.getItem("codex-rpg-jogador-ficha-v1:"+index.activeId)).character;
+  });
+  assert(!persisted.skills.includes("peritoconj"),"A migração de Perito Conjurador na ficha ativa falhou");
   assert(!perrors.length,"Erros JavaScript no DNA: "+perrors.join(" | "));
   console.log("PASS DNA: compra preservada, verbete completo, Perito removido e migração de salvamentos");
  }finally{await browser.close();}
