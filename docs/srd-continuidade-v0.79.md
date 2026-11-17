@@ -141,7 +141,7 @@ Não cobrar as três formas cumulativamente.
 
 **DEFINIDO — marcas:** para cada 1 ponto de dano **realmente causado à Vida de inimigos** pelas fontes aprovadas, registrar **1 marca**. Aplicar Sangrando sem dano não gera marca; não conceder marcas fictícias pelo autoderrame sem perda de Vida.
 
-**PENDENTE:** limite/ativação de **uma amplificação por turno**, custos/gatilhos restantes de técnicas G2/G3, nuances entre a conjuração instantânea específica de Sangue e a preparação elemental geral da seção 3.
+**DEFINIDO — opção A (17/11/2026):** o Hemomante pode realizar **somente uma amplificação de Sangue por turno**, mesmo quando possui recursos para pagar mais de uma. Preservar a escolha exclusiva histórica entre amplificar a magia, manter dado adicional ou elevar dado, conforme custos e requisitos já válidos; não acumular múltiplas ativações no mesmo turno. **PENDENTE:** custos/gatilhos restantes de técnicas G2/G3 e nuances entre a conjuração instantânea específica de Sangue e a preparação elemental geral da seção 3.
 
 ### 6. Sangramento: duração, remoção e interações elementais
 
@@ -176,7 +176,7 @@ Não cobrar as três formas cumulativamente.
 | **Grau mínimo para descongelar com Água** | **DEFINIDO:** Água G1 já permite remover Congelamento mediante teste contra DE defensiva do alvo |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
-| Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização, reinicia com três turnos e nova rolagem, e **não recupera PP/Coragem/cargas já gastos**. **PENDENTE:** limite de amplificação |
+| Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização, reinicia com três turnos e nova rolagem, e **não recupera PP/Coragem/cargas já gastos**. **DEFINIDO:** apenas uma amplificação de Sangue por turno |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **PENDENTE**: se esgotamento imediatamente antes do fim de rodada inicia recuperação no mesmo encerramento |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
@@ -195,8 +195,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “O limite histórico de **uma amplificação de Sangue por turno** permanece vigente, inclusive quando o Hemomante tem marcas de Sangue ou três alvos Sangrando disponíveis?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Quando o conjurador **reduz voluntariamente uma magia elemental de G2 para G1** para lançar imediatamente, a magia passa a usar **somente os efeitos de G1**, perdendo os efeitos de G2?”
 
-**Depois da resposta**, confirmar ou revisar somente o limite de amplificação por turno. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar quais efeitos permanecem ao reduzir voluntariamente G2 para G1; não reabrir o limite de uma amplificação de Sangue por turno. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
