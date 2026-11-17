@@ -1429,6 +1429,7 @@ function symbolMarkup(symbols,criticalFace=false){
   '<span'+(criticalFace?' class="fp-critical-glyph"':'')+'>'+['ᛋ','ᚨ','ᚦ'][i]+'</span></span>':"").join("");
 }
 function syncFields(){
+ const race=$("char-race");if(race)race.value=state.race;
  for(const [id,key] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
   $(id).value=state[key];
  }
@@ -1436,6 +1437,53 @@ function syncFields(){
  $("portrait-image").src=state.portrait||"../assets/codex-logo.svg";
  $("portrait-trigger").classList.toggle("fp-has-portrait",!!state.portrait);
 }
+
+function raceOptions(list,value){return '<option value="">Escolha o elemento</option>'+list.map(([id,n])=>'<option value="'+id+'"'+(id===value?' selected':'')+'>'+n+'</option>').join("");}
+function raceForm(){
+ const c=RACES[state.race]||RACES.humano;
+ const select='<label class="fp-wiz-field">Linhagem / raça<select data-race-select>'+Object.entries(RACES).map(([id,v])=>'<option value="'+id+'"'+(id===state.race?' selected':'')+'>'+v[0]+'</option>').join("")+'</select></label>';
+ const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
+ const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
+ return select+pure+rune+'<div class="fp-wiz-reminder"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais gratuitas não consomem XP nem atribuem graus automaticamente.</p></div>';
+}
+function changeRace(id){
+ if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending)return;
+ const old=state.race,oldPure=state.pureElement,oldRune=[...state.runeElements];
+ state.race=id;state.pureElement="";state.runeElements=["",""];
+ const duplicate=state.skills.some(id=>racialGrants(state).includes(id));
+ const blocked=dependentsValid(state);
+ if(duplicate||blocked||xpCosts().free<0){
+  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;
+  toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
+ }
+ render();save();
+}
+function changeRaceElement(key,value){
+ if(state.creationLocked||state.pending)return;
+ const oldPure=state.pureElement,oldRune=[...state.runeElements];
+ if(key==="pure"&&state.race==="lucker_puro"&&(value===""||PURE_ELEMENTS.some(([id])=>id===value)))state.pureElement=value;
+ else if(/^rune-[01]$/.test(key)&&state.race==="runa_espinhos"&&(value===""||RUNE_ELEMENTS.some(([id])=>id===value)))state.runeElements[Number(key.slice(-1))]=value;
+ else return;
+ const duplicated=state.skills.some(id=>racialGrants(state).includes(id));
+ if(duplicated||dependentsValid(state)||(state.runeElements[0]&&state.runeElements[0]===state.runeElements[1])){
+  state.pureElement=oldPure;state.runeElements=oldRune;toast("Elementos devem ser diferentes e não podem duplicar compras.");render();return;
+ }
+ render();save();
+}
+function renderRacePanel(){
+ const select=$("char-race"),info=$("race-description"),panel=$("race-benefit-panel"),c=RACES[state.race]||RACES.humano;
+ if(select)select.value=state.race;
+ if(info)info.textContent=c[1]+" "+c[2]+" "+raceCaution();
+ if(!panel)return;
+ const names=racialGrants(state).map(id=>SKILLS.find(row=>row[0]===id)?.[1]||id);
+ panel.innerHTML='<strong>'+c[0]+'</strong><p>'+c[1]+'</p>'+(names.length?'<p>Perícias raciais gratuitas: '+esc(names.join(", "))+'.</p>':'')+
+ (raceCaution()?'<p>XP PENDENTE: '+esc(raceCaution())+'</p>':'')+
+ (state.race==="humano"?'<p>Perseverança Humana: <strong>'+(state.perseverancaUsed?'Usada':'Disponível')+'</strong> (1 rerrolagem/teste por descanso longo).</p>'+
+ '<button type="button" data-action="human-reroll-use"'+(state.perseverancaUsed?' disabled':'')+'>Marcar uso</button> '+
+ '<button type="button" data-action="human-long-rest"'+(!state.perseverancaUsed?' disabled':'')+'>Descanso longo</button>'+
+ '<p><small>Controle manual; esta interface ainda não refaz a rolagem automaticamente.</small></p>':'');
+}
+
 function renderDiceLegend(){
  $("dice-legend").innerHTML=[4,6,10,12,20].map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<b>d'+n+'</b></span>').join("");
 }
@@ -1850,7 +1898,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
@@ -1928,6 +1976,7 @@ function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
  if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=2;renderWizard();return;}
+  if(!raceChoicesComplete()){toast("Escolha os elementos raciais iniciais para concluir.");wizardStep=0;renderWizard();return;}
  const xp=xpCosts();
  if(xp.free<0){toast("O investimento ultrapassa 20 XP.");return;}
  if(!confirm("Concluir a criação usando "+xp.total+" dos 20 XP? "+xp.free+" XP restante ficará disponível para progressão."))return;
@@ -2141,7 +2190,7 @@ function renderWizard(){
     ["personality","Personalidade","Como reage ao mundo?",100]
    ].map(([field,label,placeholder,max])=>'<label class="fp-wiz-field'+(field==="name"?' wide':'')+'">'+label+
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
-   '</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
+   raceForm()+'</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
   content=wizardStarterCards();
  }else if(stage===2){
