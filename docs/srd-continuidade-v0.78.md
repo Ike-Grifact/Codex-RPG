@@ -1,9 +1,9 @@
 ---
-title: "Codex RPG — SRD de Continuidade v0.78: retirar arma cravada com Força ou Atletismo"
+title: "Codex RPG — SRD de Continuidade v0.78: retirar arma cravada combinando aptidões físicas"
 version: "0.78"
 system: "Codex RPG"
 updated: "2026-11-17"
-status: "DEFINIDO — retirar Cravar exige superar a DE do peso da arma (máximo 4), com Força e/ou Atletismo"
+status: "DEFINIDO — retirar Cravar requer combinação pertinente com Força, Atletismo ou Vigor; DE por peso da arma, máximo 4"
 ---
 
 # Codex RPG — SRD de Continuidade v0.78
@@ -12,13 +12,9 @@ status: "DEFINIDO — retirar Cravar exige superar a DE do peso da arma (máximo
 
 **Decisão explícita do autor:** retirar uma arma presa pela característica **Cravar** exige superar a **Dificuldade de Êxito (DE) correspondente ao peso da própria arma cravada**, e a **maior DE possível é 4**.
 
-O defensor pode fazer o teste com **qualquer uma destas três composições**, conforme o modo como tenta soltar a arma:
+**DEFINIDO — correção explícita do autor:** a retirada usa **uma combinação de aptidões**, não Força ou Atletismo isolados. A combinação deve incluir **Força, Atletismo ou Vigor** junto a **outra fonte pertinente**, seguindo as regras normais do sistema.
 
-1. **Força**, sozinha;
-2. **Atletismo**, sozinho;
-3. **Força + Atletismo**, juntos.
-
-**DEFINIDO:** as três composições são válidas **especificamente para esta ação**, mesmo que o compositor geral de testes costume solicitar uma combinação de Atributo + Prática. A alternativa Força + Atletismo é uma composição normal entre Atributo e Prática; os usos isolados são uma permissão específica, não uma regra nova para todos os testes. Os dados vêm dos **graus efetivamente possuídos** em cada fonte e obedecem ao rolamento e aos limites gerais do sistema.
+Exemplos: **Força + Atletismo**, **Vigor + Atletismo**, ou **Força/Vigor + outra Prática pertinente**. Outros pares pertinentes podem ser aceitos pelo Narrador desde que respeitem as restrições de categoria, habilidades e contexto. Não conceder Atributo + Atributo nem Prática + Prática a jogadores sem a habilitação já definida. Os dados vêm dos graus possuídos e respeitam limites usuais.
 
 **Resultado:** se a rolagem alcança ou supera a DE, a arma é **retirada do escudo**. O estado de Cravar termina, a penalidade de **−2E ao Levantar Escudo desaparece**, e a carga do portador deixa de incluir o peso adicional da arma. Se o teste falha, a arma **permanece presa** e as consequências vigentes de Pavor continuam pertinentes. A arma retirada não desaparece: sua posse/destinação deve ser resolvida conforme a cena, sem teletransporte automático para o inventário.
 
@@ -32,13 +28,13 @@ O defensor pode fazer o teste com **qualquer uma destas três composições**, c
 
 A **aplicação** de Cravar continua exigindo arma Média/Pesada com característica Cravar, ataque que **alcança a DE**, e **crítico ou Perícia em Armas Médias/Pesadas pertinente** (1 PP ou 1 Coragem no acerto não crítico). Escudo Pesado só pode receber arma Pesada. Enquanto a arma estiver presa, Levantar Escudo sofre **−2E** e a arma acrescenta sua carga ao escudo.
 
-**Aplicação e retirada não são o mesmo teste:** o gatilho crítico/Perícia é exigido **para cravar**, não **para retirar**. A retirada utiliza Força, Atletismo ou ambas as fontes, sem exigir Perícia de arma.
+**Aplicação e retirada não são o mesmo teste:** o gatilho crítico/Perícia é exigido **para cravar**, não **para retirar**. A retirada utiliza combinação pertinente que inclua Força, Atletismo ou Vigor, sem exigir Perícia de arma.
 
 ### Protótipo de ficha [IMPLEMENTADO]
 
-No inventário, um escudo que possui arma cravada permite abrir a **ação de retirada** e selecionar **Força, Atletismo ou Força + Atletismo**, com DE de **1 a 4 declarada pelo Narrador**. O rolador usa as faces simbólicas oficiais, as quantidades de dados compradas e o limite de dados rolados/mantidos. O jogador seleciona os dados mantidos; Antecipar pode ser usada para anular Pavor ou converter duas Antecipações em um Êxito, sem gastar o mesmo símbolo duas vezes. Um teste **bem-sucedido** permite confirmar e retirar a arma do escudo; um teste que falhe **não** limpa a condição. A remoção recalcula penalidade e carga no próprio inventário.
+No inventário, um escudo que possui arma cravada permite iniciar a **ação de retirada** no compositor regular, com combinação de aptidões que inclua Força, Atletismo ou Vigor e DE de **1 a 4 declarada pelo Narrador**. O rolador usa as faces simbólicas oficiais, as quantidades de dados compradas e o limite de dados rolados/mantidos. O jogador seleciona os dados mantidos; Antecipar pode ser usada para anular Pavor ou converter duas Antecipações em um Êxito, sem gastar o mesmo símbolo duas vezes. Um teste **bem-sucedido** permite confirmar e retirar a arma do escudo; um teste que falhe **não** limpa a condição. A remoção recalcula penalidade e carga no próprio inventário.
 
-A rolagem específica de retirada **não altera o compositor normal** de ataque nem a composição de testes comuns. O inventário continua permitindo **corrigir manualmente um registro equivocado sob validação do Narrador**, o que é diferente de uma retirada ficcional sem teste. Não sincroniza automaticamente a arma/escudo de personagens distintos.
+A retirada **reutiliza o compositor normal** e não cria exceção para fontes isoladas nem altera os testes comuns. O inventário continua permitindo **corrigir manualmente um registro equivocado sob validação do Narrador**, o que é diferente de uma retirada ficcional sem teste. Não sincroniza automaticamente a arma/escudo de personagens distintos.
 
 ### Pendências que permanecem
 
