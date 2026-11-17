@@ -38,11 +38,21 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 - **Medicina Avançada**: exige **Medicina G2**, compra **1 XP**, permite **Medicina predominante + até duas fontes pertinentes** e habilita o tratamento para remover Sangrando com teste próprio (seção 6).
 - **Disciplina Avançada**: conserva requisito **Disciplina G2**, custo **1 XP** e aplicação apenas quando Disciplina for a fonte principal.
 - **Furtividade Avançada**: conserva requisito **Furtividade G2 + Perícia em Furtividade**, custo **1 XP** e aplicação apenas quando Furtividade for a fonte principal.
-- Outras possíveis especializações Avançadas de Conhecimentos e Práticas passam a ter **custo-padrão e efeito genérico definidos**, mas **a existência de compra habilitada e os requisitos próprios das novas Perícias ainda são PENDENTES**. Não presumir Grau 2 para todas somente por analogia com as três existentes.
+- **DEFINIDO — requisito universal (resposta A do autor, 17/11/2026):** todas as Perícias Avançadas de Conhecimentos e Práticas exigem **Grau 2 na própria fonte** e custam **1 XP**. Para as especializações previamente existentes, quaisquer requisitos adicionais publicados permanecem vigentes (ex.: Perícia em Furtividade para Furtividade Avançada).
 
-**IMPLEMENTADO NESTA BRANCH DE REVISÃO:** catálogo, compra de Medicina Avançada por 1 XP quando Medicina ≥2, vinculação da terceira fonte no compositor comum e exposição no Codex Genético. Disciplina Avançada e Furtividade Avançada preservam requisitos individuais e compartilham a verificação de fonte principal. Tratamento automático da condição Sangrando **não** foi implementado nesta etapa, pois a ficha ainda não modela o alvo da intervenção.
+**IMPLEMENTADO NESTA BRANCH DE REVISÃO:** **12 Perícias Avançadas**, cobrindo **6 Conhecimentos** (Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição) e **6 Práticas** (Disciplina, Atletismo, Furtividade, Artesão, Apresentação e Coleta). As **9 especializações novas**, além de Medicina, Disciplina e Furtividade Avançadas, são:
 
-**PENDENTE:** a relação exata entre fontes selecionadas, dados e Grau para monstros, além dos requisitos das demais especializações Avançadas não existentes no catálogo.
+| Conhecimento Avançado | Prática Avançada |
+|---|---|
+| Proteção Avançada | Atletismo Avançado |
+| Astronomia Avançada | Artesão Avançado |
+| Alquimia Avançada | Apresentação Avançada |
+| Engenharia Avançada | Coleta Avançada |
+| Erudição Avançada | — |
+
+**Compras, terceira fonte do compositor, Codex Genético e verbetes individuais:** registrados na branch. Disciplina Avançada e Furtividade Avançada preservam requisitos individuais. As nove novas concedem **somente o benefício genérico aprovado** de até três fontes pertinentes, não magias, ataques ou efeitos novos. O tratamento automático da condição Sangrando **não** foi implementado nesta etapa porque a ficha ainda não modela o alvo da intervenção.
+
+**PENDENTE:** detalhes especiais da relação entre fontes, dados e Grau para monstros; as 12 especializações Avançadas de jogadores têm compra e requisitos mínimos definidos. Não inventar efeitos temáticos adicionais.
 
 ### 2. Cravar, retirada e Sobrecarga
 
@@ -158,7 +168,8 @@ Não cobrar as três formas cumulativamente.
 
 | Tema | Estado e próximo passo |
 |---|---|
-| **Requisitos de outras Perícias Avançadas** | **PENDENTE — PRÓXIMA PERGUNTA**: confirmar se o Grau 2 da própria fonte é requisito universal para as futuras especializações Avançadas; custo de 1 XP e três fontes já DEFINIDOS |
+| **Requisitos de Perícias Avançadas** | **DEFINIDO:** Grau 2 da própria fonte, 1 XP, até três fontes pertinentes; 12 especializações cadastradas na branch |
+| **Queimar × Congelar × Sangrando** | **PENDENTE — PRÓXIMA PERGUNTA:** esclarecer se Congelar remove Sangrando, se Queimar remove Congelamento, ou ambas |
 | Ambiguidade Queimar × Congelar × Sangrando | **PENDENTE**: confirmar exatamente quais condições se removem entre si |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
@@ -175,14 +186,14 @@ Não cobrar as três formas cumulativamente.
 - Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **o padrão G2=2 turnos, G3=3, redução para G1 e foco −1 turno** governa onde aplicável; **conteúdos mecânicos da redução ainda pendentes**.
 - Livro apresenta Conjuração Refinada com alcance pendente: **+8 m está definido**.
 - O criador e o Livro ainda podem usar **orçamento inicial diferente de 15 XP**, regra ainda **EXPERIMENTAL**.
-- **Atualização posterior neste checkpoint:** Medicina Avançada foi cadastrada no criador desta branch com **Medicina 2 / 1 XP**. Sua implementação será efetiva no site oficial somente após a integração da branch; a ficha atual da `main` permanece anterior.
+- **Atualização posterior neste checkpoint:** as **12 Perícias Avançadas** estão cadastradas no criador desta branch com **Grau 2 e custo 1 XP**, preservados os requisitos adicionais publicados; as nove novas contam com verbetes e catálogo. A implementação será efetiva no site oficial somente após integrar a branch; a ficha da `main` ainda permanece na versão anterior.
 
 ### 8. Protocolo para retomar a revisão
 
-A revisão avançou após o checkpoint inicial: o autor definiu **Medicina G2**, custo **1 XP** e **custo padrão de 1 XP para todas as Perícias Avançadas de Conhecimento ou Prática**; cada uma usa sua fonte como predominante e pode adicionar **duas fontes pertinentes**. Foram implementados na branch o cadastro, a compra e a seleção avançada para Medicina, preservando Disciplina/Furtividade.
+O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “As demais Perícias Avançadas de Conhecimentos e Práticas que ainda não existem também devem exigir **Grau 2 na respectiva fonte** para serem adquiridas?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Quando você disse ‘queimar tira sangramento e congelamento também’, quis dizer que **Queimar remove Sangrando e Congelamento**, que **Congelar remove Sangrando**, ou **ambos**?”
 
-**Depois da resposta** cadastrar, se aprovado, as demais especializações Avançadas com requisitos efetivamente definidos, mantendo 1 XP e a capacidade de três fontes. Não voltar a perguntar sobre custo-padrão, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga, já aprovados.
+**Depois da resposta**, consolidar exatamente quais condições elementais removem outras, mantendo as demais regras já aprovadas. **Não voltar a perguntar** sobre Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
-**Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de Medicina Avançada no criador e no Codex Genético, seu verbete e catálogo e atualização documental do Livro do Jogador. **Não foram alterados** os dados simbólicos, o custo de outras Perícias não avançadas, as mecânicas de Cravar/Hemomancia/focos no código ou o Foundry; as demais especializações Avançadas aguardam requisitos de aquisição.
+**Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
