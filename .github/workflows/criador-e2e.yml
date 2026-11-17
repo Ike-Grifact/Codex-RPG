@@ -9,6 +9,7 @@ on:
       - '.github/tests/genetico-navegacao-e2e.cjs'
       - '.github/tests/pequena-ficha-e2e.cjs'
       - '.github/tests/fichas-multiplas-e2e.cjs'
+      - '.github/tests/genetico-linhagens-iniciais-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -48,6 +49,8 @@ jobs:
         run: node --test prototipo-ficha/elemental-summoning.test.mjs
       - name: Testar múltiplas fichas de jogadores e migração
         run: node .github/tests/fichas-multiplas-e2e.cjs
+      - name: Testar graus raciais gratuitos e Codex Genético principal
+        run: node .github/tests/genetico-linhagens-iniciais-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular

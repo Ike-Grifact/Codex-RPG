@@ -57,6 +57,27 @@ function racialCostTable(group,key,s=state){
  }
  return normal;
 }
+// SRD v0.61: atributo favorecido da origem começa no Grau 1 (custo zero).
+// Atribuições raciais automáticas são distinguidas dos graus comprados manualmente.
+function racialStartingAttributes(race){
+ if(race==="lucker_sangue")return ["vigor","agilidade"];
+ if(race==="lucker_puro")return ["inteligencia","influencia"];
+ if(race==="runa_espinhos")return ["vigor","forca"];
+ return [];
+}
+function applyRacialStartingAttributes(s){
+ const favored=racialStartingAttributes(s.race);
+ const previous=Array.isArray(s.racialInitialAttributes)?s.racialInitialAttributes:[];
+ for(const key of previous){
+  if(!favored.includes(key)&&(s.attributes[key]||0)===1)s.attributes[key]=0;
+ }
+ const granted=previous.filter(key=>favored.includes(key)&&(s.attributes[key]||0)>=1);
+ for(const key of favored){
+  if((s.attributes[key]||0)<1){s.attributes[key]=1;granted.push(key);}
+ }
+ s.racialInitialAttributes=[...new Set(granted)];
+ return s;
+}
 function raceChoicesComplete(s=state){
  return s.race==="lucker_puro"?PURE_ELEMENTS.some(([id])=>id===s.pureElement):
  s.race==="runa_espinhos"?(s.runeElements||[]).length===2&&s.runeElements[0]!==s.runeElements[1]&&
@@ -1014,14 +1035,14 @@ const same=(a,b)=>!!a&&!!b&&key(a)===key(b);
 const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
- schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
+ schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let playerSheets=[],activePlayerSheetId="";
-let wizardCategory="",wizardTab="attr",wizardMode="list";
+let wizardCategory="",wizardTab="attr",wizardMode="genetic";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
@@ -1029,7 +1050,7 @@ let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneIns
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, raça e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
- ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
+ ["Distribuir XP","Compre graus e Perícias","Codex Genético por padrão; listas opcionais"],
  ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
@@ -1085,7 +1106,7 @@ function restoreWizard(w={}){
  wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
- wizardMode=w.mode==="genetic"?"genetic":"list";
+ wizardMode=w.mode==="list"?"list":"genetic";
  wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
@@ -1258,6 +1279,8 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
+ s.racialInitialAttributes=Array.isArray(v.racialInitialAttributes)?
+  [...new Set(v.racialInitialAttributes)].filter(id=>racialStartingAttributes(s.race).includes(id)&&(s.attributes[id]||0)>0):[];
  const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string"))]:[];
  const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
@@ -1605,25 +1628,25 @@ function raceBenefitsForm(){
  const c=RACES[state.race]||RACES.humano;
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
- return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais gratuitas não consomem XP nem atribuem graus automaticamente.</p></div>';
+ return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais são gratuitas. Os Atributos favorecidos por esta origem começam no Grau 1 automaticamente, com custo de 0 XP; graus superiores seguem a tabela.</p></div>';
 }
 function changeRace(id){
- if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending)return;
- const old=state.race,oldPure=state.pureElement,oldRune=[...state.runeElements];
+ if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending||id===state.race)return;
+ const before=structuredClone(state),old=state.race;
  state.race=id;state.pureElement="";state.runeElements=["",""];
- const duplicate=state.skills.some(id=>racialGrants(state).includes(id));
+ applyRacialStartingAttributes(state);
+ const duplicate=state.skills.some(key=>racialGrants(state).includes(key));
  const blocked=dependentsValid(state);
  if(duplicate||blocked||xpCosts().free<0){
-  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;
+  state=before;
   toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
  }
- // O cristal inicial é o benefício comum da aquisição de Criar Item de Foco e Magia.
- // Não preservar cristal concedido somente pela origem se ela deixar de conceder Foco.
  if(ownsSkill("criar-item-foco-magia")){
   if(!state.elementalCrystal.quantity){state.elementalCrystal.quantity=1;state.elementalCrystal.element="";}
  }else if(old==="lucker_puro"||old==="runa_espinhos"){
   state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
  }
+ geneDraft.clear();genePendingSkills.clear();geneSelected="attr:"+(racialStartingAttributes(id)[0]||"forca");
  render();save();
 }
 function changeRaceElement(key,value){
@@ -2068,7 +2091,7 @@ function prepareElementSkill(id){
 
 function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
-/* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
+/* Etapas guiadas: Codex Genético padrão e listas opcionais compartilham o mesmo XP e ficha. */
 function wizardPersist(){
  try{localStorage.setItem(WIZARD_KEY,JSON.stringify(wizardSnapshot()));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
@@ -2103,15 +2126,20 @@ function wizardSelectStep(next){
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
 function wizardStarterSelect(group,id){
- if(wizardStep!==1||viewMode!=="builder"||state.creationLocked)return;
+ if(wizardStep!==1||viewMode!=="builder"||state.creationLocked||state.pending)return;
  if(group==="attr"){
   if(!A.some(([k])=>k===id))return;
-  wizardStarterAttribute=id;wizardStarterPhase="training";
+  // "Começar com" compra o Atributo de imediato e o Codex Genético vê G1.
+  const first=(state.attributes[id]||0)<1;
+  const cost=first?racialCostTable("attr",id,state)[1]:0;
+  if(cost>xpCosts().free){toast("XP insuficiente para iniciar com esse Atributo.");return;}
+  if(first)state.attributes[id]=1;
+  wizardStarterAttribute=id;wizardStarterPhase="training";geneSelected="attr:"+id;
  }else if(group==="know"||group==="practice"){
   if(!GROUPS[group].some(([k])=>k===id)||!wizardStarterAttribute)return;
   wizardStarterTraining=group+":"+id;wizardStarterPhase="confirm";
  }else return;
- wizardPersist();renderWizard();
+ wizardPersist();render();save();
  $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});
 }
 function wizardStarterBack(){
@@ -2133,9 +2161,9 @@ function wizardConfirmStarterPicks(){
   toast("XP insuficiente para as duas compras. Ajuste outras compras antes de continuar.");return;
  }
  // Compras dos graus mínimos em uma operação, sem bônus de 'atributo principal'.
- if(attrCost)state.attributes[attr]=1;
- if(trainingCost)state[SOURCE_PROPS[group]][id]=1;
- wizardCategory="attr";wizardTab="attr";wizardMode="list";
+ if((state.attributes[attr]||0)<1)state.attributes[attr]=1;
+ if((state[SOURCE_PROPS[group]][id]||0)<1)state[SOURCE_PROPS[group]][id]=1;
+ wizardCategory="attr";wizardTab="attr";wizardMode="genetic";
  wizardStep=2;wizardReached=Math.max(wizardReached,2);
  wizardPersist();save();render();
  toast("Compras iniciais confirmadas: "+(attrCost+trainingCost)+" XP. O restante é livre.");
@@ -2190,7 +2218,7 @@ function wizardStarterOption(group,[id,name]){
   '<span class="fp-wiz-focus-role">'+esc(info[0])+'</span>'+
   '<span class="fp-wiz-focus-description">'+esc(info[1])+'</span>'+
   '<span class="fp-wiz-focus-example">'+esc(info[2])+'</span>'+
-  '<span class="fp-wiz-focus-bottom"><span>'+dice+'</span><b>'+(cost?cost+' XP · grau 1':'Grau '+grade+' já comprado')+'</b></span></button>';
+  '<span class="fp-wiz-focus-bottom"><span>'+dice+'</span><b>'+(grade>=1?'Grau '+grade+' já comprado':cost?cost+' XP · grau 1':'0 XP · grau 1')+'</b></span></button>';
 }
 function wizardStarterCards(){
  const [group,id]=wizardStarterTraining.split(":");
@@ -2205,7 +2233,7 @@ function wizardStarterCards(){
  if(wizardStarterPhase==="attr")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · PRIMEIRA ESCOLHA</span>'+
   '<h3>Escolha um Atributo principal.</h3><p>Veja os seis Atributos, suas funções e exemplos. Selecione aquele com que deseja iniciar. <strong>“Principal” não cria bônus, classe ou restrição:</strong> será só sua primeira compra.</p></div>'+
   phases+'<div class="fp-wiz-focus-grid">'+A.map(x=>wizardStarterOption("attr",x)).join("")+'</div>'+
-  '<div class="fp-wiz-reminder"><strong>Atributos</strong><p>Grau 0: 1d4; grau 1: 1d6 por 1 XP. Você poderá desenvolver outros Atributos mais tarde. O XP será gasto quando confirmar as duas escolhas.</p></div>';
+  '<div class="fp-wiz-reminder"><strong>Atributos</strong><p>Grau 0: 1d4; grau 1: 1d6. “Começar com” compra o Grau 1 imediatamente pelo custo racial. Atributos favorecidos iniciam automaticamente no Grau 1 por 0 XP. Outras compras são feitas no Codex Genético.</p></div>';
  if(wizardStarterPhase==="training")return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 02 · SEGUNDA ESCOLHA</span>'+
   '<h3>Escolha um Conhecimento ou uma Prática.</h3><p>Seu Atributo inicial é <strong>'+esc(attr?.[1]||"não selecionado")+'</strong>. Agora selecione <strong>um</strong> Conhecimento ou <strong>uma</strong> Prática. Conhecimento representa estudo; Prática representa treinamento. Não é preciso escolher os dois.</p></div>'+
   phases+
@@ -2218,19 +2246,19 @@ function wizardStarterCards(){
   '<section data-source-group="attr"><small>ATRIBUTO PRINCIPAL</small><strong>'+esc(attr?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+attrCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="attr">Alterar Atributo</button></section>'+
   '<section data-source-group="'+group+'"><small>CONHECIMENTO OU PRÁTICA</small><strong>'+esc(training?.[1]||"Não selecionado")+'</strong><span>Grau 1 · '+trainingCost+' XP</span><button type="button" data-action="wizard-starter-edit" data-phase="training">Alterar escolha</button></section></div>'+
   '<div class="fp-wiz-starter-total"><span>XP para confirmar: <strong>'+(attrCost+trainingCost)+'</strong></span><span>Saldo livre após confirmar: <strong>'+(xpCosts().free-attrCost-trainingCost)+' XP</strong></span></div>'+
-  '<div class="fp-wiz-reminder"><strong>A escolha “principal” é orientativa</strong><p>Não há bônus oculto. Se voltar aqui depois de outras compras, os investimentos já realizados permanecem na ficha e o custo de uma nova fonte será informado.</p></div>';
+  '<div class="fp-wiz-reminder"><strong>A escolha “principal” é orientativa</strong><p>Não há bônus oculto. Ao clicar em “Começar com”, o Atributo escolhido é comprado imediatamente. Se voltar, as compras feitas permanecem na ficha e o custo de uma nova fonte será informado.</p></div>';
 }
 function wizardBuild(){
  const attrOK=A.some(([k])=>(state.attributes[k]||0)>=1);
  const trainingOK=K.some(([k])=>(state.knowledges[k]||0)>=1)||P.some(([k])=>(state.practices[k]||0)>=1);
  const switcher='<div class="fp-wiz-view-switch" role="group" aria-label="Visualização da criação">'+
-  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Modo padrão · listas</button>'+
-  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · mapa</button></div>';
+  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · principal</button>'+
+  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Listas · alternativa</button></div>';
  const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
   '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
   '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
   '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 18 XP (total experimental)</span></div>';
- const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais estão registradas. Agora compre outros graus e Perícias usando o saldo compartilhado, ou alterne para o Codex Genético.</span></div>';
+ const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais já estão registradas no Codex Genético. Desenvolva outros graus e Perícias pelo mapa ou use as listas opcionais.</span></div>';
  if(wizardMode==="genetic")return confirmedHint+switcher+
   geneBudgetPanel()+
   '<div class="fp-gene-map-tools"><button type="button" data-action="gene-future" aria-pressed="'+geneShowFuture+'">'+
@@ -2334,7 +2362,7 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=NPC_MODE;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
+  "Criação guiada: o Codex Genético é o modo principal para Atributos, Conhecimentos, Práticas e Perícias.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{

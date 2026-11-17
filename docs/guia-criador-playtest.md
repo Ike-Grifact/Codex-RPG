@@ -4,7 +4,7 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 
 ## Criação nível 1: investimentos mínimos e XP livre
 
-**DEFINIDO:** para concluir a criação, compre **pelo menos um Atributo grau 1** e **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
+**DEFINIDO:** para concluir a criação, tenha **pelo menos um Atributo grau 1** (inclusive o Grau 1 racial automático, quando aplicável) e compre **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
 
 **EXPERIMENTAL (montante):** a ferramenta usa **18 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 18 XP restam 15 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
 
@@ -19,8 +19,8 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 ## Fluxo guiado da criação
 
 1. **Identidade:** informar nome, conceito, **Origem / Raça** (seletor no alto, no lugar de “Origem narrativa”), virtude e personalidade. A origem é a raça; os benefícios raciais aparecem logo após os demais campos, sem outro seletor duplicado.
-2. **Escolhas iniciais:** primeiro selecionar **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos, dados e custo de 1 XP no grau 1. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
-3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
+2. **Escolhas iniciais:** ao escolher a raça, os **dois Atributos favorecidos são colocados automaticamente no Grau 1 (0 XP)** para Lucker de Sangue, Lucker Puro e Runa Espinhos; Humano não recebe graus automáticos. Em seguida, escolher **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos e dados. O botão **“Começar com” compra imediatamente o Grau 1** caso ainda não tenha sido adquirido, com custo dependente da raça. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
+3. **Distribuir XP:** **Codex Genético é o modo principal** ao entrar na distribuição livre; todos os graus reais, inclusive os automáticos de raça e a primeira compra, aparecem nos nós do mapa. As **listas são uma alternativa** e usam a mesma ficha, o mesmo saldo e as mesmas compras.
 4. **VT e itens iniciais:** o playtest utiliza **20 VT experimentais**, valor separado dos 18 XP, distribuídos entre cinco recursos comuns. O catálogo G1 oferece compras opcionais com preços ainda **PROPOSTOS**, sem itens gratuitos presumidos. Equipamentos adquiridos entram no inventário da ficha.
 5. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1, conferindo também recursos e itens.
 

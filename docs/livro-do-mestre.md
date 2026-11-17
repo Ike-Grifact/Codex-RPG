@@ -2,6 +2,8 @@
 
 ## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
 
+**Implementação posterior [DEFINIDO, SRD v0.61]:** na criação, conceder automaticamente G1 de ambos os Atributos favorecidos de Lucker de Sangue (Vigor/Agilidade), Lucker Puro (Inteligência/Influência) e Runa Espinhos (Vigor/Força), a **0 XP**. O Humano não recebe grau automático. Os G1 contam para a obrigação de Atributo, mas continua exigido um Conhecimento ou Prática G1. O botão “Começar com” adquire imediatamente o Grau 1; o Codex Genético abre como modo principal. Não mudar custos, benefícios raciais, 18 XP iniciais experimentais nem limites.
+
 A progressão experimental agora alcança **260 XP totais no nível 20** (18 iniciais + até 242 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
 
 | Grau | Atributo desconto | Atributo normal | Atributo elevado | Conhecimento/Prática desconto | Conhecimento/Prática normal | Conhecimento/Prática elevado |

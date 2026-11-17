@@ -32,6 +32,8 @@ const { chromium } = require('playwright');
       await page.waitForSelector('button[data-action="wizard-starter-attr"][data-key="forca"]');
       console.log('[TRACE]', testCase.name, 'entrou na etapa 2');
       await page.locator('button[data-action="wizard-starter-attr"][data-key="forca"]').click();
+      const currentSource=await page.locator('#wizard-summary').innerText();
+      if(!currentSource.includes('17 XP'))throw new Error('Começar com Força não debitou 1 XP imediatamente: '+currentSource);
       await page.waitForSelector('button[data-action="wizard-starter-training"][data-group="' + testCase.group + '"][data-key="' + testCase.id + '"]');
       console.log('[TRACE]', testCase.name, 'selecionou atributo');
       await page.locator('button[data-action="wizard-starter-training"][data-group="' + testCase.group + '"][data-key="' + testCase.id + '"]').click();
@@ -57,8 +59,13 @@ const { chromium } = require('playwright');
       if (exceptions.length > 0) {
         throw new Error('Erro JavaScript em navegação: '+exceptions.join(' | '));
       }
+      if (await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').getAttribute('aria-pressed') !== 'true')
+        throw new Error('O Codex Genético não abriu como modo padrão após as escolhas iniciais');
+      if (!await page.locator('#gene-builder-map').isVisible())
+        throw new Error('A tela principal de construção não exibiu o mapa');
+      await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
       const tabs=page.locator('#wizard-content [data-action="wizard-tab"]');
-      if (await tabs.count() !== 4) throw new Error('Etapa 3 não oferece as quatro abas');
+      if (await tabs.count() !== 4) throw new Error('Listas alternativas não oferecem as quatro abas');
       await page.locator('#wizard-content button[data-action="wizard-tab"][data-group="practice"]').click();
       if (!await page.locator('#wizard-content [data-action="grade"][data-group="practice"]').count()) {
         throw new Error('Lista de Práticas não carrega na etapa 3');

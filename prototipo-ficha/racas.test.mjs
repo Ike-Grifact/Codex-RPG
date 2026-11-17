@@ -6,13 +6,46 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const start=source.indexOf("const AT_COST=");
 const end=source.indexOf("const CREATE_BUDGET=");
 assert.ok(start>=0&&end>start,"Constantes e funções raciais devem existir no criador");
-const {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
- source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
+const {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
+ source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
 )();
 
 function character(race,more={}){
  return {race,skills:[],pureElement:"",runeElements:["",""],attributes:{},knowledges:{},practices:{},...more};
 }
+
+test("v0.61: Grau 1 automático dos Atributos favorecidos sem alterar custos",()=>{
+ const cases=[
+  ["lucker_sangue",["vigor","agilidade"]],
+  ["lucker_puro",["inteligencia","influencia"]],
+  ["runa_espinhos",["vigor","forca"]],
+  ["humano",[]]
+ ];
+ for(const [race,expected] of cases){
+  const c=character(race,{racialInitialAttributes:[]});
+  applyRacialStartingAttributes(c);
+  assert.deepEqual(racialStartingAttributes(race),expected);
+  assert.deepEqual(c.racialInitialAttributes,expected);
+  for(const key of expected){
+   assert.equal(c.attributes[key],1);
+   assert.equal(racialCostTable("attr",key,c)[1],0,"G1 não consome XP");
+  }
+  applyRacialStartingAttributes(c);
+  assert.deepEqual(c.racialInitialAttributes,expected);
+ }
+ const changed=character("lucker_sangue",{racialInitialAttributes:[]});
+ applyRacialStartingAttributes(changed);
+ changed.attributes.agilidade=2; // avanço manual pago
+ changed.race="lucker_puro";
+ applyRacialStartingAttributes(changed);
+ assert.equal(changed.attributes.agilidade,2,"graus superiores pagos nunca são apagados");
+ assert.equal(changed.attributes.vigor,0,"G1 automático de raça anterior removido");
+ assert.equal(changed.attributes.inteligencia,1);
+ assert.equal(changed.attributes.influencia,1);
+ const human=character("humano",{racialInitialAttributes:[]});
+ applyRacialStartingAttributes(human);
+ assert.deepEqual(human.attributes,{},"Humano não recebe graus automáticos");
+});
 
 test("quatro linhagens, sem criar classes obrigatórias",()=>{
  assert.deepEqual(Object.keys(RACES),["humano","lucker_sangue","lucker_puro","runa_espinhos"]);
