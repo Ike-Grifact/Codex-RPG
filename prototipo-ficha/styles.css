@@ -1344,3 +1344,39 @@ html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65
  .fp-racial-xp-legend{gap:6px}
  .fp-racial-xp-marker{font-size:9px}
 }
+
+
+/* SRD v0.71 — protótipo manual de Hemomancia. O layout nunca representa curas automáticas. */
+.fp-hemo-panel{margin-top:18px;padding:18px;border:1px solid color-mix(in srgb,var(--fp-p) 44%,var(--fp-stroke));border-radius:13px;background:var(--fp-deep);min-width:0}
+.fp-hemo-panel[hidden]{display:none}
+.fp-hemo-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.fp-hemo-heading h4{font:normal 23px/1.2 Georgia,serif;margin:5px 0 0;color:var(--fp-text)}
+.fp-hemo-status{font-size:10px;color:var(--fp-muted);border:1px solid var(--fp-stroke);border-radius:18px;padding:5px 8px}
+.fp-hemo-counters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.fp-hemo-counter{border:1px solid var(--fp-stroke);border-radius:10px;background:var(--fp-surface);padding:13px;min-width:0;display:flex;flex-direction:column;gap:7px}
+.fp-hemo-counter>strong,.fp-hemo-actions strong,.fp-hemo-transfusion strong{font-size:12px;color:var(--fp-text)}
+.fp-hemo-counter p{font-size:11px;color:var(--fp-muted);line-height:1.5;flex:1}
+.fp-hemo-counter p strong{font-weight:750;color:var(--fp-p)}
+.fp-hemo-counter-row{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:5px}
+.fp-hemo-counter-row button{width:37px;height:37px;flex:none;border-radius:8px;border:1px solid var(--fp-stroke);background:var(--fp-raised);color:var(--fp-text);font-size:20px}
+.fp-hemo-counter-row button:hover{border-color:var(--fp-p)}
+.fp-hemo-counter-row output{font:normal 27px Georgia,serif;min-width:50px;text-align:center;color:var(--fp-p);font-variant-numeric:tabular-nums}
+.fp-hemo-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.fp-hemo-actions>div{min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:7px}
+.fp-hemo-actions small,.fp-hemo-transfusion small{font-size:11px;line-height:1.5;color:var(--fp-muted)}
+.fp-hemo-actions button,.fp-hemo-transfusion button{border:1px solid var(--fp-p);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);padding:10px 11px;font-size:11px;min-height:40px;font-weight:700;text-align:center}
+.fp-hemo-actions button[aria-pressed="true"]{background:color-mix(in srgb,var(--fp-p) 22%,var(--fp-raised));color:var(--fp-text)}
+.fp-hemo-actions button:disabled,.fp-hemo-transfusion button:disabled{opacity:.48;cursor:not-allowed}
+.fp-hemo-transfusion{display:flex;gap:14px;align-items:center;justify-content:space-between;border-top:1px solid var(--fp-stroke);padding-top:13px;margin-top:14px}
+.fp-hemo-transfusion>div{flex:1;min-width:0}
+.fp-hemo-transfusion small{display:block;margin-top:4px}
+.fp-hemo-transfusion p{font-size:11px;line-height:1.4;margin-top:7px;color:var(--fp-muted)}
+.fp-hemo-transfusion button{max-width:240px}
+.fp-hemo-footnote{font-size:10px;line-height:1.6;margin-top:13px!important;color:var(--fp-muted)}
+@media(max-width:650px){
+ .fp-hemo-panel{padding:11px}
+ .fp-hemo-heading h4{font-size:19px}
+ .fp-hemo-counters,.fp-hemo-actions{grid-template-columns:1fr}
+ .fp-hemo-transfusion{align-items:stretch;flex-direction:column}
+ .fp-hemo-transfusion button{max-width:none;width:100%}
+}
