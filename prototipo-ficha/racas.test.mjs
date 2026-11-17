@@ -93,7 +93,10 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  const SKILLS=[
   ["sangue","Perícia em Elemento Sangue","",2],
   ["criar-item-foco-magia","Criar Item de Foco e Magia","",1],
-  ["pugilismo","Pugilismo","",1]
+  ["pugilismo","Pugilismo","",1],
+  ["disciplina-avancada","Disciplina Avançada","",1],
+  ["vento","Perícia em Elemento Ar","",1],
+  ["trevas","Perícia em Elemento Trevas","",2]
  ];
  const calculate=new Function("racialCostTable","SKILLS",sourceLists+"\n"+accounting+"\nreturn rawCreationCosts;")(racialCostTable,SKILLS);
  const sangue=calculate(character("lucker_sangue",{
@@ -107,6 +110,13 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  assert.equal(rune.skills,0); // Foco, Pugilismo e os elementos não são compras
  const bought=calculate(character("humano",{skills:["pugilismo"]}));
  assert.equal(bought.skills,1);
+ const build=calculate(character("humano",{
+  attributes:{inteligencia:2},practices:{armas_conjuracao:2,artesao:1},
+  skills:["criar-item-foco-magia","disciplina-avancada","vento","trevas"]
+ }));
+ assert.deepEqual(build,{attr:3,training:6,skills:5});
+ assert.equal(build.attr+build.training+build.skills,14);
+ assert.equal(15-(build.attr+build.training+build.skills),1); // mesmo saldo residual da build humana antiga de 19 XP
 });
 
 test("interface inclui seletor, persistência, salvaguardas e marcador manual de Perseverança",()=>{
