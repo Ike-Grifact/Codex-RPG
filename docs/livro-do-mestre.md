@@ -2,7 +2,7 @@
 
 ## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
 
-**Implementação posterior [DEFINIDO, SRD v0.61]:** na criação, conceder automaticamente G1 de ambos os Atributos favorecidos de Lucker de Sangue (Vigor/Agilidade), Lucker Puro (Inteligência/Influência) e Runa Espinhos (Vigor/Força), a **0 XP**. O Humano não recebe grau automático. Os G1 contam para a obrigação de Atributo, mas continua exigido um Conhecimento ou Prática G1. O botão “Começar com” adquire imediatamente o Grau 1; o Codex Genético abre como modo principal. Não mudar custos, benefícios raciais, 18 XP iniciais experimentais nem limites.
+**Implementação posterior [DEFINIDO, SRDs v0.61 e v0.62]:** na criação, conceder automaticamente G1 de ambos os Atributos favorecidos de Lucker de Sangue (Vigor/Agilidade), Lucker Puro (Inteligência/Destreza) e Runa Espinhos (Vigor/Força), a **0 XP**. O Humano não recebe grau automático. Os G1 contam para a obrigação de Atributo, mas continua exigido um Conhecimento ou Prática G1. O botão “Começar com” adquire imediatamente o Grau 1; o Codex Genético abre como modo principal. Não mudar custos, benefícios raciais, 18 XP iniciais experimentais nem limites.
 
 A progressão experimental agora alcança **260 XP totais no nível 20** (18 iniciais + até 242 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
 
@@ -16,7 +16,7 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 | 5 | 12 | 18 | 32 | 18 | 32 | 48 |
 | 6 | 24 | 32 | 64 | 32 | 64 | 96 |
 
-**Linhagens:** Lucker de Sangue favorece Vigor/Agilidade e eleva Influência/Apresentação; Lucker Puro favorece Inteligência/Influência e eleva Força/Atletismo; Runa Espinhos favorece Vigor/Força e eleva Agilidade/Destreza; Humano usa custos normais e mantém Perseverança Humana. "Elevado" **substitui** o multiplicador literal 2× antes descrito; a tabela elevada é o preço definitivo nesta rodada de playtest. As Perícias raciais iniciais da v0.55 permanecem gratuitas, sem Graus extras.
+**Linhagens:** Lucker de Sangue favorece Vigor/Agilidade e eleva Influência/Apresentação; Lucker Puro favorece Inteligência/Destreza e eleva Força/Atletismo; Runa Espinhos favorece Vigor/Força e eleva Agilidade/Destreza; Humano usa custos normais e mantém Perseverança Humana. "Elevado" **substitui** o multiplicador literal 2× antes descrito; a tabela elevada é o preço definitivo nesta rodada de playtest. As Perícias raciais iniciais da v0.55 permanecem gratuitas, sem Graus extras.
 
 **Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
 
