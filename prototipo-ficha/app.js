@@ -2933,8 +2933,8 @@ function score(){
  // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
  // crítico OU a Perícia pertinente para acerto não crítico.
  const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
- const weaponCategory=item?.category==="medio"||item?.weight==="medio"?"medio":
-  item?.category==="pesado"||item?.weight==="alto"||item?.weight==="extremo"?"pesado":"leve";
+ const weaponCategory=["medio","pesado"].includes(item?.category)?item.category:
+  item?.weight==="medio"?"medio":["alto","extremo"].includes(item?.weight)?"pesado":"leve";
  const validCravarWeapon=item?.equipped&&item.type==="arma"&&!item.firearm&&
   p.mode==="armas"&&["medio","pesado"].includes(weaponCategory)&&properties.includes("Cravar");
  const cravarSpecialty=weaponCategory==="medio"?"armas-medias":"armas-pesadas";
