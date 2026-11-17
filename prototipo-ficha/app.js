@@ -4,6 +4,7 @@
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
 const SAVE_KEY=NPC_MODE?"codex-html-ficha-npc-dna-v1":"codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY=NPC_MODE?"codex-html-ficha-npc-wizard-v1":"codex-html-ficha-wizard-v1";
 const CONFLICT_NPC_INBOX="codex-rpg-conflito-humanoide-inbox-v1";
+const PLAYER_SHEETS_INDEX="codex-rpg-jogadores-index-v1",PLAYER_SHEET_PREFIX="codex-rpg-jogador-ficha-v1:";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
 const K=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 const P=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
@@ -1019,6 +1020,7 @@ function defaultState(){return{
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
+let playerSheets=[],activePlayerSheetId="";
 let wizardCategory="",wizardTab="attr",wizardMode="list";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
@@ -1064,13 +1066,141 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   contextOK:false,equipmentId:"",trevas:false});
+// Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
+// O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
+function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
+function playerSheetId(){return getId().replace(/[^a-zA-Z0-9_-]/g,"").slice(0,90);}
+function playerSheetMeta(s,id,createdAt=new Date().toISOString()){
+ return {id,name:String(s.name||"").trim().slice(0,70),race:Object.hasOwn(RACES,s.race)?s.race:"humano",
+  level:clamp(Math.floor(s.level||1),1,20),createdAt,updatedAt:new Date().toISOString()};
+}
+function wizardSnapshot(){
+ return {version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,
+  starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,
+  shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred};
+}
+function restoreWizard(w={}){
+ const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
+ wizardStep=w.version>=4?clamp(oldStep,0,4):w.version>=2?(oldStep>=3?4:clamp(oldStep,0,2)):clamp(oldStep>0?1:0,0,4);
+ wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
+ wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
+ wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
+ wizardMode=w.mode==="genetic"?"genetic":"list";
+ wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
+ wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
+ wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
+ wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
+ wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
+ if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
+ if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
+}
+function readPlayerSheet(id){
+ if(!/^[a-zA-Z0-9_-]{1,90}$/.test(String(id||"")))return null;
+ try{
+  const payload=JSON.parse(localStorage.getItem(playerSheetKey(id))||"null");
+  return payload?.schema==="codex-jogador-ficha-v1"&&payload.character&&typeof payload.character==="object"?
+   payload:null;
+ }catch(e){console.warn("Codex: ficha de jogador não pôde ser recuperada",e);return null;}
+}
+function loadPlayerSheets(){
+ if(NPC_MODE)return null;
+ try{
+  const index=JSON.parse(localStorage.getItem(PLAYER_SHEETS_INDEX)||"null");
+  if(!index||!Array.isArray(index.sheets))return null;
+  const entries=index.sheets.filter(x=>x&&/^[a-zA-Z0-9_-]{1,90}$/.test(x.id))
+   .slice(0,40).map(x=>({id:x.id,name:String(x.name||"").slice(0,70),race:Object.hasOwn(RACES,x.race)?x.race:"humano",
+    level:clamp(x.level||1,1,20),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")}));
+  const ordered=[...entries.filter(x=>x.id===index.activeId),...entries.filter(x=>x.id!==index.activeId)];
+  for(const entry of ordered){
+   const payload=readPlayerSheet(entry.id);
+   if(payload){playerSheets=entries;activePlayerSheetId=entry.id;return payload;}
+  }
+ }catch(e){console.warn("Codex: índice de personagens inválido; tentativa de recuperação da ficha antiga",e);}
+ return null;
+}
+function renderPlayerSheets(){
+ const area=$("player-sheets"),select=$("player-sheet-select"),deleteButton=$("player-sheet-delete");
+ if(!area||!select)return;
+ area.hidden=NPC_MODE;
+ if(NPC_MODE)return;
+ select.innerHTML=playerSheets.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name||"Aprendiz sem nome")+
+  ' · '+esc(RACES[x.race]?.[0]||"Humano")+' · N'+x.level+'</option>').join("");
+ select.value=activePlayerSheetId;
+ if(deleteButton)deleteButton.disabled=playerSheets.length<2;
+ const note=$("player-sheets-count");
+ if(note)note.textContent=playerSheets.length+" "+(playerSheets.length===1?"ficha salva":"fichas salvas")+" neste navegador";
+}
+function resetPlayerView(wizard={}){
+ draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";sheetPage="play";
+ tradeDraft=null;tradeOwner=null;
+ geneDraft.clear();genePendingSkills.clear();geneSelected="";geneInspectorOpen=false;geneShowFuture=false;
+ geneFilter="related";geneSearch="";geneListOpen=false;
+ restoreWizard(wizard);
+}
+function activatePlayerSheet(id){
+ if(NPC_MODE||id===activePlayerSheetId)return;
+ const payload=readPlayerSheet(id);
+ if(!payload){toast("Não foi possível abrir essa ficha. Exporte as outras fichas e verifique o armazenamento.");renderPlayerSheets();return;}
+ if(!save()){toast("A ficha atual não pôde ser salva. A troca foi cancelada.");renderPlayerSheets();return;}
+ activePlayerSheetId=id;
+ state=normalize(payload.character);
+ resetPlayerView(payload.wizard||{});
+ try{localStorage.setItem(PLAYER_SHEETS_INDEX,JSON.stringify({version:1,activeId:id,sheets:playerSheets}));}
+ catch(e){console.warn(e);toast("Não foi possível registrar a seleção da ficha.");}
+ syncFields();render();wizardPersist();save();
+ window.scrollTo?.({top:0,behavior:"smooth"});
+ toast("Ficha selecionada: "+(state.name||RACES[state.race]?.[0]||"Aprendiz")+".");
+}
+function createPlayerSheet(character=defaultState(),wizard={},label="Nova ficha"){
+ if(NPC_MODE)return false;
+ if(playerSheets.length>=40){toast("Limite de 40 fichas neste navegador. Exporte e exclua as que não usar.");return false;}
+ if(activePlayerSheetId&&!save()){toast("Não foi possível salvar a ficha atual. Criação cancelada.");return false;}
+ const next=normalize(character),id=playerSheetId();
+ const previous=[...playerSheets],previousActive=activePlayerSheetId;
+ const entry=playerSheetMeta(next,id);
+ try{
+  localStorage.setItem(playerSheetKey(id),JSON.stringify({schema:"codex-jogador-ficha-v1",character:next,wizard}));
+  playerSheets.push(entry);activePlayerSheetId=id;
+  localStorage.setItem(PLAYER_SHEETS_INDEX,JSON.stringify({version:1,activeId:id,sheets:playerSheets}));
+ }catch(e){
+  console.warn("Codex: armazenamento sem espaço para outra ficha",e);
+  playerSheets=previous;activePlayerSheetId=previousActive;
+  try{localStorage.removeItem(playerSheetKey(id));}catch(e){}
+  toast("Não foi possível salvar outra ficha. Exporte suas fichas e libere espaço neste navegador.");renderPlayerSheets();
+  return false;
+ }
+ state=next;resetPlayerView(wizard);syncFields();render();wizardPersist();save();
+ window.scrollTo?.({top:0,behavior:"smooth"});
+ toast(label+" criada. As outras fichas continuam salvas.");
+ return true;
+}
+function deletePlayerSheet(){
+ if(NPC_MODE||playerSheets.length<2)return;
+ const name=state.name||RACES[state.race]?.[0]||"Aprendiz sem nome";
+ if(!confirm('Excluir permanentemente a ficha "'+name+'"? Esta operação não pode ser desfeita. Exporte o JSON antes, se desejar preservá-la.'))return;
+ const id=activePlayerSheetId;
+ const next=playerSheets.find(x=>x.id!==id),payload=readPlayerSheet(next.id);
+ if(!payload){toast("Não foi possível recuperar a outra ficha; exclusão cancelada.");return;}
+ const previous=playerSheets;
+ playerSheets=playerSheets.filter(x=>x.id!==id);activePlayerSheetId=next.id;
+ try{localStorage.setItem(PLAYER_SHEETS_INDEX,JSON.stringify({version:1,activeId:next.id,sheets:playerSheets}));}
+ catch(e){playerSheets=previous;activePlayerSheetId=id;toast("Erro ao salvar a lista. Exclusão cancelada.");return;}
+ localStorage.removeItem(playerSheetKey(id));
+ state=normalize(payload.character);resetPlayerView(payload.wizard||{});syncFields();render();wizardPersist();save();
+ toast("Ficha excluída. As demais continuam disponíveis.");
+}
 function load(){
  let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
+ const playerPayload=loadPlayerSheets();
  try{
   const saved=localStorage.getItem(SAVE_KEY);
   const oldRaw=localStorage.getItem(OLD_SAVE_KEY);
   legacyAvailable=!!oldRaw;
-  if(saved){
+  if(playerPayload){
+   const raw=playerPayload.character;
+   retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
+   state=normalize(raw);
+  }else if(saved){
    const raw=JSON.parse(saved);
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
@@ -1092,25 +1222,16 @@ function load(){
   }
  }catch(e){console.warn("Codex: falha ao recuperar ficha anterior",e);}
  draft=freshDraft();
- try{
-  const w=JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}");
-  const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
-  wizardStep=w.version>=4?clamp(oldStep,0,4):w.version>=2?(oldStep>=3?4:clamp(oldStep,0,2)):clamp(oldStep>0?1:0,0,4);
-  wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
-  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
-  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
-  wizardMode=w.mode==="genetic"?"genetic":"list";
-  wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
-  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
-  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
-  wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
-  wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
-  if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
-  if(wizardStarterPhase==="confirm"&&!wizardStarterTraining)wizardStarterPhase="training";
- }catch(e){wizardStep=0;wizardReached=0;}
+ try{restoreWizard(playerPayload?.wizard||JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}"));}
+ catch(e){restoreWizard({});}
  viewMode=state.creationLocked?"sheet":"builder";
  try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
  syncFields();render();
+ if(!NPC_MODE&&!playerPayload){
+  const id=playerSheetId();playerSheets=[playerSheetMeta(state,id)];activePlayerSheetId=id;
+  if(!save())toast("Exporte sua ficha: armazenamento local indisponível.");
+ }
+ renderPlayerSheets();
  $("import-old-creator").hidden=!legacyAvailable;
  if(migrated||retiredSkillMigrated){
   // Persistir a migração somente quando houve Perícia revogada na ficha salva,
@@ -1240,8 +1361,25 @@ function normalizeItem(it={}){
   durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999)}; // Campo legado preservado, não concede proteção na nova regra.
 }
 function save(){
- try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));$("save-indicator").textContent="Salvo neste navegador";}catch(e){
-  $("save-indicator").textContent="Não foi possível salvar; exporte a ficha.";console.warn(e);
+ try{
+  if(NPC_MODE||!activePlayerSheetId){
+   localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+  }else{
+   const entry=playerSheets.find(x=>x.id===activePlayerSheetId);
+   if(!entry)throw Error("Personagem sem entrada no índice");
+   const updated=playerSheetMeta(state,entry.id,entry.createdAt);
+   localStorage.setItem(playerSheetKey(entry.id),JSON.stringify({
+    schema:"codex-jogador-ficha-v1",character:state,wizard:wizardSnapshot()}));
+   Object.assign(entry,updated);
+   localStorage.setItem(PLAYER_SHEETS_INDEX,JSON.stringify({version:1,activeId:activePlayerSheetId,sheets:playerSheets}));
+   renderPlayerSheets();
+  }
+  $("save-indicator").textContent="Salvo neste navegador";
+  return true;
+ }catch(e){
+  $("save-indicator").textContent="Não foi possível salvar; exporte a ficha.";
+  console.warn("Codex: falha ao persistir ficha",e);
+  return false;
  }
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
@@ -1928,12 +2066,13 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
 function wizardPersist(){
- try{localStorage.setItem(WIZARD_KEY,JSON.stringify({version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred}));}
+ try{localStorage.setItem(WIZARD_KEY,JSON.stringify(wizardSnapshot()));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
+ if(!NPC_MODE&&activePlayerSheetId)save();
 }
 function wizardSelectStep(next){
  if(viewMode!=="builder"||state.creationLocked||next<0||next>=WIZARD_STEPS.length||next>wizardReached+1)return;
@@ -2192,7 +2331,7 @@ function renderWizard(){
  editButton.textContent=editMode?"Concluir edição":"Editar ficha";
  $("edit-sheet-help").hidden=show||!editMode;
  $("source-grid").classList.toggle("fp-edit-mode",editMode);
- $("xp-shortcut").hidden=show;$("start-wizard").hidden=show;
+ $("xp-shortcut").hidden=show;$("start-wizard").hidden=NPC_MODE;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
   "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
