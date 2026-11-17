@@ -1130,7 +1130,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false});
+  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -1439,8 +1439,12 @@ function normalizeItem(it={}){
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
  const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
  const max=clamp(Math.floor(it.max??0),0,999);
+ // v0.77: armadura pesada não é escudo pesado; Cravar fica preso ao escudo físico.
+ const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
+  (!["alto","extremo"].includes(weight)||it.embeddedWeapon==="pesado")?it.embeddedWeapon:"";
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
+  embeddedWeapon:embed,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances",
@@ -1656,7 +1660,14 @@ function defensePresentation(s=state){
   "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
-function itemLoad(it){return WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);}
+function itemLoad(it){
+ const regular=WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);
+ // A arma presa soma peso real categórico enquanto o escudo permanecer carregado
+ // (mesmo se abaixado). O item é retirado do inventário ao abandonar o escudo.
+ const embedded=it.type==="escudo"&&it.embeddedWeapon?
+  WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1]:0;
+ return regular+embedded;
+}
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
 function balance(){if(NPC_MODE)return "Pendente";const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
@@ -2834,8 +2845,10 @@ function roll(){
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
-    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
+    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
+    shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
+  cravarTargetShield:"",
   fireMode:"",fireGradeConfirmed:false,firePayment:"courage",fireSummon:false};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
