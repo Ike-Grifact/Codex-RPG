@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.66](srd-continuidade-v0.66.md) (DE de armaduras para todas as defesas; teto total 12), seguida do [SRD v0.65](srd-continuidade-v0.65.md) (VT experimental de armas G1), seguida do [SRD v0.64](srd-continuidade-v0.64.md) (visualização de custos raciais), seguida do [SRD v0.63](srd-continuidade-v0.63.md) (troca de raça sem herdar o Atributo escolhido anteriormente), seguida do [SRD v0.62](srd-continuidade-v0.62.md) (Lucker Puro: Inteligência + Destreza), seguida do [SRD v0.61](srd-continuidade-v0.61.md) (mapa como padrão), que sucede o [SRD v0.60](srd-continuidade-v0.60.md) (múltiplas fichas de jogadores), mantendo o [SRD v0.59](srd-continuidade-v0.59.md) (identidade), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.68](srd-continuidade-v0.68.md) (afinidade por armadura do alvo; peso natural de criaturas pendente), após [v0.67](srd-continuidade-v0.67.md) (Balanço por carga), e [v0.66](srd-continuidade-v0.66.md) (DE de armaduras para todas as defesas; teto total 12), seguida do [SRD v0.65](srd-continuidade-v0.65.md) (VT experimental de armas G1), seguida do [SRD v0.64](srd-continuidade-v0.64.md) (visualização de custos raciais), seguida do [SRD v0.63](srd-continuidade-v0.63.md) (troca de raça sem herdar o Atributo escolhido anteriormente), seguida do [SRD v0.62](srd-continuidade-v0.62.md) (Lucker Puro: Inteligência + Destreza), seguida do [SRD v0.61](srd-continuidade-v0.61.md) (mapa como padrão), que sucede o [SRD v0.60](srd-continuidade-v0.60.md) (múltiplas fichas de jogadores), mantendo o [SRD v0.59](srd-continuidade-v0.59.md) (identidade), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -634,7 +634,7 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 ## V. Defesa, Vantagem e peso
 
-**DE = Dificuldade de Êxito.** O tipo de ataque e o balanço do alvo produzem condições de Vantagem ou Desvantagem, conforme a situação.
+**DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
 ### DE defensiva — Vigor e Atletismo [DEFINIDO]
 
@@ -665,17 +665,19 @@ Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de
 
 **Não confundir Vantagem com +1E**: a Vantagem comum concede **Antecipar**, não Êxito automático. Estado situacional e afinidade de peso/arma são fontes distintas e podem interagir conforme as regras; condições ambientais iguais não se acumulam livremente.
 
-### Afinidade entre peso do ataque e balanço do alvo
+### Afinidade entre peso do ataque e armadura do alvo [DEFINIDO — SRD v0.68]
 
-| Ataque / Alvo | Leve | Médio | Pesado |
+| Ataque / Armadura equipada do alvo humanoide | Muito Leve ou Leve | Média | Pesada ou Muito Pesada |
 |---|---|---|---|
-| **Leve** | Normal | Vantagem | Desvantagem |
-| **Médio** | Vantagem | Desvantagem | Normal |
-| **Pesado** | Desvantagem | Normal | Vantagem |
+| **Leve** | Normal | Vantagem (+1A) | Desvantagem (−1A) |
+| **Médio** | Vantagem (+1A) | Desvantagem (−1A) | Normal |
+| **Pesado** | Desvantagem (−1A) | Normal | Vantagem (+1A) |
 
-O peso efetivo de cada ataque depende das **armas, Perícias e abordagem**. Um personagem não escolhe estilo obrigatório na criação. O **balanço corporal agora deriva da proporção de carga transportada**, não da comparação entre Agilidade e Vigor.
+**Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-**PENDENTE — revisão da afinidade:** a matriz histórica acima usa três categorias de alvo (Leve, Médio, Pesado), enquanto a carga corporal passou a produzir **cinco**. Até a revisão dessa interação, **não converter automaticamente Muito Leve em Leve nem Muito Pesado em Pesado** para conceder Vantagem/Desvantagem. Também permanecem pendentes os procedimentos de carga ou massa naturais para criaturas não humanoides.
+**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. O autor definiu a penalidade **−1E no estado de sobrepeso/Muito Pesado**, mas a abrangência e o procedimento automático de aplicação estão **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
+
+**Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
 ### Criatividade em combate e fora dele
 
