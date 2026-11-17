@@ -57,7 +57,7 @@ const cases=[
      assert(stroke>=3.5,id+" precisa de contorno destacado, obtido "+stroke);
     }
    }
-   assert.equal(await page.locator(".fp-racial-xp-legend .fp-racial-xp-marker").count(),2,"Mapa apresenta legenda textual");
+   assert.equal(await page.locator("#wizard-content .fp-racial-xp-legend .fp-racial-xp-marker").count(),2,"Mapa apresenta legenda textual");
    const summaryBefore=await page.locator("#wizard-summary").innerText();
    await page.locator('[data-action="wizard-mode"][data-mode="list"]').click();
    for(const group of ["attr","know","practice"]){
@@ -80,7 +80,7 @@ const cases=[
   }
   await page.setViewportSize({width:390,height:840});
   assert.equal(await page.locator('#gene-builder-map .fp-gene-card.is-xp-elevated').count(),2,"Ícones persistem no celular");
-  assert.equal(await page.locator(".fp-racial-xp-legend .fp-racial-xp-marker").count(),2);
+  assert.equal(await page.locator("#wizard-content .fp-racial-xp-legend .fp-racial-xp-marker").count(),2);
   assert.deepEqual(errors,[],"Sem erros JavaScript");
   console.log("PASS: custos raciais visíveis nas quatro origens, mapa, listas, escolha inicial, recarga, celular e XP intacto");
  }finally{await browser.close();}
