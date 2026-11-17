@@ -2804,6 +2804,13 @@ function renderComposer(){
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
  const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
+ const removalShield=draft.cravarRemovalShieldId?
+  state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
+ const removalHint=draft.cravarRemovalShieldId?
+  '<div class="fp-alert"><strong>RETIRAR CRAVAR — '+esc(removalShield?.name||"Escudo")+'</strong><p>Combine Força, Atletismo ou Vigor com outra aptidão pertinente. A DE depende do PESO DA ARMA cravada, máximo 4 — o Narrador informa a dificuldade; não há tabela numérica fixa aprovada.</p>'+
+  '<label class="fp-checkline"><input type="checkbox" data-option="cravarRemovalDEConfirmed"'+
+  (draft.cravarRemovalDEConfirmed?' checked':'')+'> Confirmo que o Narrador definiu a DE da arma (1 a 4)</label>'+
+  '<p>Uma rolagem de retirada não é ataque, não causa dano e só remove a condição ao vencer a DE.</p></div>':"";
  const isShared=draft.base.group==="practice"&&draft.base.key==="armas_conjuracao";
  const usage=isShared?(draft.mode==="conjuracao"?"Disciplina · Conjuração":"Disciplina · Armas"):label(draft.base.group,draft.base.key);
  const canTrevas=isShared&&draft.mode==="conjuracao"&&ownsSkill("trevas");
@@ -2832,7 +2839,7 @@ function renderComposer(){
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
- checks+'</div>';
+ checks+removalHint+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
@@ -3211,7 +3218,8 @@ function renderInventory(){
    '</label></div>'+
    (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −2E em Levantar Escudo; '+
     'carga adicional de '+pad(WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1])+
-    ' Alto enquanto o escudo permanecer carregado. Retirar a arma: escolha Nenhuma. Soltar escudo: retire o item da carga.</div>':"")
+    ' Alto enquanto o escudo permanecer carregado. <button type="button" class="fp-secondary" data-action="cravar-remove-prepare" data-id="'+esc(it.id)+'">Tentar retirar a arma (teste)</button>'+
+    ' <small>O campo acima permite corrigir erros de cadastro; para retirar em jogo use o teste. Soltar escudo: retire o item da carga.</small></div>':"")
   );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
@@ -3657,6 +3665,18 @@ function onClick(event){
   if(draft.base?.key==="armas_conjuracao")draft.mode=modeDefault();
   render();save();break;
  }
+ case "cravar-remove-prepare":{
+  const shield=state.items.find(it=>it.id===id&&it.type==="escudo"&&it.embeddedWeapon);
+  if(!shield){toast("Escudo sem arma cravada para retirar.");break;}
+  if(state.pending){toast("Finalize a rolagem pendente antes de tentar retirar Cravar.");break;}
+  editMode=false;sheetPage="play";
+  draft=freshDraft();
+  draft.cravarRemovalShieldId=id;draft.base={group:"practice",key:"atletismo"};
+  draft.attribute={group:"attr",key:(state.attributes.vigor||0)>(state.attributes.forca||0)?"vigor":"forca"};
+  draft.de=1;draft.cravarRemovalDEConfirmed=false;
+  render();$("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"center"});
+  toast("Retirar Cravar: escolha uma combinação com Força, Atletismo ou Vigor e informe a DE da arma (máximo 4).");break;
+ }
  case "integrity":{
   const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
  }
@@ -3718,6 +3738,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
+  if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
   renderSources();renderComposer();return;
  }
  if(el.dataset.pending&&state.pending){
