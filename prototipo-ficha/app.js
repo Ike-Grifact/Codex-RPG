@@ -2866,7 +2866,8 @@ function roll(){
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
- state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
+ state.pending={created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+  base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
@@ -2887,6 +2888,16 @@ function score(){
  const p=state.pending;if(!p)return null;
  const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
+ if(p.cravarRemovalShieldId){
+  const shield=state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon);
+  if(!shield)errs.push("O escudo já não possui a arma cravada declarada.");
+  if(!Number.isInteger(p.opts.de)||p.opts.de<1||p.opts.de>4)
+   errs.push("A DE da arma cravada deve ficar entre 1 e 4.");
+  if(![p.base,p.attribute,p.third].some(src=>src&&((src.group==="attr"&&["forca","vigor"].includes(src.key))||(src.group==="practice"&&src.key==="atletismo"))))
+   errs.push("A retirada deve combinar aptidões incluindo Força, Atletismo ou Vigor.");
+  if(p.characteristic||p.secondCharacteristic||p.opts.shieldRaise||p.opts.weightEnabled||p.opts.equipmentId||p.opts.trevas)
+   errs.push("A retirada não é um ataque e não pode aplicar característica de arma, escudo ou magia ao mesmo tempo.");
+ }
  if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&ownsSkill("trevas")))
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
@@ -3089,7 +3100,10 @@ function renderPending(){
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-e">Êxito ᛋ</span><b>'+s.E+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-a">Antecipar ᚨ</span><b>'+s.remainingA+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-p">Pavor ᚦ</span><b>'+s.P+'</b></div></div>'+
- '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'+
+ (p.cravarRemovalShieldId?'<p class="fp-caption"><strong>RETIRAR CRAVAR — '+(s.success?'SUCESSO':'FALHA')+':</strong> '+s.reached+' contra DE '+p.opts.de+
+  '. '+(s.success?'Ao finalizar, a arma será retirada do escudo e sua carga/penalidade serão removidas.':'A arma permanecerá cravada no escudo.')+
+  ' Não é ataque e não causa dano; Pavor continua produzindo risco.</p>':
+  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>')+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+
@@ -3125,15 +3139,20 @@ function finalize(){
  }
  const gainedCourage=state.courage-oldCourage,gainedPP=state.pp-oldPP;
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
+ const removalSuccess=!!(removalShield&&s.success);
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
+  cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   ppRecovered:gainedPP,courageRecovered:gainedCourage,cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
+ if(removalSuccess)removalShield.embeddedWeapon=""; // Remover −2E e massa extra somente após sucesso
  state.history=state.history.slice(0,20);state.pending=null;save();render();
- toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
+ toast(p.cravarRemovalShieldId?(removalSuccess?"Sucesso: arma retirada do escudo; carga e penalidade atualizadas.":"Falha: arma permanece cravada no escudo."):
+  (s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
 function updateGrade(group,id,delta){
  if(state.pending){toast("Finalize a rolagem antes de modificar fontes.");return;}
