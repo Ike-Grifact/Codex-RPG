@@ -2278,8 +2278,10 @@ function wizardSource(group,item){
  const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
  const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
  const lower=g>0&&!state.creationLocked&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
- return '<article class="fp-wiz-source" data-source-group="'+group+'">'+
+ const band=racialXpBand(group,id);
+ return '<article class="fp-wiz-source'+(band==="normal"?"":" is-xp-"+band)+'" data-source-group="'+group+'">'+
   '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
+  racialXpMarker(group,id)+
   '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
   '<div class="fp-wiz-source-actions">'+
   '<span class="fp-wiz-cost">'+(g>=6?'Grau máximo':'Próximo avanço: '+next+' XP')+'</span>'+
@@ -2302,8 +2304,10 @@ function wizardStarterOption(group,[id,name]){
  const selected=isAttr?wizardStarterAttribute===id:wizardStarterTraining===key;
  const cost=grade>=1?0:racialCostTable(group,id,state)[1];
  const dice=isAttr?"G0: 1d4 · G1: 1d6":"G0: 1d6 · G1: 1d10";
- return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
+ const band=racialXpBand(group,id);
+ return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+(band==="normal"?"":" is-xp-"+band)+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
   '<span class="fp-wiz-focus-top"><strong>'+esc(name)+'</strong><small>'+(selected?'Escolhido':'Escolher')+'</small></span>'+
+  racialXpMarker(group,id)+
   '<span class="fp-wiz-focus-role">'+esc(info[0])+'</span>'+
   '<span class="fp-wiz-focus-description">'+esc(info[1])+'</span>'+
   '<span class="fp-wiz-focus-example">'+esc(info[2])+'</span>'+
@@ -2536,9 +2540,11 @@ function renderSources(){
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
-   return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+'">'+
+   const band=racialXpBand(group,id);
+   return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+(band==="normal"?"":" is-xp-"+band)+'">'+
     '<button type="button" class="fp-source-pick" data-action="source" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+!!flag+'" title="'+(editMode?"Modo edição: use + ou −":"Selecionar fonte")+'" '+(state.pending||editMode?"disabled":"")+'>'+
     '<span class="fp-src-title"><span>'+esc(title)+'</span>'+(flag?'<span class="fp-flag">'+flag+'</span>':"")+'</span>'+
+    racialXpMarker(group,id)+
     '<span class="fp-dice-list">'+dice.map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("")+'</span></button>'+
     '<div class="fp-grade-controls"><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" aria-label="Aumentar grau de '+esc(title)+'" '+(!canRaise||state.pending?"disabled":"")+'>+</button>'+
     '<b>'+g+'</b><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" aria-label="Reduzir grau de '+esc(title)+'" '+(!canReduce?"disabled":"")+'>−</button><small class="fp-xp-step-cost">'+(g<6?'+'+nextCost+' XP':'MAX')+'</small></div></div>';
