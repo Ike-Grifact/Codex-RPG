@@ -58,7 +58,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 ### 2. Cravar, retirada e Sobrecarga
 
-**DEFINIDO — retirada de Cravar (complementa e corrige v0.78):** exige rolagem combinada pertinente que inclua **Força, Atletismo ou Vigor**, junto de outra fonte válida. Não vale rolar uma fonte isolada. A **DE depende da categoria de peso da arma cravada**: **Leve 1; Média 2; Pesada 3**, com **teto geral 4**. Acertar a DE retira a arma; falhar mantém a condição. Nenhum custo de PP/Coragem ou Perícia de arma foi acrescentado à retirada.
+**DEFINIDO — retirada de Cravar (correção autoral posterior, 17/11/2026; substitui a combinação mais aberta da v0.78):** exige **uma rolagem combinando exatamente uma Prática entre Disciplina ou Atletismo com exatamente um Atributo entre Força, Vigor ou Destreza**, conforme a ação. São combinações permitidas: **Disciplina + Força; Disciplina + Vigor; Disciplina + Destreza; Atletismo + Força; Atletismo + Vigor; Atletismo + Destreza**. Não vale usar apenas a Prática ou apenas o Atributo, trocar a Prática por outra fonte, somar duas Práticas ou escolher dois Atributos nessa retirada padrão. A **DE depende da categoria de peso da arma cravada**: **Leve 1; Média 2; Pesada 3**, com **teto geral 4**. Acertar a DE retira a arma; falhar mantém a condição. Nenhum custo de PP/Coragem ou Perícia de arma foi acrescentado à retirada. **Esta regra é específica de retirar Cravar e não altera as combinações gerais de outras ações.**
 
 **DEFINIDO — tipo de ação (opção A, 17/11/2026):** tentar **retirar uma arma cravada exige gastar uma ação própria do personagem** em seu turno, inclusive quando a tentativa falha. A retirada **não pode ser executada como parte de Levantar Escudo** ou de outra ação. Uma tentativa é dirigida à arma escolhida e respeita o teste e a DE definidos; esta decisão **não concede ação adicional nem cria custo de PP ou Coragem**.
 
@@ -187,7 +187,7 @@ Não cobrar as três formas cumulativamente.
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **DEFINIDO:** quando o foco comum esgota durante a rodada, recupera 1 carga **no fim dessa mesma rodada**, depois do fluxo de jogadores e inimigos; Pedra da Alma é exceção |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
-| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: aplicar **−1E cumulativo por arma cravada somente em Levantar Escudo**, retirar a penalidade por arma removida, calcular DE por peso e colocar arma removida com sucesso **na mão livre de quem retirou ou no chão quando não houver mão livre**, além do −1E geral independente da Sobrecarga |
+| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: exigir **Disciplina ou Atletismo + Força, Vigor ou Destreza** na retirada, aplicar **−1E cumulativo por arma cravada somente em Levantar Escudo**, retirar a penalidade por arma removida, calcular DE por peso e colocar arma removida com sucesso **na mão livre de quem retirou ou no chão quando não houver mão livre**, além do −1E geral independente da Sobrecarga |
 | 15 XP iniciais | **EXPERIMENTAL**: revisar balanceamento; ainda não alterar a progressão fora do início |
 
 ### 7.1. Auditoria de pendências deste checkpoint (17/11/2026)
@@ -203,12 +203,12 @@ Não cobrar as três formas cumulativamente.
 5. **Hemomancia avançada:** custos e gatilhos ainda incompletos das técnicas de Sangue G2/G3; a regra de uma amplificação por turno já está DEFINIDA.
 6. **Procedimentos elementais não especificados:** pormenores de execução de efeitos utilitários e outras interações de Água/Gelo/Fogo não expressamente resolvidas; não recriar custos nem DE.
 
-**RESOLVIDO nesta revisão — Cravar:** a retirada exige **uma ação própria**, não combinada com Levantar Escudo; a penalidade de −1E é cumulativa por arma, e a retirada bem-sucedida transfere a arma à mão livre de quem a retira ou ao chão quando não houver mão disponível. A execução nas interfaces ainda requer implementação e testes.
+**RESOLVIDO nesta revisão — Cravar:** a retirada exige **uma ação própria** e rolagem **Disciplina ou Atletismo + Força, Vigor ou Destreza**, não combinada com Levantar Escudo; a penalidade de −1E é cumulativa por arma, e a retirada bem-sucedida transfere a arma à mão livre de quem a retira ou ao chão quando não houver mão disponível. A execução nas interfaces ainda requer implementação e testes.
 
 **4 frentes de implementação/validação**, distintas de regras aprovadas:
 
 1. **Condições e alvos no criador/Foundry:** automatizar tratamento de Sangrando por Medicina Avançada e remoção de Congelamento por Água/Queimar.
-2. **Cravar e Sobrecarga nas interfaces:** a retirada deve **consumir ação própria, separada de Levantar Escudo**, exigir teste por DE/peso e, em sucesso, transferir a arma **à mão livre de quem retirou ou ao chão quando não houver mão livre**; aplicar **−1E por arma cravada** em Levantar Escudo (cumulativo) e −1E geral da Sobrecarga, preservando demais funcionalidades.
+2. **Cravar e Sobrecarga nas interfaces:** a retirada deve **consumir ação própria, separada de Levantar Escudo**, exigir **Disciplina ou Atletismo + Força, Vigor ou Destreza** contra DE por peso e, em sucesso, transferir a arma **à mão livre de quem retirou ou ao chão quando não houver mão livre**; aplicar **−1E por arma cravada** em Levantar Escudo (cumulativo) e −1E geral da Sobrecarga, preservando demais funcionalidades.
 3. **Conjuração, focos e Hemomancia:** implementar contagem de turnos, gasto de múltiplas cargas, recarga no encerramento da mesma rodada, interrupção e seus recursos; respeitar a exceção da Pedra da Alma.
 4. **Fluxo de criaturas/combinações e testes de regressão:** validar **Conhecimento/Prática com dois Atributos diferentes** quando habilitado; bloquear repetição de um mesmo Atributo; verificar a exceção das criaturas de apenas Atributos **após a reconciliação autoral**; validar humanoides, compositor, versões móvel e clássica e compatibilidade com Foundry.
 
@@ -217,7 +217,7 @@ Não cobrar as três formas cumulativamente.
 **Resumo desta auditoria: 6 frentes de regras + 4 frentes de implementação/validação + 1 frente experimental = 11 frentes de acompanhamento.** Não interpretar como exatamente 12 perguntas de sim/não: cada frente pode conter vários detalhes.
 
 **Divergências conhecidas frente ao Livro do Jogador e versões históricas:**
-- v0.78 declara DE de retirada por peso a cargo do Narrador e −2E fixos em Levantar Escudo: **substituir por tabela 1/2/3 e −1E por arma cravada, cumulativo, somente nessa ação**.
+- v0.78 traz retirada por fontes amplas, DE definida pelo Narrador e −2E fixos em Levantar Escudo: **substituir as fontes por Disciplina ou Atletismo + Força, Vigor ou Destreza; aplicar tabela de DE por peso 1/2/3 e −1E por arma cravada, cumulativo, somente em Levantar Escudo**.
 - Livro do Jogador descreve recarga de focos em N rodadas sem detalhar cargas e início de recuperação: **aplicar capacidade = Grau e recuperação gradual automática no encerramento de rodada, após esgotamento**, com exceção da Pedra da Alma.
 - Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **G2=2 turnos, G3=3 turnos, redução a G1 imediata e foco −1 turno por carga** prevalecem onde aplicáveis. **Duas cargas na mesma G3** reduzem sua preparação a **1 turno, isto é, conjuração instantânea no próprio turno**, sem perder efeitos G3; permanecem pendências de G4 e integração com memorização.
 - Livro apresenta Conjuração Refinada com alcance pendente: **+8 m está definido**.
