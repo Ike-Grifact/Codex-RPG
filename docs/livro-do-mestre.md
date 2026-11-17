@@ -2,7 +2,7 @@
 
 ## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
 
-A progressão experimental agora alcança **260 XP totais no nível 20** (15 iniciais + até 245 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
+A progressão experimental agora alcança **260 XP totais no nível 20** (18 iniciais + até 242 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
 
 | Grau | Atributo desconto | Atributo normal | Atributo elevado | Conhecimento/Prática desconto | Conhecimento/Prática normal | Conhecimento/Prática elevado |
 |---:|---:|---:|---:|---:|---:|---:|
@@ -18,9 +18,9 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (15 ini
 
 **Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
 
-**Restrições:** 15 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 245, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
+**Restrições:** 18 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 242, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
 
-Regras completas e precedência: [SRD v0.57](srd-continuidade-v0.57.md) (15 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md), sobre as linhagens do [SRD v0.55](srd-continuidade-v0.55.md).
+Regras completas e precedência: [SRD v0.58](srd-continuidade-v0.58.md) (18 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md), sobre as linhagens do [SRD v0.55](srd-continuidade-v0.55.md).
 
 ## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
 
@@ -164,7 +164,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 15 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 18 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
