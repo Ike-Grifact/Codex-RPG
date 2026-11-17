@@ -39,6 +39,16 @@ Classificar pelo percentual **sem arredondá-lo para decidir o limite**. Valores
 - Preservar quantidades e pesos dos itens já cadastrados, inclusive peso físico de focos e recursos de troca.
 - No **modo NPC**, não atribuir automaticamente um peso corporal natural a criaturas apenas por carregarem zero equipamento: mostrar **Pendente**, até a definição de massa natural e tipos de criatura.
 
+### Mapa retangular proporcional do inventário [IMPLEMENTADO NA BRANCH DE REVISÃO — 17/11/2026]
+
+O inventário exibe uma **ilustração retangular da carga**, sem introduzir unidades mecânicas novas. A malha possui **10 colunas** e **20 células por unidade Alto de capacidade**; cada célula mede visualmente **0,05 Alto**. Assim, a altura do retângulo aumenta na proporção da capacidade total do personagem.
+
+- Armas, armaduras, escudos, focos, outros equipamentos e recursos transportados são diferenciados visualmente na malha; ocupam áreas **proporcionais ao peso físico calculado**, com preenchimento fracionário dentro de uma célula.
+- A ficha também mostra **percentual de ocupação, classe corporal, carga usada e total**, com alerta destacado quando ultrapassar a capacidade (sem penalidade nova).
+- O painel **De onde vem a capacidade?** explicita as contribuições da **base 1 Alto**, **Força**, **Vigor**, **Disciplina** e **Atletismo**, obedecendo à fórmula preexistente: `1 + ⌊FOR/3⌋ + ⌊VIG/3⌋ + ⌊DISC/3⌋ + ⌊ATL/3⌋`.
+- A ilustração não converte itens em unidades indivisíveis: um objeto de 0,0125 Alto ocupa exatamente **um quarto de uma célula de 0,05 Alto**. As quantidades e a carga real continuam sendo contabilizadas sem arredondamento para blocos.
+- O mapa de capacidade de jogador não se aplica automaticamente a criaturas em modo NPC; o balanço corporal natural delas permanece **PENDENTE**, evitando classificar um monstro sem equipamento como Muito Leve por engano.
+
 ### Elementos preservados [DEFINIDO]
 
 - A **DE defensiva natural**, incluindo Vigor e Agilidade onde previsto, e os modificadores da armadura da **v0.66**, continuam intactos.
