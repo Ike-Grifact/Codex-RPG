@@ -1623,9 +1623,18 @@ function defensePresentation(s=state){
   "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+") = "+total+" · Vale para todas as defesas · Teto 12":
   "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
 }
-function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
-function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
+function itemLoad(it){return WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);}
+function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
+function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
+function balance(){const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
+function loadBlocksMarkup(){
+ const p=loadPercent(),over=p>=100;
+ return Array.from({length:20},(_,i)=>{
+  const fill=Math.max(0,Math.min(100,(p-i*5)*20));
+  return '<span class="fp-load-block'+(over?' over':'')+'" style="--fp-fill:'+fill.toFixed(2)+'%" aria-hidden="true"></span>';
+ }).join("");
+}
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
@@ -2529,6 +2538,9 @@ function renderVitals(){
    " · registro manual de dano"):"Equipe uma armadura no Inventário";
  $("de-caption").textContent=defense.caption;
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
+ const loadCaption=$("balance-caption"),blocks=$("load-blocks");
+ if(loadCaption)loadCaption.textContent=pad(loadPercent())+"% da capacidade";
+ if(blocks){blocks.innerHTML=loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
@@ -2903,7 +2915,7 @@ function renderInventory(){
  }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Ocupação física estimada: "+pad(load)+" / "+max+" Alto"+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional, sem anulação por spellslots.";
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Cada bloco da ficha representa 5% da capacidade. Focos usam carga convencional.";
  const mental=$("mental-slot-caption");
  if(mental){
   const points=mentalSlotCapacity();
@@ -2940,6 +2952,7 @@ function renderInventory(){
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
   '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+(it.type==="armadura"&&it.weight==="muito_leve"?"disabled":"")+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
+   '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
