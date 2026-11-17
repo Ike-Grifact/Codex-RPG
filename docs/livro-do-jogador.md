@@ -789,7 +789,20 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Conjuração G3 e foco [DEFINIDO — SRD v0.79, 17/11/2026]:** o **Grau da magia** e o **tempo de preparação** são grandezas distintas. Uma magia **G3 demora 3 turnos sem foco**, com seus efeitos completos de G3. Gastar **1 carga de foco** reduz a preparação para **2 turnos**; gastar **2 cargas do mesmo foco** reduz para **1 turno**, que significa **lançamento instantâneo no próprio turno do conjurador**. **A aceleração não transforma G3 em G2 nem retira efeitos G3**. O foco precisa possuir as cargas gastas; elas são consumidas normalmente. Não existe necessidade de gastar uma terceira carga para tornar G3 instantânea, pois isso já ocorre em um turno. Esta decisão substitui a limitação antiga de uma única carga por conjuração.
 
-**Conjuração G4 [DEFINIDO / PROPOSTO / PENDENTE — SRD v0.79, 17/11/2026]:** a magia **G4 une duas magias G3 de dois elementos diferentes**, com **preparação-base de 6 turnos** (3 + 3). **Não pode ser acelerada para menos de 3 turnos**, mesmo com focos; não é instantânea por aceleração. Conservar a habilitação de elementos principal/secundário, sem reduzir Grau ou efeitos. **PROPOSTO, não aprovado como custo:** o autor descreveu gastar **1 Coragem para amplificar** o primeiro componente, **1 Coragem para misturar o segundo elemento e os efeitos**, **mais 1 carga de foco ou 1 Coragem para amplificar até G3**, além de cargas associadas a cada elemento para reduzir turnos; mencionou “3 focos de cada” e “mais 2 de foco de cada elemento”. Ainda não se sabe se essas expressões designam cargas, focos separados ou momentos distintos de gasto. **PENDENTE:** correspondência entre cargas e tempo de G4, custo exato de amplificações, possibilidade de focos separados e a relação com a regra vigente de **gastar 1 Antecipar (1A) para incluir o segundo elemento**. Não implementar substituição/adição automática desse custo por Coragem. Não criar propriedades, efeitos ou permissões de memorização G4 por inferência.
+**Conjuração G4 [DEFINIDO / PROPOSTO / PENDENTE — SRD v0.79, 17/11/2026]:** a magia **G4 une duas magias G3 de dois elementos diferentes**, com **preparação-base de 6 turnos** (3 + 3), e **não pode ser acelerada para menos de 3 turnos**; nunca se torna instantânea por aceleração. Mantém o Grau e ambos os elementos, dentro das habilitações pertinentes.
+
+**DEFINIDO — opção B (G4 com ambos os efeitos máximos simultâneos):** para reduzir a preparação em **1 turno**, gastar **2 cargas de foco, uma vinculada a cada elemento**. Este pagamento adicional só se aplica à G4 que **ativa simultaneamente os efeitos máximos de dois elementos**; não se estende automaticamente às demais mesclas elementais. A escala é:
+
+| Preparação G4 com os dois efeitos máximos | Cargas do primeiro elemento | Cargas do segundo elemento | Total |
+|---|---:|---:|---:|
+| 6 turnos | 0 | 0 | 0 |
+| 5 turnos | 1 | 1 | 2 |
+| 4 turnos | 2 | 2 | 4 |
+| 3 turnos — mínimo | 3 | 3 | 6 |
+
+**PENDENTE:** como fornecer as cargas de cada elemento — incluindo se dois focos podem ser usados simultaneamente — sem violar a capacidade publicada de cada foco (G4 comum: 4 cargas máximas, menos do que as 6 cargas totais necessárias na aceleração completa).
+
+**PROPOSTO — custos adicionais ainda não aprovados:** o autor cogitou **1 Coragem para amplificar o primeiro elemento**, **1 Coragem para misturar o segundo elemento e seus efeitos** e **mais 1 carga de foco ou 1 Coragem para ampliar até G3**. Não converter essas etapas em custos automáticos. **DIVERGÊNCIA A RESOLVER:** a regra vigente de combinação elemental exige **1 Antecipar (1A)** para incluir o segundo elemento; não presumir substituição, soma ou alternativa em Coragem. Não criar efeitos, dados, custos ou permissões de memorização G4 por inferência.
 
 **Elevação e redução de Grau [DEFINIDO — SRD v0.79]:** elevar G2 para G3 permite usar os efeitos G3 respeitando a preparação do grau; a redução voluntária para G1 usa apenas os efeitos G1, com lançamento imediato. Conjurar uma magia com efeitos de G2 não preserva efeitos exclusivos de G3/G4; gastar foco **não** equivale a alterar o Grau. A redução intermediária livre G3→G2 não foi aprovada. Conservar as demais exigências de conjuração.
 
