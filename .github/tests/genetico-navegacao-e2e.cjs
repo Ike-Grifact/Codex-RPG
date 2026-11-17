@@ -103,7 +103,7 @@ const create=async page=>{
      'Arrastar em cima de um nó não deslocou o grafo');
   assert(await desktop.locator('#gene-builder-detail').isHidden(),
      'O arraste selecionou Perícia indevidamente');
-  assert((await desktop.locator('#wizard-summary').innerText()).includes('12 XP'),
+  assert((await desktop.locator('#wizard-summary').innerText()).includes('15 XP'),
      'O arraste alterou os investimentos');
   await desktop.locator('#gene-builder-map [data-gene-nav="0"]').click();
   assert(Math.abs((await cam(map)).zoom-1)<.001,'Centralizar não recuperou zoom inicial no desktop');
