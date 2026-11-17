@@ -19,6 +19,35 @@ const FACES={
 };
 const AT_COST=[0,1,3,7,15,31,55];
 const TRAIN_COST=[0,2,8,20,38,66,102];
+// SRD v0.55: descontos raciais sem valores homologados permanecem explícitos.
+const RACES={
+ humano:["Humano","Perseverança Humana: rerrolar qualquer teste uma vez por descanso longo.","Sem custos raciais adicionais."],
+ lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue inicial gratuita.","Vigor/Agilidade: desconto PENDENTE; Influência/Apresentação: custo dobrado."],
+ lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Influência: desconto PENDENTE; Força/Atletismo: aumento PENDENTE."],
+ runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia e dois elementos distintos gratuitos.","Vigor/Força: desconto PENDENTE; Agilidade/Destreza: aumento PENDENTE."]
+};
+const PURE_ELEMENTS=[["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]];
+const RUNE_ELEMENTS=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"]];
+function racialGrants(s=state){
+ if(s.race==="lucker_sangue")return ["sangue"];
+ if(s.race==="lucker_puro")return ["criar-item-foco-magia",...(PURE_ELEMENTS.some(([id])=>id===s.pureElement)?[s.pureElement]:[])];
+ if(s.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia",...new Set((s.runeElements||[]).filter(id=>RUNE_ELEMENTS.some(([k])=>k===id)))].slice(0,4);
+ return [];
+}
+function ownsSkill(id,s=state){return !!s.skills?.includes(id)||racialGrants(s).includes(id);}
+function allOwnedSkills(s=state){return [...new Set([...(s.skills||[]),...racialGrants(s)])];}
+function racialCostTable(group,key,s=state){
+ const table=group==="attr"?AT_COST:TRAIN_COST;
+ return s.race==="lucker_sangue"&&((group==="attr"&&key==="influencia")||(group==="practice"&&key==="apresentacao"))?
+  table.map(n=>n*2):table;
+}
+function raceChoicesComplete(s=state){
+ return s.race==="lucker_puro"?PURE_ELEMENTS.some(([id])=>id===s.pureElement):
+ s.race==="runa_espinhos"?(s.runeElements||[]).length===2&&s.runeElements[0]!==s.runeElements[1]&&
+  s.runeElements.every(id=>RUNE_ELEMENTS.some(([k])=>k===id)):true;
+}
+function raceCaution(s=state){return s.race==="humano"?"":"Descontos raciais ainda sem tabela aprovada; somente o dobro de Influência e Apresentação do Lucker de Sangue foi calculado.";}
+
 const CREATE_BUDGET={attr:20,training:20,skills:20,total:20}; // EXPERIMENTAL: total 20 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
 const XP_LEVEL_REFERENCE=[0,19,31,46,64,86,110,137,167,200,235,271,309,349,391,434,478,523,569,616,664]; // EXPERIMENTAL, não fixa nível.
 const SKILLS=[
@@ -921,7 +950,7 @@ function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // L
 function combatItem(item,mode){
  if(!item?.equipped||!["arma","foco"].includes(item.type))return [];
  if(!((item.grade||1)<= (state.level>=20?4:state.level>=10?3:state.level>=5?2:1)))return [];
- const skills=state.skills||[],properties=item.properties||[],range=properties.includes("À Distância");
+ const skills=allOwnedSkills(),properties=item.properties||[],range=properties.includes("À Distância");
  const cat=item.category||({leve:"leve",medio:"medio",alto:"pesado"}[item.weight]||"leve");
  const die=[6,10,12].includes(item.die)?item.die:({leve:6,medio:10,pesado:12}[cat]||0);
  if(!die)return [];
@@ -943,7 +972,7 @@ function combatItem(item,mode){
  const id={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
  return id&&skills.includes(id)?[die]:[];
 }
-function effectiveWeaponRange(item,skills=state.skills||[]){
+function effectiveWeaponRange(item,skills=allOwnedSkills()){
   const base=Math.max(0,Number(item?.range)||0);
   if(!base||item?.type!=="arma"||!skills.includes("olhos-de-aguia"))return base;
   const eligible=item.firearm?skills.includes("armas-fogo"):
@@ -968,7 +997,7 @@ const same=(a,b)=>!!a&&!!b&&key(a)===key(b);
 const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
- schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",virtue:"",personality:"",portrait:"",
+ schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",race:"humano",pureElement:"",runeElements:["",""],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
@@ -1078,6 +1107,12 @@ function load(){
 function normalize(v){
  const s=defaultState();
  if(!v||typeof v!=="object")return s;
+ s.race=Object.hasOwn(RACES,v.race)?v.race:"humano";
+ s.pureElement=PURE_ELEMENTS.some(([id])=>id===v.pureElement)?v.pureElement:"";
+ s.runeElements=Array.isArray(v.runeElements)&&v.runeElements.length===2?
+  v.runeElements.map(id=>RUNE_ELEMENTS.some(([k])=>k===id)?id:""):["",""];
+ if(s.runeElements[0]===s.runeElements[1]&&s.runeElements[0])s.runeElements[1]="";
+ s.perseverancaUsed=!!v.perseverancaUsed;
  for(const id of ["name","concept","origin","virtue","personality","notes"]){
   if(typeof v[id]==="string")s[id]=v[id].slice(0,id==="notes"?5000:100);
  }
@@ -1217,8 +1252,8 @@ function lifeStage(s=state){
 }
 function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
 function rawCreationCosts(s=state){
- return {attr:A.reduce((n,[k])=>n+AT_COST[s.attributes[k]||0],0),
-  training:K.reduce((n,[k])=>n+TRAIN_COST[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+TRAIN_COST[s.practices[k]||0],0),
+ return {attr:A.reduce((n,[k])=>n+racialCostTable("attr",k,s)[s.attributes[k]||0],0),
+  training:K.reduce((n,[k])=>n+racialCostTable("know",k,s)[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+racialCostTable("practice",k,s)[s.practices[k]||0],0),
   skills:s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0)};
 }
 function unusedInitialXP(spent){return Math.max(0,CREATE_BUDGET.total-(spent.attr+spent.training+spent.skills));}
@@ -1245,13 +1280,14 @@ function lockCreation(){
  return unusedInitialXP(state.creationBudgetSnapshot);
 }
 function xpStepCost(group,k,delta){
- const table=group==="attr"?AT_COST:TRAIN_COST,field=SOURCE_PROPS[group];
+ const table=racialCostTable(group,k,state),field=SOURCE_PROPS[group];
  const g=state[field][k]||0,next=clamp(g+delta,0,6);
  return Math.max(0,table[next]-table[g]);
 }
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
- const has=x=>s.skills.includes(x);
+ if(racialGrants(s).includes(id))return null;
+ const has=x=>ownsSkill(x,s);
  if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
   return"Requer Criar Item de Foco e Magia e Domar Criatura Pequena. O próprio foco habilita Psique; os demais elementos exigem suas Perícias.";
  if(id==="domar-criatura-media"&&!has("domar-criatura-pequena"))return"Requer a Perícia Domar Criatura Pequena antes de comprar Domar Criatura Média.";
@@ -1695,7 +1731,7 @@ function sourceGeneInfo(id,s=state){
  if(!row)return null;
  const grade=Number(state[SOURCE_PROPS[group]][key]||0);
  const previewGrade=Number(s[SOURCE_PROPS[group]][key]||0);
- const costTable=group==="attr"?AT_COST:TRAIN_COST;
+ const costTable=racialCostTable(group,key,s);
  const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
  const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
  return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,
@@ -1929,7 +1965,7 @@ function wizardStarterOption(group,[id,name]){
  const info=isAttr?WIZARD_ATTRIBUTE_GUIDE[id]:WIZARD_TRAINING_GUIDE[key];
  const grade=Number(state[SOURCE_PROPS[group]][id]||0);
  const selected=isAttr?wizardStarterAttribute===id:wizardStarterTraining===key;
- const cost=grade>=1?0:isAttr?AT_COST[1]:TRAIN_COST[1];
+ const cost=grade>=1?0:racialCostTable(group,id,state)[1];
  const dice=isAttr?"G0: 1d4 · G1: 1d6":"G0: 1d6 · G1: 1d10";
  return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
   '<span class="fp-wiz-focus-top"><strong>'+esc(name)+'</strong><small>'+(selected?'Escolhido':'Escolher')+'</small></span>'+
@@ -1942,8 +1978,8 @@ function wizardStarterCards(){
  const [group,id]=wizardStarterTraining.split(":");
  const attr=A.find(([k])=>k===wizardStarterAttribute);
  const training=GROUPS[group]?.find(([k])=>k===id);
- const attrCost=wizardStarterAttribute&&(state.attributes[wizardStarterAttribute]||0)<1?AT_COST[1]:0;
- const trainingCost=training&&(state[SOURCE_PROPS[group]][id]||0)<1?TRAIN_COST[1]:0;
+ const attrCost=wizardStarterAttribute&&(state.attributes[wizardStarterAttribute]||0)<1?racialCostTable("attr",wizardStarterAttribute,state)[1]:0;
+ const trainingCost=training&&(state[SOURCE_PROPS[group]][id]||0)<1?racialCostTable(group,id,state)[1]:0;
  const phases='<div class="fp-wiz-mini-progress" aria-label="Progresso da escolha inicial">'+
   '<span class="'+(wizardStarterPhase==="attr"?'is-current':'is-complete')+'">1 · Atributo</span>'+
   '<span class="'+(wizardStarterPhase==="training"?'is-current':wizardStarterPhase==="confirm"?'is-complete':'')+'">2 · Conhecimento ou Prática</span>'+
