@@ -1649,13 +1649,19 @@ function raceBenefitsForm(){
 }
 function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending||id===state.race)return;
- const before=structuredClone(state),old=state.race;
+ const before=structuredClone(state),old=state.race,oldStarterPurchased=wizardStarterPurchased;
+ const chosenWasFree=wizardStarterAttribute&&isRacialGradeOne("attr",wizardStarterAttribute,before);
  state.race=id;state.pureElement="";state.runeElements=["",""];
  applyRacialStartingAttributes(state,wizardStarterAttribute?[wizardStarterAttribute]:[]);
+ // Se o jogador manteve sua primeira escolha ao trocar de origem,
+ // ela passa a contar como compra normal, removível caso escolha outra.
+ if(chosenWasFree&&!isRacialGradeOne("attr",wizardStarterAttribute,state)&&
+    (state.attributes[wizardStarterAttribute]||0)===1)
+  wizardStarterPurchased=wizardStarterAttribute;
  const duplicate=state.skills.some(key=>racialGrants(state).includes(key));
  const blocked=dependentsValid(state);
  if(duplicate||blocked||xpCosts().free<0){
-  state=before;
+  state=before;wizardStarterPurchased=oldStarterPurchased;
   toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
  }
  if(ownsSkill("criar-item-foco-magia")){
