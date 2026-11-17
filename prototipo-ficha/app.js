@@ -2977,10 +2977,14 @@ async function importFile(file){
   const input=JSON.parse(txt),raw=input.character||input;
   const isNew=raw.schema==="codex-html-playtest-v1";
   const v=isNew?raw:fromCreator(input);
-  if(!confirm("Substituir a ficha atual pelos dados importados?"))return;
-  state=normalize(v);draft=freshDraft();editMode=false;viewMode=state.creationLocked?"sheet":"builder";
-  wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
-  toast(isNew?"Ficha importada.":"Ficha do criador importada parcialmente. Confira os dados.");
+  if(!NPC_MODE){
+   if(createPlayerSheet(v,{},isNew?"Ficha importada":"Ficha antiga importada"))
+    toast("Importada como nova ficha; a anterior continua salva. Confira os dados.");
+   return;
+  }
+  if(!confirm("Substituir a ficha NPC atual pelos dados importados?"))return;
+  state=normalize(v);resetPlayerView({});wizardPersist();syncFields();render();save();
+  toast(isNew?"Ficha NPC importada.":"Ficha NPC do criador importada parcialmente.");
  }catch(e){toast("Falha ao importar: "+e.message);}
 }
 function setWeaponFocus(selected){
@@ -3330,19 +3334,31 @@ function bind(){
   toast(editMode?"Edição ativa: use + ou − para ajustar graus e XP.":"Edição concluída. Selecione fontes para rolar.");
  });
  $("demo-load").addEventListener("click",()=>{
-  if(!confirm("Carregar uma ficha de exemplo? A ficha atual será substituída (você pode exportá-la antes)."))return;
-  state=demo();draft=freshDraft();editMode=false;viewMode="sheet";sheetPage="play";wizardStep=3;wizardReached=3;
-  wizardPersist();syncFields();render();save();toast("Exemplo carregado. Experimente selecionar Disciplina → Força; Disciplina Avançada permite uma terceira fonte.");
+  if(NPC_MODE){
+   if(!confirm("Substituir a ficha NPC pelo exemplo?"))return;
+   state=demo();resetPlayerView({version:4,step:4,reached:4});render();save();return;
+  }
+  createPlayerSheet(demo(),{version:4,step:4,reached:4},"Exemplo");
  });
  $("start-wizard").addEventListener("click",()=>{
-  if(!confirm("Iniciar um novo Aprendiz? Exporte antes a ficha atual se quiser preservá-la."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
-  wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
+  if(NPC_MODE){
+   if(!confirm("Reiniciar o NPC atual?"))return;
+   state=defaultState();resetPlayerView({});render();wizardPersist();save();return;
+  }
+  createPlayerSheet();
  });
+ $("player-sheet-duplicate")?.addEventListener("click",()=>{
+  if(NPC_MODE)return;
+  const copy=JSON.parse(JSON.stringify(state));
+  copy.name=(state.name.trim()?state.name.trim()+" (cópia)":"Aprendiz (cópia)").slice(0,70);
+  copy.pending=null; // Uma rolagem em andamento pertence à ficha original.
+  createPlayerSheet(copy,wizardSnapshot(),"Cópia da ficha");
+ });
+ $("player-sheet-delete")?.addEventListener("click",deletePlayerSheet);
+ $("player-sheet-select")?.addEventListener("change",event=>activatePlayerSheet(event.target.value));
  $("reset-sheet").addEventListener("click",()=>{
-  if(!confirm("Reiniciar a ficha atual? Exporte o personagem antes se quiser preservar uma cópia."))return;
-  state=defaultState();draft=freshDraft();editMode=false;viewMode="builder";wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";
-  wizardPersist();syncFields();render();save();toast("Nova criação iniciada.");
+  if(!confirm("Reiniciar somente esta ficha? As outras fichas de jogadores serão preservadas. Exporte esta ficha antes se desejar manter uma cópia."))return;
+  state=defaultState();resetPlayerView({});wizardPersist();syncFields();render();save();toast("Ficha atual reiniciada. As demais fichas foram preservadas.");
  });
  const sendNpc=$("send-to-conflito");
  if(sendNpc&&NPC_MODE){
@@ -3357,14 +3373,16 @@ function bind(){
   let raw;
   try{raw=localStorage.getItem(OLD_SAVE_KEY);}catch(e){}
   if(!raw){toast("Nenhuma ficha do criador anterior encontrada neste navegador.");return;}
-  if(!confirm("Importar a ficha do criador anterior? Isso substituirá a ficha atual. Exporte a ficha atual antes se quiser preservá-la. A ficha antiga continuará guardada."))return;
+  if(!confirm("Importar o personagem do criador anterior como nova ficha? As fichas atuais serão preservadas."))return;
   try{
    const converted=fromCreator(JSON.parse(raw));
    converted.creationLocked=!!converted.name.trim();
-   state=normalize(converted);draft=freshDraft();editMode=false;
-   viewMode=state.creationLocked?"sheet":"builder";
-   wizardStep=0;wizardReached=0;wizardCategory="";wizardTab="attr";wizardMode="list";wizardStarterPhase="attr";wizardStarterAttribute="";wizardStarterTraining="";wizardPersist();syncFields();render();save();
-   toast("Ficha antiga importada. Confira as anotações e investimentos em XP.");
+   if(!NPC_MODE){
+    if(createPlayerSheet(converted,{},"Ficha antiga"))toast("Ficha antiga adicionada. Confira as anotações e investimentos em XP.");
+   }else{
+    state=normalize(converted);resetPlayerView({});wizardPersist();syncFields();render();save();
+    toast("Ficha antiga importada para o NPC.");
+   }
   }catch(e){toast("Não foi possível importar a ficha antiga: "+e.message);}
  });
  $("import-json").addEventListener("change",async event=>{const f=event.target.files?.[0];if(f)await importFile(f);event.target.value="";});
@@ -3391,7 +3409,7 @@ function bind(){
   state.courage-=2;state.pp++;state.courageUsedTurn=true;renderVitals();renderSkills();save();toast("Perícia em Coragem: 2 Coragens convertidas em 1 PP.");
  });
  $("reset-turn").addEventListener("click",()=>{state.courageUsedTurn=false;renderSkills();save();toast("Nova oportunidade: conversão em Coragem liberada.");});
- window.addEventListener("storage",event=>{if(event.key===SAVE_KEY&&event.newValue){toast("A ficha foi alterada em outra aba. Recarregue para sincronizar.");}});
+ window.addEventListener("storage",event=>{if(event.newValue&&(event.key===SAVE_KEY||event.key===PLAYER_SHEETS_INDEX||event.key?.startsWith(PLAYER_SHEET_PREFIX))){toast("Fichas alteradas em outra aba. Recarregue para sincronizar antes de continuar.");}});
 }
 bind();load();
 })();
