@@ -1193,7 +1193,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
-| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; efeitos G1–G3 e recuperação de Fôlego (quantidade pendente), 1 PP ou 1 Coragem ao acertar |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; ativação-base de efeitos G1/G2 **gratuita** com a Perícia e Grau habilitados; elevar a G3 custa **1 Coragem**; recuperação de Fôlego ainda pendente |
 | **Perícia em Elemento Água** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
 | **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1; G1 disparo/conduzir chamas, G2 **Queimar E + P à Integridade** (4 × 4), G3 **Derreter: dano à Integridade + 1 Vida direta fixa** (8 × 8, fim do turno dos aliados) |
