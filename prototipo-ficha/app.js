@@ -1627,7 +1627,7 @@ function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floo
 function itemLoad(it){return WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);}
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
-function balance(){const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
+function balance(){if(NPC_MODE)return "Pendente";const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
 function loadBlocksMarkup(){
  const p=loadPercent(),over=p>=100;
  return Array.from({length:20},(_,i)=>{
@@ -2539,8 +2539,8 @@ function renderVitals(){
  $("de-caption").textContent=defense.caption;
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=pad(loadPercent())+"% da capacidade";
- if(blocks){blocks.innerHTML=loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Balanço natural de criatura pendente":pad(loadPercent())+"% da capacidade";
+ if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
