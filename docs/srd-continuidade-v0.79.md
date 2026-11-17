@@ -120,12 +120,12 @@ Não cobrar as três formas cumulativamente.
 
 **DEFINIDO — resolução e interrupção da preparação com 3 alvos:**
 - O Hemomante **rola e escolhe os dados mantidos no primeiro turno**, quando declara a conjuração; o resultado fica pendente.
-- Um ataque recebido interrompe a preparação quando a **força do ataque for maior ou igual à força da conjuração**.
+- **DEFINIDO (opção A):** um ataque só interrompe a preparação se **(1)** alcançar ou superar a **DE defensiva do Hemomante** **e (2)** sua força for **igual ou superior** à força da magia em preparação. Ambas as condições são obrigatórias; superar a força sem acertar a DE **não interrompe**.
 - Para essa comparação de interrupção, a força é **E + piso(P/2)**, calculada com símbolos válidos dos dados mantidos; não é E+P bruto.
-- Exemplo: magia **3E + 2P = força 4** e ataque **4E = força 4**; o ataque interrompe por empate.
+- Exemplo: magia **3E + 2P = força 4** e ataque **4E = força 4**. O empate de força **interrompe somente se o ataque também atingir a DE defensiva do Hemomante**. Não alcançar a DE conserva a canalização, mesmo com força suficiente.
 - A magia se conclui no **terceiro turno**, caso não seja interrompida.
 
-**PENDENTE:** determinar se qualquer ataque que alcance essa força interrompe independentemente de acertar a DE defensiva e como o consumo de recursos funciona quando a preparação é interrompida; não adotar uma das respostas por suposição.
+**DEFINIDO:** além de alcançar a força da magia, o ataque deve acertar a DE defensiva do Hemomante. **PENDENTE:** determinar como reiniciar ou retomar a preparação depois de uma interrupção e o destino de eventuais recursos consumidos; não adotar respostas por suposição.
 
 **DEFINIDO — Pedra da Alma equipada:** dispensa **estar Sangrando** e o **pagamento convencional em marcas/3 alvos/Vida**, permitindo conjuração de Sangue **instantânea**. Sua recarga continua excepcional (seção 4), não transformar essa dispensa em cargas infinitas.
 
@@ -175,7 +175,7 @@ Não cobrar as três formas cumulativamente.
 | **Grau mínimo para descongelar com Água** | **DEFINIDO:** Água G1 já permite remover Congelamento mediante teste contra DE defensiva do alvo |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
-| Hemomancia — interrupção e amplificação | **PENDENTE**: necessidade de ataque acertar DE; destino de recursos; limite de amplificação |
+| Hemomancia — interrupção e amplificação | **DEFINIDO:** interrupção exige acerto na DE defensiva **e** força ≥ à magia. **PENDENTE:** reinício/retomada, destino de recursos e limite de amplificação |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **PENDENTE**: se esgotamento imediatamente antes do fim de rodada inicia recuperação no mesmo encerramento |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
@@ -194,8 +194,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Na canalização de Hemomancia com **três alvos Sangrando**, o ataque que iguala ou supera a força da magia também precisa **acertar a DE defensiva do Hemomante** para interromper a preparação?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Se a conjuração de Hemomancia com **três alvos Sangrando** for interrompida, o Hemomante precisa **começar de novo os três turnos de preparação e fazer nova rolagem** ou pode **retomar de onde parou**?”
 
-**Depois da resposta**, registrar se a interrupção da canalização exige, além da força igual ou superior, que o ataque acerte a DE defensiva do Hemomante. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, definir como funciona a retomada ou reinício da canalização interrompida, sem reabrir as duas exigências já aprovadas (DE defensiva e força igual ou superior). Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
