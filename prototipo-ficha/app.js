@@ -3647,8 +3647,14 @@ function onChange(event){
  }
  if(el.dataset.pending&&state.pending){
   const k=el.dataset.pending;
-  if(["characteristic","secondCharacteristic","payment"].includes(k)){
-   state.pending[k]=String(el.value).slice(0,40);save();renderComposer();return;
+  if(["characteristic","secondCharacteristic","payment","fireMode","firePayment"].includes(k)){
+   state.pending[k]=String(el.value).slice(0,40);
+   if(k==="fireMode"){state.pending.fireGradeConfirmed=false;state.pending.fireSummon=false;}
+   save();renderComposer();return;
+  }
+  if(["fireGradeConfirmed","fireSummon"].includes(k)){
+   state.pending[k]=!!el.checked;
+   save();renderComposer();return;
   }
   if(!["cancelP","pairs","pass"].includes(k))return;
   state.pending[k]=clamp(Math.floor(el.value),0,k==="pass"?1:20);save();renderComposer();return;
