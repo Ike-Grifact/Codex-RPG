@@ -1,31 +1,25 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.55](srd-continuidade-v0.55.md), que preserva a v0.54 (escudos) e v0.53 (Domar) e introduz as linhagens de Aprendizes. A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.56](srd-continuidade-v0.56.md), que revisa XP e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
-### Linhagens de Aprendizes — atualização de 16/11/2026 [DEFINIDO / PENDENTE]
+### Linhagens de Aprendizes — custos revistos em 17/11/2026 [SRD v0.56]
 
-Todo personagem continua **Aprendiz**, com profissão emergente, independentemente da linhagem. Na criação, a escolha de **raça/linhagem** é distinta de **Origem** narrativa. Quatro opções estão autorizadas:
+Todos começam como **Aprendizes**, sem classe fixa. A linhagem concede benefícios gratuitos e escolhe a faixa de XP de fontes específicas:
 
-| Linhagem | Fontes mais baratas (fórmula PENDENTE) | Fontes mais caras | Perícias/benefícios iniciais |
-|---|---|---|---|
-| **Lucker de Sangue** | **Vigor** e **Agilidade** | **Influência** e **Apresentação**, explicitamente **2× o custo normal** | **Perícia em Elemento Sangue**, sem XP |
-| **Lucker Puro** | **Inteligência** e **Influência** | **Força** e **Atletismo** (aumento numérico PENDENTE) | **Criar Item de Foco e Magia** + **uma Perícia elemental** à escolha: Sangue, Trevas ou Veneno |
-| **Runa Espinhos** | **Vigor** e **Força** | **Agilidade** e **Destreza** (aumento numérico PENDENTE) | **Pugilismo**, **Criar Item de Foco e Magia** + **duas Perícias elementais diferentes**, exceto Sagrado, Trevas, Sangue e Veneno |
-| **Humano** | Nenhuma | Nenhuma | **Perseverança Humana:** pode **rerrolar qualquer teste uma vez por descanso longo** |
+| Linhagem | Atributos com desconto | Atributos elevados | Práticas elevadas | Benefício inicial |
+|---|---|---|---|---|
+| **Lucker de Sangue** | Vigor e Agilidade | Influência | Apresentação | Elemento Sangue |
+| **Lucker Puro** | Inteligência e Influência | Força | Atletismo | Criar Item de Foco e Magia + Sangue, Trevas **ou** Veneno |
+| **Runa Espinhos** | Vigor e Força | Agilidade e Destreza | — | Pugilismo, Criar Item de Foco e Magia + dois elementos distintos entre Ar/Água/Terra/Fogo |
+| **Humano** | — | — | — | Perseverança Humana: rerrolar um teste por descanso longo |
 
-**Runa Espinhos:** o catálogo atual permite escolher dois elementos diferentes dentre **Ar, Água, Terra e Fogo**. O foco também mantém o acesso inicial Psíquico de sua Perícia, mas não concede uma terceira Perícia elemental por essa razão. **Perícias raciais gratuitas não consomem XP**, não substituem uma compra obrigatória de Atributo G1 + Conhecimento ou Prática G1 e não fornecem automaticamente Graus de atributos/formações, itens ou materiais especiais.
+As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](srd-continuidade-v0.56.md). Uma fonte elevada **não custa automaticamente o dobro**: aplica-se a coluna elevada. As Perícias raciais gratuitas não consomem XP nem concedem Graus de fontes. A criação ainda exige uma compra de Atributo G1 e uma de Conhecimento/Prática G1.
 
-**Tabela de XP — esclarecimento [PENDENTE]:** no criador atual, Atributos custam **1/3/7/15/31/55 XP acumulados** (G1–G6); Conhecimentos e Práticas custam **2/8/20/38/66/102 XP acumulados**. Portanto, a menção à “tabela mais barata de Conhecimentos e Práticas” para Vigor/Agilidade **não corresponde aos números existentes**. A intenção de desconto está DEFINIDA, mas **não é correto usar a tabela mais cara para isso nem inventar redução à metade**. O criador usa os preços normais como referência provisória nas fontes favorecidas, identificadas como pendentes. **Somente** o custo duplicado de Influência e Apresentação do Lucker de Sangue foi numericamente aprovado e calculado no protótipo.
-
-**Perseverança Humana:** uma utilização por descanso longo, para **qualquer teste**. A ficha registra manualmente a disponibilidade e o uso, mas não executa ainda uma rerrolagem automática; permanecem PENDENTES o momento de declaração, quais dados são rerrolados e o tratamento dos efeitos já gastos ou transferidos. Não multiplicar PP, Coragem, Antecipar ou Pavor sem procedimento aprovado.
-
-Para detalhes e pendências, consultar [SRD v0.55, seção 0-AR](srd-continuidade-v0.55.md).
-
-
+**Perseverança Humana:** a ficha controla manualmente uso e recarga; a rerrolagem automatizada, o momento de declaração e o tratamento de recursos já gastos continuam pendentes.
 
 ### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
 
@@ -157,7 +151,7 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 | **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
 | **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
 
-**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela normal de Atributos da v0.56**; o texto histórico anterior usava a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
 
 ### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
 
@@ -454,11 +448,11 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 |---:|---|---:|---|---:|
 | 0 | 1d4 | 0 | **1d6** | 0 |
 | 1 | 1d6 | 1 | 1d10 | 2 |
-| 2 | 2d6 | 3 | 2d10 | 8 |
-| 3 | 3d6 | 7 | 3d10 | 20 |
-| 4 | 2d6 + 1d10 | 15 | 2d10 + 1d12 | 38 |
-| 5 | 1d6 + 2d10 | 31 | 1d10 + 2d12 | 66 |
-| 6 | 3d10 | 55 | 3d12 | 102 |
+| 2 | 2d6 | 3 | 2d10 | 4 |
+| 3 | 3d6 | 6 | 3d10 | 8 |
+| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
+| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
+| 6 | 3d10 | 32 | 3d12 | 64 |
 
 **Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
@@ -1110,9 +1104,9 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 **PP = Pontos de Perícia.** PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 5 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
 
-Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
+Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
 
-A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**. O orçamento final aguarda a aprovação dos custos das Perícias e a composição do Grau 7. Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
+A nova referência **experimental** é de **260 XP acumulados no nível 20, incluindo 20 XP iniciais e 240 de evolução**, contra 664 XP antes. O aumento de nível permanece manual e não concede XP automaticamente. Mais detalhes no [SRD v0.56](srd-continuidade-v0.56.md). Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
 
 ### Materiais para públicos diferentes
 
