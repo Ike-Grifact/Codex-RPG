@@ -353,7 +353,7 @@ const SKILLS=[
  [
   "transfusao-sanguinaria",
   "Transfusão Sanguinária (protótipo)",
-  "Compra 1 XP; exige Transfusão e Perícia em Elemento Sangue. Conjuração ATIVA: a cada 3 marcas elegíveis de dano direto à Vida representadas por sangue derramado, pode registrar recuperação de 1 Vida até o máximo. Sangue extraído magicamente, inclusive combinado com Trevas, TAMBÉM serve para esta técnica, sem dupla contagem. Procedimento, duração, alcance e custo de conjuração ainda pendentes; na ficha, o registro é manual após confirmação do Narrador.",
+  "Compra 1 XP; exige Transfusão e Perícia em Elemento Sangue. Conjuração ATIVA: cada 1 ponto de dano direto à Vida gera 1 marca de sangue (v0.72); a cada 3 marcas elegíveis de dano direto à Vida representadas por sangue derramado, pode registrar recuperação de 1 Vida até o máximo. Sangue extraído magicamente, inclusive combinado com Trevas, TAMBÉM serve para esta técnica, sem dupla contagem. Procedimento, duração, alcance e custo de conjuração ainda pendentes; na ficha, o registro é manual após confirmação do Narrador.",
   1
  ],
  [
@@ -1904,6 +1904,8 @@ function renderHemomancy(){
  const spendSpilled=$("hemo-spend-spilled"),spendExtracted=$("hemo-spend-extracted");
  if(spendSpilled)spendSpilled.disabled=h.spilled<1||!!state.pending;
  if(spendExtracted)spendExtracted.disabled=h.extracted<1||!!state.pending;
+ const recordDamage=$("hemo-record-damage");
+ if(recordDamage)recordDamage.disabled=!!state.pending;
  $("hemo-self-status").textContent=h.selfBleeding?"Sangrando":"Sem Sangramento";
  $("hemo-self-status").setAttribute("aria-pressed",String(h.selfBleeding));
  $("hemo-boost-status").textContent=h.usedThisTurn?"Uso do turno marcado":"Marcar amplificação do turno";
@@ -3368,6 +3370,24 @@ function onClick(event){
   if(state.race!=="humano"||!state.perseverancaUsed||state.pending)return;
   if(!confirm("Confirmar que o personagem concluiu um descanso longo?"))return;
   state.perseverancaUsed=false;renderRacePanel();save();toast("Perseverança Humana restaurada.");break;
+ }
+ case "hemo-record-damage":{
+  if(!ownsSkill("sangue")||state.pending)return;
+  // SRD v0.72: cada ponto de dano DIRETO aplicado à Vida gera 1 marca (não por ataque).
+  // Dano absorvido pela armadura, Sangramento sem dano e custos não aprovados não são marcados automaticamente.
+  const amount=Number($("hemo-damage-points")?.value);
+  const pool=$("hemo-damage-pool")?.value;
+  if(!Number.isInteger(amount)||amount<1||amount>999){
+   toast("Informe um número inteiro de pontos de dano direto à Vida (1 a 999 por registro).");return;
+  }
+  if(!["spilled","extracted"].includes(pool))return;
+  if(state.hemomancy[pool]+amount>999){
+   toast("O contador comporta até 999 marcas; corrija ou consuma marcas antes de registrar mais.");return;
+  }
+  state.hemomancy[pool]+=amount;
+  renderHemomancy();save();
+  toast(amount+" "+(amount===1?"marca registrada":"marcas registradas")+" de sangue "+(pool==="spilled"?"derramado":"extraído")+". Uma marca por ponto de Vida perdido.");
+  break;
  }
  case "hemo-spend":{
   if(!ownsSkill("sangue")||state.pending)return;
