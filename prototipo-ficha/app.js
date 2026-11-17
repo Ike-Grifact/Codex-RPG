@@ -209,7 +209,7 @@ const SKILLS=[
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Rework v0.73: Sangue puro conjurado causa dano convencional, primeiro à armadura, e gera 1 marca por Vida efetivamente perdida do inimigo. Não existe mais técnica separada de Extração. Uma vez por turno, o Hemomante pode amplificar magia, manter um dado OU elevar um dado, sacrificando 1 Vida própria OU consumindo 3 marcas de sangue inimigo derramado. A amplificação pode habilitar dano direto à Vida contornando armadura; quantidade exata e procedimento de dano pendentes, SEM bônus automático de dano. Sangue usado em conjuração é consumido e não pode ser reaproveitado em Transfusão. Coágulos e hemorragia interna: efeitos adicionais pendentes.",
+  "Rework v0.74: Sangue puro atinge proteção normalmente. Quando uma magia de Sangue acerta e foi amplificada para dano direto, TODO o dano calculado atinge a Vida sem passar pela Integridade da armadura; não soma bônus nem desgasta a armadura em paralelo. Custo: 1 Vida própria OU 3 marcas inimigas, uma vez por turno, em alternativa a manter ou elevar dado. O Pavor continua gerando risco. Extração como técnica segue revogada. Cada Vida de inimigo realmente perdida gera 1 marca.",
   2
  ],
  [
@@ -839,7 +839,7 @@ const CARD_EFFECTS={
  "terra": "Terra leve, terreno e percepção sísmica.",
  "sagrado": "Êxitos excedentes recuperam Coragem; P anula recuperação.",
  "veneno": "Magia de Veneno: 1 acúmulo em alvo com Sangramento; limiares por Vida atual",
- "sangue": "Dano convencional à armadura. Amplificação: 1 Vida própria OU 3 Sangues inimigos; uma vez por turno; dano direto à Vida sem valor automático.",
+ "sangue": "Magia de Sangue amplificada: TODO o dano calculado à Vida, sem atingir Integridade. Custo: 1 Vida própria OU 3 marcas inimigas; 1 vez/turno.",
  "trevas": "Até dois alvos; +2P válidos para DE, dano e risco; dividir ou concentrar Pavor.",
  "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
  "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
@@ -873,7 +873,7 @@ const CARD_BRIEFS={
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
  "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
- "sangue": "Rework v0.73: não existe Extração de Sangue como técnica. Sangue puro causa dano convencional à proteção; se efetivamente ferir Vida inimiga, gera marcas por ponto perdido. Para amplificar magia, manter ou elevar dado, uma vez por turno: sacrificar 1 Vida própria OU gastar 3 marcas de sangue inimigo. A amplificação pode fazer a magia atingir diretamente a Vida, mas não concede dano extra automático.",
+ "sangue": "Rework v0.74: Sangue puro atinge armadura normalmente. Após pagar 1 Vida própria OU 3 marcas inimigas, uma magia de Sangue que acerte pode aplicar TODO o dano calculado diretamente à Vida, sem desgaste simultâneo de armadura. Exclusivo desta build, sem bônus gratuito. Compete com manter ou elevar dado, no limite de uma vez por turno.",
  "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
@@ -1082,7 +1082,7 @@ function defaultState(){return{
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false,
- hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:""}
+ hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let playerSheets=[],activePlayerSheetId="";
@@ -1426,7 +1426,8 @@ function normalize(v){
   selfBleeding:!!v.hemomancy?.selfBleeding,
   usedThisTurn:!!v.hemomancy?.usedThisTurn,
   boostKind:["magic","direct-life","keep","step"].includes(v.hemomancy?.boostKind)?v.hemomancy.boostKind:"",
-  boostPayment:["life","blood"].includes(v.hemomancy?.boostPayment)?v.hemomancy.boostPayment:""
+  boostPayment:["life","blood"].includes(v.hemomancy?.boostPayment)?v.hemomancy.boostPayment:"",
+  directLifeResolved:!!v.hemomancy?.directLifeResolved
  };
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
@@ -2913,8 +2914,17 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const armorDamage=success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage:damageBasic*(critTier===4?2:1),damageBasic,armorDamage,passivePiercing,errors:errs,
+ const damage=damageBasic*(critTier===4?2:1);
+ // v0.74: somente UMA rolagem de magia de Sangue, vinculada a um pagamento já realizado.
+ const hemomancy=state.hemomancy||{};
+ const mayHemomancyDirectLife=ownsSkill("sangue")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
+  p.base.key==="armas_conjuracao"&&hemomancy.usedThisTurn&&
+  hemomancy.boostKind==="direct-life"&&!hemomancy.directLifeResolved;
+ if(p.hemomancyDirectLife&&!mayHemomancyDirectLife)errs.push("Dano direto de Hemomancia exige a conjuração de Sangue paga neste turno e um vínculo ainda não utilizado.");
+ const directLifeDamage=mayHemomancyDirectLife&&p.hemomancyDirectLife===true?damage:null;
+ // O dano direto à Vida substitui a aplicação normal à armadura: não somar ambos.
+ const armorDamage=directLifeDamage!==null?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage,damageBasic,armorDamage,directLifeDamage,mayHemomancyDirectLife,passivePiercing,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
