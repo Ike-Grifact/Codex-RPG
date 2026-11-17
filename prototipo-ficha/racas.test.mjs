@@ -119,6 +119,24 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  assert.equal(18-(build.attr+build.training+build.skills),4); // build de 14 XP: sobram 4 XP
 });
 
+test("origem é a raça na etapa de identidade e na ficha final, sem seletor duplicado",()=>{
+ const html=readFileSync(new URL("./index.html",import.meta.url),"utf8");
+ const form=source.slice(source.indexOf("function raceForm(){"),source.indexOf("function changeRace(id){"));
+ const step=source.slice(source.indexOf("if(stage===0){"),source.indexOf("}else if(stage===1){"));
+ assert.match(form,/Origem \/ Raça<select data-race-select/);
+ assert.match(form,/function raceBenefitsForm\(\)/);
+ assert.match(step,/\["race","Origem \/ Raça","",0\]/);
+ assert.match(step,/field==="race"\?raceForm\(\)/);
+ assert.match(step,/raceBenefitsForm\(\)/);
+ assert.doesNotMatch(step,/\["origin","Origem narrativa"/);
+ assert.equal((step.match(/raceForm\(\)/g)||[]).length,1);
+ assert.match(html,/<label class="fp-field">Origem \/ Raça<select id="char-race"/);
+ assert.doesNotMatch(html,/id="char-origin"|Origem narrativa|Linhagem \/ raça<select/);
+ // Manter o dado antigo em JSON apenas para importar fichas históricas sem perda de informação.
+ assert.match(source,/origin:"",race:"humano"/);
+ assert.match(source,/\["name","concept","origin","virtue","personality","notes"\]/);
+});
+
 test("interface inclui seletor, persistência, salvaguardas e marcador manual de Perseverança",()=>{
  const html=readFileSync(new URL("./index.html",import.meta.url),"utf8");
  assert.ok(html.includes("race-benefit-panel")&&html.includes('id="char-race"'));
