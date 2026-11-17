@@ -28,7 +28,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 **DEFINIDO — habilitações especiais:**
 - Com **Disciplina Avançada**, pode-se acrescentar **mais uma fonte/combinação pertinente** à seleção normal, sem escolher Disciplina novamente por essa habilitação.
 - **Manejo Duplo** habilita selecionar **Disciplina duas vezes**, segundo sua aplicação própria; não estender esta exceção a outras Práticas nem a quem não possua Manejo Duplo.
-- **Criaturas/monstros com ficha somente de Atributos** podem combinar **2 ou 3 Atributos**.
+- **DEFINIDO — criaturas/monstros com ficha somente de Atributos (17/11/2026):** podem combinar **2 ou 3 Atributos pertinentes e diferentes entre si**. **É proibido repetir o mesmo Atributo como duas fontes na mesma combinação**, seja de duas ou três fontes. Ex.: **Força + Agilidade** e **Força + Agilidade + Vigor** são válidos quando pertinentes; **Força + Força** e **Força + Agilidade + Força** são inválidos. Isso não altera a quantidade de dados fornecidos por um Atributo segundo seu Grau, apenas impede selecionar a mesma fonte duas vezes.
 - **Monstros humanoides** seguem a mesma restrição de categorias dos jogadores.
 - Combinações continuam sujeitas aos graus, dados e limites de rolagem/manutenção; a exigência de pelo menos um dado de Atributo na pilha permanece, a menos que uma exceção aprovada determine o contrário.
 
@@ -52,7 +52,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 **Compras, terceira fonte do compositor, Codex Genético e verbetes individuais:** registrados na branch. Disciplina Avançada e Furtividade Avançada preservam requisitos individuais. As nove novas concedem **somente o benefício genérico aprovado** de até três fontes pertinentes, não magias, ataques ou efeitos novos. O tratamento automático da condição Sangrando **não** foi implementado nesta etapa porque a ficha ainda não modela o alvo da intervenção.
 
-**PENDENTE:** detalhes especiais da relação entre fontes, dados e Grau para monstros; as 12 especializações Avançadas de jogadores têm compra e requisitos mínimos definidos. Não inventar efeitos temáticos adicionais.
+**DEFINIDO:** ao combinar 2 ou 3 Atributos de uma criatura, **cada Atributo deve ser distinto**; nenhum pode aparecer duas vezes na mesma combinação. **PENDENTE:** eventuais regras específicas de seleção de 2 versus 3 fontes por tipo/Grau de criatura, e detalhes da relação entre fontes, dados e Grau para monstros. As 12 especializações Avançadas de jogadores têm compra e requisitos mínimos definidos. Não inventar efeitos temáticos adicionais.
 
 ### 2. Cravar, retirada e Sobrecarga
 
@@ -194,7 +194,7 @@ Não cobrar as três formas cumulativamente.
 
 **6 frentes de regras ou procedimentos PENDENTES** (a frente de Cravar foi resolvida nesta revisão):
 
-1. **Combinações para monstros:** detalhamento de fontes, dados e Grau quando a ficha usa somente Atributos, inclusive exceções de criaturas.
+1. **Combinações para monstros:** a exigência de **Atributos diferentes** em combinações de 2 ou 3 fontes já está **DEFINIDA**; permanecem detalhes de seleção conforme tipo/Grau de criatura e relação entre fontes, dados e Grau. Não permitir duas escolhas do mesmo Atributo.
 2. **Conjuração G4:** tempo geral de preparação e limites de aceleração ainda não definidos para esse Grau.
 3. **Magias memorizadas e cronologia de conjuração:** compatibilidade de preparação, memorização e exceções de Sangue com os novos tempos elementais e efeitos históricos.
 4. **Pedra da Alma — Fixar Alma:** requisitos, XP, procedimento, custo, recuperação de cargas e riscos desta futura Perícia.
@@ -208,7 +208,7 @@ Não cobrar as três formas cumulativamente.
 1. **Condições e alvos no criador/Foundry:** automatizar tratamento de Sangrando por Medicina Avançada e remoção de Congelamento por Água/Queimar.
 2. **Cravar e Sobrecarga nas interfaces:** a retirada deve **consumir ação própria, separada de Levantar Escudo**, exigir teste por DE/peso e, em sucesso, transferir a arma **à mão livre de quem retirou ou ao chão quando não houver mão livre**; aplicar **−1E por arma cravada** em Levantar Escudo (cumulativo) e −1E geral da Sobrecarga, preservando demais funcionalidades.
 3. **Conjuração, focos e Hemomancia:** implementar contagem de turnos, gasto de múltiplas cargas, recarga no encerramento da mesma rodada, interrupção e seus recursos; respeitar a exceção da Pedra da Alma.
-4. **Fluxo de criaturas/combinações e testes de regressão:** validar o compositor, fichas de monstros e humanoides, versões móvel e clássica e compatibilidade com Foundry.
+4. **Fluxo de criaturas/combinações e testes de regressão:** validar que criaturas com apenas Atributos possam selecionar 2 ou 3 **Atributos distintos, sem repetir fonte**, e que humanoides usem as categorias de jogadores; validar compositor, versões móvel e clássica e compatibilidade com Foundry.
 
 **1 hipótese EXPERIMENTAL separada:** orçamento inicial de **15 XP**, ainda sujeito a playtest e aprovação definitiva; o criador e documentos históricos podem divergir. **Publicação:** a integração da PR #58 à `main` permanece uma etapa de revisão, **não** é uma nova regra PENDENTE.
 
@@ -226,8 +226,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Na ficha de criatura que possui apenas Atributos, a combinação de **2 ou 3 Atributos** precisa usar **Atributos diferentes**, ou pode repetir o mesmo Atributo?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Uma criatura com ficha **somente de Atributos** pode escolher livremente entre combinar **2 ou 3 Atributos diferentes** em cada teste pertinente, ou o uso de **3 Atributos** depende de um requisito específico de Grau/porte?”
 
-**Depois da resposta**, registrar somente se as combinações de Atributos das criaturas permitem repetição de fonte. Não reabrir a ação própria obrigatória para retirar Cravar, a destinação da arma nem a penalidade cumulativa de −1E por arma. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, esclarecer somente como uma criatura habilita ou escolhe o uso de 2 ou 3 Atributos distintos. A proibição de selecionar dois Atributos iguais na mesma rolagem permanece DEFINIDA. Não reabrir a ação própria obrigatória para retirar Cravar, a destinação da arma nem a penalidade cumulativa de −1E por arma. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
