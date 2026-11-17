@@ -6,8 +6,8 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const start=source.indexOf("const AT_COST=");
 const end=source.indexOf("const CREATE_BUDGET=");
 assert.ok(start>=0&&end>start,"Constantes e funções raciais devem existir no criador");
-const {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST}=new Function(
- source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST};"
+const {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
+ source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
 )();
 
 function character(race,more={}){
@@ -43,16 +43,45 @@ test("Runa Espinhos recebe Pugilismo, Foco e duas escolas distintas permitidas",
  assert.deepEqual(racialGrants(character("runa_espinhos",{runeElements:["sangue","trevas"]})),["pugilismo","criar-item-foco-magia"]);
 });
 
-test("somente Lucker de Sangue tem penalidade numérica expressa, em Influência e Apresentação",()=>{
- const s=character("lucker_sangue");
- assert.deepEqual(racialCostTable("attr","influencia",s),AT_COST.map(x=>2*x));
- assert.deepEqual(racialCostTable("practice","apresentacao",s),TRAIN_COST.map(x=>2*x));
- assert.deepEqual(racialCostTable("attr","vigor",s),AT_COST);
- assert.deepEqual(racialCostTable("attr","agilidade",s),AT_COST);
- assert.deepEqual(racialCostTable("attr","forca",character("lucker_puro")),AT_COST);
- assert.deepEqual(racialCostTable("attr","destreza",character("runa_espinhos")),AT_COST);
+test("v0.56: seis Graus, três faixas acumuladas por tipo de fonte",()=>{
+ assert.deepEqual(AT_COST,[0,1,3,6,9,18,32]);
+ assert.deepEqual(AT_DISCOUNT,[0,0,2,4,7,12,24]);
+ assert.deepEqual(AT_ELEVATED,[0,2,4,8,16,32,64]);
+ assert.deepEqual(TRAIN_COST,[0,2,4,8,16,32,64]);
+ assert.deepEqual(TRAIN_DISCOUNT,[0,1,3,6,9,18,32]);
+ assert.deepEqual(TRAIN_ELEVATED,[0,3,6,12,24,48,96]);
+ for(const tables of [[AT_DISCOUNT,AT_COST,AT_ELEVATED],[TRAIN_DISCOUNT,TRAIN_COST,TRAIN_ELEVATED]]){
+  for(let g=0;g<=6;g++)assert.ok(tables[0][g]<=tables[1][g]&&tables[1][g]<=tables[2][g]);
+  for(const table of tables)for(let g=1;g<=6;g++)assert.ok(table[g]>=table[g-1]);
+ }
 });
-
+test("v0.56: fontes raciais favorecidas, normais e elevadas sem multiplicar 2x",()=>{
+ const sangue=character("lucker_sangue"),puro=character("lucker_puro"),runa=character("runa_espinhos");
+ for(const key of ["vigor","agilidade"])assert.deepEqual(racialCostTable("attr",key,sangue),AT_DISCOUNT);
+ assert.deepEqual(racialCostTable("attr","influencia",sangue),AT_ELEVATED);
+ assert.deepEqual(racialCostTable("practice","apresentacao",sangue),TRAIN_ELEVATED);
+ for(const key of ["inteligencia","influencia"])assert.deepEqual(racialCostTable("attr",key,puro),AT_DISCOUNT);
+ assert.deepEqual(racialCostTable("attr","forca",puro),AT_ELEVATED);
+ assert.deepEqual(racialCostTable("practice","atletismo",puro),TRAIN_ELEVATED);
+ for(const key of ["vigor","forca"])assert.deepEqual(racialCostTable("attr",key,runa),AT_DISCOUNT);
+ for(const key of ["agilidade","destreza"])assert.deepEqual(racialCostTable("attr",key,runa),AT_ELEVATED);
+ assert.deepEqual(racialCostTable("attr","destreza",sangue),AT_COST);
+ assert.deepEqual(racialCostTable("practice","atletismo",sangue),TRAIN_COST);
+ assert.deepEqual(racialCostTable("know","medicina",runa),TRAIN_COST);
+ assert.deepEqual(racialCostTable("attr","forca",character("humano")),AT_COST);
+});
+test("v0.56: referência de nível 20 em 260 XP e concessões limitadas a 240 de evolução",()=>{
+ const reference=source.match(/const XP_LEVEL_REFERENCE=\[([^\]]+)\]/);
+ assert.ok(reference);
+ const xp=reference[1].split(",").map(Number);
+ assert.equal(xp.length,21);
+ assert.equal(xp[1],20);
+ assert.equal(xp[20],260);
+ assert.ok(xp.every((n,i)=>i===0||n>xp[i-1]));
+ assert.match(source,/MAX_EARNED_XP=XP_LEVEL_REFERENCE\[20\]-CREATE_BUDGET\.total/);
+ assert.match(source,/state\.xpEarned\+amount>MAX_EARNED_XP/);
+ assert.match(source,/s\.xpEarned=clamp\(Math\.floor\(v\.xpEarned\?\?v\.xp\?\?0\),0,1000000\)/);
+});
 test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  const sourceLists=source.slice(source.indexOf("const A="),source.indexOf("const GROUPS="));
  const accounting=source.slice(source.indexOf("function rawCreationCosts("),source.indexOf("function unusedInitialXP("));
@@ -67,8 +96,8 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
   attributes:{influencia:1,vigor:1},
   practices:{apresentacao:1}
  }));
- assert.equal(sangue.attr,3); // Influência 2 + Vigor normal 1
- assert.equal(sangue.training,4); // Apresentação 2 x 2
+ assert.equal(sangue.attr,2); // Influência elevada 2 + Vigor favorecido G1 grátis
+ assert.equal(sangue.training,3); // Apresentação na faixa elevada (não 2x)
  assert.equal(sangue.skills,0); // Perícia de Sangue gratuita
  const rune=calculate(character("runa_espinhos",{runeElements:["fogo","agua"]}));
  assert.equal(rune.skills,0); // Foco, Pugilismo e os elementos não são compras
