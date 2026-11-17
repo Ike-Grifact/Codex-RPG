@@ -128,9 +128,9 @@ test("Composição por clique: Disciplina + Força, elevação escolhida e XP in
  assert.deepEqual(basic.pool.map(d=>d.sides),[10,6]);
  const step=composeActionPool(npc,selection,"practice.armas_conjuracao.0");
  assert.equal(step.ok,true);
- assert.deepEqual(step.pool.map(d=>d.sides),[12,6]);
+ assert.deepEqual(step.pool.map(d=>d.sides),[10,6,10]);
  assert.equal(composeActionPool(npc,selection,"practice.armas_conjuracao.99").ok,false);
- assert.equal(composeActionPool(npc,selection,"attribute.forca.0").pool[1].sides,10);
+ assert.equal(composeActionPool(npc,selection,"attribute.forca.0").pool.at(-1).sides,6);
  assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"},contextOK:true}).ok,false,
   "Terceira fonte não pode ser grátis");
 });
@@ -139,9 +139,9 @@ test("Coragem é debitada somente ao confirmar: retenção mais elevação custa
  const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
  const pool=composeActionPool(npc,selection,"attribute.forca.0");
  assert.equal(pool.ok,true);
- assert.deepEqual(pool.pool.map(x=>x.sides),[10,10,6]);
+ assert.deepEqual(pool.pool.map(x=>x.sides),[10,6,6,6]);
  const rolled=rollCreatureFaces(pool.pool,()=>0.999);
- const kept=rolled.map(x=>x.id);
+ const kept=rolled.slice(0,3).map(x=>x.id);
  const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"});
  assert.equal(preview.ok,true);
  assert.equal(preview.courageCost,2);
@@ -231,4 +231,18 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível soz
   enemy.courage=0;
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
  }
+});
+
+test("Reforço de Apresentação G1 acrescenta d10 e preserva Influência G4",()=>{
+ const npc=quickHumanoid();
+ npc.attributes.influencia=4;
+ npc.practices.apresentacao=1;
+ const selection={baseGroup:"practice",baseKey:"apresentacao",attribute:"influencia"};
+ const plan=composeActionPool(npc,selection,"practice.apresentacao.0");
+ assert.equal(plan.ok,true);
+ assert.deepEqual(plan.pool.map(d=>d.sides).sort((a,b)=>a-b),[6,6,10,10,10]);
+ assert.equal(plan.pool.at(-1).reinforced,true);
+ npc.practices.apresentacao=4;
+ const trained=composeActionPool(npc,selection,"practice.apresentacao.2");
+ assert.equal(trained.pool.filter(d=>d.sides===12).length,2);
 });

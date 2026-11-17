@@ -295,7 +295,7 @@ function rollSourceCards(t){
    '<label><input type="checkbox" id="cf-context-ok"'+(d.contextOK?' checked':'')+'> Narrador confirma a pertinência</label>'+
    '<button type="button" data-clear-extra>Retirar complemento</button></div>':'')+
   (!comp.ok?'<p class="cf-note">Preparação: '+esc(comp.error)+'</p>':
-   '<p class="cf-note">Pilha inicial: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste Coragem, dado elevado e DE no painel abaixo.</p>')+
+   '<p class="cf-note">Pilha inicial: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste Coragem, dado de reforço e DE no painel abaixo.</p>')+
   '</section>';
 }
 function historyPanel(t){
@@ -440,15 +440,16 @@ function rollPane(t){
   'Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
  const originalPool=composeActionPool(t,selectionFor(t,d),"");
- const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
+ const draftPool=!r&&d.step&&d.stepDieId?composeActionPool(t,selectionFor(t,d),d.stepDieId):originalPool;
+ const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10,12].includes(x.baseSides)):[];
  const prepare=!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
   (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
    '> Manter dado adicional (1 Coragem)</label>':'')+
   '<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-step"'+(d.step?' checked':'')+
-  '> Elevar dado antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
+  '> Acrescentar uma cópia antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
   (d.step?'<label>Escolher dado elegível<select id="cf-roll-step-die"><option value="">Selecione o dado</option>'+
    stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepDieId===x.id?' selected':'')+'>'+
-   esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
+   esc(x.group+" · "+x.key+" · +1d"+x.baseSides)+
    '</option>').join("")+'</select></label>':'')+'</div>':"";
  const extraHint=d.extra?'<p class="cf-note">Terceira fonte: '+esc(d.extra.group+" / "+d.extra.key)+
   ' · pertinência '+(d.contextOK?"confirmada":"pendente")+'</p>':"";
@@ -459,7 +460,7 @@ function rollPane(t){
   '<label>DE (Dificuldade de Êxito)<input id="cf-roll-de"'+(r?' disabled':'')+' type="number" min="0" max="30" value="'+(r?.de??d.de)+'"></label>'+
   '<label>Situação<select id="cf-roll-situation"'+(r?' disabled':'')+'>'+Object.entries(SITUATIONS).map(([key,v])=>
    '<option value="'+key+'"'+((r?.situation||d.situation)===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
-  prepare+extraHint+'<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
+  prepare+(!r&&draftPool.ok?'<p class="cf-note">Pilha prevista · '+draftPool.pool.map(x=>"d"+x.sides).join(" + ")+'</p>':"")+extraHint+'<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
   (r?'<button type="button" data-roll-clear>Alterar fontes</button>':"")+
   '<span>Até '+allowed+' dados mantidos'+(human?' · Coragem '+t.courage+'/10':
    ' · '+Math.max(0,t.keep-2)+'P local se mantiver todos os planejados')+'</span></div>'+
@@ -484,7 +485,7 @@ function beginCreatureRoll(){
  }
  d.de=Math.floor(clamp(el("cf-roll-de")?.value??d.de,0,30));
  d.situation=el("cf-roll-situation")?.value||d.situation;
- if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que será elevado.");
+ if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que servirá de referência.");
  if(t.kind==="criatura"&&d.step)return notice("Elevação especial de criaturas comuns não está habilitada.");
  if(creatureRoll?.id===t.id&&!confirm("Descartar a rolagem não confirmada e gerar novos dados?"))return;
  const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepDieId:"");
@@ -492,7 +493,7 @@ function beginCreatureRoll(){
  const courageCost=human?Number(!!d.extraKeep)+Number(!!d.step):0;
  const pavorCost=t.kind==="monstro"?Number(!!d.step):0;
  if(human&&courageCost>t.courage)return notice("Coragem insuficiente para preparar a rolagem.");
- if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para elevar o dado.");
+ if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para reforçar o dado.");
  const generated=rollCreatureFaces(composed.pool);
  const planned=human?stats(t).keepBase+Number(!!d.extraKeep):t.kind==="monstro"?t.keep:2;
  const count=Math.min(planned,generated.length);
@@ -773,7 +774,7 @@ document.addEventListener("change",event=>{
  if(target.id==="cf-context-ok"){const d=draftFor(selected());d.contextOK=target.checked;render();return;}
  if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
  if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
- if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
+ if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;render();return;}
  if(target.id==="cf-roll-de"){draftFor(selected()).de=Math.floor(clamp(target.value,0,30));return;}
  if(target.id==="cf-roll-situation"){draftFor(selected()).situation=target.value;return;}
  if(target.id==="cf-roll-mode"){draftFor(selected()).mode=target.value;return;}
