@@ -613,6 +613,29 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 
 **Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** O máximo de PP por nível permanece 0 (1–4), 1 (5–9), 2 (10–19) e 3 (nível 20).
 
+### REWORK PROPOSTO/EM CONSOLIDAÇÃO — Coragem e identidades de Maestria (17/11/2026)
+
+> **Documento de transição.** O autor aprovou a **retirada de PP como recurso separado**, substituindo essa economia por **Coragem com mecanismos de recuperação ligados às Maestrias**. Os parágrafos históricos anteriores e posteriores ainda descrevem PP, Perícia em Coragem, recuperação de PP em críticos e custos de técnicas **1 PP ou 1 Coragem**. **Eles exigem migração antes de se considerar esta revisão implementada** no criador/Foundry; não são exemplos prontos de custos convertidos.
+
+**DEFINIDO — objetivo da nova economia:** as Maestrias dão **identidade de estilo de jogo sem classes obrigatórias**. São **gratuitas ao satisfazer requisitos**, que serão estabelecidos posteriormente pelo autor; o **primeiro ponto da progressão de Maestria é desbloqueado no nível 5**. São permitidas **até duas Maestrias por personagem**. Os pontos associados às Maestrias **são Coragem utilizável normalmente**, não uma nova moeda; os **gatilhos exclusivos de recuperação** são o diferencial.
+
+**DEFINIDO como estrutura-alvo:** **10 pontos de Coragem comum** + **até 3 vinculados à primeira Maestria** + **até 2 vinculados à segunda Maestria** = **até 15 pontos totais** quando ambas alcançarem os espaços previstos. A concessão desses cinco pontos **não é imediata no nível 5**; só o primeiro ponto tem nível de liberação informado. Se não escolher Maestria, o autor também deseja **conceder 3 pontos de Coragem**, mas sem gatilhos próprios de Maestria. **PENDENTE:** momento dos demais pontos, efeito da escolha de uma Maestria só, interpretação exata da reserva sem Maestria, recuperação de pontos comuns e como as parcelas identificadas compartilham o teto/gasto da Coragem.
+
+| Identidade / Maestria | Gatilho/benefício descrito pelo autor | Ainda precisa definir |
+|---|---|---|
+| **Conjuração** | Especialização com recuperação temática de combate | Requisitos e gatilho |
+| **Elemental** | Identidade de maestria; escolha sujeita ao limite de duas | Gatilho e migração da **Perícia Maestria Elemental** atual |
+| **Trevas** | Roubar medo | Alvo, tipo/quantidade de medo e recuperação |
+| **Sagrada** | Coragem adicional para conjurar; críticos sagrados recuperam; conjuração sagrada pode anular **Pavor próprio** convertendo-o em **Êxito** | Quantidades, momento, limites e relação com crítico/DE |
+| **Sangue** | Acumular sangue em combate, concentrando aqui a mecânica de Hemomancia associada | Que regras históricas são transferidas, custos, acúmulos e duração |
+| **Precisão** | **3 ativações de efeitos de armas → recupera 1 Coragem**; **crítico com 2 dados** também permite recuperação | Se soma à recuperação normal do crítico e como registrar contagens |
+| **Mestre de Armas** | **3 armas diferentes trocadas/utilizadas em combate → recupera 1 Coragem** | Condições válidas de troca e repetição |
+| **Combo (Pugilista)** | **3 aplicações de status → recupera 1 Coragem** | Quais condições contam e quando zerar a contagem |
+
+**PENDENTE — critério de recuperação:** não está definido se a recarga de Maestria só restaura os pontos identificados com aquela Maestria ou se restaura qualquer ponto da reserva total, nem a interação de vários gatilhos simultâneos. O **crítico comum** historicamente recupera Coragem e PP; a recuperação de PP será removida/convertida conforme revisão própria, sem duplicar recompensas automaticamente.
+
+**PENDENTE — migração das Perícias existentes:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. Os custos de PP em armas, Domar, Hemomancia, magias e outras Perícias precisam de revisão individual, preservando até lá os efeitos aprovados. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
+
 ### Como jogar narrativamente
 
 Declare **o que deseja alcançar** e **como seu personagem tenta fazê-lo**. Escolha as fontes pertinentes à abordagem, role a pilha e interprete os símbolos. Um Êxito pode representar a realização do objetivo; Antecipar permite reagir ou cooperar; Pavor introduz tensão e oportunidade para a situação mudar. A **falha limpa** não precisa causar dano ou humilhação narrativa. Não é obrigatório usar todas as opções de posicionamento, peso ou equipamentos em toda cena. Em desafios conjuntos, as ações dos aliados podem ser coordenadas conforme as regras específicas.
