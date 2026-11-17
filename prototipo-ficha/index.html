@@ -286,6 +286,27 @@
 
       <section class="fp-panel fp-inventory-panel" id="equipamentos">
         <div class="fp-panel-heading"><span class="fp-panel-icon">▣</span><div><h3>Equipamento e proteção</h3><small>Integridade, carga e peças equipadas</small></div><button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Item</button></div>
+        <section class="fp-cargo-panel" id="inventory-cargo-panel" aria-label="Mapa visual de capacidade de carga">
+          <div class="fp-cargo-heading">
+            <div><span class="fp-overline">MAPA DO INVENTÁRIO</span><h4>Espaço e peso transportado</h4><small id="inventory-cargo-total">0 / 1 Alto de capacidade</small></div>
+            <strong class="fp-cargo-balance" id="inventory-cargo-balance">Muito Leve · 0%</strong>
+          </div>
+          <div class="fp-cargo-grid" id="inventory-load-grid" role="img" aria-label="Ilustração proporcional da carga do inventário"></div>
+          <p class="fp-cargo-grid-hint">Cada célula equivale a 0,05 Alto. As áreas coloridas representam o peso ocupado pelos itens; as vazias representam espaço disponível.</p>
+          <div class="fp-cargo-legend" aria-label="Legenda dos itens no mapa">
+            <span class="fp-cargo-key fp-cargo-key-arma">Armas</span>
+            <span class="fp-cargo-key fp-cargo-key-armadura">Armaduras</span>
+            <span class="fp-cargo-key fp-cargo-key-escudo">Escudos</span>
+            <span class="fp-cargo-key fp-cargo-key-foco">Focos</span>
+            <span class="fp-cargo-key fp-cargo-key-outro">Outros itens</span>
+            <span class="fp-cargo-key fp-cargo-key-recurso">Recursos</span>
+          </div>
+          <div class="fp-capacity-breakdown">
+            <div><strong>De onde vem a capacidade?</strong><small id="inventory-capacity-equation">Base + Força + Vigor + Disciplina + Atletismo</small></div>
+            <div class="fp-capacity-sources" id="inventory-capacity-sources"></div>
+          </div>
+          <p class="fp-cargo-overflow" id="inventory-cargo-overflow" hidden></p>
+        </section>
         <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
         <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
         <p class="fp-muted fp-load-caption" id="mental-slot-caption">Slots mentais: 1 ponto de capacidade mental por Grau investido em Disciplina. Magias criadas e memorizadas reduzem 1 ponto de peso.</p>
