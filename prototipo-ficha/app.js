@@ -2906,6 +2906,8 @@ function score(){
  const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
  if(p.opts.shieldRaise&&(!raisedShield||p.base?.group!=="practice"||p.base.key!=="armas_conjuracao"||p.mode!=="armas"))
   errs.push("Levantar Escudo exige Disciplina (Armas) e escudo físico equipado.");
+ if(p.opts.shieldRaise&&(p.characteristic||p.secondCharacteristic||p.fireMode||p.hemomancyDirectLife))
+  errs.push("Levantar Escudo consome uma ação: não é possível ativar simultaneamente Cravar, arma ou magia.");
  const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?2:0;
  const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
