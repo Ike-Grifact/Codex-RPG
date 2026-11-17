@@ -18,7 +18,7 @@ status: "DEFINIDO — nova identidade do elemento Sangue, custo e requisito de T
 
 - **Magia de Sangue puro**, sem efeito especial de extração, causa **dano convencional**, respeitando as proteções normais.
 - A **extração ofensiva de Sangue** exige que **o Hemomante e o alvo estejam Sangrando**. Para causar **1 dano direto à Vida do alvo**, o Hemomante **perde 1 de sua própria Vida**. A condição Sangrando por si só continua **sem causar dano à Vida** (SRD v0.70).
-- O Sangue assim extraído pode amplificar a Hemomancia conforme efeitos que venham a ser detalhados; **não pode ser utilizado posteriormente para Transfusão Sanguinária**. Não o misturar no contador de sangue derramado elegível para cura.
+- O sangue assim extraído pode amplificar a Hemomancia conforme efeitos que venham a ser detalhados e **PODE contar para Transfusão Sanguinária**, inclusive quando combinado com Trevas. A restrição anterior foi revogada pelo autor. O custo de extração (1 Vida do Hemomante por 1 Vida retirada do alvo) já torna a reciclagem de sangue uma escolha cara. Rastrear a origem do sangue para **não contar o mesmo evento duas vezes**.
 - Coágulo interno e hemorragia interna são manifestações ofensivas possíveis; **PENDENTE** definir se acarretam duração, dano ou condições adicionais. Não atribuir efeito mecânico automático além da extração direta expressamente aprovada.
 - Os demais efeitos de combate de Sangue consomem **sangue derramado no ambiente**, que deve ser acompanhado separadamente; **PENDENTE** o custo por efeito e sua duração.
 
@@ -28,18 +28,18 @@ status: "DEFINIDO — nova identidade do elemento Sangue, custo e requisito de T
 
 **DEFINIDO pelo autor:** nome **Transfusão Sanguinária**, **custo de compra 1 XP**, **requisitos: Perícia Transfusão + Perícia em Elemento Sangue**. É **uma conjuração ativa**, distinta da Perícia Transfusão existente.
 
-**Efeito em revisão:** para cada **3 unidades de dano direto à Vida representadas por sangue derramado elegível**, o Hemomante pode **recuperar 1 ponto de Vida**, até seu máximo. O sangue **extraído magicamente do alvo** não pode financiar esta recuperação, mesmo quando também causou dano direto à Vida.
+**Efeito em revisão:** para cada **3 unidades elegíveis de sangue contabilizado por dano direto à Vida**, o Hemomante pode **recuperar 1 ponto de Vida**, até seu máximo. **Sangue derramado normalmente e sangue extraído por Hemomancia (inclusive combinação com Trevas) podem financiar a recuperação**, desde que uma mesma perda de Vida gere uma única entrada na contagem e não seja registrada em duas reservas. Exemplo condicional: se três extrações custam 3 Vida própria e geram três marcas, recuperar 1 Vida deixa saldo de −2 Vida ao Hemomante. A unidade geradora exata das marcas continua PENDENTE.
 
-**PENDENTE:** a unidade exata do contador, se cada **ponto de Vida perdido** ou cada **ocorrência de dano** gera uma marca, de quem o sangue pode ser utilizado, como se recolhe, quanto tempo persiste no ambiente, alcance, teste, momento e custo de ativação (PP/Coragem/Sangue). Não conceder curas gratuitas automáticas nem determinar o custo por inferência.
+**PENDENTE:** a unidade exata do contador, se cada **ponto de Vida perdido** ou cada **ocorrência de dano** gera uma marca, de quem o sangue pode ser utilizado, como se recolhe, quanto tempo persiste no ambiente, alcance, teste, momento e custo de ativação (PP/Coragem/Sangue). O sangue extraído com Trevas não cria automaticamente marcas extras. Não conceder curas gratuitas automáticas nem determinar o custo por inferência.
 
 **Dependência ainda pendente:** a Perícia **Transfusão** original continua com custo/requisitos de compra pendentes no catálogo. Transfusão Sanguinária aparece na ficha como **compra de 1 XP com pré-requisito real**; isso não autoriza comprar a Transfusão original sem uma decisão posterior.
 
 ## 0-BK. Protótipo de ficha de Hemomante — estado experimental
 
-- Painel disponível a personagens que possuam **Perícia em Elemento Sangue**, com contadores independentes para **sangue derramado elegível** e **sangue extraído por Hemomancia**. Este segundo contador fica **excluído** da Transfusão Sanguinária.
+- Painel disponível a personagens que possuam **Perícia em Elemento Sangue**, com contadores independentes para **sangue derramado** e **sangue extraído por Hemomancia**. **Ambos são elegíveis** para Transfusão Sanguinária, sem lançar a mesma marca duas vezes; o total disponível é a soma das duas reservas.
 - Contadores são **manuais**, não conectados ao dano de ataque nem a outros personagens, devido à ambiguidade de unidade e origem. Podem ser aumentados/diminuídos para testes de mesa, sem limites inventados além de proteção técnica do registro.
 - Indicação manual de **Hemomante Sangrando** e marca **uma substituição de Coragem por turno**, sem gastar recursos na rolagem nem produzir benefícios automáticos antes da definição dos custos.
-- Contador de cura potencial **1 Vida a cada 3 marcas elegíveis**. Registro manual de Transfusão Sanguinária, quando a Perícia estiver efetivamente adquirida, mediante confirmação, consome **3 marcas elegíveis** e recupera **1 Vida**. Esse controle apenas **registra a conjuração já resolvida pelo Narrador**; não executa testes, não dispensa custos adicionais e não deve ser tratado como automação do poder.
+- Contador de cura potencial **1 Vida a cada 3 marcas elegíveis somadas (derramadas + extraídas)**. Registro manual de Transfusão Sanguinária, quando a Perícia estiver efetivamente adquirida e houver confirmação, consome **3 marcas da soma** e recupera **1 Vida**. Para evitar duplicidade na interface, o registro desconta primeiro marcas derramadas e depois extraídas (mera convenção visual de escrituração, **não** exigência mecânica nem prioridade de uso). Esse controle apenas **registra a conjuração já resolvida pelo Narrador**; não executa testes, não dispensa custos adicionais e não deve ser tratado como automação do poder.
 - Persistir por personagem e preservar exportação/importação, duplicação e migração de fichas antigas.
 
 ## Sequência de decisões a revisar uma por vez
