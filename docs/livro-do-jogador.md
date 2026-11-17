@@ -1,10 +1,31 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.54](srd-continuidade-v0.54.md), que preserva a v0.53 e atualiza Levantar Escudo e Perfurante. A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.55](srd-continuidade-v0.55.md), que preserva a v0.54 (escudos) e v0.53 (Domar) e introduz as linhagens de Aprendizes. A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+### Linhagens de Aprendizes — atualização de 16/11/2026 [DEFINIDO / PENDENTE]
+
+Todo personagem continua **Aprendiz**, com profissão emergente, independentemente da linhagem. Na criação, a escolha de **raça/linhagem** é distinta de **Origem** narrativa. Quatro opções estão autorizadas:
+
+| Linhagem | Fontes mais baratas (fórmula PENDENTE) | Fontes mais caras | Perícias/benefícios iniciais |
+|---|---|---|---|
+| **Lucker de Sangue** | **Vigor** e **Agilidade** | **Influência** e **Apresentação**, explicitamente **2× o custo normal** | **Perícia em Elemento Sangue**, sem XP |
+| **Lucker Puro** | **Inteligência** e **Influência** | **Força** e **Atletismo** (aumento numérico PENDENTE) | **Criar Item de Foco e Magia** + **uma Perícia elemental** à escolha: Sangue, Trevas ou Veneno |
+| **Runa Espinhos** | **Vigor** e **Força** | **Agilidade** e **Destreza** (aumento numérico PENDENTE) | **Pugilismo**, **Criar Item de Foco e Magia** + **duas Perícias elementais diferentes**, exceto Sagrado, Trevas, Sangue e Veneno |
+| **Humano** | Nenhuma | Nenhuma | **Perseverança Humana:** pode **rerrolar qualquer teste uma vez por descanso longo** |
+
+**Runa Espinhos:** o catálogo atual permite escolher dois elementos diferentes dentre **Ar, Água, Terra e Fogo**. O foco também mantém o acesso inicial Psíquico de sua Perícia, mas não concede uma terceira Perícia elemental por essa razão. **Perícias raciais gratuitas não consomem XP**, não substituem uma compra obrigatória de Atributo G1 + Conhecimento ou Prática G1 e não fornecem automaticamente Graus de atributos/formações, itens ou materiais especiais.
+
+**Tabela de XP — esclarecimento [PENDENTE]:** no criador atual, Atributos custam **1/3/7/15/31/55 XP acumulados** (G1–G6); Conhecimentos e Práticas custam **2/8/20/38/66/102 XP acumulados**. Portanto, a menção à “tabela mais barata de Conhecimentos e Práticas” para Vigor/Agilidade **não corresponde aos números existentes**. A intenção de desconto está DEFINIDA, mas **não é correto usar a tabela mais cara para isso nem inventar redução à metade**. O criador usa os preços normais como referência provisória nas fontes favorecidas, identificadas como pendentes. **Somente** o custo duplicado de Influência e Apresentação do Lucker de Sangue foi numericamente aprovado e calculado no protótipo.
+
+**Perseverança Humana:** uma utilização por descanso longo, para **qualquer teste**. A ficha registra manualmente a disponibilidade e o uso, mas não executa ainda uma rerrolagem automática; permanecem PENDENTES o momento de declaração, quais dados são rerrolados e o tratamento dos efeitos já gastos ou transferidos. Não multiplicar PP, Coragem, Antecipar ou Pavor sem procedimento aprovado.
+
+Para detalhes e pendências, consultar [SRD v0.55, seção 0-AR](srd-continuidade-v0.55.md).
+
+
 
 ### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
 
@@ -190,9 +211,9 @@ No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão p
 
 **Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
 
-### Os Luckers — guia de interpretação [DEFINIDO no cenário / regras de origem PENDENTES]
+### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
 
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo não criam imunidades, bônus, Perícias ou regras de origem. **A criação completa disponível no playtest atual continua sendo a humana**; este texto prepara a interpretação dos Luckers para quando forem autorizados em jogo.
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das linhagens agora aprovadas na seção de regras acima**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. Sua economia de XP reduzida ou majorada sem fórmula numérica permanece **PENDENTE**; a seleção de linhagem não revoga os limites e requisitos gerais.
 
 #### Dois destinos para um povo antigo
 
