@@ -133,9 +133,8 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   }
   if(step){
    const target=pool.find(d=>d.id===stepDieId);
-   const next={4:6,6:10,10:12}[target?.baseSides];
-   if(!next)errors.push("Selecione o dado elegível a elevar (1 Coragem; d4→d6→d10→d12).");
-   else target.sides=next;
+   if(![4,6,10,12].includes(target?.sides))errors.push("Selecione um d4, d6, d10 ou d12 para reforçar.");
+   else pool.push({...target,id:target.id+".reforco",reinforced:true});
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");

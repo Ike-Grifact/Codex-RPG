@@ -7,6 +7,8 @@ updated: "2026-11-16"
 
 # Codex RPG — SRD de Continuidade v0.49
 
+> A [decisão autoral posterior sobre reforço de dados](decisao-reforco-de-dados.md) substitui a elevação comum da seção 0-Z.2.
+
 ## 0-AL. Invocação Elemental — decisão autoral de 16/11/2026 [DEFINIDO / PENDENTE]
 
 **Precedência:** esta seção é posterior à v0.48 e trata especificamente da Perícia nova **Invocação Elemental**. Não modifica o funcionamento anterior da Druídica, das Perícias Domar, da Maestria Elemental, do Escudo Arcano nem dos dados simbólicos, salvo nas aplicações explicitamente descritas. Interpretações operacionais ainda indefinidas não viram efeitos automáticos.

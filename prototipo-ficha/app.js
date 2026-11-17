@@ -2235,9 +2235,8 @@ function buildPool(){
  }
  if(draft.step){
   const target=pool.find(d=>d.id===draft.stepDieId);
-  const next={4:6,6:10,10:12}[target?.baseSides];
-  if(next)target.sides=next;
-  else errors.push("Selecione um dado elegível da pilha para elevar por 1 Coragem (d4→d6→d10→d12).");
+  if([4,6,10,12].includes(target?.sides))pool.push({...target,id:target.id+":reforco",reinforced:true});
+  else errors.push("Selecione um d4, d6, d10 ou d12 da pilha para reforçar por 1 Coragem.");
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
@@ -2280,11 +2279,11 @@ function renderComposer(){
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':'';
- const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
-  .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
+ const stepOptions=pool.filter(d=>!d.reinforced&&[4,6,10,12].includes(d.baseSides))
+  .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · +1d"+d.baseSides]);
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
- '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
- (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
+ '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Acrescentar uma cópia de um dado (1 Coragem)</label>'+
+ (draft.step?'<label class="fp-form-field full">Dado a reforçar '+select("stepDieId",[["","Selecione o dado de referência"],...stepOptions],draft.stepDieId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × balanço do alvo (se pertinente)</label>'+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");

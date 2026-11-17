@@ -7,6 +7,8 @@ updated: "2026-11-16"
 
 # Codex RPG — SRD de Continuidade v0.52
 
+> A [decisão autoral posterior sobre reforço de dados](decisao-reforco-de-dados.md) substitui a elevação comum da seção histórica 0-Z.2.
+
 ## 0-AO. Custo uniforme de ativação e pré-requisito de Domar Média — 16/11/2026 [DEFINIDO]
 
 **Decisão autoral mais recente:** corrigir as ativações comuns que ainda exibem ou cobram o valor antigo e exigir Domar Criatura Pequena antes da compra de Domar Criatura Média. Esta seção prevalece sobre trechos antigos nos documentos de continuidade, nas fichas e nos verbetes. Não confundir custo de **aquisição em XP** com custo de **ativação em combate**.

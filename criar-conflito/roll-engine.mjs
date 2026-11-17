@@ -14,7 +14,6 @@ export function creaturePool(unit,primary,secondary){
  const pool=[primary,secondary].flatMap(key=>sourceDice("attribute",key,system).map((sides,i)=>({
   id:"attribute."+key+"."+i,group:"attribute",key,sides
  })));
- if(pool.length<2||pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
  return {ok:true,pool};
 }
 /** A fonte base humana é Conhecimento/Prática + Atributo; Disciplina exige modo e habilitação. */
@@ -96,10 +95,10 @@ export function composeActionPool(unit,selection={},stepDieId=""){
  if(pool.length<2||pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
  if(stepDieId){
   const d=pool.find(x=>x.id===stepDieId);
-  const next={4:6,6:10,10:12}[d?.baseSides];
-  if(!next)return {ok:false,error:"Selecione um dado elegível para elevar (d4→d6→d10→d12)."};
-  d.sides=next;
+  if(![4,6,10,12].includes(d?.sides))return {ok:false,error:"Selecione um d4, d6, d10 ou d12 para reforçar."};
+  pool.push({...d,id:d.id+".reforco",reinforced:true});
  }
+ if(pool.length<2||pool.length>9)return {ok:false,error:"A pilha deve ter de 2 a 9 dados."};
  return {ok:true,pool,sources};
 }
 
