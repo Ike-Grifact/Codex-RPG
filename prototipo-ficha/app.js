@@ -1130,7 +1130,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  contextOK:false,equipmentId:"",trevas:false});
+  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -1439,8 +1439,12 @@ function normalizeItem(it={}){
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
  const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
  const max=clamp(Math.floor(it.max??0),0,999);
+ // v0.77: armadura pesada não é escudo pesado; Cravar fica preso ao escudo físico.
+ const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
+  (!["alto","extremo"].includes(weight)||it.embeddedWeapon==="pesado")?it.embeddedWeapon:"";
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
+  embeddedWeapon:embed,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances",
@@ -1656,7 +1660,14 @@ function defensePresentation(s=state){
   "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
-function itemLoad(it){return WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);}
+function itemLoad(it){
+ const regular=WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);
+ // A arma presa soma peso real categórico enquanto o escudo permanecer carregado
+ // (mesmo se abaixado). O item é retirado do inventário ao abandonar o escudo.
+ const embedded=it.type==="escudo"&&it.embeddedWeapon?
+  WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1]:0;
+ return regular+embedded;
+}
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
 function balance(){if(NPC_MODE)return "Pendente";const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
@@ -2794,7 +2805,12 @@ function renderComposer(){
    '</label>':'';
  const stepOptions=pool.filter(d=>Object.hasOwn({4:6,6:10,10:12},d.baseSides))
   .map(d=>[d.id,label(d.group,d.key)+" · dado "+(Number(d.id.split(":").at(-1))+1)+" · d"+d.baseSides+" → d"+({4:6,6:10,10:12}[d.baseSides])]);
- const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const carriedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
+ const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
+  (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
+  (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
+ const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
@@ -2834,8 +2850,10 @@ function roll(){
  state.pending={created:new Date().toISOString(),base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepDieId:draft.step?draft.stepDieId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
-    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,trevas:!!draft.trevas},
+    weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
+    shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
+  cravarTargetShield:"",
   fireMode:"",fireGradeConfirmed:false,firePayment:"courage",fireSummon:false};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
@@ -2884,7 +2902,14 @@ function score(){
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
  // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
- const E=Math.max(0,eBase+pairs+health.e),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ // v0.77: −2E somente quando a ação declarada é Levantar Escudo e o escudo carrega uma arma cravada.
+ const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
+ if(p.opts.shieldRaise&&(!raisedShield||p.base?.group!=="practice"||p.base.key!=="armas_conjuracao"||p.mode!=="armas"))
+  errs.push("Levantar Escudo exige Disciplina (Armas) e escudo físico equipado.");
+ if(p.opts.shieldRaise&&(p.characteristic||p.secondCharacteristic||p.fireMode||p.hemomancyDirectLife))
+  errs.push("Levantar Escudo consome uma ação: não é possível ativar simultaneamente Cravar, arma ou magia.");
+ const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?2:0;
+ const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
@@ -2907,6 +2932,25 @@ function score(){
    }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
+ // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
+ // crítico OU a Perícia pertinente para acerto não crítico.
+ const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
+ const weaponCategory=["medio","pesado"].includes(item?.category)?item.category:
+  item?.weight==="medio"?"medio":["alto","extremo"].includes(item?.weight)?"pesado":"leve";
+ const validCravarWeapon=item?.equipped&&item.type==="arma"&&!item.firearm&&
+  p.mode==="armas"&&["medio","pesado"].includes(weaponCategory)&&properties.includes("Cravar");
+ const cravarSpecialty=weaponCategory==="medio"?"armas-medias":"armas-pesadas";
+ if(cravarChosen&&success){
+  if(!validCravarWeapon)errs.push("Cravar requer arma física Média ou Pesada equipada, com a característica Cravar.");
+  if(!critTier&&!ownsSkill(cravarSpecialty))errs.push("Sem crítico, Cravar exige Perícia em Armas Médias ou Pesadas correspondente.");
+  if(!["leve","medio","pesado"].includes(p.cravarTargetShield))
+   errs.push("Para Cravar, confirme a categoria do escudo físico levantado pelo alvo.");
+  if(p.cravarTargetShield==="pesado"&&weaponCategory!=="pesado")
+   errs.push("Escudo Pesado ou Muito Pesado só pode ser cravado por arma Pesada.");
+ }
+ const cravarApplied=!!(cravarChosen&&success&&active.includes("Cravar")&&validCravarWeapon&&
+  (critTier||ownsSkill(cravarSpecialty))&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
+  (p.cravarTargetShield!=="pesado"||weaponCategory==="pesado"));
  // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
  if(p.opts.trevas&&success&&!freeElementEffect){if(p.payment==="pp")ppCost+=1;else courageCost+=1;}
  // v0.76: os Graus de Fogo ainda dependem de validação manual pelo Narrador.
@@ -2959,7 +3003,7 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
@@ -2974,11 +3018,16 @@ function renderPending(){
  const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante"));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
   [['','Nenhuma'],...specials.map(x=>[x,x])].map(([id,label])=>'<option value="'+esc(id)+'"'+(id===selected?" selected":"")+'>'+esc(label)+'</option>').join("")+'</select></label>';
- const effects=specials.length?'<div class="fp-form-grid">'+
+ const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
+ const cravarSelector=cravarChosen?
+  '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
+  [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
+  '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 PP ou 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
+ const effects=specials.length?'<div class="fp-form-grid'>
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
   '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>':"";
+  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>'+cravarSelector:"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
  '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
  '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
@@ -3028,6 +3077,11 @@ function renderPending(){
   s.fireArmorDamage+' dano potencial à Integridade (E + 1 por P não anulado'+(s.critTier===4?'; crítico dobrando o dano à Integridade':'')+'). '+
   (s.fireMode==="derreter"?'Acrescenta exatamente <strong>'+s.fireDirectLifeDamage+' Vida direta</strong>, mesmo contra armadura, não multiplicada no crítico.':'<strong>0 Vida direta adicional</strong> por Queimar.')+
   ' O Narrador resolve imunidades, outras barreiras e eventual excedente convencional; sem alteração automática de ficha adversária.</p>':"")+
+ (s.cravarApplied?'<p class="fp-caption"><strong>CRAVAR — ESCUDO FÍSICO:</strong> arma '+(p.opts.equipmentId?esc(item?.name||"Média/Pesada"):'Média/Pesada')+
+  ' fica presa ao escudo '+(s.cravarTargetShield==="pesado"?'Pesado':s.cravarTargetShield==="medio"?'Médio':'Leve')+
+  ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−2E ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
+ (p.opts.shieldRaise?'<p class="fp-caption"><strong>LEVANTAR ESCUDO:</strong> Integridade simbólica E + P válidos = '+(s.E+s.P)+
+  ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−2E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
@@ -3055,7 +3109,7 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
@@ -3138,6 +3192,15 @@ function renderInventory(){
   const canResist1=it.weight==="extremo"?it.grade>=2:(it.weight==="alto"||it.weight==="medio")?it.grade>=2:it.grade>=3;
   const canResist2=it.weight==="alto"&&it.grade>=3;
   const canImmunize=it.weight==="extremo"&&it.grade>=4;
+  const shieldEmbedFields=it.type!=="escudo"?"":(
+   '<div class="fp-item-hint"><label><strong>Arma cravada no escudo:</strong> '+
+   inventorySelect("embeddedWeapon",it.embeddedWeapon||"",
+    [["","Nenhuma"],...(["alto","extremo"].includes(it.weight)?[]:[["medio","Arma Média"]]),["pesado","Arma Pesada"]],it.id)+
+   '</label></div>'+
+   (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −2E em Levantar Escudo; '+
+    'carga adicional de '+pad(WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1])+
+    ' Alto enquanto o escudo permanecer carregado. Retirar a arma: escolha Nenhuma. Soltar escudo: retire o item da carga.</div>':"")
+  );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
@@ -3165,7 +3228,7 @@ function renderInventory(){
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
-  armorFields+'</div>';
+  armorFields+shieldEmbedFields+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
 function renderTrade(){
@@ -3642,12 +3705,12 @@ function onChange(event){
   const k=el.dataset.option;
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;}
+  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
   renderSources();renderComposer();return;
  }
  if(el.dataset.pending&&state.pending){
   const k=el.dataset.pending;
-  if(["characteristic","secondCharacteristic","payment","fireMode","firePayment"].includes(k)){
+  if(["characteristic","secondCharacteristic","payment","fireMode","firePayment","cravarTargetShield"].includes(k)){
    state.pending[k]=String(el.value).slice(0,40);
    if(k==="fireMode"){state.pending.fireGradeConfirmed=false;state.pending.fireSummon=false;}
    save();renderComposer();return;
@@ -3663,14 +3726,29 @@ function onChange(event){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
   const k=el.dataset.itemField;
   if(k==="name")it.name=el.value.slice(0,90);
-  else if(k==="type"){it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";}
-  else if(k==="weight"){it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";}
+  else if(k==="type"){
+   it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";
+   if(it.type!=="escudo")it.embeddedWeapon="";
+  }
+  else if(k==="weight"){
+   it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";
+   if(it.type==="escudo"&&["alto","extremo"].includes(it.weight)&&it.embeddedWeapon==="medio"){
+    it.embeddedWeapon="";toast("Escudo pesado só aceita Cravar de arma Pesada; marca de arma Média retirada.");
+   }
+  }
   else if(k==="qty")it.qty=clamp(Math.floor(el.value),1,99);
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);}
   else if(k==="max"){it.max=it.type==="armadura"&&it.weight==="muito_leve"?0:clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
+  else if(k==="embeddedWeapon"&&it.type==="escudo"){
+   const w=["medio","pesado"].includes(el.value)?el.value:"";
+   if(w==="medio"&&["alto","extremo"].includes(it.weight)){
+    toast("Escudo pesado só pode receber Cravar de arma Pesada.");
+    it.embeddedWeapon="";
+   }else it.embeddedWeapon=w;
+  }
   if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
