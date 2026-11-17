@@ -1641,9 +1641,11 @@ function raceForm(){
 }
 function raceBenefitsForm(){
  const c=RACES[state.race]||RACES.humano;
+ const free=racialStartingAttributes(state.race).map(id=>A.find(([k])=>k===id)?.[1]||id);
+ const sources=free.length?'<p><strong>Grau 1 de origem (0 XP): '+esc(free.join(" + "))+'</strong>. Outros Atributos devem ser comprados.</p>':'<p>Nenhum Atributo concedido automaticamente nesta raça.</p>';
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
- return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais são gratuitas. Os Atributos favorecidos por esta origem começam no Grau 1 automaticamente, com custo de 0 XP; graus superiores seguem a tabela.</p></div>';
+ return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p></div>';
 }
 function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending||id===state.race)return;
@@ -1989,10 +1991,11 @@ function sourceGeneInfo(id,s=state){
  const costTable=racialCostTable(group,key,s);
  const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
  const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
- return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,
+ const racialG1=isRacialGradeOne(group,key,s);
+ return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,
   dice:dataDice(group,previewGrade).map(n=>"d"+n),
   state:previewGrade>0?"owned":canRaise?"available":"locked",
-  label:next===null?"Grau máximo":"Próximo avanço: "+next+" XP"};
+  label:(racialG1?"Origem: Grau 1 gratuito · ":"")+(next===null?"Grau máximo":"Próximo avanço: "+next+" XP")};
 }
 function geneSkillStatus([id,,,cost],s=state){
  if(ownsSkill(id,s))return"owned";
@@ -2004,11 +2007,11 @@ function geneSkillStatus([id,,,cost],s=state){
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
  if(src){
-  const dice=src.dice.join(" + "),editable=geneCanAdjust(),canReduce=src.previewGrade>0&&
+  const dice=src.dice.join(" + "),editable=geneCanAdjust(),canReduce=src.previewGrade>(src.minGrade||0)&&
    (!state.creationLocked||editMode||src.previewGrade>src.grade)&&!state.pending;
   return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.previewGrade?"Desenvolvido":"Potencial")+'</span>'+
    '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo central.",know:"Conhecimento estudado.",practice:"Prática treinada."}[src.group])+'</p>'+
-   '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+'</dd>'+
+   '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+(src.minGrade?' · Grau 1 da origem (0 XP)':'')+'</dd>'+
    '<dt>Próximo grau</dt><dd>'+esc(src.next===null?"Máximo":src.next+" XP")+'</dd>'+
    '<dt>XP disponível</dt><dd>'+xpCosts(s).free+' XP</dd></dl>'+
    '<div class="fp-gene-grade-actions">'+
@@ -2160,7 +2163,7 @@ function wizardStarterSelect(group,id){
   const cost=xpCosts(candidate).free;
   if(cost<0){toast("XP insuficiente para iniciar com esse Atributo.");return;}
   state.attributes=candidate.attributes;
-  wizardStarterPurchased=first&&!isRacialGradeOne("attr",id)?id:"";
+  wizardStarterPurchased=first&&!isRacialGradeOne("attr",id)?id:oldChoice===id?previous:"";
   wizardStarterAttribute=id;wizardStarterPhase="training";geneSelected="attr:"+id;
  }else if(group==="know"||group==="practice"){
   if(!GROUPS[group].some(([k])=>k===id)||!wizardStarterAttribute)return;
@@ -2469,7 +2472,7 @@ function renderSources(){
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
    const nextCost=xpStepCost(group,id,1),canEdit=(viewMode==="builder"&&!state.creationLocked)||editMode;
    const canRaise=(canEdit||state.creationLocked)&&!state.pending&&g<6&&canAfford(group,nextCost);
-   const canReduce=canEdit&&g>0&&!state.pending;
+   const canReduce=canEdit&&g>0&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
