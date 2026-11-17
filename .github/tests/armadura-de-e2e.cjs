@@ -18,7 +18,7 @@ const assert=require("node:assert/strict");
   await page.locator("#import-json").setInputFiles({
    name:"aprendiz-defesa.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(imported))
   });
-  await page.waitForSelector('#inventory-list [data-action="equip"]');
+  await page.waitForSelector('#inventory-list [data-action="equip"]',{state:"attached"});
   const de=page.locator("#de-text"),label=page.locator("#de-label"),caption=page.locator("#de-caption");
   assert.equal(await de.textContent(),"1");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
