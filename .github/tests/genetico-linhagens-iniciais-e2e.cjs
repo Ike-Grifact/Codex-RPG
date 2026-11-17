@@ -41,12 +41,12 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   await page.locator('#wizard-controls [data-action="wizard-next"]').click();
   assert.equal(await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').getAttribute("aria-pressed"),"true","Codex Genético deve ser padrão");
   assert.equal(await page.locator("#gene-builder-map").isVisible(),true);
-  assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:agilidade"]').innerText(),/GRAU 1/);
+  assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:agilidade"]').textContent(),/GRAU 1/);
   assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/);
   await page.locator('[data-action="wizard-mode"][data-mode="list"]').click();
   assert.equal(await page.locator('#wizard-content [data-action="wizard-tab"]').count(),4,"Listas continuam acessíveis");
   await page.locator('[data-action="wizard-mode"][data-mode="genetic"]').click();
-  assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:agilidade"]').innerText(),/GRAU 1/);
+  assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:agilidade"]').textContent(),/GRAU 1/);
 
   // Outra ficha: Lucker já tem seus G1 favorecidos sem gastar XP;
   // escolher Agilidade novamente não desconta XP e não duplica grau.
@@ -63,7 +63,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.match(await page.locator("#wizard-summary").innerText(),/16 XP/);
   assert.equal(await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').getAttribute("aria-pressed"),"true");
   for(const key of ["agilidade","vigor"])
-   assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:'+key+'"]').innerText(),/GRAU 1/);
+   assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:'+key+'"]').textContent(),/GRAU 1/);
 
   // Quando se troca de raça antes de concluir, apenas G1 automático
   // anterior é removido; um G2 feito voluntariamente continua comprado.
