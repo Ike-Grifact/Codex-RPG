@@ -39,12 +39,12 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal((await read()).attributes.agilidade,1,"A escolha inicial de Agilidade deve ser compra imediata");
   assert.match(await page.locator("#wizard-summary").innerText(),/17 XP/,"Humano gasta 1 XP ao escolher Agilidade");
   // Escolher outro Atributo inicial substitui a compra anterior, sem empilhar G1.
-  await page.locator('[data-action="wizard-starter-back"]').click();
+  await page.locator('[data-action="wizard-back"]').click();
   await page.locator('[data-action="wizard-starter-attr"][data-key="forca"]').click();
   assert.equal((await read()).attributes.agilidade||0,0,"Agilidade deve ser devolvida ao trocar primeira escolha");
   assert.equal((await read()).attributes.forca,1,"Força deve ser o único G1 comprado");
   assert.match(await page.locator("#wizard-summary").innerText(),/17 XP/,"trocar não deve acumular custo");
-  await page.locator('[data-action="wizard-starter-back"]').click();
+  await page.locator('[data-action="wizard-back"]').click();
   await page.locator('[data-action="wizard-starter-attr"][data-key="agilidade"]').click();
   assert.equal((await read()).attributes.forca||0,0,"Força antiga não pode ficar comprada involuntariamente");
   assert.equal((await read()).attributes.agilidade,1);
@@ -90,7 +90,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal(changed.attributes.destreza,1);
   assert.equal(changed.attributes.influencia||0,0,"Influência não é favorecida pelo Puro");
   assert.deepEqual(changed.racialInitialAttributes.sort(),["destreza","inteligencia"]);
-  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/,"Agilidade escolhida custa 1 XP + Atletismo custa 2 XP");
+  assert.match(await page.locator("#wizard-summary").innerText(),/14 XP/,"Agilidade escolhida custa 1 XP + Atletismo elevado custa 3 XP");
   // Uma ficha legada da v0.61 identificada pelo marcador de G1 racial
   // é corrigida sem apagar compras manuais de outros Atributos.
   await page.evaluate(({index,prefix})=>{
@@ -107,7 +107,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal(migrated.attributes.influencia||0,0,"Remover só Influência G1 marcada como benefício incorreto");
   assert.equal(migrated.attributes.forca,1,"Atributo comprado à parte deve permanecer");
   assert.deepEqual(migrated.racialInitialAttributes.sort(),["destreza","inteligencia"]);
-  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/,"Força 1 + Atletismo 1 devem consumir 3 XP");
+  assert.match(await page.locator("#wizard-summary").innerText(),/13 XP/,"Força elevada 2 XP + Atletismo elevado 3 XP = 5 XP");
   // Um G2 de Influência feito manualmente deve sobreviver à correção.
   await page.evaluate(({index,prefix})=>{
    const idx=JSON.parse(localStorage.getItem(index));
