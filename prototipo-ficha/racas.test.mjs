@@ -70,17 +70,17 @@ test("v0.56: fontes raciais favorecidas, normais e elevadas sem multiplicar 2x",
  assert.deepEqual(racialCostTable("know","medicina",runa),TRAIN_COST);
  assert.deepEqual(racialCostTable("attr","forca",character("humano")),AT_COST);
 });
-test("v0.57: 15 XP no nível 1, 260 XP no nível 20 e até 245 XP de evolução",()=>{
+test("v0.58: 18 XP no nível 1, 260 XP no nível 20 e até 242 XP de evolução",()=>{
  const reference=source.match(/const XP_LEVEL_REFERENCE=\[([^\]]+)\]/);
  assert.ok(reference);
  const xp=reference[1].split(",").map(Number);
  assert.equal(xp.length,21);
- assert.equal(xp[1],15);
+ assert.equal(xp[1],18);
  assert.equal(xp[2],28);
- assert.equal(xp[2]-xp[1],13); // o nível 2 mantém o referencial anterior; não reduzir a curva sem aprovação
+ assert.equal(xp[2]-xp[1],10); // o nível 2 mantém o referencial anterior; não reduzir a curva sem aprovação
  assert.equal(xp[20],260);
- assert.equal(xp[20]-xp[1],245);
- assert.match(source,/const CREATE_BUDGET=\{attr:15,training:15,skills:15,total:15\}/);
+ assert.equal(xp[20]-xp[1],242);
+ assert.match(source,/const CREATE_BUDGET=\{attr:18,training:18,skills:18,total:18\}/);
  assert.ok(xp.every((n,i)=>i===0||n>xp[i-1]));
  assert.match(source,/MAX_EARNED_XP=XP_LEVEL_REFERENCE\[20\]-CREATE_BUDGET\.total/);
  assert.match(source,/state\.xpEarned\+amount>MAX_EARNED_XP/);
@@ -116,7 +116,7 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  }));
  assert.deepEqual(build,{attr:3,training:6,skills:5});
  assert.equal(build.attr+build.training+build.skills,14);
- assert.equal(15-(build.attr+build.training+build.skills),1); // mesmo saldo residual da build humana antiga de 19 XP
+ assert.equal(18-(build.attr+build.training+build.skills),4); // build de 14 XP: sobram 4 XP
 });
 
 test("interface inclui seletor, persistência, salvaguardas e marcador manual de Perseverança",()=>{
