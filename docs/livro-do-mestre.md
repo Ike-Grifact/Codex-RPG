@@ -1,5 +1,19 @@
 # Codex RPG — Livro do Mestre
 
+## Linhagens de Aprendizes — 16/11/2026 [DEFINIDO / PENDENTE, SRD v0.55]
+
+**Escolhas autorizadas:** **Humano**, **Lucker de Sangue**, **Lucker Puro** e **Runa Espinhos**. Todos começam como Aprendizes sem classe obrigatória. Benefícios raciais são **gratuitos e distintos de Perícias compradas**; não exigem compra de requisitos apenas para recebê-los, não contam para o mínimo de uma fonte de Atributo e uma de Conhecimento/Prática adquiridas com XP e não criam Graus de fontes ou itens gratuitos por dedução.
+
+**Lucker de Sangue:** recebe Perícia em Elemento Sangue; Vigor e Agilidade terão progressão de XP favorecida (**valor PENDENTE**); **Influência e Apresentação custam o DOBRO da tabela normal**, único multiplicador racial aprovado numericamente até aqui. Não conceder Criar Item de Foco e Magia adicionalmente.
+
+**Lucker Puro:** recebe **Criar Item de Foco e Magia** e escolhe **Sangue, Trevas OU Veneno** como única Perícia elemental racial. Inteligência e Influência terão custo reduzido; Força e Atletismo terão custo maior, com multiplicadores **PENDENTES**.
+
+**Runa Espinhos:** recebe **Pugilismo**, **Criar Item de Foco e Magia** e escolhe **duas Perícias elementais distintas** entre **Ar, Água, Terra e Fogo** (não Sagrado, Trevas, Sangue ou Veneno). Vigor e Força terão custo reduzido, Agilidade e Destreza aumentado; valores **PENDENTES**.
+
+**Humano:** **Perseverança Humana**, rerrolar qualquer teste **1 vez por descanso longo**. **PENDENTE:** como refazer a seleção dos dados, obrigatoriedade de aceitar o novo resultado e tratamento de recursos/símbolos já consumidos. Na ferramenta, o uso/recarga após descanso longo é registrado manualmente; não presumir uma segunda tentativa gratuita de ativação de Perícias, PP/Coragem, Pavor ou outro recurso.
+
+**Divergência matemática a não ocultar:** a tabela atual de **Conhecimentos/Práticas é MAIS CARA que a de Atributos** nos Graus positivos. Portanto, a frase “tabela mais barata (Conhecimentos e Práticas) para Vigor e Agilidade” não fornece uma fórmula válida para a redução pretendida. No protótipo, custos favorecidos permanecem provisoriamente na tabela comum e avisados como PENDENTES; **não afirmar que os descontos estão automatizados**. A duplicação de Influência/Apresentação para Sangue já pode ser aplicada. Consultar [SRD v0.55, seção 0-AR](srd-continuidade-v0.55.md).
+
 ## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
 
 **Levantar Escudo não é reação.** O defensor usa **sua ação**, rola **Disciplina** e escolhe os dados mantidos; **Êxitos + Pavor válidos mantidos** formam a **Integridade simbólica extra de bloqueio**, sujeita às equivalências de desgaste de escudos (**1E anula 1E ou 2P; 1P anula 1P; 2P anulam 1E**). Antecipar não concede Integridade automática. O personagem pode **mover-se normalmente** com o escudo erguido, mas atacar encerra a postura.
