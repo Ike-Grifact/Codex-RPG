@@ -181,6 +181,100 @@ No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão p
 
 **Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
 
+### Os Luckers — guia de interpretação [DEFINIDO no cenário / regras de origem PENDENTES]
+
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo não criam imunidades, bônus, Perícias ou regras de origem. **A criação completa disponível no playtest atual continua sendo a humana**; este texto prepara a interpretação dos Luckers para quando forem autorizados em jogo.
+
+#### Dois destinos para um povo antigo
+
+Há cerca de **20 mil anos**, a Queda e o chamado **Infortúnio dos Luckers** marcaram o destino desse povo. Guerras mágicas, cidades perdidas e tradições contraditórias obscureceram o passado. A causa verdadeira do Infortúnio **não é conhecimento público**: lendas podem falar em castigo, mas não são uma explicação confirmada para os personagens.
+
+- **Luckers Puros — imortalidade com vida.** Conservam vitalidade sem envelhecer até morrer e continuam capazes de sentir o mundo e suas emoções. **Podem ser mortos se forem abatidos.** As guerras reduziram seu número, e hoje restam poucos. Um Puro pode temer uma batalha, amar alguém, cultivar hábitos e escolher o que fazer com o tempo — não é obrigado a ser solene nem a conhecer toda a história.
+- **Luckers de Sangue — permanência sem sensação.** A condição que os atingiu retirou-lhes a experiência das sensações físicas e das emoções, mas **não a consciência, a cognição ou a capacidade de aprender**. São imortais de maneira literal: não alcançam a morte definitiva. A existência pode prosseguir mesmo quando o corpo é ferido, aprisionado ou soterrado. A maneira exata de representar destruição corporal extrema **não está definida para personagens** e cabe à condução do Narrador, sem imunidades mecânicas presumidas.
+
+Um Puro possui uma vida que pode ser interrompida. Um Lucker de Sangue possui uma existência que não consegue encerrar, sem poder experimentá-la como os demais. **Ambos continuam sendo pessoas distintas**, não modelos fixos de personalidade.
+
+#### Interpretar um Lucker Puro
+
+Um Puro **sente**, e sua longevidade altera sobretudo sua relação com o tempo. Ele pode pensar em séculos, mas também agir impulsivamente, mudar de opinião, errar, esquecer e aprender. Ter vivido muito **não concede conhecimento automático**, principalmente sobre acontecimentos que não presenciou.
+
+Perguntas para construir sua interpretação:
+
+1. Quais perdas, compromissos ou lugares marcaram sua história?
+2. Ele se aproxima dos povos mortais ou evita vínculos que podem terminar?
+3. A possibilidade de morrer em combate o torna prudente, corajoso ou indiferente ao risco?
+4. O que ele ainda deseja descobrir, construir ou preservar?
+
+**Exemplo de diálogo:**
+
+> **Humano:** “Você acredita que esta cidade vai durar?”
+>
+> **Lucker Puro:** “Eu vi duas cidades erguidas neste vale. Esta ainda pode ser a que aprende com as anteriores.”
+
+#### Interpretar um Lucker de Sangue
+
+**A regra central da interpretação é separar compreender de sentir.** Um Lucker de Sangue pode reconhecer uma ameaça, identificar sinais de tristeza, estudar o amor e entender o valor de um compromisso. Ele não precisa experimentar dor, medo, alegria ou afeto para **tomar decisões**.
+
+- **Observação não é experiência.** Ele pode estudar o choro e reconhecer o luto sem conhecer internamente a tristeza. A percepção e a comunicação necessárias à cena existem na ficção, mas os meios precisos pelos quais isso ocorre ainda não constituem regras mecânicas.
+- **Ausência de sensação não é ausência de caráter.** Um Lucker pode ser gentil, cruel, ético, protetor, irônico, paciente ou obstinado. Suas decisões podem vir de princípios, memória, hábitos, cálculos ou promessas, sem emoção correspondente.
+- **Não sentir dor não o torna invencível em jogo.** Ferimentos, restrições, captura, incapacidade de agir e conflitos continuam relevantes. A maldição não concede benefícios automáticos à ficha.
+- **Intensidade não é cura.** Um golpe mais forte, uma batalha ou uma grande demonstração de carinho não faz um Lucker voltar a sentir por padrão. Qualquer exceção pertence à história conduzida pelo Narrador, não a um recurso livre do jogador.
+- **Nem todos pensam ou falam da mesma forma.** Alguns usam linguagem objetiva, outros aprenderam gestos sociais, metáforas, humor ou estilos muito próprios. Não é necessário interpretar um robô, falar apenas com números ou responder tudo literalmente.
+
+**Exemplo de diálogo:**
+
+> **Companheiro:** “Você não tem medo de entrar?”
+>
+> **Lucker de Sangue:** “Não experimento medo. Mas reconheço a possibilidade de ficarmos presos e prefiro preservar nossa passagem.”
+
+Outro Lucker poderia responder apenas “É perigoso. Vamos por outro caminho”. Ambos são interpretações válidas.
+
+#### Diários, memória e linguagem própria
+
+Muitos Luckers de Sangue mantêm **diários** para registrar experiências observadas, decisões, vínculos e mudanças de comportamento. Não são obrigados a esquecer o que viveram: os registros podem ajudá-los a **organizar a identidade e compreender experiências que não conseguem sentir**.
+
+Alguns criaram maneiras próprias de falar, com palavras para padrões de comportamento que os humanos chamariam de saudade, carinho, prazer ou sofrimento. O jogador pode inventar expressões, mas deve explicar seu significado ao grupo para não transformar a interpretação em obstáculo à mesa.
+
+**Exemplo de registro fictício:**
+
+> **Registro 4.821.** Ela afirmou ter sentido alegria ao meu retorno. Reconheci os sinais que descreveu em outros encontros. Minha presença parece ser importante para ela. Registrei que continuarei voltando a este lugar.
+
+Os números e as pessoas do exemplo são ilustrativos, não cronologia oficial do cenário.
+
+#### Vinte mil anos não criam uma única resposta
+
+Alguns Luckers de Sangue procuram uma forma de se libertar da condição. Outros desenvolveram modos próprios de existir. Há indivíduos que ficaram profundamente desorganizados após épocas de isolamento, exploração e aprisionamento; isso **não significa que todos sejam violentos ou incapazes de raciocinar**.
+
+A imortalidade também os tornou alvos de **escravização e utilização como ferramentas**. Há relatos de Luckers perdidos em cavernas e ruínas, soterrados por milênios; uma formação que parece apenas pedra pode ocultar um deles. O tempo de cativeiro não torna esses indivíduos automaticamente sábios nem hostis.
+
+O personagem pode ser um guardião, estudioso, errante, escriba, viajante ou qualquer outra pessoa com objetivos próprios. Esses são **conceitos de interpretação**, não profissões, Perícias ou benefícios de ficha.
+
+#### Interpretar vínculos com os vivos
+
+Um Lucker de Sangue pode preservar relações, cuidar de alguém, viver em família e cumprir promessas. **Vínculo e emoção não são a mesma coisa** neste contexto: para ele, a ligação pode existir como compromisso, lembrança e escolha consciente.
+
+> **Humana:** “Por que continua me acompanhando, se não sente amizade?”
+>
+> **Lucker de Sangue:** “Prometi estar aqui. Continuo considerando essa promessa importante.”
+
+O jogador não precisa repetir a maldição em toda conversa. Mostre a diferença quando ela realmente importar para uma decisão, um conflito ou um diálogo.
+
+#### Exercício rápido para o jogador
+
+Antes de interpretar um Lucker, responda:
+
+1. Ele é **Puro** ou **de Sangue**? Como isso afeta sua relação com a vida e o tempo?
+2. O que **presenciou** e o que conhece apenas por relatos? O que **não sabe**?
+3. Quais compromissos, objetivos e hábitos orientam suas escolhas?
+4. Que relação mantém com outros povos? O que pensa sobre sua própria condição?
+5. Se for de Sangue, ele usa **diários**, símbolos, rotinas ou linguagem própria? Como se comunica com seus aliados?
+6. O que seus companheiros descobrem sobre ele **pelas ações**, sem que precise explicar tudo?
+
+**Evite estes equívocos:** interpretar todos os Puros como seres perfeitos; transformar todos os de Sangue em máquinas frias, vilões ou indivíduos desorganizados; tratar ausência de emoção como ausência de ética; presumir conhecimento de segredos antigos; usar a imortalidade narrativa para ignorar as consequências das regras.
+
+**Em resumo:** o Lucker Puro pode viver por eras, mas ainda pode morrer. O Lucker de Sangue pode continuar existindo por eras sem experimentar o que os outros chamam de viver. **Como cada um responde a isso é o que torna o personagem único.**
+
+
 ## II. Criar o Aprendiz
 
 Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
