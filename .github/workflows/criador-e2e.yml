@@ -6,6 +6,7 @@ on:
       - 'prototipo-ficha/**'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
+      - '.github/tests/armadura-de-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
       - '.github/tests/pequena-ficha-e2e.cjs'
       - '.github/tests/fichas-multiplas-e2e.cjs'
@@ -54,6 +55,8 @@ jobs:
         run: node .github/tests/genetico-linhagens-iniciais-e2e.cjs
       - name: Validar contornos e ícones de XP racial no mapa e listas
         run: node .github/tests/custos-raciais-marcadores-e2e.cjs
+      - name: Testar armaduras na ficha e DE geral no navegador móvel
+        run: node .github/tests/armadura-de-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular
