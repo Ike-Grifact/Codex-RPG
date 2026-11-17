@@ -3,7 +3,7 @@ title: "Codex RPG — SRD de Continuidade v0.79: checkpoint de decisões e pend�
 version: "0.79"
 system: "Codex RPG"
 updated: "2026-11-17"
-status: "DEFINIDO / EXPERIMENTAL / PENDENTE — checkpoint autoral e implementação parcial de Medicina Avançada na branch"
+status: "DEFINIDO / EXPERIMENTAL / PENDENTE — checkpoint autoral consolidado em PR revisável"
 supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressamente corrigidos"
 ---
 
@@ -11,7 +11,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 ## 0-BS. Checkpoint autoral — 17/11/2026
 
-**Objetivo:** preservar as decisões tomadas pelo autor na revisão sequencial de Cravar, conjuração, focos, Hemomancia, Sangramento e tratamento antes de prosseguir com outras pendências. Este documento registra as decisões e seus estados. **Nesta branch**, somente Medicina Avançada (compra e seleção de terceira fonte), seu verbete, o Codex Genético e as referências do Livro do Jogador foram atualizados; **o restante das regras do checkpoint não foi implementado** na ficha, Foundry ou portal. **Não executar mudanças de ficha ou balanceamento por inferência.**
+**Objetivo:** preservar as decisões tomadas pelo autor na revisão sequencial de Cravar, conjuração, focos, Hemomancia, Sangramento e tratamento antes de prosseguir com outras pendências. Este documento registra as decisões e seus estados. **Nesta branch**, as **12 Perícias Avançadas** foram cadastradas no criador e no Codex Genético, com verbetes e referências atualizadas, enquanto decisões sobre conjuração, condições e demais procedimentos foram consolidadas **principalmente na documentação**. **Não declarar automatizações de foco, tratamento, Cravar, Sobrecarga ou Foundry como concluídas.** Não executar mudanças de ficha ou balanceamento por inferência.
 
 **Precedência:** decisões autorais recentes deste checkpoint prevalecem sobre trechos incompatíveis de SRDs anteriores, Livro do Jogador e comportamento implementado; onde este documento for omisso, permanecem as regras anteriores válidas. Custos, dados, requisitos e efeitos não citados não foram modificados.
 
@@ -93,12 +93,12 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 - **Cada 1 carga gasta** reduz a preparação em **1 turno**, independentemente de a conjuração acelerada ser G2 ou G3. **Duas cargas podem ser gastas na mesma magia G3**, se disponíveis, reduzindo de 3 para **1 turno, isto é, lançamento instantâneo no turno do conjurador**. Gastar cargas não muda Grau ou efeitos.
 - O foco **entra em recarga quando todas as cargas se esgotam**, não a cada carga gasta.
-- Depois de esgotado, **recupera 1 carga automaticamente no final de cada rodada**, **após a troca de fluxo entre jogadores e inimigos**. Não exige ação, PP ou Coragem, inclusive em combate.
+- **DEFINIDO — opção A, 17/11/2026:** quando a **última carga do foco comum é gasta durante uma rodada**, o foco recupera **1 carga já no encerramento dessa mesma rodada**, depois de concluído o fluxo de jogadores **e** inimigos. A recarga é automática, inclusive em combate, e não exige ação, PP ou Coragem. Se o foco continuar abaixo do máximo, recupera **1 carga no fim de cada rodada seguinte** até encher. Não adiantar essa recuperação para o fim do turno individual de um personagem.
 - As cargas já recuperadas **podem ser usadas imediatamente nas próximas oportunidades**, ainda que o foco não esteja cheio. Usar uma carga recuperada não exige que se aguardem todas as demais.
 - O foco G4 possui peso físico **Muito Pesado**. Não converter automaticamente este peso em um número de carga não publicado.
 - A redação histórica de “Grau N → N rodadas para recarregar” fica **especificada** como **recuperação gradual de 1 carga por rodada até a capacidade total após esgotamento**, e não restauração integral após N rodadas.
 
-**PENDENTE:** se o esgotamento ocorre antes do encerramento de uma rodada, esclarecer eventuais casos-limite de primeira recuperação nesse mesmo encerramento; sem alterar a posição aprovada do gatilho: **final da rodada após a troca de fluxo**.
+**RESOLVIDO — borda temporal da recarga:** o esgotamento durante a rodada inicia a recuperação no **encerramento da própria rodada** (após os dois fluxos). Exemplo: foco comum G2 com 2 cargas, gasta ambas durante a rodada 1 → **fim da rodada 1: 1 carga disponível** → **fim da rodada 2: volta a 2 cargas**, se nenhuma carga for gasta no intervalo. **Exceção preservada:** Pedra da Alma não se recarrega naturalmente; a futura Perícia Fixar Alma permanece PENDENTE. Não confundir o limite de 1 carga por rodada com a quantidade de cargas que podem ser gastas para acelerar uma magia.
 
 **DEFINIDO — Pedra da Alma:** é um foco especial de magia de Sangue; muito raro e caro, acessível **a partir do nível 15** com risco/dificuldade, não comprável no nível 1. Obedece à capacidade de cargas do Grau, mas **não recarrega naturalmente**. Somente a futura Perícia **Fixar Alma** poderá possibilitar sua recarga; efeitos, custo, requisitos, prazo e riscos de Fixar Alma seguem **PENDENTES**. Não implementar recarga automática na Pedra.
 
@@ -179,10 +179,35 @@ Não cobrar as três formas cumulativamente.
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
 | Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização, reinicia com três turnos e nova rolagem, e **não recupera PP/Coragem/cargas já gastos**. **DEFINIDO:** apenas uma amplificação de Sangue por turno |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
-| Focos — borda temporal da primeira recarga | **PENDENTE**: se esgotamento imediatamente antes do fim de rodada inicia recuperação no mesmo encerramento |
+| Focos — borda temporal da primeira recarga | **DEFINIDO:** quando o foco comum esgota durante a rodada, recupera 1 carga **no fim dessa mesma rodada**, depois do fluxo de jogadores e inimigos; Pedra da Alma é exceção |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
 | Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: −1E para Levantar Escudo, DE por peso e −1E geral da Sobrecarga |
 | 15 XP iniciais | **EXPERIMENTAL**: revisar balanceamento; ainda não alterar a progressão fora do início |
+
+### 7.1. Auditoria de pendências deste checkpoint (17/11/2026)
+
+**Método de contagem:** uma **frente** representa um assunto distinto ainda não encerrado; subperguntas e repetições na seção 7 não são somadas como novas frentes. Esta auditoria cobre **somente o SRD v0.79 e as decisões aqui consolidadas**; não é uma contagem de todas as pendências históricas do Livro do Jogador, Foundry ou outras versões. **A decisão sobre a primeira recarga do foco foi resolvida e não integra a contagem.**
+
+**7 frentes de regras ou procedimentos PENDENTES:**
+
+1. **Combinações para monstros:** detalhamento de fontes, dados e Grau quando a ficha usa somente Atributos, inclusive exceções de criaturas.
+2. **Cravar em situações especiais:** múltiplas armas presas no mesmo escudo e destino/posse de arma retirada; preservar a penalidade única de −1E enquanto não houver nova decisão.
+3. **Conjuração G4:** tempo geral de preparação e limites de aceleração ainda não definidos para esse Grau.
+4. **Magias memorizadas e cronologia de conjuração:** compatibilidade de preparação, memorização e exceções de Sangue com os novos tempos elementais e efeitos históricos.
+5. **Pedra da Alma — Fixar Alma:** requisitos, XP, procedimento, custo, recuperação de cargas e riscos desta futura Perícia.
+6. **Hemomancia avançada:** custos e gatilhos ainda incompletos das técnicas de Sangue G2/G3; a regra de uma amplificação por turno já está DEFINIDA.
+7. **Procedimentos elementais não especificados:** pormenores de execução de efeitos utilitários e outras interações de Água/Gelo/Fogo não expressamente resolvidas; não recriar custos nem DE.
+
+**4 frentes de implementação/validação**, distintas de regras aprovadas:
+
+1. **Condições e alvos no criador/Foundry:** automatizar tratamento de Sangrando por Medicina Avançada e remoção de Congelamento por Água/Queimar.
+2. **Cravar e Sobrecarga nas interfaces:** aplicar retirada por DE/peso, −1E ao Levantar Escudo e −1E geral da Sobrecarga, preservando demais funcionalidades.
+3. **Conjuração, focos e Hemomancia:** implementar contagem de turnos, gasto de múltiplas cargas, recarga no encerramento da mesma rodada, interrupção e seus recursos; respeitar a exceção da Pedra da Alma.
+4. **Fluxo de criaturas/combinações e testes de regressão:** validar o compositor, fichas de monstros e humanoides, versões móvel e clássica e compatibilidade com Foundry.
+
+**1 hipótese EXPERIMENTAL separada:** orçamento inicial de **15 XP**, ainda sujeito a playtest e aprovação definitiva; o criador e documentos históricos podem divergir. **Publicação:** a integração da PR #58 à `main` permanece uma etapa de revisão, **não** é uma nova regra PENDENTE.
+
+**Resumo desta auditoria: 7 frentes de regras + 4 frentes de implementação/validação + 1 frente experimental = 12 frentes de acompanhamento.** Não interpretar como exatamente 12 perguntas de sim/não: cada frente pode conter vários detalhes.
 
 **Divergências conhecidas frente ao Livro do Jogador e versões históricas:**
 - v0.78 declara DE de retirada por peso a cargo do Narrador e −2E em Levantar Escudo: **substituir por tabela 1/2/3 e −1E somente nessa ação**.
@@ -196,8 +221,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Se o foco **esgota sua última carga durante uma rodada**, ele já recupera **1 carga no encerramento dessa mesma rodada** (depois do fluxo dos dois lados), ou a primeira recuperação só ocorre **no fim da rodada seguinte**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Sobre **Cravar**: se mais de uma arma ficar presa ao mesmo escudo, a penalidade de **−1E em Levantar Escudo** continua única, ou se acumula por arma?”
 
-**Depois da resposta**, definir somente o momento da primeira recuperação do foco esgotado em uma rodada. Não reabrir a definição de que **1 turno é instantâneo no turno do conjurador**, e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar somente o tratamento de múltiplas armas Cravadas sem inventar novos custos ou somar penalidades por inferência. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
