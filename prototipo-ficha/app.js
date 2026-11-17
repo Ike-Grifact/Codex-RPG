@@ -2923,10 +2923,15 @@ function score(){
   // Foco explicitamente de outro elemento impede vincular dano direto de Sangue.
   !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="sangue");
  if(p.hemomancyDirectLife&&!mayHemomancyDirectLife)errs.push("Dano direto de Hemomancia exige a conjuração de Sangue paga neste turno e um vínculo ainda não utilizado.");
- const directLifeDamage=mayHemomancyDirectLife&&p.hemomancyDirectLife===true?damage:null;
- // O dano direto à Vida substitui a aplicação normal à armadura: não somar ambos.
- const armorDamage=directLifeDamage!==null?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage,damageBasic,armorDamage,directLifeDamage,mayHemomancyDirectLife,passivePiercing,errors:errs,
+ const hemomancyLinked=mayHemomancyDirectLife&&p.hemomancyDirectLife===true;
+ // v0.75: apenas Escudo Arcano de Sangue ativo e aplicável anula o bypass.
+ // Escudo físico ou arcano de qualquer outro elemento não neutraliza Hemomancia direta.
+ const bloodArcaneShieldNeutralized=hemomancyLinked&&!!p.targetBloodArcaneShield;
+ const directLifeDamage=hemomancyLinked&&!bloodArcaneShieldNeutralized?damage:null;
+ // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
+ // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
+ const armorDamage=hemomancyLinked?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage,damageBasic,armorDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
@@ -2952,8 +2957,10 @@ function renderPending(){
  const hemoControl=s.mayHemomancyDirectLife?
   '<div class="fp-alert"><strong>Amplificação de Sangue já paga</strong> · disponível para uma rolagem de magia de Sangue neste turno. '+
   '<button type="button" class="fp-secondary" data-action="hemo-link-roll" aria-pressed="'+(!!p.hemomancyDirectLife)+'">'+
-  (p.hemomancyDirectLife?'✓ Vinculada: todo o dano à Vida':'Vincular esta rolagem à magia de Sangue amplificada')+'</button>'+
-  '<p class="fp-caption">Vincule somente se esta é a magia de Sangue declarada; peça confirmação ao Narrador quando não há foco. Após finalizar, não pode vincular outra rolagem neste turno.</p></div>':"";
+  (p.hemomancyDirectLife?'✓ Vinculada: magia de Sangue amplificada':'Vincular esta rolagem à magia de Sangue amplificada')+'</button>'+
+  (p.hemomancyDirectLife?'<button type="button" class="fp-secondary" data-action="hemo-target-shield" aria-pressed="'+(!!p.targetBloodArcaneShield)+'">'+
+   (p.targetBloodArcaneShield?'✓ Escudo Arcano de Sangue ativo no alvo':'Alvo tem Escudo Arcano de Sangue ativo?')+'</button>':"")+
+  '<p class="fp-caption">Escudos físicos e arcanos de outros elementos não anulam o dano direto à Vida. Somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade. Sem foco, confirme que a magia é de Sangue com o Narrador. Após finalizar, não pode vincular outra rolagem neste turno.</p></div>':"";
  const controls='<div class="fp-form-grid'+
  selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
@@ -2969,7 +2976,8 @@ function renderPending(){
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-a">Antecipar ᚨ</span><b>'+s.remainingA+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-p">Pavor ᚦ</span><b>'+s.P+'</b></div></div>'+
  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'+
- (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano convencional calculado, sem passar pela Integridade e sem desgastá-la). Falha na DE = 0. Escudos e outras barreiras ficam sob avaliação do Narrador. Marcas de sangue só pelo dano à Vida realmente aplicado.</p>':"")+
+ (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
+ (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
@@ -2997,9 +3005,10 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,directLifeDamage:s.directLifeDamage,health:s.health.id,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
- if(s.directLifeDamage!==null)state.hemomancy.directLifeResolved=true;
+ // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
+ if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
@@ -3401,6 +3410,11 @@ function onClick(event){
   const result=score();
   if(!result?.mayHemomancyDirectLife)return;
   state.pending.hemomancyDirectLife=!state.pending.hemomancyDirectLife;
+  save();renderComposer();break;
+ }
+ case "hemo-target-shield":{
+  if(!state.pending||!score()?.mayHemomancyDirectLife||!state.pending.hemomancyDirectLife)return;
+  state.pending.targetBloodArcaneShield=!state.pending.targetBloodArcaneShield;
   save();renderComposer();break;
  }
  case "hemo-record-damage":{
