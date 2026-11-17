@@ -115,6 +115,9 @@ function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendent
 const CREATE_BUDGET={attr:18,training:18,skills:18,total:18}; // EXPERIMENTAL: total 18 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
 const XP_LEVEL_REFERENCE=[0,18,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // EXPERIMENTAL: 18 XP no nível 1; níveis 2–20 preservados, nível manual.
 const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 242 XP novos concedíveis (260 totais − 18 iniciais).
+// Todas as especializações Avançadas de Conhecimentos e Práticas exigem Grau 2
+// na respectiva fonte e custam 1 XP; outras exigências históricas permanecem.
+const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:2"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:2"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:2"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:2"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:2"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:2"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:2"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:2"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:2"}];
 const SKILLS=[
  [
   "combate",
@@ -399,6 +402,60 @@ const SKILLS=[
   1
  ],
  [
+  "protecao-avancada",
+  "Proteção Avançada",
+  "1 XP. Requisito: Proteção 2. Com Proteção como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "astronomia-avancada",
+  "Astronomia Avançada",
+  "1 XP. Requisito: Astronomia 2. Com Astronomia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "alquimia-avancada",
+  "Alquimia Avançada",
+  "1 XP. Requisito: Alquimia 2. Com Alquimia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "engenharia-avancada",
+  "Engenharia Avançada",
+  "1 XP. Requisito: Engenharia 2. Com Engenharia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "erudicao-avancada",
+  "Erudição Avançada",
+  "1 XP. Requisito: Erudição 2. Com Erudição como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "atletismo-avancado",
+  "Atletismo Avançado",
+  "1 XP. Requisito: Atletismo 2. Com Atletismo como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "artesao-avancado",
+  "Artesão Avançado",
+  "1 XP. Requisito: Artesão 2. Com Artesão como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "apresentacao-avancada",
+  "Apresentação Avançada",
+  "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "coleta-avancada",
+  "Coleta Avançada",
+  "1 XP. Requisito: Coleta 2. Com Coleta como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
   "medicina-avancada",
   "Medicina Avançada",
   "1 XP. Requisito Medicina 2. Em teste com Medicina como Base, acrescenta até duas fontes pertinentes (total de três), incluindo Atributo na pilha. Para tratar Sangrando, testa contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove o estado, falha mantém. Não dispensa rolagem nem concede cura automática.",
@@ -650,6 +707,33 @@ const SKILL_AFFINITY={
   "attr:destreza",
   "attr:agilidade"
  ],
+ "protecao-avancada": [
+  "know:protecao"
+ ],
+ "astronomia-avancada": [
+  "know:astronomia"
+ ],
+ "alquimia-avancada": [
+  "know:alquimia"
+ ],
+ "engenharia-avancada": [
+  "know:engenharia"
+ ],
+ "erudicao-avancada": [
+  "know:erudicao"
+ ],
+ "atletismo-avancado": [
+  "practice:atletismo"
+ ],
+ "artesao-avancado": [
+  "practice:artesao"
+ ],
+ "apresentacao-avancada": [
+  "practice:apresentacao"
+ ],
+ "coleta-avancada": [
+  "practice:coleta"
+ ],
  "medicina-avancada": [
   "know:medicina"
  ],
@@ -736,7 +820,16 @@ const SKILL_BRANCHES=[
   "furtividade",
   "furtividade-avancada"
  ],
- ["medicina-avancada"]
+ ["medicina-avancada"],
+ ["protecao-avancada"],
+ ["astronomia-avancada"],
+ ["alquimia-avancada"],
+ ["engenharia-avancada"],
+ ["erudicao-avancada"],
+ ["atletismo-avancado"],
+ ["artesao-avancado"],
+ ["apresentacao-avancada"],
+ ["coleta-avancada"]
 ];
 
 const SKILL_PERMALINKS={
@@ -792,7 +885,16 @@ const SKILL_PERMALINKS={
  "golpe-baixo": "golpe-baixo",
  "furtividade": "pericia-em-furtividade",
  "furtividade-avancada": "furtividade-avancada",
- "medicina-avancada": "medicina-avancada"
+ "medicina-avancada": "medicina-avancada",
+ "protecao-avancada": "protecao-avancada",
+ "astronomia-avancada": "astronomia-avancada",
+ "alquimia-avancada": "alquimia-avancada",
+ "engenharia-avancada": "engenharia-avancada",
+ "erudicao-avancada": "erudicao-avancada",
+ "atletismo-avancado": "atletismo-avancado",
+ "artesao-avancado": "artesao-avancado",
+ "apresentacao-avancada": "apresentacao-avancada",
+ "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
@@ -831,6 +933,15 @@ const CARD_REQUIREMENTS={
  "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
  "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade",
  "medicina-avancada": "Medicina 2",
+ "protecao-avancada": "Proteção 2",
+ "astronomia-avancada": "Astronomia 2",
+ "alquimia-avancada": "Alquimia 2",
+ "engenharia-avancada": "Engenharia 2",
+ "erudicao-avancada": "Erudição 2",
+ "atletismo-avancado": "Atletismo 2",
+ "artesao-avancado": "Artesão 2",
+ "apresentacao-avancada": "Apresentação 2",
+ "coleta-avancada": "Coleta 2",
  "armas-leves": "Disciplina 1",
  };
 
@@ -870,7 +981,16 @@ const CARD_EFFECTS={
  "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, característica escolhida entre as armas, dano básico uma vez",
  "furtividade": "Recebe Vantagem (+1A) em testes com Furtividade, cumulativa com Concentrado",
  "furtividade-avancada": "Acrescenta mais um Atributo, Conhecimento ou Prática pertinente a teste de Furtividade",
- "medicina-avancada": "Medicina predominante + duas fontes pertinentes; tratar Sangrando exige rolagem contra DE defensiva do alvo com −1A"
+ "medicina-avancada": "Medicina predominante + duas fontes pertinentes; tratar Sangrando exige rolagem contra DE defensiva do alvo com −1A",
+ "protecao-avancada": "Proteção predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "astronomia-avancada": "Astronomia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "alquimia-avancada": "Alquimia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "engenharia-avancada": "Engenharia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
 };
 
 const CARD_BRIEFS={
@@ -909,7 +1029,16 @@ const CARD_BRIEFS={
  "maestria-manejo-duplo": "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica das duas armas sem custo; acerto comum ativa ambo…",
  "furtividade": "Ao usar Furtividade como fonte do teste, recebe +1A automaticamente e sem custo. Cumulativa com outras Vantagens legítimas como Concentrado, mas cada símbolo A só pode ser gasto uma vez. Alguns inimigos são IMUNES a Furtividade; vantagens não anulam essa imunidade nem garantem ocultação.…",
  "furtividade-avancada": "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite…",
- "medicina-avancada": "Medicina 2, 1 XP. Com Medicina predominante, combina Medicina + Atributo + complemento pertinente. Ao tratar Sangrando, teste contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove Sangrando."
+ "medicina-avancada": "Medicina 2, 1 XP. Com Medicina predominante, combina Medicina + Atributo + complemento pertinente. Ao tratar Sangrando, teste contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove Sangrando.",
+ "protecao-avancada": "1 XP; requisito Proteção 2. Com Proteção como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "astronomia-avancada": "1 XP; requisito Astronomia 2. Com Astronomia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "alquimia-avancada": "1 XP; requisito Alquimia 2. Com Alquimia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "engenharia-avancada": "1 XP; requisito Engenharia 2. Com Engenharia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
 };
 
 const CARD_ACTIVATIONS={
@@ -948,7 +1077,16 @@ const CARD_ACTIVATIONS={
  "maestria-manejo-duplo": "1 PP ou 1 Coragem no acerto normal; crítico gratuito",
  "furtividade": "Passiva",
  "furtividade-avancada": "Passiva",
- "medicina-avancada": "Passiva para compor fontes; tratamento exige teste"
+ "medicina-avancada": "Passiva para compor fontes; tratamento exige teste",
+ "protecao-avancada": "Passiva",
+ "astronomia-avancada": "Passiva",
+ "alquimia-avancada": "Passiva",
+ "engenharia-avancada": "Passiva",
+ "erudicao-avancada": "Passiva",
+ "atletismo-avancado": "Passiva",
+ "artesao-avancado": "Passiva",
+ "apresentacao-avancada": "Passiva",
+ "coleta-avancada": "Passiva"
 };
 
 function skillCompactCard([id,name,detail,cost],wizard){
@@ -1576,7 +1714,9 @@ function skillReq(id,s=state){
  if(id==="golpe-baixo"&&(dex<2||strength<1||agi<1))return"Requer Destreza 2, Força 1 e Agilidade 1.";
  if(id==="furtividade"&&(stealth<2||dex<2||agi<1))return"Requer Furtividade 2, Destreza 2 e Agilidade 1.";
  if(id==="furtividade-avancada"&&(stealth<2||!has("furtividade")))return"Requer Furtividade 2 e Perícia em Furtividade.";
-  if(id==="medicina-avancada"&&med<2)return"Requer Medicina 2.";
+  const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
+  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
+   return"Requer "+advancedSource.label+" 2.";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
  if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
@@ -2033,6 +2173,15 @@ const GENE_AUTO_REQUIREMENTS={
  "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
  "furtividade-avancada":[["p:furtividade:2","s:furtividade"]],
  "medicina-avancada":[["k:medicina:2"]],
+ "protecao-avancada":[["k:protecao:2"]],
+ "astronomia-avancada":[["k:astronomia:2"]],
+ "alquimia-avancada":[["k:alquimia:2"]],
+ "engenharia-avancada":[["k:engenharia:2"]],
+ "erudicao-avancada":[["k:erudicao:2"]],
+ "atletismo-avancado":[["p:atletismo:2"]],
+ "artesao-avancado":[["p:artesao:2"]],
+ "apresentacao-avancada":[["p:apresentacao:2"]],
+ "coleta-avancada":[["p:coleta:2"]],
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
@@ -2717,11 +2866,7 @@ function renderSources(){
 function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key==="armas_conjuracao";}
 // Uma Perícia Avançada habilita sua fonte principal + duas fontes pertinentes (3 no total).
 // O requisito de rolar um Atributo e os limites de dados continuam vigentes.
-const ADVANCED_SOURCE_SKILLS={
- "practice:armas_conjuracao":"disciplina-avancada",
- "practice:furtividade":"furtividade-avancada",
- "know:medicina":"medicina-avancada"
-};
+const ADVANCED_SOURCE_SKILLS=Object.fromEntries(ADVANCED_SOURCE_DEFS.map(({id,group,key})=>[group+":"+key,id]));
 function advancedSourceActive(){
  const base=draft.base;if(!base)return false;
  const id=ADVANCED_SOURCE_SKILLS[base.group+":"+base.key];
@@ -2814,7 +2959,7 @@ function renderComposer(){
   const chosen=draft.attribute?'<p><strong>'+esc(label(draft.attribute.group,draft.attribute.key))+'</strong> já está selecionado. Agora escolha uma Prática ou Conhecimento para definir a Base.</p>':
    '<p>Selecione um Atributo à esquerda e uma Base em Práticas ou Conhecimentos. A ordem dos cliques é livre.</p>';
   box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4>'+chosen+'</div>'+
-   '<div class="fp-alert">Experimente <strong>Disciplina + Força</strong>. Com Perícia Avançada da Base (Disciplina, Furtividade ou Medicina), acrescente a terceira fonte pertinente. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
+   '<div class="fp-alert">Experimente <strong>Disciplina + Força</strong>. Com uma Perícia Avançada do Conhecimento ou Prática predominante, acrescente uma terceira fonte pertinente. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
    (state.history.length?'<p class="fp-caption">Última ação: '+esc(state.history[0].name)+' · '+esc(state.history[0].outcome)+'</p>':"");
   return;
  }
@@ -2871,7 +3016,7 @@ function renderComposer(){
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
  (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com a Perícia Avançada da Base, pode acrescentar outra fonte pertinente, inclusive outro Atributo.</p>':
- '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia Avançada, são duas fontes. Disciplina Avançada, Furtividade Avançada e Medicina Avançada habilitam terceira fonte pertinente.")+'</p>')+
+ '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia Avançada, são duas fontes; com a especialização Avançada da fonte predominante, pode selecionar até três fontes pertinentes.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  '<div class="fp-composer-actions"><button class="fp-secondary" type="button" data-action="clear">Limpar</button>'+
  '<button class="fp-primary-btn" type="button" data-action="roll"'+(errors.length?" disabled":"")+'>Rolar dados →</button></div>';
