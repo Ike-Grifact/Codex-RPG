@@ -1050,7 +1050,7 @@ let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneIns
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, raça e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
- ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
+ ["Distribuir XP","Compre graus e Perícias","Codex Genético por padrão; listas opcionais"],
  ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
@@ -2091,7 +2091,7 @@ function prepareElementSkill(id){
 
 function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
-/* Quatro etapas guiadas: listas padrão e Codex Genético alternativo compartilham a ficha. */
+/* Etapas guiadas: Codex Genético padrão e listas opcionais compartilham o mesmo XP e ficha. */
 function wizardPersist(){
  try{localStorage.setItem(WIZARD_KEY,JSON.stringify(wizardSnapshot()));}
  catch(e){console.warn("Codex: etapa não persistida",e);}
@@ -2252,13 +2252,13 @@ function wizardBuild(){
  const attrOK=A.some(([k])=>(state.attributes[k]||0)>=1);
  const trainingOK=K.some(([k])=>(state.knowledges[k]||0)>=1)||P.some(([k])=>(state.practices[k]||0)>=1);
  const switcher='<div class="fp-wiz-view-switch" role="group" aria-label="Visualização da criação">'+
-  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Modo padrão · listas</button>'+
-  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · mapa</button></div>';
+  '<button type="button" data-action="wizard-mode" data-mode="genetic" class="'+(wizardMode==="genetic"?'is-active':'')+'" aria-pressed="'+(wizardMode==="genetic")+'">Codex Genético · principal</button>'+
+  '<button type="button" data-action="wizard-mode" data-mode="list" class="'+(wizardMode==="list"?'is-active':'')+'" aria-pressed="'+(wizardMode==="list")+'">Listas · alternativa</button></div>';
  const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
   '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
   '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
   '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 18 XP (total experimental)</span></div>';
- const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais estão registradas. Agora compre outros graus e Perícias usando o saldo compartilhado, ou alterne para o Codex Genético.</span></div>';
+ const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais já estão registradas no Codex Genético. Desenvolva outros graus e Perícias pelo mapa ou use as listas opcionais.</span></div>';
  if(wizardMode==="genetic")return confirmedHint+switcher+
   geneBudgetPanel()+
   '<div class="fp-gene-map-tools"><button type="button" data-action="gene-future" aria-pressed="'+geneShowFuture+'">'+
@@ -2362,7 +2362,7 @@ function renderWizard(){
  $("xp-shortcut").hidden=show;$("start-wizard").hidden=NPC_MODE;
  $("page-title").innerHTML=show?'Construa seu <span>Aprendiz.</span>':'Ficha de personagem <span>jogável.</span>';
  $("page-subtitle").textContent=show?
-  "Criação guiada: conheça as fontes, invista no modo padrão ou alterne para o Codex Genético.":
+  "Criação guiada: o Codex Genético é o modo principal para Atributos, Conhecimentos, Práticas e Perícias.":
   "Criação, evolução, edição e rolagens em uma única ficha do Codex RPG.";
  if(!show)return;
  $("wizard-steps").innerHTML=WIZARD_STEPS.map(([title,,desc],i)=>{
