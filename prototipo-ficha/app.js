@@ -2919,7 +2919,9 @@ function score(){
  const hemomancy=state.hemomancy||{};
  const mayHemomancyDirectLife=ownsSkill("sangue")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
   p.base.key==="armas_conjuracao"&&hemomancy.usedThisTurn&&
-  hemomancy.boostKind==="direct-life"&&!hemomancy.directLifeResolved;
+  hemomancy.boostKind==="direct-life"&&!hemomancy.directLifeResolved&&
+  // Foco explicitamente de outro elemento impede vincular dano direto de Sangue.
+  !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="sangue");
  if(p.hemomancyDirectLife&&!mayHemomancyDirectLife)errs.push("Dano direto de Hemomancia exige a conjuração de Sangue paga neste turno e um vínculo ainda não utilizado.");
  const directLifeDamage=mayHemomancyDirectLife&&p.hemomancyDirectLife===true?damage:null;
  // O dano direto à Vida substitui a aplicação normal à armadura: não somar ambos.
