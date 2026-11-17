@@ -1,10 +1,42 @@
 # Codex RPG — Livro do Mestre
 
+## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
+
+A progressão experimental agora alcança **260 XP totais no nível 20** (15 iniciais + até 245 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
+
+| Grau | Atributo desconto | Atributo normal | Atributo elevado | Conhecimento/Prática desconto | Conhecimento/Prática normal | Conhecimento/Prática elevado |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 2 | 1 | 2 | 3 |
+| 2 | 2 | 3 | 4 | 3 | 4 | 6 |
+| 3 | 4 | 6 | 8 | 6 | 8 | 12 |
+| 4 | 7 | 9 | 16 | 9 | 16 | 24 |
+| 5 | 12 | 18 | 32 | 18 | 32 | 48 |
+| 6 | 24 | 32 | 64 | 32 | 64 | 96 |
+
+**Linhagens:** Lucker de Sangue favorece Vigor/Agilidade e eleva Influência/Apresentação; Lucker Puro favorece Inteligência/Influência e eleva Força/Atletismo; Runa Espinhos favorece Vigor/Força e eleva Agilidade/Destreza; Humano usa custos normais e mantém Perseverança Humana. "Elevado" **substitui** o multiplicador literal 2× antes descrito; a tabela elevada é o preço definitivo nesta rodada de playtest. As Perícias raciais iniciais da v0.55 permanecem gratuitas, sem Graus extras.
+
+**Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
+
+**Restrições:** 15 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 245, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
+
+Regras completas e precedência: [SRD v0.57](srd-continuidade-v0.57.md) (15 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md), sobre as linhagens do [SRD v0.55](srd-continuidade-v0.55.md).
+
+## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
+
+**Levantar Escudo não é reação.** O defensor usa **sua ação**, rola **Disciplina** e escolhe os dados mantidos; **Êxitos + Pavor válidos mantidos** formam a **Integridade simbólica extra de bloqueio**, sujeita às equivalências de desgaste de escudos (**1E anula 1E ou 2P; 1P anula 1P; 2P anulam 1E**). Antecipar não concede Integridade automática. O personagem pode **mover-se normalmente** com o escudo erguido, mas atacar encerra a postura.
+
+**Primeiro ataque frontal:** o escudo físico cobre **somente a frente**, protege o defensor contra o primeiro ataque frontal e é **abaixado após essa resolução**, mesmo se o golpe falhar. Dano excedente vai à **armadura** e então à **Vida**. Escudo físico levantado anula **Perfurante de arma física** quando efetivamente bloqueia a frente; **Cravar** mantém a propriedade de danificar o escudo e atingir sua Durabilidade.
+
+**Escudo Arcano Psíquico:** anula **Perfurante de armas físicas**, mas não anula o dano do ataque. Quando conjurado como **círculo** ou **proteção pessoal/corpo a corpo**, cobre todas as direções; **parede linear** mantém cobertura conforme a própria forma. Preserva **duração de uma rodada**, custos, integridade simbólica E+P dos dados mantidos e a regra de ataques corpo a corpo originados por intruso dentro da área. **Perfurar de Água não é anulado** por essas defesas específicas contra Perfurante físico.
+
+**PENDENTE:** relação da Integridade temporária com Integridade/Durabilidade material do escudo; ataques de costas e múltiplos, setor frontal e giro; precedência de escudos físico/arcano simultâneos; execução específica de Perfurar de Água e magias de Fogo contra escudos. Escudos materiais G1 6/9/12 continuam **PROPOSTOS**. Não inventar fórmula nova: a Integridade simbólica **E+P mantidos já é DEFINIDA**. Referência normativa: [SRD v0.54, seção 0-AQ](srd-continuidade-v0.54.md). A v0.53 está em revisão independente no PR #29.
+
 ## Decisão de 16/11/2026 — Domar Média e custos de Perícias [DEFINIDO, SRD v0.52]
 
 **Ativação comum paga de Perícia: 1 PP ou 1 Coragem**, não 2 Coragens. Cobre técnicas de armas, manobras, disparos e efeitos especiais com pagamento comum, mantendo número de ativações, requisitos e custos específicos. A preparação de magias fora de combate, recuperação de PP com Coragem, penalidades de Saúde e exceções declaradas não recebem desconto automático; os elementos habilitados com foco continuam seguindo a ativação gratuita específica. **Olhos de Águia é passiva e não consome PP/Coragem.**
 
-**Domar Criatura Média:** exige Influence/Influência 3, Inteligência 1, Apresentação 1 **e Domar Criatura Pequena já adquirida**, além de 1 XP para comprar; a tentativa custa 1 PP ou 1 Coragem. Domar Grande permanece sem mudanças de requisito. Fichas antigas devem ser corrigidas sem apagar compras silenciosamente.
+**Domar Criatura Média:** exige Influence/Influência 3, Inteligência 1, Apresentação 1 **e Domar Criatura Pequena já adquirida**, além de 1 XP para comprar; a tentativa custa 1 PP ou 1 Coragem. Atualização posterior (v0.53): Domar Grande exige cumulativamente Domar Pequena e Domar Média; a formulação mais antiga de requisitos está substituída. Fichas antigas devem ser corrigidas sem apagar compras silenciosamente.
 
 Consulte o [SRD v0.52](srd-continuidade-v0.52.md), seção 0-AO. A v0.51 e anteriores continuam como histórico.
 
@@ -132,7 +164,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 20 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 15 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
