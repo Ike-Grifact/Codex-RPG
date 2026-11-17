@@ -1,8 +1,8 @@
 # Codex RPG — decisões autorais sobre escudos e Perfurante (16/11/2026)
 
-**Estado deste registro:** DEFINIDO nas decisões explícitas abaixo; PENDENTE nos detalhes enumerados. **Não é uma nova versão publicada do SRD e não altera regras de dano, dados, custos ou código.**
+**Estado deste registro:** registro das decisões autorais, agora **consolidadas para revisão no [SRD v0.54](../srd-continuidade-v0.54.md), seção 0-AQ**. DEFINIDO nas decisões explícitas; PENDENTE nas ambiguidades listadas. Não altera dados, custos ou cálculos automatizados do motor.
 
-**Fonte prevalente:** decisões explícitas mais recentes do autor nesta conversa > SRD de Continuidade v0.52 na `main` para estes assuntos. O rascunho da v0.53 referente a Domar Grande permanece no PR #29; este registro não o substitui nem modifica.
+**Precedência:** decisões autorais mais recentes (16/11/2026) > SRD v0.54 em revisão (seção 0-AQ) > histórico v0.53/v0.52 nas interações aqui alteradas. A v0.53 de Domar Grande está no PR #29; a v0.54 parte de seu conteúdo íntegro e não substitui a cadeia de Domar.
 
 ## 1. Perfurante de arma física — DEFINIDO
 
@@ -44,4 +44,4 @@
 5. A orientação/ângulo frontal, a ordem temporal do posicionamento e mudanças de direção. **Não reabrir a conversão já definida dos símbolos mantidos em Integridade simbólica.**
 6. O custo de oportunidade exato da ação *Levantar Escudo* no fluxo normal de Antecipar/Pavor, sem criar um sistema paralelo de reações.
 
-**Escopo:** decisões de design para playtest. Não alterar ainda no motor as fórmulas de dano, custos, escudos ou Perfurar de Água enquanto persistirem as ambiguidades operacionais.
+**Escopo e implementação:** as regras aprovadas foram incorporadas ao SRD v0.54 e à documentação do site. **A automação do bloqueio físico no motor ainda não foi introduzida**, para não inventar a relação com a Integridade/Durabilidade material do item ou a precedência entre escudos. Não alterar fórmulas de dano, custos ou Perfurar de Água por inferência.
