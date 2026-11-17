@@ -2947,10 +2947,15 @@ function renderPending(){
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
  '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
  '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
- const controls='<div class="fp-form-grid">'+
+ const hemoControl=s.mayHemomancyDirectLife?
+  '<div class="fp-alert"><strong>Amplificação de Sangue já paga</strong> · disponível para uma rolagem de magia de Sangue neste turno. '+
+  '<button type="button" class="fp-secondary" data-action="hemo-link-roll" aria-pressed="'+(!!p.hemomancyDirectLife)+'">'+
+  (p.hemomancyDirectLife?'✓ Vinculada: todo o dano à Vida':'Vincular esta rolagem à magia de Sangue amplificada')+'</button>'+
+  '<p class="fp-caption">Vincule somente se esta é a magia de Sangue declarada; peça confirmação ao Narrador quando não há foco. Após finalizar, não pode vincular outra rolagem neste turno.</p></div>':"";
+ const controls='<div class="fp-form-grid'+
  selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
- selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment;
+ selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment+hemoControl;
  const criticalNote=s.critTier?'<div class="fp-alert"><strong>Crítico de '+s.critTier+' dados mantidos!</strong> '+
   (s.criticalConverted?'1P convertido em 1E. ':'Sem Pavor próprio para converter. ')+
   (s.critTier>=3?'+1E e +1A. ':'')+
@@ -2962,6 +2967,7 @@ function renderPending(){
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-a">Antecipar ᚨ</span><b>'+s.remainingA+'</b></div>'+
  '<div class="fp-outcome-stat"><span class="fp-rune fp-rune-p">Pavor ᚦ</span><b>'+s.P+'</b></div></div>'+
  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'+
+ (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano convencional calculado, sem passar pela Integridade e sem desgastá-la). Falha na DE = 0. Escudos e outras barreiras ficam sob avaliação do Narrador. Marcas de sangue só pelo dano à Vida realmente aplicado.</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
@@ -2989,8 +2995,9 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,health:s.health.id,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,directLifeDamage:s.directLifeDamage,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
+ if(s.directLifeDamage!==null)state.hemomancy.directLifeResolved=true;
  state.history=state.history.slice(0,20);state.pending=null;save();render();
  toast((s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
@@ -3387,6 +3394,13 @@ function onClick(event){
   if(!confirm("Confirmar que o personagem concluiu um descanso longo?"))return;
   state.perseverancaUsed=false;renderRacePanel();save();toast("Perseverança Humana restaurada.");break;
  }
+ case "hemo-link-roll":{
+  if(!state.pending)return;
+  const result=score();
+  if(!result?.mayHemomancyDirectLife)return;
+  state.pending.hemomancyDirectLife=!state.pending.hemomancyDirectLife;
+  save();renderComposer();break;
+ }
  case "hemo-record-damage":{
   if(!ownsSkill("sangue")||state.pending)return;
   const amount=Number($("hemo-damage-points")?.value);
@@ -3429,7 +3443,7 @@ function onClick(event){
    if(h.spilled<3)return;
    h.spilled-=3;
   }
-  h.usedThisTurn=true;h.boostKind=kind;h.boostPayment=payment;
+  h.usedThisTurn=true;h.boostKind=kind;h.boostPayment=payment;h.directLifeResolved=false;
   renderVitals();renderHemomancy();save();
   toast("Amplificação paga: "+(payment==="life"?"−1 Vida própria":"−3 marcas inimigas")+". Resolva o efeito sem bônus de dano automático.");break;
  }
@@ -3757,7 +3771,7 @@ function bind(){
  });
  $("reset-turn").addEventListener("click",()=>{
   state.courageUsedTurn=false;
-  if(state.hemomancy){state.hemomancy.usedThisTurn=false;state.hemomancy.boostKind="";state.hemomancy.boostPayment="";}
+  if(state.hemomancy){state.hemomancy.usedThisTurn=false;state.hemomancy.boostKind="";state.hemomancy.boostPayment="";state.hemomancy.directLifeResolved=false;}
   renderSkills();renderHemomancy();save();
   toast("Novo turno: conversão em Coragem e marcador de amplificação com Sangue liberados.");
  });
