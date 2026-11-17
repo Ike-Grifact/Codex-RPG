@@ -16,6 +16,8 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 | 5 | 12 | 18 | 32 | 18 | 32 | 48 |
 | 6 | 24 | 32 | 64 | 32 | 64 | 96 |
 
+**Sinalização visual [DEFINIDO, SRD v0.64]:** o criador sinaliza faixas de custo racial com borda contínua e ↓ XP reduzido, ou borda tracejada e ↑ XP aumentado. Isso não é bônus mecânico e não muda nenhuma compra, preço, dado ou requisito. A sinalização vale para o Codex Genético, as listas e as fichas jogáveis.
+
 **Linhagens:** Lucker de Sangue favorece Vigor/Agilidade e eleva Influência/Apresentação; Lucker Puro favorece Inteligência/Destreza e eleva Força/Atletismo; Runa Espinhos favorece Vigor/Força e eleva Agilidade/Destreza; Humano usa custos normais e mantém Perseverança Humana. "Elevado" **substitui** o multiplicador literal 2× antes descrito; a tabela elevada é o preço definitivo nesta rodada de playtest. As Perícias raciais iniciais da v0.55 permanecem gratuitas, sem Graus extras.
 
 **Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
