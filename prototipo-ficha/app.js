@@ -2723,7 +2723,7 @@ function renderComposer(){
  const canTrevas=isShared&&draft.mode==="conjuracao"&&ownsSkill("trevas");
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
- const weight=[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]];
+ const weight=[["leve","Muito Leve / Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
  const selectedItem=state.items.find(x=>x.id===draft.equipmentId);
  const gearOptions=usingDiscipline()?'<label class="fp-form-field full">Arma ou foco equipado (dado extra, exige Perícia)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
@@ -2734,13 +2734,13 @@ function renderComposer(){
  const checks= '<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
- '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × balanço do alvo (se pertinente)</label>'+
+ '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
- (draft.weightEnabled?'<label class="fp-form-field">Peso do ataque '+select("attackWeight",weight,draft.attackWeight)+'</label><label class="fp-form-field">Balanço do alvo '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
+ (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
  checks+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
@@ -2776,6 +2776,8 @@ function roll(){
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
+// v0.68: target é a armadura do alvo humanoide (Muito Leve/Leve => leve; Pesada/Muito Pesada => pesado),
+// ou porte natural validado pelo Narrador em criatura. Nunca inferir pelo inventário do alvo.
 function affinity(attack,target){
  const matrix={leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}};
  return matrix[attack]?.[target]||0;
