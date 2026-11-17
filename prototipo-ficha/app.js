@@ -28,7 +28,7 @@ const TRAIN_ELEVATED=[0,3,6,12,24,48,96];
 const RACES={
  humano:["Humano","Perseverança Humana: rerrolar qualquer teste uma vez por descanso longo.","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue inicial gratuita.","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
- lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Influência: desconto; Força/Atletismo: faixa elevada."],
+ lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
  runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia e dois elementos distintos gratuitos.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
 const PURE_ELEMENTS=[["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]];
@@ -49,7 +49,7 @@ function racialCostTable(group,key,s=state){
   if(group==="attr"&&["vigor","agilidade"].includes(key))return discount;
   if((group==="attr"&&key==="influencia")||(group==="practice"&&key==="apresentacao"))return elevated;
  }else if(s.race==="lucker_puro"){
-  if(group==="attr"&&["inteligencia","influencia"].includes(key))return discount;
+  if(group==="attr"&&["inteligencia","destreza"].includes(key))return discount;
   if((group==="attr"&&key==="forca")||(group==="practice"&&key==="atletismo"))return elevated;
  }else if(s.race==="runa_espinhos"&&group==="attr"){
   if(["vigor","forca"].includes(key))return discount;
@@ -61,15 +61,18 @@ function racialCostTable(group,key,s=state){
 // Atribuições raciais automáticas são distinguidas dos graus comprados manualmente.
 function racialStartingAttributes(race){
  if(race==="lucker_sangue")return ["vigor","agilidade"];
- if(race==="lucker_puro")return ["inteligencia","influencia"];
+ if(race==="lucker_puro")return ["inteligencia","destreza"];
  if(race==="runa_espinhos")return ["vigor","forca"];
  return [];
 }
-function applyRacialStartingAttributes(s){
+function applyRacialStartingAttributes(s,preserve=[]){
  const favored=racialStartingAttributes(s.race);
  const previous=Array.isArray(s.racialInitialAttributes)?s.racialInitialAttributes:[];
+ const keep=new Set(preserve);
+ // Remover apenas concessões registradas de uma raça anterior. Graus elevados,
+ // escolhas explícitas de início e compras manuais continuam na ficha.
  for(const key of previous){
-  if(!favored.includes(key)&&(s.attributes[key]||0)===1)s.attributes[key]=0;
+  if(!favored.includes(key)&&(s.attributes[key]||0)===1&&!keep.has(key))s.attributes[key]=0;
  }
  const granted=previous.filter(key=>favored.includes(key)&&(s.attributes[key]||0)>=1);
  for(const key of favored){
@@ -77,6 +80,9 @@ function applyRacialStartingAttributes(s){
  }
  s.racialInitialAttributes=[...new Set(granted)];
  return s;
+}
+function isRacialGradeOne(group,key,s=state){
+ return group==="attr"&&racialStartingAttributes(s.race).includes(key);
 }
 function raceChoicesComplete(s=state){
  return s.race==="lucker_puro"?PURE_ELEMENTS.some(([id])=>id===s.pureElement):
@@ -1043,7 +1049,7 @@ function defaultState(){return{
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let playerSheets=[],activePlayerSheetId="";
 let wizardCategory="",wizardTab="attr",wizardMode="genetic";
-let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="";
+let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="",wizardStarterPurchased="";
 let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false,geneInspectorTop=12;
@@ -1097,7 +1103,7 @@ function playerSheetMeta(s,id,createdAt=new Date().toISOString()){
 }
 function wizardSnapshot(){
  return {version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,
-  starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,
+  starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,starterPurchased:wizardStarterPurchased,
   shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred};
 }
 function restoreWizard(w={}){
@@ -1110,6 +1116,7 @@ function restoreWizard(w={}){
  wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
+ wizardStarterPurchased=A.some(([k])=>k===w.starterPurchased)?w.starterPurchased:"";
  wizardStarterTraining=[...K.map(([k])=>"know:"+k),...P.map(([k])=>"practice:"+k)].includes(w.starterTraining)?w.starterTraining:"";
  wizardStarterPhase=["attr","training","confirm"].includes(w.starterPhase)?w.starterPhase:"attr";
  if(wizardStarterPhase!=="attr"&&!wizardStarterAttribute)wizardStarterPhase="attr";
@@ -1211,7 +1218,7 @@ function deletePlayerSheet(){
  toast("Ficha excluída. As demais continuam disponíveis.");
 }
 function load(){
- let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
+ let migrated=false,legacyAvailable=false,retiredSkillMigrated=false,racialGrantMigrated=false;
  const playerPayload=loadPlayerSheets();
  try{
   const saved=localStorage.getItem(SAVE_KEY);
@@ -1219,10 +1226,12 @@ function load(){
   legacyAvailable=!!oldRaw;
   if(playerPayload){
    const raw=playerPayload.character;
+   racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }else if(saved){
    const raw=JSON.parse(saved);
+   racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }
@@ -1254,11 +1263,11 @@ function load(){
  }
  renderPlayerSheets();
  $("import-old-creator").hidden=!legacyAvailable;
- if(migrated||retiredSkillMigrated){
-  // Persistir a migração somente quando houve Perícia revogada na ficha salva,
+ if(migrated||retiredSkillMigrated||racialGrantMigrated){
+  // Persistir mudanças somente quando a ficha realmente precisou ser corrigida,
   // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast(migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+  toast(racialGrantMigrated?"Lucker Puro corrigido: Inteligência + Destreza G1 gratuitos; Influência manual preservada.":migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
    "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
@@ -1279,8 +1288,16 @@ function normalize(v){
  for(const group of Object.keys(GROUPS)){
   for(const [id] of GROUPS[group])s[SOURCE_PROPS[group]][id]=clamp(Math.floor(v[SOURCE_PROPS[group]]?.[id]||0),0,6);
  }
- s.racialInitialAttributes=Array.isArray(v.racialInitialAttributes)?
-  [...new Set(v.racialInitialAttributes)].filter(id=>racialStartingAttributes(s.race).includes(id)&&(s.attributes[id]||0)>0):[];
+ const oldGrants=Array.isArray(v.racialInitialAttributes)?[...new Set(v.racialInitialAttributes)]:[];
+ // v0.61 concedia Influência G1 indevidamente ao Lucker Puro. Corrigir SOMENTE
+ // quando o marcador confirma que o G1 veio da origem; preservar Influência
+ // comprada manualmente ou seus avanços G2+.
+ const oldPureInfluence=s.race==="lucker_puro"&&oldGrants.includes("influencia");
+ if(oldPureInfluence&&(s.attributes.influencia||0)===1)s.attributes.influencia=0;
+ const newDexGrant=oldPureInfluence&&(s.attributes.destreza||0)<1;
+ if(newDexGrant)s.attributes.destreza=1;
+ s.racialInitialAttributes=oldGrants.filter(id=>racialStartingAttributes(s.race).includes(id)&&(s.attributes[id]||0)>0);
+ if(newDexGrant)s.racialInitialAttributes.push("destreza");
  const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string"))]:[];
  const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
@@ -1626,19 +1643,27 @@ function raceForm(){
 }
 function raceBenefitsForm(){
  const c=RACES[state.race]||RACES.humano;
+ const free=racialStartingAttributes(state.race).map(id=>A.find(([k])=>k===id)?.[1]||id);
+ const sources=free.length?'<p><strong>Grau 1 de origem (0 XP): '+esc(free.join(" + "))+'</strong>. Outros Atributos devem ser comprados.</p>':'<p>Nenhum Atributo concedido automaticamente nesta raça.</p>';
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
- return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais são gratuitas. Os Atributos favorecidos por esta origem começam no Grau 1 automaticamente, com custo de 0 XP; graus superiores seguem a tabela.</p></div>';
+ return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p></div>';
 }
 function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending||id===state.race)return;
- const before=structuredClone(state),old=state.race;
+ const before=structuredClone(state),old=state.race,oldStarterPurchased=wizardStarterPurchased;
+ const chosenWasFree=wizardStarterAttribute&&isRacialGradeOne("attr",wizardStarterAttribute,before);
  state.race=id;state.pureElement="";state.runeElements=["",""];
- applyRacialStartingAttributes(state);
+ applyRacialStartingAttributes(state,wizardStarterAttribute?[wizardStarterAttribute]:[]);
+ // Se o jogador manteve sua primeira escolha ao trocar de origem,
+ // ela passa a contar como compra normal, removível caso escolha outra.
+ if(chosenWasFree&&!isRacialGradeOne("attr",wizardStarterAttribute,state)&&
+    (state.attributes[wizardStarterAttribute]||0)===1)
+  wizardStarterPurchased=wizardStarterAttribute;
  const duplicate=state.skills.some(key=>racialGrants(state).includes(key));
  const blocked=dependentsValid(state);
  if(duplicate||blocked||xpCosts().free<0){
-  state=before;
+  state=before;wizardStarterPurchased=oldStarterPurchased;
   toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
  }
  if(ownsSkill("criar-item-foco-magia")){
@@ -1770,6 +1795,7 @@ function geneStageGrade(id,delta){
  if(!SOURCE_PROPS[group]||!GROUPS[group].some(([k])=>k===key)||![-1,1].includes(delta))return;
  const source=SOURCE_PROPS[group],preview=genePreviewState(),old=preview[source][key]||0,next=clamp(old+delta,0,6);
  if(next===old)return;
+ if(next<1&&isRacialGradeOne(group,key,preview)){toast("Grau 1 é concedido pela origem e não pode ser removido.");return;}
  const baseGrade=state[source][key]||0;
  if(state.creationLocked&&next<baseGrade&&!editMode){toast("Graus adquiridos após a criação não podem ser reembolsados livremente.");return;}
  const candidate={...preview,[source]:{...preview[source],[key]:next}};
@@ -1973,10 +1999,11 @@ function sourceGeneInfo(id,s=state){
  const costTable=racialCostTable(group,key,s);
  const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
  const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
- return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,
+ const racialG1=isRacialGradeOne(group,key,s);
+ return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,
   dice:dataDice(group,previewGrade).map(n=>"d"+n),
   state:previewGrade>0?"owned":canRaise?"available":"locked",
-  label:next===null?"Grau máximo":"Próximo avanço: "+next+" XP"};
+  label:(racialG1?"Origem: Grau 1 gratuito · ":"")+(next===null?"Grau máximo":"Próximo avanço: "+next+" XP")};
 }
 function geneSkillStatus([id,,,cost],s=state){
  if(ownsSkill(id,s))return"owned";
@@ -1988,11 +2015,11 @@ function geneSkillStatus([id,,,cost],s=state){
 function geneDetailHTML(id,s=state){
  const src=sourceGeneInfo(id,s);
  if(src){
-  const dice=src.dice.join(" + "),editable=geneCanAdjust(),canReduce=src.previewGrade>0&&
+  const dice=src.dice.join(" + "),editable=geneCanAdjust(),canReduce=src.previewGrade>(src.minGrade||0)&&
    (!state.creationLocked||editMode||src.previewGrade>src.grade)&&!state.pending;
   return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.previewGrade?"Desenvolvido":"Potencial")+'</span>'+
    '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo central.",know:"Conhecimento estudado.",practice:"Prática treinada."}[src.group])+'</p>'+
-   '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+'</dd>'+
+   '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+(src.minGrade?' · Grau 1 da origem (0 XP)':'')+'</dd>'+
    '<dt>Próximo grau</dt><dd>'+esc(src.next===null?"Máximo":src.next+" XP")+'</dd>'+
    '<dt>XP disponível</dt><dd>'+xpCosts(s).free+' XP</dd></dl>'+
    '<div class="fp-gene-grade-actions">'+
@@ -2129,11 +2156,22 @@ function wizardStarterSelect(group,id){
  if(wizardStep!==1||viewMode!=="builder"||state.creationLocked||state.pending)return;
  if(group==="attr"){
   if(!A.some(([k])=>k===id))return;
-  // "Começar com" compra o Atributo de imediato e o Codex Genético vê G1.
-  const first=(state.attributes[id]||0)<1;
-  const cost=first?racialCostTable("attr",id,state)[1]:0;
-  if(cost>xpCosts().free){toast("XP insuficiente para iniciar com esse Atributo.");return;}
-  if(first)state.attributes[id]=1;
+  const previous=wizardStarterPurchased,oldChoice=wizardStarterAttribute;
+  // O primeiro clique compra G1, mas trocar a opção de "Começar com"
+  // não pode acumular compras feitas exclusivamente por esse botão.
+  const candidate=structuredClone(state);
+  if(oldChoice!==id&&previous===oldChoice&&(candidate.attributes[previous]||0)===1&&
+     !isRacialGradeOne("attr",previous,candidate)){
+   candidate.attributes[previous]=0;
+   const invalid=dependentsValid(candidate);
+   if(invalid){toast("Esta compra já é requisito de outra Perícia: "+invalid);return;}
+  }
+  const first=(candidate.attributes[id]||0)<1;
+  if(first)candidate.attributes[id]=1;
+  const cost=xpCosts(candidate).free;
+  if(cost<0){toast("XP insuficiente para iniciar com esse Atributo.");return;}
+  state.attributes=candidate.attributes;
+  wizardStarterPurchased=first&&!isRacialGradeOne("attr",id)?id:oldChoice===id?previous:"";
   wizardStarterAttribute=id;wizardStarterPhase="training";geneSelected="attr:"+id;
  }else if(group==="know"||group==="practice"){
   if(!GROUPS[group].some(([k])=>k===id)||!wizardStarterAttribute)return;
@@ -2188,7 +2226,7 @@ function wizardDice(group,id,grade){
 function wizardSource(group,item){
  const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
  const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
- const lower=g>0&&!state.creationLocked&&!state.pending;
+ const lower=g>0&&!state.creationLocked&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
  return '<article class="fp-wiz-source" data-source-group="'+group+'">'+
   '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
   '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
@@ -2442,7 +2480,7 @@ function renderSources(){
    const g=state[SOURCE_PROPS[group]][id]||0,source={group,key:id};
    const nextCost=xpStepCost(group,id,1),canEdit=(viewMode==="builder"&&!state.creationLocked)||editMode;
    const canRaise=(canEdit||state.creationLocked)&&!state.pending&&g<6&&canAfford(group,nextCost);
-   const canReduce=canEdit&&g>0&&!state.pending;
+   const canReduce=canEdit&&g>0&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
@@ -2752,6 +2790,7 @@ function updateGrade(group,id,delta){
  const p=SOURCE_PROPS[group];if(!p||!GROUPS[group].some(x=>x[0]===id)||![-1,1].includes(delta))return;
  const old=state[p][id]||0,next=clamp(old+delta,0,6);
  if(next===old)return;
+ if(next<1&&isRacialGradeOne(group,id)){toast("Grau 1 é concedido pela origem e não pode ser removido.");return;}
  const purchaseCost=delta>0?xpStepCost(group,id,1):0;
  if(delta>0){
    if(!canAfford(group,purchaseCost)){toast("XP insuficiente: este avanço custa "+purchaseCost+" XP.");return;}
