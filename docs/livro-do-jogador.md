@@ -1,10 +1,19 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.52](srd-continuidade-v0.52.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.54](srd-continuidade-v0.54.md), que preserva a v0.53 e atualiza Levantar Escudo e Perfurante. A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
+
+**Escudo físico:** usar a ação **Levantar Escudo** e rolar **Disciplina**; escolher os dados mantidos e formar a Integridade extra com **E + P válidos mantidos**, usando o desgaste simbólico do Escudo Arcano. Permite deslocamento normal, mas **só bloqueia o primeiro ataque frontal**. Depois de resolvê-lo (mesmo que erre), a postura acaba; atacar também encerra a postura. Dano não bloqueado segue para **armadura → Vida**. Não é reação.
+
+**Escudo Arcano Psíquico:** anula **Perfurante de arma física** sem apagar o dano. Escudo físico levantado também anula essa característica quando bloqueia o primeiro ataque frontal. **Perfurar de Água não é anulado** por essas defesas anti-Perfurante. A barreira arcana protege de todas as direções em **círculo** ou **forma pessoal/corpo a corpo**; a parede linear não. Custos e duração arcana de 1 rodada continuam. Ver [SRD v0.54](srd-continuidade-v0.54.md), seção 0-AQ.
+
+**PENDENTE:** relação entre a Integridade simbólica rolada e a Integridade/Durabilidade material do escudo, ângulo frontal exato, ataques não frontais e múltiplos, coexistência de barreiras, interação detalhada de Perfurar de Água com a DE/Integridade dos escudos e efeitos específicos de Fogo. Os valores materiais G1 6/9/12 permanecem PROPOSTOS.
+
 
 ## Domar Média e ativações de Perícias — decisão de 16/11/2026 [DEFINIDO, SRD v0.52]
 
@@ -646,8 +655,16 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 **DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
 
-Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
+Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfurante físico habilitado ignora normalmente a Integridade da armadura ao acertar a DE, **exceto quando sua característica é anulada por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal**. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
+
+### Levantar Escudo físico [DEFINIDO — 16/11/2026]
+
+Levantar Escudo **consome uma ação**; o defensor realiza um **teste de Disciplina** e escolhe os dados mantidos dentro dos limites normais. A Integridade simbólica extra é **E + P válidos dos dados mantidos**. O desgaste usa as equivalências já definidas: **1E do ataque anula 1E do escudo ou 2P; 1P anula 1P; 2P anulam 1E**. Antecipar não concede Integridade automaticamente. **Não é reação**.
+
+O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem abaixá-lo; **atacar encerra o bloqueio**. A postura protege contra **o primeiro ataque frontal recebido** e termina **depois da resolução desse ataque**, inclusive se ele não atingir. Se houver dano excedente, aplica-se à **armadura** e, depois, à **Vida**. Enquanto protege, anula a característica **Perfurante de armas físicas**, mas não o **Perfurar de Água**. O ataque **Cravar** conserva a sua regra específica contra escudos físicos.
+
+**PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
 
 ### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
 
@@ -758,15 +775,17 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **PENDENTE:** limites de controle mental, testes dos alvos, duração, alcance, magias memorizadas e tempo efetivo da conjuração rápida. Não transformar exemplos em efeitos automáticos.
 
-### Escudo Arcano [DEFINIDO / resolução de proteção PENDENTE]
+### Escudo Arcano [DEFINIDO / detalhes de aplicação PENDENTES]
 
-**Custo: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
+**Custo de aquisição: 1 XP. Requisitos vigentes: Inteligência 2 + Vigor 1 + Criar Item de Foco e Magia.**
 
-**Ativação:** **1 PP ou 1 Coragem** cria escudo sobre si mesmo ou uma **área circular de 3×3 metros**, que **dura 1 rodada**. Uma rolagem com **Conjuração** estabelece a **DE para quebrar o escudo**, que funciona como Integridade de armadura.
+**Ativação:** **1 PP ou 1 Coragem** cria escudo pessoal, parede linear inicial de 3 m ou **área circular de 3×3 metros**, com **duração de 1 rodada**. A conjuração usa **Disciplina + Atributo pertinente** (mais uma fonte pertinente se houver Disciplina Avançada). O total de **E + P válidos nos dados mantidos** forma a **DE inicial e a Integridade simbólica** da barreira. No desgaste, **1E do ataque anula 1E do escudo ou 2P; 1P anula 1P; 2P anulam 1E**. Não criar Vida extra para a proteção.
 
-Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um inimigo entrar na área e atacar ou conjurar magia **corpo a corpo**, ignora o escudo para essa interação. Por cada **1 PP ou 1 Coragem adicional**, a área circular é ampliada em **mais 3×3 metros**.
+**Direção:** o **círculo** e o **escudo pessoal/corpo a corpo** protegem de todas as direções; a **parede linear** protege segundo sua geometria. **Escudo Arcano Psíquico ativo anula a propriedade Perfurante de armas físicas**, não o acerto nem o dano: o excedente segue para outras proteções, armadura e Vida. **Perfurar de Água não perde seu efeito mágico** por esta anulação de Perfurante físico.
 
-**PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
+**Elementos e interior:** aplicam-se as imunidades do elemento incorporado, não uma imunidade gratuita a todos os elementos. Se um inimigo entrar na área e atacar ou conjurar corpo a corpo **a partir de dentro**, ignora essa barreira na interação. Cada **1 PP ou 1 Coragem adicional** amplia a parede em 3 m ou o círculo em mais 3×3 m, conforme a forma escolhida.
+
+**PENDENTE:** geometria exata da ampliação circular, resistência a efeitos reativos e mistos, convivência com escudo físico e interação detalhada do Perfurar de Água com os símbolos/Integridade. **Formato e duração já são DEFINIDOS.**
 
 ### Conjuração Refinada [DEFINIDO no nome / alcance PENDENTE]
 
@@ -916,7 +935,7 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 | Tipo | Propriedade possível | Limite |
 |---|---|---|
 | **Cortante** | **Sangramento superficial** habilitado | O sangue escorre, **sem reduzir Vida nem causar dano periódico** |
-| **Perfurante** | Técnica habilitada ignora integridade e atinge Vida | Exige acerto, até 3 Vida em golpe não colossal |
+| **Perfurante** | Arma física habilitada normalmente ignora a armadura e atinge Vida | Requer acerto; Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula a característica, **não** o dano; limite normal até 3 Vida |
 | **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
 | **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
 | **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
