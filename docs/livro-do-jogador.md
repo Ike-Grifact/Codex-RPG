@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.64](srd-continuidade-v0.64.md) (visualização de custos raciais), seguida do [SRD v0.63](srd-continuidade-v0.63.md) (troca de raça sem herdar o Atributo escolhido anteriormente), seguida do [SRD v0.62](srd-continuidade-v0.62.md) (Lucker Puro: Inteligência + Destreza), seguida do [SRD v0.61](srd-continuidade-v0.61.md) (mapa como padrão), que sucede o [SRD v0.60](srd-continuidade-v0.60.md) (múltiplas fichas de jogadores), mantendo o [SRD v0.59](srd-continuidade-v0.59.md) (identidade), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.66](srd-continuidade-v0.66.md) (DE de armaduras para todas as defesas; teto total 12), seguida do [SRD v0.65](srd-continuidade-v0.65.md) (VT experimental de armas G1), seguida do [SRD v0.64](srd-continuidade-v0.64.md) (visualização de custos raciais), seguida do [SRD v0.63](srd-continuidade-v0.63.md) (troca de raça sem herdar o Atributo escolhido anteriormente), seguida do [SRD v0.62](srd-continuidade-v0.62.md) (Lucker Puro: Inteligência + Destreza), seguida do [SRD v0.61](srd-continuidade-v0.61.md) (mapa como padrão), que sucede o [SRD v0.60](srd-continuidade-v0.60.md) (múltiplas fichas de jogadores), mantendo o [SRD v0.59](srd-continuidade-v0.59.md) (identidade), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
@@ -26,6 +26,10 @@ Todos começam como **Aprendizes**, sem classe fixa. A linhagem concede benefíc
 As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](srd-continuidade-v0.56.md). **No Codex Genético e nas listas (SRD v0.64), ↓ XP reduzido indica desconto racial e ↑ XP aumentado indica custo elevado; contornos diferentes distinguem as fontes e não concedem Graus automaticamente.** Uma fonte elevada **não custa automaticamente o dobro**: aplica-se a coluna elevada. As Perícias raciais gratuitas não consomem XP nem concedem Graus de fontes. A criação ainda exige uma compra de Atributo G1 e uma de Conhecimento/Prática G1.
 
 **Perseverança Humana:** a ficha controla manualmente uso e recarga; a rerrolagem automatizada, o momento de declaração e o tratamento de recursos já gastos continuam pendentes.
+
+### Atualização defensiva de 17/11/2026 — DE geral de armaduras [DEFINIDO, SRD v0.66]
+
+**Decisão posterior do autor (substitui a restrição antiga de esquiva):** a Armadura **Muito Leve concede +2 DE**, a **Leve concede +1 DE** e esses bônus valem **em todas as defesas**, não somente ao esquivar. Armadura Média modifica 0; Pesada −1; Muito Pesada −2. Aplique após a DE natural (teto 9) e respeite **teto máximo absoluto de 12 na DE defensiva final**. O bônus da mesma armadura não pode ser somado novamente por postura de esquiva. O exemplo da ficha com DE natural 1 e Armadura Leve equipada deve mostrar **DE defensiva 2**. Sem armadura, volta a 1. Integridade é proteção separada; não altera a fórmula de DE.
 
 ### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
 
@@ -626,7 +630,7 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 A **Dificuldade de Êxito (DE) defensiva natural** considera o treinamento de mobilidade, precisão e resistência física:
 
-**DE natural = mínimo entre 9 e Agilidade + parte inteira(Destreza ÷ 2) + parte inteira(Vigor ÷ 2) + parte inteira(Atletismo ÷ 3).**
+**DE natural = mínimo entre 9 e Agilidade + parte inteira(Destreza ÷ 2) + parte inteira(Vigor ÷ 2) + parte inteira(Atletismo ÷ 3).** **DE defensiva final = mínimo(12, máximo(0, DE natural + modificador da armadura equipada))**, aplicável a toda defesa.
 
 ```text
 DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
@@ -634,9 +638,9 @@ DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
 
 Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
 
-**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Pesada**, fica com **DE 6** (−1 depois do teto); com armadura **Muito Pesada**, fica com **DE 5** (−2 depois do teto), **independentemente do Grau**.
+**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Leve**, fica com **DE 8** (+1 em toda defesa); com armadura **Pesada**, **DE 6** (−1); com armadura **Muito Pesada**, **DE 5** (−2), **independentemente do Grau**.
 
-**PENDENTE:** estabelecer se existe um mínimo de DE defensiva (0 ou 1). A fórmula ainda pode resultar em zero; não aplicar mínimo 1 automaticamente.
+**DE mínima no protótipo:** 0, respeitando o limite inferior do cálculo já implementado. **Teto final definido:** 12 após a armadura; o teto natural permanece 9. Nenhuma defesa negativa é permitida.
 
 ### Condições da ação
 
@@ -724,8 +728,8 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 | Tipo | Integridade | DE | Progressão elemental |
 |---|---|---|---|
-| **Muito Leve** | **Nenhuma** | **+2 DE para esquiva** | **Grau 3+:** pode ter resistência elemental |
-| **Leve** | Baixa; valor **PENDENTE** | **+1 DE para esquiva** | **Grau 3+:** pode ter resistência elemental |
+| **Muito Leve** | **Nenhuma** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
+| **Leve** | Baixa; valor **PENDENTE** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
 | **Média** | Média; valor **PENDENTE** | **0** | **Grau 2+:** pode receber resistências específicas |
 | **Pesada** | Maior Integridade das armaduras convencionais; valor **PENDENTE** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
 | **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
@@ -734,7 +738,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Modificadores de esquiva:** +2 (Muito Leve) e +1 (Leve) só se aplicam **ao esquivar**, não automaticamente a qualquer ação. Média não altera a DE, Pesada aplica −1 DE, Muito Pesada −2 DE, após o cálculo/teto da DE natural. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
+**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE natural com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Pavor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 
