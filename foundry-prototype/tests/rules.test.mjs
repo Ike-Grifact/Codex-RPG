@@ -62,22 +62,22 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  assert.deepEqual(faceSymbols(12,12),[0,0,2]);
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
-test("Elevação v0.44: dado escolhido inclusive de equipamento, sem elevar d12",()=>{
+test("Reforço copia o dado escolhido, inclusive de equipamento ou d12 já presente",()=>{
  const s=human();s.attributes.inteligencia=2;s.knowledges.medicina=1;
  const p={base:{group:"knowledge",key:"medicina"},attribute:{group:"attribute",key:"inteligencia"}};
  const before=buildPool(s,p,{equipmentDie:6});
- assert.equal(before.ok,true);
  const mod=buildPool(s,p,{step:true,stepDieId:"knowledge.medicina.0",equipmentDie:6});
- assert.equal(mod.ok,true);
- assert.equal(mod.pool.find(x=>x.id==="knowledge.medicina.0").sides,12);
- assert.equal(mod.pool.find(x=>x.id==="attribute.inteligencia.0").sides,6);
- assert.equal(before.pool.find(x=>x.id==="knowledge.medicina.0").sides,10);
+ assert.ok(before.ok&&mod.ok);
+ assert.deepEqual(mod.pool.slice(0,-1),before.pool);
+ assert.deepEqual(mod.pool.at(-1),{id:"knowledge.medicina.0.reforco",group:"knowledge",key:"medicina",sides:10,reinforced:true});
  const gear=buildPool(s,p,{step:true,stepDieId:"equipment.0",equipmentDie:6});
- assert.equal(gear.ok,true);
- assert.equal(gear.pool.find(x=>x.id==="equipment.0").sides,10);
+ assert.ok(gear.ok);
+ assert.equal(gear.pool.at(-1).sides,6);
  assert.equal(buildPool(s,p,{step:true}).ok,false,"Não escolher dado automaticamente");
  const higher={...s,knowledges:{medicina:4}};
- assert.equal(buildPool(higher,p,{step:true,stepDieId:"knowledge.medicina.2"}).ok,false,"d12 não vira d20");
+ const trained=buildPool(higher,p,{step:true,stepDieId:"knowledge.medicina.2"});
+ assert.ok(trained.ok);
+ assert.equal(trained.pool.filter(d=>d.sides===12).length,2);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
  assert.deepEqual(Object.keys(SITUATIONS),["superior","advantage","neutral","disadvantage","inferior","luck"]);

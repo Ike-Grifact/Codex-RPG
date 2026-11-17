@@ -101,6 +101,8 @@ export function mayComplement(system,base,second){
   || (skills.includes("furtividade-avancada") && [base,second].some(source=>source?.group==="practice"&&source.key==="furtividade"));
 }
 
+export const canReinforceDie = die => [4,6,10,12].includes(die?.sides);
+
 export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.second??selection?.attribute,c=selection?.complement;
  const pairError=sourcePairError(system,b,a);
@@ -139,10 +141,9 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
    else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
   }
   if(step){
-   // Elevação do SRD 0-Z.2: selecionar um dado específico da pilha.
-   const d=pool.find(x=>x.id===stepDieId),next={4:6,6:10,10:12}[d?.sides];
-   if(!next)errors.push("Escolha um dado da pilha d4, d6 ou d10 para elevar.");
-   else d.sides=next;
+   const die=pool.find(d=>d.id===stepDieId);
+   if(!canReinforceDie(die))errors.push("Escolha um d4, d6, d10 ou d12 da pilha para reforçar.");
+   else pool.push({...die,id:die.id+".reforco",reinforced:true});
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");

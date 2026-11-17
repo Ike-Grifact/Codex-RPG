@@ -87,7 +87,8 @@ function starterReserveBlocker(system){
 }
 
 function lostRequirement(previous,next){
-  for(const id of next.skills??[]){
+  for(const savedId of next.skills??[]){
+    const id=savedId==="manejo-duplo"?"maestria-manejo-duplo":savedId;
     if(!entries.has(id))continue;
     const trained=system=>(requirements[id]??[]).some(branch=>branch.every(entry=>requirement(system,entry).met));
     if(trained(previous)&&!trained(next)){
@@ -200,6 +201,15 @@ export function planSkillPackage(system,id,{creationPending=false,rules=requirem
 }
 
 
+export function skillRefundPlan(system,id){
+  const row=skillDetails(system,id);
+  if(!row.owned)return {blocker:"Perícia ainda não adquirida."};
+  const skills=(system.skills??[]).filter(key=>key!==id&&!(id==="maestria-manejo-duplo"&&key==="manejo-duplo"));
+  const next={...system,skills},before=xpLedger(system),after=xpLedger(next);
+  return {name:row.name,refund:before.spent-after.spent,spentBefore:before.spent,spentAfter:after.spent,
+    blocker:lostRequirement(system,next),changes:{"system.skills":skills}};
+}
+
 export function advancementPlan(system,request,creationPending=false){
   if(request.kind==="grade"){
     const {group,key,delta}=request;
@@ -226,11 +236,12 @@ export function advancementPlan(system,request,creationPending=false){
   if(request.kind==="skill"){
     const row=skillDetails(system,request.key);
     if(request.remove===true){
-      if(!row.owned)throw Error("Perícia ainda não adquirida.");
-      const skills=(system.skills??[]).filter(id=>id!==request.key&&!(request.key==="maestria-manejo-duplo"&&id==="manejo-duplo"));
-      const blocker=lostRequirement(system,{...system,skills});
-      if(blocker)throw Error(blocker);
-      return {"system.skills":skills};
+      const plan=skillRefundPlan(system,request.key);
+      if(plan.blocker)throw Error(plan.blocker);
+      if(request.expectedRefund!==undefined&&plan.refund!==request.expectedRefund){
+        throw Error("O reembolso mudou. Confira o novo valor.");
+      }
+      return plan.changes;
     }
     if(!row.canBuy)throw Error(row.owned?"Perícia já adquirida.":row.blocker);
     const skills=[...(system.skills??[]),request.key];

@@ -125,3 +125,9 @@ export const requirements = {
  "marciais":[["p:armas_conjuracao:1"]]
 };
 export const showSkill = (row, system) => !row.legacy || Boolean(system.skills?.includes(row.id));
+
+const normalizeName=value=>value.normalize("NFD").replace(/\p{M}/gu,"").toLocaleLowerCase("pt-BR");
+export function searchSkills(query,system){
+ const term=normalizeName(query.trim());
+ return term?SKILLS.filter(row=>showSkill(row,system)&&normalizeName(row.name).includes(term)):[];
+}

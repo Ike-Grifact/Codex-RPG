@@ -44,7 +44,7 @@ test("Foundry empacota o grafo e as regras de invocação do site, com estilos p
 
 test("constelações incluem todo o catálogo visível sem colisões no plano virtual",()=>{
  const window={};
- runInNewContext(raw.replace("{render,zoom}","{render,zoom,position,splitSkillLabel}"),{window});
+ runInNewContext(raw.replace("{render,zoom,reveal}","{render,zoom,reveal,position,splitSkillLabel}"),{window});
  const {position,splitSkillLabel}=window.CodexGeneGraph;
  const sources=[["attr",ATTRIBUTES],["know",KNOWLEDGES],["practice",PRACTICES]].flatMap(([type,list])=>
   list.map(([key,name])=>({type,id:type+":"+key,key,name})));

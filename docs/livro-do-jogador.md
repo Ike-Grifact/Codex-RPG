@@ -318,7 +318,7 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para escolher e elevar um passo de **um dado elegível da pilha** antes de rolar (d4 → d6 → d10 → d12), inclusive um dado de Conhecimento ou Prática e uma fonte complementar habilitada por Perícia avançada. Uma elevação comum por rodada.
+- **Gastar 1 Coragem** para acrescentar uma cópia de um dado elegível à pilha antes de rolar. Um reforço comum por rodada, até nove dados rolados e quatro mantidos. A retenção segue suas próprias regras. Veja a [decisão autoral sobre reforço de dados](decisao-reforco-de-dados.md).
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Pavor também retira 1 Coragem**.
 - A partir do nível 5, o Talento automático **Perícia em Coragem** permite gastar **2 Coragens para recuperar 1 PP**, uma vez por turno e sem ultrapassar o máximo de PP.
 

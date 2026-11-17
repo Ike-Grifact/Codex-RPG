@@ -44,7 +44,7 @@
     {{#unless codex.attributesOnly}}<div class="codex-resource">
       <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
-      <small>Gasto na elevação ou retenção</small>
+      <small>Gasto no reforço ou na retenção</small>
     </div>
     <div class="codex-resource">
       <span>PP · PONTOS DE PERÍCIA</span><strong>{{codex.pp}} / {{codex.ppMax}}</strong>
@@ -238,10 +238,10 @@
         {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>{{/unless}}
         {{/if}}
         {{#unless codex.isAnimal}}
-         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado elegível (d4→d6→d10→d12) por 1 Coragem</label>
+         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Reforçar um dado da pilha por 1 Coragem</label>
          {{#if codex.prepare.step}}
          <label>Escolha o dado<select data-roll-option="stepDieId">
-           <option value="">Selecione o dado que será elevado</option>
+           <option value="">Selecione um dado para acrescentar outro igual</option>
            {{#each codex.prepare.stepOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
          </select></label>
          {{/if}}

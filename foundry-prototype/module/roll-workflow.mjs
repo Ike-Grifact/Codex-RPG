@@ -4,10 +4,11 @@ import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
 import {xpLedger} from "./rules.mjs";
 import {escapeHTML} from "./roll-engine.mjs";
-import {advancementPlan, creationMissing, gradeDetails, xpAdjustmentPlan} from "./advancement.mjs";
+import {advancementPlan, creationMissing, gradeDetails, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
 
 const query = `${NS}.roll`;
 const xpHistory = "xpHistory";
+const refundHistory = "skillRefundHistory";
 const approvalTimeout = 45000;
 const flag = `flags.${NS}.pendingRoll`;
 const queues = new Map();
@@ -68,8 +69,24 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     }
     const advance=request.advance??{};
     if(advance.kind==="grade"&&!Number.isInteger(advance.expectedGrade))throw Error("Confira o Grau atual antes de alterar.");
+    const refund=advance.kind==="skill"&&advance.remove===true;
+    if(refund&&!Number.isInteger(advance.expectedRefund))throw Error("Confira o reembolso antes de devolver.");
     // A fila valida a compra e o orçamento no estado atual do Actor.
     let changes=advancementPlan(buildOf(actor),advance,creationPending);
+    if(refund&&!creationPending){
+      const preview=skillRefundPlan(buildOf(actor),advance.key);
+      const accepted=await confirm({title:"Autorizar devolução de Perícia",
+        content:"<p>"+escapeHTML(user.name)+" solicita devolver "+escapeHTML(preview.name)+" de "+
+          escapeHTML(actor.name)+". A devolução libera "+preview.refund+" XP.</p>"});
+      if(!accepted)throw Error("A devolução de Perícia não foi autorizada pelo Narrador.");
+      verifyAuthority(game);
+      if(!actor.testUserPermission(user,"OWNER")||actor.getFlag(NS,"pendingRoll"))throw Error("A ficha não está disponível para edição.");
+      const system=buildOf(actor),plan=skillRefundPlan(system,advance.key);
+      changes=advancementPlan(system,advance,false);
+      const entry={skillId:advance.key,xpRefund:plan.refund,spentBefore:plan.spentBefore,spentAfter:plan.spentAfter,
+        requestedBy:user.id,authorizedBy:game.user.id,at:Date.now()};
+      changes["flags."+NS+"."+refundHistory]=[...(actor.getFlag(NS,refundHistory)??[]),entry];
+    }
     if(advance.kind==="grade"&&advance.delta===-1&&!creationPending&&!user.isGM){
       const row=gradeDetails(buildOf(actor),advance.group,advance.key);
       const accepted=await confirm({title:"Autorizar redução de Grau",
@@ -199,6 +216,6 @@ export async function requestRoll(actor, request) {
     throw Error("O Narrador precisa habilitar Consultar Usuário nas permissões do Foundry para sincronizar rolagens.");
   }
   const needsApproval=request.action==="adjustXP"&&request.delta<0||
-    request.action==="advance"&&request.advance?.delta===-1;
+    request.action==="advance"&&(request.advance?.delta===-1||request.advance?.remove===true);
   return gm.query(query,{...request,actorUuid:actor.uuid},needsApproval?{timeout:approvalTimeout+15000}:undefined);
 }

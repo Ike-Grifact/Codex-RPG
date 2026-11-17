@@ -92,3 +92,10 @@
 @media (hover:none){
  .codex-dna-map .fp-gene-grade-button {display:none}
 }
+
+.codex-dna-search {grid-column:1/-1}
+.codex-dna-search input {max-width:380px;width:100%}
+.codex-dna-search [data-dna-skill-results] {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr));gap:5px;max-height:168px;overflow:auto;margin-top:7px}
+.codex-dna-search [data-dna-skill-results] button {display:grid;gap:2px;justify-items:start;text-align:left;height:auto;padding:6px 9px;white-space:normal}
+.codex-dna-search [data-dna-skill-results] button[aria-current="true"] {border-color:var(--cx-gold)}
+.codex-dna-search small {color:var(--cx-muted)}

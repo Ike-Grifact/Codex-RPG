@@ -28,6 +28,7 @@ export async function preparePendingRoll(actor, request, user, game) {
   const extraKeep = system.animalRules ? 0 : Math.max(0, Math.min(system.monsterRules ? 2 : 1, Math.trunc(Number(input.extraKeep)) || 0));
   const health = actor.type==="character" && system.life ? healthByLife(system,system.life.value) : null;
   if(health?.id==="morto")throw Error("Vida zero: o personagem não pode agir.");
+  if(step&&system.courage<1)throw Error("Coragem insuficiente para reforçar o dado.");
   if((health?.coragem??0)+Number(step)>system.courage)throw Error("Coragem insuficiente para agir neste estado de Saúde.");
   const scene = game.scenes.get(sceneId);
   const combat = game.combats.find(entry => entry.started && entry.scene?.id === scene?.id);
@@ -39,10 +40,9 @@ export async function preparePendingRoll(actor, request, user, game) {
     mode, contextApproved: input.contextApproved === true, step, stepDieId, equipmentDie,
   });
   if (!plan.ok) throw Error(plan.errors.join(" "));
-  if (step && system.courage < 1) throw Error("Coragem insuficiente para elevar o dado.");
   const elevation = combat ? `${combat.id}:${combat.round}` : null;
   if (step && elevation && actor.getFlag(rollNamespace, "lastElevation") === elevation) {
-    throw Error("A elevação comum já foi usada nesta rodada.");
+    throw Error("O reforço comum já foi usado nesta rodada.");
   }
   const requestedCost = Number(input.activationPavor ?? 1);
   if (![1, 2, 3].includes(requestedCost)) throw Error("Custo de ativação local inválido.");
@@ -140,7 +140,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face,pending.version<4);
     const marks=faceIcons(symbols);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
-      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+'</div>'+
+      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.reinforced?" · Reforço":"")+'</div>'+
       '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+'">'+marks+'</div>'+
       '<div class="codex-chat-die-marks">'+(chosen?'Mantido na ação':'Não mantido')+'</div>'+
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';

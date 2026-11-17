@@ -423,5 +423,14 @@ function zoom(root,dir){
  const center=centerOf(root);
  zoomAt(root,dir>0?1.2:1/1.2,center.x,center.y);
 }
-window.CodexGeneGraph={render,zoom};
+function reveal(root,id){
+ const node=root.querySelector('.fp-gene-node[data-gene-id="'+CSS.escape(id)+'"]');
+ if(!node)return;
+ const b=node.getBoundingClientRect(),r=root.getBoundingClientRect();
+ if(b.left>=r.left&&b.right<=r.right&&b.top>=r.top&&b.bottom<=r.bottom)return;
+ const from=svgPoint(root,b.left+b.width/2,b.top+b.height/2),center=centerOf(root);
+ const to=svgPoint(root,center.x,center.y),cam=getCamera(root);
+ cam.x+=to.x-from.x;cam.y+=to.y-from.y;applyTransform(root);
+}
+window.CodexGeneGraph={render,zoom,reveal};
 })();

@@ -1,11 +1,11 @@
 import {SKILLS, sourceDice, xpLedger} from "./rules.mjs";
-import {creationMissing, developmentGroups, gradeDetails, planSkillPackage, skillDetails} from "./advancement.mjs";
+import {creationMissing, developmentGroups, gradeDetails, planSkillPackage, skillDetails, skillRefundPlan} from "./advancement.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 
 import {summonPlan} from "./summon-planning.mjs";
-import {showSkill} from "./skill-catalog.mjs";
+import {searchSkills, showSkill} from "./skill-catalog.mjs";
 
 const ns="codex-rpg-foundry";
 const applications=new Map();
@@ -56,10 +56,15 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
  const packageButton=plan.status==="potential"
   ?'<button type="button" data-action="buyPackage"'+disabled+'>Comprar Perícia + requisitos — '+plan.cost+' XP</button>'
   :'<button type="button" data-action="buy"'+(plan.status!=="available"?" disabled":disabled)+'>Comprar Perícia</button>';
+ const refund=plan.status==="owned"?skillRefundPlan(system,id):null;
+ const ownedMarkup=refund?'<p>Adquirida</p><button type="button" data-action="refundSkill"'+
+  (refund.blocker?" disabled":disabled)+'>Devolver Perícia — recuperar '+refund.refund+' XP</button>'+
+  (refund.blocker?'<p class="codex-dna-note">'+esc(refund.blocker)+'</p>':
+   !creationPending?'<p class="codex-dna-note">A devolução exige autorização do Narrador.</p>':""):"";
  const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
  return '<h3>'+esc(row.name)+'</h3><p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p><p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
-  (plan.status==="owned"?'<p>Adquirida</p>':packageButton)+
+  (refund?ownedMarkup:packageButton)+
   (plan.blocker?'<p class="codex-dna-note">'+esc(plan.blocker+requiredXP)+'</p>':'')+
   (locked&&plan.status!=="owned"?'<p class="codex-dna-note">Compra indisponível durante uma rolagem ou alteração em andamento.</p>':'');
 }
@@ -135,7 +140,7 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
+  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
@@ -153,6 +158,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  async _onRender(context,options){
   await super._onRender(context,options);
   const root=this.element.querySelector(".codex-dna-root");
+  root.querySelector("[data-dna-skill-query]").addEventListener("input",()=>this.renderSkillResults(root));
   root.addEventListener("change",async event=>{
    const planner=event.target.closest("[data-summon-plan]");
    if(planner){this.updateSummonPlan(planner);return;}
@@ -220,6 +226,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    },
   });
   markRequirements(map,this.selected,system);
+  this.renderSkillResults(root);
   if(mapFocus){
    const card=map.querySelector('.fp-gene-node[data-gene-id="'+CSS.escape(mapFocus.geneId)+'"]');
    const control=mapFocus.geneGrade&&card?.querySelector('[data-gene-grade="'+mapFocus.geneGrade+'"][aria-disabled="false"]');
@@ -234,6 +241,47 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    const planner=detail.querySelector("[data-summon-plan]");
    if(planner)this.updateSummonPlan(planner);
   }
+ }
+ renderSkillResults(root){
+  const results=root.querySelector("[data-dna-skill-results]");
+  const query=root.querySelector("[data-dna-skill-query]").value.trim();
+  results.hidden=!query;
+  if(!query){results.replaceChildren();return;}
+  const system=this.actor.system,map=root.querySelector("[data-dna-map]");
+  const labels={owned:"Adquirida",available:"Disponível",potential:"Potencial",locked:"Bloqueada"};
+  const families=new Map([...map.querySelectorAll(".fp-gene-constellation")].map(el=>
+   [el.dataset.geneFamily,el.querySelector(".fp-gene-constellation-title")?.textContent]));
+  const items=searchSkills(query,system).map(row=>{
+   const node=map.querySelector('.fp-gene-skill[data-gene-id="'+CSS.escape(row.id)+'"]');
+   const state=Object.keys(labels).find(key=>node?.classList.contains("is-"+key))??"locked";
+   const plan=this.skillPlans?.get(row.id);
+   const cost=plan?.cost??row.legacyCost??row.cost;
+   const family=families.get(node?.dataset.geneFamily)??"Outras Perícias";
+   return '<button type="button" data-action="chooseSkill" data-key="'+esc(row.id)+'" class="is-'+state+'"'+
+    (this.selected===row.id?' aria-current="true"':"")+'><strong>'+esc(row.name)+'</strong><small>'+
+    esc(family)+' · '+labels[state]+' · '+(cost==null?"XP pendente":cost+" XP")+'</small></button>';
+  });
+  results.innerHTML=items.length?items.join(""):'<p role="status">Nenhuma Perícia corresponde à busca.</p>';
+ }
+ static chooseSkill(_event,target){
+  this.selected=target.dataset.key;
+  this.refresh();
+  const map=this.element.querySelector("[data-dna-map]");
+  window.CodexGeneGraph.reveal(map,this.selected);
+  map.querySelector('.fp-gene-skill[data-gene-id="'+CSS.escape(this.selected)+'"]')?.focus({preventScroll:true});
+ }
+ static refundSkill(){
+  const plan=skillRefundPlan(this.actor.system,this.selected);
+  if(plan.blocker){ui.notifications.warn(plan.blocker);return;}
+  const request={action:"advance",advance:{kind:"skill",key:this.selected,remove:true,expectedRefund:plan.refund}};
+  const creation=this.actor.getFlag(ns,"creationPending");
+  const confirmation=!game.user.isGM||creation?()=>foundry.applications.api.DialogV2.confirm({
+   window:{title:"Devolver Perícia"},rejectClose:false,
+   content:"<p>Devolver "+esc(plan.name)+" e recuperar "+plan.refund+" XP?</p>"+
+    "<p>Os graus e as outras Perícias permanecem na ficha.</p>",
+   yes:{label:"Confirmar devolução"},no:{label:"Cancelar"},
+  }):undefined;
+  return this.submit(request,confirmation);
  }
  updateSummonPlan(planner){
   const inputs=Object.fromEntries([...planner.querySelectorAll("select,input")].map(el=>[el.name,el.value]));
@@ -288,11 +336,11 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(this.busy||this.actor.getFlag(ns,"pendingRoll"))return false;
   this.busy=true;
   const status=this.element?.querySelector("[data-dna-status]");
-  const asksNarrator=request.advance?.kind==="grade"&&request.advance.delta===-1&&
+  const asksNarrator=(request.advance?.delta===-1||request.advance?.remove===true)&&
    !game.user.isGM&&!this.actor.getFlag(ns,"creationPending");
-  if(status&&asksNarrator)status.hidden=false;
   try{
    if(confirmation&&!await confirmation())return false;
+   if(status&&asksNarrator)status.hidden=false;
    await requestRoll(this.actor,request);
    return true;
   }catch(error){ui.notifications.warn(error.message);return false;}

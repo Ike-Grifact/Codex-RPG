@@ -38,7 +38,7 @@ Hooks.on("createChatMessage",(message)=>{transferCombatPavor(message).catch(e=>c
 Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
  if(game.users.get(userId)?.isGM)return;
  const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
- const protectedPath=/^(system\.(xp|attributes|knowledges|practices|skills)|flags\.codex-rpg-foundry\.(xpHistory|creationPending|pendingRoll))(\.|$)/;
+ const protectedPath=/^(system\.(xp|attributes|knowledges|practices|skills)|flags\.codex-rpg-foundry\.(xpHistory|skillRefundHistory|creationPending|pendingRoll|lastElevation))(\.|$)/;
  if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
    (options.recursive===false&&("system" in changes||"flags" in changes))){
   ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");
