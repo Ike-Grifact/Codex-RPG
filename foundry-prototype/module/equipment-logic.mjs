@@ -45,14 +45,16 @@ export function canSpendXP(system,delta){
  return !!system.monsterRules||ledger.spent+delta<=ledger.grant;
 }
 export function defenseDE(actor){
- const natural=actor?.system?Math.max(0,Number(actor.system.monsterRules?Number(actor.system.attributes?.agilidade||0)+Math.floor(Number(actor.system.attributes?.destreza||0)/2):0)):0;
- const s=actor.system;
- const general=Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)+(s.monsterRules?0:Math.floor(Number(s.attributes.vigor||0)/2)+Math.floor(Number(s.practices?.atletismo||0)/3)));
+ const s=actor.system,a=s.attributes||{},p=s.practices||{};
+ const natural=Math.min(9,Math.max(0,
+  Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2)+
+  (s.monsterRules?0:Math.floor(Number(a.vigor||0)/2)+Math.floor(Number(p.atletismo||0)/3))));
  let modifier=0;
- for(const armor of actor.items.filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
-  if(armor.system.category==="pesado")modifier=-1;
-  if(armor.system.category==="muito-pesado")modifier=-2;
+ // O modificador do primeiro equipamento válido afeta TODA defesa, não apenas esquiva.
+ for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
+  const cat=String(armor.system.category||"").toLowerCase().replace(/[_ ]/g,"-");
+  modifier=({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2})[cat]||0;
   break; // Mais de uma armadura: não empilhar sem regra.
  }
- return Math.max(0,(s.monsterRules?Math.min(9,natural):general)+modifier);
+ return Math.min(12,Math.max(0,natural+modifier));
 }

@@ -6,6 +6,7 @@ on:
       - 'prototipo-ficha/**'
       - '.github/workflows/criador-e2e.yml'
       - '.github/tests/criador-e2e.cjs'
+      - '.github/tests/armadura-de-e2e.cjs'
       - '.github/tests/genetico-navegacao-e2e.cjs'
       - '.github/tests/pequena-ficha-e2e.cjs'
       - '.github/tests/fichas-multiplas-e2e.cjs'
@@ -43,7 +44,7 @@ jobs:
       - name: Testar custo de XP da criatura Pequena independente
         run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs prototipo-ficha/domar-chain.test.mjs
       - name: Validar quatro linhagens e custos raciais
-        run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs
+        run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs prototipo-ficha/armor-defense.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel
         run: node .github/tests/pequena-ficha-e2e.cjs
       - name: Validar requisitos da Invocação Elemental e os portes de Domar
@@ -54,6 +55,8 @@ jobs:
         run: node .github/tests/genetico-linhagens-iniciais-e2e.cjs
       - name: Validar contornos e ícones de XP racial no mapa e listas
         run: node .github/tests/custos-raciais-marcadores-e2e.cjs
+      - name: Testar armaduras na ficha e DE geral no navegador móvel
+        run: node .github/tests/armadura-de-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular

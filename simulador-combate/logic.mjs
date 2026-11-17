@@ -58,7 +58,8 @@ export function armorPenalty(armor){
  return typ==="alto"||typ==="pesado"?1:typ==="extremo"||typ==="muito_pesado"?2:0;
 }
 export function defenseWithStance(natural,armor,stance="normal"){
- return Math.max(0,Number(natural||0)-armorPenalty(armor)+(stance==="esquiva"?dodgeBonus(armor):0));
+ // Armaduras afetam todas as defesas; esquiva não repete o bônus.
+ return Math.min(12,Math.max(0,Math.min(9,Number(natural||0))-armorPenalty(armor)+dodgeBonus(armor)));
 }
 export function equippedArmor(source){
  const items=source?.items||[];

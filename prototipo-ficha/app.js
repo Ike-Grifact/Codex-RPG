@@ -1608,8 +1608,21 @@ function armorDodgeBonus(s=state){
  const it=equippedArmor(s);
  return it?.weight==="muito_leve"?2:it?.weight==="leve"?1:0;
 }
-function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
-function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
+// Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
+// Teto da DE natural: 9. Teto absoluto após modificadores: 12.
+function deDefense(s=state){
+ return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)));
+}
+function deDodge(s=state){return deDefense(s);} // Esquiva não recebe um segundo bônus.
+function defensePresentation(s=state){
+ const natural=deNatural(s),total=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
+ const armor=equippedArmor(s);
+ const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
+ const modifier=bonus-penalty;
+ return {label:"DE DEFENSIVA",value:total,caption:armor?
+  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+") = "+total+" · Vale para todas as defesas · Teto 12":
+  "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
+}
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function loadUsed(){return state.items.reduce((n,it)=>n+WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
@@ -2406,7 +2419,7 @@ function wizardEquipment(){
  '<div class="fp-wiz-reminder"><strong>VT não é XP</strong><p>Você não precisa gastar todo o patrimônio. Itens comprados aparecem na ficha e podem ser equipados conforme as regras.</p></div>';
 }
 function wizardReview(){
- const x=xpCosts(),life=maxLife(),move=movement();
+ const x=xpCosts(),life=maxLife(),move=movement(),defense=defensePresentation();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
  const skillList=SKILLS.filter(([id])=>ownsSkill(id)).map(([id,name])=>'<li>'+esc(name)+(racialGrants(state).includes(id)?' <small>(origem · 0 XP)</small>':'')+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
@@ -2414,7 +2427,7 @@ function wizardReview(){
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
   '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(RACES[state.race]?.[0]||"Humano")+' · '+esc(state.concept||"Profissão por descobrir")+'</p></div></div>'+
-  '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
+  '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>'+esc(defense.label)+'</small><b>'+defense.value+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
   '<div class="fp-wiz-review-list"><section data-source-group="attr"><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
   '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
   '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
@@ -2439,7 +2452,7 @@ function wizardOverview(){
   '<div class="fp-wiz-budget-row"><span>Itens</span><b>'+state.items.length+'</b></div>'+
   '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
   '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
-  '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
+  '<span>DE</span><b>'+deDefense()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
   '<p class="fp-wiz-sidebar-note">Para concluir, compre um Atributo e um Conhecimento ou Prática no grau 1. Depois, todo o XP restante é livre, inclusive para Perícias. Listas e Codex Genético compartilham o mesmo saldo.</p>';
 }
 function renderWizard(){
@@ -2505,14 +2518,16 @@ function renderVitals(){
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / 10";
  $("pp-text").textContent=state.pp+" / "+maxPP();
- $("de-text").textContent=deDefense();$("balance-text").textContent=balance();
+ const defense=defensePresentation();
+ $("de-label").textContent=defense.label;
+ $("de-text").textContent=defense.value;$("balance-text").textContent=balance();
  const protection=equippedArmor();
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
  if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 · Sem Integridade"):"Nenhuma";
  if(integrityCaption)integrityCaption.textContent=protection?
   (protection.name+" · "+(protection.max>0?"Integridade atual / máxima":"armadura sem Integridade")+
    " · registro manual de dano"):"Equipe uma armadura no Inventário";
- $("de-caption").textContent=armorDePenalty()?"DE natural "+deNatural()+" − "+armorDePenalty()+" (armadura "+(armorDePenalty()===2?"Muito Pesada":"Pesada")+")":armorDodgeBonus()?"DE base "+deDefense()+" · Esquiva "+deDodge()+" (+"+armorDodgeBonus()+" da armadura)": "DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋";
+ $("de-caption").textContent=defense.caption;
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
@@ -2904,8 +2919,8 @@ function renderInventory(){
   const canResist2=it.weight==="alto"&&it.grade>=3;
   const canImmunize=it.weight==="extremo"&&it.grade>=4;
   const armorFields=it.type!=="armadura"?"":(
-   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE apenas na esquiva.</div>':"")+
-   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE na esquiva; resistência disponível desde Grau 3.</div>':"")+
+   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
+   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
    (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −2 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
