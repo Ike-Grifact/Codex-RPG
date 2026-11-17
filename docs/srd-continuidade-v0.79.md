@@ -71,11 +71,12 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 **DEFINIDO — novo padrão geral de preparação elemental:**
 - Magia elemental **G2**: **2 turnos de preparação** sem aceleração.
 - É possível **reduzir uma magia para G1** a fim de lançá-la **instantaneamente**.
+- **DEFINIDO — opção A (17/11/2026):** ao reduzir voluntariamente uma **magia elemental G2 para G1**, ela passa a utilizar **somente os efeitos, propriedades, dano e área previstos para G1**. **Não mantém** efeitos de G2, nem mesmo parcialmente, e a conjuração reduzida pode ser lançada **imediatamente**. Isso não concede novas propriedades de G1 nem altera custos, requisitos, dados e limites já aprovados.
 - Magia **G3**: **3 turnos de preparação** sem aceleração.
 - Um **foco mágico comum** pode reduzir a preparação de uma conjuração em **até 1 turno**, gastando **1 carga**. Não somar acelerações do mesmo foco para reduzir mais de um turno da mesma conjuração sem aprovação específica.
 - Exemplo: **foco G1 (1 carga) + magia G2 (2 turnos) = lançamento no mesmo turno**, seguido do regime de recarga do foco.
 
-**PENDENTE:** como a redução de G2 para G1 altera dano, alcance, área e propriedades; regra geral de tempo para magia G4; cronologia detalhada de declaração/conclusão e compatibilidade com magia memorizada; como esta regra prevalece sobre antigas tabelas de G1/G2/G3 e conjuração ao fim do turno dos aliados. Não inferir efeitos ou custos novos.
+**DEFINIDO:** a redução **G2 → G1** remove integralmente os efeitos exclusivos de G2 e utiliza apenas a descrição de G1, inclusive seus valores de dano e área quando definidos. **PENDENTE:** redução intermediária G3 → G2; efeitos exatos de redução G3 → G1; regra geral de tempo para G4; cronologia de declaração/conclusão, compatibilidade com magia memorizada e reconciliação com descrições históricas de conjuração ao fim do turno dos aliados. Não inferir custos nem efeitos novos.
 
 **DEFINIDO — Conjuração Refinada:** aumenta o alcance das magias em **+8 metros**, corrigindo a pendência de alcance no Livro do Jogador; conservar os requisitos/custo históricos até eventual revisão explícita.
 
@@ -174,7 +175,7 @@ Não cobrar as três formas cumulativamente.
 | **Queimar × Congelar × Sangrando** | **DEFINIDO:** Queimar remove Sangrando e Congelamento; Água também pode remover Congelamento; Congelar por si não remove Sangrando |
 | **Remoção de Congelamento com magia de Água** | **DEFINIDO:** rolar contra a DE defensiva do alvo; sucesso remove Congelamento e a imobilização correspondente, falha não remove |
 | **Grau mínimo para descongelar com Água** | **DEFINIDO:** Água G1 já permite remover Congelamento mediante teste contra DE defensiva do alvo |
-| Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
+| Redução voluntária da magia G2 para G1 | **DEFINIDO:** lançamento imediato, usando somente os efeitos/propriedades de G1. **PENDENTE:** modalidades de redução de G3 e integração com memorização |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
 | Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização, reinicia com três turnos e nova rolagem, e **não recupera PP/Coragem/cargas já gastos**. **DEFINIDO:** apenas uma amplificação de Sangue por turno |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
@@ -186,7 +187,7 @@ Não cobrar as três formas cumulativamente.
 **Divergências conhecidas frente ao Livro do Jogador e versões históricas:**
 - v0.78 declara DE de retirada por peso a cargo do Narrador e −2E em Levantar Escudo: **substituir por tabela 1/2/3 e −1E somente nessa ação**.
 - Livro do Jogador descreve recarga de focos em N rodadas sem detalhar cargas e início de recuperação: **aplicar capacidade = Grau e recuperação gradual automática no encerramento de rodada, após esgotamento**, com exceção da Pedra da Alma.
-- Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **o padrão G2=2 turnos, G3=3, redução para G1 e foco −1 turno** governa onde aplicável; **conteúdos mecânicos da redução ainda pendentes**.
+- Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **o padrão G2=2 turnos, G3=3, redução G2→G1 imediata sem efeitos G2, e foco −1 turno** governa onde aplicável; as modalidades de redução de G3 e integração com memorização ainda estão pendentes.
 - Livro apresenta Conjuração Refinada com alcance pendente: **+8 m está definido**.
 - O criador e o Livro ainda podem usar **orçamento inicial diferente de 15 XP**, regra ainda **EXPERIMENTAL**.
 - **Atualização posterior neste checkpoint:** as **12 Perícias Avançadas** estão cadastradas no criador desta branch com **Grau 2 e custo 1 XP**, preservados os requisitos adicionais publicados; as nove novas contam com verbetes e catálogo. A implementação será efetiva no site oficial somente após integrar a branch; a ficha da `main` ainda permanece na versão anterior.
@@ -195,8 +196,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Quando o conjurador **reduz voluntariamente uma magia elemental de G2 para G1** para lançar imediatamente, a magia passa a usar **somente os efeitos de G1**, perdendo os efeitos de G2?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Uma magia elemental de **G3 também pode ser reduzida para G2**, usando somente efeitos de G2 e seu tempo de preparação, ou a redução de G3 só pode ser diretamente para G1?”
 
-**Depois da resposta**, registrar quais efeitos permanecem ao reduzir voluntariamente G2 para G1; não reabrir o limite de uma amplificação de Sangue por turno. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar apenas se a redução intermediária G3→G2 é permitida; não reabrir a decisão de que G2→G1 usa apenas os efeitos de G1. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
