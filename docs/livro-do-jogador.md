@@ -783,6 +783,8 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Recarga:** foco de G1 recarrega em **1 rodada**, G2 em **2 rodadas** e assim sucessivamente (**Grau N → N rodadas**). **Criar Magia:** a Perícia permite moldar os elementos conforme a capacidade de conjuração, sem conceder gratuitamente outras habilitações elementais.
 
+**Redução voluntária de Grau na conjuração [DEFINIDO — SRD v0.79, 17/11/2026]:** o conjurador pode **reduzir uma magia elemental G2 para G1 e lançá-la imediatamente**. A magia reduzida passa a utilizar **somente os efeitos e propriedades de G1**, inclusive dano e área de G1 quando definidos, **perdendo por completo os efeitos exclusivos de G2**. Ex.: a versão reduzida de Fogo G2 não mantém o dano especial E+P à Integridade de Queimar G2; usa a manifestação de Fogo G1 pertinente. Não criar custo extra ou bônus automático por essa escolha. **PENDENTE:** possibilidade de reduzir G3 para G2 e integração com magias memorizadas.
+
 **Criação e memorização [DEFINIDO]:** a partir de **Disciplina 2**, pode criar magias de **Grau 2 e Grau 3**, **fora de combate**, pagando **1 PP ou 2 Coragens por criação**, e deixá-las **memorizadas em um slot mágico** para conjurá-las rapidamente depois. Não há autorização automática para preparar Grau 4 nessa regra.
 
 | Grau de magia | Peso nominal |
