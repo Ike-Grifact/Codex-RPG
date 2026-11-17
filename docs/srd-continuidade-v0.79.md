@@ -191,7 +191,7 @@ Não cobrar as três formas cumulativamente.
 **7 frentes de regras ou procedimentos PENDENTES:**
 
 1. **Combinações para monstros:** detalhamento de fontes, dados e Grau quando a ficha usa somente Atributos, inclusive exceções de criaturas.
-2. **Cravar em situações especiais:** múltiplas armas presas no mesmo escudo e destino/posse de arma retirada; preservar a penalidade única de −1E enquanto não houver nova decisão.
+2. **Cravar em situações especiais:** múltiplas armas presas no mesmo escudo e destino/posse de arma retirada; **não presumir que a penalidade de −1E se acumula ou que não se acumula** antes de decisão expressa.
 3. **Conjuração G4:** tempo geral de preparação e limites de aceleração ainda não definidos para esse Grau.
 4. **Magias memorizadas e cronologia de conjuração:** compatibilidade de preparação, memorização e exceções de Sangue com os novos tempos elementais e efeitos históricos.
 5. **Pedra da Alma — Fixar Alma:** requisitos, XP, procedimento, custo, recuperação de cargas e riscos desta futura Perícia.
