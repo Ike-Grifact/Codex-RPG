@@ -107,6 +107,10 @@ function card(n,edit){
    '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
  const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
+ const xpBand=["discount","elevated"].includes(n.xpBand)?n.xpBand:"normal";
+ const xpMarker=xpBand==="normal"?"":'<g class="fp-gene-racial-mark is-'+xpBand+'" aria-hidden="true">'+
+  '<circle cx="'+(x+width-7)+'" cy="'+(y+9)+'" r="13"/>'+
+  '<text x="'+(x+width-7)+'" y="'+(y+14)+'" text-anchor="middle">'+(xpBand==="discount"?"↓":"↑")+'</text></g>';
  const canDown=edit&&n.previewGrade>(n.minGrade||0);
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
  const makeButton=(delta,enabled,posX,text,aria)=>
@@ -117,13 +121,14 @@ function card(n,edit){
  const control=edit?makeButton(-1,canDown,x+14,"−","Diminuir "+label)+
   makeButton(1,canUp,x+width-46,"+","Aumentar "+label):"";
  return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+
-  '" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
-  '<title>'+label+' — '+esc(n.label||"")+'</title>'+
+  (xpBand==="normal"?"":" is-xp-"+xpBand)+
+  '" data-gene-id="'+esc(n.id)+'" data-racial-xp="'+xpBand+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+(xpBand==="normal"?"":"; "+esc(n.xpLabel||"XP racial diferenciado"))+'">'+
+  '<title>'+label+' — '+esc(n.label||"")+(xpBand==="normal"?"":" — "+esc(n.xpLabel||"XP racial diferenciado"))+'</title>'+
   '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="13"/>'+
   '<text class="fp-gene-card-title" x="'+(x+18)+'" y="'+(y+28)+'">'+label+'</text>'+
   '<text class="fp-gene-card-grade" x="'+(x+width-18)+'" y="'+(y+27)+'" text-anchor="end">GRAU '+(n.previewGrade??n.grade)+(n.minGrade?' · ORIGEM':'')+(pending?' *':'')+'</text>'+
   '<line class="fp-gene-card-separator" x1="'+(x+17)+'" x2="'+(x+width-17)+'" y1="'+(y+38)+'" y2="'+(y+38)+'"/>'+
-  control+dice+'</g>';
+  control+dice+xpMarker+'</g>';
 }
 function splitSkillLabel(name,maxChars){
  const compact=String(name||"").trim()
