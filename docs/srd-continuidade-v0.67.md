@@ -37,6 +37,7 @@ Classificar pelo percentual **sem arredondá-lo para decidir o limite**. Valores
 - Apresentar percentual e classe atuais e a contribuição de cada item em unidades **Alto** e em porcentagem da capacidade atual.
 - **100% ou mais** é **Muito Pesado**; o alerta anterior de **capacidade excedida** aparece apenas quando o peso **ultrapassa 100%**. Não bloquear itens nem aplicar penalidades novas automaticamente.
 - Preservar quantidades e pesos dos itens já cadastrados, inclusive peso físico de focos e recursos de troca.
+- No **modo NPC**, não atribuir automaticamente um peso corporal natural a criaturas apenas por carregarem zero equipamento: mostrar **Pendente**, até a definição de massa natural e tipos de criatura.
 
 ### Elementos preservados [DEFINIDO]
 
