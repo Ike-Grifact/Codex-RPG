@@ -160,10 +160,10 @@ Não cobrar as três formas cumulativamente.
 - **Fogo G1 mesclado com Sagrado** pode **aplicar Queimar sem causar dano**.
 - **Fogo G1 sem essa mescla** conserva **dano convencional à armadura**, sem conceder dano direto à Vida por inferência.
 - **Congelar** (efeito de Água/Gelo) **imobiliza o alvo**; a duração aplicável do G1 deve ser lida na habilitação vigente (atualmente **1 rodada**), até revisão específica.
-- **DEFINIDO — procedimento (opção A, 17/11/2026):** um conjurador habilitado com **magia de Água** realiza **rolagem contra a DE defensiva do alvo**. Se **alcançar a DE**, remove Congelamento e encerra a imobilização por essa condição. Se **falhar**, Congelamento permanece até ser removido ou expirar pela duração pertinente. A remoção não causa dano nem aplica Sangrando por si só. Conservar os custos e requisitos já aprovados para conjurar.
+- **DEFINIDO — Grau e procedimento (opção A, 17/11/2026):** **Água Grau 1** já permite remover Congelamento. Um conjurador habilitado realiza **rolagem de magia de Água G1 contra a DE defensiva do alvo**. Se **alcançar a DE**, remove Congelamento e encerra a imobilização por essa condição. Se **falhar**, Congelamento permanece até ser removido ou expirar pela duração pertinente. A remoção não causa dano nem aplica Sangrando por si só. Conservar os custos e requisitos já aprovados para conjurar.
 - Preservar **Fogo G2 Queimar = E + P à Integridade** e **G3 Derreter = E + P à Integridade mais 1 Vida direta fixa** conforme v0.76 enquanto não houver modificação expressa desses efeitos.
 
-**RESOLVIDO — esclarecimento autoral em 17/11/2026:** a frase “queimar tira sangramento e congelamento tb” corresponde à **opção B**: Queimar remove **Sangrando** e **Congelamento**. O autor acrescentou que **magia de Água também pode remover Congelamento**. A mera aplicação de Congelar não elimina Sangrando. **DEFINIDO:** remover Congelamento com magia de Água **exige teste contra a DE defensiva do alvo**, não é automático. **PENDENTE:** Grau mínimo exigido e particularidades não regulamentadas; não inventar custos extras.
+**RESOLVIDO — esclarecimento autoral em 17/11/2026:** a frase “queimar tira sangramento e congelamento tb” corresponde à **opção B**: Queimar remove **Sangrando** e **Congelamento**. O autor acrescentou que **magia de Água também pode remover Congelamento**. A mera aplicação de Congelar não elimina Sangrando. **DEFINIDO:** remover Congelamento com magia de Água **exige teste contra a DE defensiva do alvo**, não é automático. **DEFINIDO:** **G1 é suficiente**, sem requisito de G2. Os custos e requisitos gerais de conjuração permanecem; particularidades não regulamentadas seguem PENDENTES, sem criar custo extra.
 
 ### 7. Pendências preservadas e divergências de implementação
 
@@ -172,7 +172,7 @@ Não cobrar as três formas cumulativamente.
 | **Requisitos de Perícias Avançadas** | **DEFINIDO:** Grau 2 da própria fonte, 1 XP, até três fontes pertinentes; 12 especializações cadastradas na branch |
 | **Queimar × Congelar × Sangrando** | **DEFINIDO:** Queimar remove Sangrando e Congelamento; Água também pode remover Congelamento; Congelar por si não remove Sangrando |
 | **Remoção de Congelamento com magia de Água** | **DEFINIDO:** rolar contra a DE defensiva do alvo; sucesso remove Congelamento e a imobilização correspondente, falha não remove |
-| **Grau mínimo para descongelar com Água** | **PENDENTE — PRÓXIMA PERGUNTA:** G1 é suficiente ou requer G2+? |
+| **Grau mínimo para descongelar com Água** | **DEFINIDO:** Água G1 já permite remover Congelamento mediante teste contra DE defensiva do alvo |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
 | Hemomancia — interrupção e amplificação | **PENDENTE**: necessidade de ataque acertar DE; destino de recursos; limite de amplificação |
@@ -194,8 +194,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “A **magia de Água G1** já permite remover Congelamento após atingir a DE defensiva do alvo, ou isso exige **Grau 2**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Na canalização de Hemomancia com **três alvos Sangrando**, o ataque que iguala ou supera a força da magia também precisa **acertar a DE defensiva do Hemomante** para interromper a preparação?”
 
-**Depois da resposta**, registrar o Grau mínimo para descongelar com Água, mantendo a rolagem contra a DE defensiva do alvo e as demais decisões já aprovadas. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar se a interrupção da canalização exige, além da força igual ou superior, que o ataque acerte a DE defensiva do Hemomante. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
