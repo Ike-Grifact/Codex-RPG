@@ -860,6 +860,8 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 | **G2** | **Perfurar** ao obter **crítico nos dados** **ou** por ativação paga de efeito (1 PP ou 1 Coragem); causa dano à **Vida e armadura** |
 | **G3** | **Conjurar ao final do turno dos aliados**; efeitos **Empurrar, Perfurar e Congelar**, com dano à Vida e armadura e preservação das propriedades menores pertinentes |
 
+**DEFINIDO — SRD v0.79:** magia de Água pode **remover Congelamento** de um alvo. Congelar continua imobilizando e **não remove Sangrando** por si só. O procedimento exato para descongelar (incluindo necessidade de teste) ainda é **PENDENTE**; não presumir efeito automático ou custo adicional.
+
 **Perfurar no crítico** pode ser ativado por esse gatilho sem exigir o gasto alternativo de 1 PP ou 1 Coragem. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
 
 **Nome atualizado:** a antiga entrada **Elemento: Água** da ficha corresponde à mesma habilidade, agora denominada **Perícia em Elemento Água**, sem segunda compra nem exclusão de personagens anteriores.
@@ -891,6 +893,8 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 | **G1** | **Disparo à distância** que **danifica armadura**, mas **não causa queimadura direta à Vida**; **iluminar** ou **conduzir chamas**. **Não produz fogo do nada**: exige chama/faísca, como lamparina a óleo, isqueiro ou foco pequeno encantado (ex.: luvas que produzem faísca ao estalar os dedos) |
 | **G2 — Queimar** | Ampliar a área para **4 × 4**, em **cone, linha ou círculo**. Em acerto, **cada Pavor não anulado vale 1 dano à Integridade da armadura**, substituindo a contribuição comum de `⌊P/2⌋`: **E + P à Integridade**, sem dano direto adicional à Vida por Queimar. Excedente após a proteção segue regras usuais. **Sem foco**, invocar fogo custa **1 Coragem adicional** à ativação normal |
 | **G3 — Derreter** | Ao acertar, causa o dano de **Queimar à Integridade (E + P)** e acrescenta **exatamente 1 ponto de dano direto à Vida**, sem duplicar o dano integral; este ponto fixo **não dobra no crítico**. Mantém **conjuração ao fim do turno dos aliados** e área **8 × 8**, em **círculo, cone ou linha** |
+
+**Interação de condições [DEFINIDO — SRD v0.79]:** aplicar **Queimar remove Sangrando e desfaz Congelamento**. Fogo G1 mesclado com Sagrado pode aplicar Queimar sem causar dano; Fogo G1 sem essa mescla mantém seu dano convencional à armadura. Uma magia de Água também pode remover Congelamento, com procedimento ainda PENDENTE. Não confundir a remoção da condição com alteração do dano de G2/G3.
 
 **Distinção [DEFINIDO — SRD v0.76]:** Queimar G2 danifica a **Integridade**, sem dano direto de propriedade à Vida; Derreter G3 mantém esse dano e adiciona **1 Vida direta fixa**. Uma rolagem com **3E e 2P** causa **5 à Integridade + 1 Vida direta** em G3; em G2, **5 à Integridade + 0 Vida direta**. Um crítico aplicável pode modificar o dano à Integridade, mas **não multiplica o +1 direto**. O efeito não é o dano integral à Vida exclusivo da Hemomancia. As imunidades elementais e custos já vigentes permanecem, sem automatizar um resultado contra barreiras pendentes.
 
