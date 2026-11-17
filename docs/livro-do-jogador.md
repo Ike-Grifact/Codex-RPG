@@ -884,7 +884,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. Em ataques acertados, independentemente de crítico, **1 PP ou 1 Coragem** ativa **um efeito especial escolhido**.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base dos efeitos G1/G2** que estejam habilitados, sem cobrar os antigos 1 PP ou 1 Coragem; continuam as rolagens e a DE pertinentes. Acesso/elevação aos efeitos de **G3** exige habilitação e **1 Coragem**.
 
 | Grau | Efeitos e formas |
 |---|---|
@@ -900,17 +900,17 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. Ao acertar um ataque, independentemente de crítico, **1 PP ou 1 Coragem** permite aplicar **um efeito escolhido** de Água; G2 também possui gatilho alternativo de crítico para Perfurar.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. **DEFINIDO — atualização SRD v0.79:** a Perícia habilita **ativação-base gratuita** de efeitos G1/G2, preservando teste, DE e requisitos. **Perfurar G2** conserva sua condição/gatilho de crítico histórico, mas o pagamento alternativo de 1 PP ou 1 Coragem como ativação-base foi **substituído pela nova gratuidade**; demais requisitos de aplicação ainda exigem revisão. Elevar efeitos a G3 custa **1 Coragem**.
 
 | Grau | Efeitos |
 |---|---|
 | **G1** | **Congelar por 1 rodada**, **sem causar dano** na forma Leve; extrair água do ar, mover água, molhar ou limpar |
-| **G2** | **Perfurar** ao obter **crítico nos dados** **ou** por ativação paga de efeito (1 PP ou 1 Coragem); causa dano à **Vida e armadura** |
+| **G2** | **Perfurar**: gatilho histórico de **crítico nos dados**, ou ativação **sem custo-base de PP/Coragem** com a Perícia e Grau habilitados, respeitando demais requisitos; causa dano à **Vida e armadura** |
 | **G3** | **Conjurar ao final do turno dos aliados**; efeitos **Empurrar, Perfurar e Congelar**, com dano à Vida e armadura e preservação das propriedades menores pertinentes |
 
 **DEFINIDO — SRD v0.79:** magia de Água pode **remover Congelamento** de um alvo. Congelar continua imobilizando e **não remove Sangrando** por si só. **DEFINIDO:** o conjurador realiza uma **rolagem contra a DE defensiva do alvo**; sucesso remove Congelamento e a imobilização causada por ele, falha mantém a condição. **DEFINIDO:** **Água G1** já permite essa remoção mediante o teste descrito; não exige G2. Não presumir custo adicional.
 
-**Perfurar no crítico** pode ser ativado por esse gatilho sem exigir o gasto alternativo de 1 PP ou 1 Coragem. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
+**Perfurar no crítico** conserva seu gatilho histórico, mas a **ativação-base G2 com a Perícia adquirida também é gratuita**; o antigo pagamento alternativo de 1 PP ou 1 Coragem foi revogado quanto ao custo-base, sem inventar acionamento automático em falha nem outras propriedades. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
 
 **Nome atualizado:** a antiga entrada **Elemento: Água** da ficha corresponde à mesma habilidade, agora denominada **Perícia em Elemento Água**, sem segunda compra nem exclusão de personagens anteriores.
 
@@ -918,7 +918,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. Ao acertar um ataque, **independentemente de crítico**, pode pagar **1 PP ou 1 Coragem** para ativar **um efeito especial escolhido**, respeitando o Grau de conjuração habilitado.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. **DEFINIDO — atualização SRD v0.79:** a ativação-base dos efeitos G1/G2 habilitados pela Perícia é **gratuita**, substituindo a cobrança genérica de 1 PP ou 1 Coragem, sem dispensar teste, DE ou habilitações. Elevar o efeito a G3 exige **1 Coragem**.
 
 | Grau | Efeitos de Terra |
 |---|---|
@@ -934,7 +934,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. Em ataques que acertem, **independentemente de crítico**, gastar **1 PP ou 1 Coragem** permite aplicar **um efeito especial escolhido** do elemento, conforme o Grau habilitado.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base** de efeitos G1/G2 habilitados, substituindo o gasto genérico de 1 PP ou 1 Coragem, sem dispensar acerto/DE e fontes de Fogo. A elevação dos efeitos a G3 exige **1 Coragem**. O custo **específico** de invocar Fogo G2 sem foco, previsto antes desta atualização, está em reconciliação com a exceção ambiental.
 
 | Grau | Efeitos e manifestações de Fogo |
 |---|---|
@@ -948,13 +948,13 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 **Estratégia de um mago de Fogo:** produzir ou carregar **uma pequena faísca** e **ampliá-la magicamente** pode gerar grandes incêndios e devastação. Isso descreve o potencial narrativo do elemento; danos persistentes, propagação e duração dos incêndios **não recebem regras automáticas** sem aprovação.
 
-**Custo adicional de Fogo G2 [DEFINIDO]:** invocar fogo sem item de foco custa **1 Coragem ADICIONAL** à ativação normal de efeito especial: **1 PP + 1 Coragem** ou **2 Coragens** (1 Coragem da ativação + 1 adicional). Não cobrar esse acréscimo em magias de Fogo que não invocam fogo sem foco. **PENDENTE:** unidades e geometria das áreas 4 × 4 e 8 × 8, alcance, valores de dano, interação entre item de foco e criação de faísca, efeitos utilitários sem acerto e funcionamento de conjuração ao fim do turno dos aliados.
+**Custo específico histórico de Fogo G2 sem foco [PENDENTE DE RECONCILIAÇÃO com SRD v0.79]:** a regra anterior cobrava **1 Coragem adicional ao custo-base pago de 1 PP ou 1 Coragem** quando se invocava Fogo G2 sem foco. A **ativação-base G1/G2 agora é gratuita** com a Perícia; não aplicar automaticamente os antigos totais **1 PP + 1 Coragem** ou **2 Coragens**. **PENDENTE:** se a Coragem especificamente por falta de foco continua devida quando o ambiente oferece Fogo em abundância e dispensa o foco, e como aplicar essa exceção sem custo-base pago. Não cobrar automaticamente custos não conciliados nem criar dispensas além das explícitas. Continuam pendentes geometria das áreas 4 × 4/8 × 8, alcance, valores de dano, uso de faísca e efeitos utilitários.
 
 **Continuidade:** a entrada antiga da ficha **Elemento: Fogo** foi renomeada **Perícia em Elemento Fogo**, preservando a compra existente. Não cria uma segunda habilidade de Fogo.
 
 ### Perícia em Elemento Sagrado [DEFINIDO / procedimentos PENDENTES]
 
-**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. Ao acertar um ataque, **mesmo sem crítico**, permite pagar **1 PP ou 1 Coragem** para ativar **um efeito especial escolhido** do elemento.
+**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. **DEFINIDO — atualização SRD v0.79:** o custo-base de ativar seus efeitos G1/G2 habilitados é **gratuito**, não o antigo gasto genérico de 1 PP ou 1 Coragem. O gasto específico de **converter um Êxito em Coragem** continua sendo o próprio Êxito consumido, sem conceder Êxito adicional; elevação a G3, quando habilitada, exige **1 Coragem**.
 
 **Grau 1:** acalmar, purificar, apoiar e recuperar Coragem. **Um Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante, uma vez por conjuração/turno.** Esse **Êxito é consumido** e **não conta para atingir a DE nem para causar dano**. Não se concede um Êxito gratuito para financiar a conversão, nem se convertem vários Êxitos no mesmo turno/conjuração.
 
