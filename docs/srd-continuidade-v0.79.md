@@ -32,7 +32,17 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 - **Monstros humanoides** seguem a mesma restrição de categorias dos jogadores.
 - Combinações continuam sujeitas aos graus, dados e limites de rolagem/manutenção; a exigência de pelo menos um dado de Atributo na pilha permanece, a menos que uma exceção aprovada determine o contrário.
 
-**PENDENTE:** detalhes operacionais da fonte adicional de Disciplina Avançada e a relação exata entre fontes selecionadas, dados e grau para monstros; verificar as descrições específicas dessas Perícias antes de implementar.
+**DEFINIDO — padronização de Perícias Avançadas de Conhecimento e Prática (decisão posterior neste ciclo):**
+- O **custo de aquisição é 1 XP** para toda Perícia de **Conhecimento Avançado ou Prática Avançada**. Essa regra não concede gratuitamente a Perícia nem altera o custo de elevar o Grau da aptidão.
+- A Perícia Avançada habilita usar **a fonte especializada X como base/predominante e acrescentar até duas fontes pertinentes**: **X + fonte 2 + fonte 3**, ou seja, **até três fontes no total**, não duas fontes além de uma combinação já completa. Respeitar o teto normal de dados rolados/mantidos, manter pelo menos um dado de Atributo na pilha e não repetir a própria fonte X. Não acumular automaticamente duas Perícias Avançadas para criar uma quarta fonte.
+- **Medicina Avançada**: exige **Medicina G2**, compra **1 XP**, permite **Medicina predominante + até duas fontes pertinentes** e habilita o tratamento para remover Sangrando com teste próprio (seção 6).
+- **Disciplina Avançada**: conserva requisito **Disciplina G2**, custo **1 XP** e aplicação apenas quando Disciplina for a fonte principal.
+- **Furtividade Avançada**: conserva requisito **Furtividade G2 + Perícia em Furtividade**, custo **1 XP** e aplicação apenas quando Furtividade for a fonte principal.
+- Outras possíveis especializações Avançadas de Conhecimentos e Práticas passam a ter **custo-padrão e efeito genérico definidos**, mas **a existência de compra habilitada e os requisitos próprios das novas Perícias ainda são PENDENTES**. Não presumir Grau 2 para todas somente por analogia com as três existentes.
+
+**IMPLEMENTADO NESTA BRANCH DE REVISÃO:** catálogo, compra de Medicina Avançada por 1 XP quando Medicina ≥2, vinculação da terceira fonte no compositor comum e exposição no Codex Genético. Disciplina Avançada e Furtividade Avançada preservam requisitos individuais e compartilham a verificação de fonte principal. Tratamento automático da condição Sangrando **não** foi implementado nesta etapa, pois a ficha ainda não modela o alvo da intervenção.
+
+**PENDENTE:** a relação exata entre fontes selecionadas, dados e Grau para monstros, além dos requisitos das demais especializações Avançadas não existentes no catálogo.
 
 ### 2. Cravar, retirada e Sobrecarga
 
@@ -133,7 +143,7 @@ Não cobrar as três formas cumulativamente.
 - **Sucesso:** remove Sangrando. **Falha:** a condição permanece.
 - As demais fontes da rolagem precisam respeitar as combinações e a exigência geral de Atributo na pilha; não criar exceção para dispensar essa fonte.
 
-**PENDENTE — Medicina Avançada:** **Grau mínimo de Medicina exigido para compra** (exatamente a próxima pergunta da revisão), **custo em XP**, demais requisitos e procedimentos especiais. **Não há comprovação de cadastro atual da Perícia na ficha examinada**; não registrar custo ou requisito imaginado.
+**DEFINIDO — aquisição:** Medicina Avançada exige **Medicina 2** e custa **1 XP**, conforme a regra geral das especializações Avançadas de Conhecimento/Prática. Ela permite a combinação **Medicina predominante + duas fontes adicionais pertinentes** (três fontes ao todo). **IMPLEMENTADO na branch deste checkpoint:** compra e composição no criador; resolução automática do estado do alvo ainda é **PENDENTE DE IMPLEMENTAÇÃO**.
 
 **DEFINIDO — Fogo, Sagrado, Queimar e Água/Gelo:**
 - **Queimar remove Sangrando** conforme a decisão explícita do autor.
@@ -148,14 +158,14 @@ Não cobrar as três formas cumulativamente.
 
 | Tema | Estado e próximo passo |
 |---|---|
-| **Medicina Avançada: Grau mínimo de Medicina para adquirir** | **PENDENTE — PRÓXIMA PERGUNTA** da revisão sequencial. Depois, decidir XP e demais requisitos, uma questão por vez |
+| **Requisitos de outras Perícias Avançadas** | **PENDENTE — PRÓXIMA PERGUNTA**: confirmar se o Grau 2 da própria fonte é requisito universal para as futuras especializações Avançadas; custo de 1 XP e três fontes já DEFINIDOS |
 | Ambiguidade Queimar × Congelar × Sangrando | **PENDENTE**: confirmar exatamente quais condições se removem entre si |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
 | Hemomancia — interrupção e amplificação | **PENDENTE**: necessidade de ataque acertar DE; destino de recursos; limite de amplificação |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **PENDENTE**: se esgotamento imediatamente antes do fim de rodada inicia recuperação no mesmo encerramento |
-| Medicina Avançada no criador e Foundry | **PENDENTE DE IMPLEMENTAÇÃO**: regra aprovada parcialmente, custo e requisitos não concluídos |
+| Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
 | Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: −1E para Levantar Escudo, DE por peso e −1E geral da Sobrecarga |
 | 15 XP iniciais | **EXPERIMENTAL**: revisar balanceamento; ainda não alterar a progressão fora do início |
 
@@ -165,14 +175,14 @@ Não cobrar as três formas cumulativamente.
 - Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **o padrão G2=2 turnos, G3=3, redução para G1 e foco −1 turno** governa onde aplicável; **conteúdos mecânicos da redução ainda pendentes**.
 - Livro apresenta Conjuração Refinada com alcance pendente: **+8 m está definido**.
 - O criador e o Livro ainda podem usar **orçamento inicial diferente de 15 XP**, regra ainda **EXPERIMENTAL**.
-- Medicina Avançada não foi localizada como Perícia cadastrada nos trechos do criador verificados nesta revisão: **não interpretar ausência no código como rejeição da decisão autoral**.
+- **Atualização posterior neste checkpoint:** Medicina Avançada foi cadastrada no criador desta branch com **Medicina 2 / 1 XP**. Sua implementação será efetiva no site oficial somente após a integração da branch; a ficha atual da `main` permanece anterior.
 
 ### 8. Protocolo para retomar a revisão
 
-A última resposta autoral esclareceu que o tratamento de Sangrando por Medicina Avançada usa **Medicina predominante**, **DE do alvo** e **Desvantagem**. O autor então solicitou salvar este checkpoint no GitHub **antes de continuar**.
+A revisão avançou após o checkpoint inicial: o autor definiu **Medicina G2**, custo **1 XP** e **custo padrão de 1 XP para todas as Perícias Avançadas de Conhecimento ou Prática**; cada uma usa sua fonte como predominante e pode adicionar **duas fontes pertinentes**. Foram implementados na branch o cadastro, a compra e a seleção avançada para Medicina, preservando Disciplina/Furtividade.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Qual é o **Grau mínimo de Medicina** exigido para adquirir a **Perícia Medicina Avançada**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “As demais Perícias Avançadas de Conhecimentos e Práticas que ainda não existem também devem exigir **Grau 2 na respectiva fonte** para serem adquiridas?”
 
-**Somente depois** definir o custo em XP e outros requisitos, em perguntas separadas. Não voltar a perguntar sobre o autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga, já aprovados.
+**Depois da resposta** cadastrar, se aprovado, as demais especializações Avançadas com requisitos efetivamente definidos, mantendo 1 XP e a capacidade de três fontes. Não voltar a perguntar sobre custo-padrão, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga, já aprovados.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Sem alteração de código, dados, custos de outras Perícias, Livro do Jogador, portal ou Foundry neste commit documental.**
