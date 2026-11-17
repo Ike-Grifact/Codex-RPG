@@ -126,7 +126,7 @@ Não cobrar as três formas cumulativamente.
 - A magia se conclui no **terceiro turno**, caso não seja interrompida.
 - **DEFINIDO — opção A (17/11/2026):** quando um ataque válido interrompe a canalização, **a conjuração em preparação é perdida**, inclusive a rolagem e os dados mantidos anteriormente. Para tentar conjurar novamente, o Hemomante precisa **declarar uma nova conjuração, realizar nova rolagem e começar outros três turnos de preparação**. Não pode retomar o tempo nem o resultado anteriores.
 
-**DEFINIDO:** a interrupção exige acertar a DE defensiva do Hemomante e igualar ou superar a força da magia; se ocorrer, a preparação e a rolagem são perdidas e a próxima tentativa exige três turnos e nova rolagem. **PENDENTE:** destino de eventuais recursos (PP, Coragem, cargas) empregados na tentativa interrompida; não presumir restituição ou perda adicional.
+**DEFINIDO:** a interrupção exige acertar a DE defensiva do Hemomante e igualar ou superar a força da magia; se ocorrer, a preparação e a rolagem são perdidas, e a próxima tentativa exige três turnos e nova rolagem. **DEFINIDO — opção A (17/11/2026):** **PP, Coragem e cargas de foco já efetivamente pagos na tentativa interrompida não são devolvidos**. Recursos não pagos não passam a ser cobrados em razão da interrupção. Os três alvos Sangrando não perdem sua condição apenas por sustentarem a conjuração.
 
 **DEFINIDO — Pedra da Alma equipada:** dispensa **estar Sangrando** e o **pagamento convencional em marcas/3 alvos/Vida**, permitindo conjuração de Sangue **instantânea**. Sua recarga continua excepcional (seção 4), não transformar essa dispensa em cargas infinitas.
 
@@ -176,7 +176,7 @@ Não cobrar as três formas cumulativamente.
 | **Grau mínimo para descongelar com Água** | **DEFINIDO:** Água G1 já permite remover Congelamento mediante teste contra DE defensiva do alvo |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
-| Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização e recomeça com três turnos e nova rolagem. **PENDENTE:** destino de recursos e limite de amplificação |
+| Hemomancia — interrupção e amplificação | **DEFINIDO:** ataque acerta a DE defensiva **e** força ≥ à magia; perde a canalização, reinicia com três turnos e nova rolagem, e **não recupera PP/Coragem/cargas já gastos**. **PENDENTE:** limite de amplificação |
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **PENDENTE**: se esgotamento imediatamente antes do fim de rodada inicia recuperação no mesmo encerramento |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
@@ -195,8 +195,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Quando uma canalização de Hemomancia for interrompida, os **recursos que já tiverem sido pagos** para aquela tentativa (se houver PP, Coragem ou carga de foco) são **consumidos definitivamente** ou **devolvidos**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “O limite histórico de **uma amplificação de Sangue por turno** permanece vigente, inclusive quando o Hemomante tem marcas de Sangue ou três alvos Sangrando disponíveis?”
 
-**Depois da resposta**, registrar apenas o destino de recursos eventualmente pagos na canalização interrompida; não reabrir as regras já aprovadas de DE defensiva, força ou reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, confirmar ou revisar somente o limite de amplificação por turno. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
