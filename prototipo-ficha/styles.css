@@ -1399,3 +1399,16 @@ html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65
 .fp-hemo-register-fields button{padding:9px 12px;min-height:38px;border-radius:8px;border:1px solid var(--fp-p);background:color-mix(in srgb,var(--fp-p) 14%,var(--fp-raised));color:var(--fp-text);font-size:11px;font-weight:700}
 .fp-hemo-register-fields button:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:650px){.fp-hemo-register-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fp-hemo-register-fields button{grid-column:1/-1;width:100%}}
+
+/* SRD v0.73: reserva única de sangue inimigo e dois pagamentos alternativos. */
+.fp-hemo-panel .fp-hemo-counters{grid-template-columns:minmax(0,1fr)}
+.fp-hemo-panel .fp-hemo-register-fields{grid-template-columns:minmax(0,1fr) auto}
+.fp-hemo-effect-label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--fp-muted)}
+.fp-hemo-effect-label select{min-width:0;width:100%;min-height:38px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);font-size:12px;padding:8px 10px}
+.fp-hemo-payments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fp-hemo-payments button{min-width:0}
+#hemo-boost-status{display:block;font-weight:700}
+@media(max-width:650px){
+ .fp-hemo-panel .fp-hemo-register-fields{grid-template-columns:minmax(0,1fr)}
+ .fp-hemo-payments{grid-template-columns:minmax(0,1fr)}
+}
