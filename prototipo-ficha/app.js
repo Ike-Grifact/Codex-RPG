@@ -57,6 +57,27 @@ function racialCostTable(group,key,s=state){
  }
  return normal;
 }
+// Sinalização exclusivamente derivada da tabela de custos, sem efeitos mecânicos.
+function racialXpBand(group,key,s=state){
+ const table=racialCostTable(group,key,s);
+ if(table===(group==="attr"?AT_DISCOUNT:TRAIN_DISCOUNT))return "discount";
+ if(table===(group==="attr"?AT_ELEVATED:TRAIN_ELEVATED))return "elevated";
+ return "normal";
+}
+function racialXpLabel(band){
+ return band==="discount"?"XP reduzido":band==="elevated"?"XP aumentado":"XP normal";
+}
+function racialXpMarker(group,key,s=state){
+ const band=racialXpBand(group,key,s);
+ return band==="normal"?"":'<span class="fp-racial-xp-marker is-'+band+'" title="'+racialXpLabel(band)+' pela origem">'+
+  (band==="discount"?"↓ XP reduzido":"↑ XP aumentado")+'</span>';
+}
+function racialXpLegend(){
+ return '<div class="fp-racial-xp-legend" aria-label="Custos de XP da origem">'+
+  '<span class="fp-racial-xp-marker is-discount">↓ XP reduzido</span>'+
+  '<span class="fp-racial-xp-marker is-elevated">↑ XP aumentado</span>'+
+  '<small>Os contornos indicam custos raciais, não Graus extras.</small></div>';
+}
 // SRD v0.61: atributo favorecido da origem começa no Grau 1 (custo zero).
 // Atribuições raciais automáticas são distinguidas dos graus comprados manualmente.
 function racialStartingAttributes(race){
@@ -2028,8 +2049,8 @@ function sourceGeneInfo(id,s=state){
  const costTable=racialCostTable(group,key,s);
  const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
  const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
- const racialG1=isRacialGradeOne(group,key,s);
- return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,
+ const racialG1=isRacialGradeOne(group,key,s),xpBand=racialXpBand(group,key,s);
+ return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,xpBand,xpLabel:racialXpLabel(xpBand),
   dice:dataDice(group,previewGrade).map(n=>"d"+n),
   state:previewGrade>0?"owned":canRaise?"available":"locked",
   label:(racialG1?"Origem: Grau 1 gratuito · ":"")+(next===null?"Grau máximo":"Próximo avanço: "+next+" XP")};
@@ -2048,6 +2069,7 @@ function geneDetailHTML(id,s=state){
    (!state.creationLocked||editMode||src.previewGrade>src.grade)&&!state.pending;
   return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.previewGrade?"Desenvolvido":"Potencial")+'</span>'+
    '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo central.",know:"Conhecimento estudado.",practice:"Prática treinada."}[src.group])+'</p>'+
+   racialXpMarker(src.group,src.key,s)+
    '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+(src.minGrade?' · Grau 1 da origem (0 XP)':'')+'</dd>'+
    '<dt>Próximo grau</dt><dd>'+esc(src.next===null?"Máximo":src.next+" XP")+'</dd>'+
    '<dt>XP disponível</dt><dd>'+xpCosts(s).free+' XP</dd></dl>'+
@@ -2335,6 +2357,7 @@ function wizardBuild(){
   '<button type="button" data-gene-zoom="0">Centralizar</button><button type="button" data-gene-zoom="1" aria-label="Aumentar zoom">+</button></div></div>'+
   
   '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● Requisitos compráveis com XP</span><span class="locked">● Futuro (opcional)</span></div>'+
+  racialXpLegend()+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<div id="gene-build-actions">'+geneActionsPanel()+'</div>'+
   '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Alterações só entram na ficha após confirmar a evolução.</p>';
