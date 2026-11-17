@@ -1218,7 +1218,7 @@ function deletePlayerSheet(){
  toast("Ficha excluída. As demais continuam disponíveis.");
 }
 function load(){
- let migrated=false,legacyAvailable=false,retiredSkillMigrated=false;
+ let migrated=false,legacyAvailable=false,retiredSkillMigrated=false,racialGrantMigrated=false;
  const playerPayload=loadPlayerSheets();
  try{
   const saved=localStorage.getItem(SAVE_KEY);
@@ -1226,10 +1226,12 @@ function load(){
   legacyAvailable=!!oldRaw;
   if(playerPayload){
    const raw=playerPayload.character;
+   racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }else if(saved){
    const raw=JSON.parse(saved);
+   racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }
@@ -1261,11 +1263,11 @@ function load(){
  }
  renderPlayerSheets();
  $("import-old-creator").hidden=!legacyAvailable;
- if(migrated||retiredSkillMigrated){
-  // Persistir a migração somente quando houve Perícia revogada na ficha salva,
+ if(migrated||retiredSkillMigrated||racialGrantMigrated){
+  // Persistir mudanças somente quando a ficha realmente precisou ser corrigida,
   // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast(migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+  toast(racialGrantMigrated?"Lucker Puro corrigido: Inteligência + Destreza G1 gratuitos; Influência manual preservada.":migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
    "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
