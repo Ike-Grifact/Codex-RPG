@@ -209,7 +209,7 @@ const SKILLS=[
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Rework v0.71: Sangue é amplificação. Uma vez por turno pode substituir Coragem para ampliar uma magia OU manter mais um dado OU elevar um dado; fonte e quantidade do custo ainda pendentes, sem automação. Sangue puro: dano normal contra proteções. Extração: Hemomante e alvo Sangrando, perde 1 Vida própria para causar 1 dano direto à Vida do alvo e obter sangue extraído (não serve para Transfusão Sanguinária). Coágulos e hemorragia interna são manifestações em revisão. Outros efeitos de combate exigem sangue derramado no ambiente, custo por efeito pendente.",
+  "Rework v0.71: Sangue é amplificação. Uma vez por turno pode substituir Coragem para ampliar uma magia OU manter mais um dado OU elevar um dado; fonte e quantidade do custo ainda pendentes, sem automação. Sangue puro: dano normal contra proteções, armadura primeiro. Toda marca de sangue derramado ou extraído empregada numa conjuração é consumida, inclusive em ataque convencional, não podendo servir depois para Transfusão. Extração: Hemomante e alvo Sangrando, perde 1 Vida própria para causar 1 dano direto à Vida do alvo e obter sangue extraído (não serve para Transfusão Sanguinária). Coágulos e hemorragia interna são manifestações em revisão. Outros efeitos de combate exigem sangue derramado no ambiente, custo por efeito pendente.",
   2
  ],
  [
@@ -873,7 +873,7 @@ const CARD_BRIEFS={
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
  "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
- "sangue": "Rework v0.71: Sangue amplifica uma magia, retenção OU elevação de dado uma vez por turno, substituindo Coragem (quantia/recurso PENDENTES). Extração exige ambos Sangrando e troca 1 Vida própria por 1 Vida do alvo; sangue extraído também pode financiar Transfusão Sanguinária, sem contagem dupla.",
+ "sangue": "Rework v0.71: Sangue amplifica uma magia, retenção OU elevação de dado uma vez por turno, substituindo Coragem (quantia/recurso PENDENTES). Extração exige ambos Sangrando e troca 1 Vida própria por 1 Vida do alvo. Sangue derramado ou extraído é consumido quando utilizado em conjuração, mesmo para dano convencional à armadura, e não pode ser reutilizado em Transfusão.",
  "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
@@ -1901,6 +1901,9 @@ function renderHemomancy(){
  const h=state.hemomancy||{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false};
  $("hemo-spilled").textContent=String(h.spilled);
  $("hemo-extracted").textContent=String(h.extracted);
+ const spendSpilled=$("hemo-spend-spilled"),spendExtracted=$("hemo-spend-extracted");
+ if(spendSpilled)spendSpilled.disabled=h.spilled<1||!!state.pending;
+ if(spendExtracted)spendExtracted.disabled=h.extracted<1||!!state.pending;
  $("hemo-self-status").textContent=h.selfBleeding?"Sangrando":"Sem Sangramento";
  $("hemo-self-status").setAttribute("aria-pressed",String(h.selfBleeding));
  $("hemo-boost-status").textContent=h.usedThisTurn?"Uso do turno marcado":"Marcar amplificação do turno";
@@ -3365,6 +3368,15 @@ function onClick(event){
   if(state.race!=="humano"||!state.perseverancaUsed||state.pending)return;
   if(!confirm("Confirmar que o personagem concluiu um descanso longo?"))return;
   state.perseverancaUsed=false;renderRacePanel();save();toast("Perseverança Humana restaurada.");break;
+ }
+ case "hemo-spend":{
+  if(!ownsSkill("sangue")||state.pending)return;
+  const pool=button.dataset.pool;
+  if(!["spilled","extracted"].includes(pool)||state.hemomancy[pool]<1)return;
+  state.hemomancy[pool]-=1;
+  renderHemomancy();save();
+  toast("1 marca de Sangue consumida em conjuração. Resolva o ataque convencional contra a armadura ou o efeito especial com o Narrador.");
+  break;
  }
  case "hemo-adjust":{
   if(!ownsSkill("sangue")||state.pending)return;
