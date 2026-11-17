@@ -17,7 +17,7 @@ function character(race,more={}){
 test("v0.61: Grau 1 automático dos Atributos favorecidos sem alterar custos",()=>{
  const cases=[
   ["lucker_sangue",["vigor","agilidade"]],
-  ["lucker_puro",["inteligencia","influencia"]],
+  ["lucker_puro",["inteligencia","destreza"]],
   ["runa_espinhos",["vigor","forca"]],
   ["humano",[]]
  ];
@@ -41,8 +41,17 @@ test("v0.61: Grau 1 automático dos Atributos favorecidos sem alterar custos",()
  assert.equal(changed.attributes.agilidade,2,"graus superiores pagos nunca são apagados");
  assert.equal(changed.attributes.vigor,0,"G1 automático de raça anterior removido");
  assert.equal(changed.attributes.inteligencia,1);
- assert.equal(changed.attributes.influencia,1);
- const human=character("humano",{racialInitialAttributes:[]});
+ assert.equal(changed.attributes.destreza,1);
+ assert.equal(changed.attributes.influencia||0,0,"Influência não é atributo racial do Puro");
+ // Um grau comprado manualmente antes de escolher a raça não pode ser removido.
+ const manual=character("humano",{racialInitialAttributes:[],attributes:{agilidade:1}});
+ manual.race="lucker_sangue";applyRacialStartingAttributes(manual);
+ assert.deepEqual(manual.racialInitialAttributes,["vigor"]);
+ manual.race="lucker_puro";applyRacialStartingAttributes(manual);
+ assert.equal(manual.attributes.agilidade,1,"compra manual de Agilidade foi preservada");
+ assert.equal(manual.attributes.vigor,0,"grau automático anterior não foi preservado");
+ assert.equal(manual.attributes.destreza,1,"Destreza concedida ao Lucker Puro");
+  const human=character("humano",{racialInitialAttributes:[]});
  applyRacialStartingAttributes(human);
  assert.deepEqual(human.attributes,{},"Humano não recebe graus automáticos");
 });
@@ -93,7 +102,8 @@ test("v0.56: fontes raciais favorecidas, normais e elevadas sem multiplicar 2x",
  for(const key of ["vigor","agilidade"])assert.deepEqual(racialCostTable("attr",key,sangue),AT_DISCOUNT);
  assert.deepEqual(racialCostTable("attr","influencia",sangue),AT_ELEVATED);
  assert.deepEqual(racialCostTable("practice","apresentacao",sangue),TRAIN_ELEVATED);
- for(const key of ["inteligencia","influencia"])assert.deepEqual(racialCostTable("attr",key,puro),AT_DISCOUNT);
+ for(const key of ["inteligencia","destreza"])assert.deepEqual(racialCostTable("attr",key,puro),AT_DISCOUNT);
+ assert.deepEqual(racialCostTable("attr","influencia",puro),AT_COST,"Influência é de custo normal para o Puro");
  assert.deepEqual(racialCostTable("attr","forca",puro),AT_ELEVATED);
  assert.deepEqual(racialCostTable("practice","atletismo",puro),TRAIN_ELEVATED);
  for(const key of ["vigor","forca"])assert.deepEqual(racialCostTable("attr",key,runa),AT_DISCOUNT);
