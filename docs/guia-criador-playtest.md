@@ -38,7 +38,10 @@ No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados usam
 - Testar o bônus **condicional de +1E ou +2E** concedido por Perícias distintas mediante um seletor manual; não ultrapassar +2E por ação.
 - Aplicar afinidades entre peso do ataque (leve, médio, pesado) e balanço defensivo do alvo (leve, médio, pesado): Vantagem +1A / Desvantagem −1A.
 - Calcular DE atingida, classificação do resultado, dano básico por Êxitos e por pares completos de Pavor mantido não anulado, e gastos de Coragem.
-- Salvar localmente no navegador, importar/exportar JSON e imprimir.
+- Salvar localmente no navegador **múltiplas fichas independentes de jogadores**, importar/exportar JSON e imprimir.
+- Usar **Minhas fichas de jogadores** para alternar entre Humanos, Lucker de Sangue, Lucker Puro e Runa Espinhos. **Nova ficha** cria outro personagem sem apagar a anterior; **Duplicar** copia a build para testes separados; **Excluir ficha** pede confirmação e não remove as demais. O assistente retoma a etapa correspondente a cada ficha.
+- Ao **Importar JSON**, adicionar a ficha à lista em vez de substituir a selecionada. A migração da ficha salva pelo criador antigo também preserva sua cópia original. Cada navegador/dispositivo tem seu próprio armazenamento: **exporte JSON para backup ou para trocar de aparelho**. Muitos retratos podem esgotar o espaço local.
+- O modo NPC `?npc=1` continua separado das fichas de jogadores e não as altera.
 
 ## Como desenhar uma Perícia experimental
 
