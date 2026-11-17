@@ -3012,7 +3012,7 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=damageBasic*(critTier===4?2:1);
+ const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Retirada é ação de teste, não ataque
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
