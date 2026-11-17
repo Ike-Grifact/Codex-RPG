@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261117-origem-raca-1">
+  <link rel="stylesheet" href="./styles.css?v=20261117-multifichas-1">
   <script src="./catalog.js?v=0.48-armour3" defer></script>
   <script src="./gene-graph.js?v=20261116-constellation-1" defer></script>
-  <script src="./app.js?v=0.58-origem-raca-1" defer></script>
+  <script src="./app.js?v=0.60-multifichas-1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -40,7 +40,6 @@
     <div class="fp-page-tools">
       <a class="fp-secondary" href="#progressao" id="xp-shortcut">XP e evolução</a>
       <button type="button" class="fp-secondary fp-edit-toggle" id="edit-sheet" aria-pressed="false" hidden>Editar ficha</button>
-      <button type="button" class="fp-secondary" id="start-wizard" hidden>Novo personagem</button>
       <span class="fp-status-pill"><span class="fp-dot"></span> Ficha unificada</span>
       <button class="fp-secondary" id="demo-load" type="button">Carregar exemplo</button>
       <button class="fp-secondary" id="send-to-conflito" type="button" hidden>Enviar NPC ao Conflito</button>
@@ -51,6 +50,19 @@
     </div>
   </div>
 
+  <section class="fp-player-sheets fp-panel" id="player-sheets" aria-label="Minhas fichas de jogadores">
+    <div class="fp-player-sheets-picker">
+      <label for="player-sheet-select">MINHAS FICHAS DE JOGADORES</label>
+      <select id="player-sheet-select" aria-label="Selecionar ficha de jogador"></select>
+      <small id="player-sheets-count">Carregando fichas locais...</small>
+    </div>
+    <div class="fp-player-sheets-actions">
+      <button type="button" class="fp-primary-btn" id="start-wizard">+ Nova ficha</button>
+      <button type="button" class="fp-secondary" id="player-sheet-duplicate">Duplicar</button>
+      <button type="button" class="fp-secondary fp-danger-button" id="player-sheet-delete" disabled>Excluir ficha</button>
+    </div>
+    <p class="fp-player-sheets-help">Cada personagem tem XP, raça, inventário, rolagens e progresso próprios. O salvamento é local neste navegador; use <strong>Exportar ficha</strong> para guardar cópias.</p>
+  </section>
 
   <section class="fp-wizard fp-panel" id="builder-root" aria-label="Construtor de personagem por etapas">
     <div class="fp-wizard-intro">
