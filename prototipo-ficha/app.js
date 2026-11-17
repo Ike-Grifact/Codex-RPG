@@ -3190,6 +3190,15 @@ function renderInventory(){
   const canResist1=it.weight==="extremo"?it.grade>=2:(it.weight==="alto"||it.weight==="medio")?it.grade>=2:it.grade>=3;
   const canResist2=it.weight==="alto"&&it.grade>=3;
   const canImmunize=it.weight==="extremo"&&it.grade>=4;
+  const shieldEmbedFields=it.type!=="escudo"?"":(
+   '<div class="fp-item-hint"><label><strong>Arma cravada no escudo:</strong> '+
+   inventorySelect("embeddedWeapon",it.embeddedWeapon||"",
+    [["","Nenhuma"],...(["alto","extremo"].includes(it.weight)?[]:[["medio","Arma Média"]]),["pesado","Arma Pesada"]],it.id)+
+   '</label></div>'+
+   (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −2E em Levantar Escudo; '+
+    'carga adicional de '+pad(WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1])+
+    ' Alto enquanto o escudo permanecer carregado. Retirar a arma: escolha Nenhuma. Soltar escudo: retire o item da carga.</div>':"")
+  );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
@@ -3217,7 +3226,7 @@ function renderInventory(){
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
-  armorFields+'</div>';
+  armorFields+shieldEmbedFields+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
 function renderTrade(){
@@ -3715,14 +3724,29 @@ function onChange(event){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
   const k=el.dataset.itemField;
   if(k==="name")it.name=el.value.slice(0,90);
-  else if(k==="type"){it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";}
-  else if(k==="weight"){it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";}
+  else if(k==="type"){
+   it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";
+   if(it.type!=="escudo")it.embeddedWeapon="";
+  }
+  else if(k==="weight"){
+   it.weight=Object.hasOwn(WEIGHTS,el.value)?el.value:"leve";
+   if(it.type==="escudo"&&["alto","extremo"].includes(it.weight)&&it.embeddedWeapon==="medio"){
+    it.embeddedWeapon="";toast("Escudo pesado só aceita Cravar de arma Pesada; marca de arma Média retirada.");
+   }
+  }
   else if(k==="qty")it.qty=clamp(Math.floor(el.value),1,99);
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);}
   else if(k==="max"){it.max=it.type==="armadura"&&it.weight==="muito_leve"?0:clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
+  else if(k==="embeddedWeapon"&&it.type==="escudo"){
+   const w=["medio","pesado"].includes(el.value)?el.value:"";
+   if(w==="medio"&&["alto","extremo"].includes(it.weight)){
+    toast("Escudo pesado só pode receber Cravar de arma Pesada.");
+    it.embeddedWeapon="";
+   }else it.embeddedWeapon=w;
+  }
   if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
