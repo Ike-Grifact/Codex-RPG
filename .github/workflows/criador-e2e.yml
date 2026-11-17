@@ -43,7 +43,7 @@ jobs:
       - name: Testar custo de XP da criatura Pequena independente
         run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs prototipo-ficha/domar-chain.test.mjs
       - name: Validar quatro linhagens e custos raciais
-        run: node --test prototipo-ficha/racas.test.mjs
+        run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel
         run: node .github/tests/pequena-ficha-e2e.cjs
       - name: Validar requisitos da Invocação Elemental e os portes de Domar
