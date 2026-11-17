@@ -1816,7 +1816,7 @@ function geneDetailHTML(id,s=state){
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
  const slug=SKILL_PERMALINKS[sid];
  const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
- const skillButton=owned?
+ const skillButton=owned&&racial?'<button type="button" disabled>Concedida pela origem · 0 XP</button>':owned?
   '<button type="button" data-action="respec-skill" data-id="'+esc(sid)+'"'+(state.pending?' disabled':'')+'>Devolver '+(Number.isInteger(cost)?cost:"?")+' XP · testar build</button>':
   status==="potential"&&packagePlan&&geneCanAdjust()?
   '<button type="button" class="fp-primary-btn fp-gene-auto-buy" data-action="gene-auto-buy" data-id="'+esc(sid)+'">'+
@@ -2118,11 +2118,11 @@ function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
- const skillList=SKILLS.filter(([id])=>ownsSkill(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
+ const skillList=SKILLS.filter(([id])=>ownsSkill(id)).map(([id,name])=>'<li>'+esc(name)+(racialGrants(state).includes(id)?' <small>(origem · 0 XP)</small>':'')+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
-  '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
+  '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(RACES[state.race]?.[0]||"Humano")+' · '+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
   '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
   '<div class="fp-wiz-review-list"><section data-source-group="attr"><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
   '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
@@ -2827,7 +2827,7 @@ function setWeaponFocus(selected){
 /** Lista completa das Perícias adquiridas, inclusive IDs legados ocultos no grafo. */
 function renderRespecSkills(){
  const box=$("respec-skills-list");if(!box)return;
- const owned=SKILLS.filter(([id])=>ownsSkill(id));
+ const owned=SKILLS.filter(([id])=>state.skills.includes(id)); // Reembolso só para compra por XP.
  box.innerHTML=owned.length?owned.map(([id,name,,cost])=>
   '<div class="fp-respec-row"><span><strong>'+esc(name)+'</strong><small>'+
   (Number.isInteger(cost)?cost+" XP investidos":"Custo pendente — conferir ficha")+'</small></span>'+
