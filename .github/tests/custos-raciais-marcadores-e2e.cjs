@@ -60,11 +60,18 @@ const cases=[
    assert.equal(await page.locator(".fp-racial-xp-legend .fp-racial-xp-marker").count(),2,"Mapa apresenta legenda textual");
    const summaryBefore=await page.locator("#wizard-summary").innerText();
    await page.locator('[data-action="wizard-mode"][data-mode="list"]').click();
-   const source=await page.locator("#wizard-content .fp-wiz-source").evaluateAll(nodes=>({
-    discount:nodes.filter(el=>el.classList.contains("is-xp-discount")).length,
-    elevated:nodes.filter(el=>el.classList.contains("is-xp-elevated")).length
-   }));
-   assert.deepEqual(source,{discount:discount.length,elevated:elevated.length},race+" modo de listas consistente");
+   for(const group of ["attr","know","practice"]){
+    await page.locator('[data-action="wizard-tab"][data-group="'+group+'"]').click();
+    const source=await page.locator("#wizard-content .fp-wiz-source").evaluateAll(nodes=>({
+     discount:nodes.filter(el=>el.classList.contains("is-xp-discount")).length,
+     elevated:nodes.filter(el=>el.classList.contains("is-xp-elevated")).length,
+     labels:nodes.filter(el=>el.querySelector(".fp-racial-xp-marker")).length
+    }));
+    const expectedDiscount=discount.filter(id=>id.startsWith(group+":")).length;
+    const expectedElevated=elevated.filter(id=>id.startsWith(group+":")).length;
+    assert.deepEqual(source,{discount:expectedDiscount,elevated:expectedElevated,labels:expectedDiscount+expectedElevated},
+     race+" modo de listas ("+group+") consistente");
+   }
    await page.locator('[data-action="wizard-mode"][data-mode="genetic"]').click();
    assert.equal(await page.locator("#wizard-summary").innerText(),summaryBefore,"Trocar visualização não altera XP");
    await page.reload({waitUntil:"domcontentloaded"});
