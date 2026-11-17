@@ -27,13 +27,16 @@ test("Movimento ortogonal respeita paredes, casas ocupadas e limite por rodada",
  assert.equal(plannedMove(unit,{x:3,y:1},terrain,[unit,{id:"occupied",x:3,y:1}]).ok,false);
  unit.moved=8;assert.equal(plannedMove(unit,{x:4,y:1},terrain,[unit]).ok,false);
 });
-test("Muito Leve dá +2 só ao esquivar e não inventa Integridade",()=>{
+test("Armaduras alteram todas as defesas sem bônus duplicado na esquiva; teto absoluto 12",()=>{
  const veryLight={equipped:true,weight:"muito_leve",max:0,integrity:0};
  const light={equipped:true,weight:"leve",max:7,integrity:7};
  assert.equal(dodgeBonus(veryLight),2);
- assert.equal(defenseWithStance(0,veryLight,"normal"),0);
+ assert.equal(defenseWithStance(0,veryLight,"normal"),2);
  assert.equal(defenseWithStance(0,veryLight,"esquiva"),2);
+ assert.equal(defenseWithStance(0,light,"normal"),1);
  assert.equal(defenseWithStance(0,light,"esquiva"),1);
+ assert.equal(defenseWithStance(30,veryLight,"normal"),11,"teto natural 9 antes da armadura");
+ assert.ok(defenseWithStance(30,veryLight,"normal")<=12);
  assert.equal(armorPenalty({equipped:true,weight:"alto"}),1);
  assert.equal(defenseWithStance(5,{equipped:true,weight:"alto"},"normal"),4);
 });
