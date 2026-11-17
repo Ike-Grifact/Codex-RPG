@@ -1,12 +1,14 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.59](srd-continuidade-v0.59.md), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.60](srd-continuidade-v0.60.md) (múltiplas fichas de jogadores), mantendo o [SRD v0.59](srd-continuidade-v0.59.md) (identidade), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
 ### Linhagens de Aprendizes — custos revistos em 17/11/2026 [SRD v0.56]
+
+**Gerenciador de fichas [DEFINIDO, SRD v0.60]:** o mesmo navegador pode manter vários personagens de raças diferentes, cada um com XP, compras, itens, rolagens e progresso independentes. Na barra **Minhas fichas de jogadores**, use **Nova ficha**, **Duplicar**, **Excluir** ou selecione outro Aprendiz. Importar JSON adiciona uma ficha; exportar JSON salva uma cópia externa. Fichas antigas são migradas sem exclusão do salvamento legado. Não há sincronização entre dispositivos.
 
 **Identidade [DEFINIDO, SRD v0.59]:** **Origem é a Raça**. Na Etapa 1, o seletor **Origem / Raça** ocupa a posição antes usada por “Origem narrativa”, ao lado do Conceito. Não há dois campos de origem nem seleção de linhagem repetida embaixo. Conceito, Virtude e Personalidade continuam livres; fichas legadas preservam seu campo narrativo antigo em JSON, sem convertê-lo em raça.
 
