@@ -1645,34 +1645,63 @@ function raceBenefitsForm(){
  const c=RACES[state.race]||RACES.humano;
  const free=racialStartingAttributes(state.race).map(id=>A.find(([k])=>k===id)?.[1]||id);
  const sources=free.length?'<p><strong>Grau 1 de origem (0 XP): '+esc(free.join(" + "))+'</strong>. Outros Atributos devem ser comprados.</p>':'<p>Nenhum Atributo concedido automaticamente nesta raça.</p>';
+ const extras=racialExtraG1(),repair=extras.length?
+  '<div><p>Há '+extras.length+' Atributo(s) extra(s) em G1. Eles não são benefícios automáticos desta raça; podem ser compras ou resíduos de fichas anteriores.</p><button type="button" class="fp-secondary" data-action="wizard-racial-repair">Revisar graus extras</button></div>':"";
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
- return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p></div>';
+ return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p>'+repair+'</div>';
 }
 function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending||id===state.race)return;
- const before=structuredClone(state),old=state.race,oldStarterPurchased=wizardStarterPurchased;
- const chosenWasFree=wizardStarterAttribute&&isRacialGradeOne("attr",wizardStarterAttribute,before);
- state.race=id;state.pureElement="";state.runeElements=["",""];
- applyRacialStartingAttributes(state,wizardStarterAttribute?[wizardStarterAttribute]:[]);
- // Se o jogador manteve sua primeira escolha ao trocar de origem,
- // ela passa a contar como compra normal, removível caso escolha outra.
- if(chosenWasFree&&!isRacialGradeOne("attr",wizardStarterAttribute,state)&&
-    (state.attributes[wizardStarterAttribute]||0)===1)
-  wizardStarterPurchased=wizardStarterAttribute;
- const duplicate=state.skills.some(key=>racialGrants(state).includes(key));
- const blocked=dependentsValid(state);
- if(duplicate||blocked||xpCosts().free<0){
-  state=before;wizardStarterPurchased=oldStarterPurchased;
-  toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
+ const old=state.race,candidate=structuredClone(state);
+ // A seleção "Começar com" é específica da origem em que foi escolhida.
+ // Desfazer somente esse investimento G1 registrado pelo assistente.
+ if(wizardStarterPurchased&&(candidate.attributes[wizardStarterPurchased]||0)===1&&
+    !racialStartingAttributes(old).includes(wizardStarterPurchased))
+  candidate.attributes[wizardStarterPurchased]=0;
+ candidate.race=id;candidate.pureElement="";candidate.runeElements=["",""];
+ // Nunca preservar a escolha do assistente entre origens: esse era o vazamento
+ // Runa→Sangue (Força) e Sangue→Puro (Agilidade).
+ applyRacialStartingAttributes(candidate);
+ const duplicate=candidate.skills.some(key=>racialGrants(candidate).includes(key));
+ const blocked=dependentsValid(candidate);
+ if(duplicate||blocked||xpCosts(candidate).free<0){
+  toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");
+  render();return;
  }
+ state=candidate;
+ wizardStarterAttribute="";wizardStarterPurchased="";wizardStarterTraining="";
+ wizardStarterPhase="attr";wizardStep=0;wizardReached=0;
  if(ownsSkill("criar-item-foco-magia")){
   if(!state.elementalCrystal.quantity){state.elementalCrystal.quantity=1;state.elementalCrystal.element="";}
  }else if(old==="lucker_puro"||old==="runa_espinhos"){
   state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
  }
  geneDraft.clear();genePendingSkills.clear();geneSelected="attr:"+(racialStartingAttributes(id)[0]||"forca");
- render();save();
+ render();wizardPersist();save();
+}
+function racialExtraG1(s=state){
+ const favored=new Set(racialStartingAttributes(s.race));
+ return A.filter(([id])=>!favored.has(id)&&(s.attributes[id]||0)===1);
+}
+function repairRacialG1(){
+ if(state.creationLocked||state.pending)return;
+ const extras=racialExtraG1();
+ if(!extras.length){toast("Nenhum Grau 1 adicional encontrado.");return;}
+ const names=extras.map(([,name])=>name).join(", ");
+ if(!confirm("Revisar os Graus 1 adicionais desta ficha?\\n\\nSerão removidos: "+names+
+  ".\\n\\nAtenção: o sistema não consegue distinguir em fichas antigas uma compra manual de um Grau residual de outra raça. Se algum desses Graus foi comprado intencionalmente, CANCELE e não use esta correção. Graus 2+ serão mantidos."))
+  return;
+ const candidate=structuredClone(state);
+ for(const [id] of extras)candidate.attributes[id]=0;
+ const blocked=dependentsValid(candidate);
+ if(blocked){toast("Limpeza cancelada: "+blocked);return;}
+ state=candidate;
+ wizardStarterAttribute="";wizardStarterPurchased="";wizardStarterTraining="";
+ wizardStarterPhase="attr";wizardStep=0;wizardReached=0;
+ geneDraft.clear();genePendingSkills.clear();
+ render();wizardPersist();save();
+ toast("Graus 1 adicionais removidos. Apenas os da origem continuam automáticos.");
 }
 function changeRaceElement(key,value){
  if(state.creationLocked||state.pending)return;
@@ -2430,7 +2459,7 @@ function renderWizard(){
   content=wizardStarterCards();
  }else if(stage===2){
    content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
-   '<h3>Construa seu Aprendiz.</h3><p>O <strong>modo padrão</strong> apresenta as compras em listas. Se preferir, alterne para o <strong>Codex Genético</strong>. Ambos usam o mesmo personagem, as mesmas compras e o mesmo saldo de XP.</p></div>'+
+   '<h3>Construa seu Aprendiz.</h3><p>O <strong>Codex Genético</strong> é o modo principal. Se preferir, use as listas opcionais. Ambas as visualizações usam o mesmo personagem, as mesmas compras e o mesmo XP.</p></div>'+
    wizardBuild();
   }else if(stage===3){
    content=wizardEquipment();
@@ -3132,6 +3161,7 @@ function onClick(event){
  switch(action){
  case "wizard-next":wizardSelectStep(wizardStep+1);break;
  case "wizard-starter-attr":wizardStarterSelect("attr",button.dataset.key);break;
+ case "wizard-racial-repair":repairRacialG1();break;
  case "wizard-starter-training":wizardStarterSelect(button.dataset.group,button.dataset.key);break;
  case "wizard-starter-edit":if(wizardStep===1){wizardStarterPhase=button.dataset.phase==="attr"?"attr":"training";wizardPersist();renderWizard();}break;
  case "wizard-category":{
