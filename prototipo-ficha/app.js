@@ -1025,7 +1025,7 @@ let wizardShopCategory="all",wizardTradePreferred="ervas";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false,geneInspectorTop=12;
 const WIZARD_STEPS=[
- ["Identidade","Quem é seu Aprendiz?","Nome, origem e conceito"],
+ ["Identidade","Quem é seu Aprendiz?","Nome, raça e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
  ["Distribuir XP","Compre graus e Perícias","Modo padrão ou Codex Genético"],
  ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
@@ -1449,7 +1449,7 @@ function symbolMarkup(symbols,criticalFace=false){
 }
 function syncFields(){
  const race=$("char-race");if(race)race.value=state.race;
- for(const [id,key] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
+ for(const [id,key] of [["char-name","name"],["char-concept","concept"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
   $(id).value=state[key];
  }
  $("char-level").value=state.level;
@@ -1459,22 +1459,24 @@ function syncFields(){
 
 function raceOptions(list,value){return '<option value="">Escolha o elemento</option>'+list.map(([id,n])=>'<option value="'+id+'"'+(id===value?' selected':'')+'>'+n+'</option>').join("");}
 function raceForm(){
+ return '<label class="fp-wiz-field">Origem / Raça<select data-race-select aria-label="Origem / Raça">'+
+  Object.entries(RACES).map(([id,v])=>'<option value="'+id+'"'+(id===state.race?' selected':'')+'>'+v[0]+'</option>').join("")+
+  '</select></label>';
+}
+function raceBenefitsForm(){
  const c=RACES[state.race]||RACES.humano;
- const select='<label class="fp-wiz-field">Linhagem / raça<select data-race-select>'+Object.entries(RACES).map(([id,v])=>'<option value="'+id+'"'+(id===state.race?' selected':'')+'>'+v[0]+'</option>').join("")+'</select></label>';
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
- return select+pure+rune+'<div class="fp-wiz-reminder"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais gratuitas não consomem XP nem atribuem graus automaticamente.</p></div>';
+ return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p><p>Perícias raciais gratuitas não consomem XP nem atribuem graus automaticamente.</p></div>';
 }
 function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending)return;
  const old=state.race,oldPure=state.pureElement,oldRune=[...state.runeElements];
  state.race=id;state.pureElement="";state.runeElements=["",""];
- const oldOrigin=state.origin;
- if(state.origin==="Humano"&&id!=="humano")state.origin=""; // Origem é local/cultura, não a nova linhagem.
  const duplicate=state.skills.some(id=>racialGrants(state).includes(id));
  const blocked=dependentsValid(state);
  if(duplicate||blocked||xpCosts().free<0){
-  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;state.origin=oldOrigin;
+  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;
   toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
  }
  // O cristal inicial é o benefício comum da aquisição de Criar Item de Foco e Magia.
@@ -2150,7 +2152,7 @@ function wizardReview(){
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
-  '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(RACES[state.race]?.[0]||"Humano")+' · '+esc(state.concept||"Profissão por descobrir")+' · '+esc(state.origin||"Origem não informada")+'</p></div></div>'+
+  '<div><small>APRENDIZ · NÍVEL '+state.level+'</small><h4>'+esc(state.name||"Sem nome")+'</h4><p>'+esc(RACES[state.race]?.[0]||"Humano")+' · '+esc(state.concept||"Profissão por descobrir")+'</p></div></div>'+
   '<div class="fp-wiz-review-stats"><div><small>VIDA</small><b>'+life+'</b></div><div><small>DE DEFENSIVA</small><b>'+deNatural()+'</b></div><div><small>DESLOCAMENTO</small><b>'+move+' m</b></div><div><small>XP INVESTIDO</small><b>'+x.total+'</b></div></div>'+
   '<div class="fp-wiz-review-list"><section data-source-group="attr"><h4>Atributos</h4><ul>'+sourceSummary("attr",A)+'</ul></section>'+
   '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
@@ -2213,12 +2215,12 @@ function renderWizard(){
    '<div class="fp-wiz-input-grid">'+[
     ["name","Nome do personagem","Como seu Aprendiz se chama?",70],
     ["concept","Conceito / profissão emergente","Um caminho que deseja seguir",100],
-    ["origin","Origem narrativa","Cidade, cultura ou procedência",80],
+    ["race","Origem / Raça","",0],
     ["virtue","Virtude","O que o move?",60],
     ["personality","Personalidade","Como reage ao mundo?",100]
-   ].map(([field,label,placeholder,max])=>'<label class="fp-wiz-field'+(field==="name"?' wide':'')+'">'+label+
+   ].map(([field,label,placeholder,max])=>field==="race"?raceForm():'<label class="fp-wiz-field'+(field==="name"?' wide':'')+'">'+label+
     '<input data-wizard-field="'+field+'" type="text" maxlength="'+max+'" placeholder="'+placeholder+'" value="'+esc(state[field])+'"></label>').join("")+
-   raceForm()+'</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
+   raceBenefitsForm()+'</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
   content=wizardStarterCards();
  }else if(stage===2){
@@ -3140,7 +3142,7 @@ function bind(){
    renderWizardSkillCards();renderSkills();syncSkillFilterControls();return;
   }
   const field=event.target?.dataset?.wizardField;
-  if(viewMode!=="builder"||!["name","concept","origin","virtue","personality"].includes(field))return;
+  if(viewMode!=="builder"||!["name","concept","virtue","personality"].includes(field))return;
   state[field]=String(event.target.value).slice(0,field==="name"?70:100);
   save();
   const heading=$("wizard-summary")?.querySelector?.(".fp-wiz-summary-top strong");
@@ -3149,7 +3151,7 @@ function bind(){
  document.addEventListener("change",event=>{
   if(event.target?.matches?.("[data-wizard-focus]"))setWeaponFocus(event.target.value);
  });
- for(const [id,field] of [["char-name","name"],["char-concept","concept"],["char-origin","origin"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
+ for(const [id,field] of [["char-name","name"],["char-concept","concept"],["char-virtue","virtue"],["char-personality","personality"],["char-notes","notes"]]){
   $(id).addEventListener("input",function(){state[field]=this.value;save();});
  }
  $("char-level").addEventListener("change",function(){this.value=state.level;});

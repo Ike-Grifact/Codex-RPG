@@ -20,7 +20,7 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 
 **Restrições:** 18 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 242, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
 
-Regras completas e precedência: [SRD v0.58](srd-continuidade-v0.58.md) (18 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md), sobre as linhagens do [SRD v0.55](srd-continuidade-v0.55.md).
+Regras completas e precedência: [SRD v0.59](srd-continuidade-v0.59.md) (Origem = Raça na interface de identidade) e [SRD v0.58](srd-continuidade-v0.58.md) (18 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md) e os benefícios raciais do [SRD v0.55](srd-continuidade-v0.55.md).
 
 ## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
 

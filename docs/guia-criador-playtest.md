@@ -18,7 +18,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 
 ## Fluxo guiado da criação
 
-1. **Identidade:** informar nome, conceito, origem e identidade.
+1. **Identidade:** informar nome, conceito, **Origem / Raça** (seletor no alto, no lugar de “Origem narrativa”), virtude e personalidade. A origem é a raça; os benefícios raciais aparecem logo após os demais campos, sem outro seletor duplicado.
 2. **Escolhas iniciais:** primeiro selecionar **um Atributo principal** entre os seis, apresentados individualmente com função, exemplos, dados e custo de 1 XP no grau 1. Depois selecionar **um Conhecimento ou uma Prática**, entre os seis de cada categoria, também apresentados individualmente. Conhecimento e Prática são alternativas para o segundo investimento obrigatório, **não duas compras exigidas**. O grau 1 custa 2 XP. Uma confirmação efetua as duas compras, sem gasto ao apenas navegar ou comparar as opções. “Principal” não concede bônus.
 3. **Distribuir XP:** **listas são o modo padrão**, com abas para Atributos, Conhecimentos, Práticas e Perícias. O **Codex Genético** é uma alternância opcional e usa a mesma ficha, o mesmo saldo e as mesmas compras.
 4. **VT e itens iniciais:** o playtest utiliza **20 VT experimentais**, valor separado dos 18 XP, distribuídos entre cinco recursos comuns. O catálogo G1 oferece compras opcionais com preços ainda **PROPOSTOS**, sem itens gratuitos presumidos. Equipamentos adquiridos entram no inventário da ficha.

@@ -1,12 +1,14 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A atualização normativa mais recente para playtest é o [SRD de Continuidade v0.58](srd-continuidade-v0.58.md), que fixa 18 XP iniciais para o próximo playtest sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente é o [SRD de Continuidade v0.59](srd-continuidade-v0.59.md), que define **Origem como Raça** na identidade; o orçamento de **18 XP iniciais [EXPERIMENTAL]** continua no [SRD v0.58](srd-continuidade-v0.58.md), sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` inclui essas revisões publicadas. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
 
 ### Linhagens de Aprendizes — custos revistos em 17/11/2026 [SRD v0.56]
+
+**Identidade [DEFINIDO, SRD v0.59]:** **Origem é a Raça**. Na Etapa 1, o seletor **Origem / Raça** ocupa a posição antes usada por “Origem narrativa”, ao lado do Conceito. Não há dois campos de origem nem seleção de linhagem repetida embaixo. Conceito, Virtude e Personalidade continuam livres; fichas legadas preservam seu campo narrativo antigo em JSON, sem convertê-lo em raça.
 
 Todos começam como **Aprendizes**, sem classe fixa. A linhagem concede benefícios gratuitos e escolhe a faixa de XP de fontes específicas:
 

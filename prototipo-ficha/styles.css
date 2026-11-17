@@ -360,14 +360,16 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-wiz-input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;align-items:start}
 .fp-wiz-field{display:flex;flex-direction:column;gap:6px;font-size:10px;font-weight:800;letter-spacing:.045em;color:var(--fp-muted);text-transform:uppercase}
 .fp-wiz-field.wide{grid-column:span 2}
-.fp-wiz-field input{min-width:0;width:100%;padding:13px;color:var(--fp-text);background:var(--fp-deep);
+.fp-wiz-field input,.fp-wiz-field select{min-width:0;width:100%;padding:13px;color:var(--fp-text);background:var(--fp-deep);
  border:1px solid var(--fp-stroke);border-radius:10px;outline:none;font-size:14px;letter-spacing:normal;text-transform:none}
 .fp-wiz-field.wide input{font:normal 23px Georgia,serif}
-.fp-wiz-field input:focus{border-color:var(--fp-gold)}
+.fp-wiz-field input:focus,.fp-wiz-field select:focus{border-color:var(--fp-gold)}
+.fp-wiz-field select{font:inherit;font-size:14px;font-weight:500;letter-spacing:normal;text-transform:none;cursor:pointer;min-height:48px}
 .fp-wiz-reminder{margin-top:21px;border-left:3px solid var(--fp-gold);background:var(--fp-raised);
  border-radius:7px;padding:15px 16px;font-size:11px;line-height:1.65}
 .fp-wiz-reminder b,.fp-wiz-reminder strong{color:var(--fp-gold);font-size:12px}
 .fp-wiz-reminder p{margin-top:4px;color:var(--fp-muted)}
+.fp-wiz-race-info{grid-column:1/-1;margin-top:0}
 .fp-wiz-source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .fp-wiz-source{border:1px solid var(--fp-stroke);background:var(--fp-deep);
  border-radius:12px;padding:13px;min-width:0;display:flex;flex-direction:column;gap:12px}
