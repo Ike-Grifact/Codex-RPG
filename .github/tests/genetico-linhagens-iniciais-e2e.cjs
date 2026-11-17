@@ -84,13 +84,14 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   await page.locator('#wizard-steps button[data-action="wizard-go"][data-step="0"]').click();
   await page.locator("[data-race-select]").selectOption("lucker_puro");
   const changed=await read();
-  assert.equal(changed.attributes.agilidade,1,"Agilidade escolhida pelo jogador permanece como compra normal após mudar de raça");
+  assert.equal(changed.attributes.agilidade||0,0,"Agilidade escolhida como primeiro Atributo da raça anterior não pode persistir automaticamente");
   assert.equal(changed.attributes.vigor||0,0,"Vigor automático da raça anterior removido");
   assert.equal(changed.attributes.inteligencia,1);
   assert.equal(changed.attributes.destreza,1);
   assert.equal(changed.attributes.influencia||0,0,"Influência não é favorecida pelo Puro");
   assert.deepEqual(changed.racialInitialAttributes.sort(),["destreza","inteligencia"]);
-  assert.match(await page.locator("#wizard-summary").innerText(),/14 XP/,"Agilidade escolhida custa 1 XP + Atletismo elevado custa 3 XP");
+  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/,"Somente Atletismo elevado custa 3 XP; Puro recebe apenas seus dois Graus gratuitos");
+  assert.equal(await page.locator('#wizard-steps [data-action="wizard-go"][data-step="0"]').getAttribute("aria-current"),"step","Troca de raça reinicia escolha inicial");
   // Uma ficha legada da v0.61 identificada pelo marcador de G1 racial
   // é corrigida sem apagar compras manuais de outros Atributos.
   await page.evaluate(({index,prefix})=>{
@@ -119,6 +120,54 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal((await read()).attributes.influencia,2,"Preservar Influência G2 comprado manualmente");
   assert.equal((await read()).attributes.destreza,1,"Destreza G1 continua concedida");
+
+  // Reproduzir o vazamento visto no playtest: Runa com Força selecionada
+  // -> Sangue (sem Força) -> Sangue com Agilidade -> Puro (sem Agilidade).
+  const expectedOnly=async(keys)=>{
+   const char=await read();
+   const owned=Object.entries(char.attributes).filter(([,grade])=>grade>0).map(([id])=>id).sort();
+   assert.deepEqual(owned,keys.slice().sort(),"Atributos restantes não podem ser concedidos pela outra raça");
+   assert.deepEqual((char.racialInitialAttributes||[]).slice().sort(),keys.slice().sort(),"Os únicos G1 automáticos devem ser da raça selecionada");
+  };
+  await page.locator("#start-wizard").click();
+  await page.locator("[data-race-select]").selectOption("runa_espinhos");
+  await expectedOnly(["forca","vigor"]);
+  await page.locator('[data-wizard-field="name"]').fill("Auditoria troca de raça");
+  await page.locator('#wizard-controls [data-action="wizard-next"]').click();
+  await page.locator('[data-action="wizard-starter-attr"][data-key="forca"]').click();
+  await page.locator('#wizard-steps button[data-action="wizard-go"][data-step="0"]').click();
+  await page.locator("[data-race-select]").selectOption("lucker_sangue");
+  await expectedOnly(["agilidade","vigor"]);
+  await page.reload({waitUntil:"domcontentloaded"});
+  await expectedOnly(["agilidade","vigor"]);
+  await page.locator('#wizard-controls [data-action="wizard-next"]').click();
+  await page.locator('[data-action="wizard-starter-attr"][data-key="agilidade"]').click();
+  await page.locator('#wizard-steps button[data-action="wizard-go"][data-step="0"]').click();
+  await page.locator("[data-race-select]").selectOption("lucker_puro");
+  await expectedOnly(["destreza","inteligencia"]);
+  await page.reload({waitUntil:"domcontentloaded"});
+  await expectedOnly(["destreza","inteligencia"]);
+  await page.locator("[data-race-select]").selectOption("humano");
+  await expectedOnly([]);
+  await page.locator("[data-race-select]").selectOption("lucker_sangue");
+  await expectedOnly(["agilidade","vigor"]);
+
+  // Fichas que já foram contaminadas por versões anteriores são
+  // corrigidas só mediante confirmação: nunca apagar compras manuais às cegas.
+  await page.evaluate(({index,prefix})=>{
+   const idx=JSON.parse(localStorage.getItem(index));
+   const key=prefix+idx.activeId,payload=JSON.parse(localStorage.getItem(key));
+   payload.character.attributes.forca=1;
+   localStorage.setItem(key,JSON.stringify(payload));
+  },{index:INDEX,prefix:PREFIX});
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert.equal((await read()).attributes.forca,1,"Não apagar possíveis compras manuais sem permissão");
+  const repair=page.locator('[data-action="wizard-racial-repair"]');
+  assert.equal(await repair.isVisible(),true,"Disponibilizar revisão de G1 extras na identidade");
+  page.once("dialog",dialog=>dialog.accept());
+  await repair.click();
+  await expectedOnly(["agilidade","vigor"]);
+
   assert.deepEqual(errors,[],"Sem erros JavaScript");
   console.log("PASS: pares únicos de G1 por raça, custo racial, substituição de escolha inicial, migração e mapa");
  }finally{await browser.close();}
