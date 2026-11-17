@@ -55,7 +55,7 @@ const SKILLS=[
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa.",
+  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Perfurante de armas físicas, sem anular acerto ou dano; Perfurar da magia de Água não é anulado. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
   1
  ],
  [
@@ -722,7 +722,7 @@ const CARD_EFFECTS={
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
  "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
- "escudo-arcano": "Protege por 1 rodada; DE e Integridade vêm de E+P.",
+ "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
  "improviso": "+1A e elemento disponível na cena sem efeito especial.",
  "mestre": "+1A cumulativo e dois efeitos de elementos habilitados.",
@@ -759,7 +759,7 @@ const CARD_BRIEFS={
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
  "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
- "escudo-arcano": "Escudo por uma rodada. A rolagem fornece DE/Integridade em E e P. Parede ou círculo; imunidade ao elemento e reações com Maestria.",
+ "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
  "improviso": "Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
