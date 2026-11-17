@@ -160,10 +160,10 @@ Não cobrar as três formas cumulativamente.
 - **Fogo G1 mesclado com Sagrado** pode **aplicar Queimar sem causar dano**.
 - **Fogo G1 sem essa mescla** conserva **dano convencional à armadura**, sem conceder dano direto à Vida por inferência.
 - **Congelar** (efeito de Água/Gelo) **imobiliza o alvo**; a duração aplicável do G1 deve ser lida na habilitação vigente (atualmente **1 rodada**), até revisão específica.
-- **DEFINIDO:** um conjurador com **magia de Água** pode **remover Congelamento**. Essa remoção não implica dano ou aplicação de Sangrando.
+- **DEFINIDO — procedimento (opção A, 17/11/2026):** um conjurador habilitado com **magia de Água** realiza **rolagem contra a DE defensiva do alvo**. Se **alcançar a DE**, remove Congelamento e encerra a imobilização por essa condição. Se **falhar**, Congelamento permanece até ser removido ou expirar pela duração pertinente. A remoção não causa dano nem aplica Sangrando por si só. Conservar os custos e requisitos já aprovados para conjurar.
 - Preservar **Fogo G2 Queimar = E + P à Integridade** e **G3 Derreter = E + P à Integridade mais 1 Vida direta fixa** conforme v0.76 enquanto não houver modificação expressa desses efeitos.
 
-**RESOLVIDO — esclarecimento autoral em 17/11/2026:** a frase “queimar tira sangramento e congelamento tb” corresponde à **opção B**: Queimar remove **Sangrando** e **Congelamento**. O autor acrescentou que **magia de Água também pode remover Congelamento**. A mera aplicação de Congelar não elimina Sangrando. **PENDENTE:** decidir se a remoção por magia de Água exige teste contra DE ou é automática, e qual Grau/procedimento se aplica; não inventar valores, custos ou ação gratuita.
+**RESOLVIDO — esclarecimento autoral em 17/11/2026:** a frase “queimar tira sangramento e congelamento tb” corresponde à **opção B**: Queimar remove **Sangrando** e **Congelamento**. O autor acrescentou que **magia de Água também pode remover Congelamento**. A mera aplicação de Congelar não elimina Sangrando. **DEFINIDO:** remover Congelamento com magia de Água **exige teste contra a DE defensiva do alvo**, não é automático. **PENDENTE:** Grau mínimo exigido e particularidades não regulamentadas; não inventar custos extras.
 
 ### 7. Pendências preservadas e divergências de implementação
 
@@ -171,7 +171,8 @@ Não cobrar as três formas cumulativamente.
 |---|---|
 | **Requisitos de Perícias Avançadas** | **DEFINIDO:** Grau 2 da própria fonte, 1 XP, até três fontes pertinentes; 12 especializações cadastradas na branch |
 | **Queimar × Congelar × Sangrando** | **DEFINIDO:** Queimar remove Sangrando e Congelamento; Água também pode remover Congelamento; Congelar por si não remove Sangrando |
-| **Remoção de Congelamento com magia de Água** | **PENDENTE — PRÓXIMA PERGUNTA:** exige teste de DE ou pode remover automaticamente? Grau e procedimento específicos ainda não decididos |
+| **Remoção de Congelamento com magia de Água** | **DEFINIDO:** rolar contra a DE defensiva do alvo; sucesso remove Congelamento e a imobilização correspondente, falha não remove |
+| **Grau mínimo para descongelar com Água** | **PENDENTE — PRÓXIMA PERGUNTA:** G1 é suficiente ou requer G2+? |
 | Redução voluntária da magia para G1 | **PENDENTE**: efeitos, custos, força e limites da redução |
 | Tempos gerais de conjuração vs magias memorizadas e exceção de Sangue | **PENDENTE**: integração sem revogar silenciosamente Perícias anteriores |
 | Hemomancia — interrupção e amplificação | **PENDENTE**: necessidade de ataque acertar DE; destino de recursos; limite de amplificação |
@@ -193,8 +194,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Para remover Congelamento usando uma magia de Água, o conjurador precisa **realizar uma rolagem contra a DE do alvo** ou a **remoção ocorre automaticamente**?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “A **magia de Água G1** já permite remover Congelamento após atingir a DE defensiva do alvo, ou isso exige **Grau 2**?”
 
-**Depois da resposta**, registrar o procedimento de remoção de Congelamento com Água, mantendo a regra de Queimar e as demais decisões já aprovadas. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar o Grau mínimo para descongelar com Água, mantendo a rolagem contra a DE defensiva do alvo e as demais decisões já aprovadas. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
