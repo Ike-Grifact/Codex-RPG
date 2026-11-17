@@ -856,16 +856,16 @@ const CARD_ACTIVATIONS={
 };
 
 function skillCompactCard([id,name,detail,cost],wizard){
- const owned=state.skills.includes(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
- const disabled=!!state.pending||(!owned&&(!!req||!affordable));
+ const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
+ const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 PP|1 Coragem/i.test(detail)?"1 PP ou 1 Coragem (ativação paga)":"Passiva / consultar"));
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
- const button=owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
+ const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
- '<div><dt>XP</dt><dd>'+esc(cost===null?"Pendente":cost+" XP")+'</dd></div>'+
+ '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":cost===null?"Pendente":cost+" XP")+'</dd></div>'+
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
  '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
  '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(CARD_BRIEFS[id]||detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
@@ -886,7 +886,7 @@ function filteredSkills(){
    if(HIDDEN_CATALOG_SKILLS.has(id))return false;
   if(skillFilter.ready&&!skillRequirementsMet(id))return false;
   if(skillFilter.scope==="related"){
-   if(!SKILL_BRANCHES.some(branch=>branch.includes(id)&&branch.some(k=>state.skills.includes(k))))return false;
+   if(!SKILL_BRANCHES.some(branch=>branch.includes(id)&&branch.some(k=>ownsSkill(k))))return false;
   }else if(skillFilter.scope!=="all"&&!(SKILL_AFFINITY[id]||[]).includes(skillFilter.scope))return false;
   const str=(name+" "+description).toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   return !query||str.includes(query);
@@ -1197,7 +1197,7 @@ function normalize(v){
    .map(x=>({name:x.name.slice(0,90),price:clamp(Math.floor(x.price||0),0,99999)})):[];
  }
  s.elementalCrystal={element:String(v.elementalCrystal?.element||"").slice(0,30),
-  quantity:clamp(Math.floor(v.elementalCrystal?.quantity??(s.skills.includes("criar-item-foco-magia")?1:0)),0,1)};
+  quantity:clamp(Math.floor(v.elementalCrystal?.quantity??(ownsSkill("criar-item-foco-magia",s)?1:0)),0,1)};
  for(const item of s.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
  s.courageUsedTurn=!!v.courageUsedTurn;
@@ -1466,7 +1466,7 @@ function applySheetPage(){
  "XP, fontes e Perícias para construir sua próxima especialização.":"Uma ficha de jogo limpa: recursos, rolagens e somente as habilidades que você adquiriu.";
 }
 function renderOwnedPanel(){
- const learned=SKILLS.filter(([id])=>state.skills.includes(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
+ const learned=SKILLS.filter(([id])=>ownsSkill(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
  const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
  const empty='<span class="fp-owned-empty">Nenhuma por enquanto. Explore o Codex Genético para encontrar novas opções.</span>';
  const markup=([id,name,detail,cost])=>{
@@ -1475,7 +1475,7 @@ function renderOwnedPanel(){
    '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
  };
  $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
- const elements=ELEMENT_SKILLS.filter(([id])=>state.skills.includes(id));
+ const elements=ELEMENT_SKILLS.filter(([id])=>ownsSkill(id));
  $("owned-elements").innerHTML=
   (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
@@ -1615,7 +1615,7 @@ function geneAutoPlan(id,base=genePreviewState()){
  const catalog=new Map(SKILLS.map(row=>[row[0],row]));
  const addSkill=(skillId,current,stack)=>{
   const row=catalog.get(skillId);
-  if(current.skills.includes(skillId))return current;
+  if(ownsSkill(skillId,current))return current;
   if(!row||HIDDEN_CATALOG_SKILLS.has(skillId)||!Number.isInteger(row[3])||
     row[3]<0||stack.includes(skillId))return null;
   const alternatives=GENE_AUTO_REQUIREMENTS[skillId]||
@@ -1665,7 +1665,7 @@ function geneAutoBuy(id){
    if(to>from)levels.push(name+" "+from+" → "+to);
   }
  }
- const newSkills=plan.state.skills.filter(sid=>!base.skills.includes(sid))
+ const newSkills=plan.state.skills.filter(sid=>!ownsSkill(sid,base))
   .map(sid=>SKILLS.find(([key])=>key===sid)?.[1]||sid);
  const before=xpCosts(base).free,after=xpCosts(plan.state).free;
  const summary="Comprar "+row[1]+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
@@ -1682,13 +1682,13 @@ function geneAutoBuy(id){
    else geneDraft.set(group+":"+key,grade);
   }
  }
- for(const sid of plan.state.skills)if(!state.skills.includes(sid))genePendingSkills.add(sid);
+ for(const sid of plan.state.skills)if(!ownsSkill(sid))genePendingSkills.add(sid);
  geneCommit();
 }
 function geneStageSkill(id){
  if(!geneCanAdjust())return;
  const row=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
- if(!row||state.skills.includes(id))return;
+ if(!row||ownsSkill(id))return;
  if(genePendingSkills.has(id)){
   genePendingSkills.delete(id);geneRefresh();return;
  }
@@ -1740,7 +1740,7 @@ function sourceGeneInfo(id,s=state){
   label:next===null?"Grau máximo":"Próximo avanço: "+next+" XP"};
 }
 function geneSkillStatus([id,,,cost],s=state){
- if(s.skills.includes(id))return"owned";
+ if(ownsSkill(id,s))return"owned";
  if(!Number.isInteger(cost)||xpCosts(s).free<cost||state.pending)return"locked";
  if(!skillReq(id,s))return"available";
  // Roxo somente se o pacote completo de fontes + Perícias estiver disponível no XP.
@@ -1763,7 +1763,7 @@ function geneDetailHTML(id,s=state){
  }
  const skill=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
  if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
- const [sid,name,detail,cost]=skill,owned=state.skills.includes(sid),staged=genePendingSkills.has(sid);
+ const [sid,name,detail,cost]=skill,owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
  const slug=SKILL_PERMALINKS[sid];
@@ -1794,7 +1794,7 @@ function renderGenetic(){
   ...P.map(([k])=>({type:"practice",...sourceGeneInfo("practice:"+k,preview)})),
   ...SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id)).map(row=>({
    type:"skill",id:row[0],name:row[1],state:geneSkillStatus(row,preview),
-   label:preview.skills.includes(row[0])?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
+   label:ownsSkill(row[0],preview)?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
   }))
  ];
  const choose=(id,y)=>{geneSelected=id;geneInspectorOpen=true;
@@ -1838,9 +1838,9 @@ function openSheetPage(page,focusSkill=""){
  $("sheet-navigation")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
 }
 function prepareElementSkill(id){
- if(!ELEMENT_SKILLS.some(([key])=>key===id)||!state.skills.includes(id))return;
+ if(!ELEMENT_SKILLS.some(([key])=>key===id)||!ownsSkill(id))return;
  if(state.pending){toast("Finalize a rolagem pendente antes de preparar a magia.");return;}
- if(!state.skills.includes("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
+ if(!ownsSkill("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
  sheetPage="play";editMode=false;
  draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";
  const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
@@ -2069,7 +2069,7 @@ function wizardReview(){
  const x=xpCosts(),life=maxLife(),move=movement();
  const sourceSummary=(group,items)=>items.filter(([k])=>(state[SOURCE_PROPS[group]][k]||0)>0)
   .map(([k,name])=>'<li>'+esc(name)+' <b>G'+state[SOURCE_PROPS[group]][k]+'</b></li>').join("")||'<li class="fp-wiz-muted">Nenhum avanço comprado</li>';
- const skillList=SKILLS.filter(([id])=>state.skills.includes(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
+ const skillList=SKILLS.filter(([id])=>ownsSkill(id)).map(([id,name])=>'<li>'+esc(name)+'</li>').join("")||'<li class="fp-wiz-muted">Nenhuma Perícia comprada</li>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 05 · REVISÃO FINAL</span><h3>Este é seu Aprendiz.</h3>'+
   '<p>Confira os investimentos antes de abrir a ficha completa. Depois da confirmação, as compras realizadas deixam de ter reembolso livre.</p></div>'+
   '<div class="fp-wiz-review-hero"><div class="fp-wiz-avatar"><img src="'+esc(state.portrait||"../assets/codex-logo.svg")+'" alt=""'+(state.portrait?' class="custom"':'')+'></div>'+
@@ -2211,14 +2211,14 @@ function renderSources(){
  }
 }
 function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key==="armas_conjuracao";}
-function disciplineAdvancedActive(){return usingDiscipline()&&state.skills.includes("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
-function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&state.skills.includes("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
+function disciplineAdvancedActive(){return usingDiscipline()&&ownsSkill("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
+function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&ownsSkill("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
 function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
 function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive();}
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
- return draft.mode==="armas"||(draft.mode==="conjuracao"&&state.skills.includes("criar-item-foco-magia"));
+ return draft.mode==="armas"||(draft.mode==="conjuracao"&&ownsSkill("criar-item-foco-magia"));
 }
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
@@ -2307,7 +2307,7 @@ function renderComposer(){
  const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
  const isShared=draft.base.group==="practice"&&draft.base.key==="armas_conjuracao";
  const usage=isShared?(draft.mode==="conjuracao"?"Disciplina · Conjuração":"Disciplina · Armas"):label(draft.base.group,draft.base.key);
- const canTrevas=isShared&&draft.mode==="conjuracao"&&state.skills.includes("trevas");
+ const canTrevas=isShared&&draft.mode==="conjuracao"&&ownsSkill("trevas");
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]];
@@ -2371,7 +2371,7 @@ function score(){
  const p=state.pending;if(!p)return null;
  const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
- if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&state.skills.includes("trevas")))
+ if(p.opts.trevas&&!(p.mode==="conjuracao"&&p.base.group==="practice"&&p.base.key==="armas_conjuracao"&&ownsSkill("trevas")))
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
@@ -2387,7 +2387,7 @@ function score(){
   veneno:"veneno",sagrado:"sagrado",trevas:"trevas",sangue:"sangue"}[el];
  // SRD v0.43: foco válido + Perícia do elemento + Criar Item de Foco e Magia.
  const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
-  &&state.skills.includes("criar-item-foco-magia")&&!!elementSkill&&state.skills.includes(elementSkill);
+  &&ownsSkill("criar-item-foco-magia")&&!!elementSkill&&ownsSkill(elementSkill);
  const pBonus=properties.includes("Barulhenta")?(critTier?2:1):0;
  const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
@@ -2395,7 +2395,7 @@ function score(){
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
   (critTier&&properties.includes("Precisa")?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
- const stealthBonus=stealthUsed&&state.skills.includes("furtividade")?1:0;
+ const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
@@ -2677,7 +2677,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  render();save();toast(item.name+" adquirido por "+price+" VT. Equipe no inventário.");
 }
 function addTestFocus(){
- if(!state.skills.includes("criar-item-foco-magia")||
+ if(!ownsSkill("criar-item-foco-magia")||
     (state.practices.artesao||0)<1||(state.attributes.inteligencia||0)<1||
     (state.practices.armas_conjuracao||0)<1){
   toast("Para testar um foco, adquira Criar Item de Foco e Magia (Disciplina 1, Inteligência 1, Artesão 1).");return;
@@ -2778,7 +2778,7 @@ function setWeaponFocus(selected){
 /** Lista completa das Perícias adquiridas, inclusive IDs legados ocultos no grafo. */
 function renderRespecSkills(){
  const box=$("respec-skills-list");if(!box)return;
- const owned=SKILLS.filter(([id])=>state.skills.includes(id));
+ const owned=SKILLS.filter(([id])=>ownsSkill(id));
  box.innerHTML=owned.length?owned.map(([id,name,,cost])=>
   '<div class="fp-respec-row"><span><strong>'+esc(name)+'</strong><small>'+
   (Number.isInteger(cost)?cost+" XP investidos":"Custo pendente — conferir ficha")+'</small></span>'+
