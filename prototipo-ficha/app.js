@@ -57,6 +57,27 @@ function racialCostTable(group,key,s=state){
  }
  return normal;
 }
+// Sinalização exclusivamente derivada da tabela de custos, sem efeitos mecânicos.
+function racialXpBand(group,key,s=state){
+ const table=racialCostTable(group,key,s);
+ if(table===(group==="attr"?AT_DISCOUNT:TRAIN_DISCOUNT))return "discount";
+ if(table===(group==="attr"?AT_ELEVATED:TRAIN_ELEVATED))return "elevated";
+ return "normal";
+}
+function racialXpLabel(band){
+ return band==="discount"?"XP reduzido":band==="elevated"?"XP aumentado":"XP normal";
+}
+function racialXpMarker(group,key,s=state){
+ const band=racialXpBand(group,key,s);
+ return band==="normal"?"":'<span class="fp-racial-xp-marker is-'+band+'" title="'+racialXpLabel(band)+' pela origem">'+
+  (band==="discount"?"↓ XP reduzido":"↑ XP aumentado")+'</span>';
+}
+function racialXpLegend(){
+ return '<div class="fp-racial-xp-legend" aria-label="Custos de XP da origem">'+
+  '<span class="fp-racial-xp-marker is-discount">↓ XP reduzido</span>'+
+  '<span class="fp-racial-xp-marker is-elevated">↑ XP aumentado</span>'+
+  '<small>Os contornos indicam custos raciais, não Graus extras.</small></div>';
+}
 // SRD v0.61: atributo favorecido da origem começa no Grau 1 (custo zero).
 // Atribuições raciais automáticas são distinguidas dos graus comprados manualmente.
 function racialStartingAttributes(race){
@@ -2028,8 +2049,8 @@ function sourceGeneInfo(id,s=state){
  const costTable=racialCostTable(group,key,s);
  const next=previewGrade<6?costTable[previewGrade+1]-costTable[previewGrade]:null;
  const canRaise=next!==null&&xpCosts(s).free>=next&&!state.pending;
- const racialG1=isRacialGradeOne(group,key,s);
- return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,
+ const racialG1=isRacialGradeOne(group,key,s),xpBand=racialXpBand(group,key,s);
+ return {id,group,key,type:group,name:row[1],grade,previewGrade,next,canRaise,minGrade:racialG1?1:0,xpBand,xpLabel:racialXpLabel(xpBand),
   dice:dataDice(group,previewGrade).map(n=>"d"+n),
   state:previewGrade>0?"owned":canRaise?"available":"locked",
   label:(racialG1?"Origem: Grau 1 gratuito · ":"")+(next===null?"Grau máximo":"Próximo avanço: "+next+" XP")};
@@ -2048,6 +2069,7 @@ function geneDetailHTML(id,s=state){
    (!state.creationLocked||editMode||src.previewGrade>src.grade)&&!state.pending;
   return '<span class="fp-gene-detail-status is-'+src.state+'">'+(src.previewGrade?"Desenvolvido":"Potencial")+'</span>'+
    '<h4>'+esc(src.name)+'</h4><p>'+({attr:"Atributo central.",know:"Conhecimento estudado.",practice:"Prática treinada."}[src.group])+'</p>'+
+   racialXpMarker(src.group,src.key,s)+
    '<dl><dt>Grau / Dados</dt><dd>G'+src.previewGrade+' · '+esc(dice)+(src.minGrade?' · Grau 1 da origem (0 XP)':'')+'</dd>'+
    '<dt>Próximo grau</dt><dd>'+esc(src.next===null?"Máximo":src.next+" XP")+'</dd>'+
    '<dt>XP disponível</dt><dd>'+xpCosts(s).free+' XP</dd></dl>'+
@@ -2256,8 +2278,10 @@ function wizardSource(group,item){
  const [id,name]=item,g=state[SOURCE_PROPS[group]][id]||0;
  const next=xpStepCost(group,id,1),raised=g<6&&canAfford(group,next);
  const lower=g>0&&!state.creationLocked&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
- return '<article class="fp-wiz-source" data-source-group="'+group+'">'+
+ const band=racialXpBand(group,id);
+ return '<article class="fp-wiz-source'+(band==="normal"?"":" is-xp-"+band)+'" data-source-group="'+group+'">'+
   '<div class="fp-wiz-source-title"><strong>'+esc(name)+'</strong><span>GRAU '+g+'</span></div>'+
+  racialXpMarker(group,id)+
   '<div class="fp-wiz-source-dice">'+wizardDice(group,id,g)+'</div>'+
   '<div class="fp-wiz-source-actions">'+
   '<span class="fp-wiz-cost">'+(g>=6?'Grau máximo':'Próximo avanço: '+next+' XP')+'</span>'+
@@ -2280,8 +2304,10 @@ function wizardStarterOption(group,[id,name]){
  const selected=isAttr?wizardStarterAttribute===id:wizardStarterTraining===key;
  const cost=grade>=1?0:racialCostTable(group,id,state)[1];
  const dice=isAttr?"G0: 1d4 · G1: 1d6":"G0: 1d6 · G1: 1d10";
- return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
+ const band=racialXpBand(group,id);
+ return '<button type="button" class="fp-wiz-focus-card'+(selected?' is-active':'')+(band==="normal"?"":" is-xp-"+band)+'" data-action="'+(isAttr?'wizard-starter-attr':'wizard-starter-training')+'" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+selected+'">'+
   '<span class="fp-wiz-focus-top"><strong>'+esc(name)+'</strong><small>'+(selected?'Escolhido':'Escolher')+'</small></span>'+
+  racialXpMarker(group,id)+
   '<span class="fp-wiz-focus-role">'+esc(info[0])+'</span>'+
   '<span class="fp-wiz-focus-description">'+esc(info[1])+'</span>'+
   '<span class="fp-wiz-focus-example">'+esc(info[2])+'</span>'+
@@ -2335,6 +2361,7 @@ function wizardBuild(){
   '<button type="button" data-gene-zoom="0">Centralizar</button><button type="button" data-gene-zoom="1" aria-label="Aumentar zoom">+</button></div></div>'+
   
   '<div class="fp-gene-legend"><span class="owned">● Adquirido</span><span class="available">● Requisitos completos</span><span class="potential">● Requisitos compráveis com XP</span><span class="locked">● Futuro (opcional)</span></div>'+
+  racialXpLegend()+
   geneLayout("gene-builder-map","gene-builder-detail")+
   '<div id="gene-build-actions">'+geneActionsPanel()+'</div>'+
   '<p class="fp-wiz-reminder">As ligações são afinidades, não bônus ou pré-requisitos automáticos. Alterações só entram na ficha após confirmar a evolução.</p>';
@@ -2513,9 +2540,11 @@ function renderSources(){
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
    const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
-   return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+'">'+
+   const band=racialXpBand(group,id);
+   return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+(band==="normal"?"":" is-xp-"+band)+'">'+
     '<button type="button" class="fp-source-pick" data-action="source" data-group="'+group+'" data-key="'+id+'" aria-pressed="'+!!flag+'" title="'+(editMode?"Modo edição: use + ou −":"Selecionar fonte")+'" '+(state.pending||editMode?"disabled":"")+'>'+
     '<span class="fp-src-title"><span>'+esc(title)+'</span>'+(flag?'<span class="fp-flag">'+flag+'</span>':"")+'</span>'+
+    racialXpMarker(group,id)+
     '<span class="fp-dice-list">'+dice.map(n=>'<span class="fp-die-badge fp-die-d'+n+'">'+dieIcon(n)+'<span>d'+n+'</span></span>').join("")+'</span></button>'+
     '<div class="fp-grade-controls"><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="1" aria-label="Aumentar grau de '+esc(title)+'" '+(!canRaise||state.pending?"disabled":"")+'>+</button>'+
     '<b>'+g+'</b><button type="button" data-action="grade" data-group="'+group+'" data-key="'+id+'" data-delta="-1" aria-label="Reduzir grau de '+esc(title)+'" '+(!canReduce?"disabled":"")+'>−</button><small class="fp-xp-step-cost">'+(g<6?'+'+nextCost+' XP':'MAX')+'</small></div></div>';

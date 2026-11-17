@@ -10,6 +10,7 @@ on:
       - '.github/tests/pequena-ficha-e2e.cjs'
       - '.github/tests/fichas-multiplas-e2e.cjs'
       - '.github/tests/genetico-linhagens-iniciais-e2e.cjs'
+      - '.github/tests/custos-raciais-marcadores-e2e.cjs'
   workflow_dispatch:
 
 permissions:
@@ -51,6 +52,8 @@ jobs:
         run: node .github/tests/fichas-multiplas-e2e.cjs
       - name: Testar graus raciais gratuitos e Codex Genético principal
         run: node .github/tests/genetico-linhagens-iniciais-e2e.cjs
+      - name: Validar contornos e ícones de XP racial no mapa e listas
+        run: node .github/tests/custos-raciais-marcadores-e2e.cjs
       - name: Testar fluxo de criacao em Chromium
         run: node .github/tests/criador-e2e.cjs
       - name: Testar gestos de navegacao no grafo no PC e celular

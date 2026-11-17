@@ -1258,3 +1258,41 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  .fp-player-sheets-actions{width:100%}
  .fp-player-sheets-actions button{flex:1 1 95px;padding:10px 7px}
 }
+
+/* SRD v0.64 — indicadores de custo racial. Azul/verde/roxo dos graus e
+   Perícias permanecem sem alterações. As setas são legíveis sem cor. */
+:root{--fp-xp-discount:#087d6b;--fp-xp-elevated:#a95b19}
+html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65}
+.fp-racial-xp-marker{display:inline-flex;align-items:center;justify-content:center;gap:4px;
+ width:max-content;max-width:100%;padding:3px 8px;border-radius:20px;
+ font-size:10px;font-weight:800;letter-spacing:.015em;line-height:1.35;
+ border:1px solid currentColor;background:var(--fp-deep);white-space:normal}
+.fp-racial-xp-marker.is-discount{color:var(--fp-xp-discount)}
+.fp-racial-xp-marker.is-elevated{color:var(--fp-xp-elevated);border-style:dashed}
+.fp-racial-xp-legend{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin:12px 0}
+.fp-racial-xp-legend small{color:var(--fp-muted);font-size:10px;line-height:1.45}
+.fp-gene-card.is-xp-discount .fp-gene-card-fill{stroke:var(--fp-xp-discount);stroke-opacity:1;stroke-width:3.7}
+.fp-gene-card.is-xp-elevated .fp-gene-card-fill{stroke:var(--fp-xp-elevated);stroke-opacity:1;stroke-width:3.7;stroke-dasharray:10 4}
+.fp-gene-card.is-xp-discount:is(:hover,:focus-visible,.is-selected) .fp-gene-card-fill,
+.fp-gene-card.is-xp-elevated:is(:hover,:focus-visible,.is-selected) .fp-gene-card-fill{stroke-width:4.8}
+.fp-gene-racial-mark{pointer-events:none}
+.fp-gene-racial-mark circle{fill:var(--fp-deep);stroke-width:2.8}
+.fp-gene-racial-mark text{font-size:19px;font-weight:900;pointer-events:none}
+.fp-gene-racial-mark.is-discount circle{stroke:var(--fp-xp-discount)}
+.fp-gene-racial-mark.is-discount text{fill:var(--fp-xp-discount)}
+.fp-gene-racial-mark.is-elevated circle{stroke:var(--fp-xp-elevated)}
+.fp-gene-racial-mark.is-elevated text{fill:var(--fp-xp-elevated)}
+.fp-wiz-focus-card.is-xp-discount,.fp-wiz-source.is-xp-discount{
+ border:2px solid var(--fp-xp-discount);box-shadow:inset 3px 0 0 var(--fp-xp-discount)}
+.fp-wiz-focus-card.is-xp-elevated,.fp-wiz-source.is-xp-elevated{
+ border:2px dashed var(--fp-xp-elevated);box-shadow:inset 3px 0 0 var(--fp-xp-elevated)}
+.fp-wiz-focus-card.is-active:is(.is-xp-discount,.is-xp-elevated){background:color-mix(in srgb,var(--fp-gold) 9%,var(--fp-deep))}
+.fp-wiz-source>.fp-racial-xp-marker{align-self:flex-start}
+.fp-source-item.is-xp-discount{outline:2px solid var(--fp-xp-discount);outline-offset:-2px}
+.fp-source-item.is-xp-elevated{outline:2px dashed var(--fp-xp-elevated);outline-offset:-2px}
+.fp-source-pick>.fp-racial-xp-marker{align-self:flex-start;font-size:9px;padding:2px 6px}
+.fp-gene-detail>.fp-racial-xp-marker,.fp-gene-float-detail>.fp-racial-xp-marker{margin:4px 0 6px}
+@media(max-width:620px){
+ .fp-racial-xp-legend{gap:6px}
+ .fp-racial-xp-marker{font-size:9px}
+}
