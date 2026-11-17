@@ -2989,10 +2989,28 @@ function renderPending(){
   (p.hemomancyDirectLife?'<button type="button" class="fp-secondary" data-action="hemo-target-shield" aria-pressed="'+(!!p.targetBloodArcaneShield)+'">'+
    (p.targetBloodArcaneShield?'✓ Escudo Arcano de Sangue ativo no alvo':'Alvo tem Escudo Arcano de Sangue ativo?')+'</button>':"")+
   '<p class="fp-caption">Escudos físicos e arcanos de outros elementos não anulam o dano direto à Vida. Somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade. Sem foco, confirme que a magia é de Sangue com o Narrador. Após finalizar, não pode vincular outra rolagem neste turno.</p></div>':"";
- const controls='<div class="fp-form-grid'+
+ const fireChoices=p.mode==="conjuracao"&&p.base?.group==="practice"&&p.base.key==="armas_conjuracao"&&ownsSkill("fogo");
+ const fireControl=fireChoices?
+  '<div class="fp-alert"><strong>Fogo G2/G3 — Queimar ou Derreter (v0.76)</strong>'+
+  '<label class="fp-form-field">Efeito declarado<select data-pending="fireMode">'+
+   '<option value=""'+(!p.fireMode?' selected':'')+'>Nenhum / Fogo G1 convencional</option>'+
+   '<option value="queimar"'+(p.fireMode==="queimar"?' selected':'')+'>G2 Queimar — E+P à Integridade</option>'+
+   '<option value="derreter"'+(p.fireMode==="derreter"?' selected':'')+'>G3 Derreter — E+P à Integridade e +1 Vida direta</option></select></label>'+
+  (p.fireMode?
+   '<label class="fp-checkline"><input type="checkbox" data-pending="fireGradeConfirmed"'+(p.fireGradeConfirmed?' checked':'')+
+   '> Confirmo com o Narrador que este Grau de Fogo está habilitado (não é compra automática)</label>'+
+   (!s.fireFocus?'<label class="fp-form-field">Ativação-base do efeito em acerto<select data-pending="firePayment">'+
+    '<option value="courage"'+(p.firePayment!=="pp"?' selected':'')+'>1 Coragem</option>'+
+    '<option value="pp"'+(p.firePayment==="pp"?' selected':'')+'>1 PP</option></select></label>':
+    '<p class="fp-caption">Ativação-base gratuita com foco de Fogo válido + Criar Foco + Perícia de Fogo.</p>')+
+   (p.fireMode==="queimar"&&!s.fireFocus?'<label class="fp-checkline"><input type="checkbox" data-pending="fireSummon"'+
+    (p.fireSummon?' checked':'')+'> Invocar fogo sem foco em G2: +1 Coragem adicional à ativação-base</label>':'')+
+   '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
+  :'')+'</div>':"";
+ const controls='<div class="fp-form-grid">'+
  selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
- selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment+hemoControl;
+ selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment+hemoControl+fireControl;
  const criticalNote=s.critTier?'<div class="fp-alert"><strong>Crítico de '+s.critTier+' dados mantidos!</strong> '+
   (s.criticalConverted?'1P convertido em 1E. ':'Sem Pavor próprio para converter. ')+
   (s.critTier>=3?'+1E e +1A. ':'')+
@@ -3006,13 +3024,17 @@ function renderPending(){
  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
+ (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+
+  s.fireArmorDamage+' dano potencial à Integridade (E + 1 por P não anulado'+(s.critTier===4?'; crítico dobrando o dano à Integridade':'')+'). '+
+  (s.fireMode==="derreter"?'Acrescenta exatamente <strong>'+s.fireDirectLifeDamage+' Vida direta</strong>, mesmo contra armadura, não multiplicada no crítico.':'<strong>0 Vida direta adicional</strong> por Queimar.')+
+  ' O Narrador resolve imunidades, outras barreiras e eventual excedente convencional; sem alteração automática de ficha adversária.</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
-  '). Custo total previsto: '+cost+' Coragem.</p>'+dice+controls+
+  '). Custo previsto: '+cost+' Coragem e '+s.ppCost+' PP (inclui ativações escolhidas).</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -3033,7 +3055,7 @@ function finalize(){
  const name=baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
+  ppRecovered:gainedPP,courageRecovered:gainedCourage,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
