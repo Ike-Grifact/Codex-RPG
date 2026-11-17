@@ -209,7 +209,7 @@ const SKILLS=[
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Sangramento é condição sem dano à Vida, atravessa armadura e habilita interações com magia de Sangue. Os custos anteriores abaixo conflitam com a exigência autoral posterior de Sangramento próprio, PENDENTE de revisão. Ativação especial 1 PP ou 1 Coragem. Conjurar sem Sangramento próprio custa inicialmente 2 Vida mesmo em falha; autoaplicar Sangramento na conjuração reduz esse custo para 1 Vida; se já estava em Sangramento, o custo inicial é zero. +1P comum na conjuração. Ao acertar alvo em Sangramento ou já danificado na Vida, escolher 2 Vida diretos (não comba com colossal) OU dano convencional de Integridade com sangue coagulado, consumido no uso. Sangue fluido pode ser remanipulado sem aumento de dano, mas alvo único sem mescla. Transfusão é outra Perícia. G2/G3 por combinação.",
+  "Rework v0.71: Sangue é amplificação. Uma vez por turno pode substituir Coragem para ampliar uma magia OU manter mais um dado OU elevar um dado; fonte e quantidade do custo ainda pendentes, sem automação. Sangue puro: dano normal contra proteções. Extração: Hemomante e alvo Sangrando, perde 1 Vida própria para causar 1 dano direto à Vida do alvo e obter sangue extraído (não serve para Transfusão Sanguinária). Coágulos e hemorragia interna são manifestações em revisão. Outros efeitos de combate exigem sangue derramado no ambiente, custo por efeito pendente.",
   2
  ],
  [
@@ -349,6 +349,12 @@ const SKILLS=[
   "Transfusão",
   "Perícia separada de Elemento Sangue, compra e requisitos próprios ainda pendentes. Pode agir em combate se conjurador e alvo estiverem em Sangramento: transfere 1 Vida própria, recuperando 1 Vida do beneficiário. Pode levar Antídoto à distância ao custo de 1 Vida e das doses usadas, sem duplicação. Não gera Vida adicional.",
   null
+ ],
+ [
+  "transfusao-sanguinaria",
+  "Transfusão Sanguinária (protótipo)",
+  "Compra 1 XP; exige Transfusão e Perícia em Elemento Sangue. Conjuração ATIVA: a cada 3 marcas elegíveis de dano direto à Vida representadas por sangue derramado, pode registrar recuperação de 1 Vida até o máximo. Sangue extraído magicamente NÃO serve para esta técnica. Procedimento, duração, alcance e custo de conjuração ainda pendentes; na ficha, o registro é manual após confirmação do Narrador.",
+  1
  ],
  [
   "armas-longo-alcance",
@@ -527,6 +533,10 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "know:medicina"
  ],
+ "transfusao-sanguinaria": [
+  "practice:armas_conjuracao",
+  "know:medicina"
+ ],
  "armas-leves": [
   "practice:armas_conjuracao"
  ],
@@ -692,7 +702,8 @@ const SKILL_BRANCHES=[
   "trevas",
   "criar-veneno",
   "criar-antidoto",
-  "transfusao"
+  "transfusao",
+  "transfusao-sanguinaria"
  ],
  [
   "provocacao-sofisticada",
@@ -762,6 +773,7 @@ const SKILL_PERMALINKS={
  "criar-veneno": "criar-veneno",
  "criar-antidoto": "criar-antidoto",
  "transfusao": "transfusao",
+ "transfusao-sanguinaria": "transfusao-sanguinaria",
  "armas-longo-alcance": "pericia-em-armas-de-longo-alcance",
  "disparo-violento": "disparo-violento",
  "disparo-tatico": "disparo-tatico",
@@ -791,6 +803,7 @@ const CARD_REQUIREMENTS={
  "sangue": "Disciplina 2, Inteligência 2, Criar Foco",
  "trevas": "Disciplina 2, Inteligência 2, Criar Foco",
  "criar-antidoto": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno",
+ "transfusao-sanguinaria": "Transfusão + Perícia em Elemento Sangue",
  "armas-longo-alcance": "Disciplina 1 + Destreza 2",
  "olhos-de-aguia": "Destreza 3 + Disciplina 3 + Armas de Longo Alcance OU Armas de Fogo",
  "golpe-fulminante": "Disciplina 2 + Força 2 + uma especialização corpo a corpo",
@@ -826,11 +839,12 @@ const CARD_EFFECTS={
  "terra": "Terra leve, terreno e percepção sísmica.",
  "sagrado": "Êxitos excedentes recuperam Coragem; P anula recuperação.",
  "veneno": "Magia de Veneno: 1 acúmulo em alvo com Sangramento; limiares por Vida atual",
- "sangue": "Manipula Sangue: 2 Vida diretos ou dano à Integridade.",
+ "sangue": "Amplifica ações uma vez por turno; dano convencional ou extração 1 Vida por 1 Vida quando ambos Sangrando. Economia em revisão.",
  "trevas": "Até dois alvos; +2P válidos para DE, dano e risco; dividir ou concentrar Pavor.",
  "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
  "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
+ "transfusao-sanguinaria": "Protótipo: 3 marcas de sangue derramado elegível permitem registrar +1 Vida; sangue extraído fica excluído.",
  "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
  "golpe-fulminante": "Dano de Pavor válido passa a 1 por P no alvo corpo a corpo",
  "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
@@ -859,11 +873,12 @@ const CARD_BRIEFS={
  "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
  "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
- "sangue": "Sangramento habilita magias de Sangue e ignora armadura apenas para aplicar o estado, sem dano à Vida. Revisão de custo e requisitos próprios pendente; custos anteriores: 2 Vida sem o estado, 1 ao autoaplicar, zero se já Sangrando.",
+ "sangue": "Rework v0.71: Sangue amplifica uma magia, retenção OU elevação de dado uma vez por turno, substituindo Coragem (quantia/recurso PENDENTES). Extração exige ambos Sangrando e troca 1 Vida própria por 1 Vida do alvo; sangue extraído não financia cura da Transfusão Sanguinária.",
  "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
  "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
+ "transfusao-sanguinaria": "PROTÓTIPO: 1 XP. Requer Transfusão + Elemento Sangue. Conjuração ativa, 3 marcas elegíveis de sangue derramado → 1 Vida recuperada. Sangue extraído excluído. Custos e gatilhos pendentes.",
  "fogo": "Manipula fogo disponível e técnicas especiais conforme Grau. Na versão inicial, o disparo não causa queimadura direta à Vida.",
  "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
@@ -900,11 +915,12 @@ const CARD_ACTIVATIONS={
  "terra": "1 PP ou 1 Coragem",
  "sagrado": "1 PP ou 1 Coragem",
  "veneno": "1 PP ou 1 Coragem após acerto",
- "sangue": "1 PP ou 1 Coragem; Vida se aplicável",
+ "sangue": "Amplificação: 1 uso/turno; custos em revisão",
  "trevas": "1 PP ou 1 Coragem",
  "criar-veneno": "Preparação alquímica; ativação conforme arma",
  "criar-antidoto": "1 dose remove 1 acúmulo",
  "transfusao": "Custo de Vida; PP/Coragem a confirmar",
+ "transfusao-sanguinaria": "Conjuração ativa · custo e procedimento pendentes",
  "armas-longo-alcance": "1 PP ou 1 Coragem no acerto comum; crítico gratuito",
  "golpe-fulminante": "1 PP ou 1 Coragem; crítico não dispensa",
  "espalhar-golpe": "1 PP ou 1 Coragem por até 2 alvos adicionais",
@@ -1065,7 +1081,8 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false,
+ hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
 let playerSheets=[],activePlayerSheetId="";
@@ -1399,6 +1416,13 @@ function normalize(v){
  for(const item of s.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
  s.courageUsedTurn=!!v.courageUsedTurn;
+ // Protótipo hemomântico manual: não misturar marcas de sangue extraído com sangue derramado.
+ s.hemomancy={
+  spilled:clamp(Math.floor(v.hemomancy?.spilled??0),0,999),
+  extracted:clamp(Math.floor(v.hemomancy?.extracted??0),0,999),
+  selfBleeding:!!v.hemomancy?.selfBleeding,
+  usedThisTurn:!!v.hemomancy?.usedThisTurn
+ };
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
  }
@@ -1557,6 +1581,8 @@ function skillReq(id,s=state){
  if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
+ if(id==="transfusao-sanguinaria"&&(!has("transfusao")||!has("sangue")))
+  return"Requer Transfusão e Perícia em Elemento Sangue. Transfusão original ainda tem aquisição pendente.";
  if(id==="transfusao")return"Compra ainda pendente de custo ou regras de aquisição.";
  return null;
 }
@@ -1866,6 +1892,30 @@ function renderOwnedPanel(){
   (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
+// SRD v0.71 — protótipo manual. Não converte dano automaticamente em sangue ou cura.
+function renderHemomancy(){
+ const panel=$("hemomancy-panel");
+ if(!panel)return;
+ panel.hidden=!ownsSkill("sangue");
+ if(panel.hidden)return;
+ const h=state.hemomancy||{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false};
+ $("hemo-spilled").textContent=String(h.spilled);
+ $("hemo-extracted").textContent=String(h.extracted);
+ $("hemo-self-status").textContent=h.selfBleeding?"Sangrando":"Sem Sangramento";
+ $("hemo-self-status").setAttribute("aria-pressed",String(h.selfBleeding));
+ $("hemo-boost-status").textContent=h.usedThisTurn?"Uso do turno marcado":"Marcar amplificação do turno";
+ $("hemo-boost-status").setAttribute("aria-pressed",String(h.usedThisTurn));
+ $("hemo-boost-status").disabled=h.usedThisTurn;
+ $("hemo-transfusion-potential").textContent=String(Math.floor(h.spilled/3));
+ const skill=ownsSkill("transfusao-sanguinaria");
+ const record=$("hemo-transfusion-record");
+ record.disabled=!skill||h.spilled<3||state.life<=0||state.life>=maxLife()||!!state.pending;
+ record.title=!skill?"Exige Perícia Transfusão Sanguinária comprada; pré-requisito Transfusão ainda pendente.":
+  h.spilled<3?"Registre 3 marcas de sangue derramado elegível.":"Registrar somente após resolver a conjuração com o Narrador.";
+ $("hemo-transfusion-state").textContent=skill?
+  "Perícia adquirida — registro somente após resolver a conjuração com o Narrador.":
+  "Protótipo de Perícia: 1 XP, exige Transfusão + Elemento Sangue. A compra de Transfusão ainda está pendente.";
+}
 function geneLayout(mapId,detailId){
  return '<div class="fp-gene-layout fp-gene-creator-layout">'+
   '<div class="fp-gene-canvas-shell">'+
@@ -2233,7 +2283,7 @@ function prepareElementSkill(id){
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
-function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Etapas guiadas: Codex Genético padrão e listas opcionais compartilham o mesmo XP e ficha. */
 function wizardPersist(){
@@ -3315,6 +3365,31 @@ function onClick(event){
   if(!confirm("Confirmar que o personagem concluiu um descanso longo?"))return;
   state.perseverancaUsed=false;renderRacePanel();save();toast("Perseverança Humana restaurada.");break;
  }
+ case "hemo-adjust":{
+  if(!ownsSkill("sangue")||state.pending)return;
+  const pool=button.dataset.pool;
+  if(!["spilled","extracted"].includes(pool))return;
+  state.hemomancy[pool]=clamp(state.hemomancy[pool]+Number(delta),0,999);
+  renderHemomancy();save();break;
+ }
+ case "hemo-self":{
+  if(!ownsSkill("sangue")||state.pending)return;
+  state.hemomancy.selfBleeding=!state.hemomancy.selfBleeding;
+  renderHemomancy();save();break;
+ }
+ case "hemo-boost":{
+  if(!ownsSkill("sangue")||state.pending||state.hemomancy.usedThisTurn)return;
+  state.hemomancy.usedThisTurn=true;
+  renderHemomancy();save();
+  toast("Uso de Sangue como substituto de Coragem marcado (sem custo automático: economia pendente).");break;
+ }
+ case "hemo-transfusion":{
+  const h=state.hemomancy;
+  if(!ownsSkill("transfusao-sanguinaria")||h.spilled<3||state.life<=0||state.life>=maxLife()||state.pending)return;
+  if(!confirm("Registrar Transfusão Sanguinária JÁ RESOLVIDA pelo Narrador? Consome 3 marcas elegíveis de sangue derramado e registra +1 Vida. Custos de ativação e testes continuam pendentes e NÃO são dispensados pela ficha."))return;
+  h.spilled-=3;state.life=clamp(state.life+1,0,maxLife());
+  renderVitals();renderHemomancy();save();toast("Transfusão registrada: −3 marcas derramadas, +1 Vida.");break;
+ }
  case "source":selectSource(group,source);break;
  case "grade":updateGrade(group,source,Number(delta));break;
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
@@ -3630,7 +3705,12 @@ function bind(){
   if(state.level<5||state.courageUsedTurn||state.courage<2||state.pp>=maxPP())return;
   state.courage-=2;state.pp++;state.courageUsedTurn=true;renderVitals();renderSkills();save();toast("Perícia em Coragem: 2 Coragens convertidas em 1 PP.");
  });
- $("reset-turn").addEventListener("click",()=>{state.courageUsedTurn=false;renderSkills();save();toast("Nova oportunidade: conversão em Coragem liberada.");});
+ $("reset-turn").addEventListener("click",()=>{
+  state.courageUsedTurn=false;
+  if(state.hemomancy)state.hemomancy.usedThisTurn=false;
+  renderSkills();renderHemomancy();save();
+  toast("Novo turno: conversão em Coragem e marcador de amplificação com Sangue liberados.");
+ });
  window.addEventListener("storage",event=>{if(event.newValue&&(event.key===SAVE_KEY||event.key===PLAYER_SHEETS_INDEX||event.key?.startsWith(PLAYER_SHEET_PREFIX))){toast("Fichas alteradas em outra aba. Recarregue para sincronizar antes de continuar.");}});
 }
 bind();load();
