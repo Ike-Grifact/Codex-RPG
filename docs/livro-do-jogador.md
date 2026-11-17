@@ -259,6 +259,147 @@ Um Lucker de Sangue pode preservar relações, cuidar de alguém, viver em famí
 
 O jogador não precisa repetir a maldição em toda conversa. Mostre a diferença quando ela realmente importar para uma decisão, um conflito ou um diálogo.
 
+#### Oficina de interpretação: sete maneiras de ser um Lucker
+
+**DEFINIDO no conceito, ORIENTAÇÃO na atuação:** a maldição determina a ausência de sensações dos Luckers de Sangue, mas **não obriga a mesma personalidade, voz ou comportamento**. A interpretação aparece nas palavras, no silêncio, na postura e em hábitos aprendidos. Escolha um estilo principal e um contraste; não precisa representar todos os cacoetes toda hora.
+
+Use marcações breves como *[pausa]*, *[observa o diário]* e *[repete a palavra]*. Uma pausa funciona quando tem motivo: recordar, medir, escolher uma fórmula social ou organizar lembranças. **Nenhum exemplo abaixo cria Perícias, imunidades, condições ou habilidades mecânicas.**
+
+##### 1. O Lógico — a razão como abrigo
+
+**Conceito:** Procura causas, padrões e explicações. Não é onisciente, nem incapaz de fazer escolhas pessoais que pareçam ineficientes.
+
+- **Voz:** Ritmo regular; respostas objetivas; distingue fato, hipótese e opinião; pode corrigir a própria frase.
+- **Olhar e postura:** Observa portas, posições, objetos e reações do grupo, mais do que encarar os olhos.
+- **Pausa:** Conta silenciosamente ou reconstrói as circunstâncias antes de responder.
+- **Cacoete:** Alinha objetos e repete 'Corrigindo...' quando encontra um erro.
+- **Contraste:** Cumpre uma promessa mesmo quando isso não é a opção mais eficiente.
+
+> **Aliado: 'Você vai ficar comigo?'**
+>
+> **Lucker de Sangue:** [olha a saída, pausa] 'Sim. Minha presença reduz o risco de você permanecer sozinho. ... E eu prometi ficar.'
+
+**Cuidado na mesa:** Não use números inventados como poderes de previsão nem faça o personagem ter razão em tudo.
+
+##### 2. O Vazio — apatia sem paralisia
+
+**Conceito:** Aparenta não responder aos acontecimentos, mas continua capaz de tomar decisões, defender seus princípios e cuidar de outras pessoas.
+
+- **Voz:** Tom baixo e uniforme, frases curtas, nenhuma explicação além do necessário.
+- **Olhar e postura:** Fica imóvel por longos períodos; o olhar repousa num detalhe qualquer; move-se de maneira econômica.
+- **Pausa:** Deixa o silêncio se prolongar antes de responder, sem procurar preenchê-lo.
+- **Cacoete:** Alisa uma dobra da roupa ou fecha o diário na mesma posição.
+- **Contraste:** Age imediatamente para salvar alguém, embora permaneça sem expressão.
+
+> **Aliada: 'Ela morreu. Você não vai dizer nada?'**
+>
+> **Lucker de Sangue:** [permanece imóvel, longa pausa] 'Não sei o que acrescentar. Vou guardar os objetos dela.'
+
+**Cuidado na mesa:** Apatia não é desculpa para ficar fora do jogo ou impedir a aventura de avançar.
+
+##### 3. O Fragmentado — o 'louco' aos olhos dos outros
+
+**Conceito:** Após séculos de sepultamento, escravidão ou isolamento, embaralha a ordem de certos acontecimentos. Sua memória pode conservar informações úteis mesmo quando a fala parece desorganizada. É uma possibilidade ficcional, não um diagnóstico de psicose.
+
+- **Voz:** Começa relatos com precisão e os interrompe com referências a épocas remotas; retoma frases antigas mais tarde.
+- **Olhar e postura:** Conta rachaduras, marca paredes e observa sinais que associa a lugares perdidos.
+- **Pausa:** Fica em silêncio ao ouvir uma palavra ligada ao passado; depois retoma de onde parou.
+- **Cacoete:** Risca datas na pedra ou repete o início de uma anotação: 'Registro... registro...'.
+- **Contraste:** Percebe com lucidez um perigo que o grupo não notou.
+
+> **Aliado: 'Há quanto tempo você está soterrado?'**
+>
+> **Lucker de Sangue:** 'Quarenta e dois invernos. ... Não. Quarenta e duas dinastias.' [risca a parede] 'Não encoste na coluna norte. Ela cede primeiro.'
+
+**Cuidado na mesa:** Não transforme sofrimento psíquico em piada, violência automática ou gritos aleatórios; combine o tom com a mesa.
+
+##### 4. O Eco — o imitador de emoções
+
+**Conceito:** Aprendeu expressões humanas pela observação e procura reproduzi-las para facilitar o convívio, sem experimentar a emoção correspondente.
+
+- **Voz:** Repete fórmulas sociais; às vezes usa um cumprimento ou uma entonação no momento inadequado.
+- **Olhar e postura:** Observa os rostos dos outros antes de sorrir ou oferecer um gesto de consolo.
+- **Pausa:** Espera um instante para verificar como os demais reagem.
+- **Cacoete:** Ensaia expressões no reflexo de metal ou anota que palavras funcionaram.
+- **Contraste:** Quando percebe que a imitação incomoda, prefere explicar suas intenções diretamente.
+
+> **Humana: 'Estou feliz que você voltou!'**
+>
+> **Lucker de Sangue:** [observa o sorriso dela e sorri atrasado] 'Também estou feliz.' [pausa] 'A frase corresponde à situação? Eu quis dizer que escolhi voltar por você.'
+
+**Cuidado na mesa:** Não faça da imitação uma piada repetitiva nem trate gestos aprendidos como cura da maldição.
+
+##### 5. O Guardião — a promessa acima da emoção
+
+**Conceito:** Sustenta a identidade em um juramento, clã, lugar ou pessoa. A lealdade é uma escolha preservada em registros e ações, não um sentimento recuperado.
+
+- **Voz:** Frases firmes e diretas; recita compromissos como se fossem fórmulas antigas.
+- **Olhar e postura:** Mantém-se perto de quem protege; observa rotas de fuga; ocupa a entrada sem chamar atenção.
+- **Pausa:** Consulta mentalmente ou no diário suas promessas antes de aceitar outra obrigação.
+- **Cacoete:** Ajeita uma fita, um medalhão ou uma lista de nomes.
+- **Contraste:** Aprende que respeitar a vontade de alguém pode exigir mudar a forma de cumprir uma promessa.
+
+> **Criança: 'Por que você nunca vai embora?'**
+>
+> **Lucker de Sangue:** [ajeita a fita no braço] 'Prometi que esperaria.' [pausa] 'Mas posso partir, se você desejar.'
+
+**Cuidado na mesa:** Não transforme proteção em controle sobre os outros personagens nem em obediência sem autonomia.
+
+##### 6. O Investigador — estudar o que não pode sentir
+
+**Conceito:** Observa e registra o que os mortais descrevem como prazer, saudade e medo. Não é automaticamente um fanático antigo nem conhece a causa secreta do Infortúnio.
+
+- **Voz:** Perguntas específicas; reformula hipóteses; usa expressões como 'Segundo meus registros...'.
+- **Olhar e postura:** Acompanha expressões alheias, protege seus cadernos e compara suas observações.
+- **Pausa:** Interrompe uma pergunta ao perceber que o interlocutor não deseja ser estudado.
+- **Cacoete:** Repete três perguntas fixas e assinala contradições com um símbolo próprio.
+- **Contraste:** Decide respeitar a intimidade de alguém mesmo quando perde a chance de aprender.
+
+> **Aliada: 'Não quero explicar o que estou sentindo.'**
+>
+> **Lucker de Sangue:** [fecha o caderno] 'Entendido. ... Não registrarei nada sem sua permissão.'
+
+**Cuidado na mesa:** O desejo de conhecer não autoriza manipular pessoas ou inventar revelações do cenário.
+
+##### 7. O Puro Ancestral — longa vida, emoções presentes
+
+**Conceito:** Não compartilha a ausência de sensações dos de Sangue. Pode sentir medo, ternura, tristeza e raiva, mesmo após milênios de existência; ainda pode morrer se for abatido.
+
+- **Voz:** Pode usar expressões de épocas diferentes, hesitar ao falar de mortos ou mudar de tom ao lembrar de algo.
+- **Olhar e postura:** Guarda uma relíquia, toca um medalhão ou se detém diante de arquitetura antiga.
+- **Pausa:** Emudece ao reconhecer um nome ou lugar que acreditava perdido.
+- **Cacoete:** Chama ruínas por antigos nomes ou corrige datas segundo calendários esquecidos.
+- **Contraste:** Apesar de milênios de experiência, pode ser apaixonado, imprudente e temer a própria morte.
+
+> **Companheiro: 'Você está com medo?'**
+>
+> **Lucker Puro:** [aperta o medalhão] 'Estou. Sobrevivi a guerras demais para confundir medo com covardia.'
+
+**Cuidado na mesa:** Não confunda longevidade com sabedoria absoluta, frieza emocional ou invulnerabilidade.
+
+##### A mesma cena, seis interpretações
+
+**Situação:** o grupo encontra um aliado morto numa ruína. Um Lucker de Sangue o conhecia havia décadas. A situação não devolve sensações a nenhum deles.
+
+| Estilo | Primeira fala | O que faz |
+|---|---|---|
+| Lógico | 'Precisamos determinar a causa antes de mover o corpo.' | Registra sinais e organiza a saída. |
+| Vazio | 'Ele não vai nos acompanhar.' [silêncio] | Recolhe os pertences sem fazer comentários. |
+| Fragmentado | 'Já aconteceu nesta passagem... ou naquela era?' | Marca a parede e lembra um detalhe útil. |
+| Eco | [observa os demais] 'Sinto muito.' | Tenta oferecer um gesto de consolo aprendido. |
+| Guardião | 'Ele estava sob minha responsabilidade.' | Fica junto ao corpo até decidirem como proceder. |
+| Investigador | 'Ele dizia que partir é diferente de desaparecer.' | Guarda a frase em seu diário. |
+
+##### Exercício: um personagem reconhecível em cinco escolhas
+
+1. **Ritmo:** fala rápido, mantém longos silêncios ou retoma frases fora de ordem?
+2. **Gestos:** escolha **um ou dois** movimentos recorrentes; de onde vieram?
+3. **Expressão:** “Corrigindo...”, “Segundo meus registros...”, “Permaneço”, “Na última vez...”. Escolha a sua.
+4. **Gatilho:** o que interrompe o padrão — uma promessa, um número, um nome, um rosto, uma porta selada?
+5. **Contradição:** em que momento sua atitude surpreende os outros sem trair seus valores?
+
+**Treine uma fala curta:** uma frase normal, uma pausa com propósito e um gesto significativo. Se repetir o mesmo recurso a cada sentença, ele perde efeito e atrapalha o ritmo da mesa. O Lucker pode aprender linguagem social e mudar seus hábitos **sem recuperar sensações**. Desorganização após isolamento não significa que todos sejam violentos ou que sofrimento psicológico seja motivo de humor. Combine limites de interpretação com o grupo.
+
 #### Exercício rápido para o jogador
 
 Antes de interpretar um Lucker, responda:
