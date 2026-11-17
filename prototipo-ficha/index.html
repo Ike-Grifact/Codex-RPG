@@ -169,6 +169,15 @@
             <button type="button" class="fp-hemo-spend" id="hemo-spend-extracted" data-action="hemo-spend" data-pool="extracted" disabled>Consumir 1 marca na conjuração</button>
           </div>
         </div>
+        <div class="fp-hemo-register" aria-label="Registrar dano direto à Vida e quantidade de sangue gerada">
+          <div class="fp-hemo-register-heading"><strong>Registrar perda de Vida</strong><small>1 ponto de dano direto à Vida = 1 marca. Ex.: 3 de dano geram 3 marcas.</small></div>
+          <div class="fp-hemo-register-fields">
+            <label for="hemo-damage-points">Pontos de Vida perdidos<input type="number" id="hemo-damage-points" min="1" max="999" step="1" value="1" inputmode="numeric"></label>
+            <label for="hemo-damage-pool">Origem das marcas<select id="hemo-damage-pool"><option value="spilled">Sangue derramado</option><option value="extracted">Sangue extraído</option></select></label>
+            <button type="button" id="hemo-record-damage" data-action="hemo-record-damage">Registrar marcas</button>
+          </div>
+          <small>Somente a parte que atingiu a Vida. Sangramento sem dano e Integridade perdida não geram marcas. Registre cada perda de Vida uma única vez.</small>
+        </div>
         <div class="fp-hemo-actions">
           <div><strong>Estado do conjurador</strong><small>Para extração direta, ambos — conjurador e alvo — precisam estar Sangrando.</small><button type="button" id="hemo-self-status" data-action="hemo-self" aria-pressed="false">Sem Sangramento</button></div>
           <div><strong>Amplificação de Sangue</strong><small>Uma substituição de Coragem por turno: amplificar magia, manter dado OU elevar dado. Pagamento pendente.</small><button type="button" id="hemo-boost-status" data-action="hemo-boost" aria-pressed="false">Marcar amplificação do turno</button></div>

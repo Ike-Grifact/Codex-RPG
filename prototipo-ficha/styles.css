@@ -1387,3 +1387,15 @@ html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65
   color:var(--fp-text);font-size:11px;font-weight:700;cursor:pointer}
 .fp-hemo-spend:hover:not(:disabled){background:color-mix(in srgb,var(--fp-p) 24%,var(--fp-raised))}
 .fp-hemo-spend:disabled{cursor:not-allowed;opacity:.48}
+
+/* SRD v0.72 — inserir múltiplas marcas correspondentes a pontos de Vida perdidos */
+.fp-hemo-register{margin-top:12px;padding:12px;border:1px solid var(--fp-stroke);border-radius:10px;background:var(--fp-surface)}
+.fp-hemo-register-heading{display:flex;gap:8px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.fp-hemo-register-heading strong{font-size:12px;color:var(--fp-text)}
+.fp-hemo-register small{font-size:11px;line-height:1.5;color:var(--fp-muted)}
+.fp-hemo-register-fields{display:grid;grid-template-columns:minmax(80px,1fr) minmax(140px,1.4fr) auto;gap:9px;align-items:end;margin:10px 0 7px}
+.fp-hemo-register-fields label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--fp-muted)}
+.fp-hemo-register-fields input,.fp-hemo-register-fields select{min-width:0;width:100%;padding:9px 10px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);font:inherit;font-size:12px;min-height:38px}
+.fp-hemo-register-fields button{padding:9px 12px;min-height:38px;border-radius:8px;border:1px solid var(--fp-p);background:color-mix(in srgb,var(--fp-p) 14%,var(--fp-raised));color:var(--fp-text);font-size:11px;font-weight:700}
+.fp-hemo-register-fields button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:650px){.fp-hemo-register-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fp-hemo-register-fields button{grid-column:1/-1;width:100%}}
