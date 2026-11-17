@@ -60,11 +60,11 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 **IMPORTANTE:** v0.77/v0.78 só autorizam a **aplicação de Cravar** com arma **Média ou Pesada** e seus gatilhos já aprovados; a existência de uma DE de retirada para arma Leve **não libera, por si só, armas Leves para cravar**. Conservar a restrição até decisão explícita.
 
-**DEFINIDO — penalidade corrigida:** enquanto a arma estiver cravada, **Levantar Escudo sofre −1E** (substitui −2E na v0.77/v0.78 e no Livro). **Somente** Levantar Escudo recebe essa penalidade de Cravar; não a aplicar a qualquer teste.
+**DEFINIDO — penalidade cumulativa (opção B, 17/11/2026):** **cada arma cravada no mesmo escudo impõe −1E** exclusivamente na ação de **Levantar Escudo**. As penalidades **se acumulam por arma**: 1 arma = −1E; 2 = −2E; 3 = −3E; 4 = −4E, sempre sujeitas às regras gerais de resolução dos Êxitos, sem criar novo teto de armas. A remoção de cada arma **retira o −1E correspondente**, mantendo a penalidade das demais ainda presas. O valor anterior de **−2E fixos** da v0.77/v0.78 está revogado. A penalidade de Cravar **não se aplica aos demais testes**; **Sobrecarga** permanece condição independente (−1E em todos os testes). A aplicação de Cravar conserva armas Médias/Pesadas e demais gatilhos definidos.
 
 **DEFINIDO — Sobrecarga:** a condição de Sobrecarga aplica **−1E em todos os testes**. O peso natural, a dimensão e as proteções de criaturas devem aproveitar as regras já existentes para o porte, sem criar novas tabelas ou algoritmos.
 
-**PENDENTE:** situações de múltiplas armas cravadas, destino da arma ao ser retirada e demais procedimentos que não tenham sido expressamente aprovados. A implementação atual ainda pode conter −2E e DE manual.
+**DEFINIDO:** múltiplas armas cravadas no mesmo escudo acumulam −1E por arma em Levantar Escudo. **PENDENTE:** destino/posse da arma após sua retirada e outros procedimentos não expressamente aprovados. **PENDENTE DE IMPLEMENTAÇÃO:** interfaces podem ainda usar −2E fixos e DE manual; devem ser reconciliadas com esta decisão.
 
 ### 3. Conjuração: graus e preparação
 
@@ -181,7 +181,7 @@ Não cobrar as três formas cumulativamente.
 | Pedra da Alma — Fixar Alma | **PENDENTE**: definição futura completa |
 | Focos — borda temporal da primeira recarga | **DEFINIDO:** quando o foco comum esgota durante a rodada, recupera 1 carga **no fim dessa mesma rodada**, depois do fluxo de jogadores e inimigos; Pedra da Alma é exceção |
 | Medicina Avançada no criador e Foundry | **IMPLEMENTADO na branch do criador:** compra 1 XP, Medicina 2, terceira fonte. **PENDENTE:** automatizar tratamento de Sangrando no alvo, integrar Foundry e mesclar branch |
-| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: −1E para Levantar Escudo, DE por peso e −1E geral da Sobrecarga |
+| Cravar e Sobrecarga nas interfaces | **PENDENTE DE IMPLEMENTAÇÃO/VALIDAÇÃO**: aplicar **−1E cumulativo por arma cravada somente em Levantar Escudo**, retirar uma penalidade por arma removida, DE de retirada por peso e −1E geral independente da Sobrecarga |
 | 15 XP iniciais | **EXPERIMENTAL**: revisar balanceamento; ainda não alterar a progressão fora do início |
 
 ### 7.1. Auditoria de pendências deste checkpoint (17/11/2026)
@@ -191,7 +191,7 @@ Não cobrar as três formas cumulativamente.
 **7 frentes de regras ou procedimentos PENDENTES:**
 
 1. **Combinações para monstros:** detalhamento de fontes, dados e Grau quando a ficha usa somente Atributos, inclusive exceções de criaturas.
-2. **Cravar em situações especiais:** múltiplas armas presas no mesmo escudo e destino/posse de arma retirada; **não presumir que a penalidade de −1E se acumula ou que não se acumula** antes de decisão expressa.
+2. **Cravar — destinação da arma retirada:** a acumulação **−1E por arma cravada** já está **DEFINIDA**; permanece **PENDENTE** esclarecer a posse/destino físico da arma quando retirada e outros procedimentos de inventário específicos.
 3. **Conjuração G4:** tempo geral de preparação e limites de aceleração ainda não definidos para esse Grau.
 4. **Magias memorizadas e cronologia de conjuração:** compatibilidade de preparação, memorização e exceções de Sangue com os novos tempos elementais e efeitos históricos.
 5. **Pedra da Alma — Fixar Alma:** requisitos, XP, procedimento, custo, recuperação de cargas e riscos desta futura Perícia.
@@ -201,7 +201,7 @@ Não cobrar as três formas cumulativamente.
 **4 frentes de implementação/validação**, distintas de regras aprovadas:
 
 1. **Condições e alvos no criador/Foundry:** automatizar tratamento de Sangrando por Medicina Avançada e remoção de Congelamento por Água/Queimar.
-2. **Cravar e Sobrecarga nas interfaces:** aplicar retirada por DE/peso, −1E ao Levantar Escudo e −1E geral da Sobrecarga, preservando demais funcionalidades.
+2. **Cravar e Sobrecarga nas interfaces:** aplicar retirada por DE/peso, **−1E por arma cravada** em Levantar Escudo (cumulativo), e −1E geral da Sobrecarga, preservando demais funcionalidades.
 3. **Conjuração, focos e Hemomancia:** implementar contagem de turnos, gasto de múltiplas cargas, recarga no encerramento da mesma rodada, interrupção e seus recursos; respeitar a exceção da Pedra da Alma.
 4. **Fluxo de criaturas/combinações e testes de regressão:** validar o compositor, fichas de monstros e humanoides, versões móvel e clássica e compatibilidade com Foundry.
 
@@ -210,7 +210,7 @@ Não cobrar as três formas cumulativamente.
 **Resumo desta auditoria: 7 frentes de regras + 4 frentes de implementação/validação + 1 frente experimental = 12 frentes de acompanhamento.** Não interpretar como exatamente 12 perguntas de sim/não: cada frente pode conter vários detalhes.
 
 **Divergências conhecidas frente ao Livro do Jogador e versões históricas:**
-- v0.78 declara DE de retirada por peso a cargo do Narrador e −2E em Levantar Escudo: **substituir por tabela 1/2/3 e −1E somente nessa ação**.
+- v0.78 declara DE de retirada por peso a cargo do Narrador e −2E fixos em Levantar Escudo: **substituir por tabela 1/2/3 e −1E por arma cravada, cumulativo, somente nessa ação**.
 - Livro do Jogador descreve recarga de focos em N rodadas sem detalhar cargas e início de recuperação: **aplicar capacidade = Grau e recuperação gradual automática no encerramento de rodada, após esgotamento**, com exceção da Pedra da Alma.
 - Livro contém descrições de conjuração elemental/G1 e velocidade de G3 anteriores à revisão: **G2=2 turnos, G3=3 turnos, redução a G1 imediata e foco −1 turno por carga** prevalecem onde aplicáveis. **Duas cargas na mesma G3** reduzem sua preparação a **1 turno, isto é, conjuração instantânea no próprio turno**, sem perder efeitos G3; permanecem pendências de G4 e integração com memorização.
 - Livro apresenta Conjuração Refinada com alcance pendente: **+8 m está definido**.
@@ -221,8 +221,8 @@ Não cobrar as três formas cumulativamente.
 
 O autor confirmou, após este checkpoint, **requisito universal Grau 2** e **custo 1 XP** para **todas** as Perícias Avançadas de Conhecimento e Prática. Cada uma usa a própria fonte como predominante e pode adicionar **até duas fontes pertinentes**. Foram cadastradas na branch as **12 especializações** correspondentes aos seis Conhecimentos e seis Práticas; requisitos adicionais já existentes foram preservados.
 
-**Próximo ponto exato — perguntar apenas uma coisa:** “Sobre **Cravar**: se mais de uma arma ficar presa ao mesmo escudo, a penalidade de **−1E em Levantar Escudo** continua única, ou se acumula por arma?”
+**Próximo ponto exato — perguntar apenas uma coisa:** “Quando alguém **retira uma arma cravada do escudo** com sucesso, a arma fica **imediatamente na mão de quem a retirou** ou deve ser colocada **no chão/solta** (e pegá-la exige ação própria pelas regras já vigentes)?”
 
-**Depois da resposta**, registrar somente o tratamento de múltiplas armas Cravadas sem inventar novos custos ou somar penalidades por inferência. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
+**Depois da resposta**, registrar somente o destino da arma após a retirada, sem inventar ações, custos ou novos procedimentos; não reabrir o acúmulo de −1E por arma cravada, já aprovado. Não reabrir a recarga no encerramento da mesma rodada, nem a definição de que **1 turno é instantâneo no turno do conjurador** e duas cargas aceleram G3 até isso. Não reabrir a regra aprovada de perda de recursos já pagos, nem a DE defensiva, a força ou o reinício integral de três turnos com nova rolagem. Não reabrir o requisito Água G1 ou a necessidade de teste para descongelar. **Não voltar a perguntar** sobre a opção B, requisito Grau 2, custo-padrão das Avançadas, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga.
 
 **Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de 12 Perícias Avançadas no criador e Codex Genético, com verbetes, catálogo e Livro do Jogador atualizados. **Não foram alterados** os dados simbólicos, custos de Perícias não avançadas, mecânicas de Cravar/Hemomancia/focos no código ou Foundry. A PR continua revisável sem alterar a `main`.
