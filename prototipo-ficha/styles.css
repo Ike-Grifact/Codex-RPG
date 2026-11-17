@@ -1237,3 +1237,24 @@ html:not([data-theme="light"]) .fp-gene-legend .potential{color:#bf91e7}
  padding:10px 12px;margin:5px 0;border:1px solid var(--fp-gold);border-radius:8px;
  background:transparent;color:var(--fp-gold);text-align:center;text-decoration:none;font-weight:700;font-size:12px}
 .fp-gene-verbete:hover,.fp-gene-verbete:focus-visible{background:var(--fp-surface);text-decoration:underline;outline-offset:2px}
+
+
+/* Biblioteca local de fichas de jogadores; compartilhada pelo criador e pela ficha final. */
+.fp-player-sheets{display:flex;gap:14px 18px;align-items:center;flex-wrap:wrap;padding:15px 20px;margin:0 0 22px}
+.fp-player-sheets[hidden]{display:none!important}
+.fp-player-sheets-picker{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.fp-player-sheets-picker label{font-size:10px;font-weight:800;letter-spacing:.10em;color:var(--fp-gold)}
+.fp-player-sheets-picker select{width:100%;min-height:40px;max-width:100%;border:1px solid var(--fp-stroke);
+ background:var(--fp-deep);color:var(--fp-text);border-radius:9px;padding:8px 12px;font-size:14px}
+.fp-player-sheets-picker select:focus{outline:2px solid var(--fp-gold);outline-offset:1px}
+.fp-player-sheets-picker small{color:var(--fp-muted);font-size:11px}
+.fp-player-sheets-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fp-player-sheets-actions button{min-height:40px}
+.fp-player-sheets-actions button:disabled{opacity:.4;cursor:not-allowed}
+.fp-player-sheets .fp-danger-button:not(:disabled):hover{color:#bf615d;border-color:#bf615d}
+.fp-player-sheets-help{flex:1 0 100%;font-size:11px;line-height:1.5;color:var(--fp-muted);margin:0}
+@media(max-width:600px){
+ .fp-player-sheets{padding:14px 15px;gap:10px}
+ .fp-player-sheets-actions{width:100%}
+ .fp-player-sheets-actions button{flex:1 1 95px;padding:10px 7px}
+}
