@@ -1,10 +1,34 @@
 # Codex RPG — Livro do Jogador
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
-> **Documento em desenvolvimento.** A continuidade normativa mais recente na branch está consolidada no [SRD de Continuidade v0.52](srd-continuidade-v0.52.md). Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
+> **Documento em desenvolvimento.** A atualização normativa mais recente em revisão é o [SRD de Continuidade v0.57](srd-continuidade-v0.57.md), que fixa 15 XP iniciais para o próximo playtest sobre as tabelas da [v0.56](srd-continuidade-v0.56.md) e sucede a [v0.55](srd-continuidade-v0.55.md) (linhagens), v0.54 (escudos) e v0.53 (Domar). A `main` ainda publica a v0.52 até a revisão e a mesclagem. Este livro apresenta as regras de modo didático e diferencia regras definidas, hipóteses de playtest e pontos pendentes. O histórico anterior foi preservado em [arquivo/v0.5](arquivo/livro-do-jogador-v0.5-legado.md).
 
 ### Estado das regras
 **DEFINIDO** — confirmado pelo autor. **EXPERIMENTAL** — números para playtest. **PROPOSTO** — alternativa não aprovada. **PENDENTE** — procedimento incompleto.
+
+### Linhagens de Aprendizes — custos revistos em 17/11/2026 [SRD v0.56]
+
+Todos começam como **Aprendizes**, sem classe fixa. A linhagem concede benefícios gratuitos e escolhe a faixa de XP de fontes específicas:
+
+| Linhagem | Atributos com desconto | Atributos elevados | Práticas elevadas | Benefício inicial |
+|---|---|---|---|---|
+| **Lucker de Sangue** | Vigor e Agilidade | Influência | Apresentação | Elemento Sangue |
+| **Lucker Puro** | Inteligência e Influência | Força | Atletismo | Criar Item de Foco e Magia + Sangue, Trevas **ou** Veneno |
+| **Runa Espinhos** | Vigor e Força | Agilidade e Destreza | — | Pugilismo, Criar Item de Foco e Magia + dois elementos distintos entre Ar/Água/Terra/Fogo |
+| **Humano** | — | — | — | Perseverança Humana: rerrolar um teste por descanso longo |
+
+As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](srd-continuidade-v0.56.md). Uma fonte elevada **não custa automaticamente o dobro**: aplica-se a coluna elevada. As Perícias raciais gratuitas não consomem XP nem concedem Graus de fontes. A criação ainda exige uma compra de Atributo G1 e uma de Conhecimento/Prática G1.
+
+**Perseverança Humana:** a ficha controla manualmente uso e recarga; a rerrolagem automatizada, o momento de declaração e o tratamento de recursos já gastos continuam pendentes.
+
+### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
+
+**Escudo físico:** usar a ação **Levantar Escudo** e rolar **Disciplina**; escolher os dados mantidos e formar a Integridade extra com **E + P válidos mantidos**, usando o desgaste simbólico do Escudo Arcano. Permite deslocamento normal, mas **só bloqueia o primeiro ataque frontal**. Depois de resolvê-lo (mesmo que erre), a postura acaba; atacar também encerra a postura. Dano não bloqueado segue para **armadura → Vida**. Não é reação.
+
+**Escudo Arcano Psíquico:** anula **Perfurante de arma física** sem apagar o dano. Escudo físico levantado também anula essa característica quando bloqueia o primeiro ataque frontal. **Perfurar de Água não é anulado** por essas defesas anti-Perfurante. A barreira arcana protege de todas as direções em **círculo** ou **forma pessoal/corpo a corpo**; a parede linear não. Custos e duração arcana de 1 rodada continuam. Ver [SRD v0.54](srd-continuidade-v0.54.md), seção 0-AQ.
+
+**PENDENTE:** relação entre a Integridade simbólica rolada e a Integridade/Durabilidade material do escudo, ângulo frontal exato, ataques não frontais e múltiplos, coexistência de barreiras, interação detalhada de Perfurar de Água com a DE/Integridade dos escudos e efeitos específicos de Fogo. Os valores materiais G1 6/9/12 permanecem PROPOSTOS.
+
 
 ## Domar Média e ativações de Perícias — decisão de 16/11/2026 [DEFINIDO, SRD v0.52]
 
@@ -127,7 +151,7 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 | **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
 | **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 PP ou 1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
 
-**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela normal de Atributos da v0.56**; o texto histórico anterior usava a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
 
 ### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
 
@@ -181,9 +205,9 @@ No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão p
 
 **Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
 
-### Os Luckers — guia de interpretação [DEFINIDO no cenário / regras de origem PENDENTES]
+### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
 
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo não criam imunidades, bônus, Perícias ou regras de origem. **A criação completa disponível no playtest atual continua sendo a humana**; este texto prepara a interpretação dos Luckers para quando forem autorizados em jogo.
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das linhagens agora aprovadas na seção de regras acima**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. Sua economia de XP reduzida ou majorada sem fórmula numérica permanece **PENDENTE**; a seleção de linhagem não revoga os limites e requisitos gerais.
 
 #### Dois destinos para um povo antigo
 
@@ -424,11 +448,11 @@ Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influê
 |---:|---|---:|---|---:|
 | 0 | 1d4 | 0 | **1d6** | 0 |
 | 1 | 1d6 | 1 | 1d10 | 2 |
-| 2 | 2d6 | 3 | 2d10 | 8 |
-| 3 | 3d6 | 7 | 3d10 | 20 |
-| 4 | 2d6 + 1d10 | 15 | 2d10 + 1d12 | 38 |
-| 5 | 1d6 + 2d10 | 31 | 1d10 + 2d12 | 66 |
-| 6 | 3d10 | 55 | 3d12 | 102 |
+| 2 | 2d6 | 3 | 2d10 | 4 |
+| 3 | 3d6 | 6 | 3d10 | 8 |
+| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
+| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
+| 6 | 3d10 | 32 | 3d12 | 64 |
 
 **Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
 
@@ -444,7 +468,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
 
-**EXPERIMENTAL — orçamento total:** a ferramenta utiliza **20 XP iniciais compartilhados**, cujo valor total ainda aguarda homologação. Atributo grau 1 custa 1 XP; Conhecimento/Prática grau 1 custa 2 XP, restando **17 XP de escolha livre** neste orçamento de playtest. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
+**EXPERIMENTAL — orçamento total:** a ferramenta utiliza **15 XP iniciais compartilhados**, cujo valor total ainda aguarda homologação. Atributo grau 1 custa 1 XP; Conhecimento/Prática grau 1 custa 2 XP, restando **12 XP de escolha livre** neste orçamento de playtest. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
@@ -646,8 +670,16 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 **DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
 
-Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfuração especial habilitada ignora integridade ao acertar a DE. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
+Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** Perfurante físico habilitado ignora normalmente a Integridade da armadura ao acertar a DE, **exceto quando sua característica é anulada por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal**. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
+
+### Levantar Escudo físico [DEFINIDO — 16/11/2026]
+
+Levantar Escudo **consome uma ação**; o defensor realiza um **teste de Disciplina** e escolhe os dados mantidos dentro dos limites normais. A Integridade simbólica extra é **E + P válidos dos dados mantidos**. O desgaste usa as equivalências já definidas: **1E do ataque anula 1E do escudo ou 2P; 1P anula 1P; 2P anulam 1E**. Antecipar não concede Integridade automaticamente. **Não é reação**.
+
+O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem abaixá-lo; **atacar encerra o bloqueio**. A postura protege contra **o primeiro ataque frontal recebido** e termina **depois da resolução desse ataque**, inclusive se ele não atingir. Se houver dano excedente, aplica-se à **armadura** e, depois, à **Vida**. Enquanto protege, anula a característica **Perfurante de armas físicas**, mas não o **Perfurar de Água**. O ataque **Cravar** conserva a sua regra específica contra escudos físicos.
+
+**PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
 
 ### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
 
@@ -758,15 +790,17 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **PENDENTE:** limites de controle mental, testes dos alvos, duração, alcance, magias memorizadas e tempo efetivo da conjuração rápida. Não transformar exemplos em efeitos automáticos.
 
-### Escudo Arcano [DEFINIDO / resolução de proteção PENDENTE]
+### Escudo Arcano [DEFINIDO / detalhes de aplicação PENDENTES]
 
-**Custo: 1 XP. Requisitos: Inteligência 2 + Criar Item de Foco e Magia.**
+**Custo de aquisição: 1 XP. Requisitos vigentes: Inteligência 2 + Vigor 1 + Criar Item de Foco e Magia.**
 
-**Ativação:** **1 PP ou 1 Coragem** cria escudo sobre si mesmo ou uma **área circular de 3×3 metros**, que **dura 1 rodada**. Uma rolagem com **Conjuração** estabelece a **DE para quebrar o escudo**, que funciona como Integridade de armadura.
+**Ativação:** **1 PP ou 1 Coragem** cria escudo pessoal, parede linear inicial de 3 m ou **área circular de 3×3 metros**, com **duração de 1 rodada**. A conjuração usa **Disciplina + Atributo pertinente** (mais uma fonte pertinente se houver Disciplina Avançada). O total de **E + P válidos nos dados mantidos** forma a **DE inicial e a Integridade simbólica** da barreira. No desgaste, **1E do ataque anula 1E do escudo ou 2P; 1P anula 1P; 2P anulam 1E**. Não criar Vida extra para a proteção.
 
-Quem estiver dentro da área é **imune ao dano elemental conjurado**. Se um inimigo entrar na área e atacar ou conjurar magia **corpo a corpo**, ignora o escudo para essa interação. Por cada **1 PP ou 1 Coragem adicional**, a área circular é ampliada em **mais 3×3 metros**.
+**Direção:** o **círculo** e o **escudo pessoal/corpo a corpo** protegem de todas as direções; a **parede linear** protege segundo sua geometria. **Escudo Arcano Psíquico ativo anula a propriedade Perfurante de armas físicas**, não o acerto nem o dano: o excedente segue para outras proteções, armadura e Vida. **Perfurar de Água não perde seu efeito mágico** por esta anulação de Perfurante físico.
 
-**PENDENTE:** geometria exata de ampliação circular, alcance, relação entre DE e Integridade e efeitos mistos. **Formato circular e duração de 1 rodada estão definidos.**
+**Elementos e interior:** aplicam-se as imunidades do elemento incorporado, não uma imunidade gratuita a todos os elementos. Se um inimigo entrar na área e atacar ou conjurar corpo a corpo **a partir de dentro**, ignora essa barreira na interação. Cada **1 PP ou 1 Coragem adicional** amplia a parede em 3 m ou o círculo em mais 3×3 m, conforme a forma escolhida.
+
+**PENDENTE:** geometria exata da ampliação circular, resistência a efeitos reativos e mistos, convivência com escudo físico e interação detalhada do Perfurar de Água com os símbolos/Integridade. **Formato e duração já são DEFINIDOS.**
 
 ### Conjuração Refinada [DEFINIDO no nome / alcance PENDENTE]
 
@@ -916,7 +950,7 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 | Tipo | Propriedade possível | Limite |
 |---|---|---|
 | **Cortante** | **Sangramento superficial** habilitado | O sangue escorre, **sem reduzir Vida nem causar dano periódico** |
-| **Perfurante** | Técnica habilitada ignora integridade e atinge Vida | Exige acerto, até 3 Vida em golpe não colossal |
+| **Perfurante** | Arma física habilitada normalmente ignora a armadura e atinge Vida | Requer acerto; Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula a característica, **não** o dano; limite normal até 3 Vida |
 | **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
 | **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
 | **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
@@ -1001,7 +1035,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **Especializações corpo a corpo admitidas para Golpe Fulminante e Espalhar Golpe:** Perícia em Armas Leves, Perícia em Armas Médias, Perícia em Manejo Duplo, Perícia em Armas Pesadas ou Pugilismo. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
 
-**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 17 XP do orçamento experimental de 19, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
+**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 12 XP do orçamento experimental de 15, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
 
 **Espalhar Golpe [DEFINIDO]:** o inimigo principal já é atingido pelo ataque normal, sem pagamento de Espalhar Golpe. A cada **1 PP ou 1 Coragem**, **um inimigo adicional** dentro de um círculo de **2 m de raio centrado no personagem atacante** recebe metade do **dano dos Êxitos**. O primeiro pagamento já cobre o primeiro adicional; cada novo pagamento cobre mais um. **DEFINIDO: cada pagamento é consumido mesmo quando a rolagem não atinge a DE do alvo adicional escolhido.** Paga-se pela tentativa de incluí-lo no golpe, não pelo acerto. Essa regra de custo vale para Espalhar Golpe; os custos de Disparo Múltiplo continuam PENDENTES. **Não acrescenta +1 Êxito**. **“Golpe Colossal” era o nome anterior de Espalhar Golpe**, não técnica separada. **DEFINIDO:** a metade do dano dos Êxitos é **sempre arredondada para baixo** (⌊dano dos Êxitos ÷ 2⌋); com 5 de dano de Êxitos, cada alvo adicional recebe 2, antes das defesas. **DEFINIDO:** usa-se **o mesmo resultado da rolagem do ataque principal** contra a **DE de cada alvo adicional**, sem rolar novamente; se ficar **abaixo da DE de um alvo**, esse alvo **não é atingido**. Só os alvos cuja DE foi alcançada podem receber o dano reduzido. A mesma regra de comparação vale para **Disparo Múltiplo**, mas sua área é medida ao redor do alvo principal. **Ordem das defesas [DEFINIDO]:** primeiro obter a metade do dano dos Êxitos e arredondar para baixo, **depois** aplicar Integridade, resistências, imunidades e demais defesas **individualmente para cada alvo atingido**. Não aplicar automaticamente componente de dano de Pavor sobre os adicionais.
 
@@ -1070,9 +1104,9 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 **PP = Pontos de Perícia.** PP máximos: **0** (níveis 1–4), **1** (níveis 5–9), **2** (níveis 10–19) e **3** (nível 20). O nível 5 concede automaticamente o Talento passivo **Perícia em Coragem**, que converte 2 Coragens em 1 PP uma vez por turno, até o teto da reserva. O Cavaleiro do Terror usa 2P próprios em vez disso, transferindo **exatamente 2P**, sem duplicação.
 
-Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos. No nível 20, uma Maestria de Atributo pode fornecer segundo d20 por 2 PP; exige ao menos um Atributo-chave no grau 6, 100 XP anteriores em Perícias e mais 100 XP para adquirir a própria Maestria. Não é possível converter dois dados de Atributo em uma ação.
+Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
 
-A curva de **664 XP acumulados no nível 20 é EXPERIMENTAL**. O orçamento final aguarda a aprovação dos custos das Perícias e a composição do Grau 7. Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
+A nova referência **experimental** é de **260 XP acumulados no nível 20, incluindo 15 XP iniciais e até 245 de evolução**, contra 664 XP antes. O aumento de nível permanece manual e não concede XP automaticamente. Mais detalhes no [SRD v0.57](srd-continuidade-v0.57.md) e nas tabelas da [v0.56](srd-continuidade-v0.56.md). Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
 
 ### Materiais para públicos diferentes
 

@@ -6,7 +6,10 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const between=(a,b)=>{const begin=source.indexOf(a),end=source.indexOf(b,begin+a.length);
  assert(begin>=0&&end>begin,"Trecho não encontrado: "+a);
  return source.slice(begin,end);};
-const check=Function(between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")();
+const check=Function("racialGrants","ownsSkill",between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")(
+ () => [],
+ (id,s) => (s.skills||[]).includes(id)
+);
 const {skillReq,dependentsValid}=check;
 const start=source.indexOf("const GENE_AUTO_REQUIREMENTS=");
 const end=source.indexOf("\n};",start);
