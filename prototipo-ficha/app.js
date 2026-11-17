@@ -2897,7 +2897,12 @@ function score(){
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
  if(cancel+2*pairs+pass>aPool)errs.push("Antecipar insuficiente para os gastos selecionados.");
  // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
- const E=Math.max(0,eBase+pairs+health.e),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
+ // v0.77: −2E somente quando a ação declarada é Levantar Escudo e o escudo carrega uma arma cravada.
+ const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
+ if(p.opts.shieldRaise&&(!raisedShield||p.base?.group!=="practice"||p.base.key!=="armas_conjuracao"||p.mode!=="armas"))
+  errs.push("Levantar Escudo exige Disciplina (Armas) e escudo físico equipado.");
+ const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?2:0;
+ const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
@@ -2920,6 +2925,25 @@ function score(){
    }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
+ // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
+ // crítico OU a Perícia pertinente para acerto não crítico.
+ const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
+ const weaponCategory=item?.category==="medio"||item?.weight==="medio"?"medio":
+  item?.category==="pesado"||item?.weight==="alto"||item?.weight==="extremo"?"pesado":"leve";
+ const validCravarWeapon=item?.equipped&&item.type==="arma"&&!item.firearm&&
+  p.mode==="armas"&&["medio","pesado"].includes(weaponCategory)&&properties.includes("Cravar");
+ const cravarSpecialty=weaponCategory==="medio"?"armas-medias":"armas-pesadas";
+ if(cravarChosen&&success){
+  if(!validCravarWeapon)errs.push("Cravar requer arma física Média ou Pesada equipada, com a característica Cravar.");
+  if(!critTier&&!ownsSkill(cravarSpecialty))errs.push("Sem crítico, Cravar exige Perícia em Armas Médias ou Pesadas correspondente.");
+  if(!["leve","medio","pesado"].includes(p.cravarTargetShield))
+   errs.push("Para Cravar, confirme a categoria do escudo físico levantado pelo alvo.");
+  if(p.cravarTargetShield==="pesado"&&weaponCategory!=="pesado")
+   errs.push("Escudo Pesado ou Muito Pesado só pode ser cravado por arma Pesada.");
+ }
+ const cravarApplied=!!(cravarChosen&&success&&active.includes("Cravar")&&validCravarWeapon&&
+  (critTier||ownsSkill(cravarSpecialty))&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
+  (p.cravarTargetShield!=="pesado"||weaponCategory==="pesado"));
  // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
  if(p.opts.trevas&&success&&!freeElementEffect){if(p.payment==="pp")ppCost+=1;else courageCost+=1;}
  // v0.76: os Graus de Fogo ainda dependem de validação manual pelo Narrador.
@@ -2972,7 +2996,7 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied,cravarTargetShield:cravarApplied?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
