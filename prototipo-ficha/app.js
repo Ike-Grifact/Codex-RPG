@@ -1367,7 +1367,7 @@ function renderXP(){
  }
  $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
  "20 XP iniciais compartilhados: "+x.total+" investidos, "+x.free+" disponíveis. "+
- (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
+ (raceCaution()?raceCaution()+" ":"")+(editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
@@ -1450,11 +1450,20 @@ function changeRace(id){
  if(!Object.hasOwn(RACES,id)||state.creationLocked||state.pending)return;
  const old=state.race,oldPure=state.pureElement,oldRune=[...state.runeElements];
  state.race=id;state.pureElement="";state.runeElements=["",""];
+ const oldOrigin=state.origin;
+ if(state.origin==="Humano"&&id!=="humano")state.origin=""; // Origem é local/cultura, não a nova linhagem.
  const duplicate=state.skills.some(id=>racialGrants(state).includes(id));
  const blocked=dependentsValid(state);
  if(duplicate||blocked||xpCosts().free<0){
-  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;
+  state.race=old;state.pureElement=oldPure;state.runeElements=oldRune;state.origin=oldOrigin;
   toast(duplicate?"Perícia já comprada: devolva-a antes de recebê-la gratuitamente pela origem.":blocked||"XP insuficiente para a nova linhagem.");render();return;
+ }
+ // O cristal inicial é o benefício comum da aquisição de Criar Item de Foco e Magia.
+ // Não preservar cristal concedido somente pela origem se ela deixar de conceder Foco.
+ if(ownsSkill("criar-item-foco-magia")){
+  if(!state.elementalCrystal.quantity){state.elementalCrystal.quantity=1;state.elementalCrystal.element="";}
+ }else if(old==="lucker_puro"||old==="runa_espinhos"){
+  state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
  }
  render();save();
 }
@@ -2136,7 +2145,7 @@ function wizardReview(){
 function wizardOverview(){
  const x=xpCosts();
  return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
-  '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+'</p></div>'+
+  '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+' · '+esc(RACES[state.race]?.[0]||"Humano")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
   '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 20 XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
