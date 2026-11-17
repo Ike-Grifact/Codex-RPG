@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./styles.css?v=20261116-constellation-1">
   <script src="./catalog.js?v=0.48-armour3" defer></script>
   <script src="./gene-graph.js?v=20261116-constellation-1" defer></script>
-  <script src="./app.js?v=0.54-escudos" defer></script>
+  <script src="./app.js?v=0.55-racas" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -87,9 +87,11 @@
         <div class="fp-fields fp-fields-identity">
           <label class="fp-field">Conceito / profissão emergente<input id="char-concept" type="text" maxlength="100" placeholder="Quem pretende se tornar?"></label>
           <label class="fp-field">Origem<input id="char-origin" type="text" maxlength="80" placeholder="Humano"></label>
+           <label class="fp-field">Linhagem / raça<select id="char-race" disabled title="Selecione a linhagem na etapa Identidade do criador"><option value="humano">Humano</option><option value="lucker_sangue">Lucker de Sangue</option><option value="lucker_puro">Lucker Puro</option><option value="runa_espinhos">Runa Espinhos</option></select></label>
           <label class="fp-field">Virtude<input id="char-virtue" type="text" maxlength="60" placeholder="Sua virtude"></label>
           <label class="fp-field">Personalidade<input id="char-personality" type="text" maxlength="100" placeholder="Um traço marcante"></label>
         </div>
+        <div id="race-benefit-panel" class="fp-wiz-reminder" aria-live="polite"></div>
       </div>
     </section>
 
