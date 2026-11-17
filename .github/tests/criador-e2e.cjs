@@ -16,6 +16,17 @@ const { chromium } = require('playwright');
       page.on('console', msg => { if (msg.type() === 'error') logs.push(msg.text()); });
       const url = 'http://127.0.0.1:8000/prototipo-ficha/';
       await page.goto(url, { waitUntil: 'domcontentloaded' });
+      const identity=page.locator('#wizard-content .fp-wiz-input-grid');
+      const fields=await identity.locator(':scope > label').evaluateAll(nodes=>nodes.map(node=>
+        node.querySelector('[data-race-select]')?'race':node.querySelector('[data-wizard-field]')?.dataset.wizardField));
+      if(JSON.stringify(fields.slice(0,5))!==JSON.stringify(['name','concept','race','virtue','personality']))
+        throw new Error('Origem/Raça não ocupa a posição de Origem narrativa: '+JSON.stringify(fields));
+      if(await identity.locator('[data-wizard-field="origin"]').count()||await identity.locator('[data-race-select]').count()!==1)
+        throw new Error('Identidade possui origem narrativa ou seleção racial duplicada');
+      await identity.locator('[data-race-select]').selectOption('lucker_sangue');
+      if(!await page.locator('.fp-wiz-race-info').innerText().then(t=>t.includes('Lucker de Sangue')))
+        throw new Error('Troca de Origem/Raça não atualizou o benefício racial');
+      await page.locator('#wizard-content [data-race-select]').selectOption('humano');
       await page.locator('input[data-wizard-field="name"]').fill('Aprendiz de teste');
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('button[data-action="wizard-starter-attr"][data-key="forca"]');
@@ -162,6 +173,10 @@ const { chromium } = require('playwright');
       page.once('dialog', dialog => dialog.accept());
       await page.locator('#wizard-controls [data-action="wizard-finish"]').click();
       await page.waitForSelector('#full-sheet:not([hidden])');
+      const originField=page.locator('#full-sheet #char-race');
+      if(await originField.count()!==1||await originField.inputValue()!=='humano'||
+         await page.locator('#full-sheet #char-origin').count())
+        throw new Error('A ficha final duplicou a Origem/Raça ou ainda possui Origem narrativa');
       await page.locator('#sheet-navigation button[data-sheet-page="genetic"]').click();
       await page.waitForSelector('#genetic-view:not([hidden])');
       if (!await page.locator('#gene-sheet-budget .fp-gene-dashboard').count()||
