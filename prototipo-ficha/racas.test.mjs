@@ -6,8 +6,8 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const start=source.indexOf("const AT_COST=");
 const end=source.indexOf("const CREATE_BUDGET=");
 assert.ok(start>=0&&end>start,"Constantes e funções raciais devem existir no criador");
-const {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
- source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
+const {RACES,racialGrants,ownsSkill,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
+ source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
 )();
 
 function character(race,more={}){
@@ -54,6 +54,34 @@ test("v0.61: Grau 1 automático dos Atributos favorecidos sem alterar custos",()
   const human=character("humano",{racialInitialAttributes:[]});
  applyRacialStartingAttributes(human);
  assert.deepEqual(human.attributes,{},"Humano não recebe graus automáticos");
+});
+
+test("v0.64: custo racial exibido sem inventar descontos, alterações de custo ou graus",()=>{
+ const cases=[
+  ["humano",[],[]],
+  ["lucker_sangue",["attr:vigor","attr:agilidade"],["attr:influencia","practice:apresentacao"]],
+  ["lucker_puro",["attr:inteligencia","attr:destreza"],["attr:forca","practice:atletismo"]],
+  ["runa_espinhos",["attr:vigor","attr:forca"],["attr:agilidade","attr:destreza"]]
+ ];
+ for(const [race,expectedDiscount,expectedElevated] of cases){
+  const c=character(race);
+  const actual={discount:[],elevated:[]};
+  for(const [group,rows] of [["attr",["forca","agilidade","destreza","inteligencia","influencia","vigor"]],
+   ["know",["protecao","astronomia","medicina","alquimia","engenharia","erudicao"]],
+   ["practice",["armas_conjuracao","atletismo","furtividade","artesao","apresentacao","coleta"]]]){
+   for(const key of rows){
+    const before=[...racialCostTable(group,key,c)];
+    const band=racialXpBand(group,key,c);
+    if(actual[band])actual[band].push(group+":"+key);
+    assert.deepEqual(racialCostTable(group,key,c),before,"Sinalização nunca altera preços");
+   }
+  }
+  assert.deepEqual(actual.discount.sort(),expectedDiscount.sort(),race+": descontos apenas nas fontes oficiais");
+  assert.deepEqual(actual.elevated.sort(),expectedElevated.sort(),race+": elevações apenas nas fontes oficiais");
+ }
+ assert.equal(racialXpLabel("discount"),"XP reduzido");
+ assert.equal(racialXpLabel("elevated"),"XP aumentado");
+ assert.equal(racialXpLabel("normal"),"XP normal");
 });
 
 test("quatro linhagens, sem criar classes obrigatórias",()=>{
