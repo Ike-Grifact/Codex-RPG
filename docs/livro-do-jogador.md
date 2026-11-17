@@ -934,6 +934,8 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 A ficha do Hemomante traz **dois contadores manuais**, sangue derramado e sangue extraído, que somam para o potencial de Transfusão. O procedimento definitivo de gerar marcas (por ponto perdido ou evento de dano), seus custos de conjuração, alcance, duração e coleta estão **PENDENTES**; o registro na ficha serve ao playtest e pressupõe validação do Narrador. **Transfusão**, a Perícia pré-requisito, tem seus próprios custos de compra ainda pendentes, logo a compra da nova Perícia exige primeiro resolver a aquisição da anterior.
 
+**Consumo do Sangue [DEFINIDO]:** cada marca de sangue **derramado ou extraído** usada para conjurar é **consumida no ato**, inclusive se o ataque de Sangue causar apenas dano convencional contra a armadura. Converter a marca em efeito especial também a consome; uma marca gasta não pode ser usada novamente nem financiar Transfusão. A própria Transfusão consome três marcas para recuperar 1 Vida — não exigir uma quarta marca sem outra decisão. Permanecem **PENDENTES** a geração das marcas e a quantidade para técnicas ainda não detalhadas. A ficha oferece um botão de gasto manual sem efeitos mágicos automáticos.
+
 **Amplificação por Sangue:** uma vez por turno, optar por substituir Coragem para **uma** destas ações: ampliar magia, manter dado ou elevar dado. Não acumular as três substituições. Fonte exata do sangue gasto, valor e momento de pagamento seguem PENDENTES, portanto a ficha apenas marca o uso.
 
 ### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
