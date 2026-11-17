@@ -1273,7 +1273,7 @@ function hasStarterSources(s=state){
 }
 function lockCreation(){
  if(state.creationLocked)return 0;
- if(!hasStarterSources()||xpCosts().free<0)return null;
+ if(!hasStarterSources()||xpCosts().free<0||!raceChoicesComplete())return null;
  const spent=rawCreationCosts(state);
  state.creationBudgetSnapshot={attr:spent.attr,training:spent.training,skills:spent.skills};
  state.creationLocked=true;
@@ -1355,7 +1355,7 @@ function renderXP(){
  $("xp-free-text").textContent=(x.free<0?"−":"")+Math.abs(x.free)+" XP";
  $("xp-free-text").classList.toggle("fp-negative",x.free<0);
  $("build-status").textContent=editMode?"Modo edição · corrigindo a ficha":state.creationLocked?"Progressão · compras permanentes":"Aprendiz · orçamento experimental";
- $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0||!hasStarterSources();
+ $("lock-creation").disabled=state.creationLocked||!!state.pending||x.free<0||!hasStarterSources()||!raceChoicesComplete();
  $("lock-creation").textContent=state.creationLocked?"Criação concluída ✓":"Concluir criação";
  $("level-up").disabled=state.level>=20||!!state.pending||x.free<0;
  $("xp-award").disabled=!!state.pending;
@@ -2837,6 +2837,7 @@ function renderRespecSkills(){
   '<p class="fp-muted">Nenhuma Perícia comprada nesta Ficha.</p>';
 }
 function refundSkillForPlaytest(id){
+  if(racialGrants(state).includes(id)){toast("Perícia racial não gera reembolso de XP.");return;}
  if(state.pending){toast("Finalize ou descarte a rolagem antes de redistribuir XP.");return;}
  const index=state.skills.indexOf(id),row=SKILLS.find(x=>x[0]===id);
  if(index<0||!row||!Number.isInteger(row[3]))return;
@@ -2910,6 +2911,15 @@ function onClick(event){
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
  case "wizard-portrait":$("portrait-input").click();break;
+ case "human-reroll-use":{
+  if(state.race!=="humano"||state.perseverancaUsed||state.pending)return;
+  state.perseverancaUsed=true;renderRacePanel();save();toast("Perseverança usada. Rerrole o teste manualmente.");break;
+ }
+ case "human-long-rest":{
+  if(state.race!=="humano"||!state.perseverancaUsed||state.pending)return;
+  if(!confirm("Confirmar que o personagem concluiu um descanso longo?"))return;
+  state.perseverancaUsed=false;renderRacePanel();save();toast("Perseverança Humana restaurada.");break;
+ }
  case "source":selectSource(group,source);break;
  case "grade":updateGrade(group,source,Number(delta));break;
   case "gene-grade":geneStageGrade(group+":"+source,Number(delta));break;
@@ -2953,6 +2963,7 @@ function onClick(event){
   }break;
  case "respec-skill":refundSkillForPlaytest(id);break;
  case "skill":{
+  if(racialGrants(state).includes(id)){toast("Perícia de origem gratuita: não pode ser comprada nem devolvida como aquisição normal.");return;}
   if(state.pending){toast("Finalize a rolagem antes de modificar Perícias.");return;}
   const skill=SKILLS.find(x=>x[0]===id);if(!skill)return;
   const existing=state.skills.indexOf(id);
@@ -3090,6 +3101,11 @@ function bind(){
   const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
  });
  document.addEventListener("change",onChange);
+ document.addEventListener("change",event=>{
+  const el=event.target;
+  if(el.matches?.("[data-race-select]"))changeRace(el.value);
+  else if(el.matches?.("[data-race-element]"))changeRaceElement(el.dataset.raceElement,el.value);
+ });
  document.addEventListener("input",event=>{
   if(event.target?.dataset?.skillSearch!==undefined){
    skillFilter.query=String(event.target.value).slice(0,100);
