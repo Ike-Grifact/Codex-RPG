@@ -486,7 +486,17 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **Coragem:** começa com 10 e possui teto normal 10. **PP (Pontos de Perícia):** 0 nos níveis 1–4. O primeiro PP e a Perícia em Coragem são obtidos no nível 5.
 
-**Balanço corporal:** Agilidade maior que Vigor → leve; valores iguais → médio; Vigor maior que Agilidade → pesado. Equipamentos podem alterar o peso efetivo conforme carga e requisitos.
+**Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
+
+| Capacidade utilizada | Balanço do personagem |
+|---|---|
+| Menos de 25% | **Muito Leve** |
+| De 25% até menos de 50% | **Leve** |
+| De 50% até menos de 75% | **Médio** |
+| De 75% até menos de 100% | **Pesado** |
+| 100% ou mais | **Muito Pesado** |
+
+**Visualização na ficha:** 20 blocos representam 100% da capacidade (5% por bloco), com preenchimento parcial quando necessário; mostrar também a porcentagem exata e quanto cada item ocupa na capacidade. Ultrapassar 100% continua gerando o alerta já existente de carga excedida; nenhum novo custo ou penalidade por excesso foi aprovado. Esta mudança **não redefine o Tipo da armadura**, seus modificadores de DE, Integridade ou a categoria tática de armas e magias.
 
 ### Deslocamento [DEFINIDO]
 
@@ -663,7 +673,9 @@ Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de
 | **Médio** | Vantagem | Desvantagem | Normal |
 | **Pesado** | Desvantagem | Normal | Vantagem |
 
-O peso efetivo de cada ataque depende das **armas, Perícias e abordagem**. Um personagem não escolhe estilo obrigatório na criação. O balanço natural deriva de Agilidade e Vigor, com alterações pertinentes de equipamentos e circunstâncias.
+O peso efetivo de cada ataque depende das **armas, Perícias e abordagem**. Um personagem não escolhe estilo obrigatório na criação. O **balanço corporal agora deriva da proporção de carga transportada**, não da comparação entre Agilidade e Vigor.
+
+**PENDENTE — revisão da afinidade:** a matriz histórica acima usa três categorias de alvo (Leve, Médio, Pesado), enquanto a carga corporal passou a produzir **cinco**. Até a revisão dessa interação, **não converter automaticamente Muito Leve em Leve nem Muito Pesado em Pesado** para conceder Vantagem/Desvantagem. Também permanecem pendentes os procedimentos de carga ou massa naturais para criaturas não humanoides.
 
 ### Criatividade em combate e fora dele
 
