@@ -1,18 +1,26 @@
 # Codex RPG — Livro do Mestre
 
-## Linhagens de Aprendizes — 16/11/2026 [DEFINIDO / PENDENTE, SRD v0.55]
+## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
 
-**Escolhas autorizadas:** **Humano**, **Lucker de Sangue**, **Lucker Puro** e **Runa Espinhos**. Todos começam como Aprendizes sem classe obrigatória. Benefícios raciais são **gratuitos e distintos de Perícias compradas**; não exigem compra de requisitos apenas para recebê-los, não contam para o mínimo de uma fonte de Atributo e uma de Conhecimento/Prática adquiridas com XP e não criam Graus de fontes ou itens gratuitos por dedução.
+A progressão experimental agora alcança **260 XP totais no nível 20** (20 iniciais + até 240 de evolução manual). A curva anterior de 664 XP é histórica. O custo para chegar ao Grau é **acumulado**, e cada avanço custa a diferença entre os totais de Graus.
 
-**Lucker de Sangue:** recebe Perícia em Elemento Sangue; Vigor e Agilidade terão progressão de XP favorecida (**valor PENDENTE**); **Influência e Apresentação custam o DOBRO da tabela normal**, único multiplicador racial aprovado numericamente até aqui. Não conceder Criar Item de Foco e Magia adicionalmente.
+| Grau | Atributo desconto | Atributo normal | Atributo elevado | Conhecimento/Prática desconto | Conhecimento/Prática normal | Conhecimento/Prática elevado |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 2 | 1 | 2 | 3 |
+| 2 | 2 | 3 | 4 | 3 | 4 | 6 |
+| 3 | 4 | 6 | 8 | 6 | 8 | 12 |
+| 4 | 7 | 9 | 16 | 9 | 16 | 24 |
+| 5 | 12 | 18 | 32 | 18 | 32 | 48 |
+| 6 | 24 | 32 | 64 | 32 | 64 | 96 |
 
-**Lucker Puro:** recebe **Criar Item de Foco e Magia** e escolhe **Sangue, Trevas OU Veneno** como única Perícia elemental racial. Inteligência e Influência terão custo reduzido; Força e Atletismo terão custo maior, com multiplicadores **PENDENTES**.
+**Linhagens:** Lucker de Sangue favorece Vigor/Agilidade e eleva Influência/Apresentação; Lucker Puro favorece Inteligência/Influência e eleva Força/Atletismo; Runa Espinhos favorece Vigor/Força e eleva Agilidade/Destreza; Humano usa custos normais e mantém Perseverança Humana. "Elevado" **substitui** o multiplicador literal 2× antes descrito; a tabela elevada é o preço definitivo nesta rodada de playtest. As Perícias raciais iniciais da v0.55 permanecem gratuitas, sem Graus extras.
 
-**Runa Espinhos:** recebe **Pugilismo**, **Criar Item de Foco e Magia** e escolhe **duas Perícias elementais distintas** entre **Ar, Água, Terra e Fogo** (não Sagrado, Trevas, Sangue ou Veneno). Vigor e Força terão custo reduzido, Agilidade e Destreza aumentado; valores **PENDENTES**.
+**Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
 
-**Humano:** **Perseverança Humana**, rerrolar qualquer teste **1 vez por descanso longo**. **PENDENTE:** como refazer a seleção dos dados, obrigatoriedade de aceitar o novo resultado e tratamento de recursos/símbolos já consumidos. Na ferramenta, o uso/recarga após descanso longo é registrado manualmente; não presumir uma segunda tentativa gratuita de ativação de Perícias, PP/Coragem, Pavor ou outro recurso.
+**Restrições:** 20 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 240, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
 
-**Divergência matemática a não ocultar:** a tabela atual de **Conhecimentos/Práticas é MAIS CARA que a de Atributos** nos Graus positivos. Portanto, a frase “tabela mais barata (Conhecimentos e Práticas) para Vigor e Agilidade” não fornece uma fórmula válida para a redução pretendida. No protótipo, custos favorecidos permanecem provisoriamente na tabela comum e avisados como PENDENTES; **não afirmar que os descontos estão automatizados**. A duplicação de Influência/Apresentação para Sangue já pode ser aplicada. Consultar [SRD v0.55, seção 0-AR](srd-continuidade-v0.55.md).
+Regras completas e precedência: [SRD v0.56](srd-continuidade-v0.56.md), sobre as linhagens do [SRD v0.55](srd-continuidade-v0.55.md).
 
 ## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
 
