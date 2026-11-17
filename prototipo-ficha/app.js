@@ -1608,21 +1608,20 @@ function armorDodgeBonus(s=state){
  const it=equippedArmor(s);
  return it?.weight==="muito_leve"?2:it?.weight==="leve"?1:0;
 }
-function deDefense(s=state){return Math.max(0,deNatural(s)-armorDePenalty(s));}
-function deDodge(s=state){return deDefense(s)+armorDodgeBonus(s);}
-// Exibição contextual: o bônus da armadura Leve/Muito Leve vale SÓ na esquiva.
-// A DE geral segue disponível separadamente; não aumentar a DE de todos os ataques.
+// Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
+// Teto da DE natural: 9. Teto absoluto após modificadores: 12.
+function deDefense(s=state){
+ return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)));
+}
+function deDodge(s=state){return deDefense(s);} // Esquiva não recebe um segundo bônus.
 function defensePresentation(s=state){
- const natural=deNatural(s),base=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
- if(bonus){
-  const weight=equippedArmor(s)?.weight==="muito_leve"?"Muito Leve":"Leve";
-  return {label:"DE DEFENSIVA · ESQUIVA",value:deDodge(s),
-   caption:"DE natural "+natural+" + "+bonus+" (armadura "+weight+") = "+deDodge(s)+" somente na esquiva · Demais defesas: "+base};
- }
- if(penalty)return {label:"DE DEFENSIVA",value:base,
-  caption:"DE natural "+natural+" − "+penalty+" (armadura "+(penalty===2?"Muito Pesada":"Pesada")+") = "+base};
- return {label:"DE DEFENSIVA",value:base,
-  caption:"DE natural: teto 9 · AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋"};
+ const natural=deNatural(s),total=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
+ const armor=equippedArmor(s);
+ const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
+ const modifier=bonus-penalty;
+ return {label:"DE DEFENSIVA",value:total,caption:armor?
+  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+") = "+total+" · Vale para todas as defesas · Teto 12":
+  "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
 }
 function balance(){const a=state.attributes.agilidade||0,v=state.attributes.vigor||0;return a>v?"Leve":a<v?"Pesado":"Médio";}
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
@@ -2453,7 +2452,7 @@ function wizardOverview(){
   '<div class="fp-wiz-budget-row"><span>Itens</span><b>'+state.items.length+'</b></div>'+
   '<div class="fp-wiz-sidebar-title">ESTATÍSTICAS</div>'+
   '<div class="fp-wiz-pairs"><span>Vida</span><b>'+maxLife()+'</b><span>Deslocamento</span><b>'+movement()+' m</b>'+
-  '<span>DE</span><b>'+deNatural()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
+  '<span>DE</span><b>'+deDefense()+'</b><span>Coragem</span><b>'+state.courage+'</b></div>'+
   '<p class="fp-wiz-sidebar-note">Para concluir, compre um Atributo e um Conhecimento ou Prática no grau 1. Depois, todo o XP restante é livre, inclusive para Perícias. Listas e Codex Genético compartilham o mesmo saldo.</p>';
 }
 function renderWizard(){
@@ -2920,8 +2919,8 @@ function renderInventory(){
   const canResist2=it.weight==="alto"&&it.grade>=3;
   const canImmunize=it.weight==="extremo"&&it.grade>=4;
   const armorFields=it.type!=="armadura"?"":(
-   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE apenas na esquiva.</div>':"")+
-   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE na esquiva; resistência disponível desde Grau 3.</div>':"")+
+   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
+   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
    (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −2 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
