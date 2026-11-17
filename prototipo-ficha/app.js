@@ -997,7 +997,7 @@ const same=(a,b)=>!!a&&!!b&&key(a)===key(b);
 const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
- schema:"codex-html-playtest-v1",name:"",concept:"",origin:"Humano",race:"humano",pureElement:"",runeElements:["",""],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
+ schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false
@@ -1838,7 +1838,7 @@ function geneDetailHTML(id,s=state){
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
   '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
-  '<dt>Custo da Perícia</dt><dd>'+esc(Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
+  '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
   '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton+verbete;
 }
@@ -2194,7 +2194,7 @@ function renderWizard(){
    '<div class="fp-wiz-input-grid">'+[
     ["name","Nome do personagem","Como seu Aprendiz se chama?",70],
     ["concept","Conceito / profissão emergente","Um caminho que deseja seguir",100],
-    ["origin","Origem","Humano",80],
+    ["origin","Origem narrativa","Cidade, cultura ou procedência",80],
     ["virtue","Virtude","O que o move?",60],
     ["personality","Personalidade","Como reage ao mundo?",100]
    ].map(([field,label,placeholder,max])=>'<label class="fp-wiz-field'+(field==="name"?' wide':'')+'">'+label+
