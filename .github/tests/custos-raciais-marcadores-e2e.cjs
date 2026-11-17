@@ -23,7 +23,7 @@ const cases=[
    for(const [id] of [["forca"],["agilidade"],["destreza"],["inteligencia"],["influencia"],["vigor"]]){
     const card=page.locator('[data-action="wizard-starter-attr"][data-key="'+id+'"]');
     const band=discount.includes("attr:"+id)?"discount":elevated.includes("attr:"+id)?"elevated":"normal";
-    assert.equal(await card.evaluate((el,b)=>el.classList.contains("is-xp-"+b),band),"Etapa 2: "+race+"/"+id+" contorno correto");
+    assert.equal(await card.evaluate((el,b)=>el.classList.contains("is-xp-"+b),band),band!=="normal","Etapa 2: "+race+"/"+id+" contorno correto");
     const marker=card.locator(".fp-racial-xp-marker");
     assert.equal(await marker.count(),band==="normal"?0:1);
     if(band!=="normal")assert.match(await marker.textContent(),band==="discount"?/↓ XP reduzido/:/↑ XP aumentado/);
@@ -33,7 +33,7 @@ const cases=[
    for(const id of ["atletismo","apresentacao"]){
     const card=page.locator('[data-action="wizard-starter-training"][data-group="practice"][data-key="'+id+'"]');
     const expected=elevated.includes("practice:"+id)?"elevated":"normal";
-    assert.equal(await card.evaluate((el,b)=>el.classList.contains("is-xp-"+b),expected),race+" prática "+id);
+    assert.equal(await card.evaluate((el,b)=>el.classList.contains("is-xp-"+b),expected),expected!=="normal",race+" prática "+id);
     assert.equal(await card.locator(".fp-racial-xp-marker").count(),expected==="normal"?0:1);
    }
    await page.locator('[data-action="wizard-starter-training"][data-group="practice"][data-key="artesao"]').click();
