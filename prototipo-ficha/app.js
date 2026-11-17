@@ -1130,7 +1130,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepDieId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false});
+  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -2720,12 +2720,14 @@ function selectSource(group,k){
    if(!draft.attribute){draft.third=null;draft.contextOK=false;}
   }
  }else if(!draft.base){
-  const selectedAttribute=draft.attribute;
+  const selectedAttribute=draft.attribute,removalId=draft.cravarRemovalShieldId,removalDE=draft.de,removalConfirmed=draft.cravarRemovalDEConfirmed;
   draft=freshDraft();draft.base=source;draft.attribute=selectedAttribute;
+  if(removalId){draft.cravarRemovalShieldId=removalId;draft.de=removalDE;draft.cravarRemovalDEConfirmed=removalConfirmed;}
   draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
  }else if(same(source,draft.base)){
-  const selectedAttribute=draft.attribute;
+  const selectedAttribute=draft.attribute,removalId=draft.cravarRemovalShieldId,removalDE=draft.de,removalConfirmed=draft.cravarRemovalDEConfirmed;
   draft=freshDraft();draft.attribute=selectedAttribute;
+  if(removalId){draft.cravarRemovalShieldId=removalId;draft.de=removalDE;draft.cravarRemovalDEConfirmed=removalConfirmed;}
  }else if(!draft.attribute){
   draft.base=source;draft.mode=k==="armas_conjuracao"?modeDefault():"normal";
  }else{
@@ -2765,6 +2767,16 @@ function buildPool(){
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
+ if(draft.cravarRemovalShieldId){
+  const shield=state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon);
+  if(!shield)errors.push("Escudo sem arma cravada para retirar.");
+  if(!Number.isInteger(draft.de)||draft.de<1||draft.de>4)errors.push("Retirar Cravar exige DE de 1 a 4, correspondente ao peso da arma.");
+  if(!draft.cravarRemovalDEConfirmed)errors.push("Confirme com o Narrador a DE correspondente ao peso da arma cravada.");
+  if(![draft.base,draft.attribute,draft.third].some(src=>src&&((src.group==="attr"&&["forca","vigor"].includes(src.key))||(src.group==="practice"&&src.key==="atletismo"))))
+   errors.push("Combine aptidões incluindo Força, Atletismo ou Vigor; não são permitidas fontes isoladas.");
+  if(draft.weightEnabled||draft.shieldRaise||draft.equipmentId||draft.trevas)
+   errors.push("Retirar Cravar é teste de remoção, sem afinidade de ataque, equipamento de ataque nem defesa simultânea.");
+ }
  return{errors,pool};
 }
 function renderComposer(){
