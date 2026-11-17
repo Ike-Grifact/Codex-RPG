@@ -3,7 +3,7 @@ title: "Codex RPG — SRD de Continuidade v0.79: checkpoint de decisões e pend�
 version: "0.79"
 system: "Codex RPG"
 updated: "2026-11-17"
-status: "DEFINIDO / EXPERIMENTAL / PENDENTE — checkpoint documental da revisão, sem implementar regras no código"
+status: "DEFINIDO / EXPERIMENTAL / PENDENTE — checkpoint autoral e implementação parcial de Medicina Avançada na branch"
 supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressamente corrigidos"
 ---
 
@@ -11,7 +11,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 ## 0-BS. Checkpoint autoral — 17/11/2026
 
-**Objetivo:** preservar as decisões tomadas pelo autor na revisão sequencial de Cravar, conjuração, focos, Hemomancia, Sangramento e tratamento antes de prosseguir com outras pendências. Este documento é um registro **documental**; não significa que o Livro do Jogador, o criador web, o Foundry ou o portal já tenham sido adaptados. **Não executar mudanças de ficha ou balanceamento por inferência.**
+**Objetivo:** preservar as decisões tomadas pelo autor na revisão sequencial de Cravar, conjuração, focos, Hemomancia, Sangramento e tratamento antes de prosseguir com outras pendências. Este documento registra as decisões e seus estados. **Nesta branch**, somente Medicina Avançada (compra e seleção de terceira fonte), seu verbete, o Codex Genético e as referências do Livro do Jogador foram atualizados; **o restante das regras do checkpoint não foi implementado** na ficha, Foundry ou portal. **Não executar mudanças de ficha ou balanceamento por inferência.**
 
 **Precedência:** decisões autorais recentes deste checkpoint prevalecem sobre trechos incompatíveis de SRDs anteriores, Livro do Jogador e comportamento implementado; onde este documento for omisso, permanecem as regras anteriores válidas. Custos, dados, requisitos e efeitos não citados não foram modificados.
 
@@ -185,4 +185,4 @@ A revisão avançou após o checkpoint inicial: o autor definiu **Medicina G2**,
 
 **Depois da resposta** cadastrar, se aprovado, as demais especializações Avançadas com requisitos efetivamente definidos, mantendo 1 XP e a capacidade de três fontes. Não voltar a perguntar sobre custo-padrão, Medicina 2, autoderrame sem dano, dano E+piso(P/2), recarga automática ou momento de recarga, já aprovados.
 
-**Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Sem alteração de código, dados, custos de outras Perícias, Livro do Jogador, portal ou Foundry neste commit documental.**
+**Histórico:** documentos v0.77 e v0.78 permanecem preservados; este v0.79 é aditivo e corrige somente os tópicos listados. **Alterações nesta branch:** cadastro/seleção de Medicina Avançada no criador e no Codex Genético, seu verbete e catálogo e atualização documental do Livro do Jogador. **Não foram alterados** os dados simbólicos, o custo de outras Perícias não avançadas, as mecânicas de Cravar/Hemomancia/focos no código ou o Foundry; as demais especializações Avançadas aguardam requisitos de aquisição.
