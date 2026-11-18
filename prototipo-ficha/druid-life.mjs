@@ -13,8 +13,9 @@
  * o TOTAL ACUMULADO quando um golpe que a mataria provocar reversão.
  * DEFINIDO: reversão voluntária tem custo 0, dispensa teste e não consome
  * ação/reação/turno; não concede ação nova, restituição ou cura.
- * PENDENTE: transferência do dano em reversão voluntária da forma menor,
- * Vida real entre formas sucessivas, Vida zero e quatro faixas.
+ * DEFINIDO: forma menor transfere dano efetivo acumulado também ao reverter
+ * voluntariamente; PVs temporários não entram nem a Vida real é debitada duas vezes.
+ * PENDENTE: Vida real entre formas sucessivas, Vida zero e quatro faixas.
  */
 // Tabelas de custo ACUMULADO da v0.56, G0..G6. Não usar a antiga
 // escala de companheiros v0.48 ou de Formação v0.47 em seu lugar.
@@ -23,11 +24,7 @@ const XP_ATRIBUTO_ELEVADO=[0,2,4,8,16,32,64];
 const ATRIBUTOS_ANIMAIS=new Set(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
 const PORTES_DRUIDICOS=new Set(["pequena","media","grande"]);
 
-/**
- * Apenas economia de recursos e ações da reversão voluntária (DEFINIDO).
- * Não executa conversão de Vida: a forma menor sem golpe letal ainda depende
- * da decisão autoral sobre transferência de dano acumulado.
- */
+/** Economia de recursos e ações da reversão voluntária [DEFINIDO]. */
 export function regrasReversaoVoluntariaDruidica(){
   return {custoCoragem:0,consomeAcao:false,consomeReacao:false,
           consomeTurno:false,requerTeste:false,concedeAcaoExtra:false,
@@ -112,8 +109,8 @@ export function prepararVidaDruidica({vidaMaximaHumana,vidaAtualHumana,vidaMaxim
  * novamente ferimentos humanos anteriores à transformação.
  * 'dano' sempre significa o dano efetivo que alcançou Vida APÓS Escudo
  * Arcano ou outra proteção aplicável. Escudo é resolvido fora do módulo.
- * Reversão voluntária gratuita e sem ação está DEFINIDA; a transferência
- * do dano acumulado na forma menor sem golpe letal ainda está PENDENTE.
+ * Reversão voluntária: mesmo dano efetivo acumulado de golpe letal na forma
+ * menor; dano já debitado da Vida real e PVs temporários NÃO se duplicam.
  */
 export function simularGolpeDruidico({estado,dano}) {
   if(!estado || !["menor","igual","maior"].includes(estado.caso) ||
@@ -145,6 +142,34 @@ export function simularGolpeDruidico({estado,dano}) {
     vidaHumanaReal,vidaAnimalAtual:vidaHumanaReal+estado.pvTemporarios-absorvido,
     danoNaVidaReal:danoReal,formaCancelada:false,
     morteHumana:danoReal>0&&danoReal>=estado.vidaHumanaReal,
+    propagacaoNaoLetalPendente:false
+  };
+}
+
+
+/**
+ * Retorno voluntário à forma humana. Não executa outra transformação nem
+ * restaura Vida/Coragem. Dano absorvido por Escudo ou PV temporários não entra.
+ * Em forma menor, ainda não foi debitado o dano animal: transferir TODO o
+ * dano efetivo acumulado desde a transformação, sem repetir dano prévio.
+ * Em formas igual/maior, Vida real já foi reduzida durante os golpes.
+ */
+export function simularReversaoVoluntariaDruidica({estado}){
+  if(!estado || !["menor","igual","maior"].includes(estado.caso) ||
+     estado.formaCancelada===true || estado.morteHumana===true ||
+     !Number.isSafeInteger(estado.vidaHumanaReal) || estado.vidaHumanaReal<=0 ||
+     !Number.isSafeInteger(estado.vidaAnimalAtual) || estado.vidaAnimalAtual<0 ||
+     !Number.isSafeInteger(estado.danoAcumuladoForma) || estado.danoAcumuladoForma<0 ||
+     !Number.isSafeInteger(estado.pvTemporarios) || estado.pvTemporarios<0 ||
+     (estado.caso==="menor" && estado.pvTemporarios!==0))
+    throw new RangeError("Estado inválido para reversão voluntária");
+  const danoTransferido=estado.caso==="menor"?estado.danoAcumuladoForma:0;
+  const vidaHumanaReal=Math.max(0,estado.vidaHumanaReal-danoTransferido);
+  return {
+    ...estado,vidaHumanaReal,vidaAnimalAtual:vidaHumanaReal,
+    pvTemporarios:0,formaCancelada:true,
+    danoNaVidaReal:danoTransferido,
+    morteHumana:danoTransferido>=estado.vidaHumanaReal&&danoTransferido>0,
     propagacaoNaoLetalPendente:false
   };
 }

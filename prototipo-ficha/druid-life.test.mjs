@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {distribuirVidaEmQuatroFaixas,vidaAnimalAoTransformar,
   prepararVidaDruidica,simularGolpeDruidico,regrasReversaoVoluntariaDruidica,
+  simularReversaoVoluntariaDruidica,
   custoAtributoFormaDruidica,conferirXPFormaDruidica} from "./druid-life.mjs";
 
 test("Saúde preserva quatro faixas de Vida, com duas últimas fixas",()=>{
@@ -205,16 +206,68 @@ test("Reversão voluntária G1/G2/G3 é gratuita, sem teste nem economia de aç�
   });
 });
 
-test("Reversão voluntária não aplica conversão de Vida pendente no simulador",()=>{
-  const forma=prepararVidaDruidica({
-    vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5
-  });
+test("Forma menor: reversão voluntária transfere danos acumulados mesmo sem golpe letal",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  const ferida=simularGolpeDruidico({estado:forma,dano:2});
+  const humana=simularReversaoVoluntariaDruidica({estado:ferida});
+  assert.equal(humana.vidaHumanaReal,6);
+  assert.equal(humana.danoNaVidaReal,2);
+  assert.equal(humana.formaCancelada,true);
+  assert.equal(humana.pvTemporarios,0);
+  assert.throws(()=>simularReversaoVoluntariaDruidica({estado:humana}),RangeError);
+  assert.throws(()=>simularGolpeDruidico({estado:humana,dano:1}),RangeError);
+});
+
+});
+
+
+test("Forma menor: reversão não duplica ferimento humano preexistente",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:5});
+  const golpe=simularGolpeDruidico({estado:forma,dano:1});
+  const humana=simularReversaoVoluntariaDruidica({estado:golpe});
+  assert.equal(humana.vidaHumanaReal,5);
+  assert.equal(humana.danoNaVidaReal,1);
+});
+
+test("Forma menor sem dano volta sem perder Vida",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:7,vidaMaximaAnimal:5});
+  const humana=simularReversaoVoluntariaDruidica({estado:forma});
+  assert.equal(humana.vidaHumanaReal,7);
+  assert.equal(humana.danoNaVidaReal,0);
+});
+
+test("Forma igual: dano já aplicado à Vida não é duplicado ao reverter",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:8});
+  const golpe=simularGolpeDruidico({estado:forma,dano:3});
+  const humana=simularReversaoVoluntariaDruidica({estado:golpe});
+  assert.equal(humana.vidaHumanaReal,5);
+  assert.equal(humana.danoNaVidaReal,0);
+});
+
+test("Forma maior: PV temporário absorvido não conta no dano transferido",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:11});
   const golpe=simularGolpeDruidico({estado:forma,dano:2});
-  const antes=structuredClone(golpe);
-  const regras=regrasReversaoVoluntariaDruidica();
-  assert.equal(regras.custoCoragem,0);
-  assert.deepEqual(golpe,antes);
-  assert.equal(golpe.danoAcumuladoForma,2);
-  assert.equal(golpe.vidaHumanaReal,8);
-  assert.equal(golpe.formaCancelada,false);
+  assert.equal(golpe.pvTemporarios,1);
+  const humana=simularReversaoVoluntariaDruidica({estado:golpe});
+  assert.equal(humana.vidaHumanaReal,8);
+  assert.equal(humana.pvTemporarios,0);
+  assert.equal(humana.danoNaVidaReal,0);
+});
+
+test("Forma maior: excedente depois de PV temporário fere Vida uma vez só",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:11});
+  const golpe=simularGolpeDruidico({estado:forma,dano:5});
+  assert.equal(golpe.vidaHumanaReal,6);
+  const humana=simularReversaoVoluntariaDruidica({estado:golpe});
+  assert.equal(humana.vidaHumanaReal,6);
+  assert.equal(humana.danoNaVidaReal,0);
+});
+
+test("Escudo Arcano bloqueia dano: forma menor não transfere bloqueio",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  const bloqueado=simularGolpeDruidico({estado:forma,dano:0});
+  const real=simularGolpeDruidico({estado:bloqueado,dano:1});
+  const humana=simularReversaoVoluntariaDruidica({estado:real});
+  assert.equal(humana.vidaHumanaReal,7);
+  assert.equal(humana.danoNaVidaReal,1);
 });
