@@ -2,7 +2,7 @@
 title: "Codex RPG — SRD de Continuidade v0.79: checkpoint de decisões e pendências da revisão"
 version: "0.79"
 system: "Codex RPG"
-updated: "2026-11-17"
+updated: "2026-11-18"
 status: "DEFINIDO / EXPERIMENTAL / PENDENTE — checkpoint autoral consolidado em PR revisável"
 supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressamente corrigidos"
 ---
@@ -121,11 +121,11 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 **DEFINIDO posteriormente (seção 1-D):** o XP de todas as formas corresponde ao XP total atual do druida e usa custos animais por porte da v0.56; os três regimes de Vida estão definidos conforme os máximos humano/animal. PVs temporários surgem **somente ao transformar**, não se regeneram enquanto transformado, e desaparecem ao reverter. **PENDENTE separado:** reversão voluntária e dano não letal em forma menor, propagação de dano real em transformações sucessivas, integração dos PVs temporários às quatro faixas e automação no criador/Foundry.
 
 
-### 1-D. XP e Vida das formas Druídicas — decisão autoral posterior (17/11/2026)
+### 1-D. XP e Vida das formas Druídicas — decisões e esclarecimento autoral de 18/11/2026
 
 **DEFINIDO — XP da forma:** toda forma animal, **inclusive Pequena**, recebe como orçamento de sua ficha **o XP total atual do druida** para distribuir nos Atributos da criatura, usando as **tabelas de custo pertinentes**. Este XP é referência de construção da forma e **não é retirado nem duplicado no saldo gastável do personagem**. A antiga reserva fixa de **19 XP da forma Pequena está REVOGADA**. Quando o druida progride, o orçamento de construção de suas formas acompanha o XP atual dele, sem XP gratuito para suas compras humanas.
 
-**DEFINIDO — tabelas de XP já aprovadas (SRD v0.56, seção 0-AS.2):** as formas Druídicas usam os custos de **Atributos animais da tabela compacta da v0.56**, sem misturar custos da ficha antiga de companheiros domesticados e sem criar uma quarta progressão. Para **animal Pequeno**, **Força e Vigor usam a coluna de Atributos elevados** e todos os outros Atributos usam **coluna normal**. Para **animal Médio e Grande, todos os Atributos usam a coluna normal**. As tabelas são **XP acumulado de G0 a G6**: Atributos normais **0/1/3/6/9/18/32**; Atributos elevados **0/2/4/8/16/32/64**. Cada aumento de Grau custa a **diferença** entre os XP acumulados. O XP disponível para construir a forma é o **XP total atual do druida**, incluindo a forma Pequena. **Animal Gigante** não é forma habilitada enquanto Domar Gigante for PENDENTE. Os custos históricos das formas da v0.47 e de companheiros da v0.48 não prevalecem sobre a revisão expressa de fontes animais da v0.56.
+**DEFINIDO — esclarecimento autoral de 18/11/2026: recuperar tabelas de XP já aprovadas (SRD v0.56, seção 0-AS.2):** as formas Druídicas usam os custos de **Atributos animais da tabela compacta da v0.56**, sem misturar custos da ficha antiga de companheiros domesticados e sem criar uma quarta progressão. Para **animal Pequeno**, **Força e Vigor usam a coluna de Atributos elevados** e todos os outros Atributos usam **coluna normal**. Para **animal Médio e Grande, todos os Atributos usam a coluna normal**. As tabelas são **XP acumulado de G0 a G6**: Atributos normais **0/1/3/6/9/18/32**; Atributos elevados **0/2/4/8/16/32/64**. Cada aumento de Grau custa a **diferença** entre os XP acumulados. O XP disponível para construir a forma é o **XP total atual do druida**, incluindo a forma Pequena. **Animal Gigante** não é forma habilitada enquanto Domar Gigante for PENDENTE. Os custos históricos das formas da v0.47 e de companheiros da v0.48 não prevalecem sobre a revisão expressa de fontes animais da v0.56.
 
 **DEFINIDO — a Vida máxima vem da ficha da criatura, e a Vida atual do druida é preservada como referência real; transformar não cura ferimentos.** Comparar **Vida máxima da forma animal (A)** com **Vida máxima humana (H)** e conservar o estado atual de Vida humana (h):
 
