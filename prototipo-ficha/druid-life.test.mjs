@@ -1,61 +1,92 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {distribuirVidaEmQuatroFaixas, converterPerdaDeVidaDruidica} from "./druid-life.mjs";
+import {distribuirVidaEmQuatroFaixas,vidaAnimalAoTransformar,
+  prepararVidaDruidica,simularGolpeDruidico} from "./druid-life.mjs";
 
-test("Vida em quatro faixas, com duas últimas de um ponto fixo",()=>{
-  const expected={
-    4:[1,1,1,1],5:[2,1,1,1],6:[2,2,1,1],7:[3,2,1,1],
-    8:[3,3,1,1],9:[4,3,1,1],10:[4,4,1,1]
-  };
-  for(const [v,parts] of Object.entries(expected)) assert.deepEqual(distribuirVidaEmQuatroFaixas(+v),parts);
+test("Saúde preserva quatro faixas de Vida, com duas últimas fixas",()=>{
+  const expected={4:[1,1,1,1],5:[2,1,1,1],6:[2,2,1,1],7:[3,2,1,1],8:[3,3,1,1]};
+  for(const [n,parts] of Object.entries(expected))
+    assert.deepEqual(distribuirVidaEmQuatroFaixas(+n),parts);
 });
 
-test("hipótese de transformação entre humano 4 e animal 6 é distinta do exemplo revogado",()=>{
-  // Vida humana 4 = 1/1/1/1; urso 6 = 2/2/1/1.
-  const expected=[4,4,3,3,2,1,0];
-  for(let dano=0;dano<=6;dano++){
-    const result=converterPerdaDeVidaDruidica({vidaMaximaHumana:4,vidaMaximaAnimal:6,danoAnimal:dano});
-    assert.equal(result.hipoteseNaoAprovada,true);
-    assert.deepEqual(result.faixasHumanas,[1,1,1,1]);
-    assert.deepEqual(result.faixasAnimais,[2,2,1,1]);
-    assert.equal(result.vidaHumanaRestanteSeIntegro,expected[dano]);
-    assert.equal(result.morteAnimal,dano===6);
+test("Forma pequena usa Vida reduzida por dano humano preexistente e não gera cura",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6});
+  assert.equal(s.caso,"menor");
+  assert.equal(s.vidaAnimalAtual,4);
+  assert.equal(s.vidaHumanaReal,5);
+  assert.equal(s.pvTemporarios,0);
+  assert.deepEqual(vidaAnimalAoTransformar({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6}),
+    {vidaAnimalMaxima:6,vidaAnimalAtual:4,danoPrevio:2,formaSemVida:false});
+});
+
+test("Forma menor: golpe letal cancela transformação e transmite DANO INTEGRAL, não só excesso",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6});
+  const hit=simularGolpeDruidico({estado:s,dano:4});
+  assert.equal(hit.formaCancelada,true);
+  assert.equal(hit.danoNaVidaReal,4);
+  assert.equal(hit.vidaHumanaReal,1);
+  assert.equal(hit.morteHumana,false);
+  const mortal=simularGolpeDruidico({estado:s,dano:6});
+  assert.equal(mortal.formaCancelada,true);
+  assert.equal(mortal.vidaHumanaReal,0);
+  assert.equal(mortal.morteHumana,true);
+});
+
+test("Forma menor: dano não letal é contabilizado no animal sem inventar regra de retorno",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6});
+  const hit=simularGolpeDruidico({estado:s,dano:2});
+  assert.equal(hit.formaCancelada,false);
+  assert.equal(hit.vidaAnimalAtual,2);
+  assert.equal(hit.vidaHumanaReal,5);
+  assert.equal(hit.propagacaoNaoLetalPendente,true);
+});
+
+test("Máximos iguais: recebe Vida atual, não recebe PV temporários, pode morrer",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:4,vidaMaximaAnimal:6});
+  assert.equal(s.caso,"igual");
+  assert.equal(s.vidaAnimalAtual,4);
+  assert.equal(s.pvTemporarios,0);
+  const hit=simularGolpeDruidico({estado:s,dano:3});
+  assert.equal(hit.vidaHumanaReal,1);
+  assert.equal(hit.danoNaVidaReal,3);
+  const mortal=simularGolpeDruidico({estado:hit,dano:1});
+  assert.equal(mortal.morteHumana,true);
+  assert.equal(mortal.vidaHumanaReal,0);
+});
+
+test("Máximo maior: somente diferença de máximos concede PVs temporários",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:4,vidaMaximaAnimal:8});
+  assert.equal(s.caso,"maior");
+  assert.deepEqual([s.vidaHumanaReal,s.pvTemporarios,s.vidaAnimalAtual],[4,2,6]);
+  const hit=simularGolpeDruidico({estado:s,dano:3});
+  assert.deepEqual([hit.vidaHumanaReal,hit.pvTemporarios,hit.vidaAnimalAtual],[3,0,3]);
+  assert.equal(hit.danoNaVidaReal,1);
+  const fatal=simularGolpeDruidico({estado:hit,dano:3});
+  assert.equal(fatal.morteHumana,true);
+  assert.equal(fatal.vidaHumanaReal,0);
+});
+
+test("Proteção temporária é consumida antes de atingir a Vida real",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:3,vidaMaximaAnimal:11});
+  const hit=simularGolpeDruidico({estado:s,dano:2});
+  assert.deepEqual([hit.vidaHumanaReal,hit.pvTemporarios],[3,1]);
+  assert.equal(hit.danoNaVidaReal,0);
+});
+
+test("Validação de entradas não concede Vida incorreta",()=>{
+  assert.throws(()=>prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:7,vidaMaximaAnimal:8}),RangeError);
+  assert.throws(()=>prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:4,vidaMaximaAnimal:0}),RangeError);
+  const s=prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:4,vidaMaximaAnimal:8});
+  assert.throws(()=>simularGolpeDruidico({estado:s,dano:-1}),RangeError);
+  assert.throws(()=>simularGolpeDruidico({estado:s,dano:1.2}),RangeError);
+});
+
+test("XP: fórmula inicial não inventa gasto nem concede recuperação automática de Vida",()=>{
+  for(let h=4;h<=16;h++)for(let a=1;a<=18;a++)for(let current=0;current<=h;current++){
+    const s=prepararVidaDruidica({vidaMaximaHumana:h,vidaAtualHumana:current,vidaMaximaAnimal:a});
+    assert.ok(s.vidaAnimalAtual>=0&&s.vidaAnimalAtual<=a);
+    assert.equal(s.vidaHumanaReal,current);
+    assert.equal(s.pvTemporarios,a>h?a-h:0);
+    assert.equal(s.automatizacaoBloqueada,true);
   }
-});
-
-test("outro exemplo: humano 5 e animal 7",()=>{
-  const expected=[5,5,5,3,3,2,1,0];
-  for(let dano=0;dano<=7;dano++) assert.equal(converterPerdaDeVidaDruidica({
-    vidaMaximaHumana:5,vidaMaximaAnimal:7,danoAnimal:dano
-  }).vidaHumanaRestanteSeIntegro,expected[dano]);
-});
-
-test("propriedades de integralidade e não recuperação para Vidas 4..30",()=>{
-  for(let h=4;h<=30;h++)for(let a=4;a<=30;a++){
-    let before=h;
-    for(let dano=0;dano<=a;dano++){
-      const r=converterPerdaDeVidaDruidica({
-        vidaMaximaHumana:h,vidaMaximaAnimal:a,danoAnimal:dano
-      });
-      assert.ok(r.vidaHumanaRestanteSeIntegro>=0 && r.vidaHumanaRestanteSeIntegro<=before);
-      before=r.vidaHumanaRestanteSeIntegro;
-      if(dano===a)assert.equal(before,0);
-    }
-  }
-});
-
-test("entradas inválidas não são interpretadas como Vida real",()=>{
-  for(const n of [-1,0,2,3,4.3,NaN])assert.throws(()=>distribuirVidaEmQuatroFaixas(n),RangeError);
-  for(const n of [-1,0.5,NaN])assert.throws(()=>converterPerdaDeVidaDruidica({
-    vidaMaximaHumana:4,vidaMaximaAnimal:6,danoAnimal:n
-  }),RangeError);
-});
-
-test("dano preexistente reduz Vida atual animal ponto a ponto",async()=>{
- const {vidaAnimalAoTransformar}=await import("./druid-life.mjs");
- const x=vidaAnimalAoTransformar({vidaMaximaHumana:7,vidaAtualHumana:5,vidaMaximaAnimal:6});
- assert.deepEqual(x,{vidaAnimalMaxima:6,vidaAnimalAtual:4,danoPrevio:2,formaSemVida:false});
- const y=vidaAnimalAoTransformar({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:1});
- assert.deepEqual([y.vidaAnimalAtual,y.formaSemVida],[0,true]);
- assert.throws(()=>vidaAnimalAoTransformar({vidaMaximaHumana:7,vidaAtualHumana:8,vidaMaximaAnimal:6}),RangeError);
 });
