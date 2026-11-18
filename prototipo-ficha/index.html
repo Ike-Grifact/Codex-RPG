@@ -116,12 +116,7 @@
       <div class="fp-vital">
         <div class="fp-vital-label">CORAGEM <span>reserva</span></div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="courage" data-delta="-1" aria-label="Gastar Coragem">−</button><strong id="courage-text">10 / 10</strong><button type="button" class="fp-counter" data-resource="courage" data-delta="1" aria-label="Recuperar Coragem">+</button></div>
-        <small>Retenção, passos e capacidades</small>
-      </div>
-      <div class="fp-vital">
-        <div class="fp-vital-label">PONTOS DE PERÍCIA <span>PP</span></div>
-        <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="pp" data-delta="-1" aria-label="Gastar PP">−</button><strong id="pp-text">0 / 0</strong><button type="button" class="fp-counter" data-resource="pp" data-delta="1" aria-label="Recuperar PP">+</button></div>
-        <small>Reserva global do personagem</small>
+        <small>Teto natural +1 nos níveis 5, 10 e 20; máximo absoluto 15</small>
       </div>
       <div class="fp-vital fp-vital-basic">
         <div class="fp-vital-label" id="de-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">Natural até 9 · total até 12 com armadura</small>
@@ -333,10 +328,8 @@
         <p class="fp-footnote">Perícias consomem XP e verificam os requisitos disponíveis. Capacidade pendente não pode ser comprada; a terceira fonte continua sujeita à pertinência da ação. <strong>Conjuração elemental começa Leve, Grau 1.</strong> Raio é condição ou manifestação de magia, não um elemento comprável.</p>
         <div class="fp-weapon-focus" id="weapon-focus-wrap" hidden><label class="fp-field">Especialização de Armas 1<select id="weapon-focus"><option value="leve">Leve</option><option value="medio">Média</option><option value="pesado">Pesada</option><option value="distancia">Distância</option><option value="Punhos">Punhos</option></select></label><small class="fp-muted">Esta escolha afeta os requisitos experimentais de Artes Marciais.</small></div>
         <div class="fp-support-actions">
-          <button id="convert-courage" class="fp-secondary" type="button">Converter 2 Coragem → 1 PP</button>
           <button id="reset-turn" class="fp-secondary" type="button">Novo turno</button>
-          <span id="courage-skill-message" class="fp-muted"></span>
-        </div>
+          </div>
       </section>
 
       <section class="fp-panel fp-inventory-panel" id="equipamentos">
