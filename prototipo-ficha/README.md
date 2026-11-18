@@ -1,5 +1,7 @@
 ## Criador e ficha unificados
 
+> **DEFINIDO — atualização 17/11/2026:** PP foi abolido das fichas. Críticos recuperam apenas Coragem; custos exclusivamente em PP passam a **1 Coragem por ativação**, preservando alternativas existentes em Coragem quando já constavam no verbete. Custos elementais G1/G2 habilitados continuam gratuitos; bônus especializados de Maestrias serão revistos depois. Exemplos históricos de versões antigas neste arquivo não prevalecem sobre o SRD v0.79.
+
 **Página única e canônica:** `prototipo-ficha/`. O endereço histórico `criador.html` agora redireciona para cá, sem remover o registro antigo do navegador.
 
 A nova ficha usa colunas **Atributos à esquerda**, **Práticas no centro** e **Conhecimentos à direita**. O usuário pode selecionar o Atributo ou a Base primeiro, mas a pilha ainda deve **rolar pelo menos um dado de Atributo**. A regra não exige Atributo mantido.
@@ -77,7 +79,7 @@ A ficha e a escolha do modo são salvas localmente; a alternância entre Codex G
 - Ao menos um dado mantido é de Atributo.
 - Só dados mantidos produzem símbolos E/A/P. O resultado distingue acertos puros, acertos com Pavor normal/predominante e falhas.
 - A DE defensiva é Agilidade + metade de Destreza arredondada para baixo; Vida máxima é 3 + Vigor + metade de Força arredondada para baixo.
-- Perícia em Coragem a partir do nível 5; recuperação de PP 2 Coragem → 1 PP, no máximo uma vez por turno.
+- A reserva de Coragem recebe +1 ao teto nos níveis 5, 10 e 20; a conversão em PP foi revogada.
 - Recuperação de Vida por faixas 3/3, 2/3 e 1/3 é apresentada sem criar um temporizador de cura não aprovado.
 
 ## Limites e hipóteses do protótipo
@@ -138,11 +140,11 @@ A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Go
 
 O rolador de dados da ficha HTML reconhece **crítico quando todos os dados escolhidos para manter estão em suas faces máximas**, exigindo pelo menos dois mantidos e um dado de Atributo. Apenas a **runa nos símbolos das faces máximas** ganha dourado: o número, o corpo e o contorno do dado não recebem nova cor por ser uma face candidata a crítico.
 
-- **2 mantidos:** converte até 1 Pavor próprio em 1 Êxito e recupera até 1 PP e 1 Coragem.
-- **3 mantidos:** benefícios anteriores, mais +1 Êxito, +1 Antecipar, total de até 2 PP e 2 Coragens recuperados.
+- **2 mantidos:** converte até 1 Pavor próprio em 1 Êxito e recupera até 1 Coragem.
+- **3 mantidos:** benefícios anteriores, mais +1 Êxito, +1 Antecipar, total de até 2 Coragens recuperadas.
 - **4 mantidos:** todos os benefícios anteriores e **dano básico dobrado**; a interação final com proteções e limites de Vida ainda está pendente, portanto o valor exibido é anterior à resolução de armadura.
 
-A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos níveis 5–9, 2 nos níveis 10–19 e 3 no nível 20; Coragem máxima normal 10. O terceiro dado mantido no nível 1 ainda consome 1 Coragem; as recuperações são aplicadas após esse gasto. Os críticos ficam registrados no histórico do personagem.
+A recuperação respeita os tetos: Coragem parte do teto 10, aumenta nos níveis 5, 10, 20 e possui teto máximo absoluto 15. O terceiro dado mantido no nível 1 ainda consome 1 Coragem; as recuperações são aplicadas após esse gasto. Os críticos ficam registrados no histórico do personagem.
 
 **Os críticos dos monstros foram documentados no Livro e SRD**, com conversão de recuperações em Pavor (2P/4P/4P), mas **não são simulados no rolador da ficha de jogador**. O protótipo não automatiza os gastos do Narrador nem a alocação local-primeiro do Pavor crítico dos monstros, cujo excedente segue para a reserva pública até seu teto.
 
@@ -163,13 +165,13 @@ A recuperação respeita os tetos: **PP máximo 0 nos níveis 1–4**, 1 nos ní
 
 **Criar Item de Foco e Magia**, 1 XP, Disciplina 1 + Inteligência 1, **substitui** as antigas Perícias Aprendiz de Conjurador (2 XP) e Magia Única (1 XP). A ficha não oferece mais compra das antigas. Fichas salvas são migradas: quando os requisitos atuais são satisfeitos, a nova Perícia substitui as antigas; o investimento excedente é reconciliado no XP livre, sem conceder o reembolso duas vezes. Quando os requisitos não são satisfeitos, a compra não é concedida automaticamente e o XP anterior fica liberado; o histórico é anotado na ficha.
 
-A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau 3 fora de combate** (1 PP ou 2 Coragens por criação) para **memorizá-las em slots mágicos** e conjurá-las rapidamente. **Pesos nominais de magias:** G1=1, G2=2, G3=3, G4=4. Uma magia criada **sem foco** recebe **−1 de peso**. Não existe procedimento aprovado para determinar se G1 pode ocupar zero peso ou se isso se refere exatamente à ocupação do slot; portanto, a ficha **não calcula slots disponíveis nem os consome automaticamente**. Histórico do SRD: 1 slot por aumento de Conjuração, +1 slot por 3 Inteligência e, em outra seção, limite 9; a nova lembrança 1 capacidade por Grau de Inteligência permanece PENDENTE.
+A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau 3 fora de combate** (2 Coragens por criação) para **memorizá-las em slots mágicos** e conjurá-las rapidamente. **Pesos nominais de magias:** G1=1, G2=2, G3=3, G4=4. Uma magia criada **sem foco** recebe **−1 de peso**. Não existe procedimento aprovado para determinar se G1 pode ocupar zero peso ou se isso se refere exatamente à ocupação do slot; portanto, a ficha **não calcula slots disponíveis nem os consome automaticamente**. Histórico do SRD: 1 slot por aumento de Conjuração, +1 slot por 3 Inteligência e, em outra seção, limite 9; a nova lembrança 1 capacidade por Grau de Inteligência permanece PENDENTE.
 
 **Itens de foco:** fabricação com Artesão, recarga após N rodadas conforme seu Grau, possibilitando elementos habilitados ausentes no ambiente. O peso físico do foco depende de **Potência, Força e Atletismo**, mas a fórmula exata de conversão para carga ainda requer decisão; a ficha não a calcula como regra oficial.
 
-**Escudo Arcano:** 1 XP; Inteligência 2 + Criar Item de Foco e Magia; escudo pessoal ou **círculo 3×3 metros**, com **duração de 1 rodada**. Ativa com 1 PP/2 Coragens; rolagem de Conjuração dá DE para romper, proteção semelhante à Integridade; ataque ou conjuração inimiga corpo a corpo dentro da área ignora sua proteção. Mais 1 PP/2 Coragens amplia a área em 3×3, geometria circular exata PENDENTE. Não automatizado.
+**Escudo Arcano:** 1 XP; Inteligência 2 + Criar Item de Foco e Magia; escudo pessoal ou **círculo 3×3 metros**, com **duração de 1 rodada**. Ativa com 2 Coragens; rolagem de Conjuração dá DE para romper, proteção semelhante à Integridade; ataque ou conjuração inimiga corpo a corpo dentro da área ignora sua proteção. Mais 2 Coragens amplia a área em 3×3, geometria circular exata PENDENTE. Não automatizado.
 
-**Conjuração Equilibrada:** 1 XP, requer **Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2**. Ao pagar 1 PP ou 2 Coragens, permite alterar a magia para **Pesada ou Leve**. Sua compra e os requisitos estão automatizados; o efeito sobre Grau numérico, peso tático e peso nominal dos slots aguarda confirmação, não se cria aumento automático de Grau ou dano.
+**Conjuração Equilibrada:** 1 XP, requer **Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2**. Ao pagar 2 Coragens, permite alterar a magia para **Pesada ou Leve**. Sua compra e os requisitos estão automatizados; o efeito sobre Grau numérico, peso tático e peso nominal dos slots aguarda confirmação, não se cria aumento automático de Grau ou dano.
 
 
 ## Spellslots mentais e Perícia em Elemento Ar (12/11/2026)
@@ -178,15 +180,15 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 
 **Itens de foco:** **sempre** entram na carga física convencional do inventário. A ficha soma todos os itens do tipo Foco como qualquer outro equipamento, segundo seu peso cadastrado. Os pesos de cada foco por Grau e a relação de Potência com Força e Atletismo ainda dependem de especificação; não há peso físico gratuito.
 
-**Perícia em Elemento Ar:** custo 1 XP, requer **Disciplina 1, Criar Item de Foco e Magia e Inteligência 1**. Substitui o rótulo anterior **Elemento: Vento** mantendo o identificador técnico `vento` para preservar personagens que já o adquiriram. A compra e os requisitos estão verificados. O efeito especial custa **1 PP ou 2 Coragens**, condiciona-se a acerto mesmo sem crítico e aplica **um** dos efeitos do Ar: G1 autoempurrão e deslocamento +4m ou manipular objetos, G2 sufocar/dano à Vida ou armadura, empurrar/derrubar e deslocamento 8m, G3 conjuração ao final do turno dos aliados, tornado/rajada e possíveis danos por queda com referência 16m. Formatos linha/círculo/cone/X são opções mencionadas, não geometria calculada. Resolução de dano, duração e interpretação de 16m não estão automatizadas.
+**Perícia em Elemento Ar:** custo 1 XP, requer **Disciplina 1, Criar Item de Foco e Magia e Inteligência 1**. Substitui o rótulo anterior **Elemento: Vento** mantendo o identificador técnico `vento` para preservar personagens que já o adquiriram. A compra e os requisitos estão verificados. O efeito especial custa **2 Coragens**, condiciona-se a acerto mesmo sem crítico e aplica **um** dos efeitos do Ar: G1 autoempurrão e deslocamento +4m ou manipular objetos, G2 sufocar/dano à Vida ou armadura, empurrar/derrubar e deslocamento 8m, G3 conjuração ao final do turno dos aliados, tornado/rajada e possíveis danos por queda com referência 16m. Formatos linha/círculo/cone/X são opções mencionadas, não geometria calculada. Resolução de dano, duração e interpretação de 16m não estão automatizadas.
 
 ## Água, Fôlego de Ar e slots por dado — 12/11/2026
 
 **Capacidade mental agora DEFINIDA:** cada dado fornecido pela Prática **Disciplina** concede **1 unidade de peso mental**. O cálculo é o número de dados da fonte, independentemente de ser d6/d10/d12. **Não** soma Inteligência. A ficha mostra essa capacidade numericamente, mas não automatiza a lista de magias preparadas, nem sua distribuição por compartimentos; não cria nenhum dado adicional. A tabela de Disciplina atual tem, no Grau 6, **3d12**, portanto **3 unidades**, em conflito com o exemplo desejado de memorizar **6 magias G2**. Divergência numérica PENDENTE; a tabela de dados **não foi alterada**. Com G2 de peso nominal 2 cabe 1 G2; com peso −1 sem foco, até 3 G2, condicionado à confirmação da ocupação efetiva. O mínimo de peso G1 sem foco também permanece pendente.
 
-**Ar:** além dos efeitos G1–G3 anteriores, pode **recuperar Fôlego**. Quantidade, Grau, duração, beneficiários e ativação ficam PENDENTES; a ficha não assume que Fôlego seja PP, Coragem ou Vida e não calcula a recuperação.
+**Ar:** além dos efeitos G1–G3 anteriores, pode **recuperar Fôlego**. Quantidade, Grau, duração, beneficiários e ativação ficam PENDENTES; a ficha não assume que Fôlego seja Coragem ou Vida e não calcula a recuperação.
 
-**Perícia em Elemento Água** (1 XP) exige **Disciplina 1, Criar Item de Foco e Magia e Inteligência 1**. Mantém o identificador interno `agua` da antiga entrada "Elemento: Água" para conservar fichas. Ao acertar, com ou sem crítico, **1 PP ou 2 Coragens** ativa um efeito escolhido: **G1 Congelar 1 rodada sem dano na forma Leve**, extrair água do ar, mover, molhar e limpar; **G2 Perfurar** ao obter crítico **OU** gastar os recursos de ativação, podendo causar dano à Vida e à armadura; **G3** conjurar no final do turno dos aliados, Empurrar, Perfurar, Congelar e causar dano à Vida/armadura com propriedades menores pertinentes. A ficha somente compra e descreve as Perícias; não automatiza congelamento, perfuração, efeitos G3 ou dano.
+**Perícia em Elemento Água** (1 XP) exige **Disciplina 1, Criar Item de Foco e Magia e Inteligência 1**. Mantém o identificador interno `agua` da antiga entrada "Elemento: Água" para conservar fichas. Ao acertar, com ou sem crítico, **2 Coragens** ativa um efeito escolhido: **G1 Congelar 1 rodada sem dano na forma Leve**, extrair água do ar, mover, molhar e limpar; **G2 Perfurar** ao obter crítico **OU** gastar os recursos de ativação, podendo causar dano à Vida e à armadura; **G3** conjurar no final do turno dos aliados, Empurrar, Perfurar, Congelar e causar dano à Vida/armadura com propriedades menores pertinentes. A ficha somente compra e descreve as Perícias; não automatiza congelamento, perfuração, efeitos G3 ou dano.
 
 ## CORREÇÃO MAIS RECENTE — Capacidade e peso mental (12/11/2026)
 
@@ -194,13 +196,13 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 
 ## Perícia em Elemento Terra — 12/11/2026
 
-**Compra definida:** 1 XP, exige Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. A entrada antiga **Elemento: Terra** foi renomeada no catálogo, com ID interno `terra` preservado para manter personagens salvos. Engenharia é uma afinidade temática do filtro, **não um requisito adicional**. Uma ativação de efeito especial após acertar (mesmo sem crítico) custa **1 PP ou 2 Coragens** e aplica **um efeito escolhido**, sem automatização de condições/danos.
+**Compra definida:** 1 XP, exige Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. A entrada antiga **Elemento: Terra** foi renomeada no catálogo, com ID interno `terra` preservado para manter personagens salvos. Engenharia é uma afinidade temática do filtro, **não um requisito adicional**. Uma ativação de efeito especial após acertar (mesmo sem crítico) custa **2 Coragens** e aplica **um efeito escolhido**, sem automatização de condições/danos.
 
 **G1:** Desvantagem por **2 rodadas** (terra nos olhos), emaranhar pés, derrubar, pedras pequenas velozes, plataformas de deslocamento e sentido sísmico **18 × 18 m** para detectar criaturas furtivas e armadilhas. **G2:** enredar e imobilizar, Desvantagem por **2 turnos**, espinhos que danificam proteção/armadura e sentido sísmico **32 × 32**. **G3:** conjurar ao final do turno dos aliados, área **5 × 5** ou linha/cone/círculo a partir do alvo, causar dano/empurrão/derrubada e sentido sísmico **64 × 64**. **PENDENTE:** unidades das três últimas dimensões, dano, condições resistidas, limites de detecção, efeitos sem ataque e detalhes de geometria/turno. O protótipo verifica custo e requisitos, mas não presume procedimentos extras.
 
 ## Perícia em Elemento Fogo — 12/11/2026
 
-**Perícia em Elemento Fogo:** custo **1 XP**, exige **Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1**. Esta é a atualização da antiga entrada **Elemento: Fogo**, mantendo o identificador interno `fogo`, os personagens existentes e o catálogo de compra sem duplicação. O filtro pode associar Fogo a **Disciplina, Inteligência e Alquimia**; Alquimia é somente afinidade de busca, **não requisito de compra**. Em um ataque acertado, **independentemente de crítico**, gastar **1 PP ou 2 Coragens** ativa **um efeito especial escolhido**.
+**Perícia em Elemento Fogo:** custo **1 XP**, exige **Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1**. Esta é a atualização da antiga entrada **Elemento: Fogo**, mantendo o identificador interno `fogo`, os personagens existentes e o catálogo de compra sem duplicação. O filtro pode associar Fogo a **Disciplina, Inteligência e Alquimia**; Alquimia é somente afinidade de busca, **não requisito de compra**. Em um ataque acertado, **independentemente de crítico**, gastar **2 Coragens** ativa **um efeito especial escolhido**.
 
 - **G1:** disparo à distância causa dano à armadura, mas não queima diretamente a Vida; ilumina/conduz chamas, **não cria fogo do nada**. Pode usar lamparina a óleo, isqueiro ou item de foco pequeno encantado (por exemplo, luvas que produzem faísca ao estalar os dedos).
 - **G2:** área de disparo **4 × 4**, em cone/linha/círculo, dano à Vida e à armadura; sem item de foco, pode invocar fogo ao gastar **1 Coragem**. **PENDENTE:** se essa Coragem soma-se ou substitui o custo usual de ativação.
@@ -212,7 +214,7 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 
 **Fogo G2:** ao **invocar fogo sem item de foco**, o custo de **1 Coragem é ADICIONAL** ao custo da ativação de efeito especial (1 PP **OU** 2 Coragens); portanto o custo efetivo é **1 PP + 1 Coragem** ou **3 Coragens**. Não aplicar custo extra ao Fogo G1 com fonte de chama nem a magias de Fogo que não fazem essa invocação sem foco.
 
-**Perícia em Elemento Sagrado:** custo **2 XP**, requisitos **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**, substituindo a antiga descrição **Magia Sagrada (3 XP)** sem mudar o ID `sagrado` das fichas. A compra e os requisitos são verificados no protótipo. Magias Leves, ativação de **1 PP ou 2 Coragens** em ataque acertado mesmo sem crítico, para aplicar um efeito especial escolhido. **G1:** Acalmar, Purificar, Apoiar e Recuperar Coragem; **1 Êxito obtido na capacidade sagrada pode se converter em 1 Coragem para um participante, no máximo uma vez por conjuração/turno**. O Êxito gasto **não soma à DE nem ao dano**; nenhum Êxito adicional gratuito é criado. **G2/G3:** exigem combinação com outros elementos; não são liberados automaticamente pela compra.
+**Perícia em Elemento Sagrado:** custo **2 XP**, requisitos **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**, substituindo a antiga descrição **Magia Sagrada (3 XP)** sem mudar o ID `sagrado` das fichas. A compra e os requisitos são verificados no protótipo. Magias Leves, ativação de **2 Coragens** em ataque acertado mesmo sem crítico, para aplicar um efeito especial escolhido. **G1:** Acalmar, Purificar, Apoiar e Recuperar Coragem; **1 Êxito obtido na capacidade sagrada pode se converter em 1 Coragem para um participante, no máximo uma vez por conjuração/turno**. O Êxito gasto **não soma à DE nem ao dano**; nenhum Êxito adicional gratuito é criado. **G2/G3:** exigem combinação com outros elementos; não são liberados automaticamente pela compra.
 
 **PENDENTE:** ordem de alocação do Êxito em relação ao teste de DE, alvos e limites de Coragem, critérios de apoio sem ataque e quais combinações habilitam G2/G3. A ficha registra texto e requisitos, **não** subtrai automaticamente Êxito, não reembolsa XP histórico duplicado e não aplica efeitos mágicos automaticamente. Uma compra histórica a 3 XP pode exigir conferência do orçamento na ficha, pois o custo atualizado é 2 XP.
 
