@@ -33,14 +33,9 @@
       <small>{{codex.healthLabel}} · {{codex.healthEffect}} · Faixas {{codex.lifeBandsText}} (cura em revisão)</small>
     </div>
     {{#unless codex.isMonster}}<div class="codex-resource">
-      <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
+      <span>CORAGEM</span><strong>{{codex.courage}} / {{codex.courageMax}}</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
       <small>Gasto na elevação ou retenção</small>
-    </div>
-    <div class="codex-resource">
-      <span>PP · PONTOS DE PERÍCIA</span><strong>{{codex.pp}} / {{codex.ppMax}}</strong>
-      <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="1">+</button></div>
-      <small>Perícia em Coragem a partir do nível 5</small>
     </div>
 {{/unless}}
     {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
@@ -188,10 +183,7 @@
           <option value="{{this.name}}" {{#if this.selectedSecond}}selected{{/if}}>{{this.name}}</option>
          {{/each}}
         </select></label>
-        <label>Pagamento da característica paga<select data-pending-option="activationPayment">
-         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>2 Coragens (ou P local para monstro: em revisão)</option>
-         <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP</option>
-        </select></label>
+        <p class="codex-tip">Característica paga: 1 Coragem. No crítico, a primeira característica é gratuita.</p>
         {{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>
