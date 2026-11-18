@@ -1517,7 +1517,9 @@ function normalize(v){
  if(s.creationLocked){
   const used=rawCreationCosts(s),saved=v.creationBudgetSnapshot;
   const formerSkillsCost=used.skills+legacyDifference;
-  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET.total)?
+  // Legado: preservar snapshots de fichas que usavam até 18/20 XP; o orçamento NOVO continua em 15.
+  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isSafeInteger(saved[k])&&saved[k]>=0&&saved[k]<=20)&&
+   (saved.attr+saved.training+saved.skills)<=20?
    {attr:saved.attr,training:saved.training,skills:saved.skills}:
    {attr:used.attr,training:used.training,skills:used.skills};
   if(legacyCost>0&&legacyDifference>0){
@@ -1777,7 +1779,7 @@ function renderXP(){
   $(id+"-caption").textContent=used+" XP (orçamento global: "+CREATE_BUDGET.total+" XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
- $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
+ $("xp-feedback").textContent=x.free<0?"Saldo excedido no orçamento experimental de "+CREATE_BUDGET.total+" XP. Investimentos anteriores foram preservados: revise as compras antes de continuar.":
  CREATE_BUDGET.total+" XP iniciais compartilhados; referência experimental: até "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 ("+MAX_EARNED_XP+" XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
   ((state.xpEarned||0)>MAX_EARNED_XP?"Ficha legada acima do teto: XP preservado, novas concessões bloqueadas. ":"")+
   (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
