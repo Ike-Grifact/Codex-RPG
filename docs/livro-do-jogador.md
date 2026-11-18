@@ -486,7 +486,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **DE (Dificuldade de Êxito) defensiva natural:** **Agilidade + (Destreza ÷ 2, arredondada para baixo)**. Exemplo: Agilidade **4**, Destreza **3** → metade de Destreza é 1,5, arredondada para baixo fica **1** → **DE = 4 + 1 = 5**. A metade é arredondada antes de somar Agilidade.
 
-**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada; sua migração nos códigos e fichas continua pendente.
+**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
 
 **Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
 
@@ -565,6 +565,8 @@ A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autor
 6. Compare **E + P mantido não anulado** à DE. Decida o resultado e calcule dano e consequências quando aplicável.
 
 Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular P.
+
+**DEFINIDO — atualização de custos e fichas em 17/11/2026:** toda técnica ou Perícia que dependia **exclusivamente** do antigo custo em PP passa a exigir **1 Coragem por ativação**. Se já existia uma alternativa explícita em Coragem (inclusive 2 ou 4 Coragens), ela continua com o valor publicado. O custo em XP de aquisição, requisitos e gatilhos não se alteram. Ativações-base elementais G1/G2 com a Perícia e o Grau habilitados continuam **gratuitas**. Críticos não recuperam PP. Fichas de jogadores, NPCs humanoides e protótipo Foundry retiram o medidor e a conversão de PP. A especificação e efeitos novos de Maestrias não estão em análise nesta rodada.
 
 ### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
 
@@ -645,7 +647,7 @@ O uso de Coragem e técnicas continua sujeito a seus custos específicos; o fato
 
 **DEFINIDO — recuperação unificada:** quando o gatilho de uma Maestria recupera Coragem, **restaura a reserva geral**, até o teto total já desbloqueado. O mesmo vale para a recuperação convencional relacionada ao **Pavor**, sem carteiras separadas para Maestria neutra, especializada e Coragem básica. **PENDENTE:** cumulação de gatilhos na mesma ação, interação com a recuperação já existente por **crítico comum**, retenção de contadores entre combates e prevenção de recuperações repetidas indevidas. **DEFINIDO:** o crítico comum recupera Coragem conforme a tabela e **não recupera PP**. **PENDENTE/ADIADO:** se a Maestria Precisão acrescenta recuperação ou substitui a recuperação comum; não conceder duplicação automática e não escolher A ou B antes da revisão específica das Maestrias.
 
-**PENDENTE — migração das Perícias existentes:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. As antigas alternativas de pagamento das Perícias foram retiradas de seus textos: onde a própria regra já autorizava Coragem, essa alternativa foi preservada; custos exclusivamente legados e casos especiais seguem pendentes de reconciliação. A lógica do criador e do Foundry ainda requer migração. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
+**PENDENTE — Maestrias e regras especiais ainda não revisadas:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. As alternativas de pagamento em PP foram retiradas dos textos e do motor das fichas desta branch: quando havia alternativa de Coragem, ela foi preservada; custos exclusivamente em PP passaram a 1 Coragem por decisão autoral. As Maestrias e exceções de funcionamento ainda não especificadas permanecem para etapa própria. A implantação numa instalação externa de Foundry não foi realizada. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
 
 ### Como jogar narrativamente
 
@@ -1062,7 +1064,7 @@ São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades au
 
 Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
 
-**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **PENDENTE — migração:** os custos históricos exclusivos da reserva revogada para converter um dado de Inteligência em d20 no nível 20 e aplicar efeitos avançados/área por Maestria ou Especialidade Elemental ainda exigem definição em Coragem. Não aplicar equivalência automática.
+**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** quando o custo era exclusivamente em PP, passa a ser 1 Coragem por ativação, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
 
 
 ## VIII. Armas e seus efeitos
@@ -1251,7 +1253,7 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 ## X. Níveis, Marcos e XP
 
-**DEFINIDO — rework de recursos:** a reserva separada de Pontos de Perícia foi revogada. A Coragem inicia com teto 10, recebe +1 nos níveis 5, 10 e 20, e bônus de Maestria não podem ultrapassar o teto absoluto 15. A antiga Perícia em Coragem de conversão não permanece ativa. Sistemas de ficha/Foundry ainda precisam de migração.
+**DEFINIDO — rework de recursos:** a reserva separada de Pontos de Perícia foi revogada. A Coragem inicia com teto 10, recebe +1 nos níveis 5, 10 e 20, e bônus de Maestria não podem ultrapassar o teto absoluto 15. A antiga Perícia em Coragem de conversão não permanece ativa. O criador e o protótipo Foundry nesta branch não oferecem PP; instalação externa e Maestrias especializadas ainda dependem de implementação própria.
 
 Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
 
