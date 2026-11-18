@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {distribuirVidaEmQuatroFaixas,vidaAnimalAoTransformar,
   prepararVidaDruidica,simularGolpeDruidico,regrasReversaoVoluntariaDruidica,
-  simularReversaoVoluntariaDruidica,
+  simularReversaoVoluntariaDruidica,distribuirSaudeDruidicaComTemporarios,
   custoAtributoFormaDruidica,conferirXPFormaDruidica} from "./druid-life.mjs";
 
 test("Saúde preserva quatro faixas de Vida, com duas últimas fixas",()=>{
@@ -267,4 +267,54 @@ test("Escudo Arcano bloqueia dano: forma menor não transfere bloqueio",()=>{
   const humana=simularReversaoVoluntariaDruidica({estado:real});
   assert.equal(humana.vidaHumanaReal,7);
   assert.equal(humana.danoNaVidaReal,1);
+});
+
+
+test("PVs temporários aumentam exclusivamente Saudável nas quatro faixas",()=>{
+  assert.deepEqual(distribuirSaudeDruidicaComTemporarios({vidaMaximaHumana:8,pvTemporarios:3}),
+   {saudavel:6,ferido:3,incapacitado:1,inconsciente:1,pvTemporariosNaSaudavel:3});
+  assert.deepEqual(distribuirVidaEmQuatroFaixas(8),[3,3,1,1]);
+});
+
+test("PVs temporários mantêm a caixa Saudável até se esgotarem",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:11});
+  assert.equal(s.faixaPVsTemporarios,"Saudável");
+  const a=simularGolpeDruidico({estado:s,dano:2});
+  assert.equal(a.faixaPVsTemporarios,"Saudável");
+  assert.equal(a.vidaHumanaReal,6);
+  const b=simularGolpeDruidico({estado:a,dano:2});
+  assert.equal(b.faixaPVsTemporarios,null);
+  assert.equal(b.vidaHumanaReal,5);
+  const rev=simularReversaoVoluntariaDruidica({estado:b});
+  assert.equal(rev.faixaPVsTemporarios,null);
+  assert.equal(rev.vidaHumanaReal,5);
+});
+
+test("Escudo ativo persiste sem renovar duração ou Integridade na reversão voluntária",()=>{
+  const escudo={ativo:true,rodadasRestantes:0.5,integridadeSimbolica:["E"],de:1};
+  const s={...prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:11}),escudoArcano:escudo};
+  const rev=simularReversaoVoluntariaDruidica({estado:s});
+  assert.equal(rev.escudoArcano,escudo);
+  assert.deepEqual(rev.escudoArcano,escudo);
+  assert.equal(rev.pvTemporarios,0);
+});
+
+test("Escudo ativo persiste na reversão forçada sem criar defesa adicional",()=>{
+  const escudo={ativo:true,rodadasRestantes:1,integridadeSimbolica:["P"]};
+  const s={...prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5}),escudoArcano:escudo};
+  const fatal=simularGolpeDruidico({estado:s,dano:5});
+  assert.equal(fatal.formaCancelada,true);
+  assert.equal(fatal.escudoArcano,escudo);
+});
+
+test("Reversão não fabrica Escudo nem reativa o já expirado",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:11});
+  assert.equal(simularReversaoVoluntariaDruidica({estado:s}).escudoArcano,undefined);
+  const gasto={...s,escudoArcano:{ativo:false,rodadasRestantes:0}};
+  assert.deepEqual(simularReversaoVoluntariaDruidica({estado:gasto}).escudoArcano,gasto.escudoArcano);
+});
+
+test("Distribuição temporária não aceita números inválidos",()=>{
+  assert.throws(()=>distribuirSaudeDruidicaComTemporarios({vidaMaximaHumana:8,pvTemporarios:-1}),RangeError);
+  assert.throws(()=>distribuirSaudeDruidicaComTemporarios({vidaMaximaHumana:8,pvTemporarios:0.5}),RangeError);
 });

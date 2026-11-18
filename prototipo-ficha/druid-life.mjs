@@ -15,7 +15,9 @@
  * ação/reação/turno; não concede ação nova, restituição ou cura.
  * DEFINIDO: forma menor transfere dano efetivo acumulado também ao reverter
  * voluntariamente; PVs temporários não entram nem a Vida real é debitada duas vezes.
- * PENDENTE: Vida real entre formas sucessivas, Vida zero e quatro faixas.
+ * DEFINIDO: PVs temporários ficam apenas em Saudável e Escudo Arcano ativo
+ * persiste na reversão, sem renovação de duração ou de Integridade.
+ * PENDENTE: Vida real entre formas sucessivas, Vida zero e integração à ficha.
  */
 // Tabelas de custo ACUMULADO da v0.56, G0..G6. Não usar a antiga
 // escala de companheiros v0.48 ou de Formação v0.47 em seu lugar.
@@ -61,6 +63,17 @@ export function distribuirVidaEmQuatroFaixas(vidaMaxima) {
   return [1 + Math.ceil(extra/2), 1 + Math.floor(extra/2), 1, 1];
 }
 
+/** Distribuição das quatro caixas: PV temporário amplia só Saudável. */
+export function distribuirSaudeDruidicaComTemporarios({vidaMaximaHumana,pvTemporarios=0}){
+  if(!Number.isSafeInteger(vidaMaximaHumana)||vidaMaximaHumana<4||
+     !Number.isSafeInteger(pvTemporarios)||pvTemporarios<0||
+     !Number.isSafeInteger(vidaMaximaHumana+pvTemporarios))
+    throw new RangeError("Vida real ou temporária inválida");
+  const [saudavel,ferido,incapacitado,inconsciente]=distribuirVidaEmQuatroFaixas(vidaMaximaHumana);
+  return {saudavel:saudavel+pvTemporarios,ferido,incapacitado,inconsciente,
+          pvTemporariosNaSaudavel:pvTemporarios};
+}
+
 function valido(vidaMaximaHumana, vidaAtualHumana, vidaMaximaAnimal) {
   return Number.isSafeInteger(vidaMaximaHumana) && vidaMaximaHumana>=4 &&
     Number.isSafeInteger(vidaAtualHumana) && vidaAtualHumana>=0 &&
@@ -95,7 +108,7 @@ export function prepararVidaDruidica({vidaMaximaHumana,vidaAtualHumana,vidaMaxim
     vidaAtualHumana+pvTemporarios;
   return {
     caso,vidaMaximaHumana,vidaMaximaAnimal,vidaHumanaReal:vidaAtualHumana,
-    vidaAnimalAtual,pvTemporarios,formaSemVida:vidaAnimalAtual===0,
+    vidaAnimalAtual,pvTemporarios,faixaPVsTemporarios:pvTemporarios>0?"Saudável":null,formaSemVida:vidaAnimalAtual===0,
     danoAcumuladoForma:0,
     automatizacaoBloqueada:true
   };
@@ -139,6 +152,7 @@ export function simularGolpeDruidico({estado,dano}) {
   const vidaHumanaReal=Math.max(0,estado.vidaHumanaReal-danoReal);
   return {
     ...estado,pvTemporarios:estado.pvTemporarios-absorvido,
+    faixaPVsTemporarios:estado.pvTemporarios>absorvido?"Saudável":null,
     vidaHumanaReal,vidaAnimalAtual:vidaHumanaReal+estado.pvTemporarios-absorvido,
     danoNaVidaReal:danoReal,formaCancelada:false,
     morteHumana:danoReal>0&&danoReal>=estado.vidaHumanaReal,
@@ -153,6 +167,8 @@ export function simularGolpeDruidico({estado,dano}) {
  * Em forma menor, ainda não foi debitado o dano animal: transferir TODO o
  * dano efetivo acumulado desde a transformação, sem repetir dano prévio.
  * Em formas igual/maior, Vida real já foi reduzida durante os golpes.
+ * Escudo Arcano armazenado externamente no estado é conservado pela reversão,
+ * sem restauro de Integridade, alteração de duração nem custo adicional.
  */
 export function simularReversaoVoluntariaDruidica({estado}){
   if(!estado || !["menor","igual","maior"].includes(estado.caso) ||
@@ -167,7 +183,7 @@ export function simularReversaoVoluntariaDruidica({estado}){
   const vidaHumanaReal=Math.max(0,estado.vidaHumanaReal-danoTransferido);
   return {
     ...estado,vidaHumanaReal,vidaAnimalAtual:vidaHumanaReal,
-    pvTemporarios:0,formaCancelada:true,
+    pvTemporarios:0,faixaPVsTemporarios:null,formaCancelada:true,
     danoNaVidaReal:danoTransferido,
     morteHumana:danoTransferido>=estado.vidaHumanaReal&&danoTransferido>0,
     propagacaoNaoLetalPendente:false
