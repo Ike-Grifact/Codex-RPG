@@ -153,3 +153,20 @@ test("DE do alvo soma modificador de todas as armaduras e mantém teto 12",()=>{
  assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
  assert.equal(defenseDE({system:s,items:[light]}),5); // 2+1+1+1 da armadura em TODA defesa
 });
+
+
+test("Conjuração admite elementos sem comprar Criar Foco",()=>{
+ const s=human();s.practices.armas_conjuracao=2;s.attributes.inteligencia=2;
+ const sel={base:{group:"practice",key:"armas_conjuracao"},attribute:{group:"attribute",key:"inteligencia"}};
+ for(const id of ["fogo","agua","vento","terra","sagrado","sangue","trevas","veneno"]){
+  s.skills=[id];
+  assert.deepEqual(buildPool(s,sel,{mode:"conjuracao"}).errors,[],id);
+ }
+});
+test("Conjuração sem Perícia elemental e sem Psique permanece bloqueada",()=>{
+ const s=human();s.attributes.inteligencia=1;s.skills=[];
+ const sel={base:{group:"practice",key:"armas_conjuracao"},attribute:{group:"attribute",key:"inteligencia"}};
+ assert.match(buildPool(s,sel,{mode:"conjuracao"}).errors.join(" "),/Perícia elemental ou Criar Item/);
+ s.skills=["criar-item-foco-magia"];
+ assert.deepEqual(buildPool(s,sel,{mode:"conjuracao"}).errors,[]);
+});
