@@ -1233,8 +1233,8 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1531,8 +1531,7 @@ function normalize(v){
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
- s.courage=clamp(Math.floor(v.courage??10),0,10);
- s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
+ s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
  // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
@@ -1568,7 +1567,6 @@ function normalize(v){
   quantity:clamp(Math.floor(v.elementalCrystal?.quantity??(ownsSkill("criar-item-foco-magia",s)?1:0)),0,1)};
  for(const item of s.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
- s.courageUsedTurn=!!v.courageUsedTurn;
  // SRD v0.73: unificar sangue inimigo. Importações antigas mantêm as duas parcelas existentes
  // SOMENTE no primeiro carregamento; fichas gravadas na versão atual têm extracted=0.
  const priorSpilled=clamp(Math.floor(v.hemomancy?.spilled??0),0,1998);
@@ -1584,6 +1582,7 @@ function normalize(v){
  };
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
+  delete s.pending.payment; delete s.pending.firePayment; delete s.pending.ppCost;
  }
  return s;
 }
@@ -1652,7 +1651,11 @@ function lifeStage(s=state){
  const id=life===0?"morto":life===1?"inconsciente":life===2?"incapacitado":life<=2+bands[1]?"ferido":"saudavel";
  return {...LIFE_STATES[id],bands,life};
 }
-function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
+function maxCourage(s=state){
+ const level=Number(s.level)||1;
+ // Bônus especializados de Maestria não foram implementados; teto absoluto 15.
+ return Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
+}
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+racialCostTable("attr",k,s)[s.attributes[k]||0],0),
   training:K.reduce((n,[k])=>n+racialCostTable("know",k,s)[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+racialCostTable("practice",k,s)[s.practices[k]||0],0),
@@ -2807,10 +2810,9 @@ function renderWizard(){
 }
 
 function renderVitals(){
- const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
+ const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.courage=clamp(state.courage,0,maxCourage());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
- $("courage-text").textContent=state.courage+" / 10";
- $("pp-text").textContent=state.pp+" / "+maxPP();
+ $("courage-text").textContent=state.courage+" / "+maxCourage();
  const defense=defensePresentation();
  $("de-label").textContent=defense.label;
  $("de-text").textContent=defense.value;$("balance-text").textContent=balance();
@@ -3565,7 +3567,7 @@ function demo(){
  s.skills=["armas-medias","disciplina-avancada","criar-item-foco-magia"];
  s.creationLocked=true;s.xpEarned=80;s.weaponFocus="medio";
  s.xpHistory=[{at:new Date().toISOString(),amount:80,note:"XP de exemplo para testar evolução"}];
- s.courage=8;s.pp=1;s.life=maxLife(s)-1;
+ s.courage=Math.min(8,maxCourage(s));s.life=maxLife(s)-1;
  s.items=[normalizeItem({name:"Espada de treinamento",type:"arma",weight:"medio",grade:1,qty:1,equipped:true,max:0,hp:0}),
   normalizeItem({name:"Armadura de demonstração",type:"armadura",weight:"alto",grade:2,qty:1,equipped:true,max:5,hp:4}),
   normalizeItem({name:"Bolsa de suprimentos",type:"outro",weight:"leve",grade:1,qty:1})];
@@ -4144,10 +4146,9 @@ function bind(){
   state.courage-=2;state.pp++;state.courageUsedTurn=true;renderVitals();renderSkills();save();toast("Perícia em Coragem: 2 Coragens convertidas em 1 PP.");
  });
  $("reset-turn").addEventListener("click",()=>{
-  state.courageUsedTurn=false;
   if(state.hemomancy){state.hemomancy.usedThisTurn=false;state.hemomancy.boostKind="";state.hemomancy.boostPayment="";state.hemomancy.directLifeResolved=false;}
   renderSkills();renderHemomancy();save();
-  toast("Novo turno: conversão em Coragem e marcador de amplificação com Sangue liberados.");
+  toast("Novo turno: marcador de amplificação com Sangue liberado.");
  });
  window.addEventListener("storage",event=>{if(event.newValue&&(event.key===SAVE_KEY||event.key===PLAYER_SHEETS_INDEX||event.key?.startsWith(PLAYER_SHEET_PREFIX))){toast("Fichas alteradas em outra aba. Recarregue para sincronizar antes de continuar.");}});
 }
