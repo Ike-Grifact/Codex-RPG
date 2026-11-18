@@ -1,4 +1,6 @@
 # Codex RPG
+**Regra vigente — SRD v0.81 (18/11/2026):** [Elementos independentes de Criar Item de Foco e Magia](docs/srd-continuidade-v0.81.md). Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno não exigem a Perícia de Foco para aquisição ou para habilitar Disciplina em Conjuração. Permanecem necessários fontes elementais válidas, Graus, DE, testes e custos. **Druídica G1** passa a ter custo-base de construção de 11 XP para Humano de custos normais, sem dependência direta ou indireta de Foco. Registros de versões anteriores são históricos.
+
 
 **Regra mais recente (18/11/2026):** [SRD v0.80](docs/srd-continuidade-v0.80.md). Perícia Druídica agora custa **1 XP** com requisitos diretos **Domar Criatura Pequena + Perícia em Elemento Terra**; Domar Média habilita G2, Domar Grande habilita G3. **Criar Foco** deixa de ser requisito direto da Druídica, mas continua pré-requisito da própria Terra (dependência indireta ainda PENDENTE de revisão). Os textos de versões históricas abaixo não prevalecem sobre a v0.80.
 
