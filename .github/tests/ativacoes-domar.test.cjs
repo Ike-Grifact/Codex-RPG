@@ -32,7 +32,7 @@ test("Livro do Jogador da web revoga PP e pagamento por memorização de magias"
  const book=read("livro.html");
  assert.doesNotMatch(book,/1\s*PP\s*(?:ou|\/)\s*2\s*Coragens\b/i);
  assert.doesNotMatch(book,/2 Coragens por criação/i);
- assert.match(book,/sem magias memorizadas/i);
+ assert.match(book,/não existem mais magias memorizadas/i);
  assert.match(book,/custos exclusivamente em PP agora exigem <strong>1 Coragem por ativação<\/strong>/i);
 });
 test("Olhos de Águia permanece passiva sem gasto de Coragem",()=>{
