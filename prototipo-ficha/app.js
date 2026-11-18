@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.80 (Perícia Druídica 1 XP única; requisitos diretos Domar Pequena + Terra; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 15 XP iniciais experimentais (SRD v0.79). */
+/* Codex RPG — criador e ficha unificados. SRD v0.81 (Elementos sem requisito de Criar Foco; Druídica 1 XP; requisitos diretos Domar Pequena + Terra; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 15 XP iniciais experimentais (SRD v0.79). */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -176,31 +176,31 @@ const SKILLS=[
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
+  "1 XP · Disciplina 1 + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, a ativação-base de um efeito G1/G2 habilitado é gratuita. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, a ativação-base de um efeito G1/G2 habilitado é gratuita. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  "1 XP · Disciplina 1 + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação-base gratuita em G1/G2 quando habilitada. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base gratuita em G1/G2 quando habilitada. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
   2
  ],
  [
@@ -218,7 +218,7 @@ const SKILLS=[
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação-base G1/G2 gratuita com Perícia e Grau habilitados, respeitando gatilhos. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
+  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base G1/G2 gratuita com Perícia e Grau habilitados, respeitando gatilhos. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
   2
  ],
  [
@@ -901,20 +901,20 @@ const CARD_REQUIREMENTS={
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
- "pericia-druidica": "Domar Criatura Pequena + Perícia em Elemento Terra (G2: Domar Média; G3: Domar Grande; Terra conserva requisitos próprios)",
+ "pericia-druidica": "Domar Criatura Pequena + Perícia em Elemento Terra (G2: Domar Média; G3: Domar Grande; sem Foco)",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
  "improviso": "Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
  "mestre": "Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
- "fogo": "Disciplina 1, Inteligência 1, Criar Foco",
- "agua": "Disciplina 1, Inteligência 1, Criar Foco",
- "vento": "Disciplina 1, Inteligência 1, Criar Foco",
- "terra": "Disciplina 1, Inteligência 1, Criar Foco",
- "sagrado": "Disciplina 2, Inteligência 2, Criar Foco",
+ "fogo": "Disciplina 1, Inteligência 1",
+ "agua": "Disciplina 1, Inteligência 1",
+ "vento": "Disciplina 1, Inteligência 1",
+ "terra": "Disciplina 1, Inteligência 1",
+ "sagrado": "Disciplina 2, Inteligência 2",
  "veneno": "Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2",
- "sangue": "Disciplina 2, Inteligência 2, Criar Foco",
- "trevas": "Disciplina 2, Inteligência 2, Criar Foco",
+ "sangue": "Disciplina 2, Inteligência 2",
+ "trevas": "Disciplina 2, Inteligência 2",
  "criar-antidoto": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2 + Criar Veneno",
  "transfusao-sanguinaria": "Transfusão + Perícia em Elemento Sangue",
  "armas-longo-alcance": "Disciplina 1 + Destreza 2",
@@ -950,7 +950,7 @@ const CARD_EFFECTS={
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
- "pericia-druidica": "1 XP uma única vez. Declara transformação e ataca/age na mesma oportunidade; Escudo Arcano conjurado junto, com Pavor mantido não anulado, passa protagonismo ao inimigo. Sem esse Pavor, segue protagonismo normal. XP de toda forma = XP total atual do druida. G1 com Domar Pequena e Terra; G2 requer Domar Média; G3 requer Domar Grande. Foco não é requisito direto da Druídica, mas Terra conserva seus requisitos próprios. Máximo animal menor: golpe letal desfaz a forma e transfere todo o dano acumulado durante a forma, sem duplicar dano prévio. Sem armadura animal; Escudo Arcano habilitado pode proteger a forma quando conjurado na transformação (custos normais, 1 rodada). Igual: Vida atual humana. Maior: PV temporários somente na transformação, sem regenerar na forma nem acumular entre formas, antes da Vida real. Tabelas animais por porte da v0.56 definidas. Temporários somente em Saudável; Escudo Arcano mantém-se após reversão voluntária/forçada pela duração original restante. Reversão voluntária custa 0 Coragem, não exige teste nem ação/reação/turno e não cura; dano efetivo acumulado na forma menor se transfere mesmo na reversão voluntária; PVs temporários não contam, e dano real já aplicado não se repete.",
+ "pericia-druidica": "1 XP uma única vez. Declara transformação e ataca/age na mesma oportunidade; Escudo Arcano conjurado junto, com Pavor mantido não anulado, passa protagonismo ao inimigo. Sem esse Pavor, segue protagonismo normal. XP de toda forma = XP total atual do druida. G1 com Domar Pequena e Terra; G2 requer Domar Média; G3 requer Domar Grande. Foco não é requisito direto nem indireto da Druídica; Terra é independente da Perícia de Foco. Máximo animal menor: golpe letal desfaz a forma e transfere todo o dano acumulado durante a forma, sem duplicar dano prévio. Sem armadura animal; Escudo Arcano habilitado pode proteger a forma quando conjurado na transformação (custos normais, 1 rodada). Igual: Vida atual humana. Maior: PV temporários somente na transformação, sem regenerar na forma nem acumular entre formas, antes da Vida real. Tabelas animais por porte da v0.56 definidas. Temporários somente em Saudável; Escudo Arcano mantém-se após reversão voluntária/forçada pela duração original restante. Reversão voluntária custa 0 Coragem, não exige teste nem ação/reação/turno e não cura; dano efetivo acumulado na forma menor se transfere mesmo na reversão voluntária; PVs temporários não contam, e dano real já aplicado não se repete.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -998,7 +998,7 @@ const CARD_BRIEFS={
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
- "pericia-druidica": "Compra única de 1 XP; somente Domar Pequena e Terra como requisitos diretos. Média exige Domar Média depois; Grande exige Domar Grande. Foco não é requisito direto da Druídica, mas permanece na compra da Terra. Declara a transformação e pode atacar/agir na mesma oportunidade; Escudo Arcano junto exige sua rolagem e Pavor mantido não anulado passa protagonismo ao inimigo. Grande exige Domar Grande como evolução. Forma não exige domesticar a espécie. XP e Vida máxima vêm da ficha animal feita com XP total atual do druida, usando tabelas da v0.56: Pequena com Força/Vigor elevados; Média/Grande com Atributos normais. PV temporários só ao transformar, alocados em Saudável e nunca regenerados na forma. Escudo Arcano permanece após reversão até completar sua duração original. Nenhuma forma tem armadura física; Escudo Arcano conjurado junto pode protegê-la, respeitando 1 Coragem de Escudo, rolagem e 1 rodada. Dano animal acumulado se transfere integralmente ao reverter por golpe letal em forma menor. Reversão voluntária custa 0, dispensa teste e ação/reação/turno; a reversão voluntária também transfere o dano acumulado da forma menor, sem PVs temporários nem dupla cobrança de Vida real.",
+ "pericia-druidica": "Compra única de 1 XP; somente Domar Pequena e Terra como requisitos diretos. Média exige Domar Média depois; Grande exige Domar Grande. Foco não é requisito para comprar Druídica ou Terra. Declara a transformação e pode atacar/agir na mesma oportunidade; Escudo Arcano junto exige sua rolagem e Pavor mantido não anulado passa protagonismo ao inimigo. Grande exige Domar Grande como evolução. Forma não exige domesticar a espécie. XP e Vida máxima vêm da ficha animal feita com XP total atual do druida, usando tabelas da v0.56: Pequena com Força/Vigor elevados; Média/Grande com Atributos normais. PV temporários só ao transformar, alocados em Saudável e nunca regenerados na forma. Escudo Arcano permanece após reversão até completar sua duração original. Nenhuma forma tem armadura física; Escudo Arcano conjurado junto pode protegê-la, respeitando 1 Coragem de Escudo, rolagem e 1 rodada. Dano animal acumulado se transfere integralmente ao reverter por golpe letal em forma menor. Reversão voluntária custa 0, dispensa teste e ação/reação/turno; a reversão voluntária também transfere o dano acumulado da forma menor, sem PVs temporários nem dupla cobrança de Vida real.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -1730,8 +1730,8 @@ function skillReq(id,s=state){
  if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
  if(id==="concentracao-refinada"&&disc<2)return"Requer Disciplina 2.";
  if(id==="criar-item-foco-magia"&&(disc<1||(s.attributes.inteligencia||0)<1||art<1))return"Requer Disciplina 1, Inteligência 1 e Artesão 1.";
- if(["vento","agua","terra","fogo"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Criar Item de Foco e Magia e Inteligência 1.";
- if(id==="sagrado"&&(disc<2||(s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia e Inteligência 2.";
+ if(["vento","agua","terra","fogo"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1))return"Requer Disciplina 1 e Inteligência 1. Criar Foco é opcional.";
+ if(id==="sagrado"&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||vig<1||!has("criar-item-foco-magia")))return"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.";
@@ -1749,7 +1749,7 @@ function skillReq(id,s=state){
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
  if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
- if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia.";
+ if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
  if(id==="transfusao-sanguinaria"&&(!has("transfusao")||!has("sangue")))
@@ -2187,13 +2187,13 @@ const GENE_AUTO_REQUIREMENTS={
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
  "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
- "fogo":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "agua":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "vento":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "terra":[["p:armas_conjuracao:1","a:inteligencia:1","s:criar-item-foco-magia"]],
- "sagrado":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
- "sangue":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
- "trevas":[["p:armas_conjuracao:2","a:inteligencia:2","s:criar-item-foco-magia"]],
+ "fogo":[["p:armas_conjuracao:1","a:inteligencia:1"]],
+ "agua":[["p:armas_conjuracao:1","a:inteligencia:1"]],
+ "vento":[["p:armas_conjuracao:1","a:inteligencia:1"]],
+ "terra":[["p:armas_conjuracao:1","a:inteligencia:1"]],
+ "sagrado":[["p:armas_conjuracao:2","a:inteligencia:2"]],
+ "sangue":[["p:armas_conjuracao:2","a:inteligencia:2"]],
+ "trevas":[["p:armas_conjuracao:2","a:inteligencia:2"]],
  "veneno":[["p:armas_conjuracao:2","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
  "criar-veneno":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2"]],
  "criar-antidoto":[["p:artesao:1","a:inteligencia:2","k:alquimia:2","k:medicina:2","s:criar-veneno"]],
@@ -2874,10 +2874,11 @@ function advancedSourceActive(){
 }
 function canSecondAttribute(){return advancedSourceActive();}
 function mayThird(){return advancedSourceActive();}
+const ELEMENTAL_SKILL_IDS=["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"];
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
- return draft.mode==="armas"||(draft.mode==="conjuracao"&&ownsSkill("criar-item-foco-magia"));
+ return draft.mode==="armas"||(draft.mode==="conjuracao"&&(ownsSkill("criar-item-foco-magia")||ELEMENTAL_SKILL_IDS.some(ownsSkill)));
 }
 function selectSource(group,k){
  if(editMode){toast("Edição ativa: use + ou − para ajustar graus.");return;}
