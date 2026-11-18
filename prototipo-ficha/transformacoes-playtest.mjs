@@ -1,7 +1,7 @@
 /** Codex RPG — Playtest Nível 1 v1.0.
- * Regras PURAS da transformação animal e delta da Elemental.
- * Não ativa automaticamente: desbloqueio de G2/G3, Vida, DE/duração-base e
- * persistência dependem de procedimento ainda PENDENTE no SRD.
+ * Regras PURAS de transformação animal e duração/proteção Elemental.
+ * Não ativa automaticamente: Vida, fontes/DE e
+ * persistência dependem de procedimento ainda PENDENTE no SRD. G1/G2/G3 são liberadas juntas.
  * NÃO usa fichas animais nem XP animal, Domar ou Influência.
  */
 const GRAUS_FORMAS={pequena:1,media:2,grande:3};
@@ -35,8 +35,43 @@ export function encerraFormaDruidica({forma,danoRecebido=0,exitos=0,pavorMantido
   if(forma==="media")return pavorMantidoNaoAnulado>exitos;
   return pavorMantidoNaoAnulado>0;
 }
+/** Compra única libera todas as formas. Não aumenta XP, Grau ou recursos. */
+export function formasDruidicasDisponiveis(temPericiaDruidica) {
+  return temPericiaDruidica?["pequena","media","grande"]:[];
+}
+/** Forma ativa bloqueia conjuração em qualquer porte animal. */
+export function podeConjurarEmFormaDruidica(formaAtiva=null) {
+  return formaAtiva===null||formaAtiva==="";
+}
+/** Vida temporária animal não se transforma em cura ao reverter. */
+export function vidaTemporariaAoReverterFormaDruidica(pvTemporarios) {
+  if(!inteiro(pvTemporarios))throw new RangeError("PVs temporários inválidos");
+  return 0;
+}
+/** Não há duração-base: uma transformação só se sustenta com E - P > 0.
+ * A unidade de duração e a fonte/DE da rolagem são procedimentos separados.
+ */
+export function duracaoTransformacaoElemental({exitos,pavor}) {
+  if(!inteiro(exitos)||!inteiro(pavor))throw new RangeError("Símbolos inválidos");
+  const duracao=exitos-pavor;
+  return {duracao:Math.max(0,duracao),sustentada:duracao>0};
+}
+/** Alias legado: representa duração líquida, não um bônus sobre base externa. */
 export function deltaDuracaoElemental({exitos,pavor}) {
   if(!inteiro(exitos)||!inteiro(pavor))throw new RangeError("Símbolos inválidos");
-  // Não calcula tempo final: duração-base, unidade e filtragem de símbolos PENDENTES.
   return exitos-pavor;
+}
+/** Imunidade prevalece; resistência afeta SOMENTE dano elemental correspondente.
+ * Elemento diferente => dano normal fora desta função (null).
+ * Pavor resistido NÃO gera dano, mas risco/DE se aplicável.
+ * Não arredondar frações antes de decisão autoral.
+ */
+export function danoPorProtecaoElemental({elementoAtaque,elementoImune=null,elementoResistente=null,exitos,pavor}) {
+  if(typeof elementoAtaque!=="string"||!elementoAtaque.trim()||
+     (elementoImune!==null&&typeof elementoImune!=="string")||
+     (elementoResistente!==null&&typeof elementoResistente!=="string")||
+     !inteiro(exitos)||!inteiro(pavor))throw new RangeError("Elementos ou símbolos inválidos");
+  if(elementoAtaque===elementoImune)return {tipo:"imune",dano:0};
+  if(elementoAtaque===elementoResistente)return {tipo:"resistente",dano:exitos*0.5};
+  return {tipo:"normal",dano:null};
 }
