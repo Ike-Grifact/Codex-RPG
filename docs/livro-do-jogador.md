@@ -158,9 +158,11 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 ## Perícia Druídica — aquisição simplificada em 18/11/2026 [DEFINIDO / PENDENTE]
 
-**DEFINIDO — SRD v0.80:** aquisição por **1 XP**, com **Domar Criatura Pequena + Perícia em Elemento Terra** como únicos requisitos diretos. G1 Pequena vem na compra; G2 Média exige Domar Média e G3 Grande exige Domar Grande, ambas compradas separadamente. **PENDENTE:** a Perícia Terra ainda exige Criar Foco para sua compra, portanto Foco permanece como dependência indireta, não requisito direto da Druídica. [SRD v0.80](srd-continuidade-v0.80.md).
+**DEFINIDO — SRD v0.81:** as Perícias elementais não exigem mais Criar Item de Foco e Magia, incluindo Terra. Por isso a Druídica também não tem mais a antiga dependência indireta de Foco. Aquisição de G1 Druídica: **11 XP** para um Humano com custos normais, com **4 XP restantes** dos 15 XP iniciais experimentais. Criar Foco permanece útil para Psique, fabricação de focos e Perícias que o exigem expressamente; não é requisito para aprender Terra. [SRD v0.81](srd-continuidade-v0.81.md).
 
-**Compra ÚNICA de 1 XP — sem custo adicional por Grau. Requisitos DIRETOS para adquirir:** **Domar Criatura Pequena + Perícia em Elemento Terra**. Domar Média e Foco não são mais requisitos diretos da Druídica; a própria Terra continua exigindo Foco para ser adquirida. **Domar Grande NÃO é requisito para comprar a Druídica**: torna-se requisito de progressão apenas para usar a Transformação Grande G3. Cada espécie animal pode ser escolhida **no momento da transformação**, sem precisar memorizar formas nem ter domesticado previamente aquela espécie; basta possuir a Perícia de Domar do porte pertinente. A compra não concede companheiro domesticado e a transformação não dispensa graus e custos. **Domar Gigante fica reservado para combo futuro, sem efeitos ou Grau aprovado.**
+**DEFINIDO — SRD v0.80:** aquisição por **1 XP**, com **Domar Criatura Pequena + Perícia em Elemento Terra** como únicos requisitos diretos. G1 Pequena vem na compra; G2 Média exige Domar Média e G3 Grande exige Domar Grande, ambas compradas separadamente. **RESOLVIDO na v0.81:** Terra também não exige Foco em sua compra; Druídica é independente direta e indiretamente. [SRD v0.80](srd-continuidade-v0.80.md).
+
+**Compra ÚNICA de 1 XP — sem custo adicional por Grau. Requisitos DIRETOS para adquirir:** **Domar Criatura Pequena + Perícia em Elemento Terra**. Domar Média e Foco não são mais requisitos diretos da Druídica; a própria Terra também deixou de exigir Foco para ser adquirida. **Domar Grande NÃO é requisito para comprar a Druídica**: torna-se requisito de progressão apenas para usar a Transformação Grande G3. Cada espécie animal pode ser escolhida **no momento da transformação**, sem precisar memorizar formas nem ter domesticado previamente aquela espécie; basta possuir a Perícia de Domar do porte pertinente. A compra não concede companheiro domesticado e a transformação não dispensa graus e custos. **Domar Gigante fica reservado para combo futuro, sem efeitos ou Grau aprovado.**
 
 | Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
@@ -168,7 +170,7 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 | **2 — Média** | Adquirir **Domar Criatura Média** separadamente, respeitando custos e requisitos normais; não recomprar Druídica | Ativar por **1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
 | **3 — Grande** | Exige adquirir **Domar Criatura Grande** separadamente, com a cadeia normal de Domar, sem recomprar Druídica | Ativar por **1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
 
-**Viabilidade da build inicial [EXPERIMENTAL, revisão de 18/11/2026]:** Humano sem descontos pode comprar Druídica G1 por **14 XP** (Influência G2=3, Inteligência G1=1, Apresentação G1=2, Disciplina G1=2, Artesão G1=2, Domar Pequena=1, Criar Foco=1 pela exigência de Terra, Terra=1 e Druídica=1), restando **1 XP** dos 15 experimentais. Transformações Média/Grande exigem suas Perícias Domar. Os custos 19/15/13 XP do histórico não representam esta aquisição.
+**Viabilidade da build inicial [EXPERIMENTAL, revisão de 18/11/2026]:** Humano sem descontos pode comprar Druídica G1 por **11 XP** (Influência G2=3, Inteligência G1=1, Apresentação G1=2, Disciplina G1=2, Domar Pequena=1, Terra=1 e Druídica=1), restando **4 XP** dos 15 experimentais. Transformações Média/Grande exigem suas Perícias Domar. Os custos 19/15/13 XP do histórico não representam esta aquisição.
 
 **DEFINIDO — XP de todas as formas:** Pequena, Média e Grande utilizam como orçamento de seus **Atributos animais o XP total atual do próprio druida**; isso **revoga os antigos 19 XP fixos da forma Pequena**. O XP não é descontado do personagem. **Tabela DEFINIDA pelo SRD v0.56, seção 0-AS.2:** na forma **Pequena, Força e Vigor custam pela coluna elevada de Atributos** e os demais Atributos pela **coluna normal**; nas formas **Média e Grande, todos os Atributos são normais**. Valores **acumulados de G0 a G6**: **normal 0/1/3/6/9/18/32 XP**; **elevada 0/2/4/8/16/32/64 XP**. Cada aumento custa a diferença entre os valores acumulados; não utilizar a tabela histórica v0.47 ou a tabela de companheiros da v0.48 como substitutas da revisão da v0.56. A transformação substitui Atributos e usa a Vida da criatura, sem recuperar ferimentos gratuitamente.
 
@@ -929,9 +931,15 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu novo objetivo é **ampliar o alcance de disparos e efeitos de magias**. Os metros adicionais, custo e condições ainda serão escritos pelo autor. A antiga mudança de peso Leve/Pesada mediante esta Perícia está **revogada** e não habilita dados maiores automaticamente. **A amplificação comum de 1 Coragem da v0.43 não depende desta Perícia.** Consulte [verbete atual](../pericias/conjuracao-refinada.html).
 
+### Perícias elementais independentes de Foco [DEFINIDO — SRD v0.81, 18/11/2026]
+
+As Perícias em **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não exigem adquirir **Criar Item de Foco e Magia**. Para Ar/Água/Terra/Fogo, os requisitos continuam **Disciplina 1 + Inteligência 1**; para Sagrado/Sangue/Trevas, **Disciplina 2 + Inteligência 2**; Veneno conserva **Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2**. Os custos individuais de compra em XP não foram alterados.
+
+Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo sem a Perícia Criar Foco, desde que haja fonte elemental válida e os efeitos/Graus sejam permitidos. Uma fonte válida pode ser ambiental, conforme o Narrador, ou foco apropriado quando utilizado. **Criar Item de Foco e Magia** permanece para **Psique e a confecção de focos**; Escudo Arcano, Improviso Elemental, Maestria Elemental, Conjuração Refinada e Invocação Elemental conservam seus requisitos de Foco. Preparação em turnos, cargas, DE, Pavor e ativação não mudaram. [SRD v0.81](srd-continuidade-v0.81.md).
+
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita magias elementais **Leves de Ar**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base dos efeitos G1/G2** que estejam habilitados, sem cobrar os antigos 1 Coragem; continuam as rolagens e a DE pertinentes. Acesso/elevação aos efeitos de **G3** exige habilitação e **1 Coragem**.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita magias elementais **Leves de Ar**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base dos efeitos G1/G2** que estejam habilitados, sem cobrar os antigos 1 Coragem; continuam as rolagens e a DE pertinentes. Acesso/elevação aos efeitos de **G3** exige habilitação e **1 Coragem**.
 
 | Grau | Efeitos e formas |
 |---|---|
@@ -947,7 +955,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Água**. **DEFINIDO — atualização SRD v0.79:** a Perícia habilita **ativação-base gratuita** de efeitos G1/G2, preservando teste, DE e requisitos. **Perfurar G2** conserva sua condição/gatilho de crítico histórico, mas o pagamento alternativo de 1 Coragem como ativação-base foi **substituído pela nova gratuidade**; demais requisitos de aplicação ainda exigem revisão. Elevar efeitos a G3 custa **1 Coragem**.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Água**. **DEFINIDO — atualização SRD v0.79:** a Perícia habilita **ativação-base gratuita** de efeitos G1/G2, preservando teste, DE e requisitos. **Perfurar G2** conserva sua condição/gatilho de crítico histórico, mas o pagamento alternativo de 1 Coragem como ativação-base foi **substituído pela nova gratuidade**; demais requisitos de aplicação ainda exigem revisão. Elevar efeitos a G3 custa **1 Coragem**.
 
 | Grau | Efeitos |
 |---|---|
@@ -965,7 +973,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Terra**. **DEFINIDO — atualização SRD v0.79:** a ativação-base dos efeitos G1/G2 habilitados pela Perícia é **gratuita**, substituindo a cobrança genérica de 1 Coragem, sem dispensar teste, DE ou habilitações. Elevar o efeito a G3 exige **1 Coragem**.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Terra**. **DEFINIDO — atualização SRD v0.79:** a ativação-base dos efeitos G1/G2 habilitados pela Perícia é **gratuita**, substituindo a cobrança genérica de 1 Coragem, sem dispensar teste, DE ou habilitações. Elevar o efeito a G3 exige **1 Coragem**.
 
 | Grau | Efeitos de Terra |
 |---|---|
@@ -981,7 +989,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base** de efeitos G1/G2 habilitados, substituindo o gasto genérico de 1 Coragem, sem dispensar acerto/DE e fontes de Fogo. A elevação do efeito de Fogo a **G3 exige 1 Coragem**, com ou sem foco. Em uma magia **G4 conjunta**, Fogo elevado a G3 exige **1 Coragem como seu componente**; quando ambos os elementos são elevados a G3, o custo pleno é **1A + 2 Coragens** (uma por elemento). **DEFINIDO — decisão posterior do autor:** Fogo G2 **não paga Coragem**, nem mesmo sem foco, desde que exista fonte elemental válida conforme as regras de ambiente; a antiga cobrança adicional específica foi revogada.
+**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base** de efeitos G1/G2 habilitados, substituindo o gasto genérico de 1 Coragem, sem dispensar acerto/DE e fontes de Fogo. A elevação do efeito de Fogo a **G3 exige 1 Coragem**, com ou sem foco. Em uma magia **G4 conjunta**, Fogo elevado a G3 exige **1 Coragem como seu componente**; quando ambos os elementos são elevados a G3, o custo pleno é **1A + 2 Coragens** (uma por elemento). **DEFINIDO — decisão posterior do autor:** Fogo G2 **não paga Coragem**, nem mesmo sem foco, desde que exista fonte elemental válida conforme as regras de ambiente; a antiga cobrança adicional específica foi revogada.
 
 | Grau | Efeitos e manifestações de Fogo |
 |---|---|
@@ -1001,7 +1009,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Sagrado [DEFINIDO / procedimentos PENDENTES]
 
-**Custo: 2 XP. Requisitos: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. **DEFINIDO — atualização SRD v0.79:** o custo-base de ativar seus efeitos G1/G2 habilitados é **gratuito**, não o antigo gasto genérico de 1 Coragem. O gasto específico de **converter um Êxito em Coragem** continua sendo o próprio Êxito consumido, sem conceder Êxito adicional; elevação a G3, quando habilitada, exige **1 Coragem**.
+**Custo: 2 XP. Requisitos: Disciplina 2 + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. **DEFINIDO — atualização SRD v0.79:** o custo-base de ativar seus efeitos G1/G2 habilitados é **gratuito**, não o antigo gasto genérico de 1 Coragem. O gasto específico de **converter um Êxito em Coragem** continua sendo o próprio Êxito consumido, sem conceder Êxito adicional; elevação a G3, quando habilitada, exige **1 Coragem**.
 
 **Grau 1:** acalmar, purificar, apoiar e recuperar Coragem. **Um Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante, uma vez por conjuração/turno.** Esse **Êxito é consumido** e **não conta para atingir a DE nem para causar dano**. Não se concede um Êxito gratuito para financiar a conversão, nem se convertem vários Êxitos no mesmo turno/conjuração.
 
