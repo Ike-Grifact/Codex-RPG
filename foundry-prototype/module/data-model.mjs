@@ -13,7 +13,7 @@ const schema=(monster=false)=>({
  practices:grades(["armas_conjuracao","atletismo","furtividade","artesao","apresentacao","coleta"]),
  skills:new F.ArrayField(new F.StringField({required:true}),{required:true,initial:[]}),
  life:new F.SchemaField({value:nn(4),medical:new F.BooleanField({initial:false})}),
- courage:nn(10),pp:nn(0),xp:nn(0),
+ courage:nn(10),xp:nn(0),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
  pavorLocal:nn(0),monsterRules:new F.BooleanField({initial:monster}),
  status:new F.SchemaField({hidden:new F.BooleanField({initial:false}),note:t()})
