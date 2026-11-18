@@ -162,24 +162,24 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 | Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
-| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal com **XP igual ao XP total atual do druida** (tabela de custos animais a reconciliar) |
+| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal com **XP igual ao XP total atual do druida**; Atributos conforme a **v0.56** (Força/Vigor elevados e demais normais) |
 | **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
 | **3 — Grande** | **Progressão adicional**: exige adquirir Domar Criatura Grande depois, sem comprar Druídica novamente | Ativar por **1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
 
 **Viabilidade da build inicial [EXPERIMENTAL]:** um Humano sem descontos raciais precisa de **19 XP** com a cadeia atual; portanto, a Druídica não cabe no orçamento inicial experimental de **15 XP** dessa origem. **Lucker Puro** pode atingir os requisitos com **15 XP** pelas concessões de Foco/Inteligência, e **Runa Espinhos** com **13 XP** quando recebe Foco/Terra gratuitamente. São exemplos condicionados à origem, não redução geral de custos.
 
-**DEFINIDO — XP de todas as formas:** Pequena, Média e Grande utilizam como orçamento de seus **Atributos animais o XP total atual do próprio druida**; isso **revoga os antigos 19 XP fixos da forma Pequena**. O XP não é descontado do personagem. Usar as tabelas animais vigentes; **PENDENTE:** harmonizar a tabela de Conhecimentos/Práticas da v0.47, as revisões de Atributos da v0.56 e as tabelas particulares de criaturas/domesticação para identificar a progressão correta em cada porte antes de automatizar a distribuição. A transformação substitui Atributos e usa a Vida da criatura, sem recuperar ferimentos gratuitamente.
+**DEFINIDO — XP de todas as formas:** Pequena, Média e Grande utilizam como orçamento de seus **Atributos animais o XP total atual do próprio druida**; isso **revoga os antigos 19 XP fixos da forma Pequena**. O XP não é descontado do personagem. **Tabela DEFINIDA pelo SRD v0.56, seção 0-AS.2:** na forma **Pequena, Força e Vigor custam pela coluna elevada de Atributos** e os demais Atributos pela **coluna normal**; nas formas **Média e Grande, todos os Atributos são normais**. Valores **acumulados de G0 a G6**: **normal 0/1/3/6/9/18/32 XP**; **elevada 0/2/4/8/16/32/64 XP**. Cada aumento custa a diferença entre os valores acumulados; não utilizar a tabela histórica v0.47 ou a tabela de companheiros da v0.48 como substitutas da revisão da v0.56. A transformação substitui Atributos e usa a Vida da criatura, sem recuperar ferimentos gratuitamente.
 
 ### Vida Druídica — comparação de máximos e Saúde em quatro faixas [DEFINIDO / PENDENTE]
 
 **DEFINIDO — regra posterior do autor:**
 - **Vida máxima animal menor que a máxima humana:** usa a Vida da criatura; o golpe que mataria a forma **cancela a transformação** e **aplica o dano total equivalente à Vida do druida**, que também pode morrer se o dano for suficiente. A transferência dos ferimentos anteriores à reversão permanece pendente.
 - **Máximos iguais:** a forma começa com a **Vida atual do druida**, sem cura e sem PV temporários; o dano integral pode causar morte enquanto transformado.
-- **Vida máxima animal maior:** o excedente da Vida animal é **PV temporário** sobre a Vida real atual do druida; dano atinge primeiro os PVs temporários e, após esgotá-los, a Vida real **integralmente**, podendo matar o druida em forma animal. Os PVs temporários não curam.
+- **Vida máxima animal maior:** o excedente da Vida animal é **PV temporário** sobre a Vida real atual do druida; dano atinge primeiro os PVs temporários e, após esgotá-los, a Vida real **integralmente**, podendo matar o druida em forma animal. **PVs temporários são concedidos somente na transformação, não se regeneram enquanto a forma dura e desaparecem ao destransformar**. Uma nova transformação válida recalcula a reserva da nova forma, sem acumular pontos de formas anteriores nem curar a Vida real.
   
 Exemplo: druida com máximo **6** e atual **4** entra em forma com máximo **8**: possui **2 PV temporários** e **4 de Vida real**. Um golpe de **3** esgota os 2 temporários e causa **1** de dano à Vida real.
 
-**PENDENTE:** detalhes de ferimentos não letais em forma menor, reversão voluntária, retransformações sucessivas, alocação dos PVs temporários nas quatro faixas e reconciliação das tabelas de custos das formas. A antiga proposta de converter dano por faixas inteiras foi substituída. **Não automatizar procedimentos não concluídos.**
+**PENDENTE:** detalhes de ferimentos não letais em forma menor, reversão voluntária e propagação de danos reais em retransformações sucessivas, além da alocação dos PVs temporários nas quatro faixas. **RESOLVIDOS:** tabela de custos por porte na v0.56 e momento único da concessão de PVs temporários em cada transformação. A antiga proposta de converter dano por faixas inteiras foi substituída. **Não automatizar procedimentos não concluídos.**
 
 ### Histórico revogado: conversão de ferimentos por faixas
 
