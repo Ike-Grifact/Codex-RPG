@@ -568,6 +568,8 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 ### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
 
+**DEFINIDO — atualização de 17/11/2026:** o crítico **recupera Coragem normalmente**, conforme a quantidade de dados máximos mantidos na tabela abaixo (com **2 dados, recupera 1 Coragem**), respeitando o teto atual e o máximo absoluto de 15. **Críticos não recuperam PP**: o benefício histórico de PP foi **revogado**, sem conversão automática em Coragem extra. **PENDENTE/ADIADO:** a interação do crítico de dois dados com a Maestria Precisão (somar ou substituir recuperação) será analisada apenas na futura revisão de Maestrias; não assumir nenhuma das duas opções.
+
 Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contribuem com Êxitos ou Antecipar para o crítico; o Pavor descartado ainda obedece às regras da pilha. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
 
 | Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
@@ -575,15 +577,15 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 | Converter **1P próprio em 1E** | Sim | Sim | Sim |
 | Êxito adicional | — | **+1E** | **+1E** |
 | Antecipar adicional | — | **+1A** | **+1A** |
-| Recuperação de PP | **1 PP** | **2 PP** | **2 PP** |
+| Recuperação de PP (**revogada**) | **—** | **—** | **—** |
 | Recuperação de Coragem | **1** | **2** | **2** |
 | Dobrar dano | Não | Não | **Sim** |
 
 **Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
 
-**Exemplo:** um d6 na face **6** (1E) e um d10 na face **10** (2E + 1A), ambos mantidos, formam o crítico de dois com **3E + 1A e nenhum Pavor**. Como não há Pavor próprio, o benefício crítico de converter 1P em 1E não é aplicado. A rolagem recupera até 1 PP e 1 Coragem dentro dos respectivos tetos. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
+**Exemplo:** um d6 na face **6** (1E) e um d10 na face **10** (2E + 1A), ambos mantidos, formam o crítico de dois com **3E + 1A e nenhum Pavor**. Como não há Pavor próprio, o benefício crítico de converter 1P em 1E não é aplicado. A rolagem recupera até **1 Coragem**, respeitando o teto individual; **não recupera PP**. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
 
-**Reservas:** a Coragem individual tem teto normal 10. O máximo de PP é **0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**. Recuperação que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
+**Reservas:** a Coragem parte de um teto **10**, aumentado pela progressão e pelas Maestrias até o **máximo absoluto 15**. Os máximos históricos de PP (**0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**) são **legado em migração**, não autorização para recuperar PP em críticos. Recuperação de Coragem que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
 
 **Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face numérica máxima** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
 
@@ -615,7 +617,7 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 
 ### REWORK PROPOSTO/EM CONSOLIDAÇÃO — Coragem e identidades de Maestria (17/11/2026)
 
-> **Documento de transição.** O autor aprovou a **retirada de PP como recurso separado**, substituindo essa economia por **Coragem com mecanismos de recuperação ligados às Maestrias**. Os parágrafos históricos anteriores e posteriores ainda descrevem PP, Perícia em Coragem, recuperação de PP em críticos e custos de técnicas **1 PP ou 1 Coragem**. **Eles exigem migração antes de se considerar esta revisão implementada** no criador/Foundry; não são exemplos prontos de custos convertidos.
+> **Documento de transição.** O autor aprovou a **retirada de PP como recurso separado**, substituindo essa economia por **Coragem com mecanismos de recuperação ligados às Maestrias**. Os parágrafos históricos anteriores e posteriores ainda descrevem PP, Perícia em Coragem, recuperação de PP em críticos (**agora revogada**) e custos de técnicas **1 PP ou 1 Coragem**. **Eles exigem migração antes de se considerar esta revisão implementada** no criador/Foundry; não são exemplos prontos de custos convertidos.
 
 **DEFINIDO — objetivo da nova economia:** Maestrias representam identidades de build sem impor classe obrigatória. **A progressão neutra de Coragem é automática e concede +1 ao teto nos níveis 5, 10 e 20**, independentemente de Maestria especializada. Cada Maestria especializada é obtida gratuitamente ao cumprir **seus próprios requisitos**, a definir, e **não precisa ter o mesmo nível mínimo das demais**. O nível 20 completa a progressão neutra/identidade neutra, e continua possível escolher **uma Maestria especializada opcional**, no máximo duas identidades no total quando se conta a neutra. **Todas as recuperações de Coragem** — pelos mecanismos convencionais relacionados ao Pavor e pelos gatilhos específicos de Maestrias — alimentam **a mesma reserva geral**, até o teto alcançado.
 
@@ -641,7 +643,7 @@ O uso de Coragem, PP e técnicas continua sujeito a seus custos específicos; o 
 | **Mestre de Armas** | **3 armas diferentes trocadas/utilizadas em combate → recupera 1 Coragem** | Condições válidas de troca e repetição |
 | **Combo (Pugilista)** | **3 aplicações de status → recupera 1 Coragem** | Quais condições contam e quando zerar a contagem |
 
-**DEFINIDO — recuperação unificada:** quando o gatilho de uma Maestria recupera Coragem, **restaura a reserva geral**, até o teto total já desbloqueado. O mesmo vale para a recuperação convencional relacionada ao **Pavor**, sem carteiras separadas para Maestria neutra, especializada e Coragem básica. **PENDENTE:** cumulação de gatilhos na mesma ação, interação com a recuperação já existente por **crítico comum**, retenção de contadores entre combates e prevenção de recuperações repetidas indevidas. O crítico comum historicamente recupera Coragem e PP; a recuperação de PP será removida/convertida na migração, sem duplicação automática de benefícios.
+**DEFINIDO — recuperação unificada:** quando o gatilho de uma Maestria recupera Coragem, **restaura a reserva geral**, até o teto total já desbloqueado. O mesmo vale para a recuperação convencional relacionada ao **Pavor**, sem carteiras separadas para Maestria neutra, especializada e Coragem básica. **PENDENTE:** cumulação de gatilhos na mesma ação, interação com a recuperação já existente por **crítico comum**, retenção de contadores entre combates e prevenção de recuperações repetidas indevidas. **DEFINIDO:** o crítico comum recupera Coragem conforme a tabela e **não recupera PP**. **PENDENTE/ADIADO:** se a Maestria Precisão acrescenta recuperação ou substitui a recuperação comum; não conceder duplicação automática e não escolher A ou B antes da revisão específica das Maestrias.
 
 **PENDENTE — migração das Perícias existentes:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. Os custos de PP em armas, Domar, Hemomancia, magias e outras Perícias precisam de revisão individual, preservando até lá os efeitos aprovados. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
 
