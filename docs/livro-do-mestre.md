@@ -29,7 +29,7 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 
 **Restrições:** 15 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 245, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
 
-Regras completas e precedência: [SRD v0.59](srd-continuidade-v0.59.md) (Origem = Raça na interface de identidade) e [SRD v0.58](srd-continuidade-v0.58.md) (18 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md) e os benefícios raciais do [SRD v0.55](srd-continuidade-v0.55.md).
+Referência principal: [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). Como histórico: [SRD v0.59](srd-continuidade-v0.59.md) (origem), [v0.58](srd-continuidade-v0.58.md) (hipótese anterior de 18 XP, revogada), [v0.56](srd-continuidade-v0.56.md) (tabelas) e [v0.55](srd-continuidade-v0.55.md) (linhagens).
 
 ## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
 
@@ -173,7 +173,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 **Psíquico é elemento neutro, não físico.** Seus efeitos psicológicos e telecinéticos respeitam a ordem de dano Integridade → Vida; a imunidade física da Muito Pesada não o bloqueia automaticamente. Interações com elementos combinados seguem suas habilitações.
 
-**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **EXPERIMENTAL:** a ferramenta usa 18 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
+**Valores de Integridade [PENDENTE]:** deliberadamente adiados até medir o dano das Perícias iniciais. **Criação [DEFINIDO]:** ao menos um Atributo grau 1 e um Conhecimento ou Prática grau 1; o XP restante pode ser investido livremente, inclusive em Perícias, sem reservas por categoria. **DEFINIDO:** a ferramenta usa 15 XP iniciais compartilhados. Ver [SRD v0.39](srd-continuidade-v0.39.md), seções 0-V e 0-U, para os requisitos revisados, a separação dos ramos de golpe/disparo e a fila de pendências.
 
 
 ## 2. Exemplos para conduzir a cena
