@@ -1,5 +1,8 @@
 # Codex RPG — Livro do Mestre
 
+> **Norma vigente (18/11/2026):** [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos**, não 18; o teto adicional derivado até 260 XP é **245**, não 242. Maestrias de recuperação ficam adiadas. Druídica **não depende mais de Domar ou Influência**; requer Foco + Terra e não tem fichas animais. Transformação Elemental: 1 XP, Foco + uma Perícia Elemental. Referências antigas abaixo ficam subordinadas à norma de Playtest.
+
+
 > **REGRAS VIGENTES — SRD v0.79 (17/11/2026):** magias são concebidas e narradas livremente na ação; **memorização, spellslots, peso mental e cobrança de criação antecipada estão REVOGADOS**. A Perícia elemental e o Grau habilitam os efeitos; preparação em turnos é tempo para **conjurar**, não memorizar. **PP como recurso foi abolido**, e os custos atuais de Coragem prevalecem sobre exemplos antigos deste livro. Em especial, ativação-base elemental G1/G2 é gratuita com Perícia/Grau; elevar cada elemento a G3 custa 1 Coragem. **Não recuperar regras legadas de 12–16/11** que contrariem [o checkpoint vigente](srd-continuidade-v0.79.md). Exemplos históricos permanecem para rastreabilidade; Criar Item de Foco e Magia continua habilitando Psique e criação de focos, e a memorização de **formas Druídicas** é separada.
 
 ## Economia compacta de XP e linhagens — 17/11/2026 [SRD v0.56]
@@ -24,7 +27,7 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 
 **Criaturas:** animais pequenos usam Atributos normais, exceto Força/Vigor elevados; médios, grandes, gigantes e exóticos usam Atributos normais; monstros e monstros humanoides usam Atributos com desconto. Monstros humanoides pagam Conhecimentos e Práticas normais. Não há seleção automática de porte no criador nesta revisão.
 
-**Restrições:** 18 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 242, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
+**Restrições:** 15 XP iniciais compartilhados, exigências mínimas e preços atuais das Perícias (1–2 XP na maioria) não mudam. A ferramenta limita novos XP de evolução a 245, mas preserva o total de XP importado de fichas antigas. Nível evolui por decisão manual. Maestrias e compras de d20 que exigem historicamente 100 XP **não foram rebalanceadas** e exigem decisão separada.
 
 Regras completas e precedência: [SRD v0.59](srd-continuidade-v0.59.md) (Origem = Raça na interface de identidade) e [SRD v0.58](srd-continuidade-v0.58.md) (18 XP iniciais), com as tabelas da [v0.56](srd-continuidade-v0.56.md) e os benefícios raciais do [SRD v0.55](srd-continuidade-v0.55.md).
 
