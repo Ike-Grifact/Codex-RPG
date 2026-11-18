@@ -2,6 +2,8 @@
 
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
+> **Perícia em Elemento Fogo [DEFINIDO]:** na preparação de uma conjuração de personagem com essa Perícia, o jogador declara o Grau e confirma sua habilitação e fonte elemental com o Narrador. **G1/G2 = 0 Coragem** mesmo sem foco se houver fonte de Fogo válida; **G3 = 1 Coragem** ao ativar com sucesso. A cobrança de característica **Elemental** não duplica o custo dessa mesma ativação. **G4** continua manual por combinar dois elementos G3 (1 Antecipar + 2 Coragens no total). Sem a Perícia ou confirmação do Grau, a declaração não é válida.
+
 **Estado:** implementação experimental em JavaScript para **Foundry VTT v14**. Não foi executado dentro de uma instância real, nem testado entre múltiplos usuários. Utilize somente em mundo de testes com backup.
 
 ## Instalar manualmente
