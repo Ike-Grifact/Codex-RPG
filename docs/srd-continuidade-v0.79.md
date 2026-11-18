@@ -118,7 +118,7 @@ supersedes: "docs/srd-continuidade-v0.78.md, exclusivamente nos pontos expressam
 
 **EXPERIMENTAL — viabilidade no nível 1, sem alterar custos:** pela tabela normal do criador, Humano sem descontos precisa de **19 XP** (Influência 3 = 6; Inteligência 1 = 1; Apresentação 1 = 2; Disciplina 1 = 2; Artesão 1 = 2; Domar Pequena/Média = 2; Criar Foco = 1; Terra = 1; Druídica = 2). Portanto, **não cabe no orçamento inicial de 15 XP** do checkpoint. Com concessões raciais já existentes, **Lucker Puro pode montar os requisitos por 15 XP** usando Foco e Inteligência concedidos; **Runa Espinhos por 13 XP** usando Foco e Terra concedidos e escolhendo Terra nos elementos iniciais. Esses valores dependem de selecionar as concessões raciais indicadas e não aprovam um desconto universal.
 
-**PENDENTE separado:** transferência de ferimentos entre as quatro faixas de Vida humana/animal, cálculo de XP e atributos da ficha animal, substituições sucessivas e automação no criador/Foundry. A nova elegibilidade por porte **não resolve esses procedimentos**.
+**DEFINIDO posteriormente (seção 1-D):** o XP de todas as formas corresponde ao XP total atual do druida, e os três regimes de Vida são resolvidos conforme os máximos humano/animal. **PENDENTE separado:** harmonização de tabelas de Atributos animais por porte, reversão voluntária e dano não letal em forma menor, transformações sucessivas, distribuição de PVs temporários nas quatro faixas e automação no criador/Foundry.
 
 
 ### 1-D. XP e Vida das formas Druídicas — decisão autoral posterior (17/11/2026)
