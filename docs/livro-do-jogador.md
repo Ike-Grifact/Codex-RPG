@@ -150,7 +150,7 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 **Domar Criatura Pequena (1 XP)** exige **Influência 2 + Apresentação 1 + Inteligência 1**. Ativação **1 Coragem**, teste de Influência contra a DE da criatura; sucesso a domestica e atacá-la cancela o efeito. Em combate, pode tentar pacificá-la para domar depois. A criatura pequena não tem ficha de combate, concede **+1A em combate e +1 Vida** ao domador e pode sacrificar-se diante de dano fatal, ou o domador pode protegê-la e sofrer o dano fatal fazendo-a fugir. Com Criar Item de Foco e Magia, permite domesticar pequenas mágicas. **PENDENTE:** posicionar esse ponto extra e a proteção letal nas novas quatro caixas de Saúde. [Verbete](../pericias/domar-criatura-pequena.html).
 
-**Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
+**Domar Média (1 XP; Influência 3)** e **Domar Grande (1 XP; Influência 4)** já têm requisitos cumulativos registrados nos respectivos verbetes; ambas exigem as Perícias anteriores da cadeia. **Decisão posterior:** Domar Grande não é mais requisito para comprar a Druídica, mas habilita a Transformação Grande como evolução adicional. A futura **Domar Gigante** ainda não tem aquisição nem efeito definidos. [Verbetes](../pericias/).
 
 **Druídica Grau 3:** ao transformar, pagar **1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. O druida escolhe sua forma ao transformar; não memoriza formas nem utiliza lista de formas aprendidas. O limite de companheiros domesticados é outra regra.
 
@@ -158,13 +158,15 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
-**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida **escolhe a forma no instante da transformação**, sem precisar memorizar, aprender individualmente ou registrar formas. Os pré-requisitos de Domar e os portes habilitados permanecem; esta atualização não concede automaticamente formas de criaturas nunca domadas.
+**Compra ÚNICA de 2 XP — sem custo adicional por Grau. Requisitos para adquirir:** **Domar Criatura Pequena + Domar Criatura Média + Criar Item de Foco e Magia + Perícia em Elemento Terra**. **Domar Grande NÃO é requisito para comprar a Druídica**: torna-se requisito de progressão apenas para usar a Transformação Grande G3. Cada espécie animal pode ser escolhida **no momento da transformação**, sem precisar memorizar formas nem ter domesticado previamente aquela espécie; basta possuir a Perícia de Domar do porte pertinente. A compra não concede companheiro domesticado e a transformação não dispensa graus e custos. **Domar Gigante fica reservado para combo futuro, sem efeitos ou Grau aprovado.**
 
 | Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
 | **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** (distribuição pendente) |
 | **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
-| **3 — Grande** | **Sem XP adicional**; Domar Criatura Grande já exigida | Ativar por **1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
+| **3 — Grande** | **Progressão adicional**: exige adquirir Domar Criatura Grande depois, sem comprar Druídica novamente | Ativar por **1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
+
+**Viabilidade da build inicial [EXPERIMENTAL]:** um Humano sem descontos raciais precisa de **19 XP** com a cadeia atual; portanto, a Druídica não cabe no orçamento inicial experimental de **15 XP** dessa origem. **Lucker Puro** pode atingir os requisitos com **15 XP** pelas concessões de Foco/Inteligência, e **Runa Espinhos** com **13 XP** quando recebe Foco/Terra gratuitamente. São exemplos condicionados à origem, não redução geral de custos.
 
 **XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela normal de Atributos da v0.56**; o texto histórico anterior usava a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
 
@@ -174,7 +176,7 @@ A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1
 
 **PROPOSTO (não aprovado para transferência automática):** cada faixa animal completamente perdida descontaria a faixa humana de mesma posição. Com 4/6, o novo exemplo seria: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morto. Este é **um efeito diferente do exemplo antigo de três terços**. A transferência entre as novas faixas precisa de aprovação autoral; não combinar as duas tabelas e não automatizar cura, ferimentos prévios ou alternância de formas.
 
-**Implementação:** a compra permanece bloqueada no criador até que as Perícias de Domar estejam cadastradas, sem contornar os requisitos. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
+**Implementação:** a aquisição da Druídica exige apenas as Perícias Domar Pequena e Média mais Foco e Terra; a possibilidade de assumir forma Grande é separada da aquisição e exige Domar Grande. A transformação não depende de domesticação prévia da espécie. A ficha deve validar a compra pelas regras vigentes, sem aplicar automaticamente os efeitos ainda pendentes. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]
 
