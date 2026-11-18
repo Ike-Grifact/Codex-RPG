@@ -1,7 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {aprimorarAtributosDruidicos,combinarAtributosDaForma,
-  encerraFormaDruidica,deltaDuracaoElemental} from "./transformacoes-playtest.mjs";
+  encerraFormaDruidica,deltaDuracaoElemental,
+  formasDruidicasDisponiveis,podeConjurarEmFormaDruidica,
+  vidaTemporariaAoReverterFormaDruidica,duracaoTransformacaoElemental,
+  danoPorProtecaoElemental} from "./transformacoes-playtest.mjs";
 test("Pequena: eleva todos os dados de um Atributo, sem Vigor",()=>{
  const a={forca:[6,6,10],vigor:[6]};
  const b=aprimorarAtributosDruidicos({forma:"pequena",atributos:a,selecionados:["forca"]});
@@ -37,4 +40,31 @@ test("Elemental: delta E-P, sem inventar duração inicial",()=>{
  assert.equal(deltaDuracaoElemental({exitos:3,pavor:1}),2);
  assert.equal(deltaDuracaoElemental({exitos:0,pavor:2}),-2);
  assert.throws(()=>deltaDuracaoElemental({exitos:1,pavor:-1}),RangeError);
+});
+
+test("Compra única de Druídica libera Pequena, Média e Grande",()=>{
+ assert.deepEqual(formasDruidicasDisponiveis(false),[]);
+ assert.deepEqual(formasDruidicasDisponiveis(true),["pequena","media","grande"]);
+});
+test("Nenhuma forma animal permite conjuração e a reversão remove PV temporário",()=>{
+ assert.equal(podeConjurarEmFormaDruidica(null),true);
+ for(const forma of ["pequena","media","grande"])assert.equal(podeConjurarEmFormaDruidica(forma),false);
+ assert.equal(vidaTemporariaAoReverterFormaDruidica(6),0);
+ assert.equal(vidaTemporariaAoReverterFormaDruidica(0),0);
+ assert.throws(()=>vidaTemporariaAoReverterFormaDruidica(-1),RangeError);
+});
+test("Duração elemental é E-P, exige positiva e não soma duração-base",()=>{
+ assert.deepEqual(duracaoTransformacaoElemental({exitos:3,pavor:1}),{duracao:2,sustentada:true});
+ assert.deepEqual(duracaoTransformacaoElemental({exitos:2,pavor:2}),{duracao:0,sustentada:false});
+ assert.deepEqual(duracaoTransformacaoElemental({exitos:1,pavor:3}),{duracao:0,sustentada:false});
+ assert.equal(deltaDuracaoElemental({exitos:1,pavor:3}),-2);
+ assert.throws(()=>duracaoTransformacaoElemental({exitos:1,pavor:-1}),RangeError);
+});
+test("Imunidade zera dano; resistência E/2 e P 0 só para o elemento correspondente",()=>{
+ const damage=danoPorProtecaoElemental;
+ assert.deepEqual(damage({elementoAtaque:"fogo",elementoImune:"fogo",elementoResistente:"fogo",exitos:10,pavor:8}),{tipo:"imune",dano:0});
+ assert.deepEqual(damage({elementoAtaque:"fogo",elementoResistente:"fogo",exitos:3,pavor:4}),{tipo:"resistente",dano:1.5});
+ assert.deepEqual(damage({elementoAtaque:"fogo",elementoResistente:"fogo",exitos:4,pavor:0}),{tipo:"resistente",dano:2});
+ assert.deepEqual(damage({elementoAtaque:"agua",elementoResistente:"fogo",exitos:4,pavor:2}),{tipo:"normal",dano:null});
+ assert.throws(()=>damage({elementoAtaque:"fogo",elementoResistente:"fogo",exitos:1,pavor:-1}),RangeError);
 });
