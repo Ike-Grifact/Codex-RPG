@@ -164,7 +164,7 @@ const SKILLS=[
  [
   "improviso",
   "Improviso Elemental",
-  "Requisitos Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
+  "Requisitos Disciplina 1, Inteligência 1 e Destreza 1, sem Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
   1
  ],
  [
@@ -905,7 +905,7 @@ const CARD_REQUIREMENTS={
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
- "improviso": "Disciplina 1, Inteligência 1, Destreza 1, Criar Foco",
+ "improviso": "Disciplina 1, Inteligência 1 e Destreza 1",
  "mestre": "Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
  "fogo": "Disciplina 1, Inteligência 1",
  "agua": "Disciplina 1, Inteligência 1",
@@ -1747,7 +1747,7 @@ function skillReq(id,s=state){
 
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
- if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1||!has("criar-item-foco-magia")))return"Requer Disciplina 1, Inteligência 1, Destreza 1 e Criar Item de Foco e Magia.";
+ if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.";
  if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
  if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
@@ -2186,7 +2186,7 @@ const GENE_AUTO_REQUIREMENTS={
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
- "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1","s:criar-item-foco-magia"]],
+ "improviso":[["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1"]],
  "fogo":[["p:armas_conjuracao:1","a:inteligencia:1"]],
  "agua":[["p:armas_conjuracao:1","a:inteligencia:1"]],
  "vento":[["p:armas_conjuracao:1","a:inteligencia:1"]],
