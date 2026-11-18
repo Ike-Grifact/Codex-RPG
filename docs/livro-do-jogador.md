@@ -1,6 +1,6 @@
 # Codex RPG — Livro do Jogador
 
-> **Continuidade mais recente — SRD v0.79 (branch de revisão):** a [decisão sobre magia livre](srd-continuidade-v0.79.md) substitui todas as regras históricas de magias memorizadas, spellslots, peso mental e custo de criação antecipada. O autor aprovou que a magia seja concebida e narrada na ação, respeitando Perícias, Graus, DE, custos e duração da conjuração. A Perícia Druídica permite **escolher a forma ao transformar**, sem memorização de formas; seus requisitos de Domar, portes e custos permanecem.
+> **Continuidade mais recente — SRD v0.81 (publicação em revisão):** a [decisão sobre magia livre](srd-continuidade-v0.79.md) substitui todas as regras históricas de magias memorizadas, spellslots, peso mental e custo de criação antecipada. O autor aprovou que a magia seja concebida e narrada na ação, respeitando Perícias, Graus, DE, custos e duração da conjuração. A Perícia Druídica permite **escolher a forma ao transformar**, sem memorização de formas; seus requisitos de Domar, portes e custos permanecem.
 
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
