@@ -41,8 +41,10 @@ jobs:
           done
           cat /tmp/codex-http.log
           exit 1
-      - name: Testar custo de XP da criatura Pequena independente
-        run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs prototipo-ficha/domar-chain.test.mjs prototipo-ficha/druid-action.test.mjs prototipo-ficha/creation-xp.test.mjs prototipo-ficha/element-focus-independence.test.mjs
+      - name: Validar transformação Druídica e Elemental (Playtest Nível 1) e Domar como ramo independente
+        run: node --test prototipo-ficha/transformacoes-playtest.test.mjs prototipo-ficha/companion-small.test.mjs prototipo-ficha/domar-chain.test.mjs prototipo-ficha/creation-xp.test.mjs prototipo-ficha/element-focus-independence.test.mjs
+      # Os módulos druid-life/druid-action da v0.82 permanecem no Git apenas
+      # como LEGADO HISTÓRICO e não são mais testes normativos do SRD v1.0.
       - name: Validar quatro linhagens e custos raciais
         run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs prototipo-ficha/armor-defense.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel
