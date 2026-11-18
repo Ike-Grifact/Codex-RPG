@@ -1,5 +1,7 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
+> **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
+
 **Estado:** implementação experimental em JavaScript para **Foundry VTT v14**. Não foi executado dentro de uma instância real, nem testado entre múltiplos usuários. Utilize somente em mundo de testes com backup.
 
 ## Instalar manualmente
@@ -13,7 +15,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 ## Fichas disponíveis
 
-- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, PP, DE e Carga.
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
@@ -24,7 +26,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 3. Selecione **exatamente um Token como alvo** durante o combate para consultar a DE defensiva desse alvo; sem alvo, o teste é apenas anunciado no chat.
 4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
 5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
-6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico devolve Coragem/PP ao jogador segundo o teto; monstro recebe recompensa em Pavor.
+6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico recupera somente Coragem ao jogador até o teto; monstro recebe recompensa em Pavor.
 
 As seis classificações de situação não são classes de ataque separadas. Quando a ação não supera a DE, o chat diferencia falha sem símbolos, falha com Êxito e falha com Pavor. Quando supera a DE, diferencia acerto limpo, acerto neutro com Pavor e acerto com Pavor predominante.
 
