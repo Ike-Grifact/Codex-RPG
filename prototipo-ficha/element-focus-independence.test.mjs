@@ -54,13 +54,29 @@ test("Druídica G1 não tem mais dependência indireta de Foco",()=>{
  assert.equal(dependentsValid(s),null);
  assert.deepEqual(auto["pericia-druidica"][0],["s:domar-criatura-pequena","s:terra"]);
 });
-test("Escudo Arcano e Improviso conservam exigência própria de Foco",()=>{
+test("Improviso não exige Foco; Escudo Arcano ainda exige",()=>{
  const s=player();s.attributes.inteligencia=2;s.attributes.vigor=1;s.attributes.destreza=1;
  s.skills=["escudo-arcano","improviso"];
  assert.match(skillReq("escudo-arcano",s),/Criar Item de Foco e Magia/);
- assert.match(skillReq("improviso",s),/Criar Item de Foco e Magia/);
+ assert.equal(skillReq("improviso",s),null);
 });
 test("Rolador da ficha deixa usar elemento em Conjuração sem a Perícia de Foco",()=>{
  assert.match(source,/ELEMENTAL_SKILL_IDS\.some\(ownsSkill\)/);
  assert.match(source,/ownsSkill\("criar-item-foco-magia"\)\|\|ELEMENTAL_SKILL_IDS/);
+});
+
+test("Improviso Elemental compra com Disciplina 1, Inteligência 1, Destreza 1 e 1 XP, sem Criar Foco",()=>{
+ const s=player();s.attributes.destreza=1;s.skills=["improviso"];
+ assert.equal(skillReq("improviso",s),null);
+ assert.equal(dependentsValid(s),null);
+ assert.deepEqual(auto.improviso[0],["p:armas_conjuracao:1","a:inteligencia:1","a:destreza:1"]);
+ s.attributes.destreza=0;
+ assert.match(skillReq("improviso",s),/Destreza 1/);
+});
+test("Remover Criar Foco não invalida Improviso; Maestria conserva requisito próprio de Foco",()=>{
+ const s=player();s.attributes.destreza=3;s.attributes.inteligencia=3;s.practices.armas_conjuracao=3;
+ s.skills=["improviso"];
+ assert.equal(dependentsValid(s),null);
+ s.skills=["improviso","mestre","fogo"];
+ assert.match(skillReq("mestre",s),/Criar Item de Foco e Magia/);
 });

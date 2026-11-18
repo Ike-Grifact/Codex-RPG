@@ -1,4 +1,7 @@
 # Codex RPG
+
+**DEFINIDO — SRD v0.82 (18/11/2026):** [Improviso Elemental independente de Criar Item de Foco e Magia](docs/srd-continuidade-v0.82.md). A compra continua custando 1 XP e exigindo somente Disciplina 1 + Inteligência 1 + Destreza 1. O +1A, a utilização contextual de elementos e suas limitações não mudam. Direção de design: permitir builds mágicas híbridas (alquimista, ferreiro mágico, encantador) sem exigir a profissão de conjurador; procedimentos dessas profissões são pendentes e não foram automatizados. **Maestria Elemental mantém Criar Foco como requisito próprio.**
+
 **Regra vigente — SRD v0.81 (18/11/2026):** [Elementos independentes de Criar Item de Foco e Magia](docs/srd-continuidade-v0.81.md). Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno não exigem a Perícia de Foco para aquisição ou para habilitar Disciplina em Conjuração. Permanecem necessários fontes elementais válidas, Graus, DE, testes e custos. **Druídica G1** passa a ter custo-base de construção de 11 XP para Humano de custos normais, sem dependência direta ou indireta de Foco. Registros de versões anteriores são históricos.
 
 
