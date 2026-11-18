@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {distribuirVidaEmQuatroFaixas,vidaAnimalAoTransformar,
-  prepararVidaDruidica,simularGolpeDruidico} from "./druid-life.mjs";
+  prepararVidaDruidica,simularGolpeDruidico,
+  custoAtributoFormaDruidica,conferirXPFormaDruidica} from "./druid-life.mjs";
 
 test("Saúde preserva quatro faixas de Vida, com duas últimas fixas",()=>{
   const expected={4:[1,1,1,1],5:[2,1,1,1],6:[2,2,1,1],7:[3,2,1,1],8:[3,3,1,1]};
@@ -89,4 +90,55 @@ test("XP: fórmula inicial não inventa gasto nem concede recuperação automát
     assert.equal(s.pvTemporarios,a>h?a-h:0);
     assert.equal(s.automatizacaoBloqueada,true);
   }
+});
+
+test("XP animal da v0.56: Pequena usa Força/Vigor elevados, outros normais",()=>{
+  const normal=[0,1,3,6,9,18,32],elevado=[0,2,4,8,16,32,64];
+  for(let grau=0;grau<=6;grau++){
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"forca",grau}),elevado[grau]);
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"vigor",grau}),elevado[grau]);
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"agilidade",grau}),normal[grau]);
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"destreza",grau}),normal[grau]);
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"inteligencia",grau}),normal[grau]);
+    assert.equal(custoAtributoFormaDruidica({porte:"pequena",atributo:"influencia",grau}),normal[grau]);
+  }
+});
+
+test("XP animal da v0.56: Média e Grande usam todos os Atributos normais",()=>{
+  const normal=[0,1,3,6,9,18,32];
+  for(const porte of ["media","grande"])for(const atributo of ["forca","vigor","agilidade","destreza","inteligencia","influencia"])
+    for(let grau=0;grau<=6;grau++)assert.equal(custoAtributoFormaDruidica({porte,atributo,grau}),normal[grau]);
+});
+
+test("XP da forma usa orçamento atual do druida e não altera seu XP",()=>{
+  const graus={forca:2,vigor:2,agilidade:3};
+  const pequena=conferirXPFormaDruidica({xpTotalDruida:15,porte:"pequena",graus});
+  const media=conferirXPFormaDruidica({xpTotalDruida:15,porte:"media",graus});
+  assert.deepEqual([pequena.gasto,pequena.saldo,pequena.dentroDoOrcamento],[14,1,true]);
+  assert.deepEqual([media.gasto,media.saldo,media.dentroDoOrcamento],[12,3,true]);
+  assert.equal(grasInalterados(graus),true);
+  const excedido=conferirXPFormaDruidica({xpTotalDruida:5,porte:"grande",graus});
+  assert.equal(excedido.dentroDoOrcamento,false);
+  assert.equal(excedido.saldo,-7);
+});
+function grasInalterados(graus){return graus.forca===2&&graus.vigor===2&&graus.agilidade===3;}
+
+test("XP animal não abre porte Gigante ainda não aprovado nem Graus além de 6",()=>{
+  assert.throws(()=>custoAtributoFormaDruidica({porte:"gigante",atributo:"vigor",grau:1}),RangeError);
+  assert.throws(()=>custoAtributoFormaDruidica({porte:"grande",atributo:"vigor",grau:7}),RangeError);
+  assert.throws(()=>custoAtributoFormaDruidica({porte:"grande",atributo:"disciplina",grau:1}),RangeError);
+  assert.throws(()=>conferirXPFormaDruidica({xpTotalDruida:15,porte:"gigante",graus:{}}),RangeError);
+});
+
+test("PVs temporários só surgem ao transformar; não regeneram enquanto a forma permanece ativa",()=>{
+  const forma=prepararVidaDruidica({vidaMaximaHumana:6,vidaAtualHumana:5,vidaMaximaAnimal:8});
+  assert.equal(forma.pvTemporarios,2);
+  const g1=simularGolpeDruidico({estado:forma,dano:1});
+  const g2=simularGolpeDruidico({estado:g1,dano:1});
+  const pausa=simularGolpeDruidico({estado:g2,dano:0});
+  assert.deepEqual([g1.pvTemporarios,g2.pvTemporarios,pausa.pvTemporarios],[1,0,0]);
+  assert.equal(pausa.vidaHumanaReal,5);
+  const g3=simularGolpeDruidico({estado:pausa,dano:1});
+  assert.equal(g3.vidaHumanaReal,4);
+  assert.equal(g3.pvTemporarios,0);
 });
