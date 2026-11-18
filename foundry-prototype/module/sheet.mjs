@@ -1,6 +1,6 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxCourage,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment} from "./equipment-logic.mjs";
@@ -10,7 +10,7 @@ const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:""});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
@@ -53,7 +53,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    healthLabel:healthLabels[health.id],healthEffect:healthEffect+(actor.type==="character"&&healthCost?" · "+healthCost+" Coragem/ação":""),
    lifeBandsText:healthBands(s).join(" / "),
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
+   courage:s.courage,courageMax:maxCourage(s.level),de:monster?defenseDE(actor):defenseDE(actor),
    balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
@@ -117,7 +117,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
-    hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
+    hasProperties:!!item?.system.properties?.length,
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
@@ -148,7 +148,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(el.dataset.pendingOption&&this._pending){
    const key=el.dataset.pendingOption;
-   if(!["cancelP","convertPairs","characteristic","secondCharacteristic","activationPayment"].includes(key))return;
+   if(!["cancelP","convertPairs","characteristic","secondCharacteristic"].includes(key))return;
    this._pending.options[key]=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
    await this.actor.setFlag(NS,"pendingRoll",this._pending);this.render();
   }
@@ -195,9 +195,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;
   const field=target.dataset.resource,delta=Number(target.dataset.delta),s=this.actor.system;
-  const caps={"system.life.value":lifeMax(s),"system.courage":10,"system.pp":maxPP(s.level)};
+  const caps={"system.life.value":lifeMax(s),"system.courage":maxCourage(s.level)};
   if(!(field in caps)||![-1,1].includes(delta))return;
-  const current=field==="system.life.value"?s.life.value:field==="system.courage"?s.courage:s.pp;
+  const current=field==="system.life.value"?s.life.value:s.courage;
   await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
  }
  static async toggleSkill(event,target){
@@ -264,7 +264,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
     hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0),payPP=0;
+   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0);
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
    if(result.success&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
@@ -276,11 +276,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     const activations=result.critical?(second?1:0):1;
     if(activations){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     const activation=characteristicActivationPayment(p.options.activationPayment);
-     payPP+=activation.pp;cost+=activation.courage;
+     cost+=characteristicActivationPayment().courage;
     }
    }
-   if(payPP>s.pp)throw Error("PP insuficiente.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
@@ -294,10 +292,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
     '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
-    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
+    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+'. Crítico recupera Coragem até o teto atual.</small></p><ul>'+detail+'</ul></div>';
    if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
-   else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
-    "system.pp":Math.min(maxPP(s.level),s.pp-payPP+result.criticalRefundPP)});
+   else await this.actor.update({"system.courage":Math.max(0,Math.min(maxCourage(s.level),s.courage-cost+result.criticalRefundCourage))});
    await ChatMessage.create({user:game.user.id,speaker:ChatMessage.getSpeaker({actor:this.actor}),content:text,
     flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
      transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{
