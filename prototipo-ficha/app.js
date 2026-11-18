@@ -176,7 +176,7 @@ const SKILLS=[
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. Para Fogo G2 sem foco, o custo específico adicional está PENDENTE de reconciliação com a gratuidade-base G1/G2. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
   1
  ],
  [
@@ -1052,7 +1052,7 @@ const CARD_ACTIVATIONS={
  "conjuracao-equilibrada": "PENDENTE",
  "improviso": "Passiva",
  "mestre": "Mistura: 1A; custo próprio da Maestria PENDENTE",
- "fogo": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "fogo": "G1/G2: gratuito com Perícia e Grau habilitados, com ou sem foco se houver fonte elemental; G3: 1 Coragem; G4: 1 Coragem pela elevação de Fogo (2 no total se os dois elementos chegam a G3)",
  "agua": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
  "vento": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
  "terra": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
@@ -1582,7 +1582,7 @@ function normalize(v){
  };
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
-  delete s.pending.payment; delete s.pending.firePayment; delete s.pending.ppCost;
+  delete s.pending.payment; delete s.pending.firePayment; delete s.pending.ppCost; delete s.pending.fireSummon;
  }
  return s;
 }
@@ -3048,7 +3048,7 @@ function roll(){
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
-  fireMode:"",fireGradeConfirmed:false,fireSummon:false};
+  fireMode:"",fireGradeConfirmed:false};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
@@ -3163,23 +3163,15 @@ function score(){
   p.base.key==="armas_conjuracao"&&
   // Foco explicitamente de outro elemento não pode ser usado como foco de Fogo.
   !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="fogo");
- const fireFocus=!!(freeElementEffect&&elementSkill==="fogo");
  if(p.fireMode&&!fireMode)errs.push("Manifestação de Fogo não reconhecida nesta rolagem.");
  if(fireMode&&!isFireCast)errs.push("Queimar/Derreter exigem conjuração de Fogo habilitada, não ataque de outra natureza.");
  if(fireMode&&!p.fireGradeConfirmed)errs.push("Confirme com o Narrador o acesso a este Grau de Fogo antes de ativar.");
  if(fireMode&&p.hemomancyDirectLife)errs.push("A mesma magia não pode ser registrada simultaneamente como Fogo e como Hemomancia direta.");
- if(p.fireSummon&&(!fireMode||fireMode!=="queimar"||fireFocus))
-  errs.push("Invocar fogo sem foco com +1 Coragem é uma opção específica de G2 Queimar e apenas sem foco válido.");
  const fireValid=!!(fireMode&&isFireCast&&p.fireGradeConfirmed&&!p.hemomancyDirectLife);
- if(fireValid&&success){
-  // Se uma característica Elemental já está ativada por este mesmo acerto,
-  // não cobrar a ativação-base duas vezes para o mesmo efeito.
-  if(!fireFocus&&!active.includes("Elemental")){
-   courageCost+=1;
-  }
-  // A Coragem de invocar fogo no G2 sem foco é ADICIONAL à ativação-base.
-  if(p.fireSummon&&fireMode==="queimar"&&!fireFocus)courageCost+=1;
- }
+ // A Perícia Fogo habilita G1/G2 sem cobrança. G3 Derreter consome
+ // 1 Coragem ao ativar com sucesso, independentemente de foco.
+ // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
+ if(fireValid&&success&&fireMode==="derreter")courageCost+=1;
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
@@ -3206,7 +3198,7 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
@@ -3251,10 +3243,7 @@ function renderPending(){
   (p.fireMode?
    '<label class="fp-checkline"><input type="checkbox" data-pending="fireGradeConfirmed"'+(p.fireGradeConfirmed?' checked':'')+
    '> Confirmo com o Narrador que este Grau de Fogo está habilitado (não é compra automática)</label>'+
-   (!s.fireFocus?'<p class="fp-caption">Ativação paga de Fogo, se aplicável: 1 Coragem. G1/G2 habilitado tem ativação-base gratuita; custo próprio sem foco continua pendente.</p>':
-    '<p class="fp-caption">Ativação-base gratuita com Perícia e Grau habilitados.</p>')+
-   (p.fireMode==="queimar"&&!s.fireFocus?'<label class="fp-checkline"><input type="checkbox" data-pending="fireSummon"'+
-    (p.fireSummon?' checked':'')+'> Invocar fogo sem foco em G2: +1 Coragem adicional à ativação-base</label>':'')+
+   '<p class="fp-caption">Fogo G2 Queimar: 0 Coragem com Perícia e Grau habilitados, inclusive sem foco quando houver fonte elemental disponível. Fogo G3 Derreter: 1 Coragem. G4 plena (dois G3): 1 Coragem por elemento elevado + 1 Antecipar de mistura; a composição G4 ainda é manual.</p>'+
    '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
   :'')+'</div>':"";
  const controls='<div class="fp-form-grid">'+
@@ -3931,10 +3920,10 @@ function onChange(event){
   const k=el.dataset.pending;
   if(["characteristic","secondCharacteristic","fireMode","cravarTargetShield"].includes(k)){
    state.pending[k]=String(el.value).slice(0,40);
-   if(k==="fireMode"){state.pending.fireGradeConfirmed=false;state.pending.fireSummon=false;}
+   if(k==="fireMode")state.pending.fireGradeConfirmed=false;
    save();renderComposer();return;
   }
-  if(["fireGradeConfirmed","fireSummon"].includes(k)){
+  if(k==="fireGradeConfirmed"){
    state.pending[k]=!!el.checked;
    save();renderComposer();return;
   }
