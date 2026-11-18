@@ -1,7 +1,7 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs";
+ from "./codex-rules.mjs?v=20261117-fogo-g2-free";
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
