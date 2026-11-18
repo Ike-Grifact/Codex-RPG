@@ -863,40 +863,17 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 | Apenas um elemento com efeitos G3 | 1A | +1 | **1A + 1 Coragem**, ressalvado o custo próprio da Maestria em revisão |
 | Dois elementos com efeitos G3 simultâneos — **G4 plena** | 1A | +2 (1 por elemento) | **1A + 2 Coragens**, além das cargas de aceleração, quando usadas |
 
-**DEFINIDO:** o valor **1A + 2 Coragens da G4 plena** cobre **mistura e elevação dos dois efeitos a G3**; não inclui cargas de aceleração nem automaticamente dispensa outros custos especiais que ainda precisem de reconciliação. A G4 plena leva **6 turnos sem aceleração**, com **mínimo absoluto de 3 turnos**, inclusive se favorecida pelo ambiente. Ao acelerar via focos, cada turno reduzido exige **1 carga de cada foco elemental**, ambos apenas no inventário. **PENDENTE:** definir Grau/tempo das mesclas em que só um elemento é G3, critérios de Maestria para dano dobrado e seu cálculo, harmonização do custo próprio de Maestria, procedimentos de Invocação Elemental. **Fogo G2 sem foco está resolvido em 0 Coragem** (Perícia, Grau e fonte elemental continuam exigidos). Não criar bônus, efeitos, custos ou memorização G4 por inferência.
+**DEFINIDO:** o valor **1A + 2 Coragens da G4 plena** cobre **mistura e elevação dos dois efeitos a G3**; não inclui cargas de aceleração nem automaticamente dispensa outros custos especiais que ainda precisem de reconciliação. A G4 plena leva **6 turnos sem aceleração**, com **mínimo absoluto de 3 turnos**, inclusive se favorecida pelo ambiente. Ao acelerar via focos, cada turno reduzido exige **1 carga de cada foco elemental**, ambos apenas no inventário. **PENDENTE:** definir Grau/tempo das mesclas em que só um elemento é G3, critérios de Maestria para dano dobrado e seu cálculo, harmonização do custo próprio de Maestria, procedimentos de Invocação Elemental. **Fogo G2 sem foco está resolvido em 0 Coragem** (Perícia, Grau e fonte elemental continuam exigidos). Não criar bônus, efeitos, custos ou habilitação G4 por inferência; magias não são memorizadas.
 
 **Elevação e redução de Grau [DEFINIDO — SRD v0.79]:** elevar G2 para G3 permite usar os efeitos G3 respeitando a preparação do grau; a redução voluntária para G1 usa apenas os efeitos G1, com lançamento imediato. Conjurar uma magia com efeitos de G2 não preserva efeitos exclusivos de G3/G4; gastar foco **não** equivale a alterar o Grau. A redução intermediária livre G3→G2 não foi aprovada. Conservar as demais exigências de conjuração.
 
-**Criação e memorização [DEFINIDO]:** a partir de **Disciplina 2**, pode criar magias de **Grau 2 e Grau 3**, **fora de combate**, pagando **2 Coragens por criação**, e deixá-las **memorizadas em um slot mágico** para conjurá-las rapidamente depois. Não há autorização automática para preparar Grau 4 nessa regra.
+**DEFINIDO — criação livre de magias durante a ação (17/11/2026, decisão autoral posterior):** as magias **não precisam ser aprendidas individualmente, criadas fora de combate, memorizadas nem registradas em slots**. O jogador inventa e narra a manifestação da magia **no momento da ação**, orientando-se pelo conceito do elemento, seus efeitos habilitados e as combinações que o personagem consegue realizar. A descrição pode variar de uma ação para outra, sem comprar, memorizar ou pagar **2 Coragens de criação** para cada ideia. A antiga regra de “Criar Magia” com **−1 peso mental**, o **peso nominal G1–G4**, a tabela de **capacidade por Disciplina (0–6)** e os **spellslots mentais** foram **REVOGADOS como economia de magias memorizadas**. Disciplina continua sendo a Prática única de armas/conjuração, com seus próprios Graus, dados, custos de XP e requisitos; o revogado peso mental não é convertido em carga física.
 
-| Grau de magia | Peso nominal |
-|---|---:|
-| **1** | 1 |
-| **2** | 2 |
-| **3** | 3 |
-| **4** | 4 |
+**DEFINIDO — improvisar não altera a potência:** o narrador e o jogador verificam **Perícia elemental, Grau de acesso, fonte elemental**, efeitos e combinações permitidos, **DE/rolagem**, custos de Coragem/Antecipar/cargas, bem como o **tempo de conjuração**. A preparação G2/G3/G4 continua sendo o **tempo efetivamente gasto para conjurar aquela magia**, não um período anterior para memorizá-la. G1 permanece imediato quando habilitado; G2 mantém 2 turnos, G3 3 turnos (com as acelerações válidas), e a G4 plena 6 turnos, mínimo 3. Uma magia diferente narrada no mesmo Grau não gera dados, dano ou propriedades extras. **Fabricação de foco** permanece separada e depende de sua Perícia e materiais/rolagem aplicáveis.
 
-**Criar Magia e peso mental [DEFINIDO]:** a habilitação de **Criar Magia**, incluída em **Criar Item de Foco e Magia**, **reduz em 1 o peso de cada magia criada e memorizada**. O desconto pertence à magia criada, **não depende de estar sem item de foco**. Peso nominal: G1=1, G2=2, G3=3, G4=4; peso mental reduzido: G2=1, G3=2, G4=3. **PENDENTE:** se o mínimo de peso de magia G1 deve ser 0 ou 1, para evitar memorização ilimitada. Esta redução não altera peso físico de foco, Grau de magia, nem os dados de Disciplina.
+**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, tenham ou não sido usados na conjuração livre. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco comum criado com Artesão recupera **1 carga no encerramento da própria rodada do esgotamento**, e depois mais 1 no fim de cada rodada até encher, conforme seu Grau. A Pedra da Alma é exceção.
 
-**Spellslots mentais [DEFINIDO]:** cada **ponto investido em Disciplina** concede **1 ponto de capacidade mental**; não é a quantidade de dados rolados. A capacidade vai de **0 a 6** nos Graus atuais da Prática, sem acréscimos de Inteligência ou de equipamentos.
-
-| Grau de Disciplina | Capacidade mental | Magias G2 criadas e memorizadas (peso 1 cada) |
-|---:|---:|---:|
-| 0 | 0 | 0 |
-| 1 | 1 | 1* |
-| 2 | 2 | 2 |
-| 3 | 3 | 3 |
-| 4 | 4 | 4 |
-| 5 | 5 | 5 |
-| 6 | 6 | **6** |
-
-*Capacidade ilustrativa: **criar magias de Grau 2 exige Disciplina 2**, conforme a regra de criação.*
-
-**Exemplo no máximo:** Disciplina 6 fornece 6 pontos mentais. Uma magia criada G2 pesa 2 − 1 = **1 ponto**. Assim, o personagem memoriza **seis magias G2**, sem modificar os dados da Prática. A divergência anteriormente apontada entre “3 dados” e “6 magias” está **RESOLVIDA**: são seis **pontos investidos**, não seis dados.
-
-**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, sem serem anulados pelo fato de uma magia estar memorizada ou não exigir foco. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco comum criado com Artesão recupera **1 carga no encerramento da própria rodada do esgotamento**, e depois mais 1 no fim de cada rodada até encher, conforme seu Grau. A Pedra da Alma é exceção.
-
-**PENDENTE:** limites de controle mental, testes dos alvos, duração, alcance, magias memorizadas e tempo efetivo da conjuração rápida. Não transformar exemplos em efeitos automáticos.
+**PENDENTE:** limites de controle de efeitos mentais, testes dos alvos, duração e alcance em casos ainda não regulamentados. A memorização/slots e a chamada “conjuração rápida da magia memorizada” foram revogados; continuam vigentes os tempos normais de conjuração e sua aceleração por foco/ambiente, quando aprovadas.
 
 ### Escudo Arcano [DEFINIDO / detalhes de aplicação PENDENTES]
 
