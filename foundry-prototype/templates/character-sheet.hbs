@@ -121,6 +121,18 @@
             <option value="conjuracao" {{#if codex.prepare.modeConjuracao}}selected{{/if}}>Conjuração</option>
           </select></label>
         {{/if}}
+        {{#if codex.prepare.fireCanChoose}}
+        <label>Fogo — Grau declarado (Perícia obrigatória)
+          <select data-roll-option="fireGrade">
+            <option value="0" {{#if codex.prepare.fireGrade0}}selected{{/if}}>Não declarar manifestação de Fogo</option>
+            <option value="1" {{#if codex.prepare.fireGrade1}}selected{{/if}}>G1 — 0 Coragem</option>
+            <option value="2" {{#if codex.prepare.fireGrade2}}selected{{/if}}>G2 Queimar — 0 Coragem</option>
+            <option value="3" {{#if codex.prepare.fireGrade3}}selected{{/if}}>G3 Derreter — 1 Coragem se ativado</option>
+          </select>
+        </label>
+        <label class="codex-check"><input type="checkbox" data-roll-option="fireGradeConfirmed" {{#if codex.prepare.fireGradeConfirmed}}checked{{/if}}> Narrador confirmou a habilitação do Grau de Fogo e a fonte elemental disponível</label>
+        <p class="codex-tip">Com a Perícia Fogo, G1/G2 têm ativação gratuita inclusive sem foco, desde que haja fonte elemental válida. G3 custa 1 Coragem; G4 conjunta (dois G3, 1A + 2 Coragens) permanece manual.</p>
+        {{/if}}
         <label>DE (Dificuldade de Êxito)<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -164,6 +176,7 @@
     <section class="codex-block codex-roll-results" aria-label="Dados rolados e escolha dos mantidos">
       <div class="codex-block-title"><h2>Resultado dos dados — escolha os mantidos</h2><span>Rolagem pendente preservada no personagem</span></div>
       <p class="codex-tip">{{codex.pending.formula}} · limite de {{codex.pending.limit}} mantidos · deve incluir Atributo · custo previsto de {{codex.pending.cost}} Coragem.</p>
+      {{#if codex.pending.fireGrade}}<p class="codex-tip">Fogo G{{codex.pending.fireGrade}}: G1/G2 sem custo de ativação; G3 consome 1 Coragem ao ativar após alcançar a DE. Fonte e grau confirmados pelo Narrador.</p>{{/if}}
       <div class="codex-result-dice">
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
