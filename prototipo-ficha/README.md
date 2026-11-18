@@ -221,3 +221,9 @@ A recuperação respeita os tetos: Coragem parte do teto 10, aumenta nos níveis
 ## NPCs por DNA e restituição de Perícias (playtest)
 - `?npc=1` abre o mesmo DNA da Ficha, mas utiliza **salvamento separado**; **Enviar NPC ao Conflito** transfere investimentos e recursos básicos. Equipamentos ficam manuais no conflito.
 - **EXPERIMENTAL, só para playtest:** Perícias compradas podem ser devolvidas no Codex Genético ou nas listas após a criação. Exige confirmação, impede remoções que invalidam outra Perícia e recalcula XP livre pelo custo removido; não cria XP artificial. **Não é regra de campanha.**
+
+## Druídica — XP e Vida nas formas (decisão posterior 17/11/2026)
+
+**DEFINIDO:** todas as formas usam o **XP total atual do druida** como orçamento próprio de Atributos animais, sem gasto do XP humano; o antigo valor fixo de **19 XP da forma Pequena** foi revogado. As tabelas históricas de custo animal **divergem conforme fonte/porte e precisam ser reconciliadas** antes de compra automatizada da ficha da criatura. **Forma de Vida máxima menor**: golpe que a mataria encerra a transformação e aplica o dano total equivalente ao druida. **Máximos iguais**: Vida atual igual à do druida; dano pode matar na forma. **Forma de máximo maior**: diferença em **PVs temporários** que são consumidos antes da Vida real; sem cura artificial.
+
+O arquivo `druid-life.mjs` contém funções isoladas de **simulação** e testes para esses três regimes. **Não há integração automática ao criador, salvamento ou Foundry**: reversão voluntária, ferimentos não letais anteriores ao golpe fatal na forma menor, transformações consecutivas e alocação dos temporários nas quatro faixas permanecem **PENDENTES**. A hipótese antiga de conversão por faixas perdidas foi substituída.
