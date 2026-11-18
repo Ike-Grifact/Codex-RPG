@@ -11,8 +11,10 @@
  * dano EFETIVO que atingiu Vida depois da barreira e outras defesas.
  * Forma menor registra danos na Vida, inclusive não letais, para aplicar
  * o TOTAL ACUMULADO quando um golpe que a mataria provocar reversão.
- * PENDENTE: reversão voluntária, transferência da Vida real entre formas
- * sucessivas, Vida zero e representação dos temporários nas quatro faixas.
+ * DEFINIDO: reversão voluntária tem custo 0, dispensa teste e não consome
+ * ação/reação/turno; não concede ação nova, restituição ou cura.
+ * PENDENTE: transferência do dano em reversão voluntária da forma menor,
+ * Vida real entre formas sucessivas, Vida zero e quatro faixas.
  */
 // Tabelas de custo ACUMULADO da v0.56, G0..G6. Não usar a antiga
 // escala de companheiros v0.48 ou de Formação v0.47 em seu lugar.
@@ -20,6 +22,17 @@ const XP_ATRIBUTO_NORMAL=[0,1,3,6,9,18,32];
 const XP_ATRIBUTO_ELEVADO=[0,2,4,8,16,32,64];
 const ATRIBUTOS_ANIMAIS=new Set(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
 const PORTES_DRUIDICOS=new Set(["pequena","media","grande"]);
+
+/**
+ * Apenas economia de recursos e ações da reversão voluntária (DEFINIDO).
+ * Não executa conversão de Vida: a forma menor sem golpe letal ainda depende
+ * da decisão autoral sobre transferência de dano acumulado.
+ */
+export function regrasReversaoVoluntariaDruidica(){
+  return {custoCoragem:0,consomeAcao:false,consomeReacao:false,
+          consomeTurno:false,requerTeste:false,concedeAcaoExtra:false,
+          recuperaVida:false,reembolsaAtivacao:false};
+}
 
 /** XP da forma = XP total atual do druida. Apenas custos por porte são diferentes. */
 export function custoAtributoFormaDruidica({porte,atributo,grau}){
@@ -99,7 +112,8 @@ export function prepararVidaDruidica({vidaMaximaHumana,vidaAtualHumana,vidaMaxim
  * novamente ferimentos humanos anteriores à transformação.
  * 'dano' sempre significa o dano efetivo que alcançou Vida APÓS Escudo
  * Arcano ou outra proteção aplicável. Escudo é resolvido fora do módulo.
- * Reversão voluntária sem golpe letal ainda está PENDENTE.
+ * Reversão voluntária gratuita e sem ação está DEFINIDA; a transferência
+ * do dano acumulado na forma menor sem golpe letal ainda está PENDENTE.
  */
 export function simularGolpeDruidico({estado,dano}) {
   if(!estado || !["menor","igual","maior"].includes(estado.caso) ||

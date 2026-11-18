@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {distribuirVidaEmQuatroFaixas,vidaAnimalAoTransformar,
-  prepararVidaDruidica,simularGolpeDruidico,
+  prepararVidaDruidica,simularGolpeDruidico,regrasReversaoVoluntariaDruidica,
   custoAtributoFormaDruidica,conferirXPFormaDruidica} from "./druid-life.mjs";
 
 test("Saúde preserva quatro faixas de Vida, com duas últimas fixas",()=>{
@@ -194,4 +194,27 @@ test("Não é possível recontar golpes depois da forma já cancelada",()=>{
   const cancelada=simularGolpeDruidico({estado:s,dano:5});
   assert.equal(cancelada.formaCancelada,true);
   assert.throws(()=>simularGolpeDruidico({estado:cancelada,dano:1}),RangeError);
+});
+
+test("Reversão voluntária G1/G2/G3 é gratuita, sem teste nem economia de ação",()=>{
+  const regras=regrasReversaoVoluntariaDruidica();
+  assert.deepEqual(regras,{
+    custoCoragem:0,consomeAcao:false,consomeReacao:false,
+    consomeTurno:false,requerTeste:false,concedeAcaoExtra:false,
+    recuperaVida:false,reembolsaAtivacao:false
+  });
+});
+
+test("Reversão voluntária não aplica conversão de Vida pendente no simulador",()=>{
+  const forma=prepararVidaDruidica({
+    vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5
+  });
+  const golpe=simularGolpeDruidico({estado:forma,dano:2});
+  const antes=structuredClone(golpe);
+  const regras=regrasReversaoVoluntariaDruidica();
+  assert.equal(regras.custoCoragem,0);
+  assert.deepEqual(golpe,antes);
+  assert.equal(golpe.danoAcumuladoForma,2);
+  assert.equal(golpe.vidaHumanaReal,8);
+  assert.equal(golpe.formaCancelada,false);
 });
