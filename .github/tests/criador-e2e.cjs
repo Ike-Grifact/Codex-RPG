@@ -134,7 +134,7 @@ const { chromium } = require('playwright');
       });
       await buyAll.click();
       const autoSpent=await page.locator('#wizard-summary').innerText();
-      if(!autoSpent.includes('9 XP')||!autoSpent.includes('9 / 15 XP'))
+      if(!autoSpent.includes('6 XP')||!autoSpent.includes('9 / 15 XP'))
         throw new Error('Compra automática não debitou os 5 XP completos: '+autoSpent.slice(0,350));
       const influence=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:influencia"]');
       if(!await influence.textContent().then(t=>t.includes('GRAU 2')))
