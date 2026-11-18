@@ -218,9 +218,6 @@ test("Forma menor: reversão voluntária transfere danos acumulados mesmo sem go
   assert.throws(()=>simularGolpeDruidico({estado:humana,dano:1}),RangeError);
 });
 
-});
-
-
 test("Forma menor: reversão não duplica ferimento humano preexistente",()=>{
   const forma=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:5});
   const golpe=simularGolpeDruidico({estado:forma,dano:1});
