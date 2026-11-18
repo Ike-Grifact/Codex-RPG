@@ -67,3 +67,29 @@ test("Compra assistida inclui as duas Perícias anteriores e cobra três vezes 1
  assert.deepEqual(ordered.map(x=>prices.get(x)),[1,1,1]);
  assert.equal(ordered.reduce((total,x)=>total+prices.get(x),0),3);
 });
+
+test("Druídica fica comprável com Pequena, Média, Foco e Terra sem Domar Grande",()=>{
+ const d=base();
+ d.skills=[pequena,media,"criar-item-foco-magia","terra"];
+ assert.equal(skillReq("pericia-druidica",d),null);
+ assert.equal(dependentsValid({...d,skills:[...d.skills,"pericia-druidica"]}),null);
+ d.skills=d.skills.filter(x=>x!==media);
+ assert.match(skillReq("pericia-druidica",d),/Domar Média/);
+});
+
+test("Druídica não depende de Grande para manter compra; depende de Pequena e Média",()=>{
+ const d=base();
+ d.skills=[pequena,media,grande,"criar-item-foco-magia","terra","pericia-druidica"];
+ assert.equal(dependentsValid(d),null);
+ assert.equal(dependentsValid({...d,skills:d.skills.filter(x=>x!==grande)}),null);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==pequena)}),/Domar Criatura Pequena|Domar Pequena/);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==media)}),/Domar Criatura Média|Domar Média/);
+});
+
+test("Compra assistida Druídica lista quatro Perícias e nunca exige Domar Grande",()=>{
+ assert.deepEqual(auto["pericia-druidica"][0],[
+  "s:domar-criatura-pequena","s:domar-criatura-media","s:criar-item-foco-magia","s:terra"
+ ]);
+ assert.equal(prices.get("pericia-druidica"),2);
+ assert.equal(prices.get("domar-criatura-grande"),1);
+});
