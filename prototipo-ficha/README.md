@@ -212,7 +212,7 @@ A partir de **Disciplina 2**, o personagem pode **criar magias de Grau 2 ou Grau
 
 ## Sagrado e Coragem adicional de Fogo G2 — 12/11/2026
 
-**Fogo G2:** ao **invocar fogo sem item de foco**, o custo de **1 Coragem é ADICIONAL** ao custo da ativação de efeito especial (1 PP **OU** 2 Coragens); portanto o custo efetivo é **1 PP + 1 Coragem** ou **3 Coragens**. Não aplicar custo extra ao Fogo G1 com fonte de chama nem a magias de Fogo que não fazem essa invocação sem foco.
+**Fogo G2 sem foco — PENDENTE DE RECONCILIAÇÃO:** a ativação-base G1/G2 com a Perícia de Fogo e Grau habilitados é gratuita. O custo adicional especial historicamente aplicado quando não há foco ainda exige definição operacional; não cobrar a antiga reserva nem combinar valores legados. Não foi automatizado nesta revisão da ficha.
 
 **Perícia em Elemento Sagrado:** custo **2 XP**, requisitos **Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2**, substituindo a antiga descrição **Magia Sagrada (3 XP)** sem mudar o ID `sagrado` das fichas. A compra e os requisitos são verificados no protótipo. Magias Leves, ativação de **2 Coragens** em ataque acertado mesmo sem crítico, para aplicar um efeito especial escolhido. **G1:** Acalmar, Purificar, Apoiar e Recuperar Coragem; **1 Êxito obtido na capacidade sagrada pode se converter em 1 Coragem para um participante, no máximo uma vez por conjuração/turno**. O Êxito gasto **não soma à DE nem ao dano**; nenhum Êxito adicional gratuito é criado. **G2/G3:** exigem combinação com outros elementos; não são liberados automaticamente pela compra.
 
