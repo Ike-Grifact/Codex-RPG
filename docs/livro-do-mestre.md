@@ -200,27 +200,27 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 ## Atualização de Conjuração — novembro 2026
 
-As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1). A partir de Disciplina 2, permite criar magias de Grau 2 e 3 fora de combate, 1 PP ou 2 Coragens por criação, memorizadas em slots para conjuração rápida. Pesos G1=1, G2=2, G3=3, G4=4; sem foco −1 peso (incidência e piso PENDENTES). A capacidade total de slots permanece PENDENTE em razão da divergência com histórico do SRD.
+As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia**. **DEFINIDO — decisão autoral posterior (17/11/2026):** o jogador **cria e narra magias livremente durante a ação**, baseando-se no conceito e nas ativações/combinações dos elementos habilitados. Não existe memorização, pré-cadastro, spellslots, peso mental ou custo próprio de 2 Coragens por criação fora de combate. Os requisitos de Perícias/Graus, tempo de preparação da conjuração, focos, custos de ativação, rolagens e DE permanecem. Criar/fabricar um **item de foco** é uma atividade distinta e mantém suas regras próprias.
 
 **Escudo Arcano** dura **uma rodada** e cobre **círculo 3×3 metros**, mantendo custo, efeito de proteção e vulnerabilidade a invasão corpo a corpo. **Conjuração Refinada** substitui a antiga Equilibrada: compra histórica de 1 XP e requisitos preservados, mas agora se destina a **aumentar alcance de efeitos mágicos**; números e custo PENDENTES. A alteração antiga de peso Leve/Pesada por essa Perícia foi revogada. Peso físico dos focos deve considerar Potência, Força e Atletismo, sem fórmula inventada. Consultar seção 0-V.8 do SRD v0.39 para versões e status.
 
-## Conjuração — nova decisão de slots e Ar (12/11/2026)
+## Conjuração — Ar e disponibilidade de foco (regra atual de 17/11/2026)
 
-**Spellslots mentais:** a capacidade deriva **exclusivamente dos dados de Disciplina**. Inteligência não adiciona slots; quantificação por dado e possível teto 9 continuam PENDENTES. **Focos permanecem objetos com carga física convencional**, sem anulação por memorizar magias.
+**DEFINIDO:** não há capacidade de spellslots mentais; a antiga distinção “por dado” versus “por Grau” foi revogada. **Focos permanecem objetos com carga física convencional**, e sua existência não altera a liberdade de descrever a magia na hora.
 
 **Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1, começando por magias Leves. Ao acertar ataques, com ou sem crítico, gaste 1 PP ou 1 Coragem para aplicar um efeito especial: G1 deslocamento 4m/empurrar/puxar; G2 sufocar com dano à Vida ou armadura, empurrar e derrubar, deslocamento até 8m; G3 agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda, referência 16m. Formas linha/círculo/cone/X. **PENDENTE:** interpretação de 16m, alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
 
-## Conjuração — Água, Fôlego e spellslots por dado (12/11/2026)
+## Conjuração — Água e Fôlego (17/11/2026)
 
-**Cada dado de Disciplina = 1 unidade de peso mental para spellslots**, independente do tamanho; Inteligência não concede capacidade. A progressão atual alcança 3d12 em Disciplina 6, total de 3 unidades, incompatível com o exemplo pretendido de seis magias G2. **Divergência pendente**, não alterar dados sem decisão. Focos continuam ocupando carga física.
+**REVOGADO:** o cálculo antigo de peso/capacidade mental por dados de Disciplina, o exemplo de seis magias G2 e o custo de memorização. **Disciplina continua fornecendo os dados normais da Prática**, e os focos continuam ocupando carga física.
 
 **Ar:** além dos efeitos já listados, pode recuperar Fôlego; Grau, custo/gatilho e quantidade PENDENTES.
 
 **Perícia em Elemento Água:** 1 XP, Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Ao acertar, mesmo sem crítico, 1 PP ou 1 Coragem aplica um efeito à escolha. G1: Congelar por uma rodada sem dano em magia Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar por crítico OU ativação paga, com dano à Vida e à armadura. G3: conjurar ao final do turno dos aliados, empurrar, perfurar, congelar, danificar Vida/armadura e preservar efeitos menores pertinentes. A entrada anterior Elemento: Água é a mesma Perícia, não há compra duplicada. Dano, alcance, efeitos adicionais e operação exata estão pendentes.
 
-## CORREÇÃO MAIS RECENTE — Memorização de magias (12/11/2026)
+## Regra mais recente — criação narrativa sem memorização (17/11/2026)
 
-Substitui as descrições anteriores deste documento de “1 unidade por dado”. **Cada ponto investido em Disciplina concede 1 unidade de capacidade mental**. **Criar Magia reduz em 1 unidade de peso as magias criadas e memorizadas**, independentemente de haver item de foco. Logo, com **Disciplina 6 = 6 pontos mentais**, cabem **seis magias G2**: peso nominal 2, reduzido a 1 por magia. A tabela de dados da Prática não é modificada. **PENDENTE:** peso mínimo de G1 (1−1=0), detalhes de uso rápido e armazenamento de magias; equipamentos de foco seguem ocupando carga física.
+**DEFINIDO:** cada efeito mágico pode receber nova descrição no momento da ação, respeitando a habilitação elemental, os Graus e suas combinações. O jogador não precisa conhecer uma lista fechada de magias. Não há slots, peso mental, desconto de peso nem pagamento específico para memorizar/criar. A **preparação em turnos** é o tempo de conjurar uma magia declarada, não a memorização antecipada: G2 mantém 2 turnos, G3 mantém 3 e G4 plena tem 6 (mínimo 3), com as acelerações já homologadas. Focos seguem com carga física. **PENDENTE** continuam apenas os efeitos/procedimentos não regulamentados, e não os slots.
 
 ## Perícia em Elemento Terra — atualização de 12/11/2026
 
