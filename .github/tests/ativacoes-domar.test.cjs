@@ -10,11 +10,12 @@ const paidPerks=[
  "pericia-em-armas-medias","pericia-em-armas-pesadas",
  "pericia-em-arremesso-de-armas","pericia-em-manejo-duplo","pugilismo"
 ];
-test("15 verbetes ativos e catalogo usam 1 PP ou 1 Coragem",()=>{
+test("15 verbetes ativos e catalogo usam Coragem, sem PP legado",()=>{
  for(const name of paidPerks){
   const page=read("pericias/"+name+".html");
   assert.equal(oldCost.test(page),false,name+" apresenta custo antigo");
-  assert.match(page,/1\s*PP\s*(?:ou|\/)\s*1\s*Coragem/i,name+" deve indicar custo revisado");
+  assert.match(page,/<dt>Custo de ativação<\/dt><dd>1 Coragem/i,name+" deve indicar custo revisado");
+  assert.doesNotMatch(page,/1\s*PP\b/i,name+" não deve manter PP revogado");
  }
  assert.equal(oldCost.test(read("pericias/index.html")),false);
 });
@@ -27,11 +28,12 @@ test("Domar Media inclui Domar Pequena sem mudar XP e Domar Grande",()=>{
  assert.match(js,/id==="domar-criatura-media"&&!has\("domar-criatura-pequena"\)/);
  assert.match(js,/s:domar-criatura-pequena/);
 });
-test("Livro do Jogador da web preserva apenas custo histórico de preparação",()=>{
+test("Livro do Jogador da web revoga PP e pagamento por memorização de magias",()=>{
  const book=read("livro.html");
- const pairs=book.match(/1\s*PP\s*(?:ou|\/)\s*2\s*Coragens\b/gi)||[];
- assert.equal(pairs.length,1,"Somente preparação de magia fora de combate pode manter 2 Coragens");
- assert.match(book,/2 Coragens por criação/);
+ assert.doesNotMatch(book,/1\s*PP\s*(?:ou|\/)\s*2\s*Coragens\b/i);
+ assert.doesNotMatch(book,/2 Coragens por criação/i);
+ assert.match(book,/sem magias memorizadas/i);
+ assert.match(book,/custos exclusivamente em PP agora exigem <strong>1 Coragem por ativação<\/strong>/i);
 });
 test("Olhos de Águia permanece passiva sem gasto de Coragem",()=>{
  const html=read("pericias/olhos-de-aguia.html");
