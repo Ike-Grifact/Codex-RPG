@@ -69,28 +69,34 @@ test("Compra assistida inclui as duas Perícias anteriores e cobra três vezes 1
  assert.equal(ordered.reduce((total,x)=>total+prices.get(x),0),3);
 });
 
-test("Druídica fica comprável com Pequena, Média, Foco e Terra sem Domar Grande",()=>{
- const d=base(); d.practices.armas_conjuracao=1; d.practices.artesao=1;
- d.skills=[pequena,media,"criar-item-foco-magia","terra"];
- assert.equal(skillReq("pericia-druidica",d),null);
- assert.equal(dependentsValid({...d,skills:[...d.skills,"pericia-druidica"]}),null);
- d.skills=d.skills.filter(x=>x!==media);
- assert.match(skillReq("pericia-druidica",d),/Domar Média/);
+test("Druídica tem custo 1 XP e dois requisitos diretos: Pequena + Terra",()=>{
+ const d=base();
+ assert.match(skillReq("pericia-druidica",d),/Domar Criatura Pequena/);
+ d.skills=[pequena,"terra"];
+ assert.equal(skillReq("pericia-druidica",d),null,"nem Média nem Foco bloqueiam diretamente a compra");
+ assert.equal(prices.get("pericia-druidica"),1);
 });
-
-test("Druídica não depende de Grande para manter compra; depende de Pequena e Média",()=>{
- const d=base(); d.practices.armas_conjuracao=1; d.practices.artesao=1;
- d.skills=[pequena,media,grande,"criar-item-foco-magia","terra","pericia-druidica"];
+test("Retirar Domar Média não remove a Druídica, mas bloqueia Domar Grande",()=>{
+ const d=base();d.practices.armas_conjuracao=1;d.practices.artesao=1;
+ d.skills=[pequena,media,"criar-item-foco-magia","terra","pericia-druidica"];
  assert.equal(dependentsValid(d),null);
- assert.equal(dependentsValid({...d,skills:d.skills.filter(x=>x!==grande)}),null);
- assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==pequena)}),/Domar Criatura Pequena|Domar Pequena/);
- assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==media)}),/Domar Criatura Média|Domar Média/);
+ assert.equal(dependentsValid({...d,skills:d.skills.filter(x=>x!==media)}),null);
+ d.skills.push(grande);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==media)}),/Domar Criatura Média/);
 });
-
-test("Compra assistida Druídica lista quatro Perícias e nunca exige Domar Grande",()=>{
- assert.deepEqual(auto["pericia-druidica"][0],[
-  "s:domar-criatura-pequena","s:domar-criatura-media","s:criar-item-foco-magia","s:terra"
- ]);
- assert.equal(prices.get("pericia-druidica"),2);
+test("Druídica depende de Pequena e Terra; Terra conserva dependência própria de Foco",()=>{
+ const d=base();d.practices.armas_conjuracao=1;d.practices.artesao=1;
+ d.skills=[pequena,"criar-item-foco-magia","terra","pericia-druidica"];
+ assert.equal(dependentsValid(d),null);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!==pequena)}),/Domar Criatura Pequena|Domar Pequena/);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!=="terra")}),/Perícia em Elemento Terra|Elemento Terra/);
+ assert.match(dependentsValid({...d,skills:d.skills.filter(x=>x!=="criar-item-foco-magia")}),/Criar Item de Foco e Magia/,
+  "Sem Foco, a própria Terra perde requisito; a Druídica não o exige diretamente");
+});
+test("Compra assistida não inclui Média nem Foco como requisitos diretos da Druídica",()=>{
+ assert.deepEqual(auto["pericia-druidica"][0],["s:domar-criatura-pequena","s:terra"]);
+ assert.equal(auto["terra"][0].includes("s:criar-item-foco-magia"),true);
+ assert.equal(auto["pericia-druidica"][0].includes("s:domar-criatura-media"),false);
+ assert.equal(prices.get("pericia-druidica"),1);
  assert.equal(prices.get("domar-criatura-grande"),1);
 });
