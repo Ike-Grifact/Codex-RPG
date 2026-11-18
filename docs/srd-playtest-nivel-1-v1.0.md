@@ -22,6 +22,80 @@ repository: "Ike-Grifact/Codex-RPG"
 - **DEFINIDO:** os elementos **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não dependem de comprar Criar Item de Foco e Magia (decisão histórica v0.81). **Improviso Elemental** também não depende desse Foco: custa **1 XP**, exige Disciplina 1 + Inteligência 1 + Destreza 1 e mantém seus efeitos. Isso **não** elimina o requisito próprio de Foco de outras Perícias.
 - **PENDENTE DE RECONCILIAÇÃO:** trechos do Livro e guias antigos que ainda descrevem requisitos ou valores históricos. Quando não houver decisão explícita aqui, **não inventar** novos custos, DE, durações nem opções automáticas.
 
+## 1-A. Núcleo jogável para criar e rolar um Aprendiz (nível 1)
+
+**DEFINIDO — transcrição das regras atuais do Livro do Jogador, posteriores à continuidade v0.9 antiga.** Este quadro evita que a ficha de Playtest Nível 1 dependa de tabelas de XP e faces desatualizadas.
+
+### Atributos, Conhecimentos e Práticas
+
+**Seis Atributos:** Força, Agilidade, Destreza, Inteligência, Influência e Vigor.
+
+**Seis Conhecimentos:** Proteção, Astronomia, Medicina, Alquimia, Engenharia e Erudição.
+
+**Seis Práticas:** Disciplina, Atletismo, Furtividade, Artesão, Apresentação e Coleta. Disciplina integra usos marciais e mágicos na mesma graduação; as Perícias pertinentes determinam suas habilitações. **Não existem duas Práticas separadas de Armas e Conjuração.**
+
+| Grau | Dados de Atributo | XP acumulado | Dados de Conhecimento/Prática | XP acumulado |
+|---:|---|---:|---|---:|
+| 0 | 1d4 | 0 | 1d6 | 0 |
+| 1 | 1d6 | 1 | 1d10 | 2 |
+| 2 | 2d6 | 3 | 2d10 | 4 |
+| 3 | 3d6 | 6 | 3d10 | 8 |
+| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
+| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
+| 6 | 3d10 | 32 | 3d12 | 64 |
+
+**Criação, exemplo de Humano sem descontos:** escolha Atributo G1 (1 XP) e Conhecimento ou Prática G1 (2 XP). Dos **15 XP iniciais fixos**, **12 XP ficam livres** para quaisquer compras legais. Não exigir compra compulsória em uma terceira categoria nem obrigatoriedade de 5 XP em Perícias. As particularidades raciais já aprovadas continuam válidas e não são alteradas por esta nova numeração. Os **20 VT iniciais** permanecem **EXPERIMENTAIS**, independentes do XP.
+
+### Dados e faces simbólicas do Playtest Nível 1
+
+As faces são símbolos, não valores numéricos para somar à DE. **Êxito (E) ᛋ** `#267A45`, **Antecipar (A) ᚨ** `#2369BB`, **Pavor (P) ᚦ** `#542176`.
+
+| Face | d4 | d6 | d10 | d12 |
+|---:|---|---|---|---|
+| 1 | E | ○ | ○ | ○ |
+| 2 | A | ○ | ○ | ○ |
+| 3 | P | P | P | P |
+| 4 | ○ | P | P | P |
+| 5 | — | A+P | A+P | A+P |
+| 6 | — | E | E | E |
+| 7 | — | — | 2E | 2E |
+| 8 | — | — | E+A | E+A |
+| 9 | — | — | E+A+P | E+A+P |
+| 10 | — | — | **2E+A** | 2E+P |
+| 11 | — | — | — | E+2A+P |
+| 12 | — | — | — | 2P |
+
+A **face 4 do d4 é vazia**, mas continua sendo a face numérica máxima para críticos. A **face 10 do d10 é 2E+A**, sem Pavor (correção definida em 14/11/2026). Não reutilizar a distribuição antiga da continuidade v0.9. O **d20 extraordinário** está definido em fonte posterior, mas **não é compra comum de Aprendiz nível 1** e fica fora desta tabela de referência rápida.
+
+### Combinar, rolar e manter
+
+- **Composição comum do jogador:** iniciar a seleção por qualquer categoria e usar duas fontes pertinentes, sem repetir categorias: Atributo + Conhecimento, Atributo + Prática ou Conhecimento + Prática quando a regra aplicável permitir e houver Atributo presente na pilha; a exigência de Atributo na pilha permanece para o procedimento normal. Não combinar duas vezes a mesma fonte.
+- **Perícia Avançada** com a fonte predominante G2 e compra de **1 XP** habilita essa fonte + até duas outras fontes pertinentes, totalizando **até três fontes**, respeitando os requisitos adicionais próprios. **Conhecimento/Prática + dois Atributos diferentes** é permitido com habilitação pertinente; não habilita automaticamente uma terceira fonte pela mera existência de uma formação.
+- **Manejo Duplo** é exceção própria para duas seleções de Disciplina. A exceção **da transformação Druídica** restringe a rolagem às combinações de Atributos distintos por porte, conforme a seção 3.
+- **Limites absolutos:** até **9 dados rolados** e **4 mantidos** quando habilitado. No **nível 1**, manter **2 dados naturalmente** ou **3 com 1 Coragem**, desde que estejam na pilha; essa Coragem **não cria um novo dado**. No nível 1, não manter quatro sem habilitação posterior.
+- **Atributo é obrigatório na pilha, mas não entre os dados mantidos**, conforme a regra posterior do Livro do Jogador. Os símbolos de dados descartados não participam da resolução e **não geram Pavor/Coragem/Êxitos**.
+- **Antecipar:** cada 1A pode anular 1P próprio **ou** passar oportunidade para um aliado; 2A podem gerar 1E. Não gastar o mesmo A duas vezes. O jogador compara **E + P mantidos e não anulados** com a **Dificuldade de Êxito (DE)**: alcançar ou superar a DE cumpre a ação, mas acerto com Pavor não é acerto limpo. Pavor residual pode alimentar a reserva do adversário ou permitir intervenção na cena.
+- **Melhoria de dado com Coragem:** gastar **1 Coragem** antes da rolagem para subir **um dado** um passo na cadeia d4→d6→d10→d12, sem comprar novo Grau ou aumentar a pilha; regra comum de uma elevação por rodada. **A elevação de Atributos na transformação Druídica é um efeito específico e temporário diferente dessa compra de preparação.**
+- **Crítico:** todos os dados escolhidos para manter precisam estar nas **faces máximas**, com ao menos dois dados mantidos. O crítico recupera Coragem de acordo com a tabela atual (2 dados: 1; 3 ou 4: 2), sem conceder PP. A face máxima d4 vazia pode integrar esse critério.
+
+### Vida, estados e proteções básicos
+
+A Vida máxima do personagem é **4 + Grau de Vigor + piso(Grau de Força / 2)**. Se `X = Vigor + piso(Força/2)`, distribuir quatro caixas: **Saudável = 1 + teto(X/2)**; **Ferido = 1 + piso(X/2)**; **Incapacitado = 1**; **Inconsciente = 1**. Morte ocorre em 0 de Vida.
+
+| Estado atual | Modificador da rolagem | Custo para agir |
+|---|---|---|
+| Saudável | nenhum | 0 |
+| Ferido | −1A | 0 |
+| Incapacitado | −1E e +1P | 1 Coragem |
+| Inconsciente | −2E e +2P | 2 Coragens |
+| Morto | não age | — |
+
+Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores. Pavor do próprio estado conta normalmente para o risco e DE, se não anulado. Não curar automaticamente por transformação de formas sem o procedimento específico pendente da seção 3.
+
+**Armaduras G1 do catálogo de playtest:** Muito Leve 3, Leve 7, Média 12, Pesada 17 de Integridade, conforme as decisões vigentes posteriores à v0.44. Os modificadores de DE por tipo e efeitos de Escudo Arcano continuam de acordo com as regras recentes do Livro. As **formas Druídica e Elemental não utilizam armadura física**, conforme suas respectivas seções. Não conceder defesa ou dano suplementar sem texto aprovado.
+
+**DEFINIDO:** inimigos Grau 1 iniciam o conflito com a reserva local de Pavor estabelecida nas regras atuais (4P). Pavor **mantido e não anulado do ataque de um jogador** contra um adversário declarado vai à reserva do **alvo atacado**, não automaticamente ao inimigo mais próximo; a distribuição entre múltiplos alvos e ações sem alvo continua com regras próprias ainda incompletas. **Pavor mantido pelo inimigo em ataque** concede Coragem ao alvo jogador conforme a seção 2. Não recuperar a antiga mecânica genérica de **Pressão por dados descartados** da continuidade v0.9.
+
 ## 2. Coragem simples — sem desenvolver Maestrias neste ciclo
 
 **DEFINIDO — simplificação autoral de 18/11/2026:**
