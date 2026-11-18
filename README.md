@@ -1,5 +1,7 @@
 # Codex RPG
 
+**Regra mais recente (18/11/2026):** [SRD v0.80](docs/srd-continuidade-v0.80.md). Perícia Druídica agora custa **1 XP** com requisitos diretos **Domar Criatura Pequena + Perícia em Elemento Terra**; Domar Média habilita G2, Domar Grande habilita G3. **Criar Foco** deixa de ser requisito direto da Druídica, mas continua pré-requisito da própria Terra (dependência indireta ainda PENDENTE de revisão). Os textos de versões históricas abaixo não prevalecem sobre a v0.80.
+
 **Sistema independente de RPG narrativo e tático.** Todos os personagens começam como **Aprendizes** e constroem suas profissões por combinações de Atributos, Conhecimentos, Práticas, Perícias e equipamentos.
 
 Este repositório é o **novo lar independente** das regras, do Livro do Jogador e do criador de fichas do Codex RPG. A continuidade foi migrada de [Codex-de-Arb-rius](https://github.com/Ike-Grifact/Codex-de-Arb-rius), mas os projetos não compartilham regras automaticamente.
