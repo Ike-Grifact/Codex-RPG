@@ -4,6 +4,8 @@
 
 > **Perícia em Elemento Fogo [DEFINIDO]:** na preparação de uma conjuração de personagem com essa Perícia, o jogador declara o Grau e confirma sua habilitação e fonte elemental com o Narrador. **G1/G2 = 0 Coragem** mesmo sem foco se houver fonte de Fogo válida; **G3 = 1 Coragem** ao ativar com sucesso. A cobrança de característica **Elemental** não duplica o custo dessa mesma ativação. **G4** continua manual por combinar dois elementos G3 (1 Antecipar + 2 Coragens no total). Sem a Perícia ou confirmação do Grau, a declaração não é válida.
 
+> **Magia livre [DEFINIDO — 17/11/2026]:** não há memorização de magias, spellslots, custo de criação antecipada nem peso mental. A Perícia/Grau define o que pode ser conjurado, e o jogador concebe e narra a manifestação na hora da ação. Os tempos de conjuração, testes, custos de ativação e uso de foco continuam valendo. O protótipo Foundry não possui carteira de magias memorizadas a migrar. A declaração narrativa é feita à mesa; não há editor de feitiços persistentes nesta versão.
+
 **Estado:** implementação experimental em JavaScript para **Foundry VTT v14**. Não foi executado dentro de uma instância real, nem testado entre múltiplos usuários. Utilize somente em mundo de testes com backup.
 
 ## Instalar manualmente
