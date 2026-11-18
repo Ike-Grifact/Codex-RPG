@@ -1,5 +1,7 @@
 ## Criador e ficha unificados
 
+**DEFINIDO — SRD v0.82:** Improviso Elemental custa **1 XP** e requer somente **Disciplina 1 + Inteligência 1 + Destreza 1**, sem Criar Item de Foco e Magia. A compra assistida do Codex Genético e o visualizador clássico usam os mesmos requisitos; Foco não é comprado automaticamente. A Perícia mantém +1A e adaptação da natureza do dano quando há elemento disponível, sem controlar sua propriedade especial nem fornecer gratuitamente novas técnicas de alquimia/forja/encantamento. A **Maestria Elemental** preserva Criar Foco como seu requisito direto próprio. [SRD v0.82](../docs/srd-continuidade-v0.82.md).
+
 > **DEFINIDO — atualização 17/11/2026:** PP foi abolido das fichas. Críticos recuperam apenas Coragem; custos exclusivamente em PP passam a **1 Coragem por ativação**, preservando alternativas existentes em Coragem quando já constavam no verbete. Custos elementais G1/G2 habilitados continuam gratuitos; bônus especializados de Maestrias serão revistos depois. Exemplos históricos de versões antigas neste arquivo não prevalecem sobre o SRD v0.79.
 
 **Página única e canônica:** `prototipo-ficha/`. O endereço histórico `criador.html` agora redireciona para cá, sem remover o registro antigo do navegador.
