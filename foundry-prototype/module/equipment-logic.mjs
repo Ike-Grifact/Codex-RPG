@@ -37,8 +37,8 @@ export function skillPrerequisite(system,id){
  };
  return req[id]??true;
 }
-export function characteristicActivationPayment(payment){
- return payment==="pp"?{pp:1,courage:0}:{pp:0,courage:1};
+export function characteristicActivationPayment(){
+ return {courage:1}; // Ativação paga: recurso único, sem alternativa legada.
 }
 export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
