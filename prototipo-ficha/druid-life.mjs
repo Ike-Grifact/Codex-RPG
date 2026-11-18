@@ -6,9 +6,13 @@
  * XP de Atributos animais: tabela DEFINIDA na v0.56, seção 0-AS.2.
  * PVs temporários somente na transformação; a simulação de golpes não
  * reabastece a reserva. Temporários deixam de existir ao destransformar.
- * PENDENTE: reversão voluntária, dano não letal em forma menor,
- * transferência da Vida real entre formas sucessivas, Vida zero e
- * representação dos temporários nas quatro faixas.
+ * DEFINIDO: forma animal não possui armadura; Escudo Arcano ativo protege
+ * conforme regras externas da magia. Receber dano na simulação significa
+ * dano EFETIVO que atingiu Vida depois da barreira e outras defesas.
+ * Forma menor registra danos na Vida, inclusive não letais, para aplicar
+ * o TOTAL ACUMULADO quando um golpe que a mataria provocar reversão.
+ * PENDENTE: reversão voluntária, transferência da Vida real entre formas
+ * sucessivas, Vida zero e representação dos temporários nas quatro faixas.
  */
 // Tabelas de custo ACUMULADO da v0.56, G0..G6. Não usar a antiga
 // escala de companheiros v0.48 ou de Formação v0.47 em seu lugar.
@@ -82,30 +86,40 @@ export function prepararVidaDruidica({vidaMaximaHumana,vidaAtualHumana,vidaMaxim
   return {
     caso,vidaMaximaHumana,vidaMaximaAnimal,vidaHumanaReal:vidaAtualHumana,
     vidaAnimalAtual,pvTemporarios,formaSemVida:vidaAnimalAtual===0,
+    danoAcumuladoForma:0,
     automatizacaoBloqueada:true
   };
 }
 
 /**
  * Simula UM golpe sem resolver outros gatilhos de Pavor/cura/ferimentos.
- * Na forma menor, somente o golpe LETAL está definido integralmente:
- * cancela a forma e aplica o dano inteiro à Vida humana, não só excesso.
- * Dano não letal da forma menor permanece com integração PENDENTE.
+ * Em forma menor, os golpes sem morte ficam acumulados na Vida animal;
+ * quando um golpe mataria a forma, reverte e aplica o dano TOTAL ACUMULADO
+ * desde a transformação (inclusive golpe final) à Vida humana. Não somar
+ * novamente ferimentos humanos anteriores à transformação.
+ * 'dano' sempre significa o dano efetivo que alcançou Vida APÓS Escudo
+ * Arcano ou outra proteção aplicável. Escudo é resolvido fora do módulo.
+ * Reversão voluntária sem golpe letal ainda está PENDENTE.
  */
 export function simularGolpeDruidico({estado,dano}) {
   if(!estado || !["menor","igual","maior"].includes(estado.caso) ||
       !Number.isSafeInteger(estado.vidaAnimalAtual) || estado.vidaAnimalAtual<0 ||
       !Number.isSafeInteger(estado.vidaHumanaReal) || estado.vidaHumanaReal<0 ||
       !Number.isSafeInteger(estado.pvTemporarios) || estado.pvTemporarios<0 ||
-      !Number.isSafeInteger(dano) || dano<0)
+      !Number.isSafeInteger(estado.danoAcumuladoForma) || estado.danoAcumuladoForma<0 ||
+      estado.formaCancelada===true ||
+      !Number.isSafeInteger(dano) || dano<0 ||
+      !Number.isSafeInteger(estado.danoAcumuladoForma+dano))
     throw new RangeError("Estado de Vida ou dano inválido");
   if(estado.caso==="menor"){
     const golpeLetal=dano>=estado.vidaAnimalAtual && dano>0;
+    const danoAcumuladoForma=estado.danoAcumuladoForma+dano;
     return {
       ...estado,vidaAnimalAtual:Math.max(0,estado.vidaAnimalAtual-dano),
-      vidaHumanaReal:golpeLetal?Math.max(0,estado.vidaHumanaReal-dano):estado.vidaHumanaReal,
-      danoNaVidaReal:golpeLetal?dano:0,formaCancelada:golpeLetal,
-      morteHumana:golpeLetal&&dano>=estado.vidaHumanaReal,
+      danoAcumuladoForma,
+      vidaHumanaReal:golpeLetal?Math.max(0,estado.vidaHumanaReal-danoAcumuladoForma):estado.vidaHumanaReal,
+      danoNaVidaReal:golpeLetal?danoAcumuladoForma:0,formaCancelada:golpeLetal,
+      morteHumana:golpeLetal&&danoAcumuladoForma>=estado.vidaHumanaReal,
       propagacaoNaoLetalPendente:!golpeLetal
     };
   }
