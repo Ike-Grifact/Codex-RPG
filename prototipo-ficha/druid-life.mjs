@@ -3,10 +3,42 @@
  * NÃO altera fichas automaticamente; não cria cura, ganho de XP ou regras de
  * reversão ainda PENDENTES. Substitui a antiga hipótese de conversão de faixas.
  *
- * PENDENTE: tabela de Atributos animais por porte, reversão voluntária,
- * propagação de dano não letal em forma menor, transformações sucessivas,
- * Vida zero e distribuição dos temporários nas quatro faixas.
+ * XP de Atributos animais: tabela DEFINIDA na v0.56, seção 0-AS.2.
+ * PVs temporários somente na transformação; a simulação de golpes não
+ * reabastece a reserva. Temporários deixam de existir ao destransformar.
+ * PENDENTE: reversão voluntária, dano não letal em forma menor,
+ * transferência da Vida real entre formas sucessivas, Vida zero e
+ * representação dos temporários nas quatro faixas.
  */
+// Tabelas de custo ACUMULADO da v0.56, G0..G6. Não usar a antiga
+// escala de companheiros v0.48 ou de Formação v0.47 em seu lugar.
+const XP_ATRIBUTO_NORMAL=[0,1,3,6,9,18,32];
+const XP_ATRIBUTO_ELEVADO=[0,2,4,8,16,32,64];
+const ATRIBUTOS_ANIMAIS=new Set(["forca","agilidade","destreza","inteligencia","influencia","vigor"]);
+const PORTES_DRUIDICOS=new Set(["pequena","media","grande"]);
+
+/** XP da forma = XP total atual do druida. Apenas custos por porte são diferentes. */
+export function custoAtributoFormaDruidica({porte,atributo,grau}){
+  if(!PORTES_DRUIDICOS.has(porte) || !ATRIBUTOS_ANIMAIS.has(atributo) ||
+     !Number.isInteger(grau) || grau<0 || grau>6)
+    throw new RangeError("Porte, Atributo ou Grau inválido (Gigante ainda PENDENTE)");
+  const elevado=porte==="pequena"&&(atributo==="forca"||atributo==="vigor");
+  return (elevado?XP_ATRIBUTO_ELEVADO:XP_ATRIBUTO_NORMAL)[grau];
+}
+
+/** Valida o orçamento de uma ficha animal, sem gastar XP na ficha do druida. */
+export function conferirXPFormaDruidica({xpTotalDruida,porte,graus}){
+  if(!Number.isSafeInteger(xpTotalDruida)||xpTotalDruida<0||
+     !graus||typeof graus!=="object"||Array.isArray(graus))
+    throw new RangeError("Orçamento de XP ou distribuição animal inválida");
+  const compras=Object.entries(graus);
+  const gasto=compras.reduce((s,[atributo,grau])=>
+    s+custoAtributoFormaDruidica({porte,atributo,grau}),0);
+  if(!PORTES_DRUIDICOS.has(porte))throw new RangeError("Porte não habilitado");
+  return {porte,xpTotalDruida,gasto,saldo:xpTotalDruida-gasto,
+    dentroDoOrcamento:gasto<=xpTotalDruida};
+}
+
 export function distribuirVidaEmQuatroFaixas(vidaMaxima) {
   if (!Number.isSafeInteger(vidaMaxima) || vidaMaxima < 4) {
     throw new RangeError("Vida máxima deste modelo deve ser inteiro >= 4.");
@@ -34,8 +66,9 @@ export function vidaAnimalAoTransformar({vidaMaximaHumana,vidaAtualHumana,vidaMa
 /**
  * Compara Vida MÁXIMA, mas preserva a Vida humana ATUAL. Em forma maior,
  * o excedente A-H é temporário e não soma Vida à reserva humana.
- * O resultado é uma visualização do início da transformação, não uma
- * concessão automática de PV ao repetir transformações sucessivas.
+ * PV temporário é concedido SOMENTE NESTE ATO DE TRANSFORMAR; 
+ * simular golpes nunca o regenera. Na reversão ele deixa de existir.
+ * A passagem de Vida real entre transformações sucessivas requer regra própria.
  */
 export function prepararVidaDruidica({vidaMaximaHumana,vidaAtualHumana,vidaMaximaAnimal}) {
   if (!valido(vidaMaximaHumana,vidaAtualHumana,vidaMaximaAnimal))
