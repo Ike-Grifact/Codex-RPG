@@ -8,7 +8,7 @@ O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções inic
 
 **DEFINIDO:** para concluir a criação, tenha **pelo menos um Atributo grau 1** (inclusive o Grau 1 racial automático, quando aplicável) e compre **pelo menos um Conhecimento ou Prática grau 1**. Depois, **todo XP restante fica livre** para Atributos, Conhecimentos, Práticas e Perícias. Não existem cotas obrigatórias por categoria nem 5 XP exclusivos para Perícias.
 
-**EXPERIMENTAL (montante):** a ferramenta usa **15 XP iniciais compartilhados**, total ainda sujeito a homologação. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 15 XP restam 12 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
+**DEFINIDO (orçamento fechado):** a ferramenta usa **15 XP iniciais compartilhados**, sem revisão do montante neste ciclo. Custos mínimos: Atributo grau 1 = 1 XP; Conhecimento/Prática grau 1 = 2 XP; no cenário de 15 XP restam 12 XP sem reserva por categoria. O sistema impede concluir a criação sem as duas compras mínimas.
 
 As antigas repartições 6/8/5 e 7/7/5 permanecem somente como histórico do SRD v0.38. Consulte [SRD de Continuidade v0.44](srd-continuidade-v0.44.md), seção 0-AD (Conjuração Refinada, Integridade G1 7/12/17, pedras raras 3× comuns e cálculo probabilístico da DE), 0-AC (ativação e foco), 0-AB (Trevas), 0-AA (Pavor do alvo), 0-Z (dados e Coragem) e 0-Y (criação).
 
@@ -26,7 +26,7 @@ Cada Atributo em grau 0 fornece 1d4 gratuito; cada Conhecimento ou Prática pert
 4. **VT e itens iniciais:** o playtest utiliza **20 VT experimentais**, valor separado dos 15 XP, distribuídos entre cinco recursos comuns. O catálogo G1 oferece compras opcionais com preços ainda **PROPOSTOS**, sem itens gratuitos presumidos. Equipamentos adquiridos entram no inventário da ficha.
 5. **Revisão:** finalizar somente após ter Atributo grau 1 e Conhecimento ou Prática grau 1, conferindo também recursos e itens.
 
-**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **EXPERIMENTAL:** total compartilhado de 15 XP; saldo livre de 12 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
+**DEFINIDO:** liberdade de compra após o mínimo de 1+2 XP. **DEFINIDO:** total compartilhado de 15 XP; saldo livre de 12 XP se ambas as escolhas estavam no grau 0. Outros investimentos não são reembolsados automaticamente ao voltar ao guia.
 
 No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados usam a geometria, cores e rótulos dN do rolador **entre os botões − e +**, expandindo até três dados por fonte. As ramificações de Perícias formam um grafo de afinidades conectado no estilo visual Obsidian. Perícias **roxas** têm uma compra automática possível: o XP cobre o custo dos graus e Perícias necessários e da própria Perícia. A ferramenta mostra o pacote e exige confirmação explícita antes de gastar. Perícias **azuis** já atendem seus requisitos. Os detalhes abrem sobre o mapa; as conexões representam afinidades temáticas, não requisitos.
 
