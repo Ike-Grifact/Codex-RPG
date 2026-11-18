@@ -101,7 +101,7 @@ A [continuidade v0.48](srd-continuidade-v0.48.md), seção 0-AK, prevalece sobre
 
 **Pequena:** enquanto apoio comum não exige ficha completa de combate. Em missão separada ou outro perigo independente possui **1 ponto de Vida próprio**, além de conceder +1 Vida ao domador. **Ficha independente opcional:** XP total igual ao do jogador, com **Força e Vigor custando o dobro da tabela normal de Atributos**. Os demais Atributos seguem a escala normal. A Pequena tem **1 Vida base**, mas a ficha desenvolvida pode ampliar a Vida própria por `1 + Vigor + piso(Força/2)`; os custos de **Força e Vigor são dobrados desde o Grau 1**. O orçamento de XP da criatura acompanha o **XP total atualizado do jogador**. Aumento de Vida máxima não cura ferimentos automaticamente. A aplicação das quatro faixas a criaturas de menos de 4 Vida permanece PENDENTE. Médias/Grandes têm Vida conforme a ficha; cada porte concede +1 Vida ao domador. A alocação do bônus nas quatro faixas permanece pendente.
 
-**Armadura Muito Leve G1:** **3 de Integridade**, preservando o bônus de esquiva, Leve 7, Média 12 e Pesada 17. **Druídica:** danos sofridos antes da transformação reduzem ponto por ponto a Vida atual inicial da forma animal; ferimentos novos no retorno exigem definição.
+**Armadura Muito Leve G1:** **3 de Integridade**, preservando o bônus de esquiva, Leve 7, Média 12 e Pesada 17. **Druídica — decisão posterior:** XP de **todas as formas**, inclusive Pequena, acompanha o XP atual do druida; Vida máxima provém da ficha animal. Forma com máximo menor reverte ao sofrer golpe letal e transfere o dano integral ao druida; forma com máximo igual usa sua Vida atual; máximo maior fornece excedente em PVs temporários antes de atingir a Vida real. Detalhes operacionais de reversão/estados continuam pendentes.
 
 **Pavor sem alvo**, como em Escudo Arcano, vai para a reserva pública do Narrador até o teto. O excedente ativa intervenção inimiga, selecionando preferencialmente o mais próximo do último jogador ativo; em empate, maior DE, depois maior Vida, a critério da cena. Tarifa de múltiplos excedentes ainda pendente.
 
@@ -142,7 +142,7 @@ As penalidades **não se acumulam entre estados**. Os custos de Coragem são nec
 
 **DEFINIDO — risco como escolha narrativa:** o Pavor vindo do estado de Saúde **conta na soma da DE** exatamente como o Pavor dos dados mantidos. Um personagem Inconsciente pode alcançar DE usando Pavor, mesmo com seus Êxitos reduzidos, mas deve pagar **2 Coragens por ação** e aceitar as consequências do Pavor não anulado. **Não excluir esse Pavor da DE:** o autor manteve expressamente o benefício arriscado para preservar agência na adversidade. Um acerto com Pavor não é um acerto limpo. [Análise probabilística exata](playtests/analise-saude-quatro-estados-2026-11-16.md).
 
-**Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e conversão de ferimentos da Druídica ainda exigem revisão nas novas faixas. As rolagens de **personagens no protótipo Foundry** também incluem custos e modificadores de Saúde. Em **Criar Conflito**, a Vida máxima e o cálculo do estado foram atualizados; os custos automáticos dos NPCs e monstros permanecem pendentes.
+**Implementação e pendências:** o criador passa a usar quatro caixas, fórmula com Força e modificadores de Saúde nas rolagens. Fichas já salvas preservam a Vida atual numérica, sem cura gratuita devido ao ponto adicional de base. Recuperação natural, Recuperação Vigorosa, Instinto de Sobrevivência, Veneno e **alocação de PVs temporários/reversão da Druídica** ainda exigem revisão nas novas faixas. As rolagens de **personagens no protótipo Foundry** também incluem custos e modificadores de Saúde. Em **Criar Conflito**, a Vida máxima e o cálculo do estado foram atualizados; os custos automáticos dos NPCs e monstros permanecem pendentes.
 
 ## Domar Criaturas e Pavor Druídico — decisão de 16/11/2026 [DEFINIDO / PENDENTE]
 
@@ -162,19 +162,30 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 | Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
-| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal de **19 XP** (distribuição pendente) |
+| **1 — Pequena** | Perícia Druídica de **2 XP** + Domar Criatura Pequena | Transformação **gratuita**, sem teste, **Leve**, Vantagem Absoluta em Furtividade; ficha animal com **XP igual ao XP total atual do druida** (tabela de custos animais a reconciliar) |
 | **2 — Média** | **Sem XP adicional**; Domar Criatura Média já exigida | Ativar por **1 Coragem**, sem teste; **Leve**; mantém **2 dados naturalmente**, Vantagem em Agilidade/Destreza; **falha com Pavor** cancela a forma |
 | **3 — Grande** | **Progressão adicional**: exige adquirir Domar Criatura Grande depois, sem comprar Druídica novamente | Ativar por **1 Coragem**, sem teste; **Leve**; **combina três Atributos e mantém 3 dados naturalmente**; somente **Pavor mantido não cancelado por Antecipar** encerra a forma após a resolução da ação |
 
 **Viabilidade da build inicial [EXPERIMENTAL]:** um Humano sem descontos raciais precisa de **19 XP** com a cadeia atual; portanto, a Druídica não cabe no orçamento inicial experimental de **15 XP** dessa origem. **Lucker Puro** pode atingir os requisitos com **15 XP** pelas concessões de Foco/Inteligência, e **Runa Espinhos** com **13 XP** quando recebe Foco/Terra gratuitamente. São exemplos condicionados à origem, não redução geral de custos.
 
-**XP das formas média e grande:** a ficha animal recebe **a mesma quantidade de XP que o jogador**, para investir em Atributos animais segundo a **tabela normal de Atributos da v0.56**; o texto histórico anterior usava a **tabela de Conhecimentos e Práticas** (acumulados 2/8/20/38/66/102 nos Graus 1–6), e não segundo a tabela de Atributos dos jogadores. A base exata de XP total/obtido/gasto ainda está **PENDENTE** de padronização. A transformação usa a Vida animal e, ao retornar, recupera os próprios Atributos.
+**DEFINIDO — XP de todas as formas:** Pequena, Média e Grande utilizam como orçamento de seus **Atributos animais o XP total atual do próprio druida**; isso **revoga os antigos 19 XP fixos da forma Pequena**. O XP não é descontado do personagem. Usar as tabelas animais vigentes; **PENDENTE:** harmonizar a tabela de Conhecimentos/Práticas da v0.47, as revisões de Atributos da v0.56 e as tabelas particulares de criaturas/domesticação para identificar a progressão correta em cada porte antes de automatizar a distribuição. A transformação substitui Atributos e usa a Vida da criatura, sem recuperar ferimentos gratuitamente.
 
-### Vida Druídica e novo modelo de quatro faixas [PENDENTE na conversão]
+### Vida Druídica — comparação de máximos e Saúde em quatro faixas [DEFINIDO / PENDENTE]
 
-A divisão anterior de ferimentos em **três terços**, incluindo humano 4 = 2/1/1 e urso 6 = 2/2/2, foi **substituída** pela nova decisão de Saúde em **quatro estados**. Na nova distribuição de base + Vigor, humano com Vida 4 teria **1/1/1/1** e urso com Vida 6 teria **2/2/1/1**. A morte em forma animal continua implicando morte do druida.
+**DEFINIDO — regra posterior do autor:**
+- **Vida máxima animal menor que a máxima humana:** usa a Vida da criatura; o golpe que mataria a forma **cancela a transformação** e **aplica o dano total equivalente à Vida do druida**, que também pode morrer se o dano for suficiente. A transferência dos ferimentos anteriores à reversão permanece pendente.
+- **Máximos iguais:** a forma começa com a **Vida atual do druida**, sem cura e sem PV temporários; o dano integral pode causar morte enquanto transformado.
+- **Vida máxima animal maior:** o excedente da Vida animal é **PV temporário** sobre a Vida real atual do druida; dano atinge primeiro os PVs temporários e, após esgotá-los, a Vida real **integralmente**, podendo matar o druida em forma animal. Os PVs temporários não curam.
+  
+Exemplo: druida com máximo **6** e atual **4** entra em forma com máximo **8**: possui **2 PV temporários** e **4 de Vida real**. Um golpe de **3** esgota os 2 temporários e causa **1** de dano à Vida real.
 
-**PROPOSTO (não aprovado para transferência automática):** cada faixa animal completamente perdida descontaria a faixa humana de mesma posição. Com 4/6, o novo exemplo seria: urso perde 0–1 → humano 4; perde 2–3 → humano 3; perde 4 → humano 2; perde 5 → humano 1; perde 6 → morto. Este é **um efeito diferente do exemplo antigo de três terços**. A transferência entre as novas faixas precisa de aprovação autoral; não combinar as duas tabelas e não automatizar cura, ferimentos prévios ou alternância de formas.
+**PENDENTE:** detalhes de ferimentos não letais em forma menor, reversão voluntária, retransformações sucessivas, alocação dos PVs temporários nas quatro faixas e reconciliação das tabelas de custos das formas. A antiga proposta de converter dano por faixas inteiras foi substituída. **Não automatizar procedimentos não concluídos.**
+
+### Histórico revogado: conversão de ferimentos por faixas
+
+
+
+> **HISTÓRICO REVOGADO:** a divisão antiga em três terços e a hipótese de converter cada faixa animal integralmente perdida em uma faixa humana não são mais procedimentos vigentes. A Vida mantém as quatro faixas de Saúde, mas agora segue os três casos aprovados acima.
 
 **Implementação:** a aquisição da Druídica exige apenas as Perícias Domar Pequena e Média mais Foco e Terra; a possibilidade de assumir forma Grande é separada da aquisição e exige Domar Grande. A transformação não depende de domesticação prévia da espécie. A ficha deve validar a compra pelas regras vigentes, sem aplicar automaticamente os efeitos ainda pendentes. As formas e conversão de Vida ainda não são automatizadas. [Verbete completo](../pericias/pericia-druidica.html) e [SRD v0.47](srd-continuidade-v0.47.md).
 
