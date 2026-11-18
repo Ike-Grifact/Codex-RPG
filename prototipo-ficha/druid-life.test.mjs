@@ -142,3 +142,56 @@ test("PVs temporários só surgem ao transformar; não regeneram enquanto a form
   assert.equal(g3.vidaHumanaReal,4);
   assert.equal(g3.pvTemporarios,0);
 });
+
+test("Forma menor transfere TODO o dano acumulado em golpes diferentes, não apenas golpe final",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  const parcial=simularGolpeDruidico({estado:s,dano:2});
+  assert.equal(parcial.danoAcumuladoForma,2);
+  assert.equal(parcial.vidaHumanaReal,8);
+  assert.equal(parcial.formaCancelada,false);
+  const mortalForma=simularGolpeDruidico({estado:parcial,dano:3});
+  assert.equal(mortalForma.formaCancelada,true);
+  assert.equal(mortalForma.danoAcumuladoForma,5);
+  assert.equal(mortalForma.danoNaVidaReal,5);
+  assert.equal(mortalForma.vidaHumanaReal,3);
+  assert.equal(mortalForma.morteHumana,false);
+});
+
+test("Ferimento humano prévio não é cobrado novamente ao reverter por golpe letal",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:6,vidaMaximaAnimal:5});
+  assert.equal(s.vidaAnimalAtual,3);
+  const primeiro=simularGolpeDruidico({estado:s,dano:1});
+  const segundo=simularGolpeDruidico({estado:primeiro,dano:2});
+  assert.equal(segundo.danoAcumuladoForma,3);
+  assert.equal(segundo.vidaHumanaReal,3);
+  assert.equal(segundo.danoNaVidaReal,3);
+});
+
+test("Dano de excesso na forma menor entra integral no acúmulo e pode matar humano",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  const um=simularGolpeDruidico({estado:s,dano:2});
+  const fatal=simularGolpeDruidico({estado:um,dano:7});
+  assert.equal(fatal.danoAcumuladoForma,9);
+  assert.equal(fatal.danoNaVidaReal,9);
+  assert.equal(fatal.vidaHumanaReal,0);
+  assert.equal(fatal.morteHumana,true);
+});
+
+test("Dano integral bloqueado pelo Escudo Arcano não entra na Vida nem no acúmulo",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  // Escudo resolve-se fora deste módulo; aqui só chega o dano efetivo à Vida.
+  const escudoBloqueou=simularGolpeDruidico({estado:s,dano:0});
+  assert.equal(escudoBloqueou.danoAcumuladoForma,0);
+  assert.equal(escudoBloqueou.vidaAnimalAtual,5);
+  const real=simularGolpeDruidico({estado:escudoBloqueou,dano:2});
+  const fatal=simularGolpeDruidico({estado:real,dano:3});
+  assert.equal(fatal.danoNaVidaReal,5);
+  assert.equal(fatal.vidaHumanaReal,3);
+});
+
+test("Não é possível recontar golpes depois da forma já cancelada",()=>{
+  const s=prepararVidaDruidica({vidaMaximaHumana:8,vidaAtualHumana:8,vidaMaximaAnimal:5});
+  const cancelada=simularGolpeDruidico({estado:s,dano:5});
+  assert.equal(cancelada.formaCancelada,true);
+  assert.throws(()=>simularGolpeDruidico({estado:cancelada,dano:1}),RangeError);
+});
