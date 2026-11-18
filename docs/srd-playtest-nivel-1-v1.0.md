@@ -100,7 +100,7 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 
 **DEFINIDO — simplificação autoral de 18/11/2026:**
 
-- **Coragem inicial: 3 pontos**, conforme a referência a “3 Coragens” na decisão deste ciclo. **Teto base: 3** para o Aprendiz; a evolução neutra acrescenta **+1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20**, sem compra de Maestria (tetos base **3 / 4 / 5 / 6** por intervalo de nível). A confirmação textual do significado exato de “3 Coragens” permanece **PENDENTE DE REVISÃO** antes de substituir todas as reservas históricas de 10 nos sistemas, para não apagar saldos de personagens antigos por uma interpretação equivocada. **Até então o código legado mantém 10.**
+- **DEFINIDO:** **Coragem inicial: 3 pontos** e **teto base 3** para o Aprendiz no novo Playtest. A evolução neutra acrescenta **+1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20**, sem compra de Maestria (tetos **3 / 4 / 5 / 6** nos intervalos 1–4, 5–9, 10–19 e 20). **PENDENTE DE IMPLEMENTAÇÃO/MIGRAÇÃO:** o código legado ainda inicia a reserva em 10; não apagar ou converter saldos de fichas antigas silenciosamente. O valor aprovado de 3 prevalece como regra do novo ciclo.
 - **DEFINIDO:** Coragem é **reserva única**. Não reintroduzir PP ou a conversão antiga de PP.
 - **DEFINIDO:** recuperar Coragem por **crítico**, preservando a tabela de crítico aprovada: com **2 dados máximos mantidos +1**, com **3 ou 4 dados máximos mantidos +2**, sem ultrapassar o teto disponível. Crítico não devolve PP.
 - **DEFINIDO:** em combate, quando um **inimigo mantém Pavor**, ele gera Coragem para o personagem que é alvo do ataque, pela equivalência anterior **1 Pavor mantido e não anulado → 1 Coragem**, até o teto. Não conceder Coragem por Pavor descartado ou cancelado.
@@ -108,7 +108,7 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 - **DEFINIDO:** **descanso longo** recupera **Vigor + 1 Coragem**, sempre limitado ao teto do personagem, com ou sem Perícia. A Perícia de descanso curto não adiciona automaticamente outra recuperação no mesmo descanso longo; eventual acúmulo fica **PENDENTE**.
 - **CONGELADO:** não comprar, desenvolver nem conceder agora efeitos de Maestrias especializadas, gatilhos de Precisão/Combo/Mestre de Armas nem bônus de +2/+3 de Maestria. Tais projetos seguem arquivados/adiados, **não autorizados para o Playtest Nível 1**. A Perícia histórica *Maestria Elemental* de conjuração permanece distinta e não é convertida automaticamente em uma identidade de recuperação.
 
-**Compatibilidade:** qualquer mudança de teto inicial em fichas já salvas exigirá migração explícita sem perda silenciosa de Coragem. Enquanto a ambiguidade da expressão “3 Coragens” não for definitivamente verificada, as regras de recuperação e os três marcos de progressão estão aprovados, mas **a aplicação automática do novo teto está suspensa**.
+**Compatibilidade:** o teto de 3 Coragens está **DEFINIDO** no SRD v1.0. Sua aplicação às **fichas antigas**, aos NPCs humanoides e ao Foundry exige migração explícita e testes de regressão para não apagar saldos silenciosamente. Até que essa migração seja implementada, os protótipos ainda exibem o valor antigo; isso é uma **divergência de implementação**, não uma regra alternativa aprovada.
 
 ## 3. Transformação Druídica — novo ramo animal
 
