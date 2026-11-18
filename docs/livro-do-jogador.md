@@ -1,6 +1,6 @@
 # Codex RPG — Livro do Jogador
 
-> **Continuidade mais recente — SRD v0.79 (branch de revisão):** a [decisão sobre magia livre](srd-continuidade-v0.79.md) substitui todas as regras históricas de magias memorizadas, spellslots, peso mental e custo de criação antecipada. O autor aprovou que a magia seja concebida e narrada na ação, respeitando Perícias, Graus, DE, custos e duração da conjuração. A memorização de formas druídicas é mecânica distinta.
+> **Continuidade mais recente — SRD v0.79 (branch de revisão):** a [decisão sobre magia livre](srd-continuidade-v0.79.md) substitui todas as regras históricas de magias memorizadas, spellslots, peso mental e custo de criação antecipada. O autor aprovou que a magia seja concebida e narrada na ação, respeitando Perícias, Graus, DE, custos e duração da conjuração. A Perícia Druídica permite **escolher a forma ao transformar**, sem memorização de formas; seus requisitos de Domar, portes e custos permanecem.
 
 ## Edição de leitura do portal · v0.13 (12 de novembro de 2026)
 
@@ -152,13 +152,13 @@ Cada personagem pode manter **uma criatura domesticada de cada categoria: Pequen
 
 **Domar Média e Domar Grande** têm limite e papel de requisitos Druídicos definidos, mas **custos, requisitos e procedimentos individuais ainda PENDENTES**. [Verbetes](../pericias/).
 
-**Druídica Grau 3:** ao transformar, pagar **1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. A memória de formas permanece ilimitada, independentemente do limite de companheiros.
+**Druídica Grau 3:** ao transformar, pagar **1 Coragem**, combinar **três Atributos pertinentes** e manter **três dados naturalmente**. **Somente Pavor mantido não cancelado por Antecipar** encerra a forma depois da ação. Um Antecipar cancela um Pavor; dados descartados não contam. O druida escolhe sua forma ao transformar; não memoriza formas nem utiliza lista de formas aprendidas. O limite de companheiros domesticados é outra regra.
 
 **Combinação de Atributos de criaturas [DEFINIDO — SRD v0.79, 17/11/2026]:** criaturas e monstros com **ficha somente de Atributos** são exceção à exigência comum de Conhecimento ou Prática. Monstros **Pequenos e Médios** podem combinar **até 2 Atributos diferentes** pertinentes ao teste; apenas monstros do tipo **Grande** podem combinar **até 3 Atributos diferentes**, como **Força + Agilidade + Vigor**. **Nunca** selecionar o mesmo Atributo duas vezes (ex.: **Força + Força** é inválido). A exigência de Conhecimento/Prática e as habilitações de terceira fonte continuam aplicáveis a jogadores e monstros humanoides. A transformação **Druídica G3** permanece regida por sua descrição específica, com três Atributos diferentes, sem alteração de dados por Grau ou limites de rolagem. Outros detalhes de fontes, graus e dados para monstros seguem PENDENTES.
 
 ## Perícia Druídica — decisão revisada em 15/11/2026 [DEFINIDO / PENDENTE]
 
-**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida memoriza **quantas formas quiser**, desde que sejam de criaturas que **efetivamente domou**.
+**Compra ÚNICA de 2 XP — sem custo adicional por Grau**. Os três Graus de transformação são efeitos da **mesma Perícia Druídica**; nenhum Grau é comprado separadamente. **Requisitos cumulativos:** Influência 2, Criar Item de Foco e Magia, **Domar Criatura Pequena, Domar Criatura Média e Domar Criatura Grande**, além de Perícia em Elemento Terra. Esses requisitos são custosos por si mesmos, não justificando cobrar mais 2 XP por cada forma. O druida **escolhe a forma no instante da transformação**, sem precisar memorizar, aprender individualmente ou registrar formas. Os pré-requisitos de Domar e os portes habilitados permanecem; esta atualização não concede automaticamente formas de criaturas nunca domadas.
 
 | Grau de transformação | Aquisição e requisitos | Forma e características |
 |---|---|---|
