@@ -33,7 +33,7 @@ const { chromium } = require('playwright');
       console.log('[TRACE]', testCase.name, 'entrou na etapa 2');
       await page.locator('button[data-action="wizard-starter-attr"][data-key="forca"]').click();
       const currentSource=await page.locator('#wizard-summary').innerText();
-      if(!currentSource.includes('17 XP'))throw new Error('Começar com Força não debitou 1 XP imediatamente: '+currentSource);
+      if(!currentSource.includes('14 XP'))throw new Error('Começar com Força não debitou 1 XP imediatamente: '+currentSource);
       await page.waitForSelector('button[data-action="wizard-starter-training"][data-group="' + testCase.group + '"][data-key="' + testCase.id + '"]');
       console.log('[TRACE]', testCase.name, 'selecionou atributo');
       await page.locator('button[data-action="wizard-starter-training"][data-group="' + testCase.group + '"][data-key="' + testCase.id + '"]').click();
@@ -53,7 +53,7 @@ const { chromium } = require('playwright');
       if (!content.includes('ETAPA 03') || !content.includes('Distribuição livre de XP')) {
         throw new Error('Falha de navegacao na etapa 2→3: ' + testCase.name + ' | ' + content.slice(0,300) + ' | Errors: ' + exceptions.join(' | '));
       }
-      if (!spent.includes('15 XP')) {
+      if (!spent.includes('12 XP')) {
         throw new Error('XP incorreto após confirmação: ' + spent.slice(0,450));
       }
       if (exceptions.length > 0) {
@@ -101,13 +101,13 @@ const { chromium } = require('playwright');
       // Ajustes são prévias. Confirmação é obrigatória antes de afetar a ficha.
       await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
       const budgetDraft=await page.locator('#gene-build-budget').innerText();
-      if(!budgetDraft.includes('14 XP')||!budgetDraft.includes('4 XP'))
+      if(!budgetDraft.includes('11 XP')||!budgetDraft.includes('4 XP'))
         throw new Error('Prévia de XP incorreta: '+budgetDraft);
       const spentBefore=await page.locator('#wizard-summary').innerText();
-      if(!spentBefore.includes('15 XP'))throw new Error('Alteração foi debitada antes de confirmar: '+spentBefore.slice(0,280));
+      if(!spentBefore.includes('12 XP'))throw new Error('Alteração foi debitada antes de confirmar: '+spentBefore.slice(0,280));
       await page.locator('#gene-build-actions button[data-action="gene-confirm"]').click();
       const afterConfirm=await page.locator('#wizard-summary').innerText();
-      if(!afterConfirm.includes('14 XP')||!afterConfirm.includes('4 / 18 XP'))
+      if(!afterConfirm.includes('11 XP')||!afterConfirm.includes('4 / 15 XP'))
         throw new Error('Evolução não confirmada no XP compartilhado: '+afterConfirm.slice(0,300));
       const attrCard=page.locator('#gene-builder-map [data-gene-id="attr:agilidade"].fp-gene-card');
       if(!await attrCard.count())throw new Error('Grau comprado sumiu no mapa após confirmar');
@@ -134,7 +134,7 @@ const { chromium } = require('playwright');
       });
       await buyAll.click();
       const autoSpent=await page.locator('#wizard-summary').innerText();
-      if(!autoSpent.includes('9 XP')||!autoSpent.includes('9 / 18 XP'))
+      if(!autoSpent.includes('9 XP')||!autoSpent.includes('9 / 15 XP'))
         throw new Error('Compra automática não debitou os 5 XP completos: '+autoSpent.slice(0,350));
       const influence=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:influencia"]');
       if(!await influence.textContent().then(t=>t.includes('GRAU 2')))
@@ -151,7 +151,7 @@ const { chromium } = require('playwright');
       if(await page.locator('#gene-builder-map [data-gene-id="attr:agilidade"] .fp-gene-die-inline').count()!==3)
         throw new Error('Grau 3 não exibe três dados entre − e +');
       await page.locator('#gene-build-actions [data-action="gene-reset"]').click();
-      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('9 XP')))
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('6 XP')))
         throw new Error('Descartar evolução de três dados alterou o saldo real');
       await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
       await page.locator('#wizard-content button[data-action="wizard-tab"][data-group="attr"]').click();
@@ -159,7 +159,7 @@ const { chromium } = require('playwright');
         throw new Error('Alternância de volta às listas perdeu o Atributo comprado');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
       console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
-                  'categorias=',JSON.stringify(counters),'saldo=14 XP');
+                  'categorias=',JSON.stringify(counters),'saldo=11 XP');
       // O assistente agora inclui 20 VT experimentais para comprar os itens iniciais.
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-shop-catalog');
@@ -173,7 +173,7 @@ const { chromium } = require('playwright');
       await page.locator('#wizard-content [data-action="wizard-buy-item"][data-item="Faca"]').click();
       if(!await page.locator('#wizard-content').innerText().then(t=>t.includes('18')&&t.includes('Faca')))
         throw new Error('Compra de Faca não atualizou saldo VT e inventário inicial');
-      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('9 XP')))
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('6 XP')))
         throw new Error('Compra com VT afetou indevidamente o saldo de XP ou VT');
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
@@ -192,10 +192,10 @@ const { chromium } = require('playwright');
       if (await page.locator('#gene-map .fp-gene-card').count() !== 18)
         throw new Error('O mapa da ficha final perdeu uma fonte');
       await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:destreza"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('8 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('5 XP')))
         throw new Error('Saldo prévio de XP na ficha final não responde aos dados');
       await page.locator('#gene-sheet-actions [data-action="gene-reset"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('9 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('6 XP')))
         throw new Error('Descartar evolução falhou na ficha final');
       if(exceptions.length)throw new Error('Erros Javascript na ficha final: '+exceptions.join(' | '));
       console.log('PASS', testCase.name);
