@@ -11,7 +11,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
    const idx=JSON.parse(localStorage.getItem(index));
    return JSON.parse(localStorage.getItem(prefix+idx.activeId)).character;
   },{index:INDEX,prefix:PREFIX});
-  const assertGrades=async(race,grades,free=18)=>{
+  const assertGrades=async(race,grades,free=15)=>{
    await page.locator("[data-race-select]").selectOption(race);
    const s=await read();
    assert.equal(s.race,race);
@@ -37,13 +37,13 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   await page.locator('#wizard-controls [data-action="wizard-next"]').click();
   await page.locator('[data-action="wizard-starter-attr"][data-key="agilidade"]').click();
   assert.equal((await read()).attributes.agilidade,1,"A escolha inicial de Agilidade deve ser compra imediata");
-  assert.match(await page.locator("#wizard-summary").innerText(),/17 XP/,"Humano gasta 1 XP ao escolher Agilidade");
+  assert.match(await page.locator("#wizard-summary").innerText(),/14 XP/,"Humano gasta 1 XP ao escolher Agilidade");
   // Escolher outro Atributo inicial substitui a compra anterior, sem empilhar G1.
   await page.locator('[data-action="wizard-back"]').click();
   await page.locator('[data-action="wizard-starter-attr"][data-key="forca"]').click();
   assert.equal((await read()).attributes.agilidade||0,0,"Agilidade deve ser devolvida ao trocar primeira escolha");
   assert.equal((await read()).attributes.forca,1,"Força deve ser o único G1 comprado");
-  assert.match(await page.locator("#wizard-summary").innerText(),/17 XP/,"trocar não deve acumular custo");
+  assert.match(await page.locator("#wizard-summary").innerText(),/14 XP/,"trocar não deve acumular custo");
   await page.locator('[data-action="wizard-back"]').click();
   await page.locator('[data-action="wizard-starter-attr"][data-key="agilidade"]').click();
   assert.equal((await read()).attributes.forca||0,0,"Força antiga não pode ficar comprada involuntariamente");
@@ -53,7 +53,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal(await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').getAttribute("aria-pressed"),"true","Codex Genético deve ser padrão");
   assert.equal(await page.locator("#gene-builder-map").isVisible(),true);
   assert.match(await page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:agilidade"]').textContent(),/GRAU 1/);
-  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/);
+  assert.match(await page.locator("#wizard-summary").innerText(),/12 XP/);
   await page.locator('[data-action="wizard-mode"][data-mode="list"]').click();
   assert.equal(await page.locator('#wizard-content [data-action="wizard-tab"]').count(),4,"Listas continuam acessíveis");
   await page.locator('[data-action="wizard-mode"][data-mode="genetic"]').click();
@@ -68,10 +68,10 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   await page.locator('[data-action="wizard-starter-attr"][data-key="agilidade"]').click();
   assert.equal((await read()).attributes.agilidade,1);
   assert.equal((await read()).attributes.vigor,1);
-  assert.match(await page.locator("#wizard-summary").innerText(),/18 XP/);
+  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/);
   await page.locator('[data-action="wizard-starter-training"][data-group="practice"][data-key="atletismo"]').click();
   await page.locator('#wizard-controls [data-action="wizard-next"]').click();
-  assert.match(await page.locator("#wizard-summary").innerText(),/16 XP/);
+  assert.match(await page.locator("#wizard-summary").innerText(),/13 XP/);
   assert.equal(await page.locator('#wizard-content [data-action="wizard-mode"][data-mode="genetic"]').getAttribute("aria-pressed"),"true");
   for(const key of ["agilidade","vigor"]){
    const card=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:'+key+'"]');
@@ -90,7 +90,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal(changed.attributes.destreza,1);
   assert.equal(changed.attributes.influencia||0,0,"Influência não é favorecida pelo Puro");
   assert.deepEqual(changed.racialInitialAttributes.sort(),["destreza","inteligencia"]);
-  assert.match(await page.locator("#wizard-summary").innerText(),/15 XP/,"Somente Atletismo elevado custa 3 XP; Puro recebe apenas seus dois Graus gratuitos");
+  assert.match(await page.locator("#wizard-summary").innerText(),/12 XP/,"Somente Atletismo elevado custa 3 XP; Puro recebe apenas seus dois Graus gratuitos");
   assert.equal(await page.locator('#wizard-steps [data-action="wizard-go"][data-step="0"]').getAttribute("aria-current"),"step","Troca de raça reinicia escolha inicial");
   // Uma ficha legada da v0.61 identificada pelo marcador de G1 racial
   // é corrigida sem apagar compras manuais de outros Atributos.
@@ -108,7 +108,7 @@ const INDEX="codex-rpg-jogadores-index-v1",PREFIX="codex-rpg-jogador-ficha-v1:";
   assert.equal(migrated.attributes.influencia||0,0,"Remover só Influência G1 marcada como benefício incorreto");
   assert.equal(migrated.attributes.forca,1,"Atributo comprado à parte deve permanecer");
   assert.deepEqual(migrated.racialInitialAttributes.sort(),["destreza","inteligencia"]);
-  assert.match(await page.locator("#wizard-summary").innerText(),/13 XP/,"Força elevada 2 XP + Atletismo elevado 3 XP = 5 XP");
+  assert.match(await page.locator("#wizard-summary").innerText(),/10 XP/,"Força elevada 2 XP + Atletismo elevado 3 XP = 5 XP");
   // Um G2 de Influência feito manualmente deve sobreviver à correção.
   await page.evaluate(({index,prefix})=>{
    const idx=JSON.parse(localStorage.getItem(index));

@@ -42,7 +42,7 @@ jobs:
           cat /tmp/codex-http.log
           exit 1
       - name: Testar custo de XP da criatura Pequena independente
-        run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs prototipo-ficha/domar-chain.test.mjs
+        run: node --test prototipo-ficha/companion-small.test.mjs prototipo-ficha/druid-life.test.mjs prototipo-ficha/domar-chain.test.mjs prototipo-ficha/druid-action.test.mjs prototipo-ficha/creation-xp.test.mjs
       - name: Validar quatro linhagens e custos raciais
         run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs prototipo-ficha/armor-defense.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel

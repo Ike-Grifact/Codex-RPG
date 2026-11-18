@@ -37,8 +37,15 @@ export function skillPrerequisite(system,id){
  };
  return req[id]??true;
 }
-export function characteristicActivationPayment(payment){
- return payment==="pp"?{pp:1,courage:0}:{pp:0,courage:1};
+// Fogo G4 é conjuração conjunta de dois G3, ainda não automatizada nesta ficha.
+// Para Fogo individual, G1/G2 são gratuitos com a Perícia e G3 custa 1 Coragem.
+export function fireActivationCourage(grade,hasFireSkill){
+ const n=Number(grade);
+ if(!hasFireSkill||![1,2,3].includes(n))return null;
+ return n===3?1:0;
+}
+export function characteristicActivationPayment(){
+ return {courage:1}; // Ativação paga: recurso único, sem alternativa legada.
 }
 export function canSpendXP(system,delta){
  const ledger=xpLedger(system);

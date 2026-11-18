@@ -1,7 +1,7 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
- from "./rules.mjs?v=20261116-domar53";
+ PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
+ from "./rules.mjs?v=20261117-fogo-g2-free";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261115-kinds1";
@@ -378,7 +378,7 @@ function rollWorkspace(t){
   '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.'+
   (stats(t).playerEquivalentLevel?' Grau 2 corresponde à ameaça de um jogador nível 5, mas a retenção usa o Grau.':'')+'</p></div>'+
   '<div class="cf-roll-resources"><span>Pavor local <b>'+t.pavorLocal+' / '+stats(t).limitLocal+'</b></span>'+
-  (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / 10</b>'+
+  (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / '+maxCourage(t.level)+'</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
   '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
@@ -462,7 +462,7 @@ function rollPane(t){
    '<option value="'+key+'"'+((r?.situation||d.situation)===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
   prepare+extraHint+'<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
   (r?'<button type="button" data-roll-clear>Alterar fontes</button>':"")+
-  '<span>Até '+allowed+' dados mantidos'+(human?' · Coragem '+t.courage+'/10':
+  '<span>Até '+allowed+' dados mantidos'+(human?' · Coragem '+t.courage+'/'+maxCourage(t.level):
    ' · '+Math.max(0,t.keep-2)+'P local se mantiver todos os planejados')+'</span></div>'+
   dice+(r?'<div class="cf-roll-config">'+
    '<label>Anular P (1A por P)<input type="number" data-roll-param="cancelP" min="0" max="9" value="'+r.cancelP+'"></label>'+
@@ -612,6 +612,7 @@ function update(field,value){
  t.pavorLocal=Math.min(t.pavorLocal,stats(t).limitLocal);
  t.keep=Math.min(t.keep,stats(t).keepMax);
  t.life=Math.min(t.life,stats(t).life);
+ t.courage=Math.min(t.courage,maxCourage(t.level));
  save();render();
 }
 function gradeChange(group,key,delta){
@@ -622,6 +623,7 @@ function gradeChange(group,key,delta){
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
  t.life=Math.min(t.life,stats(t).life);
+ t.courage=Math.min(t.courage,maxCourage(t.level));
  save();render();
 }
 function addKind(kind){
@@ -716,7 +718,7 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-open-roll")){conflictMode="roll";render();scrollToRoll();return;}
  if(b.dataset.conflictMode){conflictMode=b.dataset.conflictMode==="roll"?"roll":"edit";render();return;}
  if(b.dataset.courage){const t=selected();if(!t||!isHumanoidKind(t.kind))return;
-  t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,10));save();render();return;}
+  t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,maxCourage(t.level)));save();render();return;}
  if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
  if(b.hasAttribute("data-export-rolls")){exportRollHistory();return;}
  if(b.hasAttribute("data-clear-rolls")){if(confirm("Apagar todo o histórico de rolagens? Exporte CSV ou JSON antes de limpar.")){

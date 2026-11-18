@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
  buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,healthBands,healthByLife,naturalDE,
- maxPP,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
+ maxCourage,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
 
@@ -92,7 +92,7 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.grant,19);
  assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
  assert.equal(lifeMax(s),5);
- assert.equal(maxPP(1),0);assert.equal(maxPP(5),1);
+ assert.equal(maxCourage(1),10);assert.equal(maxCourage(5),11);assert.equal(maxCourage(10),12);assert.equal(maxCourage(20),13);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
 });
 test("Vida 4+Vigor+piso(Força/2) e quatro estados com Coragem/Pavor",()=>{

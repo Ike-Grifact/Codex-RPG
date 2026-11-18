@@ -1,16 +1,16 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
- sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxPP,keepLimit,
+ sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxCourage,keepLimit,
  loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
-import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment} from "./equipment-logic.mjs";
+import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment,fireActivationCourage} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {CodexPavorPanel} from "./pavor-panel.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,attribute:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,step:false,contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",fireGrade:0,fireGradeConfirmed:false});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
@@ -53,7 +53,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    healthLabel:healthLabels[health.id],healthEffect:healthEffect+(actor.type==="character"&&healthCost?" · "+healthCost+" Coragem/ação":""),
    lifeBandsText:healthBands(s).join(" / "),
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:monster?defenseDE(actor):defenseDE(actor),
+   courage:s.courage,courageMax:maxCourage(s.level),de:monster?defenseDE(actor):defenseDE(actor),
    balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
@@ -77,6 +77,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,this._opts.mode):0;
    const plan=buildPool(s,d,{mode:this._opts.mode,contextApproved:this._opts.contextApproved,step:this._opts.step,equipmentDie:die});
    if(item&&!die){plan.errors.push("Item sem Perícia pertinente, não equipado ou elemento não habilitado.");plan.ok=false;}
+   if(Number(this._opts.fireGrade)>0){
+    if(actor.type!=="character"||this._opts.mode!=="conjuracao"||!s.skills.includes("fogo")){
+     plan.errors.push("Fogo exige a Perícia em Elemento Fogo e conjuração de personagem.");plan.ok=false;
+    }
+    if(!this._opts.fireGradeConfirmed){plan.errors.push("Confirme com o Narrador o Grau e a fonte de Fogo disponíveis.");plan.ok=false;}
+    if(item?.system.kind==="focus"&&String(item.system.element||"").trim()&&!/fogo/i.test(String(item.system.element))){
+     plan.errors.push("Foco de outro elemento não é fonte válida de Fogo; selecione sem foco e valide a fonte ambiental.");plan.ok=false;
+    }
+   }
    if(actor.type==="character"&&(health.id==="morto"||s.courage<healthCost+Number(this._opts.extraKeep)+Number(this._opts.step))){
     plan.errors.push(health.id==="morto"?"Vida zero: não pode agir.":"Coragem insuficiente para atuar em "+healthLabels[health.id]+".");plan.ok=false;
    }
@@ -90,6 +99,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     targetWeightLeve:this._opts.targetWeight==="leve",targetWeightMedio:this._opts.targetWeight==="medio",targetWeightPesado:this._opts.targetWeight==="pesado",
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
     step:this._opts.step,combatBonus:false,hasCombatSkill:false,
+    fireCanChoose:actor.type==="character"&&this._opts.mode==="conjuracao"&&s.skills.includes("fogo"),
+    fireGrade0:Number(this._opts.fireGrade)===0,fireGrade1:Number(this._opts.fireGrade)===1,fireGrade2:Number(this._opts.fireGrade)===2,
+    fireGrade3:Number(this._opts.fireGrade)===3,fireGradeConfirmed:!!this._opts.fireGradeConfirmed,
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:targets.length===1?targets[0].actor?.name:"",hasTarget:targets.length===1,inCombat:!!game.combat?.started,
@@ -116,8 +128,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
+    fireGrade:Number(p.options.fireGrade||0),
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
-    hasProperties:!!item?.system.properties?.length,paymentPP:p.options.activationPayment==="pp",paymentCourage:p.options.activationPayment!=="pp",
+    hasProperties:!!item?.system.properties?.length,
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
@@ -143,12 +156,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
    this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";}
+   if(key==="mode"){this._draft.complement=null;this._opts.contextApproved=false;this._opts.equipmentId="";this._opts.fireGrade=0;this._opts.fireGradeConfirmed=false;}
+   if(key==="fireGrade"){this._opts.fireGrade=Math.max(0,Math.min(3,Number(this._opts.fireGrade)||0));this._opts.fireGradeConfirmed=false;}
    this.render();return;
   }
   if(el.dataset.pendingOption&&this._pending){
    const key=el.dataset.pendingOption;
-   if(!["cancelP","convertPairs","characteristic","secondCharacteristic","activationPayment"].includes(key))return;
+   if(!["cancelP","convertPairs","characteristic","secondCharacteristic"].includes(key))return;
    this._pending.options[key]=["cancelP","convertPairs"].includes(key)?Math.max(0,Math.floor(Number(el.value)||0)):String(el.value);
    await this.actor.setFlag(NS,"pendingRoll",this._pending);this.render();
   }
@@ -195,9 +209,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;
   const field=target.dataset.resource,delta=Number(target.dataset.delta),s=this.actor.system;
-  const caps={"system.life.value":lifeMax(s),"system.courage":10,"system.pp":maxPP(s.level)};
+  const caps={"system.life.value":lifeMax(s),"system.courage":maxCourage(s.level)};
   if(!(field in caps)||![-1,1].includes(delta))return;
-  const current=field==="system.life.value"?s.life.value:field==="system.courage"?s.courage:s.pp;
+  const current=field==="system.life.value"?s.life.value:s.courage;
   await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
  }
  static async toggleSkill(event,target){
@@ -221,6 +235,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(item&&!die)throw Error("Equipamento não habilitado por Perícia/elemento.");
    opts.health=this.actor.type==="character"?healthByLife(s,Math.max(0,Math.min(lifeMax(s),Number(s.life.value)||0))):null;
    if(opts.health?.id==="morto")throw Error("Vida zero: personagem não pode agir.");
+   const fireGrade=Number(opts.fireGrade||0);
+   if(fireGrade){
+    if(this.actor.type!=="character"||opts.mode!=="conjuracao"||!s.skills.includes("fogo")||fireActivationCourage(fireGrade,true)===null)
+     throw Error("Fogo exige Perícia, modo Conjuração e Grau G1, G2 ou G3 válido.");
+    if(!opts.fireGradeConfirmed)throw Error("Confirme o Grau e a fonte elemental de Fogo com o Narrador.");
+    if(item?.system.kind==="focus"&&String(item.system.element||"").trim()&&!/fogo/i.test(String(item.system.element)))
+     throw Error("Foco equipado de outro elemento não é foco de Fogo. Declare conjuração sem foco e confirme a fonte ambiental.");
+   }
    const cost=Number(opts.extraKeep)+Number(opts.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(opts.health?.coragem||0);
    if((this.actor.type!=="character"?s.pavorLocal:s.courage)<cost)throw Error(this.actor.type!=="character"?"Pavor local insuficiente.":"Coragem insuficiente.");
    const targets=[...game.user.targets];if(targets.length>1)throw Error("Selecione no máximo um alvo.");
@@ -264,7 +286,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     skillBonusE:Number(p.options.skillBonusE||0)+Number(p.options.health?.e||0),
     hostile:this.actor.type==="humanoid"});
    if(!result.ok)throw Error(result.errors.join(" "));
-   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0),payPP=0;
+   let cost=Number(p.options.extraKeep)+Number(p.options.step)+(this.actor.type!=="character"&&game.combat?.started?1:0)+Number(p.options.health?.coragem||0);
+   const fireGrade=Number(p.options.fireGrade||0),fireCost=fireGrade?fireActivationCourage(fireGrade,s.skills.includes("fogo")):null;
+   if(fireGrade&&(this.actor.type!=="character"||p.options.mode!=="conjuracao"||!p.options.fireGradeConfirmed||fireCost===null))
+    throw Error("Conjuração de Fogo pendente não possui confirmação válida de Grau e fonte.");
+   if(fireGrade&&item?.system.kind==="focus"&&String(item.system.element||"").trim()&&!/fogo/i.test(String(item.system.element)))
+    throw Error("Foco de outro elemento não habilita Fogo.");
+   if(result.success&&fireGrade)cost+=fireCost;
    const available=item?.system.properties||[],first=p.options.characteristic||"",second=p.options.secondCharacteristic||"",active=[];
    if(result.success&&first){
     if(!available.includes(first))throw Error("Característica não pertence à arma.");
@@ -274,13 +302,19 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      active.push(second);
     }
     const activations=result.critical?(second?1:0):1;
-    if(activations){
+    // O custo da propriedade Elemental de Fogo é o do Grau declarado,
+    // não uma segunda Coragem de característica paga.
+    const paidFeature=result.critical?second:first;
+    const fireElemental=paidFeature==="Elemental"&&fireGrade>0&&p.options.mode==="conjuracao"&&
+     item?.system.kind==="focus"&&/fogo/i.test(String(item.system.element||""))&&s.skills.includes("fogo");
+    if(activations&&!fireElemental){
      if(this.actor.type!=="character")throw Error("Custo de característica paga por adversários ainda PENDENTE; execute a característica manualmente.");
-     const activation=characteristicActivationPayment(p.options.activationPayment);
-     payPP+=activation.pp;cost+=activation.courage;
+     cost+=characteristicActivationPayment().courage;
     }
    }
-   if(payPP>s.pp)throw Error("PP insuficiente.");
+   if(item?.system.kind==="focus"&&/fogo/i.test(String(item.system.element||""))&&s.skills.includes("fogo")&&
+    p.options.mode==="conjuracao"&&[first,second].includes("Elemental")&&!fireGrade)
+    throw Error("Selecione o Grau de Fogo para aplicar o custo correto da propriedade Elemental.");
    if(cost>(this.actor.type!=="character"?s.pavorLocal:s.courage))throw Error("Recurso insuficiente após ativação.");
    const kept=p.dice.filter(x=>p.selected.includes(x.id));
    const detail=kept.map(x=>'<li>d'+x.sides+': face '+x.face+' → '+escapeHTML(markerText(x.symbols))+'</li>').join("");
@@ -292,12 +326,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
     (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
+    (fireGrade?'<p><strong>Fogo G'+fireGrade+':</strong> '+(fireCost===0?'ativação-base gratuita':'1 Coragem por elevação a G3')+' (grau e fonte confirmados com Narrador).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
     '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+
-    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+', '+payPP+' PP. Crítico recupera recursos conforme os tetos.</small></p><ul>'+detail+'</ul></div>';
+    '<p><small>Custo bruto '+cost+(this.actor.type!=='character'?' Pavor local':' Coragem')+'. Crítico recupera Coragem até o teto atual.</small></p><ul>'+detail+'</ul></div>';
    if(this.actor.type!=="character")await this.actor.update({"system.pavorLocal":s.pavorLocal-cost});
-   else await this.actor.update({"system.courage":Math.min(10,s.courage-cost+result.criticalRefundCourage),
-    "system.pp":Math.min(maxPP(s.level),s.pp-payPP+result.criticalRefundPP)});
+   else await this.actor.update({"system.courage":Math.max(0,Math.min(maxCourage(s.level),s.courage-cost+result.criticalRefundCourage))});
    await ChatMessage.create({user:game.user.id,speaker:ChatMessage.getSpeaker({actor:this.actor}),content:text,
     flags:{[NS]:{rollId:p.id,result:{...result,selected:undefined},dice:p.dice,kept:p.selected,
      transfer:game.combat?.started&&(p.options.targetActorUuid||result.monsterCriticalPavor)?{

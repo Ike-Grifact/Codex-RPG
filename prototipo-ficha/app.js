@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica 2 XP única; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 18 XP iniciais experimentais (SRD v0.58). */
+/* Codex RPG — criador e ficha unificados. SRD v0.47 (Perícia Druídica 2 XP única; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 15 XP iniciais experimentais (SRD v0.79). */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -112,9 +112,12 @@ function raceChoicesComplete(s=state){
 }
 function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendente na v0.56.
 
-const CREATE_BUDGET={attr:18,training:18,skills:18,total:18}; // EXPERIMENTAL: total 18 XP; DEFINIDO: após um Atributo e um Conhecimento/Prática, saldo livre entre categorias.
-const XP_LEVEL_REFERENCE=[0,18,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // EXPERIMENTAL: 18 XP no nível 1; níveis 2–20 preservados, nível manual.
-const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 242 XP novos concedíveis (260 totais − 18 iniciais).
+const CREATE_BUDGET={attr:15,training:15,skills:15,total:15}; // EXPERIMENTAL: 15 XP globais; após 1+2 XP mínimos, saldo livre.
+const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // EXPERIMENTAL: 15 XP no nível 1; demais níveis preservados.
+const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 245 XP novos concedíveis (260 totais − 15 iniciais).
+// Todas as especializações Avançadas de Conhecimentos e Práticas exigem Grau 2
+// na respectiva fonte e custam 1 XP; outras exigências históricas permanecem.
+const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:2"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:2"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:2"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:2"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:2"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:2"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:2"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:2"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:2"}];
 const SKILLS=[
  [
   "combate",
@@ -143,13 +146,13 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativa UM efeito Psíquico no acerto por 1 PP/1 Coragem; foco por Artesão recarrega em N rodadas no Grau N. Desde Disciplina 2, pode criar fora de combate magias G2/G3 por 1 PP/1 Coragem e memorizar em slots; Criar Magia reduz 1 ponto do peso mental de magia criada e memorizada, mesmo com foco (G2=1, G3=2, G4=3); peso mínimo de G1 pendente. Capacidade mental é 1 ponto por Grau de Disciplina, não por dado. Pesos nominais G1=1, G2=2, G3=3, G4=4. Conjuração rápida da magia preparada conforme regras ainda pendentes.",
+  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativação-base G1/G2 Psíquica gratuita com a Perícia e o Grau habilitados; foco por Artesão recarrega em N rodadas no Grau N. Magias são criadas e narradas livremente na própria ação, conforme conceitos dos elementos, Perícias adquiridas, Graus, fontes e combinações habilitadas. Não há magias memorizadas, spellslots, peso mental, desconto de −1 por Criar Magia nem custo de 2 Coragens por criação fora de combate. Preparação G2/G3/G4 é tempo de conjuração em cena, não memorização, mantendo custos, DE, Pavor, focos e outros requisitos publicados.",
   1
  ],
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 PP ou 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 PP/1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Perfurante de armas físicas, sem anular acerto ou dano; Perfurar da magia de Água não é anulado. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
+  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Perfurante de armas físicas, sem anular acerto ou dano; Perfurar da magia de Água não é anulado. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
   1
  ],
  [
@@ -167,43 +170,43 @@ const SKILLS=[
  [
   "mestre",
   "Maestria Elemental",
-  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. Custo 1 PP ou 1 Coragem para mesclar dois elementos e ativar simultaneamente as propriedades especiais dos dois, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
+  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. A mistura consciente do segundo elemento custa 1A; o custo próprio histórico da Maestria para ativar duas propriedades especiais está PENDENTE de reconciliação, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
   1
  ],
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. Sem foco, invocar fogo custa 1 Coragem ADICIONAL à ativação-base: 1 PP + 1 Coragem ou 2 Coragens. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, 1 PP/1 Coragem ativa UM efeito especial. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, a ativação-base de um efeito G1/G2 habilitado é gratuita. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, gaste 1 PP ou 1 Coragem para escolher UM efeito especial. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, 1 PP ou 1 Coragem ativa UM efeito escolhido. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  "1 XP · Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 1 Coragem. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação-base gratuita em G1/G2 quando habilitada. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
   2
  ],
  [
   "veneno",
   "Perícia em Elemento Veneno",
-  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
+  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, aplica gratuitamente 1 acúmulo G1/G2 habilitado por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
   2
  ],
  [
@@ -215,25 +218,25 @@ const SKILLS=[
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação especial 1 PP ou 1 Coragem após acerto mesmo sem crítico. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
+  "Requisitos Disciplina 2, Inteligência 2 e Criar Item de Foco e Magia; magias Leves. Ativação-base G1/G2 gratuita com Perícia e Grau habilitados, respeitando gatilhos. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
   2
  ],
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 PP/1 Coragem. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 Coragem. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/1 Coragem. Ignora Desvantagem de peso contra médios. Não automatizado.",
+  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra médios. Não automatizado.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 PP/1 Coragem. Ignora Desvantagem de peso contra leves. Não automatizado.",
+  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra leves. Não automatizado.",
   2
  ],
  [
@@ -269,19 +272,19 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 PP/1 Coragem para mudar peso do soco. Pesos disponíveis PENDENTES.",
+  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 Coragem para mudar peso do soco. Pesos disponíveis PENDENTES.",
   1
  ],
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Pugilismo + Destreza 2. 1 PP/1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Disciplina 2 + Pugilismo + Destreza 2. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
   1
  ],
  [
   "maestria-arremesso-armas",
   "Perícia em Arremesso de Armas",
-  "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
+  "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
   1
  ],
  [
@@ -293,7 +296,7 @@ const SKILLS=[
  [
   "disparo-multiplo",
   "Disparo Múltiplo",
-  "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e somente 0,5 de dano por Pavor válido mesmo se Disparo Fulminante for ativado no principal. Cada técnica é paga separadamente; crítico não dispensa custo. Armas de fogo usam apenas a modalidade especial Descarregar Tambor, nunca o efeito de Disparo Fulminante.",
+  "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e somente 0,5 de dano por Pavor válido mesmo se Disparo Fulminante for ativado no principal. Cada técnica é paga separadamente; crítico não dispensa custo. Armas de fogo usam apenas a modalidade especial Descarregar Tambor, nunca o efeito de Disparo Fulminante.",
   1
  ],
  [
@@ -317,7 +320,7 @@ const SKILLS=[
  [
   "maestria-manejo-duplo",
   "Perícia em Manejo Duplo",
-  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 PP ou 1 Coragem para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 PP ou 1 Coragem. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
+  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 Coragem para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 Coragem. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
   1
  ],
  [
@@ -359,7 +362,7 @@ const SKILLS=[
  [
   "armas-longo-alcance",
   "Perícia em Armas de Longo Alcance",
-  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 PP ou 1 Coragem ativa uma segunda; acerto normal exige 1 PP ou 1 Coragem.",
+  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 Coragem ativa uma segunda; acerto normal exige 1 Coragem.",
   2
  ],
  [
@@ -377,7 +380,7 @@ const SKILLS=[
  [
   "armas-fogo",
   "Perícia em Armas de Fogo",
-  "Perfurante, quando presente na arma de fogo, ativa passivamente no acerto, sem PP/Coragem; Barulhenta concede +1P passivo até mesmo no crítico. Crítico ativa UMA OUTRA característica escolhida gratuitamente; acerto normal custa 1 PP ou 1 Coragem para outras características. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 PP OU 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
+  "Perfurante, quando presente na arma de fogo, ativa passivamente no acerto, sem custo de ativação; Barulhenta concede +1P passivo até mesmo no crítico. Crítico ativa UMA OUTRA característica escolhida gratuitamente; acerto normal custa 1 Coragem para outras características. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
   3
  ],
  [
@@ -399,6 +402,66 @@ const SKILLS=[
   1
  ],
  [
+  "protecao-avancada",
+  "Proteção Avançada",
+  "1 XP. Requisito: Proteção 2. Com Proteção como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "astronomia-avancada",
+  "Astronomia Avançada",
+  "1 XP. Requisito: Astronomia 2. Com Astronomia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "alquimia-avancada",
+  "Alquimia Avançada",
+  "1 XP. Requisito: Alquimia 2. Com Alquimia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "engenharia-avancada",
+  "Engenharia Avançada",
+  "1 XP. Requisito: Engenharia 2. Com Engenharia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "erudicao-avancada",
+  "Erudição Avançada",
+  "1 XP. Requisito: Erudição 2. Com Erudição como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "atletismo-avancado",
+  "Atletismo Avançado",
+  "1 XP. Requisito: Atletismo 2. Com Atletismo como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "artesao-avancado",
+  "Artesão Avançado",
+  "1 XP. Requisito: Artesão 2. Com Artesão como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "apresentacao-avancada",
+  "Apresentação Avançada",
+  "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "coleta-avancada",
+  "Coleta Avançada",
+  "1 XP. Requisito: Coleta 2. Com Coleta como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  1
+ ],
+ [
+  "medicina-avancada",
+  "Medicina Avançada",
+  "1 XP. Requisito Medicina 2. Em teste com Medicina como Base, acrescenta até duas fontes pertinentes (total de três), incluindo Atributo na pilha. Para tratar Sangrando, testa contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove o estado, falha mantém. Não dispensa rolagem nem concede cura automática.",
+  1
+ ],
+ [
   "furtividade-avancada",
   "Furtividade Avançada",
   "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
@@ -407,29 +470,29 @@ const SKILLS=[
  [
   "domar-criatura-pequena",
   "Domar Criatura Pequena",
-  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+  "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
   1
  ],
  [
   "domar-criatura-media","Domar Criatura Média",
-  "1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  "1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
   1
  ],
  [
   "domar-criatura-grande","Domar Criatura Grande",
-  "1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  "1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
   1
  ],
  [
   "invocacao-elemental",
   "Invocação Elemental",
-  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 PP ou 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Uma ficha de invocação pode conter várias criaturas reais; três zumbis Médios podem compartilhar uma ficha Grande sem multiplicar Vida mecânica, ações ou XP. Dados da invocação: Pequena rola um dado de Atributo e mantém até 1; Média rola dois dados, um por parte, mantém até 2; Grande rola três dados, um por parte, mantém até 3. Registrar resultados das partes separadamente, sem conceder turnos extras. O jogador escolhe os dados de Atributo e quais manter. A invocação age sozinha ou ajuda um ÚNICO personagem (o conjurador ou um aliado) em ação conjunta normal, passando TODOS os dados mantidos para esse mesmo personagem (até 3 dados na Grande). Não distribuir entre dois personagens nem multiplicar ações, dados, Pavor ou símbolos. Uma única ficha e um único turno antecipável; limites individuais e regras normais da ação conjunta aplicam-se. Em Psique, a mente é projetada e o corpo do conjurador permanece parado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem e exigem Improviso Elemental + Maestria Elemental adquiridos, além das habilitações de ambos os elementos; Maestria Elemental na invocação custa +1 PP ou +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; pode projetar a mente com corpo parado. Separar tokens divide XP/Vida e mantém a DE da invocação. Dano de área é normal. Apenas um turno antecipável para uma ficha, mesmo com vários tokens: agir sozinho ou ajudar conjurador/aliado em ação conjunta. Não automatizar possessão e divisões inexatas.",
+  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Uma ficha de invocação pode conter várias criaturas reais; três zumbis Médios podem compartilhar uma ficha Grande sem multiplicar Vida mecânica, ações ou XP. Dados da invocação: Pequena rola um dado de Atributo e mantém até 1; Média rola dois dados, um por parte, mantém até 2; Grande rola três dados, um por parte, mantém até 3. Registrar resultados das partes separadamente, sem conceder turnos extras. O jogador escolhe os dados de Atributo e quais manter. A invocação age sozinha ou ajuda um ÚNICO personagem (o conjurador ou um aliado) em ação conjunta normal, passando TODOS os dados mantidos para esse mesmo personagem (até 3 dados na Grande). Não distribuir entre dois personagens nem multiplicar ações, dados, Pavor ou símbolos. Uma única ficha e um único turno antecipável; limites individuais e regras normais da ação conjunta aplicam-se. Em Psique, a mente é projetada e o corpo do conjurador permanece parado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem e exigem Improviso Elemental + Maestria Elemental adquiridos, além das habilitações de ambos os elementos; Maestria Elemental na invocação custa +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; pode projetar a mente com corpo parado. Separar tokens divide XP/Vida e mantém a DE da invocação. Dano de área é normal. Apenas um turno antecipável para uma ficha, mesmo com vários tokens: agir sozinho ou ajudar conjurador/aliado em ação conjunta. Não automatizar possessão e divisões inexatas.",
   1
  ],
  [
   "pericia-druidica",
   "Perícia Druídica",
-  "Compra única de 2 XP para acesso aos três Graus sem custo adicional por Grau. Requisitos cumulativos: Influência 2, Criar Item de Foco e Magia, Domar Criatura Pequena, Domar Criatura Média, Domar Criatura Grande e Perícia em Elemento Terra. Memoriza sem limite formas de criaturas domadas. G1 pequena: gratuita, 19 XP na ficha animal (distribuição ainda pendente), Vantagem Absoluta em Furtividade, Leve. G2 média: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 PP ou 1 Coragem, XP do personagem na tabela de Formação para Atributos animais, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Conversão de ferimentos da Druídica para as novas quatro caixas ainda PENDENTE; o exemplo anterior com três terços está substituído. Morrer em forma animal mata o druida; transformação não automatizada.",
+  "Compra única de 2 XP: requer Domar Pequena, Domar Média, Criar Item de Foco e Magia e Elemento Terra. Não exige Domar Grande na compra. Escolhe qualquer espécie do porte habilitado no momento de transformar, sem memorização e sem domesticação prévia da espécie. G1 pequena e G2 média estão disponíveis desde a compra; G3 grande é evolução separada ao comprar Domar Grande, sem novo custo de Druídica. Domar Gigante é futura Perícia sem custos ou efeitos definidos. G1 pequena: gratuita, ficha com XP total atual do druida; Força/Vigor na faixa elevada e demais Atributos normais da v0.56, Vantagem Absoluta em Furtividade, Leve. G2 média: 1 Coragem, XP total atual do druida para Atributos normais da v0.56, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 Coragem, XP total atual do druida para Atributos normais da v0.56, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Vida conforme comparação dos máximos: se forma menor, golpe letal cancela a forma e transfere TODO o dano acumulado nessa transformação, incluindo golpes anteriores e o final, sem duplicar ferimentos humanos pré-existentes; se igual, Vida inicial é a Vida atual humana, sem PV temporários; se maior, excedente em PVs temporários concedidos somente ao transformar, consumidos antes da Vida real, sem regeneração enquanto a forma dura e descartados ao destransformar; dano real pode matar na forma. Formas animais NÃO têm armadura; o dano efetivo vai direto à Vida. Escudo Arcano pode ser conjurado na transformação se adquirido e habilitado, protegendo a forma por 1 rodada segundo rolagem simbólica de Escudo, com 1 Coragem própria (Média/Grande pagam mais 1 Coragem pela transformação). Dano bloqueado pelo Escudo não entra no dano animal acumulado. Declara a transformação e pode atacar/agir na mesma oportunidade; ao conjurar Escudo Arcano junto, Pavor mantido não anulado na rolagem entrega protagonismo ao inimigo; sem esse Pavor, segue protagonismo normal. Morte animal imediata indiscriminada e conversão por faixas foram revogadas. Reversão voluntária DEFINIDA: custo 0 Coragem, sem teste e sem gastar ação, reação ou turno em G1/G2/G3; não cura e não reembolsa custos prévios. DEFINIDO: reversão voluntária transfere o dano animal efetivo acumulado da forma menor sem golpe letal, mas nunca PVs temporários; para forma igual/maior, Vida real já descontada não é descontada de novo. DEFINIDO: PVs temporários somente na caixa Saudável; Escudo Arcano ativo permanece após reversão até o fim da duração original de 1 rodada, sem renovar Integridade ou custo. PENDENTES: retransformações e automação da transformação/caixas de Saúde.",
   2
  ]
 ];
@@ -644,6 +707,36 @@ const SKILL_AFFINITY={
   "attr:destreza",
   "attr:agilidade"
  ],
+ "protecao-avancada": [
+  "know:protecao"
+ ],
+ "astronomia-avancada": [
+  "know:astronomia"
+ ],
+ "alquimia-avancada": [
+  "know:alquimia"
+ ],
+ "engenharia-avancada": [
+  "know:engenharia"
+ ],
+ "erudicao-avancada": [
+  "know:erudicao"
+ ],
+ "atletismo-avancado": [
+  "practice:atletismo"
+ ],
+ "artesao-avancado": [
+  "practice:artesao"
+ ],
+ "apresentacao-avancada": [
+  "practice:apresentacao"
+ ],
+ "coleta-avancada": [
+  "practice:coleta"
+ ],
+ "medicina-avancada": [
+  "know:medicina"
+ ],
  "furtividade-avancada": [
   "practice:furtividade",
   "attr:destreza",
@@ -726,7 +819,17 @@ const SKILL_BRANCHES=[
  [
   "furtividade",
   "furtividade-avancada"
- ]
+ ],
+ ["medicina-avancada"],
+ ["protecao-avancada"],
+ ["astronomia-avancada"],
+ ["alquimia-avancada"],
+ ["engenharia-avancada"],
+ ["erudicao-avancada"],
+ ["atletismo-avancado"],
+ ["artesao-avancado"],
+ ["apresentacao-avancada"],
+ ["coleta-avancada"]
 ];
 
 const SKILL_PERMALINKS={
@@ -781,14 +884,24 @@ const SKILL_PERMALINKS={
  "olhos-de-aguia": "olhos-de-aguia",
  "golpe-baixo": "golpe-baixo",
  "furtividade": "pericia-em-furtividade",
- "furtividade-avancada": "furtividade-avancada"
+ "furtividade-avancada": "furtividade-avancada",
+ "medicina-avancada": "medicina-avancada",
+ "protecao-avancada": "protecao-avancada",
+ "astronomia-avancada": "astronomia-avancada",
+ "alquimia-avancada": "alquimia-avancada",
+ "engenharia-avancada": "engenharia-avancada",
+ "erudicao-avancada": "erudicao-avancada",
+ "atletismo-avancado": "atletismo-avancado",
+ "artesao-avancado": "artesao-avancado",
+ "apresentacao-avancada": "apresentacao-avancada",
+ "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
- "pericia-druidica": "Influência 2 + Criar Item de Foco e Magia + Domar Criatura Pequena + Domar Criatura Média + Domar Criatura Grande + Perícia em Elemento Terra",
+ "pericia-druidica": "Domar Criatura Pequena + Domar Criatura Média + Criar Item de Foco e Magia + Perícia em Elemento Terra (Domar Grande apenas para Transformação G3)",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -819,6 +932,16 @@ const CARD_REQUIREMENTS={
  "criar-veneno": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2",
  "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
  "furtividade-avancada": "Furtividade 2 + Perícia em Furtividade",
+ "medicina-avancada": "Medicina 2",
+ "protecao-avancada": "Proteção 2",
+ "astronomia-avancada": "Astronomia 2",
+ "alquimia-avancada": "Alquimia 2",
+ "engenharia-avancada": "Engenharia 2",
+ "erudicao-avancada": "Erudição 2",
+ "atletismo-avancado": "Atletismo 2",
+ "artesao-avancado": "Artesão 2",
+ "apresentacao-avancada": "Apresentação 2",
+ "coleta-avancada": "Coleta 2",
  "armas-leves": "Disciplina 1",
  };
 
@@ -827,7 +950,7 @@ const CARD_EFFECTS={
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
- "pericia-druidica": "2 XP uma única vez pelos três Graus. Memória ilimitada; Vida em quatro estados, conversão animal/humana pendente.",
+ "pericia-druidica": "2 XP uma única vez. Declara transformação e ataca/age na mesma oportunidade; Escudo Arcano conjurado junto, com Pavor mantido não anulado, passa protagonismo ao inimigo. Sem esse Pavor, segue protagonismo normal. XP de toda forma = XP total atual do druida. G1/G2 com Pequena/Média, Foco e Terra; G3 Grande requer Domar Grande. Máximo animal menor: golpe letal desfaz a forma e transfere todo o dano acumulado durante a forma, sem duplicar dano prévio. Sem armadura animal; Escudo Arcano habilitado pode proteger a forma quando conjurado na transformação (custos normais, 1 rodada). Igual: Vida atual humana. Maior: PV temporários somente na transformação, sem regenerar na forma nem acumular entre formas, antes da Vida real. Tabelas animais por porte da v0.56 definidas. Temporários somente em Saudável; Escudo Arcano mantém-se após reversão voluntária/forçada pela duração original restante. Reversão voluntária custa 0 Coragem, não exige teste nem ação/reação/turno e não cura; dano efetivo acumulado na forma menor se transfere mesmo na reversão voluntária; PVs temporários não contam, e dano real já aplicado não se repete.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -857,15 +980,25 @@ const CARD_EFFECTS={
  "golpe-baixo": "Acerto aplica Desvantagem (−1A) durante 1 rodada",
  "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, característica escolhida entre as armas, dano básico uma vez",
  "furtividade": "Recebe Vantagem (+1A) em testes com Furtividade, cumulativa com Concentrado",
- "furtividade-avancada": "Acrescenta mais um Atributo, Conhecimento ou Prática pertinente a teste de Furtividade"
+ "furtividade-avancada": "Acrescenta mais um Atributo, Conhecimento ou Prática pertinente a teste de Furtividade",
+ "medicina-avancada": "Medicina predominante + duas fontes pertinentes; tratar Sangrando exige rolagem contra DE defensiva do alvo com −1A",
+ "protecao-avancada": "Proteção predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "astronomia-avancada": "Astronomia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "alquimia-avancada": "Alquimia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "engenharia-avancada": "Engenharia predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
 };
 
 const CARD_BRIEFS={
- "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 PP ou 1 Coragem.",
+ "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
- "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 PP ou 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
- "pericia-druidica": "Compra única de 2 XP; exige as três Perícias de Domar. Formas ilimitadas; conversão pela nova Saúde de quatro faixas pendente.",
+ "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
+ "pericia-druidica": "Compra única de 2 XP; Domar Pequena/Média, Foco e Terra. Declara a transformação e pode atacar/agir na mesma oportunidade; Escudo Arcano junto exige sua rolagem e Pavor mantido não anulado passa protagonismo ao inimigo. Grande exige Domar Grande como evolução. Forma não exige domesticar a espécie. XP e Vida máxima vêm da ficha animal feita com XP total atual do druida, usando tabelas da v0.56: Pequena com Força/Vigor elevados; Média/Grande com Atributos normais. PV temporários só ao transformar, alocados em Saudável e nunca regenerados na forma. Escudo Arcano permanece após reversão até completar sua duração original. Nenhuma forma tem armadura física; Escudo Arcano conjurado junto pode protegê-la, respeitando 1 Coragem de Escudo, rolagem e 1 rodada. Dano animal acumulado se transfere integralmente ao reverter por golpe letal em forma menor. Reversão voluntária custa 0, dispensa teste e ação/reação/turno; a reversão voluntária também transfere o dano acumulado da forma menor, sem PVs temporários nem dupla cobrança de Vida real.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -874,7 +1007,7 @@ const CARD_BRIEFS={
  "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
  "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
  "sangue": "Rework v0.74: Sangue puro atinge armadura normalmente. Após pagar 1 Vida própria OU 3 marcas inimigas, uma magia de Sangue que acerte pode aplicar TODO o dano calculado diretamente à Vida, sem desgaste simultâneo de armadura. Exclusivo desta build, sem bônus gratuito. Compete com manter ou elevar dado, no limite de uma vez por turno.",
- "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 PP ou 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
+ "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
  "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
@@ -886,60 +1019,80 @@ const CARD_BRIEFS={
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
  "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
  "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
- "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 PP ou 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
+ "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
  "disparo-fulminante": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.…",
- "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 PP ou 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
+ "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
  "disparo-violento": "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crític…",
  "disparo-tatico": "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.…",
- "armas-fogo": "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 PP ou 1 Coragem. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escope…",
+ "armas-fogo": "Crítico ativa UMA característica escolhida gratuitamente; acerto normal custa 1 Coragem. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escope…",
  "golpe-baixo": "Técnica somática: chutar ponto vulnerável, jogar terra nos olhos e outros golpes desleais. Ao acertar aplica Desvantagem (−1A) por 1 rodada. Contra inimigos com Inteligência grau ZERO, o inimigo ignora Provocar e fixa quem aplicou Golpe Baixo como alvo até que um dos dois seja eliminado, m…",
  "maestria-manejo-duplo": "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica das duas armas sem custo; acerto comum ativa ambo…",
  "furtividade": "Ao usar Furtividade como fonte do teste, recebe +1A automaticamente e sem custo. Cumulativa com outras Vantagens legítimas como Concentrado, mas cada símbolo A só pode ser gasto uma vez. Alguns inimigos são IMUNES a Furtividade; vantagens não anulam essa imunidade nem garantem ocultação.…",
- "furtividade-avancada": "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite…"
+ "furtividade-avancada": "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite…",
+ "medicina-avancada": "Medicina 2, 1 XP. Com Medicina predominante, combina Medicina + Atributo + complemento pertinente. Ao tratar Sangrando, teste contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove Sangrando.",
+ "protecao-avancada": "1 XP; requisito Proteção 2. Com Proteção como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "astronomia-avancada": "1 XP; requisito Astronomia 2. Com Astronomia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "alquimia-avancada": "1 XP; requisito Alquimia 2. Com Alquimia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "engenharia-avancada": "1 XP; requisito Engenharia 2. Com Engenharia como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
 };
 
 const CARD_ACTIVATIONS={
- "invocacao-elemental":"1 PP ou 1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 PP ou +1 Coragem",
- "domar-criatura-media":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
- "domar-criatura-grande":"1 PP ou 1 Coragem + teste de Influência + Apresentação",
- "domar-criatura-pequena": "1 PP ou 1 Coragem + teste de Influência + Apresentação",
- "pericia-druidica": "Pequena: 0; média/grande: 1 PP ou 1 Coragem",
- "criar-item-foco-magia": "1 PP ou 1 Coragem para efeito Psíquico",
- "escudo-arcano": "1 PP ou 1 Coragem (+ custo por expansão)",
+ "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
+ "domar-criatura-media":"1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-grande":"1 Coragem + teste de Influência + Apresentação",
+ "domar-criatura-pequena": "1 Coragem + teste de Influência + Apresentação",
+ "pericia-druidica": "Declara transformação e pode atacar/agir na mesma oportunidade. Pequena 0; média/grande 1 Coragem. Escudo Arcano junto: +1 Coragem e rolagem; Pavor mantido não anulado passa protagonismo ao inimigo, sem Pavor residual segue protagonismo normal. Reversão voluntária: 0 Coragem, sem ação/reação/turno",
+ "criar-item-foco-magia": "G1/G2 Psíquico: ativação-base gratuita",
+ "escudo-arcano": "1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
  "improviso": "Passiva",
- "mestre": "1 PP ou 1 Coragem",
- "fogo": "1 PP ou 1 Coragem",
- "agua": "1 PP ou 1 Coragem",
- "vento": "1 PP ou 1 Coragem",
- "terra": "1 PP ou 1 Coragem",
- "sagrado": "1 PP ou 1 Coragem",
- "veneno": "1 PP ou 1 Coragem após acerto",
+ "mestre": "Mistura: 1A; custo próprio da Maestria PENDENTE",
+ "fogo": "G1/G2: gratuito com Perícia e Grau habilitados, com ou sem foco se houver fonte elemental; G3: 1 Coragem; G4: 1 Coragem pela elevação de Fogo (2 no total se os dois elementos chegam a G3)",
+ "agua": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "vento": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "terra": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "sagrado": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "veneno": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
  "sangue": "1 Vida própria OU 3 Sangues de inimigos · 1 uso/turno",
- "trevas": "1 PP ou 1 Coragem",
+ "trevas": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
  "criar-veneno": "Preparação alquímica; ativação conforme arma",
  "criar-antidoto": "1 dose remove 1 acúmulo",
- "transfusao": "Custo de Vida; PP/Coragem a confirmar",
+ "transfusao": "Custo de Vida; custo de ativação PENDENTE",
  "transfusao-sanguinaria": "Conjuração ativa · custo e procedimento pendentes",
- "armas-longo-alcance": "1 PP ou 1 Coragem no acerto comum; crítico gratuito",
- "golpe-fulminante": "1 PP ou 1 Coragem; crítico não dispensa",
- "espalhar-golpe": "1 PP ou 1 Coragem por até 2 alvos adicionais",
- "maestria-arremesso-armas": "1 PP ou 1 Coragem ao acertar para ativar efeitos",
- "disparo-fulminante": "1 PP ou 1 Coragem; crítico não dispensa",
- "disparo-multiplo": "1 PP ou 1 Coragem a cada até 2 alvos adicionais",
- "disparo-violento": "1 PP ou 1 Coragem; crítico não dispensa",
+ "armas-longo-alcance": "1 Coragem no acerto comum; crítico gratuito",
+ "golpe-fulminante": "1 Coragem; crítico não dispensa",
+ "espalhar-golpe": "1 Coragem por até 2 alvos adicionais",
+ "maestria-arremesso-armas": "1 Coragem ao acertar para ativar efeitos",
+ "disparo-fulminante": "1 Coragem; crítico não dispensa",
+ "disparo-multiplo": "1 Coragem a cada até 2 alvos adicionais",
+ "disparo-violento": "1 Coragem; crítico não dispensa",
  "disparo-tatico": "PENDENTE",
- "armas-fogo": "1 PP ou 1 Coragem no acerto comum; crítico gratuito para efeitos da arma",
- "golpe-baixo": "1 PP ou 1 Coragem",
- "maestria-manejo-duplo": "1 PP ou 1 Coragem no acerto normal; crítico gratuito",
+ "armas-fogo": "1 Coragem no acerto comum; crítico gratuito para efeitos da arma",
+ "golpe-baixo": "1 Coragem",
+ "maestria-manejo-duplo": "1 Coragem no acerto normal; crítico gratuito",
  "furtividade": "Passiva",
- "furtividade-avancada": "Passiva"
+ "furtividade-avancada": "Passiva",
+ "medicina-avancada": "Passiva para compor fontes; tratamento exige teste",
+ "protecao-avancada": "Passiva",
+ "astronomia-avancada": "Passiva",
+ "alquimia-avancada": "Passiva",
+ "engenharia-avancada": "Passiva",
+ "erudicao-avancada": "Passiva",
+ "atletismo-avancado": "Passiva",
+ "artesao-avancado": "Passiva",
+ "apresentacao-avancada": "Passiva",
+ "coleta-avancada": "Passiva"
 };
 
 function skillCompactCard([id,name,detail,cost],wizard){
  const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
- const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 PP|1 Coragem/i.test(detail)?"1 PP ou 1 Coragem (ativação paga)":"Passiva / consultar"));
+ const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
@@ -1080,8 +1233,8 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,pp:0,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],courageUsedTurn:false,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1364,7 +1517,9 @@ function normalize(v){
  if(s.creationLocked){
   const used=rawCreationCosts(s),saved=v.creationBudgetSnapshot;
   const formerSkillsCost=used.skills+legacyDifference;
-  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isInteger(saved[k])&&saved[k]>=0&&saved[k]<=CREATE_BUDGET.total)?
+  // Legado: preservar snapshots de fichas que usavam até 18/20 XP; o orçamento NOVO continua em 15.
+  s.creationBudgetSnapshot=saved&&["attr","training","skills"].every(k=>Number.isSafeInteger(saved[k])&&saved[k]>=0&&saved[k]<=20)&&
+   (saved.attr+saved.training+saved.skills)<=20?
    {attr:saved.attr,training:saved.training,skills:saved.skills}:
    {attr:used.attr,training:used.training,skills:used.skills};
   if(legacyCost>0&&legacyDifference>0){
@@ -1378,8 +1533,7 @@ function normalize(v){
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
- s.courage=clamp(Math.floor(v.courage??10),0,10);
- s.pp=clamp(Math.floor(v.pp),0,maxPP(s.level));
+ s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
  // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
@@ -1415,7 +1569,6 @@ function normalize(v){
   quantity:clamp(Math.floor(v.elementalCrystal?.quantity??(ownsSkill("criar-item-foco-magia",s)?1:0)),0,1)};
  for(const item of s.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
- s.courageUsedTurn=!!v.courageUsedTurn;
  // SRD v0.73: unificar sangue inimigo. Importações antigas mantêm as duas parcelas existentes
  // SOMENTE no primeiro carregamento; fichas gravadas na versão atual têm extracted=0.
  const priorSpilled=clamp(Math.floor(v.hemomancy?.spilled??0),0,1998);
@@ -1431,6 +1584,7 @@ function normalize(v){
  };
  if(v.pending&&Array.isArray(v.pending.dice)&&Array.isArray(v.pending.selected)&&v.pending.dice.length<=9){
   s.pending={...v.pending,selected:v.pending.selected.filter(x=>typeof x==="string")};
+  delete s.pending.payment; delete s.pending.firePayment; delete s.pending.ppCost; delete s.pending.fireSummon;
  }
  return s;
 }
@@ -1499,7 +1653,11 @@ function lifeStage(s=state){
  const id=life===0?"morto":life===1?"inconsciente":life===2?"incapacitado":life<=2+bands[1]?"ferido":"saudavel";
  return {...LIFE_STATES[id],bands,life};
 }
-function maxPP(l=state.level){return l>=20?3:l>=10?2:l>=5?1:0;}
+function maxCourage(s=state){
+ const level=Number(s.level)||1;
+ // Bônus especializados de Maestria não foram implementados; teto absoluto 15.
+ return Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
+}
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+racialCostTable("attr",k,s)[s.attributes[k]||0],0),
   training:K.reduce((n,[k])=>n+racialCostTable("know",k,s)[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+racialCostTable("practice",k,s)[s.practices[k]||0],0),
@@ -1544,7 +1702,7 @@ function skillReq(id,s=state){
   return"Requer Domar Criatura Pequena e Domar Criatura Média antes de comprar Domar Criatura Grande.";
  if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
  if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
- if(id==="pericia-druidica" && ((s.attributes.influencia||0)<2 || !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","terra"].every(has)))return"Compra única de 2 XP habilita os três Graus; exige Influência 2, Criar Item de Foco e Magia, Perícia em Elemento Terra e Domar Criatura Pequena, Média e Grande. Domar Pequena, Média e Grande podem ser compradas com 1 XP cada, respeitando seus requisitos.";
+ if(id==="pericia-druidica" && !["criar-item-foco-magia","domar-criatura-pequena","domar-criatura-media","terra"].every(has))return"Compra única de 2 XP habilita as transformações Pequena G1 e Média G2; exige Domar Pequena, Domar Média, Criar Item de Foco e Magia e Elemento Terra. Domar Grande só é exigida depois para a Transformação Grande G3.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
@@ -1561,6 +1719,9 @@ function skillReq(id,s=state){
  if(id==="golpe-baixo"&&(dex<2||strength<1||agi<1))return"Requer Destreza 2, Força 1 e Agilidade 1.";
  if(id==="furtividade"&&(stealth<2||dex<2||agi<1))return"Requer Furtividade 2, Destreza 2 e Agilidade 1.";
  if(id==="furtividade-avancada"&&(stealth<2||!has("furtividade")))return"Requer Furtividade 2 e Perícia em Furtividade.";
+  const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
+  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
+   return"Requer "+advancedSource.label+" 2.";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
  if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
@@ -1618,8 +1779,8 @@ function renderXP(){
   $(id+"-caption").textContent=used+" XP (orçamento global: "+CREATE_BUDGET.total+" XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
- $("xp-feedback").textContent=x.free<0?"Saldo excedido. Reduza investimentos para respeitar o orçamento total.":
- "18 XP iniciais compartilhados; referência experimental: até "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 ("+MAX_EARNED_XP+" XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
+ $("xp-feedback").textContent=x.free<0?"Saldo excedido no orçamento experimental de "+CREATE_BUDGET.total+" XP. Investimentos anteriores foram preservados: revise as compras antes de continuar.":
+ CREATE_BUDGET.total+" XP iniciais compartilhados; referência experimental: até "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 ("+MAX_EARNED_XP+" XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
   ((state.xpEarned||0)>MAX_EARNED_XP?"Ficha legada acima do teto: XP preservado, novas concessões bloqueadas. ":"")+
   (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
@@ -1725,11 +1886,6 @@ function cargoGridMarkup(){
 function keepLimit(extra=false){return Math.min(4,(state.level>=6?3:2)+(extra?1:0));}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
-function mentalSlotCapacity(s=state){
- // DEFINIDO: cada Grau investido em Disciplina vale 1 ponto de capacidade mental.
- // A quantidade de dados da rolagem não altera essa capacidade.
- return clamp(Math.floor(s.practices.armas_conjuracao||0),0,6);
-}
 function label(g,k){
  if(g==="equipment")return k;
  const source=(GROUPS[g]||[]).find(x=>x[0]===k);return source?.[1]||k;
@@ -2005,6 +2161,7 @@ const GENE_AUTO_REQUIREMENTS={
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]],
  "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena","s:domar-criatura-media"]],
+ "pericia-druidica":[["s:domar-criatura-pequena","s:domar-criatura-media","s:criar-item-foco-magia","s:terra"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
@@ -2016,6 +2173,16 @@ const GENE_AUTO_REQUIREMENTS={
  "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
  "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
  "furtividade-avancada":[["p:furtividade:2","s:furtividade"]],
+ "medicina-avancada":[["k:medicina:2"]],
+ "protecao-avancada":[["k:protecao:2"]],
+ "astronomia-avancada":[["k:astronomia:2"]],
+ "alquimia-avancada":[["k:alquimia:2"]],
+ "engenharia-avancada":[["k:engenharia:2"]],
+ "erudicao-avancada":[["k:erudicao:2"]],
+ "atletismo-avancado":[["p:atletismo:2"]],
+ "artesao-avancado":[["p:artesao:2"]],
+ "apresentacao-avancada":[["p:apresentacao:2"]],
+ "coleta-avancada":[["p:coleta:2"]],
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
  "escudo-arcano":[["a:inteligencia:2","a:vigor:1","s:criar-item-foco-magia"]],
  "conjuracao-equilibrada":[["p:armas_conjuracao:2","a:inteligencia:2","a:destreza:2","s:criar-item-foco-magia"]],
@@ -2490,7 +2657,7 @@ function wizardBuild(){
  const status='<div class="fp-wiz-starter-status" aria-label="Compras mínimas">'+
   '<span class="'+(attrOK?'is-ready':'')+'">'+(attrOK?'✓':'○')+' Atributo grau 1</span>'+
   '<span class="'+(trainingOK?'is-ready':'')+'">'+(trainingOK?'✓':'○')+' Conhecimento ou Prática grau 1</span>'+
-  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / 18 XP (total experimental)</span></div>';
+  '<span class="fp-wiz-starter-xp">Saldo <strong>'+xpCosts().free+'</strong> / '+CREATE_BUDGET.total+' XP (total experimental)</span></div>';
  const confirmedHint='<div class="fp-wiz-creation-confirmed" role="status"><strong>Etapa 3 · Distribuição livre de XP</strong><span>As escolhas iniciais já estão registradas no Codex Genético. Desenvolva outros graus e Perícias pelo mapa ou use as listas opcionais.</span></div>';
  if(wizardMode==="genetic")return confirmedHint+switcher+
   geneBudgetPanel()+
@@ -2534,7 +2701,7 @@ function wizardEquipment(){
  .map(it=>{const purchasable=it.kind!=="focus"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
   return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?"Fabricação por Artesão":"Preço pendente")+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos 18 XP.</p></div>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos '+CREATE_BUDGET.total+' XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
@@ -2559,7 +2726,7 @@ function wizardReview(){
   '<section data-source-group="know"><h4>Conhecimentos</h4><ul>'+sourceSummary("know",K)+'</ul></section>'+
   '<section data-source-group="practice"><h4>Práticas</h4><ul>'+sourceSummary("practice",P)+'</ul></section>'+
   '<section><h4>Perícias</h4><ul>'+skillList+'</ul></section></div>'+
-  '<div class="fp-wiz-reminder"><strong>18 XP iniciais · orçamento compartilhado</strong>'+
+  '<div class="fp-wiz-reminder"><strong>'+CREATE_BUDGET.total+' XP iniciais · orçamento compartilhado</strong>'+
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
   '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
   '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>';
@@ -2569,7 +2736,7 @@ function wizardOverview(){
  return '<div class="fp-wiz-summary-top"><small>SEU PERSONAGEM</small><strong>'+esc(state.name||"Novo Aprendiz")+'</strong>'+
   '<p>'+esc(state.concept||"Seu caminho ainda está por ser escrito")+' · '+esc(RACES[state.race]?.[0]||"Humano")+'</p></div>'+
   '<div class="fp-wiz-sidebar-title">XP · CODIFICAÇÃO</div>'+
-  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / 18 XP</strong></div>'+
+  '<div class="fp-wiz-summary-total"><span>INVESTIDOS</span><strong>'+x.total+' / '+CREATE_BUDGET.total+' XP</strong></div>'+
   '<div class="fp-wiz-budget-row"><span>Atributos</span><b>'+x.attributes+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Conhecimentos e Práticas</span><b>'+x.training+' XP</b></div>'+
   '<div class="fp-wiz-budget-row"><span>Perícias</span><b>'+x.skills+' XP</b></div>'+
@@ -2641,10 +2808,9 @@ function renderWizard(){
 }
 
 function renderVitals(){
- const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.pp=clamp(state.pp,0,maxPP());
+ const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.courage=clamp(state.courage,0,maxCourage());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
- $("courage-text").textContent=state.courage+" / 10";
- $("pp-text").textContent=state.pp+" / "+maxPP();
+ $("courage-text").textContent=state.courage+" / "+maxCourage();
  const defense=defensePresentation();
  $("de-label").textContent=defense.label;
  $("de-text").textContent=defense.value;$("balance-text").textContent=balance();
@@ -2698,10 +2864,16 @@ function renderSources(){
  }
 }
 function usingDiscipline(){return draft.base?.group==="practice"&&draft.base.key==="armas_conjuracao";}
-function disciplineAdvancedActive(){return usingDiscipline()&&ownsSkill("disciplina-avancada")&&(state.practices.armas_conjuracao||0)>=2;}
-function stealthAdvancedActive(){return draft.base?.group==="practice"&&draft.base.key==="furtividade"&&ownsSkill("furtividade-avancada")&&(state.practices.furtividade||0)>=2;}
-function canSecondAttribute(){return disciplineAdvancedActive()||stealthAdvancedActive();}
-function mayThird(){return disciplineAdvancedActive()||stealthAdvancedActive();}
+// Uma Perícia Avançada habilita sua fonte principal + duas fontes pertinentes (3 no total).
+// O requisito de rolar um Atributo e os limites de dados continuam vigentes.
+const ADVANCED_SOURCE_SKILLS=Object.fromEntries(ADVANCED_SOURCE_DEFS.map(({id,group,key})=>[group+":"+key,id]));
+function advancedSourceActive(){
+ const base=draft.base;if(!base)return false;
+ const id=ADVANCED_SOURCE_SKILLS[base.group+":"+base.key];
+ return !!id&&ownsSkill(id)&&!skillReq(id,state);
+}
+function canSecondAttribute(){return advancedSourceActive();}
+function mayThird(){return advancedSourceActive();}
 function canUseShared(){
  if(!usingDiscipline())return true;
  // Disciplina permite rolagem marcial sem Perícia habilitadora; a conjuração requer sua habilitação.
@@ -2743,7 +2915,7 @@ function buildPool(){
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
-  if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo exige Disciplina Avançada com Disciplina ou Furtividade Avançada com Furtividade.");
+  if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo complementar exige Perícia Avançada da fonte principal.");
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
  }
@@ -2787,7 +2959,7 @@ function renderComposer(){
   const chosen=draft.attribute?'<p><strong>'+esc(label(draft.attribute.group,draft.attribute.key))+'</strong> já está selecionado. Agora escolha uma Prática ou Conhecimento para definir a Base.</p>':
    '<p>Selecione um Atributo à esquerda e uma Base em Práticas ou Conhecimentos. A ordem dos cliques é livre.</p>';
   box.innerHTML='<div class="fp-empty"><div class="fp-empty-glyph">ᚨ</div><h4>Seu teste começa aqui.</h4>'+chosen+'</div>'+
-   '<div class="fp-alert">Experimente <strong>Disciplina + Força</strong>. Com Disciplina Avançada (ou Furtividade Avançada nos testes de Furtividade), acrescente a terceira fonte pertinente. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
+   '<div class="fp-alert">Experimente <strong>Disciplina + Força</strong>. Com uma Perícia Avançada do Conhecimento ou Prática predominante, acrescente uma terceira fonte pertinente. A composição numérica pode ser igual, mas o tipo de teste muda.</div>'+
    (state.history.length?'<p class="fp-caption">Última ação: '+esc(state.history[0].name)+' · '+esc(state.history[0].outcome)+'</p>':"");
   return;
  }
@@ -2833,7 +3005,7 @@ function renderComposer(){
  '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar um dado à escolha (1 Coragem)</label>'+
  (draft.step?'<label class="fp-form-field full">Dado que receberá a elevação '+select("stepDieId",[["","Selecione qual dado elevar"],...stepOptions],draft.stepDieId)+'</label>':"")+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
- (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 PP ou 1 Coragem no acerto)</label>':"")+
+ (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
@@ -2843,8 +3015,8 @@ function renderComposer(){
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
  options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
- (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com Disciplina Avançada, pode acrescentar inclusive outro Atributo quando a Base é Disciplina.</p>':
- '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia de combinação, são duas fontes. Disciplina Avançada e Furtividade Avançada habilitam complemento em suas ações.")+'</p>')+
+ (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com a Perícia Avançada da Base, pode acrescentar outra fonte pertinente, inclusive outro Atributo.</p>':
+ '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia Avançada, são duas fontes; com a especialização Avançada da fonte predominante, pode selecionar até três fontes pertinentes.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  '<div class="fp-composer-actions"><button class="fp-secondary" type="button" data-action="clear">Limpar</button>'+
  '<button class="fp-primary-btn" type="button" data-action="roll"'+(errors.length?" disabled":"")+'>Rolar dados →</button></div>';
@@ -2874,7 +3046,7 @@ function roll(){
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
-  fireMode:"",fireGradeConfirmed:false,firePayment:"courage",fireSummon:false};
+  fireMode:"",fireGradeConfirmed:false};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
@@ -2943,7 +3115,7 @@ function score(){
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem,ppCost=0;
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem;
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -2958,7 +3130,7 @@ function score(){
    // Com foco e Perícia do elemento, a propriedade Elemental já habilitada é gratuita.
    const paidFeature=critTier?p.secondCharacteristic:p.characteristic;
    if(!(freeElementEffect&&paidFeature==="Elemental")&&!(passivePiercing&&paidFeature==="Perfurante")){
-    if(p.payment==="pp")ppCost+=1;else courageCost+=1;
+    courageCost+=1;
    }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
@@ -2982,32 +3154,23 @@ function score(){
   (critTier||ownsSkill(cravarSpecialty))&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
   (p.cravarTargetShield!=="pesado"||weaponCategory==="pesado"));
  // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
- if(p.opts.trevas&&success&&!freeElementEffect){if(p.payment==="pp")ppCost+=1;else courageCost+=1;}
+ if(p.opts.trevas&&success&&!freeElementEffect){courageCost+=1;}
  // v0.76: os Graus de Fogo ainda dependem de validação manual pelo Narrador.
  const fireMode=["queimar","derreter"].includes(p.fireMode)?p.fireMode:"";
  const isFireCast=ownsSkill("fogo")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
   p.base.key==="armas_conjuracao"&&
   // Foco explicitamente de outro elemento não pode ser usado como foco de Fogo.
   !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="fogo");
- const fireFocus=!!(freeElementEffect&&elementSkill==="fogo");
  if(p.fireMode&&!fireMode)errs.push("Manifestação de Fogo não reconhecida nesta rolagem.");
  if(fireMode&&!isFireCast)errs.push("Queimar/Derreter exigem conjuração de Fogo habilitada, não ataque de outra natureza.");
  if(fireMode&&!p.fireGradeConfirmed)errs.push("Confirme com o Narrador o acesso a este Grau de Fogo antes de ativar.");
  if(fireMode&&p.hemomancyDirectLife)errs.push("A mesma magia não pode ser registrada simultaneamente como Fogo e como Hemomancia direta.");
- if(p.fireSummon&&(!fireMode||fireMode!=="queimar"||fireFocus))
-  errs.push("Invocar fogo sem foco com +1 Coragem é uma opção específica de G2 Queimar e apenas sem foco válido.");
  const fireValid=!!(fireMode&&isFireCast&&p.fireGradeConfirmed&&!p.hemomancyDirectLife);
- if(fireValid&&success){
-  // Se uma característica Elemental já está ativada por este mesmo acerto,
-  // não cobrar a ativação-base duas vezes para o mesmo efeito.
-  if(!fireFocus&&!active.includes("Elemental")){
-   if(p.firePayment==="pp")ppCost+=1;else courageCost+=1;
-  }
-  // A Coragem de invocar fogo no G2 sem foco é ADICIONAL à ativação-base.
-  if(p.fireSummon&&fireMode==="queimar"&&!fireFocus)courageCost+=1;
- }
+ // A Perícia Fogo habilita G1/G2 sem cobrança. G3 Derreter consome
+ // 1 Coragem ao ativar com sucesso, independentemente de foco.
+ // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
+ if(fireValid&&success&&fireMode==="derreter")courageCost+=1;
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
- if(ppCost>state.pp)errs.push("PP insuficiente para a ativação.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
@@ -3033,8 +3196,8 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,fireFocus,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,ppCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
+ return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+  aPool,courageCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
@@ -3052,15 +3215,15 @@ function renderPending(){
  const cravarSelector=cravarChosen?
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
-  '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 PP ou 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
- const effects=specials.length?'<div class="fp-form-grid'>
+  '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
+ const effects=specials.length?'<div class="fp-form-grid">'+
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
-  '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>'+cravarSelector:"";
+  '<p class="fp-caption">Ativação paga, quando necessária: 1 Coragem. Crítico: uma característica grátis e outra paga.</p></div>'+
+  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem. Efeitos G1/G2 habilitados têm ativação-base gratuita. Narrador aplica danos e condições.</p>'+cravarSelector:"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
- '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
- '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
+  '<p class="fp-caption">Trevas: efeito habilitado gratuito.</p>':
+  '<p class="fp-caption">Trevas: ativação paga no acerto custa 1 Coragem.</p>'):'';
  const hemoControl=s.mayHemomancyDirectLife?
   '<div class="fp-alert"><strong>Amplificação de Sangue já paga</strong> · disponível para uma rolagem de magia de Sangue neste turno. '+
   '<button type="button" class="fp-secondary" data-action="hemo-link-roll" aria-pressed="'+(!!p.hemomancyDirectLife)+'">'+
@@ -3078,12 +3241,7 @@ function renderPending(){
   (p.fireMode?
    '<label class="fp-checkline"><input type="checkbox" data-pending="fireGradeConfirmed"'+(p.fireGradeConfirmed?' checked':'')+
    '> Confirmo com o Narrador que este Grau de Fogo está habilitado (não é compra automática)</label>'+
-   (!s.fireFocus?'<label class="fp-form-field">Ativação-base do efeito em acerto<select data-pending="firePayment">'+
-    '<option value="courage"'+(p.firePayment!=="pp"?' selected':'')+'>1 Coragem</option>'+
-    '<option value="pp"'+(p.firePayment==="pp"?' selected':'')+'>1 PP</option></select></label>':
-    '<p class="fp-caption">Ativação-base gratuita com foco de Fogo válido + Criar Foco + Perícia de Fogo.</p>')+
-   (p.fireMode==="queimar"&&!s.fireFocus?'<label class="fp-checkline"><input type="checkbox" data-pending="fireSummon"'+
-    (p.fireSummon?' checked':'')+'> Invocar fogo sem foco em G2: +1 Coragem adicional à ativação-base</label>':'')+
+   '<p class="fp-caption">Fogo G2 Queimar: 0 Coragem com Perícia e Grau habilitados, inclusive sem foco quando houver fonte elemental disponível. Fogo G3 Derreter: 1 Coragem. G4 plena (dois G3): 1 Coragem por elemento elevado + 1 Antecipar de mistura; a composição G4 ainda é manual.</p>'+
    '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
   :'')+'</div>':"";
  const controls='<div class="fp-form-grid">'+
@@ -3093,7 +3251,7 @@ function renderPending(){
  const criticalNote=s.critTier?'<div class="fp-alert"><strong>Crítico de '+s.critTier+' dados mantidos!</strong> '+
   (s.criticalConverted?'1P convertido em 1E. ':'Sem Pavor próprio para converter. ')+
   (s.critTier>=3?'+1E e +1A. ':'')+
-  'Recuperação de até '+s.critRecovery+' PP e '+s.critRecovery+' Coragem (respeitando os tetos). '+
+  'Recuperação de até '+s.critRecovery+' Coragem (respeitando o teto). '+
   (s.critTier===4?'Dano básico dobrado; interação com proteções ainda pendente. ':'')+'</div>':'';
  const stats='<div class="fp-outcome"><h4>'+esc(s.outcome)+'</h4>'+criticalNote+'<div class="fp-outcome-stats">'+
  '<div class="fp-outcome-stat">DE alcançada<b>'+s.reached+' / '+de+'</b></div>'+
@@ -3121,7 +3279,7 @@ function renderPending(){
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
-  '). Custo previsto: '+cost+' Coragem e '+s.ppCost+' PP (inclui ativações escolhidas).</p>'+dice+controls+
+  '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -3131,13 +3289,10 @@ function renderPending(){
 function finalize(){
  const p=state.pending,s=score();
  if(!p||s.errors.length){toast(s?.errors?.[0]||"Rolagem inválida.");return;}
- state.courage=clamp(state.courage-s.courageCost,0,10);state.pp=clamp(state.pp-s.ppCost,0,maxPP());
- const oldCourage=state.courage,oldPP=state.pp;
- if(s.critRecovery){
-  state.courage=clamp(state.courage+s.critRecovery,0,10);
-  state.pp=clamp(state.pp+s.critRecovery,0,maxPP());
- }
- const gainedCourage=state.courage-oldCourage,gainedPP=state.pp-oldPP;
+ state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
+ const oldCourage=state.courage;
+ if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
+ const gainedCourage=state.courage-oldCourage;
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
  const name=(p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
@@ -3145,7 +3300,7 @@ function finalize(){
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  ppRecovered:gainedPP,courageRecovered:gainedCourage,cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
+  courageRecovered:gainedCourage,cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
@@ -3176,7 +3331,8 @@ function updateGrade(group,id,delta){
  else toast("Grau reduzido para "+next+". XP da ficha recalculado.");
 }
 function adjustResource(resource,delta){
- const max=resource==="life"?maxLife():resource==="pp"?maxPP():10;
+ if(!["life","courage"].includes(resource)||![-1,1].includes(Number(delta)))return;
+ const max=resource==="life"?maxLife():maxCourage();
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
 function renderSkills(){
@@ -3185,8 +3341,6 @@ function renderSkills(){
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
- $("convert-courage").disabled=state.level<5||state.courage<2||state.pp>=maxPP()||state.courageUsedTurn;
- $("courage-skill-message").textContent=state.level<5?"Perícia em Coragem: disponível a partir do nível 5.":state.courageUsedTurn?"Conversão já usada neste turno.":"A conversão pode ser usada uma vez por turno.";
 }
 function inventorySelect(field,value,values,id){
  return'<select data-item-field="'+field+'" data-id="'+esc(id)+'">'+values.map(([k,v])=>'<option value="'+k+'"'+(k===value?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select>';
@@ -3215,15 +3369,6 @@ function renderInventory(){
   const overflow=$("inventory-cargo-overflow");
   overflow.hidden=!(load>max);
   overflow.textContent=load>max?"Capacidade excedida em "+pad(load-max)+" Alto. Nenhuma nova penalidade foi definida.":"";
- }
- const mental=$("mental-slot-caption");
- if(mental){
-  const points=mentalSlotCapacity();
-  const canCreateG2=(state.practices.armas_conjuracao||0)>=2;
-  mental.textContent="Slots mentais: "+points+" ponto"+(points===1?"":"s")+" de capacidade (1 por Grau investido em Disciplina, NÃO por dado). "+
-   "Criar Magia reduz 1 ponto do peso das magias criadas e memorizadas: G2=1, G3=2, G4=3. "+
-   (canCreateG2?"Pode memorizar até "+points+" magia"+(points===1?"":"s")+" G2 criada"+(points===1?"":"s")+", conforme demais requisitos. ":"Criar magia G2 exige Disciplina 2. ")+
-   "G1 após −1: peso mínimo PENDENTE. Os itens de foco seguem contando como carga física.";
  }
  $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
@@ -3393,7 +3538,7 @@ function demo(){
  s.skills=["armas-medias","disciplina-avancada","criar-item-foco-magia"];
  s.creationLocked=true;s.xpEarned=80;s.weaponFocus="medio";
  s.xpHistory=[{at:new Date().toISOString(),amount:80,note:"XP de exemplo para testar evolução"}];
- s.courage=8;s.pp=1;s.life=maxLife(s)-1;
+ s.courage=Math.min(8,maxCourage(s));s.life=maxLife(s)-1;
  s.items=[normalizeItem({name:"Espada de treinamento",type:"arma",weight:"medio",grade:1,qty:1,equipped:true,max:0,hp:0}),
   normalizeItem({name:"Armadura de demonstração",type:"armadura",weight:"alto",grade:2,qty:1,equipped:true,max:5,hp:4}),
   normalizeItem({name:"Bolsa de suprimentos",type:"outro",weight:"leve",grade:1,qty:1})];
@@ -3762,12 +3907,12 @@ function onChange(event){
  }
  if(el.dataset.pending&&state.pending){
   const k=el.dataset.pending;
-  if(["characteristic","secondCharacteristic","payment","fireMode","firePayment","cravarTargetShield"].includes(k)){
+  if(["characteristic","secondCharacteristic","fireMode","cravarTargetShield"].includes(k)){
    state.pending[k]=String(el.value).slice(0,40);
-   if(k==="fireMode"){state.pending.fireGradeConfirmed=false;state.pending.fireSummon=false;}
+   if(k==="fireMode")state.pending.fireGradeConfirmed=false;
    save();renderComposer();return;
   }
-  if(["fireGradeConfirmed","fireSummon"].includes(k)){
+  if(k==="fireGradeConfirmed"){
    state.pending[k]=!!el.checked;
    save();renderComposer();return;
   }
@@ -3967,15 +4112,10 @@ function bind(){
  $("add-item").addEventListener("click",()=>{
   state.items.push(normalizeItem({name:"Novo equipamento",type:"outro",weight:"leve",grade:1,max:0}));renderInventory();renderVitals();save();
  });
- $("convert-courage").addEventListener("click",()=>{
-  if(state.level<5||state.courageUsedTurn||state.courage<2||state.pp>=maxPP())return;
-  state.courage-=2;state.pp++;state.courageUsedTurn=true;renderVitals();renderSkills();save();toast("Perícia em Coragem: 2 Coragens convertidas em 1 PP.");
- });
  $("reset-turn").addEventListener("click",()=>{
-  state.courageUsedTurn=false;
   if(state.hemomancy){state.hemomancy.usedThisTurn=false;state.hemomancy.boostKind="";state.hemomancy.boostPayment="";state.hemomancy.directLifeResolved=false;}
   renderSkills();renderHemomancy();save();
-  toast("Novo turno: conversão em Coragem e marcador de amplificação com Sangue liberados.");
+  toast("Novo turno: marcador de amplificação com Sangue liberado.");
  });
  window.addEventListener("storage",event=>{if(event.newValue&&(event.key===SAVE_KEY||event.key===PLAYER_SHEETS_INDEX||event.key?.startsWith(PLAYER_SHEET_PREFIX))){toast("Fichas alteradas em outra aba. Recarregue para sincronizar antes de continuar.");}});
 }

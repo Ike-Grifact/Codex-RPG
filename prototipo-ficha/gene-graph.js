@@ -53,7 +53,9 @@ const GENE_CONSTELLATIONS=[
  {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
  {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo"]},
  {id:"alquimia",label:"ALQUIMIA E TRANSFUSÃO",column:2,skills:["criar-veneno","criar-antidoto","transfusao"]},
- {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
+ {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
+ {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","alquimia-avancada","engenharia-avancada","erudicao-avancada"]},
+ {id:"praticas-avancadas",label:"PRÁTICAS AVANÇADAS",column:0,skills:["atletismo-avancado","artesao-avancado","apresentacao-avancada","coleta-avancada"]},
  {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar"]}
 ];
 function position(nodes,branches=[]){
