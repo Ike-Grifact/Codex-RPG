@@ -100,7 +100,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     extraKeep:this._opts.extraKeep,extraZero:Number(this._opts.extraKeep)===0,extraOne:Number(this._opts.extraKeep)===1,extraTwo:Number(this._opts.extraKeep)===2,
     step:this._opts.step,combatBonus:false,hasCombatSkill:false,
     fireCanChoose:actor.type==="character"&&this._opts.mode==="conjuracao"&&s.skills.includes("fogo"),
-    fireGrade1:Number(this._opts.fireGrade)===1,fireGrade2:Number(this._opts.fireGrade)===2,
+    fireGrade0:Number(this._opts.fireGrade)===0,fireGrade1:Number(this._opts.fireGrade)===1,fireGrade2:Number(this._opts.fireGrade)===2,
     fireGrade3:Number(this._opts.fireGrade)===3,fireGradeConfirmed:!!this._opts.fireGradeConfirmed,
     equipmentOptions:actor.items.filter(i=>i.type==="equipment"&&i.system.equipped&&["weapon","firearm","focus"].includes(i.system.kind))
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
@@ -128,6 +128,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     selectedCount:p.selected.length,canFinalize:summary?.ok&&actor.isOwner,summary,errors:summary?.errors||[],
     de:p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetActorUuid,
     critical:summary?.critical||0,
+    fireGrade:Number(p.options.fireGrade||0),
     properties:(item?.system.properties||[]).map(name=>({name,selected:p.options.characteristic===name,selectedSecond:p.options.secondCharacteristic===name})),
     hasProperties:!!item?.system.properties?.length,
     limit:keepLimit(monster?s.threatGrade:s.level,p.options.extraKeep,monster),extraKeep:p.options.extraKeep,
