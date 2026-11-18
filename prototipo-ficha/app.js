@@ -3048,7 +3048,7 @@ function roll(){
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
-  fireMode:"",fireGradeConfirmed:false,firePayment:"courage",fireSummon:false};
+  fireMode:"",fireGradeConfirmed:false,fireSummon:false};
  playRollSound();draft=freshDraft();save();render();
  toast("Dados rolados. Mantenha quaisquer dados da pilha, respeitando o limite.");
 }
@@ -3226,14 +3226,14 @@ function renderPending(){
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
   '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
- const effects=specials.length?'<div class="fp-form-grid'>
+ const effects=specials.length?'<div class="fp-form-grid">'+
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
-  '<label class="fp-form-field">Pagamento, quando necessário<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem/1 PP. Crítico: uma grátis e outra paga. Efeitos elementais habilitados com foco e Perícia têm ativação gratuita. Narrador aplica danos/condições.</p>'+cravarSelector:"";
+  '<p class="fp-caption">Ativação paga, quando necessária: 1 Coragem. Crítico: uma característica grátis e outra paga.</p></div>'+
+  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem. Efeitos G1/G2 habilitados têm ativação-base gratuita. Narrador aplica danos e condições.</p>'+cravarSelector:"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
- '<p class="fp-caption">Trevas com foco e Perícia correspondente: efeito habilitado gratuito (0 Coragem / 0 PP).</p>':
- '<label class="fp-form-field">Pagamento de Trevas se acertar<select data-pending="payment"><option value="courage"'+(p.payment!=="pp"?" selected":"")+'>1 Coragem</option><option value="pp"'+(p.payment==="pp"?" selected":"")+'>1 PP</option></select></label>'):'';
+  '<p class="fp-caption">Trevas: efeito habilitado gratuito.</p>':
+  '<p class="fp-caption">Trevas: ativação paga no acerto custa 1 Coragem.</p>'):'';
  const hemoControl=s.mayHemomancyDirectLife?
   '<div class="fp-alert"><strong>Amplificação de Sangue já paga</strong> · disponível para uma rolagem de magia de Sangue neste turno. '+
   '<button type="button" class="fp-secondary" data-action="hemo-link-roll" aria-pressed="'+(!!p.hemomancyDirectLife)+'">'+
@@ -3251,10 +3251,8 @@ function renderPending(){
   (p.fireMode?
    '<label class="fp-checkline"><input type="checkbox" data-pending="fireGradeConfirmed"'+(p.fireGradeConfirmed?' checked':'')+
    '> Confirmo com o Narrador que este Grau de Fogo está habilitado (não é compra automática)</label>'+
-   (!s.fireFocus?'<label class="fp-form-field">Ativação-base do efeito em acerto<select data-pending="firePayment">'+
-    '<option value="courage"'+(p.firePayment!=="pp"?' selected':'')+'>1 Coragem</option>'+
-    '<option value="pp"'+(p.firePayment==="pp"?' selected':'')+'>1 PP</option></select></label>':
-    '<p class="fp-caption">Ativação-base gratuita com foco de Fogo válido + Criar Foco + Perícia de Fogo.</p>')+
+   (!s.fireFocus?'<p class="fp-caption">Ativação paga de Fogo, se aplicável: 1 Coragem. G1/G2 habilitado tem ativação-base gratuita; custo próprio sem foco continua pendente.</p>':
+    '<p class="fp-caption">Ativação-base gratuita com Perícia e Grau habilitados.</p>')+
    (p.fireMode==="queimar"&&!s.fireFocus?'<label class="fp-checkline"><input type="checkbox" data-pending="fireSummon"'+
     (p.fireSummon?' checked':'')+'> Invocar fogo sem foco em G2: +1 Coragem adicional à ativação-base</label>':'')+
    '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
