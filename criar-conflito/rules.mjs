@@ -1,6 +1,6 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
- sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity}
+ sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs";
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
@@ -29,7 +29,7 @@ export function canBuyDomarGrande(t){
   &&t.skills.includes("domar-criatura-media");
 }
 export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
-export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap};
+export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage};
 // Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
 export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};
 export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};
@@ -100,7 +100,7 @@ export function normalize(raw){
  for(const k of ["name","concept","notes","abilities"])t[k]=String(raw[k]||"").slice(0,k==="notes"||k==="abilities"?4000:160);
  t.leader=!!raw.leader;
  for(const k of ["level","threatGrade","xp","life","pavorLocal","keep","courage"]){
-  const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,10]:k==="xp"?[0,50000]:[0,999];
+  const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,maxCourage(raw.level??t.level)]:k==="xp"?[0,50000]:[0,999];
   t[k]=Math.floor(clamp(raw[k]??t[k],min,max));
  }
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
