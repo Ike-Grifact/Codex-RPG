@@ -293,7 +293,7 @@ function rollSourceCards(t){
    ' A escolha não compra graus e não gasta recursos.</p>'+cards+
   '<label class="cf-context-toggle"><input type="checkbox" id="cf-pick-extra"'+(d.pickExtra?' checked':'')+'> Clicar para escolher a terceira fonte (se habilitada)</label>'+
   (d.extra?'<div class="cf-extra-preview"><span>Complemento: '+esc(d.extra.group+" · "+d.extra.key)+'</span>'+
-   '<label><input type="checkbox" id="cf-context-ok"'+(d.contextOK?' checked':'')+'> Narrador confirma a pertinência</label>'+
+   '<small class="cf-note">Pertinência definida entre jogador e Narrador, sem confirmação digital.</small>'+
    '<button type="button" data-clear-extra>Retirar complemento</button></div>':'')+
   (!comp.ok?'<p class="cf-note">Preparação: '+esc(comp.error)+'</p>':
    '<p class="cf-note">Pilha inicial: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste Coragem, dado elevado e DE no painel abaixo.</p>')+
@@ -452,7 +452,7 @@ function rollPane(t){
    esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
    '</option>').join("")+'</select></label>':'')+'</div>':"";
  const extraHint=d.extra?'<p class="cf-note">Terceira fonte: '+esc(d.extra.group+" / "+d.extra.key)+
-  ' · pertinência '+(d.contextOK?"confirmada":"pendente")+'</p>':"";
+  ' · pertinência combinada verbalmente</p>':"";
 
  return '<section class="cf-panel cf-roll-panel" id="cf-roll-panel"><h3>Rolagem de '+(human?'humanoide':'criatura')+'</h3>'+
   '<p class="cf-note">'+help+'</p>'+
@@ -777,7 +777,6 @@ document.addEventListener("change",event=>{
    refreshRoll();return;
   }
   if(target.id==="cf-pick-extra"){const d=draftFor(selected());d.pickExtra=target.checked;render();return;}
- if(target.id==="cf-context-ok"){const d=draftFor(selected());d.contextOK=target.checked;render();return;}
  if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
  if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
  if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
