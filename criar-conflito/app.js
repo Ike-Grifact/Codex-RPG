@@ -52,14 +52,14 @@ function draftFor(t){
   const attribute=ATTRIBUTES.find(([key])=>t.attributes[key]>0)?.[0]||"forca";
   rollDraft={id:t.id,baseGroup:trained?.group||"practice",baseKey:trained?.key||"atletismo",
    attribute,first:"forca",second:"vigor",mode:"armas",extra:null,contextOK:false,
-   step:false,stepDieId:"",extraKeep:isHumanoidKind(t.kind)&&t.threatGrade>=2,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
+   stepSourceId:"",keepExtra:0,de:Math.max(1,stats(t).de),situation:"neutral",declaredSkill:"",declaredAction:""};
  }
  return rollDraft;
 }
 function selectionFor(t,d){
  return isHumanoidKind(t.kind)?
-  {baseGroup:d.baseGroup,baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,extra:d.extra,contextOK:d.contextOK}:
-  {first:d.first,second:d.second,extra:d.extra,contextOK:d.contextOK};
+  {baseGroup:d.baseGroup,baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,extra:d.extra}:
+  {first:d.first,second:d.second,extra:d.extra};
 }
 function scrollToRoll(){el("cf-roll-panel")?.scrollIntoView({behavior:"smooth",block:"start"});}
 function storeHistory(t,r,preview,settlement){
@@ -291,12 +291,12 @@ function rollSourceCards(t){
   '<p class="cf-note">Selecione as fontes na ficha. '+(human?
    "Uma Base de Conhecimento ou Prática + um Atributo; a terceira fonte só com habilitação.":"Dois Atributos diferentes e pertinentes; Grau 5+ pode habilitar uma terceira fonte conforme regra.")+
    ' A escolha não compra graus e não gasta recursos.</p>'+cards+
-  '<label class="cf-context-toggle"><input type="checkbox" id="cf-pick-extra"'+(d.pickExtra?' checked':'')+'> Clicar para escolher a terceira fonte (se habilitada)</label>'+
+  '<button type="button" class="cf-source-extra-button" data-pick-extra aria-pressed="'+Boolean(d.pickExtra)+'">'+(d.pickExtra?'Cancelar seleção da 3ª fonte':'Escolher terceira fonte (com Perícia Avançada)')+'</button>'+
   (d.extra?'<div class="cf-extra-preview"><span>Complemento: '+esc(d.extra.group+" · "+d.extra.key)+'</span>'+
    '<small class="cf-note">Pertinência definida entre jogador e Narrador, sem confirmação digital.</small>'+
    '<button type="button" data-clear-extra>Retirar complemento</button></div>':'')+
   (!comp.ok?'<p class="cf-note">Preparação: '+esc(comp.error)+'</p>':
-   '<p class="cf-note">Pilha inicial: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste Coragem, dado elevado e DE no painel abaixo.</p>')+
+   '<p class="cf-note">Pilha de dados: <strong>'+comp.pool.map(x=>'d'+x.sides).join(" + ")+'</strong>. Ajuste retenção, Pavor local, elevação e DE aqui mesmo.</p>')+
   '</section>';
 }
 function historyPanel(t){
@@ -381,8 +381,7 @@ function rollWorkspace(t){
   (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / '+maxCourage(t.level)+'</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
-  '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
+  '</div></div><div class="cf-roll-unified">'+threatActions(t)+rollPane(t)+'</div>'+historyPanel(t)+'</div>';
 }
 
 function rollPane(t){
@@ -725,6 +724,7 @@ document.addEventListener("click",event=>{
    model.rollHistory=[];save();render();}return;}
  if(b.dataset.historyScope){model.historyScope=b.dataset.historyScope;save();render();return;}
  if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.contextOK=false;d.stepDieId="";render();return;}
+ if(b.hasAttribute("data-pick-extra")){const d=draftFor(selected());d.pickExtra=!d.pickExtra;render();return;}
  if(b.dataset.rollSource){
   const t=selected();if(!t||conflictMode!=="roll")return;
   if(creatureRoll?.id===t.id)return notice("Confirme ou descarte a rolagem atual antes de trocar as fontes.");
@@ -776,8 +776,7 @@ document.addEventListener("change",event=>{
    else if(k==="cancelP"||k==="convertPairs")creatureRoll[k]=Math.floor(clamp(target.value,0,9));
    refreshRoll();return;
   }
-  if(target.id==="cf-pick-extra"){const d=draftFor(selected());d.pickExtra=target.checked;render();return;}
- if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
+  if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
  if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
  if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
  if(target.id==="cf-roll-de"){draftFor(selected()).de=Math.floor(clamp(target.value,0,30));return;}
