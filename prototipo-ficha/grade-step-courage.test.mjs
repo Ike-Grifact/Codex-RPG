@@ -87,7 +87,7 @@ test("Não ignora o consumo de Coragem nem concede manutenção adicional",()=>{
 });
 test("UI seleciona fonte e mostra composições completas, não um dado isolado",()=>{
  assert.ok(app.includes('select("stepSourceId"'));
- assert.ok(app.includes("Elevar a fonte em 1 Grau nesta rolagem (1 Coragem)"));
+ assert.ok(app.includes("Elevar fonte em 1 Grau nesta rolagem (1 Coragem)"));
  assert.ok(app.includes("describeDicePool(temporaryGradeDice(source.group,grade,true))"));
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
