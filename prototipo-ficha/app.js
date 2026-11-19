@@ -1299,8 +1299,10 @@ function quickRollItem(id){
  draft.attribute={group:"attr",key:attr};
  draft.mode=mode;draft.equipmentId=id;draft.de=de;
  sheetPage="play";
- // Usa o mesmo pool e os mesmos testes do botão Rolar, sem bônus ou custo implícito.
- roll();
+ // Ação preparada: o jogador escolhe recursos antes de executar a rolagem.
+ render();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Ação preparada com "+item.name+". Ajuste seus recursos e clique em Rolar dados.");
 }
 
 const RESOURCES=[["ervas","Ervas"],["espolios","Espólios"],["couro","Couro"],["comida","Comida"],["minerios","Minérios"]];
@@ -3130,7 +3132,7 @@ function buildPool(){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
   if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo complementar exige Perícia Avançada da fonte principal.");
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
-  else if(!draft.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
+  // A pertinência do complemento é combinada verbalmente com o Narrador; sem checkbox obrigatório.
  }
  if(!canUseShared())errors.push("Conjuração exige Criar Item de Foco e Magia (a Perícia substitui Aprendiz de Conjurador e Magia Única). Uso marcial básico de Disciplina é livre.");
  const sources=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])];
@@ -3153,6 +3155,7 @@ function buildPool(){
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
+ if(Number(draft.extraKeep)+Number(draft.step)>5)errors.push("Máximo de 5 Coragens gastas por rolagem.");
  if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
  if(draft.cravarRemovalShieldId){
@@ -3222,11 +3225,10 @@ function renderComposer(){
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
  const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
- '<label class="fp-checkline"><input type="checkbox" data-option="step"'+(draft.step?" checked":"")+'> Elevar a fonte em 1 Grau nesta rolagem (1 Coragem)</label>'+
- (draft.step?'<label class="fp-form-field full">Fonte a elevar temporariamente '+select("stepSourceId",[["","Selecione a fonte"],...stepOptions],draft.stepSourceId)+'</label>':"")+
+ '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
- (draft.third?'<label class="fp-checkline fp-context full"><input type="checkbox" data-option="contextOK"'+(draft.contextOK?" checked":"")+'> Confirmo que a Perícia permite este complemento na ação declarada, sob validação do Narrador.</label>':"");
+ "";
  const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
@@ -3253,6 +3255,7 @@ function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
  const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0);
+ if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
@@ -3390,6 +3393,7 @@ function score(){
  // 1 Coragem ao ativar com sucesso, independentemente de foco.
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
  if(fireValid&&success&&fireMode==="derreter")courageCost+=1;
+ if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  const damageBasic=success?E+Math.floor(P/2):0;
@@ -4196,6 +4200,7 @@ function onChange(event){
   const k=el.dataset.option;
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
+  if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
   renderSources();renderComposer();return;
