@@ -1451,7 +1451,7 @@ function playerSheetMeta(s,id,createdAt=new Date().toISOString()){
 function wizardSnapshot(){
  return {version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,
   starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,starterPurchased:wizardStarterPurchased,
-  shopCategory:wizardShopCategory,tradePreferred:wizardTradePreferred};
+  shopCategory:wizardShopCategory,shopWeight:wizardShopWeight,tradePreferred:wizardTradePreferred};
 }
 function restoreWizard(w={}){
  const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
@@ -1460,7 +1460,8 @@ function restoreWizard(w={}){
  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
  wizardMode=w.mode==="list"?"list":"genetic";
- wizardShopCategory=["all","weapon","firearm","armor","shield"].includes(w.shopCategory)?w.shopCategory:"all";
+ wizardShopCategory=EQUIPMENT_FAMILIES.some(([id])=>id===w.shopCategory)?w.shopCategory:"all";
+ wizardShopWeight=EQUIPMENT_WEIGHT_OPTIONS.some(([id])=>id===w.shopWeight)?w.shopWeight:"all";
  wizardTradePreferred=RESOURCES.some(([k])=>k===w.tradePreferred)?w.tradePreferred:"ervas";
  wizardStarterAttribute=A.some(([k])=>k===w.starterAttribute)?w.starterAttribute:"";
  wizardStarterPurchased=A.some(([k])=>k===w.starterPurchased)?w.starterPurchased:"";
@@ -2868,11 +2869,35 @@ function wizardEquipment(){
  const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
  const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
- const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"],["ammunition","Munições"],["container","Aljavas/Estojos"],["instrument","Instrumentos"],["kit","Kits"],["adventurer","Aventureiro"]];
- const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
- const items=CATALOG.filter(it=>wizardShopCategory==="all"||it.kind===wizardShopCategory)
- .map(it=>{const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:(it.kind==="armor"||it.kind==="shield"?"Integridade "+(it.integrity?.max??"—"):null),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div class="fp-wiz-item-heading"><span class="fp-shop-label">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p>'+(it.description?'<small>'+esc(it.description)+'</small>':'')+'<footer><b>'+(purchasable?price+' VT':it.kind==="focus"?(it.priceFormula?it.priceFormula+" VT · foco":"Fabricação por Artesão"):(it.priceVT!=null?it.priceVT+" VT · carga pendente":"Preço pendente"))+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
+
+ const selectFilter=(key,options,value)=>'<select data-wizard-shop-'+key+' aria-label="Filtrar por '+(key==="type"?"tipo":"peso")+'">'+
+  options.map(([id,label])=>'<option value="'+id+'"'+(id===value?' selected':'')+'>'+esc(label)+'</option>').join("")+'</select>';
+ const filters='<div class="fp-equip-filters"><label>Tipo '+selectFilter("type",EQUIPMENT_FAMILIES,wizardShopCategory)+'</label>'+
+  '<label>Peso '+selectFilter("weight",EQUIPMENT_WEIGHT_OPTIONS,wizardShopWeight)+'</label></div>';
+ const visible=CATALOG.filter(it=>equipmentMatches(it,wizardShopCategory,wizardShopWeight))
+  .sort((a,b)=>EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
+    EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||
+    EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(a))-
+    EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(b))||
+    a.name.localeCompare(b.name,"pt-BR"));
+ let previousGroup="";
+ const items=visible.map(it=>{
+  const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const groupTitle=group===previousGroup?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
+  previousGroup=group;
+  const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.priceVT!=null&&Number(it.priceVT)>0;
+  const price=Number(it.priceVT);
+  const priceText=purchasable?price+" VT":it.kind==="focus"?(it.priceFormula?it.priceFormula+" VT · foco":"Fabricação por Artesão"):
+   it.priceVT!=null?it.priceVT+" VT · categoria pendente":"Preço pendente";
+  return groupTitle+'<details class="fp-wiz-shop-item fp-shop-compact"><summary class="fp-shop-summary">'+
+   codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong><small>'+esc(equipmentDetails(it))+'</small>'+
+   '<b>'+esc(priceText)+'</b></summary><div class="fp-shop-expand">'+
+   (it.description?'<p>'+esc(it.description)+'</p>':'<p>As características exigem Perícia apropriada; não concedem bônus automáticos.</p>')+
+   (purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+
+    (remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar · '+price+' VT')+'</button>':
+    '<span class="fp-wiz-muted">Não disponível para compra automática</span>')+
+   '</div></details>';
+ }).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos '+CREATE_BUDGET.total+' XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
@@ -2881,7 +2906,7 @@ function wizardEquipment(){
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
- '<div class="fp-wiz-shop-tabs">'+tabs+'</div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item cadastrado nesta categoria.</p>')+'</div></section>'+
+ '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Seus itens iniciais</h4><div class="fp-wiz-owned-list">'+owned+'</div></section>'+
  '<div class="fp-wiz-reminder"><strong>VT não é XP</strong><p>Você não precisa gastar todo o patrimônio. Itens comprados aparecem na ficha e podem ser equipados conforme as regras.</p></div>';
 }
@@ -4058,6 +4083,13 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.wizardShopType!==undefined||el.dataset.wizardShopWeight!==undefined){
+  if(viewMode!=="builder"||wizardStep!==3)return;
+  if(el.dataset.wizardShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))wizardShopCategory=el.value;
+  if(el.dataset.wizardShopWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))wizardShopWeight=el.value;
+  wizardPersist();renderWizard();return;
+ }
+
  if(el.dataset.wizardVtDraft!==undefined){
   if(state.trade.purchases.length||state.trade.collected)return;
   const k=el.dataset.wizardVtDraft;
