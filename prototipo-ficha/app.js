@@ -1,4 +1,4 @@
-/* Codex RPG — criador e ficha unificados. SRD v0.81 (Elementos sem requisito de Criar Foco; Druídica 1 XP; requisitos diretos Domar Pequena + Terra; Saúde com Força, quatro estados, modificadores e Coragem nas rolagens); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 15 XP iniciais experimentais (SRD v0.79). */
+/* Codex RPG — criador e ficha unificados. SRD Playtest Nível 1 v1.0 (15 XP, Druídica Foco + Terra e Transformação Elemental; efeitos manuais); d4 de v0.46 (1E, 1A, 1P, vazio); base v0.44: Conjuração Refinada, armaduras G1 −3 e pedras especiais 3× comuns; 15 XP iniciais DEFINIDOS (SRD Playtest Nível 1 v1.0). */
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
@@ -112,8 +112,8 @@ function raceChoicesComplete(s=state){
 }
 function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendente na v0.56.
 
-const CREATE_BUDGET={attr:15,training:15,skills:15,total:15}; // EXPERIMENTAL: 15 XP globais; após 1+2 XP mínimos, saldo livre.
-const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // EXPERIMENTAL: 15 XP no nível 1; demais níveis preservados.
+const CREATE_BUDGET={attr:15,training:15,skills:15,total:15}; // DEFINIDO: 15 XP globais; após 1+2 XP mínimos, saldo livre.
+const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // DEFINIDO: 15 XP no nível 1; demais níveis preservados.
 const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 245 XP novos concedíveis (260 totais − 15 iniciais).
 // Todas as especializações Avançadas de Conhecimentos e Práticas exigem Grau 2
 // na respectiva fonte e custam 1 XP; outras exigências históricas permanecem.
@@ -492,7 +492,13 @@ const SKILLS=[
  [
   "pericia-druidica",
   "Perícia Druídica",
-  "Compra única de 1 XP: exige diretamente Domar Criatura Pequena e Perícia em Elemento Terra. Não exige Domar Média nem Foco diretamente; Terra conserva o requisito próprio de Foco. Escolhe qualquer espécie coerente com o porte habilitado na transformação, sem memorização/domesticação anterior. G1 Pequena disponível na compra; G2 Média ao adquirir Domar Média; G3 Grande ao adquirir Domar Grande, sem recomprar Druídica. Domar Gigante é futura Perícia sem custos ou efeitos definidos. G1 pequena: gratuita, ficha com XP total atual do druida; Força/Vigor na faixa elevada e demais Atributos normais da v0.56, Vantagem Absoluta em Furtividade, Leve. G2 média: 1 Coragem, XP total atual do druida para Atributos normais da v0.56, mantém 2 dados naturalmente, Vantagem em Agilidade/Destreza, Leve; falha com Pavor encerra forma. G3 grande: 1 Coragem, XP total atual do druida para Atributos normais da v0.56, combina três Atributos pertinentes, mantém 3 dados naturalmente, Leve; somente Pavor mantido não cancelado por Antecipar encerra a forma depois da ação. Atualização 16/11: Vida agora possui quatro caixas (Saudável, Ferido, Incapacitado, Inconsciente) com 1 ponto inicial em cada; Vigor alterna na primeira/segunda, as duas últimas fixas em 1. Vida conforme comparação dos máximos: se forma menor, golpe letal cancela a forma e transfere TODO o dano acumulado nessa transformação, incluindo golpes anteriores e o final, sem duplicar ferimentos humanos pré-existentes; se igual, Vida inicial é a Vida atual humana, sem PV temporários; se maior, excedente em PVs temporários concedidos somente ao transformar, consumidos antes da Vida real, sem regeneração enquanto a forma dura e descartados ao destransformar; dano real pode matar na forma. Formas animais NÃO têm armadura; o dano efetivo vai direto à Vida. Escudo Arcano pode ser conjurado na transformação se adquirido e habilitado, protegendo a forma por 1 rodada segundo rolagem simbólica de Escudo, com 1 Coragem própria (Média/Grande pagam mais 1 Coragem pela transformação). Dano bloqueado pelo Escudo não entra no dano animal acumulado. Declara a transformação e pode atacar/agir na mesma oportunidade; ao conjurar Escudo Arcano junto, Pavor mantido não anulado na rolagem entrega protagonismo ao inimigo; sem esse Pavor, segue protagonismo normal. Morte animal imediata indiscriminada e conversão por faixas foram revogadas. Reversão voluntária DEFINIDA: custo 0 Coragem, sem teste e sem gastar ação, reação ou turno em G1/G2/G3; não cura e não reembolsa custos prévios. DEFINIDO: reversão voluntária transfere o dano animal efetivo acumulado da forma menor sem golpe letal, mas nunca PVs temporários; para forma igual/maior, Vida real já descontada não é descontada de novo. DEFINIDO: PVs temporários somente na caixa Saudável; Escudo Arcano ativo permanece após reversão até o fim da duração original de 1 rodada, sem renovar Integridade ou custo. PENDENTES: retransformações e automação da transformação/caixas de Saúde.",
+  "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+  1
+ ],
+ [
+  "transformacao-elemental",
+  "Transformação Elemental",
+  "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
   1
  ]
 ];
@@ -509,7 +515,8 @@ const SKILL_AFFINITY={
  "domar-criatura-media":["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "domar-criatura-grande":["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "domar-criatura-pequena": ["attr:influencia","attr:inteligencia","practice:apresentacao"],
- "pericia-druidica": ["attr:influencia","practice:apresentacao","practice:armas_conjuracao","attr:inteligencia"],
+ "pericia-druidica": ["practice:armas_conjuracao","attr:inteligencia","practice:artesao"],
+ "transformacao-elemental": ["practice:armas_conjuracao","attr:inteligencia","practice:artesao"],
  "combate": [
   "practice:armas_conjuracao"
  ],
@@ -744,8 +751,9 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental","pericia-druidica"],
- ["criar-item-foco-magia","terra","domar-criatura-pequena","pericia-druidica"],
+ ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental"],
+ ["criar-item-foco-magia","terra","pericia-druidica"],
+ ["criar-item-foco-magia","terra","transformacao-elemental"],
  [
   "armas",
   "armas-leves",
@@ -838,6 +846,7 @@ const SKILL_PERMALINKS={
  "domar-criatura-grande":"domar-criatura-grande",
  "domar-criatura-pequena": "domar-criatura-pequena",
  "pericia-druidica": "pericia-druidica",
+ "transformacao-elemental": "transformacao-elemental",
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
@@ -901,7 +910,8 @@ const CARD_REQUIREMENTS={
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
- "pericia-druidica": "Domar Criatura Pequena + Perícia em Elemento Terra (G2: Domar Média; G3: Domar Grande; sem Foco)",
+ "pericia-druidica": "Criar Item de Foco e Magia + Perícia em Elemento Terra; sem Domar nem Influência",
+ "transformacao-elemental": "Criar Item de Foco e Magia + ao menos uma Perícia Elemental",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
@@ -950,7 +960,8 @@ const CARD_EFFECTS={
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
- "pericia-druidica": "1 XP uma única vez. Declara transformação e ataca/age na mesma oportunidade; Escudo Arcano conjurado junto, com Pavor mantido não anulado, passa protagonismo ao inimigo. Sem esse Pavor, segue protagonismo normal. XP de toda forma = XP total atual do druida. G1 com Domar Pequena e Terra; G2 requer Domar Média; G3 requer Domar Grande. Foco não é requisito direto nem indireto da Druídica; Terra é independente da Perícia de Foco. Máximo animal menor: golpe letal desfaz a forma e transfere todo o dano acumulado durante a forma, sem duplicar dano prévio. Sem armadura animal; Escudo Arcano habilitado pode proteger a forma quando conjurado na transformação (custos normais, 1 rodada). Igual: Vida atual humana. Maior: PV temporários somente na transformação, sem regenerar na forma nem acumular entre formas, antes da Vida real. Tabelas animais por porte da v0.56 definidas. Temporários somente em Saudável; Escudo Arcano mantém-se após reversão voluntária/forçada pela duração original restante. Reversão voluntária custa 0 Coragem, não exige teste nem ação/reação/turno e não cura; dano efetivo acumulado na forma menor se transfere mesmo na reversão voluntária; PVs temporários não contam, e dano real já aplicado não se repete.",
+ "pericia-druidica": "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+ "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -998,7 +1009,8 @@ const CARD_BRIEFS={
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
- "pericia-druidica": "Compra única de 1 XP; somente Domar Pequena e Terra como requisitos diretos. Média exige Domar Média depois; Grande exige Domar Grande. Foco não é requisito para comprar Druídica ou Terra. Declara a transformação e pode atacar/agir na mesma oportunidade; Escudo Arcano junto exige sua rolagem e Pavor mantido não anulado passa protagonismo ao inimigo. Grande exige Domar Grande como evolução. Forma não exige domesticar a espécie. XP e Vida máxima vêm da ficha animal feita com XP total atual do druida, usando tabelas da v0.56: Pequena com Força/Vigor elevados; Média/Grande com Atributos normais. PV temporários só ao transformar, alocados em Saudável e nunca regenerados na forma. Escudo Arcano permanece após reversão até completar sua duração original. Nenhuma forma tem armadura física; Escudo Arcano conjurado junto pode protegê-la, respeitando 1 Coragem de Escudo, rolagem e 1 rodada. Dano animal acumulado se transfere integralmente ao reverter por golpe letal em forma menor. Reversão voluntária custa 0, dispensa teste e ação/reação/turno; a reversão voluntária também transfere o dano acumulado da forma menor, sem PVs temporários nem dupla cobrança de Vida real.",
+ "pericia-druidica": "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+ "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -1046,7 +1058,8 @@ const CARD_ACTIVATIONS={
  "domar-criatura-media":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-grande":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-pequena": "1 Coragem + teste de Influência + Apresentação",
- "pericia-druidica": "Declara transformação e pode atacar/agir na mesma oportunidade. Pequena 0; média/grande 1 Coragem. Escudo Arcano junto: +1 Coragem e rolagem; Pavor mantido não anulado passa protagonismo ao inimigo, sem Pavor residual segue protagonismo normal. Reversão voluntária: 0 Coragem, sem ação/reação/turno",
+ "pericia-druidica": "Compra única libera Pequena/Média/Grande; 0/1/1 Coragem. Nenhuma forma animal permite conjuração.",
+ "transformacao-elemental": "1 Coragem. Ambiente favorável: 3 turnos. Duração = E-P (>0); unidade, fontes, DE e amplificação pendentes.",
  "criar-item-foco-magia": "G1/G2 Psíquico: ativação-base gratuita",
  "escudo-arcano": "1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
@@ -1702,7 +1715,8 @@ function skillReq(id,s=state){
   return"Requer Domar Criatura Pequena e Domar Criatura Média antes de comprar Domar Criatura Grande.";
  if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
  if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência 2, Inteligência 1 e Apresentação 1.";
- if(id==="pericia-druidica" && !["domar-criatura-pequena","terra"].every(has))return"Compra única de 1 XP: exige Domar Criatura Pequena e Perícia em Elemento Terra. Média G2 requer Domar Média; Grande G3 requer Domar Grande. Terra conserva seus requisitos próprios.";
+ if(id==="pericia-druidica" && !["criar-item-foco-magia","terra"].every(has))return"Compra única de 1 XP: exige Criar Item de Foco e Magia e Perícia Terra; não exige Domar nem Influência.";
+ if(id==="transformacao-elemental" && (!has("criar-item-foco-magia")||!["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"].some(has)))return"Requer Criar Item de Foco e Magia e pelo menos uma Perícia em Elemento.";
 
  const disc=s.practices.armas_conjuracao||0;
  const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;
@@ -2161,7 +2175,8 @@ const GENE_AUTO_REQUIREMENTS={
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]],
  "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena","s:domar-criatura-media"]],
- "pericia-druidica":[["s:domar-criatura-pequena","s:terra"]],
+ "pericia-druidica":[["s:criar-item-foco-magia","s:terra"]],
+ "transformacao-elemental":[["s:criar-item-foco-magia","s:vento"],["s:criar-item-foco-magia","s:agua"],["s:criar-item-foco-magia","s:terra"],["s:criar-item-foco-magia","s:fogo"],["s:criar-item-foco-magia","s:sagrado"],["s:criar-item-foco-magia","s:sangue"],["s:criar-item-foco-magia","s:trevas"],["s:criar-item-foco-magia","s:veneno"]],
  "montar":[["a:influencia:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],

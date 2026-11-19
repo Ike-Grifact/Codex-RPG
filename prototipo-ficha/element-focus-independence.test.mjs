@@ -49,10 +49,28 @@ test("Veneno continua exigindo Disciplina, Inteligência, Alquimia e Medicina 2"
  assert.match(skillReq("veneno",s),/Medicina 2/);
  assert.deepEqual(auto.veneno[0],["p:armas_conjuracao:2","a:inteligencia:2","k:alquimia:2","k:medicina:2"]);
 });
-test("Druídica G1 não tem mais dependência indireta de Foco",()=>{
- const s=player();s.skills=["domar-criatura-pequena","terra","pericia-druidica"];
- assert.equal(dependentsValid(s),null);
- assert.deepEqual(auto["pericia-druidica"][0],["s:domar-criatura-pequena","s:terra"]);
+test("Druídica exige Foco e Terra, mas nunca Domar ou Influência",()=>{
+ const s=player();s.attributes.influencia=0;s.practices.apresentacao=0;
+ s.skills=["pericia-druidica","terra","criar-item-foco-magia"];
+ assert.equal(skillReq("pericia-druidica",s),null);
+ assert.deepEqual(auto["pericia-druidica"][0],["s:criar-item-foco-magia","s:terra"]);
+ s.skills=["pericia-druidica","terra"];
+ assert.match(skillReq("pericia-druidica",s),/Criar Item de Foco e Magia/);
+ s.skills=["pericia-druidica","criar-item-foco-magia"];
+ assert.match(skillReq("pericia-druidica",s),/Terra/);
+});
+test("Transformação Elemental custa 1 XP e exige Foco + qualquer Perícia Elemental",()=>{
+ const s=player();s.skills=["transformacao-elemental","criar-item-foco-magia","terra"];
+ assert.equal(skillReq("transformacao-elemental",s),null);
+ assert.deepEqual(auto["transformacao-elemental"][2],["s:criar-item-foco-magia","s:terra"]);
+ s.skills=["transformacao-elemental","terra"];
+ assert.match(skillReq("transformacao-elemental",s),/Criar Item de Foco e Magia/);
+ s.skills=["transformacao-elemental","criar-item-foco-magia"];
+ assert.match(skillReq("transformacao-elemental",s),/Perícia em Elemento/);
+ s.skills=["transformacao-elemental","criar-item-foco-magia","fogo"];
+ assert.equal(skillReq("transformacao-elemental",s),null);
+ const definitions=between("const SKILLS=", "// IDs de Perícias legadas");
+ assert.match(definitions,/\x22transformacao-elemental\x22,\s*\x22Transformação Elemental\x22,[\s\S]*?\b1\b/);
 });
 test("Improviso não exige Foco; Escudo Arcano ainda exige",()=>{
  const s=player();s.attributes.inteligencia=2;s.attributes.vigor=1;s.attributes.destreza=1;
