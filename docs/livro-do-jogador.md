@@ -177,6 +177,9 @@ Pode usar elemento de um **foco** para amplificar a forma ou um elemento present
 
 ## Coragem — recuperação no ciclo Playtest Nível 1 [DEFINIDO]
 
+**DEFINIDO (19/11/2026):** até **5 Coragens gastas por rolagem**, somando condição de Vida, retenção, elevação e ativações de Perícias relacionadas ao mesmo teste. Esse limite não reduz a reserva nem modifica as recuperações. Clicar em arma/foco apenas **prepara a ação**; o personagem decide os gastos antes de rolar. A pertinência da terceira fonte é acertada verbalmente com o Narrador, sem checkbox extra de confirmação.
+
+
 **Maestrias de recuperação não serão desenvolvidas agora.** Permanecem: crítico (2 faces máximas mantidas = +1 Coragem; 3–4 = +2), **1 Coragem por Pavor mantido e não anulado pelo inimigo contra o personagem atacado**, recuperação por **Recobrar Coragem** no descanso curto (efeito publicado de +2 após a cena narrativa) e **Vigor + 1** no descanso longo, respeitando o teto. A progressão neutra aumenta esse teto em **+1 nos níveis 5, 10 e 20**. **DEFINIDO — correção autoral:** o Aprendiz começa com **10 Coragens** e recebe **+1 de teto** nos níveis **5, 10 e 20**, chegando a **11, 12 e 13**, respectivamente. A menção a “3 Coragens” significava os três aumentos na progressão, não 3 pontos iniciais. O criador já utiliza os valores corretos: não é necessária migração da base 10. As descrições das Maestrias adiante são **histórico adiado**, não novas compras nem mecanismos automáticos.
 
 ## Atualização normativa — 15/11/2026: proteção, Conjuração Refinada, pedras e competência [DEFINIDO / PROPOSTO]

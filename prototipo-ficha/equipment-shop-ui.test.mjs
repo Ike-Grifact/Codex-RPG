@@ -14,17 +14,18 @@ const end=app.indexOf("const RESOURCES=",start);
 assert.ok(start>0&&end>start,"Funções puras de equipamento não encontradas");
 const fragment=app.slice(start,end);
 function makeUI(state,initialDraft={},extras={}){
- let rollCount=0;
+ let rollCount=0,renderCount=0;
  const messages=[];
  const source="let draft=initialDraft,sheetPage='inventory',editMode=false;\n"+fragment+
   "\nreturn {equipmentFamily,equipmentWeight,equipmentGroupName,equipmentWeightName,equipmentMatches,equipmentDetails,preferredQuickAttribute,quickRollItem,getDraft:()=>draft,getPage:()=>sheetPage};";
- const injected=new Function("CATALOG","state","initialDraft","roll","combatItem","toast","freshDraft","label",source);
+ const injected=new Function("CATALOG","state","initialDraft","roll","combatItem","toast","freshDraft","label","render","$",source);
  const roll=()=>{rollCount++;};
  const combatItem=extras.combatItem||((item,mode)=>item.equipped&&item.type==="arma"&&mode==="armas"?[item.die]:[]);
  const ui=injected(catalog,state,initialDraft,roll,combatItem,x=>messages.push(x),
   ()=>({base:null,attribute:null,third:null,mode:"normal",de:1,extraKeep:false,step:false,equipmentId:""}),
-  (_,name)=>({destreza:"Destreza",forca:"Força",inteligencia:"Inteligência"}[name]||name));
- return {...ui,messages,getRollCount:()=>rollCount};
+  (_,name)=>({destreza:"Destreza",forca:"Força",inteligencia:"Inteligência"}[name]||name),
+  ()=>{renderCount++;},()=>({scrollIntoView(){}}));
+ return {...ui,messages,getRollCount:()=>rollCount,getRenderCount:()=>renderCount};
 }
 const melee=catalog.find(x=>x.name==="Espada Curta");
 const firearm=catalog.find(x=>x.name==="Revólver");
@@ -49,12 +50,13 @@ test("Classificação legível por tipo e categoria física (sem alterar dados)"
  assert.equal(ui.equipmentFamily({name:"Lança de Arremesso",type:"arma",category:"medio"}),"hastes");
  assert.equal(ui.equipmentFamily({name:"Cajado Pesado",type:"arma",category:"pesado"}),"cajados");
 });
-test("Atalho usa Disciplina + Atributo existente e o dado habilitado, sem regra nova",()=>{
+test("Atalho prepara Disciplina + Atributo escolhido sem executar uma rolagem",()=>{
  const item={...melee,id:"weapon-1",type:"arma",equipped:true};
  const state={items:[item],attributes:{forca:1,destreza:2,inteligencia:1},pending:null};
  const ui=makeUI(state,{attribute:{group:"attr",key:"forca"},de:4});
  ui.quickRollItem("weapon-1");
- assert.equal(ui.getRollCount(),1);
+ assert.equal(ui.getRollCount(),0);
+ assert.equal(ui.getRenderCount(),1);
  assert.equal(ui.getPage(),"play");
  assert.deepEqual(ui.getDraft().base,{group:"practice",key:"armas_conjuracao"});
  assert.deepEqual(ui.getDraft().attribute,{group:"attr",key:"forca"});
@@ -66,7 +68,8 @@ test("Atalho prefere atributo treinado mais alto se não existe seleção do jog
  const item={...melee,id:"weapon-2",type:"arma",equipped:true};
  const ui=makeUI({items:[item],attributes:{forca:1,destreza:3,agilidade:2},pending:null});
  ui.quickRollItem("weapon-2");
- assert.equal(ui.getRollCount(),1);
+ assert.equal(ui.getRollCount(),0);
+ assert.equal(ui.getRenderCount(),1);
  assert.equal(ui.getDraft().attribute.key,"destreza");
 });
 test("Atalho não rola quando o item não é apto, não está equipado, ou há pendência",()=>{
@@ -79,12 +82,13 @@ test("Atalho não rola quando o item não é apto, não está equipado, ou há p
  const pending=makeUI({items:[owned],attributes:{destreza:2},pending:{dice:[]}});
  pending.quickRollItem("w");assert.equal(pending.getRollCount(),0);
 });
-test("Foco usa modo Conjuração e Inteligência já treinada",()=>{
+test("Foco prepara modo Conjuração e Inteligência já treinada sem rolar",()=>{
  const focus={name:"Varinha G1",id:"focus-1",type:"foco",equipped:true,die:6};
  const ui=makeUI({items:[focus],attributes:{destreza:3,inteligencia:1},pending:null},{},
   {combatItem:(item,mode)=>mode==="conjuracao"?[6]:[]});
  ui.quickRollItem("focus-1");
- assert.equal(ui.getRollCount(),1);
+ assert.equal(ui.getRollCount(),0);
+ assert.equal(ui.getRenderCount(),1);
  assert.equal(ui.getDraft().mode,"conjuracao");
  assert.equal(ui.getDraft().attribute.key,"inteligencia");
 });
@@ -103,4 +107,15 @@ test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",(
  assert.ok(app.includes('data-action="integrity"'));
  assert.ok(app.includes('data-item-field="ammoRemaining"'));
  assert.ok(app.includes('data-action="cravar-impact"'));
+});
+
+test("Preparação exige decisão de gastar recursos no compositor e não confirmação do Narrador",()=>{
+ assert.ok(!app.includes('data-option="contextOK"'));
+ assert.ok(!app.includes('data-option="step"'));
+ assert.ok(app.includes('select("stepSourceId"'));
+ assert.ok(app.includes('data-option="extraKeep"'));
+ assert.ok(app.includes('if(k==="stepSourceId")draft.step=!!draft.stepSourceId'));
+ assert.ok(app.includes('if(courageCost>5)errs.push('));
+ assert.ok(app.includes('if(precoPrevisto>5)'));
+ assert.ok(app.includes('toast("Ação preparada com "+item.name'));
 });
