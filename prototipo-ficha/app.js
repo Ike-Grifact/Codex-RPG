@@ -1208,6 +1208,101 @@ function codexIcon(icon,cls="fp-codex-icon"){
 const codexSkillIcon=(id,cls)=>codexIcon(CODEX_SKILL_ICONS[id],cls);
 const codexItemIcon=(item,cls)=>codexIcon(codexItemIconId(item),cls);
 
+
+/** Organização VISUAL do catálogo: não muda categoria física, dado ou compra. */
+const EQUIPMENT_FAMILIES=[
+ ["all","Todos os tipos"],["espadas","Espadas"],["adagas","Adagas e facas"],
+ ["martelos","Martelos e maças"],["machados","Machados"],["hastes","Lanças e hastes"],
+ ["cajados","Cajados e bastões"],["distancia","Longo alcance"],
+ ["fogo","Armas de fogo"],["arremesso","Arremesso"],["punhos","Luvas e punhos"],
+ ["armas-outros","Outras armas"],["armadura","Armaduras"],["escudo","Escudos"],
+ ["foco","Focos"],["ammunition","Munições"],["container","Aljavas e estojos"],
+ ["instrument","Instrumentos"],["kit","Kits"],["adventurer","Aventureiro"],["outro","Outros"]
+];
+const EQUIPMENT_WEIGHT_OPTIONS=[
+ ["all","Todos os pesos"],["muito_leve","Muito leve"],["leve","Leve"],
+ ["medio","Médio"],["pesado","Pesado"],["extremo","Muito pesado"]
+];
+function equipmentFamily(item){
+ const catalogRow=item.catalogId?CATALOG.find(x=>x.name===item.catalogId):null;
+ const kind=item.kind||catalogRow?.kind||item.type||"";
+ const n=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(kind==="firearm"||item.firearm)return "fogo";
+ if(kind==="armor"||kind==="armadura")return "armadura";
+ if(kind==="shield"||kind==="escudo")return "escudo";
+ if(kind==="focus"||kind==="foco")return "foco";
+ if(["ammunition","container","instrument","kit","adventurer"].includes(kind))return kind;
+ if(kind!=="weapon"&&kind!=="arma")return "outro";
+ if(/arco|besta|zarabatana/.test(n)||(item.properties||[]).includes("À Distância"))return "distancia";
+ if(/espada|katana|montante/.test(n))return "espadas";
+ if(/martelo|marreta|maca|clava/.test(n))return "martelos";
+ if(/machado|machadinha/.test(n))return "machados";
+ if(/lanca|azagaia|naginata|alabarda/.test(n))return "hastes";
+ if(/cajado|bastao/.test(n))return "cajados";
+ if(/faca|adaga|punhal|kunai|shuriken/.test(n))return "adagas";
+ if(/luva|manopla|soqueira|punho/.test(n))return "punhos";
+ if(/arremesso|dardo/.test(n))return "arremesso";
+ return "armas-outros";
+}
+function equipmentWeight(item){
+ const c=String(item.category||"").replace(/-/g,"_");
+ if(["muito_leve","leve","medio","pesado","extremo"].includes(c))return c;
+ if(item.weight==="muito_leve")return "muito_leve";
+ if(item.weight==="leve")return "leve";
+ if(item.weight==="medio")return "medio";
+ if(item.weight==="alto")return "pesado";
+ if(item.weight==="extremo")return "extremo";
+ return "leve";
+}
+function equipmentGroupName(id){return EQUIPMENT_FAMILIES.find(x=>x[0]===id)?.[1]||"Outros";}
+function equipmentWeightName(id){return EQUIPMENT_WEIGHT_OPTIONS.find(x=>x[0]===id)?.[1]||"Leve";}
+function equipmentMatches(item,family,weight){
+ return (family==="all"||equipmentFamily(item)===family)&&
+  (weight==="all"||equipmentWeight(item)===weight);
+}
+function equipmentDetails(item){
+ const kind=item.kind||item.type;
+ const weight=equipmentWeightName(equipmentWeight(item));
+ const p=item.properties||[];
+ const info=[weight];
+ if(item.die>0)info.push("d"+item.die+" com Perícia");
+ if(kind==="armor"||kind==="armadura"){
+  info.push("Integridade "+(item.integrity?.max??item.max??0));
+  info.push(({muito_leve:"+2 DE",leve:"+1 DE",medio:"0 DE",pesado:"−1 DE",extremo:"−2 DE"})[equipmentWeight(item)]||"DE a conferir");
+ }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(item.integrity?.max??item.max??0));
+ if(item.range>0)info.push("Alcance "+item.range+" m");
+ if(p.length)info.push(p.join(" · "));
+ return info.join(" · ");
+}
+function preferredQuickAttribute(item){
+ if(item.type==="foco"&&(state.attributes.inteligencia||0)>0)return "inteligencia";
+ const previous=draft.attribute;
+ if(previous?.group==="attr"&&(state.attributes[previous.key]||0)>0)return previous.key;
+ const priority=["destreza","forca","agilidade","vigor","inteligencia","influencia"];
+ return priority.filter(k=>(state.attributes[k]||0)>0)
+  .sort((a,b)=>state.attributes[b]-state.attributes[a])[0]||null;
+}
+function quickRollItem(id){
+ const item=state.items.find(it=>it.id===id&&it.equipped&&["arma","foco"].includes(it.type));
+ if(!item){toast("Somente arma ou foco equipado pode iniciar uma rolagem de equipamento.");return;}
+ if(state.pending){toast("Finalize primeiro a rolagem pendente.");return;}
+ if(editMode){toast("Conclua a edição antes de rolar.");return;}
+ const mode=item.type==="foco"?"conjuracao":"armas";
+ if(!combatItem(item,mode).length){
+  toast("O dado de "+item.name+" exige a Perícia de manejo ou foco pertinente; revise a ficha.");return;
+ }
+ const attr=preferredQuickAttribute(item);
+ if(!attr){toast("Selecione um Atributo treinado para rolar com Disciplina.");sheetPage="play";render();return;}
+ const de=Number.isInteger(draft.de)?draft.de:1;
+ draft=freshDraft();
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ draft.attribute={group:"attr",key:attr};
+ draft.mode=mode;draft.equipmentId=id;draft.de=de;
+ sheetPage="play";
+ // Usa o mesmo pool e os mesmos testes do botão Rolar, sem bônus ou custo implícito.
+ roll();
+}
+
 const RESOURCES=[["ervas","Ervas"],["espolios","Espólios"],["couro","Couro"],["comida","Comida"],["minerios","Minérios"]];
 const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT não é moeda física.
 // SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
@@ -1301,7 +1396,8 @@ let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0
 let playerSheets=[],activePlayerSheetId="";
 let wizardCategory="",wizardTab="attr",wizardMode="genetic";
 let wizardStarterPhase="attr",wizardStarterAttribute="",wizardStarterTraining="",wizardStarterPurchased="";
-let wizardShopCategory="all",wizardTradePreferred="ervas";
+let wizardShopCategory="all",wizardShopWeight="all",wizardTradePreferred="ervas";
+let tradeShopType="all",tradeShopWeight="all",inventoryType="all",inventoryWeight="all";
 let sheetPage="play",geneFilter="related",geneSelected="",geneSearch="",geneListOpen=false;
 let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneInspectorOpen=false,geneInspectorTop=12;
 const WIZARD_STEPS=[
