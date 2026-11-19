@@ -1412,3 +1412,20 @@ html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65
  .fp-hemo-panel .fp-hemo-register-fields{grid-template-columns:minmax(0,1fr)}
  .fp-hemo-payments{grid-template-columns:minmax(0,1fr)}
 }
+
+/* Atlas SVG de contorno: recursos e famílias de constelações. */
+.fp-vital-label.fp-icon-life,.fp-vital-label.fp-icon-de,.fp-vital-label.fp-icon-integrity{
+ background-repeat:no-repeat;background-position:left center;background-size:21px 21px;
+ padding-left:28px;min-height:22px;align-items:center
+}
+.fp-vital-label.fp-icon-life{background-image:url("../assets/icons/codex/status-vida.svg")}
+.fp-vital-label.fp-icon-de{background-image:url("../assets/icons/codex/status-de.svg")}
+.fp-vital-label.fp-icon-integrity{background-image:url("../assets/icons/codex/status-integridade.svg")}
+.fp-gene-constellation-icon,.fp-gene-skill-pictogram{pointer-events:none;user-select:none}
+.fp-gene-constellation-icon{opacity:.95}
+.fp-gene-skill-pictogram{opacity:.94}
+.fp-gene-skill.is-locked .fp-gene-skill-pictogram{opacity:.54}
+.fp-gene-skill.is-selected .fp-gene-skill-pictogram{opacity:1}
+@media(max-width:650px){
+ .fp-vital-label.fp-icon-life,.fp-vital-label.fp-icon-de,.fp-vital-label.fp-icon-integrity{background-size:18px 18px;padding-left:24px}
+}
