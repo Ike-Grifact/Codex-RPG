@@ -523,7 +523,7 @@ O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, ro
 | 1–5 | 2 | 3 |
 | 6–20 | 3 | 4 |
 
-Gastar Coragem para manter mais um dado **não cria um novo dado na pilha**. Gastar 1 Coragem permite escolher **qual dado elegível da pilha** elevar em um passo antes da rolagem, incluindo Atributo, Conhecimento, Prática ou dado adicional habilitado de equipamento. A cadeia comum é d4→d6→d10→d12, com uma elevação comum por rodada e sem alterar limites de rolagem ou retenção.
+Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
@@ -617,7 +617,7 @@ O uso de Coragem e técnicas continua sujeito a seus custos específicos; o fato
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para escolher e elevar um passo de **um dado elegível da pilha** antes de rolar (d4 → d6 → d10 → d12), inclusive um dado de Conhecimento ou Prática e uma fonte complementar habilitada por Perícia avançada. Uma elevação comum por rodada.
+- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados.
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Pavor também retira 1 Coragem**.
 - **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
 

@@ -51,6 +51,8 @@ jobs:
         run: node --test prototipo-ficha/druid-icons-ui.test.mjs
       - name: Validar loja compacta e rolagem rápida de equipamentos
         run: node --test prototipo-ficha/equipment-shop-ui.test.mjs
+      - name: Validar Elevar dado por Grau e contornos de XP apenas na edição
+        run: node --test prototipo-ficha/grade-step-courage.test.mjs
       - name: Validar quatro linhagens e custos raciais
         run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs prototipo-ficha/armor-defense.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel

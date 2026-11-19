@@ -58,12 +58,14 @@ Clique **“Registrar como rascunho”**. Ela aparecerá em uma categoria separa
 
 **Exemplo PROPOSTO, não oficial:** Passo Calculado — 1 XP, requer Agilidade 1 e espaço livre; concede +1E em uma manobra de reposicionamento quando a condição é cumprida. Respeita o teto +2E de Perícias por ação.
 
+Na ficha jogável, os **contornos/etiquetas de XP reduzido e aumentado** ficam ocultos durante as ações e aparecem apenas no **Modo edição**, quando é possível revisar os graus e seus custos. No Codex de criação, continuam visíveis para orientar escolhas.
+
 ## Como testar no laboratório
 
 1. Crie um Aprendiz e utilize o catálogo de equipamentos G1 do protótipo. Itens sem preço aprovado e focos de fabricação não podem ser comprados por zero VT.
 2. Escolha Atributo e fonte adicional. A terceira fonte, se habilitada pela Perícia de combinação, ainda depende de pertinência validada.
 3. Escolha DE de teste e balanço do alvo. Nos níveis 1–5, DE 2 é uma referência de confronto comum para playtest, DE 3 treinado e DE 4 excepcional — todas EXPERIMENTAIS, não obrigações.
-4. Se desejar, gaste **1 Coragem** para **escolher e elevar um dado elegível da pilha antes de rolar**, de Atributo, Conhecimento, Prática ou equipamento habilitado, inclusive complemento liberado por Perícia avançada (um passo comum por rodada, d4→d6→d10→d12).
+4. Se desejar, gaste **1 Coragem** para **elevar uma fonte participante (Atributo, Conhecimento ou Prática) em um Grau temporário**, substituindo os dados dessa fonte pela composição do Grau seguinte. Exemplos: **2d6 → 3d6**, **2d10 → 3d10**, **3d10 → 2d10 + 1d12**. Não eleva dado de equipamento isolado, não gasta XP nem altera o Grau comprado; o aumento pode acrescentar um dado à pilha, até o limite de 9 dados rolados.
 5. Role e **selecione livremente os dados mantidos**. É obrigatório **rolar** pelo menos um dado de Atributo, mas **não mantê-lo**. O terceiro dado mantido nos níveis 1–5 custa 1 Coragem.
 6. Declare, quando pertinente, +1E ou +2E de Perícias. O criador disponibiliza esse valor para testes e pressupõe que os requisitos foram cumpridos.
 7. Gaste Antecipar para cancelar Pavor e converter pares em Êxito. Não reutilize símbolos.
