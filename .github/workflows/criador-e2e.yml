@@ -47,6 +47,8 @@ jobs:
       # como LEGADO HISTÓRICO e não são mais testes normativos do SRD v1.0.
       - name: Validar os SVGs e os pictogramas do Codex Genético
         run: node --test prototipo-ficha/iconography.test.mjs
+      - name: Validar apresentação Druídica e ícones nos equipamentos
+        run: node --test prototipo-ficha/druid-icons-ui.test.mjs
       - name: Validar quatro linhagens e custos raciais
         run: node --test prototipo-ficha/racas.test.mjs prototipo-ficha/catalog-prices.test.mjs prototipo-ficha/armor-defense.test.mjs
       - name: Testar ficha opcional de criatura Pequena no navegador móvel
