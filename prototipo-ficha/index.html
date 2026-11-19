@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261119-compact-shop-v1">
+  <link rel="stylesheet" href="./styles.css?v=20261119-vitals-v1">
   <script src="./catalog.js?v=0.65-vt1prop" defer></script>
   <script src="./gene-graph.js?v=20261119-druid-icons-v2" defer></script>
-  <script src="./app.js?v=20261119-action-prep-v2" defer></script>
+  <script src="./app.js?v=20261119-vitals-v1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -106,30 +106,42 @@
       </div>
     </section>
 
-    <section class="fp-vitals" aria-label="Recursos e defesas">
+    <section class="fp-vitals" aria-label="Recursos e defesas — toque em um cartão para ver a explicação">
       <div class="fp-vital fp-life-vital">
-        <div class="fp-vital-label fp-icon-life">VIDA <span>atual / máxima</span></div>
+        <button class="fp-vital-open" type="button" data-vital-open="life" aria-label="Explicar Vida e estados de Saúde" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-life">VIDA</div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">4 / 4</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
         <div class="fp-life-boxes" id="life-boxes" aria-label="Quatro estados de Saúde"><span></span><span></span><span></span><span></span></div>
-        <small id="life-recovery">Saudável · sem penalidade · Cura em revisão</small>
+        <small id="life-recovery">Saudável</small>
       </div>
       <div class="fp-vital">
-        <div class="fp-vital-label">CORAGEM <span>reserva</span></div>
+        <button class="fp-vital-open" type="button" data-vital-open="courage" aria-label="Explicar Coragem e sua recuperação" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-courage">CORAGEM</div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="courage" data-delta="-1" aria-label="Gastar Coragem">−</button><strong id="courage-text">10 / 10</strong><button type="button" class="fp-counter" data-resource="courage" data-delta="1" aria-label="Recuperar Coragem">+</button></div>
-        <small>Teto natural +1 nos níveis 5, 10 e 20; máximo absoluto 15</small>
+        <small>Até 5 por rolagem</small>
       </div>
       <div class="fp-vital fp-vital-basic">
-        <div class="fp-vital-label fp-icon-de" id="de-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">Natural até 9 · total até 12 com armadura</small>
+        <button class="fp-vital-open" type="button" data-vital-open="defense" aria-label="Explicar DE Defensiva e modificadores" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-de" id="de-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">DE natural</small>
       </div>
-      <div class="fp-vital fp-vital-basic fp-armor-integrity-vital"><div class="fp-vital-label fp-icon-integrity">INTEGRIDADE <span>armadura equipada</span></div><strong id="armor-integrity-text">Sem armadura</strong><small id="armor-integrity-caption">Confira a proteção no Inventário</small></div>
+      <div class="fp-vital fp-vital-basic fp-armor-integrity-vital">
+        <button class="fp-vital-open" type="button" data-vital-open="integrity" aria-label="Explicar Integridade e armadura equipada" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-integrity">INTEGRIDADE</div><strong id="armor-integrity-text">—</strong><small id="armor-integrity-caption">Sem armadura</small>
+      </div>
       <div class="fp-vital fp-vital-basic">
-        <div class="fp-vital-label">BALANÇO POR CARGA</div><strong id="balance-text">Muito Leve</strong><small id="balance-caption">0% da capacidade</small>
+        <button class="fp-vital-open" type="button" data-vital-open="balance" aria-label="Explicar balanço por peso carregado" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-load">BALANÇO</div><strong id="balance-text">Muito Leve</strong><small id="balance-caption">0% de carga</small>
       </div>
       <div class="fp-vital fp-vital-basic">
-        <div class="fp-vital-label">CARGA</div><strong id="load-text">0 / 1</strong><small>Unidades Alto · fórmula em teste</small><div id="load-blocks" class="fp-load-blocks" role="img" aria-label="Ocupação da capacidade de carga"></div>
+        <button class="fp-vital-open" type="button" data-vital-open="load" aria-label="Explicar capacidade e carga do inventário" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-load">CARGA</div><strong id="load-text">0 / 1</strong><small>Unidades de carga</small><div id="load-blocks" class="fp-load-blocks" role="img" aria-label="Ocupação da capacidade de carga"></div>
       </div>
-      <div class="fp-vital fp-vital-basic fp-movement-vital"><div class="fp-vital-label">DESLOCAMENTO</div><strong id="move-text">8 m</strong><small id="move-caption">8 + Agilidade + ⌊Atletismo ÷ 3⌋</small></div>
+      <div class="fp-vital fp-vital-basic fp-movement-vital">
+        <button class="fp-vital-open" type="button" data-vital-open="movement" aria-label="Explicar deslocamento e fórmula" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-movement">MOVIMENTO</div><strong id="move-text">8 m</strong><small id="move-caption">Por deslocamento</small>
+      </div>
     </section>
+    <div id="fp-vital-tooltip" class="fp-vital-tooltip" role="tooltip" hidden></div>
 
 
     <nav class="fp-sheet-navigation" id="sheet-navigation" aria-label="Páginas da ficha">
@@ -138,6 +150,44 @@
       <button type="button" data-sheet-page="genetic">Codex Genético <small>Mapa de perícias</small></button>
       <button type="button" data-sheet-page="inventory">Inventário <small>Equipamentos e VT</small></button>
     </nav>
+    <div class="fp-workspace">
+      <div class="fp-primary-column">
+        <section class="fp-section-intro">
+          <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
+          <p>Escolha seu <strong>Atributo</strong> e a <strong>Base</strong> em Práticas ou Conhecimentos, em qualquer ordem. Um complemento exige Perícia pertinente.</p>
+        </section>
+        <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
+        <div class="fp-source-grid" id="source-grid">
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-attr">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3 id="sources-attr">Atributos</h3><small>Fonte obrigatória na rolagem</small></div><span class="fp-count">06</span></div>
+            <div id="attribute-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-practice">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3 id="sources-practice">Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="practice-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-know">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3 id="sources-know">Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="knowledge-list" class="fp-sources"></div>
+          </section>
+        </div>
+        <section class="fp-panel fp-bottom-note">
+          <div id="dice-legend" class="fp-dice-legend" aria-label="Cores dos cinco dados"></div>
+          <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
+          <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
+          <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
+          <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Perícias Avançadas de Conhecimentos e Práticas</strong> exigem Grau 2 na fonte correspondente e custam 1 XP. Permitem até três fontes (a especializada como predominante + duas fontes pertinentes). Especializações existentes podem manter requisitos adicionais, como Furtividade Avançada.</p>
+        </section>
+      </div>
+
+      <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
+        <section class="fp-panel fp-composer" id="composer-panel">
+          <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
+          <div id="composer-content"></div>
+        </section>
+      </aside>
+    </div>
+
     <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
       <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
       <div class="fp-play-talent-grid">
@@ -274,44 +324,6 @@
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
       <p class="fp-footnote"><strong>DEFINIDO — Druídica:</strong> custa 1 XP, exige Criar Item de Foco e Magia + Perícia em Elemento Terra e libera as três formas imediatamente, sem Domar ou Influência. Pequena: 0 Coragem; Média ou Grande: 1 Coragem. Não conjura enquanto transformado; Vida temporária desaparece ao reverter. <a href="../pericias/pericia-druidica.html">Ler regras completas da Druídica.</a></p><p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>DEFINIDO:</strong> orçamento inicial de 15 XP compartilhados; após as compras mínimas de 3 XP, restam 12 XP livres. XP não gasto segue disponível após concluir. <strong>EXPERIMENTAL (playtest):</strong> o painel acima permite desfazer Perícias com conferência de dependências e restituição do custo; não constitui regra de campanha. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
     </section>
-
-    <div class="fp-workspace">
-      <div class="fp-primary-column">
-        <section class="fp-section-intro">
-          <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
-          <p>Escolha seu <strong>Atributo</strong> e a <strong>Base</strong> em Práticas ou Conhecimentos, em qualquer ordem. Um complemento exige Perícia pertinente.</p>
-        </section>
-        <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
-        <div class="fp-source-grid" id="source-grid">
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-attr">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3 id="sources-attr">Atributos</h3><small>Fonte obrigatória na rolagem</small></div><span class="fp-count">06</span></div>
-            <div id="attribute-list" class="fp-sources"></div>
-          </section>
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-practice">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3 id="sources-practice">Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
-            <div id="practice-list" class="fp-sources"></div>
-          </section>
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-know">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3 id="sources-know">Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
-            <div id="knowledge-list" class="fp-sources"></div>
-          </section>
-        </div>
-        <section class="fp-panel fp-bottom-note">
-          <div id="dice-legend" class="fp-dice-legend" aria-label="Cores dos cinco dados"></div>
-          <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
-          <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
-          <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
-          <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Perícias Avançadas de Conhecimentos e Práticas</strong> exigem Grau 2 na fonte correspondente e custam 1 XP. Permitem até três fontes (a especializada como predominante + duas fontes pertinentes). Especializações existentes podem manter requisitos adicionais, como Furtividade Avançada.</p>
-        </section>
-      </div>
-
-      <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
-        <section class="fp-panel fp-composer" id="composer-panel">
-          <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
-          <div id="composer-content"></div>
-        </section>
-      </aside>
-    </div>
 
     <section class="fp-lower">
       <section class="fp-panel fp-skills-panel" id="pericias">
