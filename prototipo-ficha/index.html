@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261119-druid-icons-v2">
+  <link rel="stylesheet" href="./styles.css?v=20261119-compact-shop-v1">
   <script src="./catalog.js?v=0.65-vt1prop" defer></script>
   <script src="./gene-graph.js?v=20261119-druid-icons-v2" defer></script>
-  <script src="./app.js?v=20261119-druid-icons-v2" defer></script>
+  <script src="./app.js?v=20261119-compact-shop-v1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -371,6 +371,11 @@
           </details>
           <div class="fp-trade-shop">
             <h4>Comprar equipamento G1</h4>
+            <div class="fp-equip-filters fp-trade-filters">
+              <label>Tipo <select id="trade-shop-type" data-trade-shop-type aria-label="Filtrar compras por tipo"></select></label>
+              <label>Peso <select id="trade-shop-weight" data-trade-shop-weight aria-label="Filtrar compras por peso"></select></label>
+              <span class="fp-filter-count" id="trade-shop-count"></span>
+            </div>
             <div class="fp-trade-shop-grid">
               <label>Equipamento <select id="shop-items"><option value="">Escolha um equipamento</option></select></label>
               <label>Pagar preferencialmente com <select id="shop-preferred"></select></label>
@@ -403,8 +408,9 @@
           <label>Modelo de foco G1 (simulação; fabricação com Artesão) <select id="focus-test-model"><option value="Foco de Magia Leve G1">Foco de Magia Leve G1</option></select></label>
           <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Simular foco escolhido</button>
         </div>
+        <div id="inventory-filterbar" class="fp-inventory-filterbar"></div>
         <div id="inventory-list" class="fp-inventory-list"></div>
-        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve não tem Integridade e dá +2 DE em todas as defesas; Leve +1 DE em todas as defesas; Média 0; Pesada −1 DE; Muito Pesada −2 DE, requer Vigor 6 e Atletismo 6 e possui imunidade física natural em qualquer Grau. G2 exige nível 5, G3 nível 10 e G4 nível 20. Muito Pesada G4 pode acumular resistência elemental de G2 e imunidade elemental adicional. Integridades G1 de 7/12/17 após redução de 3 são valores de playtest; escudos 6/9/12 permanecem propostos. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
+        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve G1 tem 3 de Integridade e +2 DE; Leve 7 e +1 DE; Média 12 e 0 DE; Pesada 17 e −1 DE. Os escudos Leve/Médio/Pesado têm 2/3/4 de Integridade, respectivamente; Cravar ativada reduz 1 por Êxito mantido. Muito Pesada −2 DE, exige Vigor 6 e Atletismo 6 e possui imunidade física natural. G2 exige nível 5, G3 nível 10 e G4 nível 20. Modificadores especiais e integridade de Graus superiores dependem do SRD vigente. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
       </section>
     </section>
 

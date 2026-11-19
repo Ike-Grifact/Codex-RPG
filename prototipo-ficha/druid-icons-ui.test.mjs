@@ -56,11 +56,12 @@ test("Armas e elementos agora mostram ícones na loja, inventário, Perícias e 
   "codexItemIcon(it)+'<strong>'+esc(it.name)",
   "codexSkillIcon(id)+'</span><span>'+esc(name)",
   "codexIcon(sid",
-  "codexItemIcon(it)+'<input type="
+  "fp-inventory-name"
  ]){
   if(snippet==="codexIcon(sid")continue;
   assert.ok(app.includes(snippet),"Ícone ausente da interface: "+snippet);
  }
+ assert.match(app,/fp-inventory-name[^\n]*codexItemIcon\(it\)/);
  assert.match(app,/fp-gene-detail-heading['"]?/);
  assert.match(css,/\.fp-codex-icon\{/);
  assert.match(css,/\.fp-element-icon \.fp-codex-icon\{/);

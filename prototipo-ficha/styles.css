@@ -1455,3 +1455,56 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-codex-icon{width:24px;height:24px;min-width:24px}
  .fp-element-icon .fp-codex-icon{width:30px;height:30px;min-width:30px}
 }
+
+/* Equipment UX v1 — filtros e listas de compra/inventário compactos. */
+.fp-equip-filters{display:flex;gap:9px;align-items:end;flex-wrap:wrap}
+.fp-equip-filters label{display:grid;gap:4px;color:var(--fp-muted);font-size:10px;min-width:130px;flex:1}
+.fp-equip-filters select{width:100%;min-width:0;min-height:34px;background:var(--fp-surface);color:var(--fp-text);border:1px solid var(--fp-stroke);border-radius:8px;padding:6px;font-size:12px}
+.fp-filter-count{font-size:11px;color:var(--fp-muted);white-space:nowrap;padding:7px 0}
+.fp-shop-filters-wrap{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:4px 0 12px}
+.fp-shop-filters-wrap .fp-equip-filters{flex:1;min-width:min(320px,100%)}
+.fp-wiz-shop-catalog{gap:6px}
+.fp-shop-group-title{grid-column:1/-1;margin:12px 0 2px;color:var(--fp-gold);text-transform:uppercase;letter-spacing:.09em;font-size:10px}
+.fp-wiz-shop-item.fp-shop-compact{display:block;min-width:0;min-height:0;padding:0;margin:0;border-radius:8px}
+.fp-shop-compact .fp-shop-summary{display:grid;grid-template-columns:28px minmax(110px,1fr) minmax(120px,1.1fr) auto;gap:9px;align-items:center;padding:9px 12px;cursor:pointer;list-style:none}
+.fp-shop-compact .fp-shop-summary::-webkit-details-marker{display:none}
+.fp-shop-compact .fp-shop-summary::marker{content:""}
+.fp-shop-compact .fp-shop-summary strong{font-size:12px;min-width:0}
+.fp-shop-compact .fp-shop-summary small{font-size:10px;line-height:1.4;color:var(--fp-muted);min-width:0}
+.fp-shop-compact .fp-shop-summary b{font-size:11px;color:var(--fp-gold);white-space:nowrap}
+.fp-shop-compact .fp-shop-expand{padding:9px 12px 12px 48px;border-top:1px solid var(--fp-stroke);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.fp-shop-compact .fp-shop-expand p{font-size:11px;line-height:1.5;margin:0;flex:1;min-width:180px}
+.fp-shop-compact .fp-shop-expand button{background:var(--fp-raised);color:var(--fp-text);border:1px solid var(--fp-gold);border-radius:8px;padding:8px 11px;cursor:pointer}
+.fp-shop-compact .fp-shop-expand button:disabled{opacity:.48;cursor:not-allowed}
+.fp-inventory-filterbar{margin:12px 0}
+.fp-inventory-list{display:grid;gap:7px}
+.fp-inventory-list>.fp-shop-group-title{margin:13px 0 0}
+.fp-item.fp-item-compact{display:block;padding:0;min-width:0}
+.fp-item-compact .fp-item-summary{display:grid;grid-template-columns:28px minmax(110px,1fr) minmax(90px,1.4fr) auto;gap:9px;align-items:center;padding:10px;cursor:pointer;list-style:none}
+.fp-item-compact .fp-item-summary::-webkit-details-marker{display:none}
+.fp-item-compact .fp-item-summary::marker{content:""}
+.fp-item-compact .fp-item-summary strong{font-size:12px;min-width:0}
+.fp-item-compact .fp-item-summary small{font-size:10px;line-height:1.4;color:var(--fp-muted)}
+.fp-inventory-status{color:var(--fp-gold);font-size:10px;white-space:nowrap}
+.fp-item-compact .fp-item-editor{display:grid;grid-template-columns:minmax(0,2fr) minmax(80px,1fr) minmax(65px,.7fr) minmax(95px,1fr);gap:6px;align-items:center;border-top:1px solid var(--fp-stroke);padding:10px}
+.fp-owned-gear .fp-gear-main{color:var(--fp-gold);font-weight:650;font-size:11px}
+.fp-owned-gear .fp-owned-roll{justify-self:start;width:100%;padding:9px 12px;border-radius:8px;cursor:pointer;color:var(--fp-text);background:var(--fp-raised);border:1px solid var(--fp-gold);font-size:11px;font-weight:750}
+.fp-owned-gear .fp-owned-roll:disabled{border-color:var(--fp-stroke);cursor:not-allowed;opacity:.65}
+.fp-owned-gear .fp-owned-noroll{font-size:10px;color:var(--fp-muted)}
+.fp-owned-gear:has(.fp-owned-roll:not(:disabled)){border-color:var(--fp-gold)}
+@media(max-width:780px){
+ .fp-shop-compact .fp-shop-summary,.fp-item-compact .fp-item-summary{grid-template-columns:25px minmax(90px,1fr) auto}
+ .fp-shop-compact .fp-shop-summary small,.fp-item-compact .fp-item-summary small{grid-column:2/-1}
+ .fp-item-compact .fp-item-editor{grid-template-columns:minmax(0,1fr) minmax(70px,.7fr)}
+ .fp-equip-filters label{min-width:120px}
+}
+@media(max-width:440px){
+ .fp-shop-compact .fp-shop-summary,.fp-item-compact .fp-item-summary{gap:6px;padding:9px}
+ .fp-shop-compact .fp-shop-summary b{font-size:10px}
+ .fp-item-compact .fp-item-summary strong{font-size:11px}
+ .fp-shop-compact .fp-shop-expand{padding:10px;gap:6px}
+}
+
+.fp-owned-gear-action{width:100%;color:var(--fp-text);font:inherit;text-align:left;cursor:pointer}
+.fp-owned-gear-action:hover,.fp-owned-gear-action:focus-visible{border-color:var(--fp-gold);box-shadow:0 0 0 2px rgba(215,188,136,.14)}
+.fp-owned-gear-action .fp-owned-roll{display:block;text-align:center;padding:8px 10px;background:var(--fp-raised);color:var(--fp-gold);border:1px solid var(--fp-gold);border-radius:7px;font-size:11px;font-weight:750}

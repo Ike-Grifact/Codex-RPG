@@ -168,7 +168,9 @@ const { chromium } = require('playwright');
         throw new Error('Etapa de VT não abriu corretamente');
       if(await page.locator('#wizard-content [data-wizard-vt-draft]').count()!==5)
         throw new Error('Faltam os cinco tipos de recursos de troca');
-      await page.locator('#wizard-content [data-action="wizard-shop-category"][data-category="weapon"]').click();
+      await page.locator('#wizard-content [data-wizard-shop-type]').selectOption('adagas');
+      await page.locator('#wizard-content [data-wizard-shop-weight]').selectOption('leve');
+      await page.locator('#wizard-content .fp-shop-compact summary').filter({hasText:'Faca'}).first().click();
       page.once('dialog', dialog => dialog.accept());
       await page.locator('#wizard-content [data-action="wizard-buy-item"][data-item="Faca"]').click();
       if(!await page.locator('#wizard-content').innerText().then(t=>t.includes('18')&&t.includes('Faca')))
