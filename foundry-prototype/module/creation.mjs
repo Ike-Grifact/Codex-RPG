@@ -9,6 +9,7 @@ export const actorKinds = {
   creature: "Criatura / Monstro",
 };
 export const itemKinds = {
+  ammunition:'Munição',container:'Aljava ou estojo',instrument:'Instrumento',kit:'Kit',adventurer:'Equipamento de aventureiro',
   weapon: "Arma", firearm: "Arma de fogo", armor: "Armadura", shield: "Escudo", focus: "Foco",
   tool: "Ferramenta", resource: "Recurso de troca", consumable: "Consumível", misc: "Outro",
 };
@@ -76,8 +77,9 @@ export function equipmentData(kind, name, catalogIndex = "") {
 }
 
 function webItem(raw) {
-  const kind = raw.firearm && raw.type === "arma" ? "firearm"
-    : Object.hasOwn(webItemTypes, raw.type) ? webItemTypes[raw.type] : "misc";
+  const catalog=G1_CATALOG.find(row=>row.name===raw.catalogId);
+  const kind = catalog?.kind ?? (raw.firearm && raw.type === "arma" ? "firearm"
+    : Object.hasOwn(webItemTypes, raw.type) ? webItemTypes[raw.type] : "misc");
   const max = integer(raw.max, 0, 999);
   const durabilityMax = integer(raw.durabilityMax, 0, 999);
   const properties = Array.isArray(raw.properties) ? raw.properties.map(value => text(value)).filter(Boolean).slice(0, 24) : [];
@@ -88,7 +90,11 @@ function webItem(raw) {
   return {
     name: text(raw.name) || itemKinds[kind],
     type: "equipment",
+    flags:{'codex-rpg-foundry':{webOriginal:structuredClone(raw)}},
     system: {
+      catalogId:text(raw.catalogId),packSize:integer(raw.packSize,0,100000),storageCapacity:integer(raw.storageCapacity,0,100000),
+      ammo:{value:integer(raw.ammoRemaining,0,100000),max:integer(Math.max(raw.packSize||0,raw.ammoRemaining||0),0,100000),reload:0,cartucho:''},
+      associatedEquipment:text(raw.associatedEquipment),embeddedWeapon:text(raw.embeddedWeapon),
       kind, grade: integer(raw.grade, 1, 7), quantity: integer(raw.qty, 1, 99),
       weight: (Object.hasOwn(weights, raw.weight) ? weights[raw.weight] : weights.leve) * (properties.includes("Muito Leve") ? .5 : 1),
       category: Object.values(categories).includes(category) ? category : className,
@@ -147,6 +153,7 @@ export function importSiteData(payload, characterType = "character") {
   }
   return [{
     ...actor,
+    flags:{'codex-rpg-foundry':{imported:true,sourceTrade:structuredClone(raw.trade??{})}},
     items: [...validEntries(raw.items, 100).map(webItem), ...tradeItems(raw.trade?.resources)],
   }];
 }

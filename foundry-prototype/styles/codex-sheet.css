@@ -792,3 +792,18 @@
 .codex-source.is-editing .codex-grade{padding:4px;gap:3px}
 @media(pointer:fine){.codex-source.is-editing .codex-grade button{min-height:27px}}
 @media(pointer:coarse){.codex-source.is-editing .codex-grade button{min-height:44px;min-width:34px}}
+.codex-repertoire{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:8px;margin:10px 0 16px}
+.codex-repertoire article{display:grid;gap:5px;background:var(--cx-panel2);border:1px solid var(--cx-line);border-radius:10px;padding:10px}
+.codex-equipment-filters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.codex-equipment-filters label{flex:1;min-width:120px}
+.codex-equipment-row{border-bottom:1px solid var(--cx-line);padding:6px 0}
+.codex-equipment-row summary{display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer}
+.codex-equipment-row summary strong{flex:1;min-width:130px}
+.codex-equipment-row summary small{flex:2;min-width:160px;color:var(--cx-muted)}
+.codex-equipment-row svg{width:24px;height:24px}
+.codex-item-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr));gap:9px;padding:10px 0}
+.codex-item-fields p{grid-column:1/-1}
+.codex-item-fields label{display:grid;gap:4px}
+.codex-shop{margin-top:16px}
+.codex-shop>summary{cursor:pointer;font-weight:750}
+.codex-equipment h3{font-size:15px;margin-top:14px}

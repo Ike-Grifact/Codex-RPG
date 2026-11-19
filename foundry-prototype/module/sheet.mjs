@@ -11,6 +11,8 @@ import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
+import {equipmentView} from './equipment-view.mjs';
+import {quickEquipmentPlan} from './equipment-workflow.mjs';
 import {skillDetails,skillRefundPlan} from "./advancement.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
@@ -29,7 +31,7 @@ const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ"
 const markerHTML = faceIcons;
 const symbolsFor = die => die.symbols ?? faceSymbols(die.sides,die.face);
 const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
- .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(1,Number(i.system.quantity)||1),0);
+ .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(0,Number(i.system.quantity)??1),0);
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
@@ -47,9 +49,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
  editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
+ ,buyEquipment:CodexCharacterSheet.buyEquipment,quickEquipment:CodexCharacterSheet.quickEquipment,
+ prepareEquipment:CodexCharacterSheet.prepareEquipment,cravarEquipment:CodexCharacterSheet.cravarEquipment
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs",scrollable:[""]}};
- constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;}
+ constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};}
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal,ledger=xpLedger(s),
    used=carriedItems(actor),carryMax=loadCapacity(s),
@@ -67,6 +71,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    percent:armorMax?Math.round(100*armorCurrent/armorMax):0
   }:null;
   ctx.codex={
+   equipment:equipmentView(actor,this._equipmentFilters),
    actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
    canOpenDNA:actor.isOwner&&!attributesOnly&&!this._pending,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
@@ -182,11 +187,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  _preSyncPartState(partId,newElement,priorElement,state){
   super._preSyncPartState(partId,newElement,priorElement,state);
   state.contentScroll=priorElement.closest(".window-content")?.scrollTop;
+  state.openDetails=[...priorElement.querySelectorAll('details[data-sync][open]')].map(el=>el.dataset.sync);
  }
  _syncPartState(partId,newElement,priorElement,state){
   super._syncPartState(partId,newElement,priorElement,state);
   const content=newElement.closest(".window-content");
   if(content&&state.contentScroll!=null)content.scrollTop=state.contentScroll;
+  for(const detail of newElement.querySelectorAll('details[data-sync]'))detail.open=state.openDetails?.includes(detail.dataset.sync)??false;
  }
  async _onRender(ctx,options){
   await super._onRender(ctx,options);
@@ -212,6 +219,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  async _change(event){
   const el=event.target;
+  if(el.dataset.equipmentFilter){
+   this._equipmentFilters[el.dataset.equipmentFilter]=el.value;
+   this.render();return;
+  }
+  if(el.dataset.itemField){
+   const value=el.type==='checkbox'?el.checked:el.type==='number'?Number(el.value):el.dataset.itemField==='properties'?el.value.split(',').map(x=>x.trim()).filter(Boolean):el.value;
+   return this._request({action:'equipment',itemId:el.dataset.id,path:el.dataset.itemField,value});
+  }
   if(el.dataset.field){
    if(!this.actor.isOwner||!this._editing)return;
    const fields=["name","system.concept","system.origin","system.virtue","system.personality","system.notes","system.abilities","system.leader","system.level","system.xp","system.threatGrade"];
@@ -401,6 +416,40 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async addEquipment(){
   if(!this._editing||!this.actor.isOwner)return;
   return createCodexItem(this.actor);
+ }
+ static async buyEquipment(_event,target){
+  if(this._buying||this._busy||this._pending||!this.actor.isOwner)return;
+  this._buying=true;
+  try{
+  const quantity=Number(target.closest('[data-shop-row]').querySelector('[data-shop-quantity]').value);
+  const row=G1_CATALOG.find(row=>row.name===target.dataset.name);
+  if(!Number.isInteger(quantity)||quantity<1||quantity>99||!row)return;
+  const accepted=await foundry.applications.api.DialogV2.confirm({window:{title:'Comprar equipamento'},
+   content:'<p>Comprar '+quantity+' × '+foundry.utils.escapeHTML(target.dataset.name)+' por '+row.priceVT*quantity+' VT em recursos?</p>',rejectClose:false,
+   yes:{label:'Confirmar compra'},no:{label:'Cancelar'}});
+  if(!accepted)return;
+  return this._request({action:'purchase',id:crypto.randomUUID(),name:target.dataset.name,quantity});
+  }finally{this._buying=false;}
+ }
+ static prepareEquipment(_event,target){return this._useEquipment(target.dataset.id,false);}
+ static quickEquipment(_event,target){return this._useEquipment(target.dataset.id,true);}
+ _useEquipment(id,roll){
+  if(this._editing){ui.notifications.warn('Conclua a edição antes de rolar.');return;}
+  if(this._busy||this._pending||this.actor.getFlag(NS,'pendingRoll')){ui.notifications.warn('Finalize a rolagem pendente.');return;}
+  try{
+   const plan=quickEquipmentPlan(this.actor,id,this._draft,this._opts);
+   this._draft=plan.selection;this._opts=plan.options;
+   if(roll)return CodexCharacterSheet.executeRoll.call(this);
+   this.render();
+  }catch(error){ui.notifications.warn(error.message);}
+ }
+ static async cravarEquipment(_event,target){
+  const item=this.actor.items.get(target.dataset.id);
+  if(item?.system.kind!=='shield'||this._busy||this._pending)return;
+  const hits=Number(target.closest('details').querySelector('[data-cravar-hits]').value);
+  if(!Number.isInteger(hits)||hits<1)return;
+  const accepted=await foundry.applications.api.DialogV2.confirm({window:{title:'Cravar no escudo'},content:'Aplicar −'+hits+' Integridade após acerto e ativação de Cravar? A consequência de Integridade zero exige adjudicação.',rejectClose:false});
+  if(accepted)return this._request({action:'equipment',itemId:item.id,path:'integrity.value',value:Math.max(0,item.system.integrity.value-hits)});
  }
  static async addCatalogEquipment(){
   if(!this._editing||!this.actor.isOwner)return;

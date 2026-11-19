@@ -28,7 +28,7 @@ export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
   kind:new F.StringField({required:true,initial:"weapon"}),
   grade:new F.NumberField({required:true,integer:true,min:1,max:7,initial:1}),
   weight:new F.NumberField({required:true,min:0,initial:0.125}),
-  quantity:new F.NumberField({required:true,integer:true,min:1,initial:1}),
+  quantity:new F.NumberField({required:true,integer:true,min:0,initial:1}),
   equipped:new F.BooleanField({initial:false}),
   integrity:new F.SchemaField({value:nn(0),max:nn(0)}),
   durability:new F.SchemaField({value:nn(0),max:nn(0)}),
@@ -37,6 +37,6 @@ export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
   range:nn(1),priceVT:nn(0),
   properties:new F.ArrayField(new F.StringField(),{required:true,initial:[]}),
   ammo:new F.SchemaField({value:nn(0),max:nn(0),reload:nn(0),cartucho:t()}),
-  element:t()
+  element:t(),catalogId:t(),associatedEquipment:t(),embeddedWeapon:t(),packSize:nn(0),storageCapacity:nn(0)
  };}
 }

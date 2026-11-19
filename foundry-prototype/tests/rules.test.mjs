@@ -181,7 +181,7 @@ test("Catálogo experimental contém arma mista e armaduras G1",()=>{
  assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Leve").integrity.max,7);
  assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Média").integrity.max,12);
  assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,17);
- assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,12);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,4);
 });
 test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automaticamente",()=>{
  const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;

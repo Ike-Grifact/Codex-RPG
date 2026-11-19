@@ -2,6 +2,7 @@ import { cpSync, lstatSync, mkdirSync, readFileSync, readdirSync, writeFileSync 
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {generateRuneFaces} from "./rune-faces-generator.mjs";
+import {syncEquipmentCatalog} from './sync-equipment-catalog.mjs';
 
 export const systemId = "codex-rpg-foundry";
 export const source = fileURLToPath(new URL("../", import.meta.url));
@@ -79,6 +80,7 @@ export function validatePackage(root) {
 }
 
 export function preparePackage(destination, tag) {
+  syncEquipmentCatalog();
   const manifest = validatePackage(source);
   if (tag) {
     const current = releaseFields(manifest.version);

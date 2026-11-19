@@ -4,6 +4,7 @@ import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
 import {xpLedger} from "./rules.mjs";
 import {escapeHTML} from "./roll-engine.mjs";
+import {purchasePlan} from "./equipment-workflow.mjs";
 import {advancementPlan, creationMissing, gradeDetails, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
 
 const query = `${NS}.roll`;
@@ -40,6 +41,38 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if(request.action==='purchase'){
+    const history=actor.getFlag(NS,'purchases')??[];
+    if(history.some(entry=>entry.id===request.id))return {purchased:false};
+    if(pending)throw Error('Finalize a rolagem antes de comprar.');
+    const {items,entry}=purchasePlan(actor,request);
+    await actor.update({items,['flags.'+NS+'.purchases']:[...history,{...entry,userId:user.id,at:Date.now()}]});
+    return {purchased:true};
+  }
+  if(request.action==='equipment'){
+    if(pending)throw Error('Finalize a rolagem antes de modificar o equipamento.');
+    const item=actor.items.get(request.itemId);
+    if(item?.type!=='equipment')throw Error('Equipamento indisponível.');
+    if(item.system.kind==='resource'&&!user.isGM)throw Error('O Narrador ajusta os recursos de troca.');
+    const path=request.path;
+    const fields=['quantity','integrity.value','integrity.max','ammo.value','ammo.max','equipped','properties','associatedEquipment','embeddedWeapon','description'];
+    if(!fields.includes(path))throw Error('Campo de equipamento inválido.');
+    let value=request.value;
+    if(path==='equipped')value=value===true;
+    else if(path==='properties'){
+      if(!Array.isArray(value)||value.length>24||value.some(x=>typeof x!=='string'||x.length>100))throw Error('Propriedades inválidas.');
+    }else if(['description','associatedEquipment','embeddedWeapon'].includes(path)){
+      if(typeof value!=='string'||value.length>5000)throw Error('Texto inválido.');
+      if(path==='embeddedWeapon'&&(item.system.kind!=='shield'||!['','medio','pesado'].includes(value)))throw Error('Arma cravada inválida.');
+    }else if(!Number.isInteger(value)||value<0||value>100000||(path==='quantity'&&value<1))throw Error('Quantidade inválida.');
+    const changes={['system.'+path]:value};
+    if(path==='integrity.value'&&value>item.system.integrity.max)throw Error('Integridade acima do máximo.');
+    if(path==='integrity.max')changes['system.integrity.value']=Math.min(value,item.system.integrity.value);
+    if(path==='ammo.value'&&value>item.system.ammo.max)throw Error('Munição acima do máximo.');
+    if(path==='ammo.max')changes['system.ammo.value']=Math.min(value,item.system.ammo.value);
+    await item.update(changes);
+    return;
+  }
   if (request.action === "adjustXP") {
     if (!user.isGM) throw Error("Somente o Narrador pode ajustar XP adicional.");
     if (pending) throw Error("Finalize ou descarte a rolagem antes de editar.");

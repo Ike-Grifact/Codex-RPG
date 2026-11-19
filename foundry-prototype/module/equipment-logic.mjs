@@ -16,6 +16,8 @@ export function effectiveWeaponRange(system,item){
 export function equippedDie(actor,item,mode){
  if(!item||!item.system.equipped)return 0;
  const s=actor.system,k=item.system.kind,cat=item.system.category;
+ const maxGrade=s.level>=20?4:s.level>=10?3:s.level>=5?2:1;
+ if(item.system.grade>maxGrade||cat==='pendente')return 0;
  const keys=s.skills||[];
  if(mode==="conjuracao"){
   if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
@@ -28,11 +30,11 @@ export function equippedDie(actor,item,mode){
   else {
    const long=isRangedWeapon(item.system);
    const categorySkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
-   if(!(keys.includes(categorySkill)||(long&&keys.includes("armas-longo-alcance"))))return 0;
+   if(long?!keys.includes('armas-longo-alcance'):!keys.includes(categorySkill))return 0;
   }
  }else return 0;
  const die=Number(item.system.die)||({leve:6,medio:10,pesado:12}[cat]||0);
- return [6,10,12].includes(die)?die:0;
+ return [6,10,12].includes(die)?(mode==='conjuracao'?6:die):0;
 }
 export function skillPrerequisite(system,id){
  const a=system.attributes||{},p=system.practices||{},s=system.skills||[];

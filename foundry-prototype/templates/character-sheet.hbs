@@ -356,27 +356,74 @@
       {{/each}}
     </section>
     {{/unless}}
-    <section class="codex-block">
-      <div class="codex-block-title"><h2>Inventário e proteção</h2><span>Itens persistidos como documentos Foundry</span></div>
-      {{#each codex.gear}}
-      <div class="codex-gear">
-        <div>{{#if @root.codex.editing}}<button type="button" class="codex-gear-name" data-action="openEquipment" data-id="{{this.id}}">{{this.name}}</button>{{else}}<strong>{{this.name}}</strong>{{/if}}<small>Grau {{this.grade}} · peso {{this.weight}} Alto · {{this.kind}} · integridade {{this.integrity}}/{{this.integrityMax}}{{#if this.range}} · alcance efetivo {{this.range}} m{{/if}}</small>{{#if this.dieIcon}}<span class="codex-small-die">{{{this.dieIcon}}}<b>d{{this.die}}</b></span>{{/if}}</div>
-        <div class="codex-gear-actions">
-          <button type="button" data-action="toggleEquip" data-id="{{this.id}}">{{#if this.equipped}}Equipado{{else}}Equipar{{/if}}</button>
-          <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="-1">−</button>
-          <button type="button" data-action="adjustIntegrity" data-id="{{this.id}}" data-delta="1">+</button>
-          {{#if @root.codex.editing}}<button type="button" data-action="removeEquipment" data-id="{{this.id}}" aria-label="Excluir equipamento">×</button>{{/if}}
+    <section class="codex-block codex-equipment">
+      <h2>Repertório</h2>
+      <div class="codex-repertoire">
+      {{#each codex.equipment.repertoire}}
+        <article data-repertoire-id="{{this.id}}">
+          <strong>{{this.name}}</strong>
+          <small>{{this.weightName}} · {{this.propertiesText}}{{#if this.range}} · alcance {{this.range}} m{{/if}}</small>
+          {{#if this.attack}}<span class="codex-small-die">{{{this.icon}}} d{{this.die}} habilitável</span>
+          <small>Perícia exigida · {{this.requiredSkill}}. {{#if this.enabledDie}}Habilitada · dado d{{this.enabledDie}}{{else}}Confira habilitação e equipamento ativo{{/if}}</small>
+          <div class="codex-actions">
+            <button type="button" data-action="quickEquipment" data-id="{{this.id}}">Rolar com {{this.name}}</button>
+            <button type="button" data-action="prepareEquipment" data-id="{{this.id}}">Preparar</button>
+          </div>{{/if}}
+          {{#if this.armor}}<small>Proteção · Integridade {{this.integrity.value}} / {{this.integrity.max}} · {{this.defense}} DE</small>{{/if}}
+          {{#if this.shield}}<small>Escudo · Integridade {{this.integrity.value}} / {{this.integrity.max}} · bloqueio pela ação própria</small>{{/if}}
+          <small>{{#if this.equipped}}Equipado{{else}}Guardado{{/if}}</small>
+        </article>
+      {{else}}<p>Nenhuma arma, foco ou proteção no inventário.</p>{{/each}}
+      </div>
+      <h2>Inventário</h2>
+      <div class="codex-equipment-filters">
+        <label>Tipo<select data-equipment-filter="family">{{#each codex.equipment.families}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
+        <label>Peso<select data-equipment-filter="weight">{{#each codex.equipment.weights}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
+      </div>
+      {{#each codex.equipment.gear}}
+        {{#if this.groupTitle}}<h3>{{this.groupTitle}}</h3>{{/if}}
+        <details data-sync="equipment-{{this.id}}" class="codex-equipment-row">
+          <summary>{{{this.icon}}}<strong>{{this.name}}</strong><small>{{this.quantity}} × · {{this.weightName}} · {{this.weight}} Alto · {{#if this.equipped}}Equipado{{else}}Guardado{{/if}}</small></summary>
+          <div class="codex-item-fields">
+            <p>{{this.description}}</p>
+            <label>Quantidade<input type="number" min="1" value="{{this.quantity}}" data-item-field="quantity" data-id="{{this.id}}"></label>
+            <label>Equipado<input type="checkbox" {{#if this.equipped}}checked{{/if}} data-item-field="equipped" data-id="{{this.id}}"></label>
+            <label>Integridade<input type="number" min="0" value="{{this.integrity.value}}" data-item-field="integrity.value" data-id="{{this.id}}"></label>
+            <label>Integridade máxima<input type="number" min="0" value="{{this.integrity.max}}" data-item-field="integrity.max" data-id="{{this.id}}"></label>
+            <label>Munição restante<input type="number" min="0" value="{{this.ammo.value}}" data-item-field="ammo.value" data-id="{{this.id}}"></label>
+            <label>Munição máxima<input type="number" min="0" value="{{this.ammo.max}}" data-item-field="ammo.max" data-id="{{this.id}}"></label>
+            <label>Propriedades<input value="{{this.propertiesText}}" data-item-field="properties" data-id="{{this.id}}"></label>
+            <label>Equipamentos associados<input value="{{this.associatedEquipment}}" data-item-field="associatedEquipment" data-id="{{this.id}}"></label>
+            {{#if this.shield}}
+              <label>Arma cravada<select data-item-field="embeddedWeapon" data-id="{{this.id}}"><option value="">Nenhuma</option><option value="medio" {{#if this.embeddedMedium}}selected{{/if}}>Média</option><option value="pesado" {{#if this.embeddedHeavy}}selected{{/if}}>Pesada</option></select></label>
+              <label>Êxitos mantidos do ataque<input data-cravar-hits type="number" min="1" value="1"></label>
+              <button type="button" data-action="cravarEquipment" data-id="{{this.id}}">Aplicar Cravar</button>
+            {{/if}}
+            {{#if @root.codex.editing}}<button type="button" data-action="openEquipment" data-id="{{this.id}}">Editar item completo</button><button type="button" data-action="removeEquipment" data-id="{{this.id}}">Excluir item</button>{{/if}}
+          </div>
+        </details>
+      {{else}}<p>Nenhum item corresponde aos filtros.</p>{{/each}}
+      {{#if codex.editing}}<button type="button" data-action="addEquipment">Criar equipamento personalizado</button>{{/if}}
+      <details data-sync="shop" class="codex-shop">
+        <summary>Loja · {{codex.equipment.balance}} VT em recursos</summary>
+        <div class="codex-equipment-filters">
+          <label>Tipo<select data-equipment-filter="shopFamily">{{#each codex.equipment.shopFamilies}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
+          <label>Peso<select data-equipment-filter="shopWeight">{{#each codex.equipment.shopWeights}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
         </div>
-      </div>
-      {{else}}<p class="codex-tip">Nenhum equipamento cadastrado.</p>{{/each}}
-      {{#if codex.editing}}<div class="codex-catalog-picker">
-       <label>Itens de Grau 1 — valores de playtest<select data-catalog-choice>
-       {{#each codex.catalog}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}
-       </select></label>
-       <button type="button" data-action="addCatalogEquipment">+ Item do catálogo</button>
-      </div>
-      <button type="button" data-action="addEquipment">+ Novo equipamento</button>{{/if}}
-      <p class="codex-tip">Armaduras: Grau 1 integridade; Grau 2 primeira resistência (nível 5); Grau 3 segunda resistência, quando apta; Grau 4 imunidade específica habilitada.</p>
+        {{#each codex.equipment.shop}}
+          <details data-sync="shop-{{this.id}}" data-shop-row class="codex-equipment-row">
+            <summary>{{{this.icon}}}<strong>{{this.name}}</strong><small>{{this.family}} · {{this.weightName}} · {{this.price}} VT{{#if this.hasDie}} · d{{this.die}} habilitável{{/if}} · {{this.propertiesText}}</small></summary>
+            <div class="codex-item-fields">
+              <p>{{this.description}}</p>
+              <p>{{#if this.attack}}Uso condicionado à Perícia de manejo ou foco, Disciplina e Grau permitido.{{/if}}{{#if this.armor}}Proteção · Integridade {{this.integrity.max}} · {{this.defense}} DE{{/if}}</p>
+              {{#if this.canBuy}}
+                <label>Quantidade<input type="number" min="1" max="99" value="1" data-shop-quantity></label>
+                <button type="button" data-action="buyEquipment" data-name="{{this.name}}" {{#unless this.canAfford}}disabled{{/unless}}>Comprar · {{this.price}} VT por unidade</button>
+              {{else}}<p>Compra indisponível. Preço ou fabricação pendente.</p>{{/if}}
+            </div>
+          </details>
+        {{else}}<p>Nenhum equipamento corresponde aos filtros.</p>{{/each}}
+      </details>
     </section>
   </div>
 
