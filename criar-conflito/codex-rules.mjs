@@ -26,9 +26,9 @@ export const SITUATIONS={
  inferior:{label:"Desvantagem Absoluta",e:-1,a:0},
  luck:{label:"Ação de Sorte",e:-2,a:0}
 };
-export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
-export const XP_TRAINING=[0,2,8,20,38,66,102];
-export const CREATION_REFERENCE={attributes:6,training:8,skills:5,total:19}; // 6+8+5 experimental.
+export const XP_ATTRIBUTE=[0,1,3,6,9,18,32];
+export const XP_TRAINING=[0,2,4,8,16,32,64];
+export const CREATION_REFERENCE={total:15}; // DEFINIDO Playtest Nível 1: XP inicial compartilhado.
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -91,9 +91,9 @@ export function xpLedger(s){
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:19);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:15);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
+  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"15 XP iniciais compartilhados: sem reservas de categoria."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];
