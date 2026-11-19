@@ -3389,6 +3389,11 @@ function renderInventory(){
     ' Alto enquanto o escudo permanecer carregado. <button type="button" class="fp-secondary" data-action="cravar-remove-prepare" data-id="'+esc(it.id)+'">Tentar retirar a arma (teste)</button>'+
     ' <small>O campo acima permite corrigir erros de cadastro; para retirar em jogo use o teste. Soltar escudo: retire o item da carga.</small></div>':"")
   );
+  const cravarImpact=it.type!=="escudo"?"":(
+   '<div class="fp-item-hint"><label><strong>Cravar ativo contra este escudo:</strong> Êxitos mantidos <input type="number" data-cravar-exitos min="1" max="32" value="1" style="width:55px"></label> '+
+   '<button type="button" class="fp-secondary" data-action="cravar-impact" data-id="'+esc(it.id)+'">Aplicar perda de Integridade</button> '+
+   '<small>Apenas quando o ataque acertou e Cravar foi ativada conforme a Perícia. -1 Integridade por Êxito. Não implica remoção automática das armas cravadas.</small></div>'
+  );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 3 de Integridade e +2 DE em todas as defesas (valores corrigidos).</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
@@ -3419,7 +3424,7 @@ function renderInventory(){
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
-  armorFields+shieldEmbedFields+'</div>';
+  armorFields+shieldEmbedFields+cravarImpact+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
 function renderTrade(){
@@ -3848,6 +3853,19 @@ function onClick(event){
   draft.de=1;draft.cravarRemovalDEConfirmed=false;
   render();$("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"center"});
   toast("Retirar Cravar: escolha uma combinação com Força, Atletismo ou Vigor e informe a DE da arma (máximo 4).");break;
+ }
+ case "cravar-impact":{
+  const target=state.items.find(it=>it.id===id&&it.type==="escudo");
+  if(!target){toast("Escolha um escudo físico do inventário.");break;}
+  const input=button.closest(".fp-item")?.querySelector("[data-cravar-exitos]");
+  const e=Number(input?.value);
+  if(!Number.isSafeInteger(e)||e<1||e>32){toast("Informe quantos Êxitos mantidos foram válidos (1 a 32).");break;}
+  if(!confirm("Confirmar ataque acertado com Cravar ativada por Perícia habilitada? Aplicar "+e+" de perda à Integridade do escudo "+target.name+"?"))break;
+  const removed=Math.min(target.hp,e);
+  target.hp=Math.max(0,target.hp-e);
+  renderInventory();renderVitals();save();
+  toast("Cravar: "+removed+" de Integridade perdida; restante "+target.hp+"/"+target.max+".");
+  break;
  }
  case "integrity":{
   const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
