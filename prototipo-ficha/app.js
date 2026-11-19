@@ -2242,9 +2242,9 @@ function renderOwnedPanel(){
   const ready=enabled&&!!chosen;
   const headline=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
   const summary=equipmentDetails(it);
-  const open=ready?'<button type="button" class="fp-owned-gear fp-owned-gear-action" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Clique para rolar com Disciplina + '+esc(label("attr",chosen))+'">':'<article class="fp-owned-gear">';
+  const open=ready?'<button type="button" class="fp-owned-gear fp-owned-gear-action" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Preparar ação com Disciplina + '+esc(label("attr",chosen))+'">':'<article class="fp-owned-gear">';
   const close=ready?'</button>':'</article>';
-  const hint=ready?'<span class="fp-owned-roll">Rolar agora · '+esc(extraDice)+'</span>':
+  const hint=ready?'<span class="fp-owned-roll">Preparar ação · '+esc(extraDice)+'</span>':
    canAttempt?'<span class="fp-owned-noroll">'+(enabled?'Selecione um Atributo treinado':'Adquira a Perícia de arma/foco para usar o dado')+'</span>':
    '<span class="fp-owned-noroll">Este item protege ou oferece utilidade; não adiciona dado de ataque.</span>';
   return open+'<span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
