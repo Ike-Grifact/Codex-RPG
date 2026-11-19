@@ -1,19 +1,11 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs?v=20261117-fogo-g2-free";
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
-const PLAYER_DNA_EXTRA_SKILLS=[
- {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
- {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
- {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1},
- {id:"domar-criatura-media",name:"Domar Criatura Média",detail:"1 XP; Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena.",cost:1},
- {id:"domar-criatura-grande",name:"Domar Criatura Grande",detail:"1 XP; Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média.",cost:1},
- {id:"olhos-de-aguia",name:"Olhos de Águia",detail:"1 XP. Destreza 3 + Disciplina 3 + (Armas de Longo Alcance OU Armas de Fogo). Aumenta em 8 m o alcance efetivo das armas à distância e de fogo habilitadas, sem custo adicional.",cost:1},
- {id:"concentracao-refinada",name:"Concentração Refinada",detail:"1 XP; Disciplina 2. Ao guardar 1 Antecipar em rolagem com Disciplina para a próxima rolagem, o símbolo vira 1 Êxito e você recebe Vantagem. Não pode usar a Perícia com inimigo a até 8 metros; 1E e Vantagem expiram ao usar, realizar outra ação ou completar descanso longo.",cost:1},
- {id:"invocacao-elemental",name:"Invocação Elemental",detail:"1 XP; Criar Item de Foco e Magia (habilita Psique) e Domar Pequena. Demais elementos exigem Perícia específica. Invocação: 1 Coragem; XP do invocador; porte por Domar. Dados de Atributo por porte: Pequena 1, Média 2, Grande 3; um dado por parte, até 3 mantidos na Grande. Jogador escolhe os dados e quais manter. Pode agir sozinho ou ajudar UM único personagem (conjurador ou aliado) em ação conjunta, passando a ele todos os dados mantidos, até três na Grande. Não dividir entre vários beneficiários. Uma ficha e um turno antecipável, sem duplicar dados ou ações.",cost:1}
-];
+import {PLAYER_SKILLS,PLAYER_ATTRIBUTE_XP,PLAYER_TRAINING_XP,PLAYER_INITIAL_XP}
+ from "../prototipo-ficha/player-genetic-rules.mjs";
 export function canBuyDomarMedium(t){
  return Number(t?.attributes?.influencia||0)>=3
   &&Number(t?.attributes?.inteligencia||0)>=1
@@ -28,7 +20,7 @@ export function canBuyDomarGrande(t){
   &&t.skills.includes("domar-criatura-pequena")
   &&t.skills.includes("domar-criatura-media");
 }
-export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
+export const SKILLS=PLAYER_SKILLS;
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage};
 // Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
 export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};
@@ -71,11 +63,11 @@ export function toSystem(t){
 }
 export function ledger(t){
  const s=toSystem(t),monster=monsterAttributeCost(t.kind),humanoid=isHumanoidKind(t.kind);
- const attrs=ATTRIBUTES.reduce((n,[k])=>n+(monster?XP_TRAINING:XP_ATTRIBUTE)[clamp(s.attributes[k],0,6)],0);
+ const attrs=ATTRIBUTES.reduce((n,[k])=>n+(monster?PLAYER_TRAINING_XP:PLAYER_ATTRIBUTE_XP)[clamp(s.attributes[k],0,6)],0);
  const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges",x[0]]),...PRACTICES.map(x=>["practices",x[0]])]
-  .reduce((n,[group,key])=>n+XP_TRAINING[clamp(s[group][key],0,6)],0):0;
+  .reduce((n,[group,key])=>n+PLAYER_TRAINING_XP[clamp(s[group][key],0,6)],0):0;
  const skills=humanoid?s.skills.reduce((n,id)=>n+Number(SKILLS.find(x=>x.id===id)?.cost||0),0):0;
- const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?20:0);
+ const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?PLAYER_INITIAL_XP:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
