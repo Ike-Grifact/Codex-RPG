@@ -103,7 +103,7 @@ function edge(a,b,cls){
  if(!a||!b)return"";
  // Curvas suaves, apenas em conexões selecionadas. Evita cruzamento permanente em massa.
  const x=(a.x+b.x)/2;
- return '<path class="fp-gene-relation '+cls+'" d="M'+a.x+' '+a.y+' C'+x+' '+a.y+' '+x+' '+b.y+' '+b.x+' '+b.y+'"/>';
+ return '<path data-gene-from="'+esc(a.id)+'" data-gene-to="'+esc(b.id)+'" class="fp-gene-relation '+cls+'" d="M'+a.x+' '+a.y+' C'+x+' '+a.y+' '+x+' '+b.y+' '+b.x+' '+b.y+'"/>';
 }
 function card(n,edit){
  const c=n.type==="attr"?"attr":n.type==="know"?"know":"practice";
@@ -166,10 +166,10 @@ function skill(n){
  const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
  const pictogram=GENE_SKILL_PICTOGRAMS[n.id];
  const smallIcon=pictogram?
-  '<image class="fp-gene-skill-pictogram" href="../assets/icons/codex/'+pictogram+'.svg" x="'+(n.x-10)+'" y="'+(n.y-10)+'" width="20" height="20" pointer-events="none" aria-hidden="true"/>':"";
+  '<image class="fp-gene-skill-pictogram" href="../assets/icons/codex/'+pictogram+'.svg" x="'+(n.x-16)+'" y="'+(n.y-16)+'" width="32" height="32" pointer-events="none" aria-hidden="true"/>':"";
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
-  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+smallIcon+
+  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="20"/>'+smallIcon+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
 function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
@@ -198,7 +198,9 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
    }
    if(i>=3){
     const prev=members[i-3],active=selected===prev.id||selected===n.id;
-    svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
+    // Domar e Druídica ocupam a mesma área temática, mas são ramos independentes.
+    if(family.id!=="natureza"||(![prev.id,n.id].includes("pericia-druidica")))
+     svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
    }
   });
  }

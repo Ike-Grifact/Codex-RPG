@@ -75,6 +75,19 @@ const create=async page=>{
    "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"conjuracao"};
   for(const [id,family] of Object.entries(expected))
    assert(all.placements[id]===family,"Constelação incorreta: "+id+" -> "+all.placements[id]);
+  // Domar e Druídica são Perícias separadas, sem aresta de progressão entre elas.
+  const druidDomarEdges=await map.evaluate(root=>[...root.querySelectorAll(".fp-gene-skill-link")].filter(edge=>{
+   const a=edge.getAttribute("data-gene-from"),b=edge.getAttribute("data-gene-to");
+   return (a==="pericia-druidica"&&b?.startsWith("domar-")) ||
+     (b==="pericia-druidica"&&a?.startsWith("domar-"));
+  }).length);
+  assert(druidDomarEdges===0,"O mapa ainda liga Druídica a Domar");
+  const fogoIcon=map.locator('.fp-gene-skill[data-gene-id="fogo"] image.fp-gene-skill-pictogram');
+  const levesIcon=map.locator('.fp-gene-skill[data-gene-id="armas-leves"] image.fp-gene-skill-pictogram');
+  assert(await fogoIcon.count()===1,"Ícone elemental não aparece em Fogo");
+  assert(await levesIcon.count()===1,"Ícone de armas não aparece em Armas Leves");
+  assert(await fogoIcon.getAttribute("width")==="32","Ícone elemental deveria ter 32 unidades");
+  assert(await levesIcon.getAttribute("width")==="32","Ícone de arma deveria ter 32 unidades");
   await desktop.locator('#wizard-content [data-action="gene-future"]').click();
   await checkGeneSpacing(map,"Caminhos restaurados");
   await map.scrollIntoViewIfNeeded();

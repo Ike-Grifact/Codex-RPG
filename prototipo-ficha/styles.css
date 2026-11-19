@@ -1429,3 +1429,29 @@ html:not([data-theme="light"]){--fp-xp-discount:#49c6ae;--fp-xp-elevated:#f2ad65
 @media(max-width:650px){
  .fp-vital-label.fp-icon-life,.fp-vital-label.fp-icon-de,.fp-vital-label.fp-icon-integrity{background-size:18px 18px;padding-left:24px}
 }
+
+/* Iconografia V2 — armas, elementos e inscrições Druídicas legíveis. */
+.fp-codex-icon{display:inline-block;width:27px;height:27px;min-width:27px;object-fit:contain;flex-shrink:0;vertical-align:middle}
+.fp-skill-heading,.fp-owned-heading,.fp-shop-label,.fp-inventory-name,.fp-gene-detail-heading{
+ display:inline-flex;align-items:center;gap:9px;min-width:0
+}
+.fp-skill-heading strong,.fp-shop-label strong,.fp-owned-heading strong{min-width:0}
+.fp-gene-detail-heading{margin:0 0 9px}
+.fp-gene-detail-heading .fp-codex-icon{width:34px;height:34px;min-width:34px}
+.fp-wiz-shop-item .fp-wiz-item-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.fp-wiz-shop-item .fp-shop-label{flex:1}
+.fp-inventory-name{width:100%;min-width:0}
+.fp-inventory-name input{flex:1;min-width:0}
+.fp-element-icon{display:inline-flex;align-items:center;justify-content:center;color:inherit}
+.fp-element-icon .fp-codex-icon{width:34px;height:34px;min-width:34px}
+.fp-owned-gear .fp-owned-heading{display:flex}
+.fp-gene-skill.is-locked{opacity:.60}
+.fp-gene-skill.is-locked .fp-gene-node-label{opacity:.72}
+.fp-gene-skill.is-locked .fp-gene-skill-pictogram{opacity:1}
+.fp-gene-skill-pictogram{opacity:1}
+html[data-theme="light"] .fp-gene-skill-pictogram{filter:brightness(.68) contrast(1.1)}
+html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
+@media(max-width:560px){
+ .fp-codex-icon{width:24px;height:24px;min-width:24px}
+ .fp-element-icon .fp-codex-icon{width:30px;height:30px;min-width:30px}
+}
