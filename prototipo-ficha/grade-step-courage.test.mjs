@@ -92,5 +92,5 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261119-source-step-v1/);
+ assert.match(html,/app\.js\?v=20261119-action-prep-v2/);
 });
