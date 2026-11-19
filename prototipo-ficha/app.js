@@ -2225,16 +2225,18 @@ function renderOwnedPanel(){
   const enabled=canAttempt&&combatItem(it,mode).length>0;
   const extraDice=enabled?combatItem(it,mode).map(n=>"d"+n).join(" + "):"";
   const chosen=canAttempt?preferredQuickAttribute(it):null;
-  const label=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
+  const ready=enabled&&!!chosen;
+  const headline=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
   const summary=equipmentDetails(it);
-  const action=canAttempt?'<button type="button" class="fp-owned-roll" data-action="repertoire-roll" data-id="'+esc(it.id)+'"'+(enabled&&chosen?"":" disabled")+
-   ' title="'+esc(enabled?"Rolar com Disciplina + "+(chosen?label("attr",chosen):"Atributo treinado"):"É preciso adquirir a Perícia correspondente")+'">'+
-   (enabled&&chosen?"Rolar agora · "+extraDice:"Requer Perícia")+'</button>':
-   '<span class="fp-owned-noroll">Este item não fornece dados de ataque.</span>';
-  return '<article class="fp-owned-gear"><span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
-   '<span class="fp-gear-main">'+esc(label)+'</span><small>'+esc(summary)+'</small>'+
-   (canAttempt?'<small>Características ativam somente conforme Perícia. Fonte padrão: Disciplina + '+esc(chosen?label("attr",chosen):"Atributo treinado")+'. DE atual do rolador.</small>':"")+
-   action+'</article>';
+  const open=ready?'<button type="button" class="fp-owned-gear fp-owned-gear-action" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Clique para rolar com Disciplina + '+esc(label("attr",chosen))+'">':'<article class="fp-owned-gear">';
+  const close=ready?'</button>':'</article>';
+  const hint=ready?'<span class="fp-owned-roll">Rolar agora · '+esc(extraDice)+'</span>':
+   canAttempt?'<span class="fp-owned-noroll">'+(enabled?'Selecione um Atributo treinado':'Adquira a Perícia de arma/foco para usar o dado')+'</span>':
+   '<span class="fp-owned-noroll">Este item protege ou oferece utilidade; não adiciona dado de ataque.</span>';
+  return open+'<span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
+   '<span class="fp-gear-main">'+esc(headline)+'</span><small>'+esc(summary)+'</small>'+
+   (canAttempt?'<small>Características ativam só com Perícia. Fonte: Disciplina + '+esc(chosen?label("attr",chosen):"Atributo treinado")+'. DE atual do rolador.</small>':"")+
+   hint+close;
  }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
