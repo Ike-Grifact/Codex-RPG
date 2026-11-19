@@ -1508,3 +1508,45 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
 .fp-owned-gear-action{width:100%;color:var(--fp-text);font:inherit;text-align:left;cursor:pointer}
 .fp-owned-gear-action:hover,.fp-owned-gear-action:focus-visible{border-color:var(--fp-gold);box-shadow:0 0 0 2px rgba(215,188,136,.14)}
 .fp-owned-gear-action .fp-owned-roll{display:block;text-align:center;padding:8px 10px;background:var(--fp-raised);color:var(--fp-gold);border:1px solid var(--fp-gold);border-radius:7px;font-size:11px;font-weight:750}
+
+
+/* 19/11/2026 — visão rápida dos sete recursos; detalhes ao toque/clique. */
+.fp-vitals{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:10px 0 15px}
+.fp-vital{min-width:0;min-height:108px;position:relative;gap:7px;padding:12px 10px;justify-content:flex-start}
+.fp-vital:has(.fp-vital-open[aria-expanded="true"]){border-color:var(--fp-gold)}
+.fp-vital-label{min-height:22px;align-items:center;justify-content:flex-start;gap:5px;letter-spacing:.055em;font-size:10px;overflow:visible}
+.fp-vital small{margin-top:auto;font-size:10px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.fp-vital strong{font-variant-numeric:tabular-nums}
+.fp-vital-basic>strong{font-size:clamp(17px,2vw,27px);line-height:1.1;margin-top:3px;white-space:normal;overflow-wrap:anywhere}
+.fp-vital-main{gap:2px}
+.fp-vital-main strong{font-size:clamp(16px,1.65vw,23px)}
+.fp-life-boxes{margin-top:1px}
+.fp-vital-open{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;border:0;border-radius:12px;background:transparent;cursor:help;color:var(--fp-muted)}
+.fp-vital-open::after{content:"ⓘ";position:absolute;right:7px;top:8px;font-size:12px;line-height:1;color:var(--fp-muted);opacity:.65}
+.fp-vital-open:hover::after,.fp-vital-open[aria-expanded="true"]::after{color:var(--fp-gold);opacity:1}
+.fp-vital-open:focus-visible{outline:2px solid var(--fp-gold);outline-offset:3px}
+.fp-vital-main .fp-counter{position:relative;z-index:2;cursor:pointer}
+.fp-vital-tooltip{position:fixed;z-index:10000;box-sizing:border-box;width:min(355px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto;padding:15px 17px;border:1px solid var(--fp-gold);border-radius:12px;background:var(--fp-raised);color:var(--fp-text);box-shadow:0 14px 42px #0008;font-size:12px;line-height:1.55;text-align:left}
+.fp-vital-tooltip[hidden]{display:none}
+.fp-vital-tooltip strong{display:block;font:normal 20px/1.2 Georgia,serif;color:var(--fp-gold);margin-bottom:8px}
+.fp-vital-tooltip p{margin:7px 0}
+.fp-vital-tooltip-formula{padding:10px;background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:8px}
+.fp-vital-tooltip small{display:block;margin-top:9px;color:var(--fp-muted);line-height:1.5;font-size:10px}
+.fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load{background-repeat:no-repeat;background-position:left center;background-size:21px 21px;padding-left:28px}
+.fp-vital-label.fp-icon-courage{background-image:url("../assets/icons/codex/status-coragem.svg")}
+.fp-vital-label.fp-icon-movement{background-image:url("../assets/icons/codex/status-movimento.svg")}
+.fp-vital-label.fp-icon-load{background-image:url("../assets/icons/codex/status-peso.svg")}
+@media(max-width:1370px){.fp-vitals{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1120px){
+ .fp-workspace{display:flex;flex-direction:column;gap:13px}
+ .fp-primary-column,.fp-side-column{width:100%;min-width:0}
+ .fp-side-column{order:-1;position:static}
+}
+@media(max-width:850px){.fp-vitals{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){
+ .fp-vitals{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .fp-vital{min-height:101px;padding:10px 9px}
+ .fp-vital-label{font-size:9px}
+ .fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load{background-size:18px 18px;padding-left:24px}
+ .fp-vital-main strong{font-size:19px}
+}
