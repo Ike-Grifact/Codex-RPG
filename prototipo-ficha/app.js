@@ -3569,7 +3569,20 @@ function renderInventory(){
   overflow.hidden=!(load>max);
   overflow.textContent=load>max?"Capacidade excedida em "+pad(load-max)+" Alto. Nenhuma nova penalidade foi definida.":"";
  }
- $("inventory-list").innerHTML=state.items.length?state.items.map(it=>{
+ const filterSelect=(opts,current,attribute)=>'<select '+attribute+'>'+opts.map(([id,label])=>
+  '<option value="'+id+'"'+(current===id?' selected':'')+'>'+esc(label)+'</option>').join("")+'</select>';
+ $("inventory-filterbar").innerHTML='<div class="fp-equip-filters"><label>Tipo '+
+  filterSelect(EQUIPMENT_FAMILIES,inventoryType,'data-inventory-type aria-label="Filtrar inventário por tipo"')+'</label>'+
+  '<label>Peso '+filterSelect(EQUIPMENT_WEIGHT_OPTIONS,inventoryWeight,'data-inventory-weight aria-label="Filtrar inventário por peso"')+'</label>'+
+  '<span class="fp-filter-count">'+state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight)).length+' de '+state.items.length+' itens</span></div>';
+ const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
+ const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
+  .sort((a,b)=>EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
+    EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||
+    EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(a))-
+    EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(b))||a.name.localeCompare(b.name,"pt-BR"));
+ let previousGroup="";
+ $("inventory-list").innerHTML=listedItems.length?listedItems.map(it=>{
   const types=[["arma","Arma"],["armadura","Armadura"],["escudo","Escudo"],["foco","Foco"],["ferramenta","Ferramenta"],["outro","Outro"]];
   const canResist1=it.weight==="extremo"?it.grade>=2:(it.weight==="alto"||it.weight==="medio")?it.grade>=2:it.grade>=3;
   const canResist2=it.weight==="alto"&&it.grade>=3;
@@ -3600,7 +3613,15 @@ function renderInventory(){
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
    '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 3, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
-  return'<div class="fp-item"><div class="fp-inventory-name">'+codexItemIcon(it)+'<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
+  const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
+  previousGroup=group;
+  const stats=equipmentDetails(it);
+  return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
+  '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
+  '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+it.hp+' / '+it.max+'</b>'+
@@ -3619,8 +3640,8 @@ function renderInventory(){
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
-  armorFields+shieldEmbedFields+cravarImpact+'</div>';
- }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
+  armorFields+shieldEmbedFields+cravarImpact+'</div></details>';
+ }).join(""):'<div class="fp-empty-list">'+(state.items.length?'Nenhum item corresponde aos filtros.':'Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.')+'</div>';
 }
 function renderTrade(){
  const panel=$("trade-panel");if(!panel)return;
@@ -4095,6 +4116,12 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.inventoryType!==undefined||el.dataset.inventoryWeight!==undefined){
+  if(el.dataset.inventoryType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))inventoryType=el.value;
+  if(el.dataset.inventoryWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))inventoryWeight=el.value;
+  renderInventory();return;
+ }
+
  if(el.dataset.tradeShopType!==undefined||el.dataset.tradeShopWeight!==undefined){
   if(el.dataset.tradeShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))tradeShopType=el.value;
   if(el.dataset.tradeShopWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))tradeShopWeight=el.value;
