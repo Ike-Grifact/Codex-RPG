@@ -68,7 +68,7 @@ function storeHistory(t,r,preview,settlement){
    kept:r.selected.includes(d.id),symbols:faceSymbols(d.sides,d.face)})),
   outcome:preview.result.outcome,reached:preview.result.reached,success:preview.result.success,
   e:preview.result.e,a:preview.remainingA,p:preview.result.p,damage:preview.result.damage,
-  critical:preview.result.critical||0,extraKeep:!!r.extraKeep,stepDieId:r.stepDieId||"",
+  critical:preview.result.critical||0,keepExtra:Number(r.keepExtra||0),stepSourceId:r.stepSourceId||"",
   pavorSpent:settlement.spent||0,courageSpent:settlement.courageSpent||0,
   localGain:settlement.localGain||0,publicGain:settlement.publicGain||0,
   cancelP:r.cancelP,convertPairs:r.convertPairs,passA:r.passA};
@@ -465,33 +465,24 @@ function refreshRoll(){const e=el("cf-roll-panel"),t=selected();if(e&&t)e.outerH
 function beginCreatureRoll(){
  const t=selected();if(!t)return;
  const d=draftFor(t),human=isHumanoidKind(t.kind);
- if(human){
-  d.baseGroup=el("cf-roll-group")?.value||d.baseGroup;
-  d.baseKey=el("cf-roll-base")?.value||d.baseKey;
-  d.attribute=el("cf-roll-attr")?.value||d.attribute;
-  d.mode=d.baseKey==="armas_conjuracao"?(el("cf-roll-mode")?.value||"armas"):"normal";
- }else{
-  d.first=el("cf-roll-first")?.value||d.first;d.second=el("cf-roll-second")?.value||d.second;
- }
+ d.mode=human&&d.baseGroup==="practice"&&d.baseKey==="armas_conjuracao"?(el("cf-roll-mode")?.value||d.mode||"armas"):"normal";
  d.de=Math.floor(clamp(el("cf-roll-de")?.value??d.de,0,30));
  d.situation=el("cf-roll-situation")?.value||d.situation;
- if(d.step&&!d.stepDieId)return notice("Escolha o dado de Atributo, Conhecimento ou Prática que será elevado.");
- if(t.kind==="criatura"&&d.step)return notice("Elevação especial de criaturas comuns não está habilitada.");
- if(creatureRoll?.id===t.id&&!confirm("Descartar a rolagem não confirmada e gerar novos dados?"))return;
- const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepDieId:"");
+ if(t.kind==="criatura"&&d.stepSourceId)return notice("Elevação especial da criatura comum ainda não está habilitada.");
+ if(creatureRoll?.id===t.id&&!confirm("Descartar os dados não confirmados para uma nova rolagem?"))return;
+ const composed=composeActionPool(t,selectionFor(t,d),d.stepSourceId);
  if(!composed.ok)return notice(composed.error);
- const courageCost=human?Number(!!d.extraKeep)+Number(!!d.step):0;
- const pavorCost=t.kind==="monstro"?Number(!!d.step):0;
- if(human&&courageCost>t.courage)return notice("Coragem insuficiente para preparar a rolagem.");
- if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para elevar o dado.");
+ const natural=human?(Number(t.level)>=6?3:2):2;
+ const maxKeep=human?Math.min(4,natural+1):t.kind==="monstro"?stats(t).keepMax:2;
+ const keepExtra=Math.floor(clamp(d.keepExtra||0,0,maxKeep-natural));
+ const cost=keepExtra+Number(!!d.stepSourceId);
+ if(cost>t.pavorLocal)return notice("Pavor local insuficiente: a preparação exige "+cost+"P.");
  const generated=rollCreatureFaces(composed.pool);
- const planned=human?stats(t).keepBase+Number(!!d.extraKeep):t.kind==="monstro"?t.keep:2;
- const count=Math.min(planned,generated.length);
+ const count=Math.min(natural+keepExtra,generated.length);
  creatureRoll={id:t.id,first:d.first,second:d.second,group:d.baseGroup,
-  baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,
+  baseKey:d.baseKey,attribute:d.attribute,mode:d.mode,keepExtra,
   sources:composed.sources,declaredSkill:d.declaredSkill||"",declaredAction:d.declaredAction||"",de:d.de,situation:d.situation,
-  extraKeep:human&&!!d.extraKeep,stepDieId:d.step?d.stepDieId:"",
-  dice:generated,selected:generated.slice(0,count).map(x=>x.id),
+  stepSourceId:d.stepSourceId||"",dice:generated,selected:generated.slice(0,count).map(x=>x.id),
   cancelP:0,convertPairs:0,passA:false};
  refreshRoll();if(innerWidth<760)scrollToRoll();
 }
@@ -714,7 +705,7 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-clear-rolls")){if(confirm("Apagar todo o histórico de rolagens? Exporte CSV ou JSON antes de limpar.")){
    model.rollHistory=[];save();render();}return;}
  if(b.dataset.historyScope){model.historyScope=b.dataset.historyScope;save();render();return;}
- if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.contextOK=false;d.stepDieId="";render();return;}
+ if(b.hasAttribute("data-clear-extra")){const d=draftFor(selected());d.extra=null;d.stepSourceId="";render();return;}
  if(b.hasAttribute("data-pick-extra")){const d=draftFor(selected());d.pickExtra=!d.pickExtra;render();return;}
  if(b.dataset.rollSource){
   const t=selected();if(!t||conflictMode!=="roll")return;
@@ -734,7 +725,7 @@ document.addEventListener("click",event=>{
    else if(d.first!==key){d.second=key;d.firstClicked=false;}
    else return notice("Selecione outro Atributo distinto.");
   }
-  d.stepDieId="";render();return;
+  d.stepSourceId="";render();return;
  }
  if(b.dataset.actionTab){conflictActionTab=["weapons","elements","skills"].includes(b.dataset.actionTab)?b.dataset.actionTab:"skills";render();return;}
  if(b.dataset.conflictAction)return prepareThreatAction(b.dataset.conflictAction,b.dataset.actionSkill,b.dataset.actionItem);
@@ -756,7 +747,7 @@ document.addEventListener("click",event=>{
 document.addEventListener("change",event=>{
  const target=event.target;
  if(target.dataset.rollKeep&&creatureRoll){
-   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=isHumanoidKind(t.kind)?stats(t).keepBase+Number(!!r.extraKeep):t.kind==="monstro"?t.keep:2;
+   const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=Math.min(stats(t).keepMax,(isHumanoidKind(t.kind)?(t.level>=6?3:2):2)+Number(r.keepExtra||0));
    if(target.checked){if(r.selected.length>=max){notice("Desmarque antes um dado.");return refreshRoll();}r.selected.push(id);}
    else r.selected=r.selected.filter(x=>x!==id);
    refreshRoll();return;
@@ -767,33 +758,11 @@ document.addEventListener("change",event=>{
    else if(k==="cancelP"||k==="convertPairs")creatureRoll[k]=Math.floor(clamp(target.value,0,9));
    refreshRoll();return;
   }
-  if(target.id==="cf-roll-extra"){const d=draftFor(selected());d.extraKeep=target.checked;render();return;}
- if(target.id==="cf-roll-step"){const d=draftFor(selected());d.step=target.checked;if(!d.step)d.stepDieId="";render();return;}
- if(target.id==="cf-roll-step-die"){draftFor(selected()).stepDieId=target.value;return;}
+  if(target.id==="cf-roll-keep-extra"){const d=draftFor(selected());d.keepExtra=Number(target.value)||0;render();return;}
+ if(target.id==="cf-roll-step-source"){const d=draftFor(selected());d.stepSourceId=target.value;render();return;}
  if(target.id==="cf-roll-de"){draftFor(selected()).de=Math.floor(clamp(target.value,0,30));return;}
  if(target.id==="cf-roll-situation"){draftFor(selected()).situation=target.value;return;}
  if(target.id==="cf-roll-mode"){draftFor(selected()).mode=target.value;return;}
- if(target.id==="cf-roll-attr"){draftFor(selected()).attribute=target.value;return;}
- if(target.id==="cf-roll-first"){draftFor(selected()).first=target.value;return;}
- if(target.id==="cf-roll-second"){draftFor(selected()).second=target.value;return;}
- if(target.id==="cf-roll-group"){
-  const group=target.value,list=el("cf-roll-base"),options=group==="knowledge"?KNOWLEDGES:PRACTICES;
-  const d=draftFor(selected());d.baseGroup=group;
-  const t=selected();
-  if(list&&t){
-   const field=group==="knowledge"?"knowledges":"practices";
-   const first=options.find(([key])=>key!=="armas_conjuracao"&&t[field][key]>0)?.[0]||
-    (group==="knowledge"?"protecao":"atletismo");
-   list.innerHTML=options.map(([key,name])=>'<option value="'+key+'"'+(key===first?' selected':'')+'>'+esc(name)+'</option>').join("");
-   d.baseKey=first;d.mode=first==="armas_conjuracao"?"armas":"normal";
-   const mode=el("cf-roll-mode");if(mode)mode.disabled=first!=="armas_conjuracao";
-  }
-  return;
- }
- if(target.id==="cf-roll-base"){
-  const d=draftFor(selected());d.baseKey=target.value;d.mode=target.value==="armas_conjuracao"?"armas":"normal";
-  const mode=el("cf-roll-mode");if(mode)mode.disabled=target.value!=="armas_conjuracao";return;
- }
  if(target.id==="player-count"){model.players=Math.floor(clamp(target.value,0,30));model.publicPavor=Math.min(model.publicPavor,narratorCap(model.players));model.companions=normalizeCompanions(model.companions,model.players);save();renderSummary();return;}
  if(target.id==="party-xp"){model.partyXp=Math.floor(clamp(target.value,0,99999));save();renderSummary();return;}
   if(target.dataset.companion){
