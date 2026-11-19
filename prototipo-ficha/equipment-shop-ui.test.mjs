@@ -90,7 +90,7 @@ test("Foco usa modo Conjuração e Inteligência já treinada",()=>{
 });
 test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",()=>{
  for(const txt of [
-  'data-wizard-shop-','data-trade-shop','data-inventory-type','data-inventory-weight',
+  'data-wizard-shop-','dataset.tradeShopType','data-inventory-type','data-inventory-weight',
   'EQUIPMENT_FAMILIES','EQUIPMENT_WEIGHT_OPTIONS','wizardShopWeight','tradeShopWeight','fp-shop-summary','fp-item-summary','fp-item-editor',
   'fp-owned-roll','fp-owned-gear-action','case "repertoire-roll":quickRollItem(id)'
  ])assert.ok(app.includes(txt),"Não encontrado: "+txt);
