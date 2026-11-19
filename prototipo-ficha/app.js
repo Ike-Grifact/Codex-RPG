@@ -2219,9 +2219,22 @@ function renderOwnedPanel(){
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
     '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
  const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
-  '<article class="fp-owned-gear"><span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
-  (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+ $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
+  const mode=it.type==="foco"?"conjuracao":"armas",canAttempt=["arma","foco"].includes(it.type);
+  const enabled=canAttempt&&combatItem(it,mode).length>0;
+  const extraDice=enabled?combatItem(it,mode).map(n=>"d"+n).join(" + "):"";
+  const chosen=canAttempt?preferredQuickAttribute(it):null;
+  const label=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
+  const summary=equipmentDetails(it);
+  const action=canAttempt?'<button type="button" class="fp-owned-roll" data-action="repertoire-roll" data-id="'+esc(it.id)+'"'+(enabled&&chosen?"":" disabled")+
+   ' title="'+esc(enabled?"Rolar com Disciplina + "+(chosen?label("attr",chosen):"Atributo treinado"):"É preciso adquirir a Perícia correspondente")+'">'+
+   (enabled&&chosen?"Rolar agora · "+extraDice:"Requer Perícia")+'</button>':
+   '<span class="fp-owned-noroll">Este item não fornece dados de ataque.</span>';
+  return '<article class="fp-owned-gear"><span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
+   '<span class="fp-gear-main">'+esc(label)+'</span><small>'+esc(summary)+'</small>'+
+   (canAttempt?'<small>Características ativam somente conforme Perícia. Fonte padrão: Disciplina + '+esc(chosen?label("attr",chosen):"Atributo treinado")+'. DE atual do rolador.</small>':"")+
+   action+'</article>';
+ }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
 // SRD v0.71 — protótipo manual. Não converte dano automaticamente em sangue ou cura.
@@ -3859,6 +3872,7 @@ function onClick(event){
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
+ case "repertoire-roll":quickRollItem(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
