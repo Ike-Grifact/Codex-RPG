@@ -2660,7 +2660,9 @@ function prepareElementSkill(id){
  const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
   (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
  if(focus)draft.equipmentId=focus.id;
- render();toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
+ render();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
