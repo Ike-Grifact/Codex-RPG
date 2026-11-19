@@ -4,7 +4,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,
  from "./codex-rules.mjs?v=20261117-fogo-g2-free";
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
-import {PLAYER_SKILLS,PLAYER_ATTRIBUTE_XP,PLAYER_TRAINING_XP,PLAYER_INITIAL_XP}
+import {PLAYER_SKILLS,PLAYER_ATTRIBUTE_XP,PLAYER_TRAINING_XP,PLAYER_INITIAL_XP,playerSkillRequirement}
  from "../prototipo-ficha/player-genetic-rules.mjs";
 export function canBuyDomarMedium(t){
  return Number(t?.attributes?.influencia||0)>=3
@@ -21,12 +21,13 @@ export function canBuyDomarGrande(t){
   &&t.skills.includes("domar-criatura-media");
 }
 export const SKILLS=PLAYER_SKILLS;
+export const skillPrerequisite=playerSkillRequirement;
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage};
 // Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
 export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};
 export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};
 export const isHumanoidKind=kind=>kind==="humanoide"||kind==="humanoide-monstro";
-export const monsterAttributeCost=kind=>kind==="monstro"||kind==="humanoide-monstro";
+export const monsterAttributeCost=kind=>kind==="monstro";
 // Decisão autoral posterior à v0.44: ameaças G2+ podem reter até 4 dados.
 // O custo adicional continua conforme a economia do tipo, sem retenção gratuita implícita.
 export const enemyKeepCap=grade=>Number(grade)>=2?4:3;
@@ -67,17 +68,17 @@ export function ledger(t){
  const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges",x[0]]),...PRACTICES.map(x=>["practices",x[0]])]
   .reduce((n,[group,key])=>n+PLAYER_TRAINING_XP[clamp(s[group][key],0,6)],0):0;
  const skills=humanoid?s.skills.reduce((n,id)=>n+Number(SKILLS.find(x=>x.id===id)?.cost||0),0):0;
- const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?PLAYER_INITIAL_XP:0);
+ const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(humanoid?PLAYER_INITIAL_XP:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
  const s=toSystem(t),monster=t.kind==="monstro",human=isHumanoidKind(t.kind),grade=clamp(t.threatGrade,1,6);
  const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
- const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
+ const naturalKeep=human?(Number(t.level)>=6?3:2):2;
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
  return {life,de:defense,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
-  keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
+  keepCostP:Math.max(0,Number(t.keep||2)-naturalKeep),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
 }
 export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+Number(it.weight||0)*Math.max(1,Number(it.qty||1)),0);}
