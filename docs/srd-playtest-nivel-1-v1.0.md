@@ -2,7 +2,7 @@
 title: "Codex RPG — SRD Playtest Nível 1 v1.0"
 version: "1.0"
 cycle: "playtest-nivel-1"
-updated: "2026-11-18"
+updated: "2026-11-19"
 status: "DEFINIDO / PENDENTE DE PROCEDIMENTO"
 supersedes_as_active: "docs/srd-continuidade-v0.82.md"
 repository: "Ike-Grifact/Codex-RPG"
@@ -11,6 +11,8 @@ repository: "Ike-Grifact/Codex-RPG"
 # Codex RPG — SRD Playtest Nível 1 · v1.0
 
 > **Referência principal para o ciclo de Playtest Nível 1.** A contagem foi reiniciada por decisão autoral de **18/11/2026**. As versões `srd-continuidade-v0.XX.md` permanecem disponíveis como **histórico**, não como numeração ativa. Este documento registra as decisões mais recentes sem apagar regras anteriores que não foram revogadas. Em divergência: decisão autoral mais recente > este SRD > Livro do Jogador atualizado > código > arquivos históricos. **Código implementado não significa regra aprovada.**
+
+> **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
 ## 1. Estados e limites da revisão
 
@@ -75,7 +77,7 @@ A **face 4 do d4 é vazia**, mas continua sendo a face numérica máxima para cr
 - **Limites absolutos:** até **9 dados rolados** e **4 mantidos** quando habilitado. No **nível 1**, manter **2 dados naturalmente** ou **3 com 1 Coragem**, desde que estejam na pilha; essa Coragem **não cria um novo dado**. No nível 1, não manter quatro sem habilitação posterior.
 - **Atributo é obrigatório na pilha, mas não entre os dados mantidos**, conforme a regra posterior do Livro do Jogador. Os símbolos de dados descartados não participam da resolução e **não geram Pavor/Coragem/Êxitos**.
 - **Antecipar:** cada 1A pode anular 1P próprio **ou** passar oportunidade para um aliado; 2A podem gerar 1E. Não gastar o mesmo A duas vezes. O jogador compara **E + P mantidos e não anulados** com a **Dificuldade de Êxito (DE)**: alcançar ou superar a DE cumpre a ação, mas acerto com Pavor não é acerto limpo. Pavor residual pode alimentar a reserva do adversário ou permitir intervenção na cena.
-- **Melhoria de dado com Coragem:** gastar **1 Coragem** antes da rolagem para subir **um dado** um passo na cadeia d4→d6→d10→d12, sem comprar novo Grau ou aumentar a pilha; regra comum de uma elevação por rodada. **A elevação de Atributos na transformação Druídica é um efeito específico e temporário diferente dessa compra de preparação.**
+- **Elevar uma fonte com Coragem [DEFINIDO — correção autoral de 19/11/2026]:** ao gastar **1 Coragem** antes de rolar, escolher **uma fonte que componha a rolagem** (Atributo, Conhecimento ou Prática) com Grau inferior a 6 e aplicar **temporariamente os dados do Grau seguinte**, conforme a tabela desta seção. Não se compra Grau, não se gasta XP e a ficha permanece no Grau anterior após a rolagem. O efeito **pode acrescentar um dado à pilha**, quando a tabela do Grau seguinte o acrescentar, sempre respeitando o teto de **9 dados rolados** e de dados mantidos do Marco. Exemplos: **Agilidade G2, 2d6 → G3, 3d6**; **Disciplina G2, 2d10 → G3, 3d10**; **Disciplina G3, 3d10 → G4, 2d10 + 1d12**. A elevação comum não se aplica a dados de equipamento, não concede Perícia ou habilitação e não extrapola G6; continua sendo **uma fonte por rolagem**. A elevação de Atributos da transformação Druídica mantém seu procedimento específico.
 - **Crítico:** todos os dados escolhidos para manter precisam estar nas **faces máximas**, com ao menos dois dados mantidos. O crítico recupera Coragem de acordo com a tabela atual (2 dados: 1; 3 ou 4: 2), sem conceder PP. A face máxima d4 vazia pode integrar esse critério.
 
 ### Vida, estados e proteções básicos
