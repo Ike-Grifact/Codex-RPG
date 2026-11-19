@@ -92,5 +92,22 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261119-action-prep-v2/);
+ assert.match(html,/app\.js\?v=20261119-vitals-v1/);
+});
+
+test("Ficha mantém sete recursos com explicação contextual e rolador acima do repertório",()=>{
+ const resources=["life","courage","defense","integrity","balance","load","movement"];
+ for(const resource of resources){
+  assert.match(html,new RegExp('data-vital-open="'+resource+'"'),"Sem cartão "+resource);
+ }
+ assert.match(html,/id="fp-vital-tooltip"/);
+ assert.ok(html.indexOf('id="composer-panel"')<html.indexOf('id="play-talents"'),
+  "A preparação precisa aparecer antes do repertório");
+ assert.ok(app.includes("function vitalHelpDetails(kind)"));
+ assert.ok(app.includes("function toggleVitalTooltip(button)"));
+ const css=readFileSync(join(root,"styles.css"),"utf8");
+ for(const icon of ["coragem","movimento","peso"]){
+  assert.ok(css.includes("status-"+icon+".svg"),"CSS sem ícone "+icon);
+  assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
+ }
 });
