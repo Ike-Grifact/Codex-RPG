@@ -3645,10 +3645,22 @@ function renderTrade(){
   (canAllocate?'<button type="button" class="fp-secondary" data-action="trade-allocate"'+(draftSum!==STARTING_VT?" disabled":"")+'>Confirmar distribuição</button>':"")+'</div>';
  $("trade-wallet").innerHTML=RESOURCES.map(([key,name])=>
   '<span class="fp-trade-token">'+esc(name)+' <b>'+state.trade.resources[key]+'</b></span>').join("");
- const catalog=CATALOG.filter(x=>x.kind!=="focus"&&x.category!=="pendente"&&Number(x.priceVT)>0);
+ const listOptions=(options,value)=>options.map(([id,label])=>'<option value="'+id+'"'+(id===value?' selected':'')+'>'+esc(label)+'</option>').join("");
+ $("trade-shop-type").innerHTML=listOptions(EQUIPMENT_FAMILIES,tradeShopType);
+ $("trade-shop-weight").innerHTML=listOptions(EQUIPMENT_WEIGHT_OPTIONS,tradeShopWeight);
+ const catalog=CATALOG.filter(x=>x.kind!=="focus"&&x.category!=="pendente"&&Number(x.priceVT)>0)
+  .filter(x=>equipmentMatches(x,tradeShopType,tradeShopWeight))
+  .sort((a,b)=>EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
+    EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||a.name.localeCompare(b.name,"pt-BR"));
  const currentShop=$("shop-items").value,currentPreferred=$("shop-preferred").value;
- $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>
-  '<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+(x.die?"d"+x.die:x.integrity?.max+" Integridade")+'</option>').join("");
+ $("trade-shop-count").textContent=catalog.length+" opções";
+ let prevFamily="";
+ $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>{
+  const family=equipmentFamily(x);
+  const group=family!==prevFamily?'</optgroup><optgroup label="'+esc(equipmentGroupName(family))+'">':'';
+  prevFamily=family;
+  return group+'<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+esc(equipmentDetails(x))+'</option>';
+ }).join("").replace(/^<\/optgroup>/,"")+(catalog.length?'</optgroup>':'');
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
@@ -4083,6 +4095,12 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.tradeShopType!==undefined||el.dataset.tradeShopWeight!==undefined){
+  if(el.dataset.tradeShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))tradeShopType=el.value;
+  if(el.dataset.tradeShopWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))tradeShopWeight=el.value;
+  renderTrade();return;
+ }
+
  if(el.dataset.wizardShopType!==undefined||el.dataset.wizardShopWeight!==undefined){
   if(viewMode!=="builder"||wizardStep!==3)return;
   if(el.dataset.wizardShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))wizardShopCategory=el.value;
