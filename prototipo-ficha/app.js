@@ -1110,7 +1110,7 @@ function skillCompactCard([id,name,detail,cost],wizard){
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
- '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><strong>'+esc(name)+'</strong><dl class="fp-skill-quick">'+
+ '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":cost===null?"Pendente":cost+" XP")+'</dd></div>'+
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
@@ -2113,7 +2113,7 @@ function renderOwnedPanel(){
  const empty='<span class="fp-owned-empty">Nenhuma por enquanto. Explore o Codex Genético para encontrar novas opções.</span>';
  const markup=([id,name,detail,cost])=>{
   const text=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail.slice(0,130),action=CARD_ACTIVATIONS[id]||"Consultar";
-  return '<article class="fp-owned-card"><div><strong>'+esc(name)+'</strong><small>'+esc(action)+'</small></div>'+
+  return '<article class="fp-owned-card"><div><span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><small>'+esc(action)+'</small></div>'+
    '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
  };
  $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
@@ -2121,10 +2121,10 @@ function renderOwnedPanel(){
  $("owned-elements").innerHTML=
   (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
-    '<span class="fp-element-icon">ᚨ</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
+    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
  const equipped=state.items.filter(it=>it.equipped);
  $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>
-  '<article class="fp-owned-gear"><strong>'+esc(it.name)+'</strong><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
+  '<article class="fp-owned-gear"><span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span><span>'+esc(it.die?"Dado habilitável d"+it.die:it.type)+"</span>"+
   (it.properties?.length?'<small>'+it.properties.map(esc).join(" · ")+'</small>':"")+'</article>').join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
 }
 
@@ -2467,7 +2467,7 @@ function geneDetailHTML(id,s=state){
    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
    (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
-  '<h4>'+esc(name)+'</h4><p>'+esc(detail)+'</p>'+
+  '<h4 class="fp-gene-detail-heading">'+codexSkillIcon(sid)+'<span>'+esc(name)+'</span></h4><p>'+esc(sid==="pericia-druidica"?CARD_BRIEFS[sid]:detail)+'</p>'+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
