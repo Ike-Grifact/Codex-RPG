@@ -3030,17 +3030,15 @@ function renderVitals(){
  $("de-text").textContent=defense.value;$("balance-text").textContent=balance();
  const protection=equippedArmor();
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
- if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 · Sem Integridade"):"Nenhuma";
- if(integrityCaption)integrityCaption.textContent=protection?
-  (protection.name+" · "+(protection.max>0?"Integridade atual / máxima":"armadura sem Integridade")+
-   " · registro manual de dano"):"Equipe uma armadura no Inventário";
- $("de-caption").textContent=defense.caption;
+ if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 / 0"):"—";
+ if(integrityCaption)integrityCaption.textContent=protection?protection.name:"Sem armadura";
+ $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Balanço natural de criatura pendente":pad(loadPercent())+"% da capacidade";
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
  if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
- $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
+ $("move-caption").textContent="Por deslocamento";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
  const bands=health.bands;
  $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
@@ -3051,9 +3049,58 @@ function renderVitals(){
    ((i===2&&health.id==="incapacitado")||(i===3&&health.id==="inconsciente")?" critical":"")+'"></span>';
  }).join("");
  const effects=(health.e?health.e+"E ":"")+(health.a?health.a+"A ":"")+(health.p?"+"+health.p+"P ":"");
- $("life-recovery").textContent=health.label+" · "+(effects.trim()||"sem penalidade")+
-  (health.coragem&&Number.isFinite(health.coragem)?" · "+health.coragem+" Coragem para agir":"")+
-  " · Cura: revisão pendente";
+ $("life-recovery").textContent=health.label+(effects.trim()?" · "+effects.trim():"");
+}
+
+/* Ajuda contextual: leitura das fórmulas existentes, sem mudar regras. */
+function vitalHelpDetails(kind){
+ const a=state.attributes,p=state.practices,armor=equippedArmor(),health=lifeStage();
+ const natural=deNatural(),mod=armorDodgeBonus()-armorDePenalty();
+ const used=Number(loadUsed().toFixed(2)),percent=Number(loadPercent().toFixed(1));
+ const levelBonus=Number(state.level>=5)+Number(state.level>=10)+Number(state.level>=20);
+ const entries={
+ life:["Vida e estados","A Vida atual define a condição "+health.label+". Em zero, o personagem morre.",
+ "Máxima: 4 + Vigor ("+(a.vigor||0)+") + ⌊Força ("+(a.forca||0)+") / 2⌋ = "+maxLife()+". Faixas: "+health.bands.join(" / ")+".",
+ "SRD Playtest Nível 1 v1.0 · Vida e estados."],
+ courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
+ "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
+ "SRD Playtest Nível 1 v1.0 · Seção 2."],
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar. Teto natural 9 e total com modificadores limitado a 12.",
+ "Natural: Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Vigor ("+(a.vigor||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
+ "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
+ integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
+ armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
+ "SRD Playtest Nível 1 v1.0 · Proteções; Inventário da ficha."],
+ balance:["Balanço por carga",NPC_MODE?"Balanço natural de criatura: regra pendente.":"Categoria atual do peso carregado: "+balance()+".",
+ "Ocupação: "+used+" / "+capacity()+" = "+percent+"%. Faixas: abaixo de 25% Muito Leve; 25–49% Leve; 50–74% Médio; 75–99% Pesado; 100% ou mais Muito Pesado.",
+ "Classificação atual do criador (playtest)."],
+ load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
+ "Capacidade = 1 + ⌊Força ("+(a.forca||0)+")/3⌋ + ⌊Vigor ("+(a.vigor||0)+")/3⌋ + ⌊Disciplina ("+(p.armas_conjuracao||0)+")/3⌋ + ⌊Atletismo ("+(p.atletismo||0)+")/3⌋ = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Fórmula atual da ficha · Inventário (playtest)."],
+ movement:["Movimento","Deslocamento básico antes de efeitos situacionais e Perícias específicas.",
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+movement()+" m.",
+ "Fórmula atual da ficha · Agilidade e Atletismo."]
+ };
+ return entries[kind]||null;
+}
+function closeVitalTooltip(){
+ const tip=$("fp-vital-tooltip");if(tip)tip.hidden=true;
+ document.querySelectorAll(".fp-vital-open[aria-expanded='true']").forEach(b=>{
+  b.setAttribute("aria-expanded","false");b.removeAttribute("aria-describedby");
+ });
+}
+function toggleVitalTooltip(button){
+ const tip=$("fp-vital-tooltip");if(!tip||!button)return;
+ const wasOpen=button.getAttribute("aria-expanded")==="true";closeVitalTooltip();
+ if(wasOpen)return;
+ const info=vitalHelpDetails(button.dataset.vitalOpen);if(!info)return;
+ tip.innerHTML="<strong>"+esc(info[0])+"</strong><p>"+esc(info[1])+"</p><p class='fp-vital-tooltip-formula'>"+esc(info[2])+"</p><small>Origem: "+esc(info[3])+"</small>";
+ tip.hidden=false;
+ const rect=button.getBoundingClientRect(),gap=10,padding=12;
+ const width=tip.offsetWidth,height=tip.offsetHeight;
+ tip.style.left=Math.max(padding,Math.min(rect.left,Math.max(padding,window.innerWidth-width-padding)))+"px";
+ tip.style.top=(rect.bottom+gap+height<=window.innerHeight-padding?rect.bottom+gap:Math.max(padding,rect.top-height-gap))+"px";
+ button.setAttribute("aria-expanded","true");button.setAttribute("aria-describedby","fp-vital-tooltip");
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -4254,6 +4301,14 @@ function onChange(event){
 }
 function bind(){
  document.addEventListener("click",onClick);
+ document.addEventListener("click",event=>{
+  const trigger=event.target.closest("[data-vital-open]");
+  if(trigger){toggleVitalTooltip(trigger);return;}
+  if(!event.target.closest("#fp-vital-tooltip"))closeVitalTooltip();
+ });
+ document.addEventListener("keydown",event=>{if(event.key==="Escape")closeVitalTooltip();});
+ window.addEventListener("resize",closeVitalTooltip);
+ window.addEventListener("scroll",event=>{if(!event.target.closest?.("#fp-vital-tooltip"))closeVitalTooltip();},true);
  document.addEventListener("click",event=>{
   const page=event.target.closest("button[data-sheet-page]");
   if(page){openSheetPage(page.dataset.sheetPage,page.dataset.geneSelect||"");return;}
