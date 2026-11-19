@@ -44,6 +44,17 @@ const cameras=new WeakMap(),listeners=new WeakSet();
 const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,initialized:false});return cameras.get(root);};
 // Famílias visuais com identificadores estáveis para futuros ícones.
 // Afinidade temática não substitui os requisitos de skillReq().
+// Pictogramas são apenas apresentação; não alteram o modelo de perícias.
+const GENE_SKILL_PICTOGRAMS=Object.freeze({
+ "armas-leves":"arma-adaga","armas-medias":"arma-espada","armas-pesadas":"arma-montante",
+ "armas-longo-alcance":"arma-arco","maestria-arremesso-armas":"arma-arremesso",
+ "armas-fogo":"arma-pistola","pugilismo":"arma-punhos",
+ "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
+ "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
+ "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
+ "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar","terra":"elemento-terra",
+ "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
+});
 const GENE_CONSTELLATIONS=[
  {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
@@ -153,9 +164,12 @@ function skill(n){
  // Letras pequenas e em até duas linhas; full name no title e aria-label.
  const lines=splitSkillLabel(n.name,16);
  const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
+ const pictogram=GENE_SKILL_PICTOGRAMS[n.id];
+ const smallIcon=pictogram?
+  '<image class="fp-gene-skill-pictogram" href="../assets/icons/codex/'+pictogram+'.svg" x="'+(n.x-10)+'" y="'+(n.y-10)+'" width="20" height="20" pointer-events="none" aria-hidden="true"/>':"";
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
-  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
+  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+smallIcon+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
 function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
@@ -173,8 +187,9 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  for(const family of groups){
   svg+='<g class="fp-gene-constellation" data-gene-family="'+esc(family.id)+'" aria-hidden="true">'+
    '<rect class="fp-gene-constellation-border" x="'+(family.x+6)+'" y="'+(family.y+4)+'" width="'+(family.width-12)+'" height="'+(family.height-10)+'" rx="26"/>'+
-   '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+46)+'" y2="'+(family.y+46)+'"/>'+
-   '<text class="fp-gene-constellation-title" x="'+(family.x+26)+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
+   '<image class="fp-gene-constellation-icon" href="../assets/icons/codex/categoria-'+family.id+'.svg" x="'+(family.x+20)+'" y="'+(family.y+14)+'" width="34" height="34" pointer-events="none" aria-hidden="true"/>'+
+   '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+55)+'" y2="'+(family.y+55)+'"/>'+
+   '<text class="fp-gene-constellation-title" x="'+(family.x+65)+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
   const members=family.nodes;
   members.forEach((n,i)=>{
    if(i%3>0&&Math.floor(i/3)===Math.floor((i-1)/3)){
