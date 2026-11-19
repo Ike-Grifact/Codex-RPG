@@ -1504,3 +1504,7 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-item-compact .fp-item-summary strong{font-size:11px}
  .fp-shop-compact .fp-shop-expand{padding:10px;gap:6px}
 }
+
+.fp-owned-gear-action{width:100%;color:var(--fp-text);font:inherit;text-align:left;cursor:pointer}
+.fp-owned-gear-action:hover,.fp-owned-gear-action:focus-visible{border-color:var(--fp-gold);box-shadow:0 0 0 2px rgba(215,188,136,.14)}
+.fp-owned-gear-action .fp-owned-roll{display:block;text-align:center;padding:8px 10px;background:var(--fp-raised);color:var(--fp-gold);border:1px solid var(--fp-gold);border-radius:7px;font-size:11px;font-weight:750}

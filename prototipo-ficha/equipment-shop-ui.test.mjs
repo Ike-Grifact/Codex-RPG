@@ -92,7 +92,7 @@ test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",(
  for(const txt of [
   'data-wizard-shop-type','data-wizard-shop-weight','data-trade-shop-type','data-trade-shop-weight',
   'data-inventory-type','data-inventory-weight','fp-shop-summary','fp-item-summary','fp-item-editor',
-  'fp-owned-roll','case "repertoire-roll":quickRollItem(id)'
+  'fp-owned-roll','fp-owned-gear-action','case "repertoire-roll":quickRollItem(id)'
  ])assert.ok(app.includes(txt),"Não encontrado: "+txt);
  for(const txt of ['id="trade-shop-type"','id="trade-shop-weight"','id="inventory-filterbar"'])
   assert.ok(html.includes(txt),"Faltando no HTML: "+txt);
