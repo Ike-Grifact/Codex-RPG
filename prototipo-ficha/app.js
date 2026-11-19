@@ -492,7 +492,7 @@ const SKILLS=[
  [
   "pericia-druidica",
   "Perícia Druídica",
-  "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+  "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
   1
  ],
  [
@@ -910,7 +910,7 @@ const CARD_REQUIREMENTS={
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
  "domar-criatura-pequena": "Influência 2 + Apresentação 1 + Inteligência 1",
- "pericia-druidica": "Criar Item de Foco e Magia + Perícia em Elemento Terra; sem Domar nem Influência",
+ "pericia-druidica": "Criar Item de Foco e Magia + Perícia em Elemento Terra",
  "transformacao-elemental": "Criar Item de Foco e Magia + ao menos uma Perícia Elemental",
  "criar-item-foco-magia": "Disciplina 1, Inteligência 1, Artesão 1",
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
@@ -960,7 +960,7 @@ const CARD_EFFECTS={
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
- "pericia-druidica": "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+ "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
@@ -1009,7 +1009,7 @@ const CARD_BRIEFS={
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
- "pericia-druidica": "1 XP; requer Criar Item de Foco e Magia e Perícia Terra. Sem Domar, Influência ou ficha animal. Pequena: 0 Coragem, eleva temporariamente 1 Atributo exceto Vigor, vantagem em Furtividade e recebe dano → reverte. Média: 1 Coragem, eleva 2 Atributos inclusive Vigor, vantagem em Atletismo e Pavor maior que Êxito → reverte. Grande: 1 Coragem, eleva 3 Atributos, combina até 3 Atributos distintos, qualquer Pavor mantido não anulado → reverte. Pequena/Média rolam até 2 Atributos; formas não combinam Conhecimento ou Prática nem recebem armadura. Ganho de Vida preenche ferimentos e excedente vira Vida temporária. Compra única libera as três formas. Não pode conjurar nas formas animais. Vida temporária só existe enquanto transformado; detalhes da Vida ferida permanecem PENDENTES.",
+ "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
@@ -1058,7 +1058,7 @@ const CARD_ACTIVATIONS={
  "domar-criatura-media":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-grande":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-pequena": "1 Coragem + teste de Influência + Apresentação",
- "pericia-druidica": "Compra única libera Pequena/Média/Grande; 0/1/1 Coragem. Nenhuma forma animal permite conjuração.",
+ "pericia-druidica": "Pequena: 0 Coragem; Média e Grande: 1 Coragem",
  "transformacao-elemental": "1 Coragem. Ambiente favorável: 3 turnos. Duração = E-P (>0); unidade, fontes, DE e amplificação pendentes.",
  "criar-item-foco-magia": "G1/G2 Psíquico: ativação-base gratuita",
  "escudo-arcano": "1 Coragem (+ custo por expansão)",
@@ -1162,6 +1162,52 @@ function renderWizardSkillCards(){
 
 const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Alto / Pesado",1],extremo:["Extremo",2]};
 const CATALOG=(window.CODEX_G1_CATALOG||[]).filter(x=>x.grade===1);
+// Pictogramas apenas visuais: não fornecem dados, habilidades nem novos requisitos.
+const CODEX_SKILL_ICONS=Object.freeze({
+ "armas-leves":"arma-adaga","armas-medias":"arma-espada","armas-pesadas":"arma-montante",
+ "armas-longo-alcance":"arma-arco","maestria-arremesso-armas":"arma-arremesso",
+ "armas-fogo":"arma-pistola","pugilismo":"arma-punhos","manejo-perfeito":"arma-espada",
+ "maestria-manejo-duplo":"arma-espada","disciplina-avancada":"arma-espada",
+ "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
+ "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
+ "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
+ "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar",
+ "terra":"elemento-terra","sagrado":"elemento-sagrado","sangue":"elemento-sangue",
+ "trevas":"elemento-trevas","veneno":"elemento-veneno"
+});
+function codexItemIconId(item){
+ const name=String(item?.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const type=item?.kind||item?.type||"";
+ if(type==="shield"||type==="escudo")return "armadura-escudo";
+ if(type==="armor"||type==="armadura"){
+  if(/muito leve|roupas simples/.test(name)||item.weight==="muito_leve")return "armadura-muito-leve";
+  if(/pesada|pesado/.test(name)||item.weight==="alto")return "armadura-pesada";
+  if(/media|medio/.test(name)||item.weight==="medio")return "armadura-media";
+  return "armadura-leve";
+ }
+ if(type==="focus"||type==="foco")return "magia-foco";
+ if(type==="weapon"||type==="firearm"||type==="arma"){
+  if(/punho|luva|soqueira|manopla/.test(name))return "arma-punhos";
+  if(/arco/.test(name))return "arma-arco";
+  if(/besta/.test(name))return "arma-besta";
+  if(/revolver|pistola|mosquete|rifle|metralhadora|escopeta/.test(name))return "arma-pistola";
+  if(/lanca|azagaia|naginata|cajado|bastao/.test(name))return "arma-lanca";
+  if(/machado|machadinha/.test(name))return "arma-machado";
+  if(/montante/.test(name))return "arma-montante";
+  if(/adaga|faca|punhal|kunai|shuriken/.test(name))return "arma-adaga";
+  if(/espada|katana/.test(name))return "arma-espada";
+  if(/arremesso|dardo|chicote/.test(name))return "arma-arremesso";
+  return item.die>=12?"arma-montante":item.die>=10?"arma-espada":"arma-adaga";
+ }
+ return null;
+}
+function codexIcon(icon,cls="fp-codex-icon"){
+ if(!icon||!/^[a-z0-9-]+$/.test(icon))return "";
+ return '<img class="'+cls+'" src="../assets/icons/codex/'+icon+'.svg" alt="" aria-hidden="true">';
+}
+const codexSkillIcon=(id,cls)=>codexIcon(CODEX_SKILL_ICONS[id],cls);
+const codexItemIcon=(item,cls)=>codexIcon(codexItemIconId(item),cls);
+
 const RESOURCES=[["ervas","Ervas"],["espolios","Espólios"],["couro","Couro"],["comida","Comida"],["minerios","Minérios"]];
 const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT não é moeda física.
 // SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
