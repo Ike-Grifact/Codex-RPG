@@ -1550,3 +1550,11 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load{background-size:18px 18px;padding-left:24px}
  .fp-vital-main strong{font-size:19px}
 }
+
+/* Navegação bidirecional entre compositor e fontes quando ficam empilhados. */
+.fp-roll-jump{display:none}
+@media(max-width:1120px){
+ .fp-roll-jump{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin:0 0 12px;padding:8px 12px;border:1px solid var(--fp-stroke);border-radius:8px;color:var(--fp-gold);background:var(--fp-deep);font-size:11px;font-weight:700;text-decoration:none}
+ .fp-roll-jump:hover,.fp-roll-jump:focus-visible{border-color:var(--fp-gold)}
+ #source-grid,#composer-panel{scroll-margin-top:15px}
+}
