@@ -12,7 +12,9 @@
 | Bastão Pesado | Pesado / d12 | Contundente | **7** | — |
 | Martelo de Guerra | **Médio / d10** | **Perfurante, Contundente** | **6** | Substitui Pesado/d12/7 VT |
 | Lança de Arremesso (**Azagaia**) | Médio / d10 | **Cravar, Perfurante** | **6** | Alcance cadastrado 8 m; dois nomes, uma arma |
-| Luvas | Leve / d6 | Contundente, Muito Leve | PENDENTE | Já existia no site; não duplicar |
+| Cajado Leve | Leve / d6 | Contundente, Enganchar | **4 VT** | Mesma proporção de arma leve com duas características |
+| Bastão Leve | Leve / d6 | Contundente | **2 VT** | Uma característica |
+| Luvas | Leve / d6 | Contundente, Muito Leve | **2 VT** | Muito Leve é tag de peso; Contundente, o efeito marcial principal |
 
 **DEFINIDO:** não revisar agora armas de fogo e equipamentos G2 ou superior.
 
@@ -71,25 +73,51 @@ Não confundir a **perda de Integridade pelo ataque** com o **efeito de arma cra
 
 A referência de carga `0.125` equivale à categoria Leve já utilizada pela ficha; **não está em kg**. O impacto da bandoleira na capacidade de saque ainda é PENDENTE.
 
-## 5. Instrumentos musicais [DEFINIDO preço, PENDENTE tipo/carga]
+## 5. Instrumentos musicais por tamanho [DEFINIDO]
 
-- **Instrumento Musical (tipo à escolha): 10 VT por instrumento.**
-- Pode ser alaúde, flauta, lira, tambor, viola etc. Estes nomes são **exemplos narrativos**, não novos custos nem efeitos de Apresentação.
-- **PENDENTE:** carga específica de cada instrumento, durabilidade, tipo de item e eventuais efeitos; enquanto isso fica listado, mas **a compra automática na ficha é bloqueada por falta de categoria física**.
+| Porte | Preço | Categoria física | Exemplos narrativos |
+|---|---:|---|---|
+| Leve | **5 VT** | Leve (0,125 Alto) | Flauta, ocarina, apito |
+| Médio | **10 VT** | Médio (0,5 Alto) | Alaúde, viola |
+| Grande | **15 VT** | Pesado (1 Alto) | Harpa, tambor grande |
 
-## 6. Kits e equipamentos de aventureiro [PROPOSTO catálogo; preços PENDENTES]
+O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automático de Apresentação.
 
-**Kits listados:** Alquimia, Couraria, Escrita, Medicina, Engenharia, Ferraria, Carpintaria, Costura, Herbalismo, Cartografia, Escalada, Arrombamento, Caça, Acampamento e Cozinha.
+## 6. Ferramentas, kits e equipamentos de exploração [DEFINIDO princípio / PROPOSTO preços detalhados]
 
-**Outros itens listados:** Mochila, Bolsa de Cintura, Corda, Gancho de Escalada, Tocha, Lampião, Óleo para Lampião, Pederneira, Cantil, Ração de Viagem, Saco de Dormir, Tenda, Cobertor, Frasco Vazio, Bolsa de Componentes, Papel/Pergaminho e Tinta/Pena.
+**DEFINIDO:** ferramentas comuns são em geral **Leves**; todos os **15 kits de profissão básicos** foram tratados como **Leves (0,125 Alto)**. A categoria de um instrumento musical varia com o tamanho; uma **Tenda, Saco de Dormir ou kit volumoso** pode ser Médio por volume. Ferramentas classificáveis como **armas** (foice, picareta, machado de combate etc.) **não são gratuitas dentro do kit**, e só podem entrar com custo proporcional à arma equivalente. Nenhum kit concede dados, bônus de combate, foco elemental ou habilidade automaticamente.
 
-**PROPOSTO:** a presença de um kit oferece ferramentas narrativamente pertinentes, **sem bônus de rolagem automático**. **PENDENTE:** custo em VT, categoria de carga e quantidade/duração de cada item. O catálogo mostra os nomes como **não compráveis** até autorização de preço/categoria; não atribuir valor para preencher lacuna.
+**PROPOSTO — preços delegados para balanceamento:** 5 VT para os kits básicos de Couraria, Escrita, Ferraria (manutenção portátil), Carpintaria, Costura, Herbalismo, Cartografia, Escalada, Arrombamento, Caça, Acampamento e Cozinha. **7 VT** para Alquimia, Medicina e Engenharia, pela variedade de materiais. **Kit de Explorador 9 VT, categoria Médio** por reunir seis ferramentas e consumíveis, embora cada ferramenta individual seja Leve. Todos os itens são compráveis no protótipo como referência de playtest.
+
+**Kit de Explorador (9 VT):** Corda de 10 m (**2 VT**) + Pederneira (**1**) + Lampião (**3**) + Óleo para Lampião (**1**) + Papel/Pergaminho (**1**) + Tinta e Pena (**1**) = **9 VT**. A compra do kit **já inclui** os componentes; não contabilizar os mesmos itens duas vezes no patrimônio nem na carga. A decomposição e consumo permanecem manuais.
+
+| Item avulso | Preço proposto | Carga |
+|---|---:|---|
+| Mochila | 3 VT | Leve |
+| Bolsa de Cintura | 1 VT | Leve |
+| Corda (10 m) | 2 VT | Leve |
+| Gancho de Escalada | 2 VT | Leve |
+| Tocha (1) | 1 VT | Leve |
+| Lampião | 3 VT | Leve |
+| Óleo para Lampião (1 carga) | 1 VT | Leve |
+| Pederneira | 1 VT | Leve |
+| Cantil | 2 VT | Leve |
+| Ração de Viagem (1 dia) | 1 VT | Leve |
+| Saco de Dormir | 3 VT | Médio |
+| Tenda | 6 VT | Médio |
+| Cobertor | 2 VT | Leve |
+| Frasco Vazio | 1 VT | Leve |
+| Bolsa de Componentes | 2 VT | Leve |
+| Papel ou Pergaminho | 1 VT | Leve |
+| Tinta e Pena | 1 VT | Leve |
+
+**PROPOSTO:** os valores pormenorizados de kits e itens de aventureiro foram construídos conforme a autorização de estabelecer preços proporcionais. São hipóteses de playtest sujeitas a ajuste, não custos finais homologados individualmente.
 
 ## 7. Integração e validação
 
-- Catálogo do **site e Foundry sincronizados em 87 itens** pela branch de revisão; 43 itens anteriores + 44 novos.
+- Catálogo do **site e Foundry sincronizados em 90 itens** pela branch de revisão; 43 itens anteriores + 44 novos.
 - Correções do criador: categoria de loja para Munições, Aljavas/Estojos, Instrumentos, Kits e Aventureiro; armazenamento manual da quantidade de munição; confirmação explícita de dano de Cravar no escudo.
-- Ferramentas, instrumentos e kits sem categoria física/VT não podem ser comprados com valores fictícios.
+- Ferramentas e kits já têm categoria física Leve e preços proporcionais de playtest; instrumentos têm 5/10/15 VT conforme tamanho. Katana/Naginata e focos sem preço numérico continuam sem compra automática.
 - **PENDENTE DE VALIDAR:** compatibilidade visual e schema do Foundry para novos `kind` não combatentes; consumo automático de munição, capacidade efetiva das bolsas, múltiplas armas presas e resolução ao zerar Integridade do escudo.
 - **Não alterar XP, preços de pedras raras (3B), Maestrias ou níveis G2+** nesta revisão.
 
@@ -98,8 +126,8 @@ A referência de carga `0.125` equivale à categoria Leve já utilizada pela fic
 | Tema | Informação faltante |
 |---|---|
 | Katana e Naginata | Categoria física Leve/Média/Pesada, dado e VT |
-| Luvas e Bastão/Cajado Leves | Preços VT ainda não definidos |
+| Luvas e Bastão/Cajado Leves | **Resolvido: 2, 2 e 4 VT**, respectivamente |
 | Cetros | Referência exata de arma contundente em cada porte (Bastão ou Cajado) |
-| Instrumentos musicais | Peso/carga: categoria Leve, Média ou classificação por modelo |
-| Kits e exploração | VT e carga por item; confirmar quais dos modelos propostos entram na lista final |
+| Instrumentos musicais | **Resolvido: leve/médio/grande; 5/10/15 VT** |
+| Kits e exploração | **PROPOSTO:** conferir 5/7 VT básicos, 9 VT Explorador e avulsos proporcionais após playtest |
 | Cravar no escudo | Efeito operacional quando Integridade atinge 0 |

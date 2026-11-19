@@ -41,7 +41,7 @@ test("v0.65: armas de disparo, itens defensivos e preços pendentes não são al
  for(const [name,price] of [["Arco Curto",4],["Arco Longo",6],["Besta de uma mão",5],["Besta de duas mãos",6],["Besta Pesada",9],["Zarabatana",3],["Escudo Médio",5],["Armadura Média",8]]){
   assert.equal(byName(name).priceVT,price,name);
  }
- for(const name of ["Bastão Leve","Cajado Leve","Luvas","Cetro Médio G1","Katana","Naginata"]){
+ for(const name of ["Cetro Médio G1","Katana","Naginata"]){
   assert.equal(byName(name).priceVT,null,name+" continua pendente");
  }
  assert.deepEqual(byName("Espada Longa").properties,["Perfurante","Cortante"]);
@@ -75,8 +75,8 @@ test("Munições, porta-munições e instrumentos com os preços aprovados",()=>
   const item=byName(name);assert.equal(item.priceVT,5);assert.equal(item.storageCapacity,20);
  }
  assert.equal(byName("Bandoleira").priceVT,5);
- assert.equal(byName("Instrumento Musical (à escolha)").priceVT,10);
- assert.equal(byName("Instrumento Musical (à escolha)").category,"pendente");
+ assert.equal(byName("Instrumento Musical Médio (à escolha)").priceVT,10);
+ assert.equal(byName("Instrumento Musical Médio (à escolha)").category,"medio");
 });
 test("Focos com preço em função de B, sem conversão numérica arbitrária",()=>{
  assert.equal(byName("Varinha G1").priceFormula,"B");
@@ -89,11 +89,36 @@ test("Focos com preço em função de B, sem conversão numérica arbitrária",(
  }
 });
 test("Itens com categoria ou preço pendente não são armas ativadas automaticamente",()=>{
- for(const name of ["Katana","Naginata","Kit de Alquimia","Kit de Couraria","Kit de Escrita"]){
+ for(const name of ["Katana","Naginata"]){
   const x=byName(name);
   assert.equal(x.priceVT,null);assert.equal(x.category,"pendente");
  }
  assert.deepEqual(byName("Katana").properties,["Cortante","Perfurante"]);
  assert.deepEqual(byName("Naginata").properties,["Longa","Cortante"]);
  assert.equal(byName("Naginata").range,2);
+});
+
+test("Novos preços leves e instrumentos por porte aprovados",()=>{
+ for(const [name,vt] of [["Cajado Leve",4],["Bastão Leve",2],["Luvas",2]])assert.equal(byName(name).priceVT,vt,name);
+ for(const [name,vt,category,weight] of [["Instrumento Musical Leve (à escolha)",5,"leve",0.125],["Instrumento Musical Médio (à escolha)",10,"medio",0.5],["Instrumento Musical Grande (à escolha)",15,"pesado",1]]){
+  const v=byName(name);assert.equal(v.priceVT,vt);assert.equal(v.category,category);assert.equal(v.weight,weight);
+ }
+});
+test("Ferramentas e kits básicos são leves; kits não dão armas",()=>{
+ const kits=siteCatalog.filter(x=>x.kind==="kit");assert.equal(kits.length,16);
+ for(const kit of kits.filter(x=>x.name!=="Kit de Explorador")){
+  assert.equal(kit.category,"leve",kit.name);assert.equal(kit.weight,0.125,kit.name);
+  assert.equal(kit.priceVT,["Kit de Alquimia","Kit de Medicina","Kit de Engenharia"].includes(kit.name)?7:5,kit.name);
+  assert.equal(kit.die,0,kit.name);assert.equal(kit.properties.length,0,kit.name);
+ }
+ const explorer=byName("Kit de Explorador");assert.equal(explorer.priceVT,9);assert.equal(explorer.category,"medio");
+ assert.equal(explorer.includedItems.length,6);
+ assert.equal(siteCatalog.length,90);
+});
+test("Aventureiro: preços proporcionais, a maioria leve",()=>{
+ for(const name of ["Mochila","Bolsa de Cintura","Corda","Gancho de Escalada","Tocha","Lampião","Óleo para Lampião","Pederneira","Cantil","Ração de Viagem","Cobertor","Frasco Vazio","Bolsa de Componentes","Papel ou Pergaminho","Tinta e Pena"]){
+  const item=byName(name);assert.equal(item.category,"leve",name);assert.equal(item.weight,0.125,name);assert.ok(item.priceVT>0,name);
+ }
+ for(const name of ["Saco de Dormir","Tenda"]){const x=byName(name);assert.equal(x.category,"medio");assert.equal(x.weight,0.5)}
+ assert.equal(byName("Corda").priceVT,2);assert.equal(byName("Pederneira").priceVT,1);assert.equal(byName("Lampião").priceVT,3);
 });
