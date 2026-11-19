@@ -56,7 +56,7 @@ test("Armas e elementos agora mostram ícones na loja, inventário, Perícias e 
   "codexItemIcon(it)+'<strong>'+esc(it.name)",
   "codexSkillIcon(id)+'</span><span>'+esc(name)",
   "codexIcon(sid",
-  "fp-inventory-name'+codexItemIcon(it)
+  "fp-inventory-name">'+codexItemIcon(it)
  ]){
   if(snippet==="codexIcon(sid")continue;
   assert.ok(app.includes(snippet),"Ícone ausente da interface: "+snippet);
