@@ -86,7 +86,6 @@ export function composeActionPool(unit,selection={},stepSourceId="",equipment=nu
    Number((selection.baseGroup==="knowledge"?unit.knowledges:unit.practices)[selection.baseKey]||0)>=2:
    Number(unit.threatGrade)>=5;
   if(!able)errors.push("Terceira fonte exige Perícia Avançada da base ou habilidade de monstro G5+.");
-  if(!selection.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
   if(human&&extra.group===selection.baseGroup)errors.push("Não combine Prática com Prática, nem Conhecimento com Conhecimento.");
   if(!human&&extra.group!=="attribute")errors.push("Criaturas extraordinárias usam apenas Atributos.");
  }
