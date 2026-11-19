@@ -1214,13 +1214,14 @@ function effectiveWeaponRange(item,skills=allOwnedSkills()){
   return base+(eligible?8:0);
  }
  function normalizedCatalogItem(entry){
- const type=entry.kind==="armor"?"armadura":entry.kind==="shield"?"escudo":entry.kind==="focus"?"foco":"arma";
+ const type=entry.kind==="armor"?"armadura":entry.kind==="shield"?"escudo":entry.kind==="focus"?"foco":entry.kind==="kit"||entry.kind==="instrument"?"ferramenta":entry.kind==="weapon"||entry.kind==="firearm"?"arma":"outro";
  const weight=entry.category==="muito-leve"?"muito_leve":entry.category==="pesado"?"alto":entry.category==="medio"?"medio":"leve";
  return normalizeItem({name:entry.name,type,weight,category:entry.category,grade:entry.grade,qty:1,
   max:entry.integrity?.max||0,hp:entry.integrity?.value||0,equipped:false,
   die:entry.die||0,range:entry.range||0,priceVT:entry.priceVT||0,properties:entry.properties||[],
   element:entry.element||"",firearm:entry.kind==="firearm",catalogId:entry.name,
-  durability:entry.durability?.value||0,durabilityMax:entry.durability?.max||0});
+  durability:entry.durability?.value||0,durabilityMax:entry.durability?.max||0,
+  packSize:entry.packSize||0,ammoRemaining:entry.packSize||0,storageCapacity:entry.storageCapacity||0,description:entry.description||""});
 }
 
 const SITUATIONS={normal:["Normal",0,0],vantagem:["Vantagem (+1A)",0,1],desvantagem:["Desvantagem (−1A)",0,-1],absoluta:["Vantagem absoluta (+1E)",1,0],desv_absoluta:["Desvantagem absoluta (−1E)",-1,0],sorte:["Ação de Sorte (−2E)",-2,0]};
@@ -1607,7 +1608,9 @@ function normalizeItem(it={}){
   priceVT:clamp(Math.floor(it.priceVT||0),0,10000),
   properties:Array.isArray(it.properties)?it.properties.filter(x=>typeof x==="string").slice(0,6):[],
   firearm:!!it.firearm,element:String(it.element||"").slice(0,40),
-  durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999)}; // Campo legado preservado, não concede proteção na nova regra.
+  durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999),
+  packSize:clamp(Math.floor(it.packSize||0),0,99),ammoRemaining:clamp(Math.floor(it.ammoRemaining??it.packSize??0),0,99),
+  storageCapacity:clamp(Math.floor(it.storageCapacity||0),0,99),description:String(it.description||"").slice(0,330)}; // Lotes/consumo manuais.
 }
 function save(){
  try{
@@ -2695,11 +2698,11 @@ function wizardEquipment(){
  const sum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
  const changed=RESOURCES.some(([k])=>Number(tradeDraft[k]||0)!==Number(state.trade.resources[k]||0));
  const resources=RESOURCES.map(([k,name])=>'<label class="fp-wiz-vt-resource"><span>'+esc(name)+'</span><input type="number" min="0" max="'+STARTING_VT+'" data-wizard-vt-draft="'+k+'" value="'+tradeDraft[k]+'"'+(editable?'':' disabled')+'><small>Grau 1 · 1 VT por unidade (playtest)</small></label>').join("");
- const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"]];
+ const categories=[["all","Todos"],["weapon","Armas"],["firearm","Armas de fogo"],["armor","Armaduras"],["shield","Escudos"],["focus","Focos elementais"],["ammunition","Munições"],["container","Aljavas/Estojos"],["instrument","Instrumentos"],["kit","Kits"],["adventurer","Aventureiro"]];
  const tabs=categories.map(([k,name])=>'<button type="button" data-action="wizard-shop-category" data-category="'+k+'"'+(wizardShopCategory===k?' class="is-active" aria-pressed="true"':' aria-pressed="false"')+'>'+name+'</button>').join("");
  const items=CATALOG.filter(it=>wizardShopCategory==="all"||it.kind===wizardShopCategory)
- .map(it=>{const purchasable=it.kind!=="focus"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
-  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?"Fabricação por Artesão":"Preço pendente")+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
+ .map(it=>{const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.priceVT!=null&&Number(it.priceVT)>0,price=Number(it.priceVT),details=[it.kind==="focus"?"Foco elemental":null,it.die?"d"+it.die:"Integridade "+(it.integrity?.max??"—"),it.category||"",...(it.properties||[]).slice(0,2)].filter(Boolean);
+  return '<article class="fp-wiz-shop-item"><div><strong>'+esc(it.name)+'</strong><small>Grau '+it.grade+'</small></div><p>'+details.map(esc).join(" · ")+'</p><footer><b>'+(purchasable?price+' VT':it.kind==="focus"?(it.priceFormula?it.priceFormula+" VT · foco":"Fabricação por Artesão"):(it.priceVT!=null?it.priceVT+" VT · carga pendente":"Preço pendente"))+'</b>'+(purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar')+'</button>':'<span class="fp-wiz-muted">'+(it.kind==="focus"?"Foco de fabricação; não é compra direta":"Não disponível para compra")+'</span>')+'</footer></article>';}).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
  return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos '+CREATE_BUDGET.total+' XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
@@ -3381,13 +3384,13 @@ function renderInventory(){
    inventorySelect("embeddedWeapon",it.embeddedWeapon||"",
     [["","Nenhuma"],...(["alto","extremo"].includes(it.weight)?[]:[["medio","Arma Média"]]),["pesado","Arma Pesada"]],it.id)+
    '</label></div>'+
-   (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −2E em Levantar Escudo; '+
+   (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −1E por arma cravada em Levantar Escudo (registro de múltiplas armas pendente); '+
     'carga adicional de '+pad(WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1])+
     ' Alto enquanto o escudo permanecer carregado. <button type="button" class="fp-secondary" data-action="cravar-remove-prepare" data-id="'+esc(it.id)+'">Tentar retirar a arma (teste)</button>'+
     ' <small>O campo acima permite corrigir erros de cadastro; para retirar em jogo use o teste. Soltar escudo: retire o item da carga.</small></div>':"")
   );
   const armorFields=it.type!=="armadura"?"":(
-   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve:</strong> sem Integridade; +2 DE em todas as defesas.</div>':"")+
+   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 3 de Integridade e +2 DE em todas as defesas (valores corrigidos).</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
@@ -3395,7 +3398,7 @@ function renderInventory(){
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 0, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 3, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   return'<div class="fp-item"><input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item">'+
   inventorySelect("type",it.type,types,it.id)+
@@ -3406,13 +3409,16 @@ function renderInventory(){
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
   '<div class="fp-item-hint"><label>Grau <input type="number" data-item-field="grade" data-id="'+esc(it.id)+'" min="1" max="4" value="'+it.grade+'" style="width:40px"></label> · '+
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
-  '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+(it.type==="armadura"&&it.weight==="muito_leve"?"disabled":"")+'> </label>'+
+  '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
+  (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
+  (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
+  (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
   armorFields+shieldEmbedFields+'</div>';
  }).join(""):'<div class="fp-empty-list">Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.</div>';
 }
@@ -3439,7 +3445,7 @@ function renderTrade(){
   (canAllocate?'<button type="button" class="fp-secondary" data-action="trade-allocate"'+(draftSum!==STARTING_VT?" disabled":"")+'>Confirmar distribuição</button>':"")+'</div>';
  $("trade-wallet").innerHTML=RESOURCES.map(([key,name])=>
   '<span class="fp-trade-token">'+esc(name)+' <b>'+state.trade.resources[key]+'</b></span>').join("");
- const catalog=CATALOG.filter(x=>x.kind!=="focus"&&Number(x.priceVT)>0);
+ const catalog=CATALOG.filter(x=>x.kind!=="focus"&&x.category!=="pendente"&&Number(x.priceVT)>0);
  const currentShop=$("shop-items").value,currentPreferred=$("shop-preferred").value;
  $("shop-items").innerHTML='<option value="">Escolha um equipamento</option>'+catalog.map(x=>
   '<option value="'+esc(x.name)+'">'+esc(x.name)+' · '+x.priceVT+' VT · '+(x.die?"d"+x.die:x.integrity?.max+" Integridade")+'</option>').join("");
@@ -3489,6 +3495,7 @@ function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-p
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
+ if(item.category==="pendente"){toast("Categoria/carga ainda não definidas; compra indisponível.");return;}
  if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
@@ -3934,9 +3941,10 @@ function onChange(event){
     it.embeddedWeapon="";toast("Escudo pesado só aceita Cravar de arma Pesada; marca de arma Média retirada.");
    }
   }
-  else if(k==="qty")it.qty=clamp(Math.floor(el.value),1,99);
+  else if(k==="qty")it.qty=it.packSize>0?1:clamp(Math.floor(el.value),1,99);
+  else if(k==="ammoRemaining"&&it.packSize>0){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);}
-  else if(k==="max"){it.max=it.type==="armadura"&&it.weight==="muito_leve"?0:clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
+  else if(k==="max"){it.max=clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
   else if(k==="specificImmunity"){it.specificImmunity=String(el.value).slice(0,70);}
@@ -3947,7 +3955,7 @@ function onChange(event){
     it.embeddedWeapon="";
    }else it.embeddedWeapon=w;
   }
-  if(it.type==="armadura"&&it.weight==="muito_leve"){it.max=0;it.hp=0;}
+  // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
