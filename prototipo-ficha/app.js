@@ -2271,7 +2271,7 @@ function renderMagicActions(){
  $("owned-elements").innerHTML=elements.map(([id,name])=>
   '<button type="button" class="fp-magic-element'+(chosen===id?" selected":"")+
   '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id?'true':'false')+'">'+
-  esc(name)+'</button>').join("");
+  '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span></button>').join("");
  const focusOptions=[["","Sem foco (ambiente a confirmar)"],...magicCompatibleFoci(chosen)
   .map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+
    (combatItem(item,"conjuracao").length?" · dado habilitado":"")])];
