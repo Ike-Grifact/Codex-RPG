@@ -112,11 +112,12 @@ export function passiveAnticipar(system,selection){
   (sources.some(isDiscipline)?Number(skills.includes('improviso'))+Number(skills.includes('mestre')):0);
 }
 
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
+export function buildPool(system,selection,{mode="normal",actionType="",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.second??selection?.attribute,c=selection?.complement;
  const pairError=sourcePairError(system,b,a);
  if(pairError)errors.push(pairError);
  const sources=[b,a,c].filter(Boolean);
+ if(actionType&&!attributesOnly(system)&&(!isDiscipline(b)||a?.group!=="attribute"))errors.push("Atacar e conjurar exigem Disciplina e um Atributo.");
  if(!attributesOnly(system)&&!sources.some(source=>source.group==='attribute'))errors.push('A pilha exige um Atributo.');
  if(c){
   const duplicate=[b,a].some(source=>source?.group===c.group&&source.key===c.key);
@@ -134,9 +135,8 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
  if(sources.some(isDiscipline)){
   const skills=allOwnedSkills(system);
   const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","maestria-arremesso-armas","manejo-duplo","maestria-manejo-duplo"];
-  if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
+  if(mode==="armas"&&!(actionType==="attack"&&!equipmentDie)&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
   if(mode==="conjuracao"&&!['criar-item-foco-magia','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].some(id=>skills.includes(id)))errors.push("Conjuração exige habilitação Psíquica ou elemental.");
-  if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
  }
  if(!errors.length){
   const occurrences=new Map();
@@ -209,11 +209,12 @@ export function compareKeptOptions(rolled,options={},limit=5){
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,legacyD4Faces=false}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,legacyD4Faces=false,requireAttribute=false}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  const maxKeep=animal?2:keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
+ if(requireAttribute&&kept.length&&!kept.some(die=>die.group==="attribute"))errors.push("Mantenha ao menos um dado de Atributo.");
 
  const extraKept=Math.max(0,kept.length-(animal?2:keepLimit(monster?threatGrade:level,0,monster)));
   if(extraKept+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");

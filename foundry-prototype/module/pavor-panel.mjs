@@ -1,5 +1,5 @@
 import {openJointPlan} from "./joint-attack.mjs";
-import {narratorCap,monsterCap,maxCourage} from "./rules.mjs";
+import {narratorCap,monsterCap} from "./rules.mjs";
 
 export const NS = "codex-rpg-foundry";
 export const publicPavorDefault = 2;
@@ -12,7 +12,6 @@ export function publicPavorState(players, value) {
   const balance = Math.max(0, Math.min(cap, Math.trunc(Number(value)) || 0));
   return {players, cap, value: balance, room: cap - balance};
 }
-
 function readReserve() {
   const configured = game.settings.get(NS, "publicPavorPlayers");
   const automatic = configured === automaticPlayers;
@@ -200,35 +199,4 @@ export class CodexPavorHUD extends foundry.applications.api.HandlebarsApplicatio
       else ui.notifications.info(result.prepared+" ameaça(s) com reserva local inicial completa.");
     }catch(e){ui.notifications.error("Codex: "+e.message);}
   }
-}
-
-export async function transferCombatPavor(message){
- if(!game.user.isActiveGM||!game.combat?.started)return;
- const obj=message.getFlag(NS,"transfer");
- if(!obj||!obj.actorId||!Number.isInteger(obj.p)||obj.p<0||obj.p>20)return;
- const owner=game.actors.get(obj.actorId),user=game.users.get(message.user?.id);
- if(!owner||!user||!(user.isGM||owner.testUserPermission(user,"OWNER")))return;
- if(obj.targetUuid){
-  const target=await fromUuid(obj.targetUuid);
-  if(target&&["character","humanoid","animal","creature","monsterHumanoid"].includes(target.type)){
-   const add=Math.max(0,obj.p);
-   if(obj.targetType==="character")
-    await target.update({"system.courage":Math.min(Math.max(target.system.courage,maxCourage(target.system.level)),Number(target.system.courage||0)+add)});
-   else {
-    const cap=monsterCap(target.system.threatGrade);
-    await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});
-    // Excedente de Pavor do ataque permanece para resolução manual do Narrador.
-   }
-  }
- }
- if(obj.monsterCriticalPavor&&["creature","humanoid","monsterHumanoid"].includes(owner.type)){
-  const cap=monsterCap(owner.system.threatGrade);
-  const available=Math.max(0,cap-Number(owner.system.pavorLocal||0));
-  const saved=Math.min(available,obj.monsterCriticalPavor);
-  if(saved)await owner.update({"system.pavorLocal":Number(owner.system.pavorLocal||0)+saved});
-  const overflow=obj.monsterCriticalPavor-saved;
-  if(overflow){
-   await queueWrite(() => changeReserve(overflow));
-  }
- }
 }

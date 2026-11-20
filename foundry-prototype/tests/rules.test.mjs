@@ -292,7 +292,7 @@ test("Disciplina Avançada permite um complemento e Manejo Duplo permite duas Di
  const attribute={group:"attribute",key:"vigor"};
  const three={base:discipline,second:attribute,complement:knowledge};
  assert.equal(buildPool(pc,three,{mode:"armas",contextApproved:true}).ok,true);
- assert.equal(buildPool(pc,three,{mode:"normal",contextApproved:true}).ok,false);
+ assert.equal(buildPool(pc,three,{mode:"normal",contextApproved:true}).ok,true,"Disciplina também pode participar de um teste comum");
  const duplicate={base:attribute,second:discipline,complement:discipline};
  assert.match(buildPool(pc,{base:discipline,second:{group:"knowledge",key:"alquimia"}},{mode:"armas"}).errors.join(" "),/Disciplina deve ser combinada com um Atributo/);
  assert.equal(buildPool(pc,{base:knowledge,second:discipline},{mode:"armas"}).ok,false);

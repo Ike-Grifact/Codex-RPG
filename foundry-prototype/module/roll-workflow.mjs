@@ -9,6 +9,7 @@ import {animalTransformationPlan} from './transformations.mjs';
 import {maxCourage,lifeMax} from './rules.mjs';
 import {advancementPlan, creationMissing, gradeDetails, originChangePlan, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
 import {racialChoicesComplete,usesRacialRules,hasSkill} from "./races.mjs";
+import {applyAttackImpact,impactSummary} from "./attack-impact.mjs";
 
 const query = `${NS}.roll`;
 const xpHistory = "xpHistory";
@@ -16,6 +17,7 @@ const refundHistory = "skillRefundHistory";
 const approvalTimeout = 45000;
 const flag = `flags.${NS}.pendingRoll`;
 const queues = new Map();
+let publishing = Promise.resolve();
 const options = ["cancelP", "convertPairs", "characteristic", "secondCharacteristic", "activationPayment", "passAllyId"];
 
 export function enqueueRoll(actor, user, request, dependencies = {}) {
@@ -40,10 +42,19 @@ async function confirmAdvancement({title,content}){
 
 const buildOf = actor => actor.system.toObject?.() ?? actor.system;
 
-async function mutateRoll(actor, user, request, {game = globalThis.game, chat = globalThis.ChatMessage, confirm = confirmAdvancement} = {}) {
+async function mutateRoll(actor, user, request, {game = globalThis.game, chat = globalThis.ChatMessage, resolveUuid = globalThis.fromUuid, confirm = confirmAdvancement} = {}) {
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if(request.action==="attackShortcut"){
+    if(pending)throw Error("Finalize a rolagem antes de editar atalhos.");
+    const item=actor.items.get(request.itemId);
+    if(item?.type!=="equipment"||!["weapon","firearm"].includes(item.system.kind))throw Error("Escolha uma arma no inventário.");
+    const ids=(actor.getFlag(NS,"attackShortcuts")??[]).filter(id=>actor.items.has(id)&&id!==item.id);
+    if(request.enabled===true)ids.push(item.id);
+    await actor.setFlag(NS,"attackShortcuts",ids);
+    return;
+  }
   if(request.action==="origin"){
     if(pending)throw Error("Finalize a rolagem antes de mudar a origem.");
     const creating=Boolean(actor.getFlag(NS,"creationPending"));
@@ -195,11 +206,6 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if (pending) return {started: false};
     if(actor.system.transformation?.kind==='animal'&&request.options?.mode==='conjuracao')throw Error('A forma animal não pode conjurar.');
     if (actor.getFlag(NS, "creationPending")) throw Error("Conclua a criação do Aprendiz antes de rolar.");
-    if(request.options?.mode==='conjuracao'&&!request.options.equipmentId&&!user.isGM){
-      const approved=await confirm({title:'Confirmar fonte elemental',content:'<p>'+escapeHTML(actor.name)+' · '+escapeHTML(request.options.element??'')+'</p><p>'+escapeHTML(request.options.sourceContext??'')+'</p><p>Confirma a fonte disponível e o tempo de preparação pelas regras vigentes?</p>'});
-      if(!approved)throw Error('Fonte ou preparação não confirmada pelo Narrador.');
-      verifyAuthority(game);
-    }
     const { pending: draft, roll, changes, privateDE } = await preparePendingRoll(actor, request, user, game);
     verifyAuthority(game);
     if(draft.options.privateDefense)draft.options.sealedDE=await sealDefense(game,draft,privateDE);
@@ -207,7 +213,12 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     return {started: true, roll: roll.toJSON()};
   }
   if (!pending || pending.id !== request.id) return;
-  if (request.action === "finish") return publish(actor, user, pending, game, chat);
+  if (request.action === "finish") {
+    // Acertos simultâneos podem atingir o mesmo alvo ou o outro atacante.
+    const next=publishing.then(()=>publish(actor,user,pending,game,chat,resolveUuid));
+    publishing=next.catch(()=>{});
+    return next;
+  }
   if (request.action === "preview" && pending.options.privateDefense && !pending.publication) {
     const de = await readDefense(game, pending);
     return {
@@ -246,15 +257,16 @@ function verifyAuthority(game) {
   if (game.user && !game.user.isActiveGM) throw Error("O Narrador ativo mudou. Tente novamente.");
 }
 
-async function publish(actor, user, pending, game, chat) {
+async function publish(actor, user, pending, game, chat, resolveUuid) {
+  verifyAuthority(game);
   if (!pending.publication) {
     if (pending.version < 3 && game.messages.some(message => message.getFlag(NS, "rollId") === pending.id)) {
       await actor.unsetFlag(NS, "pendingRoll");
       return;
     }
-    const {changes, content, result, adjudication} = resolvePendingRoll(actor, pending, game, await readDefense(game, pending));
+    const {changes, content, result, adjudication, impact} = resolvePendingRoll(actor, pending, game, await readDefense(game, pending));
     const id = pending.id.replaceAll("-", "").slice(0, 16);
-    const publication = {id, author: user.id, content, result, adjudication};
+    const publication = {id, author: user.id, content, result, adjudication, impact};
     pending = {...pending, publication};
     // Persist costs and the recoverable publication in a single Actor update.
     await actor.update({...changes, [flag]: pending});
@@ -263,12 +275,15 @@ async function publish(actor, user, pending, game, chat) {
   const publication = pending.publication;
   const existing = () => game.messages.get(publication.id);
   const matches = () => existing()?.getFlag(NS, "rollId") === pending.id;
+  if(existing()&&!matches())throw Error("O identificador de publicação já está em uso.");
+  const receipt=publication.impact?await applyAttackImpact(publication.impact,pending.id,game,resolveUuid):null;
+  const impactText=receipt?impactSummary(receipt,pending.options.privateDefense):"";
+  verifyAuthority(game);
   if (!matches()) {
-    if (existing()) throw Error("O identificador de publicação já está em uso.");
     try {
       await chat.create({
         _id: publication.id, author: publication.author, speaker: chat.getSpeaker({actor}),
-        content: publication.content,
+        content: impactText?publication.content.replace(/<\/div>\s*$/,`<p class="codex-chat-impact">${escapeHTML(impactText)}</p></div>`):publication.content,
         flags: {[NS]: {
           rollId: pending.id, result: publication.result, dice: pending.dice, kept: pending.selected,
           adjudication: publication.adjudication,
@@ -299,7 +314,7 @@ export async function requestRoll(actor, request) {
   if (!game.user.hasPermission("QUERY_USER")) {
     throw Error("O Narrador precisa habilitar Consultar Usuário nas permissões do Foundry para sincronizar rolagens.");
   }
-  const needsApproval=request.action==='rest'||request.action==='start'&&request.options?.mode==='conjuracao'&&!request.options.equipmentId||request.action==="adjustXP"&&request.delta<0||
+  const needsApproval=request.action==='rest'||request.action==="adjustXP"&&request.delta<0||
     request.action==="advance"&&(request.advance?.delta===-1||request.advance?.remove===true);
   return gm.query(query,{...request,actorUuid:actor.uuid},needsApproval?{timeout:approvalTimeout+15000}:undefined);
 }

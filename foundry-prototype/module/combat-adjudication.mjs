@@ -68,7 +68,7 @@ export function registerCombatAdjudication() {
       });
       content.append(button);
     };
-    if (data.targetUuid && data.p > 0) add(`Aplicar ${data.p}P residual ao alvo`, applyResidual);
+    if (data.targetUuid && data.p > 0 && !data.autoTarget && !data.isTest) add(`Aplicar ${data.p}P residual ao alvo`, applyResidual);
     if (data.allyId) add("Validar passagem de oportunidade", approvePass);
   });
 }

@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.18.** Selecione duas fontes para abrir a janela de rolagem no PC. Arraste a barra **Rolagem** para mover a janela. Com a barra em foco, use as setas. Em telas pequenas e com toque, a preparação permanece na ficha. Consulte o [SRD ativo v1.0](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/srd-playtest-nivel-1-v1.0.md).
+> **Playtest 0.2.1.19.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -75,7 +75,7 @@ O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma
 ## Rolagem
 
 1. Em Jogar, clique nos cartões de um Atributo e uma Prática ou Conhecimento, em qualquer ordem. Perícias Avançadas habilitam o complemento pertinente. Criaturas não humanoides usam Atributos distintos. Editar ficha permite evolução e equipamentos, com a seleção de fontes oculta.
-2. Escolha o modo de Disciplina, as condições de **Vantagem Absoluta (+1E), Vantagem (+1A), Normal, Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Ação de Sorte (−2E)**, equipamento equipado e custos opcionais.
+2. Use **Atacar** para preparar Disciplina + Atributo, com mãos vazias ou uma arma equipada e habilitada. Use **Conjurar** para escolher um elemento adquirido ou um foco habilitado. As criaturas que só têm Atributos atacam com duas fontes naturais. Altere as aptidões na própria preparação. No Inventário, **Criar atalho de ataque** fixa uma arma na barra da ficha. A mesa declara a presença do elemento, a preparação e a pertinência do complemento durante o jogo.
 3. Use a ferramenta **Selecionar alvos** do Foundry e clique em **um token** no mapa. Passe o cursor sobre o token e pressione **T** para usar o atalho. O Codex aplica a DE defensiva da ficha e mantém a DE reservada para jogadores sem permissão de consulta. Use **DE manual** para testes sem alvo.
 4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
 5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
@@ -83,7 +83,7 @@ O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma
 
 **Comparativo das faces já roladas:** o bloco "Comparar escolhas" apresenta até quatro alternativas de dados mantidos, com DE, Êxito, Antecipar, Pavor e dano. A comparação não rerrola dados, não aplica a alternativa nem gasta recursos automaticamente.
 
-**Alcance e movimento no mapa.** O Repertório mostra o alcance cadastrado de armas e a preparação exibe seu alcance efetivo quando habilitadas. Compare com a distância usando a régua da cena. A validação de alcance entre tokens, incluindo conjuração, e os limites de deslocamento por turno ficam a cargo da mesa. Arrastar o token e medir o trajeto são recursos nativos do Foundry.
+**Alcance e movimento no mapa.** O Repertório mostra o alcance de armas. A conferência de alcance do ataque continua na mesa. O deslocamento padrão é 8 m + Agilidade + 1 m por 3 Graus completos de Atletismo. Em cenas configuradas em metros ou pés, a régua de arrasto compara a distância do trajeto com esse orçamento e destaca o excesso. A mesa decide sobre deslocamentos especiais.
 
 **Carga no Foundry:** a ficha soma os pesos e quantidades dos equipamentos, informa a capacidade restante e o número alternativo de Leves, Médios e Pesados que cabem. Adicionar um item G1 acima da capacidade avisa sobre sobrecarga, sem inventar penalidades. As compras VT do site não são importadas automaticamente.
 
@@ -93,9 +93,7 @@ As seis classificações de situação não são classes de ataque separadas. Qu
 
 A HUD no topo da mesa exibe a quantidade de jogadores e o saldo de Pavor público sobre o teto, com uma runa por espaço da reserva. Use os botões −/+ ao lado de cada valor para ajustá-lo. Clique na contagem manual de jogadores para voltar à contagem do cadastro. Durante o combate, a HUD mostra quanto Pavor foi adicionado à reserva pública na rodada em exibição, já respeitando o teto. O mundo novo começa com 2P e retoma o saldo salvo nas próximas sessões.
 
-Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pavor residual** ao Actor alvo: monstros e humanoides da oposição recebem Pavor local até o teto de Grau, Personagens recebem Coragem, 1 por Pavor, até 10/11/12/13 nos níveis 1/5/10/20. A operação é realizada no cliente do Narrador a partir da mensagem de chat. A decisão de alocação do excedente permanece manual. Recompensas críticas da oposição seguem a ordem local primeiro, público depois, sujeitas ao teto.
-
-**Importante:** o mecanismo de transferência por chat ainda requer validação multijogador, especialmente de permissões, casos simultâneos e adversários pertencentes a jogadores. Não utilize como contabilidade oficial sem conferir a reserva na ficha.
+Ao finalizar um ataque ou conjuração com um único alvo, o Narrador ativo sincroniza o **Pavor mantido e não anulado**. O alvo da oposição recebe Pavor local até o teto de Grau. O personagem alvo recebe Coragem até o teto de nível. O excedente fica para adjudicação. O recibo no alvo impede reaplicar os efeitos caso seja necessário retomar a publicação no chat.
 
 ## Itens e Perícias
 
@@ -107,7 +105,7 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 ## Limites da automação atual
 
-O dano à Vida e à Integridade do alvo e as condições especiais são resolvidos pelo Narrador a partir da intenção e do resultado registrados no chat. A criação tem XP e requisitos validados; etapas narrativas do criador web continuam supervisionadas. A Loja controla VT. Comércio, múltiplos alvos, sucessões de transformações e composições de dados animais ainda indefinidas permanecem sob adjudicação. A Druídica v1.0 custa 1 XP, exige Foco + Terra e habilita os três portes sem Domar. Os limites de cada automação e as sete aquisições ainda pendentes estão descritos na auditoria.
+Em **Atacar** e **Conjurar**, o dano básico de um acerto usa a Integridade da armadura equipada antes da Vida. A opção de mundo **Aplicar perda experimental de Vida** usa a escala publicada para playtest: 1–5 de dano restante tira 1 Vida, 6–8 tira 2 e 9 ou mais tira 3. O Livro atual mantém os limiares definitivos em aberto. Barreiras ativas podem ser resolvidas na mesa pela opção avançada de dano manual. Efeitos especiais, proteção elemental e golpes colossais sinalizados ficam para adjudicação, juntamente com casos de múltiplos alvos e transformações pendentes.
 
 ## Testes de regras
 

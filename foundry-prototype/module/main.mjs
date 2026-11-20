@@ -10,7 +10,8 @@ import {CodexCharacterSheet} from "./sheet.mjs";
 import {CodexEquipmentSheet} from "./item-sheet.mjs";
 import {registerCodexCreation} from "./creation-ui.mjs";
 import {registerCodexDice} from "./dice-so-nice.mjs";
-import {openPublicPavor,registerPublicPavor,transferCombatPavor} from "./pavor-panel.mjs";
+import {openPublicPavor,registerPublicPavor} from "./pavor-panel.mjs";
+import {registerCodexMovement} from "./movement.mjs";
 Hooks.once("diceSoNiceReady",registerCodexDice);
 registerCodexCreation();
 registerCombatAdjudication();
@@ -33,6 +34,12 @@ Hooks.once("init",()=>{
  registerPublicPavor();
  registerRollQueries();
  registerDefenseSettings();
+ registerCodexMovement();
+ game.settings.register("codex-rpg-foundry","experimentalLifeDamage",{
+  name:"Aplicar perda experimental de Vida",
+  hint:"Dano que chega à Vida: 1–5 tira 1, 6–8 tira 2, 9 ou mais tira 3. Golpes colossais e efeitos especiais ficam com a mesa.",
+  scope:"world",config:true,type:Boolean,default:true
+ });
 });
 Hooks.once("ready",()=>{
  if(game.user.isActiveGM)void migrateRules().catch(error=>ui.notifications.error('Codex: '+error.message));
@@ -52,14 +59,12 @@ Hooks.on('preCreateActor',(actor,data)=>{
   actor.updateSource({items:[...(data.items??[]),...startingResources()]});
  }
 });
-Hooks.on("createChatMessage",(message)=>{transferCombatPavor(message).catch(e=>console.error("Codex RPG: Pavor",e));});
-
 Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
  const life=foundry.utils.getProperty(changes,'system.life.value');
  if(game.users.get(userId)?.isGM&&_actor.system.transformation?.size==='pequena'&&typeof life==='number'&&life<_actor.system.life.value)foundry.utils.setProperty(changes,'system.transformation',{});
  if(game.users.get(userId)?.isGM)return;
  const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
- const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|lastElevation))(\.|$)/;
+ const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|lastElevation|impactReceipts|attackShortcuts))(\.|$)/;
  if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
    (options.recursive===false&&("system" in changes||"flags" in changes))){
   ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");

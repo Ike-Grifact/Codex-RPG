@@ -79,6 +79,7 @@
       {{/if}}
     </div>
     <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
+    <div class="codex-resource"><span>DESLOCAMENTO</span><strong>{{codex.movement}} m</strong><small>8 m + Agilidade + Atletismo ÷ 3 (graus completos)</small></div>
     <div class="codex-resource {{#if codex.overloaded}}is-overloaded{{/if}}">
      <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
      <small>Espaço restante: {{codex.loadFree}} Alto</small>
@@ -119,7 +120,16 @@
 
   </div>
 
-  {{#unless codex.editing}}<div class="codex-actions"><button type="button" data-action="showRoll" data-section="{{#if codex.hasPending}}pending{{else}}prep{{/if}}" {{#unless codex.hasPending}}{{#unless codex.preparing}}disabled{{/unless}}{{/unless}}>Ver rolagem</button></div>{{/unless}}
+  {{#unless codex.editing}}
+    <div class="codex-actions codex-action-bar">
+      {{#if codex.canAttack}}<button type="button" class="codex-primary" data-action="prepareAction" data-kind="attack">Atacar</button>{{/if}}
+      {{#if codex.canCast}}<button type="button" class="codex-primary" data-action="prepareAction" data-kind="spell">Conjurar</button>{{/if}}
+      {{#if codex.canAttack}}{{#each codex.equipment.shortcuts}}
+        <button type="button" data-action="prepareEquipment" data-id="{{id}}" {{#unless enabledDie}}disabled{{/unless}}>{{{icon}}} {{name}}</button>
+      {{/each}}{{/if}}
+      {{#if codex.hasPending}}<button type="button" data-action="showRoll">Ver rolagem</button>{{else}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/if}}
+    </div>
+  {{/unless}}
   <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
     <span class="legend-e"><b aria-hidden="true">ᛋ</b> Êxito</span>
     <span class="legend-a"><b aria-hidden="true">ᚨ</b> Antecipar</span>
@@ -203,35 +213,45 @@
     </div>
   {{#if codex.preparing}}
     <section class="codex-block codex-roll-prep" aria-label="Preparação da rolagem">
-      <div class="codex-block-title"><h2>Preparação da ação</h2><span>Sem executar nem gastar recursos</span></div>
+      <div class="codex-block-title"><h2>{{codex.prepare.actionLabel}}</h2></div>
       <div class="codex-compose">
-        <div><small>BASE · TIPO DE TESTE</small><strong>{{codex.selectedBase}}</strong></div>
-        <div><small>2ª FONTE</small><strong>{{codex.selectedSecond}}</strong></div>
-        <div><small>COMPLEMENTO</small><strong>{{#if codex.selectedComplement}}{{codex.selectedComplement}}{{else}}Opcional{{/if}}</strong></div>
+        <div><small>BASE</small>{{#if codex.prepare.lockedDiscipline}}<strong>Disciplina</strong>{{else}}
+          <select data-roll-source="base" aria-label="Fonte base">{{#each codex.prepare.baseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}</div>
+        <div><small>{{#if codex.prepare.lockedDiscipline}}ATRIBUTO{{else}}2ª FONTE{{/if}}</small>
+          <select data-roll-source="second" aria-label="Segunda fonte">{{#each codex.prepare.secondOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></div>
+        {{#if codex.prepare.complementOptions.length}}<div><small>COMPLEMENTO</small>
+          {{#if codex.prepare.repeatedDiscipline}}<strong>Disciplina</strong>{{else}}
+          <select data-roll-source="complement" aria-label="Complemento"><option value="">Nenhum</option>{{#each codex.prepare.complementOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          {{/if}}</div>{{/if}}
       </div>
       <p class="codex-tip">Atacante: <strong>{{codex.actorName}}</strong>{{#if codex.prepare.hasTarget}} · Alvo: <strong>{{codex.prepare.targetName}}</strong> · DE: <strong>{{codex.prepare.targetDE}}</strong>{{/if}}</p>
       <div class="codex-prep-controls">
-       <label>Equipamento equipado / fonte extra<select data-roll-option="equipmentId">
-        <option value="">Sem dado de equipamento</option>
+       {{#if codex.prepare.modeArmas}}{{#unless codex.attributesOnly}}
+       <label>Arma<select data-roll-option="equipmentId">
+        <option value="">Mãos vazias</option>
         {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
        </select>{{#if codex.prepare.effectiveRange}}<small>Alcance efetivo {{codex.prepare.effectiveRange}} m</small>{{/if}}</label>
-       {{#if codex.prepare.hasTarget}}<label class="codex-check"><input type="checkbox" data-roll-option="targetDodges" {{#if codex.prepare.targetDodges}}checked{{/if}}> Alvo usa Esquiva</label>{{/if}}
-        {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
-        <label>Ativação e aproximação confirmadas pelo Narrador<select data-roll-option="activationPavor">
+       {{/unless}}{{/if}}
+       {{#if codex.prepare.canChooseFocus}}
+       <label>Fonte de conjuração<select data-roll-option="equipmentId">
+        <option value="">Elemento</option>
+        {{#each codex.prepare.equipmentOptions}}<option value="{{id}}" {{#if selected}}selected{{/if}}>Foco · {{name}}</option>{{/each}}
+       </select></label>
+       {{/if}}
+       {{#if codex.prepare.useElement}}<label>Elemento<select data-roll-option="element"><option value="">Selecione</option>{{#each codex.prepare.elements}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>{{/if}}
+       {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
+        <label>Custo local<select data-roll-option="activationPavor">
           {{#each codex.prepare.localCostOptions}}<option value="{{cost}}" {{#if selected}}selected{{/if}}>{{cost}}P local no total</option>{{/each}}
         </select></label>
         {{/unless}}{{/if}}{{/if}}
-        {{#if codex.prepare.isShared}}
-          <label>Uso da Prática compartilhada<select data-roll-option="mode">
-            <option value="armas" {{#if codex.prepare.modeArmas}}selected{{/if}}>Armas</option>
-            <option value="conjuracao" {{#if codex.prepare.modeConjuracao}}selected{{/if}}>Conjuração</option>
-          </select></label>
-        {{/if}}
         {{#unless codex.prepare.hasTarget}}<label>DE manual<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>{{/unless}}
-        {{#if codex.prepare.modeConjuracao}}<label>Elemento<select data-roll-option="element"><option value="">Selecione</option>{{#each codex.prepare.elements}}<option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.key}}</option>{{/each}}</select></label><label>Fonte ambiental e preparação<input data-roll-option="sourceContext" value="{{codex.prepare.sourceContext}}" placeholder="Descreva para confirmação do Narrador"></label>{{/if}}
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
         {{/each}}</select></label>
+      </div>
+      <details class="codex-roll-advanced" data-sync="roll-advanced"><summary>Opções avançadas</summary>
+      <div class="codex-prep-controls">
+        {{#if codex.prepare.offensive}}{{#if codex.prepare.hasTarget}}<label class="codex-check"><input type="checkbox" data-roll-option="manualDamage" {{#if codex.prepare.manualDamage}}checked{{/if}}> Resolver dano e proteções na mesa</label>{{/if}}{{/if}}
         {{#if codex.isMonster}}
         <label>Dados extras mantidos — 1P cada<select data-roll-option="extraKeep">
           <option value="0" {{#if codex.prepare.extraZero}}selected{{/if}}>0 (2 dados)</option>
@@ -264,8 +284,8 @@
             <option value="pesado" {{#if codex.prepare.targetWeightPesado}}selected{{/if}}>Pesado</option>
           </select></label>
         {{/if}}
-        {{#unless codex.attributesOnly}}{{#if codex.selectedComplement}}{{#unless codex.prepare.repeatedDiscipline}}<label class="codex-check codex-warn"><input type="checkbox" data-roll-option="contextApproved" {{#if codex.prepare.contextApproved}}checked{{/if}}> Narrador confirmou a pertinência da Perícia e do complemento</label>{{/unless}}{{/if}}{{/unless}}
       </div>
+      </details>
       {{#if codex.prepare.canRepeatDisc}}<div class="codex-actions"><button type="button" data-action="repeatDiscipline" aria-pressed="{{#if codex.prepare.repeatedDiscipline}}true{{else}}false{{/if}}">{{#if codex.prepare.repeatedDiscipline}}Retirar segunda Disciplina{{else}}Adicionar segunda Disciplina{{/if}}</button></div>{{/if}}
       <div class="codex-pool"><strong>Pilha prevista · {{codex.prepare.poolCount}}/9 dados</strong>
         {{#each codex.prepare.pool}}<span class="codex-pool-die">{{{this.icon}}} <b>d{{this.sides}}</b><small>{{this.label}}</small></span>{{/each}}
@@ -356,10 +376,7 @@
           <small>{{this.weightName}} · {{this.propertiesText}}{{#if this.range}} · alcance {{this.range}} m{{/if}}</small>
           {{#if this.attack}}<span class="codex-small-die">{{{this.dieIcon}}} d{{this.die}} habilitável</span>
           <small>Perícia exigida · {{this.requiredSkill}}. {{#if this.enabledDie}}Habilitada · dado d{{this.enabledDie}}{{else}}Confira habilitação e equipamento ativo{{/if}}</small>
-          <div class="codex-actions">
-            <button type="button" data-action="quickEquipment" data-id="{{this.id}}">Rolar com {{this.name}}</button>
-            <button type="button" data-action="prepareEquipment" data-id="{{this.id}}">Preparar</button>
-          </div>{{/if}}
+          {{#if @root.codex.canAttack}}<button type="button" data-action="prepareEquipment" data-id="{{this.id}}" {{#unless this.enabledDie}}disabled{{/unless}}>Preparar ação</button>{{/if}}{{/if}}
           {{#if this.armor}}<small>Proteção · Integridade {{this.integrity.value}} / {{this.integrity.max}} · {{this.defense}} DE</small>{{/if}}
           {{#if this.shield}}<small>Escudo · Integridade {{this.integrity.value}} / {{this.integrity.max}} · bloqueio pela ação própria</small>{{/if}}
           <small>{{#if this.equipped}}Equipado{{else}}Guardado{{/if}}</small>
@@ -379,6 +396,9 @@
             <p>{{this.description}}</p>
             <label>Quantidade<input type="number" min="1" value="{{this.quantity}}" data-item-field="quantity" data-id="{{this.id}}"></label>
             <label>Equipado<input type="checkbox" {{#if this.equipped}}checked{{/if}} data-item-field="equipped" data-id="{{this.id}}"></label>
+            {{#if this.canShortcut}}{{#if @root.codex.isOwner}}
+              <button type="button" data-action="attackShortcut" data-id="{{this.id}}" data-enabled="{{#if this.hasShortcut}}false{{else}}true{{/if}}">{{#if this.hasShortcut}}Remover atalho{{else}}Criar atalho de ataque{{/if}}</button>
+            {{/if}}{{/if}}
             <label>Integridade<input type="number" min="0" value="{{this.integrity.value}}" data-item-field="integrity.value" data-id="{{this.id}}"></label>
             <label>Integridade máxima<input type="number" min="0" value="{{this.integrity.max}}" data-item-field="integrity.max" data-id="{{this.id}}"></label>
             <label>Munição restante<input type="number" min="0" value="{{this.ammo.value}}" data-item-field="ammo.value" data-id="{{this.id}}"></label>

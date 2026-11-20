@@ -19,6 +19,7 @@ function rowView(name,s,id){
   attack,requiredSkill,hasDie:attack&&s.die>0};
 }
 export function equipmentView(actor,filters){
+ const shortcutIds=new Set(actor.getFlag?.('codex-rpg-foundry','attackShortcuts')??[]);
  const options=(rows,value)=>rows.map(([id,label])=>({id,label,selected:id===value}));
  const shop=G1_CATALOG.filter(row=>equipmentMatches(row,filters.shopFamily,filters.shopWeight)).map(row=>({
   ...rowView(row.name,row,row.name),canBuy:row.kind!=='focus'&&row.category!=='pendente'&&Number.isFinite(row.priceVT)&&row.priceVT>0,
@@ -33,6 +34,7 @@ export function equipmentView(actor,filters){
  const gear=inventory.map(item=>{
   const s=item.system,row=rowView(item.name,s,item.id),group=row.family+' · '+row.weightName;
   const result={...row,embeddedMedium:s.embeddedWeapon==='medio',embeddedHeavy:s.embeddedWeapon==='pesado',groupTitle:group!==previous?group:null,range:effectiveWeaponRange(actor.system,s)||s.range,
+   canShortcut:['weapon','firearm'].includes(s.kind),hasShortcut:shortcutIds.has(item.id),
    enabledDie:equippedDie(actor,item,s.kind==='focus'?'conjuracao':'armas')};
   previous=group;
   return result;
@@ -40,7 +42,8 @@ export function equipmentView(actor,filters){
  const repertoire=[...actor.items].filter(i=>i.type==='equipment'&&['weapon','firearm','focus','armor','shield'].includes(i.system.kind)).map(item=>({
   ...rowView(item.name,item.system,item.id),range:effectiveWeaponRange(actor.system,item.system)||item.system.range,
   enabledDie:equippedDie(actor,item,item.system.kind==='focus'?'conjuracao':'armas')}));
- return {balance:walletValue(actor),shop,gear,repertoire,
+ const shortcuts=repertoire.filter(row=>shortcutIds.has(row.id)&&['weapon','firearm'].includes(row.kind));
+ return {balance:walletValue(actor),shop,gear,repertoire,shortcuts,
   families:options(EQUIPMENT_FAMILIES,filters.family),weights:options(EQUIPMENT_WEIGHT_OPTIONS,filters.weight),
   shopFamilies:options(EQUIPMENT_FAMILIES,filters.shopFamily),shopWeights:options(EQUIPMENT_WEIGHT_OPTIONS,filters.shopWeight)};
 }

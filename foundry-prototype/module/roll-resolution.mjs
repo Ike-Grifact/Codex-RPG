@@ -21,14 +21,15 @@ export async function preparePendingRoll(actor, request, user, game) {
   if(system.transformation?.kind==='animal'&&input.mode==='conjuracao')throw Error('A forma animal não pode conjurar.');
   if(system.transformation?.kind==='animal'&&(system.transformation.pendingAttributes?.length||system.transformation.lifePending))throw Error('O aprimoramento destes dados ou a Vida da forma exige adjudicação. Consulte o Narrador antes da rolagem automática.');
   const {
-    mode = "normal", de = 1, situation = "neutral", stepDieId = "", equipmentId = "",
+    mode = "normal", actionType = "", de = 1, situation = "neutral", stepDieId = "", equipmentId = "",
     attackWeight, targetWeight,
   } = input;
   if (!["normal", "armas", "conjuracao"].includes(mode)) throw Error("Modo de rolagem inválido.");
+  if (!["","attack","spell"].includes(actionType) ||
+      (actionType==="attack"&&mode!=="armas") || (actionType==="spell"&&mode!=="conjuracao")) throw Error("Ação ofensiva inválida.");
   if(mode==='conjuracao'&&!equipmentId){
     const skill=input.element==='psiquico'?'criar-item-foco-magia':input.element;
     if(!['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(input.element)||!hasSkill(system,skill))throw Error('Selecione um elemento adquirido.');
-    if(typeof input.sourceContext!=='string'||!input.sourceContext.trim()||input.sourceContext.length>500)throw Error('Descreva a fonte elemental e a preparação para o Narrador.');
   }
   if (!Number.isInteger(de) || de < 0 || de > 30) throw Error("Informe uma DE inteira de 0 a 30.");
   if (![stepDieId, equipmentId].every(id => typeof id === "string")) throw Error("Fonte de dado inválida.");
@@ -41,11 +42,14 @@ export async function preparePendingRoll(actor, request, user, game) {
   const scene = game.scenes.get(sceneId);
   const combat = game.combats.find(entry => entry.started && entry.scene?.id === scene?.id);
   const target = lookupTarget(game, user, sceneId, targetIds, input.targetDodges === true);
+  if(actionType&&target?.actorUuid===actor.uuid)throw Error("Escolha outro token como alvo do ataque.");
   const item = actor.items.get(equipmentId);
   const equipmentDie = item ? equippedDie(actor, item, mode) : 0;
   if (equipmentId && !equipmentDie) throw Error("Equipamento não habilitado por Perícia ou elemento.");
+  const focusElement=String(item?.system.element??"").normalize("NFD").replace(/\p{M}/gu,"").trim().toLowerCase();
+  const element=mode==="conjuracao"?(equipmentId?(focusElement==="ar"?"vento":focusElement||"psiquico"):input.element):"";
   const plan = buildPool(system, selection, {
-    mode, contextApproved: input.contextApproved === true, step, stepDieId, equipmentDie,
+    mode, actionType, contextApproved: input.contextApproved === true, step, stepDieId, equipmentDie,
   });
   if (!plan.ok) throw Error(plan.errors.join(" "));
   const elevation = combat ? `${combat.id}:${combat.round}` : null;
@@ -58,10 +62,10 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (activationCost > (system.pavorLocal ?? 0)) throw Error("Pavor local insuficiente para a ativação.");
   const {dice, formula, roll} = await rollPool(plan.pool);
   const pending = {
-    version: 5, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
+    version: 6, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
     base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
-      health, mode, equipmentId, element:input.element??'',sourceContext:input.sourceContext??'',de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,bonusA:passiveAnticipar(system,selection),
+      health, mode, actionType, equipmentId, element, manualDamage:input.manualDamage===true,de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,bonusA:passiveAnticipar(system,selection),
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
       attackWeight, targetWeight, weightEnabled: input.weightEnabled === true,
       noisy: Boolean(item?.system.properties?.includes("Barulhenta")),
@@ -81,7 +85,7 @@ function optionsFor(actor, options) {
   const s = actor.system;
   return {
     ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage - (options.health?.coragem??0), monster: s.monsterRules,
-    animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character",
+    animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character", requireAttribute:Boolean(options.actionType),
     weight: options.weightEnabled ? affinity(options.attackWeight, options.targetWeight) : 0,
   };
 }
@@ -157,26 +161,33 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const sources = [pending.base, pending.second ?? pending.attribute, pending.complement].filter(Boolean)
     .map(source => escapeHTML(sourceLabel(source.group, source.key))).join(" + ");
   const overflow = result.monsterCriticalPavor - localReward;
-  const content = `<div class="codex-chat-result"><h3>Codex RPG · ${escapeHTML(result.outcome)}</h3>
+  const offensive=Boolean(o.actionType);
+  const impact=offensive&&o.targetTokenUuid?{
+    tokenUuid:o.targetTokenUuid,actorUuid:o.targetActorUuid,damage:result.damage,pavor:result.p,mode:o.mode,element:o.element,
+    manualDamage:o.manualDamage,special:active.length>0||item?.system.kind==="firearm"&&item.system.properties?.includes("Perfurante"),
+  }:null;
+  const generic=pending.version>=6&&!offensive;
+  const label=o.actionType==="attack"?"Ataque":o.actionType==="spell"?"Conjuração":"Codex RPG";
+  const content = `<div class="codex-chat-result"><h3>${label} · ${escapeHTML(result.outcome)}</h3>
     <p>${sources}${o.targetName ? ` · Alvo ${escapeHTML(o.targetName)}` : ""}</p>
-    ${o.sourceContext?'<p>Fonte e preparação · '+escapeHTML(o.sourceContext)+'</p>':''}
+    ${o.element?'<p>Elemento · '+escapeHTML(o.element)+'</p>':''}
     <p>Total ${result.reached} · DE ${o.privateDefense ? "reservada" : result.de} · ᛋ ${result.e} · ᚨ ${result.aRemaining} · ᚦ ${result.p}</p>
     ${result.critical ? `<p>Crítico · ${result.critical} faces máximas mantidas.</p>` : ""}
     ${active.length ? `<p>Características · ${active.map(escapeHTML).join(", ")}.</p>` : ""}
-    <p>Dano básico ${result.damage} · Narrador aplica à Integridade/Vida e decide condições.</p>
+    ${!generic?`<p>Dano básico ${result.damage}${impact?"":" · resolução na mesa"}.</p>`:""}
     ${o.health ? `<p>Saúde ao agir · ${o.health.label}.</p>` : ""}
     <p>Custo · ${courage + Number(Boolean(o.stepPaid))} Coragem, ${pavor} Pavor local.</p>
     ${ally ? `<p>1A para passar a oportunidade a ${escapeHTML(ally.name)} · validação do Narrador.</p>` : ""}
-    ${result.p ? `<p>Pavor residual · ${result.p}P para o Narrador encaminhar conforme o alvo.</p>` : ""}
-    ${overflow ? `<p>Crítico · ${overflow}P excedentes para a reserva pública, até o teto.</p>` : ""}
+    ${result.p&&!impact ? `<p>Pavor residual · ${result.p}P para resolução na mesa.</p>` : ""}
+    ${overflow ? `<p>Crítico · ${overflow}P excedentes para adjudicação na reserva pública.</p>` : ""}
     <p class="codex-chat-dice-heading">Dados rolados · ${pending.selected.length} de ${pending.dice.length} mantidos</p>\n    ${kept}</div>`;
   const {selected, ...summary} = publicRollResult(result, o.privateDefense);
   const combat = game.combats.get(o.combatId);
   const adjudication = {
     combatId: combat?.id ?? null, round: o.combatRound ?? combat?.round ?? null, allyId: ally?.id ?? null,
-    targetUuid: o.targetActorUuid, p: result.p,
+    targetUuid: o.targetActorUuid, p: result.p, autoTarget:Boolean(impact), isTest:generic,
   };
-  return {changes, content, result: {...summary, costs: {courage, pavor}, localReward, overflow}, adjudication};
+  return {changes, content, result: {...summary, costs: {courage, pavor}, localReward, overflow}, adjudication,impact};
 }
 
 export function publicRollResult(result, privateDefense) {

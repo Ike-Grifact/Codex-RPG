@@ -13,7 +13,7 @@ class ApplicationV2 {
 globalThis.foundry = {
   applications: {api: {ApplicationV2, HandlebarsApplicationMixin: Base => Base}},
 };
-const {CodexPavorHUD, openPublicPavor, registerPublicPavor, transferCombatPavor,prepareCombatPavor} = await import("../module/pavor-panel.mjs");
+const {CodexPavorHUD, openPublicPavor, registerPublicPavor, prepareCombatPavor} = await import("../module/pavor-panel.mjs");
 
 test("Preparação do combate: cada ameaça começa cheia uma única vez",async()=>{
  const actors=[
@@ -105,18 +105,8 @@ test("reserva pública começa em 2P, mantém zero salvo e aplica os limites da 
   await adjust(1);
   assert.equal((await panel._prepareContext()).roundPavor, 1);
 
-  // A rewarded critical goes through the same ledger, after the local reserve.
   await adjust(-1);
   await adjust(-1);
-  const monster = {type: "creature", system: {threatGrade: 2, pavorLocal: 1}};
-  monster.update = async updates => { monster.system.pavorLocal = updates["system.pavorLocal"]; };
-  game.actors = new Map([["threat", monster]]);
-  game.users = new Map([["gm", game.user]]);
-  await transferCombatPavor({
-    user: {id: "gm"},
-    getFlag: () => ({actorId: "threat", p: 0, monsterCriticalPavor: 3}),
-  });
-  assert.equal(monster.system.pavorLocal, 4);
   assert.deepEqual([(await panel._prepareContext()).value, (await panel._prepareContext()).roundPavor], [3, 1]);
   game.combat.round = 1;
   assert.equal((await panel._prepareContext()).roundPavor, 5);
