@@ -3085,24 +3085,64 @@ function vitalHelpDetails(kind){
  };
  return entries[kind]||null;
 }
+let vitalTooltipPinned=false;
+let vitalTooltipTrigger=null;
+let vitalTooltipTimer=null;
+function stopVitalTooltipTimer(){
+ if(vitalTooltipTimer!==null)clearTimeout(vitalTooltipTimer);
+ vitalTooltipTimer=null;
+}
 function closeVitalTooltip(){
+ stopVitalTooltipTimer();
+ vitalTooltipPinned=false;vitalTooltipTrigger=null;
  const tip=$("fp-vital-tooltip");if(tip)tip.hidden=true;
  document.querySelectorAll(".fp-vital-open[aria-expanded='true']").forEach(b=>{
   b.setAttribute("aria-expanded","false");b.removeAttribute("aria-describedby");
  });
 }
-function toggleVitalTooltip(button){
+function showVitalTooltip(button,pinned=false){
  const tip=$("fp-vital-tooltip");if(!tip||!button)return;
- const wasOpen=button.getAttribute("aria-expanded")==="true";closeVitalTooltip();
- if(wasOpen)return;
- const info=vitalHelpDetails(button.dataset.vitalOpen);if(!info)return;
- tip.innerHTML="<strong>"+esc(info[0])+"</strong><p>"+esc(info[1])+"</p><p class='fp-vital-tooltip-formula'>"+esc(info[2])+"</p><small>Origem: "+esc(info[3])+"</small>";
+ if(vitalTooltipPinned&&!pinned)return;
+ const kind=button.dataset.vitalOpen,info=vitalHelpDetails(kind);
+ if(!info)return;
+ stopVitalTooltipTimer();
+ document.querySelectorAll(".fp-vital-open[aria-expanded='true']").forEach(b=>b.setAttribute("aria-expanded","false"));
+ let controls="";
+ if(kind==="life"||kind==="courage"){
+  const value=kind==="life"?state.life+" / "+maxLife():state.courage+" / "+maxCourage();
+  const minusLabel=kind==="life"?"Perder Vida":"Gastar Coragem",plusLabel=kind==="life"?"Recuperar Vida":"Recuperar Coragem";
+  controls='<div class="fp-vital-tooltip-actions"><strong>'+esc(value)+'</strong>'+
+   '<button type="button" class="fp-counter" data-resource="'+kind+'" data-delta="-1" aria-label="'+minusLabel+'">−</button>'+
+   '<button type="button" class="fp-counter" data-resource="'+kind+'" data-delta="1" aria-label="'+plusLabel+'">+</button></div>';
+ }
+ tip.innerHTML='<div class="fp-vital-tooltip-heading"><strong id="fp-vital-tooltip-title">'+esc(info[0])+'</strong>'+
+  '<button type="button" class="fp-vital-tooltip-close" data-vital-close aria-label="Fechar explicação">×</button></div>'+
+  '<p>'+esc(info[1])+'</p>'+controls+
+  '<p class="fp-vital-tooltip-formula">'+esc(info[2])+'</p>'+
+  '<small>Origem: '+esc(info[3])+'</small>'+
+  '<a class="fp-vital-tooltip-source" href="https://github.com/Ike-Grifact/Codex-RPG/blob/main/docs/srd-playtest-nivel-1-v1.0.md" target="_blank" rel="noopener noreferrer">Consultar SRD vigente</a>';
  tip.hidden=false;
- const rect=button.getBoundingClientRect(),gap=10,padding=12;
+ tip.setAttribute("aria-labelledby","fp-vital-tooltip-title");
+ const rect=button.getBoundingClientRect(),gap=9,padding=12;
  const width=tip.offsetWidth,height=tip.offsetHeight;
- tip.style.left=Math.max(padding,Math.min(rect.left,Math.max(padding,window.innerWidth-width-padding)))+"px";
- tip.style.top=(rect.bottom+gap+height<=window.innerHeight-padding?rect.bottom+gap:Math.max(padding,rect.top-height-gap))+"px";
- button.setAttribute("aria-expanded","true");button.setAttribute("aria-describedby","fp-vital-tooltip");
+ const left=Math.max(padding,Math.min(rect.left,window.innerWidth-width-padding));
+ const bottom=rect.bottom+gap;
+ const top=bottom+height<=window.innerHeight-padding?bottom:Math.max(padding,Math.min(rect.top-height-gap,window.innerHeight-height-padding));
+ tip.style.left=left+"px";tip.style.top=top+"px";
+ button.setAttribute("aria-expanded","true");
+ vitalTooltipTrigger=button;vitalTooltipPinned=!!pinned;
+}
+function toggleVitalTooltip(button){
+ if(vitalTooltipPinned&&vitalTooltipTrigger===button){closeVitalTooltip();return;}
+ showVitalTooltip(button,true);
+}
+function scheduleVitalTooltipClose(){
+ if(vitalTooltipPinned)return;
+ stopVitalTooltipTimer();
+ vitalTooltipTimer=setTimeout(()=>{
+  const tip=$("fp-vital-tooltip");
+  if(!tip?.matches(":hover")&&!vitalTooltipTrigger?.matches(":hover"))closeVitalTooltip();
+ },180);
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -4306,7 +4346,21 @@ function bind(){
  document.addEventListener("click",event=>{
   const trigger=event.target.closest("[data-vital-open]");
   if(trigger){toggleVitalTooltip(trigger);return;}
+  if(event.target.closest("[data-vital-close]")){closeVitalTooltip();return;}
   if(!event.target.closest("#fp-vital-tooltip"))closeVitalTooltip();
+ });
+ document.addEventListener("pointerover",event=>{
+  if(event.pointerType!=="mouse")return;
+  const trigger=event.target.closest?.("[data-vital-open]");
+  if(trigger&&!trigger.contains(event.relatedTarget))showVitalTooltip(trigger,false);
+  if(event.target.closest?.("#fp-vital-tooltip"))stopVitalTooltipTimer();
+ });
+ document.addEventListener("pointerout",event=>{
+  if(event.pointerType!=="mouse")return;
+  const trigger=event.target.closest?.("[data-vital-open]");
+  if(trigger&&!trigger.contains(event.relatedTarget))scheduleVitalTooltipClose();
+  const tip=event.target.closest?.("#fp-vital-tooltip");
+  if(tip&&!tip.contains(event.relatedTarget))scheduleVitalTooltipClose();
  });
  document.addEventListener("keydown",event=>{if(event.key==="Escape")closeVitalTooltip();});
  window.addEventListener("resize",closeVitalTooltip);
@@ -4337,7 +4391,11 @@ function bind(){
   }
  });
  document.addEventListener("click",event=>{
-  const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
+  const b=event.target.closest("button[data-resource]");
+  if(b){
+   adjustResource(b.dataset.resource,Number(b.dataset.delta));
+   if(b.closest("#fp-vital-tooltip")&&vitalTooltipTrigger)showVitalTooltip(vitalTooltipTrigger,true);
+  }
  });
  document.addEventListener("change",onChange);
  document.addEventListener("change",event=>{
