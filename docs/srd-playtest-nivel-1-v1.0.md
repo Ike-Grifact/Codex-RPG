@@ -14,6 +14,18 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Maestria em Escudos e Escudo Bumerangue (20/11/2026)
+
+**DEFINIDO — Maestria em Escudos:** custa **1 XP**, exige **Destreza 2 + Vigor 2**. Ao **utilizar um escudo físico equipado**, o personagem recebe **+1 à DE defensiva** e o **escudo equipado recebe +1 de Integridade**. O +1 DE aplica-se **uma vez**, mesmo que múltiplos escudos apareçam equipados, **após a DE natural e o modificador da armadura**; respeita o **teto geral de 12 para DE defensiva final**. Não alterar a DE natural, não somar à DE de ações não defensivas nem modificar a Integridade da armadura ou o total de E+P simbólicos da ação Levantar Escudo. O +1 de Integridade acompanha somente o escudo equipado; é **bônus temporário de capacidade material** no cálculo da ficha, **sem aumentar permanentemente a Integridade-base do item**. Se a ficha registrar mais de um escudo equipado, o benefício é aplicado apenas ao primeiro selecionado pela ficha, sem multiplicação. Consumo/recuperação do ponto bônus deve ser rastreado de modo a impedir renovação gratuita apenas ao guardar e reequipar.
+
+**DEFINIDO — Escudo Bumerangue:** custa **1 XP**, exige **Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos** (ambas as Perícias adquiridas). **Permite arremessar escudos físicos a até 8 metros e faz o escudo retornar ao personagem após o arremesso**. A exigência de *Arremesso de Armas* corresponde à Perícia existente, registrada internamente como `maestria-arremesso-armas` e denominada **Perícia em Arremesso de Armas** no criador; não é a nova Maestria por família chamada Armas Arremessadas. Não estender automaticamente o alcance de escudos pelas distâncias de arremesso de armas leves/médias/pesadas (12/8/4 m): **o alcance específico do escudo é 8 m**. O retorno não concede um segundo ataque nem outro efeito da arma, e o escudo não é consumido ou descartado por simplesmente executar o arremesso.
+
+**PENDENTE — execução detalhada do Escudo Bumerangue:** dano base, dados, fontes e requisitos de acerto para **um ataque com escudo**, custo/ação de lançamento, momento exato do retorno, bloqueio de trajetória, interação com mãos ocupadas e Escudo Levantado. Essas lacunas não autorizam criar bônus de dano, ataque ou Coragem. Até homologação, a ficha indica alcance/retorno e requisitos, sem transformar o escudo em arma comum ou inventar dado e dano automático.
+
+**Implementação:** compra por XP e requisitos, exibição no Codex Genético/inventário, bônus de +1 DE defensiva no cálculo com teto 12; +1 Integridade material exibida apenas no escudo equipado e rastreada separadamente do valor-base, inclusive desgaste manual. Não alterar Escudo Arcano nem Levantar Escudo e seus E/P simbólicos.
+
+---
+
 ## Adendo normativo — Perícia em Montaria e Montar Animal (20/11/2026)
 
 **DEFINIDO — Perícia em Montaria (nova):** requer **Influência 1 + Destreza 2**; **adiciona +1 Antecipar (A) aos testes com montaria**. É um símbolo extra de Antecipar, **não Vantagem**, e não concede dado adicional. Cada Antecipar só pode ser gasto uma vez, segundo a regra geral. É uma Perícia separada de Montar Animal e **não exige Montar Animal como pré-requisito**, pois isso não foi declarado.
