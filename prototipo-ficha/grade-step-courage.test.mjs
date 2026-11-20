@@ -354,6 +354,8 @@ test("Exclusividades: Maestria em Armas de Fogo inicial só para Humano; Transfu
  assert.match(fn("maestria-armas-fogo",{...eligible,race:"lucker_sangue"}),/exclusiva dos Humanos/i);
  assert.ok(app.includes('&&!(x==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")'),"Importação remove aquisição incompatível com raça");
  assert.ok(app.includes('rawSkills.filter'),"Preserva importação geral de fichas");
+ assert.ok(app.includes("Restrição racial de Transfusão Sanguinária: compra histórica inválida"),"Registra histórico da remoção racial em nota, sem ocultar o reembolso");
+ assert.ok(app.includes('transfusion.title=state.race!=="lucker_sangue"'),"Bloqueio da ação também explica exclusividade ao jogador");
  const verbete=readFileSync(join(root,"../pericias/transfusao-sanguinaria.html"),"utf8");
  assert.match(verbete,/somente Luckers de Sangue podem comprar e utilizar/);
  const fogo=readFileSync(join(root,"../pericias/maestria-em-armas-fogo.html"),"utf8");
