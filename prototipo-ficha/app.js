@@ -2201,7 +2201,7 @@ const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","
 
 /* Conjuração livre: efeitos/tempo definidos no Livro; efeitos de amplificação não recebem números inventados. */
 function magicElementId(value){
- const raw=String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").trim().toLowerCase();
+ const raw=String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
  return ({ar:"vento",vento:"vento",psique:"psiquico",psiquico:"psiquico",agua:"agua",fogo:"fogo",terra:"terra",sagrado:"sagrado",sangue:"sangue",trevas:"trevas",veneno:"veneno"})[raw]||"";
 }
 function magicKnownElements(){
