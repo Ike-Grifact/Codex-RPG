@@ -2195,6 +2195,24 @@ function renderDiceLegend(){
 
 /* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
 const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+let inventoryPane="bag";
+function syncInventoryPane(){
+ const container=$("equipamentos");if(!container)return;
+ for(const node of container.querySelectorAll("[data-inventory-pane]"))
+  node.hidden=node.dataset.inventoryPane!==inventoryPane;
+ for(const button of container.querySelectorAll("button[data-inventory-view]")){
+  const active=button.dataset.inventoryView===inventoryPane;
+  button.setAttribute("aria-current",active?"page":"false");
+  button.classList.toggle("active",active);
+ }
+ if(inventoryPane==="shop"){
+  const market=$("inventory-shop-details");if(market)market.open=true;
+ }
+}
+function chooseInventoryPane(next){
+ if(!["bag","wallet","shop"].includes(next))return;
+ inventoryPane=next;syncInventoryPane();
+}
 function applySheetPage(){
  const show=viewMode==="sheet"&&!!state.creationLocked;
  const nav=$("sheet-navigation");if(!nav)return;
@@ -2214,6 +2232,7 @@ function applySheetPage(){
   const active=b.dataset.sheetPage===chosen;
   b.setAttribute("aria-current",active?"page":"false");b.classList.toggle("active",active);
  }
+ syncInventoryPane();
  $("page-subtitle").textContent=isGene?"Explore os caminhos presentes e futuros do seu Codex Genético.":isInv?
  "Seus equipamentos, materiais e Valor de Troca num espaço próprio.":isEvolve?
  "XP, fontes e Perícias para construir sua próxima especialização.":"Uma ficha de jogo limpa: recursos, rolagens e somente as habilidades que você adquiriu.";
@@ -2644,6 +2663,7 @@ function renderGenetic(){
 function openSheetPage(page,focusSkill=""){
  if(!["play","evolution","genetic","inventory"].includes(page)||viewMode!=="sheet")return;
  sheetPage=page;
+ if(page==="inventory")inventoryPane="bag";
  if(focusSkill)geneSelected=focusSkill;
  if((page==="play"||page==="inventory")&&editMode)editMode=false;
  render();
@@ -4345,6 +4365,10 @@ function onChange(event){
 }
 function bind(){
  document.addEventListener("click",onClick);
+ document.addEventListener("click",event=>{
+  const button=event.target.closest("button[data-inventory-view]");
+  if(button)chooseInventoryPane(button.dataset.inventoryView);
+ });
  document.addEventListener("click",event=>{
   const trigger=event.target.closest("[data-vital-open]");
   if(trigger){toggleVitalTooltip(trigger);return;}
