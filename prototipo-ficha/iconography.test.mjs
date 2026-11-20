@@ -22,7 +22,7 @@ test("Atlas contém armas, armaduras, elementos, constelações e indicadores",(
  for(const filename of names){
   const source=readFileSync(join(icons,filename),"utf8");
   assert.match(source,/<svg\s/);
-  assert.match(source,/viewBox="0 0 64 64"/);
+  assert.match(source,filename==="status-de.svg"?/viewBox="0 0 22\\.02 39\\.15"/:/viewBox="0 0 64 64"/);
   assert.match(source,/<title\s/);
   assert.match(source,/<g[^>]+stroke="/);
   assert.doesNotMatch(source,/<script\b|<foreignObject\b|\bonload\s*=/i);
@@ -33,6 +33,10 @@ test("DE mescla três runas e tem exclusivamente o azul de Ansuz",()=>{
  const de=readFileSync(join(icons,"status-de.svg"),"utf8");
  const antecipar=readFileSync(join(icons,"status-antecipar.svg"),"utf8");
  assert.match(de,/Sowilo, Ansuz e Thurisaz fundidas/);
+ // Modelo autoral: mantém os glifos A, t e S nas posições originais do SVG enviado.
+ assert.match(de,/font-family: Zillaroonies/);
+ for(const rune of [">A</tspan>",">t</tspan>",">S</tspan>"])
+  assert.ok(de.includes(rune),"Glifo original ausente: "+rune);
  assert.deepEqual([...de.matchAll(/#[0-9A-Fa-f]{6}/g)].map(x=>x[0]),["#2369BB","#2369BB"]);
  assert.match(antecipar,/Antecipar — Ansuz ᚨ/);
  assert.match(antecipar,/stroke="#2369BB"/);
