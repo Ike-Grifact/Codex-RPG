@@ -95,6 +95,7 @@ const assert=require("node:assert/strict");
   // Conjuração: foco compatível apenas no inventário, G3 acelerado para 1 turno.
   const mage={schema:"codex-html-playtest-v1",character:{
    schema:"codex-html-playtest-v1",name:"Aprendiz conjurador",race:"humano",level:5,creationLocked:true,
+   life:4,courage:11,
    attributes:{inteligencia:2,destreza:1},practices:{armas_conjuracao:2,artesao:1},
    skills:["criar-item-foco-magia","fogo"],items:[{
     id:"foco-fogo-e2e",name:"Foco de Fogo",type:"foco",weight:"leve",
