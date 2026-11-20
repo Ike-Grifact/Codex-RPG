@@ -14,6 +14,16 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia em Montaria e Montar Animal (20/11/2026)
+
+**DEFINIDO — Perícia em Montaria (nova):** requer **Influência 1 + Destreza 2**; **adiciona +1 Antecipar (A) aos testes com montaria**. É um símbolo extra de Antecipar, **não Vantagem**, e não concede dado adicional. Cada Antecipar só pode ser gasto uma vez, segundo a regra geral. É uma Perícia separada de Montar Animal e **não exige Montar Animal como pré-requisito**, pois isso não foi declarado.
+
+**PENDENTE — custo de Perícia em Montaria:** o autor não informou XP. Registrar nome, efeito e requisitos no SRD, catálogo, criador e Codex Genético, mas **bloquear a compra** até determinar o custo; não reutilizar automaticamente os 2 XP de Montar Animal. A inclusão contextual de +1A no rolador também está pendente de uma indicação explícita do teste como montaria; até lá, aplicá-lo manualmente no playtest.
+
+**DEFINIDO — Montar Animal (Perícia existente):** permanece custando **2 XP**, exige **Influência 2** e concede **Vantagem nos testes com montaria**, não +1A. Não converter a Vantagem em Antecipar nem alterar o benefício de uma Perícia pela outra. A aplicação conjunta, quando pertinente, observa as regras já existentes de Vantagem e Antecipar.
+
+---
+
 ## Adendo normativo — Maestrias por tipo de arma e exclusividades de origem (20/11/2026)
 
 **DEFINIDO — mesma mecânica para cada tipo de arma:** o modelo aprovado de **Maestria em Martelos** (acerto comum: **1 efeito próprio da arma gratuito**; crítico: **até 2 efeitos diferentes gratuitos** e **1 terceiro diferente por 1 Coragem**, sempre se a arma possuir tais características) aplica-se às **Maestrias das outras famílias de armas**, quando habilitadas. Todas mantêm **acerto da DE, condições individuais da característica e especialização marcial apropriada**, sem somar acerto, Êxitos ou dano básico de forma automática. Uma característica não é ativada duas vezes como se fossem duas; sem características suficientes, não há benefícios inexistentes.

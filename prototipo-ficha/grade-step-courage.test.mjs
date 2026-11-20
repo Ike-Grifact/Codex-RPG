@@ -420,3 +420,38 @@ test("Maestrias por família: regra compartilhada, compra não inventada e habil
  const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
  for(const x of specs)assert.ok(portal.includes(x.id.replace("maestria-","maestria-em-")+".html"),"Catalogada "+x.name);
 });
+
+
+test("Montaria: Montar Animal dá Vantagem; nova Perícia em Montaria dá +1A sem custo XP inventado",()=>{
+ const definitions=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const rules=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+definitions+rules+
+  "\nreturn skillReq;")({},()=>[],(id,s)=>(s.skills||[]).includes(id));
+ const make=({influencia=1,destreza=2,skills=[]}={})=>({
+  race:"humano",attributes:{influencia,destreza,forca:0,agilidade:0,inteligencia:0,vigor:0},
+  practices:{armas_conjuracao:0,artesao:0,apresentacao:0,atletismo:0,furtividade:0,coleta:0},
+  knowledges:{},skills
+ });
+ assert.match(req("pericia-montaria",make({influencia:0})),/Influência 1 e Destreza 2/,"Influência 1 obrigatória");
+ assert.match(req("pericia-montaria",make({destreza:1})),/Influência 1 e Destreza 2/,"Destreza 2 obrigatória");
+ assert.match(req("pericia-montaria",make()),/Custo XP.*PENDENTE/,"Não pode comprar sem custo definido");
+ assert.match(req("pericia-montaria",make({skills:["montar"]})),/Custo XP.*PENDENTE/,"Montar Animal não substitui custo não definido");
+ assert.equal(req("montar",make({influencia:2})),null,"Montar Animal continua com requisito Influência 2");
+ assert.match(req("montar",make({influencia:1})),/Influência grau 2/,"Montar Animal não adota novos requisitos");
+ assert.match(app,/"montar",\s*"Montar Animal",[\s\S]*?\n  2\n \]/,"Montar Animal permanece custando 2 XP");
+ assert.match(app,/"pericia-montaria",\s*"Perícia em Montaria",[\s\S]*?\n  null\n \]/,"Nova compra fica sem custo atribuído");
+ assert.ok(app.includes('"pericia-montaria":[["a:influencia:1","a:destreza:2"]]'),"Atributos na compra assistida");
+ assert.ok(app.includes('"montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente."'),"Montar Animal oferece Vantagem, não +1A");
+ assert.ok(app.includes('"pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra.'),"Perícia em Montaria oferece +1A, não Vantagem");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"montar","pericia-montaria"'),"Ambas representadas no Codex Genético");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="pericia-em-montaria.html">Perícia em Montaria</a>'));
+ assert.ok(catalog.includes('<a href="montar-animal.html">Montar Animal</a>'));
+ const newPage=readFileSync(join(root,"../pericias/pericia-em-montaria.html"),"utf8");
+ const oldPage=readFileSync(join(root,"../pericias/montar-animal.html"),"utf8");
+ assert.ok(newPage.includes("Influência 1 + Destreza 2")&&newPage.includes("+1A"));
+ assert.ok(newPage.includes("compra está <strong>PENDENTE</strong>"));
+ assert.ok(oldPage.includes("Vantagem em testes com montaria")&&oldPage.includes("Vantagem não é +1 Antecipar"));
+});
