@@ -191,7 +191,7 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 - **DEFINIDO:** **descanso longo** recupera **Vigor + 1 Coragem**, sempre limitado ao teto do personagem, com ou sem Perícia. A Perícia de descanso curto não adiciona automaticamente outra recuperação no mesmo descanso longo; eventual acúmulo fica **PENDENTE**.
 - **CONGELADO:** não comprar, desenvolver nem conceder agora efeitos de Maestrias especializadas, gatilhos de Precisão/Combo/Mestre de Armas nem bônus de +2/+3 de Maestria. Tais projetos seguem arquivados/adiados, **não autorizados para o Playtest Nível 1**. A Perícia histórica *Maestria Elemental* de conjuração permanece distinta e não é convertida automaticamente em uma identidade de recuperação.
 
-**Compatibilidade:** fica **REVOGADA** a interpretação anterior desta própria v1.0 que registrava 3 Coragens iniciais. O comportamento já implementado de **10/11/12/13** está correto e deve ser preservado no criador, nos NPCs humanoides e no Foundry, sem rebaixar reservas salvas. Maestrias especializadas continuam **ADIADAS**.
+**Compatibilidade:** fica **REVOGADA** a interpretação anterior desta própria v1.0 que registrava 3 Coragens iniciais. O comportamento já implementado de **10/11/12/13** está correto e deve ser preservado no criador, nos NPCs humanoides e no Foundry, sem rebaixar reservas salvas. Maestrias de recuperação ainda não detalhadas continuam **ADIADAS**. **EXCEÇÃO posterior e DEFINIDA em 20/11/2026:** Maestria em Martelos e as demais Maestrias por família de arma têm efeito regulamentado no adendo acima, embora as novas compras não raciais permaneçam pendentes de custos e requisitos; Maestria em Armas de Fogo é concedida gratuitamente aos Humanos.
 
 ## 3. Transformação Druídica — novo ramo animal
 
