@@ -4,6 +4,7 @@ import {mkdirSync,writeFileSync} from "node:fs";
 import {join} from "node:path";
 import {deflateSync} from "node:zlib";
 import {FACES} from "../module/rules.mjs";
+import {runeTextureFile} from "../module/dice-icons.mjs";
 
 const SIZE=256;
 const COLORS=Buffer.from([
@@ -11,7 +12,8 @@ const COLORS=Buffer.from([
  38,122,69,   // Êxito: #267A45
  35,105,187,  // Antecipar: #2369BB
  84,33,118,   // Pavor: #542176
- 221,225,232  // círculo da face vazia
+ 221,225,232, // círculo da face vazia
+ 215,188,136  // dourado das faces máximas
 ]);
 function crc32(bytes){
  let value=0xffffffff;
@@ -27,7 +29,7 @@ function chunk(name,body){
  crc.writeUInt32BE(crc32(Buffer.concat([title,body])));
  return Buffer.concat([length,title,body,crc]);
 }
-function raster(symbols){
+function raster(symbols,maximum){
  const [e,a,p]=symbols,raw=Buffer.alloc((SIZE+1)*SIZE);
  const put=(x,y,c)=>{if(x>=0&&y>=0&&x<SIZE&&y<SIZE)raw[y*(SIZE+1)+x+1]=c;};
  function stroke(x1,y1,x2,y2,weight,color){
@@ -42,10 +44,10 @@ function raster(symbols){
    if(xx*xx+yy*yy<=r*r)put(x,y,color);
   }
  }
- function path(points,x,y,w,h,color){
+ function path(points,x,y,w,h,weight,color){
   for(let j=1;j<points.length;j++){
    const u=points[j-1],v=points[j];
-   stroke(x+(u[0]-.5)*w,y+(u[1]-.5)*h,x+(v[0]-.5)*w,y+(v[1]-.5)*h,17,color);
+   stroke(x+(u[0]-.5)*w,y+(u[1]-.5)*h,x+(v[0]-.5)*w,y+(v[1]-.5)*h,weight,color);
   }
  }
  const forms={
@@ -53,54 +55,44 @@ function raster(symbols){
   a:[[[.25,.08],[.25,.94]],[[.25,.2],[.81,.47]],[[.25,.49],[.81,.76]]],
   p:[[[.23,.08],[.23,.94]],[[.23,.22],[.82,.53],[.23,.78]]]
  };
- function digit(n,x,y,color){
-  const glyphs={0:[0,1,2,3,4,5],1:[1,2],2:[0,1,6,4,3],3:[0,1,6,2,3],
-   4:[5,6,1,2],5:[0,5,6,2,3],6:[0,5,6,2,3,4],7:[0,1,2],8:[0,1,2,3,4,5,6],9:[0,1,2,3,5,6]};
-  const segments=[[-9,-12,9,-12],[9,-12,9,0],[9,0,9,12],[-9,12,9,12],
-   [-9,0,-9,12],[-9,-12,-9,0],[-9,0,9,0]];
-  for(const i of glyphs[n]||[]){
-   const [x1,y1,x2,y2]=segments[i];
-   stroke(x+x1,y+y1,x+x2,y+y2,7,color);
-  }
- }
- const active=[{key:"e",n:e,color:1},{key:"a",n:a,color:2},{key:"p",n:p,color:3}].filter(x=>x.n>0);
- if(!active.length){
+ const runes=[..."e".repeat(e),..."a".repeat(a),..."p".repeat(p)];
+ if(!runes.length){
   for(let y=0;y<SIZE;y++)for(let x=0;x<SIZE;x++){
    const r=Math.hypot(x-128,y-128);
-   if(r>=37&&r<=44)put(x,y,4);
+   if(r>=37&&r<=44)put(x,y,maximum?5:4);
   }
  }else{
-  const positions=active.length===1?[128]:active.length===2?[76,180]:[48,128,208];
-  const width=active.length===1?142:active.length===2?94:69;
-  const height=active.length===1?152:118;
-  active.forEach((item,i)=>{
-   const cy=item.n>1?105:127,cx=positions[i];
-   for(const segments of forms[item.key])path(segments,cx,cy,width,height,item.color);
-   if(item.n>1){
-    stroke(cx-27,215,cx-14,230,7,item.color);
-    stroke(cx-27,230,cx-14,215,7,item.color);
-    digit(item.n,cx+13,221,item.color);
-   }
+  const columns=runes.length===4?2:Math.min(3,runes.length),rows=Math.ceil(runes.length/columns);
+  const width=[0,142,77,58][columns],height=[0,128,79,59][rows];
+  const colors={e:1,a:2,p:3},weight=rows===1?17:12;
+  runes.forEach((key,i)=>{
+   const row=Math.floor(i/columns),column=i%columns;
+   const inRow=Math.min(columns,runes.length-row*columns);
+   const cx=128+(column-(inRow-1)/2)*(width+12);
+   const cy=128+(row-(rows-1)/2)*(height+8);
+   for(const segments of forms[key])path(segments,cx,cy,width,height,weight,maximum?5:colors[key]);
   });
  }
  const header=Buffer.from([137,80,78,71,13,10,26,10]);
  const ihdr=Buffer.alloc(13);
  ihdr.writeUInt32BE(SIZE,0);ihdr.writeUInt32BE(SIZE,4);ihdr[8]=8;ihdr[9]=3;
  return Buffer.concat([header,chunk("IHDR",ihdr),chunk("PLTE",COLORS),
-  chunk("tRNS",Buffer.from([0,255,255,255,255])),
+  chunk("tRNS",Buffer.from([0,255,255,255,255,255])),
   chunk("IDAT",deflateSync(raw,{level:9})),chunk("IEND",Buffer.alloc(0))]);
 }
-/** Uma imagem transparente por combinação distinta de E/A/P. */
+/** Uma imagem transparente por combinação de E/A/P e uma variante por face máxima. */
 export function generateRuneFaces(directory){
  mkdirSync(directory,{recursive:true});
- const unique=new Map(Object.values(FACES).flat().map(v=>[v.join("-"),v]));
- for(const [key,values] of unique){
-  const [e,a,p]=values;
-  writeFileSync(join(directory,`e${e}-a${a}-p${p}.png`),raster(values));
+ const files=new Map();
+ for(const faces of Object.values(FACES)){
+  for(const symbols of faces)files.set(runeTextureFile(symbols),{symbols,maximum:false});
+  const maximum=faces.at(-1);
+  files.set(runeTextureFile(maximum,true),{symbols:maximum,maximum:true});
  }
- return unique.size;
+ for(const [name,{symbols,maximum}] of files)writeFileSync(join(directory,name),raster(symbols,maximum));
+ return files.size;
 }
 export const faceImagePath=(sides,face)=>{
- const [e,a,p]=FACES[sides][face-1];
- return `systems/codex-rpg-foundry/assets/dice/runes/e${e}-a${a}-p${p}.png`;
+ const faces=FACES[sides];
+ return `systems/codex-rpg-foundry/assets/dice/runes/${runeTextureFile(faces[face-1],face===faces.length)}`;
 };

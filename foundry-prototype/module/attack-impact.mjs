@@ -42,7 +42,11 @@ export function planAttackImpact(target,impact,{autoLife=true}={}) {
  // A consequência do golpe colossal depende da mesa.
  const colossal=remaining>=3*lifeMax(system);
  const loss=autoLife&&!colossal?Math.min(system.life.value,basicLifeLoss(remaining)):0;
- if(loss)changes["system.life.value"]=system.life.value-loss;
+ if(loss){
+  receipt.lifeBefore=system.life.value;
+  receipt.lifeAfter=system.life.value-loss;
+  changes["system.life.value"]=receipt.lifeAfter;
+ }
  return {changes,receipt:{...receipt,integrity:absorbed,life:loss,manual:colossal||!autoLife?remaining:0}};
 }
 
@@ -57,7 +61,9 @@ export async function applyAttackImpact(impact,rollId,game,resolveUuid) {
  const {changes,receipt}=planAttackImpact(target,impact,{autoLife:game.settings?.get(ns,"experimentalLifeDamage")??true});
  // Uma mesma atualização persiste os efeitos e o recibo da rolagem, inclusive no token sintético.
  await target.update({...changes,["flags."+ns+"."+key+"."+rollId]:receipt});
- return receipt;
+ const saved=token.actor?.getFlag(ns,key)?.[rollId];
+ if(!saved)throw Error("O impacto ainda não foi confirmado no alvo. Use Retomar publicação.");
+ return saved;
 }
 
 export function impactSummary(receipt,privateDefense) {
@@ -65,7 +71,12 @@ export function impactSummary(receipt,privateDefense) {
  const messages=[];
  if(receipt.immune)messages.push("A armadura bloqueou o dano físico.");
  if(receipt.integrity)messages.push(privateDefense?"Dano aplicado à Integridade.":receipt.integrity+" de dano à Integridade.");
- if(receipt.life)messages.push(privateDefense?"Dano aplicado à Vida.":receipt.life+" Vida perdida.");
+ if(receipt.life){
+  const detail=receipt.lifeBefore!=null&&receipt.lifeAfter!=null
+   ?`Vida do alvo ${receipt.lifeBefore} → ${receipt.lifeAfter} (−${receipt.life}).`
+   :`Vida do alvo −${receipt.life}.`;
+  messages.push(privateDefense?"Dano aplicado à Vida.":detail);
+ }
  if(receipt.manual)messages.push(receipt.complex?"Proteção ou efeito especial: resolva o dano na mesa.":"Dano restante para resolução na mesa.");
  if(receipt.pavor)messages.push(receipt.pavorField==="courage"?"Coragem concedida ao alvo.":"Pavor transferido ao alvo.");
  if(receipt.overflow)messages.push("Pavor excedente para adjudicação.");

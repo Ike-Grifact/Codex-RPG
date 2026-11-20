@@ -173,10 +173,12 @@ test("seleção visual de duas fontes e cartas sem polígonos flutuantes",()=>{
 
 test("face visual apresenta todas as runas coloridas sem trocar o indice interno",()=>{
  const two=faceIcons([2,1,1]);
- assert.match(two,/codex-face-symbol-e/);
+ assert.equal((two.match(/codex-face-symbol-e/g)??[]).length,2);
  assert.match(two,/codex-face-symbol-a/);
  assert.match(two,/codex-face-symbol-p/);
- assert.match(two,/×2/);
+ assert.doesNotMatch(two,/×2|codex-face-maximum/);
+ assert.equal((faceIcons([2,1,0],true).match(/codex-face-rune codex-face-maximum/g)??[]).length,3);
  assert.match(faceIcons([0,0,0]),/Face vazia/);
+ assert.match(faceIcons([0,0,0],true),/Face máxima vazia/);
  assert.doesNotMatch(two,/>10<\/strong>/);
 });

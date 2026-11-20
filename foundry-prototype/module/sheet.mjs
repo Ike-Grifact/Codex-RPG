@@ -1,7 +1,7 @@
 /* Codex RPG — ficha de Actor para Foundry v14. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SITUATIONS,
  sourceDice,sourceLabel,faceSymbols,buildPool,canReinforceDie,starterPurchasePlan,lifeMax,healthByLife,balance,maxCourage,
- loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap,isMaximumFace} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal,pendingRollFor} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
@@ -30,8 +30,6 @@ function cards(list,group,s,d){
  isBase:eq(d.base,{group,key}),isSecond:eq(d.second,{group,key}),isComplement:eq(d.complement,{group,key})&&!isRepeat(d)}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
-const markerHTML = faceIcons;
-const symbolsFor = die => die.symbols ?? faceSymbols(die.sides,die.face);
 const carriedItems=carriedWeight;
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
@@ -169,6 +167,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(this._pending){
    const p=this._pending,item=selectedItem(actor,p.options);
+   const symbolsFor=die=>die.symbols??faceSymbols(die.sides,die.face,p.version<4);
+   const markerHTML=die=>faceIcons(symbolsFor(die),isMaximumFace(die));
    let summary=null,comparisons=[];
    if(!p.publication)try{
     if(p.options.privateDefense){
@@ -183,10 +183,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    this._comparisonIds=comparisons.map(option=>option.ids);
    ctx.codex.comparisons=comparisons
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
-      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(symbolsFor(d)),icon:dieSvg(d.sides)}))}));
+      .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(d),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
     dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s)+(x.elevated?" · Elevação":x.reinforced?" · Reforço legado":""),
-      selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(symbolsFor(x))})),
+      selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(x),maximum:isMaximumFace(x)})),
     selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
     publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
     de:p.options.privateDefense?"Reservada":p.options.de,formula:p.formula,targetName:p.options.targetName||"",hasTarget:!!p.options.targetName,

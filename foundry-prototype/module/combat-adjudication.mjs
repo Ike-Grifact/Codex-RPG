@@ -1,5 +1,7 @@
-import {monsterCap,maxCourage} from "./rules.mjs";
+import {monsterCap,maxCourage,isMaximumFace} from "./rules.mjs";
 import {rollNamespace as NS} from "./roll-resolution.mjs";
+import {faceIcons} from "./dice-icons.mjs";
+import {impactSummary} from "./attack-impact.mjs";
 
 const queues = new Map();
 
@@ -58,15 +60,26 @@ function inspectableImpactTarget(data) {
 async function openImpactTarget(_message, data) {
   const target = inspectableImpactTarget(data);
   if (!target?.sheet) throw Error("A ficha do alvo da rolagem está indisponível.");
-  await target.sheet.render({force: true});
+  const sheet = target.sheet;
+  await sheet.render({force: true});
+  sheet.element?.querySelector(".codex-resources")?.scrollIntoView({block: "nearest"});
 }
 
 export function registerCombatAdjudication() {
   Hooks.on("renderChatMessageHTML", (message, html) => {
-    const data = message.getFlag(NS, "adjudication");
-    if (!data) return;
     const content = html.querySelector(".codex-chat-result");
     if (!content) return;
+    const dice = message.getFlag(NS, "dice");
+    const faces = content.querySelectorAll(".codex-chat-die-face");
+    if (Array.isArray(dice) && dice.length === faces.length) faces.forEach((face, i) => {
+      const die = dice[i];
+      if (!Array.isArray(die?.symbols)) return;
+      const maximum = isMaximumFace(die);
+      face.innerHTML = faceIcons(die.symbols, maximum);
+      if (maximum) face.setAttribute("aria-label", `Face ${die.face} · máxima`);
+    });
+    const data = message.getFlag(NS, "adjudication");
+    if (!data) return;
     const add = (label, work, register = true) => {
       const button = content.ownerDocument.createElement("button");
       button.type = "button";
@@ -86,7 +99,13 @@ export function registerCombatAdjudication() {
       });
       content.append(button);
     };
-    if (inspectableImpactTarget(data)) add("Abrir ficha do alvo", openImpactTarget, false);
+    const target = inspectableImpactTarget(data);
+    if (target) {
+      const receipt = target.getFlag(NS, "impactReceipts")?.[message.getFlag(NS, "rollId")];
+      const summary = content.querySelector(".codex-chat-impact");
+      if (receipt && summary) summary.textContent = impactSummary(receipt, false);
+      add("Abrir ficha do alvo", openImpactTarget, false);
+    }
     if (!game.user.isActiveGM) return;
     if (data.targetUuid && data.p > 0 && !data.autoTarget && !data.isTest) add(`Aplicar ${data.p}P residual ao alvo`, applyResidual);
     if (data.allyId) add("Validar passagem de oportunidade", approvePass);

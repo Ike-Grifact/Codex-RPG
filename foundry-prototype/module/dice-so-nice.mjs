@@ -1,4 +1,5 @@
 import {FACES} from "./rules.mjs";
+import {runeTextureFile} from "./dice-icons.mjs";
 
 const system="codex-rpg-foundry";
 const colorset="codex-runas";
@@ -6,8 +7,7 @@ const colorset="codex-runas";
 const fontScale={4:0.82,6:1.35,10:1.02,12:1.1,20:1};
 const labelScale={4:0.66,6:0.82,10:0.72,12:0.76,20:0.68};
 
-/* PNGs transparentes coloridos são gerados ao empacotar. Cada arquivo contém
-   apenas runas e multiplicadores, sem polígonos; o resultado numérico não muda. */
+/* PNGs transparentes com runas individuais e destaque dourado nas máximas. */
 export function faceLabels(sides){
  const faces=FACES[sides];
  if(!faces)return [];
@@ -19,7 +19,7 @@ export function faceLabels(sides){
 export function faceImageLabels(sides){
  const faces=FACES[sides];
  if(!faces)return [];
- return faces.map(([e,a,p])=>`systems/codex-rpg-foundry/assets/dice/runes/e${e}-a${a}-p${p}.png`);
+ return faces.map((symbols,index)=>`systems/codex-rpg-foundry/assets/dice/runes/${runeTextureFile(symbols,index===faces.length-1)}`);
 }
 
 export function registerCodexDice(dice3d){

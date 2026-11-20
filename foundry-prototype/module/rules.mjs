@@ -31,6 +31,8 @@ export function faceSymbols(sides,face,legacyD4Faces=false){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...(sides===4&&legacyD4Faces?legacyD4:FACES[sides])[face-1]];
 }
+export const isMaximumFace=die=>die.face===die.sides&&Object.hasOwn(FACES,die.sides);
+export const criticalCount=kept=>kept.length>=2&&kept.every(isMaximumFace)?kept.length:0;
 export function sourceLabel(group,key){
  return (GROUPS[group]||[]).find(x=>x[0]===key)?.[1]|| (group==="equipment"?"Equipamento":"");
 }
@@ -191,8 +193,7 @@ export function compareKeptOptions(rolled,options={},limit=5){
  const results=[];
  function visit(start,ids){
   if(ids.length){
-   const bonusP=options.noisy?(ids.length>=2&&
-    rolled.filter(d=>ids.includes(d.id)).every(d=>d.face===d.sides)?2:1):Number(options.bonusP||0);
+   const bonusP=options.noisy?(criticalCount(rolled.filter(d=>ids.includes(d.id)))?2:1):Number(options.bonusP||0);
    const r=resolveRoll(rolled,ids,{...options,bonusP,cancelP:0,convertPairs:0});
    if(r.ok)results.push({ids:[...ids],dice:r.selected.map(d=>"d"+d.sides+": "+d.face),
     e:r.e,p:r.p,a:r.aRemaining,reached:r.reached,damage:r.damage,
@@ -209,19 +210,19 @@ export function compareKeptOptions(rolled,options={},limit=5){
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,legacyD4Faces=false,requireAttribute=false}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,legacyD4Faces=false,requireAttributeInPool=false}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  const maxKeep=animal?2:keepLimit(monster?threatGrade:level,extraKeep,monster);
  if(kept.length<1||kept.length>maxKeep)errors.push("Retenção fora do limite.");
- if(requireAttribute&&kept.length&&!kept.some(die=>die.group==="attribute"))errors.push("Mantenha ao menos um dado de Atributo.");
+ if(requireAttributeInPool&&!rolled.some(die=>die.group==="attribute"))errors.push("Role ao menos um dado de Atributo.");
 
  const extraKept=Math.max(0,kept.length-(animal?2:keepLimit(monster?threatGrade:level,0,monster)));
   if(extraKept+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
  const raw=[0,0,0];for(const d of kept)faceSymbols(d.sides,d.face,legacyD4Faces).forEach((v,i)=>raw[i]+=v);
- const crit=kept.length>=2&&kept.every(d=>d.face===d.sides);
+ const critical=criticalCount(kept);
  let convertedCrit=0,extraCritE=0,extraCritA=0;
- if(crit){convertedCrit=raw[2]>0?1:0;extraCritE=kept.length>=3?1:0;extraCritA=kept.length>=3?1:0;}
+ if(critical){convertedCrit=raw[2]>0?1:0;extraCritE=critical>=3?1:0;extraCritA=critical>=3?1:0;}
  const st=SITUATIONS[situation]||SITUATIONS.neutral;
  const a=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA)+(health?.a??0));
  const pBefore=Math.max(0,raw[2]-convertedCrit+Number(bonusP)+(health?.p??0));
@@ -229,10 +230,10 @@ export function resolveRoll(rolled,selectedIds,options={}){
  if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs>a)errors.push("Conversão 2A → 1E inválida.");
  const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)+(health?.e??0)),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
  const outcome=success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
- const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(crit&&kept.length===4?2:1):0;
- const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
+ const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(critical===4?2:1):0;
+ const refund=critical?(critical>=3?2:1):0;
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
   reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,
   criticalRefundPP:0,monsterCriticalPavor:!animal&&(monster||hostile)?2*refund:0,
-  freeCharacteristics:success&&crit?1:0,selected:kept};
+  freeCharacteristics:success&&critical?1:0,selected:kept};
 }

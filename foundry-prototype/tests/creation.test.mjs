@@ -80,7 +80,8 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
       const [e,a,p]=faces[i];
       assert.equal(label, ["ᛋ".repeat(e),"ᚨ".repeat(a),"ᚦ".repeat(p)].filter(Boolean).join(" ")||" ");
       assert.ok(!label.endsWith(".png"),"Rótulos rúnicos Unicode continuam disponíveis para depuração");
-       assert.match(faceImageLabels(sides)[i],/assets\/dice\/runes\/e\d+-a\d+-p\d+\.png$/);
+      assert.match(faceImageLabels(sides)[i],/assets\/dice\/runes\/e\d+-a\d+-p\d+(?:-max)?\.png$/);
+      assert.equal(faceImageLabels(sides)[i].endsWith("-max.png"),i===faces.length-1);
     });
   }
   const user = {id: "player"};
@@ -101,17 +102,20 @@ test("Dice So Nice usa as faces atuais e anima a mesma pilha para toda a mesa", 
   assert.equal(calls.length, 1);
 });
 
-test("o empacotamento gera 21 faces PNG distintas com a paleta oficial",()=>{
+test("o empacotamento gera 21 texturas rúnicas e cinco faces máximas douradas",()=>{
  const target=mkdtempSync(join(tmpdir(),"codex-runas-"));
  try{
-  assert.equal(generateRuneFaces(target),21);
+  assert.equal(generateRuneFaces(target),26);
   const files=readdirSync(target);
-  assert.equal(files.length,21);
+  assert.equal(files.length,26);
   assert.ok(files.includes("e2-a1-p0.png"));
   const image=readFileSync(join(target,"e2-a1-p0.png"));
   assert.deepEqual([...image.subarray(0,8)],[137,80,78,71,13,10,26,10]);
   assert.equal(image.readUInt32BE(16),256);
   assert.equal(image.readUInt32BE(20),256);
   assert.ok(image.includes(Buffer.from([38,122,69,35,105,187,84,33,118,221,225,232])));
+  const maximum=readFileSync(join(target,"e2-a1-p0-max.png"));
+  assert.ok(maximum.includes(Buffer.from([215,188,136])));
+  assert.notDeepEqual(maximum,image);
  }finally{rmSync(target,{recursive:true,force:true});}
 });

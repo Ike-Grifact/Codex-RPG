@@ -307,7 +307,7 @@
       {{#each codex.pending.dice}}
         <button type="button" class="codex-result-die {{#if this.selected}}is-kept{{/if}}" data-action="toggleKept" data-id="{{this.id}}" aria-pressed="{{#if this.selected}}true{{else}}false{{/if}}">
           <span class="codex-result-die-head"><span>d{{this.sides}} · {{this.label}}</span>{{#if this.selected}}<span class="codex-kept-tag">MANTIDO</span>{{else}}<span class="codex-kept-tag">SELECIONAR</span>{{/if}}</span>
-           <span class="codex-result-face codex-face-icons" role="img" aria-label="{{this.symbolsText}} · face {{this.face}}">{{{this.symbolsHTML}}}</span>
+           <span class="codex-result-face codex-face-icons" role="img" aria-label="{{this.symbolsText}} · face {{this.face}}{{#if this.maximum}} · máxima{{/if}}">{{{this.symbolsHTML}}}</span>
             <span class="codex-result-symbols">{{#if this.selected}}Clique para retirar{{else}}Clique para manter{{/if}}</span>
         </button>
       {{/each}}

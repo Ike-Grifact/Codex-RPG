@@ -116,6 +116,28 @@ test("crítico com dois d12 máxima pode acertar com Pavor predominante",()=>{
  assert.equal(r.critical,2);assert.equal(r.e,1);assert.equal(r.p,3);
  assert.equal(r.outcome,"Acerto com Pavor");
 });
+test("crítico acumula benefícios, exige acerto para dobrar e permite descartar o Atributo rolado",()=>{
+ const dice=[
+  {id:"attr",group:"attribute",sides:4,face:4},
+  {id:"d10",group:"practice",sides:10,face:10},
+  {id:"d6",group:"knowledge",sides:6,face:6},
+  {id:"d12",group:"practice",sides:12,face:12},
+  {id:"extra",group:"equipment",sides:6,face:6},
+ ];
+ const options={level:6,extraKeep:1,de:1,requireAttributeInPool:true};
+ const withD4=resolveRoll(dice,["attr","d10"],options);
+ const two=resolveRoll(dice,["d10","d6"],options);
+ const three=resolveRoll(dice,["d10","d6","d12"],options);
+ const keepFour=["d10","d6","d12","extra"];
+ const four=resolveRoll(dice,keepFour,options);
+ assert.deepEqual([withD4.critical,withD4.e,withD4.p],[2,2,0]);
+ assert.equal(two.ok,true);
+ assert.deepEqual([two.critical,two.e,two.p,two.aRemaining,two.criticalRefundCourage,two.criticalRefundPP],[2,3,0,1,1,0]);
+ assert.deepEqual([three.critical,three.e,three.p,three.aRemaining,three.damage,three.criticalRefundCourage],[3,5,1,2,5,2]);
+ assert.deepEqual([four.critical,four.e,four.p,four.aRemaining,four.damage,four.criticalRefundCourage],[4,6,1,2,12,2]);
+ assert.equal(resolveRoll(dice,keepFour,{...options,de:8}).damage,0);
+ assert.equal(resolveRoll(dice.slice(1),keepFour,options).ok,false);
+});
 test("Conversão de Antecipar não reutiliza símbolos",()=>{
  const d=[{id:"a",group:"attribute",sides:10,face:8},{id:"b",group:"practice",sides:12,face:11}];
  const one=resolveRoll(d,["a","b"],{de:3,convertPairs:1,cancelP:1});

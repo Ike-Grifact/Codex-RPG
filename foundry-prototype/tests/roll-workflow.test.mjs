@@ -65,7 +65,7 @@ test("O chat preserva faces e runas de todos os dados e distingue descarte", asy
   assert.match(content,/MANTIDO/);
   assert.match(content,/DESCARTADO/);
   assert.match(content,/Dados rolados · 1 de 2 mantidos/);
-   assert.match(content,/aria-label="Face 6"/);
+  assert.match(content,/aria-label="Face 6 · máxima"/);
    assert.doesNotMatch(content,/codex-chat-die-face">6<\/strong>/);
    assert.ok(messages.get(id).source.flags[NS].dice[0].face===6,"O motor ainda registra a face numérica");
 });

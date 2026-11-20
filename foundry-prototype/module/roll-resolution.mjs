@@ -1,4 +1,4 @@
-import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxCourage, passiveAnticipar,monsterCap, sourceLabel, faceSymbols, healthByLife} from "./rules.mjs";
+import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxCourage, passiveAnticipar,monsterCap, sourceLabel, faceSymbols, healthByLife,criticalCount,isMaximumFace} from "./rules.mjs";
 import {equippedDie} from "./equipment-logic.mjs";
 import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
@@ -96,7 +96,7 @@ function optionsFor(actor, options) {
   const s = actor.system;
   return {
     ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage - (options.health?.coragem??0), monster: s.monsterRules,
-    animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character", requireAttribute:Boolean(options.actionType),
+    animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character", requireAttributeInPool:Boolean(options.actionType),
     weight: options.weightEnabled ? affinity(options.attackWeight, options.targetWeight) : 0,
   };
 }
@@ -108,7 +108,7 @@ export function alternativesFor(actor, pending, de = pending.options.de) {
 export function rollResult(actor, pending, de = pending.options.de) {
   const options = {...optionsFor(actor, pending.options), legacyD4Faces:pending.version!=null&&pending.version<4, de};
   const kept = pending.dice.filter(die => pending.selected.includes(die.id));
-  const critical = kept.length >= 2 && kept.every(die => die.face === die.sides);
+  const critical = criticalCount(kept);
   const bonusP = options.noisy ? (critical ? 2 : 1) : 0;
   return resolveRoll(pending.dice, pending.selected, {...options, bonusP});
 }
@@ -161,10 +161,10 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const chosenIds=new Set(pending.selected);
   const cards=pending.dice.map(die=>{
     const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face,pending.version<4);
-    const marks=faceIcons(symbols);
+    const maximum=isMaximumFace(die),marks=faceIcons(symbols,maximum);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
       '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.elevated?" · Elevação":die.reinforced?" · Reforço legado":"")+'</div>'+
-      '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+'">'+marks+'</div>'+
+      '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+(maximum?' · máxima':'')+'">'+marks+'</div>'+
       '<div class="codex-chat-die-marks">'+(chosen?'Mantido na ação':'Não mantido')+'</div>'+
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
   }).join("");

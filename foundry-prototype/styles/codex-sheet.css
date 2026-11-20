@@ -746,10 +746,8 @@
 .codex-face-symbol-a{color:#2369BB}
 .codex-face-symbol-p{color:#542176}
 .codex-face-symbol .codex-face-rune{font:inherit}
-.codex-face-symbol .codex-face-count{
- font:800 13px Inter,"Segoe UI",sans-serif;align-self:flex-end;padding-bottom:3px
-}
 .codex-face-blank{color:#b6a789;font:400 38px/1 Inter,system-ui,sans-serif}
+.codex-face-maximum{color:#916615}
 .codex-foundry-root .codex-result-face{
  width:100%;min-height:70px;display:flex!important;justify-content:center;
  align-items:center;gap:8px;flex-wrap:wrap;font-size:inherit
@@ -763,11 +761,9 @@
 .chat-message .codex-chat-die-face .codex-face-symbol,.codex-chat-die-face .codex-face-symbol{
  font-size:25px;padding:5px;border-radius:6px
 }
-.chat-message .codex-chat-die-face .codex-face-count,.codex-chat-die-face .codex-face-count{font-size:10px}
 .codex-chat-die-marks{font:600 10px/1.3 Inter,"Segoe UI",sans-serif;color:#827c72;text-align:center;min-height:14px}
 .codex-compare-option .codex-face-icons{display:inline-flex!important;gap:3px}
 .codex-compare-option .codex-face-symbol{font-size:17px;padding:3px 5px;border-radius:5px}
-.codex-compare-option .codex-face-count{font-size:10px}
 .codex-rune-legend .legend-e b{color:#267A45;background:#f7f1e7;border-radius:4px;padding:0 3px}
 .codex-rune-legend .legend-a b{color:#2369BB;background:#f7f1e7;border-radius:4px;padding:0 3px}
 .codex-rune-legend .legend-p b{color:#542176;background:#f7f1e7;border-radius:4px;padding:0 3px}

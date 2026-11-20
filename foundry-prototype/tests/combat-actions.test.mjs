@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {actorData} from "../module/creation.mjs";
-import {basicLifeLoss,planAttackImpact,applyAttackImpact} from "../module/attack-impact.mjs";
+import {basicLifeLoss,planAttackImpact,applyAttackImpact,impactSummary} from "../module/attack-impact.mjs";
 import {standardMovement,movementBudget} from "../module/movement.mjs";
 import {prepareCombatAction,changeRollSource} from "../module/combat-action.mjs";
 import {buildPool} from "../module/rules.mjs";
@@ -78,6 +78,8 @@ test("ataque básico gasta a Integridade, consome só a Vida correspondente e li
  assert.equal(changes["system.life.value"],2);
  assert.equal(changes["system.pavorLocal"],4);
  assert.deepEqual([receipt.integrity,receipt.life,receipt.pavor,receipt.overflow],[1,2,1,2]);
+ assert.match(impactSummary(receipt,false),/Vida do alvo 4 → 2 \(−2\)/);
+ assert.doesNotMatch(impactSummary(receipt,true),/4 → 2/);
  assert.deepEqual([0,1,5,6,8,9].map(basicLifeLoss),[0,1,1,2,2,3]);
  const pc=actor("character","pc",{courage:8});
  const failed=planAttackImpact(pc,{mode:"armas",damage:0,pavor:3});
@@ -91,6 +93,14 @@ test("efeitos especiais e dano colossal ficam manuais e token removido não redi
  assert.equal(planAttackImpact(target,{mode:"armas",damage:3,pavor:0},{autoLife:false}).receipt.manual,3);
  assert.deepEqual(await applyAttackImpact({tokenUuid:"Scene.s.Token.t",actorUuid:"Actor.outro"},rollId,{},async()=>({actor:target})),{missing:true});
  assert.equal(target.updates,0);
+});
+
+test("uma atualização recusada não confirma dano ou Pavor no chat",async()=>{
+ const target=actor("creature","enemy");
+ target.update=async()=>undefined;
+ const attack={tokenUuid:"Scene.s.Token.t",actorUuid:target.uuid,damage:3,pavor:1,mode:"armas"};
+ await assert.rejects(applyAttackImpact(attack,rollId,{},async()=>({actor:target})),/impacto ainda não foi confirmado/);
+ assert.deepEqual([target.system.life.value,target.system.pavorLocal],[4,0]);
 });
 
 test("tokens desvinculados retomam apenas a rolagem salva na própria instância",()=>{

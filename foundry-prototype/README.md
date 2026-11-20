@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.22.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.23.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -78,7 +78,7 @@ O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma
 2. Use **Atacar** para preparar Disciplina + Atributo, com mãos vazias ou uma arma equipada e habilitada. Use **Conjurar** para escolher um elemento adquirido ou um foco habilitado. As criaturas que só têm Atributos atacam com duas fontes naturais. Altere as aptidões na própria preparação. No Inventário, **Criar atalho de ataque** fixa uma arma na barra da ficha. A mesa declara a presença do elemento, a preparação e a pertinência do complemento durante o jogo.
 3. Use a ferramenta **Selecionar alvos** do Foundry e clique em **um token** no mapa. Passe o cursor sobre o token e pressione **T** para usar o atalho. O Codex aplica a DE defensiva da ficha e mantém a DE reservada para jogadores sem permissão de consulta. Use **DE manual** para testes sem alvo.
    A carta de ataque oferece **Abrir ficha do alvo** para quem tem permissão de consulta. Em tokens desvinculados, Vida, Pavor e rolagens pendentes pertencem àquele token. Para continuar uma rolagem salva, clique em **Retomar rolagem** na ficha correspondente.
-4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
+4. Role a pilha de até nove dados e **escolha quais manter**. O Atributo precisa entrar na pilha e pode ser descartado. As cartas mostram uma runa por símbolo. As runas das faces máximas aparecem em dourado, mesmo em dados descartados. O crítico só se confirma quando todos os mantidos estão na face máxima, com pelo menos dois dados.
 5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
 6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico devolve Coragem segundo o teto de nível; monstro recebe recompensa em Pavor. PP histórico permanece sem uso nas ações atuais. A elevação comum paga 1 Coragem uma vez na rodada e sobe um dado na cadeia d4→d6→d10→d12.
 
@@ -106,7 +106,7 @@ Ao finalizar um ataque ou conjuração com um único alvo, o Narrador ativo sinc
 
 ## Limites da automação atual
 
-Em **Atacar** e **Conjurar**, o dano básico de um acerto usa a Integridade da armadura equipada antes da Vida. A opção de mundo **Aplicar perda experimental de Vida** usa a escala publicada para playtest: 1–5 de dano restante tira 1 Vida, 6–8 tira 2 e 9 ou mais tira 3. O Livro atual mantém os limiares definitivos em aberto. Barreiras ativas podem ser resolvidas na mesa pela opção avançada de dano manual. Efeitos especiais, proteção elemental e golpes colossais sinalizados ficam para adjudicação, juntamente com casos de múltiplos alvos e transformações pendentes.
+Em **Atacar** e **Conjurar**, o dano básico de um acerto usa a Integridade da armadura equipada antes da Vida. A opção de mundo **Aplicar perda experimental de Vida** faz 1–5 de dano restante tirar 1 Vida, 6–8 tirar 2 e 9 ou mais tirar 3. A carta separa o dano básico da redução efetiva de Vida para quem pode consultar o alvo. O Livro atual mantém os limiares definitivos em aberto. Barreiras ativas podem ser resolvidas na mesa pela opção avançada de dano manual. Efeitos especiais, proteção elemental e golpes colossais sinalizados ficam para adjudicação, juntamente com casos de múltiplos alvos e transformações pendentes.
 
 ## Testes de regras
 
