@@ -1752,3 +1752,45 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-inventory-pane[data-inventory-pane="shop"] .fp-trade-shop-grid{gap:9px}
 .fp-inventory-stone-owned{font-size:11px;color:var(--fp-muted);line-height:1.5}
 @media(max-width:570px){.fp-inventory-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.fp-inventory-tabs button{justify-content:center;font-size:10px;padding:8px 6px;gap:4px}.fp-inventory-tabs button span{font-size:13px}}
+
+
+/* 20/11/2026 · Conjuração livre: elemento, Grau, fonte e aceleração dentro de Ações. */
+.fp-magic-action{min-width:0;display:grid;gap:7px;align-content:start}
+.fp-magic-actions{display:grid;gap:6px;min-width:0}
+.fp-magic-action .fp-magic-element-list{display:flex;gap:5px}
+.fp-primary-column>#play-talents .fp-magic-action .fp-owned-elements{
+ display:flex;flex-flow:row wrap;align-content:flex-start;gap:5px;max-height:none;overflow:visible;padding:0
+}
+.fp-primary-column>#play-talents .fp-magic-element{
+ display:inline-flex;align-items:center;justify-content:center;min-height:30px;max-width:100%;
+ padding:6px 9px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-deep);
+ color:var(--fp-text);font-size:10px;font-weight:650;cursor:pointer
+}
+.fp-primary-column>#play-talents .fp-magic-element.selected,
+.fp-primary-column>#play-talents .fp-magic-element[aria-pressed="true"]{
+ border-color:var(--fp-gold);background:var(--fp-raised);color:var(--fp-gold)
+}
+.fp-primary-column>#play-talents .fp-magic-element:hover,.fp-primary-column>#play-talents .fp-magic-element:focus-visible{
+ border-color:var(--fp-gold);outline-offset:2px
+}
+.fp-primary-column>#play-talents .fp-action-cast{width:100%;padding:9px 10px;border:1px solid var(--fp-gold);border-radius:9px;background:var(--fp-raised);color:var(--fp-gold);font-weight:750;font-size:12px;cursor:pointer;text-align:center}
+.fp-primary-column>#play-talents .fp-action-cast:hover,.fp-primary-column>#play-talents .fp-action-cast:focus-visible{
+ box-shadow:0 0 0 2px rgba(215,188,136,.14);outline-offset:2px
+}
+.fp-primary-column>#play-talents .fp-magic-config{display:grid;gap:6px;min-width:0}
+.fp-magic-config label{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:10px;color:var(--fp-muted);font-weight:650}
+.fp-magic-config select{width:100%;min-width:0;padding:7px 8px;border:1px solid var(--fp-stroke);background:var(--fp-deep);color:var(--fp-text);font-size:11px;border-radius:7px}
+.fp-magic-config .fp-magic-check{display:flex;flex-direction:row;gap:7px;align-items:flex-start;line-height:1.4;color:var(--fp-text);cursor:pointer}
+.fp-magic-check input{width:16px;height:16px;flex:0 0 16px;margin:1px 0 0;accent-color:var(--fp-gold)}
+.fp-magic-check:has(input:disabled){opacity:.5;cursor:default}
+.fp-magic-note{font-size:10px;color:var(--fp-muted);line-height:1.5}
+.fp-magic-composer{border:1px solid var(--fp-stroke);border-radius:9px;padding:12px;margin:9px 0;background:var(--fp-deep);display:grid;gap:6px}
+.fp-magic-composer strong{font-size:13px;color:var(--fp-gold)}
+.fp-magic-composer small,.fp-magic-composer p{font-size:11px;line-height:1.45;color:var(--fp-muted);margin:0}
+.fp-focus-charge-editor{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.fp-focus-charge-editor label{display:inline-flex;align-items:center;gap:5px;min-width:0}
+.fp-focus-charge-editor select{max-width:140px}
+.fp-focus-charge-editor input{max-width:62px}
+.fp-focus-charge-editor button{min-height:29px;font-size:10px}
+.fp-focus-charge-editor small{flex:0 0 100%;font-size:10px;line-height:1.5;color:var(--fp-muted)}
+@media(max-width:600px){.fp-magic-config{grid-template-columns:1fr}.fp-primary-column>#play-talents .fp-magic-element{min-height:32px}}
