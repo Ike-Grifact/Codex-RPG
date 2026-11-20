@@ -452,7 +452,7 @@ const SKILLS=[
  [
   "maestria-martelos",
   "Maestria em Martelos",
-  "1 XP. Requisitos de compra: Força 3 + Destreza 1 + Vigor 1. Em ataque com martelo que acerte, permite ativar um efeito próprio desse martelo sem Coragem, desde que possua a Perícia em Armas correspondente ao peso: Leves/Médias/Pesadas. A Perícia de Armas é requisito para ativar, não para comprar. Não cria efeito extra, não dispensa DE ou gatilhos; acúmulo com crítico pendente.",
+  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
  [
@@ -1069,7 +1069,7 @@ const CARD_EFFECTS={
  "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
- "maestria-martelos": "Ao acertar com martelo habilitado para seu peso, ativa UMA característica própria da arma sem Coragem. Perícia em Armas Leves/Médias/Pesadas do peso correspondente é exigida na ativação, não na compra. Não libera segundo efeito gratuitamente",
+ "maestria-martelos": "Martelo habilitado pelo peso: acerto comum ativa 1 característica gratuita; crítico ativa até 2 características diferentes gratuitas e pode pagar 1 Coragem para mais uma terceira, se existente. Não exige Perícia de Armas para compra, só para ativação",
  "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
  "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades de fabricação pendentes; Encantar com Elemento é requisito comprável e nunca é concedido automaticamente",
  "resistencia-a-fogo": "Resistência pessoal à Vida: dano de Fogo que alcança a Vida do portador é reduzido à metade. Derreter G3 causa 0 de Vida direta (seu +1 fixo é anulado), mas E+P à Integridade da armadura continua normal. Não concede imunidade ou proteção à armadura",
@@ -1123,7 +1123,7 @@ const CARD_BRIEFS={
  "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
- "maestria-martelos": "1 XP. Requer Força 3, Destreza 1, Vigor 1. Martelos: em acerto, um efeito da arma grátis se possuir Perícia em Armas correspondente ao peso do martelo; sem habilitação, não ativa gratuitamente. Acumular com crítico pendente.",
+ "maestria-martelos": "1 XP; exige Força 3, Destreza 1 e Vigor 1. Com Perícia de Armas do peso, em acerto comum ativa 1 efeito grátis; em crítico, 2 diferentes grátis + possibilidade de terceira por 1 Coragem. Apenas efeitos existentes na arma.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
  "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
  "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O portador reduz à metade o dano de Fogo à Vida, sem proteger a armadura. O +1 de Vida direta de Derreter é 0, enquanto E+P à Integridade permanece normal. Frações e interações pendentes.",
@@ -1177,7 +1177,7 @@ const CARD_ACTIVATIONS={
  "erudicao-avancada": "Passiva",
  "atletismo-avancado": "Passiva",
  "artesao-avancado": "Passiva",
- "maestria-martelos": "Em acerto com martelo e Perícia em Armas do peso correspondente: uma característica gratuitamente; escolher efeito manualmente",
+ "maestria-martelos": "Acerto comum: 1 efeito grátis. Crítico: 2 efeitos diferentes grátis e uma terceira por 1 Coragem; requer arma e Perícia de peso habilitadas. Escolha manual",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
  "resistencia-a-fogo": "Passiva pessoal: metade do dano de Fogo à Vida e 0 Vida direta por Derreter. Não protege Integridade; cálculos automáticos pendentes",
@@ -1349,6 +1349,13 @@ function hammerMasteryRequiredSkill(item){
 function hammerMasteryCanActivate(item,s=state){
  const required=hammerMasteryRequiredSkill(item);
  return !!required&&ownsSkill("maestria-martelos",s)&&ownsSkill(required,s);
+}
+// Orçamento de características para um ATAQUE QUE ACERTOU, não executa efeitos ou gasta recursos.
+function hammerMasteryOnHit(item,critical=false,payExtra=false,s=state){
+ if(!hammerMasteryCanActivate(item,s))return {free:0,paid:0,courageCost:0,maxEffects:0};
+ const free=critical?2:1;
+ const paid=critical&&payExtra?1:0;
+ return {free,paid,courageCost:paid,maxEffects:free+paid};
 }
 function equipmentGroupName(id){return EQUIPMENT_FAMILIES.find(x=>x[0]===id)?.[1]||"Outros";}
 function equipmentWeightName(id){return EQUIPMENT_WEIGHT_OPTIONS.find(x=>x[0]===id)?.[1]||"Leve";}
@@ -4023,7 +4030,7 @@ function renderInventory(){
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
-  (ownsSkill("maestria-martelos")&&["weapon","arma"].includes(it.type)&&/martelo|marreta/i.test(String(it.name||""))?'<div class="fp-item-hint"><strong>Maestria em Martelos:</strong> '+(hammerMasteryCanActivate(it)?'Arma habilitada: ao acertar, UMA característica própria do martelo sem Coragem.':'Ativação gratuita indisponível: falta Perícia de Armas do peso deste martelo, ou peso não padronizado.')+' Compra da Maestria não dispensa a Perícia do peso.</div>':"")+ 
+  (ownsSkill("maestria-martelos")&&["weapon","arma"].includes(it.type)&&/martelo|marreta/i.test(String(it.name||""))?'<div class="fp-item-hint"><strong>Maestria em Martelos:</strong> '+(hammerMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas do peso deste martelo, ou peso não padronizado.')+' Compra da Maestria não dispensa a Perícia do peso.</div>':"")+ 
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
