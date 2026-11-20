@@ -161,3 +161,28 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
   assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
  }
 });
+
+
+test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const skillReq=new Function("state","racialGrants","ownsSkill",code+"\\nreturn skillReq;")(
+  {},()=>[],(id,s)=>s.skills.includes(id)
+ );
+ const ficha=(influencia,destreza,inteligencia,skills=[])=>({
+  attributes:{influencia,destreza,inteligencia},practices:{},knowledges:{},skills
+ });
+ assert.ok(skillReq("montar",ficha(2,2,0)),"Montar exige Destreza 3");
+ assert.ok(skillReq("montar",ficha(1,3,0)),"Montar exige Influência 2");
+ assert.equal(skillReq("montar",ficha(2,3,0)),null,"Domar não é requisito");
+ assert.ok(skillReq("maestria-montaria",ficha(6,4,2)),"Maestria exige a Perícia Montar Animal");
+ assert.ok(skillReq("maestria-montaria",ficha(5,4,2,["montar"])),"Maestria exige Influência 6");
+ assert.ok(skillReq("maestria-montaria",ficha(6,3,2,["montar"])),"Maestria exige Destreza 4");
+ assert.ok(skillReq("maestria-montaria",ficha(6,4,1,["montar"])),"Maestria exige Inteligência 2");
+ assert.equal(skillReq("maestria-montaria",ficha(6,4,2,["montar"])),null);
+ assert.match(app,/"montar",\s*"Montar Animal",[^\]]+\b1\s*\]/,"Montar custa 1 XP");
+ assert.match(app,/"maestria-montaria",\s*"Maestria em Montaria",[^\]]+\b1\s*\]/,"Maestria custa 1 XP");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('skills:["provocacao-sofisticada","recobrar-coragem","montar","maestria-montaria"]'),
+  "As Perícias formam ramificação conjunta em Influência e Mobilidade");
+ assert.ok(app.includes('"maestria-montaria":"maestria-em-montaria"'),"Verbete da Maestria acessível");
+});
