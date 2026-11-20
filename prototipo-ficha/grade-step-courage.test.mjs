@@ -122,6 +122,14 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
  assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
  assert.ok(app.includes('data-action="prepare-element"'),"Atalho elemental precisa ser preservado");
  assert.match(html,/id="inventory-shop-details"/,"Loja separada dos pertences");
+ const panes=["bag","wallet","shop"];
+ for(const pane of panes){
+  assert.ok(html.includes('data-inventory-view="'+pane+'"'),"Subaba "+pane+" disponível");
+  assert.ok(html.includes('data-inventory-pane="'+pane+'"'),"Conteúdo da subaba "+pane+" disponível");
+ }
+ assert.ok(app.includes("function chooseInventoryPane(next)"),"Subabas do Inventário precisam funcionar");
+ assert.ok(app.includes('if(page==="inventory")inventoryPane="bag"'),"Abrir Inventário deve mostrar a Mochila");
+ assert.ok(html.includes("VT é uma unidade de valor"),"VT tem explicação de poder de troca");
  assert.match(html,/id="inventory-quick-items"/,"Resumo do que o personagem possui");
  assert.ok(html.indexOf('id="inventory-list"')<html.indexOf('id="trade-panel"'),"Itens antes da bolsa de VT");
  assert.ok(html.indexOf('id="trade-panel"')<html.indexOf('id="inventory-shop-details"'),"VT separado da loja");
