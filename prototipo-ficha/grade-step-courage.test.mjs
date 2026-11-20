@@ -455,3 +455,85 @@ test("Montaria: Montar Animal dá Vantagem; nova Perícia em Montaria dá +1A se
  assert.ok(newPage.includes("compra está <strong>PENDENTE</strong>"));
  assert.ok(oldPage.includes("Vantagem em testes com montaria")&&oldPage.includes("Vantagem não é +1 Antecipar"));
 });
+
+
+test("Maestria em Escudos: 1 XP, Destreza/Vigor 2, +1 DE com escudo único e Integridade temporária",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const skillReq=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+
+  "\nreturn skillReq;")({},()=>[],owns);
+ const prep=(dex,vig,skills=[])=>({
+  attributes:{destreza:dex,vigor:vig,forca:0,agilidade:0},practices:{armas_conjuracao:0,artesao:0,atletismo:0},knowledges:{},skills
+ });
+ assert.match(skillReq("maestria-escudos",prep(1,2)),/Destreza 2 e Vigor 2/);
+ assert.match(skillReq("maestria-escudos",prep(2,1)),/Destreza 2 e Vigor 2/);
+ assert.equal(skillReq("maestria-escudos",prep(2,2)),null);
+ assert.match(app,/"maestria-escudos",\s*"Maestria em Escudos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.ok(app.includes('"maestria-escudos":[["a:destreza:2","a:vigor:2"]]'));
+ const code=extract("function deNatural(s=state){","function capacity(){");
+ const sheet={level:1,skills:["maestria-escudos"],attributes:{destreza:2,vigor:2,agilidade:5,forca:3},
+  practices:{atletismo:0},items:[
+   {id:"first",type:"escudo",equipped:true,hp:6,max:6,shieldMasteryBonusSpent:false},
+   {id:"second",type:"escudo",equipped:true,hp:9,max:9,shieldMasteryBonusSpent:false}
+  ]};
+ const f=new Function("state","ownsSkill",code+
+  "\nreturn {deNatural,deDefense,shieldMasteryActive,shieldIntegrityDisplay,changeShieldIntegrity,loseShieldIntegrity};")(sheet,owns);
+ assert.equal(f.deDefense(sheet),f.deNatural(sheet)+1,"+1 DE enquanto há escudo");
+ assert.equal(f.shieldMasteryActive(sheet.items[0]),true);
+ assert.equal(f.shieldMasteryActive(sheet.items[1]),false,"Não se multiplicam bônus por vários escudos");
+ assert.deepEqual(f.shieldIntegrityDisplay(sheet.items[0]),{hp:7,max:7,bonus:1,active:true});
+ assert.deepEqual(f.shieldIntegrityDisplay(sheet.items[1]),{hp:9,max:9,bonus:0,active:false});
+ f.changeShieldIntegrity(sheet.items[0],-1);
+ assert.equal(sheet.items[0].hp,6,"Primeiro perde ponto extra, não material base");
+ assert.equal(sheet.items[0].shieldMasteryBonusSpent,true);
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).hp,6);
+ sheet.items[0].equipped=false;
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).max,6,"Sem equipamento, sem +1");
+ sheet.items[0].equipped=true;
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).hp,6,"Reequipar não restaura ponto gasto");
+ assert.equal(f.loseShieldIntegrity(sheet.items[0],2),2);
+ assert.equal(sheet.items[0].hp,4,"Cravar e desgaste material respeitam ponto consumido");
+ const noSkill={...sheet,skills:[]};
+ assert.equal(f.deDefense(noSkill),f.deNatural(noSkill),"Sem Maestria DE normal");
+ const cap={...sheet,attributes:{...sheet.attributes,agilidade:9},items:[sheet.items[0],
+  {id:"armor",type:"armadura",weight:"muito_leve",equipped:true,grade:1}]};
+ assert.equal(f.deDefense(cap),12,"Maestria + armadura não ultrapassam teto 12");
+ const file=readFileSync(join(root,"../pericias/maestria-em-escudos.html"),"utf8");
+ assert.ok(file.includes("Destreza 2 + Vigor 2")&&file.includes("+1 DE defensiva"));
+ assert.ok(app.includes("shieldMasteryBonusSpent:type===\"escudo\"&&!!it.shieldMasteryBonusSpent"),"Persistência do desgaste do bônus");
+});
+
+test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano inventado",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+
+  "\nreturn skillReq;")({},()=>[],owns);
+ const state=(dex,forca,skills)=>({attributes:{destreza:dex,forca,vigor:2,agilidade:1},
+  practices:{armas_conjuracao:0,artesao:0,atletismo:0},knowledges:{},skills});
+ const owned=["maestria-escudos","maestria-arremesso-armas"];
+ assert.match(req("escudo-bumerangue",state(1,3,owned)),/Requer Destreza 2, Força 3/);
+ assert.match(req("escudo-bumerangue",state(2,2,owned)),/Requer Destreza 2, Força 3/);
+ assert.match(req("escudo-bumerangue",state(2,3,["maestria-escudos"])),/Arremesso de Armas/);
+ assert.match(req("escudo-bumerangue",state(2,3,["maestria-arremesso-armas"])),/Maestria em Escudos/);
+ assert.equal(req("escudo-bumerangue",state(2,3,owned)),null);
+ assert.match(app,/"escudo-bumerangue",\s*"Escudo Bumerangue",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.ok(app.includes('"escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]]'));
+ const code=extract("function deNatural(s=state){","function capacity(){");
+ const s={...state(2,3,[...owned,"escudo-bumerangue"]),items:[{id:"sh",type:"escudo",equipped:true,hp:6,max:6}]};
+ const ready=new Function("state","ownsSkill",code+"\nreturn shieldBoomerangReady;")(s,owns);
+ assert.equal(ready(s.items[0],s),true,"Escudo equipado e requisitos cumpridos");
+ assert.equal(ready({...s.items[0],equipped:false},s),false,"Só escudo usado pode ser arremessado");
+ assert.equal(ready({type:"arma",equipped:true},s),false,"Arma comum não substitui escudo");
+ assert.equal(ready(s.items[0],{...s,skills:owned}),false,"Sem Bumerangue não habilita");
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ assert.ok(page.includes("8 metros")&&page.includes("retorna ao personagem"));
+ assert.ok(page.includes("O autor não determinou quais dados"),"Dano e dados pendentes");
+ const map=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
+ const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(portal.includes('href="escudo-bumerangue.html"')&&portal.includes('href="maestria-em-escudos.html"'));
+});
