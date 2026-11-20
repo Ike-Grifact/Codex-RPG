@@ -1,9 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="icon-title">
-  <title id="icon-title">Movimento — bota de caminhada</title>
-  <g fill="none" stroke="#2369BB" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 8h20l-2 21c0 4 3 8 7 10l9 4c3 1 5 4 5 7v3c0 3-2 5-5 5H12c-4 0-7-2-7-6v-5c0-2 2-4 4-5l10-5 3-12-2-17Z"/>
-    <path d="M21 15h17M8 49h49M20 38l11 5 7-9"/>
-    <path d="m24 23 9 3-10 4 10 2"/>
-    <path d="M14 54h8m26 0h6"/>
+  <title id="icon-title">Movimento — duas pegadas de sola de bota</title>
+  <g fill="none" stroke="#2369BB" stroke-width="3.1" stroke-linejoin="round" stroke-linecap="round">
+    <g transform="translate(7 4) rotate(-10 14 24)">
+      <path d="M9 29C7 24 5.5 17 6.5 12C7.8 5 12.6 3 16.5 3.5C23 4 25 11 23 17C21.4 22 18.4 26 18 29Z"/>
+      <path d="M9.5 34.5H18V39C18 43 15.9 45 13.5 45C10.5 45 9 42.5 9.5 39Z"/>
+    </g>
+    <g transform="translate(30 14) rotate(10 14 24)">
+      <path d="M9 29C7 24 5.5 17 6.5 12C7.8 5 12.6 3 16.5 3.5C23 4 25 11 23 17C21.4 22 18.4 26 18 29Z"/>
+      <path d="M9.5 34.5H18V39C18 43 15.9 45 13.5 45C10.5 45 9 42.5 9.5 39Z"/>
+    </g>
   </g>
 </svg>
