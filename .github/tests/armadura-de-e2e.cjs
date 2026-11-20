@@ -114,8 +114,9 @@ const assert=require("node:assert/strict");
   assert.ok(!(await page.locator('[data-magic-field="magicTimeConfirmed"]').count()),
    "G3 acelerado com duas cargas não exige turnos adicionais");
   await page.locator('[data-magic-field="magicGradeConfirmed"]').check();
+  const magicValidation=await page.locator("#composer-content .fp-alert.invalid").allTextContents();
   assert.equal(await page.locator("#composer-content [data-action='roll']").isDisabled(),false,
-   "G3 confirmado pode rolar, respeitando Coragem e foco");
+   "G3 confirmado pode rolar; mensagens: "+magicValidation.join(" | "));
   assert.match(await page.locator("#composer-content").textContent(),/1 turno\(s\)/);
   await page.locator("#composer-content [data-action='roll']").click();
   assert.equal(await page.locator('#composer-content .fp-roll-die').count(),5,
