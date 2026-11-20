@@ -2258,46 +2258,42 @@ function prepareMagic(element=""){
  toast("Conjuração de "+(known.find(([id])=>id===chosen)?.[1]||chosen)+" preparada; defina os gastos e confirme a rolagem.");
 }
 function renderMagicActions(){
- const root=$("magic-actions");if(!root)return;
+ const root=$("magic-actions"),elementsRoot=$("owned-elements");
+ if(!root||!elementsRoot)return;
  const elements=magicKnownElements();
  if(!elements.length){
-  root.innerHTML='<p class="fp-owned-empty">Adquira Criar Item de Foco e Magia (Psíquico) ou uma Perícia elemental para conjurar.</p>';
-  $("owned-elements").innerHTML="";return;
+  root.innerHTML='<span class="fp-owned-empty">Nenhuma magia habilitada</span>';
+  elementsRoot.innerHTML="";return;
  }
  const chosen=elements.some(([id])=>id===draft.magicElement)?draft.magicElement:elements[0][0];
- const grade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
- const focus=magicCompatibleFoci(chosen).find(it=>it.id===draft.magicFocusId)||null;
- const charges=grade===3?Math.min(2,focus?.focusCharges||0):0;
- $("owned-elements").innerHTML=elements.map(([id,name])=>
-  '<button type="button" class="fp-magic-element'+(chosen===id?" selected":"")+
-  '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id?'true':'false')+'">'+
+ root.innerHTML='<button type="button" class="fp-action-cast" data-action="magic-prepare" title="Preparar Disciplina e configurar Grau, foco e custos no rolador">ᚨ Conjurar magia</button>';
+ elementsRoot.innerHTML=elements.map(([id,name])=>
+  '<button type="button" class="fp-magic-element'+(chosen===id&&draft.mode==="conjuracao"?" selected":"")+
+  '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id&&draft.mode==="conjuracao"?'true':'false')+'" title="Conjurar '+esc(name)+'">'+
   '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span></button>').join("");
- const focusOptions=[["","Sem foco (ambiente a confirmar)"],...magicCompatibleFoci(chosen)
-  .map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+
-   (combatItem(item,"conjuracao").length?" · dado habilitado":"")])];
- const options=(items,current)=>items.map(([id,label])=>'<option value="'+esc(id)+'"'+(id===current?" selected":"")+'>'+esc(label)+'</option>').join("");
- const ampAllowed=!!focus;
- root.innerHTML='<button type="button" class="fp-action-cast" data-action="magic-prepare">ᚨ Conjurar magia · preparar ação</button>'+
+}
+function magicComposerFields(){
+ if(draft.mode!=="conjuracao"||!draft.magicElement)return "";
+ const chosen=draft.magicElement,grade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),charges=grade===3?Math.min(2,focus?.focusCharges??0):0;
+ const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
+ const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
+ const time=magicPreparationTurns(grade,draft.magicCharges);
+ const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
+ return '<div class="fp-magic-composer"><strong>Conjurar '+esc(chosenName)+'</strong>'+
   '<div class="fp-magic-config">'+
-  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]].map(([n,t])=>[String(n),t]),String(grade))+'</select></label>'+
+  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]],grade)+'</select></label>'+
   '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
   (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
-   options(Array.from({length:charges+1},(_,n)=>[String(n),n+" carga(s) · "+(3-n)+" turno(s)"]),String(Math.min(charges,draft.magicCharges||0)))+
-   '</select></label>':'')+
-  (!focus&&chosen!=="psiquico"?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicEnvironmentConfirmed"'+(draft.magicEnvironmentConfirmed?' checked':'')+
-   '> Narrador confirmou disponibilidade do elemento no ambiente</label>':'')+
-  (magicPreparationTurns(grade,Math.min(charges,draft.magicCharges||0))>1?
-   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicTimeConfirmed"'+(draft.magicTimeConfirmed?' checked':'')+
-   '> Turnos de preparação cumpridos em mesa</label>':'')+
-  (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?' checked':'')+
-   '> Grau e efeito habilitados confirmados com Narrador</label>':'')+
-  '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&ampAllowed?' checked':'')+
-  (ampAllowed?"":" disabled")+
-  '> Ampliar até limite já permitido (+1 Coragem; efeito avaliado pelo Narrador)</label>'+
-  '<small class="fp-magic-note">'+
-  esc(grade===3?"G3: "+magicPreparationTurns(grade,Math.min(charges,draft.magicCharges||0))+
-    " turno(s) se as cargas forem gastas.":grade===2?"G2: 2 turnos. Reduzir para G1 remove efeitos G2.":"G1: lançamento imediato.")+
-  ' O foco deve ser do elemento; pode estar guardado. Dado extra só com Perícia habilitada. Amplificação não gera dano automático nem consome carga adicional sem regra definida.</small></div>';
+   options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+(3-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
+  (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+
+   '> Grau e efeito habilitados (confirmado com Narrador)</label>':"")+
+  (time>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicTimeConfirmed"'+(draft.magicTimeConfirmed?" checked":"")+
+   '> '+time+' turno(s) de preparação cumpridos</label>':"")+
+  '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
+  '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
+  '<small class="fp-magic-note">Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
+  ' Coragem · '+draft.magicCharges+' carga(s) de foco. Fonte elemental, efeitos e amplificação são resolvidos conforme regras e Narrador.</small></div>';
 }
 
 let inventoryPane="bag";
@@ -2345,14 +2341,13 @@ function applySheetPage(){
 function renderOwnedPanel(){
  // Ações aparecem antes das fontes: botões compactos abrem a especialização ou preparam o teste.
  const learned=SKILLS.filter(([id])=>ownsSkill(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
- const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
+ const basic=learned; // Consulta na Evolução inclui também Perícias elementais.
  const skillsEmpty='<span class="fp-owned-empty">Nenhuma Perícia adquirida.</span>';
+ const skillCount=$("owned-skills-count");if(skillCount)skillCount.textContent=String(basic.length);
  $("owned-skills").innerHTML=basic.length?basic.map(([id,name,detail])=>{
   const description=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail||"";
-  return '<button type="button" class="fp-action-skill" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" '+
-   'title="'+esc(description.slice(0,170))+'" aria-label="Ver detalhes da Perícia '+esc(name)+'">'+
-   '<span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span>'+
-   '<span class="fp-action-hint">Ver detalhes</span></button>';
+  return '<details class="fp-quick-skill"><summary>'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></summary>'+
+   '<p>'+esc(description)+'</p><button type="button" class="fp-secondary" data-sheet-page="genetic" data-gene-select="'+esc(id)+'">Ver no Codex Genético</button></details>';
  }).join(""):skillsEmpty;
  renderMagicActions();
  // A área de armas mostra apenas armamento equipado; focos ficam no preparador de magia.
