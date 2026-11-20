@@ -464,7 +464,7 @@ const SKILLS=[
  [
   "resistencia-a-fogo",
   "Resistência a Fogo",
-  "1 XP. Requisitos: Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2. O próprio personagem que comprou recebe resistência pessoal a Fogo: contra ataques desse elemento, cada Êxito válido equivale a 0,5 de dano e Pavor causa 0 dano, mantendo riscos. Não é imunidade nem encantamento de equipamento. Tratamento de frações e acúmulo com itens pendentes.",
+  "1 XP. Requisitos: Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2. Somente o próprio personagem reduz pela metade o dano de Fogo que atingiria a Vida. O +1 direto à Vida de Derreter G3 é anulado (0), sem reduzir E+P de dano à Integridade de armadura. Não é imunidade. Frações e interação com outras resistências pendentes.",
   1
  ],
  [
@@ -1056,7 +1056,7 @@ const CARD_EFFECTS={
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
  "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades de fabricação pendentes; Encantar com Elemento é requisito comprável e nunca é concedido automaticamente",
- "resistencia-a-fogo": "Resistência pessoal a Fogo no personagem que adquiriu a Perícia. Somente contra ataques de Fogo, dano de Êxitos é 0,5 por Êxito válido e Pavor causa 0 dano, preservados os demais riscos. Não é imunidade; não modifica equipamentos",
+ "resistencia-a-fogo": "Resistência pessoal à Vida: dano de Fogo que alcança a Vida do portador é reduzido à metade. Derreter G3 causa 0 de Vida direta (seu +1 fixo é anulado), mas E+P à Integridade da armadura continua normal. Não concede imunidade ou proteção à armadura",
  "encantar-com-elemento": "Armadura/escudo: 1 Coragem para aplicar resistência ao elemento adquirido. Arma: adquire temporariamente o elemento. Duração igual para os três: E-P>0; unidade temporal, DE/fontes, custo da arma e automação pendentes",
  "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
@@ -1109,7 +1109,7 @@ const CARD_BRIEFS={
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
  "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
- "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O próprio portador recebe resistência pessoal ao Fogo: cada E válido de dano por Fogo conta 0,5 e P do elemento causa 0 dano. Não é imunidade; interação com itens e frações pendente.",
+ "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O portador reduz à metade o dano de Fogo à Vida, sem proteger a armadura. O +1 de Vida direta de Derreter é 0, enquanto E+P à Integridade permanece normal. Frações e interações pendentes.",
  "encantar-com-elemento": "1 XP. Exige uma Perícia Elemental + Criar Item de Foco e Magia. Armaduras e escudos: 1 Coragem por resistência elemental; armas tornam-se do elemento habilitado. Mesma duração E-P>0 para todos. Custo da arma e unidade temporal pendentes.",
  "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
@@ -1162,7 +1162,7 @@ const CARD_ACTIVATIONS={
  "artesao-avancado": "Passiva",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
- "resistencia-a-fogo": "Passiva pessoal enquanto adquirida; tratamento automático de dano fracionário PENDENTE",
+ "resistencia-a-fogo": "Passiva pessoal: metade do dano de Fogo à Vida e 0 Vida direta por Derreter. Não protege Integridade; cálculos automáticos pendentes",
  "encantar-com-elemento": "Armadura/escudo: 1 Coragem. Arma: custo PENDENTE. Duração E-P>0 para ambos",
  "apresentacao-avancada": "Passiva",
  "coleta-avancada": "Passiva"
@@ -3887,7 +3887,7 @@ function adjustResource(resource,delta){
 }
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
- const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> seu personagem possui a Perícia Resistência a Fogo. Contra ataques de Fogo: 0,5 de dano por Êxito válido; Pavor não causa dano desse elemento (riscos permanecem). Não é imunidade nem propriedade da armadura.</p>':"";
+ const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
  $("skills-list").innerHTML=fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
