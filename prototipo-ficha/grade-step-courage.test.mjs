@@ -289,7 +289,7 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
  assert.ok(fn("maestria-martelos",make({destreza:0})),"Destreza 1 requerida");
  assert.ok(fn("maestria-martelos",make({vigor:0})),"Vigor 1 requerido");
  assert.equal(fn("maestria-martelos",make()),null,"Não exige Perícia de Armas para comprar");
- assert.match(app,/"maestria-martelos",\\s*"Maestria em Martelos",[\\s\\S]*?\\n  1\\n \\]/,"Custo 1 XP");
+ assert.match(app,/"maestria-martelos",\s*"Maestria em Martelos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
  assert.ok(app.includes('"maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]]'),"Compra assistida não obriga especializações");
  const start=app.indexOf("function hammerMasteryRequiredSkill(item){");
  const end=app.indexOf("function equipmentGroupName(id)",start);
