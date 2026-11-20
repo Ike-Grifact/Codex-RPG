@@ -318,6 +318,18 @@ const SKILLS=[
   1
  ],
  [
+  "maestria-escudos",
+  "Maestria em Escudos",
+  "1 XP. Requisitos: Destreza 2 + Vigor 2. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 12, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
+  1
+ ],
+ [
+  "escudo-bumerangue",
+  "Escudo Bumerangue",
+  "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite arremessar escudo físico até 8 m; o escudo retorna ao personagem. Dados, dano, custo de ação e momento de retorno PENDENTES: não concede ataque ou dano extra automático.",
+  1
+ ],
+ [
   "maestria-arremesso-armas",
   "Perícia em Arremesso de Armas",
   "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
@@ -707,6 +719,8 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:destreza"
  ],
+ "maestria-escudos": ["attr:destreza","attr:vigor","know:protecao"],
+ "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
  "maestria-arremesso-armas": [
   "practice:armas_conjuracao",
   "attr:forca",
@@ -854,6 +868,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["maestria-escudos","escudo-bumerangue","maestria-arremesso-armas"],
  ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental"],
  ["criar-item-foco-magia","terra","pericia-druidica"],
  ["criar-item-foco-magia","terra","transformacao-elemental"],
@@ -981,6 +996,8 @@ const SKILL_PERMALINKS={
  "espalhar-golpe": "golpe-colossal",
  "pugilismo": "pugilismo",
  "artista-marcial": "artista-marcial",
+ "maestria-escudos": "maestria-em-escudos",
+ "escudo-bumerangue": "escudo-bumerangue",
  "maestria-arremesso-armas": "pericia-em-arremesso-de-armas",
  "disparo-fulminante": "disparo-fulminante",
  "disparo-multiplo": "disparo-multiplo",
@@ -1031,6 +1048,8 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "maestria-escudos": "Destreza 2 + Vigor 2",
+ "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
  "pericia-montaria": "Influência 1 + Destreza 2; custo em XP PENDENTE",
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
@@ -1100,6 +1119,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
+ "escudo-bumerangue": "Permite arremessar escudos físicos a até 8 metros e recuperá-los pelo retorno ao portador; não fornece dado/dano automático nem modifica o alcance de armas.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
  "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
@@ -1168,6 +1189,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
+ "escudo-bumerangue": "1 XP; Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos. Arremessa escudo a 8 m, que retorna. Procedimento do ataque pendente.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
@@ -1236,6 +1259,8 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
+ "escudo-bumerangue": "Arremesso de escudo: 8 m, com retorno · custo/rolagem PENDENTES",
  "montar": "Vantagem nos testes com montaria; não é +1A",
  "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
  "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
@@ -2026,6 +2051,7 @@ function normalizeItem(it={}){
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
   type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
   embeddedWeapon:embed,
+  shieldMasteryBonusSpent:type==="escudo"&&!!it.shieldMasteryBonusSpent,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances",
@@ -2178,6 +2204,8 @@ function skillReq(id,s=state){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
+ if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
+ if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
@@ -2786,6 +2814,8 @@ const GENE_AUTO_REQUIREMENTS={
  "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
  "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
   "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
+ "maestria-escudos":[["a:destreza:2","a:vigor:2"]],
+ "escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]],
  "maestria-arremesso-armas":[
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
