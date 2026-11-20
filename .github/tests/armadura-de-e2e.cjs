@@ -47,10 +47,10 @@ const assert=require("node:assert/strict");
    const apt=document.querySelector("#source-grid").getBoundingClientRect();
    const roll=document.querySelector("#composer-panel").getBoundingClientRect();
    const skills=document.querySelector("#play-talents").getBoundingClientRect();
-   return{aptBottom:apt.bottom,rollTop:roll.top,rollBottom:roll.bottom,skillsTop:skills.top};
+   return{aptTop:apt.top,aptBottom:apt.bottom,rollTop:roll.top,skillsBottom:skills.bottom};
   });
-  assert.ok(mobile.rollTop>=mobile.aptBottom-3,"No celular, rolador deve aparecer após as aptidões");
-  assert.ok(mobile.skillsTop>=mobile.rollBottom-3,"No celular, repertório aparece depois do rolador");
+  assert.ok(mobile.skillsBottom<=mobile.aptTop+3,"No celular, Ações vêm antes das aptidões");
+  assert.ok(mobile.rollTop>=mobile.aptBottom-3,"No celular, rolador aparece após aptidões");
   const indicators=await page.locator(".fp-vitals").evaluate(bar=>{
    const items=Array.from(bar.querySelectorAll(".fp-vital"));
    return{
@@ -70,6 +70,13 @@ const assert=require("node:assert/strict");
   await page.locator(".fp-vital-inventory").click();
   assert.equal(await page.locator('#sheet-navigation button[data-sheet-page="inventory"]').getAttribute("aria-current"),"page","O atalho abriu a aba Inventário");
   assert.equal(await page.locator("#equipamentos").isVisible(),true,"O inventário mostra equipamentos e carga");
+  assert.equal(await page.locator("#inventory-list").isVisible(),true,"Os itens possuídos são a seção principal");
+  assert.equal(await page.locator("#trade-panel").isVisible(),true,"Bolsa de VT separada");
+  assert.equal(await page.locator("#inventory-shop-details").evaluate(el=>el.open),false,"Mercado recolhido por padrão");
+  await page.locator("#inventory-shop-details > summary").click();
+  assert.equal(await page.locator("#shop-items").isVisible(),true,"Compras acessíveis ao abrir o Mercado");
+  await page.locator("#inventory-shop-details > summary").click();
+  assert.equal(await page.locator("#inventory-shop-details").evaluate(el=>el.open),false,"Mercado pode ser recolhido");
   await page.locator('button[data-sheet-page="play"]').first().click();
   assert.equal(await page.locator(".fp-vital-inventory").isVisible(),true,"Indicadores continuam acessíveis após voltar a Jogar");
 
