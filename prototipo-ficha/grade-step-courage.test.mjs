@@ -245,7 +245,7 @@ test("Encantar com Elemento: custo, alternativas de requisito, duração idênti
 
 
 
-test("Resistência a Fogo: custo 1 XP, pré-requisitos e efeito não implementado",()=>{
+test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no portador",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
   "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
@@ -260,12 +260,16 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e efeito não implementad
  assert.match(app,/"resistencia-a-fogo",\s*"Resistência a Fogo",[\s\S]*?\n  1\n \]/,"Custo exatamente 1 XP");
  assert.ok(app.includes('"resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]]'),"Compra assistida mantém requisitos");
  assert.ok(app.includes('"resistencia-a-fogo": "resistencia-a-fogo"'),"Verbete da ficha");
- assert.ok(app.includes('"resistencia-a-fogo": "Efeito/ativação PENDENTE'),"Sem implementar bônus ou resistência não aprovados");
+ assert.ok(app.includes('"resistencia-a-fogo": "Passiva pessoal enquanto adquirida'),"Efeito pessoal reconhecido");
+ assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Exibe resistência somente se o personagem possuir a Perícia");
+ assert.ok(app.includes("0,5 de dano por Êxito válido; Pavor não causa dano desse elemento"),"Resistência pessoal usa a regra vigente");
  const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(graph.includes('"ferreiro-elemental","resistencia-a-fogo"'),"Ramo genético da Forja Elemental");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(catalog.includes('<a href="resistencia-a-fogo.html">Resistência a Fogo</a>'),"Catálogo do portal");
  const page=readFileSync(join(root,"../pericias/resistencia-a-fogo.html"),"utf8");
  assert.ok(page.includes("Ferreiro Elemental")&&page.includes("Perícia em Elemento Fogo")&&page.includes("Vigor 2"),"Verbetes preservam requisitos");
- assert.ok(page.includes("não concede automaticamente resistência"),"Não antecipar efeito");
+ assert.ok(page.includes("próprio personagem que adquiriu a Perícia"),"Portador, não equipamento");
+ assert.ok(page.includes("0,5 de dano"),"Redução por Êxito de Fogo, sem imunidade");
+ assert.ok(!page.includes("PENDENTE — efeito"),"Efeito pessoal definido e documentado");
 });
