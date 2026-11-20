@@ -120,16 +120,16 @@ const assert=require("node:assert/strict");
    "Perícias adquiridas são consultadas como cartões de consulta rápida");
   await page.locator('button[data-sheet-page="play"]').first().click();
   const psychicIcon=page.locator('[data-action="magic-element"][data-id="psiquico"] .fp-codex-icon');
-  assert.match(await psychicIcon.getAttribute("src"),/elemento-psiquico\\.svg$/,"Psíquico deve ter pictograma próprio");
+  assert.ok((await psychicIcon.getAttribute("src")).endsWith("/elemento-psiquico.svg"),"Psíquico deve ter pictograma próprio");
   assert.equal(await psychicIcon.evaluate(img=>img.complete&&img.naturalWidth>0),true,
    "O SVG de Psíquico precisa carregar no navegador");
   await page.locator('[data-action="magic-element"][data-id="fogo"]').click();
   assert.match(await page.locator("#composer-content").textContent(),/Disciplina · Conjuração/);
   const selectedIcon=page.locator('#owned-elements [data-id="fogo"] .fp-codex-icon');
-  assert.match(await selectedIcon.getAttribute("src"),/elemento-fogo\\.svg$/);
+  assert.ok((await selectedIcon.getAttribute("src")).endsWith("/elemento-fogo.svg"),"Fogo no chip");
   assert.equal(await selectedIcon.evaluate(img=>img.complete&&img.naturalWidth>0),true);
   const compositorIcon=page.locator("#composer-content .fp-magic-heading .fp-codex-icon");
-  assert.match(await compositorIcon.getAttribute("src"),/elemento-fogo\\.svg$/,"O título da preparação deve repetir o ícone do elemento");
+  assert.ok((await compositorIcon.getAttribute("src")).endsWith("/elemento-fogo.svg"),"Fogo no compositor");
 
   assert.equal(await page.locator('#composer-content [data-magic-field="magicGrade"]').count(),1,
    "O Grau é escolhido em Preparar ação");
