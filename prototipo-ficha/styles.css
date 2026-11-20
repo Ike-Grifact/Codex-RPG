@@ -1882,3 +1882,12 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 #composer-content .fp-magic-composer .fp-magic-heading{
  display:flex;align-items:center;gap:8px;
 }
+
+
+/* Codex Genético: pictogramas brancos dentro dos nós coloridos (verde, azul e roxo).
+   Aplica-se somente ao <image> do nó; não altera SVGs usados em outros locais.
+   Nós bloqueados conservam o aspecto atenuado já definido acima. */
+.fp-gene-skill:is(.is-owned,.is-available,.is-potential) .fp-gene-skill-pictogram{
+ filter:brightness(0) invert(1);
+ opacity:1;
+}
