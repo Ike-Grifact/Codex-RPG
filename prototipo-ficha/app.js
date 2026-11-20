@@ -3067,7 +3067,7 @@ function vitalHelpDetails(kind){
  courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
- defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar. Teto natural 9 e total com modificadores limitado a 12.",
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto natural 9 e total com modificadores limitado a 12.",
  "Natural: Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Vigor ("+(a.vigor||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
