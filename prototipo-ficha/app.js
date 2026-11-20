@@ -2248,7 +2248,9 @@ function prepareMagic(element=""){
  const attr=(state.attributes.inteligencia||0)>0?"inteligencia":
   A.find(([id])=>(state.attributes[id]||0)>0)?.[0]||"";
  if(attr)draft.attribute={group:"attr",key:attr};
- draft.magicElement=chosen;draft.magicGrade=grade;draft.magicFocusId=focusId;
+ draft.magicElement=chosen;draft.magicGrade=grade;
+ const compatible=magicCompatibleFoci(chosen);
+ draft.magicFocusId=focusId||(previous.mode!=="conjuracao"&&compatible.length===1?compatible[0].id:"");
  draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;draft.magicEnvironmentConfirmed=envConfirmed;
  alignMagicDraft();sheetPage="play";render();
  $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
@@ -2349,7 +2351,7 @@ function renderOwnedPanel(){
    '<span class="fp-action-hint">Ver detalhes</span></button>';
  }).join(""):skillsEmpty;
  renderMagicActions();
- // Não listar armaduras e ferramentas aqui: só equipamento capaz de preparar uma ação.
+ // A área de armas mostra apenas armamento equipado; focos ficam no preparador de magia.
  const weapons=state.items.filter(it=>it.equipped&&it.type==="arma");
  $("equipped-shortcuts").innerHTML=weapons.length?weapons.map(it=>{
   const mode="armas",dice=combatItem(it,mode);
