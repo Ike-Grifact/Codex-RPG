@@ -1591,3 +1591,25 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
 .fp-vital-tooltip-source{display:inline-block;margin-top:11px;color:var(--fp-gold);font-size:11px;font-weight:700;text-underline-offset:3px}
 .fp-vital-tooltip-source:hover,.fp-vital-tooltip-source:focus-visible{color:var(--fp-text)}
 @media(max-width:600px){.fp-vital .fp-vital-label{padding:0;background-size:18px 18px}}
+
+
+/* 20/11/2026 — aptidões e perícias à esquerda, rolador à direita durante toda a montagem. */
+@media(min-width:981px){
+ .fp-workspace{display:grid;grid-template-columns:minmax(0,1fr) clamp(295px,29vw,370px);grid-template-rows:auto auto;column-gap:12px;row-gap:13px;align-items:start}
+ .fp-workspace>.fp-primary-column{grid-column:1;grid-row:1;width:auto;min-width:0;order:0}
+ .fp-workspace>.fp-side-column{grid-column:2;grid-row:1/span 2;width:auto;min-width:0;position:sticky;top:12px;align-self:start;order:0;max-height:calc(100dvh - 24px);overflow-y:auto;scrollbar-width:thin}
+ .fp-workspace>#play-talents{grid-column:1;grid-row:2;min-width:0;margin-bottom:0}
+ .fp-workspace .fp-source-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .fp-workspace .fp-roll-jump{display:none}
+}
+@media(min-width:981px) and (max-width:1370px){
+ .fp-workspace>#play-talents .fp-play-talent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .fp-workspace>#play-talents .fp-play-talent-grid>div:last-child{grid-column:1/-1}
+}
+@media(max-width:980px){
+ .fp-workspace{display:flex;flex-direction:column;gap:12px}
+ .fp-workspace>.fp-primary-column{order:0;width:100%;min-width:0}
+ .fp-workspace>.fp-side-column{order:1;width:100%;min-width:0;position:static;max-height:none;overflow:visible}
+ .fp-workspace>#play-talents{order:2;width:100%;min-width:0;margin:0}
+ .fp-workspace .fp-roll-jump{display:inline-flex}
+}
