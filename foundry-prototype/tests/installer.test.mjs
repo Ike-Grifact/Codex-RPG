@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { ClassicLevel } from "classic-level";
 import { readJson, releaseFields, source, systemId, validatePackage } from "../scripts/package.mjs";
 
 const install = fileURLToPath(new URL("../scripts/install.mjs", import.meta.url));
@@ -58,7 +59,7 @@ test("gera a estrutura de playtest e prepara um manifesto estável com a tag cor
   assert.ok(!existsSync(invalid));
 });
 
-test("valida, instala e atualiza com backup integral e sem alterar dados de usuário", (t) => {
+test("valida, instala e atualiza com backup integral e sem alterar dados de usuário", async (t) => {
   const { root, json, options, world, actor, packageRoot } = fixture(t);
   const args = ["--user-data", root];
   const unchanged = [options, world, actor].map((file) => [file, readFileSync(file)]);
@@ -75,22 +76,42 @@ test("valida, instala e atualiza com backup integral e sem alterar dados de usu�
   assert.equal(validatePackage(packageRoot).version, current.version);
   assert.deepEqual(readdirSync(join(packageRoot, "storage")), []);
   const optionsOld = { id: systemId, version: "0.2.0" };
+  const packPath = current.packs.find(pack => pack.name === "equipamentos").path;
+  const existingPack = new ClassicLevel(join(packageRoot, packPath), {valueEncoding: "json"});
+  await existingPack.open();
+  try {
+    await existingPack.sublevel("items", {valueEncoding: "json"}).put("0000000000000000", {name: "Registro editado no pacote anterior"});
+  } finally {
+    await existingPack.close();
+  }
   json(`Data/systems/${systemId}/system.json`, optionsOld);
   json(`Data/systems/${systemId}/storage/preferencias.json`, { value: 42 });
   json(`Data/systems/${systemId}/modificacao-local.json`, { previous: true });
   json(`Data/systems/${systemId}/assets/pessoal/anotacoes.json`, { personal: 'preservar' });
+  json(`Data/systems/${systemId}/${packPath}/anotacoes.json`, { personal: 'preservar' });
   const updated = run(install, args);
   assert.equal(updated.status, 0, updated.stderr);
   assert.equal(validatePackage(packageRoot).version, current.version);
   assert.equal(readJson(join(packageRoot, "storage", "preferencias.json")).value, 42);
   assert.equal(readJson(join(packageRoot, "modificacao-local.json")).previous, true);
   assert.equal(readJson(join(packageRoot, "assets", "pessoal", "anotacoes.json")).personal, 'preservar');
+  assert.equal(readJson(join(packageRoot, packPath, "anotacoes.json")).personal, 'preservar');
+  const packagedFiles = readdirSync(join(source, packPath));
+  assert.deepEqual(readdirSync(join(packageRoot, packPath)).sort(), [...packagedFiles, "anotacoes.json"].sort());
   const backupRoot = join(root, "Backups", "codex-rpg-system-installer");
   const [transaction] = readdirSync(backupRoot);
   const backup = join(backupRoot, transaction, systemId);
   assert.deepEqual(readJson(join(backup, "system.json")), optionsOld);
   assert.equal(readJson(join(backup, "modificacao-local.json")).previous, true);
   assert.deepEqual(readdirSync(backupRoot), [transaction]);
+  const backupPack = new ClassicLevel(join(backup, packPath), {readOnly: true, valueEncoding: "json"});
+  await backupPack.open();
+  try {
+    const oldRecord = await backupPack.sublevel("items", {valueEncoding: "json"}).get("0000000000000000");
+    assert.equal(oldRecord.name, "Registro editado no pacote anterior");
+  } finally {
+    await backupPack.close();
+  }
   for (const [file, contents] of unchanged) assert.deepEqual(readFileSync(file), contents);
 });
 

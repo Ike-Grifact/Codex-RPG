@@ -148,16 +148,20 @@ function installedVersion(target) {
   return manifest.version ?? "(versão desconhecida)";
 }
 
-function preserveAdditionalFiles(from, to) {
+const levelFile = /^(?:CURRENT|LOCK|LOG(?:\.old)?|MANIFEST-\d+|\d+\.(?:log|ldb|sst|dbtmp))$/;
+
+function preserveAdditionalFiles(from, to, packDirectories) {
   for (const name of readdirSync(from)) {
     const original = join(from, name), staged = join(to, name);
     const entry = lstat(original), replacement = lstat(staged);
     if (!entry.isFile() && !entry.isDirectory()) throw new Error(`Arquivo pessoal especial ou redirecionado: ${original}`);
+    // Logs antigos podem ser reaplicados pelo LevelDB se forem copiados sobre a base nova.
+    if (entry.isFile() && packDirectories.has(to) && levelFile.test(name)) continue;
     if (!replacement) {
       if (entry.isDirectory()) copyDirectory(original, staged);
       else copyFileSync(original, staged);
     } else if (entry.isDirectory() && replacement.isDirectory()) {
-      preserveAdditionalFiles(original, staged);
+      preserveAdditionalFiles(original, staged, packDirectories);
     } else if (entry.isDirectory() !== replacement.isDirectory()) {
       throw new Error(`Conflito entre arquivo pessoal e pacote: ${original}. A instalação anterior foi conservada.`);
     }
@@ -248,7 +252,10 @@ async function install(userData, dryRun) {
     else if (manifest.persistentStorage) mkdirSync(stagedStorage);
     // Conserve arquivos adicionais também na raiz e nas pastas de recursos.
     // Arquivos distribuídos pelo pacote são atualizados e sua versão anterior fica no backup.
-    if (existing) preserveAdditionalFiles(target, stage);
+    if (existing) {
+      const packDirectories = new Set((manifest.packs ?? []).map(pack => join(stage, pack.path)));
+      preserveAdditionalFiles(target, stage, packDirectories);
+    }
     await assertFoundryClosed(port);
 
     if (existing) {
