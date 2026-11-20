@@ -34,6 +34,23 @@ const assert=require("node:assert/strict");
   assert.match(await tooltip.textContent(),/Total = 2/,"O tooltip usa a defesa calculada e não um exemplo fixo");
   await page.keyboard.press("Escape");
   assert.equal(await tooltip.isVisible(),false,"Escape fecha a explicação");
+  await page.setViewportSize({width:1200,height:900});
+  const desktop=await page.evaluate(()=>{
+   const pos=id=>document.querySelector(id).getBoundingClientRect();
+   const apt=pos("#source-grid"),roll=pos("#composer-panel"),skills=pos("#play-talents");
+   return{aptRight:apt.right,rollLeft:roll.left,skillsRight:skills.right,skillsVisible:skills.width>0};
+  });
+  assert.ok(desktop.rollLeft>=desktop.aptRight-3,"Rolador deve estar à direita das aptidões no desktop");
+  assert.ok(desktop.skillsVisible&&desktop.rollLeft>=desktop.skillsRight-3,"Rolador deve ficar à direita das perícias adquiridas");
+  await page.setViewportSize({width:390,height:844});
+  const mobile=await page.evaluate(()=>{
+   const apt=document.querySelector("#source-grid").getBoundingClientRect();
+   const roll=document.querySelector("#composer-panel").getBoundingClientRect();
+   const skills=document.querySelector("#play-talents").getBoundingClientRect();
+   return{aptBottom:apt.bottom,rollTop:roll.top,rollBottom:roll.bottom,skillsTop:skills.top};
+  });
+  assert.ok(mobile.rollTop>=mobile.aptBottom-3,"No celular, rolador deve aparecer após as aptidões");
+  assert.ok(mobile.skillsTop>=mobile.rollBottom-3,"No celular, repertório aparece depois do rolador");
   assert.equal(await page.locator("#armor-integrity-text").textContent(),"7 / 7");
   await page.reload({waitUntil:"load"});
   assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
