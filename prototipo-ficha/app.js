@@ -1443,7 +1443,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicEnvironmentConfirmed:false});
+  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicEnvironmentConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -2240,7 +2240,7 @@ function prepareMagic(element=""){
  const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
  if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
  const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId;
- const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,envConfirmed=previous.magicEnvironmentConfirmed;
+ const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,envConfirmed=previous.magicEnvironmentConfirmed,timeConfirmed=previous.magicTimeConfirmed;
  const de=Number.isInteger(previous.de)?previous.de:1;
  draft=freshDraft();draft.mode="conjuracao";draft.de=de;
  draft.base={group:"practice",key:"armas_conjuracao"};
@@ -2252,6 +2252,7 @@ function prepareMagic(element=""){
  const compatible=magicCompatibleFoci(chosen);
  draft.magicFocusId=focusId||(previous.mode!=="conjuracao"&&compatible.length===1?compatible[0].id:"");
  draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;draft.magicEnvironmentConfirmed=envConfirmed;
+ draft.magicTimeConfirmed=chosen===previous.magicElement&&!!timeConfirmed;
  alignMagicDraft();sheetPage="play";render();
  $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
  toast("Conjuração de "+(known.find(([id])=>id===chosen)?.[1]||chosen)+" preparada; defina os gastos e confirme a rolagem.");
@@ -2285,6 +2286,9 @@ function renderMagicActions(){
    '</select></label>':'')+
   (!focus&&chosen!=="psiquico"?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicEnvironmentConfirmed"'+(draft.magicEnvironmentConfirmed?' checked':'')+
    '> Narrador confirmou disponibilidade do elemento no ambiente</label>':'')+
+  (magicPreparationTurns(grade,Math.min(charges,draft.magicCharges||0))>1?
+   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicTimeConfirmed"'+(draft.magicTimeConfirmed?' checked':'')+
+   '> Turnos de preparação cumpridos em mesa</label>':'')+
   (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?' checked':'')+
    '> Grau e efeito habilitados confirmados com Narrador</label>':'')+
   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&ampAllowed?' checked':'')+
@@ -3335,6 +3339,8 @@ function buildPool(){
   const focus=magicSelectedFocus();
   if(!known)errors.push("Elemento não habilitado para esta conjuração.");
   if(draft.magicGrade>1&&!draft.magicGradeConfirmed)errors.push("Confirme com Narrador o acesso ao Grau e efeito G"+draft.magicGrade+".");
+  if(magicPreparationTurns(draft.magicGrade,draft.magicCharges)>1&&!draft.magicTimeConfirmed)
+   errors.push("Confirme que os turnos exigidos para preparar esta magia já foram cumpridos.");
   if(!focus&&draft.magicElement!=="psiquico"&&!draft.magicEnvironmentConfirmed)
    errors.push("Sem foco do elemento: Narrador deve confirmar abundância ambiental.");
   if(draft.magicFocusId&&!focus)errors.push("Foco deve estar no inventário e corresponder ao elemento.");
@@ -3491,7 +3497,8 @@ function roll(){
     magicCharges:draft.mode==="conjuracao"?draft.magicCharges:0,
     magicAmplify:draft.mode==="conjuracao"&&!!draft.magicAmplify,
     magicGradeConfirmed:!!draft.magicGradeConfirmed,
-    magicEnvironmentConfirmed:!!draft.magicEnvironmentConfirmed},
+    magicEnvironmentConfirmed:!!draft.magicEnvironmentConfirmed,
+    magicTimeConfirmed:!!draft.magicTimeConfirmed},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
   fireMode:"",fireGradeConfirmed:false};
@@ -3568,6 +3575,8 @@ function score(){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
   if(grade>1&&!p.opts.magicGradeConfirmed)errs.push("Grau avançado não confirmado pelo Narrador.");
+  if(magicPreparationTurns(grade,p.opts.magicCharges||0)>1&&!p.opts.magicTimeConfirmed)
+   errs.push("Turnos de conjuração não confirmados.");
   const focus=state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"&&
    magicElementId(it.element||"psiquico")===element);
   if(p.opts.magicFocusId&&!focus)errs.push("Foco não corresponde ao elemento da magia.");
@@ -4420,12 +4429,13 @@ function onChange(event){
  if(el.dataset.magicField!==undefined){
   if(state.pending){toast("Finalize a rolagem antes de alterar a magia.");renderOwnedPanel();return;}
   const field=el.dataset.magicField;
-  if(field==="magicGrade"){draft.magicGrade=Number(el.value);draft.magicGradeConfirmed=false;draft.magicCharges=0;}
-  else if(field==="magicFocusId"){draft.magicFocusId=String(el.value);draft.magicCharges=0;}
-  else if(field==="magicCharges")draft.magicCharges=Math.floor(Number(el.value));
+  if(field==="magicGrade"){draft.magicGrade=Number(el.value);draft.magicGradeConfirmed=false;draft.magicTimeConfirmed=false;draft.magicCharges=0;}
+  else if(field==="magicFocusId"){draft.magicFocusId=String(el.value);draft.magicCharges=0;draft.magicTimeConfirmed=false;}
+  else if(field==="magicCharges"){draft.magicCharges=Math.floor(Number(el.value));draft.magicTimeConfirmed=false;}
   else if(field==="magicAmplify")draft.magicAmplify=!!el.checked;
   else if(field==="magicGradeConfirmed")draft.magicGradeConfirmed=!!el.checked;
   else if(field==="magicEnvironmentConfirmed")draft.magicEnvironmentConfirmed=!!el.checked;
+  else if(field==="magicTimeConfirmed")draft.magicTimeConfirmed=!!el.checked;
   else return;
   alignMagicDraft();
   if(draft.mode!=="conjuracao"||!draft.base)prepareMagic();
