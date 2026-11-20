@@ -1342,7 +1342,7 @@ function equipmentWeight(item){
 // e não como requisito para comprar Maestria em Martelos.
 function hammerMasteryRequiredSkill(item){
  if(!item||!["weapon","arma"].includes(item.type))return null;
- const name=String(item.name||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+ const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  if(!/martelo|marreta/.test(name))return null;
  return {leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)]||null;
 }
