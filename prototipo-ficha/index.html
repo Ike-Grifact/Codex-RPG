@@ -160,49 +160,14 @@
     </nav>
     <div class="fp-workspace">
       <div class="fp-primary-column">
-        <section class="fp-section-intro">
-          <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
-          <p>Escolha seu <strong>Atributo</strong> e a <strong>Base</strong> em Práticas ou Conhecimentos, em qualquer ordem. Um complemento exige Perícia pertinente.</p>
-        </section>
-        <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
-        <div class="fp-source-grid" id="source-grid">
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-attr">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3 id="sources-attr">Atributos</h3><small>Fonte obrigatória na rolagem</small></div><span class="fp-count">06</span></div>
-            <div id="attribute-list" class="fp-sources"></div>
-          </section>
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-practice">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3 id="sources-practice">Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
-            <div id="practice-list" class="fp-sources"></div>
-          </section>
-          <section class="fp-panel fp-source-panel" aria-labelledby="sources-know">
-            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3 id="sources-know">Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
-            <div id="knowledge-list" class="fp-sources"></div>
-          </section>
-        </div>
-        <a class="fp-roll-jump" href="#composer-panel">↓ Abrir rolador</a>
-        <section class="fp-panel fp-bottom-note">
-          <div id="dice-legend" class="fp-dice-legend" aria-label="Cores dos cinco dados"></div>
-          <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
-          <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
-          <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
-          <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Perícias Avançadas de Conhecimentos e Práticas</strong> exigem Grau 2 na fonte correspondente e custam 1 XP. Permitem até três fontes (a especializada como predominante + duas fontes pertinentes). Especializações existentes podem manter requisitos adicionais, como Furtividade Avançada.</p>
-        </section>
-      </div>
-
-      <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
-        <section class="fp-panel fp-composer" id="composer-panel">
-          <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
-          <a class="fp-roll-jump" href="#source-grid">↑ Escolher aptidões</a>
-          <div id="composer-content"></div>
-        </section>
-      </aside>
       <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
-            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
+            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Perícias, magia e armas prontas para preparar uma ação</small></div></div>
             <div class="fp-play-talent-grid">
-              <div><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
-              <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
-              <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+              <div><h4>Perícias</h4><div id="owned-skills" class="fp-owned-list"></div></div>
+              <div><h4>Elementos</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
+              <div><h4>Armas e focos</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
             </div>
+            <details class="fp-actions-hemo" id="hemo-details" hidden><summary>Hemomancia · marcas e amplificação</summary>
             <section class="fp-hemo-panel" id="hemomancy-panel" aria-label="Recursos de Hemomancia — protótipo" hidden>
               <div class="fp-hemo-heading">
                 <div><span class="fp-overline">HEMOMANCIA · SRD v0.75</span><h4>Reservas e amplificação de Sangue</h4></div>
@@ -258,7 +223,45 @@
               </div>
               <p class="fp-hemo-footnote">Magia de Sangue puro causa dano convencional contra proteção. Com amplificação de dano direto já paga, se acertar, <strong>TODO o dano calculado atinge a Vida, sem gastar Integridade da armadura</strong> — exclusivo da Hemomancia. Vincule o pagamento a UMA rolagem de Sangue no compositor. Escudos físicos e arcanos de outros elementos não anulam esse dano direto; somente Escudo Arcano de Sangue ativo e aplicável anula a propriedade, voltando à defesa convencional. O Narrador verifica a natureza da magia e o escudo do alvo. Não há bônus numérico gratuito nem dano automático em fichas adversárias. Marcas legadas da antiga reserva de extração são unificadas uma única vez; confira sua procedência.</p>
             </section>
+            </details>
           </section>
+        <section class="fp-section-intro">
+          <div><span class="fp-kicker">MONTAGEM DA AÇÃO</span><h2>Suas fontes de dados</h2></div>
+          <p>Escolha seu <strong>Atributo</strong> e a <strong>Base</strong> em Práticas ou Conhecimentos, em qualquer ordem. Um complemento exige Perícia pertinente.</p>
+        </section>
+        <div id="edit-sheet-help" class="fp-edit-help" role="status" hidden><strong>Modo edição ativo.</strong> Ajuste os Graus usando <strong>+</strong> e <strong>−</strong> ao lado de Atributos, Conhecimentos e Práticas. O XP é recalculado. Para preparar rolagens, clique em <strong>Concluir edição</strong>.</div>
+        <div class="fp-source-grid" id="source-grid">
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-attr">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-attr">◇</span><div><h3 id="sources-attr">Atributos</h3><small>Fonte obrigatória na rolagem</small></div><span class="fp-count">06</span></div>
+            <div id="attribute-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-practice">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-practice">⚔</span><div><h3 id="sources-practice">Práticas</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="practice-list" class="fp-sources"></div>
+          </section>
+          <section class="fp-panel fp-source-panel" aria-labelledby="sources-know">
+            <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-know">✦</span><div><h3 id="sources-know">Conhecimentos</h3><small>Base ou complemento</small></div><span class="fp-count">06</span></div>
+            <div id="knowledge-list" class="fp-sources"></div>
+          </section>
+        </div>
+        <a class="fp-roll-jump" href="#composer-panel">↓ Abrir rolador</a>
+        <section class="fp-panel fp-bottom-note">
+          <div id="dice-legend" class="fp-dice-legend" aria-label="Cores dos cinco dados"></div>
+          <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
+          <span class="fp-rune fp-rune-a">ᚨ Antecipar</span>
+          <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
+          <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Perícias Avançadas de Conhecimentos e Práticas</strong> exigem Grau 2 na fonte correspondente e custam 1 XP. Permitem até três fontes (a especializada como predominante + duas fontes pertinentes). Especializações existentes podem manter requisitos adicionais, como Furtividade Avançada.</p>
+        </section>
+      </div>
+
+      <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
+        <section class="fp-panel fp-composer" id="composer-panel">
+          <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
+          <a class="fp-roll-jump" href="#source-grid">↑ Escolher aptidões</a>
+          <div id="composer-content"></div>
+        </section>
+      </aside>
+
     </div>
 
     <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
