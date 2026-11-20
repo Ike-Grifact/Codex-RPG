@@ -120,22 +120,30 @@ const { chromium } = require('playwright');
       // Ramificações conectadas como no grafo temático, não como pré-requisitos.
       const branchLines=await page.locator('#gene-builder-map .fp-gene-skill-link').count();
       if(branchLines<1)throw new Error('O grafo de Perícias não tem conexões de ramificação');
+      // Evoluir Agilidade para grau 3 produz 3 ícones de dados; descartar não gasta XP.
+      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
+      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
+      if(await page.locator('#gene-builder-map [data-gene-id="attr:agilidade"] .fp-gene-die-inline').count()!==3)
+        throw new Error('Grau 3 não exibe três dados entre − e +');
+      await page.locator('#gene-build-actions [data-action="gene-reset"]').click();
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('11 XP')))
+        throw new Error('Descartar evolução de três dados alterou o saldo real');
       const mount=page.locator('#gene-builder-map .fp-gene-skill.is-potential[data-gene-id="montar"]');
       if(await mount.count()!==1)throw new Error('Montar Animal deve mostrar pacote roxo com XP suficiente');
       await mount.press('Enter');
       const buyAll=page.locator('#gene-builder-detail [data-action="gene-auto-buy"][data-id="montar"]');
       if(!await buyAll.count())throw new Error('Falta o botão comprar Perícia + requisitos');
       const preBuyText=await page.locator('#gene-builder-detail').innerText();
-      if(!preBuyText.includes('5 XP'))throw new Error('Pacote Montar não calcula Influence 2 + Perícia por 5 XP: '+preBuyText);
+      if(!preBuyText.includes('10 XP'))throw new Error('Pacote Montar não calcula Influência 2 + Destreza 3 + Perícia 1 XP por 10 XP: '+preBuyText);
       page.once('dialog', async dialog => {
-        if(!dialog.message().includes('Influência 0 → 2')||!dialog.message().includes('Montar Animal'))
+        if(!dialog.message().includes('Influência 0 → 2')||!dialog.message().includes('Destreza 0 → 3')||!dialog.message().includes('Montar Animal'))
           throw new Error('Confirmação não lista todos os requisitos: '+dialog.message());
         await dialog.accept();
       });
       await buyAll.click();
       const autoSpent=await page.locator('#wizard-summary').innerText();
-      if(!autoSpent.includes('6 XP')||!autoSpent.includes('9 / 15 XP'))
-        throw new Error('Compra automática não debitou os 5 XP completos: '+autoSpent.slice(0,350));
+      if(!autoSpent.includes('1 XP')||!autoSpent.includes('14 / 15 XP'))
+        throw new Error('Compra automática não debitou os 10 XP completos: '+autoSpent.slice(0,350));
       const influence=page.locator('#gene-builder-map .fp-gene-card[data-gene-id="attr:influencia"]');
       if(!await influence.textContent().then(t=>t.includes('GRAU 2')))
         throw new Error('Compra automática não elevou Influência a grau 2');
@@ -145,21 +153,13 @@ const { chromium } = require('playwright');
         throw new Error('Montar Animal não foi incorporada como Perícia adquirida');
       // Fechar a ficha lateral antes de interagir com os nós atrás dela.
       await page.locator('#gene-builder-detail [data-action="gene-close-detail"]').click();
-      // Evoluir Agilidade para grau 3 produz 3 ícones de dados; descartar não gasta XP.
-      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
-      await page.locator('#gene-builder-map [data-gene-grade="1"][data-gene-id="attr:agilidade"]').click();
-      if(await page.locator('#gene-builder-map [data-gene-id="attr:agilidade"] .fp-gene-die-inline').count()!==3)
-        throw new Error('Grau 3 não exibe três dados entre − e +');
-      await page.locator('#gene-build-actions [data-action="gene-reset"]').click();
-      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('6 XP')))
-        throw new Error('Descartar evolução de três dados alterou o saldo real');
       await page.locator('#wizard-content button[data-action="wizard-mode"][data-mode="list"]').click();
       await page.locator('#wizard-content button[data-action="wizard-tab"][data-group="attr"]').click();
       if(!await page.locator('#wizard-content [data-action="grade"][data-group="attr"][data-key="agilidade"]').count())
         throw new Error('Alternância de volta às listas perdeu o Atributo comprado');
       if(exceptions.length)throw new Error('Erros Javascript no Codex Genético: '+exceptions.join(' | '));
       console.log('[TRACE] Codex Genético reorganizado e evolução confirmada:',testCase.name,
-                  'categorias=',JSON.stringify(counters),'saldo=11 XP');
+                  'categorias=',JSON.stringify(counters),'saldo=1 XP');
       // O assistente agora inclui 20 VT experimentais para comprar os itens iniciais.
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-shop-catalog');
@@ -175,7 +175,7 @@ const { chromium } = require('playwright');
       await page.locator('#wizard-content [data-action="wizard-buy-item"][data-item="Faca"]').click();
       if(!await page.locator('#wizard-content').innerText().then(t=>t.includes('18')&&t.includes('Faca')))
         throw new Error('Compra de Faca não atualizou saldo VT e inventário inicial');
-      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('6 XP')))
+      if(!await page.locator('#wizard-summary').innerText().then(t=>t.includes('18 VT')&&t.includes('1 XP')))
         throw new Error('Compra com VT afetou indevidamente o saldo de XP ou VT');
       await page.locator('#wizard-controls [data-action="wizard-next"]').click();
       await page.waitForSelector('#wizard-content .fp-wiz-review-hero');
@@ -193,11 +193,11 @@ const { chromium } = require('playwright');
         throw new Error('A ficha final não apresenta saldo ou confirmação do Codex Genético');
       if (await page.locator('#gene-map .fp-gene-card').count() !== 18)
         throw new Error('O mapa da ficha final perdeu uma fonte');
-      await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:destreza"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('5 XP')))
+      await page.locator('#gene-map [data-gene-grade="1"][data-gene-id="attr:vigor"]').click();
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('0 XP')))
         throw new Error('Saldo prévio de XP na ficha final não responde aos dados');
       await page.locator('#gene-sheet-actions [data-action="gene-reset"]').click();
-      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('6 XP')))
+      if (!await page.locator('#gene-sheet-budget').innerText().then(t => t.includes('1 XP')))
         throw new Error('Descartar evolução falhou na ficha final');
       if(exceptions.length)throw new Error('Erros Javascript na ficha final: '+exceptions.join(' | '));
       console.log('PASS', testCase.name);
