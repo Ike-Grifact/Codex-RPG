@@ -95,7 +95,7 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.match(html,/app\.js\?v=20261120-vitals-priority-v3/);
 });
 
-test("Indicadores priorizam quatro vitais, com recursos secundários e Inventário clicável",()=>{
+test("Ações acessíveis, inventário como posses e indicadores prioritários",()=>{
  const resources=["life","integrity","defense","movement","courage","balance"];
  for(const resource of resources){
   assert.match(html,new RegExp('data-vital-open="'+resource+'"'),"Sem cartão "+resource);
@@ -108,14 +108,25 @@ test("Indicadores priorizam quatro vitais, com recursos secundários e Inventár
  assert.ok(html.includes('id="load-text"'),"Dados auxiliares continuam disponíveis");
  const order=["life","integrity","defense","movement","courage","balance"].map(id=>html.indexOf('data-vital-open="'+id+'"'));
  assert.deepEqual([...order].sort((a,b)=>a-b),order,"Ordem dos indicadores vitais e secundários");
- assert.ok(html.indexOf('id="composer-panel"')<html.indexOf('id="play-talents"'),
-  "A preparação precisa aparecer antes do repertório");
- assert.ok(html.indexOf('id="source-grid"')<html.indexOf('id="composer-panel"'),"Fontes surgem antes do rolador no DOM");
+ assert.ok(html.indexOf('id="play-talents"')<html.indexOf('id="source-grid"'),
+  "Ações devem ficar no topo, antes das aptidões");
+ assert.ok(html.indexOf('id="source-grid"')<html.indexOf('id="composer-panel"'),
+  "No celular, selecionar aptidões antes de abrir o rolador");
  const beginning=html.indexOf('<div class="fp-workspace">');
  const ending=html.indexOf('<section class="fp-panel fp-genetic-panel"',beginning);
  const layout=html.slice(beginning,ending);
- assert.ok(layout.includes('id="play-talents"'),"As perícias adquiridas compartilham a grade do rolador");
- assert.ok(layout.indexOf('id="composer-panel"')<layout.indexOf('id="play-talents"'),"No celular, preparação aparece antes do repertório");
+ assert.ok(layout.includes('id="play-talents"'),"Ações compartilham a coluna esquerda com aptidões");
+ assert.match(layout,/<h3>Ações<\/h3>/,"Repertório foi renomeado como Ações");
+ assert.ok(!layout.includes("Seu repertório"),"Sem cabeçalho antigo");
+ assert.match(layout,/<h4>Armas e focos<\/h4>/,"Atalhos de armamento ficam junto dos elementos");
+ assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
+ assert.ok(app.includes('data-action="prepare-element"'),"Atalho elemental precisa ser preservado");
+ assert.match(html,/id="inventory-shop-details"/,"Loja separada dos pertences");
+ assert.match(html,/id="inventory-quick-items"/,"Resumo do que o personagem possui");
+ assert.ok(html.indexOf('id="inventory-list"')<html.indexOf('id="trade-panel"'),"Itens antes da bolsa de VT");
+ assert.ok(html.indexOf('id="trade-panel"')<html.indexOf('id="inventory-shop-details"'),"VT separado da loja");
+ assert.ok(!html.includes('<details class="fp-inventory-store" id="inventory-shop-details" open'),"Loja fechada inicialmente");
+ assert.ok(app.includes("inventory-quick-equipped"),"Contador de equipamentos deve atualizar");
  assert.ok(app.includes("function vitalHelpDetails(kind)"));
  assert.ok(app.includes("function toggleVitalTooltip(button)"));
  assert.ok(app.includes('document.addEventListener("pointerover"'),"Abrir detalhes ao passar o mouse");
