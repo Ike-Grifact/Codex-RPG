@@ -450,6 +450,12 @@ const SKILLS=[
   1
  ],
  [
+  "ferreiro-elemental",
+  "Ferreiro Elemental",
+  "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
+  1
+ ],
+ [
   "apresentacao-avancada",
   "Apresentação Avançada",
   "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
@@ -747,6 +753,12 @@ const SKILL_AFFINITY={
   "attr:destreza",
   "attr:inteligencia"
  ],
+ "ferreiro-elemental": [
+  "practice:artesao",
+  "attr:inteligencia",
+  "attr:destreza",
+  "practice:armas_conjuracao"
+ ],
  "apresentacao-avancada": [
   "practice:apresentacao"
  ],
@@ -847,7 +859,7 @@ const SKILL_BRANCHES=[
  ["engenharia-avancada"],
  ["erudicao-avancada"],
  ["atletismo-avancado"],
- ["artesao-avancado","ferreiro"],
+ ["artesao-avancado","ferreiro","ferreiro-elemental"],
  ["apresentacao-avancada"],
  ["coleta-avancada"]
 ];
@@ -915,6 +927,7 @@ const SKILL_PERMALINKS={
  "atletismo-avancado": "atletismo-avancado",
  "artesao-avancado": "artesao-avancado",
  "ferreiro": "ferreiro",
+ "ferreiro-elemental": "ferreiro-elemental",
  "apresentacao-avancada": "apresentacao-avancada",
  "coleta-avancada": "coleta-avancada"
 };
@@ -964,6 +977,7 @@ const CARD_REQUIREMENTS={
  "atletismo-avancado": "Atletismo 2",
  "artesao-avancado": "Artesão 2",
  "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 2)",
+ "ferreiro-elemental": "Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento (aquisição PENDENTE)",
  "apresentacao-avancada": "Apresentação 2",
  "coleta-avancada": "Coleta 2",
  "armas-leves": "Disciplina 1",
@@ -1015,6 +1029,7 @@ const CARD_EFFECTS={
  "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
+ "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades pendentes; pré-requisito Encantar com Elemento ainda indisponível, bloqueando a compra",
  "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
 };
@@ -1065,6 +1080,7 @@ const CARD_BRIEFS={
  "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
+ "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento (ainda não disponível). Cria armas elementais e pedras elementais; criação e aquisição pendentes.",
  "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
 };
@@ -1115,6 +1131,7 @@ const CARD_ACTIVATIONS={
  "atletismo-avancado": "Passiva",
  "artesao-avancado": "Passiva",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
+ "ferreiro-elemental": "Habilitação de criação; procedimentos e Encantar com Elemento pendentes",
  "apresentacao-avancada": "Passiva",
  "coleta-avancada": "Passiva"
 };
@@ -1905,6 +1922,8 @@ function skillReq(id,s=state){
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
    return"Requer "+advancedSource.label+" 2.";
  if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
+ if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
+ if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Encantar com Elemento ainda não possui Perícia adquirível. Compra de Ferreiro Elemental PENDENTE até essa habilitação ser definida.";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
  if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
@@ -2503,6 +2522,7 @@ const GENE_AUTO_REQUIREMENTS={
  "atletismo-avancado":[["p:atletismo:2"]],
  "artesao-avancado":[["p:artesao:2"]],
  "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],
+ "ferreiro-elemental":[["a:inteligencia:2","a:destreza:2","s:ferreiro","s:improviso","s:criar-item-foco-magia","s:encantar-com-elemento"]],
  "apresentacao-avancada":[["p:apresentacao:2"]],
  "coleta-avancada":[["p:coleta:2"]],
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
