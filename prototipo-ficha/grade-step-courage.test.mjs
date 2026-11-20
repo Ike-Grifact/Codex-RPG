@@ -92,7 +92,7 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261120-magic-actions-v1/);
+ assert.match(html,/app\.js\?v=20261120-magic-actions-v2/);
 });
 
 test("Ações acessíveis, inventário como posses e indicadores prioritários",()=>{
@@ -122,7 +122,12 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
  assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
  assert.ok(app.includes('data-action="magic-element"'),"Elementos adquiridos ficam selecionáveis na conjuração");
  assert.match(html,/id="magic-actions"/,"Conjuração deve aparecer junto das Ações");
- assert.match(layout,/<h4>Conjurar magia<\/h4>/,"O bloco da magia tem título explícito");
+ assert.match(layout,/<h4>Magias<\/h4>/,"Os atalhos de magia ocupam a faixa de Ações");
+ assert.ok(!layout.includes('id="owned-skills"'),"Ações não devem listar todas as Perícias");
+ assert.ok(html.includes('id="evolution-skills"')&&html.includes('id="owned-skills"'),"Consulta rápida precisa estar em Evolução");
+ assert.ok(html.indexOf('id="owned-skills"')>html.indexOf('id="progressao"'),"Lista de Perícias fica abaixo da área de XP");
+ assert.ok(app.includes('function magicComposerFields()'),"Grau e foco devem ser renderizados no compositor");
+ assert.ok(!app.includes('data-magic-field="magicEnvironmentConfirmed"'),"Sem checkbox para disponibilidade ambiental");
  for(const field of ["magicGrade","magicFocusId","magicCharges","magicAmplify","magicTimeConfirmed"]){
   assert.ok(app.includes('data-magic-field="'+field+'"'),"Campo de conjuração ausente: "+field);
  }
