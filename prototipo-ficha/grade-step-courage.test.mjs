@@ -103,6 +103,12 @@ test("Ficha mantém sete recursos com explicação contextual e rolador acima do
  assert.match(html,/id="fp-vital-tooltip"/);
  assert.ok(html.indexOf('id="composer-panel"')<html.indexOf('id="play-talents"'),
   "A preparação precisa aparecer antes do repertório");
+ assert.ok(html.indexOf('id="source-grid"')<html.indexOf('id="composer-panel"'),"Fontes surgem antes do rolador no DOM");
+ const beginning=html.indexOf('<div class="fp-workspace">');
+ const ending=html.indexOf('<section class="fp-panel fp-genetic-panel"',beginning);
+ const layout=html.slice(beginning,ending);
+ assert.ok(layout.includes('id="play-talents"'),"As perícias adquiridas compartilham a grade do rolador");
+ assert.ok(layout.indexOf('id="composer-panel"')<layout.indexOf('id="play-talents"'),"No celular, preparação aparece antes do repertório");
  assert.ok(app.includes("function vitalHelpDetails(kind)"));
  assert.ok(app.includes("function toggleVitalTooltip(button)"));
  assert.ok(app.includes('document.addEventListener("pointerover"'),"Abrir detalhes ao passar o mouse");
