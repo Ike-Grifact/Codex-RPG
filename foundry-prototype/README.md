@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.19.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.20.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -83,7 +83,7 @@ O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma
 
 **Comparativo das faces já roladas:** o bloco "Comparar escolhas" apresenta até quatro alternativas de dados mantidos, com DE, Êxito, Antecipar, Pavor e dano. A comparação não rerrola dados, não aplica a alternativa nem gasta recursos automaticamente.
 
-**Alcance e movimento no mapa.** O Repertório mostra o alcance de armas. A conferência de alcance do ataque continua na mesa. O deslocamento padrão é 8 m + Agilidade + 1 m por 3 Graus completos de Atletismo. Em cenas configuradas em metros ou pés, a régua de arrasto compara a distância do trajeto com esse orçamento e destaca o excesso. A mesa decide sobre deslocamentos especiais.
+**Alcance e movimento no mapa.** O Repertório mostra o alcance de armas. A conferência de alcance do ataque continua na mesa. O deslocamento padrão é 8 m + Agilidade + 1 m por 3 Graus completos de Atletismo. Durante um combate iniciado no rastreador, a régua soma os movimentos do token no turno atual e reinicia a contagem quando o turno avança. A linha, as casas marcadas e o rótulo ficam verdes até o limite, azuis até o dobro e roxos acima do dobro. Cenas em pés são convertidas para metros e cenas com o campo de unidade em branco usam metros. Fora do combate, a régua informa a distância do trajeto atual. A mesa decide sobre deslocamentos especiais.
 
 **Carga no Foundry:** a ficha soma os pesos e quantidades dos equipamentos, informa a capacidade restante e o número alternativo de Leves, Médios e Pesados que cabem. Adicionar um item G1 acima da capacidade avisa sobre sobrecarga, sem inventar penalidades. As compras VT do site não são importadas automaticamente.
 

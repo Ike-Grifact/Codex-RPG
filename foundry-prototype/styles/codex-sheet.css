@@ -115,7 +115,9 @@
 .codex-roll-surface:popover-open .codex-compose{grid-template-columns:repeat(3,minmax(0,1fr))}
 .codex-roll-advanced{margin:8px 0}
 .codex-roll-advanced summary{cursor:pointer;color:var(--cx-muted)}
-.waypoint-label.codex-movement-over .total-measurement{color:#ff9a8c}
+#measurement .waypoint-label.codex-movement-exito{background:#267A45;color:#fff}
+#measurement .waypoint-label.codex-movement-antecipar{background:#2369BB;color:#fff}
+#measurement .waypoint-label.codex-movement-pavor{background:#542176;color:#fff}
 .codex-skill,.codex-gear{display:flex;justify-content:space-between;gap:9px;align-items:center;padding:9px 2px;border-bottom:1px solid var(--cx-line)}
 .codex-skill>div,.codex-gear>div:first-child{display:flex;flex-direction:column;gap:4px}
 .codex-skill strong,.codex-gear strong{font-size:13px}

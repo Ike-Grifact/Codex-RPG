@@ -43,8 +43,16 @@ function armor(target){
 test("deslocamento segue Agilidade e grupos completos de três em Atletismo",()=>{
  assert.equal(standardMovement({attributes:{agilidade:2},practices:{atletismo:3}}),11);
  assert.equal(standardMovement({attributes:{agilidade:1},practices:{atletismo:2}}),9);
- assert.deepEqual(movementBudget({attributes:{agilidade:2}} ,40,"ft"),{max:10,used:12.192,exceeded:true});
+ assert.deepEqual(movementBudget({attributes:{agilidade:2}},40,"ft"),{max:10,used:12.192,band:"antecipar"});
  assert.equal(movementBudget({},100,"polegadas de mapa"),null);
+});
+
+test("a régua aplica as três faixas ao total do turno, incluindo mapas sem unidade",()=>{
+ const system={attributes:{agilidade:4},practices:{atletismo:3}};
+ assert.deepEqual([0,13,14,26,27].map(total=>movementBudget(system,total,"").band),
+  ["exito","exito","antecipar","antecipar","pavor"]);
+ assert.equal(movementBudget(system,13/.3048,"ft").band,"exito");
+ assert.equal(movementBudget(system,26/.3048,"ft").band,"antecipar");
 });
 
 test("o desarmado exige Disciplina na pilha, dispensa Perícia de arma e permite trocar o Atributo",()=>{
