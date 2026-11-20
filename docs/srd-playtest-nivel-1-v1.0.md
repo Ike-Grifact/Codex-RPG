@@ -14,13 +14,27 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Encantar com Elemento (20/11/2026)
+
+**DEFINIDO — aquisição:** **Encantar com Elemento** custa **1 XP** e exige **uma Perícia Elemental adquirida** e **Criar Item de Foco e Magia**. Qualquer uma das Perícias em **Fogo, Água, Ar, Terra, Sagrado, Sangue, Trevas ou Veneno** satisfaz a exigência de especialização elemental. O elemento aplicado deve ser aquele efetivamente habilitado na ficha. O foco não substitui a Perícia Elemental nem concede elementos automaticamente.
+
+**DEFINIDO — armadura ou escudo:** gastar **1 Coragem** para aplicar **resistência ao elemento escolhido** ao equipamento. Contra o elemento resistido, **cada Êxito válido do ataque causa 0,5 de dano e Pavor não causa dano desse elemento**, sem anular outros efeitos de Pavor nem conceder imunidade. O encantamento é temporário e sua **duração = E − P, somente com E − P > 0**, calculada pelos símbolos válidos da rolagem.
+
+**DEFINIDO — arma:** encantar uma arma temporariamente, tornando-a do **elemento habilitado** na ficha. A arma utiliza **a mesma duração E − P > 0** que armaduras e escudos, sem base adicional. Não acrescentar automaticamente dados, Êxitos, dano extra, propriedades elementais de outras Perícias ou efeitos de Grau superior. O tipo elemental é aplicado à arma enquanto o encantamento durar.
+
+**PENDENTE de procedimento:** unidade temporal exata de **E − P** (turnos/rodadas), fontes/DE do teste, tratamento das anulações de Pavor, gasto caso a duração não seja positiva, **custo de Coragem para encantar arma** (o custo de **1 Coragem** foi explicitado para armaduras e escudos), acúmulo de resistências de equipamento, troca de alvo e automação de estados e inventário. Não inventar duração diferente para armas, armaduras ou escudos.
+
+**DEFINIDO — interação com Ferreiro Elemental:** Encantar com Elemento passa a ser **Perícia comprável por 1 XP**; ela continua sendo requisito de **Ferreiro Elemental**. Comprar Ferreiro Elemental exige possuir Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. A compra de uma não concede automaticamente a outra.
+
+---
+
 ## Adendo normativo — Ferreiro Elemental (20/11/2026)
 
 **DEFINIDO — decisão autoral:** a Perícia **Ferreiro Elemental** custa **1 XP**. Requisitos informados: **Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar magia + item de foco + Encantar com Elemento**. Para a nomenclatura do catálogo vigente, a expressão «Criar magia + item de foco» foi vinculada à única Perícia existente **Criar Item de Foco e Magia**; não foi criada uma segunda compra de Criar Magia, que aparece historicamente como descrição de conjuração livre, não como uma Perícia separada atual.
 
 **DEFINIDO — efeito:** habilita **criar armas elementais e pedras elementais**. Não atribui grau de arma/pedra, novos símbolos, novas características, bônus de rolagem, imunidades, recarga, receitas ou automatização de itens. O +1E de **Ferreiro** continua específico aos testes efetivamente caracterizados como **Forja**, sem extensão automática a toda criação elemental.
 
-**PENDENTE — requisito indisponível:** **Encantar com Elemento** foi explicitamente exigida, mas não consta do catálogo e não possui custo, requisitos ou efeito de aquisição homologados neste SRD. **A compra de Ferreiro Elemental fica bloqueada** até a aquisição de Encantar com Elemento ser definida/implementada; a Perícia permanece visível para consulta no Codex Genético. Não inventar ou conceder Encantar com Elemento gratuitamente e não remover o requisito.
+**DEFINIDO — requisito agora adquirível:** **Encantar com Elemento** foi cadastrada com custo de **1 XP** e exigência de **uma Perícia Elemental + Criar Item de Foco e Magia**. Ferreiro Elemental só pode ser comprada depois da aquisição de **todos** os requisitos, inclusive Encantar; não conceder gratuitamente nenhum deles.
 
 **PENDENTE — fabricação:** ingredientes, custos, ferramentas, DE, tempo, quais elementos podem ser vinculados, atributos e graus de armas/pedras, processo de encantamento, interações com itens existentes e fluxo de inventário. A criação de itens não é efetuada automaticamente ao comprar a Perícia.
 
