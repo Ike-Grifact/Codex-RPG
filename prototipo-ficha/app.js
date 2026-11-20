@@ -134,8 +134,14 @@ const SKILLS=[
  [
   "montar",
   "Montar Animal",
-  "Requer Influência grau 2.",
-  2
+  "1 XP; Influência 2 e Destreza 3. Vantagem (+1A) nos testes pertinentes de montaria. Ação conjunta com a ficha própria da montaria, não um turno extra; montaria Grande rola até 3 Atributos diferentes e mantém no máximo 2 dados. Sem a Perícia: Desvantagem Absoluta (−1E) nos testes pertinentes e sem acesso ao benefício de coordenação por Antecipar.",
+  1
+ ],
+ [
+  "maestria-montaria",
+  "Maestria em Montaria",
+  "1 XP; Influência 6, Destreza 4, Inteligência 2 e Montar Animal. Habilita controlar e montar criaturas Gigantes e especiais; Vantagem (+1A) ao montar Gigantes. Montaria Gigante mantém no máximo 3 dados; usa ficha própria. Ação conjunta e eventual acúmulo de Vantagens sujeitos à validação de mesa.",
+  1
  ],
  [
   "provocacao-sofisticada",
@@ -524,8 +530,9 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao"
  ],
  "montar": [
-  "attr:influencia"
+  "attr:influencia","attr:destreza"
  ],
+ "maestria-montaria":["attr:influencia","attr:destreza","attr:inteligencia"],
  "provocacao-sofisticada": [
   "attr:influencia",
   "practice:apresentacao"
@@ -810,6 +817,7 @@ const SKILL_BRANCHES=[
   "provocacao-sofisticada",
   "combate",
   "montar",
+  "maestria-montaria",
   "recobrar-coragem"
  ],
  [
@@ -850,6 +858,7 @@ const SKILL_PERMALINKS={
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
+ "maestria-montaria":"maestria-em-montaria",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
@@ -956,6 +965,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "montar":"Vantagem (+1A) nos testes pertinentes de montaria; permite participação coordenada com montaria de ficha própria numa ação conjunta (não turno adicional). Sem a Perícia: Desvantagem Absoluta (−1E) nesses testes, sem benefício de coordenação por Antecipar. Grande: até três Atributos diferentes na rolagem e apenas dois dados mantidos. Procedimento exato da ação conjunta PENDENTE.",
+ "maestria-montaria":"Habilita controlar e montar criaturas Gigantes e especiais; +1A ao montar Gigantes. Uma montaria Gigante pode manter até três dados da própria ficha. Não concede turno extra. Acúmulo de Vantagens e combinação detalhada dos dados em ação conjunta: PENDENTE.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
@@ -1005,6 +1016,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "montar":"1 XP · Influência 2 + Destreza 3 · +1A em testes de montaria pertinentes, sem requisito de Domar.",
+ "maestria-montaria":"1 XP · Montar Animal + Influência 6 + Destreza 4 + Inteligência 2. Montarias Gigantes e especiais; até 3 dados mantidos para Gigantes.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
@@ -1910,7 +1923,10 @@ function skillReq(id,s=state){
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
 
- if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
+ if(id==="montar"&&((s.attributes.influencia||0)<2||dex<3))
+  return"Requer Influência 2 e Destreza 3. Domar Criatura Grande NÃO é requisito.";
+ if(id==="maestria-montaria"&&(!has("montar")||(s.attributes.influencia||0)<6||dex<4||(s.attributes.inteligencia||0)<2))
+  return"Requer Montar Animal, Influência 6, Destreza 4 e Inteligência 2.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.";
  if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
