@@ -262,7 +262,8 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
  assert.ok(app.includes('"resistencia-a-fogo": "resistencia-a-fogo"'),"Verbete da ficha");
  assert.ok(app.includes('"resistencia-a-fogo": "Passiva pessoal enquanto adquirida'),"Efeito pessoal reconhecido");
  assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Exibe resistência somente se o personagem possuir a Perícia");
- assert.ok(app.includes("0,5 de dano por Êxito válido; Pavor não causa dano desse elemento"),"Resistência pessoal usa a regra vigente");
+ assert.ok(app.includes("0 dano direto à Vida por Derreter G3"),"Derreter não causa dano direto à Vida do portador");
+ assert.ok(app.includes("Não reduz dano à Integridade da armadura"),"Resistência protege somente a Vida");
  const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(graph.includes('"ferreiro-elemental","resistencia-a-fogo"'),"Ramo genético da Forja Elemental");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
@@ -270,6 +271,8 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
  const page=readFileSync(join(root,"../pericias/resistencia-a-fogo.html"),"utf8");
  assert.ok(page.includes("Ferreiro Elemental")&&page.includes("Perícia em Elemento Fogo")&&page.includes("Vigor 2"),"Verbetes preservam requisitos");
  assert.ok(page.includes("próprio personagem que adquiriu a Perícia"),"Portador, não equipamento");
- assert.ok(page.includes("0,5 de dano"),"Redução por Êxito de Fogo, sem imunidade");
+ assert.ok(page.includes("todo dano que efetivamente alcançaria a Vida do portador é dividido por 2"),"Metade do dano que chega à Vida");
+ assert.ok(page.includes("Derreter causa 0 de dano direto à Vida"),"Derreter anula apenas parcela direta à Vida");
+ assert.ok(page.includes("E + P de dano à Integridade"),"Integridade da armadura permanece normal");
  assert.ok(!page.includes("PENDENTE — efeito"),"Efeito pessoal definido e documentado");
 });
