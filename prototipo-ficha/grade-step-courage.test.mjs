@@ -242,3 +242,30 @@ test("Encantar com Elemento: custo, alternativas de requisito, duração idênti
  const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(graph.includes('"criar-item-foco-magia","encantar-com-elemento"'));
 });
+
+
+
+test("Resistência a Fogo: custo 1 XP, pré-requisitos e efeito não implementado",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+ const make=({vigor=2,skills=["ferreiro-elemental","fogo"]}={})=>({
+  attributes:{forca:1,vigor,destreza:2,inteligencia:2},
+  practices:{artesao:2,armas_conjuracao:2},knowledges:{},skills
+ });
+ assert.match(fn("resistencia-a-fogo",make({skills:["fogo"]})),/Ferreiro Elemental/,"Exige Ferreiro Elemental");
+ assert.match(fn("resistencia-a-fogo",make({skills:["ferreiro-elemental"]})),/Perícia em Elemento Fogo/,"Exige Fogo");
+ assert.match(fn("resistencia-a-fogo",make({vigor:1})),/Vigor 2/,"Exige Vigor 2");
+ assert.equal(fn("resistencia-a-fogo",make()),null,"Permite comprar após todos os requisitos");
+ assert.match(app,/"resistencia-a-fogo",\s*"Resistência a Fogo",[\s\S]*?\n  1\n \]/,"Custo exatamente 1 XP");
+ assert.ok(app.includes('"resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]]'),"Compra assistida mantém requisitos");
+ assert.ok(app.includes('"resistencia-a-fogo": "resistencia-a-fogo"'),"Verbete da ficha");
+ assert.ok(app.includes('"resistencia-a-fogo": "Efeito/ativação PENDENTE'),"Sem implementar bônus ou resistência não aprovados");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"ferreiro-elemental","resistencia-a-fogo"'),"Ramo genético da Forja Elemental");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="resistencia-a-fogo.html">Resistência a Fogo</a>'),"Catálogo do portal");
+ const page=readFileSync(join(root,"../pericias/resistencia-a-fogo.html"),"utf8");
+ assert.ok(page.includes("Ferreiro Elemental")&&page.includes("Perícia em Elemento Fogo")&&page.includes("Vigor 2"),"Verbetes preservam requisitos");
+ assert.ok(page.includes("não concede automaticamente resistência"),"Não antecipar efeito");
+});
