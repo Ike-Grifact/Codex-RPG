@@ -165,7 +165,8 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
 
 test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
- const skillReq=new Function("state","racialGrants","ownsSkill",code+"\\nreturn skillReq;")(
+ const skillReq=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[];const SOURCE_PROPS={};"+String.fromCharCode(10)+code+String.fromCharCode(10)+"return skillReq;")(
   {},()=>[],(id,s)=>s.skills.includes(id)
  );
  const ficha=(influencia,destreza,inteligencia,skills=[])=>({
