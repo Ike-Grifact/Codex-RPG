@@ -1613,3 +1613,10 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-workspace>#play-talents{order:2;width:100%;min-width:0;margin:0}
  .fp-workspace .fp-roll-jump{display:inline-flex}
 }
+
+/* Ao evoluir as aptidões, usar toda a largura: o compositor só existe no modo Jogar. */
+@media(min-width:981px){
+ .fp-editing-sources .fp-workspace{display:block}
+ .fp-editing-sources .fp-workspace>.fp-primary-column{display:block;width:100%}
+ .fp-editing-sources .fp-workspace>.fp-side-column{display:none}
+}
