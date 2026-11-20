@@ -92,7 +92,7 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261119-vitals-v1/);
+ assert.match(html,/app\.js\?v=20261120-vitals-compact-v2/);
 });
 
 test("Ficha mantém sete recursos com explicação contextual e rolador acima do repertório",()=>{
@@ -105,7 +105,11 @@ test("Ficha mantém sete recursos com explicação contextual e rolador acima do
   "A preparação precisa aparecer antes do repertório");
  assert.ok(app.includes("function vitalHelpDetails(kind)"));
  assert.ok(app.includes("function toggleVitalTooltip(button)"));
+ assert.ok(app.includes('document.addEventListener("pointerover"'),"Abrir detalhes ao passar o mouse");
+ assert.ok(app.includes("function scheduleVitalTooltipClose()"),"Fechar detalhe flutuante ao sair");
+ assert.ok(app.includes("fp-vital-tooltip-actions"),"Controles de Vida e Coragem continuam disponíveis");
  const css=readFileSync(join(root,"styles.css"),"utf8");
+ assert.match(css,/\\.fp-vitals\\{display:flex;flex-wrap:wrap/,"Indicadores devem usar somente a largura necessária");
  for(const icon of ["coragem","movimento","peso"]){
   assert.ok(css.includes("status-"+icon+".svg"),"CSS sem ícone "+icon);
   assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
