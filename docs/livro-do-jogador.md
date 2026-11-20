@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Jogador
 
+> **Montaria — 20/11/2026 [DEFINIDO / CUSTO PENDENTE]:** **Montar Animal** (2 XP, Influência 2) concede **Vantagem** nos testes com montaria, não +1A. Nova **Perícia em Montaria** (Influência 1 + Destreza 2) concede **+1 Antecipar (A)** nesses testes, não Vantagem. **Custo XP da nova Perícia PENDENTE**: compra bloqueada até decisão, sem repetir os 2 XP de Montar Animal. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--perícia-em-montaria-e-montar-animal-20112026) · [Verbete](../pericias/pericia-em-montaria.html).
+
 > **Maestrias de armas por família e exclusividades de linhagem — 20/11/2026 [DEFINIDO / AQUISIÇÕES PENDENTES]:** o mesmo efeito de Maestria em Martelos vale para outras famílias de armas: **1 efeito grátis em acerto comum**, **2 efeitos diferentes grátis no crítico** e **1 terceiro por 1 Coragem no crítico**, respeitando a arma e sua habilitação. **Humano começa com Maestria em Armas de Fogo gratuitamente**, mas a ativação requer **Perícia em Armas de Fogo**. **Transfusão Sanguinária é exclusiva de Lucker de Sangue** e preserva requisitos **Transfusão + Perícia em Elemento Sangue** e custo **1 XP**; não é gratuita. Os **custos e requisitos específicos das novas Maestrias não raciais** aguardam decisão, exceto Martelos. [SRD v1.0](srd-playtest-nivel-1-v1.0.md#adendo-normativo--maestrias-por-tipo-de-arma-e-exclusividades-de-origem-20112026).
 
 > **Maestria em Martelos — 20/11/2026 [DEFINIDO]:** **1 XP**; requer **Força 3 + Destreza 1 + Vigor 1** para comprar. Ao acertar com martelo e possuir a **Perícia de Armas do peso correspondente** (Leves/Médias/Pesadas), ativa **1 efeito da arma gratuitamente em acerto comum**. **No crítico, até 2 efeitos diferentes gratuitos e mais 1 efeito diferente por 1 Coragem**, limitado às características existentes do martelo. DE e gatilhos continuam obrigatórios; sem Perícia adequada ao peso, a Maestria não confere o bônus. A compra não exige Perícia de Armas. **PENDENTE:** outros pesos e maças/clavas. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--perícia-maestria-em-martelos-20112026) · [Verbete](../pericias/maestria-em-martelos.html).
@@ -1261,7 +1263,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
 | Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
-| Montar Animal | 2 | Montaria comum, requer Influência 2 |
+| Montar Animal | 2 | Requer Influência 2; concede **Vantagem** nos testes com montaria (**não +1A**) |
+| **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
 | **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
