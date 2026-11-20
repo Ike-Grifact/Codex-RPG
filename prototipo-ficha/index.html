@@ -358,8 +358,50 @@
       </section>
 
       <section class="fp-panel fp-inventory-panel" id="equipamentos">
-        <div class="fp-panel-heading"><span class="fp-panel-icon">▣</span><div><h3>Equipamento e proteção</h3><small>Integridade, carga e peças equipadas</small></div><button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Item</button></div>
-        <section class="fp-cargo-panel" id="inventory-cargo-panel" aria-label="Mapa visual de capacidade de carga">
+        <div class="fp-panel-heading fp-inventory-heading">
+          <span class="fp-panel-icon">▣</span><div><h3>Inventário</h3><small>O que você possui, equipa e transporta</small></div>
+          <button id="add-item" type="button" class="fp-secondary fp-small-btn">+ Adicionar item</button>
+        </div>
+        <div class="fp-inventory-stats" aria-label="Resumo do inventário">
+          <div><small>ITENS</small><strong id="inventory-quick-items">0</strong></div>
+          <div><small>EQUIPADOS</small><strong id="inventory-quick-equipped">0</strong></div>
+          <div><small>CARGA</small><strong id="inventory-quick-load">0 / 1 Alto</strong></div>
+        </div>
+        <div class="fp-inventory-load-summary">
+          <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
+        <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
+        </div>
+        <section class="fp-inventory-owned" aria-label="Itens e equipamentos possuídos">
+          <div class="fp-inventory-section-heading"><h4>Minha mochila e equipamentos</h4><small>Clique em um item para abrir seus detalhes, equipar, editar ou ajustar Integridade.</small></div>
+          <div id="inventory-filterbar" class="fp-inventory-filterbar"></div>
+        <div id="inventory-list" class="fp-inventory-list"></div>
+          <details class="fp-inventory-rules"><summary>Consultar regras de proteção e equipamento</summary><p class="fp-footnote">Tipo e Grau são independentes. Muito Leve G1 tem 3 de Integridade e +2 DE; Leve 7 e +1 DE; Média 12 e 0 DE; Pesada 17 e −1 DE. Os escudos Leve/Médio/Pesado têm 2/3/4 de Integridade, respectivamente; Cravar ativada reduz 1 por Êxito mantido. Muito Pesada −2 DE, exige Vigor 6 e Atletismo 6 e possui imunidade física natural. G2 exige nível 5, G3 nível 10 e G4 nível 20. Modificadores especiais e integridade de Graus superiores dependem do SRD vigente. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p></details>
+        </section>
+        <section class="fp-trade-panel fp-inventory-purse" id="trade-panel" aria-label="Bolsa e poder de troca">
+          <div class="fp-inventory-section-heading"><h4>Bolsa e Valor de Troca (VT)</h4><small>Saldo para compras, como dinheiro de aventura; representado pelos recursos de escambo.</small></div>
+          <div class="fp-trade-heading">
+            <div><strong>Patrimônio disponível</strong>
+              <small>20 VT iniciais · EXPERIMENTAL</small></div>
+            <div class="fp-trade-balance"><span>Disponível</span><strong id="trade-total">20 VT</strong></div>
+          </div>
+          <p class="fp-muted">VT é uma unidade de valor para comprar e negociar, semelhante à função de moedas. No sistema atual não é moeda física: Ervas, Espólios, Couro, Comida e Minérios representam esse valor e ocupam Carga.</p>
+          <div class="fp-trade-wallet" id="trade-wallet"></div>
+          <details class="fp-trade-distribute">
+            <summary>Escolher recursos iniciais (antes da primeira compra ou coleta)</summary>
+            <div class="fp-trade-allocate" id="trade-allocate"></div>
+          </details>
+          <details class="fp-inventory-collect"><summary>Registrar coleta de recursos na aventura</summary><div class="fp-trade-collect">
+            <h4>Registrar coleta durante a aventura</h4>
+            <label>Recurso <select id="collect-type"><option value="ervas">Ervas</option><option value="espolios">Espólios</option><option value="couro">Couro</option><option value="comida">Comida</option><option value="minerios">Minérios</option></select></label>
+            <label>Quantidade G1 <input id="collect-amount" type="number" min="1" max="999" value="1"></label>
+            <button class="fp-secondary" type="button" data-action="trade-collect">+ Registrar coleta</button>
+          </div></details>
+          <p class="fp-trade-meta">Total gasto em compras deste catálogo: <strong id="trade-spent">0 VT</strong>. Descontos e sobrepreços por Perícias de Comércio ainda não foram definidos.</p>
+          <div class="fp-crystal-summary" id="crystal-summary"></div>
+        </section>
+        <details class="fp-inventory-capacity">
+          <summary><span>Espaço transportado e cálculo da capacidade</span><small>Ver o mapa completo da carga e seus componentes</small></summary>
+          <section class="fp-cargo-panel" id="inventory-cargo-panel" aria-label="Mapa visual de capacidade de carga">
           <div class="fp-cargo-heading">
             <div><span class="fp-overline">MAPA DO INVENTÁRIO</span><h4>Espaço e peso transportado</h4><small id="inventory-cargo-total">0 / 1 Alto de capacidade</small></div>
             <strong class="fp-cargo-balance" id="inventory-cargo-balance">Muito Leve · 0%</strong>
@@ -380,21 +422,11 @@
           </div>
           <p class="fp-cargo-overflow" id="inventory-cargo-overflow" hidden></p>
         </section>
-        <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
-        <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
-        <section class="fp-trade-panel" id="trade-panel" aria-label="Patrimônio em recursos e comércio">
-          <div class="fp-trade-heading">
-            <div><strong>Recursos e Valor de Troca (VT)</strong>
-              <small>Escambo de Grau 1 · 20 VT iniciais experimentais</small></div>
-            <div class="fp-trade-balance"><span>Disponível</span><strong id="trade-total">20 VT</strong></div>
-          </div>
-          <p class="fp-muted">VT não é moeda física. Ervas, Espólios, Couro, Comida e Minérios possuem valor de troca equivalente no mesmo Grau; todos ocupam Carga.</p>
-          <div class="fp-trade-wallet" id="trade-wallet"></div>
-          <details class="fp-trade-distribute">
-            <summary>Escolher recursos iniciais (antes da primeira compra ou coleta)</summary>
-            <div class="fp-trade-allocate" id="trade-allocate"></div>
-          </details>
-          <div class="fp-trade-shop">
+        </details>
+        <details class="fp-inventory-store" id="inventory-shop-details">
+          <summary><span>Mercado e compras</span><small>Comprar equipamento, pedras elementais ou simular fabricação</small></summary>
+          <div class="fp-inventory-store-content">
+            <div class="fp-trade-shop">
             <h4>Comprar equipamento G1</h4>
             <div class="fp-equip-filters fp-trade-filters">
               <label>Tipo <select id="trade-shop-type" data-trade-shop-type aria-label="Filtrar compras por tipo"></select></label>
@@ -420,22 +452,12 @@
             <small>Preços preenchidos pela mesa são <strong>EXPERIMENTAIS, não oficiais</strong>. A compra usa o saldo e a preferência de pagamento do comércio. A pedra adquirida fica registrada em compras, sem efeito mágico ou carga física automáticos até haver regra.</small>
             <div class="fp-muted" id="stone-owned"></div>
           </div>
-          <div class="fp-trade-collect">
-            <h4>Registrar coleta durante a aventura</h4>
-            <label>Recurso <select id="collect-type"><option value="ervas">Ervas</option><option value="espolios">Espólios</option><option value="couro">Couro</option><option value="comida">Comida</option><option value="minerios">Minérios</option></select></label>
-            <label>Quantidade G1 <input id="collect-amount" type="number" min="1" max="999" value="1"></label>
-            <button class="fp-secondary" type="button" data-action="trade-collect">+ Registrar coleta</button>
-          </div>
-          <p class="fp-trade-meta">Total gasto em compras deste catálogo: <strong id="trade-spent">0 VT</strong>. Descontos e sobrepreços por Perícias de Comércio ainda não foram definidos.</p>
-          <div class="fp-crystal-summary" id="crystal-summary"></div>
-        </section>
-        <div class="fp-trade-shop-grid">
+            <div class="fp-inventory-store-focus"><div class="fp-trade-shop-grid">
           <label>Modelo de foco G1 (simulação; fabricação com Artesão) <select id="focus-test-model"><option value="Foco de Magia Leve G1">Foco de Magia Leve G1</option></select></label>
           <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Simular foco escolhido</button>
-        </div>
-        <div id="inventory-filterbar" class="fp-inventory-filterbar"></div>
-        <div id="inventory-list" class="fp-inventory-list"></div>
-        <p class="fp-footnote">Tipo e Grau são independentes. Muito Leve G1 tem 3 de Integridade e +2 DE; Leve 7 e +1 DE; Média 12 e 0 DE; Pesada 17 e −1 DE. Os escudos Leve/Médio/Pesado têm 2/3/4 de Integridade, respectivamente; Cravar ativada reduz 1 por Êxito mantido. Muito Pesada −2 DE, exige Vigor 6 e Atletismo 6 e possui imunidade física natural. G2 exige nível 5, G3 nível 10 e G4 nível 20. Modificadores especiais e integridade de Graus superiores dependem do SRD vigente. Efeitos especiais e danos a alvos ainda exigem arbitragem do Narrador.</p>
+        </div></div>
+          </div>
+        </details>
       </section>
     </section>
 
