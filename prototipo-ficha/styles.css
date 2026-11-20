@@ -1585,3 +1585,9 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-vital-label,.fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load,.fp-vital-label.fp-icon-balance{flex-basis:18px;width:18px;height:18px;min-height:18px;font-size:0;background-size:18px 18px;padding:0}
  .fp-vital strong,.fp-vital .fp-vital-main strong,.fp-vital.fp-vital-basic>strong{font-size:16px}
 }
+
+/* Sobrescreve também as regras antigas de padding lateral dos ícones. */
+.fp-vital .fp-vital-label{padding:0;background-size:20px 20px;background-position:center center}
+.fp-vital-tooltip-source{display:inline-block;margin-top:11px;color:var(--fp-gold);font-size:11px;font-weight:700;text-underline-offset:3px}
+.fp-vital-tooltip-source:hover,.fp-vital-tooltip-source:focus-visible{color:var(--fp-text)}
+@media(max-width:600px){.fp-vital .fp-vital-label{padding:0;background-size:18px 18px}}
