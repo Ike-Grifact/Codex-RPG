@@ -1338,7 +1338,8 @@ function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries
 function walletValue(s=state){return RESOURCES.reduce((n,[k])=>n+Number(s.trade?.resources?.[k]||0),0);}
 function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // Lotes G1 pequenos: 10 unidades = 1 Leve (proposta).
 function combatItem(item,mode){
- if(!item?.equipped||!["arma","foco"].includes(item.type))return [];
+ // Foco pode estar somente no inventário para conjurar; armas ainda exigem estar equipadas.
+ if(!item||!(item.equipped||(mode==="conjuracao"&&item.type==="foco"))||!["arma","foco"].includes(item.type))return [];
  if(!((item.grade||1)<= (state.level>=20?4:state.level>=10?3:state.level>=5?2:1)))return [];
  const skills=allOwnedSkills(),properties=item.properties||[],range=properties.includes("À Distância");
  const cat=item.category||({leve:"leve",medio:"medio",alto:"pesado"}[item.weight]||"leve");
@@ -1441,7 +1442,8 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false});
+  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
+  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -1766,6 +1768,7 @@ function normalizeItem(it={}){
   priceVT:clamp(Math.floor(it.priceVT||0),0,10000),
   properties:Array.isArray(it.properties)?it.properties.filter(x=>typeof x==="string").slice(0,6):[],
   firearm:!!it.firearm,element:String(it.element||"").slice(0,40),
+  focusCharges:type==="foco"?clamp(Math.floor(it.focusCharges??grade),0,grade):0,
   durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999),
   packSize:clamp(Math.floor(it.packSize||0),0,99),ammoRemaining:clamp(Math.floor(it.ammoRemaining??it.packSize??0),0,99),
   storageCapacity:clamp(Math.floor(it.storageCapacity||0),0,99),description:String(it.description||"").slice(0,330)}; // Lotes/consumo manuais.
