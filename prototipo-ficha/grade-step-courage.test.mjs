@@ -122,7 +122,7 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
  assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
  assert.ok(app.includes('data-action="magic-element"'),"Elementos adquiridos ficam selecionáveis na conjuração");
  assert.match(html,/id="magic-actions"/,"Conjuração deve aparecer junto das Ações");
- assert.match(layout,/<h4>Conjurar magia<\\/h4>/,"O bloco da magia tem título explícito");
+ assert.match(layout,/<h4>Conjurar magia<\/h4>/,"O bloco da magia tem título explícito");
  for(const field of ["magicGrade","magicFocusId","magicCharges","magicAmplify","magicTimeConfirmed"]){
   assert.ok(app.includes('data-magic-field="'+field+'"'),"Campo de conjuração ausente: "+field);
  }
