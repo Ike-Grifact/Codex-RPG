@@ -96,7 +96,7 @@ test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",(
  for(const txt of [
   'data-wizard-shop-','dataset.tradeShopType','data-inventory-type','data-inventory-weight',
   'EQUIPMENT_FAMILIES','EQUIPMENT_WEIGHT_OPTIONS','wizardShopWeight','tradeShopWeight','fp-shop-summary','fp-item-summary','fp-item-editor',
-  'fp-action-weapon','fp-action-skill','case "repertoire-roll":quickRollItem(id)'
+  'fp-action-weapon','fp-quick-skill','case "repertoire-roll":quickRollItem(id)'
  ])assert.ok(app.includes(txt),"Não encontrado: "+txt);
  for(const txt of ['id="trade-shop-type"','id="trade-shop-weight"','id="inventory-filterbar"'])
   assert.ok(html.includes(txt),"Faltando no HTML: "+txt);
@@ -144,6 +144,8 @@ test("Magia G1/G2/G3: custos, tempo, foco e normalização de elementos",()=>{
  assert.ok(app.includes('data-magic-field="magicTimeConfirmed"'),"G2 e G3 exigem registro dos turnos de preparação");
  assert.ok(app.includes('case "magic-element":prepareMagic(id)'),"Botão de elemento prepara Disciplina");
  assert.ok(app.includes('case "repertoire-roll":quickRollItem(id)'),"Atalhos de armas preservados");
- assert.ok(html.includes('id="magic-actions"'),"Formulário da magia presente junto das Ações");
+ assert.ok(html.includes('id="magic-actions"'),"Atalho de magia presente junto das Ações");
+ assert.ok(app.includes("function magicComposerFields()"),"Formulário deve existir somente no compositor");
+ assert.ok(!app.includes('data-magic-field="magicEnvironmentConfirmed"'),"Sem confirmação de ambiente no formulário");
  assert.ok(css.includes(".fp-magic-config"),"Composição da magia estilizada");
 });
