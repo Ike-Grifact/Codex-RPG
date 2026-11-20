@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261119-vitals-v1">
+  <link rel="stylesheet" href="./styles.css?v=20261120-vitals-compact-v2">
   <script src="./catalog.js?v=0.65-vt1prop" defer></script>
   <script src="./gene-graph.js?v=20261119-druid-icons-v2" defer></script>
-  <script src="./app.js?v=20261119-vitals-v1" defer></script>
+  <script src="./app.js?v=20261120-vitals-compact-v2" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -108,40 +108,40 @@
 
     <section class="fp-vitals" aria-label="Recursos e defesas — toque em um cartão para ver a explicação">
       <div class="fp-vital fp-life-vital">
-        <button class="fp-vital-open" type="button" data-vital-open="life" aria-label="Explicar Vida e estados de Saúde" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="life" aria-label="Explicar Vida e estados de Saúde" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-life">VIDA</div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="life" data-delta="-1" aria-label="Perder Vida">−</button><strong id="life-text">4 / 4</strong><button type="button" class="fp-counter" data-resource="life" data-delta="1" aria-label="Recuperar Vida">+</button></div>
         <div class="fp-life-boxes" id="life-boxes" aria-label="Quatro estados de Saúde"><span></span><span></span><span></span><span></span></div>
         <small id="life-recovery">Saudável</small>
       </div>
       <div class="fp-vital">
-        <button class="fp-vital-open" type="button" data-vital-open="courage" aria-label="Explicar Coragem e sua recuperação" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="courage" aria-label="Explicar Coragem e sua recuperação" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-courage">CORAGEM</div>
         <div class="fp-vital-main"><button type="button" class="fp-counter" data-resource="courage" data-delta="-1" aria-label="Gastar Coragem">−</button><strong id="courage-text">10 / 10</strong><button type="button" class="fp-counter" data-resource="courage" data-delta="1" aria-label="Recuperar Coragem">+</button></div>
         <small>Até 5 por rolagem</small>
       </div>
       <div class="fp-vital fp-vital-basic">
-        <button class="fp-vital-open" type="button" data-vital-open="defense" aria-label="Explicar DE Defensiva e modificadores" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="defense" aria-label="Explicar DE Defensiva e modificadores" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-de" id="de-label">DE DEFENSIVA</div><strong id="de-text">0</strong><small id="de-caption">DE natural</small>
       </div>
       <div class="fp-vital fp-vital-basic fp-armor-integrity-vital">
-        <button class="fp-vital-open" type="button" data-vital-open="integrity" aria-label="Explicar Integridade e armadura equipada" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="integrity" aria-label="Explicar Integridade e armadura equipada" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-integrity">INTEGRIDADE</div><strong id="armor-integrity-text">—</strong><small id="armor-integrity-caption">Sem armadura</small>
       </div>
       <div class="fp-vital fp-vital-basic">
-        <button class="fp-vital-open" type="button" data-vital-open="balance" aria-label="Explicar balanço por peso carregado" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
-        <div class="fp-vital-label fp-icon-load">BALANÇO</div><strong id="balance-text">Muito Leve</strong><small id="balance-caption">0% de carga</small>
+        <button class="fp-vital-open" type="button" data-vital-open="balance" aria-label="Explicar balanço por peso carregado" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
+        <div class="fp-vital-label fp-icon-balance">BALANÇO</div><strong id="balance-text">Muito Leve</strong><small id="balance-caption">0% de carga</small>
       </div>
       <div class="fp-vital fp-vital-basic">
-        <button class="fp-vital-open" type="button" data-vital-open="load" aria-label="Explicar capacidade e carga do inventário" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="load" aria-label="Explicar capacidade e carga do inventário" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-load">CARGA</div><strong id="load-text">0 / 1</strong><small>Unidades de carga</small><div id="load-blocks" class="fp-load-blocks" role="img" aria-label="Ocupação da capacidade de carga"></div>
       </div>
       <div class="fp-vital fp-vital-basic fp-movement-vital">
-        <button class="fp-vital-open" type="button" data-vital-open="movement" aria-label="Explicar deslocamento e fórmula" aria-expanded="false" aria-controls="fp-vital-tooltip"></button>
+        <button class="fp-vital-open" type="button" data-vital-open="movement" aria-label="Explicar deslocamento e fórmula" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
         <div class="fp-vital-label fp-icon-movement">MOVIMENTO</div><strong id="move-text">8 m</strong><small id="move-caption">Por deslocamento</small>
       </div>
     </section>
-    <div id="fp-vital-tooltip" class="fp-vital-tooltip" role="tooltip" hidden></div>
+    <div id="fp-vital-tooltip" class="fp-vital-tooltip" role="dialog" aria-modal="false" aria-label="Detalhes do recurso" hidden></div>
 
 
     <nav class="fp-sheet-navigation" id="sheet-navigation" aria-label="Páginas da ficha">
