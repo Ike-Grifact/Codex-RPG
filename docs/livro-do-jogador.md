@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Jogador
 
+> **Decisão posterior, 20/11/2026 — Montaria [DEFINIDO]:** Montar Animal agora custa **1 XP** e requer **Influência 2 + Destreza 3**, sem exigir Domar. **Maestria em Montaria** custa 1 XP e requer **Montar Animal, Influência 6, Destreza 4, Inteligência 2**. Consulte o adendo normativo no [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md#adendo-normativo--montaria-e-maestria-20112026). Montarias possuem ficha própria; ações coordenadas **não criam turnos extras**. Penalidade −1E para quem não tem Montar; acúmulo de +1A e contabilidade dos dados conjuntos permanecem PENDENTES de procedimento.
+
 > **Referência ativa — SRD Playtest Nível 1 v1.0 (18/11/2026):** [ler SRD consolidado](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos [DEFINIDO]**; iniciação mínima Atributo G1 + Conhecimento/Prática G1, restante livre. A Druídica passou a exigir **Criar Item de Foco e Magia + Terra**, **sem Domar, Influência nem fichas animais**, e foi criado o ramo **Transformação Elemental** (1 XP, Foco + Perícia em Elemento). **Maestrias de recuperação ficam adiadas**; permanecem os usos convencionais de Coragem, crítico, Pavor mantido por inimigo, Recobrar Coragem em descanso curto e Vigor + 1 em descanso longo, com +1 de teto nos níveis 5/10/20. Valores e procedimentos antigos conflitantes abaixo são históricos e **não prevalecem**.
 
 
@@ -1233,7 +1235,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
 | Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
-| Montar Animal | 2 | Montaria comum, requer Influência 2 |
+| **Montar Animal** | **1** | **Influência 2 + Destreza 3**, sem Domar; +1A pertinente à montaria; ação conjunta com ficha independente, sem turno extra; sem Perícia, −1E nos testes pertinentes. Montaria Grande rola até 3 Atributos diferentes e mantém 2 dados. |
+| **Maestria em Montaria** | **1** | **Montar Animal + Influência 6 + Destreza 4 + Inteligência 2**; monta/controla criaturas Gigantes e especiais; +1A ao montar Gigantes; Gigantes mantêm até 3 dados. |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
 | **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
