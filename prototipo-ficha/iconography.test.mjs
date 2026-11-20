@@ -94,3 +94,13 @@ test("Cada elemento selecionável mostra seu SVG, inclusive Psíquico",()=>{
  assert.ok(app.includes("codexSkillIcon(chosen)+'</span><span>Conjurar"),"Título do compositor precisa incluir o SVG");
  assert.ok(css.includes("#composer-content .fp-magic-heading"),"Ícone de magia precisa de estilo no rolador");
 });
+
+test("Pictogramas de nós coloridos do Codex Genético são brancos",()=>{
+ const whiteRule=/\.fp-gene-skill:is\(\.is-owned,\.is-available,\.is-potential\) \.fp-gene-skill-pictogram\s*\{\s*filter:brightness\(0\) invert\(1\);\s*opacity:1;/;
+ assert.match(css,whiteRule,"Filtragem de branco só nos ícones dos nós coloridos");
+ assert.ok(!css.includes(".fp-gene-skill.is-locked .fp-gene-skill-pictogram{filter:brightness(0) invert(1)"),
+  "Nós bloqueados devem preservar contraste atenuado");
+ assert.ok(html.includes("styles.css?v=20261120-gene-white-v1"),
+  "Nova versão do CSS deve invalidar cache do navegador");
+ assert.match(graph,/class="fp-gene-skill-pictogram"/,"Os ícones permanecem SVG no mapa");
+});
