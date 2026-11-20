@@ -1861,3 +1861,24 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
  .fp-primary-column>#play-talents .fp-magic-action .fp-owned-elements{flex:1 1 auto}
  .fp-evolution-skills .fp-owned-list{grid-template-columns:1fr}
 }
+
+
+/* Ícones elementais: manter a mesma iconografia de Perícias nos atalhos e no rolador. */
+.fp-primary-column>#play-talents .fp-magic-element{
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;
+}
+.fp-primary-column>#play-talents .fp-magic-element .fp-element-icon,
+#composer-content .fp-magic-heading .fp-element-icon{
+ display:inline-flex;align-items:center;justify-content:center;
+ flex:0 0 20px;width:20px;height:20px;min-width:20px;min-height:20px;
+}
+.fp-primary-column>#play-talents .fp-magic-element .fp-element-icon .fp-codex-icon,
+#composer-content .fp-magic-heading .fp-element-icon .fp-codex-icon{
+ display:block;width:20px;height:20px;min-width:20px;min-height:20px;object-fit:contain;
+}
+.fp-primary-column>#play-talents .fp-magic-element .fp-element-label{
+ display:inline-block;line-height:1.15;white-space:nowrap;
+}
+#composer-content .fp-magic-composer .fp-magic-heading{
+ display:flex;align-items:center;gap:8px;
+}
