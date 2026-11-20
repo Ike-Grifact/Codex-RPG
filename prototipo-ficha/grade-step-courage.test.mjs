@@ -92,15 +92,22 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261120-vitals-compact-v2/);
+ assert.match(html,/app\.js\?v=20261120-vitals-priority-v3/);
 });
 
-test("Ficha mantém sete recursos com explicação contextual e rolador acima do repertório",()=>{
- const resources=["life","courage","defense","integrity","balance","load","movement"];
+test("Indicadores priorizam quatro vitais, com recursos secundários e Inventário clicável",()=>{
+ const resources=["life","integrity","defense","movement","courage","balance"];
  for(const resource of resources){
   assert.match(html,new RegExp('data-vital-open="'+resource+'"'),"Sem cartão "+resource);
  }
  assert.match(html,/id="fp-vital-tooltip"/);
+ assert.match(html,/class="fp-vitals-primary"/,"Primeiro grupo com quatro indicadores vitais");
+ assert.match(html,/class="fp-vitals-secondary"/,"Segundo grupo com três utilitários");
+ assert.match(html,/class="fp-vital fp-vital-small fp-vital-inventory" data-sheet-page="inventory"/,"Inventário é atalho direto");
+ assert.ok(!html.includes('data-vital-open="load"'),"Capacidade numérica deve sair dos indicadores do topo");
+ assert.ok(html.includes('id="load-text"'),"Dados auxiliares continuam disponíveis");
+ const order=["life","integrity","defense","movement","courage","balance"].map(id=>html.indexOf('data-vital-open="'+id+'"'));
+ assert.deepEqual([...order].sort((a,b)=>a-b),order,"Ordem dos indicadores vitais e secundários");
  assert.ok(html.indexOf('id="composer-panel"')<html.indexOf('id="play-talents"'),
   "A preparação precisa aparecer antes do repertório");
  assert.ok(html.indexOf('id="source-grid"')<html.indexOf('id="composer-panel"'),"Fontes surgem antes do rolador no DOM");
@@ -116,7 +123,8 @@ test("Ficha mantém sete recursos com explicação contextual e rolador acima do
  assert.ok(app.includes("fp-vital-tooltip-actions"),"Controles de Vida e Coragem continuam disponíveis");
  const css=readFileSync(join(root,"styles.css"),"utf8");
  assert.match(css,/\.fp-vitals\{display:flex;flex-wrap:wrap/,"Indicadores devem usar somente a largura necessária");
- for(const icon of ["coragem","movimento","peso"]){
+ assert.match(css,/\.fp-vitals-primary \.fp-vital \.fp-vital-label\{width:32px/,"Ícones principais maiores");
+ for(const icon of ["coragem","movimento","peso","inventario"]){
   assert.ok(css.includes("status-"+icon+".svg"),"CSS sem ícone "+icon);
   assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
  }
