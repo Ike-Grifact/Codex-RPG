@@ -105,8 +105,28 @@ const assert=require("node:assert/strict");
   await page.locator("#import-json").setInputFiles({
    name:"conjurador.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(mage))
   });
+  await page.setViewportSize({width:1200,height:900});
+  const actionSize=await page.locator("#play-talents").boundingBox();
+  assert.ok(actionSize.height<245,"Ações deve ser uma faixa compacta, sem formulário de Grau");
+  assert.equal(await page.locator("#play-talents [data-magic-field]").count(),0,
+   "Configuração do Grau não deve ficar na faixa Ações");
+  assert.equal(await page.locator("#play-talents #owned-skills").count(),0,
+   "A consulta de Perícias saiu da área Jogar");
+  await page.locator('button[data-sheet-page="evolution"]').click();
+  assert.equal(await page.locator("#evolution-skills").isVisible(),true,
+   "Perícias adquiridas ficam em Evolução");
+  await page.locator("#evolution-skills summary").first().click();
+  assert.ok(await page.locator("#evolution-skills .fp-quick-skill").count()>0,
+   "Perícias adquiridas são consultadas como cartões de consulta rápida");
+  await page.locator('button[data-sheet-page="play"]').first().click();
   await page.locator('[data-action="magic-element"][data-id="fogo"]').click();
   assert.match(await page.locator("#composer-content").textContent(),/Disciplina · Conjuração/);
+  assert.equal(await page.locator('#composer-content [data-magic-field="magicGrade"]').count(),1,
+   "O Grau é escolhido em Preparar ação");
+  assert.equal(await page.locator('#composer-content [data-magic-field="magicFocusId"]').count(),1,
+   "O foco é configurado ao lado do rolador");
+  assert.equal(await page.locator('#composer-content [data-magic-field="magicEnvironmentConfirmed"]').count(),0,
+   "Sem confirmação ambiental na interface");
   assert.equal(await page.locator('[data-magic-field="magicFocusId"]').inputValue(),"foco-fogo-e2e",
    "Foco do inventário é selecionado mesmo guardado");
   assert.match(await page.locator("#composer-content").textContent(),/Foco de Fogo/);
