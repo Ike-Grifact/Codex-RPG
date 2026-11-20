@@ -51,6 +51,28 @@ const assert=require("node:assert/strict");
   });
   assert.ok(mobile.rollTop>=mobile.aptBottom-3,"No celular, rolador deve aparecer após as aptidões");
   assert.ok(mobile.skillsTop>=mobile.rollBottom-3,"No celular, repertório aparece depois do rolador");
+  const indicators=await page.locator(".fp-vitals").evaluate(bar=>{
+   const items=Array.from(bar.querySelectorAll(".fp-vital"));
+   return{
+    groups:[...bar.children].filter(el=>el.classList.contains("fp-vitals-primary")||el.classList.contains("fp-vitals-secondary")).map(el=>el.children.length),
+    ids:items.filter(x=>x.querySelector("[data-vital-open]")).map(x=>x.querySelector("[data-vital-open]").dataset.vitalOpen),
+    primaryIcon:parseFloat(getComputedStyle(items[0].querySelector(".fp-vital-label")).width),
+    secondaryIcon:parseFloat(getComputedStyle(items[4].querySelector(".fp-vital-label")).width),
+    hasLoadCard:!!bar.querySelector('[data-vital-open="load"]'),
+    inventoryIsButton:items[6].tagName==="BUTTON"
+   };
+  });
+  assert.deepEqual(indicators.groups,[4,3],"Quatro indicadores principais e três secundários");
+  assert.deepEqual(indicators.ids,["life","integrity","defense","movement","courage","balance"]);
+  assert.ok(indicators.primaryIcon>indicators.secondaryIcon,"Ícones de Vida, Integridade, DE e Movimento maiores");
+  assert.equal(indicators.hasLoadCard,false,"Capacidade sai da barra superior");
+  assert.ok(indicators.inventoryIsButton,"Inventário é um atalho real");
+  await page.locator(".fp-vital-inventory").click();
+  assert.equal(await page.locator('button[data-sheet-page="inventory"]').first().getAttribute("aria-current"),"page","O atalho abriu a aba Inventário");
+  assert.equal(await page.locator("#equipamentos").isVisible(),true,"O inventário mostra equipamentos e carga");
+  await page.locator('button[data-sheet-page="play"]').first().click();
+  assert.equal(await page.locator(".fp-vital-inventory").isVisible(),true,"Indicadores continuam acessíveis após voltar a Jogar");
+
   assert.equal(await page.locator("#armor-integrity-text").textContent(),"7 / 7");
   await page.reload({waitUntil:"load"});
   assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
