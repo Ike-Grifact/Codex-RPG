@@ -14,6 +14,20 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia Maestria em Martelos (20/11/2026)
+
+**DEFINIDO — aquisição:** a Perícia **Maestria em Martelos** custa **1 XP** e exige **Força 3 + Destreza 1 + Vigor 1**. Essas são as condições para **comprar** a Perícia. Ter Perícia em Armas Leves, Médias ou Pesadas **não é exigido para a compra**; o requisito de peso aplica-se à ativação do efeito com cada martelo.
+
+**DEFINIDO — ativação em combate:** quando o personagem **ataca usando um martelo**, pode **ativar uma única característica/efeito existente desse martelo sem custo em Coragem**, desde que possua a **Perícia em Armas correspondente ao peso do martelo**: martelo **Leve → Armas Leves; Médio → Armas Médias; Pesado → Armas Pesadas**. O ataque ainda precisa **acertar a DE** e respeitar as condições/gatilhos específicos do efeito da arma; comprar Maestria em Martelos **não torna o ataque um acerto**, não cria uma nova característica e não dispensa a Perícia do peso. Não conceder vários efeitos gratuitos por ataque, nem acrescentar Êxitos ou dano básico.
+
+**DEFINIDO — sem Coragem:** essa ativação escolhida **não consome a 1 Coragem que normalmente seria necessária em um acerto comum**; os demais custos e efeitos independentes permanecem pelas suas regras. Caso não possua a Perícia correspondente ao peso, Maestria em Martelos **não permite a ativação gratuita** desse martelo.
+
+**PENDENTE:** se essa ativação gratuita acumula com a característica gratuita convencional de um crítico para obter **dois** efeitos distintos; **não conceder automaticamente** esse segundo efeito. A extensão a armas não chamadas martelo (como maças ou clavas) e eventual categoria de peso fora de Leve/Médio/Pesado exigem confirmação, sem ampliar por afinidade temática.
+
+**Implementação:** registrar compra, requisitos e aviso contextual na ficha/inventário quando houver martelo, sem consumir Coragem automaticamente até o motor possuir seleção contextual validada da característica da arma.
+
+---
+
 ## Adendo normativo — Perícia Resistência a Fogo (20/11/2026)
 
 **DEFINIDO — compra:** **Resistência a Fogo** custa **1 XP** e exige **Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2**. Ferreiro Elemental e Perícia em Elemento Fogo devem ter sido **adquiridas**, sem substituir nenhuma das compras anteriores. Todos os requisitos indiretos de Ferreiro Elemental continuam válidos.
