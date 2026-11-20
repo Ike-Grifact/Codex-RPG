@@ -1171,7 +1171,7 @@ const CODEX_SKILL_ICONS=Object.freeze({
  "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
  "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
  "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
- "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar",
+ "psiquico":"elemento-psiquico","fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar",
  "terra":"elemento-terra","sagrado":"elemento-sagrado","sangue":"elemento-sangue",
  "trevas":"elemento-trevas","veneno":"elemento-veneno"
 });
@@ -2270,7 +2270,7 @@ function renderMagicActions(){
  elementsRoot.innerHTML=elements.map(([id,name])=>
   '<button type="button" class="fp-magic-element'+(chosen===id&&draft.mode==="conjuracao"?" selected":"")+
   '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id&&draft.mode==="conjuracao"?'true':'false')+'" title="Conjurar '+esc(name)+'">'+
-  '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span></button>').join("");
+  '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span class="fp-element-label">'+esc(name)+'</span></button>').join("");
 }
 function magicComposerFields(){
  if(draft.mode!=="conjuracao"||!draft.magicElement)return "";
@@ -2280,7 +2280,7 @@ function magicComposerFields(){
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
  const time=magicPreparationTurns(grade,draft.magicCharges);
  const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
- return '<div class="fp-magic-composer"><strong>Conjurar '+esc(chosenName)+'</strong>'+
+ return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
   '<div class="fp-magic-config">'+
   '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]],grade)+'</select></label>'+
   '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
