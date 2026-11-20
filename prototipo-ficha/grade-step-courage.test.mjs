@@ -192,3 +192,53 @@ test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a F
  const entry=readFileSync(join(root,"../pericias/ferreiro.html"),"utf8");
  assert.ok(entry.includes("+1 Êxito (1E)")&&entry.includes("testes de Forja"),"Verbete não amplia o bônus indevidamente");
 });
+
+
+test("Ferreiro Elemental: custo, requisitos e compra após adquirir Encantar com Elemento",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+ const base=["ferreiro","improviso","criar-item-foco-magia"];
+ const make=({inteligencia=2,destreza=2,skills=base}={})=>({
+  attributes:{forca:1,destreza,inteligencia},practices:{artesao:2,armas_conjuracao:1},knowledges:{},skills
+ });
+ assert.ok(fn("ferreiro-elemental",make()),"Sem Encantar com Elemento não é comprável");
+ assert.match(fn("ferreiro-elemental",make()),/Encantar com Elemento/,"Bloqueio explica a Perícia ainda não comprada");
+ assert.ok(fn("ferreiro-elemental",make({inteligencia:1,skills:[...base,"encantar-com-elemento"]})),"Inteligência 2 é requisito");
+ assert.ok(fn("ferreiro-elemental",make({destreza:1,skills:[...base,"encantar-com-elemento"]})),"Destreza 2 é requisito");
+ for(const pre of base){assert.ok(fn("ferreiro-elemental",make({skills:[...base.filter(x=>x!==pre),"encantar-com-elemento"]})),"Exige "+pre);}
+ assert.equal(fn("ferreiro-elemental",make({skills:[...base,"encantar-com-elemento"]})),null,"Requisitos aprovados completos desbloqueiam a aquisição futura");
+ assert.match(app,/"ferreiro-elemental",\s*"Ferreiro Elemental",[\s\S]*?\n  1\n \]/,"Custo é 1 XP");
+ assert.ok(app.includes('"ferreiro-elemental":[["a:inteligencia:2","a:destreza:2","s:ferreiro","s:improviso","s:criar-item-foco-magia","s:encantar-com-elemento"]]'),"Plano automático não ignora Encantar");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"ferreiro","ferreiro-elemental"'),"Ramo visível em Artesão");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="ferreiro-elemental.html">Ferreiro Elemental</a>'),"Verbetes vinculados");
+ assert.match(readFileSync(join(root,"../pericias/ferreiro-elemental.html"),"utf8"),/pode ser comprada quando todos os seus requisitos forem adquiridos/i,"Consulta informa a aquisição liberada por requisitos");
+});
+
+test("Encantar com Elemento: custo, alternativas de requisito, duração idêntica e desbloqueio do Ferreiro Elemental",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+ const make=(skills)=>({attributes:{forca:1,inteligencia:2,destreza:2},practices:{artesao:2,armas_conjuracao:2},knowledges:{},skills});
+ assert.ok(fn("encantar-com-elemento",make([])),"Falta Foco e elemento");
+ assert.ok(fn("encantar-com-elemento",make(["fogo"])),"Falta Criar Item de Foco e Magia");
+ assert.ok(fn("encantar-com-elemento",make(["criar-item-foco-magia"])),"Falta Perícia Elemental");
+ for(const element of ["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"]){
+  assert.equal(fn("encantar-com-elemento",make(["criar-item-foco-magia",element])),null,"Perícia Elemental "+element+" habilita a compra");
+ }
+ assert.equal(fn("ferreiro-elemental",make(["ferreiro","improviso","criar-item-foco-magia","encantar-com-elemento"])),null,"Ferreiro Elemental desbloqueia depois dos requisitos");
+ assert.match(app,/"encantar-com-elemento",\s*"Encantar com Elemento",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.ok(app.includes('"encantar-com-elemento":[["s:criar-item-foco-magia","s:vento"]'),"Compra assistida tem requisitos alternativos, com Foco");
+ assert.ok(app.includes('"encantar-com-elemento": "encantar-com-elemento"'),"Verbete vinculado");
+ assert.ok(app.includes("Duração igual para arma, armadura e escudo: E-P"),"Todas as modalidades usam a mesma duração");
+ const page=readFileSync(join(root,"../pericias/encantar-com-elemento.html"),"utf8");
+ assert.match(page,/1 Coragem/,"Custo de proteção");
+ assert.match(page,/E − P/,"Duração idêntica");
+ assert.match(page,/armaduras, escudos e armas/,"Confere três modalidades");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="encantar-com-elemento.html">Encantar com Elemento</a>'));
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"criar-item-foco-magia","encantar-com-elemento"'));
+});
