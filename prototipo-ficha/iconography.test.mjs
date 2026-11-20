@@ -12,8 +12,8 @@ const css=readFileSync(join(root,"styles.css"),"utf8");
 const names=readdirSync(icons).filter(x=>x.endsWith(".svg")).sort();
 
 test("Atlas contém armas, armaduras, elementos, constelações e indicadores",()=>{
- assert.equal(names.length,47);
- for(const status of ["coragem","movimento","peso"]){
+ assert.equal(names.length,48);
+ for(const status of ["coragem","movimento","peso","balanco"]){
   assert.ok(names.includes("status-"+status+".svg"),"Falta ícone de "+status);
  }
  for(const prefix of ["arma-","armadura-","elemento-","categoria-","magia-","status-"]){
