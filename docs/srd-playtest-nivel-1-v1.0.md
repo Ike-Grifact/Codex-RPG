@@ -14,6 +14,16 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia Resistência a Fogo (20/11/2026)
+
+**DEFINIDO — compra:** **Resistência a Fogo** custa **1 XP** e exige **Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2**. Ferreiro Elemental e Perícia em Elemento Fogo devem ter sido **adquiridas**, sem substituir nenhuma das compras anteriores. Todos os requisitos indiretos de Ferreiro Elemental continuam válidos.
+
+**PENDENTE — efeito e execução:** a decisão autoral informou **nome, custo e requisitos**, mas **não descreveu o benefício concreto**. Ainda não está definido se Resistência a Fogo afeta o personagem, um equipamento ou outra entidade; se o efeito é passivo, precisa de ativação ou teste; duração, aplicação, limites e eventuais acúmulos também não foram especificados. **Não atribuir automaticamente redução de dano, imunidade, resistência permanente ou qualquer novo bônus** ao comprar a Perícia. O sistema já define a mecânica geral de resistência elemental, mas ela não é concedida por esta nova compra até o autor determinar o efeito.
+
+**Implementação do cadastro:** a Perícia pode ser comprada com **1 XP** assim que os requisitos forem atendidos; fica visível na ficha, no catálogo e no Codex Genético, sem automatização defensiva ou mudança dos valores de combate.
+
+---
+
 ## Adendo normativo — Encantar com Elemento (20/11/2026)
 
 **DEFINIDO — aquisição:** **Encantar com Elemento** custa **1 XP** e exige **uma Perícia Elemental adquirida** e **Criar Item de Foco e Magia**. Qualquer uma das Perícias em **Fogo, Água, Ar, Terra, Sagrado, Sangue, Trevas ou Veneno** satisfaz a exigência de especialização elemental. O elemento aplicado deve ser aquele efetivamente habilitado na ficha. O foco não substitui a Perícia Elemental nem concede elementos automaticamente.
