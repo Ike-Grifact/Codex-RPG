@@ -171,7 +171,7 @@
             <div id="knowledge-list" class="fp-sources"></div>
           </section>
         </div>
-        <a class="fp-roll-jump" href="#composer-panel">↑ Voltar ao rolador</a>
+        <a class="fp-roll-jump" href="#composer-panel">↓ Abrir rolador</a>
         <section class="fp-panel fp-bottom-note">
           <div id="dice-legend" class="fp-dice-legend" aria-label="Cores dos cinco dados"></div>
           <span class="fp-rune fp-rune-e">ᛋ Êxito</span>
@@ -179,80 +179,80 @@
           <span class="fp-rune fp-rune-p">ᚦ Pavor</span>
           <p>A fonte <strong>Base</strong> determina o tipo de teste. <strong>Disciplina</strong> é a Prática compartilhada para armas ou conjuração: <em>Disciplina + Força</em> já permite a rolagem básica de armas. <strong>Perícias Avançadas de Conhecimentos e Práticas</strong> exigem Grau 2 na fonte correspondente e custam 1 XP. Permitem até três fontes (a especializada como predominante + duas fontes pertinentes). Especializações existentes podem manter requisitos adicionais, como Furtividade Avançada.</p>
         </section>
+        <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
+          <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
+          <div class="fp-play-talent-grid">
+            <div><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
+            <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
+            <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+          </div>
+          <section class="fp-hemo-panel" id="hemomancy-panel" aria-label="Recursos de Hemomancia — protótipo" hidden>
+            <div class="fp-hemo-heading">
+              <div><span class="fp-overline">HEMOMANCIA · SRD v0.75</span><h4>Reservas e amplificação de Sangue</h4></div>
+              <span class="fp-hemo-status">Custos registrados · efeitos resolvidos com Narrador</span>
+            </div>
+            <div class="fp-hemo-counters">
+              <div class="fp-hemo-counter">
+                <strong>Sangue derramado de inimigos</strong>
+                <p>Uma marca para cada ponto de Vida realmente perdido por inimigos. Sem técnica de Extração separada. Não recebe marcas por dano absorvido pela armadura ou pelo simples Sangramento.</p>
+                <div class="fp-hemo-counter-row"><button type="button" data-action="hemo-adjust" data-delta="-1" aria-label="Corrigir menos uma marca de sangue inimigo">−</button><output id="hemo-spilled" aria-live="polite">0</output><button type="button" data-action="hemo-adjust" data-delta="1" aria-label="Adicionar uma marca de sangue inimigo">+</button></div>
+                <button type="button" class="fp-hemo-spend" id="hemo-spend-spilled" data-action="hemo-spend" disabled>Consumir 1 marca em conjuração comum</button>
+              </div>
+            </div>
+            <div class="fp-hemo-register" aria-label="Registrar dano à Vida e quantidade de sangue inimigo">
+              <div class="fp-hemo-register-heading"><strong>Registrar dano à Vida de inimigos</strong><small>3 de Vida perdidos = 3 marcas de sangue inimigo.</small></div>
+              <div class="fp-hemo-register-fields">
+                <label for="hemo-damage-points">Pontos de Vida efetivamente perdidos<input type="number" id="hemo-damage-points" min="1" max="999" step="1" value="1" inputmode="numeric"></label>
+                <button type="button" id="hemo-record-damage" data-action="hemo-record-damage">Registrar marcas</button>
+              </div>
+              <small>Marque somente perda de Vida realmente aplicada aos inimigos. Não registre aqui o sacrifício de Vida do próprio Hemomante.</small>
+            </div>
+            <div class="fp-hemo-actions">
+              <div>
+                <strong>Estado de Sangramento</strong>
+                <small>Indicador manual do estado do Hemomante. Requisitos específicos para cada magia permanecem sujeitos ao Narrador.</small>
+                <button type="button" id="hemo-self-status" data-action="hemo-self" aria-pressed="false">Sem Sangramento</button>
+              </div>
+              <div>
+                <strong>Amplificar · uma vez por turno</strong>
+                <small>Escolha um efeito. Pague com 1 Vida própria OU 3 marcas de sangue inimigo, nunca ambos. A ficha registra o pagamento, mas não altera o dado ou dano automaticamente.</small>
+                <label class="fp-hemo-effect-label" for="hemo-amplify-effect">Efeito de amplificação
+                  <select id="hemo-amplify-effect">
+                    <option value="direct-life">Magia de Sangue: TODO o dano diretamente à Vida</option>
+                    <option value="magic">Ampliar outro efeito de magia</option>
+                    <option value="keep">Manter mais um dado</option>
+                    <option value="step">Elevar dado</option>
+                  </select>
+                </label>
+                <div class="fp-hemo-payments">
+                  <button type="button" id="hemo-amplify-life" data-action="hemo-amplify" data-payment="life">Usar 1 Vida própria</button>
+                  <button type="button" id="hemo-amplify-blood" data-action="hemo-amplify" data-payment="blood">Usar 3 marcas inimigas</button>
+                </div>
+                <small id="hemo-boost-status" role="status">Disponível · 1 ativação por turno</small>
+              </div>
+            </div>
+            <div class="fp-hemo-transfusion">
+              <div>
+                <strong>Transfusão Sanguinária</strong>
+                <small id="hemo-transfusion-state">Protótipo · 1 XP · exige Transfusão e Elemento Sangue</small>
+                <p>Potencial: <strong id="hemo-transfusion-potential">0</strong> de Vida recuperável (3 marcas inimigas disponíveis por 1 Vida). Sangue já gasto não pode ser reutilizado.</p>
+              </div>
+              <button type="button" id="hemo-transfusion-record" data-action="hemo-transfusion" disabled>Registrar conjuração: −3 marcas / +1 Vida</button>
+            </div>
+            <p class="fp-hemo-footnote">Magia de Sangue puro causa dano convencional contra proteção. Com amplificação de dano direto já paga, se acertar, <strong>TODO o dano calculado atinge a Vida, sem gastar Integridade da armadura</strong> — exclusivo da Hemomancia. Vincule o pagamento a UMA rolagem de Sangue no compositor. Escudos físicos e arcanos de outros elementos não anulam esse dano direto; somente Escudo Arcano de Sangue ativo e aplicável anula a propriedade, voltando à defesa convencional. O Narrador verifica a natureza da magia e o escudo do alvo. Não há bônus numérico gratuito nem dano automático em fichas adversárias. Marcas legadas da antiga reserva de extração são unificadas uma única vez; confira sua procedência.</p>
+          </section>
+        </section>
       </div>
 
       <aside class="fp-side-column" aria-label="Preparação e resolução de rolagens">
         <section class="fp-panel fp-composer" id="composer-panel">
           <div class="fp-panel-heading"><span class="fp-panel-icon fp-icon-dice">ᚨ</span><div><h3>Preparar ação</h3><small id="composer-status">Escolha uma Base</small></div></div>
-          <a class="fp-roll-jump" href="#source-grid">Escolher fontes ↓</a>
+          <a class="fp-roll-jump" href="#source-grid">↑ Escolher aptidões</a>
           <div id="composer-content"></div>
         </section>
       </aside>
     </div>
 
-    <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
-      <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Seu repertório</h3><small>Perícias adquiridas, elementos e atalhos de preparação · sem opções bloqueadas</small></div></div>
-      <div class="fp-play-talent-grid">
-        <div><h4>Perícias em uso</h4><div id="owned-skills" class="fp-owned-list"></div></div>
-        <div><h4>Elementos e conjuração</h4><div id="owned-elements" class="fp-owned-elements"></div></div>
-        <div><h4>Equipado agora</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
-      </div>
-      <section class="fp-hemo-panel" id="hemomancy-panel" aria-label="Recursos de Hemomancia — protótipo" hidden>
-        <div class="fp-hemo-heading">
-          <div><span class="fp-overline">HEMOMANCIA · SRD v0.75</span><h4>Reservas e amplificação de Sangue</h4></div>
-          <span class="fp-hemo-status">Custos registrados · efeitos resolvidos com Narrador</span>
-        </div>
-        <div class="fp-hemo-counters">
-          <div class="fp-hemo-counter">
-            <strong>Sangue derramado de inimigos</strong>
-            <p>Uma marca para cada ponto de Vida realmente perdido por inimigos. Sem técnica de Extração separada. Não recebe marcas por dano absorvido pela armadura ou pelo simples Sangramento.</p>
-            <div class="fp-hemo-counter-row"><button type="button" data-action="hemo-adjust" data-delta="-1" aria-label="Corrigir menos uma marca de sangue inimigo">−</button><output id="hemo-spilled" aria-live="polite">0</output><button type="button" data-action="hemo-adjust" data-delta="1" aria-label="Adicionar uma marca de sangue inimigo">+</button></div>
-            <button type="button" class="fp-hemo-spend" id="hemo-spend-spilled" data-action="hemo-spend" disabled>Consumir 1 marca em conjuração comum</button>
-          </div>
-        </div>
-        <div class="fp-hemo-register" aria-label="Registrar dano à Vida e quantidade de sangue inimigo">
-          <div class="fp-hemo-register-heading"><strong>Registrar dano à Vida de inimigos</strong><small>3 de Vida perdidos = 3 marcas de sangue inimigo.</small></div>
-          <div class="fp-hemo-register-fields">
-            <label for="hemo-damage-points">Pontos de Vida efetivamente perdidos<input type="number" id="hemo-damage-points" min="1" max="999" step="1" value="1" inputmode="numeric"></label>
-            <button type="button" id="hemo-record-damage" data-action="hemo-record-damage">Registrar marcas</button>
-          </div>
-          <small>Marque somente perda de Vida realmente aplicada aos inimigos. Não registre aqui o sacrifício de Vida do próprio Hemomante.</small>
-        </div>
-        <div class="fp-hemo-actions">
-          <div>
-            <strong>Estado de Sangramento</strong>
-            <small>Indicador manual do estado do Hemomante. Requisitos específicos para cada magia permanecem sujeitos ao Narrador.</small>
-            <button type="button" id="hemo-self-status" data-action="hemo-self" aria-pressed="false">Sem Sangramento</button>
-          </div>
-          <div>
-            <strong>Amplificar · uma vez por turno</strong>
-            <small>Escolha um efeito. Pague com 1 Vida própria OU 3 marcas de sangue inimigo, nunca ambos. A ficha registra o pagamento, mas não altera o dado ou dano automaticamente.</small>
-            <label class="fp-hemo-effect-label" for="hemo-amplify-effect">Efeito de amplificação
-              <select id="hemo-amplify-effect">
-                <option value="direct-life">Magia de Sangue: TODO o dano diretamente à Vida</option>
-                <option value="magic">Ampliar outro efeito de magia</option>
-                <option value="keep">Manter mais um dado</option>
-                <option value="step">Elevar dado</option>
-              </select>
-            </label>
-            <div class="fp-hemo-payments">
-              <button type="button" id="hemo-amplify-life" data-action="hemo-amplify" data-payment="life">Usar 1 Vida própria</button>
-              <button type="button" id="hemo-amplify-blood" data-action="hemo-amplify" data-payment="blood">Usar 3 marcas inimigas</button>
-            </div>
-            <small id="hemo-boost-status" role="status">Disponível · 1 ativação por turno</small>
-          </div>
-        </div>
-        <div class="fp-hemo-transfusion">
-          <div>
-            <strong>Transfusão Sanguinária</strong>
-            <small id="hemo-transfusion-state">Protótipo · 1 XP · exige Transfusão e Elemento Sangue</small>
-            <p>Potencial: <strong id="hemo-transfusion-potential">0</strong> de Vida recuperável (3 marcas inimigas disponíveis por 1 Vida). Sangue já gasto não pode ser reutilizado.</p>
-          </div>
-          <button type="button" id="hemo-transfusion-record" data-action="hemo-transfusion" disabled>Registrar conjuração: −3 marcas / +1 Vida</button>
-        </div>
-        <p class="fp-hemo-footnote">Magia de Sangue puro causa dano convencional contra proteção. Com amplificação de dano direto já paga, se acertar, <strong>TODO o dano calculado atinge a Vida, sem gastar Integridade da armadura</strong> — exclusivo da Hemomancia. Vincule o pagamento a UMA rolagem de Sangue no compositor. Escudos físicos e arcanos de outros elementos não anulam esse dano direto; somente Escudo Arcano de Sangue ativo e aplicável anula a propriedade, voltando à defesa convencional. O Narrador verifica a natureza da magia e o escudo do alvo. Não há bônus numérico gratuito nem dano automático em fichas adversárias. Marcas legadas da antiga reserva de extração são unificadas uma única vez; confira sua procedência.</p>
-      </section>
-    </section>
     <section class="fp-panel fp-genetic-panel" id="genetic-view" hidden aria-labelledby="gene-heading">
       <div class="fp-panel-heading"><span class="fp-panel-icon">✧</span><div>
         <h3 id="gene-heading">Codex Genético</h3>
