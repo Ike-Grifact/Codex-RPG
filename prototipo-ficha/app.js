@@ -1443,7 +1443,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false});
+  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicEnvironmentConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -2240,7 +2240,7 @@ function prepareMagic(element=""){
  const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
  if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
  const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId;
- const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed;
+ const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,envConfirmed=previous.magicEnvironmentConfirmed;
  const de=Number.isInteger(previous.de)?previous.de:1;
  draft=freshDraft();draft.mode="conjuracao";draft.de=de;
  draft.base={group:"practice",key:"armas_conjuracao"};
@@ -2249,7 +2249,7 @@ function prepareMagic(element=""){
   A.find(([id])=>(state.attributes[id]||0)>0)?.[0]||"";
  if(attr)draft.attribute={group:"attr",key:attr};
  draft.magicElement=chosen;draft.magicGrade=grade;draft.magicFocusId=focusId;
- draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;
+ draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;draft.magicEnvironmentConfirmed=envConfirmed;
  alignMagicDraft();sheetPage="play";render();
  $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
  toast("Conjuração de "+(known.find(([id])=>id===chosen)?.[1]||chosen)+" preparada; defina os gastos e confirme a rolagem.");
@@ -2281,6 +2281,8 @@ function renderMagicActions(){
   (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
    options(Array.from({length:charges+1},(_,n)=>[String(n),n+" carga(s) · "+(3-n)+" turno(s)"]),String(Math.min(charges,draft.magicCharges||0)))+
    '</select></label>':'')+
+  (!focus&&chosen!=="psiquico"?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicEnvironmentConfirmed"'+(draft.magicEnvironmentConfirmed?' checked':'')+
+   '> Narrador confirmou disponibilidade do elemento no ambiente</label>':'')+
   (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?' checked':'')+
    '> Grau e efeito habilitados confirmados com Narrador</label>':'')+
   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&ampAllowed?' checked':'')+
