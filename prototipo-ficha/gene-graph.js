@@ -59,7 +59,7 @@ const GENE_CONSTELLATIONS=[
  {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
- {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},
+ {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},
  {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
  {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
  {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo"]},
