@@ -27,7 +27,13 @@ repository: "Ike-Grifact/Codex-RPG"
 
 **Montaria Gigante (DEFINIDO):** mantém até **3 dados** da própria rolagem; a quantidade de Atributos que pode combinar e os procedimentos adicionais para criaturas especiais não foram alterados por esta decisão.
 
-**PENDENTE de procedimento:** definir como se paga/utiliza Antecipar na coordenação, quais dados/símbolos a montaria transfere na ação conjunta, se o +1A de Montar e o +1A de Maestria acumulam em criaturas Gigantes e como o limite de 9 dados rolados / 4 mantidos interage entre duas fichas. **Não aplicar a contribuição automaticamente pelo criador ou rolador até essa definição.** Não criar nova ação, turno, DE, custo ou dano.
+**DEFINIDO — ação conjunta montada em duas rolagens independentes (decisão autoral de 20/11/2026):** estando montado, quem possui **Montar Animal** recebe o **+1A** da Perícia nos testes pertinentes. Ao **gastar 1A disponível**, inclusive o concedido pela Perícia, o cavaleiro **antecipa a oportunidade da própria montaria** dentro da mesma sequência: primeiro resolve sua rolagem e em seguida a montaria resolve a dela, em **ficha separada**. O A gasto na coordenação não pode ser reutilizado para anular Pavor, converter em Êxito ou passar outra oportunidade. Não é um turno adicional gratuito: a segunda rolagem resulta do gasto desse A.
+ 
+**DEFINIDO — limites e resolução separados:** o cavaleiro e a montaria formam **duas pilhas independentes**, cada uma com teto próprio de **9 dados rolados** e **até 4 mantidos**, sujeito às restrições de seu participante. O cavaleiro mantém conforme seu Marco/recursos; a montaria Grande mantém **até 2**; uma montaria Gigante com a Maestria mantém **até 3**. **Não somar as pilhas** nem transferir dados mantidos ou símbolos de uma ficha à outra. Cada rolagem verifica separadamente DE, dano quando aplicável, Antecipar, acerto/falha e Pavor.
+ 
+**DEFINIDO — Pavor das duas rolagens:** considerar somente Pavor **mantido e não anulado**, conforme as regras atuais, nunca o Pavor descartado. Antecipar a montaria **não anula nem apaga** o Pavor do cavaleiro. Se ambas as rolagens conservarem Pavor, o Narrador pode receber **até duas oportunidades de intervenção**, uma de cada rolagem, e **ativar até dois inimigos diferentes** se cada ativação for válida e paga com a reserva de **Pavor local** pertinente (custo comum de **1P local por ativação**). O Pavor não gera duas ativações gratuitas nem permite usar o mesmo 1P duas vezes. Em resolução manual, manter o registro de Pavor e das intervenções de cada ficha distinto.
+ 
+**PENDENTE:** decidir se o +1A de Montar Animal acumula com o +1A de Maestria em Montaria contra Gigantes; quantos Atributos uma montaria Gigante pode combinar, e particularidades de criaturas especiais. A execução automática de duas rolagens vinculadas ainda não está implementada: por ora, efetuar as duas rolagens separadamente no rolador, sem inventar transferência de símbolos ou custo adicional.
 
 ---
 
