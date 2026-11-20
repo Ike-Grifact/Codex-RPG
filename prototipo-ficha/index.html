@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261120-magic-actions-v1">
+  <link rel="stylesheet" href="./styles.css?v=20261120-magic-actions-v2">
   <script src="./catalog.js?v=0.65-vt1prop" defer></script>
   <script src="./gene-graph.js?v=20261119-druid-icons-v2" defer></script>
-  <script src="./app.js?v=20261120-magic-actions-v1" defer></script>
+  <script src="./app.js?v=20261120-magic-actions-v2" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -161,11 +161,10 @@
     <div class="fp-workspace">
       <div class="fp-primary-column">
       <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
-            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Perícias, magia e armas prontas para preparar uma ação</small></div></div>
+            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Escolha uma magia ou arma; o restante é preparado no rolador</small></div></div>
             <div class="fp-play-talent-grid">
-              <div><h4>Perícias</h4><div id="owned-skills" class="fp-owned-list"></div></div>
-              <div class="fp-magic-action"><h4>Conjurar magia</h4><div id="owned-elements" class="fp-owned-elements" aria-label="Elementos habilitados para conjuração"></div><div id="magic-actions" class="fp-magic-actions"></div></div>
-              <div><h4>Armas equipadas</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+              <div class="fp-magic-action"><h4>Magias</h4><div id="magic-actions" class="fp-magic-actions"></div><div id="owned-elements" class="fp-owned-elements" aria-label="Elementos habilitados para conjuração"></div></div>
+              <div class="fp-weapons-action"><h4>Armas equipadas</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
             </div>
             <details class="fp-actions-hemo" id="hemo-details" hidden><summary>Hemomancia · marcas e amplificação</summary>
             <section class="fp-hemo-panel" id="hemomancy-panel" aria-label="Recursos de Hemomancia — protótipo" hidden>
@@ -336,6 +335,11 @@
       </section>
       <div id="xp-feedback" class="fp-xp-feedback" role="status" aria-live="polite"></div>
       <p class="fp-footnote"><strong>DEFINIDO — Druídica:</strong> custa 1 XP, exige Criar Item de Foco e Magia + Perícia em Elemento Terra e libera as três formas imediatamente, sem Domar ou Influência. Pequena: 0 Coragem; Média ou Grande: 1 Coragem. Não conjura enquanto transformado; Vida temporária desaparece ao reverter. <a href="../pericias/pericia-druidica.html">Ler regras completas da Druídica.</a></p><p class="fp-footnote"><strong>DEFINIDO:</strong> a criação exige pelo menos um Atributo grau 1 e um Conhecimento ou Prática grau 1. Todo XP restante é livre, inclusive para Perícias, sem reserva por categoria. <strong>DEFINIDO:</strong> orçamento inicial de 15 XP compartilhados; após as compras mínimas de 3 XP, restam 12 XP livres. XP não gasto segue disponível após concluir. <strong>EXPERIMENTAL (playtest):</strong> o painel acima permite desfazer Perícias com conferência de dependências e restituição do custo; não constitui regra de campanha. A evolução é concedida manualmente, pois a curva por nível ainda está em teste.</p>
+      <details class="fp-evolution-skills" id="evolution-skills">
+        <summary>Consulta rápida · Perícias adquiridas <span id="owned-skills-count" class="fp-tiny-tag">0</span></summary>
+        <p class="fp-caption">Confira as Perícias já adquiridas; selecione uma para abrir seu verbete no Codex Genético.</p>
+        <div id="owned-skills" class="fp-owned-list" aria-label="Perícias já adquiridas"></div>
+      </details>
     </section>
 
     <section class="fp-lower">
