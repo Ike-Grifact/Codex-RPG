@@ -3,7 +3,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SITUATIONS,
  sourceDice,sourceLabel,faceSymbols,buildPool,canReinforceDie,starterPurchasePlan,lifeMax,healthByLife,balance,maxCourage,
  loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
-import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
+import {keepForActor,rollResult,alternativesFor,usesLocal,pendingRollFor} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
 import {equippedDie,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
@@ -57,13 +57,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs",scrollable:[""]}};
- constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};}
+ constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._rollOpen=false;this._busy=false;this._editing=false;this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};}
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal||s.transformation?.kind==='animal',ledger=xpLedger(s),
    used=carriedItems(actor),carryMax=loadCapacity(s),
    hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
-  this._pending=actor.getFlag(NS,"pendingRoll")||null;
+  this._pending=pendingRollFor(actor);
   const canPrepare=actor.isOwner&&!this._editing&&!this._pending&&!actor.getFlag(NS,"creationPending");
   const elements=availableElements(s);
   if(this._pending)this._editing=false;
@@ -84,6 +84,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
+   sheetLocation:actor.isToken?"Token na cena":actor.prototypeToken?.actorLink===false?"Ficha-base":"",
    concept:s.concept,origin:s.origin,race:RACES[s.race]?.name,virtue:s.virtue,personality:s.personality,
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
@@ -341,7 +342,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    });
    this._bindRollDrag(panel);
   }
-  if(this._rollOpen??Boolean(this._pending)){
+  if(this._rollOpen){
    panel.rollIntent=this._rollIntent;
    if(!panel.matches(":popover-open"))panel.showPopover();
    this._positionRollSurface(panel);
@@ -489,7 +490,6 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(request.action==="start"&&response?.started){
     this._draft=draft();
     this._opts=defaults();
-    this._rollOpen=true;
     this._rollScroll=0;
     void showCodexDice(foundry.dice.Roll.fromData(response.roll));
    }
@@ -564,7 +564,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _prepareCombat(actionType,target,equipmentId=""){
   if(!this.actor.isOwner||!["attack","spell"].includes(actionType))return;
   if(this._editing){ui.notifications.warn('Conclua a edição antes de rolar.');return;}
-  if(this._busy||this._pending||this.actor.getFlag(NS,'pendingRoll')){ui.notifications.warn('Finalize a rolagem pendente.');return;}
+  if(this._busy||this._pending||pendingRollFor(this.actor)){ui.notifications.warn('Finalize a rolagem pendente.');return;}
   try{
    this._draft=prepareCombatAction(this.actor,actionType,this._draft,equipmentId);
    this._opts={...defaults(),de:this._opts.de,actionType,mode:actionType==="spell"?"conjuracao":"armas",equipmentId};
@@ -634,7 +634,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   window.removeEventListener("keydown",this._rollEscape,{capture:true});
   window.removeEventListener("resize",this._rollResize);
   this._rollMedia=null;
-  this._rollOpen=undefined;
+  this._rollOpen=false;
   this._rollAnchor=null;
   this._rollPosition=null;
   for(const [event,id] of this._targetHooks??[])Hooks.off(event,id);

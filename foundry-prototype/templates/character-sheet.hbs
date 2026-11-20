@@ -9,7 +9,7 @@
     <div class="codex-identity">
       <div class="codex-brand">
         <div>
-          <span class="codex-overline">{{codex.actorTypeLabel}}</span>
+          <span class="codex-overline">{{codex.actorTypeLabel}}{{#if codex.sheetLocation}} · {{codex.sheetLocation}}{{/if}}</span>
           <h2>{{codex.actorName}}</h2>
         </div>
         {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
@@ -127,7 +127,7 @@
       {{#if codex.canAttack}}{{#each codex.equipment.shortcuts}}
         <button type="button" data-action="prepareEquipment" data-id="{{id}}" {{#unless enabledDie}}disabled{{/unless}}>{{{icon}}} {{name}}</button>
       {{/each}}{{/if}}
-      {{#if codex.hasPending}}<button type="button" data-action="showRoll">Ver rolagem</button>{{else}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/if}}
+      {{#if codex.hasPending}}<button type="button" data-action="showRoll">Retomar rolagem</button>{{else}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/if}}
     </div>
   {{/unless}}
   <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
@@ -203,7 +203,7 @@
     </div>
   {{/if}}
   {{#if codex.hasPending}}
-    <p class="codex-tip codex-source-pending-note">Rolagem pendente. Finalize ou descarte para escolher novas fontes.</p>
+    <p class="codex-tip codex-source-pending-note">Use Retomar rolagem para finalizar ou descartar a ação pendente.</p>
   {{/if}}
 
   <div class="codex-roll-surface" aria-label="Rolagem Codex">

@@ -1,4 +1,4 @@
-import { rollNamespace as NS, preparePendingRoll, resolvePendingRoll, keepForActor, alternativesFor, rollResult, publicRollResult } from "./roll-resolution.mjs";
+import { rollNamespace as NS, pendingRollEntry, pendingRollFor, preparePendingRoll, resolvePendingRoll, keepForActor, alternativesFor, rollResult, publicRollResult } from "./roll-resolution.mjs";
 
 import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
@@ -15,7 +15,6 @@ const query = `${NS}.roll`;
 const xpHistory = "xpHistory";
 const refundHistory = "skillRefundHistory";
 const approvalTimeout = 45000;
-const flag = `flags.${NS}.pendingRoll`;
 const queues = new Map();
 let publishing = Promise.resolve();
 const options = ["cancelP", "convertPairs", "characteristic", "secondCharacteristic", "activationPayment", "passAllyId"];
@@ -42,10 +41,17 @@ async function confirmAdvancement({title,content}){
 
 const buildOf = actor => actor.system.toObject?.() ?? actor.system;
 
+function pendingChanges(actor, roll) {
+  const key = actor.isToken ? "tokenPendingRoll" : "pendingRoll";
+  const changes = {[`flags.${NS}.${key}`]: roll};
+  if (pendingRollEntry(actor).key !== key) changes[`flags.${NS}.-=pendingRoll`] = null;
+  return changes;
+}
+
 async function mutateRoll(actor, user, request, {game = globalThis.game, chat = globalThis.ChatMessage, resolveUuid = globalThis.fromUuid, confirm = confirmAdvancement} = {}) {
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
-  const pending = actor.getFlag(NS, "pendingRoll");
+  const {key: pendingKey, roll: pending} = pendingRollEntry(actor);
   if(request.action==="attackShortcut"){
     if(pending)throw Error("Finalize a rolagem antes de editar atalhos.");
     const item=actor.items.get(request.itemId);
@@ -90,7 +96,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const approved=await confirm({title:'Confirmar descanso',content:'<p>Confirmar descanso '+(request.kind==='short'?'curto e cena narrativa':'longo')+' de '+escapeHTML(actor.name)+'?</p>'});
     if(!approved)throw Error('Descanso cancelado.');
     verifyAuthority(game);
-    if(actor.getFlag(NS,'pendingRoll'))throw Error('A ficha tem uma rolagem pendente.');
+    if(pendingRollFor(actor))throw Error('A ficha tem uma rolagem pendente.');
     const amount=request.kind==='short'?2:Number(actor.system.attributes.vigor)+1;
     const changes={'system.courage':Math.min(Math.max(actor.system.courage,maxCourage(actor.system.level)),actor.system.courage+amount)};
     if(request.kind==='long'&&actor.system.race==='humano')changes['system.perseverancaUsed']=false;
@@ -137,7 +143,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
         content:"<p>Retirar "+(-plan.delta)+" XP de "+escapeHTML(actor.name)+"? O XP adicional passará de "+plan.previous+" para "+plan.next+".</p>"});
       if(!accepted)throw Error("A retirada de XP foi cancelada.");
       verifyAuthority(game);
-      if(actor.getFlag(NS,"pendingRoll"))throw Error("Finalize ou descarte a rolagem antes de editar.");
+      if(pendingRollFor(actor))throw Error("Finalize ou descarte a rolagem antes de editar.");
       plan=xpAdjustmentPlan(buildOf(actor),request);
     }
     const entry={userId:user.id,userName:user.name,at:Date.now(),...plan};
@@ -169,7 +175,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
           escapeHTML(actor.name)+". A devolução libera "+preview.refund+" XP.</p>"});
       if(!accepted)throw Error("A devolução de Perícia não foi autorizada pelo Narrador.");
       verifyAuthority(game);
-      if(!actor.testUserPermission(user,"OWNER")||actor.getFlag(NS,"pendingRoll"))throw Error("A ficha não está disponível para edição.");
+      if(!actor.testUserPermission(user,"OWNER")||pendingRollFor(actor))throw Error("A ficha não está disponível para edição.");
       const system=buildOf(actor),plan=skillRefundPlan(system,advance.key);
       changes=advancementPlan(system,advance,false);
       const entry={skillId:advance.key,xpRefund:plan.refund,spentBefore:plan.spentBefore,spentAfter:plan.spentAfter,
@@ -183,7 +189,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
           " de G"+row.grade+" para G"+(row.grade-1)+", liberando "+row.refund+" XP.</p>"});
       if(!accepted)throw Error("A redução de Grau não foi autorizada pelo Narrador.");
       verifyAuthority(game);
-      if(!actor.testUserPermission(user,"OWNER")||actor.getFlag(NS,"pendingRoll"))throw Error("A ficha não está disponível para edição.");
+      if(!actor.testUserPermission(user,"OWNER")||pendingRollFor(actor))throw Error("A ficha não está disponível para edição.");
       changes=advancementPlan(buildOf(actor),advance,Boolean(actor.getFlag(NS,"creationPending")));
     }
     await actor.update(changes);
@@ -198,7 +204,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if (request.value === actor.system.threatGrade) return;
     if (pending?.publication) throw Error("Retome a publicação antes de alterar o Grau.");
     const changes = {"system.threatGrade": request.value};
-    if (pending) changes[`flags.${NS}.-=pendingRoll`] = null;
+    if (pending) changes[`flags.${NS}.-=${pendingKey}`] = null;
     await actor.update(changes);
     return;
   }
@@ -209,7 +215,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const { pending: draft, roll, changes, privateDE } = await preparePendingRoll(actor, request, user, game);
     verifyAuthority(game);
     if(draft.options.privateDefense)draft.options.sealedDE=await sealDefense(game,draft,privateDE);
-    await actor.update({...changes, [flag]: draft});
+    await actor.update({...changes, ...pendingChanges(actor, draft)});
     return {started: true, roll: roll.toJSON()};
   }
   if (!pending || pending.id !== request.id) return;
@@ -228,7 +234,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   }
   if (pending.publication) throw Error("A ação foi confirmada. Retome a publicação no chat.");
   if (request.action === "discard") {
-    await actor.unsetFlag(NS, "pendingRoll");
+    await actor.unsetFlag(NS, pendingKey);
     return;
   }
   const config = {...pending.options};
@@ -250,7 +256,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     config[key] = value;
     if (key === "characteristic") config.secondCharacteristic = "";
   } else return;
-  await actor.update({[flag]: {...pending, selected, options: config}});
+  await actor.update(pendingChanges(actor, {...pending, selected, options: config}));
 }
 
 function verifyAuthority(game) {
@@ -261,7 +267,7 @@ async function publish(actor, user, pending, game, chat, resolveUuid) {
   verifyAuthority(game);
   if (!pending.publication) {
     if (pending.version < 3 && game.messages.some(message => message.getFlag(NS, "rollId") === pending.id)) {
-      await actor.unsetFlag(NS, "pendingRoll");
+      await actor.unsetFlag(NS, pendingRollEntry(actor).key);
       return;
     }
     const {changes, content, result, adjudication, impact} = resolvePendingRoll(actor, pending, game, await readDefense(game, pending));
@@ -269,7 +275,7 @@ async function publish(actor, user, pending, game, chat, resolveUuid) {
     const publication = {id, author: user.id, content, result, adjudication, impact};
     pending = {...pending, publication};
     // Persist costs and the recoverable publication in a single Actor update.
-    await actor.update({...changes, [flag]: pending});
+    await actor.update({...changes, ...pendingChanges(actor, pending)});
   }
 
   const publication = pending.publication;
@@ -294,7 +300,8 @@ async function publish(actor, user, pending, game, chat, resolveUuid) {
     }
   }
   if (!matches()) throw Error("Publicação ainda não confirmada. Use Retomar publicação.");
-  if (actor.getFlag(NS, "pendingRoll")?.id === pending.id) await actor.unsetFlag(NS, "pendingRoll");
+  const current = pendingRollEntry(actor);
+  if (current.roll?.id === pending.id) await actor.unsetFlag(NS, current.key);
 }
 
 export function registerRollQueries() {

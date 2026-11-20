@@ -6,6 +6,7 @@ import {standardMovement,movementBudget} from "../module/movement.mjs";
 import {prepareCombatAction,changeRollSource} from "../module/combat-action.mjs";
 import {buildPool} from "../module/rules.mjs";
 import {enqueueRoll} from "../module/roll-workflow.mjs";
+import {pendingRollEntry,pendingRollFor} from "../module/roll-resolution.mjs";
 
 const ns="codex-rpg-foundry";
 const user={id:"player",viewedScene:"s"};
@@ -92,6 +93,23 @@ test("efeitos especiais e dano colossal ficam manuais e token removido não redi
  assert.equal(target.updates,0);
 });
 
+test("tokens desvinculados retomam apenas a rolagem salva na própria instância",()=>{
+ const base=actor("creature","enemy");
+ const previous={id:"base",version:3,publication:{id:"base-message"}};
+ base.flags[ns]={pendingRoll:previous};
+ const delta=actor("creature","delta");
+ const token={isToken:true,token:{delta},getFlag:(namespace,key)=>({
+  ...base.getFlag(namespace,key),...delta.getFlag(namespace,key),
+ })};
+ assert.equal(pendingRollFor(base),previous);
+ assert.equal(pendingRollFor(token),null);
+ delta.flags[ns]={pendingRoll:{id:"old-token"}};
+ assert.deepEqual(pendingRollEntry(token),{key:"pendingRoll",roll:{id:"old-token",version:3,publication:undefined}});
+ const rolled={id:"token",version:6,selected:[],options:{mode:"armas"}};
+ delta.flags[ns]={tokenPendingRoll:rolled};
+ assert.equal(pendingRollFor(token),rolled);
+});
+
 test("retomar o chat após falha não repete dano, Pavor ou cobrança; dados descartados não transferem Pavor",async()=>{
  const attacker=actor("character","pc"),target=actor("creature","enemy");
  const vest=armor(target);
@@ -119,6 +137,7 @@ test("retomar o chat após falha não repete dano, Pavor ou cobrança; dados des
  assert.equal(messages.size,1);
  assert.match([...messages.values()][0].source.content,/Pavor transferido ao alvo/);
  assert.equal([...messages.values()][0].source.flags[ns].adjudication.autoTarget,true);
+ assert.equal([...messages.values()][0].source.flags[ns].adjudication.targetTokenUuid,targetUuid);
 });
 
 test("conjurador com elemento adquirido rola sem consulta de aprovação do Narrador",async()=>{

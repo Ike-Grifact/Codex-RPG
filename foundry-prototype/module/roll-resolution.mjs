@@ -6,6 +6,17 @@ import {faceIcons} from "./dice-icons.mjs";
 import {hasSkill} from "./races.mjs";
 
 export const rollNamespace = "codex-rpg-foundry";
+export function pendingRollEntry(actor) {
+  const document = actor?.isToken ? actor.token?.delta : actor;
+  const key = actor?.isToken ? "tokenPendingRoll" : "pendingRoll";
+  const saved = document?.getFlag(rollNamespace, key);
+  const legacy = actor?.isToken && !saved && document?.getFlag(rollNamespace, "pendingRoll");
+  if (!legacy?.id) return {key, roll: saved ?? null};
+  // Deltas antigos podem conter apenas os campos diferentes da ficha-base.
+  const roll = actor.getFlag(rollNamespace, "pendingRoll");
+  return {key: "pendingRoll", roll: {...roll, publication: legacy.publication ? roll.publication : undefined}};
+}
+export const pendingRollFor = actor => pendingRollEntry(actor).roll;
 const humanoid = actor => ["humanoid", "monsterHumanoid"].includes(actor.type);
 export const usesLocal = actor => actor.type === "creature" || actor.type === "animal";
 export const keepLevel = actor => humanoid(actor) ? (actor.system.threatGrade >= 2 ? 6 : 1) : actor.system.level;
@@ -185,7 +196,8 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const combat = game.combats.get(o.combatId);
   const adjudication = {
     combatId: combat?.id ?? null, round: o.combatRound ?? combat?.round ?? null, allyId: ally?.id ?? null,
-    targetUuid: o.targetActorUuid, p: result.p, autoTarget:Boolean(impact), isTest:generic,
+    targetUuid: o.targetActorUuid, targetTokenUuid: o.targetTokenUuid,
+    p: result.p, autoTarget:Boolean(impact), isTest:generic,
   };
   return {changes, content, result: {...summary, costs: {courage, pavor}, localReward, overflow}, adjudication,impact};
 }

@@ -2,6 +2,7 @@
 import {applyCatalogArmorMigration,catalogArmorMigration} from "./equipment-migration.mjs";
 import {itemKinds} from "./creation.mjs";
 import {dieSvg} from "./dice-icons.mjs";
+import {pendingRollFor} from "./roll-resolution.mjs";
 export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-item-sheet"],actions:{migrateArmor(){return applyCatalogArmorMigration(this.item);}},window:{resizable:true},position:{width:550,height:590}};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/equipment-sheet.hbs"}};
@@ -24,7 +25,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const part=this.element?.querySelector(".codex-equipment-root");
   part?.addEventListener("change",async event=>{
    if(!this.item.isOwner)return;
-   if(this.item.parent?.getFlag('codex-rpg-foundry','pendingRoll')){ui.notifications.warn('Finalize a rolagem antes de editar o equipamento.');return this.render();}
+   if(pendingRollFor(this.item.parent)){ui.notifications.warn('Finalize a rolagem antes de editar o equipamento.');return this.render();}
    const input=event.target,path=input.dataset.field;
    const fields=["name","system.kind","system.grade","system.weight","system.quantity",
     "system.equipped","system.integrity.value","system.integrity.max","system.description",

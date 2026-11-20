@@ -1,6 +1,7 @@
 import {SKILLS, sourceDice, xpLedger} from "./rules.mjs";
 import {creationMissing, developmentGroups, gradeDetails, planSkillPackage, skillDetails, skillRefundPlan} from "./advancement.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
+import {pendingRollFor} from "./roll-resolution.mjs";
 import {openSkillDefinition} from './compendium-data.mjs';
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
@@ -197,7 +198,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const root=this.element.querySelector(".codex-dna-root");
   if(!root)return;
   const system=this.actor.system,ledger=xpLedger(system);
-  const pendingRoll=Boolean(this.actor.getFlag(ns,"pendingRoll"));
+  const pendingRoll=Boolean(pendingRollFor(this.actor));
   const locked=pendingRoll||Boolean(this.busy);
   const creationPending=Boolean(this.actor.getFlag(ns,"creationPending"));
   const missing=creationMissing(system);
@@ -334,7 +335,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const system=this.actor.system;
   const stored={race:system.race,pureElement:system.pureElement,runeElements:[...system.runeElements]};
   const draft=this.originDraft??stored;
-  const locked=Boolean(this.busy||this.actor.getFlag(ns,"pendingRoll"));
+  const locked=Boolean(this.busy||pendingRollFor(this.actor));
   const canEdit=game.user.isGM||Boolean(this.actor.getFlag(ns,"creationPending"));
   const choices=(list,current)=>'<option value="">Escolha</option>'+list.map(([id,name])=>
    '<option value="'+esc(id)+'"'+(current===id?" selected":"")+'>'+esc(name)+'</option>').join("");
@@ -392,7 +393,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(await this.submit({action:"adjustXP",delta,expectedXP:this.actor.system.xp}))input.value="";
  }
  async submit(request,confirmation){
-  if(this.busy||this.actor.getFlag(ns,"pendingRoll"))return false;
+  if(this.busy||pendingRollFor(this.actor))return false;
   this.busy=true;
   const status=this.element?.querySelector("[data-dna-status]");
   const asksNarrator=(request.advance?.delta===-1||request.advance?.remove===true)&&

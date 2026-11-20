@@ -45,14 +45,29 @@ async function approvePass(message, data) {
   });
 }
 
+function inspectableImpactTarget(data) {
+  if (!data.autoTarget || typeof data.targetUuid !== "string") return null;
+  // Cartas anteriores a targetTokenUuid já guardavam o UUID completo do Actor sintético.
+  const tokenUuid = data.targetTokenUuid ?? (data.targetUuid.startsWith("Scene.") ? data.targetUuid.split(".Actor.")[0] : null);
+  const token = tokenUuid ? fromUuidSync(tokenUuid, {strict: false}) : null;
+  const target = tokenUuid ? token?.actor : fromUuidSync(data.targetUuid, {strict: false});
+  if (target?.uuid !== data.targetUuid || (token?.hidden && !game.user.isGM)) return null;
+  return target.testUserPermission(game.user, "OBSERVER") ? target : null;
+}
+
+async function openImpactTarget(_message, data) {
+  const target = inspectableImpactTarget(data);
+  if (!target?.sheet) throw Error("A ficha do alvo da rolagem está indisponível.");
+  await target.sheet.render({force: true});
+}
+
 export function registerCombatAdjudication() {
   Hooks.on("renderChatMessageHTML", (message, html) => {
-    if (!game.user.isActiveGM) return;
     const data = message.getFlag(NS, "adjudication");
     if (!data) return;
     const content = html.querySelector(".codex-chat-result");
     if (!content) return;
-    const add = (label, work) => {
+    const add = (label, work, register = true) => {
       const button = content.ownerDocument.createElement("button");
       button.type = "button";
       button.textContent = label;
@@ -60,14 +75,19 @@ export function registerCombatAdjudication() {
         button.disabled = true;
         try {
           await work(message, data);
-          button.textContent = "Registrado";
+          if (register) {
+            button.textContent = "Registrado";
+            return;
+          }
         } catch (error) {
-          button.disabled = false;
           ui.notifications.error(error.message);
         }
+        button.disabled = false;
       });
       content.append(button);
     };
+    if (inspectableImpactTarget(data)) add("Abrir ficha do alvo", openImpactTarget, false);
+    if (!game.user.isActiveGM) return;
     if (data.targetUuid && data.p > 0 && !data.autoTarget && !data.isTest) add(`Aplicar ${data.p}P residual ao alvo`, applyResidual);
     if (data.allyId) add("Validar passagem de oportunidade", approvePass);
   });
