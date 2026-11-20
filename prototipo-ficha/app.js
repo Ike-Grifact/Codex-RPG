@@ -2195,6 +2195,24 @@ function renderDiceLegend(){
 
 /* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
 const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+let inventoryPane="bag";
+function syncInventoryPane(){
+ const container=$("equipamentos");if(!container)return;
+ for(const node of container.querySelectorAll("[data-inventory-pane]"))
+  node.hidden=node.dataset.inventoryPane!==inventoryPane;
+ for(const button of container.querySelectorAll("button[data-inventory-view]")){
+  const active=button.dataset.inventoryView===inventoryPane;
+  button.setAttribute("aria-current",active?"page":"false");
+  button.classList.toggle("active",active);
+ }
+ if(inventoryPane==="shop"){
+  const market=$("inventory-shop-details");if(market)market.open=true;
+ }
+}
+function chooseInventoryPane(next){
+ if(!["bag","wallet","shop"].includes(next))return;
+ inventoryPane=next;syncInventoryPane();
+}
 function applySheetPage(){
  const show=viewMode==="sheet"&&!!state.creationLocked;
  const nav=$("sheet-navigation");if(!nav)return;
@@ -2214,51 +2232,50 @@ function applySheetPage(){
   const active=b.dataset.sheetPage===chosen;
   b.setAttribute("aria-current",active?"page":"false");b.classList.toggle("active",active);
  }
+ syncInventoryPane();
  $("page-subtitle").textContent=isGene?"Explore os caminhos presentes e futuros do seu Codex Genético.":isInv?
  "Seus equipamentos, materiais e Valor de Troca num espaço próprio.":isEvolve?
  "XP, fontes e Perícias para construir sua próxima especialização.":"Uma ficha de jogo limpa: recursos, rolagens e somente as habilidades que você adquiriu.";
 }
 function renderOwnedPanel(){
+ // Ações aparecem antes das fontes: botões compactos abrem a especialização ou preparam o teste.
  const learned=SKILLS.filter(([id])=>ownsSkill(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
  const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
- const empty='<span class="fp-owned-empty">Nenhuma por enquanto. Explore o Codex Genético para encontrar novas opções.</span>';
- const markup=([id,name,detail,cost])=>{
-  const text=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail.slice(0,130),action=CARD_ACTIVATIONS[id]||"Consultar";
-  return '<article class="fp-owned-card"><div><span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><small>'+esc(action)+'</small></div>'+
-   '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
- };
- $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
+ const skillsEmpty='<span class="fp-owned-empty">Nenhuma Perícia adquirida.</span>';
+ $("owned-skills").innerHTML=basic.length?basic.map(([id,name,detail])=>{
+  const description=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail||"";
+  return '<button type="button" class="fp-action-skill" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" '+
+   'title="'+esc(description.slice(0,170))+'" aria-label="Ver detalhes da Perícia '+esc(name)+'">'+
+   '<span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span>'+
+   '<span class="fp-action-hint">Ver detalhes</span></button>';
+ }).join(""):skillsEmpty;
  const elements=ELEMENT_SKILLS.filter(([id])=>ownsSkill(id));
  $("owned-elements").innerHTML=
-  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
+  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
-    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
- const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
-  const mode=it.type==="foco"?"conjuracao":"armas",canAttempt=["arma","foco"].includes(it.type);
-  const enabled=canAttempt&&combatItem(it,mode).length>0;
-  const extraDice=enabled?combatItem(it,mode).map(n=>"d"+n).join(" + "):"";
-  const chosen=canAttempt?preferredQuickAttribute(it):null;
-  const ready=enabled&&!!chosen;
-  const headline=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
-  const summary=equipmentDetails(it);
-  const open=ready?'<button type="button" class="fp-owned-gear fp-owned-gear-action" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Preparar ação com Disciplina + '+esc(label("attr",chosen))+'">':'<article class="fp-owned-gear">';
-  const close=ready?'</button>':'</article>';
-  const hint=ready?'<span class="fp-owned-roll">Preparar ação · '+esc(extraDice)+'</span>':
-   canAttempt?'<span class="fp-owned-noroll">'+(enabled?'Selecione um Atributo treinado':'Adquira a Perícia de arma/foco para usar o dado')+'</span>':
-   '<span class="fp-owned-noroll">Este item protege ou oferece utilidade; não adiciona dado de ataque.</span>';
-  return open+'<span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
-   '<span class="fp-gear-main">'+esc(headline)+'</span><small>'+esc(summary)+'</small>'+
-   (canAttempt?'<small>Características ativam só com Perícia. Fonte: Disciplina + '+esc(chosen?label("attr",chosen):"Atributo treinado")+'. DE atual do rolador.</small>':"")+
-   hint+close;
- }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido.</span>');
+ // Não listar armaduras e ferramentas aqui: só equipamento capaz de preparar uma ação.
+ const weapons=state.items.filter(it=>it.equipped&&["arma","foco"].includes(it.type));
+ $("equipped-shortcuts").innerHTML=weapons.length?weapons.map(it=>{
+  const mode=it.type==="foco"?"conjuracao":"armas",dice=combatItem(it,mode);
+  const chosen=preferredQuickAttribute(it),ready=dice.length>0&&!!chosen;
+  const labelText=dice.length?dice.map(n=>"d"+n).join(" + "):"Requer Perícia";
+  const hint=ready?labelText+" · Preparar":dice.length?"Selecione um Atributo treinado":"Perícia de manejo/foco necessária";
+  const icon=codexItemIcon(it),name=esc(it.name);
+  return ready?
+   '<button type="button" class="fp-action-weapon" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Preparar '+name+' com Disciplina + '+esc(label("attr",chosen))+'">'+
+    '<span class="fp-owned-heading">'+icon+'<strong>'+name+'</strong></span><small>'+esc(hint)+'</small></button>':
+   '<div class="fp-action-weapon is-unavailable" title="'+esc(equipmentDetails(it))+'">'+
+    '<span class="fp-owned-heading">'+icon+'<strong>'+name+'</strong></span><small>'+esc(hint)+'</small></div>';
+ }).join(""):'<button type="button" class="fp-action-inventory" data-sheet-page="inventory">Equipar arma ou foco no Inventário</button>';
 }
-
 // SRD v0.71 — protótipo manual. Não converte dano automaticamente em sangue ou cura.
 function renderHemomancy(){
  const panel=$("hemomancy-panel");
  if(!panel)return;
- panel.hidden=!ownsSkill("sangue");
+ const available=ownsSkill("sangue");
+ const details=$("hemo-details");if(details)details.hidden=!available;
+ panel.hidden=!available;
  if(panel.hidden)return;
  const h=state.hemomancy||{spilled:0,selfBleeding:false,usedThisTurn:false};
  $("hemo-spilled").textContent=String(h.spilled);
@@ -2646,6 +2663,7 @@ function renderGenetic(){
 function openSheetPage(page,focusSkill=""){
  if(!["play","evolution","genetic","inventory"].includes(page)||viewMode!=="sheet")return;
  sheetPage=page;
+ if(page==="inventory")inventoryPane="bag";
  if(focusSkill)geneSelected=focusSkill;
  if((page==="play"||page==="inventory")&&editMode)editMode=false;
  render();
@@ -2660,7 +2678,9 @@ function prepareElementSkill(id){
  const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
   (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
  if(focus)draft.equipmentId=focus.id;
- render();toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
+ render();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
   " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
 }
 
@@ -3030,17 +3050,15 @@ function renderVitals(){
  $("de-text").textContent=defense.value;$("balance-text").textContent=balance();
  const protection=equippedArmor();
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
- if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 · Sem Integridade"):"Nenhuma";
- if(integrityCaption)integrityCaption.textContent=protection?
-  (protection.name+" · "+(protection.max>0?"Integridade atual / máxima":"armadura sem Integridade")+
-   " · registro manual de dano"):"Equipe uma armadura no Inventário";
- $("de-caption").textContent=defense.caption;
+ if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 / 0"):"—";
+ if(integrityCaption)integrityCaption.textContent=protection?protection.name:"Sem armadura";
+ $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Balanço natural de criatura pendente":pad(loadPercent())+"% da capacidade";
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
  if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
- $("move-caption").textContent="8 + "+(state.attributes.agilidade||0)+" Agilidade + ⌊"+(state.practices.atletismo||0)+"/3⌋ Atletismo";
+ $("move-caption").textContent="Por deslocamento";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
  const bands=health.bands;
  $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
@@ -3051,9 +3069,98 @@ function renderVitals(){
    ((i===2&&health.id==="incapacitado")||(i===3&&health.id==="inconsciente")?" critical":"")+'"></span>';
  }).join("");
  const effects=(health.e?health.e+"E ":"")+(health.a?health.a+"A ":"")+(health.p?"+"+health.p+"P ":"");
- $("life-recovery").textContent=health.label+" · "+(effects.trim()||"sem penalidade")+
-  (health.coragem&&Number.isFinite(health.coragem)?" · "+health.coragem+" Coragem para agir":"")+
-  " · Cura: revisão pendente";
+ $("life-recovery").textContent=health.label+(effects.trim()?" · "+effects.trim():"");
+}
+
+/* Ajuda contextual: leitura das fórmulas existentes, sem mudar regras. */
+function vitalHelpDetails(kind){
+ const a=state.attributes,p=state.practices,armor=equippedArmor(),health=lifeStage();
+ const natural=deNatural(),mod=armorDodgeBonus()-armorDePenalty();
+ const used=Number(loadUsed().toFixed(2)),percent=Number(loadPercent().toFixed(1));
+ const levelBonus=Number(state.level>=5)+Number(state.level>=10)+Number(state.level>=20);
+ const entries={
+ life:["Vida e estados","A Vida atual define a condição "+health.label+". Em zero, o personagem morre.",
+ "Máxima: 4 + Vigor ("+(a.vigor||0)+") + ⌊Força ("+(a.forca||0)+") / 2⌋ = "+maxLife()+". Faixas: "+health.bands.join(" / ")+".",
+ "SRD Playtest Nível 1 v1.0 · Vida e estados."],
+ courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
+ "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
+ "SRD Playtest Nível 1 v1.0 · Seção 2."],
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto natural 9 e total com modificadores limitado a 12.",
+ "Natural: Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Vigor ("+(a.vigor||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
+ "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
+ integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
+ armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
+ "SRD Playtest Nível 1 v1.0 · Proteções; Inventário da ficha."],
+ balance:["Balanço por carga",NPC_MODE?"Balanço natural de criatura: regra pendente.":"Categoria atual do peso carregado: "+balance()+".",
+ "Ocupação: "+used+" / "+capacity()+" = "+percent+"%. Faixas: abaixo de 25% Muito Leve; 25–49% Leve; 50–74% Médio; 75–99% Pesado; 100% ou mais Muito Pesado.",
+ "Classificação atual do criador (playtest)."],
+ load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
+ "Capacidade = 1 + ⌊Força ("+(a.forca||0)+")/3⌋ + ⌊Vigor ("+(a.vigor||0)+")/3⌋ + ⌊Disciplina ("+(p.armas_conjuracao||0)+")/3⌋ + ⌊Atletismo ("+(p.atletismo||0)+")/3⌋ = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Fórmula atual da ficha · Inventário (playtest)."],
+ movement:["Movimento","Deslocamento básico antes de efeitos situacionais e Perícias específicas.",
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+movement()+" m.",
+ "Fórmula atual da ficha · Agilidade e Atletismo."]
+ };
+ return entries[kind]||null;
+}
+let vitalTooltipPinned=false;
+let vitalTooltipTrigger=null;
+let vitalTooltipTimer=null;
+function stopVitalTooltipTimer(){
+ if(vitalTooltipTimer!==null)clearTimeout(vitalTooltipTimer);
+ vitalTooltipTimer=null;
+}
+function closeVitalTooltip(){
+ stopVitalTooltipTimer();
+ vitalTooltipPinned=false;vitalTooltipTrigger=null;
+ const tip=$("fp-vital-tooltip");if(tip)tip.hidden=true;
+ document.querySelectorAll(".fp-vital-open[aria-expanded='true']").forEach(b=>{
+  b.setAttribute("aria-expanded","false");b.removeAttribute("aria-describedby");
+ });
+}
+function showVitalTooltip(button,pinned=false){
+ const tip=$("fp-vital-tooltip");if(!tip||!button)return;
+ if(vitalTooltipPinned&&!pinned)return;
+ const kind=button.dataset.vitalOpen,info=vitalHelpDetails(kind);
+ if(!info)return;
+ stopVitalTooltipTimer();
+ document.querySelectorAll(".fp-vital-open[aria-expanded='true']").forEach(b=>b.setAttribute("aria-expanded","false"));
+ let controls="";
+ if(kind==="life"||kind==="courage"){
+  const value=kind==="life"?state.life+" / "+maxLife():state.courage+" / "+maxCourage();
+  const minusLabel=kind==="life"?"Perder Vida":"Gastar Coragem",plusLabel=kind==="life"?"Recuperar Vida":"Recuperar Coragem";
+  controls='<div class="fp-vital-tooltip-actions"><strong>'+esc(value)+'</strong>'+
+   '<button type="button" class="fp-counter" data-resource="'+kind+'" data-delta="-1" aria-label="'+minusLabel+'">−</button>'+
+   '<button type="button" class="fp-counter" data-resource="'+kind+'" data-delta="1" aria-label="'+plusLabel+'">+</button></div>';
+ }
+ tip.innerHTML='<div class="fp-vital-tooltip-heading"><strong id="fp-vital-tooltip-title">'+esc(info[0])+'</strong>'+
+  '<button type="button" class="fp-vital-tooltip-close" data-vital-close aria-label="Fechar explicação">×</button></div>'+
+  '<p>'+esc(info[1])+'</p>'+controls+
+  '<p class="fp-vital-tooltip-formula">'+esc(info[2])+'</p>'+
+  '<small>Origem: '+esc(info[3])+'</small>'+
+  '<a class="fp-vital-tooltip-source" href="https://github.com/Ike-Grifact/Codex-RPG/blob/main/docs/srd-playtest-nivel-1-v1.0.md" target="_blank" rel="noopener noreferrer">Consultar SRD vigente</a>';
+ tip.hidden=false;
+ tip.setAttribute("aria-labelledby","fp-vital-tooltip-title");
+ const rect=button.getBoundingClientRect(),gap=9,padding=12;
+ const width=tip.offsetWidth,height=tip.offsetHeight;
+ const left=Math.max(padding,Math.min(rect.left,window.innerWidth-width-padding));
+ const bottom=rect.bottom+gap;
+ const top=bottom+height<=window.innerHeight-padding?bottom:Math.max(padding,Math.min(rect.top-height-gap,window.innerHeight-height-padding));
+ tip.style.left=left+"px";tip.style.top=top+"px";
+ button.setAttribute("aria-expanded","true");
+ vitalTooltipTrigger=button;vitalTooltipPinned=!!pinned;
+}
+function toggleVitalTooltip(button){
+ if(vitalTooltipPinned&&vitalTooltipTrigger===button){closeVitalTooltip();return;}
+ showVitalTooltip(button,true);
+}
+function scheduleVitalTooltipClose(){
+ if(vitalTooltipPinned)return;
+ stopVitalTooltipTimer();
+ vitalTooltipTimer=setTimeout(()=>{
+  const tip=$("fp-vital-tooltip");
+  if(!tip?.matches(":hover")&&!vitalTooltipTrigger?.matches(":hover"))closeVitalTooltip();
+ },180);
 }
 function renderSources(){
  for(const group of ["attr","practice","know"]){
@@ -3577,6 +3684,10 @@ function renderInventory(){
   if(models.some(x=>x.name===previous))focusSelector.value=previous;
  }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
+ const count=$("inventory-quick-items"),equipped=$("inventory-quick-equipped"),quickLoad=$("inventory-quick-load");
+ if(count)count.textContent=String(state.items.length);
+ if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
+ if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
  $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional.";
  const cargoPanel=$("inventory-cargo-panel");
@@ -4255,6 +4366,32 @@ function onChange(event){
 function bind(){
  document.addEventListener("click",onClick);
  document.addEventListener("click",event=>{
+  const button=event.target.closest("button[data-inventory-view]");
+  if(button)chooseInventoryPane(button.dataset.inventoryView);
+ });
+ document.addEventListener("click",event=>{
+  const trigger=event.target.closest("[data-vital-open]");
+  if(trigger){toggleVitalTooltip(trigger);return;}
+  if(event.target.closest("[data-vital-close]")){closeVitalTooltip();return;}
+  if(!event.target.closest("#fp-vital-tooltip"))closeVitalTooltip();
+ });
+ document.addEventListener("pointerover",event=>{
+  if(event.pointerType!=="mouse")return;
+  const trigger=event.target.closest?.("[data-vital-open]");
+  if(trigger&&!trigger.contains(event.relatedTarget))showVitalTooltip(trigger,false);
+  if(event.target.closest?.("#fp-vital-tooltip"))stopVitalTooltipTimer();
+ });
+ document.addEventListener("pointerout",event=>{
+  if(event.pointerType!=="mouse")return;
+  const trigger=event.target.closest?.("[data-vital-open]");
+  if(trigger&&!trigger.contains(event.relatedTarget))scheduleVitalTooltipClose();
+  const tip=event.target.closest?.("#fp-vital-tooltip");
+  if(tip&&!tip.contains(event.relatedTarget))scheduleVitalTooltipClose();
+ });
+ document.addEventListener("keydown",event=>{if(event.key==="Escape")closeVitalTooltip();});
+ window.addEventListener("resize",closeVitalTooltip);
+ window.addEventListener("scroll",event=>{if(!event.target.closest?.("#fp-vital-tooltip"))closeVitalTooltip();},true);
+ document.addEventListener("click",event=>{
   const page=event.target.closest("button[data-sheet-page]");
   if(page){openSheetPage(page.dataset.sheetPage,page.dataset.geneSelect||"");return;}
   const zoom=event.target.closest("button[data-gene-zoom]");
@@ -4280,7 +4417,11 @@ function bind(){
   }
  });
  document.addEventListener("click",event=>{
-  const b=event.target.closest("button[data-resource]");if(b)adjustResource(b.dataset.resource,Number(b.dataset.delta));
+  const b=event.target.closest("button[data-resource]");
+  if(b){
+   adjustResource(b.dataset.resource,Number(b.dataset.delta));
+   if(b.closest("#fp-vital-tooltip")&&vitalTooltipTrigger)showVitalTooltip(vitalTooltipTrigger,true);
+  }
  });
  document.addEventListener("change",onChange);
  document.addEventListener("change",event=>{

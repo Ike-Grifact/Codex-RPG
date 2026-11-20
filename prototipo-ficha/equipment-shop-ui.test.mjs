@@ -96,12 +96,17 @@ test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",(
  for(const txt of [
   'data-wizard-shop-','dataset.tradeShopType','data-inventory-type','data-inventory-weight',
   'EQUIPMENT_FAMILIES','EQUIPMENT_WEIGHT_OPTIONS','wizardShopWeight','tradeShopWeight','fp-shop-summary','fp-item-summary','fp-item-editor',
-  'fp-owned-roll','fp-owned-gear-action','case "repertoire-roll":quickRollItem(id)'
+  'fp-action-weapon','fp-action-skill','case "repertoire-roll":quickRollItem(id)'
  ])assert.ok(app.includes(txt),"Não encontrado: "+txt);
  for(const txt of ['id="trade-shop-type"','id="trade-shop-weight"','id="inventory-filterbar"'])
   assert.ok(html.includes(txt),"Faltando no HTML: "+txt);
- for(const txt of [".fp-shop-compact",".fp-item-compact",".fp-equip-filters",".fp-owned-roll"])
+ for(const txt of [".fp-shop-compact",".fp-item-compact",".fp-equip-filters",".fp-action-weapon"])
   assert.ok(css.includes(txt),"Estilo ausente: "+txt);
+ for(const pane of ["bag","wallet","shop"]){
+  assert.ok(html.includes('data-inventory-pane="'+pane+'"'),"Subaba ausente: "+pane);
+ }
+ assert.ok(app.includes("function chooseInventoryPane(next)"),"Navegação do inventário não implementada");
+ assert.ok(app.includes('const weapons=state.items.filter(it=>it.equipped'),"Atalhos precisam vir de armas e focos equipados");
  assert.ok(app.includes('data-action="wizard-buy-item"'));
  assert.ok(app.includes('case "trade-buy":buyCatalogItem()'));
  assert.ok(app.includes('data-action="integrity"'));

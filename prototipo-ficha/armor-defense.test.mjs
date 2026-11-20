@@ -63,7 +63,8 @@ test("v0.66: a UI, inventário e resumo usam DE geral já modificada",()=>{
  const html=readFileSync(new URL("./index.html",import.meta.url),"utf8");
  assert.match(html,/id="de-label"/);
  assert.match(src,/\$\("de-text"\)\.textContent=defense\.value/);
- assert.match(src,/\$\("de-caption"\)\.textContent=defense\.caption/);
+ assert.match(src,/\$\("de-caption"\)\.textContent="Natural "\+deNatural\(\)/);
+ assert.match(src,/function vitalHelpDetails\(kind\)/);
  assert.match(src,/function wizardReview\(\)\{[\s\S]*?defense=defensePresentation\(\)/);
  assert.match(src,/<small>'\+esc\(defense\.label\)\+'<\/small><b>'\+defense\.value/);
  assert.match(src,/<span>DE<\/span><b>'\+deDefense\(\)/);

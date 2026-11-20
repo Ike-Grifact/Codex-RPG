@@ -92,5 +92,59 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261119-action-prep-v2/);
+ assert.match(html,/app\.js\?v=20261120-actions-inventory-v4/);
+});
+
+test("Ações acessíveis, inventário como posses e indicadores prioritários",()=>{
+ const resources=["life","integrity","defense","movement","courage","balance"];
+ for(const resource of resources){
+  assert.match(html,new RegExp('data-vital-open="'+resource+'"'),"Sem cartão "+resource);
+ }
+ assert.match(html,/id="fp-vital-tooltip"/);
+ assert.match(html,/class="fp-vitals-primary"/,"Primeiro grupo com quatro indicadores vitais");
+ assert.match(html,/class="fp-vitals-secondary"/,"Segundo grupo com três utilitários");
+ assert.match(html,/class="fp-vital fp-vital-small fp-vital-inventory" data-sheet-page="inventory"/,"Inventário é atalho direto");
+ assert.ok(!html.includes('data-vital-open="load"'),"Capacidade numérica deve sair dos indicadores do topo");
+ assert.ok(html.includes('id="load-text"'),"Dados auxiliares continuam disponíveis");
+ const order=["life","integrity","defense","movement","courage","balance"].map(id=>html.indexOf('data-vital-open="'+id+'"'));
+ assert.deepEqual([...order].sort((a,b)=>a-b),order,"Ordem dos indicadores vitais e secundários");
+ assert.ok(html.indexOf('id="play-talents"')<html.indexOf('id="source-grid"'),
+  "Ações devem ficar no topo, antes das aptidões");
+ assert.ok(html.indexOf('id="source-grid"')<html.indexOf('id="composer-panel"'),
+  "No celular, selecionar aptidões antes de abrir o rolador");
+ const beginning=html.indexOf('<div class="fp-workspace">');
+ const ending=html.indexOf('<section class="fp-panel fp-genetic-panel"',beginning);
+ const layout=html.slice(beginning,ending);
+ assert.ok(layout.includes('id="play-talents"'),"Ações compartilham a coluna esquerda com aptidões");
+ assert.match(layout,/<h3>Ações<\/h3>/,"Repertório foi renomeado como Ações");
+ assert.ok(!layout.includes("Seu repertório"),"Sem cabeçalho antigo");
+ assert.match(layout,/<h4>Armas e focos<\/h4>/,"Atalhos de armamento ficam junto dos elementos");
+ assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
+ assert.ok(app.includes('data-action="prepare-element"'),"Atalho elemental precisa ser preservado");
+ assert.match(html,/id="inventory-shop-details"/,"Loja separada dos pertences");
+ const panes=["bag","wallet","shop"];
+ for(const pane of panes){
+  assert.ok(html.includes('data-inventory-view="'+pane+'"'),"Subaba "+pane+" disponível");
+  assert.ok(html.includes('data-inventory-pane="'+pane+'"'),"Conteúdo da subaba "+pane+" disponível");
+ }
+ assert.ok(app.includes("function chooseInventoryPane(next)"),"Subabas do Inventário precisam funcionar");
+ assert.ok(app.includes('if(page==="inventory")inventoryPane="bag"'),"Abrir Inventário deve mostrar a Mochila");
+ assert.ok(html.includes("VT é uma unidade de valor"),"VT tem explicação de poder de troca");
+ assert.match(html,/id="inventory-quick-items"/,"Resumo do que o personagem possui");
+ assert.ok(html.indexOf('id="inventory-list"')<html.indexOf('id="trade-panel"'),"Itens antes da bolsa de VT");
+ assert.ok(html.indexOf('id="trade-panel"')<html.indexOf('id="inventory-shop-details"'),"VT separado da loja");
+ assert.ok(!html.includes('<details class="fp-inventory-store" id="inventory-shop-details" open'),"Loja fechada inicialmente");
+ assert.ok(app.includes("inventory-quick-equipped"),"Contador de equipamentos deve atualizar");
+ assert.ok(app.includes("function vitalHelpDetails(kind)"));
+ assert.ok(app.includes("function toggleVitalTooltip(button)"));
+ assert.ok(app.includes('document.addEventListener("pointerover"'),"Abrir detalhes ao passar o mouse");
+ assert.ok(app.includes("function scheduleVitalTooltipClose()"),"Fechar detalhe flutuante ao sair");
+ assert.ok(app.includes("fp-vital-tooltip-actions"),"Controles de Vida e Coragem continuam disponíveis");
+ const css=readFileSync(join(root,"styles.css"),"utf8");
+ assert.match(css,/\.fp-vitals\{display:flex;flex-wrap:wrap/,"Indicadores devem usar somente a largura necessária");
+ assert.match(css,/\.fp-vitals-primary \.fp-vital \.fp-vital-label\{width:32px/,"Ícones principais maiores");
+ for(const icon of ["coragem","movimento","peso","inventario"]){
+  assert.ok(css.includes("status-"+icon+".svg"),"CSS sem ícone "+icon);
+  assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
+ }
 });

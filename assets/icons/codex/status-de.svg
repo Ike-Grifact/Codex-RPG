@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="icon-title"><title id="icon-title">Dificuldade de Êxito — Sowilo, Ansuz e Thurisaz fundidas</title><g fill="none" stroke="#2369BB" color="#2369BB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M29 7v50 M29 10l20 14 M29 31l18 16"/><path d="M29 9 14 24 43 34 24 55"/><path d="m29 20 21 13-21 12"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.02 39.15" role="img" aria-labelledby="icon-title" fill="#2369BB">
+  <title id="icon-title">Dificuldade de Êxito — Sowilo, Ansuz e Thurisaz fundidas</title>
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: Zillaroonies, Zillaroonies;
+        font-size: 25.47px;
+      }
+    </style>
+  </defs>
+  <g stroke="#2369BB" stroke-width="0">
+    <text class="cls-1" transform="translate(9.8 22.82)"><tspan x="0" y="0">A</tspan></text>
+    <text class="cls-1" transform="translate(9.68 38.69)"><tspan x="0" y="0">t</tspan></text>
+    <text class="cls-1" transform="translate(0 21.74)"><tspan x="0" y="0">S</tspan></text>
+  </g>
+</svg>

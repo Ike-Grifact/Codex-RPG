@@ -1508,3 +1508,247 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
 .fp-owned-gear-action{width:100%;color:var(--fp-text);font:inherit;text-align:left;cursor:pointer}
 .fp-owned-gear-action:hover,.fp-owned-gear-action:focus-visible{border-color:var(--fp-gold);box-shadow:0 0 0 2px rgba(215,188,136,.14)}
 .fp-owned-gear-action .fp-owned-roll{display:block;text-align:center;padding:8px 10px;background:var(--fp-raised);color:var(--fp-gold);border:1px solid var(--fp-gold);border-radius:7px;font-size:11px;font-weight:750}
+
+
+/* 19/11/2026 — visão rápida dos sete recursos; detalhes ao toque/clique. */
+.fp-vitals{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:10px 0 15px}
+.fp-vital{min-width:0;min-height:108px;position:relative;gap:7px;padding:12px 10px;justify-content:flex-start}
+.fp-vital:has(.fp-vital-open[aria-expanded="true"]){border-color:var(--fp-gold)}
+.fp-vital-label{min-height:22px;align-items:center;justify-content:flex-start;gap:5px;letter-spacing:.055em;font-size:10px;overflow:visible}
+.fp-vital small{margin-top:auto;font-size:10px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.fp-vital strong{font-variant-numeric:tabular-nums}
+.fp-vital-basic>strong{font-size:clamp(17px,2vw,27px);line-height:1.1;margin-top:3px;white-space:normal;overflow-wrap:anywhere}
+.fp-vital-main{gap:2px}
+.fp-vital-main strong{font-size:clamp(16px,1.65vw,23px)}
+.fp-life-boxes{margin-top:1px}
+.fp-vital-open{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;border:0;border-radius:12px;background:transparent;cursor:help;color:var(--fp-muted)}
+.fp-vital-open::after{content:"ⓘ";position:absolute;right:7px;top:8px;font-size:12px;line-height:1;color:var(--fp-muted);opacity:.65}
+.fp-vital-open:hover::after,.fp-vital-open[aria-expanded="true"]::after{color:var(--fp-gold);opacity:1}
+.fp-vital-open:focus-visible{outline:2px solid var(--fp-gold);outline-offset:3px}
+.fp-vital-main .fp-counter{position:relative;z-index:2;cursor:pointer}
+.fp-vital-tooltip{position:fixed;z-index:10000;box-sizing:border-box;width:min(355px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto;padding:15px 17px;border:1px solid var(--fp-gold);border-radius:12px;background:var(--fp-raised);color:var(--fp-text);box-shadow:0 14px 42px #0008;font-size:12px;line-height:1.55;text-align:left}
+.fp-vital-tooltip[hidden]{display:none}
+.fp-vital-tooltip strong{display:block;font:normal 20px/1.2 Georgia,serif;color:var(--fp-gold);margin-bottom:8px}
+.fp-vital-tooltip p{margin:7px 0}
+.fp-vital-tooltip-formula{padding:10px;background:var(--fp-deep);border:1px solid var(--fp-stroke);border-radius:8px}
+.fp-vital-tooltip small{display:block;margin-top:9px;color:var(--fp-muted);line-height:1.5;font-size:10px}
+.fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load{background-repeat:no-repeat;background-position:left center;background-size:21px 21px;padding-left:28px}
+.fp-vital-label.fp-icon-courage{background-image:url("../assets/icons/codex/status-coragem.svg")}
+.fp-vital-label.fp-icon-movement{background-image:url("../assets/icons/codex/status-movimento.svg")}
+.fp-vital-label.fp-icon-load{background-image:url("../assets/icons/codex/status-peso.svg")}
+@media(max-width:1370px){.fp-vitals{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1120px){
+ .fp-workspace{display:flex;flex-direction:column;gap:13px}
+ .fp-primary-column,.fp-side-column{width:100%;min-width:0}
+ .fp-side-column{order:-1;position:static}
+}
+@media(max-width:850px){.fp-vitals{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){
+ .fp-vitals{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .fp-vital{min-height:101px;padding:10px 9px}
+ .fp-vital-label{font-size:9px}
+ .fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load{background-size:18px 18px;padding-left:24px}
+ .fp-vital-main strong{font-size:19px}
+}
+
+/* Navegação bidirecional entre compositor e fontes quando ficam empilhados. */
+.fp-roll-jump{display:none}
+@media(max-width:1120px){
+ .fp-roll-jump{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin:0 0 12px;padding:8px 12px;border:1px solid var(--fp-stroke);border-radius:8px;color:var(--fp-gold);background:var(--fp-deep);font-size:11px;font-weight:700;text-decoration:none}
+ .fp-roll-jump:hover,.fp-roll-jump:focus-visible{border-color:var(--fp-gold)}
+ #source-grid,#composer-panel{scroll-margin-top:15px}
+}
+
+
+/* 20/11/2026 — faixa compacta: apenas símbolos e valores; conceito no painel. */
+.fp-vitals{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px;margin:8px 0 13px}
+.fp-vital{display:inline-flex;flex:0 0 auto;flex-direction:row;align-items:center;justify-content:center;min-width:0;min-height:0;max-width:100%;gap:6px;padding:7px 10px 7px 8px;border-radius:9px}
+.fp-vital-label,.fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load,.fp-vital-label.fp-icon-balance{display:block;flex:0 0 20px;width:20px;height:20px;min-height:20px;line-height:0;font-size:0;letter-spacing:0;color:transparent;overflow:hidden;padding:0;background-repeat:no-repeat;background-position:center;background-size:20px 20px}
+.fp-vital-label.fp-icon-balance{background-image:url("../assets/icons/codex/status-balanco.svg")}
+.fp-vital .fp-vital-main{flex:0 0 auto;justify-content:flex-start;gap:0}
+.fp-vital strong,.fp-vital .fp-vital-main strong,.fp-vital.fp-vital-basic>strong{display:inline-block;font:normal 17px/1.1 Georgia,serif;letter-spacing:-.02em;white-space:nowrap;overflow-wrap:normal;margin:0;color:var(--fp-text);font-variant-numeric:tabular-nums}
+.fp-vital .fp-counter,.fp-vital small,.fp-vital .fp-life-boxes,.fp-vital .fp-load-blocks{display:none}
+.fp-vital-open{border-radius:9px;cursor:pointer}
+.fp-vital-open::after{display:none}
+.fp-vital:hover{border-color:var(--fp-gold)}
+.fp-vital-tooltip{width:min(440px,calc(100vw - 24px));padding:17px 18px}
+.fp-vital-tooltip-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:9px}
+.fp-vital-tooltip-heading strong{margin-bottom:0}
+.fp-vital-tooltip-close{width:29px;height:29px;flex:none;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-deep);color:var(--fp-text);font-size:20px;line-height:1;cursor:pointer}
+.fp-vital-tooltip-close:hover,.fp-vital-tooltip-close:focus-visible{border-color:var(--fp-gold);color:var(--fp-gold)}
+.fp-vital-tooltip-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0;padding:10px 12px;border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:8px}
+.fp-vital-tooltip-actions strong{margin:0 auto 0 0;color:var(--fp-text);font:normal 19px/1.1 Georgia,serif;font-variant-numeric:tabular-nums}
+.fp-vital-tooltip-actions .fp-counter{display:block;position:static;z-index:auto;min-width:32px;min-height:32px;cursor:pointer}
+@media(max-width:600px){
+ .fp-vitals{display:flex;flex-wrap:wrap;gap:5px}
+ .fp-vital{flex:0 0 auto;min-width:0;min-height:0;gap:5px;padding:6px 8px}
+ .fp-vital-label,.fp-vital-label.fp-icon-courage,.fp-vital-label.fp-icon-movement,.fp-vital-label.fp-icon-load,.fp-vital-label.fp-icon-balance{flex-basis:18px;width:18px;height:18px;min-height:18px;font-size:0;background-size:18px 18px;padding:0}
+ .fp-vital strong,.fp-vital .fp-vital-main strong,.fp-vital.fp-vital-basic>strong{font-size:16px}
+}
+
+/* Sobrescreve também as regras antigas de padding lateral dos ícones. */
+.fp-vital .fp-vital-label{padding:0;background-size:20px 20px;background-position:center center}
+.fp-vital-tooltip-source{display:inline-block;margin-top:11px;color:var(--fp-gold);font-size:11px;font-weight:700;text-underline-offset:3px}
+.fp-vital-tooltip-source:hover,.fp-vital-tooltip-source:focus-visible{color:var(--fp-text)}
+@media(max-width:600px){.fp-vital .fp-vital-label{padding:0;background-size:18px 18px}}
+
+
+/* 20/11/2026 — aptidões e perícias à esquerda, rolador à direita durante toda a montagem. */
+@media(min-width:981px){
+ .fp-workspace{display:grid;grid-template-columns:minmax(0,1fr) clamp(295px,29vw,370px);grid-template-rows:auto auto;column-gap:12px;row-gap:13px;align-items:start}
+ .fp-workspace>.fp-primary-column{grid-column:1;grid-row:1;width:auto;min-width:0;order:0}
+ .fp-workspace>.fp-side-column{grid-column:2;grid-row:1/span 2;width:auto;min-width:0;position:sticky;top:12px;align-self:start;order:0;max-height:calc(100dvh - 24px);overflow-y:auto;scrollbar-width:thin}
+ .fp-workspace>#play-talents{grid-column:1;grid-row:2;min-width:0;margin-bottom:0}
+ .fp-workspace .fp-source-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .fp-workspace .fp-roll-jump{display:none}
+}
+@media(min-width:981px) and (max-width:1370px){
+ .fp-workspace>#play-talents .fp-play-talent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .fp-workspace>#play-talents .fp-play-talent-grid>div:last-child{grid-column:1/-1}
+}
+@media(max-width:980px){
+ .fp-workspace{display:flex;flex-direction:column;gap:12px}
+ .fp-workspace>.fp-primary-column{order:0;width:100%;min-width:0}
+ .fp-workspace>.fp-side-column{order:1;width:100%;min-width:0;position:static;max-height:none;overflow:visible}
+ .fp-workspace>#play-talents{order:2;width:100%;min-width:0;margin:0}
+ .fp-workspace .fp-roll-jump{display:inline-flex}
+}
+
+/* Ao evoluir as aptidões, usar toda a largura: o compositor só existe no modo Jogar. */
+@media(min-width:981px){
+ .fp-editing-sources .fp-workspace{display:block}
+ .fp-editing-sources .fp-workspace>.fp-primary-column{display:block;width:100%}
+ .fp-editing-sources .fp-workspace>.fp-side-column{display:none}
+}
+
+
+/* 20/11/2026 — hierarquia dos indicadores: quatro vitais, três utilitários. */
+.fp-vitals{display:flex;flex-wrap:wrap;gap:9px 15px;align-items:center;justify-content:flex-start;margin:8px 0 13px}
+.fp-vitals-primary,.fp-vitals-secondary{display:flex;flex-wrap:wrap;align-items:center;gap:7px;min-width:0}
+.fp-vitals-secondary{gap:6px;border-left:1px solid var(--fp-stroke);padding-left:13px}
+.fp-vitals-primary .fp-vital{min-height:51px;padding:8px 11px 8px 9px;gap:9px}
+.fp-vitals-primary .fp-vital .fp-vital-label{width:32px;height:32px;min-height:32px;flex:0 0 32px;padding:0;background-size:32px 32px;background-position:center}
+.fp-vitals-primary .fp-vital strong,
+.fp-vitals-primary .fp-vital .fp-vital-main strong,
+.fp-vitals-primary .fp-vital.fp-vital-basic>strong{font-size:24px;line-height:1.05;font-variant-numeric:tabular-nums;margin:0;white-space:nowrap}
+.fp-vitals-primary .fp-life-vital,.fp-vitals-primary .fp-armor-integrity-vital{border-color:color-mix(in srgb,var(--fp-gold) 42%,var(--fp-stroke))}
+.fp-vitals-primary .fp-movement-vital{border-color:color-mix(in srgb,var(--fp-a) 50%,var(--fp-stroke))}
+.fp-vitals-secondary .fp-vital{min-height:36px;padding:6px 9px;gap:6px}
+.fp-vitals-secondary .fp-vital .fp-vital-label{width:20px;height:20px;min-height:20px;flex:0 0 20px;padding:0;background-size:20px 20px;background-position:center}
+.fp-vitals-secondary .fp-vital strong,
+.fp-vitals-secondary .fp-vital .fp-vital-main strong,
+.fp-vitals-secondary .fp-vital.fp-vital-basic>strong{font-size:16px;line-height:1.1;margin:0;white-space:nowrap}
+.fp-vital-label.fp-icon-inventory{background-image:url("../assets/icons/codex/status-inventario.svg")}
+button.fp-vital-inventory{position:relative;cursor:pointer;appearance:none;font:inherit;color:var(--fp-text)}
+.fp-vital-inventory-text{color:var(--fp-gold);font-size:12px;line-height:1;font-weight:750;white-space:nowrap}
+button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-color:var(--fp-gold);background:var(--fp-raised);outline-offset:2px}
+@media(max-width:1020px){
+ .fp-vitals{align-items:flex-start;flex-direction:column;gap:7px}
+ .fp-vitals-secondary{border-left:0;padding-left:0}
+}
+@media(max-width:600px){
+ .fp-vitals-primary,.fp-vitals-secondary{gap:5px}
+ .fp-vitals-primary .fp-vital{min-height:45px;padding:7px 9px 7px 7px;gap:7px}
+ .fp-vitals-primary .fp-vital .fp-vital-label{width:26px;height:26px;min-height:26px;flex-basis:26px;background-size:26px 26px}
+ .fp-vitals-primary .fp-vital strong,
+ .fp-vitals-primary .fp-vital .fp-vital-main strong,
+ .fp-vitals-primary .fp-vital.fp-vital-basic>strong{font-size:21px}
+ .fp-vitals-secondary .fp-vital{min-height:34px;padding:6px 8px}
+ .fp-vitals-secondary .fp-vital .fp-vital-label{width:19px;height:19px;min-height:19px;flex-basis:19px;background-size:19px 19px}
+}
+
+
+/* 20/11/2026 — Ações rápidas na parte superior, antes da seleção das aptidões. */
+.fp-primary-column>#play-talents{margin:0 0 15px;padding:12px 14px 14px}
+.fp-primary-column>#play-talents>.fp-panel-heading{margin:0 0 10px}
+.fp-primary-column>#play-talents>.fp-panel-heading h3{font-size:21px}
+.fp-primary-column>#play-talents>.fp-panel-heading small{font-size:10px}
+.fp-primary-column>#play-talents .fp-play-talent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.fp-primary-column>#play-talents .fp-play-talent-grid>div{min-width:0}
+.fp-primary-column>#play-talents .fp-play-talent-grid h4{font-size:10px;letter-spacing:.06em;margin:0 0 7px}
+.fp-primary-column>#play-talents .fp-owned-list,.fp-primary-column>#play-talents .fp-owned-elements{display:flex;flex-direction:column;gap:5px;max-height:154px;overflow-y:auto;scrollbar-width:thin;padding-right:3px}
+.fp-primary-column>#play-talents .fp-action-skill,.fp-primary-column>#play-talents .fp-action-weapon,.fp-primary-column>#play-talents .fp-action-inventory,.fp-primary-column>#play-talents .fp-element-prep{display:flex;min-width:0;width:100%;min-height:42px;gap:6px;align-items:center;justify-content:space-between;padding:8px 9px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-deep);color:var(--fp-text);text-align:left;font:inherit;font-size:11px}
+.fp-primary-column>#play-talents .fp-action-skill,.fp-primary-column>#play-talents .fp-action-inventory,.fp-primary-column>#play-talents .fp-action-weapon:not(.is-unavailable),.fp-primary-column>#play-talents .fp-element-prep{cursor:pointer}
+.fp-primary-column>#play-talents .fp-action-skill:hover,.fp-primary-column>#play-talents .fp-action-weapon:not(.is-unavailable):hover,.fp-primary-column>#play-talents .fp-action-inventory:hover,.fp-primary-column>#play-talents .fp-element-prep:hover,
+.fp-primary-column>#play-talents .fp-action-skill:focus-visible,.fp-primary-column>#play-talents .fp-action-weapon:focus-visible,.fp-primary-column>#play-talents .fp-action-inventory:focus-visible,.fp-primary-column>#play-talents .fp-element-prep:focus-visible{border-color:var(--fp-gold);background:var(--fp-raised);outline-offset:1px}
+.fp-primary-column>#play-talents .fp-owned-heading{display:inline-flex;align-items:center;gap:6px;min-width:0;flex:1}
+.fp-primary-column>#play-talents .fp-owned-heading strong{min-width:0;font-size:11px;white-space:normal;line-height:1.3;overflow-wrap:anywhere}
+.fp-primary-column>#play-talents .fp-owned-heading .fp-codex-icon{width:24px;height:24px;min-width:24px}
+.fp-primary-column>#play-talents .fp-action-hint,.fp-primary-column>#play-talents .fp-action-weapon small,.fp-primary-column>#play-talents .fp-element-prep small{font-size:9px;line-height:1.2;color:var(--fp-gold);font-weight:700;white-space:normal;text-align:right;max-width:76px;flex-shrink:0}
+.fp-primary-column>#play-talents .fp-action-weapon.is-unavailable{opacity:.65;cursor:default}
+.fp-primary-column>#play-talents .fp-owned-empty{font-size:10px;padding:8px;min-height:42px}
+.fp-primary-column>#play-talents .fp-element-prep .fp-element-icon{display:inline-flex;flex:0 0 25px}
+.fp-primary-column>#play-talents .fp-element-prep .fp-element-icon .fp-codex-icon{width:25px;height:25px;min-width:25px}
+.fp-primary-column>#play-talents .fp-element-prep>span:nth-child(2){flex:1;min-width:0;font-size:11px}
+.fp-primary-column>#play-talents .fp-owned-crystal{padding:8px}
+.fp-actions-hemo{margin-top:11px;border:1px solid var(--fp-stroke);border-radius:9px;padding:0 10px;background:var(--fp-deep)}
+.fp-actions-hemo>summary{cursor:pointer;padding:10px 2px;color:var(--fp-gold);font-size:11px;font-weight:750}
+.fp-actions-hemo .fp-hemo-panel{margin:8px 0 12px}
+@media(max-width:1170px){.fp-primary-column>#play-talents .fp-play-talent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-primary-column>#play-talents .fp-play-talent-grid>div:last-child{grid-column:1/-1}}
+@media(max-width:600px){.fp-primary-column>#play-talents{padding:11px}.fp-primary-column>#play-talents .fp-play-talent-grid{grid-template-columns:1fr}.fp-primary-column>#play-talents .fp-play-talent-grid>div:last-child{grid-column:auto}.fp-primary-column>#play-talents .fp-owned-list,.fp-primary-column>#play-talents .fp-owned-elements{max-height:118px}}
+
+/* Inventário: posses primeiro, Bolsa VT à parte, carga detalhada e loja recolhidas. */
+.fp-inventory-panel{padding:17px}
+.fp-inventory-heading{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.fp-inventory-heading>div{flex:1;min-width:160px}
+.fp-inventory-stats{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+.fp-inventory-stats>div{min-width:110px;display:flex;flex-direction:column;gap:4px;padding:10px 13px;border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-deep)}
+.fp-inventory-stats small{font-size:9px;letter-spacing:.07em;color:var(--fp-muted);font-weight:800}
+.fp-inventory-stats strong{font-size:16px;color:var(--fp-gold);font-variant-numeric:tabular-nums}
+.fp-inventory-load-summary{margin:0 0 14px;padding:0 2px}
+.fp-inventory-load-summary .fp-load-caption{margin-top:5px;font-size:10px}
+.fp-inventory-owned{border:1px solid var(--fp-stroke);background:var(--fp-deep);border-radius:12px;padding:15px;margin:12px 0}
+.fp-inventory-section-heading{display:flex;flex-direction:column;gap:4px;margin:0 0 12px}
+.fp-inventory-section-heading h4{margin:0;color:var(--fp-gold);font-size:16px;line-height:1.2}
+.fp-inventory-section-heading small{font-size:11px;line-height:1.5;color:var(--fp-muted)}
+.fp-inventory-owned .fp-inventory-filterbar{margin:0 0 11px}
+.fp-inventory-owned .fp-inventory-list{display:grid;gap:5px}
+.fp-inventory-owned .fp-item.fp-item-compact{background:var(--fp-surface);border:1px solid var(--fp-stroke);border-radius:7px}
+.fp-inventory-owned .fp-item-compact .fp-item-summary{grid-template-columns:29px minmax(135px,1.1fr) minmax(120px,1.8fr) minmax(60px,auto);gap:12px;align-items:center;padding:8px 12px}
+.fp-inventory-owned .fp-item-compact .fp-item-summary strong{font-size:12px}
+.fp-inventory-owned .fp-item-compact .fp-item-summary small{font-size:10px}
+.fp-inventory-owned .fp-shop-group-title{margin:14px 0 2px;font-size:10px}
+.fp-inventory-rules{margin-top:13px;border-top:1px solid var(--fp-stroke);padding-top:10px}
+.fp-inventory-rules summary{font-size:11px;color:var(--fp-muted);cursor:pointer}
+.fp-inventory-rules .fp-footnote{margin:10px 0 0;line-height:1.6}
+.fp-inventory-panel .fp-inventory-purse{margin:12px 0;gap:9px;padding:15px;background:var(--fp-deep)}
+.fp-inventory-purse .fp-trade-heading{display:flex;align-items:center;gap:9px}
+.fp-inventory-purse .fp-trade-balance{background:var(--fp-surface);padding:7px 12px;border:1px solid var(--fp-gold);border-radius:9px}
+.fp-inventory-purse .fp-trade-balance strong{font-size:23px}
+.fp-inventory-purse .fp-trade-wallet{gap:5px}
+.fp-inventory-purse .fp-trade-token{padding:7px 10px;background:var(--fp-surface)}
+.fp-inventory-purse .fp-trade-distribute{margin-top:5px}
+.fp-inventory-collect{border-top:1px solid var(--fp-stroke);padding-top:10px;margin-top:2px}
+.fp-inventory-collect>summary{cursor:pointer;font-size:11px;color:var(--fp-gold);font-weight:700}
+.fp-inventory-collect .fp-trade-collect{margin-top:10px}
+.fp-inventory-capacity,.fp-inventory-store{border:1px solid var(--fp-stroke);border-radius:12px;background:var(--fp-deep);margin:12px 0;overflow:hidden}
+.fp-inventory-capacity>summary,.fp-inventory-store>summary{display:flex;flex-direction:column;gap:4px;list-style:none;cursor:pointer;position:relative;padding:16px 40px 16px 16px;color:var(--fp-gold);font-size:15px;font-weight:800}
+.fp-inventory-capacity>summary::-webkit-details-marker,.fp-inventory-store>summary::-webkit-details-marker{display:none}
+.fp-inventory-capacity>summary::after,.fp-inventory-store>summary::after{content:"+";font-size:20px;position:absolute;right:17px;top:14px;color:var(--fp-gold)}
+.fp-inventory-capacity[open]>summary::after,.fp-inventory-store[open]>summary::after{content:"−"}
+.fp-inventory-capacity>summary small,.fp-inventory-store>summary small{font-size:11px;color:var(--fp-muted);line-height:1.4;font-weight:400}
+.fp-inventory-capacity[open]>summary,.fp-inventory-store[open]>summary{border-bottom:1px solid var(--fp-stroke)}
+.fp-inventory-capacity .fp-cargo-panel{margin:14px;padding:13px}
+.fp-inventory-store-content{padding:16px;display:grid;gap:14px}
+.fp-inventory-store-content .fp-trade-shop{border:1px solid var(--fp-stroke);border-radius:9px;padding:12px}
+.fp-inventory-store-focus{border-top:1px solid var(--fp-stroke);padding-top:13px}
+@media(max-width:730px){.fp-inventory-owned .fp-item-compact .fp-item-summary{grid-template-columns:26px minmax(90px,1fr) auto;gap:7px}.fp-inventory-owned .fp-item-compact .fp-item-summary small{grid-column:2/-1}.fp-inventory-owned{padding:10px}.fp-inventory-stats>div{flex:1;min-width:94px}.fp-inventory-panel{padding:12px}.fp-inventory-purse .fp-trade-heading{align-items:stretch}}
+
+
+/* Subnavegação: bagagens, poder de troca e compras são telas distintas. */
+.fp-inventory-tabs{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 14px;margin:4px 0 13px;border-bottom:1px solid var(--fp-stroke)}
+.fp-inventory-tabs button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:9px 13px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-deep);color:var(--fp-muted);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.fp-inventory-tabs button span{font-size:16px;color:var(--fp-gold)}
+.fp-inventory-tabs button:hover,.fp-inventory-tabs button:focus-visible{border-color:var(--fp-gold);outline-offset:2px}
+.fp-inventory-tabs button.active,.fp-inventory-tabs button[aria-current="page"]{border-color:var(--fp-gold);color:var(--fp-text);background:var(--fp-raised);box-shadow:inset 0 -2px var(--fp-gold)}
+.fp-inventory-pane{min-width:0}
+.fp-inventory-pane[hidden]{display:none!important}
+.fp-inventory-pane[data-inventory-pane="bag"] .fp-inventory-owned{margin:10px 0}
+.fp-inventory-pane[data-inventory-pane="wallet"]>.fp-inventory-purse{margin:0}
+.fp-inventory-pane[data-inventory-pane="shop"]>.fp-inventory-store{margin:0}
+.fp-inventory-pane[data-inventory-pane="shop"]>.fp-inventory-store .fp-trade-panel select,
+.fp-inventory-pane[data-inventory-pane="shop"] select,
+.fp-inventory-pane[data-inventory-pane="shop"] input{min-width:0;max-width:100%;width:100%;min-height:36px;padding:7px 9px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);font-size:12px}
+.fp-inventory-pane[data-inventory-pane="shop"] .fp-trade-shop-grid{gap:9px}
+.fp-inventory-stone-owned{font-size:11px;color:var(--fp-muted);line-height:1.5}
+@media(max-width:570px){.fp-inventory-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.fp-inventory-tabs button{justify-content:center;font-size:10px;padding:8px 6px;gap:4px}.fp-inventory-tabs button span{font-size:13px}}
