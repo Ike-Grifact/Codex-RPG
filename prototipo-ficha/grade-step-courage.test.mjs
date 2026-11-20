@@ -276,3 +276,42 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
  assert.ok(page.includes("E + P de dano à Integridade"),"Integridade da armadura permanece normal");
  assert.ok(!page.includes("PENDENTE — efeito"),"Efeito pessoal definido e documentado");
 });
+
+
+test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia do peso do martelo",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+ const make=({forca=3,destreza=1,vigor=1,skills=[]}={})=>({
+  attributes:{forca,destreza,vigor},practices:{armas_conjuracao:0,artesao:0},knowledges:{},skills
+ });
+ assert.ok(fn("maestria-martelos",make({forca:2})),"Força 3 requerida");
+ assert.ok(fn("maestria-martelos",make({destreza:0})),"Destreza 1 requerida");
+ assert.ok(fn("maestria-martelos",make({vigor:0})),"Vigor 1 requerido");
+ assert.equal(fn("maestria-martelos",make()),null,"Não exige Perícia de Armas para comprar");
+ assert.match(app,/"maestria-martelos",\\s*"Maestria em Martelos",[\\s\\S]*?\\n  1\\n \\]/,"Custo 1 XP");
+ assert.ok(app.includes('"maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]]'),"Compra assistida não obriga especializações");
+ const start=app.indexOf("function hammerMasteryRequiredSkill(item){");
+ const end=app.indexOf("function equipmentGroupName(id)",start);
+ assert.ok(start>=0&&end>start,"Verificador de Martelos existe");
+ const eligibility=new Function("state", "ownsSkill", "equipmentWeight",
+  app.slice(start,end)+"\nreturn {required:hammerMasteryRequiredSkill,can:hammerMasteryCanActivate};")(
+  {},(id,s)=>s.skills.includes(id),(it)=>it.weight==="alto"?"pesado":it.weight
+ );
+ for(const [weight,skill] of [["leve","armas-leves"],["medio","armas-medias"],["alto","armas-pesadas"]]){
+  const weapon={type:"weapon",name:"Martelo de Guerra",weight};
+  assert.equal(eligibility.required(weapon),skill,"Peso "+weight+" exige "+skill);
+  assert.equal(eligibility.can(weapon,make({skills:["maestria-martelos"]})),false,"Sem Perícia de peso não ativa");
+  assert.equal(eligibility.can(weapon,make({skills:[skill]})),false,"Sem Maestria não ativa");
+  assert.equal(eligibility.can(weapon,make({skills:[skill,"maestria-martelos"]})),true,"Com ambas habilita efeito grátis");
+ }
+ assert.equal(eligibility.required({type:"weapon",name:"Espada",weight:"leve"}),null,"Não aplica a armas sem martelo");
+ assert.ok(app.includes("UMA característica própria do martelo sem Coragem"),"Inventário informa uma característica");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"armas-pesadas","maestria-martelos"'),"Mapa no ramo de Armas");
+ const page=readFileSync(join(root,"../pericias/maestria-em-martelos.html"),"utf8");
+ assert.ok(page.includes("Força 3")&&page.includes("Destreza 1")&&page.includes("Vigor 1"));
+ assert.ok(page.includes("Perícia em Armas")&&page.includes("sem gastar Coragem"));
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Maestria em Martelos</a>'));
+});
