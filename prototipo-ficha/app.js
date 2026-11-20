@@ -462,6 +462,12 @@ const SKILLS=[
   1
  ],
  [
+  "resistencia-a-fogo",
+  "Resistência a Fogo",
+  "1 XP. Requisitos: Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2. Efeito PENDENTE de decisão autoral: não concede resistência, imunidade, redução de dano ou bônus automático até definição do funcionamento.",
+  1
+ ],
+ [
   "apresentacao-avancada",
   "Apresentação Avançada",
   "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
@@ -765,6 +771,11 @@ const SKILL_AFFINITY={
   "attr:destreza",
   "practice:armas_conjuracao"
  ],
+ "resistencia-a-fogo": [
+  "practice:artesao",
+  "attr:vigor",
+  "practice:armas_conjuracao"
+ ],
  "encantar-com-elemento": [
   "practice:armas_conjuracao",
   "attr:inteligencia"
@@ -869,7 +880,7 @@ const SKILL_BRANCHES=[
  ["engenharia-avancada"],
  ["erudicao-avancada"],
  ["atletismo-avancado"],
- ["artesao-avancado","ferreiro","ferreiro-elemental"],
+ ["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"],
  ["criar-item-foco-magia","encantar-com-elemento"],
  ["apresentacao-avancada"],
  ["coleta-avancada"]
@@ -939,6 +950,7 @@ const SKILL_PERMALINKS={
  "artesao-avancado": "artesao-avancado",
  "ferreiro": "ferreiro",
  "ferreiro-elemental": "ferreiro-elemental",
+ "resistencia-a-fogo": "resistencia-a-fogo",
  "encantar-com-elemento": "encantar-com-elemento",
  "apresentacao-avancada": "apresentacao-avancada",
  "coleta-avancada": "coleta-avancada"
@@ -990,6 +1002,7 @@ const CARD_REQUIREMENTS={
  "artesao-avancado": "Artesão 2",
  "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 2)",
  "ferreiro-elemental": "Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento",
+ "resistencia-a-fogo": "Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2",
  "encantar-com-elemento": "Uma Perícia Elemental + Criar Item de Foco e Magia",
  "apresentacao-avancada": "Apresentação 2",
  "coleta-avancada": "Coleta 2",
@@ -1043,6 +1056,7 @@ const CARD_EFFECTS={
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
  "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades de fabricação pendentes; Encantar com Elemento é requisito comprável e nunca é concedido automaticamente",
+ "resistencia-a-fogo": "Perícia comprável por 1 XP com Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. Efeito concreto PENDENTE; não aplica resistência, imunidade, redução de dano nem mudança automática no inventário",
  "encantar-com-elemento": "Armadura/escudo: 1 Coragem para aplicar resistência ao elemento adquirido. Arma: adquire temporariamente o elemento. Duração igual para os três: E-P>0; unidade temporal, DE/fontes, custo da arma e automação pendentes",
  "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
@@ -1095,6 +1109,7 @@ const CARD_BRIEFS={
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
  "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
+ "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. Efeito específico PENDENTE de definição; não concede resistência automática.",
  "encantar-com-elemento": "1 XP. Exige uma Perícia Elemental + Criar Item de Foco e Magia. Armaduras e escudos: 1 Coragem por resistência elemental; armas tornam-se do elemento habilitado. Mesma duração E-P>0 para todos. Custo da arma e unidade temporal pendentes.",
  "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
@@ -1147,6 +1162,7 @@ const CARD_ACTIVATIONS={
  "artesao-avancado": "Passiva",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
+ "resistencia-a-fogo": "Efeito/ativação PENDENTE — nenhuma resistência automática",
  "encantar-com-elemento": "Armadura/escudo: 1 Coragem. Arma: custo PENDENTE. Duração E-P>0 para ambos",
  "apresentacao-avancada": "Passiva",
  "coleta-avancada": "Passiva"
@@ -1940,6 +1956,7 @@ function skillReq(id,s=state){
  if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
+ if(id==="resistencia-a-fogo"&&(!has("ferreiro-elemental")||!has("fogo")||vig<2))return"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2."; 
  if(id==="encantar-com-elemento"&&(!has("criar-item-foco-magia")||!["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"].some(has)))return"Requer Criar Item de Foco e Magia e pelo menos uma Perícia Elemental adquirida (Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas ou Veneno).";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
@@ -2540,6 +2557,7 @@ const GENE_AUTO_REQUIREMENTS={
  "artesao-avancado":[["p:artesao:2"]],
  "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],
  "ferreiro-elemental":[["a:inteligencia:2","a:destreza:2","s:ferreiro","s:improviso","s:criar-item-foco-magia","s:encantar-com-elemento"]],
+ "resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]],
  "encantar-com-elemento":[["s:criar-item-foco-magia","s:vento"],["s:criar-item-foco-magia","s:agua"],["s:criar-item-foco-magia","s:terra"],["s:criar-item-foco-magia","s:fogo"],["s:criar-item-foco-magia","s:sagrado"],["s:criar-item-foco-magia","s:sangue"],["s:criar-item-foco-magia","s:trevas"],["s:criar-item-foco-magia","s:veneno"]],
  "apresentacao-avancada":[["p:apresentacao:2"]],
  "coleta-avancada":[["p:coleta:2"]],
