@@ -105,8 +105,10 @@
  width:min(620px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;
  border:1px solid var(--cx-gold);border-radius:12px;box-shadow:0 16px 50px #0008;
 }
-.codex-roll-surface:popover-open .codex-roll-popup-bar{display:flex;justify-content:flex-end;margin-bottom:6px}
-.codex-roll-surface:popover-open .codex-roll-popup-bar button{width:32px;min-height:28px}
+.codex-roll-surface:popover-open .codex-roll-popup-bar{display:flex;gap:6px;margin-bottom:6px}
+.codex-roll-popup-bar [data-action="closeRoll"]{width:32px;min-height:28px}
+.codex-roll-popup-bar .codex-roll-drag{flex:1;width:auto;justify-content:flex-start;gap:8px;cursor:grab;touch-action:none;user-select:none}
+.codex-roll-popup-bar .codex-roll-drag.is-dragging{cursor:grabbing}
 .codex-roll-surface:popover-open .codex-block{margin-top:0;padding:8px;border:0;background:transparent}
 .codex-roll-surface:popover-open .codex-roll-prep .codex-block-title span{display:none}
 .codex-roll-surface:popover-open .codex-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}

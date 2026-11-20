@@ -212,6 +212,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     this.element.querySelector('[data-action="showRoll"]')?.focus({preventScroll:true});
    };
    window.addEventListener("keydown",this._rollEscape,{capture:true});
+   this._rollResize=()=>{
+    const panel=this.element?.querySelector(".codex-roll-surface:popover-open");
+    if(panel)this._positionRollSurface(panel);
+   };
+   window.addEventListener("resize",this._rollResize);
   }
   this._configureRollSurface();
   this._targetHooks??=[
@@ -314,19 +319,59 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    panel.addEventListener("toggle",event=>{
     if(event.newState==="closed"&&panel.isConnected&&panel.hasAttribute("popover")&&panel.rollIntent===this._rollIntent)this._rollOpen=false;
    });
+   this._bindRollDrag(panel);
   }
   if(this._rollOpen??Boolean(this._pending)){
    panel.rollIntent=this._rollIntent;
    if(!panel.matches(":popover-open"))panel.showPopover();
-   const {width,height}=panel.getBoundingClientRect();
-   const anchor=this._rollAnchor;
-   const left=anchor?Math.min(Math.max(12,anchor.left),window.innerWidth-width-12):(window.innerWidth-width)/2;
-   const below=anchor&&anchor.bottom+height+20<window.innerHeight;
-   const top=below?anchor.bottom+8:anchor&&anchor.top-height>12?anchor.top-height-8:(window.innerHeight-height)/2;
-   panel.style.left=Math.max(12,left)+"px";
-   panel.style.top=Math.max(12,top)+"px";
+   this._positionRollSurface(panel);
    panel.scrollTop=this._rollScroll??0;
   }
+ }
+ _positionRollSurface(panel,position=this._rollPosition){
+  const {width,height}=panel.getBoundingClientRect();
+  const anchor=this._rollAnchor;
+  const margin=12,gap=8;
+  const below=anchor&&anchor.bottom+gap+height+margin<=window.innerHeight;
+  const above=anchor&&anchor.top-gap-height>=margin;
+  const left=position?.left??anchor?.left??(window.innerWidth-width)/2;
+  const top=position?.top??(below?anchor.bottom+gap:above?anchor.top-gap-height:(window.innerHeight-height)/2);
+  const clamp=(value,space)=>Math.max(margin,Math.min(value,space-margin));
+  const point={left:clamp(left,window.innerWidth-width),top:clamp(top,window.innerHeight-height)};
+  panel.style.left=point.left+"px";
+  panel.style.top=point.top+"px";
+  if(position)this._rollPosition=point;
+ }
+ _bindRollDrag(panel){
+  const handle=panel.querySelector("[data-roll-drag]");
+  if(!handle||handle.dataset.dragReady)return;
+  handle.dataset.dragReady="true";
+  let drag;
+  handle.addEventListener("pointerdown",event=>{
+   if(event.button!==0||!event.isPrimary||!panel.matches(":popover-open"))return;
+   const bounds=panel.getBoundingClientRect();
+   drag={id:event.pointerId,offsetX:event.clientX-bounds.left,offsetY:event.clientY-bounds.top};
+   handle.setPointerCapture(event.pointerId);
+   handle.classList.add("is-dragging");
+   event.preventDefault();
+  });
+  handle.addEventListener("pointermove",event=>{
+   if(drag?.id!==event.pointerId)return;
+   this._positionRollSurface(panel,{left:event.clientX-drag.offsetX,top:event.clientY-drag.offsetY});
+  });
+  handle.addEventListener("lostpointercapture",()=>{
+   drag=null;
+   handle.classList.remove("is-dragging");
+  });
+  handle.addEventListener("keydown",event=>{
+   const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];
+   if(!direction||!panel.matches(":popover-open"))return;
+   event.preventDefault();
+   event.stopPropagation();
+   const {left,top}=panel.getBoundingClientRect();
+   const step=event.shiftKey?40:10;
+   this._positionRollSurface(panel,{left:left+step*direction[0],top:top+step*direction[1]});
+  });
  }
  _openRollNear(target){
   this._rollOpen=true;
@@ -564,9 +609,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._targetLost=false;
   this._rollMedia?.removeEventListener("change",this._rollMediaChanged);
   window.removeEventListener("keydown",this._rollEscape,{capture:true});
+  window.removeEventListener("resize",this._rollResize);
   this._rollMedia=null;
   this._rollOpen=undefined;
   this._rollAnchor=null;
+  this._rollPosition=null;
   for(const [event,id] of this._targetHooks??[])Hooks.off(event,id);
   this._targetHooks=null;
   return super.close(options);

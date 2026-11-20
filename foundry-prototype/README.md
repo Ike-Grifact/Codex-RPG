@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.17.** Selecione duas fontes com o mouse para abrir a janela de rolagem. Em telas pequenas e com toque, a preparação permanece na ficha. Consulte a [auditoria da revisão anterior](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/foundry-prototype/AUDITORIA-02116.md) e o [SRD ativo v1.0](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/srd-playtest-nivel-1-v1.0.md).
+> **Playtest 0.2.1.18.** Selecione duas fontes para abrir a janela de rolagem no PC. Arraste a barra **Rolagem** para mover a janela. Com a barra em foco, use as setas. Em telas pequenas e com toque, a preparação permanece na ficha. Consulte o [SRD ativo v1.0](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/srd-playtest-nivel-1-v1.0.md).
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -76,12 +76,14 @@ O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma
 
 1. Em Jogar, clique nos cartões de um Atributo e uma Prática ou Conhecimento, em qualquer ordem. Perícias Avançadas habilitam o complemento pertinente. Criaturas não humanoides usam Atributos distintos. Editar ficha permite evolução e equipamentos, com a seleção de fontes oculta.
 2. Escolha o modo de Disciplina, as condições de **Vantagem Absoluta (+1E), Vantagem (+1A), Normal, Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Ação de Sorte (−2E)**, equipamento equipado e custos opcionais.
-3. Selecione **exatamente um Token como alvo** durante o combate para consultar a DE defensiva desse alvo; sem alvo, o teste é apenas anunciado no chat.
+3. Use a ferramenta **Selecionar alvos** do Foundry e clique em **um token** no mapa. Passe o cursor sobre o token e pressione **T** para usar o atalho. O Codex aplica a DE defensiva da ficha e mantém a DE reservada para jogadores sem permissão de consulta. Use **DE manual** para testes sem alvo.
 4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
 5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
 6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico devolve Coragem segundo o teto de nível; monstro recebe recompensa em Pavor. PP histórico permanece sem uso nas ações atuais. A elevação comum paga 1 Coragem uma vez na rodada e sobe um dado na cadeia d4→d6→d10→d12.
 
 **Comparativo das faces já roladas:** o bloco "Comparar escolhas" apresenta até quatro alternativas de dados mantidos, com DE, Êxito, Antecipar, Pavor e dano. A comparação não rerrola dados, não aplica a alternativa nem gasta recursos automaticamente.
+
+**Alcance e movimento no mapa.** O Repertório mostra o alcance cadastrado de armas e a preparação exibe seu alcance efetivo quando habilitadas. Compare com a distância usando a régua da cena. A validação de alcance entre tokens, incluindo conjuração, e os limites de deslocamento por turno ficam a cargo da mesa. Arrastar o token e medir o trajeto são recursos nativos do Foundry.
 
 **Carga no Foundry:** a ficha soma os pesos e quantidades dos equipamentos, informa a capacidade restante e o número alternativo de Leves, Médios e Pesados que cabem. Adicionar um item G1 acima da capacidade avisa sobre sobrecarga, sem inventar penalidades. As compras VT do site não são importadas automaticamente.
 

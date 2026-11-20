@@ -197,7 +197,10 @@
   {{/if}}
 
   <div class="codex-roll-surface" aria-label="Rolagem Codex">
-    <div class="codex-roll-popup-bar"><button type="button" data-action="closeRoll" aria-label="Fechar rolagem"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+    <div class="codex-roll-popup-bar">
+      <button type="button" class="codex-roll-drag" data-roll-drag aria-label="Mover janela de rolagem com as setas" title="Arraste para mover ou use as setas"><i class="fa-solid fa-grip-lines" aria-hidden="true"></i> Rolagem</button>
+      <button type="button" data-action="closeRoll" aria-label="Fechar rolagem"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
   {{#if codex.preparing}}
     <section class="codex-block codex-roll-prep" aria-label="Preparação da rolagem">
       <div class="codex-block-title"><h2>Preparação da ação</h2><span>Sem executar nem gastar recursos</span></div>
