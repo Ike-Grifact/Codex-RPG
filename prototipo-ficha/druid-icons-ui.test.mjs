@@ -30,8 +30,8 @@ test("Druídica: detalhes concisos e separados do verbete completo",()=>{
  const req=section(app,"const CARD_REQUIREMENTS={","const CARD_EFFECTS={").match(/"pericia-druidica": "([^"]+)"/)?.[1];
  assert.equal(req,"Criar Item de Foco e Magia + Perícia em Elemento Terra");
 });
-test("Mapas de SVG dos oito elementos e das armas existem",()=>{
- for(const id of ["fogo","agua","vento","terra","sagrado","sangue","veneno","trevas","armas-leves","armas-medias","armas-pesadas"]){
+test("Mapas de SVG dos nove elementos, incluindo Psíquico, e das armas existem",()=>{
+ for(const id of ["psiquico","fogo","agua","vento","terra","sagrado","sangue","veneno","trevas","armas-leves","armas-medias","armas-pesadas"]){
   const key=icons.CODEX_SKILL_ICONS[id];
   assert.ok(key,"Perícia sem ícone: "+id);
   assert.ok(existsSync(join(root,"../assets/icons/codex",key+".svg")),key);
@@ -54,7 +54,7 @@ test("Armas e elementos agora mostram ícones na loja, inventário, Perícias e 
  for(const snippet of [
   "codexSkillIcon(id)+'<strong>'+esc(name)",
   "codexItemIcon(it)+'<strong>'+esc(it.name)",
-  "codexSkillIcon(id)+'</span><span>'+esc(name)",
+  "codexSkillIcon(id)+'</span><span class=\"fp-element-label\">'+esc(name)",
   "codexIcon(sid",
   "fp-inventory-name"
  ]){
