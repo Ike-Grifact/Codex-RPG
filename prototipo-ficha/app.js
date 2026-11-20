@@ -3531,7 +3531,7 @@ function score(){
  const elementSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
   veneno:"veneno",sagrado:"sagrado",trevas:"trevas",sangue:"sangue"}[el];
  // SRD v0.43: foco válido + Perícia do elemento + Criar Item de Foco e Magia.
- const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
+ const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"
   &&ownsSkill("criar-item-foco-magia")&&!!elementSkill&&ownsSkill(elementSkill);
  // v0.69: Barulhenta sempre concede +1P passivo, inclusive no crítico.
  const pBonus=properties.includes("Barulhenta")?1:0;
@@ -3619,7 +3619,7 @@ function score(){
  const isFireCast=ownsSkill("fogo")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
   p.base.key==="armas_conjuracao"&&
   // Foco explicitamente de outro elemento não pode ser usado como foco de Fogo.
-  !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="fogo");
+  !(item?.type==="foco"&&elementSkill&&elementSkill!=="fogo");
  if(p.fireMode&&!fireMode)errs.push("Manifestação de Fogo não reconhecida nesta rolagem.");
  if(fireMode&&!isFireCast)errs.push("Queimar/Derreter exigem conjuração de Fogo habilitada, não ataque de outra natureza.");
  if(fireMode&&p.opts.magicElement&&p.opts.magicElement!=="fogo")errs.push("Efeito de Fogo exige elemento Fogo declarado.");
@@ -3916,6 +3916,12 @@ function renderInventory(){
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
+  (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
+   [["psiquico","Psíquico"],["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]]
+   .map(([id,name])=>'<option value="'+id+'"'+(magicElementId(it.element||"psiquico")===id?" selected":"")+'>'+name+'</option>').join("")+
+   '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+it.grade+'" value="'+(it.focusCharges??it.grade)+'"></label>'+
+   ' / '+it.grade+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??it.grade)>=it.grade?" disabled":"")+'>Encerrar rodada: +1 carga</button>'+
+   '<small>Recarga gradual manual no fim de cada rodada; Pedra da Alma não recarrega naturalmente.</small></div>':"")+
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
@@ -4215,6 +4221,9 @@ function onClick(event){
   // Registro manual de encerramento de rodada: sem supor que "Novo turno" encerrou a rodada.
   if(state.pending){toast("Finalize a ação antes de atualizar cargas do foco.");break;}
   const item=state.items.find(it=>it.id===id&&it.type==="foco");if(!item)return;
+  if(magicElementId(item.element||"psiquico")==="sangue"&&item.name.toLowerCase().includes("alma")){
+   toast("Pedra da Alma não recarrega naturalmente: exige Perícia Fixar Alma.");break;
+  }
   item.focusCharges=Math.min(item.grade,(item.focusCharges??item.grade)+1);
   renderInventory();renderOwnedPanel();save();
   toast(item.name+": "+item.focusCharges+"/"+item.grade+" cargas disponíveis.");
@@ -4516,7 +4525,12 @@ function onChange(event){
   }
   else if(k==="qty")it.qty=it.packSize>0?1:clamp(Math.floor(el.value),1,99);
   else if(k==="ammoRemaining"&&it.packSize>0){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
-  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);}
+  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??it.grade,0,it.grade);}
+  else if(k==="focusCharges"&&it.type==="foco")it.focusCharges=clamp(Math.floor(Number(el.value)),0,it.grade);
+  else if(k==="element"&&it.type==="foco"){
+   const n=magicElementId(el.value);
+   if(n)it.element=n;
+  }
   else if(k==="max"){it.max=clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}
