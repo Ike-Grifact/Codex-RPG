@@ -3372,7 +3372,8 @@ function buildPool(){
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
- const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+lifeStage().coragem;
+ const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+
+  (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
  if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
