@@ -56,12 +56,14 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
  "maestria-arcos":"arma-arco","maestria-bestas":"arma-arco",
  "maestria-arremessos":"arma-arremesso","maestria-longo-alcance":"arma-arco",
  "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
+ "maestria-escudos":"armadura-escudo","escudo-bumerangue":"arma-arremesso",
  "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
  "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
  "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar","terra":"elemento-terra",
  "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
 });
 const GENE_CONSTELLATIONS=[
+ {id:"escudos",label:"ESCUDOS FÍSICOS",column:0,skills:["maestria-escudos","escudo-bumerangue"]},
  {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
