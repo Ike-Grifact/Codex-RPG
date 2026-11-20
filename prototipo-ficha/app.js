@@ -134,13 +134,13 @@ const SKILLS=[
  [
   "montar",
   "Montar Animal",
-  "1 XP; Influência 2 e Destreza 3. Vantagem (+1A) nos testes pertinentes de montaria. Gaste 1A para antecipar a rolagem da montaria na mesma ação conjunta: são duas rolagens independentes de até 9 dados cada, sem transferir símbolos; se ambas mantêm Pavor, até duas intervenções inimigas, com ativação paga por Pavor local. Montaria Grande rola até 3 Atributos diferentes e mantém no máximo 2 dados. Sem a Perícia: Desvantagem Absoluta (−1E) nos testes pertinentes e sem acesso ao benefício de coordenação por Antecipar.",
+  "1 XP; Influência 2 e Destreza 3. Aplica estado de Vantagem na rolagem pertinente de montaria, e não +1A separado. Se a Vantagem for efetiva, ela fornece 1A conforme a regra geral. Gaste 1A para antecipar a rolagem da montaria na mesma ação conjunta: são duas rolagens independentes de até 9 dados cada, sem transferir símbolos; se ambas mantêm Pavor, até duas intervenções inimigas, com ativação paga por Pavor local. Montaria Grande rola até 3 Atributos diferentes e mantém no máximo 2 dados. Sem a Perícia: Desvantagem Absoluta (−1E) nos testes pertinentes e sem acesso ao benefício de coordenação por Antecipar.",
   1
  ],
  [
   "maestria-montaria",
   "Maestria em Montaria",
-  "1 XP; Influência 6, Destreza 4, Inteligência 2 e Montar Animal. Habilita controlar e montar criaturas Gigantes e especiais; Vantagem (+1A) ao montar Gigantes. Montaria Gigante mantém no máximo 3 dados; usa ficha própria. Ação conjunta em duas rolagens independentes mediante 1A; eventual acúmulo de Vantagens ainda PENDENTE.",
+  "1 XP; Influência 6, Destreza 4, Inteligência 2 e Montar Animal. Habilita controlar e montar criaturas Gigantes e especiais; aplica estado de Vantagem na rolagem pertinente ao montar Gigantes (não +1A avulso). Montaria Gigante mantém no máximo 3 dados; usa ficha própria. Ação conjunta em duas rolagens independentes mediante 1A; eventual acúmulo de Vantagens ainda PENDENTE.",
   1
  ],
  [
@@ -967,8 +967,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
- "montar":"Vantagem (+1A) nos testes pertinentes de montaria; permite participação coordenada com montaria de ficha própria numa ação conjunta (não turno adicional). Sem a Perícia: Desvantagem Absoluta (−1E) nesses testes, sem benefício de coordenação por Antecipar. Grande: até três Atributos diferentes na rolagem e apenas dois dados mantidos. Para antecipar a montaria, gasta 1A; duas rolagens separadas, cada qual com limite de 9 dados rolados, sem transferir mantidos. Pavor mantido em ambas pode abrir até duas intervenções inimigas pagas com Pavor local. Automação PENDENTE.",
- "maestria-montaria":"Habilita controlar e montar criaturas Gigantes e especiais; +1A ao montar Gigantes. Uma montaria Gigante pode manter até três dados da própria ficha. Não concede turno extra. Gasta 1A para antecipar uma rolagem separada da montaria, com teto próprio de 9 dados. Se as duas rolagens mantêm Pavor, até duas intervenções com ativações pagas. Acúmulo de Vantagens e automação: PENDENTE.",
+ "montar":"Condição Vantagem nas rolagens pertinentes de montaria, que concede 1A se efetiva, sem bônus +1A avulso; permite participação coordenada com montaria de ficha própria numa ação conjunta (não turno adicional). Sem a Perícia: Desvantagem Absoluta (−1E) nesses testes, sem benefício de coordenação por Antecipar. Grande: até três Atributos diferentes na rolagem e apenas dois dados mantidos. Para antecipar a montaria, gasta 1A; duas rolagens separadas, cada qual com limite de 9 dados rolados, sem transferir mantidos. Pavor mantido em ambas pode abrir até duas intervenções inimigas pagas com Pavor local. Automação PENDENTE.",
+ "maestria-montaria":"Habilita controlar e montar criaturas Gigantes e especiais; condição Vantagem na rolagem pertinente ao montar Gigantes (não +1A direto). Uma montaria Gigante pode manter até três dados da própria ficha. Não concede turno extra. Gasta 1A para antecipar uma rolagem separada da montaria, com teto próprio de 9 dados. Se as duas rolagens mantêm Pavor, até duas intervenções com ativações pagas. Acúmulo de estados de Vantagem e automação: PENDENTE.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
@@ -1018,8 +1018,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
- "montar":"1 XP · Influência 2 + Destreza 3 · +1A em testes de montaria pertinentes, sem requisito de Domar.",
- "maestria-montaria":"1 XP · Montar Animal + Influência 6 + Destreza 4 + Inteligência 2. Montarias Gigantes e especiais; até 3 dados mantidos para Gigantes.",
+ "montar":"1 XP · Influência 2 + Destreza 3 · condição Vantagem em rolagens pertinentes de montaria (sem +1A avulso), sem requisito de Domar.",
+ "maestria-montaria":"1 XP · Montar Animal + Influência 6 + Destreza 4 + Inteligência 2. Montarias Gigantes e especiais; estado de Vantagem nas rolagens pertinentes ao montar Gigantes; até 3 dados mantidos para Gigantes.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
