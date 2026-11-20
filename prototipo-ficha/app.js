@@ -158,8 +158,14 @@ const SKILLS=[
  [
   "montar",
   "Montar Animal",
-  "Requer Influência grau 2.",
+  "2 XP. Requer Influência 2. Nos testes com montaria concede Vantagem, não +1A. Vantagem e Antecipar são benefícios distintos.",
   2
+ ],
+ [
+  "pericia-montaria",
+  "Perícia em Montaria",
+  "Requisitos: Influência 1 + Destreza 2. Concede +1A (um símbolo Antecipar) nos testes com montaria, não Vantagem nem dado extra. Custo de XP PENDENTE; compra bloqueada até decisão autoral.",
+  null
  ],
  [
   "provocacao-sofisticada",
@@ -580,6 +586,10 @@ const SKILL_AFFINITY={
  "montar": [
   "attr:influencia"
  ],
+ "pericia-montaria": [
+  "attr:influencia",
+  "attr:destreza"
+ ],
  "provocacao-sofisticada": [
   "attr:influencia",
   "practice:apresentacao"
@@ -903,6 +913,7 @@ const SKILL_BRANCHES=[
   "provocacao-sofisticada",
   "combate",
   "montar",
+  "pericia-montaria",
   "recobrar-coragem"
  ],
  [
@@ -946,6 +957,7 @@ const SKILL_PERMALINKS={
  "combate": "combate",
  "armas": "armas-1",
  "montar": "montar-animal",
+ "pericia-montaria": "pericia-em-montaria",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
@@ -1019,6 +1031,8 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "montar": "Influência 2",
+ "pericia-montaria": "Influência 1 + Destreza 2; custo em XP PENDENTE",
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
@@ -1086,6 +1100,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
+ "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
@@ -1152,6 +1168,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
+ "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
@@ -1218,6 +1236,8 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "montar": "Vantagem nos testes com montaria; não é +1A",
+ "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
  "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
  "domar-criatura-media":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-grande":"1 Coragem + teste de Influência + Apresentação",
@@ -2166,6 +2186,8 @@ function skillReq(id,s=state){
  if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
 
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
+ if(id==="pericia-montaria"&&((s.attributes.influencia||0)<1||dex<2))return"Requer Influência 1 e Destreza 2.";
+ if(id==="pericia-montaria")return"Custo XP de Perícia em Montaria PENDENTE: compra indisponível até a definição autoral.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.";
  if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
@@ -2721,6 +2743,7 @@ const GENE_AUTO_REQUIREMENTS={
  "pericia-druidica":[["s:criar-item-foco-magia","s:terra"]],
  "transformacao-elemental":[["s:criar-item-foco-magia","s:vento"],["s:criar-item-foco-magia","s:agua"],["s:criar-item-foco-magia","s:terra"],["s:criar-item-foco-magia","s:fogo"],["s:criar-item-foco-magia","s:sagrado"],["s:criar-item-foco-magia","s:sangue"],["s:criar-item-foco-magia","s:trevas"],["s:criar-item-foco-magia","s:veneno"]],
  "montar":[["a:influencia:2"]],
+ "pericia-montaria":[["a:influencia:1","a:destreza:2"]],
  "provocacao-sofisticada":[["a:influencia:2"]],
  "armas-leves":[["p:armas_conjuracao:1"]],
  "armas-medias":[["p:armas_conjuracao:1","a:forca:1"]],
