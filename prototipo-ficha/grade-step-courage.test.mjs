@@ -194,6 +194,9 @@ test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
  assert.ok(app.includes("Gaste 1A para antecipar a rolagem da montaria"),"Perícia documenta o custo de Antecipar da coordenação");
  assert.ok(app.includes("duas rolagens separadas, cada qual com limite de 9 dados rolados"),"Duas pilhas independentes de 9 dados");
  assert.ok(app.includes("Pavor mantido em ambas pode abrir até duas intervenções inimigas"),"Dois resultados com Pavor mantido permitem até duas intervenções");
- assert.ok(app.includes("Acúmulo de Vantagens e automação: PENDENTE"),"Maestria não presume acúmulo de +1A");
+ assert.ok(app.includes("Acúmulo de estados de Vantagem e automação: PENDENTE"),"Maestria não presume acúmulo de +1A");
+ assert.ok(app.includes("Aplica estado de Vantagem na rolagem pertinente de montaria, e não +1A separado"),"Montar Animal oferece estado Vantagem, não 1A avulso");
+ assert.ok(app.includes("Se a Vantagem for efetiva, ela fornece 1A conforme a regra geral"),"A condição Vantagem é a origem do Antecipar");
+ assert.ok(app.includes("condição Vantagem na rolagem pertinente ao montar Gigantes (não +1A direto)"),"Maestria também não fornece +1A avulso");
 
 });
