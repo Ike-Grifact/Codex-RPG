@@ -2346,15 +2346,11 @@ function renderOwnedPanel(){
    '<span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span>'+
    '<span class="fp-action-hint">Ver detalhes</span></button>';
  }).join(""):skillsEmpty;
- const elements=ELEMENT_SKILLS.filter(([id])=>ownsSkill(id));
- $("owned-elements").innerHTML=
-  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
-  (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
-    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido.</span>');
+ renderMagicActions();
  // Não listar armaduras e ferramentas aqui: só equipamento capaz de preparar uma ação.
- const weapons=state.items.filter(it=>it.equipped&&["arma","foco"].includes(it.type));
+ const weapons=state.items.filter(it=>it.equipped&&it.type==="arma");
  $("equipped-shortcuts").innerHTML=weapons.length?weapons.map(it=>{
-  const mode=it.type==="foco"?"conjuracao":"armas",dice=combatItem(it,mode);
+  const mode="armas",dice=combatItem(it,mode);
   const chosen=preferredQuickAttribute(it),ready=dice.length>0&&!!chosen;
   const labelText=dice.length?dice.map(n=>"d"+n).join(" + "):"Requer Perícia";
   const hint=ready?labelText+" · Preparar":dice.length?"Selecione um Atributo treinado":"Perícia de manejo/foco necessária";
@@ -2767,18 +2763,9 @@ function openSheetPage(page,focusSkill=""){
  $("sheet-navigation")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
 }
 function prepareElementSkill(id){
- if(!ELEMENT_SKILLS.some(([key])=>key===id)||!ownsSkill(id))return;
- if(state.pending){toast("Finalize a rolagem pendente antes de preparar a magia.");return;}
- if(!ownsSkill("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
- sheetPage="play";editMode=false;
- draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";
- const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
-  (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
- if(focus)draft.equipmentId=focus.id;
- render();
- $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
- toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
-  " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
+ // Compatibilidade com atalhos legados: Perícia elemental não exige compra da Perícia de Foco.
+ if(!magicKnownElements().some(([key])=>key===id))return;
+ prepareMagic(id);
 }
 
 function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
