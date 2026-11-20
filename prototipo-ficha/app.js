@@ -2198,6 +2198,100 @@ function renderDiceLegend(){
 
 /* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
 const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+
+/* Conjuração livre: efeitos/tempo definidos no Livro; efeitos de amplificação não recebem números inventados. */
+function magicElementId(value){
+ const raw=String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").trim().toLowerCase();
+ return ({ar:"vento",vento:"vento",psique:"psiquico",psiquico:"psiquico",agua:"agua",fogo:"fogo",terra:"terra",sagrado:"sagrado",sangue:"sangue",trevas:"trevas",veneno:"veneno"})[raw]||"";
+}
+function magicKnownElements(){
+ return [...(ownsSkill("criar-item-foco-magia")?[["psiquico","Psíquico"]]:[]),
+  ...ELEMENT_SKILLS.filter(([id])=>ownsSkill(id))];
+}
+function magicCompatibleFoci(element){
+ return state.items.filter(item=>item.type==="foco"&&
+  magicElementId(item.element||"psiquico")===element);
+}
+function magicSelectedFocus(plan=draft){
+ return magicCompatibleFoci(plan.magicElement).find(item=>item.id===plan.magicFocusId)||null;
+}
+function magicPreparationTurns(grade,charges){
+ return grade===1?1:grade===2?2:Math.max(1,3-Math.min(2,charges));
+}
+function magicCourageCost(plan=draft){
+ return (plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
+}
+function alignMagicDraft(){
+ const known=magicKnownElements();
+ if(!known.some(([id])=>id===draft.magicElement))draft.magicElement=known[0]?.[0]||"";
+ draft.magicGrade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const focus=magicSelectedFocus();
+ if(!focus){draft.magicFocusId="";draft.magicCharges=0;draft.magicAmplify=false;}
+ else draft.magicCharges=Math.min(Number(draft.magicGrade)===3?2:0,focus.focusCharges||0,
+   Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
+ if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
+ if(draft.mode==="conjuracao"&&draft.magicElement){
+  draft.equipmentId=focus&&combatItem(focus,"conjuracao").length?focus.id:"";
+ }
+}
+function prepareMagic(element=""){
+ if(state.pending){toast("Finalize a rolagem pendente antes de preparar uma conjuração.");return;}
+ if(editMode){toast("Encerre a edição da ficha antes de conjurar.");return;}
+ const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
+ if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
+ const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId;
+ const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed;
+ const de=Number.isInteger(previous.de)?previous.de:1;
+ draft=freshDraft();draft.mode="conjuracao";draft.de=de;
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ // Inteligência é preenchida só se foi realmente treinada; outras combinações continuam possíveis.
+ const attr=(state.attributes.inteligencia||0)>0?"inteligencia":
+  A.find(([id])=>(state.attributes[id]||0)>0)?.[0]||"";
+ if(attr)draft.attribute={group:"attr",key:attr};
+ draft.magicElement=chosen;draft.magicGrade=grade;draft.magicFocusId=focusId;
+ draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;
+ alignMagicDraft();sheetPage="play";render();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
+ toast("Conjuração de "+(known.find(([id])=>id===chosen)?.[1]||chosen)+" preparada; defina os gastos e confirme a rolagem.");
+}
+function renderMagicActions(){
+ const root=$("magic-actions");if(!root)return;
+ const elements=magicKnownElements();
+ if(!elements.length){
+  root.innerHTML='<p class="fp-owned-empty">Adquira Criar Item de Foco e Magia (Psíquico) ou uma Perícia elemental para conjurar.</p>';
+  $("owned-elements").innerHTML="";return;
+ }
+ const chosen=elements.some(([id])=>id===draft.magicElement)?draft.magicElement:elements[0][0];
+ const grade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const focus=magicCompatibleFoci(chosen).find(it=>it.id===draft.magicFocusId)||null;
+ const charges=grade===3?Math.min(2,focus?.focusCharges||0):0;
+ $("owned-elements").innerHTML=elements.map(([id,name])=>
+  '<button type="button" class="fp-magic-element'+(chosen===id?" selected":"")+
+  '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id?'true':'false')+'">'+
+  esc(name)+'</button>').join("");
+ const focusOptions=[["","Sem foco (ambiente a confirmar)"],...magicCompatibleFoci(chosen)
+  .map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+
+   (combatItem(item,"conjuracao").length?" · dado habilitado":"")])];
+ const options=(items,current)=>items.map(([id,label])=>'<option value="'+esc(id)+'"'+(id===current?" selected":"")+'>'+esc(label)+'</option>').join("");
+ const ampAllowed=!!focus;
+ root.innerHTML='<button type="button" class="fp-action-cast" data-action="magic-prepare">ᚨ Conjurar magia · preparar ação</button>'+
+  '<div class="fp-magic-config">'+
+  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]].map(([n,t])=>[String(n),t]),String(grade))+'</select></label>'+
+  '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
+  (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
+   options(Array.from({length:charges+1},(_,n)=>[String(n),n+" carga(s) · "+(3-n)+" turno(s)"]),String(Math.min(charges,draft.magicCharges||0)))+
+   '</select></label>':'')+
+  (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?' checked':'')+
+   '> Grau e efeito habilitados confirmados com Narrador</label>':'')+
+  '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&ampAllowed?' checked':'')+
+  (ampAllowed?"":" disabled")+
+  '> Ampliar até limite já permitido (+1 Coragem; efeito avaliado pelo Narrador)</label>'+
+  '<small class="fp-magic-note">'+
+  esc(grade===3?"G3: "+magicPreparationTurns(grade,Math.min(charges,draft.magicCharges||0))+
+    " turno(s) se as cargas forem gastas.":grade===2?"G2: 2 turnos. Reduzir para G1 remove efeitos G2.":"G1: lançamento imediato.")+
+  ' O foco deve ser do elemento; pode estar guardado. Dado extra só com Perícia habilitada. Amplificação não gera dano automático nem consome carga adicional sem regra definida.</small></div>';
+}
+
 let inventoryPane="bag";
 function syncInventoryPane(){
  const container=$("equipamentos");if(!container)return;
