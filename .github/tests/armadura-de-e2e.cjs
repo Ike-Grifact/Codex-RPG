@@ -68,7 +68,7 @@ const assert=require("node:assert/strict");
   assert.equal(indicators.hasLoadCard,false,"Capacidade sai da barra superior");
   assert.ok(indicators.inventoryIsButton,"Inventário é um atalho real");
   await page.locator(".fp-vital-inventory").click();
-  assert.equal(await page.locator('button[data-sheet-page="inventory"]').first().getAttribute("aria-current"),"page","O atalho abriu a aba Inventário");
+  assert.equal(await page.locator('#sheet-navigation button[data-sheet-page="inventory"]').getAttribute("aria-current"),"page","O atalho abriu a aba Inventário");
   assert.equal(await page.locator("#equipamentos").isVisible(),true,"O inventário mostra equipamentos e carga");
   await page.locator('button[data-sheet-page="play"]').first().click();
   assert.equal(await page.locator(".fp-vital-inventory").isVisible(),true,"Indicadores continuam acessíveis após voltar a Jogar");
