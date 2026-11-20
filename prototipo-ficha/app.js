@@ -2266,6 +2266,44 @@ function canEquipArmor(s=state,it=null){
  if(it.weight==="extremo"&&((s.attributes.vigor||0)<6||(s.practices.atletismo||0)<6))return false;
  return true;
 }
+// Bônus de Maestria em Escudos: apenas uma peça física equipada recebe os bônus.
+function masteredShield(s=state){
+ return ownsSkill("maestria-escudos",s)?(s.items||[]).find(it=>it.type==="escudo"&&it.equipped)||null:null;
+}
+function shieldMasteryActive(item,s=state){
+ const shield=masteredShield(s);
+ return !!(shield&&item?.type==="escudo"&&shield.id===item.id);
+}
+function shieldIntegrityDisplay(item,s=state){
+ const active=shieldMasteryActive(item,s),bonus=active?1:0;
+ return {hp:(item?.hp||0)+(active&&!item.shieldMasteryBonusSpent?1:0),max:(item?.max||0)+bonus,bonus,active};
+}
+// O ponto extra não modifica a Integridade-base e não renasce ao reequipar.
+function changeShieldIntegrity(item,delta,s=state){
+ if(!item||item.type!=="escudo"||![-1,1].includes(Number(delta)))return;
+ const active=shieldMasteryActive(item,s);
+ if(delta<0){
+  if(active&&!item.shieldMasteryBonusSpent){item.shieldMasteryBonusSpent=true;return;}
+  item.hp=Math.max(0,item.hp-1);
+ }else if(item.hp<item.max)item.hp=Math.min(item.max,item.hp+1);
+ else if(active&&item.shieldMasteryBonusSpent)item.shieldMasteryBonusSpent=false;
+}
+function loseShieldIntegrity(item,amount,s=state){
+ const loss=Math.min(shieldIntegrityDisplay(item,s).hp,Math.max(0,Math.floor(amount)||0));
+ if(!loss)return 0;
+ let rest=loss;
+ if(shieldMasteryActive(item,s)&&!item.shieldMasteryBonusSpent){
+  item.shieldMasteryBonusSpent=true;rest--;
+ }
+ item.hp=Math.max(0,item.hp-rest);
+ return loss;
+}
+function shieldBoomerangReady(item,s=state){
+ return !!(item?.type==="escudo"&&item.equipped&&
+  ownsSkill("escudo-bumerangue",s)&&ownsSkill("maestria-escudos",s)&&
+  ownsSkill("maestria-arremesso-armas",s)&&
+  (s.attributes?.destreza||0)>=2&&(s.attributes?.forca||0)>=3);
+}
 function equippedArmor(s=state){return s.items.find(it=>it.type==="armadura"&&it.equipped&&canEquipArmor(s,it))||null;}
 function armorDePenalty(s=state){
  const it=equippedArmor(s);
@@ -2278,17 +2316,18 @@ function armorDodgeBonus(s=state){
 // Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
 // Teto da DE natural: 9. Teto absoluto após modificadores: 12.
 function deDefense(s=state){
- return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)));
+ return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
 }
 function deDodge(s=state){return deDefense(s);} // Esquiva não recebe um segundo bônus.
 function defensePresentation(s=state){
  const natural=deNatural(s),total=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
  const armor=equippedArmor(s);
  const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
- const modifier=bonus-penalty;
- return {label:"DE DEFENSIVA",value:total,caption:armor?
-  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+") = "+total+" · Vale para todas as defesas · Teto 12":
-  "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
+ const modifier=bonus-penalty,shieldBonus=masteredShield(s)?1:0;
+ const baseCaption=armor?
+  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
+  "DE natural "+natural;
+ return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto natural 9 / final 12"};
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function itemLoad(it){
@@ -3452,7 +3491,7 @@ function renderVitals(){
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
  if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 / 0"):"—";
  if(integrityCaption)integrityCaption.textContent=protection?protection.name:"Sem armadura";
- $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"");
+ $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
  if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
