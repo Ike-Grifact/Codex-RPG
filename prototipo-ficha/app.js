@@ -3664,6 +3664,10 @@ function renderInventory(){
   if(models.some(x=>x.name===previous))focusSelector.value=previous;
  }
  const load=loadUsed(),max=capacity(),fill=$("load-bar-fill");
+ const count=$("inventory-quick-items"),equipped=$("inventory-quick-equipped"),quickLoad=$("inventory-quick-load");
+ if(count)count.textContent=String(state.items.length);
+ if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
+ if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
  $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional.";
  const cargoPanel=$("inventory-cargo-panel");
