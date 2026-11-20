@@ -186,4 +186,10 @@ test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
  assert.ok(graph.includes('skills:["provocacao-sofisticada","recobrar-coragem","montar","maestria-montaria"]'),
   "As Perícias formam ramificação conjunta em Influência e Mobilidade");
  assert.ok(app.includes('"maestria-montaria":"maestria-em-montaria"'),"Verbete da Maestria acessível");
+ assert.ok(app.includes('"montar":[["a:influencia:2","a:destreza:3"]]'),
+  "Compra automática de Montar precisa adquirir Destreza 3 além de Influência 2");
+ assert.ok(app.includes('"maestria-montaria":[["a:influencia:6","a:destreza:4","a:inteligencia:2","s:montar"]]'),
+  "Compra automática da Maestria precisa incluir os graus e Montar Animal");
+ assert.ok(app.includes('"montar":"Influência 2 + Destreza 3 (não exige Domar)"'),"Mostrar requisitos ao consultar Perícia");
+
 });
