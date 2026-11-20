@@ -1733,3 +1733,22 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-inventory-store-content .fp-trade-shop{border:1px solid var(--fp-stroke);border-radius:9px;padding:12px}
 .fp-inventory-store-focus{border-top:1px solid var(--fp-stroke);padding-top:13px}
 @media(max-width:730px){.fp-inventory-owned .fp-item-compact .fp-item-summary{grid-template-columns:26px minmax(90px,1fr) auto;gap:7px}.fp-inventory-owned .fp-item-compact .fp-item-summary small{grid-column:2/-1}.fp-inventory-owned{padding:10px}.fp-inventory-stats>div{flex:1;min-width:94px}.fp-inventory-panel{padding:12px}.fp-inventory-purse .fp-trade-heading{align-items:stretch}}
+
+
+/* Subnavegação: bagagens, poder de troca e compras são telas distintas. */
+.fp-inventory-tabs{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 14px;margin:4px 0 13px;border-bottom:1px solid var(--fp-stroke)}
+.fp-inventory-tabs button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:9px 13px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-deep);color:var(--fp-muted);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.fp-inventory-tabs button span{font-size:16px;color:var(--fp-gold)}
+.fp-inventory-tabs button:hover,.fp-inventory-tabs button:focus-visible{border-color:var(--fp-gold);outline-offset:2px}
+.fp-inventory-tabs button.active,.fp-inventory-tabs button[aria-current="page"]{border-color:var(--fp-gold);color:var(--fp-text);background:var(--fp-raised);box-shadow:inset 0 -2px var(--fp-gold)}
+.fp-inventory-pane{min-width:0}
+.fp-inventory-pane[hidden]{display:none!important}
+.fp-inventory-pane[data-inventory-pane="bag"] .fp-inventory-owned{margin:10px 0}
+.fp-inventory-pane[data-inventory-pane="wallet"]>.fp-inventory-purse{margin:0}
+.fp-inventory-pane[data-inventory-pane="shop"]>.fp-inventory-store{margin:0}
+.fp-inventory-pane[data-inventory-pane="shop"]>.fp-inventory-store .fp-trade-panel select,
+.fp-inventory-pane[data-inventory-pane="shop"] select,
+.fp-inventory-pane[data-inventory-pane="shop"] input{min-width:0;max-width:100%;width:100%;min-height:36px;padding:7px 9px;border:1px solid var(--fp-stroke);border-radius:8px;background:var(--fp-raised);color:var(--fp-text);font-size:12px}
+.fp-inventory-pane[data-inventory-pane="shop"] .fp-trade-shop-grid{gap:9px}
+.fp-inventory-stone-owned{font-size:11px;color:var(--fp-muted);line-height:1.5}
+@media(max-width:570px){.fp-inventory-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.fp-inventory-tabs button{justify-content:center;font-size:10px;padding:8px 6px;gap:4px}.fp-inventory-tabs button span{font-size:13px}}
