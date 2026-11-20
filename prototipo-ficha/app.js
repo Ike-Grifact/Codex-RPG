@@ -4152,6 +4152,17 @@ function onClick(event){
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
+ case "magic-prepare":prepareMagic();break;
+ case "magic-element":prepareMagic(id);break;
+ case "focus-round":{
+  // Registro manual de encerramento de rodada: sem supor que "Novo turno" encerrou a rodada.
+  if(state.pending){toast("Finalize a ação antes de atualizar cargas do foco.");break;}
+  const item=state.items.find(it=>it.id===id&&it.type==="foco");if(!item)return;
+  item.focusCharges=Math.min(item.grade,(item.focusCharges??item.grade)+1);
+  renderInventory();renderOwnedPanel();save();
+  toast(item.name+": "+item.focusCharges+"/"+item.grade+" cargas disponíveis.");
+  break;
+ }
  case "repertoire-roll":quickRollItem(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
@@ -4338,6 +4349,21 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.magicField!==undefined){
+  if(state.pending){toast("Finalize a rolagem antes de alterar a magia.");renderOwnedPanel();return;}
+  const field=el.dataset.magicField;
+  if(field==="magicGrade"){draft.magicGrade=Number(el.value);draft.magicGradeConfirmed=false;draft.magicCharges=0;}
+  else if(field==="magicFocusId"){draft.magicFocusId=String(el.value);draft.magicCharges=0;}
+  else if(field==="magicCharges")draft.magicCharges=Math.floor(Number(el.value));
+  else if(field==="magicAmplify")draft.magicAmplify=!!el.checked;
+  else if(field==="magicGradeConfirmed")draft.magicGradeConfirmed=!!el.checked;
+  else if(field==="magicEnvironmentConfirmed")draft.magicEnvironmentConfirmed=!!el.checked;
+  else return;
+  alignMagicDraft();
+  if(draft.mode!=="conjuracao"||!draft.base)prepareMagic();
+  else{renderOwnedPanel();renderComposer();}
+  return;
+ }
  if(el.dataset.inventoryType!==undefined||el.dataset.inventoryWeight!==undefined){
   if(el.dataset.inventoryType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))inventoryType=el.value;
   if(el.dataset.inventoryWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))inventoryWeight=el.value;
@@ -4399,6 +4425,7 @@ function onChange(event){
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
+  if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
   renderSources();renderComposer();return;
  }
