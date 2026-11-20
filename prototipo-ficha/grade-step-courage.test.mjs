@@ -92,7 +92,7 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261120-actions-inventory-v4/);
+ assert.match(html,/app\.js\?v=20261120-magic-actions-v1/);
 });
 
 test("Ações acessíveis, inventário como posses e indicadores prioritários",()=>{
@@ -118,9 +118,17 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
  assert.ok(layout.includes('id="play-talents"'),"Ações compartilham a coluna esquerda com aptidões");
  assert.match(layout,/<h3>Ações<\/h3>/,"Repertório foi renomeado como Ações");
  assert.ok(!layout.includes("Seu repertório"),"Sem cabeçalho antigo");
- assert.match(layout,/<h4>Armas e focos<\/h4>/,"Atalhos de armamento ficam junto dos elementos");
+ assert.match(layout,/<h4>Armas equipadas<\/h4>/,"Atalhos de armas ficam junto da conjuração");
  assert.ok(app.includes('data-action="repertoire-roll"'),"Atalho de arma/foco precisa preparar a ação");
- assert.ok(app.includes('data-action="prepare-element"'),"Atalho elemental precisa ser preservado");
+ assert.ok(app.includes('data-action="magic-element"'),"Elementos adquiridos ficam selecionáveis na conjuração");
+ assert.match(html,/id="magic-actions"/,"Conjuração deve aparecer junto das Ações");
+ assert.match(layout,/<h4>Conjurar magia<\\/h4>/,"O bloco da magia tem título explícito");
+ for(const field of ["magicGrade","magicFocusId","magicCharges","magicAmplify","magicTimeConfirmed"]){
+  assert.ok(app.includes('data-magic-field="'+field+'"'),"Campo de conjuração ausente: "+field);
+ }
+ assert.ok(app.includes('const spellCost=draft.mode==="conjuracao"'),"Gastos de magia devem entrar no limite de Coragem");
+ assert.ok(app.includes('focusCharges:type==="foco"'),"Cargas precisam ser persistidas no inventário");
+ assert.ok(app.includes('if(usedFocus&&p.opts.magicCharges)'),"Gasto de foco deve ocorrer ao finalizar");
  assert.match(html,/id="inventory-shop-details"/,"Loja separada dos pertences");
  const panes=["bag","wallet","shop"];
  for(const pane of panes){
