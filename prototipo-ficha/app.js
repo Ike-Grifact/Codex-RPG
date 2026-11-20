@@ -1171,7 +1171,7 @@ const CODEX_SKILL_ICONS=Object.freeze({
  "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
  "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
  "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
- "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar",
+ "psiquico":"elemento-psiquico","fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar",
  "terra":"elemento-terra","sagrado":"elemento-sagrado","sangue":"elemento-sangue",
  "trevas":"elemento-trevas","veneno":"elemento-veneno"
 });
@@ -1338,7 +1338,8 @@ function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries
 function walletValue(s=state){return RESOURCES.reduce((n,[k])=>n+Number(s.trade?.resources?.[k]||0),0);}
 function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // Lotes G1 pequenos: 10 unidades = 1 Leve (proposta).
 function combatItem(item,mode){
- if(!item?.equipped||!["arma","foco"].includes(item.type))return [];
+ // Foco pode estar somente no inventário para conjurar; armas ainda exigem estar equipadas.
+ if(!item||!(item.equipped||(mode==="conjuracao"&&item.type==="foco"))||!["arma","foco"].includes(item.type))return [];
  if(!((item.grade||1)<= (state.level>=20?4:state.level>=10?3:state.level>=5?2:1)))return [];
  const skills=allOwnedSkills(),properties=item.properties||[],range=properties.includes("À Distância");
  const cat=item.category||({leve:"leve",medio:"medio",alto:"pesado"}[item.weight]||"leve");
@@ -1441,7 +1442,8 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false});
+  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
+  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -1766,6 +1768,7 @@ function normalizeItem(it={}){
   priceVT:clamp(Math.floor(it.priceVT||0),0,10000),
   properties:Array.isArray(it.properties)?it.properties.filter(x=>typeof x==="string").slice(0,6):[],
   firearm:!!it.firearm,element:String(it.element||"").slice(0,40),
+  focusCharges:type==="foco"?clamp(Math.floor(it.focusCharges??grade),0,grade):0,
   durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999),
   packSize:clamp(Math.floor(it.packSize||0),0,99),ammoRemaining:clamp(Math.floor(it.ammoRemaining??it.packSize??0),0,99),
   storageCapacity:clamp(Math.floor(it.storageCapacity||0),0,99),description:String(it.description||"").slice(0,330)}; // Lotes/consumo manuais.
@@ -2195,6 +2198,104 @@ function renderDiceLegend(){
 
 /* Pós-criação: páginas separadas para jogar, evoluir, Codex Genético e inventário. */
 const ELEMENT_SKILLS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+
+/* Conjuração livre: efeitos/tempo definidos no Livro; efeitos de amplificação não recebem números inventados. */
+function magicElementId(value){
+ const raw=String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
+ return ({ar:"vento",vento:"vento",psique:"psiquico",psiquico:"psiquico",agua:"agua",fogo:"fogo",terra:"terra",sagrado:"sagrado",sangue:"sangue",trevas:"trevas",veneno:"veneno"})[raw]||"";
+}
+function magicKnownElements(){
+ return [...(ownsSkill("criar-item-foco-magia")?[["psiquico","Psíquico"]]:[]),
+  ...ELEMENT_SKILLS.filter(([id])=>ownsSkill(id))];
+}
+function magicCompatibleFoci(element){
+ return state.items.filter(item=>item.type==="foco"&&
+  magicElementId(item.element||"psiquico")===element);
+}
+function magicSelectedFocus(plan=draft){
+ return magicCompatibleFoci(plan.magicElement).find(item=>item.id===plan.magicFocusId)||null;
+}
+function magicPreparationTurns(grade,charges){
+ return grade===1?1:grade===2?2:Math.max(1,3-Math.min(2,charges));
+}
+function magicCourageCost(plan=draft){
+ return (plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
+}
+function alignMagicDraft(){
+ const known=magicKnownElements();
+ if(!known.some(([id])=>id===draft.magicElement))draft.magicElement=known[0]?.[0]||"";
+ draft.magicGrade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const focus=magicSelectedFocus();
+ if(!focus){draft.magicFocusId="";draft.magicCharges=0;draft.magicAmplify=false;}
+ else draft.magicCharges=Math.min(Number(draft.magicGrade)===3?2:0,focus.focusCharges||0,
+   Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
+ if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
+ if(draft.mode==="conjuracao"&&draft.magicElement){
+  draft.equipmentId=focus&&combatItem(focus,"conjuracao").length?focus.id:"";
+ }
+}
+function prepareMagic(element=""){
+ if(state.pending){toast("Finalize a rolagem pendente antes de preparar uma conjuração.");return;}
+ if(editMode){toast("Encerre a edição da ficha antes de conjurar.");return;}
+ const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
+ if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
+ const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId;
+ const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,timeConfirmed=previous.magicTimeConfirmed;
+ const de=Number.isInteger(previous.de)?previous.de:1;
+ draft=freshDraft();draft.mode="conjuracao";draft.de=de;
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ // Inteligência é preenchida só se foi realmente treinada; outras combinações continuam possíveis.
+ const attr=(state.attributes.inteligencia||0)>0?"inteligencia":
+  A.find(([id])=>(state.attributes[id]||0)>0)?.[0]||"";
+ if(attr)draft.attribute={group:"attr",key:attr};
+ draft.magicElement=chosen;draft.magicGrade=grade;
+ const compatible=magicCompatibleFoci(chosen);
+ draft.magicFocusId=focusId||(previous.mode!=="conjuracao"&&compatible.length===1?compatible[0].id:"");
+ draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;
+ draft.magicTimeConfirmed=chosen===previous.magicElement&&!!timeConfirmed;
+ alignMagicDraft();sheetPage="play";render();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
+ toast("Conjuração de "+(known.find(([id])=>id===chosen)?.[1]||chosen)+" preparada; defina os gastos e confirme a rolagem.");
+}
+function renderMagicActions(){
+ const root=$("magic-actions"),elementsRoot=$("owned-elements");
+ if(!root||!elementsRoot)return;
+ const elements=magicKnownElements();
+ if(!elements.length){
+  root.innerHTML='<span class="fp-owned-empty">Nenhuma magia habilitada</span>';
+  elementsRoot.innerHTML="";return;
+ }
+ const chosen=elements.some(([id])=>id===draft.magicElement)?draft.magicElement:elements[0][0];
+ root.innerHTML='<button type="button" class="fp-action-cast" data-action="magic-prepare" title="Preparar Disciplina e configurar Grau, foco e custos no rolador">ᚨ Conjurar magia</button>';
+ elementsRoot.innerHTML=elements.map(([id,name])=>
+  '<button type="button" class="fp-magic-element'+(chosen===id&&draft.mode==="conjuracao"?" selected":"")+
+  '" data-action="magic-element" data-id="'+esc(id)+'" aria-pressed="'+(chosen===id&&draft.mode==="conjuracao"?'true':'false')+'" title="Conjurar '+esc(name)+'">'+
+  '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span class="fp-element-label">'+esc(name)+'</span></button>').join("");
+}
+function magicComposerFields(){
+ if(draft.mode!=="conjuracao"||!draft.magicElement)return "";
+ const chosen=draft.magicElement,grade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),charges=grade===3?Math.min(2,focus?.focusCharges??0):0;
+ const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
+ const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
+ const time=magicPreparationTurns(grade,draft.magicCharges);
+ const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
+ return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
+  '<div class="fp-magic-config">'+
+  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]],grade)+'</select></label>'+
+  '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
+  (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
+   options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+(3-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
+  (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+
+   '> Grau e efeito habilitados (confirmado com Narrador)</label>':"")+
+  (time>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicTimeConfirmed"'+(draft.magicTimeConfirmed?" checked":"")+
+   '> '+time+' turno(s) de preparação cumpridos</label>':"")+
+  '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
+  '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
+  '<small class="fp-magic-note">Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
+  ' Coragem · '+draft.magicCharges+' carga(s) de foco. Fonte elemental, efeitos e amplificação são resolvidos conforme regras e Narrador.</small></div>';
+}
+
 let inventoryPane="bag";
 function syncInventoryPane(){
  const container=$("equipamentos");if(!container)return;
@@ -2240,24 +2341,19 @@ function applySheetPage(){
 function renderOwnedPanel(){
  // Ações aparecem antes das fontes: botões compactos abrem a especialização ou preparam o teste.
  const learned=SKILLS.filter(([id])=>ownsSkill(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
- const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
+ const basic=learned; // Consulta na Evolução inclui também Perícias elementais.
  const skillsEmpty='<span class="fp-owned-empty">Nenhuma Perícia adquirida.</span>';
+ const skillCount=$("owned-skills-count");if(skillCount)skillCount.textContent=String(basic.length);
  $("owned-skills").innerHTML=basic.length?basic.map(([id,name,detail])=>{
   const description=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail||"";
-  return '<button type="button" class="fp-action-skill" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" '+
-   'title="'+esc(description.slice(0,170))+'" aria-label="Ver detalhes da Perícia '+esc(name)+'">'+
-   '<span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span>'+
-   '<span class="fp-action-hint">Ver detalhes</span></button>';
+  return '<details class="fp-quick-skill"><summary>'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></summary>'+
+   '<p>'+esc(description)+'</p><button type="button" class="fp-secondary" data-sheet-page="genetic" data-gene-select="'+esc(id)+'">Ver no Codex Genético</button></details>';
  }).join(""):skillsEmpty;
- const elements=ELEMENT_SKILLS.filter(([id])=>ownsSkill(id));
- $("owned-elements").innerHTML=
-  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
-  (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
-    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido.</span>');
- // Não listar armaduras e ferramentas aqui: só equipamento capaz de preparar uma ação.
- const weapons=state.items.filter(it=>it.equipped&&["arma","foco"].includes(it.type));
+ renderMagicActions();
+ // A área de armas mostra apenas armamento equipado; focos ficam no preparador de magia.
+ const weapons=state.items.filter(it=>it.equipped&&it.type==="arma");
  $("equipped-shortcuts").innerHTML=weapons.length?weapons.map(it=>{
-  const mode=it.type==="foco"?"conjuracao":"armas",dice=combatItem(it,mode);
+  const mode="armas",dice=combatItem(it,mode);
   const chosen=preferredQuickAttribute(it),ready=dice.length>0&&!!chosen;
   const labelText=dice.length?dice.map(n=>"d"+n).join(" + "):"Requer Perícia";
   const hint=ready?labelText+" · Preparar":dice.length?"Selecione um Atributo treinado":"Perícia de manejo/foco necessária";
@@ -2670,18 +2766,9 @@ function openSheetPage(page,focusSkill=""){
  $("sheet-navigation")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
 }
 function prepareElementSkill(id){
- if(!ELEMENT_SKILLS.some(([key])=>key===id)||!ownsSkill(id))return;
- if(state.pending){toast("Finalize a rolagem pendente antes de preparar a magia.");return;}
- if(!ownsSkill("criar-item-foco-magia")){toast("Crie primeiro um foco e adquira Criar Item de Foco e Magia.");return;}
- sheetPage="play";editMode=false;
- draft=freshDraft();draft.base={group:"practice",key:"armas_conjuracao"};draft.attribute={group:"attr",key:"inteligencia"};draft.mode="conjuracao";
- const focus=state.items.find(it=>it.equipped&&it.type==="foco"&&combatItem(it,"conjuracao").length&&
-  (it.element||"").normalize("NFD").toLowerCase().includes(id==="vento"?"ar":id));
- if(focus)draft.equipmentId=focus.id;
- render();
- $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
- toast("Conjuração "+(ELEMENT_SKILLS.find(([key])=>key===id)?.[1]||"")+
-  " preparada. Escolha o foco pertinente, confira a pilha e os custos.");
+ // Compatibilidade com atalhos legados: Perícia elemental não exige compra da Perícia de Foco.
+ if(!magicKnownElements().some(([key])=>key===id))return;
+ prepareMagic(id);
 }
 
 function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
@@ -3241,7 +3328,22 @@ function buildPool(){
   if(!mayThird())errors.push("Falta Perícia pertinente para a terceira fonte.");
   // A pertinência do complemento é combinada verbalmente com o Narrador; sem checkbox obrigatório.
  }
- if(!canUseShared())errors.push("Conjuração exige Criar Item de Foco e Magia (a Perícia substitui Aprendiz de Conjurador e Magia Única). Uso marcial básico de Disciplina é livre.");
+ if(!canUseShared())errors.push("Conjuração exige Perícia elemental habilitada ou Criar Item de Foco e Magia para Psíquico.");
+ if(draft.mode==="conjuracao"&&draft.magicElement){
+  const known=magicKnownElements().some(([id])=>id===draft.magicElement);
+  const focus=magicSelectedFocus();
+  if(!known)errors.push("Elemento não habilitado para esta conjuração.");
+  if(draft.magicGrade>1&&!draft.magicGradeConfirmed)errors.push("Confirme com Narrador o acesso ao Grau e efeito G"+draft.magicGrade+".");
+  if(magicPreparationTurns(draft.magicGrade,draft.magicCharges)>1&&!draft.magicTimeConfirmed)
+   errors.push("Confirme que os turnos exigidos para preparar esta magia já foram cumpridos.");
+  if(draft.magicFocusId&&!focus)errors.push("Foco deve estar no inventário e corresponder ao elemento.");
+  if(draft.magicCharges>0&&(!focus||draft.magicGrade!==3||
+     draft.magicCharges>2||draft.magicCharges>(focus?.focusCharges??0)))
+   errors.push("Cargas insuficientes ou aceleração não permitida para esse Grau.");
+  if(draft.magicAmplify&&!focus)errors.push("Amplificação com foco exige um foco compatível.");
+  if(draft.equipmentId&&draft.equipmentId!==(focus?.id||""))
+   errors.push("O dado do foco deve corresponder à magia escolhida.");
+ }
  const sources=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])];
  const selectedStep=draft.step?draft.stepSourceId:"";
  const elevatedSource=sources.find(source=>selectedStep&&key(source)===selectedStep);
@@ -3262,8 +3364,11 @@ function buildPool(){
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
- if(Number(draft.extraKeep)+Number(draft.step)>5)errors.push("Máximo de 5 Coragens gastas por rolagem.");
- if(Number(draft.extraKeep)+Number(draft.step)>state.courage)errors.push("Coragem insuficiente para os custos de preparação.");
+ const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
+ const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+
+  (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
+ if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
+ if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
  if(draft.cravarRemovalShieldId){
   const shield=state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon);
@@ -3294,14 +3399,15 @@ function renderComposer(){
  '<div class="fp-step-box attr"><small>02 · ATRIBUTO</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
  '<div class="fp-step-box third"><small>03 · COMPLEMENTO</small><strong>'+(draft.third?esc(label(draft.third.group,draft.third.key)):"Opcional")+'</strong></div></div>';
  if(!draft.attribute){
-  box.innerHTML=step+'<p class="fp-prepare-description">A Base já foi definida. Clique em um Atributo na coluna à esquerda. Nenhum dado será rolado sem sua confirmação.</p>'+
+  box.innerHTML=step+'<p class="fp-prepare-description">Escolha um Atributo na coluna à esquerda para completar a ação.</p>'+
+   magicComposerFields()+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
- if(usingDiscipline()&&!draft.equipmentId){
+ if(usingDiscipline()&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
- const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step);
+ const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+lifeStage().coragem;
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
@@ -3316,10 +3422,12 @@ function renderComposer(){
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Muito Leve / Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
  const selectedItem=state.items.find(x=>x.id===draft.equipmentId);
- const gearOptions=usingDiscipline()?'<label class="fp-form-field full">Arma ou foco equipado (dado extra, exige Perícia)'+
+ const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
+ const gearOptions=spellSelection?magicComposerFields():
+  usingDiscipline()?'<label class="fp-form-field full">Arma ou foco (dado extra sujeito a Perícia)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
-   '</label>':'';
+   '</label>':"";
  const stepOptions=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])].filter(source=>
   source&&(state[SOURCE_PROPS[source.group]]?.[source.key]||0)<6).map(source=>{
   const grade=state[SOURCE_PROPS[source.group]][source.key]||0;
@@ -3361,7 +3469,8 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0);
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+
+  (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
  if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
@@ -3373,7 +3482,14 @@ function roll(){
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
-    shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas},
+    shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
+    magicElement:draft.mode==="conjuracao"?draft.magicElement:"",
+    magicGrade:draft.mode==="conjuracao"&&draft.magicElement?draft.magicGrade:0,
+    magicFocusId:draft.mode==="conjuracao"?draft.magicFocusId:"",
+    magicCharges:draft.mode==="conjuracao"?draft.magicCharges:0,
+    magicAmplify:draft.mode==="conjuracao"&&!!draft.magicAmplify,
+    magicGradeConfirmed:!!draft.magicGradeConfirmed,
+    magicTimeConfirmed:!!draft.magicTimeConfirmed},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
   fireMode:"",fireGradeConfirmed:false};
@@ -3415,7 +3531,7 @@ function score(){
  const elementSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
   veneno:"veneno",sagrado:"sagrado",trevas:"trevas",sangue:"sangue"}[el];
  // SRD v0.43: foco válido + Perícia do elemento + Criar Item de Foco e Magia.
- const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"&&item.equipped
+ const freeElementEffect=p.mode==="conjuracao"&&item?.type==="foco"
   &&ownsSkill("criar-item-foco-magia")&&!!elementSkill&&ownsSkill(elementSkill);
  // v0.69: Barulhenta sempre concede +1P passivo, inclusive no crítico.
  const pBonus=properties.includes("Barulhenta")?1:0;
@@ -3446,6 +3562,20 @@ function score(){
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem;
+ if(p.mode==="conjuracao"&&p.opts.magicElement){
+  const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
+  if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
+  if(grade>1&&!p.opts.magicGradeConfirmed)errs.push("Grau avançado não confirmado pelo Narrador.");
+  if(magicPreparationTurns(grade,p.opts.magicCharges||0)>1&&!p.opts.magicTimeConfirmed)
+   errs.push("Turnos de conjuração não confirmados.");
+  const focus=state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"&&
+   magicElementId(it.element||"psiquico")===element);
+  if(p.opts.magicFocusId&&!focus)errs.push("Foco não corresponde ao elemento da magia.");
+  if(p.opts.magicCharges&&(grade!==3||!focus||p.opts.magicCharges>2||
+    p.opts.magicCharges>(focus.focusCharges??focus.grade)))errs.push("Cargas insuficientes no foco antes de finalizar.");
+  if(p.opts.magicAmplify&&!focus)errs.push("Amplificação exige foco correspondente.");
+  courageCost+=(grade===3?1:0)+(p.opts.magicAmplify?1:0);
+ }
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -3490,16 +3620,19 @@ function score(){
  const isFireCast=ownsSkill("fogo")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
   p.base.key==="armas_conjuracao"&&
   // Foco explicitamente de outro elemento não pode ser usado como foco de Fogo.
-  !(item?.equipped&&item.type==="foco"&&elementSkill&&elementSkill!=="fogo");
+  !(item?.type==="foco"&&elementSkill&&elementSkill!=="fogo");
  if(p.fireMode&&!fireMode)errs.push("Manifestação de Fogo não reconhecida nesta rolagem.");
  if(fireMode&&!isFireCast)errs.push("Queimar/Derreter exigem conjuração de Fogo habilitada, não ataque de outra natureza.");
+ if(fireMode&&p.opts.magicElement&&p.opts.magicElement!=="fogo")errs.push("Efeito de Fogo exige elemento Fogo declarado.");
+ if(fireMode&&p.opts.magicGrade&&Number(p.opts.magicGrade)!==(fireMode==="derreter"?3:2))
+  errs.push("Grau da magia deve coincidir com Queimar G2 ou Derreter G3.");
  if(fireMode&&!p.fireGradeConfirmed)errs.push("Confirme com o Narrador o acesso a este Grau de Fogo antes de ativar.");
  if(fireMode&&p.hemomancyDirectLife)errs.push("A mesma magia não pode ser registrada simultaneamente como Fogo e como Hemomancia direta.");
  const fireValid=!!(fireMode&&isFireCast&&p.fireGradeConfirmed&&!p.hemomancyDirectLife);
  // A Perícia Fogo habilita G1/G2 sem cobrança. G3 Derreter consome
  // 1 Coragem ao ativar com sucesso, independentemente de foco.
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
- if(fireValid&&success&&fireMode==="derreter")courageCost+=1;
+ if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
@@ -3532,6 +3665,11 @@ function score(){
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
+ const magicSummary=p.opts.magicElement?
+  '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
+  '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0)+' turno(s) · '+(p.opts.magicCharges||0)+
+  ' carga(s) de foco reservadas; custos efetivos ao finalizar. Amplificação: '+(p.opts.magicAmplify?"declarada":"não")+" (sem bônus numérico automático).</div>":"";
+
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
  const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" title="Face '+d.face+' do d'+d.sides+'" aria-label="'+esc(label(d.group,d.key))+' · d'+d.sides+' · face '+d.face+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
@@ -3607,7 +3745,7 @@ function renderPending(){
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
- return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+
+ return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
   '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
@@ -3624,6 +3762,9 @@ function finalize(){
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
  const gainedCourage=state.courage-oldCourage;
+ // As cargas de foco são consumidas pela conjuração concluída, mesmo se a DE falhar.
+ const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
+ if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
  const name=(p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
@@ -3631,7 +3772,10 @@ function finalize(){
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
-  courageRecovered:gainedCourage,cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
+  courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
+  magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
+  magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
+  cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
@@ -3773,6 +3917,12 @@ function renderInventory(){
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
+  (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
+   [["psiquico","Psíquico"],["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]]
+   .map(([id,name])=>'<option value="'+id+'"'+(magicElementId(it.element||"psiquico")===id?" selected":"")+'>'+name+'</option>').join("")+
+   '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+it.grade+'" value="'+(it.focusCharges??it.grade)+'"></label>'+
+   ' / '+it.grade+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??it.grade)>=it.grade?" disabled":"")+'>Encerrar rodada: +1 carga</button>'+
+   '<small>Recarga gradual manual no fim de cada rodada; Pedra da Alma não recarrega naturalmente.</small></div>':"")+
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
@@ -4066,6 +4216,20 @@ function onClick(event){
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
+ case "magic-prepare":prepareMagic();break;
+ case "magic-element":prepareMagic(id);break;
+ case "focus-round":{
+  // Registro manual de encerramento de rodada: sem supor que "Novo turno" encerrou a rodada.
+  if(state.pending){toast("Finalize a ação antes de atualizar cargas do foco.");break;}
+  const item=state.items.find(it=>it.id===id&&it.type==="foco");if(!item)return;
+  if(magicElementId(item.element||"psiquico")==="sangue"&&item.name.toLowerCase().includes("alma")){
+   toast("Pedra da Alma não recarrega naturalmente: exige Perícia Fixar Alma.");break;
+  }
+  item.focusCharges=Math.min(item.grade,(item.focusCharges??item.grade)+1);
+  renderInventory();renderOwnedPanel();save();
+  toast(item.name+": "+item.focusCharges+"/"+item.grade+" cargas disponíveis.");
+  break;
+ }
  case "repertoire-roll":quickRollItem(id);break;
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
@@ -4252,6 +4416,21 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(el.dataset.magicField!==undefined){
+  if(state.pending){toast("Finalize a rolagem antes de alterar a magia.");renderOwnedPanel();return;}
+  const field=el.dataset.magicField;
+  if(field==="magicGrade"){draft.magicGrade=Number(el.value);draft.magicGradeConfirmed=false;draft.magicTimeConfirmed=false;draft.magicCharges=0;}
+  else if(field==="magicFocusId"){draft.magicFocusId=String(el.value);draft.magicCharges=0;draft.magicTimeConfirmed=false;}
+  else if(field==="magicCharges"){draft.magicCharges=Math.floor(Number(el.value));draft.magicTimeConfirmed=false;}
+  else if(field==="magicAmplify")draft.magicAmplify=!!el.checked;
+  else if(field==="magicGradeConfirmed")draft.magicGradeConfirmed=!!el.checked;
+  else if(field==="magicTimeConfirmed")draft.magicTimeConfirmed=!!el.checked;
+  else return;
+  alignMagicDraft();
+  if(draft.mode!=="conjuracao"||!draft.base)prepareMagic();
+  else{renderOwnedPanel();renderComposer();}
+  return;
+ }
  if(el.dataset.inventoryType!==undefined||el.dataset.inventoryWeight!==undefined){
   if(el.dataset.inventoryType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))inventoryType=el.value;
   if(el.dataset.inventoryWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))inventoryWeight=el.value;
@@ -4313,6 +4492,7 @@ function onChange(event){
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
+  if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
   renderSources();renderComposer();return;
  }
@@ -4346,7 +4526,12 @@ function onChange(event){
   }
   else if(k==="qty")it.qty=it.packSize>0?1:clamp(Math.floor(el.value),1,99);
   else if(k==="ammoRemaining"&&it.packSize>0){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
-  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);}
+  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??it.grade,0,it.grade);}
+  else if(k==="focusCharges"&&it.type==="foco")it.focusCharges=clamp(Math.floor(Number(el.value)),0,it.grade);
+  else if(k==="element"&&it.type==="foco"){
+   const n=magicElementId(el.value);
+   if(n)it.element=n;
+  }
   else if(k==="max"){it.max=clamp(Math.floor(el.value),0,999);it.hp=clamp(it.hp,0,it.max);}
   else if(k==="elementalResistance"){it.elementalResistance=String(el.value).slice(0,70);}
   else if(k==="secondResistance"){it.secondResistance=String(el.value).slice(0,70);}

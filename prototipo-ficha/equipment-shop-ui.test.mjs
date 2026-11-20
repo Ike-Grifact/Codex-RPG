@@ -96,7 +96,7 @@ test("Loja, VT e inventário possuem filtros sem esconder preços ou edição",(
  for(const txt of [
   'data-wizard-shop-','dataset.tradeShopType','data-inventory-type','data-inventory-weight',
   'EQUIPMENT_FAMILIES','EQUIPMENT_WEIGHT_OPTIONS','wizardShopWeight','tradeShopWeight','fp-shop-summary','fp-item-summary','fp-item-editor',
-  'fp-action-weapon','fp-action-skill','case "repertoire-roll":quickRollItem(id)'
+  'fp-action-weapon','fp-quick-skill','case "repertoire-roll":quickRollItem(id)'
  ])assert.ok(app.includes(txt),"Não encontrado: "+txt);
  for(const txt of ['id="trade-shop-type"','id="trade-shop-weight"','id="inventory-filterbar"'])
   assert.ok(html.includes(txt),"Faltando no HTML: "+txt);
@@ -123,4 +123,29 @@ test("Preparação exige decisão de gastar recursos no compositor e não confir
  assert.ok(app.includes('if(courageCost>5)errs.push('));
  assert.ok(app.includes('if(precoPrevisto>5)'));
  assert.ok(app.includes('toast("Ação preparada com "+item.name'));
+});
+
+test("Magia G1/G2/G3: custos, tempo, foco e normalização de elementos",()=>{
+ const id=app.slice(app.indexOf("function magicElementId("),app.indexOf("function magicKnownElements("));
+ const prep=app.slice(app.indexOf("function magicPreparationTurns("),app.indexOf("function alignMagicDraft("));
+ assert.ok(id.length>70&&prep.length>120,"Funções de magia ausentes");
+ const get=new Function("draft",id+"\n"+prep+"\nreturn {magicElementId,magicPreparationTurns,magicCourageCost};");
+ const helpers=get({});
+ assert.equal(helpers.magicElementId("Água"),"agua");
+ assert.equal(helpers.magicElementId("Psíquico"),"psiquico");
+ assert.equal(helpers.magicElementId("Ar"),"vento");
+ for(const [grade,charges,expected] of [[1,0,1],[2,0,2],[3,0,3],[3,1,2],[3,2,1]]){
+  assert.equal(helpers.magicPreparationTurns(grade,charges),expected);
+ }
+ for(const [grade,amplify,expected] of [[1,false,0],[2,false,0],[3,false,1],[3,true,2]]){
+  assert.equal(helpers.magicCourageCost({magicGrade:grade,magicAmplify:amplify}),expected);
+ }
+ assert.ok(app.includes('if(usedFocus&&p.opts.magicCharges)'),"Cargas gastas só ao finalizar");
+ assert.ok(app.includes('data-magic-field="magicTimeConfirmed"'),"G2 e G3 exigem registro dos turnos de preparação");
+ assert.ok(app.includes('case "magic-element":prepareMagic(id)'),"Botão de elemento prepara Disciplina");
+ assert.ok(app.includes('case "repertoire-roll":quickRollItem(id)'),"Atalhos de armas preservados");
+ assert.ok(html.includes('id="magic-actions"'),"Atalho de magia presente junto das Ações");
+ assert.ok(app.includes("function magicComposerFields()"),"Formulário deve existir somente no compositor");
+ assert.ok(!app.includes('data-magic-field="magicEnvironmentConfirmed"'),"Sem confirmação de ambiente no formulário");
+ assert.ok(css.includes(".fp-magic-config"),"Composição da magia estilizada");
 });

@@ -7,12 +7,13 @@ import {fileURLToPath} from "node:url";
 const root=dirname(fileURLToPath(import.meta.url));
 const icons=join(root,"../assets/icons/codex");
 const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+const app=readFileSync(join(root,"app.js"),"utf8");
 const html=readFileSync(join(root,"index.html"),"utf8");
 const css=readFileSync(join(root,"styles.css"),"utf8");
 const names=readdirSync(icons).filter(x=>x.endsWith(".svg")).sort();
 
 test("Atlas contém armas, armaduras, elementos, constelações e indicadores",()=>{
- assert.equal(names.length,49);
+ assert.equal(names.length,50);
  for(const status of ["coragem","movimento","peso","balanco","inventario"]){
   assert.ok(names.includes("status-"+status+".svg"),"Falta ícone de "+status);
  }
@@ -69,4 +70,27 @@ test("Vida, Integridade e DE estão integradas sem substituir IDs da ficha",()=>
   assert.ok(html.includes(cl),cl);
   assert.ok(css.includes(asset),asset);
  }
+});
+
+test("Cada elemento selecionável mostra seu SVG, inclusive Psíquico",()=>{
+ const start=app.indexOf("const CODEX_SKILL_ICONS=Object.freeze({");
+ const end=app.indexOf("function codexItemIconId(",start);
+ assert.ok(start>=0&&end>start,"Mapa de ícones não encontrado");
+ const mappings=app.slice(start,end);
+ for(const [id,icon] of [
+  ["psiquico","elemento-psiquico"],["fogo","elemento-fogo"],
+  ["agua","elemento-agua"],["vento","elemento-ar"],["terra","elemento-terra"],
+  ["sagrado","elemento-sagrado"],["veneno","elemento-veneno"],
+  ["sangue","elemento-sangue"],["trevas","elemento-trevas"]
+ ]){
+  assert.ok(mappings.includes('"'+id+'":"'+icon+'"'),"Ícone ausente no mapa: "+id);
+  assert.ok(existsSync(join(icons,icon+".svg")),"Arquivo SVG ausente: "+icon);
+ }
+ const psychic=readFileSync(join(icons,"elemento-psiquico.svg"),"utf8");
+ assert.match(psychic,/stroke="#C6AB77"/);
+ assert.match(psychic,/fill="none"/);
+ assert.doesNotMatch(psychic,/<text|font-family/);
+ assert.ok(app.includes("codexSkillIcon(id)+'</span><span class=\"fp-element-label\""),"Botão elemental precisa incluir o SVG");
+ assert.ok(app.includes("codexSkillIcon(chosen)+'</span><span>Conjurar"),"Título do compositor precisa incluir o SVG");
+ assert.ok(css.includes("#composer-content .fp-magic-heading"),"Ícone de magia precisa de estilo no rolador");
 });
