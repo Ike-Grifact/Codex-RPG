@@ -6,6 +6,10 @@
 .codex-dna-panel,.codex-dna-workspace{margin-top:12px}
 .codex-dna-panel{display:grid;gap:10px;max-width:600px}
 .codex-dna-panel p,.codex-dna-detail p{margin:5px 0}
+.codex-dna-origin fieldset{display:grid;gap:8px;min-inline-size:0;padding:12px;border:1px solid var(--cx-line);border-radius:8px}
+.codex-dna-origin fieldset button{justify-self:start}
+.codex-racial-discount{color:var(--cx-E)}
+.codex-racial-elevated{color:var(--cx-gold)}
 .codex-dna-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,250px);gap:12px;align-items:start}
 .codex-dna-map,.codex-dna-detail{border:1px solid var(--cx-line);border-radius:10px;background:var(--cx-panel)}
 .codex-dna-map{height:510px;position:relative;overflow:hidden;touch-action:none;user-select:none;cursor:grab}

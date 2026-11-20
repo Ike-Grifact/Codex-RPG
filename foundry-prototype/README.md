@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.16.** Consulte a [auditoria e matriz de conformidade](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/foundry-prototype/AUDITORIA-02116.md) e o [SRD ativo v1.0](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/srd-playtest-nivel-1-v1.0.md). Os pacotes nativos Codex RPG — Equipamentos e Codex RPG — Perícias ficam na aba Compendium Packs.
+> **Playtest 0.2.1.17.** Selecione duas fontes com o mouse para abrir a janela de rolagem. Em telas pequenas e com toque, a preparação permanece na ficha. Consulte a [auditoria da revisão anterior](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/foundry-prototype/AUDITORIA-02116.md) e o [SRD ativo v1.0](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/srd-playtest-nivel-1-v1.0.md).
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -66,7 +66,9 @@ Para animar as faces rúnicas em 3D, ative o módulo **Dice So Nice** no mundo. 
 
 O [relatório de feedback](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/criar-conflito-foundry-carga-20261113/docs/feedback-foundry-site-2026-11-14.md) compara a cobertura com o Criador, o Criar Conflito e o Roll & Keep do Assimilação.
 
-Além dos botões de aumento de grau e da compra de Perícias, a ficha de Personagem/Humanoide possui um painel **“Compras mínimas orientadas”**: escolhe-se um Atributo e um Conhecimento OU Prática, confirma-se a compra e apenas os graus ainda ausentes são debitados. Na ficha nova, o custo total é **3 XP** (1+2), deixando **12 XP livres** do total inicial de **15 XP**. O restante das escolhas permanece livre; não existe reserva por categoria. Monstros extraordinários têm orçamento próprio definido pelo Narrador.
+A ficha de Personagem/Humanoide oferece **Compras mínimas orientadas**. A compra usa os custos vigentes para a origem e cobra apenas os graus ainda ausentes. Para um Humano novo, Atributo G1 e Conhecimento ou Prática G1 custam 3 dos 15 XP.
+
+Em **Codex Genético → Identidade**, escolha Humano, Lucker de Sangue, Lucker Puro ou Runa Espinhos. As origens não humanas concedem os Graus e as Perícias indicados. O custo dos graus segue as faixas raciais do criador e os benefícios gratuitos ficam separados das aquisições pagas. O jogador escolhe durante a criação e o Narrador pode ajustar fichas já concluídas. Origens narrativas antigas e graus comprados são preservados. A Perseverança Humana tem uma marca de uso manual, restaurada no descanso longo.
 
 O comparador oferece botão **“Usar estes dados mantidos”** para aplicar uma seleção alternativa dentro da **mesma rolagem já realizada**. Isso não rerrola, não consome recursos e não publica mensagem: somente a finalização confirmada produz efeitos.
 
@@ -97,7 +99,7 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 - Itens Foundry `equipment`: arma, arma de fogo, armadura, escudo, foco e recursos genéricos. Campos de Grau, Carga, dado adicional, alcance, Integridade, Durabilidade, VT, características, elemento, munição, cartucho e recarga.
 - O Compendium **Codex RPG — Equipamentos** contém as 90 entradas do catálogo oficial, com IDs estáveis, dados estruturados e indicação de preços pendentes. A Loja usa os mesmos dados e debita VT. O Narrador pode conceder equipamento por arrasto nativo; o jogador deve comprar pela Loja.
-- O Compendium **Codex RPG — Perícias** contém 66 definições consultáveis, incluindo registros legados. O botão de consulta está no DNA e na ficha clássica. A aquisição continua em `Actor.system.skills`, com o mesmo validador e débito de XP. Arrastar uma definição não concede uma Perícia.
+- O Compendium **Codex RPG — Perícias** contém 66 definições consultáveis, incluindo registros legados. Consulta, aquisição e devolução ficam no Codex Genético. Aquisições pagas continuam em `Actor.system.skills` e as de origem são calculadas a partir da linhagem. Arrastar uma definição não concede uma Perícia.
 - O dado da arma ou foco é acrescentado à pilha quando o equipamento está equipado e a Perícia habilitadora é possuída. A Besta de uma mão com Manejo Duplo, múltiplos focos e efeitos simultâneos complexos ainda exigem código adicional.
 - A Perícia **Criar Item de Foco e Magia** custa 1 XP e exige **Disciplina 1 + Inteligência 1 + Artesão 1**. Seu Cristal Elemental inicial é uma regra definida, mas a escolha e entrega automática do item ainda não têm formulário próprio.
 

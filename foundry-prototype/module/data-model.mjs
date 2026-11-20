@@ -7,6 +7,8 @@ function grades(keys){return new F.SchemaField(Object.fromEntries(keys.map(k=>[k
 const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  level:new F.NumberField({required:true,integer:true,min:1,max:20,initial:1}),
  concept:t(),origin:new F.StringField({required:true,initial:monster||animal?"Criatura":"Humano"}),
+ race:t(),pureElement:t(),runeElements:new F.ArrayField(t(),{initial:[]}),
+ racialInitialAttributes:new F.ArrayField(t(),{initial:[]}),perseverancaUsed:new F.BooleanField({initial:false}),
  virtue:t(),personality:t(),notes:t(),abilities:t(),leader:new F.BooleanField({initial:false}),bodySize:new F.StringField({initial:'medio'}),
  attributes:grades(["forca","agilidade","destreza","inteligencia","influencia","vigor"]),
  knowledges:grades(["protecao","astronomia","medicina","alquimia","engenharia","erudicao"]),

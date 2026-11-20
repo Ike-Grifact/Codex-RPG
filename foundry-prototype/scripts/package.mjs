@@ -103,6 +103,7 @@ export function preparePackage(destination, tag) {
   mkdirSync(dirname(destination), { recursive: true });
   mkdirSync(destination);
   for (const name of content) copyDirectory(join(source, name), join(destination, name));
+  copyDirectory(join(source, "..", "assets", "icons", "codex"), join(destination, "assets", "icons", "codex"));
   cpSync(join(source, "..", "prototipo-ficha", "gene-graph.js"), join(destination, "module", "codex-gene-graph.js"));
   cpSync(join(source, "..", "prototipo-ficha", "elemental-summoning.mjs"), join(destination, "module", "elemental-summoning.mjs"));
   generateRuneFaces(join(destination, "assets", "dice", "runes"));

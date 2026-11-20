@@ -25,7 +25,7 @@ test('LevelDB distribuídos contêm exatamente as definições atuais, com IDs, 
    const expected=new Map(definitions.map(row=>[row._id,row]));
    for(const [id,row] of entries){
     const canonical=expected.get(id);assert(canonical,key+' '+id);
-    assert.equal(row.name,canonical.name,id);assert.equal(row.type,canonical.type,id);
+    assert.equal(row.name,canonical.name,id);assert.equal(row.type,canonical.type,id);assert.equal(row.img,canonical.img,id);
     assert.deepEqual(row.system,canonical.system,id);assert.deepEqual(row.flags,canonical.flags,id);
    }
   }finally{await database.close();}

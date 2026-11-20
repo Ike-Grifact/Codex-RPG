@@ -7,7 +7,8 @@ import {escapeHTML} from "./roll-engine.mjs";
 import {purchasePlan} from "./equipment-workflow.mjs";
 import {animalTransformationPlan} from './transformations.mjs';
 import {maxCourage,lifeMax} from './rules.mjs';
-import {advancementPlan, creationMissing, gradeDetails, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
+import {advancementPlan, creationMissing, gradeDetails, originChangePlan, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
+import {racialChoicesComplete,usesRacialRules,hasSkill} from "./races.mjs";
 
 const query = `${NS}.roll`;
 const xpHistory = "xpHistory";
@@ -43,6 +44,21 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if(request.action==="origin"){
+    if(pending)throw Error("Finalize a rolagem antes de mudar a origem.");
+    const creating=Boolean(actor.getFlag(NS,"creationPending"));
+    if(!creating&&!user.isGM)throw Error("O Narrador ajusta a origem de fichas concluídas.");
+    await actor.update(originChangePlan(buildOf(actor),request,creating));
+    return;
+  }
+  if(request.action==="perseverance"){
+    if(pending)throw Error("Finalize a rolagem antes de marcar Perseverança.");
+    if(!usesRacialRules(actor.system)||actor.system.race!=="humano"||actor.system.perseverancaUsed){
+      throw Error("Perseverança Humana indisponível.");
+    }
+    await actor.update({"system.perseverancaUsed":true});
+    return;
+  }
   if(request.action==='resource'){
     if(!['system.life.value','system.courage'].includes(request.field)||![-1,1].includes(request.delta))throw Error('Recurso inválido.');
     const current=request.field==='system.courage'?actor.system.courage:actor.system.life.value;
@@ -59,13 +75,15 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   if(request.action==='rest'){
     if(pending)throw Error('Finalize a rolagem antes de descansar.');
     if(!['short','long'].includes(request.kind))throw Error('Descanso inválido.');
-    if(request.kind==='short'&&!actor.system.skills.includes('recobrar-coragem'))throw Error('Descanso curto exige Recobrar Coragem.');
+    if(request.kind==='short'&&!hasSkill(actor.system,'recobrar-coragem'))throw Error('Descanso curto exige Recobrar Coragem.');
     const approved=await confirm({title:'Confirmar descanso',content:'<p>Confirmar descanso '+(request.kind==='short'?'curto e cena narrativa':'longo')+' de '+escapeHTML(actor.name)+'?</p>'});
     if(!approved)throw Error('Descanso cancelado.');
     verifyAuthority(game);
     if(actor.getFlag(NS,'pendingRoll'))throw Error('A ficha tem uma rolagem pendente.');
     const amount=request.kind==='short'?2:Number(actor.system.attributes.vigor)+1;
-    await actor.update({'system.courage':Math.min(Math.max(actor.system.courage,maxCourage(actor.system.level)),actor.system.courage+amount)});return;
+    const changes={'system.courage':Math.min(Math.max(actor.system.courage,maxCourage(actor.system.level)),actor.system.courage+amount)};
+    if(request.kind==='long'&&actor.system.race==='humano')changes['system.perseverancaUsed']=false;
+    await actor.update(changes);return;
   }
   if(request.action==='purchase'){
     const history=actor.getFlag(NS,'purchases')??[];
@@ -120,6 +138,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const creationPending = Boolean(actor.getFlag(NS, "creationPending"));
     if (request.action === "completeCreation") {
       if (!creationPending) return;
+      if (!racialChoicesComplete(actor.system)) throw Error("Complete as escolhas de elementos da origem.");
       const missing = creationMissing(actor.system);
       if (missing.attr || missing.training) throw Error("Adquira um Atributo G1 e um Conhecimento ou uma Prática G1.");
       if(xpLedger(actor.system).left<0)throw Error("O XP investido excede o total da ficha.");

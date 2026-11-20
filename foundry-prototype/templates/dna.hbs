@@ -34,7 +34,8 @@
   <section data-dna-panel="identity" class="codex-dna-panel">
     <label>Nome<input data-identity="name" value="{{actorName}}"></label>
     <label>Conceito<input data-identity="system.concept" value="{{concept}}"></label>
-    <label>Origem<input data-identity="system.origin" value="{{origin}}"></label>
+    <label>Origem narrativa<input data-identity="system.origin" value="{{origin}}"></label>
+    {{#if hasOrigin}}<div class="codex-dna-origin" data-dna-origin></div>{{/if}}
     <button type="button" data-action="stage" data-stage="development">Continuar</button>
   </section>
   <section data-dna-panel="development" class="codex-dna-panel">

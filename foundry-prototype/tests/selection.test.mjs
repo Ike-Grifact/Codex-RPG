@@ -14,12 +14,15 @@ function sheet(system){
   actor:{system},_busy:false,_pending:null,
   _draft:{base:null,second:null,complement:null},
   _opts:{mode:"normal"},
+  _openRollNear:CodexCharacterSheet.prototype._openRollNear,
   element:{querySelector:()=>({scrollIntoView:()=>{scrolls++;}})},
   async render(){renders++;return this;},
  };
  return {s,rendered:()=>renders,scrolled:()=>scrolls};
 }
-const pick=(sheet,group,key)=>CodexCharacterSheet.chooseSource.call(sheet,null,{dataset:{group,key}});
+const pick=(sheet,group,key)=>CodexCharacterSheet.chooseSource.call(sheet,null,{
+ dataset:{group,key},getBoundingClientRect:()=>({left:20,top:100,bottom:150}),
+});
 
 test("Criatura usa dois Atributos distintos e mantém a seleção ao clicar em um terceiro",async()=>{
  const ctx=sheet({monsterRules:true,threatGrade:6,attributes:{forca:0,vigor:0,agilidade:0},skills:[]});
@@ -28,11 +31,13 @@ test("Criatura usa dois Atributos distintos e mantém a seleção ao clicar em u
  await pick(ctx.s,"attribute","agilidade");
  assert.equal(ctx.s._draft.base.key,"forca");
  assert.equal(ctx.s._draft.second.key,"vigor");
+ assert.equal(ctx.s._rollOpen,true);
  assert.equal(ctx.s._draft.complement,null);
  assert.equal(ctx.scrolled(),0,"Selecionar não desloca a ficha");
  assert.equal(ctx.s.actor.system.attributes.forca,0);
  await pick(ctx.s,"attribute","vigor");
  assert.equal(ctx.s._draft.second,null);
+ assert.equal(ctx.s._rollOpen,false);
 });
 
 test("As duas primeiras fontes usam categorias diferentes em qualquer ordem",async()=>{

@@ -1,0 +1,2 @@
+# O LevelDB lê o manifesto e os logs como arquivos binários. CURRENT exige LF literal.
+/packs/** binary

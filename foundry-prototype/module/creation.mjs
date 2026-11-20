@@ -1,5 +1,6 @@
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP,maxCourage, monsterCap} from "./rules.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
+import {RACES, withRacialOrigin, usesRacialRules} from "./races.mjs";
 
 export const actorKinds = {
   character: "Aprendiz / personagem",
@@ -33,13 +34,15 @@ export function actorData(type, raw = {}, quick = false) {
   if (!Object.hasOwn(actorKinds, type)) throw new Error("Escolha um tipo de ficha válido.");
   const animal = type === "animal";
   const monster = type === "creature";
-  const system = {
+  let system = {
     creationBudget:15,
     level: integer(raw.level, 1, 20),
     threatGrade: integer(raw.threatGrade, 1, 6),
     xp: integer(raw.xp, 0, 10000000),
     concept: text(raw.concept),
-    origin: text(raw.origin) || (animal || monster ? "Criatura" : "Humano"),
+    origin: text(raw.origin) || (animal || monster ? "Criatura" : ""),
+    race:"",
+    perseverancaUsed:raw.perseverancaUsed===true,
     virtue: text(raw.virtue),
     personality: text(raw.personality),
     notes: text(raw.notes, 5000),
@@ -59,6 +62,11 @@ export function actorData(type, raw = {}, quick = false) {
   if (quick && type === "humanoid") {
     system.attributes.forca = 1;
     system.practices.armas_conjuracao = 1;
+  }
+  if(usesRacialRules(system)&&raw.race!==""){
+    const race=Object.hasOwn(RACES,raw.race)?raw.race:"humano";
+    const recorded=Array.isArray(raw.racialInitialAttributes)?raw.racialInitialAttributes.filter(key=>RACES[race].favored.includes(key)):[];
+    system=withRacialOrigin({...system,race,racialInitialAttributes:recorded},{...raw,race});
   }
   system.pp = integer(raw.pp, 0, maxPP(system.level));
   system.life = {value: integer(raw.life ?? lifeMax(system), 0, lifeMax(system))};
@@ -145,7 +153,7 @@ export function importSiteData(payload, characterType = "character") {
     throw new Error("Escolha Personagem ou Humanoide para importar a ficha do Criador.");
   }
   const xp = integer(raw.xpEarned ?? raw.xp, 0, 1000000) + integer(raw.legacyXPRefund, 0, 1000000);
-  const actor = actorData(characterType, {...raw, xp});
+  const actor = actorData(characterType, {...raw,race:Object.hasOwn(RACES,raw.race)?raw.race:"",xp});
   const unknown = Array.isArray(raw.skills)
     ? raw.skills.filter(id => typeof id === "string" && !supportedSkills.has(id)) : [];
   if (unknown.length) {

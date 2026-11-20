@@ -4,6 +4,8 @@ import {requestRoll} from "./roll-workflow.mjs";
 import {openSkillDefinition} from './compendium-data.mjs';
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
+import {iconBase,iconMarkup,skillIconId} from "./iconography.mjs";
+import {RACES,PURE_ELEMENTS,RUNE_ELEMENTS,usesRacialRules,racialChoicesComplete,racialGrants,allOwnedSkills} from "./races.mjs";
 
 import {summonPlan} from "./summon-planning.mjs";
 import {searchSkills, showSkill} from "./skill-catalog.mjs";
@@ -20,12 +22,13 @@ function graphicalNodes(system,creationPending,locked,plans){
   return {
    type:group.graph,id:group.graph+":"+key,key,name:row.name,
    grade:row.grade,previewGrade:row.grade,canRaise:!locked&&row.canBuy,canLower:!locked&&row.canLower,
+   xpBand:row.band,
    dice:sourceDice(kind,key,system).map(n=>"d"+n)
   };
  }));
  const skills=SKILLS.filter(row=>showSkill(row,system)).map(skill=>{
   const plan=plans.get(skill.id);
-  return {type:"skill",id:skill.id,name:skill.name,label:plan.blocker||(plan.cost!=null?plan.cost+" XP":"Adquirida"),
+  return {type:"skill",id:skill.id,name:skill.name,icon:skillIconId(skill.id,skill.family),label:plan.blocker||(plan.cost!=null?plan.cost+" XP":"Adquirida"),
    state:locked&&plan.status!=="owned"?"locked":plan.status};
  });
  return [...sources,...skills];
@@ -37,7 +40,9 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
  if(graphGroups[type]){
   const group=graphGroups[type],row=gradeDetails(system,group,key,creationPending);
   const dice=sourceDice(group,key,system).map(sides=>'<span class="codex-small-die">'+dieSvg(sides)+'<b>d'+sides+'</b></span>').join("");
-  const tier=row.cost!==null?"<p>Próximo Grau: "+row.cost+" XP.</p>":"<p>Grau máximo.</p>";
+  const band={discount:"XP reduzido",elevated:"XP aumentado"}[row.band];
+  const tier=(row.cost!==null?"<p>Próximo Grau · "+row.cost+" XP.</p>":"<p>Grau máximo.</p>")+
+   (band?'<p class="codex-racial-'+row.band+'">'+band+' pela origem</p>':'');
   const button=(delta,label,enabled)=>
    '<button type="button" data-action="adjustGrade" data-delta="'+delta+'" data-grade="'+row.grade+
    '" aria-label="'+label+'"'+(!enabled?" disabled":disabled)+'>'+(delta>0?"+":"−")+'</button>';
@@ -52,18 +57,19 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
  }
  if(!plan)return "<p>Selecione uma capacidade do mapa.</p>";
  const row=skillDetails(system,id);
+ const granted=racialGrants(system).includes(id)&&!system.skills.includes(id);
  const alternativeMarkup=row.alternatives.map(branch=>"<ul>"+branch.map(item=>
   '<li class="'+(item.met?"met":"unmet")+'">'+(item.met?"✓ ":"○ ")+esc(item.name)+'</li>').join("")+"</ul>").join("<p>ou</p>");
  const packageButton=plan.status==="potential"
   ?'<button type="button" data-action="buyPackage"'+disabled+'>Comprar Perícia + requisitos — '+plan.cost+' XP</button>'
   :'<button type="button" data-action="buy"'+(plan.status!=="available"?" disabled":disabled)+'>Comprar Perícia</button>';
  const refund=plan.status==="owned"?skillRefundPlan(system,id):null;
- const ownedMarkup=refund?'<p>Adquirida</p><button type="button" data-action="refundSkill"'+
+ const ownedMarkup=granted?'<p>Concedida pela origem · 0 XP</p>':refund?'<p>Adquirida</p><button type="button" data-action="refundSkill"'+
   (refund.blocker?" disabled":disabled)+'>Devolver Perícia — recuperar '+refund.refund+' XP</button>'+
   (refund.blocker?'<p class="codex-dna-note">'+esc(refund.blocker)+'</p>':
    !creationPending?'<p class="codex-dna-note">A devolução exige autorização do Narrador.</p>':""):"";
  const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
- return '<h3>'+esc(row.name)+'</h3><p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p><p>'+esc(row.detail)+'</p>'+
+ return '<h3>'+iconMarkup(skillIconId(row.id,row.family))+' '+esc(row.name)+'</h3>'+(granted?'':'<p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p>')+'<p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
   '<button type="button" data-action="consultSkill">Consultar no Compendium</button>'+(refund?ownedMarkup:packageButton)+
   (plan.blocker?'<p class="codex-dna-note">'+esc(plan.blocker+requiredXP)+'</p>':'')+
@@ -121,15 +127,16 @@ function optionList(keys, labels){
  return keys.map(id=>'<option value="'+esc(id)+'">'+esc(labels[id])+'</option>').join("");
 }
 function summoningMarkup(rules,system){
- const sizes=optionList(rules.summonableElementalSizes(system.skills),sizeLabels);
- const elements=optionList(rules.eligibleElementalSkills(system.skills),elementLabels);
+ const skills=allOwnedSkills(system);
+ const sizes=optionList(rules.summonableElementalSizes(skills),sizeLabels);
+ const elements=optionList(rules.eligibleElementalSkills(skills),elementLabels);
  if(!sizes||!elements)return "";
  const payment='<option value="courage">Coragem</option>';
- const mastery=system.skills.includes("mestre");
+ const mastery=skills.includes("mestre");
  return '<section class="codex-summon-plan" data-summon-plan><h4>Planejar invocação</h4>'+
   '<label>Porte <select name="size">'+sizes+'</select></label>'+
   '<label>Elemento <select name="first">'+elements+'</select></label>'+
-  (mastery&&system.skills.includes("improviso")?'<label>Segundo elemento <select name="second"><option value="">Nenhum</option>'+elements+'</select></label>':'')+
+  (mastery&&skills.includes("improviso")?'<label>Segundo elemento <select name="second"><option value="">Nenhum</option>'+elements+'</select></label>':'')+
   '<label>Custo-base <select name="base">'+payment+'</select></label>'+
   (mastery?'<label>Ativar Maestria <select name="mastery"><option value="">Sem Maestria</option>'+payment+'</select></label>':'')+
   '<label>Tokens <input name="count" type="number" min="1" step="1" value="1"></label>'+
@@ -141,7 +148,8 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{consultSkill(){return openSkillDefinition(this.selected);},stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
+  actions:{consultSkill(){return openSkillDefinition(this.selected);},stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic,
+   saveOrigin:CodexDNA.saveOrigin,perseverance(){return this.submit({action:"perseverance"});}}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
@@ -153,7 +161,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  }
  async _prepareContext(){
   return {canManageXP:game.user.isGM,actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
-   categories:groups.map(([key,group])=>({label:group.label,description:group.description})),
+   hasOrigin:usesRacialRules(this.actor.system),categories:groups.map(([key,group])=>({label:group.label,description:group.description})),
   };
  }
  async _onRender(context,options){
@@ -161,6 +169,18 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const root=this.element.querySelector(".codex-dna-root");
   root.querySelector("[data-dna-skill-query]").addEventListener("input",()=>this.renderSkillResults(root));
   root.addEventListener("change",async event=>{
+   if(event.target.dataset.originRace!==undefined){
+    this.originDraft={race:event.target.value,pureElement:"",runeElements:[]};
+    this.renderOrigin(root);
+    return;
+   }
+   if(event.target.dataset.originElement!==undefined){
+    const system=this.actor.system;
+    this.originDraft??={race:system.race,pureElement:system.pureElement,runeElements:[...system.runeElements]};
+    if(event.target.dataset.originElement==="pure")this.originDraft.pureElement=event.target.value;
+    else this.originDraft.runeElements[Number(event.target.dataset.originElement)]=event.target.value;
+    return;
+   }
    const planner=event.target.closest("[data-summon-plan]");
    if(planner){this.updateSummonPlan(planner);return;}
    const field=event.target.dataset.identity;
@@ -181,6 +201,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const locked=pendingRoll||Boolean(this.busy);
   const creationPending=Boolean(this.actor.getFlag(ns,"creationPending"));
   const missing=creationMissing(system);
+  this.renderOrigin(root);
   root.querySelector("[data-dna-name]").textContent=this.actor.name;
   for(const field of ["formation","additional","grant","spent","left"]){
    root.querySelector('[data-dna-xp="'+field+'"]').textContent=ledger[field]+" XP";
@@ -202,9 +223,10 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   for(const stage of root.querySelectorAll("[data-dna-panel]"))stage.hidden=stage.dataset.dnaPanel!==this.stageName;
   for(const element of root.querySelectorAll('[data-action="stage"]'))element.setAttribute("aria-pressed",String(element.dataset.stage===this.stageName));
   root.querySelector('[data-action="complete"]').hidden=!creationPending;
-  root.querySelector('[data-action="complete"]').disabled=locked||missing.attr||missing.training||ledger.left<0;
+  root.querySelector('[data-action="complete"]').disabled=locked||missing.attr||missing.training||ledger.left<0||!racialChoicesComplete(system);
   root.querySelector("[data-dna-creation]").textContent=creationPending
-   ? [missing.attr?"Falta um Atributo G1.":"",missing.training?"Falta um Conhecimento ou uma Prática G1.":""].filter(Boolean).join(" ")
+   ? [missing.attr?"Falta um Atributo G1.":"",missing.training?"Falta um Conhecimento ou uma Prática G1.":"",
+      !racialChoicesComplete(system)?"Complete os elementos da origem.":""].filter(Boolean).join(" ")
    : "";
   if(this.stageName!=="map")return;
   const map=root.querySelector("[data-dna-map]");
@@ -214,7 +236,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    .map(row=>[row.id,planSkillPackage(system,row.id,{creationPending})]));
   const nodes=graphicalNodes(system,creationPending,locked,this.skillPlans);
   window.CodexGeneGraph.render(map,{
-   skills:nodes,selected:this.selected,showFuture:true,edit:true,
+   skills:nodes,selected:this.selected,showFuture:true,edit:true,iconBase,
    onAdjust:(id,delta)=>{
     const row=nodes.find(node=>node.id===id);
     if(!row||(delta>0?!row.canRaise:!row.canLower))return;
@@ -256,11 +278,12 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    const node=map.querySelector('.fp-gene-skill[data-gene-id="'+CSS.escape(row.id)+'"]');
    const state=Object.keys(labels).find(key=>node?.classList.contains("is-"+key))??"locked";
    const plan=this.skillPlans?.get(row.id);
-   const cost=plan?.cost??row.legacyCost??row.cost;
+   const granted=racialGrants(system).includes(row.id)&&!system.skills.includes(row.id);
+   const cost=granted?0:plan?.cost??row.legacyCost??row.cost;
    const family=families.get(node?.dataset.geneFamily)??"Outras Perícias";
    return '<button type="button" data-action="chooseSkill" data-key="'+esc(row.id)+'" class="is-'+state+'"'+
     (this.selected===row.id?' aria-current="true"':"")+'><strong>'+esc(row.name)+'</strong><small>'+
-    esc(family)+' · '+labels[state]+' · '+(cost==null?"XP pendente":cost+" XP")+'</small></button>';
+    esc(family)+' · '+(granted?"Origem":labels[state])+' · '+(cost==null?"XP pendente":cost+" XP")+'</small></button>';
   });
   results.innerHTML=items.length?items.join(""):'<p role="status">Nenhuma Perícia corresponde à busca.</p>';
  }
@@ -304,6 +327,41 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  static stage(_event,target){
   this.stageName=target.dataset.stage;
   this.refresh();
+ }
+ renderOrigin(root){
+  const panel=root.querySelector("[data-dna-origin]");
+  if(!panel)return;
+  const system=this.actor.system;
+  const stored={race:system.race,pureElement:system.pureElement,runeElements:[...system.runeElements]};
+  const draft=this.originDraft??stored;
+  const locked=Boolean(this.busy||this.actor.getFlag(ns,"pendingRoll"));
+  const canEdit=game.user.isGM||Boolean(this.actor.getFlag(ns,"creationPending"));
+  const choices=(list,current)=>'<option value="">Escolha</option>'+list.map(([id,name])=>
+   '<option value="'+esc(id)+'"'+(current===id?" selected":"")+'>'+esc(name)+'</option>').join("");
+  const meta=Object.hasOwn(RACES,draft.race)?RACES[draft.race]:null;
+  const field=(id,label,list,value)=>'<label>'+label+'<select data-origin-element="'+id+'">'+choices(list,value)+'</select></label>';
+  const elements=draft.race==="lucker_puro"?field("pure","Elemento inicial",PURE_ELEMENTS,draft.pureElement):
+   draft.race==="runa_espinhos"?[0,1].map(i=>field(i,"Elemento "+(i+1),RUNE_ELEMENTS,draft.runeElements[i])).join(""):"";
+  const favors=meta?.favored.map(key=>gradeDetails(system,"attribute",key).name)??[];
+  const notice=favors.length?'<p>G1 gratuito · '+esc(favors.join(" e "))+'</p>':"";
+  panel.innerHTML=(canEdit?'<fieldset'+(locked?" disabled":"")+'><legend>Origem / Raça</legend>'+
+   '<label>Linhagem<select data-origin-race>'+choices(Object.entries(RACES).map(([id,row])=>[id,row.name]),draft.race)+'</select></label>'+
+   elements+'<button type="button" data-action="saveOrigin">Salvar origem</button></fieldset>':
+   '<p><strong>Origem / Raça · '+esc(meta?.name??"A definir com o Narrador")+'</strong></p>')+
+   (meta?'<p>'+esc(meta.description)+'</p>'+notice:"")+
+   (stored.race==="humano"?'<button type="button" data-action="perseverance"'+(locked||system.perseverancaUsed?" disabled":"")+
+    '>'+ (system.perseverancaUsed?"Perseverança usada":"Marcar uso da Perseverança")+'</button>':"");
+ }
+ static async saveOrigin(){
+  const root=this.element.querySelector(".codex-dna-root");
+  const race=root.querySelector("[data-origin-race]")?.value;
+  if(!Object.hasOwn(RACES,race))return ui.notifications.warn("Escolha uma origem.");
+  const pureElement=root.querySelector('[data-origin-element="pure"]')?.value;
+  const runeElements=[...root.querySelectorAll('[data-origin-element="0"],[data-origin-element="1"]')].map(el=>el.value);
+  if(await this.submit({action:"origin",race,pureElement,runeElements})){
+   this.originDraft=null;
+   this.refresh();
+  }
  }
  static buy(){
   return this.submit({action:"advance",advance:{kind:"skill",key:this.selected}});
@@ -371,6 +429,7 @@ export async function openCodexDNA(actor,stage="map"){
  try{
   if(!window.CodexGeneGraph)await import("./codex-gene-graph.js");
   const app=applications.get(actor.uuid)??new CodexDNA(actor,stage);
+  app.stageName=stage;
   app.summonRules??=await import("./elemental-summoning.mjs");
   applications.set(actor.uuid,app);
   return await app.render({force:true});

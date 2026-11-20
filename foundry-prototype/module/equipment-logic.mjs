@@ -1,6 +1,7 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
 import {xpLedger} from "./rules.mjs";
 import {skillDetails} from './advancement.mjs';
+import {allOwnedSkills} from './races.mjs';
 
 const isRangedWeapon = item => item?.properties?.some(property=>property.toLowerCase()==="à distância");
 const elementalSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
@@ -8,7 +9,7 @@ const elementalSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"te
 export function effectiveWeaponRange(system,item){
  if(!["weapon","firearm"].includes(item?.kind))return 0;
  const base=Math.max(0,Number(item.range)||0);
- const skills=system.skills??[];
+ const skills=allOwnedSkills(system);
  if(!base||!skills.includes("olhos-de-aguia"))return base;
  const eligible=item.kind==="firearm"?skills.includes("armas-fogo"):
   isRangedWeapon(item)&&skills.includes("armas-longo-alcance");
@@ -20,7 +21,7 @@ export function equippedDie(actor,item,mode){
  const s=actor.system,k=item.system.kind,cat=item.system.category;
  const maxGrade=s.level>=20?4:s.level>=10?3:s.level>=5?2:1;
  if(item.system.grade>maxGrade||cat==='pendente')return 0;
- const keys=s.skills||[];
+ const keys=allOwnedSkills(s);
  if(mode==="conjuracao"){
   if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
   if(!keys.includes("criar-item-foco-magia"))return 0;

@@ -3,6 +3,7 @@ import {equipmentFamily,equipmentWeight,equipmentGroupName,equipmentWeightName,e
 import {equippedDie,effectiveWeaponRange} from './equipment-logic.mjs';
 import {walletValue} from './equipment-workflow.mjs';
 import {dieSvg} from './dice-icons.mjs';
+import {equipmentIconId,iconMarkup} from './iconography.mjs';
 
 function rowView(name,s,id){
  const family=equipmentFamily({name,...s}),weight=equipmentWeight(s);
@@ -11,7 +12,8 @@ function rowView(name,s,id){
   s.kind==='firearm'?'Armas de Fogo':s.properties?.includes('À Distância')?'Armas de Longo Alcance':
   ({leve:'Armas Leves',medio:'Armas Médias',pesado:'Armas Pesadas'})[s.category];
  return {id,name,...s,family:equipmentGroupName(family),weightName:equipmentWeightName(weight),
-  icon:attack&&s.die?dieSvg(s.die):'<i class="fa-solid '+({armor:'fa-shirt',shield:'fa-shield-halved',ammunition:'fa-bullseye',instrument:'fa-music',container:'fa-box',kit:'fa-toolbox'}[s.kind]??'fa-suitcase')+'" aria-hidden="true"></i>',propertiesText:(s.properties??[]).join(', '),
+  icon:iconMarkup(equipmentIconId({name,...s}))||'<i class="fa-solid '+({ammunition:'fa-bullseye',instrument:'fa-music',container:'fa-box',kit:'fa-toolbox'}[s.kind]??'fa-suitcase')+'" aria-hidden="true"></i>',
+  dieIcon:dieSvg(s.die),propertiesText:(s.properties??[]).join(', '),
   armor:s.kind==='armor',shield:s.kind==='shield',
   defense:({'muito-leve':'+2',leve:'+1',medio:'0',pesado:'−1','muito-pesado':'−2'})[s.category],
   attack,requiredSkill,hasDie:attack&&s.die>0};

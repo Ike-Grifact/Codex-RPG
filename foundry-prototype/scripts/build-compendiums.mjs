@@ -4,6 +4,9 @@ import {resolve,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parseArgs} from 'node:util';
 import {equipmentDefinitions,skillDefinitions} from '../module/compendium-data.mjs';
+import {readJson} from './package.mjs';
+
+const {version}=readJson(fileURLToPath(new URL('../system.json',import.meta.url)));
 
 const {values}=parseArgs({options:{foundry:{type:'string'},out:{type:'string'}}});
 const app=values.foundry??process.env.FOUNDRY_APP_PATH;
@@ -18,7 +21,7 @@ for(const [name,definitions] of [['equipamentos',equipmentDefinitions()],['peric
  try{
   await database.open();
   const items=database.sublevel('items',{valueEncoding:'json'});
-  await items.batch(definitions.map(row=>({type:'put',key:row._id,value:{...row,effects:[],folder:null,sort:0,ownership:{default:2},_stats:{coreVersion:'14.367',systemId:'codex-rpg-foundry',systemVersion:'0.2.1.16'}}})));
+  await items.batch(definitions.map(row=>({type:'put',key:row._id,value:{...row,effects:[],folder:null,sort:0,ownership:{default:2},_stats:{coreVersion:'14.367',systemId:'codex-rpg-foundry',systemVersion:version}}})));
   console.log(name+': '+(await items.keys().all()).length+' Items');
  }finally{await database.close();}
 }

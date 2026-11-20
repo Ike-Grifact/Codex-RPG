@@ -1,4 +1,5 @@
-import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, XP_ATTRIBUTE, XP_TRAINING, xpLedger, starterPurchasePlan} from "./rules.mjs";
+import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, xpLedger, starterPurchasePlan, lifeMax} from "./rules.mjs";
+import {hasSkill, racialGrants, racialChoicesComplete, racialGradeFloor, gradeXPTable, racialBand, withRacialOrigin} from "./races.mjs";
 
 import {requirements} from "./skill-catalog.mjs";
 
@@ -10,8 +11,7 @@ export const developmentGroups = {
 const groupsByPrefix = {a:"attribute", k:"knowledge", p:"practice"};
 const entries = new Map(SKILLS.map(skill=>[skill.id,skill]));
 
-const ownsSkill=(system,id)=>system.skills?.includes(id)||
-  (id==="maestria-manejo-duplo"&&system.skills?.includes("manejo-duplo"));
+const ownsSkill=hasSkill;
 const purchasable=skill=>skill&&!skill.legacy&&Number.isSafeInteger(skill.cost)&&skill.cost>=0;
 const branchesFor=(id,rules)=>Object.hasOwn(rules,id)?rules[id]:[[]];
 
@@ -63,14 +63,14 @@ export function gradeDetails(system,group,key,creationPending=false){
   const name=meta?.list.find(([id])=>id===key)?.[1];
   if(!name)throw Error("Fonte indisponível.");
   const grade=Number(system[meta.field]?.[key]??0);
-  const scale=group==="attribute"&&!system.monsterRules&&!system.monsterHumanoidRules?XP_ATTRIBUTE:XP_TRAINING;
+  const scale=gradeXPTable(system,group,key),floor=racialGradeFloor(system,group,key);
   const cost=grade<6?scale[grade+1]-scale[grade]:null;
-  const refund=grade>0?scale[grade]-scale[grade-1]:null;
+  const refund=grade>floor?scale[grade]-scale[grade-1]:null;
   const withGrade=value=>({...system,[meta.field]:{...system[meta.field],[key]:value}});
   const raiseBlocker=cost===null?"Grau máximo (G6).":xpLedger(system).left<cost?"XP insuficiente.":
     creationPending?starterReserveBlocker(withGrade(grade+1)):"";
-  const lowerBlocker=refund===null?"Grau mínimo (G0).":gradeRemovalBlocker(system,withGrade(grade-1));
-  return {name,grade,cost,refund,field:meta.field,canBuy:!raiseBlocker,canLower:!lowerBlocker,raiseBlocker,lowerBlocker};
+  const lowerBlocker=refund===null?(floor?"O Grau 1 de origem é gratuito.":"Grau mínimo (G0)."):gradeRemovalBlocker(system,withGrade(grade-1));
+  return {name,grade,cost,refund,band:racialBand(system,group,key),field:meta.field,canBuy:!raiseBlocker,canLower:!lowerBlocker,raiseBlocker,lowerBlocker};
 }
 
 export function creationMissing(system){
@@ -82,7 +82,8 @@ export function creationMissing(system){
 
 function starterReserveBlocker(system){
   const missing=creationMissing(system);
-  const reserve=(missing.attr?XP_ATTRIBUTE[1]:0)+(missing.training?XP_TRAINING[1]:0);
+  const min=groups=>Math.min(...groups.flatMap(group=>developmentGroups[group].list.map(([key])=>gradeXPTable(system,group,key)[1])));
+  const reserve=(missing.attr?min(["attribute"]):0)+(missing.training?min(["knowledge","practice"]):0);
   return reserve>xpLedger(system).left?"Reserve "+reserve+" XP para a formação mínima do Aprendiz.":"";
 }
 
@@ -106,6 +107,24 @@ function gradeRemovalBlocker(previous,next){
   if(!before.attr&&after.attr)return "Adquira outro Atributo G1 antes de remover o último.";
   if(!before.training&&after.training)return "Adquira outro Conhecimento ou Prática G1 antes de remover o último.";
   return "";
+}
+
+export function originChangePlan(system, request, creationPending=false) {
+  const next=withRacialOrigin(system,request);
+  if(!racialChoicesComplete(next))throw Error("Escolha os elementos iniciais exigidos pela origem, sem repetir.");
+  if(racialGrants(next).some(id=>system.skills?.includes(id)&&!racialGrants(system).includes(id))){
+    throw Error("Devolva primeiro a Perícia comprada que será concedida pela nova origem.");
+  }
+  const blocker=creationPending?lostRequirement(system,next):gradeRemovalBlocker(system,next);
+  if(blocker)throw Error(blocker);
+  if(xpLedger(next).left<0)throw Error("O saldo de XP é insuficiente para essa origem.");
+  if(creationPending){
+    const reserve=starterReserveBlocker(next);
+    if(reserve)throw Error(reserve);
+  }
+  const life=system.life.value===0?0:Math.min(lifeMax(next),Math.max(0,system.life.value+lifeMax(next)-lifeMax(system)));
+  return {"system.race":next.race,"system.pureElement":next.pureElement,"system.runeElements":next.runeElements,
+    "system.racialInitialAttributes":next.racialInitialAttributes,"system.attributes":next.attributes,"system.life.value":life};
 }
 
 export function xpAdjustmentPlan(system,request){
@@ -203,6 +222,7 @@ export function planSkillPackage(system,id,{creationPending=false,rules=requirem
 
 export function skillRefundPlan(system,id){
   const row=skillDetails(system,id);
+  if(racialGrants(system).includes(id)&&!system.skills?.includes(id))return {blocker:"Perícia concedida pela origem, sem reembolso."};
   if(!row.owned)return {blocker:"Perícia ainda não adquirida."};
   const skills=(system.skills??[]).filter(key=>key!==id&&!(id==="maestria-manejo-duplo"&&key==="manejo-duplo"));
   const next={...system,skills},before=xpLedger(system),after=xpLedger(next);

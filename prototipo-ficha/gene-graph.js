@@ -109,6 +109,7 @@ function card(n,edit){
    '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
  const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
+ const xpBand=n.xpBand==="discount"?"↓ XP reduzido":n.xpBand==="elevated"?"↑ XP aumentado":"";
  const canDown=edit&&n.previewGrade>0&&n.canLower!==false;
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
  const makeButton=(delta,enabled,posX,text,aria)=>
@@ -120,7 +121,7 @@ function card(n,edit){
   makeButton(1,canUp,x+width-46,"+","Aumentar "+label):"";
  return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+
   '" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
-  '<title>'+label+' — '+esc(n.label||"")+'</title>'+
+  '<title>'+label+(xpBand?' · '+xpBand:'')+'</title>'+
   '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="13"/>'+
   '<text class="fp-gene-card-title" x="'+(x+18)+'" y="'+(y+28)+'">'+label+'</text>'+
   '<text class="fp-gene-card-grade" x="'+(x+width-18)+'" y="'+(y+27)+'" text-anchor="end">GRAU '+(n.previewGrade??n.grade)+(pending?' *':'')+'</text>'+
@@ -144,16 +145,17 @@ function splitSkillLabel(name,maxChars){
  }
  return lines.length?lines:[""];
 }
-function skill(n){
+function skill(n,iconBase){
  // Letras pequenas e em até duas linhas; full name no title e aria-label.
  const lines=splitSkillLabel(n.name,16);
  const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
-  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="15"/>'+
+  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="'+(n.icon?'20':'15')+'"/>'+
+  (n.icon?'<image class="fp-gene-skill-pictogram" href="'+esc(iconBase+n.icon+'.svg')+'" x="'+(n.x-16)+'" y="'+(n.y-16)+'" width="32" height="32" pointer-events="none" aria-hidden="true"/>':"")+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
-function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
+function draw(nodes,height,selected,affinity,branches,groups,edit,camera,iconBase){
  const byId=new Map(nodes.map(n=>[n.id,n]));
  let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e Perícias organizadas ao redor e abaixo das fontes.">'+
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
@@ -168,8 +170,9 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  for(const family of groups){
   svg+='<g class="fp-gene-constellation" data-gene-family="'+esc(family.id)+'" aria-hidden="true">'+
    '<rect class="fp-gene-constellation-border" x="'+(family.x+6)+'" y="'+(family.y+4)+'" width="'+(family.width-12)+'" height="'+(family.height-10)+'" rx="26"/>'+
+   (iconBase?'<image class="fp-gene-constellation-icon" href="'+esc(iconBase+'categoria-'+family.id+'.svg')+'" x="'+(family.x+20)+'" y="'+(family.y+13)+'" width="30" height="30" aria-hidden="true"/>':"")+
    '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+46)+'" y2="'+(family.y+46)+'"/>'+
-   '<text class="fp-gene-constellation-title" x="'+(family.x+26)+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
+   '<text class="fp-gene-constellation-title" x="'+(family.x+(iconBase?58:26))+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
   const members=family.nodes;
   members.forEach((n,i)=>{
    if(i%3>0&&Math.floor(i/3)===Math.floor((i-1)/3)){
@@ -200,7 +203,7 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  svg+='<line class="fp-gene-branch-rule" x1="75" x2="1525" y1="829" y2="829"/>'+
   '<text class="fp-gene-column-title is-skills" x="800" y="865" text-anchor="middle">RAMIFICAÇÕES · PERÍCIAS</text>';
  if(!skills.length)svg+='<text class="fp-gene-empty-text" x="800" y="935" text-anchor="middle">Nenhuma Perícia disponível no momento. Desenvolva fontes para habilitar novos caminhos.</text>';
- for(const n of skills)svg+=skill({...n,selected:n.id===selected});
+ for(const n of skills)svg+=skill({...n,selected:n.id===selected},iconBase);
  return svg+'</g></svg>';
 }
 const MIN_ZOOM=.55,MAX_ZOOM=5;
@@ -397,7 +400,7 @@ function bind(root){
   observer.observe(root);
  }
 }
-function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,onSelect=()=>{},onAdjust=()=>{}}={}){
+function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,iconBase="",onSelect=()=>{},onAdjust=()=>{}}={}){
  if(!root)return;
  root.__geneActions={onSelect,onAdjust};
  const all=skills.filter(n=>n&&n.type&&n.type!=="hidden").map(n=>({...n,key:n.key||n.id?.split(":")[1]}));
@@ -409,7 +412,7 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
  const {height,groups}=position(visible,branches),cam=getCamera(root);
- root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam)+
+ root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam,iconBase)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
   '<button type="button" data-gene-nav="-1" aria-label="Afastar o mapa">−</button>'+

@@ -3,7 +3,9 @@ export const ATTRIBUTES=[["forca","Força"],["agilidade","Agilidade"],["destreza
 export const KNOWLEDGES=[["protecao","Proteção"],["astronomia","Astronomia"],["medicina","Medicina"],["alquimia","Alquimia"],["engenharia","Engenharia"],["erudicao","Erudição"]];
 export const PRACTICES=[["armas_conjuracao","Disciplina"],["atletismo","Atletismo"],["furtividade","Furtividade"],["artesao","Artesão"],["apresentacao","Apresentação"],["coleta","Coleta"]];
 import {SKILLS,ADVANCED_SOURCES} from "./skill-catalog.mjs";
+import {XP_ATTRIBUTE,XP_TRAINING,allOwnedSkills,gradeXPTable} from "./races.mjs";
 export {SKILLS};
+export {XP_ATTRIBUTE,XP_TRAINING};
 export const ATTRIBUTE_DICE=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]];
 export const TRAINING_DICE=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 export const MONSTER_DICE=[[4],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
@@ -23,8 +25,6 @@ export const SITUATIONS={
  inferior:{label:"Desvantagem Absoluta",e:-1,a:0},
  luck:{label:"Ação de Sorte",e:-2,a:0}
 };
-export const XP_ATTRIBUTE=[0,1,3,6,9,18,32];
-export const XP_TRAINING=[0,2,4,8,16,32,64];
 export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD Playtest Nível 1 v1.0.
 const legacyD4=[[0,0,0],[0,0,0],[0,0,1],[0,1,1]];
 export function faceSymbols(sides,face,legacyD4Faces=false){
@@ -65,9 +65,9 @@ export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 const skillCosts=new Map(SKILLS.map(row=>[row.id,row.legacyCost??row.cost]));
 export function xpLedger(s){
- const attr=ATTRIBUTES.reduce((n,[k])=>n+(s.monsterRules||s.monsterHumanoidRules?XP_TRAINING:XP_ATTRIBUTE)[Number(s.attributes?.[k]||0)],0);
- const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
- const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
+ const attr=ATTRIBUTES.reduce((n,[k])=>n+gradeXPTable(s,"attribute",k)[Number(s.attributes?.[k]||0)],0);
+ const knowledge=KNOWLEDGES.reduce((n,[k])=>n+gradeXPTable(s,"knowledge",k)[Number(s.knowledges?.[k]||0)],0);
+ const practices=PRACTICES.reduce((n,[k])=>n+gradeXPTable(s,"practice",k)[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(skillCosts.get(id)??0),0);
  const formation=s.monsterRules||s.animalRules||s.monsterHumanoidRules?0:(s.creationBudget??CREATION_REFERENCE.total);
  const additional=Number(s.xp||0),spent=attr+knowledge+practices+perks,grant=formation+additional;
@@ -92,14 +92,14 @@ export function sourcePairError(system,base,second){
 }
 
 export function canRepeatDiscipline(system,base,second){
- const skills=system.skills||[];
+ const skills=allOwnedSkills(system);
  return !attributesOnly(system) && [base,second].some(isDiscipline)
   && (skills.includes("maestria-manejo-duplo") || skills.includes("manejo-duplo"));
 }
 
 export function mayComplement(system,base,second){
  if(attributesOnly(system))return system.transformation?.size==='grande'||system.bodySize==='grande';
- const skills=system.skills||[];
+ const skills=allOwnedSkills(system);
  return skills.includes("combinacao")||ADVANCED_SOURCES.some(row=>skills.includes(row.id)&&
   [base,second].some(source=>source?.group===(row.group==='know'?'knowledge':row.group)&&source.key===row.key));
 }
@@ -107,7 +107,7 @@ export function mayComplement(system,base,second){
 export const canReinforceDie = die => [4,6,10].includes(die?.sides);
 export function passiveAnticipar(system,selection){
  const sources=[selection.base,selection.second??selection.attribute,selection.complement].filter(Boolean);
- const skills=system.skills??[];
+ const skills=allOwnedSkills(system);
  return Number(skills.includes('furtividade')&&sources.some(s=>s.group==='practice'&&s.key==='furtividade'))+
   (sources.some(isDiscipline)?Number(skills.includes('improviso'))+Number(skills.includes('mestre')):0);
 }
@@ -132,7 +132,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   else if(!repeatedDiscipline&&!contextApproved)errors.push("Confirme pertinência do complemento.");
  }
  if(sources.some(isDiscipline)){
-  const skills=system.skills||[];
+  const skills=allOwnedSkills(system);
   const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","maestria-arremesso-armas","manejo-duplo","maestria-manejo-duplo"];
   if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
   if(mode==="conjuracao"&&!['criar-item-foco-magia','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].some(id=>skills.includes(id)))errors.push("Conjuração exige habilitação Psíquica ou elemental.");
@@ -179,7 +179,8 @@ export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey
  const changes={};
  if(!hasAttribute)changes["system.attributes."+attributeId]=1;
  if(!hasTraining)changes["system."+(trainingGroup==="knowledge"?"knowledges":"practices")+"."+trainingKey]=1;
- const cost=(hasAttribute?0:XP_ATTRIBUTE[1])+(hasTraining?0:XP_TRAINING[1]);
+ const cost=(hasAttribute?0:gradeXPTable(system,"attribute",attributeId)[1])+
+  (hasTraining?0:gradeXPTable(system,trainingGroup,trainingKey)[1]);
  const ledger=xpLedger(system);
  return {ok:ledger.left>=cost,changes,cost,available:ledger.left,remaining:ledger.left-cost,
   complete:hasAttribute&&hasTraining,error:ledger.left<cost?"XP disponível insuficiente para concluir as compras mínimas.":""};

@@ -1,6 +1,5 @@
-import {showSkill} from "./skill-catalog.mjs";
-/* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
+/* Codex RPG — ficha de Actor para Foundry v14. */
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SITUATIONS,
  sourceDice,sourceLabel,faceSymbols,buildPool,canReinforceDie,starterPurchasePlan,lifeMax,healthByLife,balance,maxCourage,
  loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
@@ -12,17 +11,18 @@ import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {equipmentView} from './equipment-view.mjs';
-import {openSkillDefinition} from './compendium-data.mjs';
 import {quickEquipmentPlan} from './equipment-workflow.mjs';
-import {skillDetails,skillRefundPlan} from "./advancement.mjs";
+import {RACES,hasSkill,racialBand} from "./races.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
  cancelP:0,convertPairs:0,equipmentId:"",element:"",sourceContext:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
+const desktopRollMedia="(min-width: 851px) and (hover: hover) and (pointer: fine)";
 function cards(list,group,s,d){
- return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
+ return list.map(([key])=>({key,group,label:sourceLabel(group,key,s),
+ xpLabel:{discount:"↓ XP reduzido",elevated:"↑ XP aumentado"}[racialBand(s,group,key)],
  grade:Number(s[{attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group]]?.[key]||0),
  dice:sourceDice(group,key,s).map(sides=>({sides,icon:dieSvg(sides)})),
  isSelected:[d.base,d.second,d.complement].some(source=>eq(source,{group,key})),
@@ -41,7 +41,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
  openDNA:CodexCharacterSheet.openDNA,chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
- adjustResource:CodexCharacterSheet.adjustResource,toggleSkill:CodexCharacterSheet.toggleSkill,
+ adjustResource:CodexCharacterSheet.adjustResource,closeRoll:CodexCharacterSheet.closeRoll,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
  toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
  purchaseStarter:CodexCharacterSheet.purchaseStarter,finalizeRoll:CodexCharacterSheet.finalizeRoll,
@@ -50,7 +50,6 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
  editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
  ,rest(_event,target){return this._request({action:'rest',kind:target.dataset.kind});},transform:CodexCharacterSheet.transform
- ,consultSkill(_event,target){return openSkillDefinition(target.dataset.key);}
  ,buyEquipment:CodexCharacterSheet.buyEquipment,quickEquipment:CodexCharacterSheet.quickEquipment,
  prepareEquipment:CodexCharacterSheet.prepareEquipment,cravarEquipment:CodexCharacterSheet.cravarEquipment
  }};
@@ -79,7 +78,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
-   concept:s.concept,origin:s.origin,virtue:s.virtue,personality:s.personality,
+   concept:s.concept,origin:s.origin,race:RACES[s.race]?.name,virtue:s.virtue,personality:s.personality,
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    health:healthByLife(s,s.life.value),healthApplied:actor.type==="character",
@@ -98,7 +97,6 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    attributes:cards(ATTRIBUTES,"attribute",s,d),
    knowledges:attributesOnly?[]:cards(KNOWLEDGES,"knowledge",s,d),
    practices:attributesOnly?[]:cards(PRACTICES,"practice",s,d),
-   skills:attributesOnly?[]:SKILLS.filter(row=>showSkill(row,s)).map(k=>skillDetails(s,k.id)),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
     id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
     quantity:i.system.quantity,equipped:i.system.equipped,range:effectiveWeaponRange(s,i.system),
@@ -132,7 +130,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    ctx.codex.prepare={
     isShared,repeatedDiscipline:isRepeat(d),canRepeatDisc:canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
     contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,sourceContext:this._opts.sourceContext,
-    elements:['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].filter(key=>s.skills.includes(key==='psiquico'?'criar-item-foco-magia':key)).map(key=>({key,selected:this._opts.element===key})),
+    elements:['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].filter(key=>hasSkill(s,key==='psiquico'?'criar-item-foco-magia':key)).map(key=>({key,selected:this._opts.element===key})),
     localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
@@ -191,6 +189,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   super._preSyncPartState(partId,newElement,priorElement,state);
   state.contentScroll=priorElement.closest(".window-content")?.scrollTop;
   state.openDetails=[...priorElement.querySelectorAll('details[data-sync][open]')].map(el=>el.dataset.sync);
+  this._rollScroll=priorElement.querySelector(".codex-roll-surface")?.scrollTop??0;
  }
  _syncPartState(partId,newElement,priorElement,state){
   super._syncPartState(partId,newElement,priorElement,state);
@@ -201,6 +200,20 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  async _onRender(ctx,options){
   await super._onRender(ctx,options);
   this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",event=>this._change(event));
+  if(!this._rollMedia){
+   this._rollMedia=window.matchMedia(desktopRollMedia);
+   this._rollMediaChanged=()=>this._configureRollSurface();
+   this._rollMedia.addEventListener("change",this._rollMediaChanged);
+   this._rollEscape=event=>{
+    if(event.key!=="Escape"||!this.element?.querySelector(".codex-roll-surface:popover-open"))return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    CodexCharacterSheet.closeRoll.call(this);
+    this.element.querySelector('[data-action="showRoll"]')?.focus({preventScroll:true});
+   };
+   window.addEventListener("keydown",this._rollEscape,{capture:true});
+  }
+  this._configureRollSurface();
   this._targetHooks??=[
    ["targetToken",Hooks.on("targetToken",(user,token,targeted)=>{
     if(user.id!==game.user.id||this._pending)return;
@@ -287,9 +300,51 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._draft=draft();this._opts=defaults();
   return this.render();
  }
- static showRoll(_event,target){
-  const section=target.dataset.section==="pending"?".codex-roll-results":".codex-roll-prep";
-  this.element?.querySelector(section)?.scrollIntoView({block:"start"});
+ _configureRollSurface(){
+  const panel=this.element?.querySelector(".codex-roll-surface");
+  if(!panel?.querySelector(".codex-roll-prep,.codex-roll-results"))return;
+  if(!this._rollMedia.matches||typeof panel.showPopover!=="function"){
+   panel.removeAttribute("popover");
+   panel.removeAttribute("role");
+   return;
+  }
+  if(!panel.hasAttribute("popover")){
+   panel.setAttribute("popover","auto");
+   panel.setAttribute("role","dialog");
+   panel.addEventListener("toggle",event=>{
+    if(event.newState==="closed"&&panel.isConnected&&panel.hasAttribute("popover")&&panel.rollIntent===this._rollIntent)this._rollOpen=false;
+   });
+  }
+  if(this._rollOpen??Boolean(this._pending)){
+   panel.rollIntent=this._rollIntent;
+   if(!panel.matches(":popover-open"))panel.showPopover();
+   const {width,height}=panel.getBoundingClientRect();
+   const anchor=this._rollAnchor;
+   const left=anchor?Math.min(Math.max(12,anchor.left),window.innerWidth-width-12):(window.innerWidth-width)/2;
+   const below=anchor&&anchor.bottom+height+20<window.innerHeight;
+   const top=below?anchor.bottom+8:anchor&&anchor.top-height>12?anchor.top-height-8:(window.innerHeight-height)/2;
+   panel.style.left=Math.max(12,left)+"px";
+   panel.style.top=Math.max(12,top)+"px";
+   panel.scrollTop=this._rollScroll??0;
+  }
+ }
+ _openRollNear(target){
+  this._rollOpen=true;
+  this._rollIntent=(this._rollIntent??0)+1;
+  this._rollAnchor=target?.getBoundingClientRect()??null;
+  this._rollScroll=0;
+ }
+ static showRoll(event,target){
+  this._openRollNear(target);
+  this._configureRollSurface();
+  const panel=this.element?.querySelector(".codex-roll-surface");
+  if(panel?.matches(":popover-open")){
+   if(event?.detail===0)panel.querySelector('[data-action="closeRoll"]')?.focus({preventScroll:true});
+  }else panel?.scrollIntoView({block:"start"});
+ }
+ static closeRoll(){
+  this._rollOpen=false;
+  this.element?.querySelector(".codex-roll-surface:popover-open")?.hidePopover();
  }
  static async chooseSource(_event,target){
   if(this._busy||this._editing)return;
@@ -325,11 +380,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    return;
   }
   if(hasDiscipline(d)!==previousDiscipline){
-   this._opts.mode=hasDiscipline(d)?(['criar-item-foco-magia','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].some(id=>system.skills.includes(id))?"conjuracao":"armas"):"normal";
+   this._opts.mode=hasDiscipline(d)?(['criar-item-foco-magia','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].some(id=>hasSkill(system,id))?"conjuracao":"armas"):"normal";
    this._opts.equipmentId="";
   }
   this._opts.contextApproved=false;
   this._opts.stepDieId="";
+  if(d.second)this._openRollNear(target);
+  else this._rollOpen=false;
   return this.render();
  }
  static async repeatDiscipline(){
@@ -358,16 +415,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(!(field in caps)||![-1,1].includes(delta))return;
   return this._request({action:'resource',field,delta});
  }
- static toggleSkill(_event,target){
-  if(!this._editing||!this.actor.isOwner||this._pending||this._busy)return;
-  const key=target.dataset.key;
-  if(!skillDetails(this.actor.system,key).owned)return this._request({action:"advance",advance:{kind:"skill",key}});
-  const plan=skillRefundPlan(this.actor.system,key);
-  if(plan.blocker){ui.notifications.warn(plan.blocker);return;}
-  if((!game.user.isGM||this.actor.getFlag(NS,"creationPending"))&&!confirm("Devolver "+plan.name+" e recuperar "+plan.refund+" XP?"))return;
-  return this._request({action:"advance",advance:{kind:"skill",key,remove:true,expectedRefund:plan.refund}});
- }
- static clearDraft(){if(this._pending)return;this._draft=draft();this._opts=defaults();this.render();}
+ static clearDraft(){if(this._pending)return;this._draft=draft();this._opts=defaults();this._rollOpen=false;this.render();}
  async _request(request){
   if(this._busy||!this.actor.isOwner)return;
   this._busy=true;
@@ -377,6 +425,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(request.action==="start"&&response?.started){
     this._draft=draft();
     this._opts=defaults();
+    this._rollOpen=true;
+    this._rollScroll=0;
     void showCodexDice(foundry.dice.Roll.fromData(response.roll));
    }
   }catch(e){ui.notifications.error("Codex: "+e.message);}
@@ -442,14 +492,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   return this._request({action:'purchase',id:crypto.randomUUID(),name:target.dataset.name,quantity});
   }finally{this._buying=false;}
  }
- static prepareEquipment(_event,target){return this._useEquipment(target.dataset.id,false);}
- static quickEquipment(_event,target){return this._useEquipment(target.dataset.id,true);}
- _useEquipment(id,roll){
+ static prepareEquipment(_event,target){return this._useEquipment(target,false);}
+ static quickEquipment(_event,target){return this._useEquipment(target,true);}
+ _useEquipment(target,roll){
   if(this._editing){ui.notifications.warn('Conclua a edição antes de rolar.');return;}
   if(this._busy||this._pending||this.actor.getFlag(NS,'pendingRoll')){ui.notifications.warn('Finalize a rolagem pendente.');return;}
   try{
-   const plan=quickEquipmentPlan(this.actor,id,this._draft,this._opts);
+   const plan=quickEquipmentPlan(this.actor,target.dataset.id,this._draft,this._opts);
    this._draft=plan.selection;this._opts=plan.options;
+   this._openRollNear(target);
    if(roll)return CodexCharacterSheet.executeRoll.call(this);
    this.render();
   }catch(error){ui.notifications.warn(error.message);}
@@ -511,6 +562,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._editing=false;
   this._lastTargetId=null;
   this._targetLost=false;
+  this._rollMedia?.removeEventListener("change",this._rollMediaChanged);
+  window.removeEventListener("keydown",this._rollEscape,{capture:true});
+  this._rollMedia=null;
+  this._rollOpen=undefined;
+  this._rollAnchor=null;
   for(const [event,id] of this._targetHooks??[])Hooks.off(event,id);
   this._targetHooks=null;
   return super.close(options);

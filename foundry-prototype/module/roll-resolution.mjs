@@ -3,6 +3,7 @@ import {equippedDie} from "./equipment-logic.mjs";
 import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
 import {faceIcons} from "./dice-icons.mjs";
+import {hasSkill} from "./races.mjs";
 
 export const rollNamespace = "codex-rpg-foundry";
 const humanoid = actor => ["humanoid", "monsterHumanoid"].includes(actor.type);
@@ -26,7 +27,7 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (!["normal", "armas", "conjuracao"].includes(mode)) throw Error("Modo de rolagem inválido.");
   if(mode==='conjuracao'&&!equipmentId){
     const skill=input.element==='psiquico'?'criar-item-foco-magia':input.element;
-    if(!['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(input.element)||!system.skills.includes(skill))throw Error('Selecione um elemento adquirido.');
+    if(!['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(input.element)||!hasSkill(system,skill))throw Error('Selecione um elemento adquirido.');
     if(typeof input.sourceContext!=='string'||!input.sourceContext.trim()||input.sourceContext.length>500)throw Error('Descreva a fonte elemental e a preparação para o Narrador.');
   }
   if (!Number.isInteger(de) || de < 0 || de > 30) throw Error("Informe uma DE inteira de 0 a 30.");

@@ -1,8 +1,9 @@
 import {healthByLife, xpLedger} from "./rules.mjs";
+import {allOwnedSkills} from "./races.mjs";
 
 // Preparação consultiva. O Narrador controla a criação, as ações e a dissipação da ficha.
 export function summonPlan(rules, system, {size, first, second="", base="courage", mastery="", count=1, life, de}){
- const skills=system.skills??[];
+ const skills=allOwnedSkills(system);
  const elements=[first,...(second?[second]:[])];
  const health=system.life&&healthByLife(system,system.life.value);
  if(health&&["morto","incapacitado","inconsciente"].includes(health.id))throw Error("A Saúde atual impede sustentar a Invocação.");
