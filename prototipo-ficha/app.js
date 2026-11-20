@@ -1557,7 +1557,7 @@ function equipmentDetails(item){
  if(kind==="armor"||kind==="armadura"){
   info.push("Integridade "+(item.integrity?.max??item.max??0));
   info.push(({muito_leve:"+2 DE",leve:"+1 DE",medio:"0 DE",pesado:"−1 DE",extremo:"−2 DE"})[equipmentWeight(item)]||"DE a conferir");
- }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(item.integrity?.max??item.max??0));
+ }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(kind==="escudo"?shieldIntegrityDisplay(item).max:(item.integrity?.max??item.max??0))+(kind==="escudo"&&shieldMasteryActive(item)?" (+1 Maestria)":""));
  if(item.range>0)info.push("Alcance "+item.range+" m");
  if(p.length)info.push(p.join(" · "));
  return info.join(" · ");
@@ -4246,6 +4246,11 @@ function renderInventory(){
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
    '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 3, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
+  const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
+  const shieldMasteryHint=it.type!=="escudo"?"":(
+   (shieldMasteryActive(it)?'<div class="fp-item-hint"><strong>Maestria em Escudos ativa:</strong> +1 DE defensiva (teto 12) e +1 Integridade neste escudo: '+shieldIntegrity.hp+' / '+shieldIntegrity.max+' efetivos. Valor-base: '+it.hp+' / '+it.max+'. Ponto adicional '+(it.shieldMasteryBonusSpent?'já consumido (reparo manual necessário).':'disponível.')+' Não altera a Integridade simbólica de Levantar Escudo.</div>':"")+
+   (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado; pode arremessá-lo até 8 m, e ele retorna ao personagem.':'Equipe o escudo para utilizar o arremesso.')+' Dados, dano e instante do retorno devem ser resolvidos com o Narrador; nenhuma rolagem automática.</div>':"")
+  );
   const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
@@ -4257,13 +4262,13 @@ function renderInventory(){
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+it.hp+' / '+it.max+'</b>'+
+  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
   '<div class="fp-item-hint"><label>Grau <input type="number" data-item-field="grade" data-id="'+esc(it.id)+'" min="1" max="4" value="'+it.grade+'" style="width:40px"></label> · '+
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
-  '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
+  '<label>Integridade máxima '+(it.type==="escudo"?'(base) ':'')+'<input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
@@ -4280,7 +4285,7 @@ function renderInventory(){
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
-  armorFields+shieldEmbedFields+cravarImpact+'</div></details>';
+  armorFields+shieldMasteryHint+shieldEmbedFields+cravarImpact+'</div></details>';
  }).join(""):'<div class="fp-empty-list">'+(state.items.length?'Nenhum item corresponde aos filtros.':'Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.')+'</div>';
 }
 function renderTrade(){
@@ -4744,14 +4749,14 @@ function onClick(event){
   const e=Number(input?.value);
   if(!Number.isSafeInteger(e)||e<1||e>32){toast("Informe quantos Êxitos mantidos foram válidos (1 a 32).");break;}
   if(!confirm("Confirmar ataque acertado com Cravar ativada por Perícia habilitada? Aplicar "+e+" de perda à Integridade do escudo "+target.name+"?"))break;
-  const removed=Math.min(target.hp,e);
-  target.hp=Math.max(0,target.hp-e);
+  const removed=loseShieldIntegrity(target,e);
+  const remaining=shieldIntegrityDisplay(target);
   renderInventory();renderVitals();save();
-  toast("Cravar: "+removed+" de Integridade perdida; restante "+target.hp+"/"+target.max+".");
+  toast("Cravar: "+removed+" de Integridade perdida; restante "+remaining.hp+"/"+remaining.max+" (bônus de Maestria apenas com escudo equipado).");
   break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
