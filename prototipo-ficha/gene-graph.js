@@ -67,7 +67,7 @@ const GENE_CONSTELLATIONS=[
  {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
  {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","alquimia-avancada","engenharia-avancada","erudicao-avancada"]},
  {id:"praticas-avancadas",label:"PRÁTICAS AVANÇADAS",column:0,skills:["atletismo-avancado","artesao-avancado","apresentacao-avancada","coleta-avancada"]},
- {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar"]}
+ {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar","maestria-montaria"]}
 ];
 function position(nodes,branches=[]){
  const byId=new Map(nodes.map(n=>[n.id,n]));
