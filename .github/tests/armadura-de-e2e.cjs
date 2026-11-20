@@ -91,6 +91,43 @@ const assert=require("node:assert/strict");
   assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
   assert.equal(await de.textContent(),"1","Desequipar elimina bônus");
+
+  // Conjuração: foco compatível apenas no inventário, G3 acelerado para 1 turno.
+  const mage={schema:"codex-html-playtest-v1",character:{
+   schema:"codex-html-playtest-v1",name:"Aprendiz conjurador",race:"humano",level:5,creationLocked:true,
+   attributes:{inteligencia:2,destreza:1},practices:{armas_conjuracao:2,artesao:1},
+   skills:["criar-item-foco-magia","fogo"],items:[{
+    id:"foco-fogo-e2e",name:"Foco de Fogo",type:"foco",weight:"leve",
+    element:"fogo",grade:2,die:6,focusCharges:2,equipped:false,max:0,hp:0
+   }]
+  }};
+  await page.locator("#import-json").setInputFiles({
+   name:"conjurador.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(mage))
+  });
+  await page.locator('[data-action="magic-element"][data-id="fogo"]').click();
+  assert.match(await page.locator("#composer-content").textContent(),/Disciplina · Conjuração/);
+  assert.equal(await page.locator('[data-magic-field="magicFocusId"]').inputValue(),"foco-fogo-e2e",
+   "Foco do inventário é selecionado mesmo guardado");
+  assert.match(await page.locator("#composer-content").textContent(),/Foco de Fogo/);
+  await page.locator('[data-magic-field="magicGrade"]').selectOption("3");
+  await page.locator('[data-magic-field="magicCharges"]').selectOption("2");
+  assert.ok(!(await page.locator('[data-magic-field="magicTimeConfirmed"]').count()),
+   "G3 acelerado com duas cargas não exige turnos adicionais");
+  await page.locator('[data-magic-field="magicGradeConfirmed"]').check();
+  assert.equal(await page.locator("#composer-content [data-action='roll']").isDisabled(),false,
+   "G3 confirmado pode rolar, respeitando Coragem e foco");
+  assert.match(await page.locator("#composer-content").textContent(),/1 turno\(s\)/);
+  await page.locator("#composer-content [data-action='roll']").click();
+  assert.equal(await page.locator('#composer-content .fp-roll-die').count(),5,
+   "Disciplina G2 + Inteligência G2 + foco d6");
+  assert.match(await page.locator("#composer-content").textContent(),/2 carga\(s\) de foco reservadas/);
+  await page.locator("#composer-content .fp-roll-die").first().click();
+  await page.locator("#composer-content .fp-roll-die").nth(1).click();
+  assert.equal(await page.locator("#composer-content [data-action='finalize']").isDisabled(),false);
+  await page.locator("#composer-content [data-action='finalize']").click();
+  await page.locator(".fp-vital-inventory").click();
+  assert.equal(await page.locator('#inventory-list [data-item-field="focusCharges"]').getAttribute("value"),"0",
+   "Duas cargas são gastas somente após finalizar; persiste no Inventário");
   assert.deepEqual(errors,[],"Nenhum erro no navegador");
   console.log("PASS armadura: DE geral +1 Leve com recarga e retirada no navegador móvel");
  }finally{await browser.close();}
