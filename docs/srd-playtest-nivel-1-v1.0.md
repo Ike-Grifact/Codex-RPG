@@ -14,6 +14,20 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia Maestria em Martelos (20/11/2026)
+
+**DEFINIDO — aquisição:** a Perícia **Maestria em Martelos** custa **1 XP** e exige **Força 3 + Destreza 1 + Vigor 1**. Essas são as condições para **comprar** a Perícia. Ter Perícia em Armas Leves, Médias ou Pesadas **não é exigido para a compra**; o requisito de peso aplica-se à ativação do efeito com cada martelo.
+
+**DEFINIDO — ativação em combate, decisão posterior de 20/11/2026:** ao atacar com um **martelo** e acertar a DE, o personagem com Maestria em Martelos e a **Perícia em Armas correspondente ao peso** (Leve → Armas Leves, Médio → Armas Médias, Pesado → Armas Pesadas) ativa **uma característica existente do martelo gratuitamente em um acerto comum**. **No acerto crítico, ativa até duas características diferentes existentes no martelo gratuitamente**, sem pagar Coragem por nenhuma dessas duas. **Adicionalmente, no crítico, pode gastar 1 Coragem para ativar mais uma terceira característica diferente**, se a arma possuir três características válidas para a situação. Limite desta Perícia no crítico: **2 gratuitas + 1 paga = até 3 efeitos**, sem repetir a mesma característica para contar duas vezes. A escolha dos efeitos deve respeitar a DE atingida e os gatilhos de cada característica; não criar efeitos inexistentes, Êxitos, acertos automáticos nem dano básico adicional.
+
+**DEFINIDO — consumo de Coragem:** no acerto comum, a primeira característica escolhida pela Maestria custa **0 Coragem**; no crítico, as **duas primeiras custam 0 Coragem** e a **terceira custa 1 Coragem**, quando efetivamente escolhida e existente. Não cobrar Coragem pela terceira se não for ativada. A Perícia do peso é exigida em todos os casos; sem ela, o personagem não recebe estas ativações especiais pela Maestria.
+
+**PENDENTE:** extensão a armas não chamadas martelo (maças ou clavas) e categorias fora de Leve/Médio/Pesado, sem ampliar por afinidade temática. O **acúmulo com crítico foi definido** nesta decisão: **duas gratuitas e uma terceira por 1 Coragem**, somente enquanto a arma possuir essas características.
+
+**Implementação:** registrar compra, requisitos e mostrar no inventário os limites de acerto normal e crítico; fornecer regra de elegibilidade e orçamento de efeitos sem executar/consumir Coragem automaticamente até a seleção contextual de características estar integrada ao motor. Respeitar as características realmente disponíveis.
+
+---
+
 ## Adendo normativo — Perícia Resistência a Fogo (20/11/2026)
 
 **DEFINIDO — compra:** **Resistência a Fogo** custa **1 XP** e exige **Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2**. Ferreiro Elemental e Perícia em Elemento Fogo devem ter sido **adquiridas**, sem substituir nenhuma das compras anteriores. Todos os requisitos indiretos de Ferreiro Elemental continuam válidos.
