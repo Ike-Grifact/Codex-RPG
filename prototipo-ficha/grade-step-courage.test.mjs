@@ -198,5 +198,7 @@ test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
  assert.ok(app.includes("Aplica estado de Vantagem na rolagem pertinente de montaria, e não +1A separado"),"Montar Animal oferece estado Vantagem, não 1A avulso");
  assert.ok(app.includes("Se a Vantagem for efetiva, ela fornece 1A conforme a regra geral"),"A condição Vantagem é a origem do Antecipar");
  assert.ok(app.includes("condição Vantagem na rolagem pertinente ao montar Gigantes (não +1A direto)"),"Maestria também não fornece +1A avulso");
+ const skillCatalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(skillCatalog.includes("condição Vantagem em rolagens pertinentes de montaria (não +1A avulso)"),"Catálogo não descreve +1A direto");
 
 });
