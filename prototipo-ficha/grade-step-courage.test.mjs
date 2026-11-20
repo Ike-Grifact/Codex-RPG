@@ -295,7 +295,7 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
  const end=app.indexOf("function equipmentGroupName(id)",start);
  assert.ok(start>=0&&end>start,"Verificador de Martelos existe");
  const eligibility=new Function("state", "ownsSkill", "equipmentWeight",
-  app.slice(start,end)+"\nreturn {required:hammerMasteryRequiredSkill,can:hammerMasteryCanActivate};")(
+  app.slice(start,end)+"\nreturn {required:hammerMasteryRequiredSkill,can:hammerMasteryCanActivate,onHit:hammerMasteryOnHit};")(
   {},(id,s)=>s.skills.includes(id),(it)=>it.weight==="alto"?"pesado":it.weight
  );
  for(const [weight,skill] of [["leve","armas-leves"],["medio","armas-medias"],["alto","armas-pesadas"]]){
@@ -304,14 +304,20 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
   assert.equal(eligibility.can(weapon,make({skills:["maestria-martelos"]})),false,"Sem Perícia de peso não ativa");
   assert.equal(eligibility.can(weapon,make({skills:[skill]})),false,"Sem Maestria não ativa");
   assert.equal(eligibility.can(weapon,make({skills:[skill,"maestria-martelos"]})),true,"Com ambas habilita efeito grátis");
+  const owned=make({skills:[skill,"maestria-martelos"]});
+  assert.deepEqual(eligibility.onHit(weapon,false,false,owned),{free:1,paid:0,courageCost:0,maxEffects:1},"Acerto comum: um efeito sem custo");
+  assert.deepEqual(eligibility.onHit(weapon,true,false,owned),{free:2,paid:0,courageCost:0,maxEffects:2},"Crítico: dois efeitos sem custo");
+  assert.deepEqual(eligibility.onHit(weapon,true,true,owned),{free:2,paid:1,courageCost:1,maxEffects:3},"Crítico + Coragem: terceiro efeito");
+  assert.deepEqual(eligibility.onHit(weapon,false,true,owned),{free:1,paid:0,courageCost:0,maxEffects:1},"Terceira característica especial só no crítico");
+  assert.deepEqual(eligibility.onHit(weapon,true,true,make({skills:["maestria-martelos"]})),{free:0,paid:0,courageCost:0,maxEffects:0},"Sem Perícia de Armas do peso não recebe benefícios");
  }
  assert.equal(eligibility.required({type:"weapon",name:"Espada",weight:"leve"}),null,"Não aplica a armas sem martelo");
- assert.ok(app.includes("UMA característica própria do martelo sem Coragem"),"Inventário informa uma característica");
+ assert.ok(app.includes("crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira"),"Inventário informa dois gratuitos e terceiro pago");
  const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(graph.includes('"armas-pesadas","maestria-martelos"'),"Mapa no ramo de Armas");
  const page=readFileSync(join(root,"../pericias/maestria-em-martelos.html"),"utf8");
  assert.ok(page.includes("Força 3")&&page.includes("Destreza 1")&&page.includes("Vigor 1"));
- assert.ok(page.includes("Perícia em Armas")&&page.includes("sem gastar Coragem"));
+ assert.ok(page.includes("Perícia em Armas")&&page.includes("1 Coragem")&&page.includes("duas características diferentes do martelo gratuitamente"),"Verbete registra crítico com dois gratuitos");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Maestria em Martelos</a>'));
 });
