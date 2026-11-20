@@ -12,6 +12,25 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Referência principal para o ciclo de Playtest Nível 1.** A contagem foi reiniciada por decisão autoral de **18/11/2026**. As versões `srd-continuidade-v0.XX.md` permanecem disponíveis como **histórico**, não como numeração ativa. Este documento registra as decisões mais recentes sem apagar regras anteriores que não foram revogadas. Em divergência: decisão autoral mais recente > este SRD > Livro do Jogador atualizado > código > arquivos históricos. **Código implementado não significa regra aprovada.**
 
+## Adendo normativo — Montaria e Maestria (20/11/2026)
+
+**Estado: DEFINIDO pelo autor.** Este adendo substitui a referência histórica a **Montar Animal por 2 XP e somente Influência 2** no Livro do Jogador e no criador; não altera a Perícia **Domar Criatura Grande**.
+
+| Perícia | Custo | Requisitos | Efeito definido |
+|---|---:|---|---|
+| **Montar Animal** | **1 XP** | **Influência 2 + Destreza 3** (não exige Domar) | Vantagem **+1 Antecipar (A)** em testes pertinentes à montaria. Habilita o cavaleiro a coordenar a participação da montaria em **ação conjunta**, sem conceder turno extra. |
+| **Maestria em Montaria** | **1 XP** | **Montar Animal + Influência 6 + Destreza 4 + Inteligência 2** | Habilita controlar e montar criaturas **Gigantes e especiais**; Vantagem **+1A** ao montar criaturas Gigantes. Montarias Gigantes mantêm até **3 dados**. |
+
+**Sem Montar Animal:** o personagem sofre **Desvantagem Absoluta (−1 Êxito, E)** nos testes pertinentes de montaria, não recebe a Vantagem da Perícia e não usa a coordenação da montaria por Antecipar concedida por essa especialização.
+
+**Montaria Grande (DEFINIDO):** utiliza **ficha independente** do cavaleiro, pode compor a própria rolagem com até **três Atributos diferentes**, mas só pode **manter 2 dados**. A ficha da montaria não substitui o personagem nem é uma transformação druídica. Uma participação coordenada utiliza a **economia normal de ação conjunta**, nunca um segundo turno ou ataque gratuito.
+
+**Montaria Gigante (DEFINIDO):** mantém até **3 dados** da própria rolagem; a quantidade de Atributos que pode combinar e os procedimentos adicionais para criaturas especiais não foram alterados por esta decisão.
+
+**PENDENTE de procedimento:** definir como se paga/utiliza Antecipar na coordenação, quais dados/símbolos a montaria transfere na ação conjunta, se o +1A de Montar e o +1A de Maestria acumulam em criaturas Gigantes e como o limite de 9 dados rolados / 4 mantidos interage entre duas fichas. **Não aplicar a contribuição automaticamente pelo criador ou rolador até essa definição.** Não criar nova ação, turno, DE, custo ou dano.
+
+---
+
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
 ## 1. Estados e limites da revisão
