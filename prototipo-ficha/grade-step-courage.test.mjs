@@ -191,5 +191,9 @@ test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
  assert.ok(app.includes('"maestria-montaria":[["a:influencia:6","a:destreza:4","a:inteligencia:2","s:montar"]]'),
   "Compra automática da Maestria precisa incluir os graus e Montar Animal");
  assert.ok(app.includes('"montar":"Influência 2 + Destreza 3 (não exige Domar)"'),"Mostrar requisitos ao consultar Perícia");
+ assert.ok(app.includes("Gaste 1A para antecipar a rolagem da montaria"),"Perícia documenta o custo de Antecipar da coordenação");
+ assert.ok(app.includes("duas rolagens separadas, cada qual com limite de 9 dados rolados"),"Duas pilhas independentes de 9 dados");
+ assert.ok(app.includes("Pavor mantido em ambas pode abrir até duas intervenções inimigas"),"Dois resultados com Pavor mantido permitem até duas intervenções");
+ assert.ok(app.includes("Acúmulo de Vantagens e automação: PENDENTE"),"Maestria não presume acúmulo de +1A");
 
 });
