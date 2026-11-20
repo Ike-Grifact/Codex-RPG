@@ -33,14 +33,14 @@ const xp=(delta,expectedXP=0)=>({action:"adjustXP",delta,expectedXP});
 test("grades debitam e devolvem apenas o custo incremental enquanto criam a ficha",async()=>{
  const actor=fixture({creationPending:true});
  const initial=xpLedger(actor.system);
- assert.equal(initial.formation,20);
+ assert.equal(initial.formation,15);
  assert.equal(initial.additional,0);
  await enqueueRoll(actor,player,grade("attribute","influencia",1,2),deps);
- assert.equal(xpLedger(actor.system).left,initial.left-4);
+ assert.equal(xpLedger(actor.system).left,initial.left-3);
  await enqueueRoll(actor,player,grade("attribute","influencia",-1,3),deps);
  assert.equal(xpLedger(actor.system).left,initial.left);
  await enqueueRoll(actor,player,grade("knowledge","medicina",1,1),deps);
- assert.equal(gradeDetails(actor.system,"knowledge","medicina").refund,6);
+ assert.equal(gradeDetails(actor.system,"knowledge","medicina").refund,2);
  await enqueueRoll(actor,player,grade("knowledge","medicina",-1,2),deps);
  assert.equal(xpLedger(actor.system).left,initial.left);
 });
@@ -82,7 +82,7 @@ test("somente Narrador ajusta XP, com histórico e confirmação sem ultrapassar
  assert.equal(actor.system.xp,0);
  const before=Date.now();
  await enqueueRoll(actor,gm,xp(5),deps);
- assert.equal(xpLedger(actor.system).grant,25);
+ assert.equal(xpLedger(actor.system).grant,20);
  assert.equal(actor.flags.xpHistory[0].userId,gm.id);
  assert.ok(actor.flags.xpHistory[0].at>=before);
  assert.deepEqual(actor.flags.xpHistory.map(({previous,next,delta})=>[previous,next,delta]),[[0,5,5]]);
@@ -90,7 +90,7 @@ test("somente Narrador ajusta XP, com histórico e confirmação sem ultrapassar
  await assert.rejects(enqueueRoll(actor,gm,xp(-1,5),{...deps,confirm:async()=>false}),/cancelada/);
  await enqueueRoll(actor,gm,xp(-1,5),{...deps,confirm:async()=>true});
  assert.equal(actor.system.xp,4);
- actor.system.attributes.influencia=4; // 15 XP, mais Força 1, Medicina 2 e Disciplina 2.
+ actor.system.attributes.influencia=4; actor.system.practices.artesao=1; // 18 XP investidos no saldo de 19.
  actor.system.skills=["armas-leves"];
  await assert.rejects(enqueueRoll(actor,gm,xp(-3,4),deps),/XP já investido/);
  assert.deepEqual(actor.flags.xpHistory.map(({previous,next,delta})=>[previous,next,delta]),[[0,5,5],[5,4,-1]]);

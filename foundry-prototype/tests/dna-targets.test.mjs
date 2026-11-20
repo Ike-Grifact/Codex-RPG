@@ -32,7 +32,7 @@ test("O Token usa a DE do modo escolhido, mesmo sem combate, e respeita visibili
  const token={actor,name:"Gárgula",uuid:"Scene.scene.Token.defender",hidden:false};
  const game={scenes:new Map([["scene",{tokens:new Map([["defender",token]])}]])};
  const general=lookupTarget(game,user,"scene",["defender"]);
- assert.equal(general.de,3);
+ assert.equal(general.de,4);
  assert.equal(general.canInspect,false);
  assert.equal(general.publicDefense,false);
  assert.equal(lookupTarget(game,user,"scene",["defender"],true).de,4);

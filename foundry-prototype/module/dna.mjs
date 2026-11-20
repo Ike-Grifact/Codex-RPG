@@ -1,6 +1,7 @@
 import {SKILLS, sourceDice, xpLedger} from "./rules.mjs";
 import {creationMissing, developmentGroups, gradeDetails, planSkillPackage, skillDetails, skillRefundPlan} from "./advancement.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
+import {openSkillDefinition} from './compendium-data.mjs';
 import {escapeHTML as esc} from "./roll-engine.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 
@@ -64,7 +65,7 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
  const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
  return '<h3>'+esc(row.name)+'</h3><p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p><p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
-  (refund?ownedMarkup:packageButton)+
+  '<button type="button" data-action="consultSkill">Consultar no Compendium</button>'+(refund?ownedMarkup:packageButton)+
   (plan.blocker?'<p class="codex-dna-note">'+esc(plan.blocker+requiredXP)+'</p>':'')+
   (locked&&plan.status!=="owned"?'<p class="codex-dna-note">Compra indisponível durante uma rolagem ou alteração em andamento.</p>':'');
 }
@@ -123,7 +124,7 @@ function summoningMarkup(rules,system){
  const sizes=optionList(rules.summonableElementalSizes(system.skills),sizeLabels);
  const elements=optionList(rules.eligibleElementalSkills(system.skills),elementLabels);
  if(!sizes||!elements)return "";
- const payment='<option value="courage">Coragem</option><option value="pp">PP</option>';
+ const payment='<option value="courage">Coragem</option>';
  const mastery=system.skills.includes("mestre");
  return '<section class="codex-summon-plan" data-summon-plan><h4>Planejar invocação</h4>'+
   '<label>Porte <select name="size">'+sizes+'</select></label>'+
@@ -140,7 +141,7 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
+  actions:{consultSkill(){return openSkillDefinition(this.selected);},stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
@@ -292,7 +293,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    const de=Number(inputs.de);
    if(count>1&&(!Number.isSafeInteger(de)||de<0))throw Error("Informe uma DE inteira a partir de zero.");
    const plan=summonPlan(this.summonRules,this.actor.system,{...inputs,count,life:Number(inputs.life),de});
-   const lines=[plan.xpTotal+" XP próprios · "+plan.courage+" Coragem · "+plan.pp+" PP.",
+   const lines=[plan.xpTotal+" XP próprios · "+plan.courage+" Coragem.",
     plan.dice.rolled+" dado(s) de Atributo, até "+plan.dice.maxKept+" mantido(s). Um turno antecipável e um beneficiário por ação conjunta."];
    if(plan.split)lines.push(plan.split.exact?plan.split.xpPerToken+" XP e "+plan.split.lifePerToken+" Vida por token · DE "+plan.split.defenseDE+" preservada.": "Divisão com restos. A distribuição exige decisão do Narrador.");
    if(plan.stillBody)lines.push("Projeção de Psique: o corpo do conjurador permanece imóvel.");

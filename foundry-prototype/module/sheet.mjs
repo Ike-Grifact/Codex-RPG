@@ -1,24 +1,25 @@
 import {showSkill} from "./skill-catalog.mjs";
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
- sourceDice,sourceLabel,faceSymbols,buildPool,canReinforceDie,starterPurchasePlan,lifeMax,healthByLife,balance,maxPP,
+ sourceDice,sourceLabel,faceSymbols,buildPool,canReinforceDie,starterPurchasePlan,lifeMax,healthByLife,balance,maxCourage,
  loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
-import {equippedDie,defenseDisplay,effectiveWeaponRange} from "./equipment-logic.mjs";
+import {equippedDie,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {equipmentView} from './equipment-view.mjs';
+import {openSkillDefinition} from './compendium-data.mjs';
 import {quickEquipmentPlan} from './equipment-workflow.mjs';
 import {skillDetails,skillRefundPlan} from "./advancement.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
 const defaults=()=>({mode:"normal",de:1,situation:"neutral",extraKeep:false,targetDodges:false,activationPavor:1,step:false,stepDieId:"",contextApproved:false,
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",element:"",sourceContext:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 function cards(list,group,s,d){
  return list.map(([key,label])=>({key,group,label:sourceLabel(group,key,s),
@@ -30,8 +31,7 @@ function cards(list,group,s,d){
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML = faceIcons;
 const symbolsFor = die => die.symbols ?? faceSymbols(die.sides,die.face);
-const carriedItems=actor=>actor.items.filter(i=>i.type==="equipment")
- .reduce((n,i)=>n+(Number(i.system.weight)||0)*Math.max(0,Number(i.system.quantity)??1),0);
+const carriedItems=carriedWeight;
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
@@ -49,13 +49,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  toggleEquip:CodexCharacterSheet.toggleEquip,adjustIntegrity:CodexCharacterSheet.adjustIntegrity,
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
  editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
+ ,rest(_event,target){return this._request({action:'rest',kind:target.dataset.kind});},transform:CodexCharacterSheet.transform
+ ,consultSkill(_event,target){return openSkillDefinition(target.dataset.key);}
  ,buyEquipment:CodexCharacterSheet.buyEquipment,quickEquipment:CodexCharacterSheet.quickEquipment,
  prepareEquipment:CodexCharacterSheet.prepareEquipment,cravarEquipment:CodexCharacterSheet.cravarEquipment
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs",scrollable:[""]}};
  constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._busy=false;this._editing=false;this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};}
  async _prepareContext(options){
-  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal,ledger=xpLedger(s),
+  const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal||s.transformation?.kind==='animal',ledger=xpLedger(s),
    used=carriedItems(actor),carryMax=loadCapacity(s),
    hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
@@ -67,11 +69,11 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const armorCurrent=Math.min(armorMax,Math.max(0,Number(armorSys?.integrity?.value)||0));
   const armorCard=wornArmor?{
    id:wornArmor.id,name:wornArmor.name,integrity:armorCurrent,maximum:armorMax,
-   noIntegrity:armorSys.category==="muito-leve",hasMaximum:armorMax>0,
+   noIntegrity:armorMax===0,hasMaximum:armorMax>0,
    percent:armorMax?Math.round(100*armorCurrent/armorMax):0
   }:null;
   ctx.codex={
-   equipment:equipmentView(actor,this._equipmentFilters),
+   equipment:equipmentView(actor,this._equipmentFilters),hasDruidic:s.skills.includes('pericia-druidica'),transformed:!!s.transformation?.kind,
    actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
    canOpenDNA:actor.isOwner&&!attributesOnly&&!this._pending,
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
@@ -81,7 +83,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    health:healthByLife(s,s.life.value),healthApplied:actor.type==="character",
-   courage:s.courage,pp:s.pp,ppMax:maxPP(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
+   courage:s.courage,courageMax:maxCourage(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
     xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
@@ -129,7 +131,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    if(targetError)plan.errors.push(targetError);
    ctx.codex.prepare={
     isShared,repeatedDiscipline:isRepeat(d),canRepeatDisc:canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),mode:this._opts.mode,modeArmas:this._opts.mode==="armas",modeConjuracao:this._opts.mode==="conjuracao",
-    contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,
+    contextApproved:this._opts.contextApproved,targetDodges:this._opts.targetDodges,de:this._opts.de,sourceContext:this._opts.sourceContext,
+    elements:['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].filter(key=>s.skills.includes(key==='psiquico'?'criar-item-foco-magia':key)).map(key=>({key,selected:this._opts.element===key})),
     localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
     weightEnabled:this._opts.weightEnabled,attackWeight:this._opts.attackWeight,targetWeight:this._opts.targetWeight,
@@ -144,7 +147,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
       .map(i=>({id:i.id,name:i.name,selected:i.id===this._opts.equipmentId})),
     targetName:target?.name??"",targetDE:target?.de??"Reservada",hasTarget:Boolean(target),inCombat:!!game.combat?.started,
     canExecute:plan.ok&&!targetError&&actor.isOwner&&!actor.getFlag(NS,"creationPending"),errors:plan.errors,
-    pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s)+(x.reinforced?" · Reforço":""),icon:dieSvg(x.sides)})),
+    pool:plan.pool.map(x=>({sides:x.sides,label:sourceLabel(x.group,x.key,s)+(x.elevated?" · Elevação":x.reinforced?" · Reforço legado":""),icon:dieSvg(x.sides)})),
     effectiveRange:die&&this._opts.mode==="armas"?effectiveWeaponRange(s,item.system):0,
     poolCount:plan.pool.length,keepNatural:keepForActor(actor,0)
    };
@@ -167,7 +170,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      .map((x,i)=>({...x,position:i+1,keptDice:x.ids.map(id=>p.dice.find(d=>d.id===id))
       .filter(Boolean).map(d=>({sides:d.sides,face:d.face,symbolsHTML:markerHTML(symbolsFor(d)),icon:dieSvg(d.sides)}))}));
    ctx.codex.pending={
-    dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s)+(x.reinforced?" · Reforço":""),
+    dice:p.dice.map(x=>({...x,icon:dieSvg(x.sides),label:sourceLabel(x.group,x.key,s)+(x.elevated?" · Elevação":x.reinforced?" · Reforço legado":""),
       selected:p.selected.includes(x.id),symbolsText:markerText(symbolsFor(x)),symbolsHTML:markerHTML(symbolsFor(x))})),
     selectedCount:p.selected.length,canFinalize:!this._busy&&actor.isOwner&&(p.publication||summary?.ok),summary,errors:summary?.errors||[],
     publishing:!!p.publication,targetOptions:(p.options.combatId?game.combats.get(p.options.combatId):null)?.combatants.filter(c=>c.actor&&c.actor.uuid!==actor.uuid&&c.actor.uuid!==p.options.targetActorUuid).map(c=>({id:c.id,name:c.name,selected:p.options.passAllyId===c.id}))??[],
@@ -322,7 +325,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    return;
   }
   if(hasDiscipline(d)!==previousDiscipline){
-   this._opts.mode=hasDiscipline(d)?(system.skills?.includes("criar-item-foco-magia")?"conjuracao":"armas"):"normal";
+   this._opts.mode=hasDiscipline(d)?(['criar-item-foco-magia','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].some(id=>system.skills.includes(id))?"conjuracao":"armas"):"normal";
    this._opts.equipmentId="";
   }
   this._opts.contextApproved=false;
@@ -351,10 +354,9 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async adjustResource(event,target){
   if(!this.actor.isOwner)return;
   const field=target.dataset.resource,delta=Number(target.dataset.delta),s=this.actor.system;
-  const caps={"system.life.value":lifeMax(s),"system.courage":10,"system.pp":maxPP(s.level)};
+  const caps={"system.life.value":lifeMax(s),"system.courage":maxCourage(s.level)};
   if(!(field in caps)||![-1,1].includes(delta))return;
-  const current=field==="system.life.value"?s.life.value:field==="system.courage"?s.courage:s.pp;
-  await this.actor.update({[field]:Math.max(0,Math.min(caps[field],current+delta))});
+  return this._request({action:'resource',field,delta});
  }
  static toggleSkill(_event,target){
   if(!this._editing||!this.actor.isOwner||this._pending||this._busy)return;
@@ -371,6 +373,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._busy=true;
   try{
    const response=await requestRoll(this.actor,request);
+   if(request.action==='transform'){this._draft=draft();this._opts={...defaults(),de:this._opts.de};}
    if(request.action==="start"&&response?.started){
     this._draft=draft();
     this._opts=defaults();
@@ -416,6 +419,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async addEquipment(){
   if(!this._editing||!this.actor.isOwner)return;
   return createCodexItem(this.actor);
+ }
+ static async transform(){
+  if(this._busy||this._pending||this._editing)return;
+  if(this.actor.system.transformation?.kind)return this._request({action:'transform',revert:true});
+  const chosen=await foundry.applications.api.DialogV2.prompt({window:{title:'Transformação Druídica'},
+   content:'<label>Forma<select name="size"><option value="pequena">Pequena · 0 Coragem · 1 Atributo</option><option value="media">Média · 1 Coragem · 2 Atributos</option><option value="grande">Grande · 1 Coragem · 3 Atributos</option></select></label><p>Aprimoramento aprovado: 2d6+1d10 → 2d10+1d12. Outras composições e o ganho de Vida por Vigor exigem adjudicação.</p>'+ATTRIBUTES.map(([id,name])=>'<label><input type="checkbox" name="attributes" value="'+id+'">'+name+'</label>').join(''),
+   ok:{label:'Transformar',callback:(_event,button)=>({size:button.form.elements.size.value,attributes:[...button.form.querySelectorAll('[name="attributes"]:checked')].map(input=>input.value)})},rejectClose:false});
+  if(chosen)return this._request({action:'transform',...chosen});
  }
  static async buyEquipment(_event,target){
   if(this._buying||this._busy||this._pending||!this.actor.isOwner)return;

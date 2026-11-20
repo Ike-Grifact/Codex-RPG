@@ -78,11 +78,13 @@ test("valida, instala e atualiza com backup integral e sem alterar dados de usu�
   json(`Data/systems/${systemId}/system.json`, optionsOld);
   json(`Data/systems/${systemId}/storage/preferencias.json`, { value: 42 });
   json(`Data/systems/${systemId}/modificacao-local.json`, { previous: true });
+  json(`Data/systems/${systemId}/assets/pessoal/anotacoes.json`, { personal: 'preservar' });
   const updated = run(install, args);
   assert.equal(updated.status, 0, updated.stderr);
   assert.equal(validatePackage(packageRoot).version, current.version);
   assert.equal(readJson(join(packageRoot, "storage", "preferencias.json")).value, 42);
-  assert.ok(!existsSync(join(packageRoot, "modificacao-local.json")));
+  assert.equal(readJson(join(packageRoot, "modificacao-local.json")).previous, true);
+  assert.equal(readJson(join(packageRoot, "assets", "pessoal", "anotacoes.json")).personal, 'preservar');
   const backupRoot = join(root, "Backups", "codex-rpg-system-installer");
   const [transaction] = readdirSync(backupRoot);
   const backup = join(backupRoot, transaction, systemId);
@@ -90,6 +92,19 @@ test("valida, instala e atualiza com backup integral e sem alterar dados de usu�
   assert.equal(readJson(join(backup, "modificacao-local.json")).previous, true);
   assert.deepEqual(readdirSync(backupRoot), [transaction]);
   for (const [file, contents] of unchanged) assert.deepEqual(readFileSync(file), contents);
+});
+
+test("conserva a instalação anterior se um arquivo pessoal conflitar com uma pasta do pacote", (t) => {
+  const { root, json, packageRoot, world, actor } = fixture(t);
+  const manifest = { id: systemId, version: '0.2.0' };
+  json(`Data/systems/${systemId}/system.json`, manifest);
+  const personal = json(`Data/systems/${systemId}/assets`, { personal: true });
+  const before = [personal, world, actor].map(file => [file, readFileSync(file)]);
+  const result = run(install, ['--user-data', root]);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Conflito entre arquivo pessoal e pacote/);
+  assert.deepEqual(readJson(join(packageRoot, 'system.json')), manifest);
+  for (const [file, contents] of before) assert.deepEqual(readFileSync(file), contents);
 });
 
 test("recusa um sistema instalado com ID diferente", (t) => {
@@ -170,4 +185,5 @@ test("atualiza se o Windows travar a renomeação da pasta por causa do diretór
   const backupRoot = join(root, "Backups", "codex-rpg-system-installer");
   const [transaction] = readdirSync(backupRoot);
   assert.deepEqual(readJson(join(backupRoot, transaction, systemId, "marcador.json")), { preserve: true });
+  assert.deepEqual(readJson(join(packageRoot, "marcador.json")), { preserve: true });
 });

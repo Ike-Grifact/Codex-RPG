@@ -1,5 +1,5 @@
 import {openJointPlan} from "./joint-attack.mjs";
-import {narratorCap,monsterCap} from "./rules.mjs";
+import {narratorCap,monsterCap,maxCourage} from "./rules.mjs";
 
 export const NS = "codex-rpg-foundry";
 export const publicPavorDefault = 2;
@@ -213,7 +213,7 @@ export async function transferCombatPavor(message){
   if(target&&["character","humanoid","animal","creature","monsterHumanoid"].includes(target.type)){
    const add=Math.max(0,obj.p);
    if(obj.targetType==="character")
-    await target.update({"system.courage":Math.min(10,Number(target.system.courage||0)+add)});
+    await target.update({"system.courage":Math.min(Math.max(target.system.courage,maxCourage(target.system.level)),Number(target.system.courage||0)+add)});
    else {
     const cap=monsterCap(target.system.threatGrade);
     await target.update({"system.pavorLocal":Math.min(cap,Number(target.system.pavorLocal||0)+add)});

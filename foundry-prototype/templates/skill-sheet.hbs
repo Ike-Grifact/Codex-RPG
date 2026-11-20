@@ -1,0 +1,10 @@
+<section class="codex-foundry-root">
+ <h2>{{skill.name}}</h2>
+ <p>{{skill.state}} · {{skill.family}} · {{#if skill.costPending}}XP pendente{{else}}{{skill.xpCost}} XP{{/if}}</p>
+ <p>{{skill.description}}</p>
+ <h3>Requisitos de aquisição</h3>
+ {{#each skill.requirementLabels}}<p>{{#unless @first}}OU {{/unless}}{{this}}</p>{{/each}}
+ <p>{{#if skill.grades.length}}Graus {{#each skill.grades}}{{this}} {{/each}} · {{/if}}Automação {{skill.automation}}</p>
+ <p>{{skill.source}}</p>
+ <p>{{purchaseNote}}</p>
+</section>

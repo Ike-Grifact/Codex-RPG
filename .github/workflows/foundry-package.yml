@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Instalar ferramentas de Compendium
+        run: npm ci --prefix foundry-prototype --ignore-scripts
       - name: Testar regras e instalador
         run: node --test 'foundry-prototype/tests/*.test.mjs'
 

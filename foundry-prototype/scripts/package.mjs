@@ -8,7 +8,7 @@ export const systemId = "codex-rpg-foundry";
 export const source = fileURLToPath(new URL("../", import.meta.url));
 const github = "https://github.com/Ike-Grifact/Codex-RPG";
 const playtestManifest = "https://raw.githubusercontent.com/Ike-Grifact/Codex-RPG/foundry-playtest-manifest/system.json";
-const content = ["assets", "lang", "module", "styles", "templates"];
+const content = ["assets", "lang", "module", "styles", "templates", "packs"];
 const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.([1-9]\d*))?$/;
 
 export function readJson(file) {
@@ -75,6 +75,11 @@ export function validatePackage(root) {
     if (isAbsolute(entry) || isAbsolute(child) || child.startsWith("..") || !lstat(file)?.isFile()) {
       throw new Error(`Arquivo do manifesto inválido: ${entry}`);
     }
+  }
+  for(const pack of manifest.packs??[]){
+    const path=resolve(root,pack.path),child=relative(root,path);
+    if(isAbsolute(pack.path)||isAbsolute(child)||child.startsWith('..')||!lstat(join(path,'CURRENT'))?.isFile())throw Error('Compendium LevelDB inválido: '+pack.path);
+    if(pack.type!=='Item')throw Error('Tipo de Compendium não suportado: '+pack.type);
   }
   return manifest;
 }

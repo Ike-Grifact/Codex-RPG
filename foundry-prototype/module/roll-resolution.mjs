@@ -1,4 +1,4 @@
-import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxPP, monsterCap, sourceLabel, faceSymbols, healthByLife} from "./rules.mjs";
+import {buildPool, resolveRoll, compareKeptOptions, affinity, keepLimit, maxCourage, passiveAnticipar,monsterCap, sourceLabel, faceSymbols, healthByLife} from "./rules.mjs";
 import {equippedDie} from "./equipment-logic.mjs";
 import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
@@ -17,11 +17,18 @@ export async function preparePendingRoll(actor, request, user, game) {
   const {selection, options: input = {}, sceneId, targetIds = []} = request;
   if (!selection || !Array.isArray(targetIds) || targetIds.length > 1) throw Error("Selecione no máximo um alvo.");
   const system = actor.system;
+  if(system.transformation?.kind==='animal'&&input.mode==='conjuracao')throw Error('A forma animal não pode conjurar.');
+  if(system.transformation?.kind==='animal'&&(system.transformation.pendingAttributes?.length||system.transformation.lifePending))throw Error('O aprimoramento destes dados ou a Vida da forma exige adjudicação. Consulte o Narrador antes da rolagem automática.');
   const {
     mode = "normal", de = 1, situation = "neutral", stepDieId = "", equipmentId = "",
     attackWeight, targetWeight,
   } = input;
   if (!["normal", "armas", "conjuracao"].includes(mode)) throw Error("Modo de rolagem inválido.");
+  if(mode==='conjuracao'&&!equipmentId){
+    const skill=input.element==='psiquico'?'criar-item-foco-magia':input.element;
+    if(!['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(input.element)||!system.skills.includes(skill))throw Error('Selecione um elemento adquirido.');
+    if(typeof input.sourceContext!=='string'||!input.sourceContext.trim()||input.sourceContext.length>500)throw Error('Descreva a fonte elemental e a preparação para o Narrador.');
+  }
   if (!Number.isInteger(de) || de < 0 || de > 30) throw Error("Informe uma DE inteira de 0 a 30.");
   if (![stepDieId, equipmentId].every(id => typeof id === "string")) throw Error("Fonte de dado inválida.");
   const step = !system.animalRules && input.step === true;
@@ -50,10 +57,10 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (activationCost > (system.pavorLocal ?? 0)) throw Error("Pavor local insuficiente para a ativação.");
   const {dice, formula, roll} = await rollPool(plan.pool);
   const pending = {
-    version: 4, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
+    version: 5, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
     base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
-      health, mode, equipmentId, de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,
+      health, mode, equipmentId, element:input.element??'',sourceContext:input.sourceContext??'',de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,bonusA:passiveAnticipar(system,selection),
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
       attackWeight, targetWeight, weightEnabled: input.weightEnabled === true,
       noisy: Boolean(item?.system.properties?.includes("Barulhenta")),
@@ -102,7 +109,6 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const extra = Math.max(0, pending.selected.length - keepForActor(actor, 0));
   let courage = (o.health?.coragem??0) + Number(Boolean(o.step && !o.stepPaid)) + (usesLocal(actor) ? 0 : extra);
   const pavor = (o.activationCost ?? costToActivate(actor, game.combat?.started)) + (usesLocal(actor) ? extra : 0);
-  let pp = 0;
   const item = actor.items.get(o.equipmentId);
   const active = [o.characteristic, o.secondCharacteristic].filter(Boolean);
   if (active.length) {
@@ -114,12 +120,12 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     }
     if (!result.critical || active.length === 2) {
       if (actor.type !== "character") throw Error("Custo de técnica paga para a oposição pendente de adjudicação.");
-      if (o.activationPayment === "pp") pp = 1;
-      else courage += 1;
+      if(o.activationPayment==='pp')throw Error('PP foi revogado. Selecione Coragem para a ativação.');
+      courage += 1;
     }
   }
 
-  if (courage > s.courage || pp > s.pp || pavor > s.pavorLocal) throw Error("Recursos insuficientes para confirmar.");
+  if (courage > s.courage || pavor > s.pavorLocal) throw Error("Recursos insuficientes para confirmar.");
   let ally;
   if (o.passAllyId) {
     const combat = game.combats.get(o.combatId);
@@ -131,8 +137,9 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const localAfterCost = s.pavorLocal - pavor;
   const localReward = Math.min(result.monsterCriticalPavor, Math.max(0, monsterCap(s.threatGrade) - localAfterCost));
   const changes = {};
-  if (courage || result.criticalRefundCourage) changes["system.courage"] = Math.min(10, s.courage - courage + result.criticalRefundCourage);
-  if (pp || result.criticalRefundPP) changes["system.pp"] = Math.min(maxPP(s.level), s.pp - pp + result.criticalRefundPP);
+  const form=s.transformation;
+  if(form?.kind==='animal'&&((form.size==='media'&&result.p>result.e)||(form.size==='grande'&&result.p>0)))changes['system.transformation']={};
+  if (courage || result.criticalRefundCourage) changes["system.courage"] = Math.min(Math.max(s.courage,maxCourage(s.level)), s.courage - courage + result.criticalRefundCourage);
   if (pavor || localReward) changes["system.pavorLocal"] = localAfterCost + localReward;
   // Dados rolados uma única vez; o chat informa a face e as runas de cada dado.
   const chosenIds=new Set(pending.selected);
@@ -140,7 +147,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face,pending.version<4);
     const marks=faceIcons(symbols);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
-      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.reinforced?" · Reforço":"")+'</div>'+
+      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.elevated?" · Elevação":die.reinforced?" · Reforço legado":"")+'</div>'+
       '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+'">'+marks+'</div>'+
       '<div class="codex-chat-die-marks">'+(chosen?'Mantido na ação':'Não mantido')+'</div>'+
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
@@ -151,12 +158,13 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const overflow = result.monsterCriticalPavor - localReward;
   const content = `<div class="codex-chat-result"><h3>Codex RPG · ${escapeHTML(result.outcome)}</h3>
     <p>${sources}${o.targetName ? ` · Alvo ${escapeHTML(o.targetName)}` : ""}</p>
+    ${o.sourceContext?'<p>Fonte e preparação · '+escapeHTML(o.sourceContext)+'</p>':''}
     <p>Total ${result.reached} · DE ${o.privateDefense ? "reservada" : result.de} · ᛋ ${result.e} · ᚨ ${result.aRemaining} · ᚦ ${result.p}</p>
     ${result.critical ? `<p>Crítico · ${result.critical} faces máximas mantidas.</p>` : ""}
     ${active.length ? `<p>Características · ${active.map(escapeHTML).join(", ")}.</p>` : ""}
     <p>Dano básico ${result.damage} · Narrador aplica à Integridade/Vida e decide condições.</p>
     ${o.health ? `<p>Saúde ao agir · ${o.health.label}.</p>` : ""}
-    <p>Custo · ${courage + Number(Boolean(o.stepPaid))} Coragem, ${pp} PP, ${pavor} Pavor local.</p>
+    <p>Custo · ${courage + Number(Boolean(o.stepPaid))} Coragem, ${pavor} Pavor local.</p>
     ${ally ? `<p>1A para passar a oportunidade a ${escapeHTML(ally.name)} · validação do Narrador.</p>` : ""}
     ${result.p ? `<p>Pavor residual · ${result.p}P para o Narrador encaminhar conforme o alvo.</p>` : ""}
     ${overflow ? `<p>Crítico · ${overflow}P excedentes para a reserva pública, até o teto.</p>` : ""}
@@ -167,7 +175,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     combatId: combat?.id ?? null, round: o.combatRound ?? combat?.round ?? null, allyId: ally?.id ?? null,
     targetUuid: o.targetActorUuid, p: result.p,
   };
-  return {changes, content, result: {...summary, costs: {courage, pp, pavor}, localReward, overflow}, adjudication};
+  return {changes, content, result: {...summary, costs: {courage, pavor}, localReward, overflow}, adjudication};
 }
 
 export function publicRollResult(result, privateDefense) {

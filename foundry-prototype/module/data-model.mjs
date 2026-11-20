@@ -7,19 +7,26 @@ function grades(keys){return new F.SchemaField(Object.fromEntries(keys.map(k=>[k
 const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  level:new F.NumberField({required:true,integer:true,min:1,max:20,initial:1}),
  concept:t(),origin:new F.StringField({required:true,initial:monster||animal?"Criatura":"Humano"}),
- virtue:t(),personality:t(),notes:t(),abilities:t(),leader:new F.BooleanField({initial:false}),
+ virtue:t(),personality:t(),notes:t(),abilities:t(),leader:new F.BooleanField({initial:false}),bodySize:new F.StringField({initial:'medio'}),
  attributes:grades(["forca","agilidade","destreza","inteligencia","influencia","vigor"]),
  knowledges:grades(["protecao","astronomia","medicina","alquimia","engenharia","erudicao"]),
  practices:grades(["armas_conjuracao","atletismo","furtividade","artesao","apresentacao","coleta"]),
  skills:new F.ArrayField(new F.StringField({required:true}),{required:true,initial:[]}),
  life:new F.SchemaField({value:nn(4),medical:new F.BooleanField({initial:false})}),
- courage:nn(10),pp:nn(0),xp:nn(0),
+ courage:nn(10),pp:nn(0),xp:nn(0),creationBudget:nn(15),transformation:new F.ObjectField({initial:{}}),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
  pavorLocal:nn(0),animalRules:new F.BooleanField({initial:animal}),monsterHumanoidRules:new F.BooleanField({initial:monsterHumanoid}),monsterRules:new F.BooleanField({initial:monster}),
  status:new F.SchemaField({hidden:new F.BooleanField({initial:false}),note:t()})
 });
-export class CodexCharacterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
-export class CodexHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false);}}
+class HistoricalFormationData extends foundry.abstract.TypeDataModel {
+ static migrateData(source){
+  const complete=['level','attributes','knowledges','practices','life','xp'].every(key=>Object.hasOwn(source,key));
+  if(complete&&!Object.hasOwn(source,'creationBudget'))source.creationBudget=20;
+  return super.migrateData(source);
+ }
+}
+export class CodexCharacterData extends HistoricalFormationData {static defineSchema(){return schema(false);}}
+export class CodexHumanoidData extends HistoricalFormationData {static defineSchema(){return schema(false);}}
 export class CodexAnimalData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,true);}}
 export class CodexMonsterHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,false,true);}}
 export class CodexMonsterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(true);}}
@@ -38,5 +45,13 @@ export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
   properties:new F.ArrayField(new F.StringField(),{required:true,initial:[]}),
   ammo:new F.SchemaField({value:nn(0),max:nn(0),reload:nn(0),cartucho:t()}),
   element:t(),catalogId:t(),associatedEquipment:t(),embeddedWeapon:t(),packSize:nn(0),storageCapacity:nn(0)
+ };}
+}
+export class CodexSkillData extends foundry.abstract.TypeDataModel {
+ static defineSchema(){return {
+  canonicalId:t(),description:t(),xpCost:nn(0),costPending:new F.BooleanField({initial:false}),
+  requirements:new F.ArrayField(new F.ArrayField(new F.StringField()),{initial:[]}),
+  grades:new F.ArrayField(new F.NumberField({integer:true,min:1,max:6}),{initial:[]}),
+  family:t(),state:t(),source:t(),sourceCommit:t(),automation:t(),effects:new F.ArrayField(new F.ObjectField(),{initial:[]})
  };}
 }

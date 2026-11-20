@@ -5,6 +5,8 @@ import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 import {xpLedger} from "./rules.mjs";
 import {escapeHTML} from "./roll-engine.mjs";
 import {purchasePlan} from "./equipment-workflow.mjs";
+import {animalTransformationPlan} from './transformations.mjs';
+import {maxCourage,lifeMax} from './rules.mjs';
 import {advancementPlan, creationMissing, gradeDetails, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
 
 const query = `${NS}.roll`;
@@ -41,6 +43,30 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   verifyAuthority(game);
   if (!actor.testUserPermission(user, "OWNER")) throw Error("Sem permissão para rolar por esta ficha.");
   const pending = actor.getFlag(NS, "pendingRoll");
+  if(request.action==='resource'){
+    if(!['system.life.value','system.courage'].includes(request.field)||![-1,1].includes(request.delta))throw Error('Recurso inválido.');
+    const current=request.field==='system.courage'?actor.system.courage:actor.system.life.value;
+    const limit=request.field==='system.courage'?Math.max(current,maxCourage(actor.system.level)):lifeMax(actor.system);
+    await actor.update({[request.field]:Math.max(0,Math.min(limit,current+request.delta))});return;
+  }
+  if(request.action==='transform'){
+    if(pending)throw Error('Finalize a rolagem antes de transformar.');
+    if(request.revert){await actor.update({'system.transformation':{}});return;}
+    if(actor.system.transformation?.kind)throw Error('Reverta a forma atual antes de transformar novamente.');
+    const plan=animalTransformationPlan(actor.system,request);
+    await actor.update({'system.transformation':plan.state,'system.courage':actor.system.courage-plan.courage});return;
+  }
+  if(request.action==='rest'){
+    if(pending)throw Error('Finalize a rolagem antes de descansar.');
+    if(!['short','long'].includes(request.kind))throw Error('Descanso inválido.');
+    if(request.kind==='short'&&!actor.system.skills.includes('recobrar-coragem'))throw Error('Descanso curto exige Recobrar Coragem.');
+    const approved=await confirm({title:'Confirmar descanso',content:'<p>Confirmar descanso '+(request.kind==='short'?'curto e cena narrativa':'longo')+' de '+escapeHTML(actor.name)+'?</p>'});
+    if(!approved)throw Error('Descanso cancelado.');
+    verifyAuthority(game);
+    if(actor.getFlag(NS,'pendingRoll'))throw Error('A ficha tem uma rolagem pendente.');
+    const amount=request.kind==='short'?2:Number(actor.system.attributes.vigor)+1;
+    await actor.update({'system.courage':Math.min(Math.max(actor.system.courage,maxCourage(actor.system.level)),actor.system.courage+amount)});return;
+  }
   if(request.action==='purchase'){
     const history=actor.getFlag(NS,'purchases')??[];
     if(history.some(entry=>entry.id===request.id))return {purchased:false};
@@ -148,7 +174,13 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
   }
   if (request.action === "start") {
     if (pending) return {started: false};
+    if(actor.system.transformation?.kind==='animal'&&request.options?.mode==='conjuracao')throw Error('A forma animal não pode conjurar.');
     if (actor.getFlag(NS, "creationPending")) throw Error("Conclua a criação do Aprendiz antes de rolar.");
+    if(request.options?.mode==='conjuracao'&&!request.options.equipmentId&&!user.isGM){
+      const approved=await confirm({title:'Confirmar fonte elemental',content:'<p>'+escapeHTML(actor.name)+' · '+escapeHTML(request.options.element??'')+'</p><p>'+escapeHTML(request.options.sourceContext??'')+'</p><p>Confirma a fonte disponível e o tempo de preparação pelas regras vigentes?</p>'});
+      if(!approved)throw Error('Fonte ou preparação não confirmada pelo Narrador.');
+      verifyAuthority(game);
+    }
     const { pending: draft, roll, changes, privateDE } = await preparePendingRoll(actor, request, user, game);
     verifyAuthority(game);
     if(draft.options.privateDefense)draft.options.sealedDE=await sealDefense(game,draft,privateDE);
@@ -184,7 +216,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if (["cancelP", "convertPairs"].includes(key)) {
       if (!Number.isSafeInteger(value) || value < 0 || value > 100) throw Error("Quantidade de Antecipar inválida.");
     } else if (typeof value !== "string" || value.length > 200) throw Error("Opção inválida.");
-    if (key === "activationPayment" && !["pp", "courage"].includes(value)) throw Error("Pagamento inválido.");
+    if (key === "activationPayment" && value!=="courage") throw Error("A ativação usa Coragem. PP foi revogado.");
     config[key] = value;
     if (key === "characteristic") config.secondCharacteristic = "";
   } else return;
@@ -248,7 +280,7 @@ export async function requestRoll(actor, request) {
   if (!game.user.hasPermission("QUERY_USER")) {
     throw Error("O Narrador precisa habilitar Consultar Usuário nas permissões do Foundry para sincronizar rolagens.");
   }
-  const needsApproval=request.action==="adjustXP"&&request.delta<0||
+  const needsApproval=request.action==='rest'||request.action==='start'&&request.options?.mode==='conjuracao'&&!request.options.equipmentId||request.action==="adjustXP"&&request.delta<0||
     request.action==="advance"&&(request.advance?.delta===-1||request.advance?.remove===true);
   return gm.query(query,{...request,actorUuid:actor.uuid},needsApproval?{timeout:approvalTimeout+15000}:undefined);
 }

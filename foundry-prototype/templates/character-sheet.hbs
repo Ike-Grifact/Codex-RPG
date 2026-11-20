@@ -42,15 +42,13 @@
       <small>{{codex.health.label}}{{#if codex.healthApplied}}{{#if codex.health.coragem}} · {{codex.health.coragem}} Coragem por ação{{/if}}{{/if}}</small>
     </div>
     {{#unless codex.attributesOnly}}<div class="codex-resource">
-      <span>CORAGEM</span><strong>{{codex.courage}} / 10</strong>
+      <span>CORAGEM</span><strong>{{codex.courage}} / {{codex.courageMax}}</strong>
       <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
       <small>Gasto no reforço ou na retenção</small>
+      <div class="codex-actions"><button type="button" data-action="rest" data-kind="short">Descanso curto</button><button type="button" data-action="rest" data-kind="long">Descanso longo</button></div>
+      {{#if codex.hasDruidic}}<button type="button" data-action="transform">{{#if codex.transformed}}Reverter forma{{else}}Transformação Druídica{{/if}}</button>{{/if}}
     </div>
-    <div class="codex-resource">
-      <span>PP · PONTOS DE PERÍCIA</span><strong>{{codex.pp}} / {{codex.ppMax}}</strong>
-      <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.pp" data-delta="1">+</button></div>
-      <small>Perícia em Coragem a partir do nível 5</small>
-    </div>
+
 {{/unless}}
     {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
     {{#if codex.isAnimal}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
@@ -85,7 +83,7 @@
      <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
      <small>Espaço restante: {{codex.loadFree}} Alto</small>
      <small>Alternativas: {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</small>
-     {{#if codex.overloaded}}<small class="codex-warning">ATENÇÃO: carga excedida. Penalidades pendentes.</small>{{/if}}
+     {{#if codex.overloaded}}<small class="codex-warning">Sobrecarga anotada · alcance da penalidade sob adjudicação do Narrador.</small>{{/if}}
     </div>
   </div>
 
@@ -101,7 +99,7 @@
      {{#unless codex.attributesOnly}}{{#unless codex.hasCreationMinimum}}
        <details class="codex-starter-guide" open>
         <summary>Compras mínimas orientadas · 3 XP no personagem novo</summary>
-        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 20 XP experimentais livremente, sem reservas.</p>
+        <p>Escolha o primeiro Atributo (1 XP) e um Conhecimento OU Prática (2 XP). Depois use o resto dos 15 XP livremente, sem reservas.</p>
         <div class="codex-starter-fields">
          <label>Atributo inicial<select data-starter-attr>{{#each codex.starterAttributes}}
           <option value="{{this.id}}">{{this.name}}</option>{{/each}}</select></label>
@@ -225,6 +223,7 @@
           </select></label>
         {{/if}}
         {{#unless codex.prepare.hasTarget}}<label>DE manual<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>{{/unless}}
+        {{#if codex.prepare.modeConjuracao}}<label>Elemento<select data-roll-option="element"><option value="">Selecione</option>{{#each codex.prepare.elements}}<option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.key}}</option>{{/each}}</select></label><label>Fonte ambiental e preparação<input data-roll-option="sourceContext" value="{{codex.prepare.sourceContext}}" placeholder="Descreva para confirmação do Narrador"></label>{{/if}}
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
         {{/each}}</select></label>
@@ -238,10 +237,10 @@
         {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>{{/unless}}
         {{/if}}
         {{#unless codex.isAnimal}}
-         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Reforçar um dado da pilha por 1 Coragem</label>
+         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado da pilha por 1 Coragem</label>
          {{#if codex.prepare.step}}
          <label>Escolha o dado<select data-roll-option="stepDieId">
-           <option value="">Selecione um dado para acrescentar outro igual</option>
+           <option value="">Selecione um dado para subir uma categoria</option>
            {{#each codex.prepare.stepOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
          </select></label>
          {{/if}}
@@ -260,7 +259,7 @@
             <option value="pesado" {{#if codex.prepare.targetWeightPesado}}selected{{/if}}>Pesado</option>
           </select></label>
         {{/if}}
-        {{#if codex.selectedComplement}}{{#unless codex.prepare.repeatedDiscipline}}<label class="codex-check codex-warn"><input type="checkbox" data-roll-option="contextApproved" {{#if codex.prepare.contextApproved}}checked{{/if}}> Narrador confirmou a pertinência da Perícia e do complemento</label>{{/unless}}{{/if}}
+        {{#unless codex.attributesOnly}}{{#if codex.selectedComplement}}{{#unless codex.prepare.repeatedDiscipline}}<label class="codex-check codex-warn"><input type="checkbox" data-roll-option="contextApproved" {{#if codex.prepare.contextApproved}}checked{{/if}}> Narrador confirmou a pertinência da Perícia e do complemento</label>{{/unless}}{{/if}}{{/unless}}
       </div>
       {{#if codex.prepare.canRepeatDisc}}<div class="codex-actions"><button type="button" data-action="repeatDiscipline" aria-pressed="{{#if codex.prepare.repeatedDiscipline}}true{{else}}false{{/if}}">{{#if codex.prepare.repeatedDiscipline}}Retirar segunda Disciplina{{else}}Adicionar segunda Disciplina{{/if}}</button></div>{{/if}}
       <div class="codex-pool"><strong>Pilha prevista · {{codex.prepare.poolCount}}/9 dados</strong>
@@ -302,7 +301,7 @@
         </select></label>
         <label>Pagamento da característica paga<select data-pending-option="activationPayment">
          <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>1 Coragem (custo-base de ativação)</option>
-         <option value="pp" {{#if codex.pending.paymentPP}}selected{{/if}}>1 PP</option>
+
         </select></label>
         {{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
@@ -348,6 +347,7 @@
       {{#each codex.skills}}
       <div class="codex-skill {{#if this.owned}}is-owned{{/if}}">
         <div><strong>{{this.name}}</strong><small>{{this.detail}} · {{#if this.pending}}XP de aquisição pendente{{else}}{{this.cost}} XP{{/if}}</small></div>
+        <button type="button" data-action="consultSkill" data-key="{{this.id}}">Consultar no Compendium</button>
                 {{#if @root.codex.editing}}
           {{#unless this.owned}}{{#if this.blocker}}<small>{{this.blocker}}</small>{{/if}}{{/unless}}
           <button type="button" data-action="toggleSkill" data-key="{{this.id}}" {{#unless this.owned}}{{#unless this.canBuy}}disabled{{/unless}}{{/unless}}>{{#if this.owned}}Adquirida{{else}}Comprar{{/if}}</button>
@@ -435,5 +435,5 @@
     {{/if}}
     <label>Notas <textarea data-field="system.notes" {{#unless codex.editing}}readonly{{/unless}}>{{codex.notes}}</textarea></label>
   </details>
-  <footer class="codex-footer">Protótipo Foundry v14 · Referência SRD v0.51 · orçamento experimental compartilhado · automação de Pavor sob validação.</footer>
+  <footer class="codex-footer">Protótipo Foundry v14 · Referência SRD Playtest Nível 1 v1.0 · formação registrada na ficha · automação de Pavor sob validação.</footer>
 </section>

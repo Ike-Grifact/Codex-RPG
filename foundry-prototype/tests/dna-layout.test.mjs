@@ -11,7 +11,7 @@ import {preparePackage,systemId} from "../scripts/package.mjs";
 const web=name=>new URL("../../prototipo-ficha/"+name,import.meta.url);
 const raw=readFileSync(web("gene-graph.js"),"utf8");
 const app=readFileSync(web("app.js"),"utf8");
-const rows=runInNewContext(app.match(/^const SKILLS=(\[[\s\S]*?^\]);/m)[1]);
+const rows=JSON.parse(readFileSync(new URL("../reference/site-catalog.json",import.meta.url),"utf8")).skills;
 const system={xp:100,attributes:{},knowledges:{},practices:{},skills:[]};
 
 test("catálogo espelha IDs, nomes, texto e custos atuais por ID e preserva legadas",()=>{
@@ -55,7 +55,7 @@ test("constelações incluem todo o catálogo visível sem colisões no plano vi
   const {height,groups}=position(nodes);
   assert.equal(groups.flatMap(group=>[...group.nodes]).length,count);
   if(count===skills.length){
-   assert.equal(groups.length,10);
+   assert.equal(groups.length,12);
    const byId=new Map(nodes.map(n=>[n.id,n]));
    for(const [id,family] of [["invocacao-elemental","conjuracao"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","armas"],["olhos-de-aguia","disparos"]])
     assert.equal(byId.get(id)?.geneFamily,family);

@@ -9,10 +9,11 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const ctx=await super._prepareContext(options);
   const s=this.item.system;
   ctx.equipment={
+   pricePending:this.item.getFlag('codex-rpg-foundry','pricePending')===true,
    canMigrateArmor:game.user.isGM&&!!catalogArmorMigration(this.item),
    name:this.item.name,dieIcon:dieSvg(s.die),img:this.item.img,kind:s.kind,grade:s.grade,weight:s.weight,
    quantity:s.quantity,equipped:s.equipped,category:s.category,die:s.die,range:s.range,priceVT:s.priceVT,element:s.element,properties:s.properties.join(", "),ammo:s.ammo, durability:s.durability.value,durabilityMax:s.durability.max,
-   categoryLeve:s.category==="leve",categoryMedio:s.category==="medio",categoryPesado:s.category==="pesado",categoryMuitoLeve:s.category==="muito-leve",
+   categoryLeve:s.category==="leve",categoryMedio:s.category==="medio",categoryPesado:s.category==="pesado",categoryMuitoLeve:s.category==="muito-leve",categoryMuitoPesado:s.category==="muito-pesado",categoryPending:s.category==="pendente",
    integrity:s.integrity.value,integrityMax:s.integrity.max,description:s.description,
    types:Object.entries(itemKinds).map(([key,label])=>({key,label,selected:s.kind===key}))
   };
@@ -23,6 +24,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const part=this.element?.querySelector(".codex-equipment-root");
   part?.addEventListener("change",async event=>{
    if(!this.item.isOwner)return;
+   if(this.item.parent?.getFlag('codex-rpg-foundry','pendingRoll')){ui.notifications.warn('Finalize a rolagem antes de editar o equipamento.');return this.render();}
    const input=event.target,path=input.dataset.field;
    const fields=["name","system.kind","system.grade","system.weight","system.quantity",
     "system.equipped","system.integrity.value","system.integrity.max","system.description",

@@ -1,4 +1,4 @@
-import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP, monsterCap} from "./rules.mjs";
+import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP,maxCourage, monsterCap} from "./rules.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 
 export const actorKinds = {
@@ -34,6 +34,7 @@ export function actorData(type, raw = {}, quick = false) {
   const animal = type === "animal";
   const monster = type === "creature";
   const system = {
+    creationBudget:15,
     level: integer(raw.level, 1, 20),
     threatGrade: integer(raw.threatGrade, 1, 6),
     xp: integer(raw.xp, 0, 10000000),
@@ -51,8 +52,8 @@ export function actorData(type, raw = {}, quick = false) {
     knowledges: animal || monster ? {} : grades(KNOWLEDGES, raw.knowledges),
     practices: animal || monster ? {} : grades(PRACTICES, raw.practices),
     skills: animal || monster ? [] : [...new Set(Array.isArray(raw.skills)
-      ? raw.skills.filter(id => supportedSkills.has(id)) : [])],
-    courage: integer(raw.courage ?? 10, 0, 10),
+      ? raw.skills.filter(id=>typeof id==='string'&&id.length<=100).slice(0,500) : [])],
+    courage: integer(raw.courage ?? 10, 0, maxCourage(integer(raw.level,1,20))),
     pavorLocal: integer(raw.pavorLocal, 0, monsterCap(raw.threatGrade)),
   };
   if (quick && type === "humanoid") {

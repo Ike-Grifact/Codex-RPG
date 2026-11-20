@@ -8,7 +8,8 @@
       "monsterHumanoid": "Humanoide Monstro"
     },
     "Item": {
-      "equipment": "Equipamento"
+      "equipment": "Equipamento",
+      "skill": "Perícia"
     }
   }
 }

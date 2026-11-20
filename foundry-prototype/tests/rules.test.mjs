@@ -19,7 +19,7 @@ test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurado
  assert.ok(SKILLS.some(s=>s.id==="criar-item-foco-magia"));
  assert.ok(!SKILLS.some(s=>s.id==="peritoconj"));
  assert.equal(SKILLS.find(s=>s.id==="conjuracao-equilibrada")?.name,"Conjuração Refinada");
- assert.match(SKILLS.find(s=>s.id==="armas-leves").detail,/1 PP\/1 Coragem/);
+ assert.match(SKILLS.find(s=>s.id==="armas-leves").detail,/1 Coragem/);
  assert.doesNotMatch(SKILLS.find(s=>s.id==="armas-pesadas").detail,/2 Coragens/);
 });
 test("Recuperação Vigorosa preserva o XP de fichas antigas e aguarda custo definitivo",()=>{
@@ -62,22 +62,22 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  assert.deepEqual(faceSymbols(12,12),[0,0,2]);
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
-test("Reforço copia o dado escolhido, inclusive de equipamento ou d12 já presente",()=>{
+test("Elevação comum sobe a categoria de um dado e impede ultrapassar d12",()=>{
  const s=human();s.attributes.inteligencia=2;s.knowledges.medicina=1;
  const p={base:{group:"knowledge",key:"medicina"},attribute:{group:"attribute",key:"inteligencia"}};
  const before=buildPool(s,p,{equipmentDie:6});
  const mod=buildPool(s,p,{step:true,stepDieId:"knowledge.medicina.0",equipmentDie:6});
  assert.ok(before.ok&&mod.ok);
- assert.deepEqual(mod.pool.slice(0,-1),before.pool);
- assert.deepEqual(mod.pool.at(-1),{id:"knowledge.medicina.0.reforco",group:"knowledge",key:"medicina",sides:10,reinforced:true});
+ assert.equal(mod.pool.length,before.pool.length);
+ assert.deepEqual(mod.pool[0],{id:"knowledge.medicina.0",group:"knowledge",key:"medicina",sides:12,elevated:true});
  const gear=buildPool(s,p,{step:true,stepDieId:"equipment.0",equipmentDie:6});
  assert.ok(gear.ok);
- assert.equal(gear.pool.at(-1).sides,6);
+ assert.equal(gear.pool.at(-1).sides,10);
  assert.equal(buildPool(s,p,{step:true}).ok,false,"Não escolher dado automaticamente");
  const higher={...s,knowledges:{medicina:4}};
  const trained=buildPool(higher,p,{step:true,stepDieId:"knowledge.medicina.2"});
- assert.ok(trained.ok);
- assert.equal(trained.pool.filter(d=>d.sides===12).length,2);
+ assert.equal(trained.ok,false);
+ assert.equal(trained.pool.filter(d=>d.sides===12).length,1);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
  assert.deepEqual(Object.keys(SITUATIONS),["superior","advantage","neutral","disadvantage","inferior","luck"]);
@@ -150,14 +150,14 @@ test("Criatura não humanoide usa d4 no grau 0, d10 no G1, 2d10 no G2",()=>{
 });
 test("Compra de XP usa progressões distintas e perícias sem custo inventado",()=>{
  const s=human();const xp=xpLedger(s);
- assert.equal(CREATION_REFERENCE.total,20);
+ assert.equal(CREATION_REFERENCE.total,15);
  assert.equal(xp.attributes,4); // Força, Agilidade, Destreza, Vigor em grau 1
  assert.equal(xp.training,2);
  assert.equal(xp.skills,2);
- assert.equal(xp.grant,20);
+ assert.equal(xp.grant,15);
  assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
  assert.equal(lifeMax(s),5);
- assert.equal(maxPP(1),0);assert.equal(maxPP(5),1);
+ assert.equal(maxPP(1),0);assert.equal(maxPP(5),0);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
 });
 test("Disciplina com arma habilitada adiciona dado extra, sem aumentar retenção",()=>{
@@ -183,15 +183,15 @@ test("Catálogo experimental contém arma mista e armaduras G1",()=>{
  assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,17);
  assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,4);
 });
-test("DE do alvo usa armadura pesada sem aplicar bônus de esquiva Leve automaticamente",()=>{
+test("DE do alvo inclui o modificador de armadura em todas as defesas",()=>{
  const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;
  const heavy={type:"equipment",system:{kind:"armor",equipped:true,category:"pesado"}};
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
  assert.equal(defenseDE({system:s,items:[heavy]}),3); // 2+1+1-1
- assert.equal(defenseDE({system:s,items:[light]}),4);
+ assert.equal(defenseDE({system:s,items:[light]}),5);
 });
 
-test("Esquiva: Muito Leve +2 e Leve +1 sem alterar DE geral nem acumular peças",()=>{
+test("Armadura: Muito Leve +2 e Leve +1 na DE geral sem acumular peças",()=>{
  const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;
  const make=(category,equipped=true)=>({type:"equipment",system:{kind:"armor",equipped,category}});
  const normal={system:s,items:[]},veryLight={system:s,items:[make("muito-leve")]},
@@ -199,26 +199,26 @@ test("Esquiva: Muito Leve +2 e Leve +1 sem alterar DE geral nem acumular peças"
        heavy={system:s,items:[make("pesado")]},extreme={system:s,items:[make("muito-pesado")]},
        stored={system:s,items:[make("muito-leve",false)]};
  assert.equal(defenseDE(normal),4);assert.equal(dodgeDE(normal),4);
- assert.equal(defenseDE(veryLight),4);assert.equal(dodgeBonus(veryLight),2);assert.equal(dodgeDE(veryLight),6);
- assert.equal(defenseDE(light),4);assert.equal(dodgeBonus(light),1);assert.equal(dodgeDE(light),5);
+ assert.equal(defenseDE(veryLight),6);assert.equal(dodgeBonus(veryLight),2);assert.equal(dodgeDE(veryLight),6);
+ assert.equal(defenseDE(light),5);assert.equal(dodgeBonus(light),1);assert.equal(dodgeDE(light),5);
  assert.equal(defenseDE(medium),4);assert.equal(dodgeDE(medium),4);
  assert.equal(defenseDE(heavy),3);assert.equal(dodgeDE(heavy),3);
- assert.equal(defenseDE(extreme),2);assert.equal(dodgeDE(extreme),2);
+ assert.equal(defenseDE(extreme),4);assert.equal(dodgeDE(extreme),4); // Vigor e Atletismo ainda não habilitam a peça.
  assert.equal(dodgeDE(stored),4);
  assert.equal(dodgeDE({system:s,items:[make("leve"),make("muito-leve")]}),5,"Não empilhar duas armaduras");
  const displayed=defenseDisplay(veryLight);
  assert.equal(displayed.de,6,"DE final única inclui bônus de Esquiva");
  assert.equal(displayed.calculation,"Natural 4 + 2 (Muito Leve) = 6");
- assert.match(displayed.condition,/somente ao esquivar/);
+ assert.match(displayed.condition,/todas as defesas/);
  assert.equal(defenseDisplay(light).de,5);
  assert.equal(defenseDisplay(heavy).de,3);
  assert.equal(defenseDisplay(normal).calculation,"Natural 4 · sem modificador = 4");
 });
-test("Orçamento monstruoso usa tabela da Formação e humanoide usa 20 XP compartilhados",()=>{
+test("Orçamento monstruoso usa tabela da Formação e humanoide novo usa 15 XP compartilhados",()=>{
  const m={monsterRules:true,xp:20,attributes:{forca:1,agilidade:2},skills:[],knowledges:{},practices:{}};
- assert.equal(xpLedger(m).attributes,10); // d10 G1 = 2 XP; 2d10 G2 = 8 XP
+ assert.equal(xpLedger(m).attributes,6); // d10 G1 = 2 XP; 2d10 G2 = 8 XP
  assert.equal(xpLedger(m).grant,20);
- assert.equal(xpLedger(human()).grant,20);
+ assert.equal(xpLedger(human()).grant,15);
 });
 test("Capacidade de carga inclui Disciplina, Força, Vigor e Atletismo",async()=>{
  const {loadCapacity}=await import("../module/rules.mjs");
@@ -253,11 +253,11 @@ test("Monstro precisa de orçamento informado antes de comprar graus",async()=>{
 test("Compra inicial guiada cobra apenas os graus obrigatórios ainda ausentes",()=>{
  const fresh={monsterRules:false,xp:0,attributes:{},knowledges:{},practices:{},skills:[]};
  const plan=starterPurchasePlan(fresh,"forca","practice","atletismo");
- assert.equal(plan.ok,true);assert.equal(plan.cost,3);assert.equal(plan.remaining,17);
+ assert.equal(plan.ok,true);assert.equal(plan.cost,3);assert.equal(plan.remaining,12);
  assert.deepEqual(plan.changes,{"system.attributes.forca":1,"system.practices.atletismo":1});
  const partial={...fresh,attributes:{forca:1}};
  const middle=starterPurchasePlan(partial,"forca","knowledge","medicina");
- assert.equal(middle.ok,true);assert.equal(middle.cost,2);assert.equal(middle.remaining,17);
+ assert.equal(middle.ok,true);assert.equal(middle.cost,2);assert.equal(middle.remaining,12);
  assert.deepEqual(middle.changes,{"system.knowledges.medicina":1});
  const complete={...partial,practices:{atletismo:1}};
  const ready=starterPurchasePlan(complete,"forca","practice","atletismo");
@@ -267,20 +267,20 @@ test("Compra inicial guiada cobra apenas os graus obrigatórios ainda ausentes",
  assert.equal(starterPurchasePlan(monster,"forca","practice","atletismo").ok,false);
 });
 
-test("Pilha aceita categorias diferentes em qualquer ordem e resolve sem Atributo",()=>{
+test("Pilha aceita a ordem das categorias e exige Atributo entre as fontes",()=>{
  const pc={attributes:{forca:1},practices:{atletismo:1},knowledges:{medicina:1},skills:[]};
  const attribute={group:"attribute",key:"forca"}, practice={group:"practice",key:"atletismo"}, knowledge={group:"knowledge",key:"medicina"};
  for(const base of [attribute,practice,knowledge]){
   for(const second of [attribute,practice,knowledge]){
    const plan=buildPool(pc,{base,second});
-   assert.equal(plan.ok,base.group!==second.group);
+   assert.equal(plan.ok,base.group!==second.group&&(base.group==="attribute"||second.group==="attribute"));
    if(plan.ok){
     const rolled=plan.pool.map(die=>({...die,face:die.sides}));
     assert.equal(resolveRoll(rolled,[rolled[0].id]).ok,true);
    }
   }
  }
- assert.equal(buildPool({...pc,monsterHumanoidRules:true},{base:practice,second:knowledge}).ok,true);
+ assert.equal(buildPool({...pc,monsterHumanoidRules:true},{base:practice,second:knowledge}).ok,false);
  assert.equal(buildPool({...pc,monsterRules:true},{base:practice,second:knowledge}).ok,false);
  assert.equal(buildPool({...pc,monsterRules:true,threatGrade:6},{base:attribute,second:{group:"attribute",key:"vigor"},complement:{group:"attribute",key:"agilidade"}},{contextApproved:true}).ok,false);
 });

@@ -20,10 +20,10 @@ test("converte a ficha exportada com seu inventário e recursos de troca", () =>
     },
   }, "humanoid");
   assert.equal(draft.type, "humanoid");
-  assert.equal(xpLedger(draft.system).grant, 25);
+  assert.equal(xpLedger(draft.system).grant, 20);
   assert.equal(draft.system.life.value, 0);
   assert.equal(draft.system.attributes.invalid, undefined);
-  assert.deepEqual(draft.system.skills, ["armas-leves"]);
+  assert.deepEqual(draft.system.skills, ["armas-leves","futura"]);
   assert.match(draft.system.notes, /futura/);
   assert.equal(draft.items[0].system.equipped, true);
   assert.deepEqual(draft.items[0].system.integrity, {value: 0, max: 15});
@@ -42,7 +42,7 @@ test("importa criatura comum, monstro e humanoide como Actors separados", () => 
   assert.equal(animal.system.pavorLocal, 5);
   assert.equal(animal.items[0].system.quantity, 2);
   assert.equal(xpLedger(animal.system).grant, 10);
-  assert.equal(xpLedger(humanoid.system).grant, 30);
+  assert.equal(xpLedger(humanoid.system).grant, 25);
   const selection = {base: {group: "attribute", key: "forca"}, attribute: {group: "attribute", key: "vigor"}};
   const pool = buildPool(animal.system, selection);
   assert.equal(pool.ok, true);

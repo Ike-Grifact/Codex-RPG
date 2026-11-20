@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import {
-  mkdirSync, mkdtempSync, realpathSync, readdirSync, renameSync, rmdirSync, rmSync, statSync,
+  copyFileSync, mkdirSync, mkdtempSync, realpathSync, readdirSync, renameSync, rmdirSync, rmSync, statSync,
 } from "node:fs";
 import { connect } from "node:net";
 import { homedir, networkInterfaces } from "node:os";
@@ -148,6 +148,22 @@ function installedVersion(target) {
   return manifest.version ?? "(versão desconhecida)";
 }
 
+function preserveAdditionalFiles(from, to) {
+  for (const name of readdirSync(from)) {
+    const original = join(from, name), staged = join(to, name);
+    const entry = lstat(original), replacement = lstat(staged);
+    if (!entry.isFile() && !entry.isDirectory()) throw new Error(`Arquivo pessoal especial ou redirecionado: ${original}`);
+    if (!replacement) {
+      if (entry.isDirectory()) copyDirectory(original, staged);
+      else copyFileSync(original, staged);
+    } else if (entry.isDirectory() && replacement.isDirectory()) {
+      preserveAdditionalFiles(original, staged);
+    } else if (entry.isDirectory() !== replacement.isDirectory()) {
+      throw new Error(`Conflito entre arquivo pessoal e pacote: ${original}. A instalação anterior foi conservada.`);
+    }
+  }
+}
+
 async function replaceContents(target, stage, backup, port) {
   // An open working directory on Windows may prevent renaming the package root.
   // Back up everything before touching any entry, and keep storage in place.
@@ -230,6 +246,9 @@ async function install(userData, dryRun) {
     const stagedStorage = join(stage, "storage");
     if (existing && lstat(storage)) copyDirectory(storage, stagedStorage);
     else if (manifest.persistentStorage) mkdirSync(stagedStorage);
+    // Conserve arquivos adicionais também na raiz e nas pastas de recursos.
+    // Arquivos distribuídos pelo pacote são atualizados e sua versão anterior fica no backup.
+    if (existing) preserveAdditionalFiles(target, stage);
     await assertFoundryClosed(port);
 
     if (existing) {

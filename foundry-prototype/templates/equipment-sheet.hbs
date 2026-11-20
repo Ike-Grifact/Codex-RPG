@@ -14,10 +14,12 @@
 <option value="medio" {{#if equipment.categoryMedio}}selected{{/if}}>Média</option>
 <option value="pesado" {{#if equipment.categoryPesado}}selected{{/if}}>Pesada</option>
 <option value="muito-leve" {{#if equipment.categoryMuitoLeve}}selected{{/if}}>Muito Leve</option>
+<option value="muito-pesado" {{#if equipment.categoryMuitoPesado}}selected{{/if}}>Muito Pesada</option>
+<option value="pendente" {{#if equipment.categoryPending}}selected{{/if}}>Pendente</option>
 </select></label>
 <label>Dado adicional (0/6/10/12) {{#if equipment.dieIcon}}<span class="codex-small-die">{{{equipment.dieIcon}}}<b>d{{equipment.die}}</b></span>{{/if}}<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
 <label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
-<label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>
+{{#if equipment.pricePending}}<p>Preço pendente no catálogo.</p>{{else}}<label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>{{/if}}
 <label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
   <label>Peso (unidades Alto)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
   <label>Quantidade<input type="number" min="1" step="1" value="{{equipment.quantity}}" data-field="system.quantity"></label>

@@ -1,4 +1,4 @@
-import {monsterCap} from "./rules.mjs";
+import {monsterCap,maxCourage} from "./rules.mjs";
 import {rollNamespace as NS} from "./roll-resolution.mjs";
 
 const queues = new Map();
@@ -20,7 +20,7 @@ async function applyResidual(message, data) {
     const applied = target.getFlag(NS, "appliedPavor") ?? {};
     if (Object.hasOwn(applied, message.id)) return;
     const field = target.type === "character" ? "courage" : "pavorLocal";
-    const limit = field === "courage" ? 10 : monsterCap(target.system.threatGrade);
+    const limit = field === "courage" ? maxCourage(target.system.level) : monsterCap(target.system.threatGrade);
     const value = Math.min(limit, target.system[field] + data.p);
     await target.update({
       ["system." + field]: value,
