@@ -2219,46 +2219,44 @@ function applySheetPage(){
  "XP, fontes e Perícias para construir sua próxima especialização.":"Uma ficha de jogo limpa: recursos, rolagens e somente as habilidades que você adquiriu.";
 }
 function renderOwnedPanel(){
+ // Ações aparecem antes das fontes: botões compactos abrem a especialização ou preparam o teste.
  const learned=SKILLS.filter(([id])=>ownsSkill(id)&&!HIDDEN_CATALOG_SKILLS.has(id));
  const basic=learned.filter(([id])=>!ELEMENT_SKILLS.some(([key])=>id===key));
- const empty='<span class="fp-owned-empty">Nenhuma por enquanto. Explore o Codex Genético para encontrar novas opções.</span>';
- const markup=([id,name,detail,cost])=>{
-  const text=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail.slice(0,130),action=CARD_ACTIVATIONS[id]||"Consultar";
-  return '<article class="fp-owned-card"><div><span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><small>'+esc(action)+'</small></div>'+
-   '<p>'+esc(text.slice(0,145))+'</p><button type="button" class="fp-owned-details" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" aria-label="Ver detalhes de '+esc(name)+'">Detalhes</button></article>';
- };
- $("owned-skills").innerHTML=basic.length?basic.map(markup).join(""):empty;
+ const skillsEmpty='<span class="fp-owned-empty">Nenhuma Perícia adquirida.</span>';
+ $("owned-skills").innerHTML=basic.length?basic.map(([id,name,detail])=>{
+  const description=CARD_EFFECTS[id]||CARD_BRIEFS[id]||detail||"";
+  return '<button type="button" class="fp-action-skill" data-sheet-page="genetic" data-gene-select="'+esc(id)+'" '+
+   'title="'+esc(description.slice(0,170))+'" aria-label="Ver detalhes da Perícia '+esc(name)+'">'+
+   '<span class="fp-owned-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span>'+
+   '<span class="fp-action-hint">Ver detalhes</span></button>';
+ }).join(""):skillsEmpty;
  const elements=ELEMENT_SKILLS.filter(([id])=>ownsSkill(id));
  $("owned-elements").innerHTML=
-  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental inicial</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
+  (state.elementalCrystal?.quantity?'<div class="fp-owned-crystal"><span>ᚨ Cristal Elemental</span><strong>'+esc(state.elementalCrystal.element||"Elemento a escolher")+'</strong></div>':"")+
   (elements.length?elements.map(([id,name])=>'<button type="button" class="fp-element-prep" data-action="prepare-element" data-id="'+esc(id)+'" title="Preparar Disciplina + Inteligência com conjuração '+esc(name)+'">'+
-    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido. Ao comprar uma Perícia elemental, ela aparecerá aqui para preparar a conjuração.</span>');
- const equipped=state.items.filter(it=>it.equipped);
- $("equipped-shortcuts").innerHTML=equipped.length?equipped.map(it=>{
-  const mode=it.type==="foco"?"conjuracao":"armas",canAttempt=["arma","foco"].includes(it.type);
-  const enabled=canAttempt&&combatItem(it,mode).length>0;
-  const extraDice=enabled?combatItem(it,mode).map(n=>"d"+n).join(" + "):"";
-  const chosen=canAttempt?preferredQuickAttribute(it):null;
-  const ready=enabled&&!!chosen;
-  const headline=canAttempt?(enabled?"Dado do equipamento: "+extraDice:"Dado habilitável d"+it.die+" · Perícia necessária"):"Proteção e recursos";
-  const summary=equipmentDetails(it);
-  const open=ready?'<button type="button" class="fp-owned-gear fp-owned-gear-action" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Preparar ação com Disciplina + '+esc(label("attr",chosen))+'">':'<article class="fp-owned-gear">';
-  const close=ready?'</button>':'</article>';
-  const hint=ready?'<span class="fp-owned-roll">Preparar ação · '+esc(extraDice)+'</span>':
-   canAttempt?'<span class="fp-owned-noroll">'+(enabled?'Selecione um Atributo treinado':'Adquira a Perícia de arma/foco para usar o dado')+'</span>':
-   '<span class="fp-owned-noroll">Este item protege ou oferece utilidade; não adiciona dado de ataque.</span>';
-  return open+'<span class="fp-owned-heading">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong></span>'+
-   '<span class="fp-gear-main">'+esc(headline)+'</span><small>'+esc(summary)+'</small>'+
-   (canAttempt?'<small>Características ativam só com Perícia. Fonte: Disciplina + '+esc(chosen?label("attr",chosen):"Atributo treinado")+'. DE atual do rolador.</small>':"")+
-   hint+close;
- }).join(""):'<span class="fp-owned-empty">Nenhum item equipado. Abra Inventário para equipar.</span>';
+    '<span class="fp-element-icon">'+codexSkillIcon(id)+'</span><span>'+esc(name)+'</span><small>Preparar magia</small></button>').join(""):'<span class="fp-owned-empty">Nenhum elemento adquirido.</span>');
+ // Não listar armaduras e ferramentas aqui: só equipamento capaz de preparar uma ação.
+ const weapons=state.items.filter(it=>it.equipped&&["arma","foco"].includes(it.type));
+ $("equipped-shortcuts").innerHTML=weapons.length?weapons.map(it=>{
+  const mode=it.type==="foco"?"conjuracao":"armas",dice=combatItem(it,mode);
+  const chosen=preferredQuickAttribute(it),ready=dice.length>0&&!!chosen;
+  const labelText=dice.length?dice.map(n=>"d"+n).join(" + "):"Requer Perícia";
+  const hint=ready?labelText+" · Preparar":dice.length?"Selecione um Atributo treinado":"Perícia de manejo/foco necessária";
+  const icon=codexItemIcon(it),name=esc(it.name);
+  return ready?
+   '<button type="button" class="fp-action-weapon" data-action="repertoire-roll" data-id="'+esc(it.id)+'" title="Preparar '+name+' com Disciplina + '+esc(label("attr",chosen))+'">'+
+    '<span class="fp-owned-heading">'+icon+'<strong>'+name+'</strong></span><small>'+esc(hint)+'</small></button>':
+   '<div class="fp-action-weapon is-unavailable" title="'+esc(equipmentDetails(it))+'">'+
+    '<span class="fp-owned-heading">'+icon+'<strong>'+name+'</strong></span><small>'+esc(hint)+'</small></div>';
+ }).join(""):'<button type="button" class="fp-action-inventory" data-sheet-page="inventory">Equipar arma ou foco no Inventário</button>';
 }
-
 // SRD v0.71 — protótipo manual. Não converte dano automaticamente em sangue ou cura.
 function renderHemomancy(){
  const panel=$("hemomancy-panel");
  if(!panel)return;
- panel.hidden=!ownsSkill("sangue");
+ const available=ownsSkill("sangue");
+ const details=$("hemo-details");if(details)details.hidden=!available;
+ panel.hidden=!available;
  if(panel.hidden)return;
  const h=state.hemomancy||{spilled:0,selfBleeding:false,usedThisTurn:false};
  $("hemo-spilled").textContent=String(h.spilled);
