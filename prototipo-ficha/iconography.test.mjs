@@ -22,7 +22,7 @@ test("Atlas contém armas, armaduras, elementos, constelações e indicadores",(
  for(const filename of names){
   const source=readFileSync(join(icons,filename),"utf8");
   assert.match(source,/<svg\s/);
-  assert.match(source,filename==="status-de.svg"?/viewBox="0 0 22\\.02 39\\.15"/:/viewBox="0 0 64 64"/);
+  assert.match(source,filename==="status-de.svg"?/viewBox="0 0 22\.02 39\.15"/:/viewBox="0 0 64 64"/);
   assert.match(source,/<title\s/);
   assert.match(source,/<g[^>]+stroke="/);
   assert.doesNotMatch(source,/<script\b|<foreignObject\b|\bonload\s*=/i);
