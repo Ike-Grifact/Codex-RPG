@@ -9,7 +9,7 @@ const assert=require("node:assert/strict");
   await page.goto("http://127.0.0.1:8000/prototipo-ficha/",{waitUntil:"load"});
   const imported={schema:"codex-html-playtest-v1",character:{
    schema:"codex-html-playtest-v1",name:"Aprendiz defesa",race:"humano",level:1,
-   creationLocked:false,attributes:{agilidade:1,destreza:0,vigor:0},
+   creationLocked:true,attributes:{agilidade:1,destreza:0,vigor:0},
    practices:{atletismo:0},items:[{
     name:"Armadura Leve",type:"armadura",weight:"leve",grade:1,
     qty:1,equipped:false,max:7,hp:7
@@ -25,6 +25,8 @@ const assert=require("node:assert/strict");
   assert.equal(await de.textContent(),"2","DE total com Armadura Leve equipada");
   assert.equal(await label.textContent(),"DE DEFENSIVA");
   assert.match(await caption.textContent(),/Natural 1 · armadura \+1/,"O cartão mostra só o resumo");
+  assert.equal(await page.locator(".fp-vitals").evaluate(el=>getComputedStyle(el).display),"flex","Indicadores compactos");
+  assert.equal(await caption.isVisible(),false,"Subtexto deixa de ocupar espaço visual");
   await page.locator('[data-vital-open="defense"]').click();
   const tooltip=page.locator("#fp-vital-tooltip");
   assert.equal(await tooltip.isVisible(),true,"O detalhe deve abrir ao toque");
