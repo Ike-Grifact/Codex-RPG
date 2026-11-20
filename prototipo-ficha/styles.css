@@ -1620,3 +1620,39 @@ html:not([data-theme="light"]) .fp-gene-skill-pictogram{filter:brightness(1.18)}
  .fp-editing-sources .fp-workspace>.fp-primary-column{display:block;width:100%}
  .fp-editing-sources .fp-workspace>.fp-side-column{display:none}
 }
+
+
+/* 20/11/2026 — hierarquia dos indicadores: quatro vitais, três utilitários. */
+.fp-vitals{display:flex;flex-wrap:wrap;gap:9px 15px;align-items:center;justify-content:flex-start;margin:8px 0 13px}
+.fp-vitals-primary,.fp-vitals-secondary{display:flex;flex-wrap:wrap;align-items:center;gap:7px;min-width:0}
+.fp-vitals-secondary{gap:6px;border-left:1px solid var(--fp-stroke);padding-left:13px}
+.fp-vitals-primary .fp-vital{min-height:51px;padding:8px 11px 8px 9px;gap:9px}
+.fp-vitals-primary .fp-vital .fp-vital-label{width:32px;height:32px;min-height:32px;flex:0 0 32px;padding:0;background-size:32px 32px;background-position:center}
+.fp-vitals-primary .fp-vital strong,
+.fp-vitals-primary .fp-vital .fp-vital-main strong,
+.fp-vitals-primary .fp-vital.fp-vital-basic>strong{font-size:24px;line-height:1.05;font-variant-numeric:tabular-nums;margin:0;white-space:nowrap}
+.fp-vitals-primary .fp-life-vital,.fp-vitals-primary .fp-armor-integrity-vital{border-color:color-mix(in srgb,var(--fp-gold) 42%,var(--fp-stroke))}
+.fp-vitals-primary .fp-movement-vital{border-color:color-mix(in srgb,var(--fp-a) 50%,var(--fp-stroke))}
+.fp-vitals-secondary .fp-vital{min-height:36px;padding:6px 9px;gap:6px}
+.fp-vitals-secondary .fp-vital .fp-vital-label{width:20px;height:20px;min-height:20px;flex:0 0 20px;padding:0;background-size:20px 20px;background-position:center}
+.fp-vitals-secondary .fp-vital strong,
+.fp-vitals-secondary .fp-vital .fp-vital-main strong,
+.fp-vitals-secondary .fp-vital.fp-vital-basic>strong{font-size:16px;line-height:1.1;margin:0;white-space:nowrap}
+.fp-vital-label.fp-icon-inventory{background-image:url("../assets/icons/codex/status-inventario.svg")}
+button.fp-vital-inventory{position:relative;cursor:pointer;appearance:none;font:inherit;color:var(--fp-text)}
+.fp-vital-inventory-text{color:var(--fp-gold);font-size:12px;line-height:1;font-weight:750;white-space:nowrap}
+button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-color:var(--fp-gold);background:var(--fp-raised);outline-offset:2px}
+@media(max-width:1020px){
+ .fp-vitals{align-items:flex-start;flex-direction:column;gap:7px}
+ .fp-vitals-secondary{border-left:0;padding-left:0}
+}
+@media(max-width:600px){
+ .fp-vitals-primary,.fp-vitals-secondary{gap:5px}
+ .fp-vitals-primary .fp-vital{min-height:45px;padding:7px 9px 7px 7px;gap:7px}
+ .fp-vitals-primary .fp-vital .fp-vital-label{width:26px;height:26px;min-height:26px;flex-basis:26px;background-size:26px 26px}
+ .fp-vitals-primary .fp-vital strong,
+ .fp-vitals-primary .fp-vital .fp-vital-main strong,
+ .fp-vitals-primary .fp-vital.fp-vital-basic>strong{font-size:21px}
+ .fp-vitals-secondary .fp-vital{min-height:34px;padding:6px 8px}
+ .fp-vitals-secondary .fp-vital .fp-vital-label{width:19px;height:19px;min-height:19px;flex-basis:19px;background-size:19px 19px}
+}
