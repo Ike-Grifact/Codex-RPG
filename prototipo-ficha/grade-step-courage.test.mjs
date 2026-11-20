@@ -161,3 +161,44 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
   assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
  }
 });
+
+
+test("Montaria: compras, requisitos e ramificação sem exigir Domar",()=>{
+ const code=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const skillReq=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[];const SOURCE_PROPS={};"+String.fromCharCode(10)+code+String.fromCharCode(10)+"return skillReq;")(
+  {},()=>[],(id,s)=>s.skills.includes(id)
+ );
+ const ficha=(influencia,destreza,inteligencia,skills=[])=>({
+  attributes:{influencia,destreza,inteligencia},practices:{},knowledges:{},skills
+ });
+ assert.ok(skillReq("montar",ficha(2,2,0)),"Montar exige Destreza 3");
+ assert.ok(skillReq("montar",ficha(1,3,0)),"Montar exige Influência 2");
+ assert.equal(skillReq("montar",ficha(2,3,0)),null,"Domar não é requisito");
+ assert.ok(skillReq("maestria-montaria",ficha(6,4,2)),"Maestria exige a Perícia Montar Animal");
+ assert.ok(skillReq("maestria-montaria",ficha(5,4,2,["montar"])),"Maestria exige Influência 6");
+ assert.ok(skillReq("maestria-montaria",ficha(6,3,2,["montar"])),"Maestria exige Destreza 4");
+ assert.ok(skillReq("maestria-montaria",ficha(6,4,1,["montar"])),"Maestria exige Inteligência 2");
+ assert.equal(skillReq("maestria-montaria",ficha(6,4,2,["montar"])),null);
+ assert.match(app,/"montar",\s*"Montar Animal",[^\]]+\b1\s*\]/,"Montar custa 1 XP");
+ assert.match(app,/"maestria-montaria",\s*"Maestria em Montaria",[^\]]+\b1\s*\]/,"Maestria custa 1 XP");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('skills:["provocacao-sofisticada","recobrar-coragem","montar","maestria-montaria"]'),
+  "As Perícias formam ramificação conjunta em Influência e Mobilidade");
+ assert.ok(app.includes('"maestria-montaria":"maestria-em-montaria"'),"Verbete da Maestria acessível");
+ assert.ok(app.includes('"montar":[["a:influencia:2","a:destreza:3"]]'),
+  "Compra automática de Montar precisa adquirir Destreza 3 além de Influência 2");
+ assert.ok(app.includes('"maestria-montaria":[["a:influencia:6","a:destreza:4","a:inteligencia:2","s:montar"]]'),
+  "Compra automática da Maestria precisa incluir os graus e Montar Animal");
+ assert.ok(app.includes('"montar":"Influência 2 + Destreza 3 (não exige Domar)"'),"Mostrar requisitos ao consultar Perícia");
+ assert.ok(app.includes("Gaste 1A para antecipar a rolagem da montaria"),"Perícia documenta o custo de Antecipar da coordenação");
+ assert.ok(app.includes("duas rolagens separadas, cada qual com limite de 9 dados rolados"),"Duas pilhas independentes de 9 dados");
+ assert.ok(app.includes("Pavor mantido em ambas pode abrir até duas intervenções inimigas"),"Dois resultados com Pavor mantido permitem até duas intervenções");
+ assert.ok(app.includes("Acúmulo de estados de Vantagem e automação: PENDENTE"),"Maestria não presume acúmulo de +1A");
+ assert.ok(app.includes("Aplica estado de Vantagem na rolagem pertinente de montaria, e não +1A separado"),"Montar Animal oferece estado Vantagem, não 1A avulso");
+ assert.ok(app.includes("Se a Vantagem for efetiva, ela fornece 1A conforme a regra geral"),"A condição Vantagem é a origem do Antecipar");
+ assert.ok(app.includes("condição Vantagem na rolagem pertinente ao montar Gigantes (não +1A direto)"),"Maestria também não fornece +1A avulso");
+ const skillCatalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(skillCatalog.includes("condição Vantagem em rolagens pertinentes de montaria (não +1A avulso)"),"Catálogo não descreve +1A direto");
+
+});
