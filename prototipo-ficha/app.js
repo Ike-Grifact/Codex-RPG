@@ -385,8 +385,8 @@ const SKILLS=[
  ],
  [
   "transfusao-sanguinaria",
-  "Transfusão Sanguinária (protótipo)",
-  "Compra 1 XP; exige Transfusão e Perícia em Elemento Sangue. Conjuração ATIVA: a cada 3 marcas disponíveis de sangue derramado de inimigos registra recuperação de 1 Vida (até o máximo), após resolver a técnica com o Narrador. Cada 1 Vida efetivamente perdida pelo inimigo gera 1 marca; Sangramento sem dano e dano à Integridade não geram marcas. Não existe reserva extraída separada. As mesmas marcas não podem ser gastas em outra magia e depois na Transfusão. Procedimento, duração, alcance e ativação ainda pendentes.",
+  "Transfusão Sanguinária (exclusiva Lucker de Sangue)",
+  "Exclusiva de Lucker de Sangue; compra 1 XP, exige Transfusão e Perícia em Elemento Sangue. Não é concedida pela origem. Conjuração ATIVA: a cada 3 marcas disponíveis de sangue derramado de inimigos registra recuperação de 1 Vida (até o máximo), após resolver a técnica com o Narrador. Cada 1 Vida efetivamente perdida pelo inimigo gera 1 marca; Sangramento sem dano e dano à Integridade não geram marcas. Não existe reserva extraída separada. As mesmas marcas não podem ser gastas em outra magia e depois na Transfusão. Procedimento, duração, alcance e ativação ainda pendentes.",
   1
  ],
  [
@@ -1452,6 +1452,49 @@ function hammerMasteryOnHit(item,critical=false,payExtra=false,s=state){
  if(!hammerMasteryCanActivate(item,s))return {free:0,paid:0,courageCost:0,maxEffects:0};
  const free=critical?2:1;
  const paid=critical&&payExtra?1:0;
+ return {free,paid,courageCost:paid,maxEffects:free+paid};
+}
+// Identificação conservadora de famílias: o catálogo visual não concede Maestria por proximidade.
+function weaponMasteryId(item){
+ if(!item||!["weapon","arma"].includes(item.type))return null;
+ const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(item.firearm||/revolver|pistola|mosquete|rifle|metralhadora|escopeta|shotgun|sniper|lanca.granadas/.test(name))return "maestria-armas-fogo";
+ if(/martelo|marreta/.test(name))return "maestria-martelos";
+ if(/maca|clava/.test(name))return "maestria-macas";
+ if(/besta/.test(name))return "maestria-bestas";
+ if(/arco/.test(name))return "maestria-arcos";
+ if(/adaga|faca|punhal|kunai/.test(name))return "maestria-adagas";
+ if(/espada|katana|montante/.test(name))return "maestria-espadas";
+ if(/machado|machadinha/.test(name))return "maestria-machados";
+ if(/lanca|azagaia|naginata|alabarda/.test(name))return "maestria-hastes";
+ if(/cajado|bastao/.test(name))return "maestria-cajados";
+ if(/luva|manopla|soqueira|punho/.test(name))return "maestria-punhos";
+ if(/dardo|shuriken|funda|arremesso/.test(name))return "maestria-arremessos";
+ if(/zarabatana/.test(name)||(item.properties||[]).includes("À Distância"))return "maestria-longo-alcance";
+ return null; // Famílias não classificadas continuam pendentes em vez de ganhar Maestria arbitrária.
+}
+function weaponMasteryRequiredSkill(item){
+ const id=weaponMasteryId(item);
+ if(!id)return null;
+ if(id==="maestria-martelos")return hammerMasteryRequiredSkill(item);
+ if(id==="maestria-armas-fogo")return "armas-fogo";
+ if(id==="maestria-punhos")return "pugilismo";
+ if(["maestria-arcos","maestria-bestas","maestria-longo-alcance"].includes(id))return "armas-longo-alcance";
+ if(id==="maestria-arremessos")return "maestria-arremesso-armas";
+ return {leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)]||null;
+}
+function weaponMasteryCanActivate(item,s=state){
+ const id=weaponMasteryId(item),required=weaponMasteryRequiredSkill(item);
+ if(!id||!required||!ownsSkill(id,s)||!ownsSkill(required,s))return false;
+ if(id==="maestria-arremessos"){
+  const weightSkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)];
+  if(!weightSkill||!ownsSkill(weightSkill,s))return false;
+ }
+ return id!=="maestria-armas-fogo"||s.race==="humano";
+}
+function weaponMasteryOnHit(item,critical=false,payExtra=false,s=state){
+ if(!weaponMasteryCanActivate(item,s))return {free:0,paid:0,courageCost:0,maxEffects:0};
+ const free=critical?2:1,paid=critical&&payExtra?1:0;
  return {free,paid,courageCost:paid,maxEffects:free+paid};
 }
 function equipmentGroupName(id){return EQUIPMENT_FAMILIES.find(x=>x[0]===id)?.[1]||"Outros";}
@@ -4130,7 +4173,7 @@ function renderInventory(){
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
-  (ownsSkill("maestria-martelos")&&["weapon","arma"].includes(it.type)&&/martelo|marreta/i.test(String(it.name||""))?'<div class="fp-item-hint"><strong>Maestria em Martelos:</strong> '+(hammerMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas do peso deste martelo, ou peso não padronizado.')+' Compra da Maestria não dispensa a Perícia do peso.</div>':"")+ 
+  (weaponMasteryId(it)&&ownsSkill(weaponMasteryId(it))?'<div class="fp-item-hint"><strong>Maestria por tipo de arma:</strong> '+(weaponMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas/manejo apropriada para este equipamento ou peso não definido.')+' Não concede Perícias de Armas, nem ativa efeitos automaticamente.</div>':"")+ 
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
