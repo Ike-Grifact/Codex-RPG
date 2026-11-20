@@ -1900,6 +1900,9 @@ function normalize(v){
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))&&!(x==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")))];
+ if(s.race!=="lucker_sangue"&&rawSkills.includes("transfusao-sanguinaria")&&!s.notes.includes("Restrição racial de Transfusão Sanguinária:")){
+  s.notes=(s.notes+"\nRestrição racial de Transfusão Sanguinária: compra histórica inválida nesta origem; Perícia retirada da ficha, XP investido liberado para redistribuição.").trim().slice(0,5000);
+ }
  if(removed.length&&!s.notes.includes("Protótipos aposentados:")){
   s.notes=(s.notes+"\nProtótipos aposentados: "+removed.map(id=>id==="marciais"?"Artes Marciais":id==="combinacao"?"Combinação de Fontes":"Perito Conjurador").join(" e ")+
    ". XP liberado automaticamente pela retirada; habilidades antigas não são concedidas sem requisitos.").trim().slice(0,5000);
@@ -2643,10 +2646,10 @@ function renderHemomancy(){
  $("hemo-transfusion-potential").textContent=String(Math.floor(h.spilled/3));
  const transfusion=$("hemo-transfusion-record");
  transfusion.disabled=!ownsSkill("transfusao-sanguinaria")||h.spilled<3||state.life<=0||state.life>=maxLife()||!!state.pending;
- transfusion.title=!ownsSkill("transfusao-sanguinaria")?
+ transfusion.title=state.race!=="lucker_sangue"?"Exclusiva de Lucker de Sangue; outras origens não podem utilizar Transfusão Sanguinária.":!ownsSkill("transfusao-sanguinaria")?
   "Exige Transfusão Sanguinária (e sua Perícia pré-requisito Transfusão ainda pendente).":
   h.spilled<3?"Exige 3 marcas de sangue inimigo disponível.":"Registrar conjuração já resolvida com o Narrador.";
- $("hemo-transfusion-state").textContent=ownsSkill("transfusao-sanguinaria")?
+ $("hemo-transfusion-state").textContent=state.race!=="lucker_sangue"?"Transfusão Sanguinária é exclusiva dos Luckers de Sangue, não disponível para esta origem.":ownsSkill("transfusao-sanguinaria")?
   "Perícia adquirida. Registro somente após resolver a conjuração com o Narrador.":
   "Protótipo: 1 XP, requisitos Transfusão + Elemento Sangue; aquisição de Transfusão ainda pendente.";
 }
