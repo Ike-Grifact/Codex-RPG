@@ -14,6 +14,18 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Ferreiro Elemental (20/11/2026)
+
+**DEFINIDO — decisão autoral:** a Perícia **Ferreiro Elemental** custa **1 XP**. Requisitos informados: **Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar magia + item de foco + Encantar com Elemento**. Para a nomenclatura do catálogo vigente, a expressão «Criar magia + item de foco» foi vinculada à única Perícia existente **Criar Item de Foco e Magia**; não foi criada uma segunda compra de Criar Magia, que aparece historicamente como descrição de conjuração livre, não como uma Perícia separada atual.
+
+**DEFINIDO — efeito:** habilita **criar armas elementais e pedras elementais**. Não atribui grau de arma/pedra, novos símbolos, novas características, bônus de rolagem, imunidades, recarga, receitas ou automatização de itens. O +1E de **Ferreiro** continua específico aos testes efetivamente caracterizados como **Forja**, sem extensão automática a toda criação elemental.
+
+**PENDENTE — requisito indisponível:** **Encantar com Elemento** foi explicitamente exigida, mas não consta do catálogo e não possui custo, requisitos ou efeito de aquisição homologados neste SRD. **A compra de Ferreiro Elemental fica bloqueada** até a aquisição de Encantar com Elemento ser definida/implementada; a Perícia permanece visível para consulta no Codex Genético. Não inventar ou conceder Encantar com Elemento gratuitamente e não remover o requisito.
+
+**PENDENTE — fabricação:** ingredientes, custos, ferramentas, DE, tempo, quais elementos podem ser vinculados, atributos e graus de armas/pedras, processo de encantamento, interações com itens existentes e fluxo de inventário. A criação de itens não é efetuada automaticamente ao comprar a Perícia.
+
+---
+
 ## Adendo normativo — Perícia Ferreiro (20/11/2026)
 
 **DEFINIDO — decisão autoral de 20/11/2026:** a Perícia **Ferreiro** custa **1 XP** e exige **Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado**. A Perícia **Artesão Avançado**, pré-requisito, já exige **Artesão 2** e custa 1 XP. Logo, um personagem que cumpra todos os requisitos de Ferreiro precisa, na prática, de **Artesão 2**, sem dispensar a aquisição de Artesão Avançado. A menção a Artesão 1 é preservada conforme a decisão autoral, sem reduzir exigências indiretas.
