@@ -827,6 +827,6 @@ test("Decisões autorais: Espelho Mágico reflete Pavor mágico antes da absorç
   assert.ok(text.includes("Pavor"),"O reflexo depende de Pavor");
  }
  assert.ok(srd.includes("Mesmo que a armadura")&&srd.includes("0 Vida"),"Reflete quando armadura bloqueia 100%");
- assert.ok(book.includes("inteiramente absorvida pela armadura")&&book.includes("2 de dano são refletidos"),"Exemplo confirma conta antes da absorção");
+ assert.ok(book.includes("a armadura absorve 5")&&book.includes("reflexão de 2 de dano"),"Exemplo confirma conta antes da absorção");
  assert.ok(page.includes("ataque físico")&&page.includes("antes da absorção"),"Não funciona contra ataque físico");
 });
