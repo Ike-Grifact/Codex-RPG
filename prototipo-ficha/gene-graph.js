@@ -95,11 +95,19 @@ const GENE_CONSTELLATIONS=[
 // Duas faixas de constelações de cada lado das fontes centrais.
 // Em vez de um catálogo muito comprido abaixo da ficha, os ramos envolvem a hélice
 // e são distribuídos por afinidade, com alturas proporcionais ao número de nós.
+// Famílias maiores permanecem nas laterais; quatro grupos ocupam os espaços
+// acima e abaixo das fontes, fechando o anel sem cobrir as cartas centrais.
 const ORBIT_LANES=Object.freeze([
- {x:44,ids:["escudos","armas","corporal","furtividade","cavalaria"]},
- {x:590,ids:["disparos","conjuracao","elementos","psiquico"]},
+ {x:44,ids:["armas","corporal","furtividade"]},
+ {x:590,ids:["disparos","conjuracao","elementos"]},
  {x:2290,ids:["natureza","alquimia","apresentacao","artesao","coleta"]},
- {x:2836,ids:["recuperacao","conhecimentos-avancados","influencia","atletismo"]}
+ {x:2836,ids:["conhecimentos-avancados","influencia","atletismo"]}
+]);
+const ORBIT_ARCS=Object.freeze([
+ {id:"escudos",x:1150,y:240,side:"top"},
+ {id:"psiquico",x:1740,y:240,side:"top"},
+ {id:"cavalaria",x:1150,y:1360,side:"bottom"},
+ {id:"recuperacao",x:1740,y:1360,side:"bottom"}
 ]);
 const ORBIT_WIDTH=520,ORBIT_ROW=112,ORBIT_GAP=24;
 function position(nodes,branches=[]){
@@ -145,6 +153,24 @@ function position(nodes,branches=[]){
    top+=fullHeight+ORBIT_GAP;
   }
   bottom=Math.max(bottom,top);
+ }
+ // Arcos superior e inferior aproveitam o espaço vertical antes vazio.
+ // Mesmos tamanhos de nó e mesmo cálculo de posição das faixas laterais.
+ for(const slot of ORBIT_ARCS){
+  const family=byFamily.get(slot.id);
+  if(!family)continue;
+  const visible=family.nodes,fullHeight=heightFor(family);
+  if(!visible.length)continue;
+  visible.forEach((node,i)=>{
+   const row=Math.floor(i/3),count=Math.min(3,visible.length-row*3),inRow=i-row*3;
+   node.x=Math.round(slot.x+ORBIT_WIDTH/2+(inRow-(count-1)/2)*160);
+   node.y=slot.y+88+row*ORBIT_ROW;
+   node.geneFamily=family.id;
+  });
+  const activeHeight=Math.min(fullHeight,166+(Math.ceil(visible.length/3)-1)*ORBIT_ROW);
+  groups.push({id:family.id,label:family.label,x:slot.x,y:slot.y,width:ORBIT_WIDTH,
+   height:activeHeight,nodes:visible,orbitSide:slot.side});
+  bottom=Math.max(bottom,slot.y+activeHeight+ORBIT_GAP);
  }
  if(unknown.length){
   const x=W/2-ORBIT_WIDTH/2,y=bottom+20,rows=Math.ceil(unknown.length/3);
@@ -283,7 +309,7 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  }
  for(const n of nodes.filter(n=>n.type!=="skill"))svg+=card({...n,selected:n.id===selected},edit);
  const skills=nodes.filter(n=>n.type==="skill");
- svg+='<text class="fp-gene-column-title is-skills" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+125)+'" text-anchor="middle">PERÍCIAS · ÓRBITAS TEMÁTICAS</text>';
+ svg+='<text class="fp-gene-column-title is-skills" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+68)+'" text-anchor="middle">PERÍCIAS · ÓRBITAS TEMÁTICAS</text>';
  if(!skills.length)svg+='<text class="fp-gene-empty-text" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+170)+'" text-anchor="middle">Nenhuma Perícia disponível. Desenvolva fontes ou mostre as futuras.</text>';
  for(const n of skills)svg+=skill({...n,selected:n.id===selected});
  return svg+'</g></svg>';
