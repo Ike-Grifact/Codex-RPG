@@ -29,15 +29,24 @@ const RACES={
  humano:["Humano","Perseverança Humana + Maestria em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue gratuita; linhagem exclusiva de Transfusão Sanguinária (que não é gratuita).","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
  lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento (Sangue, Trevas ou Veneno) gratuitos.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
- runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia e dois elementos distintos gratuitos.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
+ runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
 const PURE_ELEMENTS=[["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]];
 const RUNE_ELEMENTS=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"]];
+// Regra racial: conversão dos símbolos que compõem a barreira; não modifica a
+// rolagem original, Pressão nem outros gastos de Pavor.
+function runeShieldBarrier(successes,pavores){
+ const E=Math.max(0,Math.floor(Number(successes)||0));
+ const P=Math.max(0,Math.floor(Number(pavores)||0));
+ const pairs=Math.floor(P/2);
+ return {E:E+pairs,P:P%2,de:E+pairs+P%2,integrity:E+pairs+P%2,convertedPairs:pairs};
+}
 function racialGrants(s=state){
  if(s.race==="humano")return ["maestria-armas-fogo"];
  if(s.race==="lucker_sangue")return ["sangue"];
  if(s.race==="lucker_puro")return ["criar-item-foco-magia",...(PURE_ELEMENTS.some(([id])=>id===s.pureElement)?[s.pureElement]:[])];
- if(s.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia",...new Set((s.runeElements||[]).filter(id=>RUNE_ELEMENTS.some(([k])=>k===id)))].slice(0,4);
+ if(s.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia","escudo-arcano",
+  ...((s.runeElements||[]).slice(0,1).filter(id=>RUNE_ELEMENTS.some(([k])=>k===id)))];
  return [];
 }
 function ownsSkill(id,s=state){
@@ -112,8 +121,7 @@ function isRacialGradeOne(group,key,s=state){
 }
 function raceChoicesComplete(s=state){
  return s.race==="lucker_puro"?PURE_ELEMENTS.some(([id])=>id===s.pureElement):
- s.race==="runa_espinhos"?(s.runeElements||[]).length===2&&s.runeElements[0]!==s.runeElements[1]&&
-  s.runeElements.every(id=>RUNE_ELEMENTS.some(([k])=>k===id)):true;
+ s.race==="runa_espinhos"?RUNE_ELEMENTS.some(([id])=>id===s.runeElements?.[0]):true;
 }
 function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendente na v0.56.
 
@@ -1497,7 +1505,7 @@ const CARD_BRIEFS={
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue. 1 XP; exige Transfusão + Elemento Sangue. Conjuração ativa; 3 marcas inimigas por 1 Vida; compra prévia de Transfusão pendente.",
  "fogo": "SRD v0.76: G1 disparo convencional; G2 Queimar causa E+P à Integridade; G3 Derreter mantém esse dano e acrescenta só 1 Vida direta, não dobrada no crítico. Áreas e custos mantidos; validação dos Graus pelo Narrador.",
  "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
- "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
+ "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
  "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
@@ -1630,7 +1638,8 @@ const CARD_ACTIVATIONS={
  "coleta-avancada": "Passiva"
 };
 
-function skillCompactCard([id,name,detail,cost],wizard){
+function skillCompactCard([id,baseName,detail,cost],wizard){
+ const name=id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
@@ -1979,7 +1988,7 @@ const same=(a,b)=>!!a&&!!b&&key(a)===key(b);
 const pad=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
 const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.floor(Math.random()*1e6);
 function defaultState(){return{
- schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
+ schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,runeShieldFreeUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:0},notes:"",pending:null,history:[],
@@ -2221,8 +2230,10 @@ function normalize(v){
  s.pureElement=PURE_ELEMENTS.some(([id])=>id===v.pureElement)?v.pureElement:"";
  s.runeElements=Array.isArray(v.runeElements)&&v.runeElements.length===2?
   v.runeElements.map(id=>RUNE_ELEMENTS.some(([k])=>k===id)?id:""):["",""];
+ // Guardar o segundo elemento histórico como dado legado, sem continuá-lo como Perícia gratuita.
  if(s.runeElements[0]===s.runeElements[1]&&s.runeElements[0])s.runeElements[1]="";
  s.perseverancaUsed=!!v.perseverancaUsed;
+ s.runeShieldFreeUsed=!!v.runeShieldFreeUsed;
  for(const id of ["name","concept","origin","virtue","personality","notes"]){
   if(typeof v[id]==="string")s[id]=v[id].slice(0,id==="notes"?5000:100);
  }
@@ -2609,6 +2620,7 @@ function deNatural(s=state){
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
+ if(s.race==="runa_espinhos")return false; // Runa Espinhos: armadura física proibida.
  const minLevel=it.grade===4?20:it.grade===3?10:it.grade===2?5:1;
  if(s.level<minLevel)return false;
  if(it.weight==="extremo"&&((s.attributes.vigor||0)<6||(s.practices.atletismo||0)<6))return false;
@@ -2828,7 +2840,7 @@ function raceBenefitsForm(){
  const extras=racialExtraG1(),repair=extras.length?
   '<div><p>Há '+extras.length+' Atributo(s) extra(s) em G1. Eles não são benefícios automáticos desta raça; podem ser compras ou resíduos de fichas anteriores.</p><button type="button" class="fp-secondary" data-action="wizard-racial-repair">Revisar graus extras</button></div>':"";
  const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
- const rune=state.race==="runa_espinhos"?[0,1].map(i=>'<label class="fp-wiz-field">Elemento '+(i+1)+'<select data-race-element="rune-'+i+'">'+raceOptions(RUNE_ELEMENTS,state.runeElements[i])+'</select></label>').join(""):'';
+ const rune=state.race==="runa_espinhos"?'<label class="fp-wiz-field">Elemento inicial (1 gratuito)<select data-race-element="rune-0">'+raceOptions(RUNE_ELEMENTS,state.runeElements[0])+'</select></label>':'';
  return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p>'+repair+'</div>';
 }
 function changeRace(id){
@@ -2839,7 +2851,7 @@ function changeRace(id){
  if(wizardStarterPurchased&&(candidate.attributes[wizardStarterPurchased]||0)===1&&
     !racialStartingAttributes(old).includes(wizardStarterPurchased))
   candidate.attributes[wizardStarterPurchased]=0;
- candidate.race=id;candidate.pureElement="";candidate.runeElements=["",""];
+ candidate.race=id;candidate.pureElement="";candidate.runeElements=["",""];candidate.runeShieldFreeUsed=false;
  // Nunca preservar a escolha do assistente entre origens: esse era o vazamento
  // Runa→Sangue (Força) e Sangue→Puro (Agilidade).
  applyRacialStartingAttributes(candidate);
@@ -2850,6 +2862,7 @@ function changeRace(id){
   render();return;
  }
  state=candidate;
+ for(const item of state.items)if(item.type==="armadura"&&item.equipped&&!canEquipArmor(state,item))item.equipped=false;
  wizardStarterAttribute="";wizardStarterPurchased="";wizardStarterTraining="";
  wizardStarterPhase="attr";wizardStep=0;wizardReached=0;
  if(ownsSkill("criar-item-foco-magia")){
@@ -2887,10 +2900,10 @@ function changeRaceElement(key,value){
  if(state.creationLocked||state.pending)return;
  const oldPure=state.pureElement,oldRune=[...state.runeElements];
  if(key==="pure"&&state.race==="lucker_puro"&&(value===""||PURE_ELEMENTS.some(([id])=>id===value)))state.pureElement=value;
- else if(/^rune-[01]$/.test(key)&&state.race==="runa_espinhos"&&(value===""||RUNE_ELEMENTS.some(([id])=>id===value)))state.runeElements[Number(key.slice(-1))]=value;
+ else if(key==="rune-0"&&state.race==="runa_espinhos"&&(value===""||RUNE_ELEMENTS.some(([id])=>id===value)))state.runeElements[0]=value;
  else return;
  const duplicated=state.skills.some(id=>racialGrants(state).includes(id));
- if(duplicated||dependentsValid(state)||(state.runeElements[0]&&state.runeElements[0]===state.runeElements[1])){
+ if(duplicated||dependentsValid(state)){
   state.pureElement=oldPure;state.runeElements=oldRune;toast("Elementos devem ser diferentes e não podem duplicar compras.");render();return;
  }
  render();save();
@@ -2900,9 +2913,13 @@ function renderRacePanel(){
  if(select)select.value=state.race;
  if(info)info.textContent=c[1]+" "+c[2]+" "+raceCaution();
  if(!panel)return;
- const names=racialGrants(state).map(id=>SKILLS.find(row=>row[0]===id)?.[1]||id);
+ const names=racialGrants(state).map(id=>id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":SKILLS.find(row=>row[0]===id)?.[1]||id);
  panel.innerHTML='<strong>'+c[0]+'</strong><p>'+c[1]+'</p>'+(names.length?'<p>Perícias raciais gratuitas: '+esc(names.join(", "))+'.</p>':'')+
  (raceCaution()?'<p>XP PENDENTE: '+esc(raceCaution())+'</p>':'')+
+ (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência a um elemento e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas.</p>'+
+ '<button type="button" data-action="rune-shield-use"'+(state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Marcar ativação gratuita</button> '+
+ '<button type="button" data-action="rune-shield-reset"'+(!state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Restaurar uso diário</button>'+
+ (state.runeElements?.[1]?'<p><small>Ficha legada: o segundo elemento '+esc(RUNE_ELEMENTS.find(([id])=>id===state.runeElements[1])?.[1]||state.runeElements[1])+' foi preservado apenas como dado histórico; não é mais gratuito e pode ser comprado separadamente.</small></p>':''):'')+
  (state.race==="humano"?'<p>Perseverança Humana: <strong>'+(state.perseverancaUsed?'Usada':'Disponível')+'</strong> (1 rerrolagem/teste por descanso longo).</p>'+
  '<button type="button" data-action="human-reroll-use"'+(state.perseverancaUsed?' disabled':'')+'>Marcar uso</button> '+
  '<button type="button" data-action="human-long-rest"'+(!state.perseverancaUsed?' disabled':'')+'>Descanso longo</button>'+
@@ -2996,6 +3013,11 @@ function magicComposerFields(){
  const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
  const time=magicPreparationTurns(grade,draft.magicCharges);
+ const tacticalHint=chosen==="vento"?
+ "Ar: corrente em L, X, linha, cone ou círculo. Contorne a cobertura por passagem aberta; alcance/DE e limites de curvas pelo Narrador.":
+ chosen==="fogo"&&ownsSkill("veneno")?
+ "Ácido: Fogo + Veneno, em acerto com Queimar, aplica 1 acúmulo de Veneno por 2 rodadas sem exigir Sangramento nesse ataque; Veneno isolado ainda exige Sangramento. Não duplica dano. Registro manual até automatizar custos e DE.":
+ "";
  const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
  return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
   '<div class="fp-magic-config">'+
@@ -3009,6 +3031,7 @@ function magicComposerFields(){
    '> '+time+' turno(s) de preparação cumpridos</label>':"")+
   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
   '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
+  (tacticalHint?'<p class="fp-magic-note">'+esc(tacticalHint)+'</p>':'')+
   '<small class="fp-magic-note">Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
   ' Coragem · '+draft.magicCharges+' carga(s) de foco. Fonte elemental, efeitos e amplificação são resolvidos conforme regras e Narrador.</small></div>';
 }
@@ -3436,7 +3459,10 @@ function geneDetailHTML(id,s=state){
  }
  const skill=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
  if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
- const [sid,name,detail,cost]=skill,owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
+ const [sid,baseName,baseDetail,cost]=skill,owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
+ const name=sid==="escudo-arcano"&&s.race==="runa_espinhos"?"Escudo Rúnico":baseName;
+ const detail=sid==="escudo-arcano"&&s.race==="runa_espinhos"?
+ "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Absorção elemental ainda PENDENTE.":baseDetail;
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
  const slug=SKILL_PERMALINKS[sid];
@@ -3466,7 +3492,7 @@ function renderGenetic(){
   ...K.map(([k])=>({type:"know",...sourceGeneInfo("know:"+k,preview)})),
   ...P.map(([k])=>({type:"practice",...sourceGeneInfo("practice:"+k,preview)})),
   ...SKILLS.filter(([id])=>!HIDDEN_CATALOG_SKILLS.has(id)).map(row=>({
-   type:"skill",id:row[0],name:row[1],state:geneSkillStatus(row,preview),
+   type:"skill",id:row[0],name:row[0]==="escudo-arcano"&&preview.race==="runa_espinhos"?"Escudo Rúnico":row[1],state:geneSkillStatus(row,preview),
    label:ownsSkill(row[0],preview)?"Adquirida":skillReq(row[0],preview)||"Requisitos e XP"
   }))
  ];
@@ -5255,6 +5281,16 @@ function onClick(event){
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
  case "wizard-portrait":$("portrait-input").click();break;
+ case "rune-shield-use":{
+  if(state.race!=="runa_espinhos"||state.runeShieldFreeUsed||state.pending)return;
+  state.runeShieldFreeUsed=true;renderRacePanel();save();
+  toast("Escudo Rúnico: ativação gratuita diária registrada. Faça a rolagem de Disciplina normalmente.");break;
+ }
+ case "rune-shield-reset":{
+  if(state.race!=="runa_espinhos"||!state.runeShieldFreeUsed||state.pending)return;
+  if(!confirm("Confirmar a renovação do uso diário do Escudo Rúnico?"))return;
+  state.runeShieldFreeUsed=false;renderRacePanel();save();toast("Escudo Rúnico: uso diário restaurado.");break;
+ }
  case "human-reroll-use":{
   if(state.race!=="humano"||state.perseverancaUsed||state.pending)return;
   state.perseverancaUsed=true;renderRacePanel();save();toast("Perseverança usada. Rerrole o teste manualmente.");break;
@@ -5432,7 +5468,7 @@ function onClick(event){
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
-  if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast("Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
+  if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
@@ -5576,7 +5612,7 @@ function onChange(event){
    }else it.embeddedWeapon=w;
   }
   // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
-  if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
+  if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
 }

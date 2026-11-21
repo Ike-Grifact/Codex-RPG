@@ -86,7 +86,7 @@ test("v0.64: custo racial exibido sem inventar descontos, alterações de custo 
 
 test("quatro linhagens, sem criar classes obrigatórias",()=>{
  assert.deepEqual(Object.keys(RACES),["humano","lucker_sangue","lucker_puro","runa_espinhos"]);
- assert.deepEqual(racialGrants(character("humano")),[]);
+ assert.deepEqual(racialGrants(character("humano")),["maestria-armas-fogo"]);
 });
 
 test("Lucker de Sangue inicia só com a Perícia de Sangue, sem Foco inventado",()=>{
@@ -104,13 +104,15 @@ test("Lucker Puro recebe Foco e exatamente uma Perícia elemental escolhida",()=
  assert.deepEqual(racialGrants(character("lucker_puro",{pureElement:"fogo"})),["criar-item-foco-magia"]);
 });
 
-test("Runa Espinhos recebe Pugilismo, Foco e duas escolas distintas permitidas",()=>{
+test("Runa Espinhos recebe Pugilismo, Foco, Escudo Rúnico e somente um elemento gratuito",()=>{
  const c=character("runa_espinhos",{runeElements:["vento","terra"]});
- assert.deepEqual(racialGrants(c),["pugilismo","criar-item-foco-magia","vento","terra"]);
+ assert.deepEqual(racialGrants(c),["pugilismo","criar-item-foco-magia","escudo-arcano","vento"]);
+  assert.equal(ownsSkill("escudo-arcano",c),true);
+  assert.equal(ownsSkill("terra",c),false,"O segundo elemento não é mais gratuito");
  assert.equal(raceChoicesComplete(c),true);
- assert.equal(raceChoicesComplete(character("runa_espinhos",{runeElements:["fogo","fogo"]})),false);
- assert.equal(raceChoicesComplete(character("runa_espinhos",{runeElements:["fogo",""]})),false);
- assert.deepEqual(racialGrants(character("runa_espinhos",{runeElements:["sangue","trevas"]})),["pugilismo","criar-item-foco-magia"]);
+ assert.equal(raceChoicesComplete(character("runa_espinhos",{runeElements:["fogo","fogo"]})),true);
+ assert.equal(raceChoicesComplete(character("runa_espinhos",{runeElements:["fogo",""]})),true);
+ assert.deepEqual(racialGrants(character("runa_espinhos",{runeElements:["sangue","trevas"]})),["pugilismo","criar-item-foco-magia","escudo-arcano"]);
 });
 
 test("v0.56: seis Graus, três faixas acumuladas por tipo de fonte",()=>{
@@ -178,7 +180,7 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  assert.equal(sangue.training,3); // Apresentação na faixa elevada (não 2x)
  assert.equal(sangue.skills,0); // Perícia de Sangue gratuita
  const rune=calculate(character("runa_espinhos",{runeElements:["fogo","agua"]}));
- assert.equal(rune.skills,0); // Foco, Pugilismo e os elementos não são compras
+ assert.equal(rune.skills,0); // Foco, Pugilismo, Escudo Rúnico e primeiro elemento são grátis
  const bought=calculate(character("humano",{skills:["pugilismo"]}));
  assert.equal(bought.skills,1);
  const build=calculate(character("humano",{
@@ -187,7 +189,7 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  }));
  assert.deepEqual(build,{attr:3,training:6,skills:5});
  assert.equal(build.attr+build.training+build.skills,14);
- assert.equal(18-(build.attr+build.training+build.skills),4); // build de 14 XP: sobram 4 XP
+ assert.equal(15-(build.attr+build.training+build.skills),1); // build de 14 XP: sobra 1 XP atual
 });
 
 test("origem é a raça na etapa de identidade e na ficha final, sem seletor duplicado",()=>{

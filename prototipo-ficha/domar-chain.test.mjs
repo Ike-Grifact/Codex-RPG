@@ -6,7 +6,8 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const between=(a,b)=>{const begin=source.indexOf(a),end=source.indexOf(b,begin+a.length);
  assert(begin>=0&&end>begin,"Trecho não encontrado: "+a);
  return source.slice(begin,end);};
-const check=Function("racialGrants","ownsSkill","ADVANCED_SOURCE_DEFS","SOURCE_PROPS",between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")(
+const weaponMasteryDefs=between("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+const check=Function("racialGrants","ownsSkill","ADVANCED_SOURCE_DEFS","SOURCE_PROPS",weaponMasteryDefs+between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")(
  () => [],
  (id,s) => (s.skills||[]).includes(id),
  [],{}
@@ -17,7 +18,7 @@ const end=source.indexOf("\n};",start);
 assert(start>=0&&end>start,"Tabela de compra assistida indisponível");
 const auto=Function("return "+source.slice(start+"const GENE_AUTO_REQUIREMENTS=".length,end+3))();
 const listStart=source.indexOf("const SKILLS="),listEnd=source.indexOf("];",listStart);
-const prices=new Map(Function("return "+source.slice(listStart+"const SKILLS=".length,listEnd+2))()
+const prices=new Map(Function(weaponMasteryDefs+"return "+source.slice(listStart+"const SKILLS=".length,listEnd+2))()
  .map(([id,, ,xp])=>[id,xp]));
 const base=()=>({
  attributes:{influencia:4,inteligencia:1},

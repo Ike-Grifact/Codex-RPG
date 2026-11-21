@@ -111,10 +111,10 @@ const { chromium } = require('playwright');
         throw new Error('Evolução não confirmada no XP compartilhado: '+afterConfirm.slice(0,300));
       const attrCard=page.locator('#gene-builder-map [data-gene-id="attr:agilidade"].fp-gene-card');
       if(!await attrCard.count())throw new Error('Grau comprado sumiu no mapa após confirmar');
-      await page.locator('#wizard-content button[data-action="gene-future"]').click();
+      await page.locator('#wizard-content button[data-action="gene-future"]:not(.fp-gene-future-float)').click();
       if(!await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
         throw new Error('O modo de ramificações futuras não mostra opções bloqueadas');
-      await page.locator('#wizard-content button[data-action="gene-future"]').click();
+      await page.locator('#wizard-content button[data-action="gene-future"]:not(.fp-gene-future-float)').click();
       if(await page.locator('#gene-builder-map .fp-gene-skill.is-locked').count())
         throw new Error('Opções futuras não foram ocultadas de novo');
       // Ramificações conectadas como no grafo temático, não como pré-requisitos.

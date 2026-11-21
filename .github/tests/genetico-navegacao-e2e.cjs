@@ -63,16 +63,17 @@ const create=async page=>{
   desktop.on('pageerror',e=>errors.push(e.message));
   await create(desktop);
   const map=desktop.locator('#gene-builder-map');
+  const initialDesktop=await cam(map);
   // Não reservar lacunas para Perícias bloqueadas, nem sobrepor nós.
   const normal=await checkGeneSpacing(map,"Caminhos atuais");
   if(normal.skills<=18)assert(normal.furthest<1850,"Constelações visíveis excessivamente distantes: "+JSON.stringify(normal));
-  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  await desktop.locator('#wizard-content [data-action="gene-future"]:not(.fp-gene-future-float)').click();
   const all=await checkGeneSpacing(map,"Ramificações futuras");
   assert(all.skills>=normal.skills,"Alternar ramificações futuras reduziu os nós");
   assert(all.families.length>=10,"Constelações temáticas ausentes: "+JSON.stringify(all.families));
   const expected={terra:"elementos","pericia-druidica":"natureza",
    "domar-criatura-grande":"natureza","disparo-tatico":"disparos",
-   "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"conjuracao"};
+   "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"elementos"};
   for(const [id,family] of Object.entries(expected))
    assert(all.placements[id]===family,"Constelação incorreta: "+id+" -> "+all.placements[id]);
   // Domar e Druídica são Perícias separadas, sem aresta de progressão entre elas.
@@ -88,7 +89,7 @@ const create=async page=>{
   assert(await levesIcon.count()===1,"Ícone de armas não aparece em Armas Leves");
   assert(await fogoIcon.getAttribute("width")==="32","Ícone elemental deveria ter 32 unidades");
   assert(await levesIcon.getAttribute("width")==="32","Ícone de arma deveria ter 32 unidades");
-  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  await desktop.locator('#wizard-content [data-action="gene-future"]:not(.fp-gene-future-float)').click();
   await checkGeneSpacing(map,"Caminhos restaurados");
   await map.scrollIntoViewIfNeeded();
   const box=await map.boundingBox();
@@ -119,11 +120,11 @@ const create=async page=>{
   assert((await desktop.locator('#wizard-summary').innerText()).includes('15 XP'),
      'O arraste alterou os investimentos');
   await desktop.locator('#gene-builder-map [data-gene-nav="0"]').click();
-  assert(Math.abs((await cam(map)).zoom-1)<.001,'Centralizar não recuperou zoom inicial no desktop');
+  assert(Math.abs((await cam(map)).zoom-initialDesktop.zoom)<.01,'Centralizar não recuperou zoom inicial no desktop');
   await desktop.locator('#gene-builder-map [data-gene-nav="1"]').click();
-  assert((await cam(map)).zoom>1,'Botão flutuante + não aplicou zoom');
+  assert((await cam(map)).zoom>initialDesktop.zoom+.01,'Botão flutuante + não aplicou zoom');
   await desktop.locator('#gene-builder-map [data-gene-nav="-1"]').click();
-  assert(Math.abs((await cam(map)).zoom-1)<.01,'Botão flutuante − não reduziu zoom');
+  assert(Math.abs((await cam(map)).zoom-initialDesktop.zoom)<.01,'Botão flutuante − não restaurou o zoom inicial');
   await map.focus();
   await desktop.keyboard.press('ArrowRight');
   assert((await cam(map)).x<0,'Tecla de direção não moveu o mapa');
@@ -176,7 +177,7 @@ const create=async page=>{
   await mobile.locator('#gene-builder-map [data-gene-nav="0"]').tap();
   const resetMobile=await cam(m);
   const tapTrace=await mobile.evaluate(()=>window.__geneTapTrace);
-  assert(Math.abs(resetMobile.zoom-2.25)<.01,
+  assert(Math.abs(resetMobile.zoom-first.zoom)<.01,
     'Centralizar não restaurou zoom móvel adequado: '+JSON.stringify({resetMobile,tapTrace}));
   assert(!merrors.length,'Erros Javascript no celular: '+merrors.join(' | '));
   console.log('PASS Mobile: pinça, um dedo arrasta, botões e zoom inicial legível');

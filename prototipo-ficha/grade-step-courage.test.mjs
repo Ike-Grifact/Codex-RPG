@@ -15,6 +15,7 @@ function extract(a,b){
 const diceTable=extract("const DICE_ATTR=","const FACES=");
 const helpers=extract("function dataDice(","function label(");
 const poolCode=extract("function buildPool(){","function renderComposer(){");
+const weaponMasteryDefs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
 const unitFactory=new Function("state","draft",diceTable+helpers+
  "\nconst SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
  "\nconst key=s=>s?s.group+'.'+s.key:'';"+
@@ -167,7 +168,7 @@ test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a F
  const sourceReq=extract("function skillReq(id,s=state){","function dependentsValid(");
  const ADVANCED_SOURCE_DEFS=[{id:"artesao-avancado",group:"practice",key:"artesao",label:"Artesão"}];
  const getReq=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS="+JSON.stringify(ADVANCED_SOURCE_DEFS)+";const SOURCE_PROPS={practice:'practices'};"+sourceReq+"\nreturn skillReq;")(
+  "const ADVANCED_SOURCE_DEFS="+JSON.stringify(ADVANCED_SOURCE_DEFS)+";const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+sourceReq+"\nreturn skillReq;")(
    {},()=>[],(id,s)=>s.skills.includes(id)
   );
  const ficha=({art=2,forca=1,destreza=1,inteligencia=1,skills=["artesao-avancado"]}={})=>({
@@ -197,7 +198,7 @@ test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a F
 test("Ferreiro Elemental: custo, requisitos e compra após adquirir Encantar com Elemento",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
  const base=["ferreiro","improviso","criar-item-foco-magia"];
  const make=({inteligencia=2,destreza=2,skills=base}={})=>({
   attributes:{forca:1,destreza,inteligencia},practices:{artesao:2,armas_conjuracao:1},knowledges:{},skills
@@ -220,7 +221,7 @@ test("Ferreiro Elemental: custo, requisitos e compra após adquirir Encantar com
 test("Encantar com Elemento: custo, alternativas de requisito, duração idêntica e desbloqueio do Ferreiro Elemental",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
  const make=(skills)=>({attributes:{forca:1,inteligencia:2,destreza:2},practices:{artesao:2,armas_conjuracao:2},knowledges:{},skills});
  assert.ok(fn("encantar-com-elemento",make([])),"Falta Foco e elemento");
  assert.ok(fn("encantar-com-elemento",make(["fogo"])),"Falta Criar Item de Foco e Magia");
@@ -248,7 +249,7 @@ test("Encantar com Elemento: custo, alternativas de requisito, duração idênti
 test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no portador",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
  const make=({vigor=2,skills=["ferreiro-elemental","fogo"]}={})=>({
   attributes:{forca:1,vigor,destreza:2,inteligencia:2},
   practices:{artesao:2,armas_conjuracao:2},knowledges:{},skills
@@ -260,7 +261,7 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
  assert.match(app,/"resistencia-a-fogo",\s*"Resistência a Fogo",[\s\S]*?\n  1\n \]/,"Custo exatamente 1 XP");
  assert.ok(app.includes('"resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]]'),"Compra assistida mantém requisitos");
  assert.ok(app.includes('"resistencia-a-fogo": "resistencia-a-fogo"'),"Verbete da ficha");
- assert.ok(app.includes('"resistencia-a-fogo": "Passiva pessoal enquanto adquirida'),"Efeito pessoal reconhecido");
+ assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Efeito pessoal reconhecido na ficha");
  assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Exibe resistência somente se o personagem possuir a Perícia");
  assert.ok(app.includes("0 dano direto à Vida por Derreter G3"),"Derreter não causa dano direto à Vida do portador");
  assert.ok(app.includes("Não reduz dano à Integridade da armadura"),"Resistência protege somente a Vida");
@@ -281,7 +282,7 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
 test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia do peso do martelo",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
  const make=({forca=3,destreza=1,vigor=1,skills=[]}={})=>({
   attributes:{forca,destreza,vigor},practices:{armas_conjuracao:0,artesao:0},knowledges:{},skills
  });
@@ -533,7 +534,7 @@ test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano in
  assert.ok(page.includes("8 metros")&&page.includes("retorna ao portador"));
  assert.ok(page.includes("dano físico básico normal")&&page.includes("1 Coragem"),"Dano físico normal e custo do lançamento definidos");
  const map=readFileSync(join(root,"gene-graph.js"),"utf8");
- assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
+ assert.ok(map.includes('skills:["maestria-escudos","escudo-refletor","escudo-bumerangue"'),"Ambas as perícias continuam agrupadas na constelação Escudos");
  const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(portal.includes('href="escudo-bumerangue.html"')&&portal.includes('href="maestria-em-escudos.html"'));
 });
@@ -553,10 +554,10 @@ test("Escudo Bumerangue: Disciplina + Atributos, retorno somente no acerto e que
  assert.ok(app.includes('if(draft.shieldThrowId){'),"Pilha valida contexto de Escudo Bumerangue");
  assert.ok(app.includes('draft.third&&draft.third.group!=="attr"'),"Complemento, quando válido, é outro Atributo");
  assert.ok(app.includes('draft.shieldThrowMeters>8'),"Não aceita alvo além de 8 metros");
- assert.ok(app.includes('if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId'),"Não insere dado de arma automaticamente");
+ assert.ok(app.includes('if(usingDiscipline()&&!draft.maosLeves&&!draft.shieldThrowId&&!draft.equipmentId'),"Não insere dado de arma automaticamente");
  assert.ok(app.includes('shieldThrowId:draft.shieldThrowId||""'),"Origem da rolagem acompanha os dados");
  assert.ok(app.includes('shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0]'),"Resultado decidido após contar E, P e gastar A");
- assert.ok(app.includes('const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)'),"Dano normal do ataque físico, incluindo crítico de quatro dados");
+ assert.ok(app.includes('const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)'),"Dano normal do ataque físico, incluindo crítico de quatro dados");
  assert.ok(app.includes('thrownShield.equipped=false;thrownShield.shieldGrounded=true'),"Finalização registra falha com escudo no chão");
  assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Histórico registra retorno");
  assert.ok(app.includes('shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null'),"Histórico registra distância de queda");
@@ -581,7 +582,7 @@ test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características p
  assert.ok(book.includes("arremessar o escudo consome **1 Coragem**")&&srd.includes("cada lançamento de Escudo Bumerangue consome **1 Coragem**"));
  assert.ok(index.includes("dano físico normal e características próprias do escudo"));
  assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"Usa a fórmula universal E + piso(P/2)");
- assert.ok(app.includes("const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)"),"Sem ramo null e com crítico normal");
+ assert.ok(app.includes("const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)"),"Sem ramo null e com crítico normal");
  assert.ok(app.includes("Number(!!draft.shieldThrowId)"),"Preparação inclui 1 Coragem por arremesso");
  assert.ok(app.includes("Number(!!p.shieldThrowId)"),"Pontuação/finalização inclui custo em Coragem mesmo em falha");
  assert.ok(app.includes('const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));'),"Consulta características do escudo sem usar seus dados como arma");
@@ -971,8 +972,8 @@ test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()
  }
  assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Doze Perícias"));
  assert.ok(srd.includes("3+1+1 = DE 5")&&srd.includes("3+1+2 = DE 6"));
- assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("não habilitar d20 em outros testes"));
- assert.ok(srd.includes("Destreza 3")&&srd.includes("«De 3» significa **Destreza 3**"),"Destreza 3 confirmada pelo autor");
+ assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("Disciplina em um golpe corpo a corpo")&&srd.includes("um dado já existente da pilha"));
+ assert.ok(srd.includes("**DEFINIDO — Bioética (1 XP):** exige **Alquimia 3 + Inteligência 3 + Destreza 3"),"Destreza 3 confirmada pelo autor");
 });
 
 test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorção total",()=>{

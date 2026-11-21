@@ -8,8 +8,9 @@ const between=(a,b)=>{
  assert.ok(start>=0&&end>start,"Trecho esperado não encontrado: "+a);
  return source.slice(start,end);
 };
+const weaponMasteryDefs=between("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
 const {skillReq,dependentsValid}=Function("racialGrants","ownsSkill","ADVANCED_SOURCE_DEFS","SOURCE_PROPS",
- between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")(
+ weaponMasteryDefs+between("function skillReq(","function movement(")+"return {skillReq,dependentsValid};")(
  ()=>[],(id,s)=>(s.skills||[]).includes(id),[],{});
 const start=source.indexOf("const GENE_AUTO_REQUIREMENTS="),end=source.indexOf("\n};",start);
 assert.ok(start>=0&&end>start);

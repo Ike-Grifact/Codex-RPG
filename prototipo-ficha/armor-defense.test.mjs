@@ -6,9 +6,9 @@ const src=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const start=src.indexOf("function deNatural(s=state)");
 const end=src.indexOf("function balance(){",start);
 assert.ok(start>=0&&end>start,"Lógica defensiva do criador disponível");
-const {deNatural,canEquipArmor,equippedArmor,armorDePenalty,armorDodgeBonus,deDefense,deDodge,defensePresentation}=new Function(
+const {deNatural,canEquipArmor,equippedArmor,armorDePenalty,armorDodgeBonus,deDefense,deDodge,defensePresentation}=new Function("ownsSkill",
  src.slice(start,end)+";return {deNatural,canEquipArmor,equippedArmor,armorDePenalty,armorDodgeBonus,deDefense,deDodge,defensePresentation};"
-)();
+)((id,s)=>!!s?.skills?.includes(id));
 const character=(weight="leve",equipped=true,more={})=>({
  level:1,attributes:{agilidade:1,destreza:0,vigor:0},practices:{atletismo:0},
  items:[{name:"Armadura de teste",type:"armadura",weight,grade:1,equipped,max:7,hp:7}],...more
@@ -23,8 +23,8 @@ test("v0.66: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva
  const p=defensePresentation(s);
  assert.equal(p.value,2);
  assert.equal(p.label,"DE DEFENSIVA");
- assert.match(p.caption,/todas as defesas/);
- assert.match(p.caption,/Teto 12/);
+ assert.match(p.caption,/todas as defesas/i);
+ assert.match(p.caption,/Teto natural 9 \/ final 12/);
 });
 
 test("v0.66: retirar armadura remove bônus e preserva Integridade",()=>{
