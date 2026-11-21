@@ -24,7 +24,7 @@ test("v0.66: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva
  assert.equal(p.value,2);
  assert.equal(p.label,"DE DEFENSIVA");
  assert.match(p.caption,/todas as defesas/i);
- assert.match(p.caption,/Teto 12/);
+ assert.match(p.caption,/Teto natural 9 \/ final 12/);
 });
 
 test("v0.66: retirar armadura remove bônus e preserva Integridade",()=>{
