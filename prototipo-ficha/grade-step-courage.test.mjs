@@ -531,7 +531,7 @@ test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano in
  assert.equal(ready(s.items[0],{...s,skills:owned}),false,"Sem Bumerangue não habilita");
  const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
  assert.ok(page.includes("8 metros")&&page.includes("retorna ao portador"));
- assert.ok(page.includes("O autor não determinou <strong>dano específico do impacto"),"Dano do impacto permanece pendente");
+ assert.ok(page.includes("dano físico básico normal")&&page.includes("1 Coragem"),"Dano físico normal e custo do lançamento definidos");
  const map=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
  const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
@@ -556,7 +556,7 @@ test("Escudo Bumerangue: Disciplina + Atributos, retorno somente no acerto e que
  assert.ok(app.includes('if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId'),"Não insere dado de arma automaticamente");
  assert.ok(app.includes('shieldThrowId:draft.shieldThrowId||""'),"Origem da rolagem acompanha os dados");
  assert.ok(app.includes('shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0]'),"Resultado decidido após contar E, P e gastar A");
- assert.ok(app.includes('const damage=p.shieldThrowId?null:'),"Não inventa dano do ataque com escudo");
+ assert.ok(app.includes('const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)'),"Dano normal do ataque físico, incluindo crítico de quatro dados");
  assert.ok(app.includes('thrownShield.equipped=false;thrownShield.shieldGrounded=true'),"Finalização registra falha com escudo no chão");
  assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Histórico registra retorno");
  assert.ok(app.includes('shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null'),"Histórico registra distância de queda");
@@ -570,4 +570,24 @@ test("Escudo Bumerangue: Disciplina + Atributos, retorno somente no acerto e que
  assert.ok(page.includes("mesmo turno em que foi lançado"),"Verbetes descrevem retorno no mesmo turno");
  assert.ok(page.includes("Falha limpa:")&&page.includes("Falha com Pavor:"),"Verbetes descrevem falhas distintas");
  assert.ok(page.includes("1E por 2A convertidos"),"Verbetes descrevem queda com Antecipar convertido");
+});
+
+test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características próprias da peça",()=>{
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(page.includes("1 Coragem para lançar")&&page.includes("dano físico básico normal"));
+ assert.ok(book.includes("arremessar o escudo consome **1 Coragem**")&&srd.includes("cada lançamento de Escudo Bumerangue consome **1 Coragem**"));
+ assert.ok(index.includes("dano físico normal e características próprias do escudo"));
+ assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"Usa a fórmula universal E + piso(P/2)");
+ assert.ok(app.includes("const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)"),"Sem ramo null e com crítico normal");
+ assert.ok(app.includes("Number(!!draft.shieldThrowId)"),"Preparação inclui 1 Coragem por arremesso");
+ assert.ok(app.includes("Number(!!p.shieldThrowId)"),"Pontuação/finalização inclui custo em Coragem mesmo em falha");
+ assert.ok(app.includes('const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));'),"Consulta características do escudo sem usar seus dados como arma");
+ assert.ok(app.includes('!(p.shieldThrowId&&x==="Cravar")'),"Cravar incompatível com retorno não está no seletor");
+ assert.ok(!app.includes('||p.opts.weightEnabled||p.characteristic||p.secondCharacteristic)'),"Características do escudo são permitidas");
+ assert.ok(app.includes('if(courageCost>5)errs.push'),"Teto de Coragem preservado");
+ assert.ok(page.includes("uma característica ativável custa mais 1 Coragem no acerto comum"));
+ assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Retorno e queda existentes permanecem");
 });
