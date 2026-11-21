@@ -142,6 +142,42 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-espadas":"Força 2 + Destreza 2"
 });
 const SKILLS=[
+ [
+  "maos-leves","Mãos Leves","1 XP. Requisitos: Furtividade 3 + Disciplina 3 + Proteção 2. Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",1
+ ],
+ [
+  "pericia-armadilha","Perícia em Armadilha","1 XP. Requisitos: Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1. Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",1
+ ],
+ [
+  "golpe-furtivo","Golpe Furtivo","1 XP. Requisitos: Disciplina 2 + Furtividade 2. Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",1
+ ],
+ [
+  "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",1
+ ],
+ [
+  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
+ ],
+ [
+  "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
+ ],
+ [
+  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",1
+ ],
+ [
+  "passo-etereo","Passo Etéreo","1 XP. Requisitos: Invocar Esfera Espiritual. Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",1
+ ],
+ [
+  "absorver-esferas","Absorver Esferas","1 XP. Requisitos: Invocar Esfera Espiritual. Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",1
+ ],
+ [
+  "disparo-esferas-espirituais","Disparo de Esferas Espirituais","1 XP. Requisitos: Invocar Esfera Espiritual. Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",1
+ ],
+ [
+  "dilema","Dilema","1 XP. Requisitos: Vigor 4 + Artista Marcial. Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",1
+ ],
+ [
+  "impacto-psiquico","Impacto Psíquico","1 XP. Requisitos: Criar Item de Foco e Magia + Artista Marcial. Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",1
+ ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
   (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de aquisição: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
@@ -629,6 +665,18 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "maos-leves":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "pericia-armadilha":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "golpe-furtivo":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "bioetica":["know:alquimia","attr:inteligencia","attr:destreza"],
+ "pesquisa-avancada-pocoes":["know:alquimia","practice:artesao","attr:destreza"],
+ "corpo-fechado":["attr:vigor","practice:armas_conjuracao"],
+ "invocar-esfera-espiritual":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "passo-etereo":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "absorver-esferas":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "disparo-esferas-espirituais":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "dilema":["attr:vigor","practice:armas_conjuracao"],
+ "impacto-psiquico":["attr:inteligencia","practice:armas_conjuracao"],
  "invocacao-elemental":["attr:influencia","attr:inteligencia","practice:apresentacao","practice:armas_conjuracao"],
  "domar-criatura-media":["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "domar-criatura-grande":["attr:influencia","attr:inteligencia","practice:apresentacao"],
@@ -921,6 +969,11 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["furtividade","maos-leves","golpe-furtivo"],
+ ["protecao","pericia-armadilha"],
+ ["alquimia","pesquisa-avancada-pocoes","bioetica"],
+ ["artista-marcial","corpo-fechado","dilema","impacto-psiquico"],
+ ["criar-item-foco-magia","invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais"],
  ["maestria-escudos","escudo-refletor","escudo-bumerangue","maestria-arremesso-armas"],
   ["sacrificio-heroico","maestria-escudos"],
   ["improviso","sentido-elemental","transformacao-elemental","mudanca-elemental"],
@@ -1019,6 +1072,18 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "maos-leves":"maos-leves",
+ "pericia-armadilha":"pericia-armadilha",
+ "golpe-furtivo":"golpe-furtivo",
+ "bioetica":"bioetica",
+ "pesquisa-avancada-pocoes":"pesquisa-avancada-pocoes",
+ "corpo-fechado":"corpo-fechado",
+ "invocar-esfera-espiritual":"invocar-esfera-espiritual",
+ "passo-etereo":"passo-etereo",
+ "absorver-esferas":"absorver-esferas",
+ "disparo-esferas-espirituais":"disparo-esferas-espirituais",
+ "dilema":"dilema",
+ "impacto-psiquico":"impacto-psiquico",
  "invocacao-elemental":"invocacao-elemental",
  "domar-criatura-media":"domar-criatura-media",
  "domar-criatura-grande":"domar-criatura-grande",
@@ -1111,6 +1176,18 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "maos-leves":"Furtividade 3 + Disciplina 3 + Proteção 2",
+ "pericia-armadilha":"Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1",
+ "golpe-furtivo":"Disciplina 2 + Furtividade 2",
+ "bioetica":"Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média",
+ "pesquisa-avancada-pocoes":"Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2",
+ "corpo-fechado":"Vigor 4 + Artista Marcial",
+ "invocar-esfera-espiritual":"Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3",
+ "passo-etereo":"Invocar Esfera Espiritual",
+ "absorver-esferas":"Invocar Esfera Espiritual",
+ "disparo-esferas-espirituais":"Invocar Esfera Espiritual",
+ "dilema":"Vigor 4 + Artista Marcial",
+ "impacto-psiquico":"Criar Item de Foco e Magia + Artista Marcial",
  "sacrificio-heroico":"Vigor 4",
  "escudo-refletor":"Maestria em Escudos",
  "sentido-elemental":"Inteligência 3 + Improviso Elemental",
@@ -1189,6 +1266,18 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "maos-leves":"Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",
+ "pericia-armadilha":"Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",
+ "golpe-furtivo":"Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",
+ "bioetica":"Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",
+ "pesquisa-avancada-pocoes":"Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
+ "corpo-fechado":"Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",
+ "passo-etereo":"Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
+ "absorver-esferas":"Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",
+ "disparo-esferas-espirituais":"Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
+ "dilema":"Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",
+ "impacto-psiquico":"Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
  "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
  "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
  "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
@@ -1266,6 +1355,18 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "maos-leves":"1 XP; retira arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso se equipado (Leve +1, Médio +2 nos exemplos).",
+ "pericia-armadilha":"1 XP; Vantagem (+1A) para armar ou desarmar armadilhas usando Proteção.",
+ "golpe-furtivo":"1 XP; ataque furtivo recebe mais 1 dado da arma, respeitando limite de 9 dados rolados.",
+ "bioetica":"1 XP; cria homúnculo elemental de carne misturando o DNA de duas criaturas; procedimento pendente.",
+ "pesquisa-avancada-pocoes":"1 XP; +1E em testes para criar poções; pode produzir poções elementais.",
+ "corpo-fechado":"1 XP; 1 Coragem: sem efeitos ou dano na Vitalidade de golpes de armas físicas por 1 rodada.",
+ "invocar-esfera-espiritual":"1 XP; gera no máximo 1 esfera por rodada via Coragem. Com 5 esferas, d20 para golpe corpo a corpo de Disciplina, Punho Supremo de Asura; procedimento pendente.",
+ "passo-etereo":"1 XP; gasta 1 Esfera Espiritual para se projetar até 8 m.",
+ "absorver-esferas":"1 XP; recupera Coragem igual ao total de Esferas Espirituais, sem assumir consumo não especificado.",
+ "disparo-esferas-espirituais":"1 XP; 1 esfera por golpe para ataque físico à distância.",
+ "dilema":"1 XP; prende desafiante e alvo sem deslocamento até que um fique inconsciente.",
+ "impacto-psiquico":"1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
  "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
  "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
  "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
@@ -1343,6 +1444,18 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
+ "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
+ "golpe-furtivo":"Dado da arma adicional no ataque furtivo; sem custo de Coragem informado.",
+ "bioetica":"Criação de homúnculo com DNA de duas criaturas; custo/resultado pendentes.",
+ "pesquisa-avancada-pocoes":"+1E na criação de poções; habilita poções elementais.",
+ "corpo-fechado":"1 Coragem; protege Vitalidade de efeitos e danos de armas físicas por 1 rodada.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas: 1 criada por rodada; com 5 habilita d20 para Punho Supremo de Asura.",
+ "passo-etereo":"1 esfera; deslocamento rápido de 8 m.",
+ "absorver-esferas":"Recupera Coragem = total de esferas; consumo das esferas PENDENTE.",
+ "disparo-esferas-espirituais":"1 esfera por ataque físico à distância; alcance/dano pendentes.",
+ "dilema":"Pacto impede movimento de ambos até um ficar inconsciente; custo de ativação não informado.",
+ "impacto-psiquico":"1 Coragem; golpe psíquico pode aplicar efeitos de armas.",
  "sacrificio-heroico":"Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
  "escudo-refletor":"Passiva com escudo físico equipado ao sofrer dano de Pavor",
  "sentido-elemental":"1 Coragem por análise",
@@ -1771,7 +1884,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:false},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1822,7 +1935,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  shieldThrowId:"",shieldThrowMeters:8,
+  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -2077,7 +2190,11 @@ function normalize(v){
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
- s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+  s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+ s.spiritualSpheres={
+  count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,99),
+  createdThisRound:!!v.spiritualSpheres?.createdThisRound
+ };
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
  // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
@@ -2264,6 +2381,26 @@ function skillReq(id,s=state){
  const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
  const rangedSpecialty=has("armas-longo-alcance")||has("maestria-arremesso-armas");
  const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;
+  // Perícias definidas em 21/11/2026: compras por 1 XP; sem graus ou elementos gratuitos.
+  const protection=s.knowledges.protecao||0,engineering=s.knowledges.engenharia||0;
+  if(id==="maos-leves"&&(stealth<3||disc<3||protection<2))return"Requer Furtividade 3, Disciplina 3 e Proteção 2.";
+  if(id==="pericia-armadilha"&&(art<1||disc<1||engineering<1||dex<1||intelligence<1||protection<2||stealth<1))
+    return"Requer Artesão 1, Disciplina 1, Engenharia 1, Destreza 1, Inteligência 1, Proteção 2 e Furtividade 1.";
+  if(id==="golpe-furtivo"&&(disc<2||stealth<2))return"Requer Disciplina 2 e Furtividade 2.";
+  if(id==="bioetica"&&(alch<3||intelligence<3||dex<3||!has("sangue")||!has("criar-item-foco-magia")||
+    !["vento","agua","terra","fogo","sagrado","trevas","veneno"].some(has)||!has("domar-criatura-media")))
+    return"Requer Alquimia 3, Inteligência 3, Destreza 3, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia elemental (diferente de Sangue) e Domar Criatura Média.";
+  if(id==="pesquisa-avancada-pocoes"&&(alch<3||!has("improviso")||art<3||dex<2))
+    return"Requer Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2.";
+  if(id==="corpo-fechado"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
+  if(id==="invocar-esfera-espiritual"&&(!has("criar-item-foco-magia")||dex<4||intelligence<3||vig<3))
+    return"Requer Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3.";
+  if(["passo-etereo","absorver-esferas","disparo-esferas-espirituais"].includes(id)&&!has("invocar-esfera-espiritual"))
+    return"Requer Invocar Esfera Espiritual.";
+  if(id==="dilema"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
+  if(id==="impacto-psiquico"&&(!has("criar-item-foco-magia")||!has("artista-marcial")))
+    return"Requer Criar Item de Foco e Magia e Artista Marcial (Artes Marciais).";
+
  if(id==="armas-longo-alcance"&&(disc<1||dex<2))return"Requer Disciplina 1 e Destreza 2.";
  if(id==="olhos-de-aguia"&&(dex<3||disc<3||!(has("armas-longo-alcance")||has("armas-fogo"))))return"Requer Destreza 3, Disciplina 3 e Armas de Longo Alcance OU Armas de Fogo.";
  if(id==="armas-fogo"&&(disc<2||dex<2))return"Requer Disciplina 2 e Destreza 2.";
@@ -2932,6 +3069,18 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
+ "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],
+ "golpe-furtivo":[["p:armas_conjuracao:2","p:furtividade:2"]],
+ "bioetica":[["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:vento","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:agua","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:terra","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:fogo","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:sagrado","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:trevas","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:veneno","s:domar-criatura-media"]],
+ "pesquisa-avancada-pocoes":[["k:alquimia:3","s:improviso","p:artesao:3","a:destreza:2"]],
+ "corpo-fechado":[["a:vigor:4","s:artista-marcial"]],
+ "invocar-esfera-espiritual":[["s:criar-item-foco-magia","a:destreza:4","a:inteligencia:3","a:vigor:3"]],
+ "passo-etereo":[["s:invocar-esfera-espiritual"]],
+ "absorver-esferas":[["s:invocar-esfera-espiritual"]],
+ "disparo-esferas-espirituais":[["s:invocar-esfera-espiritual"]],
+ "dilema":[["a:vigor:4","s:artista-marcial"]],
+ "impacto-psiquico":[["s:criar-item-foco-magia","s:artista-marcial"]],
  "invocacao-elemental":[["s:criar-item-foco-magia","s:domar-criatura-pequena"]],
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]],
@@ -3747,7 +3896,7 @@ function renderSources(){
    const canRaise=(canEdit||state.creationLocked)&&!state.pending&&g<6&&canAfford(group,nextCost);
    const canReduce=canEdit&&g>0&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
-   const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
+   const flag=isBase?"BASE":isAttr?(draft.maosLeves?"FURTIVIDADE":"ATRIBUTO"):isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
    const band=editMode?racialXpBand(group,id):"normal";
    return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+(band==="normal"?"":" is-xp-"+band)+'">'+
@@ -3812,6 +3961,15 @@ function modeDefault(){return "armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ if(draft.maosLeves){
+  if(!ownsSkill("maos-leves")||skillReq("maos-leves")||draft.base.group!=="practice"||draft.base.key!=="armas_conjuracao"||
+   draft.attribute.group!=="practice"||draft.attribute.key!=="furtividade"||draft.third||draft.mode!=="armas"||
+   draft.equipmentId||draft.shieldThrowId||draft.shieldRaise||draft.weightEnabled||draft.magicElement||draft.stealthAttack)
+   errors.push("Mãos Leves exige exclusivamente Disciplina + Furtividade, sem arma, terceiro dado de fonte ou outro efeito.");
+ }else if(!((draft.base.group==="practice"||draft.base.group==="know")&&draft.attribute.group==="attr")&&
+  !(typeof NPC_MODE!=="undefined"&&NPC_MODE&&draft.base.group==="attr"&&draft.attribute.group==="attr")){
+  errors.push("Teste comum exige Base de Conhecimento/Prática e Atributo; a exceção Disciplina + Furtividade é exclusiva de Mãos Leves.");
+ }
  if(draft.shieldThrowId){
   const shield=state.items.find(it=>it.id===draft.shieldThrowId);
   if(!shieldBoomerangReady(shield))errors.push("Escudo Bumerangue exige escudo equipado e Perícias/requisitos válidos.");
@@ -3863,6 +4021,17 @@ function buildPool(){
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
+ if(draft.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||draft.maosLeves||draft.mode==="conjuracao"||draft.shieldThrowId))
+  errors.push("Pesquisa Avançada em Poções concede +1E somente para criar poções; exige Perícia válida e teste não mágico.");
+ if(draft.stealthAttack){
+  const weapon=state.items.find(x=>x.id===draft.equipmentId);
+  const weaponDice=weapon&&combatItem(weapon,"armas");
+  if(!ownsSkill("golpe-furtivo")||skillReq("golpe-furtivo")||draft.mode!=="armas"||!usingDiscipline()||
+   !weapon||weapon.type!=="arma"||!weaponDice?.length||draft.shieldThrowId||draft.cravarRemovalShieldId||
+   draft.maosLeves||draft.shieldRaise)
+   errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
+  else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
+ }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
  const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
@@ -3896,14 +4065,14 @@ function renderComposer(){
  }
  stat.textContent=draft.attribute?"Revisar antes de rolar":"Escolha um Atributo";
  const step='<div class="fp-selection-steps"><div class="fp-step-box base"><small>01 · BASE</small><strong>'+esc(label(draft.base.group,draft.base.key))+'</strong></div>'+
- '<div class="fp-step-box attr"><small>02 · ATRIBUTO</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
+ '<div class="fp-step-box attr"><small>02 · '+(draft.maosLeves?"FURTIVIDADE":"ATRIBUTO")+'</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
  '<div class="fp-step-box third"><small>03 · COMPLEMENTO</small><strong>'+(draft.third?esc(label(draft.third.group,draft.third.key)):"Opcional")+'</strong></div></div>';
  if(!draft.attribute){
   box.innerHTML=step+'<p class="fp-prepare-description">Escolha um Atributo na coluna à esquerda para completar a ação.</p>'+
    magicComposerFields()+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
- if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
+ if(usingDiscipline()&&!draft.maosLeves&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
@@ -3936,17 +4105,22 @@ function renderComposer(){
    " → "+describeDicePool(temporaryGradeDice(source.group,grade,true))];
  });
  const carriedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
- const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield?
+ const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield&&!draft.maosLeves?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
- const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const stealthCheckbox=ownsSkill("golpe-furtivo")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
+ const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="potionResearch"'+(draft.potionResearch?' checked':'')+'> Pesquisa Avançada em Poções: confirme criação de poção (+1E; não vale em outras ações)</label>':"";
+ const checks=potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  "";
  const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Lançamento: 1 Coragem; Disciplina + Atributo(s), até 8 m, sem dado adicional de escudo. No acerto, dano físico normal, características da peça conforme custos/gatilhos e retorno no mesmo turno. Na falha, queda conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
- const options=throwDetails+'<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
+ const options=throwDetails+(draft.maosLeves?'<div class="fp-alert"><strong>MÃOS LEVES:</strong> exceção exclusiva de Disciplina + Furtividade. DE inimiga + Grau do item + peso somente se equipado. Não é ataque nem causa dano; o Narrador confirma retirada do item.</div>':"")+
+ '<div class="fp-form-grid">'+(isShared&&!draft.maosLeves?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+(draft.maosLeves?"":gearOptions)+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
@@ -3983,7 +4157,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
@@ -4035,7 +4209,12 @@ function score(){
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
- if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
+ if(p.opts.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||p.opts.maosLeves||p.mode==="conjuracao"))errs.push("Pesquisa de Poções inválida: +1E apenas no contexto de criar poções.");
+ if(p.opts.maosLeves){
+  if(!ownsSkill("maos-leves")||skillReq("maos-leves")||p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||
+   p.attribute?.group!=="practice"||p.attribute?.key!=="furtividade"||p.third||p.opts.equipmentId)
+   errs.push("Mãos Leves não permite outras fontes nem equipamento; teste inválido.");
+ }else if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
@@ -4056,7 +4235,7 @@ function score(){
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Precisa")?1:0));
+  (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
@@ -4156,7 +4335,7 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
+ const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -4283,7 +4462,7 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=(p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.opts.maosLeves?"Mãos Leves · ":p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalSuccess=!!(removalShield&&s.success);
  const thrownShield=p.shieldThrowId?state.items.find(it=>it.id===p.shieldThrowId&&it.type==="escudo"):null;
@@ -4338,6 +4517,49 @@ function adjustResource(resource,delta){
  const max=resource==="life"?maxLife():maxCourage();
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
+// Mãos Leves: exceção deliberada e EXCLUSIVA à combinação usual de fontes.
+function prepareMaosLeves(){
+ if(!ownsSkill("maos-leves")||skillReq("maos-leves")||state.pending||editMode){
+  toast("Mãos Leves requer a Perícia, seus requisitos e nenhuma rolagem/edição pendente.");return;
+ }
+ const ask=(question,min,max)=>{
+  const value=prompt(question);
+  if(value===null)return null;
+  const n=Number(value.trim());
+  if(!value.trim()||!Number.isInteger(n)||n<min||n>max){toast("Informe um número inteiro válido.");return null;}
+  return n;
+ };
+ const de=ask("Mãos Leves: DE defensiva do inimigo (0 a 30).",0,30);if(de===null)return;
+ const grade=ask("Grau da arma, escudo ou armadura que pretende retirar (1 a 4).",1,4);if(grade===null)return;
+ const equipped=confirm("O item está EQUIPADO? Em caso negativo, o peso NÃO aumenta a DE.");
+ let weight=0;
+ if(equipped){
+  const answer=ask("Peso do item EQUIPADO a somar à DE: Leve = 1, Médio = 2. Outros pesos: use o valor confirmado pelo Narrador (0 a 30).",0,30);
+  if(answer===null)return;weight=answer;
+ }
+ const finalDe=de+grade+weight;
+ if(finalDe>30){toast("DE calculada acima do teto configurável do rolador (30). Confirme a resolução manual com o Narrador.");return;}
+ draft=freshDraft();draft.maosLeves=true;draft.mode="armas";
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ draft.attribute={group:"practice",key:"furtividade"};draft.de=finalDe;
+ sheetPage="play";render();save();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Mãos Leves: DE "+de+" + Grau "+grade+(equipped?" + peso "+weight:" + peso 0 (não equipado)")+" = "+finalDe+". Teste sem dano; Narrador confirma retirada.");
+}
+function prepareArmadilha(){
+ if(!ownsSkill("pericia-armadilha")||skillReq("pericia-armadilha")||state.pending||editMode){toast("Perícia em Armadilha indisponível: confira a compra e finalize qualquer rolagem.");return;}
+ if(!confirm("Preparar teste para ARMAR ou DESARMAR armadilha, com Proteção e Vantagem (+1A), conforme contexto confirmado pelo Narrador?"))return;
+ draft=freshDraft();draft.mode="normal";draft.situation="vantagem";
+ draft.base={group:"know",key:"protecao"};
+ draft.attribute={group:"attr",key:(state.attributes.destreza||0)>0?"destreza":"inteligencia"};
+ sheetPage="play";render();save();$("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Teste de armadilha: Proteção + Atributo, Vantagem (+1A). Ajuste a DE informada pelo Narrador.");
+}
+function sphereCount(){return clamp(Math.floor(state.spiritualSpheres?.count||0),0,99);}
+function logSkillAction(name,outcome){
+ state.history.unshift({date:new Date().toISOString(),name,outcome,de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
+ state.history=state.history.slice(0,20);
+}
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
  const defensiveNotes=(ownsSkill("sacrificio-heroico")?'<p class="fp-alert"><strong>Sacrifício Heroico:</strong> proteja alguém a até 8 m, mesmo sem antecipação de seu turno. O dano segue para sua armadura ou Vida, conforme o Narrador; não é um ataque adicional.</p>':"")+
@@ -4348,8 +4570,22 @@ function renderSkills(){
   (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração <strong>E − P, com E − P > 0</strong>. Unidade de duração, resistência e custo de ativação pendentes; efeito manual.</p>':"")+
   (ownsSkill("desencantar")?'<p class="fp-alert"><strong>Desencantar:</strong> remova elementos ou imunidades até 8 m, inclusive em itens encantados. Não remove o elemento natural de criatura constituída desse elemento; não exclua objetos nem criaturas automaticamente.</p>':"")+
   (ownsSkill("espelho-magico")?'<p class="fp-alert"><strong>Espelho Mágico:</strong> passivo. Reflita ao conjurador a parcela de <strong>dano mágico de Pavor mantido, antes da armadura absorver ou anular</strong>; funciona mesmo quando a armadura bloqueia tudo. Não funciona contra ataque físico. Aplicação manual; não confundir com Escudo Refletor.</p>':"");
+ const newSkillNotes=[
+  ownsSkill("maos-leves")?'<p class="fp-alert"><strong>Mãos Leves:</strong> teste excepcional de Disciplina + Furtividade para tirar arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso somente se equipado. <button type="button" class="fp-secondary" data-action="maos-leves-prepare"'+(state.pending||editMode?' disabled':'')+'>Calcular DE e preparar teste</button> A retirada do inventário inimigo é confirmada pelo Narrador.</p>':"",
+  ownsSkill("pericia-armadilha")?'<p class="fp-alert"><strong>Perícia em Armadilha:</strong> Vantagem (+1A) para armar/desarmar armadilhas com Proteção. <button type="button" class="fp-secondary" data-action="armadilha-prepare"'+(state.pending||editMode?' disabled':'')+'>Preparar Proteção + Vantagem</button></p>':"",
+  ownsSkill("golpe-furtivo")?'<p class="fp-alert"><strong>Golpe Furtivo:</strong> marque «Golpe Furtivo» no rolador de Disciplina + Atributo durante ataque furtivo com arma habilitada: +1 dado da arma, máximo de 9 dados rolados.</p>':"",
+  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> cria homúnculo elemental de carne misturando o DNA de duas criaturas. Ficha, custos e herança genética pendentes; criação sob orientação do Narrador.</p>':"",
+  ownsSkill("pesquisa-avancada-pocoes")?'<p class="fp-alert"><strong>Pesquisa Avançada em Poções:</strong> +1E em testes para criar poções e habilita poções elementais. Receitas e valores pendentes; marque a criação de poções no rolador para somar +1E, sem alterar outras ações.</p>':"",
+  ownsSkill("corpo-fechado")?'<p class="fp-alert"><strong>Corpo Fechado:</strong> por 1 Coragem, Vitalidade protegida de danos e efeitos de golpes com armas físicas por 1 rodada. <button type="button" class="fp-secondary" data-action="corpo-fechado-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Ativar (−1 Coragem)</button> A rodada e os ataques são resolvidos manualmente.</p>':"",
+  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'</strong> esfera(s) registradas. Criação máxima de 1 por rodada mediante conversão de Coragem; taxa informada pelo Narrador. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound||state.courage<1||editMode?' disabled':'')+'>Converter Coragem em 1 esfera</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> Com 5 esferas, d20 exclusivo do Punho Supremo de Asura, corpo a corpo com Disciplina; conversão do dado ainda manual.</p>':"",
+  ownsSkill("passo-etereo")?'<p class="fp-alert"><strong>Passo Etéreo:</strong> 1 esfera para deslocamento rápido de até 8 m. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="passo-etereo"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Usar Passo Etéreo (−1 esfera)</button></p>':"",
+  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> recupera Coragem igual ao total de esferas (até o teto). Consumo das esferas pendente; resolva com Narrador antes de registrar alterações de Coragem.</p>':"",
+  ownsSkill("disparo-esferas-espirituais")?'<p class="fp-alert"><strong>Disparo de Esferas Espirituais:</strong> ataque físico a distância, 1 esfera por golpe. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="disparo-esferas-espirituais"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Declarar disparo (−1 esfera)</button> DE, alcance e dados pendentes; ataque manual.</p>':"",
+  ownsSkill("dilema")?'<p class="fp-alert"><strong>Dilema:</strong> pacto imobiliza a si e ao adversário até um dos dois ficar inconsciente. Ativação e resistência pendentes; não altera a ficha inimiga automaticamente.</p>':"",
+  ownsSkill("impacto-psiquico")?'<p class="fp-alert"><strong>Impacto Psíquico:</strong> golpe psíquico que pode usar efeitos de arma por 1 Coragem. <button type="button" class="fp-secondary" data-action="impacto-psiquico-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar golpe (−1 Coragem)</button> Dados e efeitos concretos dependem do Narrador.</p>':""
+ ].join("");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
- $("skills-list").innerHTML=defensiveNotes+antimagicNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
+ $("skills-list").innerHTML=defensiveNotes+antimagicNotes+newSkillNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -4776,6 +5012,44 @@ function onClick(event){
  }
  case "repertoire-roll":quickRollItem(id);break;
  case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "maos-leves-prepare":prepareMaosLeves();break;
+ case "armadilha-prepare":prepareArmadilha();break;
+ case "corpo-fechado-use":{
+  if(!ownsSkill("corpo-fechado")||skillReq("corpo-fechado")||state.pending||editMode||state.courage<1){toast("Corpo Fechado indisponível: confira a compra, Coragem e rolagem.");break;}
+  if(!confirm("Gastar 1 Coragem para proteger a Vitalidade contra dano e efeitos de golpes com armas FÍSICAS por 1 rodada? O Narrador encerra o efeito ao término da rodada."))break;
+  state.courage-=1;logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
+ }
+ case "impacto-psiquico-use":{
+  if(!ownsSkill("impacto-psiquico")||skillReq("impacto-psiquico")||state.pending||editMode||state.courage<1){toast("Impacto Psíquico indisponível.");break;}
+  if(!confirm("Gastar 1 Coragem para declarar Impacto Psíquico? O golpe e os efeitos de arma são resolvidos pelo Narrador."))break;
+  state.courage-=1;logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
+ }
+ case "sphere-create":{
+  if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
+  if(state.spiritualSpheres.createdThisRound){toast("Já foi criada 1 esfera nesta rodada; confirme próxima rodada antes de repetir.");break;}
+  if(sphereCount()>=99){toast("Limite técnico do contador atingido; registre no papel até definição do teto oficial.");break;}
+  const raw=prompt("Quantos pontos de Coragem o Narrador confirmou converter para criar UMA esfera nesta rodada? A taxa por esfera ainda está PENDENTE.");
+  if(raw===null)break;
+  const spent=Number(raw);
+  if(!raw.trim()||!Number.isInteger(spent)||spent<1||spent>state.courage){toast("Informe gasto positivo de Coragem que o personagem possui.");break;}
+  if(!confirm("Confirmar conversão de "+spent+" Coragem em 1 Esfera Espiritual nesta rodada?"))break;
+  state.courage-=spent;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=true;
+  logSkillAction("Invocar Esfera Espiritual","−"+spent+" Coragem; +1 esfera; 1 criação nesta rodada.");
+  render();save();toast("1 esfera criada; limite de uma por rodada aplicado.");break;
+ }
+ case "sphere-next-round":{
+  if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
+  if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto libera somente a criação de mais uma esfera."))break;
+  state.spiritualSpheres.createdThisRound=false;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
+ }
+ case "sphere-spend":{
+  const skillId=id;
+  if(!["passo-etereo","disparo-esferas-espirituais"].includes(skillId)||!ownsSkill(skillId)||skillReq(skillId)||state.pending||editMode||sphereCount()<1){toast("A ação exige a Perícia e pelo menos 1 esfera disponível.");break;}
+  const label=skillId==="passo-etereo"?"Passo Etéreo (8 m)":"Disparo de Esferas (golpe físico à distância)";
+  if(!confirm("Gastar 1 Esfera Espiritual para "+label+"? A resolução de alvo, deslocamento, alcance e dano é manual."))break;
+  state.spiritualSpheres.count=sphereCount()-1;logSkillAction(label,"−1 esfera; aplicação de efeito confirmada pelo Narrador.");
+  render();save();toast(label+": −1 esfera.");break;
+ }
  case "cancelar-magia-use":{
   if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
   if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}

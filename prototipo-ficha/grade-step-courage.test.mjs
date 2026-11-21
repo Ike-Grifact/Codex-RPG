@@ -870,3 +870,107 @@ test("Maestrias Lanças e Espadas: site e SRD refletem somente as duas compras a
  assert.ok(hasWeightTraining,"Perícia conforme peso é requisito de ativação");
  assert.ok(srd.includes("PENDENTE — custos/requisitos de compra de outras Maestrias não raciais"),"Outras continuam pendentes");
 });
+
+test("Novas doze perícias de 21/11/2026: custos 1 XP, requisitos e Bioética com segundo elemento",()=>{
+ const ids=["maos-leves","pericia-armadilha","golpe-furtivo","bioetica","pesquisa-avancada-pocoes",
+  "corpo-fechado","invocar-esfera-espiritual","passo-etereo","absorver-esferas",
+  "disparo-esferas-espirituais","dilema","impacto-psiquico"];
+ const skillsSection=extract("const SKILLS=[","const SKILL_AFFINITY=");
+ for(const id of ids){
+  assert.match(skillsSection,new RegExp('"'+id+'"\\s*,\\s*"[^"]+"\\s*,[\\s\\S]{1,1300}?,\\s*1\\s*\\]'),"1 XP: "+id);
+ }
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[];const SOURCE_PROPS={practice:'practices',know:'knowledges',attr:'attributes'};"+
+  defs+reqs+"\nreturn skillReq;")({},()=>[],owns);
+ const full={race:"humano",attributes:{forca:6,agilidade:6,destreza:6,inteligencia:6,influencia:6,vigor:6},
+  knowledges:{protecao:6,alquimia:6,engenharia:6,medicina:6},practices:{armas_conjuracao:6,furtividade:6,artesao:6,atletismo:6,apresentacao:6},
+  skills:["criar-item-foco-magia","sangue","vento","domar-criatura-media","improviso","artista-marcial","invocar-esfera-espiritual"]};
+ for(const id of ids)assert.equal(fn(id,full),null,"Habilita compra "+id+" com requisitos satisfeitos");
+ assert.match(fn("maos-leves",{...full,practices:{...full.practices,furtividade:2}}),/Furtividade 3/);
+ assert.match(fn("pericia-armadilha",{...full,knowledges:{...full.knowledges,protecao:1}}),/Proteção 2/);
+ assert.match(fn("golpe-furtivo",{...full,practices:{...full.practices,armas_conjuracao:1}}),/Disciplina 2/);
+ assert.match(fn("pesquisa-avancada-pocoes",{...full,practices:{...full.practices,artesao:2}}),/Artesão 3/);
+ assert.match(fn("corpo-fechado",{...full,skills:full.skills.filter(x=>x!=="artista-marcial")}),/Artista Marcial/);
+ assert.match(fn("dilema",{...full,attributes:{...full.attributes,vigor:3}}),/Vigor 4/);
+ assert.match(fn("invocar-esfera-espiritual",{...full,attributes:{...full.attributes,destreza:3}}),/Destreza 4/);
+ assert.match(fn("passo-etereo",{...full,skills:full.skills.filter(x=>x!=="invocar-esfera-espiritual")}),/Invocar Esfera/);
+ assert.match(fn("absorver-esferas",{...full,skills:full.skills.filter(x=>x!=="invocar-esfera-espiritual")}),/Invocar Esfera/);
+ assert.match(fn("disparo-esferas-espirituais",{...full,skills:full.skills.filter(x=>x!=="invocar-esfera-espiritual")}),/Invocar Esfera/);
+ assert.match(fn("impacto-psiquico",{...full,skills:full.skills.filter(x=>x!=="criar-item-foco-magia")}),/Criar Item/);
+ assert.match(fn("bioetica",{...full,skills:full.skills.filter(x=>x!=="vento")}),/outra Perícia elemental/);
+ assert.equal(fn("bioetica",{...full,skills:[...full.skills.filter(x=>x!=="vento"),"agua"]}),null,"Outro elemento pode ser Água, mas não apenas Sangue");
+});
+
+test("Mãos Leves e Golpe Furtivo: validação real da pilha, exceção restrita e dado da arma",()=>{
+ const poolCode=extract("function buildPool(){","function renderComposer(){");
+ const helper="const SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
+  "const key=s=>s?s.group+'.'+s.key:'';const same=(a,b)=>!!a&&!!b&&key(a)===key(b);"+
+  "const ownsSkill=id=>state.skills.includes(id);const skillReq=()=>null;"+
+  "const usingDiscipline=()=>draft.base?.group==='practice'&&draft.base?.key==='armas_conjuracao';"+
+  "const canSecondAttribute=()=>false,mayThird=()=>false,canUseShared=()=>true;"+
+  "const temporaryGradeDice=(g,n)=>Array.from({length:n},()=>g==='practice'?10:g==='attr'?6:10);"+
+  "const combatItem=(item,mode)=>item?.equipped&&item.type==='arma'&&mode==='armas'?[item.die]:[];";
+ const build=new Function("state","draft","NPC_MODE",helper+poolCode+"\nreturn buildPool;");
+ const state={skills:["maos-leves","golpe-furtivo"],attributes:{destreza:2},knowledges:{protecao:2},
+  practices:{armas_conjuracao:3,furtividade:3},items:[{id:"w",type:"arma",equipped:true,die:6}],courage:10};
+ const hands={de:5,base:{group:"practice",key:"armas_conjuracao"},attribute:{group:"practice",key:"furtividade"},
+  mode:"armas",third:null,maosLeves:true,stealthAttack:false,equipmentId:"",step:false,extraKeep:false};
+ const ok=build(state,hands,false)();
+ assert.deepEqual(ok.errors,[],"Mãos Leves pode usar duas Práticas e não exige Atributo");
+ assert.equal(ok.pool.length,6,"Disciplina 3 e Furtividade 3 compõem os dados respectivos");
+ assert.ok(build(state,{...hands,maosLeves:false},false)().errors.length>0,"Duas Práticas são proibidas sem Mãos Leves");
+ assert.ok(build(state,{...hands,maosLeves:false},true)().errors.length>0,"Humanoides NPC não podem combinar duas Práticas");
+ const monster={...hands,maosLeves:false,base:{group:"attr",key:"destreza"},attribute:{group:"attr",key:"forca"}};
+ const monsterState={...state,attributes:{...state.attributes,forca:2}};
+ assert.deepEqual(build(monsterState,monster,true)().errors,[],"Criaturas só de Atributos podem combinar dois Atributos");
+ const melee={...hands,maosLeves:false,attribute:{group:"attr",key:"destreza"},equipmentId:"w",stealthAttack:true};
+ const sneak=build(state,melee,false)(),normal=build(state,{...melee,stealthAttack:false},false)();
+ assert.deepEqual(sneak.errors,[]);
+ assert.equal(sneak.pool.length,normal.pool.length+1,"Um dado extra, não um Êxito fixo");
+ assert.equal(sneak.pool.find(x=>x.stealthBonus)?.sides,6,"Repete dado da arma");
+ const invalid=build({...state,items:[{id:"w",type:"arma",equipped:false,die:6}]},melee,false)();
+ assert.ok(invalid.errors.length>0,"Não concede dado de arma desequipada");
+ assert.ok(app.includes('if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");'));
+ assert.ok(app.includes('if(p.opts.maosLeves)'),"Valida Mãos Leves na resolução");
+ assert.ok(app.includes('const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:'),"Mãos Leves não causa dano");
+});
+
+test("Poções, Corpo Fechado e Esferas: bônus, custo e persistência contextual sem invenção",()=>{
+ assert.ok(app.includes('p.opts.potionResearch?1:0'),"Poções recebe +1E contextual");
+ assert.ok(app.includes('data-option="potionResearch"'),"Requer confirmar contexto de criação de poções");
+ assert.ok(app.includes('case "corpo-fechado-use"'),"Corpo Fechado usa 1 Coragem");
+ assert.ok(app.includes('case "impacto-psiquico-use"'),"Impacto Psíquico usa 1 Coragem");
+ assert.ok(app.includes('spiritualSpheres:{count:0,createdThisRound:false}'),"Contador está na ficha");
+ assert.ok(app.includes('v.spiritualSpheres?.count'),"Contador persiste importação/exportação");
+ assert.ok(app.includes('case "sphere-create"')&&app.includes('state.spiritualSpheres.createdThisRound=true'),"Apenas 1 esfera criada por rodada");
+ assert.ok(app.includes('case "sphere-next-round"'),"Liberação manual na rodada seguinte");
+ assert.ok(app.includes('case "sphere-spend"')&&app.includes('state.spiritualSpheres.count=sphereCount()-1'),"Passo e Disparo gastam 1 esfera");
+ assert.ok(!app.includes('case "sphere-absorb"'),"Não presume consumir ou não as esferas de Absorver");
+ assert.ok(app.includes("taxa por esfera ainda está PENDENTE"),"Não inventa taxa de Coragem");
+});
+
+test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()=>{
+ const ids=["maos-leves","pericia-armadilha","golpe-furtivo","bioetica","pesquisa-avancada-pocoes",
+  "corpo-fechado","invocar-esfera-espiritual","passo-etereo","absorver-esferas",
+  "disparo-esferas-espirituais","dilema","impacto-psiquico"];
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ const gene=readFileSync(join(root,"gene-graph.js"),"utf8");
+ const req=extract("const GENE_AUTO_REQUIREMENTS={","function geneAutoPlan(");
+ for(const id of ids){
+  const page=readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
+  assert.ok(page.includes("1 XP")&&page.includes("DEFINIDO")&&page.includes("PENDENTES"),"Verbeta corretamente "+id);
+  assert.ok(index.includes('href="'+id+'.html"'),"Catálogo "+id);
+  assert.ok(app.includes('"'+id+'":"'+id+'"'),"Permalink "+id);
+  assert.ok(gene.includes('"'+id+'"'),"Constelação ou ícone "+id);
+  assert.ok(req.includes('"'+id+'"'),"Nó de requisitos "+id);
+ }
+ assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Doze Perícias"));
+ assert.ok(srd.includes("3+1+1 = DE 5")&&srd.includes("3+1+2 = DE 6"));
+ assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("não autorizar d20 genericamente".replace("não autorizar","Não autorizar")));
+ assert.ok(srd.includes("Destreza 3")&&srd.includes("PENDENTE DE CONFIRMAÇÃO"),"Interpretação De 3 sinalizada");
+});
