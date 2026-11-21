@@ -1037,6 +1037,8 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  assert.equal(converted.pool.find(x=>x.asuraSpecial).baseSides,10,"Dado original preservado para identificação");
  assert.ok(factory({...state,spiritualSpheres:{count:4}},draft,false)().errors.length>0,"Quatro esferas não bastam");
  assert.ok(factory({...state,courage:0},draft,false)().errors.length>0,"Asura exige 1 Coragem além das cinco esferas");
+ assert.ok(factory({...state,spiritualSpheres:{count:5,createdThisRound:5}},draft,false)().errors.length>0,"Asura não pode ser executado na rodada em que criou as esferas");
+ assert.deepEqual(factory({...state,spiritualSpheres:{count:5,createdThisRound:0}},draft,false)().errors,[],"Asura pode ser executado na rodada seguinte");
  assert.ok(factory(state,{...draft,mode:"conjuracao"},false)().errors.length>0,"Asura não funciona como magia à distância");
  const rangeState={...state,items:[{id:"r",type:"arma",equipped:true,range:12,die:6,properties:["À Distância"]}]};
  assert.ok(factory(rangeState,{...draft,equipmentId:"r"},false)().errors.length>0,"Arma à distância não habilita Asura");
@@ -1045,7 +1047,15 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  assert.ok(app.includes("health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura)"),"Asura adiciona 1 Coragem ao custo de resolução");
  assert.ok(source.includes("state.courage=clamp(state.courage-s.courageCost"),"Finalização desconta Coragem após validar custo");
  assert.ok(source.includes("asuraCourageSpent:p.opts.asura?1:0"),"Histórico registra 1 Coragem de Asura");
- assert.ok(source.includes("asuraD20Face:p.opts.asura?"),"Histórico registra resultado numérico do d20 para dano proporcional");
+ assert.ok(source.includes("asuraD20Face:p.opts.asura?"),"Histórico registra a face do d20");
+ assert.ok(!source.includes("asuraDamageProportional:"),"Não registra pacote de dano adicional de Asura");
+ assert.ok(app.includes('damageNature:p.opts.asura?"neutro"'),"Natureza do dano de Asura é sempre neutra");
+ assert.ok(app.includes('p.characteristic==="Elemental"||p.secondCharacteristic==="Elemental"'),"Asura bloqueia característica Elemental");
+ assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"D20 contribui ao dano básico normal");
+ assert.ok(app.includes("for(const d of dice){const f=face(d.sides,d.face);"),"D20 mantido conta para E, A, P da mesma rolagem");
+ const faces=app.match(/20:\[([^\n]+)\]/);
+ assert.ok(faces&&faces[1].endsWith("[8,0,0]"),"Face 20 contém 8 Êxitos");
+ assert.ok(source.includes("state.spiritualSpheres.createdThisRound>0"),"Finalização impede ataque no turno de invocação");
  assert.ok(source.includes("if(!p||s.errors.length)"),"Não consome se a rolagem é inválida");
  assert.ok(app.includes("d20")&&app.includes("asuraDieId"),"Permite escolher o dado a substituir");
 });
@@ -1063,5 +1073,5 @@ test("Bioética: Destreza 3 e ficha separada, sem atribuir Atributos não defini
  assert.ok(srd.includes("não gera uma criatura automaticamente"),"Não inventa estatísticas do homúnculo");
  assert.ok(srd.includes("a mesma já definida para criaturas companheiras de Domar Criaturas"),"Progressão é a de Domar Criaturas");
  assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("XP total atual do personagem criador"),"Materiais e proporcionalidade definidos");
- assert.ok(srd.includes("dano proporcional ao resultado de 1d20")&&srd.includes("PENDENTE"),"Dano proporcional ao d20, cálculo ainda pendente");
+ assert.ok(srd.includes("O mesmo d20, se mantido")&&srd.includes("sempre causa dano neutro"),"Um d20 para atingir DE e calcular dano neutro, sem segundo dano");
 });
