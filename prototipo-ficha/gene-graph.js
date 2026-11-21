@@ -309,7 +309,7 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  }
  for(const n of nodes.filter(n=>n.type!=="skill"))svg+=card({...n,selected:n.id===selected},edit);
  const skills=nodes.filter(n=>n.type==="skill");
- svg+='<text class="fp-gene-column-title is-skills" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+68)+'" text-anchor="middle">PERÍCIAS · ÓRBITAS TEMÁTICAS</text>';
+ svg+='<text class="fp-gene-column-title is-skills" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+3)+'" text-anchor="middle">PERÍCIAS · ÓRBITAS TEMÁTICAS</text>';
  if(!skills.length)svg+='<text class="fp-gene-empty-text" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+170)+'" text-anchor="middle">Nenhuma Perícia disponível. Desenvolva fontes ou mostre as futuras.</text>';
  for(const n of skills)svg+=skill({...n,selected:n.id===selected});
  return svg+'</g></svg>';
