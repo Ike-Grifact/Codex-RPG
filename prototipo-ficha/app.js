@@ -117,8 +117,8 @@ function raceChoicesComplete(s=state){
 }
 function raceCaution(s=state){return "";} // Nenhum multiplicador racial pendente na v0.56.
 
-const CREATE_BUDGET={attr:15,training:15,skills:15,total:15}; // DEFINIDO: 15 XP globais; após 1+2 XP mínimos, saldo livre.
-const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // DEFINIDO: 15 XP no nível 1; demais níveis preservados.
+const CREATE_BUDGET={attr:15,training:15,skills:15,total:15}; // DEFINIDO PARA PLAYTEST (21/11/2026): 15 XP globais; após compras mínimas 1+2 XP, saldo livre.
+const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260]; // DEFINIDO PARA O PLAYTEST (21/11/2026): 15 XP no nível 1 e teto acumulado 260 XP no nível 20; demais níveis preservados.
 const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 245 XP novos concedíveis (260 totais − 15 iniciais).
 // Todas as especializações Avançadas de Conhecimentos e Práticas exigem Grau 2
 // na respectiva fonte e custam 1 XP; outras exigências históricas permanecem.
@@ -2597,8 +2597,8 @@ function renderXP(){
   $(id+"-caption").textContent=used+" XP (orçamento global: "+CREATE_BUDGET.total+" XP)";
   const bar=$(id+"-bar");bar.style.width=Math.min(100,used/cap*100)+"%";bar.classList.toggle("over",used>cap);
  }
- $("xp-feedback").textContent=x.free<0?"Saldo excedido no orçamento experimental de "+CREATE_BUDGET.total+" XP. Investimentos anteriores foram preservados: revise as compras antes de continuar.":
- CREATE_BUDGET.total+" XP iniciais compartilhados; referência experimental: até "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 ("+MAX_EARNED_XP+" XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
+ $("xp-feedback").textContent=x.free<0?"Saldo excedido no orçamento do playtest de "+CREATE_BUDGET.total+" XP. Investimentos anteriores foram preservados: revise as compras antes de continuar.":
+ CREATE_BUDGET.total+" XP iniciais compartilhados; teto de playtest: "+XP_LEVEL_REFERENCE[20]+" XP totais no nível 20 ("+MAX_EARNED_XP+" XP de evolução). "+x.total+" investidos, "+x.free+" disponíveis. "+
   ((state.xpEarned||0)>MAX_EARNED_XP?"Ficha legada acima do teto: XP preservado, novas concessões bloqueadas. ":"")+
   (editMode?"Edição: correções dependem do Narrador.":"Os requisitos individuais permanecem válidos.");
  $("char-level").value=state.level;
@@ -5669,7 +5669,7 @@ function bind(){
   if(state.pending){toast("Finalize a rolagem antes de conceder XP.");return;}
   const amount=Math.floor(Number($("xp-award-amount").value));
   if(!Number.isSafeInteger(amount)||amount<1||amount>9999){toast("Informe de 1 a 9999 XP.");return;}
-  if(state.xpEarned+amount>MAX_EARNED_XP){toast("Teto experimental: 260 XP totais, com até 242 XP após a criação. Fichas antigas preservadas.");return;}
+  if(state.xpEarned+amount>MAX_EARNED_XP){toast("Teto do playtest: "+XP_LEVEL_REFERENCE[20]+" XP totais, com até "+MAX_EARNED_XP+" XP após a criação. Fichas antigas preservadas.");return;}
   if(!state.creationLocked){lockCreation();toast("Criação concluída com saldo inicial não gasto livre.");}
   state.xpEarned+=amount;
   state.xpHistory.unshift({at:new Date().toISOString(),amount,note:"XP concedidos manualmente"});
