@@ -1935,7 +1935,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  shieldThrowId:"",shieldThrowMeters:8,
+  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -3957,6 +3957,14 @@ function modeDefault(){return "armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ if(draft.maosLeves){
+  if(!ownsSkill("maos-leves")||skillReq("maos-leves")||draft.base.group!=="practice"||draft.base.key!=="armas_conjuracao"||
+   draft.attribute.group!=="practice"||draft.attribute.key!=="furtividade"||draft.third||draft.mode!=="armas"||
+   draft.equipmentId||draft.shieldThrowId||draft.shieldRaise||draft.weightEnabled||draft.magicElement||draft.stealthAttack)
+   errors.push("Mãos Leves exige exclusivamente Disciplina + Furtividade, sem arma, terceiro dado de fonte ou outro efeito.");
+ }else if(draft.attribute.group!=="attr"||draft.base.group==="attr"){
+  errors.push("Teste comum exige Base de Conhecimento/Prática e Atributo; a exceção Disciplina + Furtividade é exclusiva de Mãos Leves.");
+ }
  if(draft.shieldThrowId){
   const shield=state.items.find(it=>it.id===draft.shieldThrowId);
   if(!shieldBoomerangReady(shield))errors.push("Escudo Bumerangue exige escudo equipado e Perícias/requisitos válidos.");
@@ -4008,6 +4016,15 @@ function buildPool(){
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
+ if(draft.stealthAttack){
+  const weapon=state.items.find(x=>x.id===draft.equipmentId);
+  const weaponDice=weapon&&combatItem(weapon,"armas");
+  if(!ownsSkill("golpe-furtivo")||skillReq("golpe-furtivo")||draft.mode!=="armas"||!usingDiscipline()||
+   !weapon||weapon.type!=="arma"||!weaponDice?.length||draft.shieldThrowId||draft.cravarRemovalShieldId||
+   draft.maosLeves||draft.shieldRaise)
+   errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
+  else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
+ }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
  const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
@@ -4041,14 +4058,14 @@ function renderComposer(){
  }
  stat.textContent=draft.attribute?"Revisar antes de rolar":"Escolha um Atributo";
  const step='<div class="fp-selection-steps"><div class="fp-step-box base"><small>01 · BASE</small><strong>'+esc(label(draft.base.group,draft.base.key))+'</strong></div>'+
- '<div class="fp-step-box attr"><small>02 · ATRIBUTO</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
+ '<div class="fp-step-box attr"><small>02 · '+(draft.maosLeves?"FURTIVIDADE":"ATRIBUTO")+'</small><strong>'+(draft.attribute?esc(label(draft.attribute.group,draft.attribute.key)):"Selecione...")+'</strong></div>'+
  '<div class="fp-step-box third"><small>03 · COMPLEMENTO</small><strong>'+(draft.third?esc(label(draft.third.group,draft.third.key)):"Opcional")+'</strong></div></div>';
  if(!draft.attribute){
   box.innerHTML=step+'<p class="fp-prepare-description">Escolha um Atributo na coluna à esquerda para completar a ação.</p>'+
    magicComposerFields()+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
- if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
+ if(usingDiscipline()&&!draft.maosLeves&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
@@ -4085,13 +4102,16 @@ function renderComposer(){
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
- const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const stealthCheckbox=ownsSkill("golpe-furtivo")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
+ const checks=stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  "";
  const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Lançamento: 1 Coragem; Disciplina + Atributo(s), até 8 m, sem dado adicional de escudo. No acerto, dano físico normal, características da peça conforme custos/gatilhos e retorno no mesmo turno. Na falha, queda conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
- const options=throwDetails+'<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
+ const options=throwDetails+(draft.maosLeves?'<div class="fp-alert"><strong>MÃOS LEVES:</strong> exceção exclusiva de Disciplina + Furtividade. DE inimiga + Grau do item + peso somente se equipado. Não é ataque nem causa dano; o Narrador confirma retirada do item.</div>':"")+
+ '<div class="fp-form-grid">'+(isShared&&!draft.maosLeves?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+(draft.maosLeves?"":gearOptions)+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
@@ -4128,7 +4148,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
@@ -4180,7 +4200,11 @@ function score(){
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
- if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
+ if(p.opts.maosLeves){
+  if(!ownsSkill("maos-leves")||skillReq("maos-leves")||p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||
+   p.attribute?.group!=="practice"||p.attribute?.key!=="furtividade"||p.third||p.opts.equipmentId)
+   errs.push("Mãos Leves não permite outras fontes nem equipamento; teste inválido.");
+ }else if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
@@ -4301,7 +4325,7 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
+ const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -4428,7 +4452,7 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=(p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.opts.maosLeves?"Mãos Leves · ":p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalSuccess=!!(removalShield&&s.success);
  const thrownShield=p.shieldThrowId?state.items.find(it=>it.id===p.shieldThrowId&&it.type==="escudo"):null;
