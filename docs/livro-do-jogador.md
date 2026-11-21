@@ -1,6 +1,6 @@
 # Codex RPG — Livro do Jogador
 
-> **Doze novas Perícias — 21/11/2026 [DEFINIDO / procedimentos PENDENTES]:** **Mãos Leves, Perícia em Armadilha, Golpe Furtivo, Bioética, Pesquisa Avançada em Poções, Corpo Fechado, Invocar Esfera Espiritual, Passo Etéreo, Absorver Esferas, Disparo de Esferas Espirituais, Dilema e Impacto Psíquico** custam **1 XP cada**. Requisitos e efeitos constam nas seções abaixo. Mãos Leves permite exclusivamente Disciplina + Furtividade com DE alvo + Grau do item + peso se equipado; Golpe Furtivo adiciona dado da arma, não dano fixo; criação de homúnculos, esferas e d20 de Asura têm procedimentos ainda pendentes. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--doze-perícias-furtividade-alquimia-corpo-a-corpo-e-esferas-espirituais-21112026).
+> **Doze novas Perícias — 21/11/2026 [DEFINIDO / procedimentos PENDENTES]:** **Mãos Leves, Perícia em Armadilha, Golpe Furtivo, Bioética, Pesquisa Avançada em Poções, Corpo Fechado, Invocar Esfera Espiritual, Passo Etéreo, Absorver Esferas, Disparo de Esferas Espirituais, Dilema e Impacto Psíquico** custam **1 XP cada**. Requisitos e efeitos constam nas seções abaixo. Mãos Leves permite exclusivamente Disciplina + Furtividade com DE alvo + Grau do item + peso se equipado; Golpe Furtivo adiciona dado da arma, não dano fixo; **Bioética exige Destreza 3** e cada homúnculo tem **ficha própria**; **1 Coragem cria 1 esfera**, **Absorver consome todas** e **Asura consome 5 para trocar um dado por d20** no golpe de Disciplina; os demais procedimentos permanecem pendentes. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--doze-perícias-furtividade-alquimia-corpo-a-corpo-e-esferas-espirituais-21112026).
 
 > **Maestrias em Lanças e Espadas — 21/11/2026 [DEFINIDO]:** Maestria em **Lanças** (entrada existente «Lanças e Hastes»): **1 XP**, exige **Força 2 + Agilidade 1 + Destreza 1**. Maestria em **Espadas**: **1 XP**, exige **Força 2 + Destreza 2**. Ambas requerem **Perícia em Armas Leves, Médias ou Pesadas correspondente ao peso da arma para ativação**, não para a compra. No ataque acertado com a arma adequada, **uma característica própria da arma é ativada sem Coragem**. Mantêm a regra geral de crítico das Maestrias de arma. A nomenclatura/ID de Lanças e Hastes é preservada para compatibilidade. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--requisitos-de-maestria-em-lanças-e-em-espadas-21112026).
 
@@ -213,7 +213,7 @@ As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisi
 
 ### Bioética
 
-**Requisitos:** Alquimia 3, Inteligência 3, **Destreza 3** (abreviação autoral «De 3»), Perícia em Sangue, Criar Item de Foco e Magia, **outra Perícia elemental além de Sangue** e Domar Criatura Média. Permite **criar homúnculos**, criaturas elementais de carne formadas pela **mistura do DNA de duas criaturas**. **PENDENTE:** confirmação do nome do Atributo abreviado «De», ficha de homúnculo, procedimento, requisitos de material, limites e controle.
+**Requisitos:** Alquimia 3, Inteligência 3, **Destreza 3** (abreviação autoral «De 3»), Perícia em Sangue, Criar Item de Foco e Magia, **outra Perícia elemental além de Sangue** e Domar Criatura Média. Permite **criar homúnculos**, criaturas elementais de carne formadas pela **mistura do DNA de duas criaturas**. **DEFINIDO:** «De 3» é **Destreza 3** e cada homúnculo possui **ficha própria**, independente da ficha do criador. Não transfere automaticamente os Atributos nem os recursos de quem o criou. **PENDENTE:** distribuição de atributos na ficha própria, procedimento de criação, requisitos de material, limites e controle.
 
 ### Pesquisa Avançada em Poções
 
@@ -225,7 +225,7 @@ As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisi
 
 ### Invocar Esfera Espiritual
 
-**Requisitos:** Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3. Converte **Coragem em Esferas Espirituais**, com criação de **uma esfera por rodada**. Ao reunir **5 esferas**, habilita a transformação de **um dado em d20** para executar o **Punho Supremo de Asura**, um golpe **somente corpo a corpo e com Disciplina**. **PENDENTE:** razão da conversão, gasto das cinco esferas, dado a ser transformado, integração do d20 extraordinário e regra própria de Asura. Esta habilidade não transforma livremente um dado em d20 em outros ataques.
+**Requisitos:** Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3. Converte **1 Coragem em 1 Esfera Espiritual**, gerando **no máximo uma esfera por rodada**. Ao possuir **5 esferas**, pode **consumir as cinco** para transformar **um dado existente na pilha em d20** ao realizar o **Punho Supremo de Asura**, um golpe **exclusivamente corpo a corpo e com Disciplina**. O gasto ocorre na rolagem de Asura; **não é bônus passivo por manter 5 esferas**. A conversão substitui um dado, não aumenta a quantidade de dados nem o limite de retenção. **PENDENTE:** efeitos adicionais de Asura, se houver, e limite geral de armazenamento de esferas. Esta habilidade não transforma livremente um dado em d20 em outros ataques.
 
 ### Passo Etéreo
 
@@ -233,7 +233,7 @@ As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisi
 
 ### Absorver Esferas
 
-**Requisito:** Invocar Esfera Espiritual. Recupera **Coragem em número igual ao total de esferas** presentes, respeitando o teto da ficha. **PENDENTE:** esclarecer se a absorção consome as esferas e o custo de ação. O criador não permite explorar essa indefinição para criar Coragem infinita.
+**Requisito:** Invocar Esfera Espiritual. **Consome todas as esferas presentes** e recupera **1 Coragem por esfera consumida**, respeitando o teto da ficha. Exemplo: 5 esferas recuperam até 5 Coragens e deixam o contador de esferas em **0**; se faltam apenas 3 até o teto, só 3 Coragens são efetivamente recuperadas, mas as 5 esferas são consumidas. **PENDENTE:** economia de ação.
 
 ### Disparo de Esferas Espirituais
 
@@ -247,7 +247,7 @@ As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisi
 
 **Requisitos:** Criar Item de Foco e Magia e **Artes Marciais (Artista Marcial)**. Permite **golpes psíquicos** capazes de aplicar efeitos de armas, gastando **1 Coragem**. A seleção das características, dados do golpe e defesa do alvo dependem de procedimento posterior.
 
-**Observação para playtest:** Corpo Fechado e Impacto Psíquico podem registrar gasto de Coragem; Mãos Leves pode preparar a rolagem excepcional; Perícia em Armadilha pode preparar Proteção com Vantagem; Golpe Furtivo acrescenta dado com a confirmação de furtividade. Recursos de esferas são controlados por ficha, com a taxa de Coragem informada pelo Narrador, sem supor valores ausentes.
+**Observação para playtest:** Corpo Fechado e Impacto Psíquico podem registrar gasto de Coragem; Mãos Leves pode preparar a rolagem excepcional; Perícia em Armadilha pode preparar Proteção com Vantagem; Golpe Furtivo acrescenta dado com a confirmação de furtividade. Recursos de esferas são controlados pela ficha com taxa **1 Coragem = 1 esfera**, uma criação por rodada, **consumo total ao Absorver** e **consumo de 5 em Asura**; cada homúnculo tem **ficha separada**.
 
 ## Quatro novas Perícias: antimagia, Mudança Elemental e reflexão [DEFINIDO / procedimento PENDENTE — 20/11/2026]
 
