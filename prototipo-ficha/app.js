@@ -161,7 +161,7 @@ const SKILLS=[
   "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
  ],
  [
-  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o golpe causa dano proporcional ao resultado de 1d20; sua conversão em dano contra Vida/Integridade ainda requer procedimento.",1
+  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",1
  ],
  [
   "passo-etereo","Passo Etéreo","1 XP. Requisitos: Invocar Esfera Espiritual. Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",1
@@ -1272,7 +1272,7 @@ const CARD_EFFECTS={
  "bioetica":"Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",
  "pesquisa-avancada-pocoes":"Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
  "corpo-fechado":"Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
- "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o golpe causa dano proporcional ao resultado de 1d20; sua conversão em dano contra Vida/Integridade ainda requer procedimento.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",
  "passo-etereo":"Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
  "absorver-esferas":"Recupera Coragem em quantidade igual ao total de Esferas Espirituais; consome TODAS as esferas disponíveis. Recupera 1 Coragem por esfera consumida, limitada ao teto; esferas ficam em zero após a absorção.",
  "disparo-esferas-espirituais":"Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
@@ -4039,9 +4039,9 @@ function buildPool(){
   const melee=!draft.equipmentId||(weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
     !((weapon.properties||[]).includes("À Distância"))&&Number(weapon.range||1)<=2);
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||sphereCount()<5||state.courage<1||
-    !usingDiscipline()||draft.mode!=="armas"||draft.shieldThrowId||draft.cravarRemovalShieldId||draft.maosLeves||
+    state.spiritualSpheres.createdThisRound>0||!usingDiscipline()||draft.mode!=="armas"||draft.shieldThrowId||draft.cravarRemovalShieldId||draft.maosLeves||
     draft.magicElement||draft.shieldRaise||draft.potionResearch||!melee)
-    errors.push("Punho Supremo de Asura exige Invocar Esfera, 5 esferas e golpe corpo a corpo com Disciplina.");
+    errors.push("Asura exige 5 esferas preparadas em rodada anterior, 1 Coragem e golpe corpo a corpo com Disciplina.");
   if(!chosen||chosen.sides===20)errors.push("Selecione UM dado válido da pilha para transformar em d20 com Asura.");
   else{chosen.baseSides=chosen.sides;chosen.sides=20;chosen.asuraSpecial=true;}
  }
@@ -4127,8 +4127,8 @@ function renderComposer(){
  const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
   '<label class="fp-checkline full"><input type="checkbox" data-option="potionResearch"'+(draft.potionResearch?' checked':'')+'> Pesquisa Avançada em Poções: confirme criação de poção (+1E; não vale em outras ações)</label>':"";
  const asuraControls=ownsSkill("invocar-esfera-espiritual")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
-  '<label class="fp-checkline full"><input type="checkbox" data-option="asura"'+(draft.asura?' checked':'')+((sphereCount()<5||state.courage<1)&&!draft.asura?' disabled':'')+
-   '> Punho Supremo de Asura: 5 esferas + 1 Coragem; substitui UM dado por d20 (somente corpo a corpo; dano proporcional a 1d20, conversão pendente)</label>'+
+  '<label class="fp-checkline full"><input type="checkbox" data-option="asura"'+(draft.asura?' checked':'')+((sphereCount()<5||state.courage<1||state.spiritualSpheres.createdThisRound>0)&&!draft.asura?' disabled':'')+
+   '> Punho Supremo de Asura: 5 esferas + 1 Coragem; substitui UM dado por d20 (somente corpo a corpo; d20 contribui para DE e dano básico; neutro)</label>'+
   (draft.asura?'<label class="fp-form-field full">Dado da pilha que se transforma em d20 '+
    select("asuraDieId",[["","Selecione um dado"],...pool.filter(d=>d.sides!==20||d.asuraSpecial).map(d=>[d.id,
      (d.asuraSpecial?"d"+d.baseSides:"d"+d.sides)+" · "+label(d.group,d.key)])],draft.asuraDieId)+'</label>':""):"";
@@ -4210,8 +4210,8 @@ function score(){
    !(weapon.properties||[]).includes("À Distância")&&Number(weapon.range||1)<=2);
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||sphereCount()<5||state.courage<1||
     p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||p.mode!=="armas"||
-    p.shieldThrowId||p.cravarRemovalShieldId||p.opts.magicElement||!melee||converted.length!==1)
-    errs.push("Asura exige 5 esferas, Disciplina no corpo a corpo e exatamente um dado convertido em d20.");
+    p.shieldThrowId||p.cravarRemovalShieldId||p.opts.magicElement||state.spiritualSpheres.createdThisRound>0||!melee||converted.length!==1)
+    errs.push("Asura exige 5 esferas preparadas em rodada anterior, 1 Coragem, Disciplina corpo a corpo e dado convertido em d20.");
  }
  if(p.shieldThrowId){
   const shield=state.items.find(it=>it.id===p.shieldThrowId);
@@ -4246,6 +4246,7 @@ function score(){
  }else if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
+ if(p.opts.asura&&(p.characteristic==="Elemental"||p.secondCharacteristic==="Elemental"))errs.push("Asura causa sempre dano neutro: característica Elemental não aplicável.");
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
  const criticalConverted=critTier&&raw[2]>0?1:0;
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
@@ -4361,6 +4362,7 @@ function score(){
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
+ // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
@@ -4385,13 +4387,13 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
  const asuraSummary=p.opts.asura?
- '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Dano proporcional ao resultado de 1d20; cálculo final de dano ainda pendente.</div>':"";
+ '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
  const magicSummary=p.opts.magicElement?
   '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
   '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0)+' turno(s) · '+(p.opts.magicCharges||0)+
@@ -4486,7 +4488,7 @@ function finalize(){
  const p=state.pending,s=score();
  if(!p||s.errors.length){toast(s?.errors?.[0]||"Rolagem inválida.");return;}
  if(p.opts.asura){
-  if(sphereCount()<5){toast("São necessárias 5 Esferas Espirituais para executar Asura.");return;}
+  if(sphereCount()<5||state.spiritualSpheres.createdThisRound>0){toast("Asura exige 5 esferas preparadas e execução em uma rodada posterior.");return;}
   state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
  }
  state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
@@ -4510,7 +4512,7 @@ function finalize(){
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   shieldThrowId:p.shieldThrowId||"",shieldThrowMeters:p.opts.shieldThrowMeters||0,
   shieldThrowReturned:!!s.shieldThrowOutcome?.returned,shieldThrowFallCase:s.shieldThrowOutcome?.grounded?s.shieldThrowOutcome.where:"",shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null,
-  asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraDamageProportional:!!p.opts.asura,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
+  asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraNeutral:!!p.opts.asura,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
@@ -4612,7 +4614,7 @@ function renderSkills(){
   ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> requer Destreza 3, confirmada. Homúnculo elemental de carne feito com DNA de duas criaturas, sangue e tecidos vivos, usa <strong>ficha própria</strong> com XP e custos por porte conforme Domar Criaturas, acompanhando o XP total do criador. <a href="../criar-conflito/" target="_blank" rel="noopener noreferrer">Abrir Criar Conflito para montar ficha própria</a>. Porte, quantidades dos materiais e procedimento de criação ainda não definidos.</p>':"",
   ownsSkill("pesquisa-avancada-pocoes")?'<p class="fp-alert"><strong>Pesquisa Avançada em Poções:</strong> +1E em testes para criar poções e habilita poções elementais. Receitas e valores pendentes; marque a criação de poções no rolador para somar +1E, sem alterar outras ações.</p>':"",
   ownsSkill("corpo-fechado")?'<p class="fp-alert"><strong>Corpo Fechado:</strong> por 1 Coragem, Vitalidade protegida de danos e efeitos de golpes com armas físicas por 1 rodada. <button type="button" class="fp-secondary" data-action="corpo-fechado-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Ativar (−1 Coragem)</button> A rodada e os ataques são resolvidos manualmente.</p>':"",
-  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'/5</strong> armazenadas; <strong>'+state.spiritualSpheres.createdThisRound+'/5</strong> criadas nesta rodada. <strong>1 Coragem = 1 esfera</strong>. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound>=5||sphereCount()>=5||state.courage<1||editMode?' disabled':'')+'>Criar esfera (−1 Coragem)</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> <strong>Punho Supremo de Asura:</strong> com 5 esferas e 1 Coragem, selecione a técnica no rolador de Disciplina corpo a corpo, escolha UM dado para trocar por d20; os 6 recursos são consumidos na conclusão. Dano proporcional ao resultado de 1d20, com conversão de dano pendente.</p>':"",
+  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'/5</strong> armazenadas; <strong>'+state.spiritualSpheres.createdThisRound+'/5</strong> criadas nesta rodada. <strong>1 Coragem = 1 esfera</strong>. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound>=5||sphereCount()>=5||state.courage<1||editMode?' disabled':'')+'>Criar esfera (−1 Coragem)</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> <strong>Punho Supremo de Asura:</strong> com 5 esferas e 1 Coragem, selecione a técnica no rolador de Disciplina corpo a corpo, escolha UM dado para trocar por d20; os 6 recursos são consumidos na conclusão. Os símbolos do d20 mantido contam para acerto e dano básico, sem parcela extra; dano neutro.</p>':"",
   ownsSkill("passo-etereo")?'<p class="fp-alert"><strong>Passo Etéreo:</strong> 1 esfera para deslocamento rápido de até 8 m. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="passo-etereo"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Usar Passo Etéreo (−1 esfera)</button></p>':"",
   ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> consome <strong>TODAS</strong> as esferas e recupera a mesma quantidade de Coragem, até o teto. <button type="button" class="fp-secondary" data-action="sphere-absorb"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Absorver '+sphereCount()+' esferas</button></p>':"",
   ownsSkill("disparo-esferas-espirituais")?'<p class="fp-alert"><strong>Disparo de Esferas Espirituais:</strong> ataque físico a distância, 1 esfera por golpe. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="disparo-esferas-espirituais"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Declarar disparo (−1 esfera)</button> DE, alcance e dados pendentes; ataque manual.</p>':"",
