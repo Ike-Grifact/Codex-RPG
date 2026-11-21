@@ -1045,6 +1045,7 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  assert.ok(app.includes("health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura)"),"Asura adiciona 1 Coragem ao custo de resolução");
  assert.ok(source.includes("state.courage=clamp(state.courage-s.courageCost"),"Finalização desconta Coragem após validar custo");
  assert.ok(source.includes("asuraCourageSpent:p.opts.asura?1:0"),"Histórico registra 1 Coragem de Asura");
+ assert.ok(source.includes("asuraD20Face:p.opts.asura?"),"Histórico registra resultado numérico do d20 para dano proporcional");
  assert.ok(source.includes("if(!p||s.errors.length)"),"Não consome se a rolagem é inválida");
  assert.ok(app.includes("d20")&&app.includes("asuraDieId"),"Permite escolher o dado a substituir");
 });
@@ -1060,6 +1061,7 @@ test("Bioética: Destreza 3 e ficha separada, sem atribuir Atributos não defini
  }
  assert.ok(app.includes('href="../criar-conflito/"'),"Criador oferece caminho para ficha separada de criatura");
  assert.ok(srd.includes("não gera uma criatura automaticamente"),"Não inventa estatísticas do homúnculo");
+ assert.ok(srd.includes("a mesma já definida para criaturas companheiras de Domar Criaturas"),"Progressão é a de Domar Criaturas");
  assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("proporcional ao nível do criador"),"Materiais e proporcionalidade definidos");
- assert.ok(srd.includes("efeito adicional")&&srd.includes("PENDENTE"),"Não inventa efeito adicional de Asura");
+ assert.ok(srd.includes("dano proporcional ao resultado de 1d20")&&srd.includes("PENDENTE"),"Dano proporcional ao d20, cálculo ainda pendente");
 });
