@@ -1062,6 +1062,6 @@ test("Bioética: Destreza 3 e ficha separada, sem atribuir Atributos não defini
  assert.ok(app.includes('href="../criar-conflito/"'),"Criador oferece caminho para ficha separada de criatura");
  assert.ok(srd.includes("não gera uma criatura automaticamente"),"Não inventa estatísticas do homúnculo");
  assert.ok(srd.includes("a mesma já definida para criaturas companheiras de Domar Criaturas"),"Progressão é a de Domar Criaturas");
- assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("proporcional ao nível do criador"),"Materiais e proporcionalidade definidos");
+ assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("XP total atual do personagem criador"),"Materiais e proporcionalidade definidos");
  assert.ok(srd.includes("dano proporcional ao resultado de 1d20")&&srd.includes("PENDENTE"),"Dano proporcional ao d20, cálculo ainda pendente");
 });
