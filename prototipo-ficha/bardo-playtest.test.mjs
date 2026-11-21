@@ -103,3 +103,14 @@ test("Persistem limitações centrais das rolagens, ações e Antecipar",()=>{
  assert.ok(playtest.includes("9 dados")||srd.includes("9 dados"),"Limite de 9 dados");
  assert.ok(!app.includes('const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);'),"Ocultação agora considera efeitos internos");
 });
+
+
+test("Navegação móvel: mapa oferece salto direto às constelações sem nova mecânica",()=>{
+ assert.ok(graph.includes("function jumpToFamily(root,id)"),"Função de salto entre ramos");
+ assert.ok(graph.includes('data-gene-family-jump'),"Seletor de grupos no mapa");
+ assert.ok(graph.includes("cam.zoom=clamp"),"Salto controla zoom sem alterar nós");
+ assert.ok(graph.includes("root.__geneFamilies=groups"),"Ramos acompanham filtros e ficha atual");
+ const styles=readFileSync(join(root,"styles.css"),"utf8");
+ assert.ok(styles.includes(".fp-gene-family-jump"),"Navegação estilizada");
+ assert.ok(styles.includes("@media(max-width:620px)"),"Compatibilidade móvel preservada");
+});
