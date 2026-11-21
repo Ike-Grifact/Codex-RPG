@@ -1935,7 +1935,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,
+  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -3896,7 +3896,7 @@ function renderSources(){
    const canRaise=(canEdit||state.creationLocked)&&!state.pending&&g<6&&canAfford(group,nextCost);
    const canReduce=canEdit&&g>0&&!state.pending&&!(g===1&&isRacialGradeOne(group,id));
    const isBase=same(source,draft.base),isAttr=same(source,draft.attribute),isThird=same(source,draft.third);
-   const flag=isBase?"BASE":isAttr?"ATRIBUTO":isThird?"COMPLEMENTO":"";
+   const flag=isBase?"BASE":isAttr?(draft.maosLeves?"FURTIVIDADE":"ATRIBUTO"):isThird?"COMPLEMENTO":"";
    const title=label(group,id),dice=dataDice(group,g);
    const band=editMode?racialXpBand(group,id):"normal";
    return '<div class="fp-source-item '+(isBase?"fp-is-base":isAttr?"fp-is-attr":isThird?"fp-is-third":"")+(band==="normal"?"":" is-xp-"+band)+'">'+
@@ -3966,7 +3966,7 @@ function buildPool(){
    draft.attribute.group!=="practice"||draft.attribute.key!=="furtividade"||draft.third||draft.mode!=="armas"||
    draft.equipmentId||draft.shieldThrowId||draft.shieldRaise||draft.weightEnabled||draft.magicElement||draft.stealthAttack)
    errors.push("Mãos Leves exige exclusivamente Disciplina + Furtividade, sem arma, terceiro dado de fonte ou outro efeito.");
- }else if(draft.attribute.group!=="attr"||draft.base.group==="attr"){
+ }else if(!NPC_MODE&&(draft.attribute.group!=="attr"||draft.base.group==="attr")){
   errors.push("Teste comum exige Base de Conhecimento/Prática e Atributo; a exceção Disciplina + Furtividade é exclusiva de Mãos Leves.");
  }
  if(draft.shieldThrowId){
@@ -4020,6 +4020,8 @@ function buildPool(){
   if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
+ if(draft.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||draft.maosLeves||draft.mode==="conjuracao"||draft.shieldThrowId))
+  errors.push("Pesquisa Avançada em Poções concede +1E somente para criar poções; exige Perícia válida e teste não mágico.");
  if(draft.stealthAttack){
   const weapon=state.items.find(x=>x.id===draft.equipmentId);
   const weaponDice=weapon&&combatItem(weapon,"armas");
@@ -4102,13 +4104,15 @@ function renderComposer(){
    " → "+describeDicePool(temporaryGradeDice(source.group,grade,true))];
  });
  const carriedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
- const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield?
+ const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield&&!draft.maosLeves?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
  const stealthCheckbox=ownsSkill("golpe-furtivo")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
   '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
- const checks=stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="potionResearch"'+(draft.potionResearch?' checked':'')+'> Pesquisa Avançada em Poções: confirme criação de poção (+1E; não vale em outras ações)</label>':"";
+ const checks=potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
@@ -4152,7 +4156,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
@@ -4204,6 +4208,7 @@ function score(){
   errs.push("A técnica de Trevas exige Disciplina em Conjuração e Perícia em Elemento Trevas.");
  if(dice.length===0)errs.push("Selecione os dados que deseja manter.");
  if(dice.length>keepLimit(p.opts.extraKeep))errs.push("Limite de retenção excedido.");
+ if(p.opts.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||p.opts.maosLeves||p.mode==="conjuracao"))errs.push("Pesquisa de Poções inválida: +1E apenas no contexto de criar poções.");
  if(p.opts.maosLeves){
   if(!ownsSkill("maos-leves")||skillReq("maos-leves")||p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||
    p.attribute?.group!=="practice"||p.attribute?.key!=="furtividade"||p.third||p.opts.equipmentId)
@@ -4229,7 +4234,7 @@ function score(){
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
  const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
-  (critTier&&properties.includes("Precisa")?1:0));
+  (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
  const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
