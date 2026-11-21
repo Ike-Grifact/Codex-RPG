@@ -142,6 +142,10 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-espadas":"Força 2 + Destreza 2"
 });
 const SKILLS=[
+ ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
+ ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
+ ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
+ ["cancoes-sustentadas","Canções Sustentadas","PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",null],
  ["pericia-em-instrumentos","Perícia em Instrumentos","Meio instrumental para habilidades do Bardo. Efeitos próprios e XP pendentes.",null],
  ["maestria-em-apresentacao","Maestria em Apresentação","EXPERIMENTAL: Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos; 3A musicais totais para distribuir entre aliados. Desarmonia na falha com Pavor. Compra XP pendente.",null],
  ["voz-encantadora","Voz Encantadora","EXPERIMENTAL: Influência 4 + Apresentação 4 + Vigor 3. Voz substitui instrumento para apresentações comuns, sem substituir instrumentos específicos da Melodia Psíquica. XP pendente.",null],
@@ -681,6 +685,10 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "dueto-improvisado":["practice:apresentacao","attr:influencia"],
+ "contratempo":["practice:apresentacao","attr:influencia"],
+ "solo-provocador":["practice:apresentacao","attr:influencia"],
+ "cancoes-sustentadas":["practice:apresentacao","attr:influencia"],
  "pericia-em-instrumentos":["practice:apresentacao","attr:influencia","attr:destreza"],
  "maestria-em-apresentacao":["practice:apresentacao","attr:influencia","attr:destreza"],
  "voz-encantadora":["practice:apresentacao","attr:influencia","attr:vigor"],
@@ -1001,6 +1009,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["maestria-em-apresentacao","dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas"],
  ["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora","ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao","acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical","piada-infame","elevacao-harmonica","acao-em-conjunto-musical","presenca-de-palco"],
  ["criar-item-foco-magia","melodia-psiquica"],
  ["furtividade","maos-leves","golpe-furtivo"],
@@ -1106,6 +1115,10 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "dueto-improvisado":"dueto-improvisado",
+ "contratempo":"contratempo",
+ "solo-provocador":"solo-provocador",
+ "cancoes-sustentadas":"cancoes-sustentadas",
  "pericia-em-instrumentos":"pericia-em-instrumentos",
  "maestria-em-apresentacao":"maestria-em-apresentacao",
  "voz-encantadora":"voz-encantadora",
@@ -1226,6 +1239,10 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
+ "contratempo":"Requisitos e custos pendentes; PROPOSTO",
+ "solo-provocador":"Requisitos e custos pendentes; PROPOSTO",
+ "cancoes-sustentadas":"Requisitos e custos pendentes; PROPOSTO",
  "pericia-em-instrumentos":"Requisitos próprios ainda não definidos",
  "maestria-em-apresentacao":"Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos",
  "voz-encantadora":"Influência 4 + Apresentação 4 + Vigor 3",
