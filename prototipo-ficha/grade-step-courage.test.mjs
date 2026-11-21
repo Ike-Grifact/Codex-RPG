@@ -773,7 +773,7 @@ test("Mudança Elemental, Desencantar e Espelho Mágico não inventam dados e pa
  assert.ok(srd.includes("custo de ativação (não informado)"),"Custo não inventado");
  assert.ok(srd.includes("Não destruir, apagar nem remover automaticamente"),"Não destrói fichas nem itens");
  assert.ok(page.includes("passivo")||page.includes("Passivo"));
- assert.ok(page.includes("Pavor que não provocou dano"));
+ assert.ok(page.includes("Pavor que não causaria dano"),"Não inventa dano mágico sem contribuição de Pavor");
  assert.ok(srd.includes("cumulação com **Escudo Refletor**"));
 });
 
@@ -827,6 +827,6 @@ test("Decisões autorais: Espelho Mágico reflete Pavor mágico antes da absorç
   assert.ok(text.includes("Pavor"),"O reflexo depende de Pavor");
  }
  assert.ok(srd.includes("Mesmo que a armadura")&&srd.includes("0 Vida"),"Reflete quando armadura bloqueia 100%");
- assert.ok(book.includes("a armadura absorve 5")&&book.includes("2 de dano são refletidos"),"Exemplo confirma conta antes da absorção");
+ assert.ok(book.includes("inteiramente absorvida pela armadura")&&book.includes("2 de dano são refletidos"),"Exemplo confirma conta antes da absorção");
  assert.ok(page.includes("ataque físico")&&page.includes("antes da absorção"),"Não funciona contra ataque físico");
 });
