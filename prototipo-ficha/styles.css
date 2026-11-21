@@ -1030,6 +1030,23 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 @media(max-width:620px){.fp-gene-family-jump{top:8px;right:8px;max-width:57%;padding:6px}
  .fp-gene-family-jump select{min-height:38px;font-size:11px}.fp-gene-gesture-hint{max-width:38%;font-size:9px}}
 
+/* Controle persistente dentro da área do mapa (sem rolar a página). */
+.fp-gene-future-float{position:absolute;left:12px;bottom:12px;z-index:4;
+ min-height:43px;max-width:calc(100% - 340px);padding:9px 13px;border-radius:10px;
+ border:1px solid var(--fp-gold);background:color-mix(in srgb,var(--fp-surface) 94%,transparent);
+ color:var(--fp-text);font-size:12px;font-weight:750;cursor:pointer;
+ box-shadow:0 6px 20px rgba(0,0,0,.25);touch-action:manipulation}
+.fp-gene-future-float[aria-pressed="true"]{background:color-mix(in srgb,var(--fp-gold) 18%,var(--fp-surface))}
+.fp-gene-future-float:focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
+.fp-gene-orbit-guide{fill:none;stroke:var(--fp-gold);stroke-width:2;stroke-opacity:.13;stroke-dasharray:10 18;pointer-events:none}
+@media(max-width:620px){
+ .fp-gene-future-float{left:8px;bottom:75px;max-width:calc(100% - 16px);min-height:41px;padding:9px 11px}
+ .fp-gene-family-jump{max-width:60%;padding:5px;gap:0}
+ .fp-gene-family-jump label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .fp-gene-family-jump select{min-height:40px}
+ .fp-gene-gesture-hint{font-size:9px;max-width:35%;padding:5px 7px}
+}
+
 /* Grupos orbitais do Codex Genético. Ícones individuais podem ocupar o nó
    sem modificar os IDs nem a lógica de compra das Perícias. */
 .fp-gene-constellation{pointer-events:none}
