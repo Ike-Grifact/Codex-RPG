@@ -943,13 +943,13 @@ test("Poções, Corpo Fechado e Esferas: bônus, custo e persistência contextua
  assert.ok(app.includes('data-option="potionResearch"'),"Requer confirmar contexto de criação de poções");
  assert.ok(app.includes('case "corpo-fechado-use"'),"Corpo Fechado usa 1 Coragem");
  assert.ok(app.includes('case "impacto-psiquico-use"'),"Impacto Psíquico usa 1 Coragem");
- assert.ok(app.includes('spiritualSpheres:{count:0,createdThisRound:false}'),"Contador está na ficha");
+ assert.ok(app.includes('spiritualSpheres:{count:0,createdThisRound:0}'),"Contador está na ficha");
  assert.ok(app.includes('v.spiritualSpheres?.count'),"Contador persiste importação/exportação");
- assert.ok(app.includes('case "sphere-create"')&&app.includes('state.spiritualSpheres.createdThisRound=true'),"Apenas 1 esfera criada por rodada");
+ assert.ok(app.includes('case "sphere-create"')&&app.includes('state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1'),"Até 5 esferas criadas por rodada");
  assert.ok(app.includes('case "sphere-next-round"'),"Liberação manual na rodada seguinte");
  assert.ok(app.includes('case "sphere-spend"')&&app.includes('state.spiritualSpheres.count=sphereCount()-1'),"Passo e Disparo gastam 1 esfera");
- assert.ok(!app.includes('case "sphere-absorb"'),"Não presume consumir ou não as esferas de Absorver");
- assert.ok(app.includes("taxa por esfera ainda está PENDENTE"),"Não inventa taxa de Coragem");
+ assert.ok(app.includes('case "sphere-absorb"')&&app.includes('state.spiritualSpheres.count=0;'),"Absorver consome todas as esferas");
+ assert.ok(app.includes('state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;'),"Taxa definida: 1 Coragem = 1 Esfera");
 });
 
 test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()=>{
@@ -971,6 +971,107 @@ test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()
  }
  assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Doze Perícias"));
  assert.ok(srd.includes("3+1+1 = DE 5")&&srd.includes("3+1+2 = DE 6"));
- assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("não autorizar d20 genericamente".replace("não autorizar","Não autorizar")));
- assert.ok(srd.includes("Destreza 3")&&srd.includes("PENDENTE DE CONFIRMAÇÃO"),"Interpretação De 3 sinalizada");
+ assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("não habilitar d20 em outros testes"));
+ assert.ok(srd.includes("Destreza 3")&&srd.includes("«De 3» significa **Destreza 3**"),"Destreza 3 confirmada pelo autor");
+});
+
+test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorção total",()=>{
+ const caseCode=extract('case "sphere-create":{','case "sphere-next-round":{');
+ const handler=new Function("action","state","ownsSkill","skillReq","sphereCount","maxCourage","clamp","logSkillAction","render","save","toast","confirm","editMode",
+   "switch(action){"+caseCode+"default:break;}");
+ const records=[];
+ const state={courage:10,spiritualSpheres:{count:0,createdThisRound:0},pending:null};
+ const invoke=(action)=>handler(action,state,()=>true,()=>null,()=>state.spiritualSpheres.count,
+   ()=>10,(n,min,max)=>Math.max(min,Math.min(max,n)),(name,result)=>records.push([name,result]),()=>{},()=>{},()=>{},()=>true,false);
+ for(let i=1;i<=5;i++){
+  invoke("sphere-create");
+  assert.equal(state.courage,10-i,"Cada esfera consome 1 Coragem");
+  assert.equal(state.spiritualSpheres.count,i,"Armazena até 5 esferas");
+  assert.equal(state.spiritualSpheres.createdThisRound,i,"Contador de criação por rodada");
+ }
+ invoke("sphere-create");
+ assert.equal(state.spiritualSpheres.count,5,"Sexta criação da mesma rodada é bloqueada");
+ assert.equal(state.courage,5,"Bloqueio não consome Coragem");
+ state.spiritualSpheres.createdThisRound=0;
+ invoke("sphere-create");
+ assert.equal(state.spiritualSpheres.count,5,"Não ultrapassa estoque de 5 mesmo numa nova rodada");
+ state.spiritualSpheres.count=4;
+ invoke("sphere-create");
+ assert.equal(state.spiritualSpheres.count,5,"Pode criar uma esfera após gastar outra em nova rodada");
+ assert.equal(state.spiritualSpheres.createdThisRound,1);
+ state.spiritualSpheres.count=5;state.courage=6;
+ invoke("sphere-absorb");
+ assert.equal(state.courage,10,"Recuperação respeita teto");
+ assert.equal(state.spiritualSpheres.count,0,"Todas as cinco esferas são consumidas");
+ assert.ok(records.some(x=>x[0]==="Absorver Esferas"));
+ state.courage=10;state.spiritualSpheres.count=2;
+ invoke("sphere-absorb");
+ assert.equal(state.courage,10,"Não ultrapassa teto");
+ assert.equal(state.spiritualSpheres.count,0,"Mesmo no teto de Coragem, absorção consome todas");
+ assert.ok(app.includes('count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,5)'),"Importação limita armazenamento a 5");
+ assert.ok(app.includes('typeof v.spiritualSpheres?.createdThisRound==="boolean"'),"Migração das fichas antigas");
+});
+
+test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco esferas",()=>{
+ const poolCode=extract("function buildPool(){","function renderComposer(){");
+ const helper="const SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
+   "const key=s=>s?s.group+'.'+s.key:'';const same=(a,b)=>!!a&&!!b&&key(a)===key(b);"+
+   "const ownsSkill=id=>state.skills.includes(id);const skillReq=()=>null;"+
+   "const sphereCount=()=>state.spiritualSpheres.count;"+
+   "const usingDiscipline=()=>draft.base?.group==='practice'&&draft.base?.key==='armas_conjuracao';"+
+   "const canSecondAttribute=()=>false,mayThird=()=>false,canUseShared=()=>true;"+
+   "const temporaryGradeDice=(g,n)=>Array.from({length:n},()=>g==='practice'?10:g==='attr'?6:10);"+
+   "const combatItem=(item,mode)=>item?.equipped&&item.type==='arma'&&mode==='armas'?[item.die]:[];";
+ const factory=new Function("state","draft","NPC_MODE",helper+poolCode+"\nreturn buildPool;");
+ const state={skills:["invocar-esfera-espiritual"],spiritualSpheres:{count:5},attributes:{destreza:2},
+   knowledges:{},practices:{armas_conjuracao:2},items:[],courage:10};
+ const draft={base:{group:"practice",key:"armas_conjuracao"},attribute:{group:"attr",key:"destreza"},
+   mode:"armas",third:null,de:3,asura:true,asuraDieId:"practice.armas_conjuracao:0",
+   equipmentId:"",extraKeep:false,step:false,shieldThrowId:"",cravarRemovalShieldId:"",maosLeves:false,
+   shieldRaise:false,potionResearch:false,magicElement:""};
+ const normal=factory(state,{...draft,asura:false},false)();
+ const converted=factory(state,draft,false)();
+ assert.deepEqual(converted.errors,[],"Disciplina corpo a corpo com 5 esferas permite Asura");
+ assert.equal(converted.pool.length,normal.pool.length,"Não acrescenta décimo dado");
+ assert.equal(converted.pool.filter(x=>x.sides===20&&x.asuraSpecial).length,1,"Um dado convertido em d20");
+ assert.equal(converted.pool.find(x=>x.asuraSpecial).baseSides,10,"Dado original preservado para identificação");
+ assert.ok(factory({...state,spiritualSpheres:{count:4}},draft,false)().errors.length>0,"Quatro esferas não bastam");
+ assert.ok(factory({...state,courage:0},draft,false)().errors.length>0,"Asura exige 1 Coragem além das cinco esferas");
+ assert.ok(factory({...state,spiritualSpheres:{count:5,createdThisRound:5}},draft,false)().errors.length>0,"Asura não pode ser executado na rodada em que criou as esferas");
+ assert.deepEqual(factory({...state,spiritualSpheres:{count:5,createdThisRound:0}},draft,false)().errors,[],"Asura pode ser executado na rodada seguinte");
+ assert.ok(factory(state,{...draft,mode:"conjuracao"},false)().errors.length>0,"Asura não funciona como magia à distância");
+ const rangeState={...state,items:[{id:"r",type:"arma",equipped:true,range:12,die:6,properties:["À Distância"]}]};
+ assert.ok(factory(rangeState,{...draft,equipmentId:"r"},false)().errors.length>0,"Arma à distância não habilita Asura");
+ const start=app.indexOf("function finalize(){");const source=app.slice(start,app.indexOf("\nfunction ",start+1));
+ assert.ok(source.includes("state.spiritualSpheres.count=sphereCount()-5"),"Finalização consome 5 esferas");
+ assert.ok(app.includes("health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura)"),"Asura adiciona 1 Coragem ao custo de resolução");
+ assert.ok(source.includes("state.courage=clamp(state.courage-s.courageCost"),"Finalização desconta Coragem após validar custo");
+ assert.ok(source.includes("asuraCourageSpent:p.opts.asura?1:0"),"Histórico registra 1 Coragem de Asura");
+ assert.ok(source.includes("asuraD20Face:p.opts.asura?"),"Histórico registra a face do d20");
+ assert.ok(!source.includes("asuraDamageProportional:"),"Não registra pacote de dano adicional de Asura");
+ assert.ok(app.includes('damageNature:p.opts.asura?"neutro"'),"Natureza do dano de Asura é sempre neutra");
+ assert.ok(app.includes('p.characteristic==="Elemental"||p.secondCharacteristic==="Elemental"'),"Asura bloqueia característica Elemental");
+ assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"D20 contribui ao dano básico normal");
+ assert.ok(app.includes("for(const d of dice){const f=face(d.sides,d.face);"),"D20 mantido conta para E, A, P da mesma rolagem");
+ const faces=app.match(/20:\[([^\n]+)\]/);
+ assert.ok(faces&&faces[1].endsWith("[8,0,0]"),"Face 20 contém 8 Êxitos");
+ assert.ok(source.includes("state.spiritualSpheres.createdThisRound>0"),"Finalização impede ataque no turno de invocação");
+ assert.ok(source.includes("if(!p||s.errors.length)"),"Não consome se a rolagem é inválida");
+ assert.ok(app.includes("d20")&&app.includes("asuraDieId"),"Permite escolher o dado a substituir");
+});
+
+test("Bioética: Destreza 3 e ficha separada, sem atribuir Atributos não definidos",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/bioetica.html"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const text of [srd,book,page,index]){
+  assert.ok(text.includes("Destreza 3"),"Destreza 3 confirmado");
+  assert.ok(text.toLowerCase().includes("ficha própria"),"Cada homúnculo possui ficha própria");
+ }
+ assert.ok(app.includes('href="../criar-conflito/"'),"Criador oferece caminho para ficha separada de criatura");
+ assert.ok(srd.includes("não gera uma criatura automaticamente"),"Não inventa estatísticas do homúnculo");
+ assert.ok(srd.includes("a mesma já definida para criaturas companheiras de Domar Criaturas"),"Progressão é a de Domar Criaturas");
+ assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("XP total atual do personagem criador"),"Materiais e proporcionalidade definidos");
+ assert.ok(srd.includes("O mesmo d20, se mantido")&&srd.includes("sempre causa dano neutro"),"Um d20 para atingir DE e calcular dano neutro, sem segundo dano");
 });
