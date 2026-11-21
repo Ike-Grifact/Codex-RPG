@@ -1884,7 +1884,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},notes:"",pending:null,history:[],
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:false},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -2190,7 +2190,11 @@ function normalize(v){
   at:String(x.at||"").slice(0,40),amount:clamp(Math.floor(x.amount),0,1000000),note:String(x.note||"").slice(0,100)
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
- s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+  s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+ s.spiritualSpheres={
+  count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,99),
+  createdThisRound:!!v.spiritualSpheres?.createdThisRound
+ };
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
  // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
@@ -4506,6 +4510,49 @@ function adjustResource(resource,delta){
  if(!["life","courage"].includes(resource)||![-1,1].includes(Number(delta)))return;
  const max=resource==="life"?maxLife():maxCourage();
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
+}
+// Mãos Leves: exceção deliberada e EXCLUSIVA à combinação usual de fontes.
+function prepareMaosLeves(){
+ if(!ownsSkill("maos-leves")||skillReq("maos-leves")||state.pending||editMode){
+  toast("Mãos Leves requer a Perícia, seus requisitos e nenhuma rolagem/edição pendente.");return;
+ }
+ const ask=(question,min,max)=>{
+  const value=prompt(question);
+  if(value===null)return null;
+  const n=Number(value.trim());
+  if(!value.trim()||!Number.isInteger(n)||n<min||n>max){toast("Informe um número inteiro válido.");return null;}
+  return n;
+ };
+ const de=ask("Mãos Leves: DE defensiva do inimigo (0 a 30).",0,30);if(de===null)return;
+ const grade=ask("Grau da arma, escudo ou armadura que pretende retirar (1 a 4).",1,4);if(grade===null)return;
+ const equipped=confirm("O item está EQUIPADO? Em caso negativo, o peso NÃO aumenta a DE.");
+ let weight=0;
+ if(equipped){
+  const answer=ask("Peso do item EQUIPADO a somar à DE: Leve = 1, Médio = 2. Outros pesos: use o valor confirmado pelo Narrador (0 a 30).",0,30);
+  if(answer===null)return;weight=answer;
+ }
+ const finalDe=de+grade+weight;
+ if(finalDe>30){toast("DE calculada acima do teto configurável do rolador (30). Confirme a resolução manual com o Narrador.");return;}
+ draft=freshDraft();draft.maosLeves=true;draft.mode="armas";
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ draft.attribute={group:"practice",key:"furtividade"};draft.de=finalDe;
+ sheetPage="play";render();save();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Mãos Leves: DE "+de+" + Grau "+grade+(equipped?" + peso "+weight:" + peso 0 (não equipado)")+" = "+finalDe+". Teste sem dano; Narrador confirma retirada.");
+}
+function prepareArmadilha(){
+ if(!ownsSkill("pericia-armadilha")||skillReq("pericia-armadilha")||state.pending||editMode){toast("Perícia em Armadilha indisponível: confira a compra e finalize qualquer rolagem.");return;}
+ if(!confirm("Preparar teste para ARMAR ou DESARMAR armadilha, com Proteção e Vantagem (+1A), conforme contexto confirmado pelo Narrador?"))return;
+ draft=freshDraft();draft.mode="normal";draft.situation="vantagem";
+ draft.base={group:"know",key:"protecao"};
+ draft.attribute={group:"attr",key:(state.attributes.destreza||0)>0?"destreza":"inteligencia"};
+ sheetPage="play";render();save();$("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Teste de armadilha: Proteção + Atributo, Vantagem (+1A). Ajuste a DE informada pelo Narrador.");
+}
+function sphereCount(){return clamp(Math.floor(state.spiritualSpheres?.count||0),0,99);}
+function logSkillAction(name,outcome){
+ state.history.unshift({date:new Date().toISOString(),name,outcome,de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
+ state.history=state.history.slice(0,20);
 }
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
