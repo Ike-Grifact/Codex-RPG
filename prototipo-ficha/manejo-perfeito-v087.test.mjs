@@ -78,7 +78,7 @@ test("Golpe Certo é gatilho condicional com Vantagem Absoluta preexistente, sem
 });
 
 test("Arma Certa não é comprável, não aparece no mapa nem no catálogo, mas seu link histórico funciona",()=>{
- const skillList=part("const SKILLS=[","const SKILL_SOURCE_CONNECTIONS=");
+ const skillList=part("const SKILLS=[","const CARD_REQUIREMENTS=");
  assert.doesNotMatch(skillList,/\"arma-certa\"/);
  assert.doesNotMatch(graph,/\"arma-certa\"/);
  assert.doesNotMatch(index,/href="maestria-arma-certa\.html"/);
