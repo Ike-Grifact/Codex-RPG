@@ -152,7 +152,7 @@ const SKILLS=[
   "golpe-furtivo","Golpe Furtivo","1 XP. Requisitos: Disciplina 2 + Furtividade 2. Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",1
  ],
  [
-  "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",1
+  "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",1
  ],
  [
   "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
@@ -161,13 +161,13 @@ const SKILLS=[
   "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
  ],
  [
-  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",1
+  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",1
  ],
  [
   "passo-etereo","Passo Etéreo","1 XP. Requisitos: Invocar Esfera Espiritual. Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",1
  ],
  [
-  "absorver-esferas","Absorver Esferas","1 XP. Requisitos: Invocar Esfera Espiritual. Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",1
+  "absorver-esferas","Absorver Esferas","1 XP. Requisitos: Invocar Esfera Espiritual. Recupera Coragem em quantidade igual ao total de Esferas Espirituais; consome TODAS as esferas disponíveis. Recupera 1 Coragem por esfera consumida, limitada ao teto; esferas ficam em zero após a absorção.",1
  ],
  [
   "disparo-esferas-espirituais","Disparo de Esferas Espirituais","1 XP. Requisitos: Invocar Esfera Espiritual. Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",1
@@ -1269,12 +1269,12 @@ const CARD_EFFECTS={
  "maos-leves":"Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",
  "pericia-armadilha":"Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",
  "golpe-furtivo":"Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",
- "bioetica":"Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",
+ "bioetica":"Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",
  "pesquisa-avancada-pocoes":"Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
  "corpo-fechado":"Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
- "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",
  "passo-etereo":"Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
- "absorver-esferas":"Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",
+ "absorver-esferas":"Recupera Coragem em quantidade igual ao total de Esferas Espirituais; consome TODAS as esferas disponíveis. Recupera 1 Coragem por esfera consumida, limitada ao teto; esferas ficam em zero após a absorção.",
  "disparo-esferas-espirituais":"Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
  "dilema":"Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",
  "impacto-psiquico":"Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
@@ -1358,12 +1358,12 @@ const CARD_BRIEFS={
  "maos-leves":"1 XP; retira arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso se equipado (Leve +1, Médio +2 nos exemplos).",
  "pericia-armadilha":"1 XP; Vantagem (+1A) para armar ou desarmar armadilhas usando Proteção.",
  "golpe-furtivo":"1 XP; ataque furtivo recebe mais 1 dado da arma, respeitando limite de 9 dados rolados.",
- "bioetica":"1 XP; cria homúnculo elemental de carne misturando o DNA de duas criaturas; procedimento pendente.",
+ "bioetica":"1 XP; Destreza 3 confirmada. Cria homúnculo com sangue e tecidos vivos, ficha própria e XP igual ao total atual do criador, seguindo Domar Criaturas.",
  "pesquisa-avancada-pocoes":"1 XP; +1E em testes para criar poções; pode produzir poções elementais.",
  "corpo-fechado":"1 XP; 1 Coragem: sem efeitos ou dano na Vitalidade de golpes de armas físicas por 1 rodada.",
- "invocar-esfera-espiritual":"1 XP; gera no máximo 1 esfera por rodada via Coragem. Com 5 esferas, d20 para golpe corpo a corpo de Disciplina, Punho Supremo de Asura; procedimento pendente.",
+ "invocar-esfera-espiritual":"1 XP; 1 Coragem cria 1 esfera, até 1 por rodada. Em golpe corpo a corpo com Disciplina, Punho Supremo de Asura consome 5 esferas e converte um dado em d20.",
  "passo-etereo":"1 XP; gasta 1 Esfera Espiritual para se projetar até 8 m.",
- "absorver-esferas":"1 XP; recupera Coragem igual ao total de Esferas Espirituais, sem assumir consumo não especificado.",
+ "absorver-esferas":"1 XP; recupera Coragem igual ao total de Esferas Espirituais, consumindo todas as esferas.",
  "disparo-esferas-espirituais":"1 XP; 1 esfera por golpe para ataque físico à distância.",
  "dilema":"1 XP; prende desafiante e alvo sem deslocamento até que um fique inconsciente.",
  "impacto-psiquico":"1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
@@ -1447,12 +1447,12 @@ const CARD_ACTIVATIONS={
  "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
  "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
  "golpe-furtivo":"Dado da arma adicional no ataque furtivo; sem custo de Coragem informado.",
- "bioetica":"Criação de homúnculo com DNA de duas criaturas; custo/resultado pendentes.",
+ "bioetica":"Cria homúnculo com ficha própria e XP como Domar Criaturas, conforme porte; materiais e procedimento pendentes.",
  "pesquisa-avancada-pocoes":"+1E na criação de poções; habilita poções elementais.",
  "corpo-fechado":"1 Coragem; protege Vitalidade de efeitos e danos de armas físicas por 1 rodada.",
- "invocar-esfera-espiritual":"Converte Coragem em Esferas: 1 criada por rodada; com 5 habilita d20 para Punho Supremo de Asura.",
+ "invocar-esfera-espiritual":"1 Coragem = 1 Esfera Espiritual (uma por rodada). Punho Supremo de Asura consome 5 para substituir um dado por d20 em golpe corpo a corpo com Disciplina.",
  "passo-etereo":"1 esfera; deslocamento rápido de 8 m.",
- "absorver-esferas":"Recupera Coragem = total de esferas; consumo das esferas PENDENTE.",
+ "absorver-esferas":"Recupera Coragem = total de esferas; consome todas as esferas.",
  "disparo-esferas-espirituais":"1 esfera por ataque físico à distância; alcance/dano pendentes.",
  "dilema":"Pacto impede movimento de ambos até um ficar inconsciente; custo de ativação não informado.",
  "impacto-psiquico":"1 Coragem; golpe psíquico pode aplicar efeitos de armas.",
@@ -1884,7 +1884,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
- items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:false},notes:"",pending:null,history:[],
+ items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
 let state=defaultState(),draft=null,toastTimer=null,wizardStep=0,wizardReached=0,viewMode="builder",editMode=false;
@@ -1935,7 +1935,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
-  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,
+  shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -2192,8 +2192,9 @@ function normalize(v){
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
   s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
  s.spiritualSpheres={
-  count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,99),
-  createdThisRound:!!v.spiritualSpheres?.createdThisRound
+  count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,5),
+  // Migra fichas antigas: true equivalia a uma criação na rodada.
+  createdThisRound:clamp(Math.floor(typeof v.spiritualSpheres?.createdThisRound==="boolean"?(v.spiritualSpheres.createdThisRound?1:0):Number(v.spiritualSpheres?.createdThisRound)||0),0,5)
  };
  s.xp=clamp(Math.floor(v.xp),0,1e9);
  // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
@@ -4032,6 +4033,18 @@ function buildPool(){
    errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
   else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
  }
+ if(draft.asura){
+  const chosen=pool.find(d=>d.id===draft.asuraDieId);
+  const weapon=state.items.find(item=>item.id===draft.equipmentId);
+  const melee=!draft.equipmentId||(weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
+    !((weapon.properties||[]).includes("À Distância"))&&Number(weapon.range||1)<=2);
+  if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||sphereCount()<5||state.courage<1||
+    state.spiritualSpheres.createdThisRound>0||!usingDiscipline()||draft.mode!=="armas"||draft.shieldThrowId||draft.cravarRemovalShieldId||draft.maosLeves||
+    draft.magicElement||draft.shieldRaise||draft.potionResearch||!melee)
+    errors.push("Asura exige 5 esferas preparadas em rodada anterior, 1 Coragem e golpe corpo a corpo com Disciplina.");
+  if(!chosen||chosen.sides===20)errors.push("Selecione UM dado válido da pilha para transformar em d20 com Asura.");
+  else{chosen.baseSides=chosen.sides;chosen.sides=20;chosen.asuraSpecial=true;}
+ }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
  const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
@@ -4113,7 +4126,13 @@ function renderComposer(){
   '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
  const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
   '<label class="fp-checkline full"><input type="checkbox" data-option="potionResearch"'+(draft.potionResearch?' checked':'')+'> Pesquisa Avançada em Poções: confirme criação de poção (+1E; não vale em outras ações)</label>':"";
- const checks=potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const asuraControls=ownsSkill("invocar-esfera-espiritual")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="asura"'+(draft.asura?' checked':'')+((sphereCount()<5||state.courage<1||state.spiritualSpheres.createdThisRound>0)&&!draft.asura?' disabled':'')+
+   '> Punho Supremo de Asura: 5 esferas + 1 Coragem; substitui UM dado por d20 (somente corpo a corpo; d20 contribui para DE e dano básico; neutro)</label>'+
+  (draft.asura?'<label class="fp-form-field full">Dado da pilha que se transforma em d20 '+
+   select("asuraDieId",[["","Selecione um dado"],...pool.filter(d=>d.sides!==20||d.asuraSpecial).map(d=>[d.id,
+     (d.asuraSpecial?"d"+d.baseSides:"d"+d.sides)+" · "+label(d.group,d.key)])],draft.asuraDieId)+'</label>':""):"";
+ const checks=asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
@@ -4157,7 +4176,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,asura:!!draft.asura,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
@@ -4184,6 +4203,16 @@ function score(){
  const p=state.pending;if(!p)return null;
  const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
+ if(p.opts.asura){
+  const converted=p.dice.filter(d=>d.asuraSpecial&&d.sides===20);
+  const weapon=state.items.find(it=>it.id===p.opts.equipmentId);
+  const melee=!p.opts.equipmentId||(weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
+   !(weapon.properties||[]).includes("À Distância")&&Number(weapon.range||1)<=2);
+  if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||sphereCount()<5||state.courage<1||
+    p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||p.mode!=="armas"||
+    p.shieldThrowId||p.cravarRemovalShieldId||p.opts.magicElement||state.spiritualSpheres.createdThisRound>0||!melee||converted.length!==1)
+    errs.push("Asura exige 5 esferas preparadas em rodada anterior, 1 Coragem, Disciplina corpo a corpo e dado convertido em d20.");
+ }
  if(p.shieldThrowId){
   const shield=state.items.find(it=>it.id===p.shieldThrowId);
   if(!shieldBoomerangReady(shield))errs.push("Escudo Bumerangue inválido: escudo não equipado ou requisitos não atendidos.");
@@ -4217,6 +4246,7 @@ function score(){
  }else if(!p.dice.some(x=>x.group==="attr"))errs.push("É obrigatório rolar pelo menos um dado de Atributo.");
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
+ if(p.opts.asura&&(p.characteristic==="Elemental"||p.secondCharacteristic==="Elemental"))errs.push("Asura causa sempre dano neutro: característica Elemental não aplicável.");
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
  const criticalConverted=critTier&&raw[2]>0?1:0;
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
@@ -4257,7 +4287,7 @@ function score(){
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
   Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem+Number(!!p.shieldThrowId);
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
  if(p.mode==="conjuracao"&&p.opts.magicElement){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
@@ -4332,6 +4362,7 @@ function score(){
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
+ // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
@@ -4356,11 +4387,13 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
+ const asuraSummary=p.opts.asura?
+ '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
  const magicSummary=p.opts.magicElement?
   '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
   '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0)+' turno(s) · '+(p.opts.magicCharges||0)+
@@ -4441,7 +4474,7 @@ function renderPending(){
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
- return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+
+ return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+asuraSummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
   '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
@@ -4454,6 +4487,10 @@ function renderPending(){
 function finalize(){
  const p=state.pending,s=score();
  if(!p||s.errors.length){toast(s?.errors?.[0]||"Rolagem inválida.");return;}
+ if(p.opts.asura){
+  if(sphereCount()<5||state.spiritualSpheres.createdThisRound>0){toast("Asura exige 5 esferas preparadas e execução em uma rodada posterior.");return;}
+  state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
+ }
  state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
@@ -4462,7 +4499,7 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=(p.opts.maosLeves?"Mãos Leves · ":p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.opts.asura?"Punho Supremo de Asura · ":p.opts.maosLeves?"Mãos Leves · ":p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalSuccess=!!(removalShield&&s.success);
  const thrownShield=p.shieldThrowId?state.items.find(it=>it.id===p.shieldThrowId&&it.type==="escudo"):null;
@@ -4475,7 +4512,7 @@ function finalize(){
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   shieldThrowId:p.shieldThrowId||"",shieldThrowMeters:p.opts.shieldThrowMeters||0,
   shieldThrowReturned:!!s.shieldThrowOutcome?.returned,shieldThrowFallCase:s.shieldThrowOutcome?.grounded?s.shieldThrowOutcome.where:"",shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null,
-  E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
+  asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraNeutral:!!p.opts.asura,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
@@ -4555,7 +4592,7 @@ function prepareArmadilha(){
  sheetPage="play";render();save();$("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
  toast("Teste de armadilha: Proteção + Atributo, Vantagem (+1A). Ajuste a DE informada pelo Narrador.");
 }
-function sphereCount(){return clamp(Math.floor(state.spiritualSpheres?.count||0),0,99);}
+function sphereCount(){return clamp(Math.floor(state.spiritualSpheres?.count||0),0,5);}
 function logSkillAction(name,outcome){
  state.history.unshift({date:new Date().toISOString(),name,outcome,de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
  state.history=state.history.slice(0,20);
@@ -4574,12 +4611,12 @@ function renderSkills(){
   ownsSkill("maos-leves")?'<p class="fp-alert"><strong>Mãos Leves:</strong> teste excepcional de Disciplina + Furtividade para tirar arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso somente se equipado. <button type="button" class="fp-secondary" data-action="maos-leves-prepare"'+(state.pending||editMode?' disabled':'')+'>Calcular DE e preparar teste</button> A retirada do inventário inimigo é confirmada pelo Narrador.</p>':"",
   ownsSkill("pericia-armadilha")?'<p class="fp-alert"><strong>Perícia em Armadilha:</strong> Vantagem (+1A) para armar/desarmar armadilhas com Proteção. <button type="button" class="fp-secondary" data-action="armadilha-prepare"'+(state.pending||editMode?' disabled':'')+'>Preparar Proteção + Vantagem</button></p>':"",
   ownsSkill("golpe-furtivo")?'<p class="fp-alert"><strong>Golpe Furtivo:</strong> marque «Golpe Furtivo» no rolador de Disciplina + Atributo durante ataque furtivo com arma habilitada: +1 dado da arma, máximo de 9 dados rolados.</p>':"",
-  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> cria homúnculo elemental de carne misturando o DNA de duas criaturas. Ficha, custos e herança genética pendentes; criação sob orientação do Narrador.</p>':"",
+  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> requer Destreza 3, confirmada. Homúnculo elemental de carne feito com DNA de duas criaturas, sangue e tecidos vivos, usa <strong>ficha própria</strong> com XP e custos por porte conforme Domar Criaturas, acompanhando o XP total do criador. <a href="../criar-conflito/" target="_blank" rel="noopener noreferrer">Abrir Criar Conflito para montar ficha própria</a>. Porte, quantidades dos materiais e procedimento de criação ainda não definidos.</p>':"",
   ownsSkill("pesquisa-avancada-pocoes")?'<p class="fp-alert"><strong>Pesquisa Avançada em Poções:</strong> +1E em testes para criar poções e habilita poções elementais. Receitas e valores pendentes; marque a criação de poções no rolador para somar +1E, sem alterar outras ações.</p>':"",
   ownsSkill("corpo-fechado")?'<p class="fp-alert"><strong>Corpo Fechado:</strong> por 1 Coragem, Vitalidade protegida de danos e efeitos de golpes com armas físicas por 1 rodada. <button type="button" class="fp-secondary" data-action="corpo-fechado-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Ativar (−1 Coragem)</button> A rodada e os ataques são resolvidos manualmente.</p>':"",
-  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'</strong> esfera(s) registradas. Criação máxima de 1 por rodada mediante conversão de Coragem; taxa informada pelo Narrador. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound||state.courage<1||editMode?' disabled':'')+'>Converter Coragem em 1 esfera</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> Com 5 esferas, d20 exclusivo do Punho Supremo de Asura, corpo a corpo com Disciplina; conversão do dado ainda manual.</p>':"",
+  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'/5</strong> armazenadas; <strong>'+state.spiritualSpheres.createdThisRound+'/5</strong> criadas nesta rodada. <strong>1 Coragem = 1 esfera</strong>. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound>=5||sphereCount()>=5||state.courage<1||editMode?' disabled':'')+'>Criar esfera (−1 Coragem)</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> <strong>Punho Supremo de Asura:</strong> com 5 esferas e 1 Coragem, selecione a técnica no rolador de Disciplina corpo a corpo, escolha UM dado para trocar por d20; os 6 recursos são consumidos na conclusão. Os símbolos do d20 mantido contam para acerto e dano básico, sem parcela extra; dano neutro.</p>':"",
   ownsSkill("passo-etereo")?'<p class="fp-alert"><strong>Passo Etéreo:</strong> 1 esfera para deslocamento rápido de até 8 m. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="passo-etereo"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Usar Passo Etéreo (−1 esfera)</button></p>':"",
-  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> recupera Coragem igual ao total de esferas (até o teto). Consumo das esferas pendente; resolva com Narrador antes de registrar alterações de Coragem.</p>':"",
+  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> consome <strong>TODAS</strong> as esferas e recupera a mesma quantidade de Coragem, até o teto. <button type="button" class="fp-secondary" data-action="sphere-absorb"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Absorver '+sphereCount()+' esferas</button></p>':"",
   ownsSkill("disparo-esferas-espirituais")?'<p class="fp-alert"><strong>Disparo de Esferas Espirituais:</strong> ataque físico a distância, 1 esfera por golpe. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="disparo-esferas-espirituais"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Declarar disparo (−1 esfera)</button> DE, alcance e dados pendentes; ataque manual.</p>':"",
   ownsSkill("dilema")?'<p class="fp-alert"><strong>Dilema:</strong> pacto imobiliza a si e ao adversário até um dos dois ficar inconsciente. Ativação e resistência pendentes; não altera a ficha inimiga automaticamente.</p>':"",
   ownsSkill("impacto-psiquico")?'<p class="fp-alert"><strong>Impacto Psíquico:</strong> golpe psíquico que pode usar efeitos de arma por 1 Coragem. <button type="button" class="fp-secondary" data-action="impacto-psiquico-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar golpe (−1 Coragem)</button> Dados e efeitos concretos dependem do Narrador.</p>':""
@@ -5026,21 +5063,29 @@ function onClick(event){
  }
  case "sphere-create":{
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
-  if(state.spiritualSpheres.createdThisRound){toast("Já foi criada 1 esfera nesta rodada; confirme próxima rodada antes de repetir.");break;}
-  if(sphereCount()>=99){toast("Limite técnico do contador atingido; registre no papel até definição do teto oficial.");break;}
-  const raw=prompt("Quantos pontos de Coragem o Narrador confirmou converter para criar UMA esfera nesta rodada? A taxa por esfera ainda está PENDENTE.");
-  if(raw===null)break;
-  const spent=Number(raw);
-  if(!raw.trim()||!Number.isInteger(spent)||spent<1||spent>state.courage){toast("Informe gasto positivo de Coragem que o personagem possui.");break;}
-  if(!confirm("Confirmar conversão de "+spent+" Coragem em 1 Esfera Espiritual nesta rodada?"))break;
-  state.courage-=spent;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=true;
-  logSkillAction("Invocar Esfera Espiritual","−"+spent+" Coragem; +1 esfera; 1 criação nesta rodada.");
-  render();save();toast("1 esfera criada; limite de uma por rodada aplicado.");break;
+  if(state.spiritualSpheres.createdThisRound>=5){toast("Limite de 5 esferas criadas nesta rodada; confirme a próxima rodada antes de repetir.");break;}
+  if(sphereCount()>=5){toast("Teto de 5 Esferas Espirituais armazenadas atingido.");break;}
+  if(state.courage<1){toast("Invocar Esfera Espiritual exige 1 Coragem.");break;}
+  if(!confirm("Converter 1 Coragem em 1 Esfera Espiritual? Limite de 5 criações por rodada e de 5 esferas armazenadas."))break;
+  state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
+  logSkillAction("Invocar Esfera Espiritual","−1 Coragem; +1 esfera; "+state.spiritualSpheres.createdThisRound+"/5 criadas na rodada.");
+  render();save();toast("1 esfera criada; "+state.spiritualSpheres.createdThisRound+"/5 nesta rodada.");break;
+ }
+ case "sphere-absorb":{
+  if(!ownsSkill("absorver-esferas")||skillReq("absorver-esferas")||state.pending||editMode||sphereCount()<1){
+    toast("Absorver Esferas exige a Perícia e pelo menos uma Esfera Espiritual disponível.");break;
+  }
+  const amount=sphereCount(),received=Math.min(amount,Math.max(0,maxCourage()-state.courage));
+  if(!confirm("Absorver TODAS as "+amount+" esferas? Recupera "+received+" Coragem"+(received<amount?" (limitada pelo teto)":"")+" e consome todas as esferas, deixando 0. Prosseguir?"))break;
+  state.spiritualSpheres.count=0;
+  state.courage=clamp(state.courage+received,0,maxCourage());
+  logSkillAction("Absorver Esferas","−"+amount+" esferas; +"+received+" Coragem (teto respeitado).");
+  render();save();toast("Absorver Esferas: −"+amount+" esferas, +"+received+" Coragem.");break;
  }
  case "sphere-next-round":{
   if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
-  if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto libera somente a criação de mais uma esfera."))break;
-  state.spiritualSpheres.createdThisRound=false;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
+  if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto zera o contador de até 5 criações permitidas por rodada."))break;
+  state.spiritualSpheres.createdThisRound=0;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
  }
  case "sphere-spend":{
   const skillId=id;
@@ -5361,7 +5406,8 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;}
+  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
+  if(k==="asura"&&!draft.asura)draft.asuraDieId="";
   if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
   renderSources();renderComposer();return;
