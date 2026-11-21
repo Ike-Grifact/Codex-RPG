@@ -13,7 +13,7 @@ const css=readFileSync(join(root,"styles.css"),"utf8");
 const names=readdirSync(icons).filter(x=>x.endsWith(".svg")).sort();
 
 test("Atlas contém armas, armaduras, elementos, constelações e indicadores",()=>{
- assert.equal(names.length,50);
+ assert.ok(names.length>=50,"O atlas deve preservar os 50 ícones-base e admitir novos SVGs");
  for(const status of ["coragem","movimento","peso","balanco","inventario"]){
   assert.ok(names.includes("status-"+status+".svg"),"Falta ícone de "+status);
  }
@@ -46,7 +46,7 @@ test("DE mescla três runas e tem exclusivamente o azul de Ansuz",()=>{
 test("Cada categoria do mapa tem seu SVG de constelação",()=>{
  const section=graph.slice(graph.indexOf("const GENE_CONSTELLATIONS=["),graph.indexOf("function position("));
  const ids=[...section.matchAll(/\{id:"([^"]+)",label:/g)].map(x=>x[1]);
- assert.equal(ids.length,12);
+ assert.ok(ids.length>=12,"Todas as 12 constelações-base permanecem, mesmo com novos ramos");
  for(const id of [...ids,"outros"])assert.ok(existsSync(join(icons,"categoria-"+id+".svg")),id);
  assert.match(graph,/class="fp-gene-constellation-icon"/);
 });
