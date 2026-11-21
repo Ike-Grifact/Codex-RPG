@@ -249,7 +249,7 @@ As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisi
 
 **Requisitos:** Criar Item de Foco e Magia e **Artes Marciais (Artista Marcial)**. Permite **golpes psíquicos** capazes de aplicar efeitos de armas, gastando **1 Coragem**. A seleção das características, dados do golpe e defesa do alvo dependem de procedimento posterior.
 
-**Observação para playtest:** Corpo Fechado e Impacto Psíquico podem registrar gasto de Coragem; Mãos Leves pode preparar a rolagem excepcional; Perícia em Armadilha pode preparar Proteção com Vantagem; Golpe Furtivo acrescenta dado com a confirmação de furtividade. Recursos de esferas são controlados pela ficha com taxa **1 Coragem = 1 esfera**, uma criação por rodada, **consumo total ao Absorver** e **consumo de 5 em Asura**; cada homúnculo tem **ficha separada**.
+**Observação para playtest:** Corpo Fechado e Impacto Psíquico podem registrar gasto de Coragem; Mãos Leves pode preparar a rolagem excepcional; Perícia em Armadilha pode preparar Proteção com Vantagem; Golpe Furtivo acrescenta dado com a confirmação de furtividade. Recursos de esferas são controlados pela ficha com taxa **1 Coragem = 1 esfera**, até 5 criações por rodada com teto de 5 em estoque, **consumo total ao Absorver** e **consumo de 5 esferas + 1 Coragem em Asura**; cada homúnculo tem **ficha separada**.
 
 ## Quatro novas Perícias: antimagia, Mudança Elemental e reflexão [DEFINIDO / procedimento PENDENTE — 20/11/2026]
 
