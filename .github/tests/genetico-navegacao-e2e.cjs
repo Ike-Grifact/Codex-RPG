@@ -72,7 +72,7 @@ const create=async page=>{
   assert(all.families.length>=10,"Constelações temáticas ausentes: "+JSON.stringify(all.families));
   const expected={terra:"elementos","pericia-druidica":"natureza",
    "domar-criatura-grande":"natureza","disparo-tatico":"disparos",
-   "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"conjuracao"};
+   "criar-antidoto":"alquimia","furtividade-avancada":"furtividade","invocacao-elemental":"elementos"};
   for(const [id,family] of Object.entries(expected))
    assert(all.placements[id]===family,"Constelação incorreta: "+id+" -> "+all.placements[id]);
   // Domar e Druídica são Perícias separadas, sem aresta de progressão entre elas.
