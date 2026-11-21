@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Jogador
 
+> **Novas especializações — 20/11/2026 [DEFINIDO / procedimentos PENDENTES]:** **Sacrifício Heroico** (1 XP, Vigor 4): a até 8 m protege alguém e recebe o dano na própria armadura/Vida, mesmo sem turno antecipado. **Escudo Refletor** (1 XP, Maestria em Escudos): com escudo físico equipado, reflete ao inimigo a parcela realmente danosa do Pavor recebido. **Sentido Elemental** (1 XP, Inteligência 3 + Improviso Elemental): por 1 Coragem analisa um alvo e conhece sua afinidade elemental. **Aura Sagrada** é efeito da **Transformação Elemental em Sagrado**, sem outra compra: pessoas no raio de 3 m recebem +1 Coragem ao transformar-se, respeitando o teto. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--sacrifício-heroico-escudo-refletor-aura-sagrada-e-sentido-elemental-20112026).
+
 > **Escudos — decisão de 20/11/2026 [DEFINIDO / PENDENTE]:** **Maestria em Escudos**, 1 XP, **Destreza 2 + Vigor 2**: com escudo equipado, **+1 DE defensiva** (teto 12) e **+1 Integridade material**, sem somar à Integridade simbólica de Levantar Escudo. **Escudo Bumerangue**, 1 XP, **Destreza 2 + Força 3 + Arremesso de Armas + Maestria em Escudos**: lança escudo físico a **8 m**, rolando **Disciplina + Atributo(s)**. **Em acerto, retorna no mesmo turno**; **em falha, cai conforme Arremesso de Armas** (falha limpa: no caminho, 1A pode permitir recuperar; com Pavor: próximo ao alvo ou risco ao aliado). **DEFINIDO:** 1 Coragem pelo lançamento, dano físico normal da rolagem no acerto e características existentes na peça conforme regras normais; **PENDENTE:** economia de ação e obstáculos. [SRD](srd-playtest-nivel-1-v1.0.md#adendo-normativo--maestria-em-escudos-e-escudo-bumerangue-20112026) · [Maestria](../pericias/maestria-em-escudos.html) · [Bumerangue](../pericias/escudo-bumerangue.html).
 
 > **Montaria — 20/11/2026 [DEFINIDO / CUSTO PENDENTE]:** **Montar Animal** (2 XP, Influência 2) concede **Vantagem** nos testes com montaria, não +1A. Nova **Perícia em Montaria** (Influência 1 + Destreza 2) concede **+1 Antecipar (A)** nesses testes, não Vantagem. **Custo XP da nova Perícia PENDENTE**: compra bloqueada até decisão, sem repetir os 2 XP de Montar Animal. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--perícia-em-montaria-e-montar-animal-20112026) · [Verbete](../pericias/pericia-em-montaria.html).
@@ -178,6 +180,14 @@ Domar Criatura Pequena, Média e Grande continuam existindo como Perícias separ
 | **Grande (G3)** | **1** | Eleva temporariamente **três Atributos** | Combina até **três Atributos diferentes** | Qualquer **Pavor mantido e não anulado** |
 
 **Exemplo aprovado:** elevar o Atributo de `2d6 + 1d10` resulta temporariamente em `2d10 + 1d12`. A conversão para outras composições especiais não foi definida. Quando a elevação aumentar a Vida, a quantidade adicional **preenche as caixas inferiores do personagem ferido até alcançar Saudável**; o **excedente acima da Vida máxima real** é **Vida temporária**. Não cria ficha animal nova. **A Vida temporária só permanece enquanto a forma está ativa; ao destransformar, desaparece integralmente.** Os pontos de Vida provisoriamente preenchidos nas caixas feridas não constituem cura real permanente: ao reverter, a Vida verdadeira continua sujeita aos ferimentos anteriores e danos reais sofridos. **PENDENTE DE PROCEDIMENTO:** contabilização exata de danos e caixas ao alternar formas e cálculo do ganho por Vigor. **A compra já libera G1/G2/G3.**
+
+## Aura Sagrada [DEFINIDO — efeito da Transformação Elemental, 20/11/2026]
+
+Ao **transformar-se em Sagrado**, pessoas a até **3 metros** do personagem recebem **1 Coragem** cada, respeitando o próprio teto da reserva. O efeito pertence à Transformação Elemental quando se escolhe Sagrado, **sem nova compra em XP**, sem aumento de duração, dados ou custo adicional. Não recuperar Coragem a cada turno de permanência na aura. **PENDENTE:** entrada/saída durante a forma e repetição de transformação na mesma cena.
+
+## Sentido Elemental [DEFINIDO — nova Perícia, 20/11/2026]
+
+**Custo 1 XP; requisitos Inteligência 3 e Improviso Elemental; ativação 1 Coragem.** Ao analisar um alvo, identifica sua **afinidade elemental**. O Narrador informa a afinidade real do alvo; não acrescenta fraqueza, resistência, bônus ofensivo ou nova DE automaticamente. O gasto é registrado no criador quando a análise é declarada.
 
 ## Transformação Elemental — nova Perícia [DEFINIDO / procedimentos PENDENTES — Playtest Nível 1 v1.0]
 
@@ -759,6 +769,12 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Pavor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊P/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊P/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
+
+### Sacrifício Heroico e Escudo Refletor [DEFINIDO — 20/11/2026]
+
+**Sacrifício Heroico (1 XP, Vigor 4):** pode intervir para proteger outra pessoa em **raio de 8 metros** e **receber o dano em seu lugar**, mesmo que seu turno **não tenha sido antecipado**. O ataque causa dano somente a quem efetivamente o recebeu: o protetor. A proteção aplicável é a do protetor; o dano segue à **armadura ou Vida** conforme a regra normal. Sem custo adicional de Coragem definido. **PENDENTE:** atravessar obstáculos, posicionamento exato e simultaneidade; o Narrador confirma a intervenção antes da aplicação de dano.
+
+**Escudo Refletor (1 XP, exige Maestria em Escudos):** com **escudo físico equipado**, quando o personagem efetivamente **recebe dano**, reflete ao atacante **apenas a parcela de dano causada por Pavor**. Não refletir os Êxitos nem contar Pavor sem dano. No dano físico básico a parcela de Pavor é **⌊Pavor mantido não anulado ÷ 2⌋**; efeitos específicos do golpe podem alterar essa parcela. O dano original não é reduzido pela reflexão; o inimigo resolve proteções pertinentes normalmente. **PENDENTE:** alocação exata da parcela de Pavor em bloqueios e resistências complexas — nesses casos, aplicar somente após confirmação do Narrador. Não gerar ação ou Pressão adicional.
 
 ### Maestria em Escudos e Escudo Bumerangue [DEFINIDO — 20/11/2026]
 

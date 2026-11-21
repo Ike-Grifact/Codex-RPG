@@ -632,3 +632,68 @@ test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de
  assert.equal(missed.courageCost,1,"Falha ainda consome Coragem do lançamento quando finalizada");
  assert.equal(missed.shieldThrowOutcome.grounded,true);
 });
+
+test("Novas Perícias — Sacrifício Heroico, Escudo Refletor e Sentido Elemental: requisitos e compra de 1 XP",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\nreturn skillReq;")({},()=>[],owns);
+ const prepare=(vigor,inteligencia,skills=[])=>({
+  attributes:{vigor,inteligencia,forca:0,destreza:0,agilidade:0,influencia:0},
+  practices:{armas_conjuracao:1,atletismo:0,artesao:0},knowledges:{alquimia:0,medicina:0},skills
+ });
+ assert.match(req("sacrificio-heroico",prepare(3,3)),/Vigor 4/);
+ assert.equal(req("sacrificio-heroico",prepare(4,0)),null);
+ assert.match(req("escudo-refletor",prepare(4,3)),/Maestria em Escudos/);
+ assert.equal(req("escudo-refletor",prepare(4,0,["maestria-escudos"])),null);
+ assert.match(req("sentido-elemental",prepare(4,2,["improviso"])),/Inteligência 3/);
+ assert.match(req("sentido-elemental",prepare(4,3)),/Improviso Elemental/);
+ assert.equal(req("sentido-elemental",prepare(4,3,["improviso"])),null);
+ for(const id of ["sacrificio-heroico","escudo-refletor","sentido-elemental"]){
+  assert.match(app,new RegExp('"'+id+'",\\s*"[^"]+",[\\s\\S]*?\\n  1\\n \\]'),"Compra "+id+" = 1 XP");
+  const page=readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
+  assert.ok(page.includes("1 XP")&&page.includes("DEFINIDO"),"Verbete da Perícia "+id);
+ }
+ assert.ok(app.includes('"sacrificio-heroico":[["a:vigor:4"]]'));
+ assert.ok(app.includes('"escudo-refletor":[["s:maestria-escudos"]]'));
+ assert.ok(app.includes('"sentido-elemental":[["a:inteligencia:3","s:improviso"]]'));
+ const gene=readFileSync(join(root,"gene-graph.js"),"utf8");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const id of ["sacrificio-heroico","escudo-refletor","sentido-elemental"]){
+  assert.ok(gene.includes('"'+id+'"'),"Codex Genético: "+id);
+  assert.ok(catalog.includes('href="'+id+'.html"'),"Catálogo: "+id);
+ }
+});
+
+test("Aura Sagrada é efeito da Transformação Elemental, não compra separada",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/transformacao-elemental.html"),"utf8");
+ assert.ok(srd.includes("Aura Sagrada")&&srd.includes("3 metros")&&srd.includes("1 Coragem"));
+ assert.ok(book.includes("Aura Sagrada")&&page.includes("Aura Sagrada"));
+ assert.ok(app.includes("Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza"));
+ assert.ok(!app.includes('"aura-sagrada",\n'),"Não criar nova compra de Aura Sagrada");
+ assert.ok(app.includes('ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")'),"Aviso só aparece para combinação habilitada");
+});
+
+test("Sentido Elemental debita Coragem apenas após confirmação e não inventa afinidade",()=>{
+ assert.ok(app.includes('case "sentido-elemental-use"'));
+ assert.ok(app.includes('if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.")'));
+ assert.ok(app.includes('if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.")'));
+ assert.ok(app.includes('if(!confirm("Gastar 1 Coragem para analisar "+target+"?'));
+ assert.ok(app.includes('state.courage-=1;'));
+ assert.ok(app.includes('state.history.unshift({date:new Date().toISOString(),name:"Sentido Elemental · "+target'));
+ assert.ok(app.includes('Solicite ao Narrador a afinidade elemental de '));
+ const page=readFileSync(join(root,"../pericias/sentido-elemental.html"),"utf8");
+ assert.ok(page.includes("Inteligência 3")&&page.includes("Improviso Elemental"));
+});
+
+test("Sacrifício Heroico e Escudo Refletor não criam resolução falsa de dano recebido",()=>{
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ assert.ok(srd.includes("mesmo quando seu turno não foi antecipado")&&book.includes("raio de 8 metros"));
+ assert.ok(srd.includes("parcela de dano causada pelo Pavor")&&srd.includes("Pavor sem dano não gera reflexão"));
+ assert.ok(book.includes("⌊Pavor mantido não anulado ÷ 2⌋"));
+ assert.ok(app.includes('ownsSkill("escudo-refletor")')&&app.includes('ownsSkill("sacrificio-heroico")'));
+});
