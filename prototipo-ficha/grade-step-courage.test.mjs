@@ -830,3 +830,43 @@ test("Decisões autorais: Espelho Mágico reflete Pavor mágico antes da absorç
  assert.ok(book.includes("a armadura absorve 5")&&book.includes("reflexão de 2 de dano"),"Exemplo confirma conta antes da absorção");
  assert.ok(page.includes("ataque físico")&&page.includes("antes da absorção"),"Não funciona contra ataque físico");
 });
+
+test("Maestria em Lanças e Espadas: custos de 1 XP e requisitos de atributos aprovados",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const catalog=new Function(defs+"\\nreturn APPROVED_WEAPON_MASTERY_PURCHASE;")();
+ assert.equal(catalog["maestria-hastes"],"Força 2 + Agilidade 1 + Destreza 1");
+ assert.equal(catalog["maestria-espadas"],"Força 2 + Destreza 2");
+ assert.ok(app.includes("APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null"),"Compra custa 1 XP; outras não aprovadas continuam sem custo");
+ assert.ok(app.includes('WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id]'),"Apenas Maestrias aprovadas passam bloqueio");
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\\nreturn skillReq;")({},()=>[],(id,s)=>(s.skills||[]).includes(id));
+ const make=(forca,destreza,agilidade,skills=[])=>({
+  race:"humano",attributes:{forca,destreza,agilidade,vigor:0,inteligencia:0,influencia:0},
+  knowledges:{},practices:{armas_conjuracao:0,artesao:0,atletismo:0},skills
+ });
+ assert.match(req("maestria-hastes",make(1,1,1)),/Força 2/);
+ assert.match(req("maestria-hastes",make(2,1,0)),/Agilidade 1/);
+ assert.match(req("maestria-hastes",make(2,0,1)),/Destreza 1/);
+ assert.equal(req("maestria-hastes",make(2,1,1)),null,"Compra de lanças requer só atributos; manejo é para ativação");
+ assert.match(req("maestria-espadas",make(1,2,1)),/Força 2/);
+ assert.match(req("maestria-espadas",make(2,1,1)),/Destreza 2/);
+ assert.equal(req("maestria-espadas",make(2,2,0)),null,"Agilidade não foi exigida em espadas");
+ assert.match(req("maestria-adagas",make(6,6,6)),/PENDENTES/,"Demais Maestrias seguem bloqueadas");
+});
+
+test("Maestrias Lanças e Espadas: site e SRD refletem somente as duas compras aprovadas",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ const espadas=readFileSync(join(root,"../pericias/maestria-em-espadas.html"),"utf8");
+ const hastes=readFileSync(join(root,"../pericias/maestria-em-hastes.html"),"utf8");
+ for(const x of [srd,book,index,espadas,hastes])assert.ok(x.includes("1 XP"),"Valor de 1 XP documentado");
+ for(const x of [srd,book,hastes])assert.ok(x.includes("Força 2")&&x.includes("Agilidade 1")&&x.includes("Destreza 1"),"Lanças possui requisitos");
+ for(const x of [srd,book,espadas])assert.ok(x.includes("Força 2")&&x.includes("Destreza 2"),"Espadas possui requisitos");
+ assert.ok(index.includes("maestria-em-hastes.html")&&index.includes("maestria-em-espadas.html"));
+ assert.ok(app.includes('maestria-hastes'),"Identificador antigo preservado");
+ const hasWeightTraining=app.includes('return {leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}');
+ assert.ok(hasWeightTraining,"Perícia conforme peso é requisito de ativação");
+ assert.ok(srd.includes("PENDENTE — custos/requisitos de compra de outras Maestrias não raciais"),"Outras continuam pendentes");
+});
