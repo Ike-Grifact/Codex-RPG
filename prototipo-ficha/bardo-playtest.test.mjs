@@ -114,3 +114,61 @@ test("Navegação móvel: mapa oferece salto direto às constelações sem nova 
  assert.ok(styles.includes(".fp-gene-family-jump"),"Navegação estilizada");
  assert.ok(styles.includes("@media(max-width:620px)"),"Compatibilidade móvel preservada");
 });
+
+
+test("Órbitas temáticas cercam fontes, sem sobreposição e sem alongar o mapa para baixo",()=>{
+ const from=graph.indexOf("const GENE_CONSTELLATIONS="),to=graph.indexOf("function edge(",from);
+ assert.ok(from>0&&to>from);
+ const program=`const W=3400,BASE_Y=630,ROW=112,SOURCE_CENTER_X=1700;
+const baseAttr=["forca","agilidade","destreza","inteligencia","influencia","vigor"];
+const baseKnow=["protecao","medicina","astronomia","alquimia","engenharia","erudicao"];
+const basePractice=["atletismo","armas_conjuracao","furtividade","artesao","apresentacao","coleta"];
+`+graph.slice(from,to)+"\\nreturn position(nodes);";
+ const run=new Function("nodes",program);
+ const source=group=>[...(group==="attr"?["forca","agilidade","destreza","inteligencia","influencia","vigor"]:group==="know"?["protecao","medicina","astronomia","alquimia","engenharia","erudicao"]:["atletismo","armas_conjuracao","furtividade","artesao","apresentacao","coleta"])].map(id=>({id:group+":"+id,type:group}));
+ const raw=app.slice(app.indexOf("const SKILLS=["),app.indexOf("// IDs de Perícias legadas"));
+ const ids=[...raw.matchAll(/\\[\\s*"([\\w-]+)"\\s*,\\s*"/g)].map(m=>m[1]);
+ const skills=ids.filter(id=>!hidden.includes(id)&&id!=="combate"&&id!=="armas").map(id=>({id,type:"skill",name:id}));
+ const sources=[...source("attr"),...source("know"),...source("practice")];
+ for(const subset of [skills,skills.filter((_,i)=>i%3===0)]){
+  const {height,groups}=run([...sources.map(s=>({...s})),...subset.map(s=>({...s}))]);
+  assert.ok(height<=2500,"Mapa compactado em altura; atual: "+height);
+  assert.ok(groups.length>0,"Existem constelações visíveis");
+  for(const a of groups){
+   assert.ok(a.x>=0&&a.x+a.width<=3400&&a.y>=0&&a.y+a.height<=height,"Constelação dentro da área SVG: "+a.id);
+   for(const node of a.nodes)assert.ok(node.x>a.x&&node.x<a.x+a.width&&node.y>a.y&&node.y<a.y+a.height,"Nó dentro de "+a.id);
+   // As fontes centrais ocupam x=1149..2251, sem cruzar áreas temáticas.
+   assert.ok(a.x+a.width<=1149||a.x>=2251,"Ramo não cobre o centro: "+a.id);
+   for(const other of groups){
+    if(a===other)continue;
+    const overlap=a.x<other.x+other.width&&a.x+a.width>other.x&&a.y<other.y+other.height&&a.y+a.height>other.y;
+    assert.equal(overlap,false,"Sem cruzamento de constelações: "+a.id+" x "+other.id);
+   }
+  }
+ }
+});
+
+test("Montaria: nomes completos, efeitos distintos e especialização épica em consulta",()=>{
+ const begin=graph.indexOf("function splitSkillLabel("),end=graph.indexOf("function skill(",begin);
+ assert.ok(begin>0&&end>begin);
+ const fn=new Function(graph.slice(begin,end)+"\\nreturn splitSkillLabel;")();
+ assert.deepEqual(fn("Perícia em Montaria",16),["Perícia em","Montaria"],"Não abreviar para apenas Montaria");
+ assert.deepEqual(fn("Montar Animal",16),["Montar Animal"]);
+ assert.ok(registry.includes('"montar",')&&registry.includes("Vantagem, não +1A"),"Montar Animal preserva Vantagem");
+ assert.ok(registry.includes('"pericia-montaria",')&&registry.includes("Concede +1A"),"Perícia em Montaria mantém A");
+ assert.ok(registry.includes('"montaria-epica",'),"Montaria Épica preservada como proposta");
+});
+
+test("Mostrar futuras no mapa preserva câmera, suporta toque e sincroniza assistente",()=>{
+ assert.ok(graph.includes('class="fp-gene-future-float"'),"Botão na própria área do gráfico");
+ assert.ok(graph.includes('data-action="gene-future"'),"Usa o mesmo comando da ficha");
+ assert.ok(graph.includes('aria-pressed="'),"Estado acessível do botão");
+ assert.ok(graph.includes('fp-gene-skill-hit'),"Área de clique dos nós ampliada");
+ assert.ok(graph.includes('MAX_ZOOM=12'),"Ampliação suficiente para celular");
+ assert.ok(graph.includes('value="fontes"'),"Atalho de volta às fontes");
+ const action=app.slice(app.indexOf('case "gene-future":{'),app.indexOf('case "gene-close-detail"'));
+ assert.ok(action.includes("renderGenetic()"),"Re-render apenas do mapa");
+ assert.ok(!action.includes("renderWizard()"),"Não recriar o assistente e perder zoom ao alternar");
+ const styles=readFileSync(join(root,"styles.css"),"utf8");
+ assert.ok(styles.includes(".fp-gene-future-float")&&styles.includes(".fp-gene-skill-hit"),"CSS integrado");
+});
