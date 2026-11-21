@@ -69,6 +69,17 @@ O Bardo é uma **especialização emergente de apoio coletivo**: transforma a pr
 
 Melodia Psíquica **não exige automaticamente Maestria em Apresentação, Influência 4 ou Perícia em Instrumentos como requisitos extras de compra**, porque o autor informou apenas os dois requisitos acima; exige **um instrumento em uso** para aplicar seu efeito. A interação com Voz Encantadora é pendente.
 
+### 3.2 Ideias complementares ainda não aprovadas
+
+Estas quatro ideias foram sugeridas na exploração anterior, mas **NÃO** receberam decisões autorais suficientes para serem consideradas Perícias de uso definido. São apenas **PROPOSTAS**, sem compra nem ativação na ficha:
+
+- **Dueto Improvisado:** transferir **1A** ao aliado que participa de dueto, sem duplicar símbolo; requisitos, alcance, momento e XP pendentes.
+- **Contratempo:** interferir na escolha de **dados mantidos** pelo inimigo; não é a mesma coisa que rerrolar (Piada Infame). Oposição, alcance, custo e XP pendentes.
+- **Solo Provocador:** empregar Apresentação/Influência para atrair atenção de uma ameaça, **sem controle mental automático**; DE, duração e custos pendentes.
+- **Canções Sustentadas:** manter composição de Guerra, Harmonia ou Ressonância. Limite preliminar de uma canção ativa é apenas hipótese; troca, duração e manutenção pendentes.
+
+Estas propostas não podem elevar o alcance, a reserva de 3A nem o número de ações por inferência. Recuperar Integridade continua **excluído** do escopo.
+
 ## 4. Escolhas e exemplos de avaliação
 
 **Uma rolagem com resultado 5**, em atuação compatível, contra inimigo DE 4 e aliados DE 3, DE 5 e DE 7: atinge inimigo, torna os dois primeiros aliados elegíveis e não habilita o terceiro. A distribuição de 3A entre esses elegíveis **não cria três cópias da reserva**. Se o bardo realizar apresentação exclusiva, compara o mesmo resultado diretamente à DE dos aliados selecionados.
