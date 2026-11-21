@@ -382,7 +382,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",
+  "PENDENTE: descrição e efeito próprios ainda não fornecidos. O efeito de Vantagem Absoluta/Golpe Certo pertence somente a Arma Certa. Requisitos históricos Disciplina Avançada + Destreza 2 aguardam confirmação; XP pendente.",
   null
  ],
  [
@@ -483,9 +483,9 @@ const SKILLS=[
  ],
  [
   "arma-certa",
-  "Maestria Arma Certa",
-  "+1E com peso favorável. Custo de XP pendente.",
-  null
+  "Arma Certa",
+  "1 XP. Requer Disciplina Avançada + Destreza 2. Usar a arma correta contra oponente que tem Desvantagem contra ela concede Vantagem Absoluta (+1E em vez do +1A natural); se já houver Vantagem Absoluta, aplica Golpe Certo. Procedimento de Golpe Certo PENDENTE, sem bônus numérico adicional.",
+  1
  ],
  [
   "criar-veneno",
@@ -918,7 +918,8 @@ const SKILL_AFFINITY={
   "know:protecao"
  ],
  "arma-certa": [
-  "practice:armas_conjuracao"
+  "practice:armas_conjuracao",
+  "attr:destreza"
  ],
  "armas-longo-alcance": [
   "practice:armas_conjuracao",
@@ -1300,6 +1301,8 @@ const CARD_REQUIREMENTS={
  "mudanca-elemental":"Transformação Elemental + Destreza 4 + Inteligência 4",
  "desencantar":"Cancelar Magia",
  "espelho-magico":"Cancelar Magia",
+ "arma-certa": "Disciplina Avançada + Destreza 2",
+ "manejo-perfeito": "PENDENTE: requisitos históricos Disciplina Avançada + Destreza 2, sem confirmação",
  "maestria-escudos": "Destreza 2 + Vigor 2",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
@@ -2568,9 +2571,9 @@ function skillReq(id,s=state){
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
- if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
+ if(id==="manejo-perfeito")return"Descrição, custo de XP e confirmação dos requisitos de Manejo Perfeito PENDENTES; compra indisponível.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
- if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
+ if(id==="arma-certa"&&(!has("disciplina-avancada")||dex<2))return"Requer Disciplina Avançada adquirida e Destreza 2.";
 
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="pericia-montaria"&&((s.attributes.influencia||0)<1||dex<2))return"Requer Influência 1 e Destreza 2.";
@@ -4280,7 +4283,7 @@ function renderComposer(){
  checks+removalHint+'</div>';
  const poolHTML='<div class="fp-pill-row">'+pool.map(d=>'<span class="fp-pool-die">'+dieIcon(d.sides)+' d'+d.sides+' <span>'+esc(label(d.group,d.key))+'</span></span>').join("")+'</div>';
  box.innerHTML=step+'<div class="fp-prepare-title">'+esc(usage)+'</div><p class="fp-prepare-description">A Base determina o tipo de ação. Atributo e complemento não alteram sua natureza automaticamente.</p>'+
- options+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
+ options+(ownsSkill("arma-certa")?'<p class="fp-caption"><strong>Arma Certa:</strong> com arma equipada, declare a afinidade de peso contra o alvo para aplicar Vantagem Absoluta (substitui +1A natural). Se a condição já for Vantagem Absoluta, o rolador apenas registra Golpe Certo; resolução do efeito PENDENTE.</p>':"")+'<p class="fp-caption" style="margin-top:10px">Pilha: '+pool.length+'/9 dados · Retenção: '+keepLimit(false)+' ou '+keepLimit(true)+' com Coragem · Custo previsto: '+cost+' Coragem.</p>'+poolHTML+
  (draft.third?'<p class="fp-caption">Para trocar o complemento, escolha outra fonte pertinente. Com a Perícia Avançada da Base, pode acrescentar outra fonte pertinente, inclusive outro Atributo.</p>':
  '<p class="fp-caption">'+(mayThird()?"Uma terceira fonte pode ser acrescentada por clique, respeitando a habilitação e a confirmação contextual.":"Sem Perícia Avançada, são duas fontes; com a especialização Avançada da fonte predominante, pode selecionar até três fontes pertinentes.")+'</p>')+
  errors.map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
@@ -4398,11 +4401,17 @@ function score(){
  const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const w=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
- const eBase=Math.max(0,raw[0]+situation[1]+criticalConverted+(critTier>=3?1:0)+
+ // v0.86: Arma Certa exige arma física equipada e confronto em que o alvo tem Desvantagem.
+ // Substitui somente o +1A natural deste confronto por Vantagem Absoluta (+1E).
+ // Se a situação já é Vantagem Absoluta, sinaliza Golpe Certo sem inventar seu efeito.
+ const armaCertaActive=ownsSkill("arma-certa")&&p.mode==="armas"&&
+  item?.type==="arma"&&item.equipped&&!p.opts.maosLeves&&!p.shieldThrowId&&w>0;
+ const armaCertaGolpeCerto=armaCertaActive&&p.opts.situation==="absoluta";
+ const eBase=Math.max(0,raw[0]+situation[1]+(armaCertaActive&&!armaCertaGolpeCerto?1:0)+criticalConverted+(critTier>=3?1:0)+
   (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
- const aPool=Math.max(0,raw[1]+situation[2]+w+stealthBonus+(critTier>=3?1:0)+
+ const aPool=Math.max(0,raw[1]+situation[2]+(armaCertaActive?0:w)+stealthBonus+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
@@ -4522,10 +4531,14 @@ function score(){
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
  return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
+  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
+   armaCertaActive:!!armaCertaActive,armaCertaGolpeCerto:!!armaCertaGolpeCerto};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
+ const armaCertaSummary=s.armaCertaActive?'<div class="fp-alert"><strong>ARMA CERTA:</strong> '+
+  (s.armaCertaGolpeCerto?'A ação já estava em Vantagem Absoluta: gatilho de <strong>Golpe Certo</strong> registrado. Seu efeito numérico está PENDENTE e não foi acrescentado ao resultado.':
+   'Confronto favorável com arma equipada: <strong>Vantagem Absoluta (+1E)</strong> aplicada no lugar do +1A natural de afinidade.')+'</div>':"";
  const asuraSummary=p.opts.asura?
  '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
  const magicSummary=p.opts.magicElement?
@@ -4608,7 +4621,7 @@ function renderPending(){
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
- return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+asuraSummary+
+ return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+asuraSummary+armaCertaSummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
   '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
@@ -4651,6 +4664,7 @@ function finalize(){
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
   cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
+   armaCertaActive:!!s.armaCertaActive,golpeCertoTriggered:!!s.armaCertaGolpeCerto,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
  // Uma conjuração vinculada consome a oportunidade também quando neutralizada pelo Escudo de Sangue.
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
