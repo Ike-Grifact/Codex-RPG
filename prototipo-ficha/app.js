@@ -3966,7 +3966,8 @@ function buildPool(){
    draft.attribute.group!=="practice"||draft.attribute.key!=="furtividade"||draft.third||draft.mode!=="armas"||
    draft.equipmentId||draft.shieldThrowId||draft.shieldRaise||draft.weightEnabled||draft.magicElement||draft.stealthAttack)
    errors.push("Mãos Leves exige exclusivamente Disciplina + Furtividade, sem arma, terceiro dado de fonte ou outro efeito.");
- }else if(!(typeof NPC_MODE!=="undefined"&&NPC_MODE)&&(draft.attribute.group!=="attr"||draft.base.group==="attr")){
+ }else if(!((draft.base.group==="practice"||draft.base.group==="know")&&draft.attribute.group==="attr")&&
+  !(typeof NPC_MODE!=="undefined"&&NPC_MODE&&draft.base.group==="attr"&&draft.attribute.group==="attr")){
   errors.push("Teste comum exige Base de Conhecimento/Prática e Atributo; a exceção Disciplina + Furtividade é exclusiva de Mãos Leves.");
  }
  if(draft.shieldThrowId){
