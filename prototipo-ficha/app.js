@@ -5468,7 +5468,7 @@ function onClick(event){
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
-  if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast("Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
+  if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
   it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
@@ -5612,7 +5612,7 @@ function onChange(event){
    }else it.embeddedWeapon=w;
   }
   // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
-  if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast("Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
+  if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
 }
