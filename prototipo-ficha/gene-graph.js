@@ -231,6 +231,7 @@ function skill(n){
   '<image class="fp-gene-skill-pictogram" href="../assets/icons/codex/'+pictogram+'.svg" x="'+(n.x-16)+'" y="'+(n.y-16)+'" width="32" height="32" pointer-events="none" aria-hidden="true"/>':"";
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
+  '<circle class="fp-gene-skill-hit" cx="'+n.x+'" cy="'+n.y+'" r="35"/>'+
   '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="20"/>'+smallIcon+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
@@ -287,7 +288,7 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera){
  for(const n of skills)svg+=skill({...n,selected:n.id===selected});
  return svg+'</g></svg>';
 }
-const MIN_ZOOM=.55,MAX_ZOOM=5;
+const MIN_ZOOM=.55,MAX_ZOOM=12;
 function canvasSvg(root){return root?.querySelector(".fp-gene-overview");}
 function svgPoint(root,clientX,clientY){
  const svg=canvasSvg(root);
@@ -309,7 +310,7 @@ function syncCanvas(root){
  const cam=getCamera(root);
  if(!cam.initialized&&w&&h){
   cam.initialized=true;
-  cam.zoom=w<620?2.55:1.9;
+  cam.zoom=clamp(W/w*(w<620?.76:.62),MIN_ZOOM,MAX_ZOOM);
   // Inicializar sobre as fontes centrais, com constelações ao redor.
   // O seletor de ramo evita ter de aproximar ou afastar manualmente tudo.
   const screenH=W*h/w;
@@ -338,8 +339,8 @@ function jumpToFamily(root,id){
  const family=(root.__geneFamilies||[]).find(g=>g.id===id),svg=canvasSvg(root);
  if(!family||!svg)return;
  const box=svg.viewBox.baseVal,cam=getCamera(root),isMobile=root.clientWidth<620;
- const target=isMobile?2.3:1.8;
- const fitX=box.width/(family.width+90),fitY=box.height/(family.height+110);
+ const target=isMobile?8:7;
+ const fitX=box.width/(family.width+60),fitY=box.height/(family.height+90);
  cam.zoom=clamp(Math.min(target,fitX,fitY),MIN_ZOOM,MAX_ZOOM);
  cam.x=box.width/2-(family.x+family.width/2)*cam.zoom;
  cam.y=box.height/2-(family.y+family.height/2)*cam.zoom;
@@ -365,7 +366,7 @@ function bind(root){
  root.tabIndex=0;
  root.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight + - 0");
  const nodePosition=node=>node.getBoundingClientRect().top-root.getBoundingClientRect().top;
- root.addEventListener("change",event=>{const picker=event.target.closest("[data-gene-family-jump]");if(picker){jumpToFamily(root,picker.value);picker.value="";}});
+ root.addEventListener("change",event=>{const picker=event.target.closest("[data-gene-family-jump]");if(picker){if(picker.value==="fontes")resetView(root);else jumpToFamily(root,picker.value);picker.value="";}});
  const pointers=new Map(),handledTouchNav=new WeakSet();
  let pinch=null,dragging=false,suppressClick=false;
  const setMoving=value=>{dragging=value;root.classList.toggle("is-dragging",value);};
@@ -512,7 +513,7 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
  root.__geneFamilies=groups;
  root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
-  '<div class="fp-gene-family-jump"><label for="fp-gene-family-'+(root.id||"map")+'">Ir para ramo</label><select id="fp-gene-family-'+esc(root.id||"map")+'" data-gene-family-jump aria-label="Ir diretamente para um ramo temático do Codex Genético"><option value="">Escolher ramo…</option>'+groups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.label)+'</option>').join("")+'</select></div>'+ 
+  '<div class="fp-gene-family-jump"><label for="fp-gene-family-'+(root.id||"map")+'">Ir para ramo</label><select id="fp-gene-family-'+esc(root.id||"map")+'" data-gene-family-jump aria-label="Ir diretamente para um ramo temático do Codex Genético"><option value="">Escolher ramo…</option><option value="fontes">Fontes centrais</option>'+groups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.label)+'</option>').join("")+'</select></div>'+ 
   '<button type="button" class="fp-gene-future-float" data-action="gene-future" aria-pressed="'+showFuture+'" title="Mostrar ou ocultar Perícias futuras sem sair do mapa">'+(showFuture?'Ocultar futuras':'Mostrar futuras')+'</button>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
   '<button type="button" data-gene-nav="-1" aria-label="Afastar o mapa">−</button>'+
