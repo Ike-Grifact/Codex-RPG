@@ -834,13 +834,13 @@ test("Decisões autorais: Espelho Mágico reflete Pavor mágico antes da absorç
 test("Maestria em Lanças e Espadas: custos de 1 XP e requisitos de atributos aprovados",()=>{
  const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
  const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
- const catalog=new Function(defs+"\\nreturn APPROVED_WEAPON_MASTERY_PURCHASE;")();
+ const catalog=new Function(defs+"\nreturn APPROVED_WEAPON_MASTERY_PURCHASE;")();
  assert.equal(catalog["maestria-hastes"],"Força 2 + Agilidade 1 + Destreza 1");
  assert.equal(catalog["maestria-espadas"],"Força 2 + Destreza 2");
  assert.ok(app.includes("APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null"),"Compra custa 1 XP; outras não aprovadas continuam sem custo");
  assert.ok(app.includes('WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id]'),"Apenas Maestrias aprovadas passam bloqueio");
  const req=new Function("state","racialGrants","ownsSkill",
-  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\\nreturn skillReq;")({},()=>[],(id,s)=>(s.skills||[]).includes(id));
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\nreturn skillReq;")({},()=>[],(id,s)=>(s.skills||[]).includes(id));
  const make=(forca,destreza,agilidade,skills=[])=>({
   race:"humano",attributes:{forca,destreza,agilidade,vigor:0,inteligencia:0,influencia:0},
   knowledges:{},practices:{armas_conjuracao:0,artesao:0,atletismo:0},skills
