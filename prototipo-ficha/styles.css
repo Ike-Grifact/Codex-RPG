@@ -1038,6 +1038,7 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
  box-shadow:0 6px 20px rgba(0,0,0,.25);touch-action:manipulation}
 .fp-gene-future-float[aria-pressed="true"]{background:color-mix(in srgb,var(--fp-gold) 18%,var(--fp-surface))}
 .fp-gene-future-float:focus-visible{outline:2px solid var(--fp-a);outline-offset:3px}
+.fp-gene-skill-hit{fill:transparent;pointer-events:all;cursor:pointer}
 .fp-gene-orbit-guide{fill:none;stroke:var(--fp-gold);stroke-width:2;stroke-opacity:.13;stroke-dasharray:10 18;pointer-events:none}
 @media(max-width:620px){
  .fp-gene-future-float{left:8px;bottom:75px;max-width:calc(100% - 16px);min-height:41px;padding:9px 11px}
