@@ -455,3 +455,180 @@ test("Montaria: Montar Animal dá Vantagem; nova Perícia em Montaria dá +1A se
  assert.ok(newPage.includes("compra está <strong>PENDENTE</strong>"));
  assert.ok(oldPage.includes("Vantagem em testes com montaria")&&oldPage.includes("Vantagem não é +1 Antecipar"));
 });
+
+
+test("Maestria em Escudos: 1 XP, Destreza/Vigor 2, +1 DE com escudo único e Integridade temporária",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const skillReq=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+
+  "\nreturn skillReq;")({},()=>[],owns);
+ const prep=(dex,vig,skills=[])=>({
+  attributes:{destreza:dex,vigor:vig,forca:0,agilidade:0},practices:{armas_conjuracao:0,artesao:0,atletismo:0},knowledges:{},skills
+ });
+ assert.match(skillReq("maestria-escudos",prep(1,2)),/Destreza 2 e Vigor 2/);
+ assert.match(skillReq("maestria-escudos",prep(2,1)),/Destreza 2 e Vigor 2/);
+ assert.equal(skillReq("maestria-escudos",prep(2,2)),null);
+ assert.match(app,/"maestria-escudos",\s*"Maestria em Escudos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.ok(app.includes('"maestria-escudos":[["a:destreza:2","a:vigor:2"]]'));
+ const code=extract("function deNatural(s=state){","function capacity(){");
+ const sheet={level:1,skills:["maestria-escudos"],attributes:{destreza:2,vigor:2,agilidade:5,forca:3},
+  practices:{atletismo:0},items:[
+   {id:"first",type:"escudo",equipped:true,hp:6,max:6,shieldMasteryBonusSpent:false},
+   {id:"second",type:"escudo",equipped:true,hp:9,max:9,shieldMasteryBonusSpent:false}
+  ]};
+ const f=new Function("state","ownsSkill",code+
+  "\nreturn {deNatural,deDefense,shieldMasteryActive,shieldIntegrityDisplay,changeShieldIntegrity,loseShieldIntegrity};")(sheet,owns);
+ assert.equal(f.deDefense(sheet),f.deNatural(sheet)+1,"+1 DE enquanto há escudo");
+ assert.equal(f.shieldMasteryActive(sheet.items[0]),true);
+ assert.equal(f.shieldMasteryActive(sheet.items[1]),false,"Não se multiplicam bônus por vários escudos");
+ assert.deepEqual(f.shieldIntegrityDisplay(sheet.items[0]),{hp:7,max:7,bonus:1,active:true});
+ assert.deepEqual(f.shieldIntegrityDisplay(sheet.items[1]),{hp:9,max:9,bonus:0,active:false});
+ f.changeShieldIntegrity(sheet.items[0],-1);
+ assert.equal(sheet.items[0].hp,6,"Primeiro perde ponto extra, não material base");
+ assert.equal(sheet.items[0].shieldMasteryBonusSpent,true);
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).hp,6);
+ sheet.items[0].equipped=false;
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).max,6,"Sem equipamento, sem +1");
+ sheet.items[0].equipped=true;
+ assert.equal(f.shieldIntegrityDisplay(sheet.items[0]).hp,6,"Reequipar não restaura ponto gasto");
+ assert.equal(f.loseShieldIntegrity(sheet.items[0],2),2);
+ assert.equal(sheet.items[0].hp,4,"Cravar e desgaste material respeitam ponto consumido");
+ const noSkill={...sheet,skills:[]};
+ assert.equal(f.deDefense(noSkill),f.deNatural(noSkill),"Sem Maestria DE normal");
+ const cap={...sheet,attributes:{...sheet.attributes,agilidade:9},items:[sheet.items[0],
+  {id:"armor",type:"armadura",weight:"muito_leve",equipped:true,grade:1}]};
+ assert.equal(f.deDefense(cap),12,"Maestria + armadura não ultrapassam teto 12");
+ const file=readFileSync(join(root,"../pericias/maestria-em-escudos.html"),"utf8");
+ assert.ok(file.includes("Destreza 2 + Vigor 2")&&file.includes("+1 DE defensiva"));
+ assert.ok(app.includes("shieldMasteryBonusSpent:type===\"escudo\"&&!!it.shieldMasteryBonusSpent"),"Persistência do desgaste do bônus");
+});
+
+test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano inventado",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+
+  "\nreturn skillReq;")({},()=>[],owns);
+ const state=(dex,forca,skills)=>({attributes:{destreza:dex,forca,vigor:2,agilidade:1},
+  practices:{armas_conjuracao:0,artesao:0,atletismo:0},knowledges:{},skills});
+ const owned=["maestria-escudos","maestria-arremesso-armas"];
+ assert.match(req("escudo-bumerangue",state(1,3,owned)),/Requer Destreza 2, Força 3/);
+ assert.match(req("escudo-bumerangue",state(2,2,owned)),/Requer Destreza 2, Força 3/);
+ assert.match(req("escudo-bumerangue",state(2,3,["maestria-escudos"])),/Arremesso de Armas/);
+ assert.match(req("escudo-bumerangue",state(2,3,["maestria-arremesso-armas"])),/Maestria em Escudos/);
+ assert.equal(req("escudo-bumerangue",state(2,3,owned)),null);
+ assert.match(app,/"escudo-bumerangue",\s*"Escudo Bumerangue",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.ok(app.includes('"escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]]'));
+ const code=extract("function deNatural(s=state){","function capacity(){");
+ const s={...state(2,3,[...owned,"escudo-bumerangue"]),items:[{id:"sh",type:"escudo",equipped:true,hp:6,max:6}]};
+ const ready=new Function("state","ownsSkill",code+"\nreturn shieldBoomerangReady;")(s,owns);
+ assert.equal(ready(s.items[0],s),true,"Escudo equipado e requisitos cumpridos");
+ assert.equal(ready({...s.items[0],equipped:false},s),false,"Só escudo usado pode ser arremessado");
+ assert.equal(ready({type:"arma",equipped:true},s),false,"Arma comum não substitui escudo");
+ assert.equal(ready(s.items[0],{...s,skills:owned}),false,"Sem Bumerangue não habilita");
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ assert.ok(page.includes("8 metros")&&page.includes("retorna ao portador"));
+ assert.ok(page.includes("dano físico básico normal")&&page.includes("1 Coragem"),"Dano físico normal e custo do lançamento definidos");
+ const map=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
+ const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(portal.includes('href="escudo-bumerangue.html"')&&portal.includes('href="maestria-em-escudos.html"'));
+});
+
+
+test("Escudo Bumerangue: Disciplina + Atributos, retorno somente no acerto e queda de Arremesso na falha",()=>{
+ const code=extract("function shieldBoomerangResult(","function prepareShieldBoomerang(");
+ const outcome=new Function(code+"\nreturn shieldBoomerangResult;")();
+ assert.deepEqual(outcome(true,0,2,0,0),{returned:true,grounded:false,where:"portador",distance:null},"Acerto limpo retorna");
+ assert.deepEqual(outcome(true,2,2,2,1),{returned:true,grounded:false,where:"portador",distance:null},"Acerto com Pavor retorna no mesmo turno");
+ assert.deepEqual(outcome(false,0,1,0,1),{returned:false,grounded:true,where:"caminho",distance:2},"Falha limpa cai no caminho; converte 2A em 1E na distância");
+ assert.deepEqual(outcome(false,2,1,2,1),{returned:false,grounded:true,where:"perto-alvo",distance:4},"Falha com Pavor cai perto do alvo; distância E+P+conversão");
+ assert.equal(outcome(false,0,0,0,0).distance,0,"Distância não inventa metros");
+ assert.ok(app.includes('draft.base={group:"practice",key:"armas_conjuracao"}'),"Lançamento usa Disciplina como Base");
+ assert.ok(app.includes('draft.attribute={group:"attr",key:attribute}'),"Lançamento usa Atributo realmente comprado");
+ assert.ok(app.includes('draft.mode="armas";draft.shieldThrowId=id;draft.shieldThrowMeters=8'),"Distância específica 8 m");
+ assert.ok(app.includes('if(draft.shieldThrowId){'),"Pilha valida contexto de Escudo Bumerangue");
+ assert.ok(app.includes('draft.third&&draft.third.group!=="attr"'),"Complemento, quando válido, é outro Atributo");
+ assert.ok(app.includes('draft.shieldThrowMeters>8'),"Não aceita alvo além de 8 metros");
+ assert.ok(app.includes('if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId'),"Não insere dado de arma automaticamente");
+ assert.ok(app.includes('shieldThrowId:draft.shieldThrowId||""'),"Origem da rolagem acompanha os dados");
+ assert.ok(app.includes('shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0]'),"Resultado decidido após contar E, P e gastar A");
+ assert.ok(app.includes('const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)'),"Dano normal do ataque físico, incluindo crítico de quatro dados");
+ assert.ok(app.includes('thrownShield.equipped=false;thrownShield.shieldGrounded=true'),"Finalização registra falha com escudo no chão");
+ assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Histórico registra retorno");
+ assert.ok(app.includes('shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null'),"Histórico registra distância de queda");
+ assert.ok(app.includes('shieldGrounded:type==="escudo"&&!!it.shieldGrounded'),"Posição no chão persiste na ficha");
+ assert.ok(app.includes('if(it.type==="escudo"&&it.shieldGrounded)return 0'),"Escudo no chão não conta na carga");
+ assert.ok(app.includes('if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão:'),"Não se reequipa escudo caído como se fosse guardado");
+ assert.ok(app.includes('case "shield-ground-recover"'),"Recuperação manual requer confirmação");
+ assert.ok(app.includes('case "shield-throw-prepare":prepareShieldBoomerang(id)'),"Inventário oferece preparação do lançamento");
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ assert.ok(page.includes("Disciplina (Armas) + Atributo(s)"),"Verbetes descrevem fontes");
+ assert.ok(page.includes("mesmo turno em que foi lançado"),"Verbetes descrevem retorno no mesmo turno");
+ assert.ok(page.includes("Falha limpa:")&&page.includes("Falha com Pavor:"),"Verbetes descrevem falhas distintas");
+ assert.ok(page.includes("1E por 2A convertidos"),"Verbetes descrevem queda com Antecipar convertido");
+});
+
+test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características próprias da peça",()=>{
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(page.includes("1 Coragem para lançar")&&page.includes("dano físico básico normal"));
+ assert.ok(book.includes("arremessar o escudo consome **1 Coragem**")&&srd.includes("cada lançamento de Escudo Bumerangue consome **1 Coragem**"));
+ assert.ok(index.includes("dano físico normal e características próprias do escudo"));
+ assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"Usa a fórmula universal E + piso(P/2)");
+ assert.ok(app.includes("const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)"),"Sem ramo null e com crítico normal");
+ assert.ok(app.includes("Number(!!draft.shieldThrowId)"),"Preparação inclui 1 Coragem por arremesso");
+ assert.ok(app.includes("Number(!!p.shieldThrowId)"),"Pontuação/finalização inclui custo em Coragem mesmo em falha");
+ assert.ok(app.includes('const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));'),"Consulta características do escudo sem usar seus dados como arma");
+ assert.ok(app.includes('!(p.shieldThrowId&&x==="Cravar")'),"Cravar incompatível com retorno não está no seletor");
+ assert.ok(!app.includes('||p.opts.weightEnabled||p.characteristic||p.secondCharacteristic)'),"Características do escudo são permitidas");
+ assert.ok(app.includes('if(courageCost>5)errs.push'),"Teto de Coragem preservado");
+ assert.ok(page.includes("uma característica ativável custa mais 1 Coragem no acerto comum"));
+ assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Retorno e queda existentes permanecem");
+});
+
+test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de Coragem",()=>{
+ const resultCode=extract("function shieldBoomerangResult(","function prepareShieldBoomerang(");
+ const scoreCode=extract("function score(){","function renderPending(){");
+ const makeScore=new Function("state","face","SITUATIONS","LIFE_STATES","lifeStage","ownsSkill",
+  "magicKnownElements","magicPreparationTurns","magicElementId","affinity","keepLimit","clamp",
+  "shieldBoomerangReady","ACTIVE_PROPERTIES",resultCode+scoreCode+"\nreturn score;");
+ function compute(faces,trait="",courage=10,de=2){
+  const p={shieldThrowId:"sh",base:{group:"practice",key:"armas_conjuracao"},
+   attribute:{group:"attr",key:"forca"},third:null,mode:"armas",
+   dice:faces.map(([sides,value],i)=>({id:"x"+i,sides,face:value,group:i?"practice":"attr"})),
+   selected:faces.map((_,i)=>"x"+i),
+   opts:{de,situation:"normal",extraKeep:false,step:false,healthId:"ok",equipmentId:"",
+    shieldThrowMeters:8,shieldRaise:false,weightEnabled:false,trevas:false,magicElement:"",
+    magicGrade:0,magicFocusId:"",magicCharges:0,magicAmplify:false},
+   cancelP:0,pairs:0,pass:0,characteristic:trait,secondCharacteristic:"",
+   fireMode:"",cravarTargetShield:""};
+  const state={pending:p,items:[{id:"sh",type:"escudo",equipped:true,properties:["Perfurante","Contundente"]}],
+   courage,skills:[],hemomancy:{}};
+  const face=(n,value)=>({6:{6:[1,0,0]},10:{6:[1,0,0],7:[2,0,0],9:[1,1,1],10:[2,0,1]},12:{12:[0,0,2]}}[n]||{})[value]||[0,0,0];
+  const health={e:0,p:0,a:0,coragem:0};
+  const score=makeScore(state,face,{normal:["Normal",0,0]},{ok:health},()=>health,
+   ()=>false,()=>[],()=>1,()=>"",()=>0,()=>4,(v,min,max)=>Math.max(min,Math.min(max,v)),
+   ()=>true,new Set(["Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]));
+  return score();
+ }
+ const basic=compute([[6,6],[10,7]]);
+ assert.deepEqual({damage:basic.damage,cost:basic.courageCost,returned:basic.shieldThrowOutcome.returned,errors:basic.errors},
+  {damage:3,cost:1,returned:true,errors:[]},"Dano só da rolagem, não do equipamento");
+ const piercing=compute([[6,6],[10,9],[12,12]],"Perfurante");
+ assert.equal(piercing.damage,3,"Dano básico com Pavor usa piso(P/2)");
+ assert.equal(piercing.armorDamage,5,"Perfurante habilitado substitui contribuição de P à Integridade");
+ assert.equal(piercing.courageCost,2,"Lançar custa 1 e ativar característica em acerto não crítico custa mais 1");
+ assert.deepEqual(piercing.active,["Perfurante"]);
+ assert.equal(piercing.errors.length,0);
+ assert.match(compute([[6,6],[10,7]],"Contundente",1).errors.join(" "),/Coragem insuficiente/);
+ const missed=compute([[6,6]],"",10,5);
+ assert.equal(missed.damage,0);
+ assert.equal(missed.courageCost,1,"Falha ainda consome Coragem do lançamento quando finalizada");
+ assert.equal(missed.shieldThrowOutcome.grounded,true);
+});
