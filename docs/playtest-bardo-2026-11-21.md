@@ -15,7 +15,7 @@ O Bardo é uma **especialização emergente de apoio coletivo**: transforma a pr
 
 **EXPERIMENTAL — Maestria em Apresentação:** requer **Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos**. Com instrumento de atuação válido e **ação cuja combinação envolva Apresentação e Influência + outra aptidão pertinente**, a apresentação habilitada produz **3 Antecipares (A) musicais** para distribuir aos aliados. São **3A no total da atuação, não 3A por destinatário**. Não acrescentam dados nem aumentam o próprio ataque, dano, DE ou Antecipar pessoal do Bardo. Os A naturais de seus dados conservam as regras normais. **Uma unidade A não pode financiar dois efeitos**; os A musicais não gastos não são armazenados para outra rodada.
 
-**EXPERIMENTAL — Desarmonia:** se a **ação musical principal** termina em falha com Pavor não anulado, a Maestria deixa de gerar seus **3A musicais durante a rodada seguinte**. Os A naturais obtidos em dados não são apagados. A mera falha em alcançar a DE de um dos vários aliados não provoca Desarmonia adicional. **PENDENTE:** ordem exata da distribuição em relação aos riscos, persistência após interrupção e efeito em ações mistas que falham no ataque mas alcançam alguns aliados.
+**EXPERIMENTAL — Desarmonia:** se a **ação musical principal** termina em falha com Pavor não anulado, a Maestria deixa de gerar seus **3A musicais durante a rodada seguinte**. Os **Antecipares naturais** obtidos nos dados não são apagados. A mera falha em alcançar a DE de um dos vários aliados não provoca Desarmonia adicional. **PENDENTE:** ordem exata da distribuição em relação aos riscos, persistência após interrupção e efeito em ações mistas que falham no ataque mas alcançam alguns aliados.
 
 **EXPERIMENTAL — duas formas:**
 - **Apresentação dedicada:** rolagem válida com **Apresentação + Influência**, com terceiro complemento pertinente quando habilitado. Compara o **mesmo resultado** separadamente à DE de cada aliado beneficiado; não divide E/P, não cria nova rolagem por alvo. Concede os A musicais apenas aos destinatários cuja DE for alcançada e que estejam dentro da área aplicável.
@@ -89,7 +89,7 @@ Estas propostas não podem elevar o alcance, a reserva de 3A nem o número de a�
 **Inspiração:** gastar **3A** para conceder **1 Coragem a um aliado**; não gera Coragem ao bardo nem permite recuperar acima do teto.
 
 **Conflito de regras a resolver antes de programação:**
-1. Reconhecer **Apresentação durante ataque/conjuração** sem introduzir uma combinação proibida de duas Práticas e sem acrescentar fontes indevidas.
+1. Reconhecer **Apresentação durante ataque/conjuração** respeitando a **proibição de misturar duas Práticas**, sem introduzir uma combinação proibida e sem acrescentar fontes indevidas.
 2. Escolher DE aliada **defensiva total vs. natural**, momento do benefício, linha de efeito e alcance.
 3. Estabelecer custos de XP individuais, demais requisitos, frequência e acúmulo de efeitos, efeitos da apresentação com falha/Pavor, e duração de auras.
 4. Melodia Psíquica: o que conta como “efeito de arma” por instrumento, efeito psíquico válido, custos e repercussão em **dois alvos**.
