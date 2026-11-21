@@ -103,7 +103,7 @@ test("Ar: corrente em L e X por passagem livre, sem atravessar paredes",()=>{
  assert.ok(c.includes("parede sólida"));
  assert.ok(c.includes("PENDENTE"));
  assert.ok(srd.includes("linha, círculo, cone e X")&&srd.includes("percurso em L"));
- assert.ok(app.includes("Ar: corrente em L, X, linha, cone ou círculo"));
+ assert.ok(app.includes("Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos"));
 });
 
 test("Revisao publicada com estados e precedencia no Livro e SRD",()=>{
