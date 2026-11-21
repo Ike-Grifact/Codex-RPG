@@ -14,6 +14,16 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia Resistência a Fogo (20/11/2026)
+
+**DEFINIDO — compra:** **Resistência a Fogo** custa **1 XP** e exige **Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2**. Ferreiro Elemental e Perícia em Elemento Fogo devem ter sido **adquiridas**, sem substituir nenhuma das compras anteriores. Todos os requisitos indiretos de Ferreiro Elemental continuam válidos.
+
+**DEFINIDO — efeito pessoal, dano à Vida e Derreter (20/11/2026):** a Perícia concede resistência **ao próprio personagem**, não à armadura ou escudo. **Todo dano de ataques de Fogo que efetivamente chegaria à Vida do portador é reduzido à metade**, depois da proteção aplicável; não reduzir a Integridade da armadura por este benefício. **Derreter G3 não causa ao portador seu +1 ponto de dano direto à Vida: essa parcela é 0**, mesmo em crítico. **O dano E + P de Queimar/Derreter à Integridade continua normal**, sem proteção adicional pela Perícia. A redução de metade é aplicada uma vez ao dano de Fogo à Vida, sem nova divisão cumulativa por Êxito. A Perícia não é imunidade, não afeta outros elementos nem protege aliados; Pavor continua gerando riscos. O benefício é pessoal enquanto comprado, sem custo adicional de ativação especificado. **PENDENTE:** registro/arredondamento de frações na Vida inteira, ordem exata com redirecionamentos de dano e interação com outras resistências. A mecânica geral de resistência elemental em outras fontes não é alterada por esta especialização.
+
+**Implementação:** a ficha indica **metade do dano de Fogo que chegaria à Vida** e **0 de Vida direta pelo efeito Derreter**. A armadura mantém sua Integridade e recebe os danos usuais. Não automatizar divisão fracionária de Vida ou alterar o simulador de ataque contra alvo genérico sem identificação do portador.
+
+---
+
 ## Adendo normativo — Encantar com Elemento (20/11/2026)
 
 **DEFINIDO — aquisição:** **Encantar com Elemento** custa **1 XP** e exige **uma Perícia Elemental adquirida** e **Criar Item de Foco e Magia**. Qualquer uma das Perícias em **Fogo, Água, Ar, Terra, Sagrado, Sangue, Trevas ou Veneno** satisfaz a exigência de especialização elemental. O elemento aplicado deve ser aquele efetivamente habilitado na ficha. O foco não substitui a Perícia Elemental nem concede elementos automaticamente.
