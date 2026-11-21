@@ -321,3 +321,102 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Maestria em Martelos</a>'));
 });
+
+
+test("Exclusividades: Maestria em Armas de Fogo inicial só para Humano; Transfusão Sanguinária só para Lucker de Sangue",()=>{
+ const racial=extract("function racialGrants(s=state){","function racialCostTable(");
+ const race=new Function("state",
+  "const PURE_ELEMENTS=[['sangue','Sangue'],['trevas','Trevas'],['veneno','Veneno']];"+
+  "const RUNE_ELEMENTS=[['agua','Água'],['fogo','Fogo'],['vento','Ar'],['terra','Terra']];"+
+  racial+"\nreturn {racialGrants,ownsSkill};")({});
+ const humano={race:"humano",skills:[],attributes:{},practices:{},knowledges:{},runeElements:[]};
+ const sangue={race:"lucker_sangue",skills:[],attributes:{},practices:{},knowledges:{},runeElements:[]};
+ const puro={race:"lucker_puro",skills:[],attributes:{},practices:{},knowledges:{},pureElement:"sangue",runeElements:[]};
+ assert.ok(race.racialGrants(humano).includes("maestria-armas-fogo"),"Humano recebe Maestria gratuita");
+ assert.ok(!race.racialGrants(humano).includes("armas-fogo"),"Não recebe Perícia em Armas de Fogo");
+ assert.ok(!race.racialGrants(sangue).includes("maestria-armas-fogo"),"Lucker de Sangue não recebe");
+ assert.ok(!race.racialGrants(puro).includes("maestria-armas-fogo"),"Lucker Puro não recebe");
+ assert.equal(race.ownsSkill("maestria-armas-fogo",humano),true);
+ assert.equal(race.ownsSkill("maestria-armas-fogo",{...puro,skills:["maestria-armas-fogo"]}),false,"Importação não permite Maestria racial para Lucker");
+ assert.equal(race.ownsSkill("transfusao-sanguinaria",{...humano,skills:["transfusao-sanguinaria"]}),false,"Não utiliza em Humano");
+ assert.equal(race.ownsSkill("transfusao-sanguinaria",{...puro,skills:["transfusao-sanguinaria"]}),false,"Não utiliza em Lucker Puro com Sangue");
+ assert.equal(race.ownsSkill("transfusao-sanguinaria",{...sangue,skills:["transfusao-sanguinaria"]}),true,"Somente Lucker de Sangue pode utilizar");
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const requirements=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const fn=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+
+  defs+requirements+"\nreturn skillReq;")({},race.racialGrants,race.ownsSkill);
+ const eligible={...sangue,skills:["transfusao","sangue"],attributes:{forca:3,destreza:2,vigor:2,inteligencia:2},practices:{armas_conjuracao:2,artesao:2},knowledges:{}};
+ assert.equal(fn("transfusao-sanguinaria",eligible),null,"Lucker de Sangue atende as exigências existentes");
+ assert.match(fn("transfusao-sanguinaria",{...eligible,race:"lucker_puro"}),/exclusiva de Lucker de Sangue/i);
+ assert.match(fn("transfusao-sanguinaria",{...eligible,race:"humano"}),/exclusiva de Lucker de Sangue/i);
+ assert.equal(fn("maestria-armas-fogo",{...humano,attributes:{forca:0,destreza:0,vigor:0}}),null,"Maestria Humana não exige Força 3");
+ assert.match(fn("maestria-armas-fogo",{...eligible,race:"lucker_sangue"}),/exclusiva dos Humanos/i);
+ assert.ok(app.includes('&&!(x==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")'),"Importação remove aquisição incompatível com raça");
+ assert.ok(app.includes('rawSkills.filter'),"Preserva importação geral de fichas");
+ assert.ok(app.includes("Restrição racial de Transfusão Sanguinária: compra histórica inválida"),"Registra histórico da remoção racial em nota, sem ocultar o reembolso");
+ assert.ok(app.includes('transfusion.title=state.race!=="lucker_sangue"'),"Bloqueio da ação também explica exclusividade ao jogador");
+ const verbete=readFileSync(join(root,"../pericias/transfusao-sanguinaria.html"),"utf8");
+ assert.match(verbete,/somente Luckers de Sangue podem comprar e utilizar/);
+ const fogo=readFileSync(join(root,"../pericias/maestria-em-armas-fogo.html"),"utf8");
+ assert.match(fogo,/Todo Humano começa com Maestria em Armas de Fogo/);
+});
+
+test("Maestrias por família: regra compartilhada, compra não inventada e habilitação apropriada",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const specs=new Function(defs+"\nreturn WEAPON_MASTERY_TYPES;")();
+ assert.equal(specs.length,12,"Doze especializações novas, além de Martelos");
+ assert.ok(specs.some(x=>x.id==="maestria-armas-fogo"),"Inclui Armas de Fogo");
+ const snippet=extract("function hammerMasteryRequiredSkill(item){","function equipmentGroupName(id)");
+ const own=(id,s)=>id==="maestria-armas-fogo"?(s.race==="humano"):(s.skills||[]).includes(id);
+ const mastery=new Function("state","ownsSkill","equipmentWeight",snippet+
+  "\nreturn {id:weaponMasteryId,required:weaponMasteryRequiredSkill,can:weaponMasteryCanActivate,onHit:weaponMasteryOnHit};")(
+    {},own,it=>it.weight==="alto"?"pesado":it.weight
+  );
+ const table=[
+  ["Adaga","leve","maestria-adagas","armas-leves"],
+  ["Espada Longa","medio","maestria-espadas","armas-medias"],
+  ["Machado de Guerra","alto","maestria-machados","armas-pesadas"],
+  ["Maça","leve","maestria-macas","armas-leves"],
+  ["Lança","medio","maestria-hastes","armas-medias"],
+  ["Cajado","leve","maestria-cajados","armas-leves"],
+  ["Arco Longo","leve","maestria-arcos","armas-longo-alcance"],
+  ["Besta pequena","leve","maestria-bestas","armas-longo-alcance"],
+  ["Dardo de arremesso","leve","maestria-arremessos","maestria-arremesso-armas"],
+  ["Manopla","leve","maestria-punhos","pugilismo"],
+  ["Zarabatana","leve","maestria-longo-alcance","armas-longo-alcance"],
+  ["Martelo de Guerra","alto","maestria-martelos","armas-pesadas"],
+  ["Pistola","leve","maestria-armas-fogo","armas-fogo"]
+ ];
+ for(const [name,weight,id,required] of table){
+  const item={type:"arma",name,weight,firearm:id==="maestria-armas-fogo",properties:["A","B","C"]};
+  assert.equal(mastery.id(item),id,name+" classificado corretamente");
+  assert.equal(mastery.required(item),required,"Requisito de manejo de "+name);
+  const extra=id==="maestria-arremessos"?["armas-leves"]:[];
+  const hero={race:"humano",skills:[id,required,...extra]};
+  assert.equal(mastery.can(item,hero),true,name+" habilitado");
+  assert.deepEqual(mastery.onHit(item,false,false,hero),{free:1,paid:0,courageCost:0,maxEffects:1});
+  assert.deepEqual(mastery.onHit(item,true,false,hero),{free:2,paid:0,courageCost:0,maxEffects:2});
+  assert.deepEqual(mastery.onHit(item,true,true,hero),{free:2,paid:1,courageCost:1,maxEffects:3});
+  assert.equal(mastery.can(item,{race:"humano",skills:[id]}),false,name+" requer Perícia de manejo");
+ }
+ const pistol={type:"arma",name:"Pistola",weight:"leve",firearm:true};
+ assert.equal(mastery.can(pistol,{race:"lucker_sangue",skills:["armas-fogo","maestria-armas-fogo"]}),false,"Não habilita a um Lucker com dados importados");
+ assert.equal(mastery.can(pistol,{race:"humano",skills:["armas-fogo"]}),true,"Humano recebe Maestria sem compra");
+ assert.equal(mastery.can(pistol,{race:"humano",skills:[]}),false,"Humano sem Perícia em Armas de Fogo não ativa");
+ const thrown={type:"arma",name:"Dardo de Arremesso",weight:"leve"};
+ assert.equal(mastery.can(thrown,{race:"humano",skills:["maestria-arremessos","maestria-arremesso-armas"]}),false,"Arremesso também exige Perícia de peso");
+ assert.equal(mastery.id({type:"arma",name:"Arma improvisada não catalogada",weight:"leve"}),null,"Sem grupo confirmado não concede Maestria arbitrária");
+ const schema=app.slice(app.indexOf("const SKILLS=["),app.indexOf("// IDs de Perícias legadas"));
+ assert.ok(schema.includes("...WEAPON_MASTERY_TYPES.map"),"Novos nomes no catálogo");
+ assert.ok(schema.includes("  null"),"Novos custos sem homologação ficam pendentes");
+ for(const spec of specs){
+  const slug=spec.id.replace("maestria-","maestria-em-");
+  const page=readFileSync(join(root,"../pericias/"+slug+".html"),"utf8");
+  assert.ok(page.includes(spec.name),"Verbete presente "+spec.name);
+ }
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"maestria-adagas"')&&graph.includes('"maestria-armas-fogo"'));
+ const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const x of specs)assert.ok(portal.includes(x.id.replace("maestria-","maestria-em-")+".html"),"Catalogada "+x.name);
+});
