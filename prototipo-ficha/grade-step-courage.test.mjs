@@ -1031,7 +1031,7 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  assert.ok(factory(state,{...draft,mode:"conjuracao"},false)().errors.length>0,"Asura não funciona como magia à distância");
  const rangeState={...state,items:[{id:"r",type:"arma",equipped:true,range:12,die:6,properties:["À Distância"]}]};
  assert.ok(factory(rangeState,{...draft,equipmentId:"r"},false)().errors.length>0,"Arma à distância não habilita Asura");
- const source=extract("function finalize(){","function resetPending(");
+ const start=app.indexOf("function finalize(){");const source=app.slice(start,app.indexOf("\nfunction ",start+1));
  assert.ok(source.includes("state.spiritualSpheres.count=sphereCount()-5"),"Finalização consome 5 esferas");
  assert.ok(source.includes("if(!p||s.errors.length)"),"Não consome se a rolagem é inválida");
  assert.ok(app.includes("d20")&&app.includes("asuraDieId"),"Permite escolher o dado a substituir");
