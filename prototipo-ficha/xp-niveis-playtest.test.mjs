@@ -41,7 +41,7 @@ test("Custos normais de fontes preservados e build de referencia livre",()=>{
  assert.deepEqual(getArray("TRAIN_COST"),[0,2,4,8,16,32,64]);
  const left=lvl[20]-2*getArray("AT_COST")[6]-2*getArray("TRAIN_COST")[6];
  assert.equal(left,68,"saldo ilustrativo, nao reservado por categoria");
- assert.ok(srd.includes("**não é requisito nem teto de quantidade de fontes**"));
+ assert.ok(srd.includes("não um teto de apenas dois Atributos"));
  assert.ok(srd.includes("Nenhuma reserva exclusiva de XP para Perícias"));
 });
 
