@@ -4564,8 +4564,22 @@ function renderSkills(){
   (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração <strong>E − P, com E − P > 0</strong>. Unidade de duração, resistência e custo de ativação pendentes; efeito manual.</p>':"")+
   (ownsSkill("desencantar")?'<p class="fp-alert"><strong>Desencantar:</strong> remova elementos ou imunidades até 8 m, inclusive em itens encantados. Não remove o elemento natural de criatura constituída desse elemento; não exclua objetos nem criaturas automaticamente.</p>':"")+
   (ownsSkill("espelho-magico")?'<p class="fp-alert"><strong>Espelho Mágico:</strong> passivo. Reflita ao conjurador a parcela de <strong>dano mágico de Pavor mantido, antes da armadura absorver ou anular</strong>; funciona mesmo quando a armadura bloqueia tudo. Não funciona contra ataque físico. Aplicação manual; não confundir com Escudo Refletor.</p>':"");
+ const newSkillNotes=[
+  ownsSkill("maos-leves")?'<p class="fp-alert"><strong>Mãos Leves:</strong> teste excepcional de Disciplina + Furtividade para tirar arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso somente se equipado. <button type="button" class="fp-secondary" data-action="maos-leves-prepare"'+(state.pending||editMode?' disabled':'')+'>Calcular DE e preparar teste</button> A retirada do inventário inimigo é confirmada pelo Narrador.</p>':"",
+  ownsSkill("pericia-armadilha")?'<p class="fp-alert"><strong>Perícia em Armadilha:</strong> Vantagem (+1A) para armar/desarmar armadilhas com Proteção. <button type="button" class="fp-secondary" data-action="armadilha-prepare"'+(state.pending||editMode?' disabled':'')+'>Preparar Proteção + Vantagem</button></p>':"",
+  ownsSkill("golpe-furtivo")?'<p class="fp-alert"><strong>Golpe Furtivo:</strong> marque «Golpe Furtivo» no rolador de Disciplina + Atributo durante ataque furtivo com arma habilitada: +1 dado da arma, máximo de 9 dados rolados.</p>':"",
+  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> cria homúnculo elemental de carne misturando o DNA de duas criaturas. Ficha, custos e herança genética pendentes; criação sob orientação do Narrador.</p>':"",
+  ownsSkill("pesquisa-avancada-pocoes")?'<p class="fp-alert"><strong>Pesquisa Avançada em Poções:</strong> +1E em testes para criar poções e habilita poções elementais. Receitas e valores pendentes; contabilize +1E no teste com o Narrador, sem alterar outras ações.</p>':"",
+  ownsSkill("corpo-fechado")?'<p class="fp-alert"><strong>Corpo Fechado:</strong> por 1 Coragem, Vitalidade protegida de danos e efeitos de golpes com armas físicas por 1 rodada. <button type="button" class="fp-secondary" data-action="corpo-fechado-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Ativar (−1 Coragem)</button> A rodada e os ataques são resolvidos manualmente.</p>':"",
+  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'</strong> esfera(s) registradas. Criação máxima de 1 por rodada mediante conversão de Coragem; taxa informada pelo Narrador. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound||state.courage<1||editMode?' disabled':'')+'>Converter Coragem em 1 esfera</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> Com 5 esferas, d20 exclusivo do Punho Supremo de Asura, corpo a corpo com Disciplina; conversão do dado ainda manual.</p>':"",
+  ownsSkill("passo-etereo")?'<p class="fp-alert"><strong>Passo Etéreo:</strong> 1 esfera para deslocamento rápido de até 8 m. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="passo-etereo"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Usar Passo Etéreo (−1 esfera)</button></p>':"",
+  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> recupera Coragem igual ao total de esferas (até o teto). Consumo das esferas pendente; resolva com Narrador antes de registrar alterações de Coragem.</p>':"",
+  ownsSkill("disparo-esferas-espirituais")?'<p class="fp-alert"><strong>Disparo de Esferas Espirituais:</strong> ataque físico a distância, 1 esfera por golpe. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="disparo-esferas-espirituais"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Declarar disparo (−1 esfera)</button> DE, alcance e dados pendentes; ataque manual.</p>':"",
+  ownsSkill("dilema")?'<p class="fp-alert"><strong>Dilema:</strong> pacto imobiliza a si e ao adversário até um dos dois ficar inconsciente. Ativação e resistência pendentes; não altera a ficha inimiga automaticamente.</p>':"",
+  ownsSkill("impacto-psiquico")?'<p class="fp-alert"><strong>Impacto Psíquico:</strong> golpe psíquico que pode usar efeitos de arma por 1 Coragem. <button type="button" class="fp-secondary" data-action="impacto-psiquico-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar golpe (−1 Coragem)</button> Dados e efeitos concretos dependem do Narrador.</p>':""
+ ].join("");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
- $("skills-list").innerHTML=defensiveNotes+antimagicNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
+ $("skills-list").innerHTML=defensiveNotes+antimagicNotes+newSkillNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -4992,6 +5006,44 @@ function onClick(event){
  }
  case "repertoire-roll":quickRollItem(id);break;
  case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "maos-leves-prepare":prepareMaosLeves();break;
+ case "armadilha-prepare":prepareArmadilha();break;
+ case "corpo-fechado-use":{
+  if(!ownsSkill("corpo-fechado")||skillReq("corpo-fechado")||state.pending||editMode||state.courage<1){toast("Corpo Fechado indisponível: confira a compra, Coragem e rolagem.");break;}
+  if(!confirm("Gastar 1 Coragem para proteger a Vitalidade contra dano e efeitos de golpes com armas FÍSICAS por 1 rodada? O Narrador encerra o efeito ao término da rodada."))break;
+  state.courage-=1;logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
+ }
+ case "impacto-psiquico-use":{
+  if(!ownsSkill("impacto-psiquico")||skillReq("impacto-psiquico")||state.pending||editMode||state.courage<1){toast("Impacto Psíquico indisponível.");break;}
+  if(!confirm("Gastar 1 Coragem para declarar Impacto Psíquico? O golpe e os efeitos de arma são resolvidos pelo Narrador."))break;
+  state.courage-=1;logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
+ }
+ case "sphere-create":{
+  if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
+  if(state.spiritualSpheres.createdThisRound){toast("Já foi criada 1 esfera nesta rodada; confirme próxima rodada antes de repetir.");break;}
+  if(sphereCount()>=99){toast("Limite técnico do contador atingido; registre no papel até definição do teto oficial.");break;}
+  const raw=prompt("Quantos pontos de Coragem o Narrador confirmou converter para criar UMA esfera nesta rodada? A taxa por esfera ainda está PENDENTE.");
+  if(raw===null)break;
+  const spent=Number(raw);
+  if(!raw.trim()||!Number.isInteger(spent)||spent<1||spent>state.courage){toast("Informe gasto positivo de Coragem que o personagem possui.");break;}
+  if(!confirm("Confirmar conversão de "+spent+" Coragem em 1 Esfera Espiritual nesta rodada?"))break;
+  state.courage-=spent;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=true;
+  logSkillAction("Invocar Esfera Espiritual","−"+spent+" Coragem; +1 esfera; 1 criação nesta rodada.");
+  render();save();toast("1 esfera criada; limite de uma por rodada aplicado.");break;
+ }
+ case "sphere-next-round":{
+  if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
+  if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto libera somente a criação de mais uma esfera."))break;
+  state.spiritualSpheres.createdThisRound=false;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
+ }
+ case "sphere-spend":{
+  const skillId=id;
+  if(!["passo-etereo","disparo-esferas-espirituais"].includes(skillId)||!ownsSkill(skillId)||skillReq(skillId)||state.pending||editMode||sphereCount()<1){toast("A ação exige a Perícia e pelo menos 1 esfera disponível.");break;}
+  const label=skillId==="passo-etereo"?"Passo Etéreo (8 m)":"Disparo de Esferas (golpe físico à distância)";
+  if(!confirm("Gastar 1 Esfera Espiritual para "+label+"? A resolução de alvo, deslocamento, alcance e dano é manual."))break;
+  state.spiritualSpheres.count=sphereCount()-1;logSkillAction(label,"−1 esfera; aplicação de efeito confirmada pelo Narrador.");
+  render();save();toast(label+": −1 esfera.");break;
+ }
  case "cancelar-magia-use":{
   if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
   if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}
