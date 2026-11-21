@@ -4336,8 +4336,12 @@ function renderSkills(){
   (ownsSkill("escudo-refletor")?'<p class="fp-alert"><strong>Escudo Refletor:</strong> com escudo físico equipado, reflita ao inimigo apenas o dano efetivo da parcela de Pavor do ataque recebido. Não diminui o golpe original; proteções e resultado devem ser resolvidos pelo Narrador.</p>':"")+
   (ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")?'<p class="fp-alert"><strong>Aura Sagrada:</strong> ao assumir efetivamente a forma Sagrada, pessoas a até 3 m recebem +1 Coragem, até o próprio teto. É um efeito da Transformação Elemental; não se repete automaticamente a cada turno. Registre o efeito nas fichas.</p>':"")+
   (ownsSkill("sentido-elemental")?'<p class="fp-alert"><strong>Sentido Elemental:</strong> gaste 1 Coragem para analisar um alvo e conhecer sua afinidade elemental (informada pelo Narrador). <button type="button" class="fp-secondary" data-action="sentido-elemental-use"'+(state.pending||state.courage<1?' disabled':'')+'>Analisar alvo (−1 Coragem)</button></p>':"");
+ const antimagicNotes=(ownsSkill("cancelar-magia")?'<p class="fp-alert"><strong>Cancelar Magia:</strong> magia percebida a até 8 m, com pelo menos 1 Pavor mantido. Requer sua Perícia no elemento e 1 Coragem para tentar superar <strong>estritamente</strong> a DE declarada da conjuração (todos os valores mantidos). <button type="button" class="fp-secondary" data-action="cancelar-magia-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar tentativa (−1 Coragem)</button> A ficha registra a tentativa; o teste e a anulação devem ser resolvidos com o Narrador.</p>':"")+
+  (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração, resistência e custo de ativação não informados; efeito manual.</p>':"")+
+  (ownsSkill("desencantar")?'<p class="fp-alert"><strong>Desencantar:</strong> remova elemento aplicado ligado à criação de um item de foco, até 8 m. O escopo exato do efeito ainda precisa de confirmação autoral; não exclua itens automaticamente.</p>':"")+
+  (ownsSkill("espelho-magico")?'<p class="fp-alert"><strong>Espelho Mágico:</strong> passivo. Reflita ao conjurador a parcela de dano mágico atribuída ao Pavor mantido na conjuração, sem criar dano onde só houve símbolo. Aplicação manual; não confundir com Escudo Refletor físico.</p>':"");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
- $("skills-list").innerHTML=defensiveNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
+ $("skills-list").innerHTML=defensiveNotes+antimagicNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -4764,6 +4768,34 @@ function onClick(event){
  }
  case "repertoire-roll":quickRollItem(id);break;
  case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "cancelar-magia-use":{
+  if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
+  if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}
+  if(state.courage<1){toast("Coragem insuficiente para tentar Cancelar Magia.");break;}
+  const available=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"],
+   ["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]]
+   .filter(([id])=>ownsSkill(id));
+  if(!available.length){toast("Cancelar Magia exige adquirir a Perícia do elemento da magia adversária.");break;}
+  const selection=prompt("Cancelar Magia: indique o número do elemento da magia percebida:\\n"+
+    available.map(([,name],i)=>(i+1)+". "+name).join("\\n"));
+  if(selection===null)break;
+  const idx=Number(selection)-1;
+  if(!Number.isInteger(idx)||idx<0||idx>=available.length){toast("Escolha um número de elemento que você possui.");break;}
+  const [elementId,elementName]=available[idx];
+  const deInput=prompt("Qual é a DE da magia adversária, considerando TODOS os valores mantidos? O Narrador informa o valor.");
+  if(deInput===null)break;
+  const enemyDe=Number(deInput);
+  if(deInput.trim()===""||!Number.isSafeInteger(enemyDe)||enemyDe<0){toast("Informe a DE inteira e não negativa declarada pelo Narrador.");break;}
+  if(!confirm("Confirmar: você percebe a conjuração de "+elementName+" a até 8 m, e o conjurador adversário MANTEVE ao menos um símbolo de Pavor? Sem isso, não é possível cancelar."))break;
+  if(!confirm("Gastar 1 Coragem para TENTAR cancelar "+elementName+"? É preciso superar a DE "+enemyDe+" (resultado estritamente maior), sem sucesso automático."))break;
+  state.courage-=1;
+  state.history.unshift({date:new Date().toISOString(),name:"Cancelar Magia · "+elementName,
+   outcome:"Tentativa declarada · DE adversária "+enemyDe+" · exige resultado > "+enemyDe+"; Narrador resolve",
+   de:enemyDe,reached:0,E:0,A:0,P:0,faces:[],damage:0});
+  state.history=state.history.slice(0,20);
+  render();save();
+  toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e supere estritamente DE "+enemyDe+"; o Narrador confirma o cancelamento.");break;
+ }
  case "sentido-elemental-use":{
   if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
   if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
