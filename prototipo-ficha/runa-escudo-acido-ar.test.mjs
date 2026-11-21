@@ -59,7 +59,7 @@ test("Escudo Runico: cada par de Pavores validos vira um Exito apenas na barreir
  assert.deepEqual(shieldBarrier(0,2),{E:1,P:0,de:1,integrity:1,convertedPairs:1});
  assert.deepEqual(shieldBarrier(4,1),{E:4,P:1,de:5,integrity:5,convertedPairs:0});
  assert.deepEqual(shieldBarrier(0,0),{E:0,P:0,de:0,integrity:0,convertedPairs:0});
- assert.ok(srd.includes("não altera por si só Pressão"),"Não apagar consequências de Pavor");
+ assert.ok(srd.includes("nem altera por si só Pressão"),"Não apagar consequências de Pavor");
  assert.ok(srd.includes("resistência a exatamente um elemento"),"Resistência não é imunidade geral");
  assert.ok(srd.includes("PENDENTE — resistência do Escudo Rúnico"),"Sem coeficiente inventado");
 });
@@ -91,7 +91,10 @@ test("Acido mistura Fogo + Veneno sem compra ou dano extra arbitrario",()=>{
  }
  assert.ok(srd.includes("Fogo + Veneno = Ácido"));
  assert.ok(srd.includes("Não empilhar duas vezes o dano de Queimar"));
- assert.ok(app.includes("Ácido: Fogo + Veneno podem ser combinados legalmente"));
+ assert.ok(srd.includes("Queimar substitui Sangramento"),"Queimar é gatilho do Ácido");
+ assert.ok(srd.includes("um acúmulo de Veneno"),"Ácido transmite só um acúmulo");
+ assert.ok(srd.includes("2 rodadas"),"Duração de Veneno vigente");
+ assert.ok(app.includes("Ácido: Fogo + Veneno, em acerto com Queimar"));
 });
 
 test("Ar: corrente em L e X por passagem livre, sem atravessar paredes",()=>{
