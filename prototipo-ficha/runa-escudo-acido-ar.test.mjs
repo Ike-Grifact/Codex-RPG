@@ -91,7 +91,7 @@ test("Acido mistura Fogo + Veneno sem compra ou dano extra arbitrario",()=>{
  }
  assert.ok(srd.includes("Fogo + Veneno = Ácido"));
  assert.ok(srd.includes("Não empilhar duas vezes o dano de Queimar"));
- assert.ok(srd.includes("Queimar substitui Sangramento"),"Queimar é gatilho do Ácido");
+ assert.ok(srd.includes("a queimadura substitui a exigência de Sangramento"),"Queimar é gatilho do Ácido");
  assert.ok(srd.includes("um acúmulo de Veneno"),"Ácido transmite só um acúmulo");
  assert.ok(srd.includes("2 rodadas"),"Duração de Veneno vigente");
  assert.ok(app.includes("Ácido: Fogo + Veneno, em acerto com Queimar"));
