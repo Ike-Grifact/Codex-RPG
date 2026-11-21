@@ -531,9 +531,43 @@ test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano in
  assert.equal(ready(s.items[0],{...s,skills:owned}),false,"Sem Bumerangue não habilita");
  const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
  assert.ok(page.includes("8 metros")&&page.includes("retorna ao personagem"));
- assert.ok(page.includes("O autor não determinou quais dados"),"Dano e dados pendentes");
+ assert.ok(page.includes("O autor não determinou <strong>dano específico do impacto"),"Dano do impacto permanece pendente");
  const map=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
  const portal=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(portal.includes('href="escudo-bumerangue.html"')&&portal.includes('href="maestria-em-escudos.html"'));
+});
+
+
+test("Escudo Bumerangue: Disciplina + Atributos, retorno somente no acerto e queda de Arremesso na falha",()=>{
+ const code=extract("function shieldBoomerangResult(","function prepareShieldBoomerang(");
+ const outcome=new Function(code+"\nreturn shieldBoomerangResult;")();
+ assert.deepEqual(outcome(true,0,2,0,0),{returned:true,grounded:false,where:"portador",distance:null},"Acerto limpo retorna");
+ assert.deepEqual(outcome(true,2,2,2,1),{returned:true,grounded:false,where:"portador",distance:null},"Acerto com Pavor retorna no mesmo turno");
+ assert.deepEqual(outcome(false,0,1,0,1),{returned:false,grounded:true,where:"caminho",distance:2},"Falha limpa cai no caminho; converte 2A em 1E na distância");
+ assert.deepEqual(outcome(false,2,1,2,1),{returned:false,grounded:true,where:"perto-alvo",distance:4},"Falha com Pavor cai perto do alvo; distância E+P+conversão");
+ assert.equal(outcome(false,0,0,0,0).distance,0,"Distância não inventa metros");
+ assert.ok(app.includes('draft.base={group:"practice",key:"armas_conjuracao"}'),"Lançamento usa Disciplina como Base");
+ assert.ok(app.includes('draft.attribute={group:"attr",key:attribute}'),"Lançamento usa Atributo realmente comprado");
+ assert.ok(app.includes('draft.mode="armas";draft.shieldThrowId=id;draft.shieldThrowMeters=8'),"Distância específica 8 m");
+ assert.ok(app.includes('if(draft.shieldThrowId){'),"Pilha valida contexto de Escudo Bumerangue");
+ assert.ok(app.includes('draft.third&&draft.third.group!=="attr"'),"Complemento, quando válido, é outro Atributo");
+ assert.ok(app.includes('draft.shieldThrowMeters>8'),"Não aceita alvo além de 8 metros");
+ assert.ok(app.includes('if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId'),"Não insere dado de arma automaticamente");
+ assert.ok(app.includes('shieldThrowId:draft.shieldThrowId||""'),"Origem da rolagem acompanha os dados");
+ assert.ok(app.includes('shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0]'),"Resultado decidido após contar E, P e gastar A");
+ assert.ok(app.includes('const damage=p.shieldThrowId?null:'),"Não inventa dano do ataque com escudo");
+ assert.ok(app.includes('thrownShield.equipped=false;thrownShield.shieldGrounded=true'),"Finalização registra falha com escudo no chão");
+ assert.ok(app.includes('shieldThrowReturned:!!s.shieldThrowOutcome?.returned'),"Histórico registra retorno");
+ assert.ok(app.includes('shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null'),"Histórico registra distância de queda");
+ assert.ok(app.includes('shieldGrounded:type==="escudo"&&!!it.shieldGrounded'),"Posição no chão persiste na ficha");
+ assert.ok(app.includes('if(it.type==="escudo"&&it.shieldGrounded)return 0'),"Escudo no chão não conta na carga");
+ assert.ok(app.includes('if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão:'),"Não se reequipa escudo caído como se fosse guardado");
+ assert.ok(app.includes('case "shield-ground-recover"'),"Recuperação manual requer confirmação");
+ assert.ok(app.includes('case "shield-throw-prepare":prepareShieldBoomerang(id)'),"Inventário oferece preparação do lançamento");
+ const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
+ assert.ok(page.includes("Disciplina (Armas) + Atributo(s)"),"Verbetes descrevem fontes");
+ assert.ok(page.includes("mesmo turno em que foi lançado"),"Verbetes descrevem retorno no mesmo turno");
+ assert.ok(page.includes("Falha limpa:")&&page.includes("Falha com Pavor:"),"Verbetes descrevem falhas distintas");
+ assert.ok(page.includes("1E por 2A convertidos"),"Verbetes descrevem queda com Antecipar convertido");
 });
