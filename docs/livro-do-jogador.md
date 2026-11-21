@@ -1,7 +1,7 @@
 # Codex RPG — Livro do Jogador
 
 
-> **Errata racial/elemental — 21/11/2026 [DEFINIDO / PROCEDIMENTO PENDENTE]:** Runa Espinhos possui **um elemento inicial gratuito** (Ar/Água/Terra/Fogo) **e Escudo Rúnico** (variante racial do Escudo Arcano, concedido gratuitamente), **em lugar dos dois elementos anteriores**. Mantém Pugilismo e Criar Foco. **Não utiliza armadura física**. Escudo Rúnico: **1 ativação gratuita/dia**, demais custos normais; resistência **a um elemento** (não imunidade) e **2P → 1E defensivo** na barreira. **Ácido = Fogo + Veneno**, transmitindo **1 acúmulo de Veneno por 2 rodadas** pela queimadura; em Ácido, **Queimar substitui Sangramento** como gatilho, enquanto o Veneno isolado mantém Sangramento obrigatório. Custos específicos da mistura e resistências permanecem PENDENTES. **Ar** pode desenhar correntes em **L/X** e outras formas para contornar obstáculos por caminhos abertos e deslocar inimigos sem atravessar paredes. Esta decisão recente tem precedência sobre antigos dois elementos gratuitos. [SRD de Continuidade v0.84](srd-continuidade-v0.84.md). Nenhum custo, grau ou dano não informado foi presumido.
+> **Esclarecimento elemental de 21/11/2026 — SRD v0.85 [DEFINIDO]:** a **resistência de Escudo Rúnico** funciona pela regra elemental padrão: **0,5 dano por E, 0 dano por P** do elemento resistido, sem suprimir consequências do Pavor. **Ácido (Fogo + Veneno)** segue a mistura normal (**1A** pelo segundo elemento, habilitações e Graus; **Maestria Elemental** para aplicar Queimar + Veneno juntos); Queimar substitui Sangramento apenas no Ácido e transmite 1 acúmulo de Veneno por 2 rodadas. **Curvas de Ar** consomem a metragem total de trajetória do efeito de seu Grau (**4/8/16 m nas referências G1/G2/G3**), não a distância em linha reta; não atravessam paredes. Pendências gerais não relacionadas permanecem. [Continuidade v0.85](srd-continuidade-v0.85.md).
 
 > **Decisão de XP do Playtest (21/11/2026) [DEFINIDO PARA PLAYTEST]:** **15 XP compartilhados no nível 1**, **260 XP acumulados no nível 20** e **245 XP máximos de evolução após a criação**. A distribuição continua livre depois de um Atributo G1 e um Conhecimento ou Prática G1; níveis não concedem XP automaticamente. Antigos orçamentos de 18/19/20 XP e limites derivados de 240/242 XP são históricos. A regra completa está na [Continuidade v0.83](srd-continuidade-v0.83.md). O equilíbrio da curva permanece EXPERIMENTAL e isso não aprova custos ainda pendentes do Bardo.
 
@@ -61,7 +61,7 @@ Todos começam como **Aprendizes**, sem classe fixa. A linhagem concede benefíc
 |---|---|---|---|---|
 | **Lucker de Sangue** | Vigor e Agilidade | Influência | Apresentação | Elemento Sangue |
 | **Lucker Puro** | Inteligência e Destreza | Força | Atletismo | Criar Item de Foco e Magia + Sangue, Trevas **ou** Veneno |
-| **Runa Espinhos** | Vigor e Força | Agilidade e Destreza | — | Pugilismo, Criar Item de Foco e Magia + dois elementos distintos entre Ar/Água/Terra/Fogo |
+| **Runa Espinhos** | Vigor e Força | Agilidade e Destreza | — | Pugilismo, Criar Item de Foco e Magia, Escudo Rúnico (Escudo Arcano racial) + um elemento entre Ar/Água/Terra/Fogo |
 | **Humano** | — | — | — | Perseverança Humana + **Maestria em Armas de Fogo inicial gratuita**, cuja ativação requer Perícia em Armas de Fogo |
 
 As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](srd-continuidade-v0.56.md). **No Codex Genético e nas listas (SRD v0.64), ↓ XP reduzido indica desconto racial e ↑ XP aumentado indica custo elevado; contornos diferentes distinguem as fontes e não concedem Graus automaticamente.** Uma fonte elevada **não custa automaticamente o dobro**: aplica-se a coluna elevada. As Perícias raciais gratuitas não consomem XP nem concedem Graus de fontes. A criação ainda exige uma compra de Atributo G1 e uma de Conhecimento/Prática G1.
@@ -955,6 +955,8 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Criar Item de Foco e Magia (1 XP; Disciplina 1 + Inteligência 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
 
+**Ácido (Fogo + Veneno) [DEFINIDO — v0.85]:** segue toda a regra geral de mistura: **1A** para introduzir o segundo elemento e os custos e habilitações dos Graus. **Improviso Elemental** troca a natureza do dano, mas não ativa Veneno; **Maestria Elemental** é necessária para usar Queimar e o efeito especial de Veneno conjuntamente. Quando houver acerto com Queimar, a queimadura substitui Sangramento para transmitir **1 acúmulo de Veneno por 2 rodadas**, sem novo dano ou custo exclusivo. Defesa mista segue a matriz geral. [SRD v0.85](srd-continuidade-v0.85.md).
+
 **Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. **DEFINIDO — esclarecimento posterior (SRD v0.79, 17/11/2026):** misturar conscientemente o segundo elemento custa **1 Antecipar (1A)**, não reutilizável. Com a **Perícia do elemento** adquirida e o Grau habilitado, **conjurar/controlar e ativar os efeitos G1 e G2 não cobra Coragem como custo-base de ativação**. **Cada elemento elevado a G3 custa +1 Coragem**, separadamente da mistura e das cargas de foco gastas na aceleração. **G4 plena de dois efeitos G3 simultâneos:** **1A + 2 Coragens** para mistura/elevação, não 1A + 3. **Improviso Elemental** adapta o elemento da manifestação/dano sem ativar duas propriedades; **Maestria Elemental** permite combinar simultaneamente as propriedades especiais dos dois elementos quando o conjurador possui as duas Perícias. A mistura não concede automaticamente dados nem Êxitos. Custos específicos históricos de Maestria/Invocação seguem em revisão própria. **Fogo G2 sem foco já está resolvido: ativação gratuita em Coragem** com a Perícia, o Grau e uma fonte elemental válida.
 
 ### Dano elemental, Improviso e Maestria [DEFINIDO / procedimento PENDENTE]
@@ -1065,11 +1067,13 @@ Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo se
 | **G2** | **Sufocar**, causando dano à Vida ou armadura; puxar, empurrar + derrubar com dano; deslocamento até **8 m**; linha reta, círculo, cone, X |
 | **G3** | Conjurar ao **final do turno dos aliados**; grandes áreas e múltiplos alvos, tornado/rajada, possíveis danos por queda e referência de **16 m**; linha reta, círculo, cone, X |
 
+**Curvatura de Ar [DEFINIDO — v0.85]:** linhas quebradas, correntes em L/X e outros caminhos curvos são permitidos; a **soma da distância percorrida** por todos os trechos conta contra a metragem disponível para a magia no Grau usado (**4 m G1, 8 m G2 e referência de 16 m G3**), sem benefício de alcance por curva, sem atravessar paredes e sem efeito automático. A distância não é calculada apenas entre início e fim. [SRD v0.85](srd-continuidade-v0.85.md).
+
 **Ar também pode recuperar Fôlego [DEFINIDO no efeito].** **PENDENTE:** em qual Grau, quanto Fôlego recupera, quem recebe e qual gatilho/custo; não confundir Fôlego com Coragem ou Vida.
 
 **Nome atualizado:** esta é a habilitação antes registrada como **Elemento: Vento**; as duas denominações correspondem ao **mesmo elemento**, não a duas compras. A ficha preserva o identificador antigo.
 
-**PENDENTE:** interpretar 16 m, duração e dano de Sufocar/queda, geometrias dos formatos e ações não ofensivas.
+**PENDENTE:** duração e dano de Sufocar/queda, áreas e largura dos formatos, ramificações e ações não ofensivas. O uso de 16 m como limite de trajeto curvo de G3 já está DEFINIDO pela v0.85.
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 
@@ -1195,6 +1199,8 @@ A ficha do Hemomante possui **uma reserva manual de sangue derramado de inimigos
 São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades automáticas. O Narrador define DE, efeitos, risco, alvo, recursos, extensão, disponibilidade dos elementos e segurança de aliados. A criatividade deve incentivar **soluções dentro e fora de combate**, sem dispensar perícias e custos.
 
 ### Defesas elementais [DEFINIDO / PENDENTE]
+
+**Escudo Rúnico [DEFINIDO — v0.85]:** a resistência a um elemento escolhido tem o mesmo coeficiente da resistência elemental comum: **cada E do ataque vale 0,5 de dano e cada P vale 0 dano desse elemento**, sem apagar o Pavor e suas consequências. Não concede imunidade; arredondamento universal de frações continua pendente. [SRD v0.85](srd-continuidade-v0.85.md).
 
 - Resistência aos **dois** elementos: metade do dano dos Êxitos, Pavor não causa dano.
 - Imunidade ao **principal**, mas não ao secundário: metade dos Êxitos, sem componente de dano de Pavor.

@@ -103,13 +103,13 @@ test("Ar: corrente em L e X por passagem livre, sem atravessar paredes",()=>{
  assert.ok(c.includes("parede sólida"));
  assert.ok(c.includes("PENDENTE"));
  assert.ok(srd.includes("linha, círculo, cone e X")&&srd.includes("percurso em L"));
- assert.ok(app.includes("Ar: corrente em L, X, linha, cone ou círculo"));
+ assert.ok(app.includes("Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos"));
 });
 
 test("Revisao publicada com estados e precedencia no Livro e SRD",()=>{
  assert.ok(srd.includes("**DEFINIDO (21/11/2026):**"));
  assert.ok(srd.includes("**PENDENTE:**"));
- assert.ok(book.includes("Continuidade v0.84"));
+ assert.ok(book.includes("Continuidade v0.85"),"Livro aponta para esclarecimento posterior, preservando v0.84 no histórico");
  assert.ok(playtest.includes("Continuidade v0.84"));
  assert.ok(!srd.includes("18 XP iniciais"));
  assert.ok(srd.includes("15 XP iniciais e 260 XP no nível 20"));
