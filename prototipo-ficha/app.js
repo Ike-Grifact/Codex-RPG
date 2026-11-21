@@ -3708,7 +3708,7 @@ function buildPool(){
   if(!shieldBoomerangReady(shield))errors.push("Escudo Bumerangue exige escudo equipado e Perícias/requisitos válidos.");
   if(draft.base.group!=="practice"||draft.base.key!=="armas_conjuracao"||draft.mode!=="armas"||draft.attribute.group!=="attr"||
     (draft.third&&draft.third.group!=="attr"))errors.push("Escudo Bumerangue requer Disciplina (Armas) + Atributo(s), não outra Prática ou Conhecimento.");
-  if(draft.shieldRaise||draft.cravarRemovalShieldId||draft.equipmentId||draft.magicElement)
+  if(draft.shieldRaise||draft.cravarRemovalShieldId||draft.equipmentId||draft.magicElement||draft.weightEnabled)
    errors.push("Arremessar Escudo Bumerangue é uma ação própria; não combinar com Levantar Escudo, Cravar ou dados de arma.");
   if(!Number.isInteger(draft.shieldThrowMeters)||draft.shieldThrowMeters<1||draft.shieldThrowMeters>8)
    errors.push("Escudo Bumerangue possui alcance máximo de 8 metros.");
@@ -3833,7 +3833,7 @@ function renderComposer(){
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
  const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
- '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
+ (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  "";
  const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Teste Disciplina + Atributo(s) rolado(s); alcance até 8 m, sem dado adicional de escudo. Acerto = retorno no mesmo turno; falha = cai no chão conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
@@ -3907,7 +3907,7 @@ function score(){
   if(p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||p.mode!=="armas"||
     p.attribute?.group!=="attr"||(p.third&&p.third.group!=="attr"))
    errs.push("Escudo Bumerangue exige Disciplina (Armas) e Atributo(s) escolhido(s).");
-  if(p.opts.shieldRaise||p.cravarRemovalShieldId||p.opts.equipmentId||p.opts.magicElement||p.characteristic||p.secondCharacteristic)
+  if(p.opts.shieldRaise||p.cravarRemovalShieldId||p.opts.equipmentId||p.opts.magicElement||p.opts.weightEnabled||p.characteristic||p.secondCharacteristic)
    errs.push("Arremesso de escudo não admite Levantar Escudo, dados de arma ou características automáticas.");
   if(!Number.isInteger(p.opts.shieldThrowMeters)||p.opts.shieldThrowMeters<1||p.opts.shieldThrowMeters>8)
    errs.push("Escudo Bumerangue atinge no máximo 8 metros.");
