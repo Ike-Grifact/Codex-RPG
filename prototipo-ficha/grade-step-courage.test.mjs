@@ -530,7 +530,7 @@ test("Escudo Bumerangue: 1 XP, dependências, alcance de 8m, retorno sem dano in
  assert.equal(ready({type:"arma",equipped:true},s),false,"Arma comum não substitui escudo");
  assert.equal(ready(s.items[0],{...s,skills:owned}),false,"Sem Bumerangue não habilita");
  const page=readFileSync(join(root,"../pericias/escudo-bumerangue.html"),"utf8");
- assert.ok(page.includes("8 metros")&&page.includes("retorna ao personagem"));
+ assert.ok(page.includes("8 metros")&&page.includes("retorna ao portador"));
  assert.ok(page.includes("O autor não determinou <strong>dano específico do impacto"),"Dano do impacto permanece pendente");
  const map=readFileSync(join(root,"gene-graph.js"),"utf8");
  assert.ok(map.includes('"maestria-escudos","escudo-bumerangue"'));
