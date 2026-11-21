@@ -198,6 +198,24 @@ const SKILLS=[
   1
  ],
  [
+  "cancelar-magia",
+  "Cancelar Magia",
+  "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; deve SUPERAR a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
+  1
+ ],
+ [
+  "desencantar",
+  "Desencantar",
+  "1 XP. Requer Cancelar Magia. Remove elemento aplicado por efeito ligado à criação de item de foco, com alcance de 8 m. O alvo exato, teste, ativação e relações com itens permanentes não foram especificados; resolução manual pelo Narrador, sem criar destruição automática de itens.",
+  1
+ ],
+ [
+  "espelho-magico",
+  "Espelho Mágico",
+  "1 XP. Requer Cancelar Magia. Passivo: permite refletir contra o conjurador a parcela do dano mágico causada pelos Pavor(es) mantidos por ele na rolagem. Não converter Pavor que não causou dano em dano refletido; a resolução de proteção e eventual combinação com Escudo Refletor ficam para o Narrador.",
+  1
+ ],
+ [
   "encantar-com-elemento",
   "Encantar com Elemento",
   "1 XP. Requisitos: uma Perícia Elemental adquirida + Criar Item de Foco e Magia. Armaduras ou escudos: 1 Coragem para resistência ao elemento habilitado; dano do elemento resistido é 0,5 por Êxito de ataque, Pavor causa 0 dano (não elimina riscos). Armas: tornam-se temporariamente do elemento escolhido. Duração igual para arma, armadura e escudo: E-P, somente com E-P>0. Unidade temporal, DE/fontes e custo específico de arma pendentes; sem efeitos extras ou automação.",
@@ -583,6 +601,12 @@ const SKILLS=[
   "sentido-elemental",
   "Sentido Elemental",
   "1 XP. Requer Inteligência 3 e Improviso Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
+  1
+ ],
+ [
+  "mudanca-elemental",
+  "Mudança Elemental",
+  "1 XP. Requer Transformação Elemental, Destreza 4 e Inteligência 4. Permite mudar o elemento de criatura, armadura ou ambiente a até 8 m para um elemento cuja Perícia o personagem possua. Não supor imunidades, dano, grau, duração, resistência ou gasto adicional sem decisão do autor; aplicar manualmente.",
   1
  ],
  [
@@ -2246,7 +2270,11 @@ function skillReq(id,s=state){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
- if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
+ if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
+  if(id==="mudanca-elemental"&&(!has("transformacao-elemental")||intelligence<4||dex<4))return"Requer Transformação Elemental, Inteligência 4 e Destreza 4.";
+  if(id==="desencantar"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
+  if(id==="espelho-magico"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
+  if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
   if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
   if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
@@ -2926,6 +2954,10 @@ const GENE_AUTO_REQUIREMENTS={
  "sacrificio-heroico":[["a:vigor:4"]],
  "escudo-refletor":[["s:maestria-escudos"]],
  "sentido-elemental":[["a:inteligencia:3","s:improviso"]],
+ "cancelar-magia":[["s:criar-item-foco-magia","s:improviso","a:inteligencia:4","a:agilidade:4","a:destreza:4"]],
+ "mudanca-elemental":[["s:transformacao-elemental","a:destreza:4","a:inteligencia:4"]],
+ "desencantar":[["s:cancelar-magia"]],
+ "espelho-magico":[["s:cancelar-magia"]],
  "maestria-escudos":[["a:destreza:2","a:vigor:2"]],
  "escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]],
  "maestria-arremesso-armas":[
