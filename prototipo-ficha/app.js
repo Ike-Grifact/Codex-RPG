@@ -2916,7 +2916,7 @@ function renderRacePanel(){
  const names=racialGrants(state).map(id=>id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":SKILLS.find(row=>row[0]===id)?.[1]||id);
  panel.innerHTML='<strong>'+c[0]+'</strong><p>'+c[1]+'</p>'+(names.length?'<p>Perícias raciais gratuitas: '+esc(names.join(", "))+'.</p>':'')+
  (raceCaution()?'<p>XP PENDENTE: '+esc(raceCaution())+'</p>':'')+
- (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência a um elemento e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas.</p>'+
+ (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência elemental padrão (0,5 dano por E e 0 dano por P do elemento escolhido) e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas.</p>'+
  '<button type="button" data-action="rune-shield-use"'+(state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Marcar ativação gratuita</button> '+
  '<button type="button" data-action="rune-shield-reset"'+(!state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Restaurar uso diário</button>'+
  (state.runeElements?.[1]?'<p><small>Ficha legada: o segundo elemento '+esc(RUNE_ELEMENTS.find(([id])=>id===state.runeElements[1])?.[1]||state.runeElements[1])+' foi preservado apenas como dado histórico; não é mais gratuito e pode ser comprado separadamente.</small></p>':''):'')+
@@ -3014,9 +3014,11 @@ function magicComposerFields(){
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
  const time=magicPreparationTurns(grade,draft.magicCharges);
  const tacticalHint=chosen==="vento"?
- "Ar: corrente em L, X, linha, cone ou círculo. Contorne a cobertura por passagem aberta; alcance/DE e limites de curvas pelo Narrador.":
+ "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 16 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
  chosen==="fogo"&&ownsSkill("veneno")?
- "Ácido: Fogo + Veneno, em acerto com Queimar, aplica 1 acúmulo de Veneno por 2 rodadas sem exigir Sangramento nesse ataque; Veneno isolado ainda exige Sangramento. Não duplica dano. Registro manual até automatizar custos e DE.":
+ (ownsSkill("mestre")?
+ "Ácido: Fogo + Veneno, em acerto com Queimar aplica 1 acúmulo de Veneno por 2 rodadas (sem Sangramento), somente na mistura com Maestria Elemental e habilitações válidas. Misturar custa 1A e a elevação G3 segue a regra comum (+1 Coragem por elemento G3). Sem dano duplicado; registro manual.":
+ "Ácido: Fogo + Veneno exige Maestria Elemental para ativar juntos Queimar e Veneno. Improviso Elemental só adapta o tipo de dano, sem transmitir Veneno. A mistura normal custa 1A e respeita Graus; registro manual."):
  "";
  const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
  return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
@@ -3462,7 +3464,7 @@ function geneDetailHTML(id,s=state){
  const [sid,baseName,baseDetail,cost]=skill,owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
  const name=sid==="escudo-arcano"&&s.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const detail=sid==="escudo-arcano"&&s.race==="runa_espinhos"?
- "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Absorção elemental ainda PENDENTE.":baseDetail;
+ "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Resistência elemental padrão contra o elemento escolhido: cada E do ataque vale 0,5 de dano e P vale 0 dano elemental, preservadas as consequências de Pavor. Arredondamento geral ainda pendente.":baseDetail;
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
  const slug=SKILL_PERMALINKS[sid];
