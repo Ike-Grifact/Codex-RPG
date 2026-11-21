@@ -58,6 +58,6 @@ Esses nomes são **efeitos dentro do mesmo verbete**, não nós extras, compras 
 
 ## 5. Mapa e manutenção
 
-Na representação do **Codex Genético**, a constelação **APRESENTAÇÃO E BARDO** mostra somente: **Apresentação Avançada, Perícia em Instrumentos, Maestria em Apresentação e Voz Encantadora**. Os efeitos internos, incluindo Melodia Psíquica, aparecem nas descrições e no documento, **não como compras ou nós adicionais**. A fonte **Apresentação** permanece uma Prática única e suas ligações continuam afinidades temáticas, não requisitos automáticos.
+Na representação do **Codex Genético**, a constelação **APRESENTAÇÃO E BARDO** mostra somente: **Apresentação Avançada, Perícia em Instrumentos, Maestria em Apresentação e Voz Encantadora**. Os efeitos internos, incluindo Melodia Psíquica, aparecem nas descrições e no documento, **sem novo nó ou compra individual**. A fonte **Apresentação** permanece uma Prática única e suas ligações continuam afinidades temáticas, não requisitos automáticos.
 
 **Implementação:** Catálogo e ficha exibem Maestria, Voz e Instrumentos como três Perícias distintas de XP **PENDENTE**; os IDs dos antigos verbetes internos podem permanecer ocultos por compatibilidade de fichas. O rolador não concede recursos ou bônus enquanto os procedimentos não estiverem definidos. Não alterar a compra de Apresentação Avançada nem requisitos, dados, fontes, XP, focos ou recursos existentes.
