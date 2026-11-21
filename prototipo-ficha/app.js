@@ -4275,8 +4275,12 @@ function adjustResource(resource,delta){
 }
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
+ const defensiveNotes=(ownsSkill("sacrificio-heroico")?'<p class="fp-alert"><strong>Sacrifício Heroico:</strong> proteja alguém a até 8 m, mesmo sem antecipação de seu turno. O dano segue para sua armadura ou Vida, conforme o Narrador; não é um ataque adicional.</p>':"")+
+  (ownsSkill("escudo-refletor")?'<p class="fp-alert"><strong>Escudo Refletor:</strong> com escudo físico equipado, reflita ao inimigo apenas o dano efetivo da parcela de Pavor do ataque recebido. Não diminui o golpe original; proteções e resultado devem ser resolvidos pelo Narrador.</p>':"")+
+  (ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")?'<p class="fp-alert"><strong>Aura Sagrada:</strong> ao assumir efetivamente a forma Sagrada, pessoas a até 3 m recebem +1 Coragem, até o próprio teto. É um efeito da Transformação Elemental; não se repete automaticamente a cada turno. Registre o efeito nas fichas.</p>':"")+
+  (ownsSkill("sentido-elemental")?'<p class="fp-alert"><strong>Sentido Elemental:</strong> gaste 1 Coragem para analisar um alvo e conhecer sua afinidade elemental (informada pelo Narrador). <button type="button" class="fp-secondary" data-action="sentido-elemental-use"'+(state.pending||state.courage<1?' disabled':'')+'>Analisar alvo (−1 Coragem)</button></p>':"");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
- $("skills-list").innerHTML=fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
+ $("skills-list").innerHTML=defensiveNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -4703,6 +4707,20 @@ function onClick(event){
  }
  case "repertoire-roll":quickRollItem(id);break;
  case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "sentido-elemental-use":{
+  if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
+  if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
+  if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.");break;}
+  const input=prompt("Sentido Elemental: qual alvo deseja analisar? A afinidade será informada pelo Narrador.");
+  if(input===null)break;
+  const target=input.trim().slice(0,90);
+  if(!target){toast("Informe o alvo da análise.");break;}
+  if(!confirm("Gastar 1 Coragem para analisar "+target+"? O Narrador informa a afinidade elemental."))break;
+  state.courage-=1;
+  state.history.unshift({date:new Date().toISOString(),name:"Sentido Elemental · "+target,outcome:"Alvo analisado — afinidade informada pelo Narrador",de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
+  state.history=state.history.slice(0,20);
+  render();save();toast("Sentido Elemental: −1 Coragem. Solicite ao Narrador a afinidade elemental de "+target+".");break;
+ }
  case "shield-ground-recover":{
   const it=state.items.find(x=>x.id===id&&x.type==="escudo"&&x.shieldGrounded);
   if(!it||state.pending){toast("Finalize a rolagem e confirme a recuperação do escudo no chão.");break;}
