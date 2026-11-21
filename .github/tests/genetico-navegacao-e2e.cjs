@@ -66,7 +66,7 @@ const create=async page=>{
   // Não reservar lacunas para Perícias bloqueadas, nem sobrepor nós.
   const normal=await checkGeneSpacing(map,"Caminhos atuais");
   if(normal.skills<=18)assert(normal.furthest<1850,"Constelações visíveis excessivamente distantes: "+JSON.stringify(normal));
-  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  await desktop.locator('#wizard-content [data-action="gene-future"]:not(.fp-gene-future-float)').click();
   const all=await checkGeneSpacing(map,"Ramificações futuras");
   assert(all.skills>=normal.skills,"Alternar ramificações futuras reduziu os nós");
   assert(all.families.length>=10,"Constelações temáticas ausentes: "+JSON.stringify(all.families));
@@ -88,7 +88,7 @@ const create=async page=>{
   assert(await levesIcon.count()===1,"Ícone de armas não aparece em Armas Leves");
   assert(await fogoIcon.getAttribute("width")==="32","Ícone elemental deveria ter 32 unidades");
   assert(await levesIcon.getAttribute("width")==="32","Ícone de arma deveria ter 32 unidades");
-  await desktop.locator('#wizard-content [data-action="gene-future"]').click();
+  await desktop.locator('#wizard-content [data-action="gene-future"]:not(.fp-gene-future-float)').click();
   await checkGeneSpacing(map,"Caminhos restaurados");
   await map.scrollIntoViewIfNeeded();
   const box=await map.boundingBox();
