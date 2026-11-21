@@ -697,3 +697,79 @@ test("Sacrifício Heroico e Escudo Refletor não criam resolução falsa de dano
  assert.ok(book.includes("⌊Pavor mantido não anulado ÷ 2⌋"));
  assert.ok(app.includes('ownsSkill("escudo-refletor")')&&app.includes('ownsSkill("sacrificio-heroico")'));
 });
+
+test("Antimagia: quatro compras de 1 XP, requisitos completos e dependências",()=>{
+ const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
+ const reqs=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const owns=(id,s)=>(s.skills||[]).includes(id);
+ const req=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\nreturn skillReq;")({},()=>[],owns);
+ const s=(int=4,agi=4,dex=4,skills=[])=>({
+  race:"humano",attributes:{inteligencia:int,agilidade:agi,destreza:dex,forca:0,vigor:0,influencia:0},
+  practices:{armas_conjuracao:1,artesao:0,atletismo:0,apresentacao:0,furtividade:0},
+  knowledges:{alquimia:0,medicina:0},skills
+ });
+ const focus=["criar-item-foco-magia","improviso"];
+ assert.match(req("cancelar-magia",s(3,4,4,focus)),/Inteligência 4/);
+ assert.match(req("cancelar-magia",s(4,3,4,focus)),/Agilidade 4/);
+ assert.match(req("cancelar-magia",s(4,4,3,focus)),/Destreza 4/);
+ assert.match(req("cancelar-magia",s(4,4,4,["improviso"])),/Criar Item de Foco/);
+ assert.match(req("cancelar-magia",s(4,4,4,["criar-item-foco-magia"])),/Improviso/);
+ assert.equal(req("cancelar-magia",s(4,4,4,focus)),null);
+ assert.match(req("mudanca-elemental",s(4,4,4)),/Transformação Elemental/);
+ assert.match(req("mudanca-elemental",s(3,4,4,["transformacao-elemental"])),/Inteligência 4/);
+ assert.match(req("mudanca-elemental",s(4,4,3,["transformacao-elemental"])),/Destreza 4/);
+ assert.equal(req("mudanca-elemental",s(4,4,4,["transformacao-elemental"])),null);
+ assert.match(req("desencantar",s()),/Cancelar Magia/);
+ assert.match(req("espelho-magico",s()),/Cancelar Magia/);
+ assert.equal(req("desencantar",s(4,4,4,["cancelar-magia"])),null);
+ assert.equal(req("espelho-magico",s(4,4,4,["cancelar-magia"])),null);
+ for(const id of ["cancelar-magia","mudanca-elemental","desencantar","espelho-magico"]){
+  assert.match(app,new RegExp('"'+id+'",\\s*"[^"]+",[\\s\\S]*?\\n  1\\n \\]'),"Custo de "+id+" = 1 XP");
+  const page=readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
+  assert.ok(page.includes("1 XP")&&page.includes("DEFINIDO"),"Verbete "+id);
+ }
+});
+
+test("Antimagia: Codex Genético, cards e links do catálogo completos",()=>{
+ const gene=readFileSync(join(root,"gene-graph.js"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const id of ["cancelar-magia","mudanca-elemental","desencantar","espelho-magico"]){
+  assert.ok(gene.includes('"'+id+'"'),"Nó genético "+id);
+  assert.ok(index.includes('href="'+id+'.html"'),"Link "+id);
+  assert.ok(app.includes('"'+id+'":"'+id+'"'),"Permalink ficha "+id);
+ }
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ for(const skill of ["Cancelar Magia","Mudança Elemental","Desencantar","Espelho Mágico"]){
+  assert.ok(srd.includes(skill)&&book.includes(skill),"SRD e Livro contêm "+skill);
+ }
+});
+
+test("Cancelar Magia: gatilhos Pavor, elemento conhecido, alcance e custo de 1 Coragem",()=>{
+ assert.ok(app.includes('case "cancelar-magia-use"'));
+ assert.ok(app.includes('if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia"))'));
+ assert.ok(app.includes('.filter(([id])=>ownsSkill(id));'),"Só permite escolher elemento comprado");
+ assert.ok(app.includes('if(state.pending||editMode)'),"Não permite agir durante rolagem pendente");
+ assert.ok(app.includes('if(state.courage<1)'),"Valida Coragem");
+ assert.ok(app.includes('const enemyDe=Number(deInput);'),"DE adversária informada");
+ assert.ok(app.includes('!Number.isSafeInteger(enemyDe)||enemyDe<0'),"Valida DE");
+ assert.ok(app.includes('MANTEVE ao menos um símbolo de Pavor'),"Pavor adversário mantido");
+ assert.ok(app.includes('a até 8 m'),"Distância exata");
+ assert.ok(app.includes('resultado estritamente maior'),"Empatar não basta");
+ assert.ok(app.includes('if(!confirm("Gastar 1 Coragem para TENTAR cancelar'),"Cobrança confirmada");
+ assert.ok(app.includes('state.courage-=1;'),"Debita 1 Coragem");
+ assert.ok(app.includes('name:"Cancelar Magia · "+elementName'),"Registra sem cancelar automaticamente");
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ assert.ok(srd.includes("todos os valores mantidos")&&srd.includes("estritamente maior"));
+});
+
+test("Mudança Elemental, Desencantar e Espelho Mágico não inventam dados e pagamentos",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/espelho-magico.html"),"utf8");
+ assert.ok(srd.includes("criatura, armadura ou ambiente")&&srd.includes("um elemento cuja Perícia"));
+ assert.ok(srd.includes("não informado")&&srd.includes("não destruir")===false||srd.includes("Não destruir nem excluir"));
+ assert.ok(page.includes("passivo")||page.includes("Passivo"));
+ assert.ok(page.includes("Pavor que não provocou dano"));
+ assert.ok(srd.includes("cumulação com **Escudo Refletor**"));
+});
