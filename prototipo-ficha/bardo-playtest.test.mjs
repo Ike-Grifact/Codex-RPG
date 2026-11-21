@@ -134,11 +134,21 @@ const basePractice=["atletismo","armas_conjuracao","furtividade","artesao","apre
   const {height,groups}=run([...sources.map(s=>({...s})),...subset.map(s=>({...s}))]);
   assert.ok(height<=2500,"Mapa compactado em altura; atual: "+height);
   assert.ok(groups.length>0,"Existem constelações visíveis");
+  if(subset.length===skills.length){
+   assert.deepEqual(groups.filter(g=>g.orbitSide==="top").map(g=>g.id).sort(),["escudos","psiquico"]);
+   assert.deepEqual(groups.filter(g=>g.orbitSide==="bottom").map(g=>g.id).sort(),["cavalaria","recuperacao"]);
+   assert.ok(groups.some(g=>g.x<1149)&&groups.some(g=>g.x>=2251),"Constelações mantidas em ambos os lados");
+  }
   for(const a of groups){
    assert.ok(a.x>=0&&a.x+a.width<=3400&&a.y>=0&&a.y+a.height<=height,"Constelação dentro da área SVG: "+a.id);
    for(const node of a.nodes)assert.ok(node.x>a.x&&node.x<a.x+a.width&&node.y>a.y&&node.y<a.y+a.height,"Nó dentro de "+a.id);
-   // As fontes centrais ocupam x=1149..2251, sem cruzar áreas temáticas.
-   assert.ok(a.x+a.width<=1149||a.x>=2251,"Ramo não cobre o centro: "+a.id);
+   // O núcleo de fontes ocupa x=1149..2251 e y=587..1233.
+   // Constelações podem ficar nas laterais, acima OU abaixo do núcleo.
+   const beside=a.x+a.width<=1149||a.x>=2251;
+   const above=a.y+a.height<=587,below=a.y>=1233;
+   assert.ok(beside||above||below,"Ramo não cobre as fontes centrais: "+a.id);
+   if(a.orbitSide==="top")assert.ok(a.y+a.height<587,"Arco superior termina antes das fontes: "+a.id);
+   if(a.orbitSide==="bottom")assert.ok(a.y>1233,"Arco inferior inicia após as fontes: "+a.id);
    for(const other of groups){
     if(a===other)continue;
     const overlap=a.x<other.x+other.width&&a.x+a.width>other.x&&a.y<other.y+other.height&&a.y+a.height>other.y;
