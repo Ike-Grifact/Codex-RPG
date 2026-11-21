@@ -142,6 +142,26 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-espadas":"Força 2 + Destreza 2"
 });
 const SKILLS=[
+ ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
+ ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
+ ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
+ ["cancoes-sustentadas","Canções Sustentadas","PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",null],
+ ["pericia-em-instrumentos","Perícia em Instrumentos","Meio instrumental para habilidades do Bardo. Efeitos próprios e XP pendentes.",null],
+ ["maestria-em-apresentacao","Maestria em Apresentação","EXPERIMENTAL: Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos; 3A musicais totais para distribuir entre aliados. Desarmonia na falha com Pavor. Compra XP pendente.",null],
+ ["voz-encantadora","Voz Encantadora","EXPERIMENTAL: Influência 4 + Apresentação 4 + Vigor 3. Voz substitui instrumento para apresentações comuns, sem substituir instrumentos específicos da Melodia Psíquica. XP pendente.",null],
+ ["ritmo-de-batalha","Ritmo de Batalha","EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",null],
+ ["inspiracao","Inspiração","EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",null],
+ ["ressonancia-arcana","Ressonância Arcana","EXPERIMENTAL: 3A musicais para recuperar 1 carga de foco de aliado, sem ultrapassar sua capacidade. XP pendente.",null],
+ ["acorde-de-protecao","Acorde de Proteção","EXPERIMENTAL: 1A musical para anular 1 Pavor mantido de aliado antes de encerrar sua rolagem. XP pendente.",null],
+ ["acorde-triunfal","Acorde Triunfal","EXPERIMENTAL: 2A musicais para conceder 1E a aliado elegível, sem duplicação. XP pendente.",null],
+ ["compasso-adiantado","Compasso Adiantado","EXPERIMENTAL: 1A musical para favorecer protagonismo de aliado, sem turno extra; procedimento pendente.",null],
+ ["ritmo-acelerado","Ritmo Acelerado","EXPERIMENTAL: distribuir 3A totais entre até três aliados, máximo de 1A cada. XP pendente.",null],
+ ["harmonia-musical","Harmonia Musical","EXPERIMENTAL: neutraliza Vantagem/Desvantagem comuns em área 16x16 m, inclui inimigos. Duração e XP pendentes.",null],
+ ["piada-infame","Piada Infame","PROPOSTO: rerrolar um dado de inimigo; novo resultado vale mesmo se melhor. Custos e procedimento pendentes.",null],
+ ["elevacao-harmonica","Elevação Harmônica","PROPOSTO: elevar um passo de um dado por aliado, sem d20. Custos e procedimento pendentes.",null],
+ ["acao-em-conjunto-musical","Ação em Conjunto","EXPERIMENTAL: proposta Apresentação + Disciplina + Influência com +1E e +1A, mas combinar duas Práticas ainda não autorizado.",null],
+ ["presenca-de-palco","Presença de Palco","EXPERIMENTAL: proposta +1E em apresentações; condições e compra XP pendentes.",null],
+ ["melodia-psiquica","Melodia Psíquica","EXPERIMENTAL: Disciplina 4 + Criar Item de Foco e Magia. Instrumento canaliza efeitos de armas OU psíquicos em até 2 alvos; não duplica dados/dano nem concede perícias. XP e procedimentos pendentes.",null],
  [
   "maos-leves","Mãos Leves","1 XP. Requisitos: Furtividade 3 + Disciplina 3 + Proteção 2. Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",1
  ],
@@ -665,6 +685,26 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "dueto-improvisado":["practice:apresentacao","attr:influencia"],
+ "contratempo":["practice:apresentacao","attr:influencia"],
+ "solo-provocador":["practice:apresentacao","attr:influencia"],
+ "cancoes-sustentadas":["practice:apresentacao","attr:influencia"],
+ "pericia-em-instrumentos":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "maestria-em-apresentacao":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "voz-encantadora":["practice:apresentacao","attr:influencia","attr:vigor"],
+ "ritmo-de-batalha":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "inspiracao":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "ressonancia-arcana":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "acorde-de-protecao":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "acorde-triunfal":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "compasso-adiantado":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "ritmo-acelerado":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "harmonia-musical":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "piada-infame":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "elevacao-harmonica":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "acao-em-conjunto-musical":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "presenca-de-palco":["practice:apresentacao","attr:influencia","attr:destreza"],
+ "melodia-psiquica":["practice:armas_conjuracao","attr:inteligencia","practice:apresentacao"],
  "maos-leves":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
  "pericia-armadilha":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
  "golpe-furtivo":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
@@ -969,6 +1009,9 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["maestria-em-apresentacao","dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas"],
+ ["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora","ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao","acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical","piada-infame","elevacao-harmonica","acao-em-conjunto-musical","presenca-de-palco"],
+ ["criar-item-foco-magia","melodia-psiquica"],
  ["furtividade","maos-leves","golpe-furtivo"],
  ["protecao","pericia-armadilha"],
  ["alquimia","pesquisa-avancada-pocoes","bioetica"],
@@ -1072,6 +1115,26 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "dueto-improvisado":"dueto-improvisado",
+ "contratempo":"contratempo",
+ "solo-provocador":"solo-provocador",
+ "cancoes-sustentadas":"cancoes-sustentadas",
+ "pericia-em-instrumentos":"pericia-em-instrumentos",
+ "maestria-em-apresentacao":"maestria-em-apresentacao",
+ "voz-encantadora":"voz-encantadora",
+ "ritmo-de-batalha":"ritmo-de-batalha",
+ "inspiracao":"inspiracao",
+ "ressonancia-arcana":"ressonancia-arcana",
+ "acorde-de-protecao":"acorde-de-protecao",
+ "acorde-triunfal":"acorde-triunfal",
+ "compasso-adiantado":"compasso-adiantado",
+ "ritmo-acelerado":"ritmo-acelerado",
+ "harmonia-musical":"harmonia-musical",
+ "piada-infame":"piada-infame",
+ "elevacao-harmonica":"elevacao-harmonica",
+ "acao-em-conjunto-musical":"acao-em-conjunto-musical",
+ "presenca-de-palco":"presenca-de-palco",
+ "melodia-psiquica":"melodia-psiquica",
  "maos-leves":"maos-leves",
  "pericia-armadilha":"pericia-armadilha",
  "golpe-furtivo":"golpe-furtivo",
@@ -1176,6 +1239,26 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
+ "contratempo":"Requisitos e custos pendentes; PROPOSTO",
+ "solo-provocador":"Requisitos e custos pendentes; PROPOSTO",
+ "cancoes-sustentadas":"Requisitos e custos pendentes; PROPOSTO",
+ "pericia-em-instrumentos":"Requisitos próprios ainda não definidos",
+ "maestria-em-apresentacao":"Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos",
+ "voz-encantadora":"Influência 4 + Apresentação 4 + Vigor 3",
+ "ritmo-de-batalha":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "inspiracao":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "ressonancia-arcana":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "acorde-de-protecao":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "acorde-triunfal":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "compasso-adiantado":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "ritmo-acelerado":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "harmonia-musical":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "piada-infame":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "elevacao-harmonica":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "acao-em-conjunto-musical":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "presenca-de-palco":"Requisitos individuais pendentes; consultar playtest do Bardo",
+ "melodia-psiquica":"Disciplina 4 + Criar Item de Foco e Magia",
  "maos-leves":"Furtividade 3 + Disciplina 3 + Proteção 2",
  "pericia-armadilha":"Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1",
  "golpe-furtivo":"Disciplina 2 + Furtividade 2",
@@ -2382,6 +2465,13 @@ function skillReq(id,s=state){
  const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
  const rangedSpecialty=has("armas-longo-alcance")||has("maestria-arremesso-armas");
  const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;
+ // Requisitos explícitos das Perícias experimentais de Bardo; XP null continua bloqueando compras.
+ if(id==="maestria-em-apresentacao"&&((s.practices.apresentacao||0)<4||(s.attributes.influencia||0)<4||dex<4||!has("apresentacao-avancada")||!has("pericia-em-instrumentos")))
+  return"Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos.";
+ if(id==="voz-encantadora"&&((s.attributes.influencia||0)<4||(s.practices.apresentacao||0)<4||vig<3))
+  return"Requer Influência 4, Apresentação 4 e Vigor 3.";
+ if(id==="melodia-psiquica"&&(disc<4||!has("criar-item-foco-magia")))
+  return"Requer Disciplina 4 e Criar Item de Foco e Magia. Instrumento obrigatório para uso.";
   // Perícias definidas em 21/11/2026: compras por 1 XP; sem graus ou elementos gratuitos.
   const protection=s.knowledges.protecao||0,engineering=s.knowledges.engenharia||0;
   if(id==="maos-leves"&&(stealth<3||disc<3||protection<2))return"Requer Furtividade 3, Disciplina 3 e Proteção 2.";

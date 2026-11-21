@@ -2,7 +2,7 @@
 title: "Codex RPG — SRD Playtest Nível 1 v1.0"
 version: "1.0"
 cycle: "playtest-nivel-1"
-updated: "2026-11-19"
+updated: "2026-11-21"
 status: "DEFINIDO / PENDENTE DE PROCEDIMENTO"
 supersedes_as_active: "docs/srd-continuidade-v0.82.md"
 repository: "Ike-Grifact/Codex-RPG"
@@ -13,6 +13,24 @@ repository: "Ike-Grifact/Codex-RPG"
 > **Referência principal para o ciclo de Playtest Nível 1.** A contagem foi reiniciada por decisão autoral de **18/11/2026**. As versões `srd-continuidade-v0.XX.md` permanecem disponíveis como **histórico**, não como numeração ativa. Este documento registra as decisões mais recentes sem apagar regras anteriores que não foram revogadas. Em divergência: decisão autoral mais recente > este SRD > Livro do Jogador atualizado > código > arquivos históricos. **Código implementado não significa regra aprovada.**
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
+
+## Adendo experimental — Bardo e Melodia Psíquica (21/11/2026)
+
+**Estado: EXPERIMENTAL para playtest; custos XP e procedimentos PENDENTES.** O autor autorizou formalizar as Perícias musicais, sem introduzir classe fixa. A especificação detalhada de efeitos, variantes de DE, alcance, instrumentos e itens sem automação está em **[Playtest de Bardo e Melodia Psíquica](playtest-bardo-2026-11-21.md)**; as Perícias também têm verbetes individuais e estão visíveis no criador como **não compráveis até que seus custos de XP sejam aprovados**. Propostas anteriores sem aprovação de custo, alcance ou procedimento não passam automaticamente a regras DEFINIDAS.
+
+**EXPERIMENTAL — Maestria em Apresentação:** exige **Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos**. Atuação válida com Apresentação e Influência e aptidão pertinente, utilizando instrumento, gera **3 Antecipares (A) musicais ao todo** para apoiar aliados; não acrescenta dados à própria rolagem, não duplica os 3A entre destinatários e não cria um recurso acumulável permanente. Cada aliado a beneficiar deve ter sua DE superada pelo resultado da mesma rolagem. **Desarmonia (EXPERIMENTAL):** falha com Pavor na ação musical principal impede gerar os 3A durante a rodada seguinte, sem remover os Antecipares naturais dos dados.
+
+**EXPERIMENTAL — tipos de aplicação:** ação dedicada (Apresentação + Influência), ação acompanhando combate/conjuração (pendente de conciliar a proibição de misturar duas Práticas) e efeitos em área (hipótese de 16 × 16 m, sem multiplicar os 3A por aliado). Com uma rolagem, DE do inimigo e DEs dos aliados são verificadas separadamente. **PENDENTE:** DE aliada defensiva total versus natural, área definitiva, audição, duração, economia de ação e efeitos simultâneos. **Não permitir quatro fontes, combinação proibida nem ação extra por inferência.**
+
+**EXPERIMENTAL — conversões e Perícias de apoio:** **Inspiração: 3A → 1 Coragem a um aliado**; **Ressonância Arcana: 3A → 1 carga de foco de aliado**, até a capacidade normal do foco; **Acorde de Proteção: 1A → anula 1P mantido de aliado**; **Acorde Triunfal: 2A → 1E para aliado**; **Compasso Adiantado: 1A para favorecer passagem de protagonismo**, sem nova ação; **Ritmo Acelerado: 3A no total entre até três aliados, máximo 1A por aliado**; **Harmonia Musical** neutraliza Vantagem/Desvantagem comuns em área 16 × 16 m, inclusive inimigos, não Vantagem Absoluta automaticamente. **Ritmo de Batalha, Piada Infame, Elevação Harmônica, Ação em Conjunto e Presença de Palco** ficam registrados como propostas/efeitos experimentais com limites específicos ainda pendentes, sem conceder bônus automáticos.
+
+**EXPERIMENTAL — Voz Encantadora:** exige **Influência 4 + Apresentação 4 + Vigor 3**. Pode utilizar a própria voz em substituição ao instrumento empunhado nos efeitos comuns de Bardo, sem remover requisitos de compra já explícitos nem substituir automaticamente o instrumento exigido em Melodia Psíquica.
+
+**EXPERIMENTAL — Melodia Psíquica (decisão autoral):** exige somente **Disciplina 4 + Criar Item de Foco e Magia** para compra (XP pendente). Usa **um instrumento** para aplicar **efeitos de armas OU psíquicos** em **até dois alvos**. **Não concede automaticamente** Perícia em armas, novo elemento, Grau, bônus, dado, ação extra ou dano duplicado. Habilitação do efeito original, DE por alvo, alcance, custos, duração e aplicação de dano/controle para dois destinatários continuam PENDENTES, de modo que a ficha não efetua a técnica automaticamente.
+
+**Exclusão expressa:** retirar recuperação de Integridade de armadura do repertório de Bardo. **Sem alteração** das regras gerais de Disciplina, conjuração, Sagrado, Apresentação Avançada, focos, dados simbólicos ou maestrias de Coragem.
+
+---
 
 ## Adendo normativo — Doze Perícias: Furtividade, Alquimia, Corpo a corpo e Esferas Espirituais (21/11/2026)
 
