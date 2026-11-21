@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Jogador
 
+> **Doze novas Perícias — 21/11/2026 [DEFINIDO / procedimentos PENDENTES]:** **Mãos Leves, Perícia em Armadilha, Golpe Furtivo, Bioética, Pesquisa Avançada em Poções, Corpo Fechado, Invocar Esfera Espiritual, Passo Etéreo, Absorver Esferas, Disparo de Esferas Espirituais, Dilema e Impacto Psíquico** custam **1 XP cada**. Requisitos e efeitos constam nas seções abaixo. Mãos Leves permite exclusivamente Disciplina + Furtividade com DE alvo + Grau do item + peso se equipado; Golpe Furtivo adiciona dado da arma, não dano fixo; criação de homúnculos, esferas e d20 de Asura têm procedimentos ainda pendentes. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--doze-perícias-furtividade-alquimia-corpo-a-corpo-e-esferas-espirituais-21112026).
+
 > **Maestrias em Lanças e Espadas — 21/11/2026 [DEFINIDO]:** Maestria em **Lanças** (entrada existente «Lanças e Hastes»): **1 XP**, exige **Força 2 + Agilidade 1 + Destreza 1**. Maestria em **Espadas**: **1 XP**, exige **Força 2 + Destreza 2**. Ambas requerem **Perícia em Armas Leves, Médias ou Pesadas correspondente ao peso da arma para ativação**, não para a compra. No ataque acertado com a arma adequada, **uma característica própria da arma é ativada sem Coragem**. Mantêm a regra geral de crítico das Maestrias de arma. A nomenclatura/ID de Lanças e Hastes é preservada para compatibilidade. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--requisitos-de-maestria-em-lanças-e-em-espadas-21112026).
 
 > **Antimagia e alteração elemental — decisões de 20/11/2026 [DEFINIDO / detalhes PENDENTES]:** **Cancelar Magia** (1 XP; Criar Item de Foco e Magia + Improviso Elemental + Inteligência/Agilidade/Destreza 4) permite tentar cancelar magia percebida a até 8 m com Pavor mantido: 1 Coragem, Perícia no elemento e **resultado igual ou maior (≥) que a DE da conjuração**. **Mudança Elemental** (1 XP; Transformação Elemental + Destreza/Inteligência 4) altera o elemento de criatura, armadura ou ambiente a até 8 m, para elemento conhecido, por **E − P > 0**. **Desencantar** (1 XP; Cancelar Magia) remove elementos ou imunidades até 8 m, exceto o elemento natural constituinte de criatura realmente feita dele. **Espelho Mágico** (1 XP; Cancelar Magia) reflete passivamente dano mágico de Pavor mantido, **mesmo se a armadura da vítima o absorveu/anulou totalmente**. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--cancelar-magia-mudança-elemental-desencantar-e-espelho-mágico-20112026).
@@ -192,6 +194,60 @@ Ao **transformar-se em Sagrado**, pessoas a até **3 metros** do personagem rece
 ## Sentido Elemental [DEFINIDO — nova Perícia, 20/11/2026]
 
 **Custo 1 XP; requisitos Inteligência 3 e Improviso Elemental; ativação 1 Coragem.** Ao analisar um alvo, identifica sua **afinidade elemental**. O Narrador informa a afinidade real do alvo; não acrescenta fraqueza, resistência, bônus ofensivo ou nova DE automaticamente. O gasto é registrado no criador quando a análise é declarada.
+
+## Doze Perícias — decisões de 21/11/2026 [DEFINIDO / procedimentos PENDENTES]
+
+As doze Perícias abaixo custam **1 XP cada** e respeitam compras e pré-requisitos no criador. Os efeitos contextuais ainda devem ser declarados no teste; a compra não concede automaticamente recursos ou fichas de criaturas.
+
+### Mãos Leves
+
+**Requisitos:** Furtividade 3, Disciplina 3 e Proteção 2. Em combate, remove itens do inventário inimigo, incluindo **armas, escudos e armaduras**. Teste **Disciplina + Furtividade**, exceção exclusiva a esta Perícia para duas Práticas. **DE = DE inimiga + Grau do item + peso se estiver equipado**. Exemplo de arma Leve G1 equipada contra DE 3: **5**; arma Média G1 equipada: **6**. Se não equipado, não adicionar peso. Outras faixas de peso ficam sob confirmação do Narrador. A rolagem não causa dano; o objeto é removido somente após o teste e a decisão do Narrador.
+
+### Perícia em Armadilha
+
+**Requisitos:** Artesão 1, Disciplina 1, Engenharia 1, Destreza 1, Inteligência 1, Proteção 2 e Furtividade 1. Obtém **Vantagem (+1A)** em testes para **armar ou desarmar armadilhas**, rolando com **Proteção**. Vantagem é modificador contextual, não um dado de arma extra. DE, materiais e tempo dependem da armadilha.
+
+### Golpe Furtivo
+
+**Requisitos:** Disciplina 2 e Furtividade 2. Acrescenta **mais um dado da arma** em **ataque furtivo**. A arma deve estar equipada e habilitada; a pilha continua limitada a **9 dados rolados**, e o Narrador confirma a furtividade. O dado adicional não é um Êxito automático nem dano fixo.
+
+### Bioética
+
+**Requisitos:** Alquimia 3, Inteligência 3, **Destreza 3** (abreviação autoral «De 3»), Perícia em Sangue, Criar Item de Foco e Magia, **outra Perícia elemental além de Sangue** e Domar Criatura Média. Permite **criar homúnculos**, criaturas elementais de carne formadas pela **mistura do DNA de duas criaturas**. **PENDENTE:** confirmação do nome do Atributo abreviado «De», ficha de homúnculo, procedimento, requisitos de material, limites e controle.
+
+### Pesquisa Avançada em Poções
+
+**Requisitos:** Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2. Concede **+1 Êxito (E) em testes de criação de poções** e permite criar **poções elementais**. Receitas, custos e efeitos das poções elementais ainda não foram definidos.
+
+### Corpo Fechado
+
+**Requisitos:** Vigor 4 e **Artes Marciais** (Perícia cadastrada como **Artista Marcial**). **Custa 1 Coragem** e impede danos e efeitos **na Vitalidade** causados por **golpes de armas físicas** durante **1 rodada**. Não protege contra toda magia, não altera Integridade da armadura e não é imunidade permanente. Marque a duração com o Narrador.
+
+### Invocar Esfera Espiritual
+
+**Requisitos:** Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3. Converte **Coragem em Esferas Espirituais**, com criação de **uma esfera por rodada**. Ao reunir **5 esferas**, habilita a transformação de **um dado em d20** para executar o **Punho Supremo de Asura**, um golpe **somente corpo a corpo e com Disciplina**. **PENDENTE:** razão da conversão, gasto das cinco esferas, dado a ser transformado, integração do d20 extraordinário e regra própria de Asura. Esta habilidade não transforma livremente um dado em d20 em outros ataques.
+
+### Passo Etéreo
+
+**Requisito:** Invocar Esfera Espiritual. Consome **1 esfera espiritual** para projetar-se rapidamente em até **8 metros**. Obstáculos, reações e interações de movimento dependem da situação de combate.
+
+### Absorver Esferas
+
+**Requisito:** Invocar Esfera Espiritual. Recupera **Coragem em número igual ao total de esferas** presentes, respeitando o teto da ficha. **PENDENTE:** esclarecer se a absorção consome as esferas e o custo de ação. O criador não permite explorar essa indefinição para criar Coragem infinita.
+
+### Disparo de Esferas Espirituais
+
+**Requisito:** Invocar Esfera Espiritual. Faz **ataques físicos à distância**, consumindo **1 esfera por golpe**. Ainda não há alcance, fórmula de dano ou dados próprios definidos; não convertê-lo em magia elemental por interpretação.
+
+### Dilema
+
+**Requisitos:** Vigor 4 e **Artes Marciais (Artista Marcial)**. Impõe pacto de combate ao adversário: **nem ele nem o personagem podem se mover até que um dos dois fique inconsciente**. **PENDENTE:** resistência, alcance, custo de ativação e possíveis interrupções por terceiros. Não imobiliza automaticamente outra ficha sem a resolução narrada.
+
+### Impacto Psíquico
+
+**Requisitos:** Criar Item de Foco e Magia e **Artes Marciais (Artista Marcial)**. Permite **golpes psíquicos** capazes de aplicar efeitos de armas, gastando **1 Coragem**. A seleção das características, dados do golpe e defesa do alvo dependem de procedimento posterior.
+
+**Observação para playtest:** Corpo Fechado e Impacto Psíquico podem registrar gasto de Coragem; Mãos Leves pode preparar a rolagem excepcional; Perícia em Armadilha pode preparar Proteção com Vantagem; Golpe Furtivo acrescenta dado com a confirmação de furtividade. Recursos de esferas são controlados por ficha, com a taxa de Coragem informada pelo Narrador, sem supor valores ausentes.
 
 ## Quatro novas Perícias: antimagia, Mudança Elemental e reflexão [DEFINIDO / procedimento PENDENTE — 20/11/2026]
 

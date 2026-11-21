@@ -14,6 +14,48 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Doze Perícias: Furtividade, Alquimia, Corpo a corpo e Esferas Espirituais (21/11/2026)
+
+**Status geral: DEFINIDO (custo, requisitos e efeitos declarados).** As doze compras custam **1 XP cada**, separadamente. Procedimentos não informados continuam **PENDENTES**, sem atribuir custo, rolagem, duração, imunidade, níveis de criatura ou efeitos automáticos. Mantêm-se os limites da pilha de **9 dados rolados** e **4 dados mantidos**, salvo os Marcos e recursos já definidos.
+
+### Furtividade e armadilhas
+
+**DEFINIDO — Mãos Leves (1 XP):** exige **Furtividade 3 + Disciplina 3 + Proteção 2**. Durante combate, permite retirar **armas, escudos ou armaduras** do inventário de um inimigo por teste específico de **Disciplina + Furtividade**, uma **exceção expressa** à proibição normal de combinar Prática com Prática. Essa exceção é exclusiva da Perícia, **não libera outras combinações de duas Práticas**. A **DE do teste é DE do inimigo + Grau do item + peso do item, somente se estiver equipado**. Exemplos autorais: **DE inimiga 3 + arma Leve G1 equipada = 3+1+1 = DE 5**; **DE inimiga 3 + arma Média G1 equipada = 3+1+2 = DE 6**. **Se não equipado, não acrescentar peso**. A ação não é ataque, não causa dano e a retirada real do objeto depende da resolução com o Narrador. **PENDENTE:** atribuição exata de peso para categorias além das exemplificadas (Muito Leve/Pesada/Extrema), transferência de equipamento, reação e simultaneidade em combate. Os valores +1 para Leve e +2 para Médio estão DEFINIDOS pelos exemplos.
+
+**DEFINIDO — Perícia em Armadilha (1 XP):** exige **Artesão 1, Disciplina 1, Engenharia 1, Destreza 1, Inteligência 1, Proteção 2 e Furtividade 1**. Concede **Vantagem em testes para armar e desarmar armadilhas**, utilizando **Proteção como Conhecimento** na rolagem. Vantagem segue o modificador geral de **+1 Antecipar (A)**; **não é dado extra**. **PENDENTE:** DE específica de cada armadilha, materiais, tempo e eventuais efeitos.
+
+**DEFINIDO — Golpe Furtivo (1 XP):** exige **Disciplina 2 + Furtividade 2**. Em **ataque furtivo**, adiciona **mais um dado da arma utilizada** à pilha, respeitando o limite geral de 9 dados rolados, habilitação de manejo e existência de arma equipada. **Não é +1E nem dano fixo**. A condição de furtividade do ataque é confirmada pelo Narrador; não se aplica a ataque não furtivo.
+
+### Alquimia e criação
+
+**DEFINIDO — Bioética (1 XP):** exige **Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + qualquer OUTRA Perícia Elemental diferente de Sangue + Domar Criatura Média**. O texto autoral especificou «De 3», aqui registrado como **Destreza 3** por correspondência com os nomes dos Atributos; esta expansão da abreviação é **PENDENTE DE CONFIRMAÇÃO**, sem mudar o valor 3. Permite **criar homúnculos**, criaturas elementais de carne geradas pela **mistura do DNA de duas criaturas diferentes**. **PENDENTE:** modelo de ficha de homúnculo, custo/material/tempo de criação, herança genética, limite e controle de criaturas, duração e efeitos em combate. Não conceder criatura ou ficha automaticamente ao comprar.
+
+**DEFINIDO — Pesquisa Avançada em Poções (1 XP):** exige **Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2**. Concede **+1 Êxito (E) para criar poções** e habilita a criação de **poções elementais**. O bônus é contextual ao teste de criação, não a toda rolagem de Alquimia. **PENDENTE:** receitas, ingredientes, preços, duração e os efeitos e graus das poções elementais.
+
+### Corpo a corpo
+
+**DEFINIDO — Corpo Fechado (1 XP):** exige **Vigor 4 + Artes Marciais** (Perícia atualmente catalogada como **Artista Marcial**, sem gerar Perícia duplicada). **Ativação: 1 Coragem**. Por **1 rodada**, a **Vitalidade** do personagem **não sofre dano nem efeitos de golpes com armas físicas**. Não extrapolar a imunidade para magias, efeitos ambientais ou Integridade de armadura; registros entre fichas e encerramento da rodada permanecem manuais.
+
+**DEFINIDO — Dilema (1 XP):** exige **Vigor 4 + Artes Marciais** (Artista Marcial). Desafia um inimigo e estabelece pacto de combate: **nem o personagem nem o inimigo podem se mover até um deles ficar inconsciente**. **PENDENTE:** alcance, gatilho de ativação, teste/resistência do alvo, custo de ativação, encerramento por morte ou efeitos de terceiros. Não inventar Coragem nem DE.
+
+**DEFINIDO — Impacto Psíquico (1 XP):** exige **Criar Item de Foco e Magia + Artes Marciais** (Artista Marcial). Por **1 Coragem**, realiza **golpes psíquicos**, podendo **aplicar efeitos de armas**. **PENDENTE:** quais características são elegíveis, defesa, dados, alcance e requisitos de arma física. Não criar dano extra, d20 ou imunidade automática.
+
+### Esferas espirituais
+
+**DEFINIDO — Invocar Esfera Espiritual (1 XP):** exige **Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3**. Permite **converter Coragem em Esferas Espirituais**, **gerando no máximo 1 esfera por rodada**. Ao reunir **5 esferas**, permite **transformar um dado em d20** para utilizar **Punho Supremo de Asura**, **somente em golpe corpo a corpo com Disciplina**. **PENDENTE:** relação exata entre pontos de Coragem e esferas, consumo ou não das cinco esferas, limite de esferas armazenadas, seleção de qual dado é transformado, compatibilidade do d20 especial e requisitos próprios de Punho Supremo de Asura. Não autorizar d20 genericamente em outros testes ou ataques à distância.
+
+**DEFINIDO — Passo Etéreo (1 XP):** exige **Invocar Esfera Espiritual**. **Consome 1 esfera** para arremessá-la e projetar-se num **deslocamento rápido de até 8 metros**. **PENDENTE:** obstáculos, reação, ação e interações com mobilidade.
+
+**DEFINIDO — Absorver Esferas (1 XP):** exige **Invocar Esfera Espiritual**. **Recupera Coragem em quantidade igual ao total de esferas espirituais**, respeitando o teto de Coragem geral. **PENDENTE:** se as esferas são consumidas pela absorção e a economia de ação. Não definir consumo automaticamente.
+
+**DEFINIDO — Disparo de Esferas Espirituais (1 XP):** exige **Invocar Esfera Espiritual**. **Consome 1 esfera por golpe** e permite **ataques FÍSICOS à distância**. **PENDENTE:** alcance, DE, fontes e dados do ataque, dano e efeitos associados; não tratar como conjuração elemental automática.
+
+**Implementação conservadora:** custo e todos os requisitos são validados no criador e no Codex Genético. Mãos Leves possui preparação de teste exclusivo; Golpe Furtivo permite um dado da arma por ação furtiva confirmada; Pesquisa Avançada em Poções disponibiliza +1E apenas quando o jogador confirma no rolador um teste de criação; Perícia em Armadilha prepara Proteção com Vantagem (+1A). Corpo Fechado e Impacto Psíquico registram Coragem, e as Esferas Espirituais têm controle persistente de uma criação por rodada com custo informado pelo Narrador. Efeitos que dependem de ficha alheia, homúnculos, d20 e economia de ação exigem resolução na mesa até procedimentos aprovados.
+
+**Precedência:** esta decisão posterior atualiza apenas as doze novas Perícias; não revoga a combinação normal de aptidões, as regras genéricas de Dados, os custos de recursos existentes, nem a progressão de outras Perícias.
+
+---
+
 ## Adendo normativo — Requisitos de Maestria em Lanças e em Espadas (21/11/2026)
 
 **DEFINIDO — Maestria em Lanças (família catalogada como «Lanças e Hastes»):** custa **1 XP** e exige **Força 2 + Agilidade 1 + Destreza 1** para **comprar**. O identificador de ficha **`maestria-hastes`** é preservado para não duplicar a Perícia nem invalidar fichas salvas. Para **usar o efeito** com uma lança, é necessário possuir **Perícia em Armas Leves, Médias ou Pesadas conforme o peso da arma efetivamente utilizada**. Em **ataque acertado**, ativa **uma característica própria da arma sem gastar Coragem**. Não cria características inexistentes nem concede automaticamente a Perícia em Armas correspondente.
