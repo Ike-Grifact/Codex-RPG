@@ -94,7 +94,7 @@ test("Montaria Épica não altera Montar Animal nem inventa XP ou voo",()=>{
  assert.ok(page("montaria-epica").includes("gigantes, aladas ou exóticas"),"Tipos da proposta");
  assert.ok(catalog.includes('href="montaria-epica.html"'),"Cavalaria no catálogo");
  assert.ok(srd.includes("PROPOSTO / PENDENTE — Montaria Épica"));
- assert.ok(registry.includes('"montar",\n  "Montar Animal"')&&registry.includes('"2 XP. Requer Influência 2"'),"Montar Animal inalterada");
+ assert.ok(registry.includes('"montar",\n  "Montar Animal"')&&registry.includes("2 XP. Requer Influência 2"),"Montar Animal inalterada");
  assert.ok(registry.includes('"pericia-montaria"')&&registry.includes("Custo de XP PENDENTE"),"Perícia em Montaria inalterada");
 });
 
