@@ -3794,7 +3794,7 @@ function renderComposer(){
    magicComposerFields()+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
- if(usingDiscipline()&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
+ if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
@@ -4316,7 +4316,8 @@ function renderInventory(){
   const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
   const shieldMasteryHint=it.type!=="escudo"?"":(
    (shieldMasteryActive(it)?'<div class="fp-item-hint"><strong>Maestria em Escudos ativa:</strong> +1 DE defensiva (teto 12) e +1 Integridade neste escudo: '+shieldIntegrity.hp+' / '+shieldIntegrity.max+' efetivos. Valor-base: '+it.hp+' / '+it.max+'. Ponto adicional '+(it.shieldMasteryBonusSpent?'já consumido (reparo manual necessário).':'disponível.')+' Não altera a Integridade simbólica de Levantar Escudo.</div>':"")+
-   (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado; pode arremessá-lo até 8 m, e ele retorna ao personagem.':'Equipe o escudo para utilizar o arremesso.')+' Dados, dano e instante do retorno devem ser resolvidos com o Narrador; nenhuma rolagem automática.</div>':"")
+   (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
+   (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' Sem dado adicional de escudo nem dano automático; recuperação condicionada ao resultado.</div>':"")
   );
   const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
@@ -4324,7 +4325,7 @@ function renderInventory(){
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
   '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
-  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
@@ -4657,6 +4658,15 @@ function onClick(event){
   break;
  }
  case "repertoire-roll":quickRollItem(id);break;
+ case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "shield-ground-recover":{
+  const it=state.items.find(x=>x.id===id&&x.type==="escudo"&&x.shieldGrounded);
+  if(!it||state.pending){toast("Finalize a rolagem e confirme a recuperação do escudo no chão.");break;}
+  if(!confirm("O Narrador confirmou que o escudo foi recuperado? Em falha limpa, 1 Antecipar pode permitir correr para recuperá-lo; não há recuperação automática, e riscos com Pavor precisam ser resolvidos."))break;
+  it.shieldGrounded=false;it.shieldFallCase="";it.shieldFallMeters=0;
+  it.equipped=true; // Escudo devolvido ao portador apenas após confirmação do Narrador.
+  render();save();toast("Escudo recuperado e equipado, conforme confirmação do Narrador.");break;
+ }
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
@@ -4827,6 +4837,7 @@ function onClick(event){
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
+  if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
   if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast("Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
   it.equipped=!it.equipped;
