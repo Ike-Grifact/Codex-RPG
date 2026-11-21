@@ -4606,12 +4606,12 @@ function renderSkills(){
   ownsSkill("maos-leves")?'<p class="fp-alert"><strong>Mãos Leves:</strong> teste excepcional de Disciplina + Furtividade para tirar arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso somente se equipado. <button type="button" class="fp-secondary" data-action="maos-leves-prepare"'+(state.pending||editMode?' disabled':'')+'>Calcular DE e preparar teste</button> A retirada do inventário inimigo é confirmada pelo Narrador.</p>':"",
   ownsSkill("pericia-armadilha")?'<p class="fp-alert"><strong>Perícia em Armadilha:</strong> Vantagem (+1A) para armar/desarmar armadilhas com Proteção. <button type="button" class="fp-secondary" data-action="armadilha-prepare"'+(state.pending||editMode?' disabled':'')+'>Preparar Proteção + Vantagem</button></p>':"",
   ownsSkill("golpe-furtivo")?'<p class="fp-alert"><strong>Golpe Furtivo:</strong> marque «Golpe Furtivo» no rolador de Disciplina + Atributo durante ataque furtivo com arma habilitada: +1 dado da arma, máximo de 9 dados rolados.</p>':"",
-  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> cria homúnculo elemental de carne misturando o DNA de duas criaturas. Ficha, custos e herança genética pendentes; criação sob orientação do Narrador.</p>':"",
+  ownsSkill("bioetica")?'<p class="fp-alert"><strong>Bioética:</strong> requer Destreza 3, confirmada. Homúnculo elemental de carne feito do DNA de duas criaturas usa <strong>ficha própria</strong>, separada da do criador. <a href="../criar-conflito/" target="_blank" rel="noopener noreferrer">Abrir Criar Conflito para montar ficha própria</a>. Atributos, regras de mistura e custo de criação ainda não definidos.</p>':"",
   ownsSkill("pesquisa-avancada-pocoes")?'<p class="fp-alert"><strong>Pesquisa Avançada em Poções:</strong> +1E em testes para criar poções e habilita poções elementais. Receitas e valores pendentes; marque a criação de poções no rolador para somar +1E, sem alterar outras ações.</p>':"",
   ownsSkill("corpo-fechado")?'<p class="fp-alert"><strong>Corpo Fechado:</strong> por 1 Coragem, Vitalidade protegida de danos e efeitos de golpes com armas físicas por 1 rodada. <button type="button" class="fp-secondary" data-action="corpo-fechado-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Ativar (−1 Coragem)</button> A rodada e os ataques são resolvidos manualmente.</p>':"",
-  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'</strong> esfera(s) registradas. Criação máxima de 1 por rodada mediante conversão de Coragem; taxa informada pelo Narrador. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound||state.courage<1||editMode?' disabled':'')+'>Converter Coragem em 1 esfera</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> Com 5 esferas, d20 exclusivo do Punho Supremo de Asura, corpo a corpo com Disciplina; conversão do dado ainda manual.</p>':"",
+  ownsSkill("invocar-esfera-espiritual")?'<p class="fp-alert"><strong>Esferas Espirituais:</strong> <strong>'+sphereCount()+'</strong> esfera(s) registradas. <strong>1 Coragem = 1 esfera</strong>, no máximo 1 criada por rodada. <button type="button" class="fp-secondary" data-action="sphere-create"'+(state.pending||state.spiritualSpheres.createdThisRound||state.courage<1||editMode?' disabled':'')+'>Criar esfera (−1 Coragem)</button> <button type="button" class="fp-secondary" data-action="sphere-next-round"'+(!state.spiritualSpheres.createdThisRound||state.pending||editMode?' disabled':'')+'>Confirmar próxima rodada</button> <strong>Punho Supremo de Asura:</strong> com 5 esferas, selecione a técnica no rolador de Disciplina corpo a corpo, escolha UM dado para trocar por d20 e consuma 5 esferas ao concluir a rolagem.</p>':"",
   ownsSkill("passo-etereo")?'<p class="fp-alert"><strong>Passo Etéreo:</strong> 1 esfera para deslocamento rápido de até 8 m. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="passo-etereo"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Usar Passo Etéreo (−1 esfera)</button></p>':"",
-  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> recupera Coragem igual ao total de esferas (até o teto). Consumo das esferas pendente; resolva com Narrador antes de registrar alterações de Coragem.</p>':"",
+  ownsSkill("absorver-esferas")?'<p class="fp-alert"><strong>Absorver Esferas:</strong> consome <strong>TODAS</strong> as esferas e recupera a mesma quantidade de Coragem, até o teto. <button type="button" class="fp-secondary" data-action="sphere-absorb"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Absorver '+sphereCount()+' esferas</button></p>':"",
   ownsSkill("disparo-esferas-espirituais")?'<p class="fp-alert"><strong>Disparo de Esferas Espirituais:</strong> ataque físico a distância, 1 esfera por golpe. <button type="button" class="fp-secondary" data-action="sphere-spend" data-id="disparo-esferas-espirituais"'+(sphereCount()<1||state.pending||editMode?' disabled':'')+'>Declarar disparo (−1 esfera)</button> DE, alcance e dados pendentes; ataque manual.</p>':"",
   ownsSkill("dilema")?'<p class="fp-alert"><strong>Dilema:</strong> pacto imobiliza a si e ao adversário até um dos dois ficar inconsciente. Ativação e resistência pendentes; não altera a ficha inimiga automaticamente.</p>':"",
   ownsSkill("impacto-psiquico")?'<p class="fp-alert"><strong>Impacto Psíquico:</strong> golpe psíquico que pode usar efeitos de arma por 1 Coragem. <button type="button" class="fp-secondary" data-action="impacto-psiquico-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar golpe (−1 Coragem)</button> Dados e efeitos concretos dependem do Narrador.</p>':""
@@ -5060,14 +5060,22 @@ function onClick(event){
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
   if(state.spiritualSpheres.createdThisRound){toast("Já foi criada 1 esfera nesta rodada; confirme próxima rodada antes de repetir.");break;}
   if(sphereCount()>=99){toast("Limite técnico do contador atingido; registre no papel até definição do teto oficial.");break;}
-  const raw=prompt("Quantos pontos de Coragem o Narrador confirmou converter para criar UMA esfera nesta rodada? A taxa por esfera ainda está PENDENTE.");
-  if(raw===null)break;
-  const spent=Number(raw);
-  if(!raw.trim()||!Number.isInteger(spent)||spent<1||spent>state.courage){toast("Informe gasto positivo de Coragem que o personagem possui.");break;}
-  if(!confirm("Confirmar conversão de "+spent+" Coragem em 1 Esfera Espiritual nesta rodada?"))break;
-  state.courage-=spent;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=true;
-  logSkillAction("Invocar Esfera Espiritual","−"+spent+" Coragem; +1 esfera; 1 criação nesta rodada.");
+  if(state.courage<1){toast("Invocar Esfera Espiritual exige 1 Coragem.");break;}
+  if(!confirm("Converter 1 Coragem em 1 Esfera Espiritual nesta rodada? Só é possível criar uma esfera por rodada."))break;
+  state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=true;
+  logSkillAction("Invocar Esfera Espiritual","−1 Coragem; +1 esfera; 1 criação nesta rodada.");
   render();save();toast("1 esfera criada; limite de uma por rodada aplicado.");break;
+ }
+ case "sphere-absorb":{
+  if(!ownsSkill("absorver-esferas")||skillReq("absorver-esferas")||state.pending||editMode||sphereCount()<1){
+    toast("Absorver Esferas exige a Perícia e pelo menos uma Esfera Espiritual disponível.");break;
+  }
+  const amount=sphereCount(),received=Math.min(amount,Math.max(0,maxCourage()-state.courage));
+  if(!confirm("Absorver TODAS as "+amount+" esferas? Recupera "+received+" Coragem"+(received<amount?" (limitada pelo teto)":"")+" e consome todas as esferas, deixando 0. Prosseguir?"))break;
+  state.spiritualSpheres.count=0;
+  state.courage=clamp(state.courage+received,0,maxCourage());
+  logSkillAction("Absorver Esferas","−"+amount+" esferas; +"+received+" Coragem (teto respeitado).");
+  render();save();toast("Absorver Esferas: −"+amount+" esferas, +"+received+" Coragem.");break;
  }
  case "sphere-next-round":{
   if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
