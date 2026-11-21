@@ -3703,6 +3703,16 @@ function modeDefault(){return "armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ if(draft.shieldThrowId){
+  const shield=state.items.find(it=>it.id===draft.shieldThrowId);
+  if(!shieldBoomerangReady(shield))errors.push("Escudo Bumerangue exige escudo equipado e Perícias/requisitos válidos.");
+  if(draft.base.group!=="practice"||draft.base.key!=="armas_conjuracao"||draft.mode!=="armas"||draft.attribute.group!=="attr"||
+    (draft.third&&draft.third.group!=="attr"))errors.push("Escudo Bumerangue requer Disciplina (Armas) + Atributo(s), não outra Prática ou Conhecimento.");
+  if(draft.shieldRaise||draft.cravarRemovalShieldId||draft.equipmentId||draft.magicElement)
+   errors.push("Arremessar Escudo Bumerangue é uma ação própria; não combinar com Levantar Escudo, Cravar ou dados de arma.");
+  if(!Number.isInteger(draft.shieldThrowMeters)||draft.shieldThrowMeters<1||draft.shieldThrowMeters>8)
+   errors.push("Escudo Bumerangue possui alcance máximo de 8 metros.");
+ }
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
   if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo complementar exige Perícia Avançada da fonte principal.");
@@ -3803,8 +3813,9 @@ function renderComposer(){
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Muito Leve / Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
  const selectedItem=state.items.find(x=>x.id===draft.equipmentId);
+ const throwingShield=!!draft.shieldThrowId;
  const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
- const gearOptions=spellSelection?magicComposerFields():
+ const gearOptions=throwingShield?"":spellSelection?magicComposerFields():
   usingDiscipline()?'<label class="fp-form-field full">Arma ou foco (dado extra sujeito a Perícia)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
@@ -3816,7 +3827,7 @@ function renderComposer(){
    " → "+describeDicePool(temporaryGradeDice(source.group,grade,true))];
  });
  const carriedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
- const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield?
+ const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
@@ -3825,7 +3836,8 @@ function renderComposer(){
  '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  "";
- const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
+ const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Teste Disciplina + Atributo(s) rolado(s); alcance até 8 m, sem dado adicional de escudo. Acerto = retorno no mesmo turno; falha = cai no chão conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
+ const options=throwDetails+'<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
@@ -3859,11 +3871,13 @@ function roll(){
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+  shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
+    shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
     magicElement:draft.mode==="conjuracao"?draft.magicElement:"",
     magicGrade:draft.mode==="conjuracao"&&draft.magicElement?draft.magicGrade:0,
     magicFocusId:draft.mode==="conjuracao"?draft.magicFocusId:"",
