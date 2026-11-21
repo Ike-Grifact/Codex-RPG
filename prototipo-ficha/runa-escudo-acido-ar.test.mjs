@@ -109,7 +109,7 @@ test("Ar: corrente em L e X por passagem livre, sem atravessar paredes",()=>{
 test("Revisao publicada com estados e precedencia no Livro e SRD",()=>{
  assert.ok(srd.includes("**DEFINIDO (21/11/2026):**"));
  assert.ok(srd.includes("**PENDENTE:**"));
- assert.ok(book.includes("Continuidade v0.84"));
+ assert.ok(book.includes("Continuidade v0.85"),"Livro aponta para esclarecimento posterior, preservando v0.84 no histórico");
  assert.ok(playtest.includes("Continuidade v0.84"));
  assert.ok(!srd.includes("18 XP iniciais"));
  assert.ok(srd.includes("15 XP iniciais e 260 XP no nível 20"));
