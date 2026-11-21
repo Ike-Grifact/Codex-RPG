@@ -261,7 +261,7 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
  assert.match(app,/"resistencia-a-fogo",\s*"Resistência a Fogo",[\s\S]*?\n  1\n \]/,"Custo exatamente 1 XP");
  assert.ok(app.includes('"resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]]'),"Compra assistida mantém requisitos");
  assert.ok(app.includes('"resistencia-a-fogo": "resistencia-a-fogo"'),"Verbete da ficha");
- assert.ok(app.includes('"resistencia-a-fogo": "Passiva pessoal enquanto adquirida'),"Efeito pessoal reconhecido");
+ assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Efeito pessoal reconhecido na ficha");
  assert.ok(app.includes('const fireResistanceNote=ownsSkill("resistencia-a-fogo")'),"Exibe resistência somente se o personagem possuir a Perícia");
  assert.ok(app.includes("0 dano direto à Vida por Derreter G3"),"Derreter não causa dano direto à Vida do portador");
  assert.ok(app.includes("Não reduz dano à Integridade da armadura"),"Resistência protege somente a Vida");
@@ -973,7 +973,7 @@ test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()
  assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Doze Perícias"));
  assert.ok(srd.includes("3+1+1 = DE 5")&&srd.includes("3+1+2 = DE 6"));
  assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("Disciplina em um golpe corpo a corpo")&&srd.includes("um dado já existente da pilha"));
- assert.ok(srd.includes("Destreza 3")&&srd.includes("«De 3» significa **Destreza 3**"),"Destreza 3 confirmada pelo autor");
+ assert.ok(srd.includes("**DEFINIDO — Bioética (1 XP):** exige **Alquimia 3 + Inteligência 3 + Destreza 3"),"Destreza 3 confirmada pelo autor");
 });
 
 test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorção total",()=>{
