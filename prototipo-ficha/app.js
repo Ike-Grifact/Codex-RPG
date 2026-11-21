@@ -3016,7 +3016,7 @@ function magicComposerFields(){
  const tacticalHint=chosen==="vento"?
  "Ar: corrente em L, X, linha, cone ou círculo. Contorne a cobertura por passagem aberta; alcance/DE e limites de curvas pelo Narrador.":
  chosen==="fogo"&&ownsSkill("veneno")?
- "Ácido: Fogo + Veneno podem ser combinados legalmente para transmitir Veneno pela queimadura. Acúmulos e requisito de Sangramento PENDENTES; não aplicar automaticamente.":
+ "Ácido: Fogo + Veneno, em acerto com Queimar, aplica 1 acúmulo de Veneno por 2 rodadas sem exigir Sangramento nesse ataque; Veneno isolado ainda exige Sangramento. Não duplica dano. Registro manual até automatizar custos e DE.":
  "";
  const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
  return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
