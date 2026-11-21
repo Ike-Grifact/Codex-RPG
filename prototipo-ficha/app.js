@@ -450,6 +450,12 @@ const SKILLS=[
   1
  ],
  [
+  "maestria-martelos",
+  "Maestria em Martelos",
+  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
+  1
+ ],
+ [
   "ferreiro",
   "Ferreiro",
   "1 XP. Requisitos: Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (que exige Artesão 2). Habilita criar armas, armaduras Médias e Pesadas de Grau 1, consertar e modificar armas e preparar minérios e metais. +1 Êxito (E) apenas em testes de Forja; demais procedimentos de fabricação pendentes.",
@@ -759,6 +765,12 @@ const SKILL_AFFINITY={
  "artesao-avancado": [
   "practice:artesao"
  ],
+ "maestria-martelos": [
+  "practice:armas_conjuracao",
+  "attr:forca",
+  "attr:destreza",
+  "attr:vigor"
+ ],
  "ferreiro": [
   "practice:artesao",
   "attr:forca",
@@ -881,6 +893,7 @@ const SKILL_BRANCHES=[
  ["erudicao-avancada"],
  ["atletismo-avancado"],
  ["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"],
+ ["armas-leves","armas-medias","armas-pesadas","maestria-martelos"],
  ["criar-item-foco-magia","encantar-com-elemento"],
  ["apresentacao-avancada"],
  ["coleta-avancada"]
@@ -948,6 +961,7 @@ const SKILL_PERMALINKS={
  "erudicao-avancada": "erudicao-avancada",
  "atletismo-avancado": "atletismo-avancado",
  "artesao-avancado": "artesao-avancado",
+ "maestria-martelos": "maestria-em-martelos",
  "ferreiro": "ferreiro",
  "ferreiro-elemental": "ferreiro-elemental",
  "resistencia-a-fogo": "resistencia-a-fogo",
@@ -1000,6 +1014,7 @@ const CARD_REQUIREMENTS={
  "erudicao-avancada": "Erudição 2",
  "atletismo-avancado": "Atletismo 2",
  "artesao-avancado": "Artesão 2",
+ "maestria-martelos": "Força 3 + Destreza 1 + Vigor 1 (Perícia de Armas do peso é exigida somente na ativação)",
  "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 2)",
  "ferreiro-elemental": "Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento",
  "resistencia-a-fogo": "Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2",
@@ -1054,6 +1069,7 @@ const CARD_EFFECTS={
  "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "maestria-martelos": "Martelo habilitado pelo peso: acerto comum ativa 1 característica gratuita; crítico ativa até 2 características diferentes gratuitas e pode pagar 1 Coragem para mais uma terceira, se existente. Não exige Perícia de Armas para compra, só para ativação",
  "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
  "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades de fabricação pendentes; Encantar com Elemento é requisito comprável e nunca é concedido automaticamente",
  "resistencia-a-fogo": "Resistência pessoal à Vida: dano de Fogo que alcança a Vida do portador é reduzido à metade. Derreter G3 causa 0 de Vida direta (seu +1 fixo é anulado), mas E+P à Integridade da armadura continua normal. Não concede imunidade ou proteção à armadura",
@@ -1107,6 +1123,7 @@ const CARD_BRIEFS={
  "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "maestria-martelos": "1 XP; exige Força 3, Destreza 1 e Vigor 1. Com Perícia de Armas do peso, em acerto comum ativa 1 efeito grátis; em crítico, 2 diferentes grátis + possibilidade de terceira por 1 Coragem. Apenas efeitos existentes na arma.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
  "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
  "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O portador reduz à metade o dano de Fogo à Vida, sem proteger a armadura. O +1 de Vida direta de Derreter é 0, enquanto E+P à Integridade permanece normal. Frações e interações pendentes.",
@@ -1160,6 +1177,7 @@ const CARD_ACTIVATIONS={
  "erudicao-avancada": "Passiva",
  "atletismo-avancado": "Passiva",
  "artesao-avancado": "Passiva",
+ "maestria-martelos": "Acerto comum: 1 efeito grátis. Crítico: 2 efeitos diferentes grátis e uma terceira por 1 Coragem; requer arma e Perícia de peso habilitadas. Escolha manual",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
  "resistencia-a-fogo": "Passiva pessoal: metade do dano de Fogo à Vida e 0 Vida direta por Derreter. Não protege Integridade; cálculos automáticos pendentes",
@@ -1319,6 +1337,25 @@ function equipmentWeight(item){
  if(item.weight==="alto")return "pesado";
  if(item.weight==="extremo")return "extremo";
  return "leve";
+}
+// Maestria em Martelos: Perícia de Armas conforme o PESO é exigida na ativação,
+// e não como requisito para comprar Maestria em Martelos.
+function hammerMasteryRequiredSkill(item){
+ if(!item||!["weapon","arma"].includes(item.type))return null;
+ const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(!/martelo|marreta/.test(name))return null;
+ return {leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)]||null;
+}
+function hammerMasteryCanActivate(item,s=state){
+ const required=hammerMasteryRequiredSkill(item);
+ return !!required&&ownsSkill("maestria-martelos",s)&&ownsSkill(required,s);
+}
+// Orçamento de características para um ATAQUE QUE ACERTOU, não executa efeitos ou gasta recursos.
+function hammerMasteryOnHit(item,critical=false,payExtra=false,s=state){
+ if(!hammerMasteryCanActivate(item,s))return {free:0,paid:0,courageCost:0,maxEffects:0};
+ const free=critical?2:1;
+ const paid=critical&&payExtra?1:0;
+ return {free,paid,courageCost:paid,maxEffects:free+paid};
 }
 function equipmentGroupName(id){return EQUIPMENT_FAMILIES.find(x=>x[0]===id)?.[1]||"Outros";}
 function equipmentWeightName(id){return EQUIPMENT_WEIGHT_OPTIONS.find(x=>x[0]===id)?.[1]||"Leve";}
@@ -1953,6 +1990,7 @@ function skillReq(id,s=state){
   const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
    return"Requer "+advancedSource.label+" 2.";
+ if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
  if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
@@ -2555,6 +2593,7 @@ const GENE_AUTO_REQUIREMENTS={
  "erudicao-avancada":[["k:erudicao:2"]],
  "atletismo-avancado":[["p:atletismo:2"]],
  "artesao-avancado":[["p:artesao:2"]],
+ "maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]],
  "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],
  "ferreiro-elemental":[["a:inteligencia:2","a:destreza:2","s:ferreiro","s:improviso","s:criar-item-foco-magia","s:encantar-com-elemento"]],
  "resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]],
@@ -3991,6 +4030,7 @@ function renderInventory(){
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
+  (ownsSkill("maestria-martelos")&&["weapon","arma"].includes(it.type)&&/martelo|marreta/i.test(String(it.name||""))?'<div class="fp-item-hint"><strong>Maestria em Martelos:</strong> '+(hammerMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas do peso deste martelo, ou peso não padronizado.')+' Compra da Maestria não dispensa a Perícia do peso.</div>':"")+ 
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+

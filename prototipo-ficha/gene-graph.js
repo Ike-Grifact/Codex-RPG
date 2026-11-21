@@ -46,7 +46,7 @@ const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,in
 // Afinidade temática não substitui os requisitos de skillReq().
 // Pictogramas são apenas apresentação; não alteram o modelo de perícias.
 const GENE_SKILL_PICTOGRAMS=Object.freeze({
- "armas-leves":"arma-adaga","armas-medias":"arma-espada","armas-pesadas":"arma-montante",
+ "armas-leves":"arma-adaga","armas-medias":"arma-espada","armas-pesadas":"arma-montante","maestria-martelos":"arma-montante",
  "armas-longo-alcance":"arma-arco","maestria-arremesso-armas":"arma-arremesso",
  "armas-fogo":"arma-pistola","pugilismo":"arma-punhos",
  "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
@@ -56,7 +56,7 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
  "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
 });
 const GENE_CONSTELLATIONS=[
- {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
  {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},
