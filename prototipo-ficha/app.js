@@ -200,19 +200,19 @@ const SKILLS=[
  [
   "cancelar-magia",
   "Cancelar Magia",
-  "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; deve SUPERAR a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
+  "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
   1
  ],
  [
   "desencantar",
   "Desencantar",
-  "1 XP. Requer Cancelar Magia. Remove elemento aplicado por efeito ligado à criação de item de foco, com alcance de 8 m. O alvo exato, teste, ativação e relações com itens permanentes não foram especificados; resolução manual pelo Narrador, sem criar destruição automática de itens.",
+  "1 XP. Requer Cancelar Magia. Remove elementos ou imunidades até 8 m. Pode remover elementos ou imunidades a até 8 m (inclusive em alvos encantados), exceto o elemento natural constituinte de criatura realmente feita daquele elemento. Custo, teste e duração pendentes; não destruir automaticamente objeto ou criatura.",
   1
  ],
  [
   "espelho-magico",
   "Espelho Mágico",
-  "1 XP. Requer Cancelar Magia. Passivo: permite refletir contra o conjurador a parcela do dano mágico causada pelos Pavor(es) mantidos por ele na rolagem. Não converter Pavor que não causou dano em dano refletido; a resolução de proteção e eventual combinação com Escudo Refletor ficam para o Narrador.",
+  "1 XP. Requer Cancelar Magia. Passivo: permite refletir contra o conjurador a parcela do dano mágico causada pelos Pavor(es) mantidos por ele na rolagem. Reflete a parcela mágica de dano de Pavor calculada ANTES de a armadura do alvo absorver ou anular o dano; mesmo quando a armadura bloqueia tudo. Não reflete ataques físicos nem Pavor que não causaria dano antes da proteção. Proteção do conjurador e cumulação com Escudo Refletor pendentes.",
   1
  ],
  [
@@ -606,7 +606,7 @@ const SKILLS=[
  [
   "mudanca-elemental",
   "Mudança Elemental",
-  "1 XP. Requer Transformação Elemental, Destreza 4 e Inteligência 4. Permite mudar o elemento de criatura, armadura ou ambiente a até 8 m para um elemento cuja Perícia o personagem possua. Não supor imunidades, dano, grau, duração, resistência ou gasto adicional sem decisão do autor; aplicar manualmente.",
+  "1 XP. Requer Transformação Elemental, Destreza 4 e Inteligência 4. Permite mudar o elemento de criatura, armadura ou ambiente a até 8 m para um elemento cuja Perícia o personagem possua. Duração E − P, válida apenas quando E − P > 0. Unidade temporal, resistência e custo de ativação pendentes; aplicar manualmente, sem conceder outras imunidades automaticamente.",
   1
  ],
  [
@@ -1188,10 +1188,10 @@ const CARD_EFFECTS={
  "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
  "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
  "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
- "cancelar-magia":"Ao perceber magia a até 8 m com Pavor mantido, gasta 1 Coragem e tenta superar a DE da conjuração; precisa ter a Perícia do elemento cancelado.",
- "mudanca-elemental":"Altera o elemento de criatura, armadura ou ambiente a até 8 m para um elemento em que possui Perícia; duração e resistência pendentes.",
- "desencantar":"Remove elemento aplicado por criação de item de foco até 8 m; escopo e procedimento completos pendentes.",
- "espelho-magico":"Passivo: reflete ao conjurador o dano mágico provocado pelos Pavor(es) mantidos por ele. Não gera dano a partir de símbolos que não causaram dano.",
+ "cancelar-magia":"Ao perceber magia a até 8 m com Pavor mantido, gasta 1 Coragem e tenta alcançar DE igual ou maior (≥) que a magia adversária; empate cancela. Requer a Perícia do elemento cancelado.",
+ "mudanca-elemental":"Altera o elemento de criatura, armadura ou ambiente até 8 m para um elemento em que possui Perícia; duração E − P (>0); unidade temporal e resistência pendentes.",
+ "desencantar":"Remove elementos ou imunidades a até 8 m; não remove o elemento natural constitutivo de criatura feita desse elemento. Teste, custo e duração pendentes.",
+ "espelho-magico":"Passivo: reflete ao conjurador a parcela do dano mágico provocada por Pavor mantido, mesmo se a armadura da vítima absorveu ou anulou totalmente o dano. Não funciona contra dano físico.",
  "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
  "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
@@ -1265,10 +1265,10 @@ const CARD_BRIEFS={
  "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
  "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
  "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
- "cancelar-magia":"1 XP; Criar Item de Foco e Magia, Improviso Elemental, Inteligência/Agilidade/Destreza 4. Reage a conjuração a 8 m com Pavor mantido; 1 Coragem; superar DE com o mesmo elemento habilitado.",
- "mudanca-elemental":"1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente a até 8 m para elemento cuja Perícia possui.",
- "desencantar":"1 XP; Cancelar Magia. Remove elemento aplicado ligado à criação de item de foco em 8 m; efeitos e teste dependem de definição.",
- "espelho-magico":"1 XP; Cancelar Magia. Passivo; devolve ao conjurador o dano mágico da parcela de Pavor mantido, sem nova rolagem ou custo adicional declarado.",
+ "cancelar-magia":"1 XP; Criar Item de Foco e Magia, Improviso Elemental, Inteligência/Agilidade/Destreza 4. Reage a magia até 8 m com Pavor mantido; 1 Coragem; resultado ≥ DE adversária, empate cancela; Perícia do mesmo elemento.",
+ "mudanca-elemental":"1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente até 8 m para elemento habilitado; duração E − P, exigindo resultado positivo.",
+ "desencantar":"1 XP; Cancelar Magia. Remove elementos ou imunidades em 8 m, exceto elemento natural constituinte de criatura elemental; teste e ativação pendentes.",
+ "espelho-magico":"1 XP; Cancelar Magia. Passivo; reflete dano mágico por Pavor mantido antes da armadura absorver ou anular, mesmo se a Vida não for atingida; somente magia.",
  "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
  "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
@@ -4336,10 +4336,10 @@ function renderSkills(){
   (ownsSkill("escudo-refletor")?'<p class="fp-alert"><strong>Escudo Refletor:</strong> com escudo físico equipado, reflita ao inimigo apenas o dano efetivo da parcela de Pavor do ataque recebido. Não diminui o golpe original; proteções e resultado devem ser resolvidos pelo Narrador.</p>':"")+
   (ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")?'<p class="fp-alert"><strong>Aura Sagrada:</strong> ao assumir efetivamente a forma Sagrada, pessoas a até 3 m recebem +1 Coragem, até o próprio teto. É um efeito da Transformação Elemental; não se repete automaticamente a cada turno. Registre o efeito nas fichas.</p>':"")+
   (ownsSkill("sentido-elemental")?'<p class="fp-alert"><strong>Sentido Elemental:</strong> gaste 1 Coragem para analisar um alvo e conhecer sua afinidade elemental (informada pelo Narrador). <button type="button" class="fp-secondary" data-action="sentido-elemental-use"'+(state.pending||state.courage<1?' disabled':'')+'>Analisar alvo (−1 Coragem)</button></p>':"");
- const antimagicNotes=(ownsSkill("cancelar-magia")?'<p class="fp-alert"><strong>Cancelar Magia:</strong> magia percebida a até 8 m, com pelo menos 1 Pavor mantido. Requer sua Perícia no elemento e 1 Coragem para tentar superar <strong>estritamente</strong> a DE declarada da conjuração (todos os valores mantidos). <button type="button" class="fp-secondary" data-action="cancelar-magia-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar tentativa (−1 Coragem)</button> A ficha registra a tentativa; o teste e a anulação devem ser resolvidos com o Narrador.</p>':"")+
-  (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração, resistência e custo de ativação não informados; efeito manual.</p>':"")+
-  (ownsSkill("desencantar")?'<p class="fp-alert"><strong>Desencantar:</strong> remova elemento aplicado ligado à criação de um item de foco, até 8 m. O escopo exato do efeito ainda precisa de confirmação autoral; não exclua itens automaticamente.</p>':"")+
-  (ownsSkill("espelho-magico")?'<p class="fp-alert"><strong>Espelho Mágico:</strong> passivo. Reflita ao conjurador a parcela de dano mágico atribuída ao Pavor mantido na conjuração, sem criar dano onde só houve símbolo. Aplicação manual; não confundir com Escudo Refletor físico.</p>':"");
+ const antimagicNotes=(ownsSkill("cancelar-magia")?'<p class="fp-alert"><strong>Cancelar Magia:</strong> magia percebida a até 8 m, com pelo menos 1 Pavor mantido. Requer sua Perícia no elemento e 1 Coragem para alcançar resultado <strong>igual ou maior (≥)</strong> que a DE declarada da conjuração (todos os valores mantidos); empate cancela. <button type="button" class="fp-secondary" data-action="cancelar-magia-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar tentativa (−1 Coragem)</button> A ficha registra a tentativa; o teste e a anulação devem ser resolvidos com o Narrador.</p>':"")+
+  (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração <strong>E − P, com E − P > 0</strong>. Unidade de duração, resistência e custo de ativação pendentes; efeito manual.</p>':"")+
+  (ownsSkill("desencantar")?'<p class="fp-alert"><strong>Desencantar:</strong> remova elementos ou imunidades até 8 m, inclusive em itens encantados. Não remove o elemento natural de criatura constituída desse elemento; não exclua objetos nem criaturas automaticamente.</p>':"")+
+  (ownsSkill("espelho-magico")?'<p class="fp-alert"><strong>Espelho Mágico:</strong> passivo. Reflita ao conjurador a parcela de <strong>dano mágico de Pavor mantido, antes da armadura absorver ou anular</strong>; funciona mesmo quando a armadura bloqueia tudo. Não funciona contra ataque físico. Aplicação manual; não confundir com Escudo Refletor.</p>':"");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
  $("skills-list").innerHTML=defensiveNotes+antimagicNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
@@ -4787,14 +4787,14 @@ function onClick(event){
   const enemyDe=Number(deInput);
   if(deInput.trim()===""||!Number.isSafeInteger(enemyDe)||enemyDe<0){toast("Informe a DE inteira e não negativa declarada pelo Narrador.");break;}
   if(!confirm("Confirmar: você percebe a conjuração de "+elementName+" a até 8 m, e o conjurador adversário MANTEVE ao menos um símbolo de Pavor? Sem isso, não é possível cancelar."))break;
-  if(!confirm("Gastar 1 Coragem para TENTAR cancelar "+elementName+"? É preciso superar a DE "+enemyDe+" (resultado estritamente maior), sem sucesso automático."))break;
+  if(!confirm("Gastar 1 Coragem para TENTAR cancelar "+elementName+"? É preciso igualar ou superar a DE "+enemyDe+" (resultado ≥ "+enemyDe+"); empate cancela, sem sucesso automático."))break;
   state.courage-=1;
   state.history.unshift({date:new Date().toISOString(),name:"Cancelar Magia · "+elementName,
-   outcome:"Tentativa declarada · DE adversária "+enemyDe+" · exige resultado > "+enemyDe+"; Narrador resolve",
+   outcome:"Tentativa declarada · DE adversária "+enemyDe+" · exige resultado ≥ "+enemyDe+"; empate cancela; Narrador resolve",
    de:enemyDe,reached:0,E:0,A:0,P:0,faces:[],damage:0});
   state.history=state.history.slice(0,20);
   render();save();
-  toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e supere estritamente DE "+enemyDe+"; o Narrador confirma o cancelamento.");break;
+  toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e alcance DE ≥ "+enemyDe+" (empate cancela); o Narrador confirma o resultado.");break;
  }
  case "sentido-elemental-use":{
   if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
