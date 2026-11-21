@@ -3193,6 +3193,7 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "manejo-perfeito":[["p:armas_conjuracao:2","a:destreza:2","s:disciplina-avancada"]],
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
  "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],
  "golpe-furtivo":[["p:armas_conjuracao:2","p:furtividade:2"]],
