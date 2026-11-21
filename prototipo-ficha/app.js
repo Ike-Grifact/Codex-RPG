@@ -318,6 +318,18 @@ const SKILLS=[
   1
  ],
  [
+  "maestria-escudos",
+  "Maestria em Escudos",
+  "1 XP. Requisitos: Destreza 2 + Vigor 2. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 12, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
+  1
+ ],
+ [
+  "escudo-bumerangue",
+  "Escudo Bumerangue",
+  "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite ataque com escudo a até 8 m, rolando Disciplina (Armas) + Atributo(s) escolhido(s). Se alcançar a DE, escudo retorna no MESMO TURNO, com ou sem Pavor; se falhar, cai no chão conforme Arremesso de Armas: falha limpa no caminho (1A pode permitir correr e recuperar); com Pavor próximo ao alvo, podendo atingir aliado próximo se alcançar sua DE. Queda em metros: E mantidos + P não anulado + E convertido de 2A. Lançar custa 1 Coragem; no acerto, causa dano físico normal da rolagem (E válidos + piso(P/2), com crítico) e permite características da peça conforme gatilhos e custos normais. Obstáculos e economia de ação permanecem PENDENTES.",
+  1
+ ],
+ [
   "maestria-arremesso-armas",
   "Perícia em Arremesso de Armas",
   "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
@@ -707,6 +719,8 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:destreza"
  ],
+ "maestria-escudos": ["attr:destreza","attr:vigor","know:protecao"],
+ "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
  "maestria-arremesso-armas": [
   "practice:armas_conjuracao",
   "attr:forca",
@@ -854,6 +868,7 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["maestria-escudos","escudo-bumerangue","maestria-arremesso-armas"],
  ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental"],
  ["criar-item-foco-magia","terra","pericia-druidica"],
  ["criar-item-foco-magia","terra","transformacao-elemental"],
@@ -981,6 +996,8 @@ const SKILL_PERMALINKS={
  "espalhar-golpe": "golpe-colossal",
  "pugilismo": "pugilismo",
  "artista-marcial": "artista-marcial",
+ "maestria-escudos": "maestria-em-escudos",
+ "escudo-bumerangue": "escudo-bumerangue",
  "maestria-arremesso-armas": "pericia-em-arremesso-de-armas",
  "disparo-fulminante": "disparo-fulminante",
  "disparo-multiplo": "disparo-multiplo",
@@ -1031,6 +1048,8 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "maestria-escudos": "Destreza 2 + Vigor 2",
+ "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
  "pericia-montaria": "Influência 1 + Destreza 2; custo em XP PENDENTE",
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
@@ -1100,6 +1119,8 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
+ "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
  "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
@@ -1168,6 +1189,8 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
+ "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
@@ -1236,6 +1259,8 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
+ "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal e características registradas na peça conforme habilitação",
  "montar": "Vantagem nos testes com montaria; não é +1A",
  "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
  "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
@@ -1532,7 +1557,7 @@ function equipmentDetails(item){
  if(kind==="armor"||kind==="armadura"){
   info.push("Integridade "+(item.integrity?.max??item.max??0));
   info.push(({muito_leve:"+2 DE",leve:"+1 DE",medio:"0 DE",pesado:"−1 DE",extremo:"−2 DE"})[equipmentWeight(item)]||"DE a conferir");
- }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(item.integrity?.max??item.max??0));
+ }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(kind==="escudo"?shieldIntegrityDisplay(item).max:(item.integrity?.max??item.max??0))+(kind==="escudo"&&shieldMasteryActive(item)?" (+1 Maestria)":""));
  if(item.range>0)info.push("Alcance "+item.range+" m");
  if(p.length)info.push(p.join(" · "));
  return info.join(" · ");
@@ -1706,6 +1731,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
+  shieldThrowId:"",shieldThrowMeters:8,
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -2024,8 +2050,12 @@ function normalizeItem(it={}){
  const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
   (!["alto","extremo"].includes(weight)||it.embeddedWeapon==="pesado")?it.embeddedWeapon:"";
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
-  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
+  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped&&!it.shieldGrounded,
+  shieldGrounded:type==="escudo"&&!!it.shieldGrounded,
+  shieldFallCase:type==="escudo"&&["caminho","perto-alvo"].includes(it.shieldFallCase)?it.shieldFallCase:"",
+  shieldFallMeters:type==="escudo"?clamp(Math.floor(Number(it.shieldFallMeters)||0),0,1000):0,
   embeddedWeapon:embed,
+  shieldMasteryBonusSpent:type==="escudo"&&!!it.shieldMasteryBonusSpent,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances",
@@ -2178,6 +2208,8 @@ function skillReq(id,s=state){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
+ if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
+ if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
@@ -2238,6 +2270,68 @@ function canEquipArmor(s=state,it=null){
  if(it.weight==="extremo"&&((s.attributes.vigor||0)<6||(s.practices.atletismo||0)<6))return false;
  return true;
 }
+// Bônus de Maestria em Escudos: apenas uma peça física equipada recebe os bônus.
+function masteredShield(s=state){
+ return ownsSkill("maestria-escudos",s)?(s.items||[]).find(it=>it.type==="escudo"&&it.equipped)||null:null;
+}
+function shieldMasteryActive(item,s=state){
+ const shield=masteredShield(s);
+ return !!(shield&&item?.type==="escudo"&&shield.id===item.id);
+}
+function shieldIntegrityDisplay(item,s=state){
+ const active=shieldMasteryActive(item,s),bonus=active?1:0;
+ return {hp:(item?.hp||0)+(active&&!item.shieldMasteryBonusSpent?1:0),max:(item?.max||0)+bonus,bonus,active};
+}
+// O ponto extra não modifica a Integridade-base e não renasce ao reequipar.
+function changeShieldIntegrity(item,delta,s=state){
+ if(!item||item.type!=="escudo"||![-1,1].includes(Number(delta)))return;
+ const active=shieldMasteryActive(item,s);
+ if(delta<0){
+  if(active&&!item.shieldMasteryBonusSpent){item.shieldMasteryBonusSpent=true;return;}
+  item.hp=Math.max(0,item.hp-1);
+ }else if(item.hp<item.max)item.hp=Math.min(item.max,item.hp+1);
+ else if(active&&item.shieldMasteryBonusSpent)item.shieldMasteryBonusSpent=false;
+}
+function loseShieldIntegrity(item,amount,s=state){
+ const loss=Math.min(shieldIntegrityDisplay(item,s).hp,Math.max(0,Math.floor(amount)||0));
+ if(!loss)return 0;
+ let rest=loss;
+ if(shieldMasteryActive(item,s)&&!item.shieldMasteryBonusSpent){
+  item.shieldMasteryBonusSpent=true;rest--;
+ }
+ item.hp=Math.max(0,item.hp-rest);
+ return loss;
+}
+function shieldBoomerangReady(item,s=state){
+ return !!(item?.type==="escudo"&&item.equipped&&!item.shieldGrounded&&
+  ownsSkill("escudo-bumerangue",s)&&ownsSkill("maestria-escudos",s)&&
+  ownsSkill("maestria-arremesso-armas",s)&&
+  (s.attributes?.destreza||0)>=2&&(s.attributes?.forca||0)>=3);
+}
+// Resultado da rolagem de Escudo Bumerangue: mesma queda de Arremesso de Armas.
+// E/P são contados dos dados mantidos; 2A convertido vale 1E na distância.
+function shieldBoomerangResult(success,pavor,keptE,keptP,convertedE){
+ if(success)return {returned:true,grounded:false,where:"portador",distance:null};
+ return {returned:false,grounded:true,where:pavor>0?"perto-alvo":"caminho",
+  distance:Math.max(0,Math.floor(keptE)+Math.floor(keptP)+Math.floor(convertedE))};
+}
+function prepareShieldBoomerang(id){
+ if(state.pending){toast("Finalize a rolagem pendente antes de arremessar um escudo.");return;}
+ if(editMode){toast("Conclua a edição da ficha antes de lançar o escudo.");return;}
+ const shield=state.items.find(it=>it.id===id);
+ if(!shieldBoomerangReady(shield)){toast("Escudo Bumerangue exige escudo físico equipado, Destreza 2, Força 3, Maestria em Escudos e Arremesso de Armas.");return;}
+ if((state.practices.armas_conjuracao||0)<1){toast("O ataque exige Disciplina treinada para rolar os dados.");return;}
+ const attribute=preferredQuickAttribute({type:"escudo"});
+ if(!attribute){toast("O ataque requer ao menos um Atributo treinado.");return;}
+ draft=freshDraft();
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ draft.attribute={group:"attr",key:attribute};
+ draft.mode="armas";draft.shieldThrowId=id;draft.shieldThrowMeters=8;
+ draft.equipmentId="";draft.shieldRaise=false;
+ sheetPage="play";render();save();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Escudo Bumerangue: 1 Coragem para arremessar; no acerto, dano físico normal e características da peça. Até 8 m, retorno no acerto e queda na falha.");
+}
 function equippedArmor(s=state){return s.items.find(it=>it.type==="armadura"&&it.equipped&&canEquipArmor(s,it))||null;}
 function armorDePenalty(s=state){
  const it=equippedArmor(s);
@@ -2250,20 +2344,22 @@ function armorDodgeBonus(s=state){
 // Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
 // Teto da DE natural: 9. Teto absoluto após modificadores: 12.
 function deDefense(s=state){
- return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)));
+ return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
 }
 function deDodge(s=state){return deDefense(s);} // Esquiva não recebe um segundo bônus.
 function defensePresentation(s=state){
  const natural=deNatural(s),total=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
  const armor=equippedArmor(s);
  const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
- const modifier=bonus-penalty;
- return {label:"DE DEFENSIVA",value:total,caption:armor?
-  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+") = "+total+" · Vale para todas as defesas · Teto 12":
-  "DE natural "+natural+" · Teto natural 9 · Teto total 12 com modificadores"};
+ const modifier=bonus-penalty,shieldBonus=masteredShield(s)?1:0;
+ const baseCaption=armor?
+  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
+  "DE natural "+natural;
+ return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto natural 9 / final 12"};
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function itemLoad(it){
+ if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
  const regular=WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);
  // A arma presa soma peso real categórico enquanto o escudo permanecer carregado
  // (mesmo se abaixado). O item é retirado do inventário ao abandonar o escudo.
@@ -2786,6 +2882,8 @@ const GENE_AUTO_REQUIREMENTS={
  "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
  "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
   "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
+ "maestria-escudos":[["a:destreza:2","a:vigor:2"]],
+ "escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]],
  "maestria-arremesso-armas":[
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
@@ -3422,7 +3520,7 @@ function renderVitals(){
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
  if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 / 0"):"—";
  if(integrityCaption)integrityCaption.textContent=protection?protection.name:"Sem armadura";
- $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"");
+ $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
  if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
@@ -3605,6 +3703,16 @@ function modeDefault(){return "armas";}
 function buildPool(){
  const errors=[],pool=[];
  if(!draft.base||!draft.attribute)return{errors:["Selecione Base e Atributo."],pool};
+ if(draft.shieldThrowId){
+  const shield=state.items.find(it=>it.id===draft.shieldThrowId);
+  if(!shieldBoomerangReady(shield))errors.push("Escudo Bumerangue exige escudo equipado e Perícias/requisitos válidos.");
+  if(draft.base.group!=="practice"||draft.base.key!=="armas_conjuracao"||draft.mode!=="armas"||draft.attribute.group!=="attr"||
+    (draft.third&&draft.third.group!=="attr"))errors.push("Escudo Bumerangue requer Disciplina (Armas) + Atributo(s), não outra Prática ou Conhecimento.");
+  if(draft.shieldRaise||draft.cravarRemovalShieldId||draft.equipmentId||draft.magicElement||draft.weightEnabled)
+   errors.push("Arremessar Escudo Bumerangue é uma ação própria; não combinar com Levantar Escudo, Cravar ou dados de arma.");
+  if(!Number.isInteger(draft.shieldThrowMeters)||draft.shieldThrowMeters<1||draft.shieldThrowMeters>8)
+   errors.push("Escudo Bumerangue possui alcance máximo de 8 metros.");
+ }
  if(draft.third){
   if(same(draft.third,draft.base)||same(draft.third,draft.attribute))errors.push("Não duplique a mesma fonte.");
   if(draft.third.group==="attr"&&!canSecondAttribute())errors.push("Segundo Atributo complementar exige Perícia Avançada da fonte principal.");
@@ -3648,7 +3756,7 @@ function buildPool(){
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
- const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+
+ const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
  if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
@@ -3686,11 +3794,11 @@ function renderComposer(){
    magicComposerFields()+
    '<div class="fp-composer-actions"><button type="button" class="fp-secondary" data-action="clear">Limpar seleção</button></div>';return;
  }
- if(usingDiscipline()&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
+ if(usingDiscipline()&&!draft.shieldThrowId&&!draft.equipmentId&&!(draft.mode==="conjuracao"&&draft.magicElement)){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
- const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+lifeStage().coragem;
+ const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
@@ -3705,8 +3813,9 @@ function renderComposer(){
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Muito Leve / Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
  const selectedItem=state.items.find(x=>x.id===draft.equipmentId);
+ const throwingShield=!!draft.shieldThrowId;
  const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
- const gearOptions=spellSelection?magicComposerFields():
+ const gearOptions=throwingShield?"":spellSelection?magicComposerFields():
   usingDiscipline()?'<label class="fp-form-field full">Arma ou foco (dado extra sujeito a Perícia)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
@@ -3718,16 +3827,17 @@ function renderComposer(){
    " → "+describeDicePool(temporaryGradeDice(source.group,grade,true))];
  });
  const carriedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
- const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield?
+ const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
   (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
  const checks=shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
- '<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>'+
+ (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
  "";
- const options='<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
+ const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Lançamento: 1 Coragem; Disciplina + Atributo(s), até 8 m, sem dado adicional de escudo. No acerto, dano físico normal, características da peça conforme custos/gatilhos e retorno no mesmo turno. Na falha, queda conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
+ const options=throwDetails+'<div class="fp-form-grid">'+(isShared?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+gearOptions+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
@@ -3752,7 +3862,7 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
  if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
@@ -3761,11 +3871,13 @@ function roll(){
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  state.pending={created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+  shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
   opts:{de:draft.de,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
+    shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
     magicElement:draft.mode==="conjuracao"?draft.magicElement:"",
     magicGrade:draft.mode==="conjuracao"&&draft.magicElement?draft.magicGrade:0,
     magicFocusId:draft.mode==="conjuracao"?draft.magicFocusId:"",
@@ -3789,6 +3901,17 @@ function score(){
  const p=state.pending;if(!p)return null;
  const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
+ if(p.shieldThrowId){
+  const shield=state.items.find(it=>it.id===p.shieldThrowId);
+  if(!shieldBoomerangReady(shield))errs.push("Escudo Bumerangue inválido: escudo não equipado ou requisitos não atendidos.");
+  if(p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||p.mode!=="armas"||
+    p.attribute?.group!=="attr"||(p.third&&p.third.group!=="attr"))
+   errs.push("Escudo Bumerangue exige Disciplina (Armas) e Atributo(s) escolhido(s).");
+  if(p.opts.shieldRaise||p.cravarRemovalShieldId||p.opts.equipmentId||p.opts.magicElement||p.opts.weightEnabled)
+   errs.push("Arremesso de escudo não admite Levantar Escudo, dados de arma ou afinidade de peso; efeitos existentes do escudo seguem suas regras.");
+  if(!Number.isInteger(p.opts.shieldThrowMeters)||p.opts.shieldThrowMeters<1||p.opts.shieldThrowMeters>8)
+   errs.push("Escudo Bumerangue atinge no máximo 8 metros.");
+ }
  if(p.cravarRemovalShieldId){
   const shield=state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon);
   if(!shield)errs.push("O escudo já não possui a arma cravada declarada.");
@@ -3808,7 +3931,7 @@ function score(){
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
  const criticalConverted=critTier&&raw[2]>0?1:0;
- const item=state.items.find(x=>x.id===p.opts.equipmentId);
+ const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
  const properties=item?.equipped?(item.properties||[]):[];
  const el=(item?.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
  const elementSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
@@ -3844,7 +3967,9 @@ function score(){
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem;
+ const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
+  Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem+Number(!!p.shieldThrowId);
  if(p.mode==="conjuracao"&&p.opts.magicElement){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
@@ -3922,7 +4047,7 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Retirada é ação de teste, não ataque
+ const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -3943,8 +4068,8 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
@@ -3959,8 +4084,8 @@ function renderPending(){
   '<strong class="fp-face-runes" aria-hidden="true">'+faceRunesMarkup(face(d.sides,d.face),d.face===d.sides)+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
- const item=state.items.find(x=>x.id===p.opts.equipmentId);
- const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante"));
+ const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
+ const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar"));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
   [['','Nenhuma'],...specials.map(x=>[x,x])].map(([id,label])=>'<option value="'+esc(id)+'"'+(id===selected?" selected":"")+'>'+esc(label)+'</option>').join("")+'</select></label>';
  const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
@@ -4013,7 +4138,7 @@ function renderPending(){
  (p.cravarRemovalShieldId?'<p class="fp-caption"><strong>RETIRAR CRAVAR — '+(s.success?'SUCESSO':'FALHA')+':</strong> '+s.reached+' contra DE '+p.opts.de+
   '. '+(s.success?'Ao finalizar, a arma será retirada do escudo e sua carga/penalidade serão removidas.':'A arma permanecerá cravada no escudo.')+
   ' Não é ataque e não causa dano; Pavor continua produzindo risco.</p>':
-  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>')+
+  (p.shieldThrowId?'<p class="fp-caption"><strong>ESCUDO BUMERANGUE:</strong> Ataque de Disciplina + Atributo(s), até 8 m. <strong>'+(s.shieldThrowOutcome?.returned?'ACERTO — escudo retorna no mesmo turno, mesmo com Pavor.':'FALHA — escudo cai no chão; '+(s.shieldThrowOutcome?.where==='caminho'?'queda no caminho, 1A pode permitir correr e recuperar.':'queda próxima ao alvo; pode atingir aliado próximo se alcançar a DE dele.')+' Distância de queda: '+s.shieldThrowOutcome?.distance+' m (E mantidos + P não anulado + E convertido por 2A).')+'</strong> Dano físico básico no acerto: <strong>'+s.damage+'</strong> (Êxitos válidos + piso(Pavor/2), crítico normal). Características da peça só se existirem e forem habilitadas; Pavor conserva seus riscos. A situação será registrada ao finalizar.</p>':'<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'))+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+
@@ -4049,11 +4174,19 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=(p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalSuccess=!!(removalShield&&s.success);
+ const thrownShield=p.shieldThrowId?state.items.find(it=>it.id===p.shieldThrowId&&it.type==="escudo"):null;
+ if(thrownShield&&s.shieldThrowOutcome?.grounded){
+  thrownShield.equipped=false;thrownShield.shieldGrounded=true;
+  thrownShield.shieldFallCase=s.shieldThrowOutcome.where;
+  thrownShield.shieldFallMeters=s.shieldThrowOutcome.distance;
+ }
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
+  shieldThrowId:p.shieldThrowId||"",shieldThrowMeters:p.opts.shieldThrowMeters||0,
+  shieldThrowReturned:!!s.shieldThrowOutcome?.returned,shieldThrowFallCase:s.shieldThrowOutcome?.grounded?s.shieldThrowOutcome.where:"",shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
@@ -4064,7 +4197,10 @@ function finalize(){
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
  if(removalSuccess)removalShield.embeddedWeapon=""; // Remover −2E e massa extra somente após sucesso
  state.history=state.history.slice(0,20);state.pending=null;save();render();
- toast(p.cravarRemovalShieldId?(removalSuccess?"Sucesso: arma retirada do escudo; carga e penalidade atualizadas.":"Falha: arma permanece cravada no escudo."):
+ toast(p.shieldThrowId?(s.shieldThrowOutcome?.returned?
+  "Escudo Bumerangue acertou e retornou no mesmo turno. Pavor mantém seus riscos.":
+  "Escudo Bumerangue falhou e caiu "+(s.shieldThrowOutcome?.where==="caminho"?"no caminho":"próximo ao alvo")+". Recupere conforme Arremesso de Armas; ficou desequipado."):
+  p.cravarRemovalShieldId?(removalSuccess?"Sucesso: arma retirada do escudo; carga e penalidade atualizadas.":"Falha: arma permanece cravada no escudo."):
   (s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
 function updateGrade(group,id,delta){
@@ -4177,24 +4313,30 @@ function renderInventory(){
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
    '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 3, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
+  const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
+  const shieldMasteryHint=it.type!=="escudo"?"":(
+   (shieldMasteryActive(it)?'<div class="fp-item-hint"><strong>Maestria em Escudos ativa:</strong> +1 DE defensiva (teto 12) e +1 Integridade neste escudo: '+shieldIntegrity.hp+' / '+shieldIntegrity.max+' efetivos. Valor-base: '+it.hp+' / '+it.max+'. Ponto adicional '+(it.shieldMasteryBonusSpent?'já consumido (reparo manual necessário).':'disponível.')+' Não altera a Integridade simbólica de Levantar Escudo.</div>':"")+
+   (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
+   (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
+  );
   const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
   '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
-  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+it.hp+' / '+it.max+'</b>'+
+  '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
   '<div class="fp-item-hint"><label>Grau <input type="number" data-item-field="grade" data-id="'+esc(it.id)+'" min="1" max="4" value="'+it.grade+'" style="width:40px"></label> · '+
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
-  '<label>Integridade máxima <input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
+  '<label>Integridade máxima '+(it.type==="escudo"?'(base) ':'')+'<input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
@@ -4211,7 +4353,7 @@ function renderInventory(){
   (it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
-  armorFields+shieldEmbedFields+cravarImpact+'</div></details>';
+  armorFields+shieldMasteryHint+shieldEmbedFields+cravarImpact+'</div></details>';
  }).join(""):'<div class="fp-empty-list">'+(state.items.length?'Nenhum item corresponde aos filtros.':'Nenhum item cadastrado. Use <strong>+ Item</strong> para simular equipamento e carga.')+'</div>';
 }
 function renderTrade(){
@@ -4516,6 +4658,15 @@ function onClick(event){
   break;
  }
  case "repertoire-roll":quickRollItem(id);break;
+ case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "shield-ground-recover":{
+  const it=state.items.find(x=>x.id===id&&x.type==="escudo"&&x.shieldGrounded);
+  if(!it||state.pending){toast("Finalize a rolagem e confirme a recuperação do escudo no chão.");break;}
+  if(!confirm("O Narrador confirmou que o escudo foi recuperado? Em falha limpa, 1 Antecipar pode permitir correr para recuperá-lo; não há recuperação automática, e riscos com Pavor precisam ser resolvidos."))break;
+  it.shieldGrounded=false;it.shieldFallCase="";it.shieldFallMeters=0;
+  it.equipped=true; // Escudo devolvido ao portador apenas após confirmação do Narrador.
+  render();save();toast("Escudo recuperado e equipado, conforme confirmação do Narrador.");break;
+ }
  case "wizard-back":if(wizardStep===1)wizardStarterBack();else wizardSelectStep(wizardStep-1);break;
  case "wizard-go":wizardSelectStep(Number(button.dataset.step));break;
  case "wizard-finish":wizardFinalize();break;
@@ -4675,17 +4826,18 @@ function onClick(event){
   const e=Number(input?.value);
   if(!Number.isSafeInteger(e)||e<1||e>32){toast("Informe quantos Êxitos mantidos foram válidos (1 a 32).");break;}
   if(!confirm("Confirmar ataque acertado com Cravar ativada por Perícia habilitada? Aplicar "+e+" de perda à Integridade do escudo "+target.name+"?"))break;
-  const removed=Math.min(target.hp,e);
-  target.hp=Math.max(0,target.hp-e);
+  const removed=loseShieldIntegrity(target,e);
+  const remaining=shieldIntegrityDisplay(target);
   renderInventory();renderVitals();save();
-  toast("Cravar: "+removed+" de Integridade perdida; restante "+target.hp+"/"+target.max+".");
+  toast("Cravar: "+removed+" de Integridade perdida; restante "+remaining.hp+"/"+remaining.max+" (bônus de Maestria apenas com escudo equipado).");
   break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
+  if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
   if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast("Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
   it.equipped=!it.equipped;
