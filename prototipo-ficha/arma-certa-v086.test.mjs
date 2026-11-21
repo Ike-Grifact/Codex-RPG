@@ -19,6 +19,7 @@ function part(start,end){
 
 const reqFactory=new Function("state","owned",
  'const WEAPON_MASTERY_TYPES=[];const APPROVED_WEAPON_MASTERY_PURCHASE={};'+
+ 'const ADVANCED_SOURCE_DEFS=[];const SOURCE_PROPS={};'+
  'const racialGrants=()=>[];const ownsSkill=(id)=>owned.includes(id);'+
  part("function skillReq(","function dependentsValid(")+
  "return skillReq;");
