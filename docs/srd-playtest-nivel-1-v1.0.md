@@ -14,6 +14,16 @@ repository: "Ike-Grifact/Codex-RPG"
 
 > **Revisão do ciclo — 19/11/2026 (DEFINIDO):** a escolha **Elevar dado** substitui a conversão histórica de uma face individual (d4→d6→d10→d12) por **+1 Grau temporário à fonte selecionada**, usando toda a composição de dados da tabela (1 Coragem, sem XP). Os contornos e etiquetas de **XP reduzido / aumentado** só aparecem na área de fontes da ficha ao ativar **Modo edição**; no Codex Genético de criação continuam visíveis para orientar compras. Os limites de 9 dados rolados e retenção permanecem.
 
+## Adendo normativo — Perícia Ferreiro (20/11/2026)
+
+**DEFINIDO — decisão autoral de 20/11/2026:** a Perícia **Ferreiro** custa **1 XP** e exige **Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado**. A Perícia **Artesão Avançado**, pré-requisito, já exige **Artesão 2** e custa 1 XP. Logo, um personagem que cumpra todos os requisitos de Ferreiro precisa, na prática, de **Artesão 2**, sem dispensar a aquisição de Artesão Avançado. A menção a Artesão 1 é preservada conforme a decisão autoral, sem reduzir exigências indiretas.
+
+**DEFINIDO — habilitações:** Ferreiro permite **criar armas e armaduras Médias e Pesadas de Grau 1; consertar e modificar armas; preparar minérios e metais**. **Bônus de +1 Êxito (E) em testes de Forja**, não uma condição Vantagem nem um bônus genérico a qualquer teste que use a Prática Artesão. Preservar DE, composição, limites de dados e demais resultados da rolagem.
+
+**PENDENTE de procedimento:** custos, materiais e tempos de fabricação; DE aplicável a cada tarefa; alcance das modificações de armas; procedimento de conserto; automação de fabricar/consertar/modificar/consumir materiais no inventário. O bônus é anotado na Perícia e deve ser aplicado manualmente em teste declarado como Forja até existir campo de contexto confiável no rolador. Não atribuir +1E a qualquer rolagem com Artesão nem criar equipamento ao comprar a Perícia.
+
+---
+
 ## 1. Estados e limites da revisão
 
 - **DEFINIDO:** aprovado pelo autor. **EXPERIMENTAL:** em playtest. **PROPOSTO:** hipótese não homologada. **PENDENTE:** falta definição operacional.

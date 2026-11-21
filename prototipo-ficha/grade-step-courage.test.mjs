@@ -161,3 +161,34 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
   assert.match(readFileSync(join(root,"../assets/icons/codex/status-"+icon+".svg"),"utf8"),/<svg /);
  }
 });
+
+
+test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a Forja",()=>{
+ const sourceReq=extract("function skillReq(id,s=state){","function dependentsValid(");
+ const ADVANCED_SOURCE_DEFS=[{id:"artesao-avancado",group:"practice",key:"artesao",label:"Artesão"}];
+ const getReq=new Function("state","racialGrants","ownsSkill",
+  "const ADVANCED_SOURCE_DEFS="+JSON.stringify(ADVANCED_SOURCE_DEFS)+";const SOURCE_PROPS={practice:'practices'};"+sourceReq+"\nreturn skillReq;")(
+   {},()=>[],(id,s)=>s.skills.includes(id)
+  );
+ const ficha=({art=2,forca=1,destreza=1,inteligencia=1,skills=["artesao-avancado"]}={})=>({
+  attributes:{forca,destreza,inteligencia},practices:{artesao:art},knowledges:{},skills
+ });
+ assert.ok(getReq("ferreiro",ficha({skills:[]})),"Exige Artesão Avançado adquirido");
+ assert.ok(getReq("ferreiro",ficha({forca:0})),"Exige Força 1");
+ assert.ok(getReq("ferreiro",ficha({destreza:0})),"Exige Destreza 1");
+ assert.ok(getReq("ferreiro",ficha({inteligencia:0})),"Exige Inteligência 1");
+ assert.ok(getReq("ferreiro",ficha({art:0})),"Exige Artesão 1 explícito");
+ assert.equal(getReq("ferreiro",ficha()),null,"Compra autorizada com Artesão Avançado e os três Atributos");
+ assert.ok(getReq("artesao-avancado",ficha({art:1,skills:[]})),"Artesão Avançado exige grau 2");
+ assert.match(app,/"ferreiro",\s*"Ferreiro",[\s\S]*?\n  1\n \]/,"Ferreiro custa 1 XP");
+ assert.ok(app.includes('"ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]]'),"Compra assistida exige todas as fontes e a Perícia");
+ assert.ok(app.includes('"ferreiro": "ferreiro"'),"Verbete cadastrado");
+ assert.ok(app.includes("+1E somente em teste de Forja"),"Êxito adicional fica limitado à Forja");
+ assert.ok(!app.includes("Ferreiro garante +1E em Artesão"),"Sem bonus genérico por usar Artesão");
+ const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
+ assert.ok(graph.includes('"artesao-avancado","ferreiro"'),"Ferreiro visível no ramo de Artesão");
+ const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ assert.ok(catalog.includes('<a href="ferreiro.html">Ferreiro</a>'),"Catálogo tem link");
+ const entry=readFileSync(join(root,"../pericias/ferreiro.html"),"utf8");
+ assert.ok(entry.includes("+1 Êxito (1E)")&&entry.includes("testes de Forja"),"Verbete não amplia o bônus indevidamente");
+});

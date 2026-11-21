@@ -444,6 +444,12 @@ const SKILLS=[
   1
  ],
  [
+  "ferreiro",
+  "Ferreiro",
+  "1 XP. Requisitos: Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (que exige Artesão 2). Habilita criar armas, armaduras Médias e Pesadas de Grau 1, consertar e modificar armas e preparar minérios e metais. +1 Êxito (E) apenas em testes de Forja; demais procedimentos de fabricação pendentes.",
+  1
+ ],
+ [
   "apresentacao-avancada",
   "Apresentação Avançada",
   "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
@@ -735,6 +741,12 @@ const SKILL_AFFINITY={
  "artesao-avancado": [
   "practice:artesao"
  ],
+ "ferreiro": [
+  "practice:artesao",
+  "attr:forca",
+  "attr:destreza",
+  "attr:inteligencia"
+ ],
  "apresentacao-avancada": [
   "practice:apresentacao"
  ],
@@ -835,7 +847,7 @@ const SKILL_BRANCHES=[
  ["engenharia-avancada"],
  ["erudicao-avancada"],
  ["atletismo-avancado"],
- ["artesao-avancado"],
+ ["artesao-avancado","ferreiro"],
  ["apresentacao-avancada"],
  ["coleta-avancada"]
 ];
@@ -902,6 +914,7 @@ const SKILL_PERMALINKS={
  "erudicao-avancada": "erudicao-avancada",
  "atletismo-avancado": "atletismo-avancado",
  "artesao-avancado": "artesao-avancado",
+ "ferreiro": "ferreiro",
  "apresentacao-avancada": "apresentacao-avancada",
  "coleta-avancada": "coleta-avancada"
 };
@@ -950,6 +963,7 @@ const CARD_REQUIREMENTS={
  "erudicao-avancada": "Erudição 2",
  "atletismo-avancado": "Atletismo 2",
  "artesao-avancado": "Artesão 2",
+ "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 2)",
  "apresentacao-avancada": "Apresentação 2",
  "coleta-avancada": "Coleta 2",
  "armas-leves": "Disciplina 1",
@@ -1000,6 +1014,7 @@ const CARD_EFFECTS={
  "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+ "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
  "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
 };
@@ -1049,6 +1064,7 @@ const CARD_BRIEFS={
  "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+ "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
  "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
 };
@@ -1098,6 +1114,7 @@ const CARD_ACTIVATIONS={
  "erudicao-avancada": "Passiva",
  "atletismo-avancado": "Passiva",
  "artesao-avancado": "Passiva",
+ "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "apresentacao-avancada": "Passiva",
  "coleta-avancada": "Passiva"
 };
@@ -1887,6 +1904,7 @@ function skillReq(id,s=state){
   const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
    return"Requer "+advancedSource.label+" 2.";
+ if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
  if(id==="criar-veneno"&&(art<1||intelligence<2||alch<2||med<2))return"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.";
  // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.
  if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
@@ -2484,6 +2502,7 @@ const GENE_AUTO_REQUIREMENTS={
  "erudicao-avancada":[["k:erudicao:2"]],
  "atletismo-avancado":[["p:atletismo:2"]],
  "artesao-avancado":[["p:artesao:2"]],
+ "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],
  "apresentacao-avancada":[["p:apresentacao:2"]],
  "coleta-avancada":[["p:coleta:2"]],
  "criar-item-foco-magia":[["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"]],
