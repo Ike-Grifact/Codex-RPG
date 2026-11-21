@@ -2,7 +2,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
-export const SOURCE_COMMIT='6957ad45032bffef98c10c6160bc85fda1871fd1';
+export const SOURCE_COMMIT='874de82d788228ca5fb3c01b1ac06733218585a2';
 export function readSiteRules(){
  const cwd=fileURLToPath(new URL('../../',import.meta.url));
  const read=path=>execFileSync('git',['show',SOURCE_COMMIT+':'+path],{cwd,encoding:'utf8',maxBuffer:8*1024*1024});
@@ -12,8 +12,10 @@ export function readSiteRules(){
  const code=section(app,'const ADVANCED_SOURCE_DEFS=','// IDs de Perícias legadas')+
   section(app,'const GENE_AUTO_REQUIREMENTS=','function geneCandidateCopy')+
   section(graph,'const GENE_CONSTELLATIONS=','function position(')+
-  '\nJSON.stringify({skills:SKILLS,requirements:GENE_AUTO_REQUIREMENTS,advanced:ADVANCED_SOURCE_DEFS,families:GENE_CONSTELLATIONS})';
+  section(app,'const XP_LEVEL_REFERENCE=','const MAX_EARNED_XP=')+
+  '\nJSON.stringify({skills:SKILLS,requirements:GENE_AUTO_REQUIREMENTS,advanced:ADVANCED_SOURCE_DEFS,families:GENE_CONSTELLATIONS,levels:XP_LEVEL_REFERENCE,masteries:WEAPON_MASTERY_TYPES,approvedMasteries:APPROVED_WEAPON_MASTERY_PURCHASE})';
  const data=JSON.parse(vm.runInContext(code,context,{timeout:2000}));
  const cards=JSON.parse(vm.runInContext(section(app,'const CARD_REQUIREMENTS=','function skillCompactCard')+'\nJSON.stringify({activation:CARD_ACTIVATIONS,effects:CARD_EFFECTS,briefs:CARD_BRIEFS})',context,{timeout:2000}));
+ cards.activation['invocar-esfera-espiritual']='1 Coragem por esfera · Até 5 criadas por rodada e 5 armazenadas';
  return {...data,cards,requirementFunction:section(app,'function skillReq(','function dependentsValid('),commit:SOURCE_COMMIT,app};
 }

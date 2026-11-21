@@ -6,7 +6,9 @@ import {standardMovement,movementBudget} from "../module/movement.mjs";
 import {prepareCombatAction,changeRollSource} from "../module/combat-action.mjs";
 import {buildPool} from "../module/rules.mjs";
 import {enqueueRoll} from "../module/roll-workflow.mjs";
-import {pendingRollEntry,pendingRollFor} from "../module/roll-resolution.mjs";
+import {spellPlan,runeBarrier} from "../module/conjuration.mjs";
+import {canAsura,spherePlan} from "../module/techniques.mjs";
+import {pendingRollEntry,pendingRollFor,resolvePendingRoll} from "../module/roll-resolution.mjs";
 
 const ns="codex-rpg-foundry";
 const user={id:"player",viewedScene:"s"};
@@ -172,4 +174,61 @@ test("conjurador com elemento adquirido rola sem consulta de aprovação do Narr
   assert.equal(roll.options.element,"fogo");
   assert.equal(roll.dice.filter(d=>d.group==="equipment").length,1);
  }finally{delete globalThis.Roll;delete globalThis.foundry;}
+});
+
+test("conjuração reserva cargas e Coragem, valida o alcance curva e só debita ao finalizar",()=>{
+ const caster=actor("character","caster",{level:10,skills:["vento","criar-item-foco-magia"]});
+ const source={_id:"f",system:{kind:"focus",equipped:true,element:"Ar",grade:3,focusCharges:2,die:6}};
+ const focus={id:"f",system:source.system,toObject:()=>structuredClone(source)};
+ caster.items.set(focus.id,focus);
+ const input={focusId:"f",element:"vento",magicGrade:3,magicAmplify:true,magicCharges:2,magicGradeConfirmed:true,magicPathMeters:16};
+ assert.throws(()=>spellPlan(caster,{...input,magicPathMeters:16.1}),/trajetória/);
+ assert.throws(()=>spellPlan(caster,{...input,magicCharges:1}),/turnos/);
+ assert.throws(()=>spellPlan(caster,{...input,element:"fogo"}),/elemento/);
+ const magic=spellPlan(caster,input);
+ assert.deepEqual([magic.courage,magic.turns,magic.charges],[2,1,2]);
+ const pending={version:6,dice:[{id:"a",group:"attribute",key:"inteligencia",sides:6,face:1}],
+  selected:["a"],options:{actionType:"spell",mode:"conjuracao",equipmentId:"f",element:"vento",de:2,magic}};
+ const final=resolvePendingRoll(caster,pending,{combats:new Map()});
+ assert.equal(final.result.success,false);
+ assert.equal(final.changes["system.courage"],8);
+ assert.equal(final.changes.items[0].system.focusCharges,0);
+ assert.equal(focus.system.focusCharges,2);
+});
+
+test("Escudo Rúnico registra uso diário e converte P apenas na barreira, sem usar armadura física",()=>{
+ const caster=actor("character","rune",{race:"runa_espinhos",runeElements:["terra"]});
+ armor(caster);
+ const magic=spellPlan(caster,{element:"terra",runeShield:true});
+ assert.equal(magic.courage,0);
+ assert.deepEqual(runeBarrier(2,3),{e:3,p:1,de:4,integrity:4});
+ const pending={version:6,dice:[{id:"a",group:"attribute",key:"forca",sides:10,face:9}],
+  selected:["a"],options:{actionType:"spell",mode:"conjuracao",element:"terra",de:0,magic}};
+ const final=resolvePendingRoll(caster,pending,{combats:new Map()});
+ assert.equal(final.changes["system.runeShieldFreeUsed"],true);
+ assert.equal(final.result.p,1);
+ assert.match(final.content,/0,5 de dano por E/);
+ assert.equal(final.impact,null);
+ caster.system.runeShieldFreeUsed=true;
+ assert.equal(spellPlan(caster,{element:"terra",runeShield:true}).courage,1);
+ const impact=planAttackImpact(caster,{mode:"armas",damage:2,pavor:0});
+ assert.equal(impact.receipt.integrity,0);
+ assert.equal(impact.receipt.life,1);
+});
+
+test("Esferas respeitam teto e rodada; Asura substitui um dado e absorção consome toda a reserva",()=>{
+ const caster=actor("character","psi",{skills:["invocar-esfera-espiritual","absorver-esferas","criar-item-foco-magia"],
+  attributes:{destreza:4,inteligencia:3,vigor:3},spiritualSpheres:{count:4,createdThisRound:4}});
+ const s=caster.system;
+ assert.equal(spherePlan(s,"create","battle:1",false)["system.courage"],9);
+ s.spiritualSpheres=spherePlan(s,"create","battle:1",false)["system.spiritualSpheres"];
+ assert.throws(()=>spherePlan(s,"create","battle:1",false),/Limite/);
+ assert.equal(canAsura(s,"battle:1",null),false);
+ assert.equal(canAsura(s,"battle:2",null),true);
+ const pool=buildPool(s,prepareCombatAction(caster,"attack"),{mode:"armas",actionType:"attack",asuraDieId:"practice.armas_conjuracao.0"});
+ assert.equal(pool.pool.filter(die=>die.sides===20&&die.asura).length,1);
+ s.courage=8;
+ const absorbed=spherePlan(s,"absorb","battle:2",false);
+ assert.equal(absorbed["system.spiritualSpheres"].count,0);
+ assert.equal(absorbed["system.courage"],10);
 });

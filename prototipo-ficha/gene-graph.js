@@ -1,7 +1,8 @@
 /* Codex Genético — fontes no centro e ao redor; ramificações só quando acessíveis.
  * Ligações são afinidades temáticas, nunca pré-requisitos automáticos. */
 (function(){"use strict";
-const W=1600,BASE_Y=145,ROW=111,SKILL_Y=900;
+const W=3400,BASE_Y=630,ROW=112,SOURCE_CENTER_X=1700;
+// Os quatro anéis laterais envolvem as fontes centrais; o layout não altera afinidades ou requisitos.
 const GRADE_MAX=6;
 // Mesmos traços poliédricos de dieIcon() no criador: mantém identidade do rolador.
 const DICE_SHAPES={
@@ -11,9 +12,9 @@ const DICE_SHAPES={
  12:'<polygon points="21,2 35,8 40,21 34,34 21,40 8,34 2,21 7,8"/><path d="M21 9 L31 16 L28 29 L14 29 L11 16 Z M21 2 L21 9 M35 8 L31 16 M40 21 L31 16 M34 34 L28 29 M21 40 L28 29 M8 34 L14 29 M2 21 L11 16 M7 8 L11 16"/>'
 };
 function dnaStrands(){
- const center=800,left=[],right=[];let rungs='';
+ const center=SOURCE_CENTER_X,left=[],right=[];let rungs='';
  for(let i=0;i<=75;i++){
-  const y=102+i*9.1,offset=78*Math.sin((y-102)*2*Math.PI/270);
+  const y=(BASE_Y-55)+i*9.1,offset=78*Math.sin(i*9.1*2*Math.PI/270);
   left.push((i?'L':'M')+(center+offset).toFixed(1)+' '+y.toFixed(1));
   right.push((i?'L':'M')+(center-offset).toFixed(1)+' '+y.toFixed(1));
   if(i%6===0)rungs+='<line class="fp-gene-dna-rung" x1="'+(center+offset).toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+(center-offset).toFixed(1)+'" y2="'+y.toFixed(1)+'"/>';
@@ -44,55 +45,150 @@ const cameras=new WeakMap(),listeners=new WeakSet();
 const getCamera=root=>{if(!cameras.has(root))cameras.set(root,{zoom:1,x:0,y:0,initialized:false});return cameras.get(root);};
 // Famílias visuais com identificadores estáveis para futuros ícones.
 // Afinidade temática não substitui os requisitos de skillReq().
+// Pictogramas são apenas apresentação; não alteram o modelo de perícias.
+const GENE_SKILL_PICTOGRAMS=Object.freeze({
+ "armas-leves":"arma-adaga","armas-medias":"arma-espada","armas-pesadas":"arma-montante","maestria-martelos":"arma-montante",
+ "armas-longo-alcance":"arma-arco","maestria-arremesso-armas":"arma-arremesso",
+ "armas-fogo":"arma-pistola","pugilismo":"arma-punhos",
+ "maestria-armas-fogo":"arma-pistola","maestria-punhos":"arma-punhos",
+ "maestria-espadas":"arma-espada","maestria-adagas":"arma-adaga",
+ "maestria-machados":"arma-montante","maestria-macas":"arma-montante",
+ "maestria-hastes":"arma-lanca","maestria-cajados":"arma-lanca",
+ "maestria-arcos":"arma-arco","maestria-bestas":"arma-arco",
+ "maestria-arremessos":"arma-arremesso","maestria-longo-alcance":"arma-arco",
+ "criar-item-foco-magia":"magia-foco","escudo-arcano":"armadura-escudo-arcano",
+ "maestria-escudos":"armadura-escudo","escudo-bumerangue":"arma-arremesso",
+  "sacrificio-heroico":"armadura-escudo","escudo-refletor":"armadura-escudo","sentido-elemental":"magia-circulo",
+ "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
+  "cancelar-magia":"magia-circulo","mudanca-elemental":"magia-transformacao","desencantar":"magia-circulo","espelho-magico":"armadura-escudo-arcano",
+ "maos-leves":"categoria-furtividade","pericia-armadilha":"categoria-furtividade","golpe-furtivo":"arma-adaga",
+ "bioetica":"categoria-natureza","pesquisa-avancada-pocoes":"magia-circulo",
+ "corpo-fechado":"arma-punhos","dilema":"arma-punhos","impacto-psiquico":"magia-circulo",
+ "invocar-esfera-espiritual":"magia-circulo","passo-etereo":"magia-circulo",
+ "absorver-esferas":"magia-circulo","disparo-esferas-espirituais":"magia-circulo",
+ "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
+ "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar","terra":"elemento-terra",
+ "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
+});
+// Cada Perícia visualmente ativa pertence a uma única constelação temática.
+// Esta classificação é independente do catálogo e NÃO é pré-requisito de compra.
 const GENE_CONSTELLATIONS=[
- {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","disciplina-avancada","concentracao-refinada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
- {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
- {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
- {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","escudo-arcano","conjuracao-equilibrada","improviso","mestre","invocacao-elemental"]},
- {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
- {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica","transformacao-elemental"]},
- {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arremesso-armas","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","olhos-de-aguia"]},
- {id:"alquimia",label:"ALQUIMIA E TRANSFUSÃO",column:2,skills:["criar-veneno","criar-antidoto","transfusao","transfusao-sanguinaria"]},
- {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
- {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","alquimia-avancada","engenharia-avancada","erudicao-avancada"]},
- {id:"praticas-avancadas",label:"PRÁTICAS AVANÇADAS",column:0,skills:["atletismo-avancado","artesao-avancado","apresentacao-avancada","coleta-avancada"]},
- {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar"]}
+ {id:"escudos",label:"ESCUDOS FÍSICOS",column:0,skills:["maestria-escudos","escudo-refletor","escudo-bumerangue","sacrificio-heroico"]},
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
+ {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo","corpo-fechado","dilema"]},
+ {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada","maos-leves","golpe-furtivo","pericia-armadilha"]},
+ {id:"disparos",label:"ARMAS DE LONGO ALCANCE",column:0,skills:["armas-longo-alcance","olhos-de-aguia","maestria-arcos","maestria-bestas","maestria-longo-alcance","maestria-arremesso-armas","maestria-arremessos","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","maestria-armas-fogo"]},
+ {id:"cavalaria",label:"CAVALARIA E MONTARIAS",column:0,skills:["montar","pericia-montaria","montaria-epica"]},
+ {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","concentracao-refinada","cancelar-magia","desencantar","espelho-magico"]},
+ {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas","improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental"]},
+ {id:"psiquico",label:"PSÍQUICO E ESFERAS",column:1,skills:["invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais","impacto-psiquico"]},
+ {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
+ {id:"alquimia",label:"ALQUIMIA E POÇÕES",column:1,skills:["alquimia-avancada","criar-veneno","criar-antidoto","pesquisa-avancada-pocoes","bioetica","transfusao","transfusao-sanguinaria"]},
+ {id:"apresentacao",label:"APRESENTAÇÃO E BARDO",column:2,skills:["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora"]},
+ {id:"artesao",label:"ARTESÃO E FORJA",column:2,skills:["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"]},
+ {id:"coleta",label:"COLETA",column:2,skills:["coleta-avancada"]},
+ {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia","recobrar-coragem"]},
+ {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","engenharia-avancada","erudicao-avancada"]},
+ {id:"influencia",label:"INFLUÊNCIA E INTERAÇÃO",column:2,skills:["provocacao-sofisticada"]},
+ {id:"atletismo",label:"ATLETISMO",column:2,skills:["atletismo-avancado"]}
 ];
+// Duas faixas de constelações de cada lado das fontes centrais.
+// Em vez de um catálogo muito comprido abaixo da ficha, os ramos envolvem a hélice
+// e são distribuídos por afinidade, com alturas proporcionais ao número de nós.
+// Famílias maiores permanecem nas laterais; quatro grupos ocupam os espaços
+// acima e abaixo das fontes, fechando o anel sem cobrir as cartas centrais.
+const ORBIT_LANES=Object.freeze([
+ {x:44,ids:["armas","corporal","furtividade"]},
+ {x:590,ids:["disparos","conjuracao","elementos"]},
+ {x:2290,ids:["natureza","alquimia","apresentacao","artesao","coleta"]},
+ {x:2836,ids:["conhecimentos-avancados","influencia","atletismo"]}
+]);
+const ORBIT_ARCS=Object.freeze([
+ {id:"escudos",x:1150,y:240,side:"top"},
+ {id:"psiquico",x:1740,y:240,side:"top"},
+ {id:"cavalaria",x:1150,y:1360,side:"bottom"},
+ {id:"recuperacao",x:1740,y:1360,side:"bottom"}
+]);
+const ORBIT_WIDTH=520,ORBIT_ROW=112,ORBIT_GAP=24;
 function position(nodes,branches=[]){
  const byId=new Map(nodes.map(n=>[n.id,n]));
- for(const [i,key] of baseAttr.entries()){const n=byId.get("attr:"+key);if(n){n.x=800;n.y=BASE_Y+i*ROW;}}
- for(const [i,key] of baseKnow.entries()){const n=byId.get("know:"+key);if(n){n.x=265;n.y=BASE_Y+i*ROW;}}
- for(const [i,key] of basePractice.entries()){const n=byId.get("practice:"+key);if(n){n.x=1335;n.y=BASE_Y+i*ROW;}}
- // Disposição temática independente da ordem do catálogo e da ordem dos ramos.
- // Apenas Perícias visíveis ocupam espaço: bloqueadas/filtradas não deixam buracos.
- const seen=new Set();
- const defs=GENE_CONSTELLATIONS.map(def=>({...def,nodes:def.skills
-  .filter(id=>!seen.has(id)&&byId.get(id)?.type==="skill")
-  .map(id=>{seen.add(id);return byId.get(id);})})).filter(def=>def.nodes.length);
- const extra=nodes.filter(n=>n.type==="skill"&&!seen.has(n.id)).sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
- if(extra.length)defs.push({id:"outros",label:"OUTRAS PERÍCIAS",column:2,nodes:extra});
- const margin=34,gap=18,width=(W-2*margin-2*gap)/3;
- const top=892,verticalGap=25,rowStep=120;
- const ends=[top,top,top],groups=[];
- for(const family of defs){
-  const x=margin+family.column*(width+gap),y=ends[family.column];
-  const rows=Math.ceil(family.nodes.length/3),height=185+(rows-1)*rowStep;
-  family.nodes.forEach((n,i)=>{
-   const row=Math.floor(i/3),count=Math.min(3,family.nodes.length-row*3),inRow=i-row*3;
-   n.x=Math.round(x+width/2+(inRow-(count-1)/2)*160);
-   n.y=y+92+row*rowStep;
-   n.geneFamily=family.id;
-  });
-  groups.push({id:family.id,label:family.label,x,y,width,height,nodes:family.nodes});
-  ends[family.column]=y+height+verticalGap;
+ const sourceCenters={attr:SOURCE_CENTER_X,know:1320,practice:2080};
+ for(const [group,items] of [["attr",baseAttr],["know",baseKnow],["practice",basePractice]]){
+  for(const [i,key] of items.entries()){
+   const node=byId.get(group+":"+key);
+   if(node){node.x=sourceCenters[group];node.y=BASE_Y+i*ROW;}
+  }
  }
- return {height:Math.max(1170,...ends.map(v=>v-verticalGap+12)),groups};
+ // Cada Perícia pertence a uma única constelação. As famílias sem nós visíveis
+ // permanecem fora do SVG, mas os espaços de sua órbita são preservados.
+ const seen=new Set();
+ const definitions=GENE_CONSTELLATIONS.map(def=>{
+  const members=def.skills.filter(id=>!seen.has(id)&&byId.get(id)?.type==="skill").map(id=>{seen.add(id);return byId.get(id);});
+  return {...def,nodes:members};
+ });
+ const unknown=nodes.filter(n=>n.type==="skill"&&!seen.has(n.id)).sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ if(unknown.length)definitions.push({id:"outros",label:"OUTRAS PERÍCIAS",nodes:unknown});
+ const byFamily=new Map(definitions.map(def=>[def.id,def]));
+ const rowsFor=def=>Math.max(1,Math.ceil(def.skills?.length?def.skills.length/3:def.nodes.length/3));
+ const heightFor=def=>166+(rowsFor(def)-1)*ORBIT_ROW;
+ const centerY=BASE_Y+ROW*2.5,groups=[];
+ let bottom=BASE_Y+ROW*6+140;
+ for(const lane of ORBIT_LANES){
+  const defs=lane.ids.map(id=>byFamily.get(id)).filter(Boolean);
+  const total=defs.reduce((sum,def)=>sum+heightFor(def),0)+Math.max(0,defs.length-1)*ORBIT_GAP;
+  let top=Math.max(44,Math.round(centerY-total/2));
+  for(const family of defs){
+   const fullHeight=heightFor(family);
+   const visible=family.nodes;
+   if(visible.length){
+    visible.forEach((node,i)=>{
+     const row=Math.floor(i/3),count=Math.min(3,visible.length-row*3),inRow=i-row*3;
+     node.x=Math.round(lane.x+ORBIT_WIDTH/2+(inRow-(count-1)/2)*160);
+     node.y=top+88+row*ORBIT_ROW;
+     node.geneFamily=family.id;
+    });
+    const activeHeight=Math.min(fullHeight,166+(Math.ceil(visible.length/3)-1)*ORBIT_ROW);
+    groups.push({id:family.id,label:family.label,x:lane.x,y:top,width:ORBIT_WIDTH,height:activeHeight,nodes:visible});
+   }
+   top+=fullHeight+ORBIT_GAP;
+  }
+  bottom=Math.max(bottom,top);
+ }
+ // Arcos superior e inferior aproveitam o espaço vertical antes vazio.
+ // Mesmos tamanhos de nó e mesmo cálculo de posição das faixas laterais.
+ for(const slot of ORBIT_ARCS){
+  const family=byFamily.get(slot.id);
+  if(!family)continue;
+  const visible=family.nodes,fullHeight=heightFor(family);
+  if(!visible.length)continue;
+  visible.forEach((node,i)=>{
+   const row=Math.floor(i/3),count=Math.min(3,visible.length-row*3),inRow=i-row*3;
+   node.x=Math.round(slot.x+ORBIT_WIDTH/2+(inRow-(count-1)/2)*160);
+   node.y=slot.y+88+row*ORBIT_ROW;
+   node.geneFamily=family.id;
+  });
+  const activeHeight=Math.min(fullHeight,166+(Math.ceil(visible.length/3)-1)*ORBIT_ROW);
+  groups.push({id:family.id,label:family.label,x:slot.x,y:slot.y,width:ORBIT_WIDTH,
+   height:activeHeight,nodes:visible,orbitSide:slot.side});
+  bottom=Math.max(bottom,slot.y+activeHeight+ORBIT_GAP);
+ }
+ if(unknown.length){
+  const x=W/2-ORBIT_WIDTH/2,y=bottom+20,rows=Math.ceil(unknown.length/3);
+  unknown.forEach((node,i)=>{const row=Math.floor(i/3),count=Math.min(3,unknown.length-row*3);
+   node.x=Math.round(x+ORBIT_WIDTH/2+(i-row*3-(count-1)/2)*160);
+   node.y=y+88+row*ORBIT_ROW;node.geneFamily="outros";
+  });
+  const height=166+(rows-1)*ORBIT_ROW;
+  groups.push({id:"outros",label:"OUTRAS PERÍCIAS",x,y,width:ORBIT_WIDTH,height,nodes:unknown});
+  bottom=y+height+ORBIT_GAP;
+ }
+ return {height:Math.max(1800,bottom+35),groups};
 }
 function edge(a,b,cls){
  if(!a||!b)return"";
  // Curvas suaves, apenas em conexões selecionadas. Evita cruzamento permanente em massa.
  const x=(a.x+b.x)/2;
- return '<path class="fp-gene-relation '+cls+'" d="M'+a.x+' '+a.y+' C'+x+' '+a.y+' '+x+' '+b.y+' '+b.x+' '+b.y+'"/>';
+ return '<path data-gene-from="'+esc(a.id)+'" data-gene-to="'+esc(b.id)+'" class="fp-gene-relation '+cls+'" d="M'+a.x+' '+a.y+' C'+x+' '+a.y+' '+x+' '+b.y+' '+b.x+' '+b.y+'"/>';
 }
 function card(n,edit){
  const c=n.type==="attr"?"attr":n.type==="know"?"know":"practice";
@@ -109,8 +205,11 @@ function card(n,edit){
    '<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="fp-gene-die-name">d'+sides+'</text></g>';
  }).join("");
  const label=esc(n.name),pending=n.previewGrade!==undefined&&n.previewGrade!==n.grade;
- const xpBand=n.xpBand==="discount"?"↓ XP reduzido":n.xpBand==="elevated"?"↑ XP aumentado":"";
- const canDown=edit&&n.previewGrade>0&&n.canLower!==false;
+ const xpBand=["discount","elevated"].includes(n.xpBand)?n.xpBand:"normal";
+ const xpMarker=xpBand==="normal"?"":'<g class="fp-gene-racial-mark is-'+xpBand+'" aria-hidden="true">'+
+  '<circle cx="'+(x+width-7)+'" cy="'+(y+9)+'" r="13"/>'+
+  '<text x="'+(x+width-7)+'" y="'+(y+14)+'" text-anchor="middle">'+(xpBand==="discount"?"↓":"↑")+'</text></g>';
+ const canDown=edit&&n.previewGrade>(n.minGrade||0);
  const canUp=edit&&n.previewGrade<GRADE_MAX&&n.canRaise;
  const makeButton=(delta,enabled,posX,text,aria)=>
   '<g role="button" tabindex="'+(enabled?'0':'-1')+'" class="fp-gene-grade-button'+(enabled?'':' is-disabled')+
@@ -120,16 +219,20 @@ function card(n,edit){
  const control=edit?makeButton(-1,canDown,x+14,"−","Diminuir "+label)+
   makeButton(1,canUp,x+width-46,"+","Aumentar "+label):"";
  return '<g class="fp-gene-node fp-gene-card type-'+c+(n.selected?' is-selected':'')+(pending?' is-pending':'')+
-  '" data-gene-id="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+'">'+
-  '<title>'+label+(xpBand?' · '+xpBand:'')+'</title>'+
+  (xpBand==="normal"?"":" is-xp-"+xpBand)+
+  '" data-gene-id="'+esc(n.id)+'" data-racial-xp="'+xpBand+'" role="button" tabindex="0" aria-label="'+label+' grau '+(n.previewGrade??n.grade)+(xpBand==="normal"?"":"; "+esc(n.xpLabel||"XP racial diferenciado"))+'">'+
+  '<title>'+label+' — '+esc(n.label||"")+(xpBand==="normal"?"":" — "+esc(n.xpLabel||"XP racial diferenciado"))+'</title>'+
   '<rect class="fp-gene-card-fill" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'" rx="13"/>'+
   '<text class="fp-gene-card-title" x="'+(x+18)+'" y="'+(y+28)+'">'+label+'</text>'+
-  '<text class="fp-gene-card-grade" x="'+(x+width-18)+'" y="'+(y+27)+'" text-anchor="end">GRAU '+(n.previewGrade??n.grade)+(pending?' *':'')+'</text>'+
+  '<text class="fp-gene-card-grade" x="'+(x+width-18)+'" y="'+(y+27)+'" text-anchor="end">GRAU '+(n.previewGrade??n.grade)+(n.minGrade?' · ORIGEM':'')+(pending?' *':'')+'</text>'+
   '<line class="fp-gene-card-separator" x1="'+(x+17)+'" x2="'+(x+width-17)+'" y1="'+(y+38)+'" y2="'+(y+38)+'"/>'+
-  control+dice+'</g>';
+  control+dice+xpMarker+'</g>';
 }
 function splitSkillLabel(name,maxChars){
- const compact=String(name||"").trim()
+ const original=String(name||"").trim();
+ // Montar Animal (Vantagem) e Perícia em Montaria (+1A) são Perícias distintas;
+ // não esconder o prefixo de Perícia em Montaria, como acontecia no mapa.
+ const compact=/^Perícia em Montaria$/i.test(original)?original:original
   .replace(/^Perícia em Elemento\s+/i,"Elemento ")
   .replace(/^Perícia em\s+/i,"").replace(/^Perícia\s+/i,"");
  const parts=compact.split(/\s+/),lines=[];let current="";
@@ -149,30 +252,34 @@ function skill(n,iconBase){
  // Letras pequenas e em até duas linhas; full name no title e aria-label.
  const lines=splitSkillLabel(n.name,16);
  const label=lines.map((line,i)=>'<tspan x="'+n.x+'" dy="'+(i?18:0)+'">'+esc(line)+'</tspan>').join("");
+ const pictogram=GENE_SKILL_PICTOGRAMS[n.id]||n.icon;
+ const smallIcon=pictogram?
+  '<image class="fp-gene-skill-pictogram" href="'+esc(iconBase+pictogram)+'.svg" x="'+(n.x-16)+'" y="'+(n.y-16)+'" width="32" height="32" pointer-events="none" aria-hidden="true"/>':"";
  return '<g class="fp-gene-node fp-gene-skill is-'+n.state+(n.selected?' is-selected':'')+'" data-gene-id="'+esc(n.id)+'" data-gene-family="'+esc(n.geneFamily||"outros")+'" data-gene-icon-key="'+esc(n.id)+'" role="button" tabindex="0" aria-label="'+esc(n.name)+' '+(n.state==="owned"?"adquirida":n.state==="available"?"disponível":n.state==="potential"?"XP suficiente, requisitos pendentes":"ramificação futura")+'">'+
   '<title>'+esc(n.name+' — '+(n.label||""))+'</title>'+
-  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="'+(n.icon?'20':'15')+'"/>'+
-  (n.icon?'<image class="fp-gene-skill-pictogram" href="'+esc(iconBase+n.icon+'.svg')+'" x="'+(n.x-16)+'" y="'+(n.y-16)+'" width="32" height="32" pointer-events="none" aria-hidden="true"/>':"")+
+  '<circle class="fp-gene-skill-hit" cx="'+n.x+'" cy="'+n.y+'" r="35"/>'+
+  '<circle class="fp-gene-dot" cx="'+n.x+'" cy="'+n.y+'" r="20"/>'+smallIcon+
   '<text class="fp-gene-node-label" x="'+n.x+'" y="'+(n.y+39)+'" text-anchor="middle">'+label+'</text></g>';
 }
 function draw(nodes,height,selected,affinity,branches,groups,edit,camera,iconBase){
  const byId=new Map(nodes.map(n=>[n.id,n]));
- let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos no centro, Conhecimentos à esquerda, Práticas à direita e Perícias organizadas ao redor e abaixo das fontes.">'+
+ let svg='<svg class="fp-gene-svg fp-gene-overview" viewBox="0 0 '+W+' '+height+'" role="img" aria-label="Codex Genético: Atributos, Conhecimentos e Práticas no centro, cercados por constelações temáticas de Perícias.">'+
   '<defs><pattern id="codex-gene-dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".11"/></pattern></defs>'+
   '<rect width="'+W+'" height="'+height+'" fill="url(#codex-gene-dots)"/>'+
   '<g class="fp-gene-viewport" transform="translate('+camera.x+' '+camera.y+') scale('+camera.zoom+')">'+
-  '<text class="fp-gene-column-title is-know" x="265" y="66" text-anchor="middle">CONHECIMENTOS</text>'+
-  '<text class="fp-gene-column-title is-attr" x="800" y="66" text-anchor="middle">ATRIBUTOS</text>'+
-  '<text class="fp-gene-column-title is-practice" x="1335" y="66" text-anchor="middle">PRÁTICAS</text>'+
+  '<ellipse class="fp-gene-orbit-guide" cx="'+SOURCE_CENTER_X+'" cy="'+(BASE_Y+ROW*2.5)+'" rx="620" ry="515"/>'+
+  '<text class="fp-gene-column-title is-know" x="1320" y="'+(BASE_Y-78)+'" text-anchor="middle">CONHECIMENTOS</text>'+
+  '<text class="fp-gene-column-title is-attr" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y-78)+'" text-anchor="middle">ATRIBUTOS</text>'+
+  '<text class="fp-gene-column-title is-practice" x="2080" y="'+(BASE_Y-78)+'" text-anchor="middle">PRÁTICAS</text>'+
   dnaStrands();
  // Regiões da constelação e seus traços internos. Conexões são afinidades,
  // não uma exigência de comprar a Perícia anterior.
  for(const family of groups){
   svg+='<g class="fp-gene-constellation" data-gene-family="'+esc(family.id)+'" aria-hidden="true">'+
    '<rect class="fp-gene-constellation-border" x="'+(family.x+6)+'" y="'+(family.y+4)+'" width="'+(family.width-12)+'" height="'+(family.height-10)+'" rx="26"/>'+
-   (iconBase?'<image class="fp-gene-constellation-icon" href="'+esc(iconBase+'categoria-'+family.id+'.svg')+'" x="'+(family.x+20)+'" y="'+(family.y+13)+'" width="30" height="30" aria-hidden="true"/>':"")+
-   '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+46)+'" y2="'+(family.y+46)+'"/>'+
-   '<text class="fp-gene-constellation-title" x="'+(family.x+(iconBase?58:26))+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
+   '<image class="fp-gene-constellation-icon" href="'+esc(iconBase+"categoria-"+family.id)+'.svg" x="'+(family.x+20)+'" y="'+(family.y+14)+'" width="34" height="34" pointer-events="none" aria-hidden="true"/>'+
+   '<line class="fp-gene-constellation-cap" x1="'+(family.x+22)+'" x2="'+(family.x+66)+'" y1="'+(family.y+55)+'" y2="'+(family.y+55)+'"/>'+
+   '<text class="fp-gene-constellation-title" x="'+(family.x+65)+'" y="'+(family.y+34)+'">'+esc(family.label)+'</text></g>';
   const members=family.nodes;
   members.forEach((n,i)=>{
    if(i%3>0&&Math.floor(i/3)===Math.floor((i-1)/3)){
@@ -181,7 +288,9 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera,iconBas
    }
    if(i>=3){
     const prev=members[i-3],active=selected===prev.id||selected===n.id;
-    svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
+    // Domar e Druídica ocupam a mesma área temática, mas são ramos independentes.
+    if(family.id!=="natureza"||(![prev.id,n.id].includes("pericia-druidica")))
+     svg+=edge(prev,n,"fp-gene-skill-link"+(active?" is-related":""));
    }
   });
  }
@@ -200,13 +309,12 @@ function draw(nodes,height,selected,affinity,branches,groups,edit,camera,iconBas
  }
  for(const n of nodes.filter(n=>n.type!=="skill"))svg+=card({...n,selected:n.id===selected},edit);
  const skills=nodes.filter(n=>n.type==="skill");
- svg+='<line class="fp-gene-branch-rule" x1="75" x2="1525" y1="829" y2="829"/>'+
-  '<text class="fp-gene-column-title is-skills" x="800" y="865" text-anchor="middle">RAMIFICAÇÕES · PERÍCIAS</text>';
- if(!skills.length)svg+='<text class="fp-gene-empty-text" x="800" y="935" text-anchor="middle">Nenhuma Perícia disponível no momento. Desenvolva fontes para habilitar novos caminhos.</text>';
+ svg+='<text class="fp-gene-column-title is-skills" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+3)+'" text-anchor="middle">PERÍCIAS · ÓRBITAS TEMÁTICAS</text>';
+ if(!skills.length)svg+='<text class="fp-gene-empty-text" x="'+SOURCE_CENTER_X+'" y="'+(BASE_Y+ROW*6+170)+'" text-anchor="middle">Nenhuma Perícia disponível. Desenvolva fontes ou mostre as futuras.</text>';
  for(const n of skills)svg+=skill({...n,selected:n.id===selected},iconBase);
  return svg+'</g></svg>';
 }
-const MIN_ZOOM=.55,MAX_ZOOM=5;
+const MIN_ZOOM=.55,MAX_ZOOM=12;
 function canvasSvg(root){return root?.querySelector(".fp-gene-overview");}
 function svgPoint(root,clientX,clientY){
  const svg=canvasSvg(root);
@@ -228,10 +336,12 @@ function syncCanvas(root){
  const cam=getCamera(root);
  if(!cam.initialized&&w&&h){
   cam.initialized=true;
-  cam.zoom=w<620?2.25:1;
-  // No celular, iniciar com as fontes centrais legíveis; todo o resto acessível por gestos.
-  cam.x=w<620?W/2-800*cam.zoom:0;
-  cam.y=w<620?190-BASE_Y*cam.zoom:0;
+  cam.zoom=clamp(W/w*(w<620?.76:.62),MIN_ZOOM,MAX_ZOOM);
+  // Inicializar sobre as fontes centrais, com constelações ao redor.
+  // O seletor de ramo evita ter de aproximar ou afastar manualmente tudo.
+  const screenH=W*h/w;
+  cam.x=W/2-SOURCE_CENTER_X*cam.zoom;
+  cam.y=screenH/2-(BASE_Y+ROW*2.5)*cam.zoom;
  }
 }
 function applyTransform(root){
@@ -248,6 +358,18 @@ function zoomAt(root,factor,clientX,clientY){
  cam.x=cursor.x-(cursor.x-cam.x)*ratio;
  cam.y=cursor.y-(cursor.y-cam.y)*ratio;
  cam.zoom=newZoom;
+ applyTransform(root);
+}
+// Acesso rápido às constelações sem perder zoom, arraste nem seleção existente.
+function jumpToFamily(root,id){
+ const family=(root.__geneFamilies||[]).find(g=>g.id===id),svg=canvasSvg(root);
+ if(!family||!svg)return;
+ const box=svg.viewBox.baseVal,cam=getCamera(root),isMobile=root.clientWidth<620;
+ const target=isMobile?8:7;
+ const fitX=box.width/(family.width+60),fitY=box.height/(family.height+90);
+ cam.zoom=clamp(Math.min(target,fitX,fitY),MIN_ZOOM,MAX_ZOOM);
+ cam.x=box.width/2-(family.x+family.width/2)*cam.zoom;
+ cam.y=box.height/2-(family.y+family.height/2)*cam.zoom;
  applyTransform(root);
 }
 function panBy(root,fromX,fromY,toX,toY){
@@ -270,6 +392,7 @@ function bind(root){
  root.tabIndex=0;
  root.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight + - 0");
  const nodePosition=node=>node.getBoundingClientRect().top-root.getBoundingClientRect().top;
+ root.addEventListener("change",event=>{const picker=event.target.closest("[data-gene-family-jump]");if(picker){if(picker.value==="fontes")resetView(root);else jumpToFamily(root,picker.value);picker.value="";}});
  const pointers=new Map(),handledTouchNav=new WeakSet();
  let pinch=null,dragging=false,suppressClick=false;
  const setMoving=value=>{dragging=value;root.classList.toggle("is-dragging",value);};
@@ -282,8 +405,8 @@ function bind(root){
  // O clique após arrastar não seleciona/compra acidentalmente um nó.
  root.addEventListener("click",event=>{
   if(!suppressClick)return;
-  // Botões explícitos de navegação são uma nova ação intencional, não seleção de nó.
-  if(event.target.closest("[data-gene-nav]")){suppressClick=false;return;}
+  // Controles flutuantes são nova intenção; não herdar o bloqueio do arraste.
+  if(event.target.closest("[data-gene-nav],[data-action=gene-future],[data-gene-family-jump]")){suppressClick=false;return;}
   event.preventDefault();event.stopImmediatePropagation();suppressClick=false;
  },true);
  root.addEventListener("click",event=>{
@@ -327,7 +450,7 @@ function bind(root){
   // O click originado no gesto anterior continua protegido até sua conclusão.
   if(!pointers.size)suppressClick=false;
   if(event.pointerType==="mouse"&&event.button!==0)return;
-  if(event.target.closest("[data-gene-nav],[data-gene-grade]"))return;
+  if(event.target.closest("[data-gene-nav],[data-gene-grade],[data-gene-family-jump],[data-action=gene-future]"))return;
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,downX:event.clientX,downY:event.clientY});
   if(pointers.size===2){
    pinch=midpoint();setMoving(true);
@@ -384,13 +507,14 @@ function bind(root){
   if(!pointers.size){pinch=null;setMoving(false);}
  });
  root.addEventListener("wheel",event=>{
+  if(event.target.closest("[data-gene-family-jump],[data-action=gene-future]"))return;
   if(!event.deltaY&&!event.deltaX)return;
   event.preventDefault();
   if(event.shiftKey&&event.deltaX)panBy(root,0,0,-event.deltaX,0);
   else zoomAt(root,Math.exp(-event.deltaY*.002),event.clientX,event.clientY);
  },{passive:false});
  root.addEventListener("dblclick",event=>{
-  if(event.target.closest("[data-gene-grade],[data-gene-nav]"))return;
+  if(event.target.closest("[data-gene-grade],[data-gene-nav],[data-action=gene-future],[data-gene-family-jump]"))return;
   event.preventDefault();
   zoomAt(root,1.35,event.clientX,event.clientY);
  });
@@ -400,7 +524,7 @@ function bind(root){
   observer.observe(root);
  }
 }
-function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,iconBase="",onSelect=()=>{},onAdjust=()=>{}}={}){
+function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,iconBase="../assets/icons/codex/",onSelect=()=>{},onAdjust=()=>{}}={}){
  if(!root)return;
  root.__geneActions={onSelect,onAdjust};
  const all=skills.filter(n=>n&&n.type&&n.type!=="hidden").map(n=>({...n,key:n.key||n.id?.split(":")[1]}));
@@ -412,8 +536,11 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
  const {height,groups}=position(visible,branches),cam=getCamera(root);
+ root.__geneFamilies=groups;
  root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam,iconBase)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
+  '<div class="fp-gene-family-jump"><label for="fp-gene-family-'+(root.id||"map")+'">Ir para ramo</label><select id="fp-gene-family-'+esc(root.id||"map")+'" data-gene-family-jump aria-label="Ir diretamente para um ramo temático do Codex Genético"><option value="">Escolher ramo…</option><option value="fontes">Fontes centrais</option>'+groups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.label)+'</option>').join("")+'</select></div>'+
+  '<button type="button" class="fp-gene-future-float" data-action="gene-future" aria-pressed="'+showFuture+'" title="Mostrar ou ocultar Perícias futuras sem sair do mapa">'+(showFuture?'Ocultar futuras':'Mostrar futuras')+'</button>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
   '<button type="button" data-gene-nav="-1" aria-label="Afastar o mapa">−</button>'+
   '<button type="button" data-gene-nav="0" aria-label="Centralizar o mapa">⦿</button>'+

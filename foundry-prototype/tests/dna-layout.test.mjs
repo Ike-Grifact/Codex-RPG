@@ -44,8 +44,8 @@ test("Foundry empacota o grafo e as regras de invocação do site, com estilos p
 
 test("constelações incluem todo o catálogo visível sem colisões no plano virtual",()=>{
  const window={};
- runInNewContext(raw.replace("{render,zoom,reveal}","{render,zoom,reveal,position,splitSkillLabel}"),{window});
- const {position,splitSkillLabel}=window.CodexGeneGraph;
+ runInNewContext(raw.replace("{render,zoom,reveal}","{render,zoom,reveal,position,splitSkillLabel,W}"),{window});
+ const {position,splitSkillLabel,W}=window.CodexGeneGraph;
  const sources=[["attr",ATTRIBUTES],["know",KNOWLEDGES],["practice",PRACTICES]].flatMap(([type,list])=>
   list.map(([key,name])=>({type,id:type+":"+key,key,name})));
  const skills=SKILLS.filter(row=>!row.legacy).map(({id,name})=>({id,name,type:"skill",state:"potential"}));
@@ -55,9 +55,10 @@ test("constelações incluem todo o catálogo visível sem colisões no plano vi
   const {height,groups}=position(nodes);
   assert.equal(groups.flatMap(group=>[...group.nodes]).length,count);
   if(count===skills.length){
-   assert.equal(groups.length,12);
+   assert.equal(groups.filter(group=>group.id!=="outros").length,18);
+   assert.ok(groups.some(group=>group.id==="outros"));
    const byId=new Map(nodes.map(n=>[n.id,n]));
-   for(const [id,family] of [["invocacao-elemental","conjuracao"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","armas"],["olhos-de-aguia","disparos"]])
+   for(const [id,family] of [["invocacao-elemental","elementos"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","conjuracao"],["olhos-de-aguia","disparos"]])
     assert.equal(byId.get(id)?.geneFamily,family);
   }
   const boxes=nodes.map(n=>{
@@ -68,7 +69,7 @@ test("constelações incluem todo o catálogo visível sem colisões no plano vi
   });
   for(let i=0;i<boxes.length;i++){
    const a=boxes[i];
-   assert(a.x1>=0&&a.x2<=1600&&a.y1>=0&&a.y2<=height,"Nó fora do mapa: "+a.id);
+   assert(a.x1>=0&&a.x2<=W&&a.y1>=0&&a.y2<=height,"Nó fora do mapa: "+a.id);
    for(let j=i+1;j<boxes.length;j++){
     const b=boxes[j];
     const xx=Math.min(a.x2,b.x2)-Math.max(a.x1,b.x1),yy=Math.min(a.y2,b.y2)-Math.max(a.y1,b.y1);

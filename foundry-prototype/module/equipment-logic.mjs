@@ -1,7 +1,7 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
 import {xpLedger} from "./rules.mjs";
 import {skillDetails} from './advancement.mjs';
-import {allOwnedSkills} from './races.mjs';
+import {allOwnedSkills,isRuna} from './races.mjs';
 
 const isRangedWeapon = item => item?.properties?.some(property=>property.toLowerCase()==="à distância");
 const elementalSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
@@ -47,7 +47,7 @@ export function canSpendXP(system,delta){
  return Number.isFinite(delta)&&delta>=0&&ledger.spent+delta<=ledger.grant;
 }
 export function equippedArmor(actor){
- if(actor.system.transformation?.kind)return;
+ if(actor.system.transformation?.kind||isRuna(actor.system))return;
  const s=actor.system,maxGrade=s.level>=20?4:s.level>=10?3:s.level>=5?2:1;
  return actor.items.find(item=>item.type==='equipment'&&item.system.kind==='armor'&&item.system.equipped&&
   (item.system.grade??1)<=maxGrade&&(item.system.category!=='muito-pesado'||(s.attributes.vigor>=6&&s.practices?.atletismo>=6)));

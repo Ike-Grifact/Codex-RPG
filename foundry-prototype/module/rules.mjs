@@ -34,7 +34,7 @@ export function faceSymbols(sides,face,legacyD4Faces=false){
 export const isMaximumFace=die=>die.face===die.sides&&Object.hasOwn(FACES,die.sides);
 export const criticalCount=kept=>kept.length>=2&&kept.every(isMaximumFace)?kept.length:0;
 export function sourceLabel(group,key){
- return (GROUPS[group]||[]).find(x=>x[0]===key)?.[1]|| (group==="equipment"?"Equipamento":"");
+ return (GROUPS[group]||[]).find(x=>x[0]===key)?.[1]|| (group==="equipment"?(key==="golpe-furtivo"?"Golpe Furtivo":"Equipamento"):"");
 }
 export function sourceDice(group,key,system){
  if(!(GROUPS[group]||[]).some(x=>x[0]===key))throw Error("Fonte inválida.");
@@ -114,13 +114,15 @@ export function passiveAnticipar(system,selection){
   (sources.some(isDiscipline)?Number(skills.includes('improviso'))+Number(skills.includes('mestre')):0);
 }
 
-export function buildPool(system,selection,{mode="normal",actionType="",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
+export function buildPool(system,selection,{mode="normal",actionType="",contextApproved=false,step=false,stepDieId="",equipmentDie=0,stealthAttack=false,asuraDieId="",lightHands=false}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.second??selection?.attribute,c=selection?.complement;
- const pairError=sourcePairError(system,b,a);
+ const lightHandsPair=lightHands&&isDiscipline(b)&&a?.group==="practice"&&a.key==="furtividade"&&!c&&!equipmentDie&&mode==="normal";
+ const pairError=lightHandsPair?"":sourcePairError(system,b,a);
+ if(lightHands&&!lightHandsPair)errors.push("Mãos Leves exige somente Disciplina e Furtividade.");
  if(pairError)errors.push(pairError);
  const sources=[b,a,c].filter(Boolean);
  if(actionType&&!attributesOnly(system)&&(!isDiscipline(b)||a?.group!=="attribute"))errors.push("Atacar e conjurar exigem Disciplina e um Atributo.");
- if(!attributesOnly(system)&&!sources.some(source=>source.group==='attribute'))errors.push('A pilha exige um Atributo.');
+ if(!lightHandsPair&&!attributesOnly(system)&&!sources.some(source=>source.group==='attribute'))errors.push('A pilha exige um Atributo.');
  if(c){
   const duplicate=[b,a].some(source=>source?.group===c.group&&source.key===c.key);
   const repeatedDiscipline=duplicate&&isDiscipline(c);
@@ -154,11 +156,17 @@ export function buildPool(system,selection,{mode="normal",actionType="",contextA
   if(equipmentDie){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
    else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
+   if(stealthAttack)pool.push({id:"equipment.stealth",group:"equipment",key:"golpe-furtivo",sides:Number(equipmentDie)});
   }
   if(step){
    const die=pool.find(d=>d.id===stepDieId);
    if(!canReinforceDie(die))errors.push("Escolha um d4, d6 ou d10 para elevar até d12.");
    else {die.sides=({4:6,6:10,10:12})[die.sides];die.elevated=true;}
+  }
+  if(asuraDieId){
+   const die=pool.find(d=>d.id===asuraDieId&&d.sides!==20);
+   if(!die)errors.push("Escolha um dado válido para o Punho Supremo de Asura.");
+   else{die.sides=20;die.asura=true;}
   }
  }
  if(pool.length>9)errors.push("Máximo absoluto de nove dados rolados.");

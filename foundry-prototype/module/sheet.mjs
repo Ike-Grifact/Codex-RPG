@@ -5,20 +5,24 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SITUATIONS,
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal,pendingRollFor} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
-import {equippedDie,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
+import {equippedDie,equippedArmor,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {equipmentView} from './equipment-view.mjs';
-import {RACES,hasSkill,racialBand} from "./races.mjs";
-import {availableElements,prepareCombatAction,selectionOptions,changeRollSource} from "./combat-action.mjs";
+import {RACES,hasSkill,racialBand,isRuna} from "./races.mjs";
+import {spellPlan,compatibleFoci,focusElement,focusCharges,magicTiming,availableElements} from "./conjuration.mjs";
+import {prepareCombatAction,selectionOptions,changeRollSource} from "./combat-action.mjs";
+import {canAsura,canUseTechnique,sphereRound,sphereState} from "./techniques.mjs";
 import {standardMovement} from "./movement.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
 const defaults=()=>({mode:"normal",actionType:"",manualDamage:false,de:1,situation:"neutral",extraKeep:false,activationPavor:1,step:false,stepDieId:"",
  weightEnabled:false,attackWeight:"leve",targetWeight:"medio",combatBonus:false,
- cancelP:0,convertPairs:0,equipmentId:"",element:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
+ cancelP:0,convertPairs:0,equipmentId:"",element:"",focusId:"",magicGrade:1,magicCharges:0,magicAmplify:false,
+ magicGradeConfirmed:false,magicTimeConfirmed:false,magicPathMeters:0,runeShield:false,
+ lightHands:false,potionResearch:false,stealthAttack:false,asuraDieId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 const desktopRollMedia="(min-width: 851px) and (hover: hover) and (pointer: fine)";
 function cards(list,group,s,d){
@@ -38,6 +42,8 @@ const isRepeat=d=>isDiscipline(d.complement)&&[d.base,d.second].some(isDisciplin
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
+ lightHands:CodexCharacterSheet.lightHands,
+ sphere(_event,target){return this._request({action:"sphere",kind:target.dataset.kind});},
  openDNA:CodexCharacterSheet.openDNA,chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,closeRoll:CodexCharacterSheet.closeRoll,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
@@ -63,10 +69,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=pendingRollFor(actor);
   const canPrepare=actor.isOwner&&!this._editing&&!this._pending&&!actor.getFlag(NS,"creationPending");
-  const elements=availableElements(s);
+  const elements=availableElements(s),round=sphereRound(game.combat),spheres=sphereState(s,round);
   if(this._pending)this._editing=false;
   const defense=defenseDisplay(actor);
-  const wornArmor=actor.items.find(i=>i.type==="equipment"&&i.system?.kind==="armor"&&i.system?.equipped);
+  const wornArmor=equippedArmor(actor);
   const armorSys=wornArmor?.system,armorMax=Math.max(0,Number(armorSys?.integrity?.max)||0);
   const armorCurrent=Math.min(armorMax,Math.max(0,Number(armorSys?.integrity?.value)||0));
   const armorCard=wornArmor?{
@@ -75,6 +81,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    percent:armorMax?Math.round(100*armorCurrent/armorMax):0
   }:null;
   ctx.codex={
+   sphere:canPrepare&&!attributesOnly&&canUseTechnique(s,"invocar-esfera-espiritual")?{
+    ...spheres,ready:canAsura(s,round),manualRound:game.user.isGM&&!round,
+    canCreate:spheres.createdThisRound<5&&spheres.count<5&&s.courage>0,
+    absorb:canUseTechnique(s,"absorver-esferas"),step:canUseTechnique(s,"passo-etereo"),
+    ranged:canUseTechnique(s,"disparo-esferas-espirituais")
+   }:null,
+   lightHands:canPrepare&&!attributesOnly&&canUseTechnique(s,"maos-leves"),
    equipment:equipmentView(actor,this._equipmentFilters),hasDruidic:s.skills.includes('pericia-druidica'),transformed:!!s.transformation?.kind,
    movement:standardMovement(s),canAttack:canPrepare,canCast:canPrepare&&!attributesOnly&&elements.length>0,
    actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
@@ -115,18 +128,25 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   };
   if(ctx.codex.preparing){
    const {mode,actionType}=this._opts;
-   const item=selectedItem(actor,this._opts),die=item?equippedDie(actor,item,mode):0;
-   const buildOptions={mode,actionType,contextApproved:true,equipmentDie:die};
+   const casting=mode==="conjuracao",foci=casting?compatibleFoci(actor,this._opts.element):[];
+   const item=casting?foci.find(i=>i.id===this._opts.focusId):selectedItem(actor,this._opts);
+   const die=item?equippedDie(actor,item,mode):0;
+   let magic;
+   if(casting)try{magic=spellPlan(actor,this._opts);}catch(error){magic={error:error.message};}
+   const stealthAvailable=actionType==="attack"&&item?.system.kind==="weapon"&&die&&canUseTechnique(s,"golpe-furtivo");
+   const potionAvailable=mode==="normal"&&!this._opts.lightHands&&canUseTechnique(s,"pesquisa-avancada-pocoes");
+   const asuraAvailable=actionType==="attack"&&canAsura(s,round,item);
+   const buildOptions={mode,actionType,contextApproved:true,equipmentDie:die,lightHands:this._opts.lightHands,
+    stealthAttack:this._opts.stealthAttack&&stealthAvailable};
    const rawPlan=buildPool(s,d,buildOptions);
-   const plan=buildPool(s,d,{...buildOptions,step:this._opts.step,stepDieId:this._opts.stepDieId});
-   if(actor.type==="character"&&(ctx.codex.health.id==="morto"||s.courage<ctx.codex.health.coragem+Number(this._opts.step))){
+   const plan=buildPool(s,d,{...buildOptions,step:this._opts.step,stepDieId:this._opts.stepDieId,asuraDieId:this._opts.asuraDieId});
+   if(actor.type==="character"&&(ctx.codex.health.id==="morto"||s.courage<ctx.codex.health.coragem+Number(this._opts.step)+(magic?.courage??0)+Number(Boolean(this._opts.asuraDieId)))){
     plan.errors.push(ctx.codex.health.id==="morto"?"Vida zero: o personagem não pode agir.":"Coragem insuficiente para agir neste estado de Saúde.");plan.ok=false;
    }
    if(this._opts.equipmentId&&!die){plan.errors.push("Equipamento indisponível para esta ação.");plan.ok=false;}
-   if(mode==="conjuracao"&&!item&&!elements.some(([id])=>id===this._opts.element)){
-    plan.errors.push("Escolha um elemento ou um foco habilitado.");plan.ok=false;
-   }
-   const targets=[...game.user.targets];
+   if(magic?.error){plan.errors.push(magic.error);plan.ok=false;}
+   if(this._opts.asuraDieId&&!asuraAvailable){plan.errors.push("Asura precisa de arma corpo a corpo ou mãos vazias.");plan.ok=false;}
+   const targets=this._opts.runeShield?[]:[...game.user.targets];
    let target=null,targetError="";
    if(targets.length===1){
     this._lastTargetId=targets[0].document?.uuid;
@@ -134,17 +154,33 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
      target=await requestRoll(actor,{action:"target",sceneId:canvas.scene?.id,targetIds:targets.map(token=>token.id)});
     }catch(error){targetError=error.message;}
    }else if(targets.length>1)targetError="Selecione apenas um alvo para esta ação.";
-   else if(this._targetLost)targetError="O alvo saiu do mapa. Selecione outro Token.";
+   else if(this._targetLost&&!this._opts.runeShield)targetError="O alvo saiu do mapa. Selecione outro Token.";
    if(targetError)plan.errors.push(targetError);
    ctx.codex.prepare={
-    actionLabel:actionType==="spell"?"Conjurar":actionType==="attack"?"Atacar":"Preparar teste",
+    fixedSources:this._opts.lightHands,baseName:sourceLabel(d.base.group,d.base.key,s),secondName:sourceLabel(d.second.group,d.second.key,s),stealthAvailable,stealthAttack:this._opts.stealthAttack,potionAvailable,potionResearch:this._opts.potionResearch,
+    asuraAvailable,asuraOptions:rawPlan.pool.map(x=>({id:x.id,label:sourceLabel(x.group,x.key,s)+" · d"+x.sides,selected:x.id===this._opts.asuraDieId})),
+    actionLabel:this._opts.lightHands?"Mãos Leves":actionType==="spell"?"Conjurar":actionType==="attack"?"Atacar":"Preparar teste",
     offensive:Boolean(actionType),lockedDiscipline:Boolean(actionType&&!attributesOnly),
     repeatedDiscipline:isRepeat(d),canRepeatDisc:mode==="armas"&&canRepeatDiscipline(s,d.base,d.second)&&(!d.complement||isRepeat(d)),
-    modeArmas:mode==="armas",useElement:mode==="conjuracao"&&!item,
-    canChooseFocus:mode==="conjuracao"&&hasSkill(s,"criar-item-foco-magia"),
+    modeArmas:mode==="armas",casting,
+    magic:casting?{
+     grades:[1,2,3].map(value=>({value,selected:value===this._opts.magicGrade})),
+     confirmGrade:this._opts.magicGrade>1,gradeConfirmed:this._opts.magicGradeConfirmed,
+     turns:magicTiming(this._opts.magicGrade,this._opts.magicCharges),
+     timeConfirmed:this._opts.magicTimeConfirmed,
+     courage:Number(this._opts.magicGrade===3)+Number(this._opts.magicAmplify)+Number(this._opts.runeShield&&s.runeShieldFreeUsed),
+     charges:this._opts.magicCharges,maxCharges:this._opts.magicGrade===3&&item?Math.min(2,focusCharges(item)):0,
+     showTime:magicTiming(this._opts.magicGrade,this._opts.magicCharges)>1,
+     amplify:this._opts.magicAmplify,hasFocus:Boolean(item),
+     wind:this._opts.element==="vento",pathMeters:this._opts.magicPathMeters||"",windRange:[4,8,16][this._opts.magicGrade-1],
+     canShield:isRuna(s)&&this._opts.magicGrade===1&&this._opts.element!=="psiquico",shield:this._opts.runeShield,
+     acid:["fogo","veneno"].includes(this._opts.element)&&["fogo","veneno","improviso"].every(id=>hasSkill(s,id)),
+     mastery:hasSkill(s,"mestre"),
+     foci:foci.map(i=>({id:i.id,name:i.name,charges:focusCharges(i),grade:i.system.grade,selected:i.id===item?.id})),
+    }:null,
     de:this._opts.de,manualDamage:this._opts.manualDamage,
     baseOptions:selectionOptions(s,d,"base",Boolean(actionType)),secondOptions:selectionOptions(s,d,"second",Boolean(actionType)),
-    complementOptions:selectionOptions(s,d,"complement",Boolean(actionType)),
+    complementOptions:this._opts.lightHands?[]:selectionOptions(s,d,"complement",Boolean(actionType)),
     elements:elements.map(([key,label])=>({key,label,selected:this._opts.element===key})),
     localCostOptions:[1,2,3].map(cost=>({cost,selected:Number(this._opts.activationPavor)===cost})),
     situations:Object.entries(SITUATIONS).map(([id,x])=>({id,label:x.label,selected:this._opts.situation===id})),
@@ -197,7 +233,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     cancelP:p.options.cancelP,convertPairs:p.options.convertPairs,
     rawP:summary?.raw?.p||0,rawA:summary?.raw?.a||0,
     localCost:(p.options.activationCost??0)+(usesLocal(actor)?Math.max(0,p.selected.length-keepForActor(actor,0)):0),
-    courageCost:(p.options.health?.coragem??0)+Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
+    courageCost:(p.options.health?.coragem??0)+(p.options.magic?.courage??0)+Number(Boolean(p.options.asura))+Number(Boolean(p.options.step&&!p.options.stepPaid))+(usesLocal(actor)?0:Math.max(0,p.selected.length-keepForActor(actor,0)))
    };
   }
   return ctx;
@@ -285,14 +321,27 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(el.dataset.rollOption){
    const key=el.dataset.rollOption;if(!Object.hasOwn(this._opts,key))return;
-   this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"?Number(el.value):key==="extraKeep"?Number(el.value):el.value;
+   this._opts[key]=el.type==="checkbox"?el.checked:el.type==="number"||["extraKeep","magicGrade"].includes(key)?Number(el.value):el.value;
+   if(["element","focusId","magicGrade"].includes(key)){
+    this._opts.magicCharges=0;
+    this._opts.magicTimeConfirmed=false;
+    if(key==="element"){
+     this._opts.focusId="";this._opts.magicPathMeters=0;
+    }
+    if(key==="magicGrade"||key==="element"){
+     this._opts.magicGradeConfirmed=false;this._opts.runeShield=false;
+    }
+    if(!this._opts.focusId)this._opts.magicAmplify=false;
+   }
    if(key==="de")this._opts.de=Math.max(0,Math.min(30,Number(this._opts.de)||0));
-    if(key==="equipmentId"||(key==="step"&&!this._opts.step))this._opts.stepDieId="";
+   if(["equipmentId","focusId"].includes(key)||(key==="step"&&!this._opts.step))this._opts.stepDieId="";
+   if(["equipmentId","stealthAttack"].includes(key))this._opts.asuraDieId="";
+   if(key==="equipmentId")this._opts.stealthAttack=false;
    this.render();return;
   }
-  if(el.dataset.rollSource&&this._draft.second&&!this._pending&&!this._editing){
+  if(el.dataset.rollSource&&this._draft.second&&!this._pending&&!this._editing&&!this._opts.lightHands){
    const selection=changeRollSource(this.actor.system,this._draft,el.dataset.rollSource,el.value,Boolean(this._opts.actionType));
-   if(selection){this._draft=selection;this._opts.stepDieId="";await this.render();}
+   if(selection){this._draft=selection;this._opts.stepDieId="";this._opts.asuraDieId="";await this.render();}
    return;
   }
   if(el.dataset.pendingOption&&this._pending){
@@ -418,11 +467,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const {group,key}=target.dataset;
   const list={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
   if(!Object.hasOwn(list,group)||!list[group].some(([id])=>id===key))return;
+  if(this._opts.lightHands){this._opts=defaults();this._draft=draft();}
   const system=this.actor.system,d=this._draft,candidate={group,key};
   if(this._opts.actionType){
    const slot=group==="attribute"?"second":"complement";
    const next=changeRollSource(system,d,slot,eq(d.complement,candidate)?"":group+":"+key,true);
-   if(next){this._draft=next;this._opts.stepDieId="";this._openRollNear(target);return this.render();}
+   if(next){this._draft=next;this._opts.stepDieId="";this._opts.asuraDieId="";this._openRollNear(target);return this.render();}
    return;
   }
   const present=[d.base,d.second,d.complement].filter(Boolean);
@@ -500,10 +550,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
  }
  static executeRoll(){
-  if(this._pending||this._editing||(this._targetLost&&!game.user.targets.size))return;
+  if(this._pending||this._editing||(this._targetLost&&!game.user.targets.size&&!this._opts.runeShield))return;
   return this._request({
    action:"start",selection:this._draft,options:{...this._opts,contextApproved:true},
-   sceneId:canvas.scene?.id,targetIds:[...game.user.targets].map(token=>token.id)
+   sceneId:canvas.scene?.id,targetIds:this._opts.runeShield?[]:[...game.user.targets].map(token=>token.id)
   });
  }
  static async discardRoll(){
@@ -556,6 +606,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   return this._request({action:'purchase',id:crypto.randomUUID(),name:target.dataset.name,quantity});
   }finally{this._buying=false;}
  }
+ static lightHands(_event,target){
+  if(!this.actor.isOwner||this._editing||this._pending||!canUseTechnique(this.actor.system,"maos-leves"))return;
+  this._draft={base:{group:"practice",key:"armas_conjuracao"},second:{group:"practice",key:"furtividade"},complement:null};
+  this._opts={...defaults(),de:this._opts.de,lightHands:true};
+  this._openRollNear(target);return this.render();
+ }
  static prepareAction(_event,target){return this._prepareCombat(target.dataset.kind,target);}
  static prepareEquipment(_event,target){
   const item=this.actor.items.get(target.dataset.id);
@@ -568,6 +624,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   try{
    this._draft=prepareCombatAction(this.actor,actionType,this._draft,equipmentId);
    this._opts={...defaults(),de:this._opts.de,actionType,mode:actionType==="spell"?"conjuracao":"armas",equipmentId};
+   if(actionType==="spell"){
+    const item=this.actor.items.get(equipmentId);
+    this._opts.element=item?focusElement(item):availableElements(this.actor.system)[0]?.[0]??"";
+    this._opts.focusId=equipmentId;
+    this._opts.equipmentId="";
+   }
    this._openRollNear(target);
    await this.render();
    if(!this._rollMedia.matches)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView({block:"start"});
@@ -599,7 +661,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  static async toggleEquip(event,target){
   const item=this.actor.items.get(target.dataset.id);
-  if(item&&this.actor.isOwner)await item.update({"system.equipped":!item.system.equipped});
+  if(!item||!this.actor.isOwner)return;
+  return this._request({action:"equipment",itemId:item.id,path:"equipped",value:!item.system.equipped});
  }
  static async adjustIntegrity(event,target){
   const item=this.actor.items.get(target.dataset.id),delta=Number(target.dataset.delta);

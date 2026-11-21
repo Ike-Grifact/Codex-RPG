@@ -8,7 +8,8 @@ import {purchasePlan} from "./equipment-workflow.mjs";
 import {animalTransformationPlan} from './transformations.mjs';
 import {maxCourage,lifeMax} from './rules.mjs';
 import {advancementPlan, creationMissing, gradeDetails, originChangePlan, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
-import {racialChoicesComplete,usesRacialRules,hasSkill} from "./races.mjs";
+import {racialChoicesComplete,usesRacialRules,hasSkill,isRuna} from "./races.mjs";
+import {spherePlan,sphereRound,canUseTechnique} from "./techniques.mjs";
 import {applyAttackImpact,impactSummary} from "./attack-impact.mjs";
 
 const query = `${NS}.roll`;
@@ -65,7 +66,33 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if(pending)throw Error("Finalize a rolagem antes de mudar a origem.");
     const creating=Boolean(actor.getFlag(NS,"creationPending"));
     if(!creating&&!user.isGM)throw Error("O Narrador ajusta a origem de fichas concluídas.");
-    await actor.update(originChangePlan(buildOf(actor),request,creating));
+    const changes=originChangePlan(buildOf(actor),request,creating);
+    if(request.race==="runa_espinhos"&&[...actor.items.values()].some(i=>i.system.kind==="armor"&&i.system.equipped)){
+      changes.items=[...actor.items.values()].map(item=>{
+        const data=item.toObject();
+        if(data.system.kind==="armor")data.system.equipped=false;
+        return data;
+      });
+    }
+    await actor.update(changes);
+    return;
+  }
+  if(request.action==="sphere"){
+    if(pending)throw Error("Finalize a rolagem antes de mudar as Esferas Espirituais.");
+    await actor.update(spherePlan(actor.system,request.kind,sphereRound(game.combat),user.isGM));
+    return;
+  }
+  if(request.action==="declareTechnique"){
+    const names={"sentido-elemental":"Sentido Elemental","corpo-fechado":"Corpo Fechado","impacto-psiquico":"Impacto Psíquico"};
+    const id=request.kind;
+    if(!Object.hasOwn(names,id)||pending||actor.system.courage<1||!canUseTechnique(actor.system,id))
+      throw Error("A Perícia não está disponível ou falta Coragem.");
+    await actor.update({"system.courage":actor.system.courage-1});
+    return {declared:names[id]};
+  }
+  if(request.action==="resetRuneShield"){
+    if(!user.isGM||!isRuna(actor.system)||pending)throw Error("A renovação diária exige Narrador e ficha livre.");
+    await actor.update({"system.runeShieldFreeUsed":false});
     return;
   }
   if(request.action==="perseverance"){
@@ -119,7 +146,10 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const fields=['quantity','integrity.value','integrity.max','ammo.value','ammo.max','equipped','properties','associatedEquipment','embeddedWeapon','description'];
     if(!fields.includes(path))throw Error('Campo de equipamento inválido.');
     let value=request.value;
-    if(path==='equipped')value=value===true;
+    if(path==='equipped'){
+      value=value===true;
+      if(value&&item.system.kind==="armor"&&isRuna(actor.system))throw Error("Runa Espinhos não pode equipar armaduras físicas.");
+    }
     else if(path==='properties'){
       if(!Array.isArray(value)||value.length>24||value.some(x=>typeof x!=='string'||x.length>100))throw Error('Propriedades inválidas.');
     }else if(['description','associatedEquipment','embeddedWeapon'].includes(path)){

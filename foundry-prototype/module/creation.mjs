@@ -43,6 +43,8 @@ export function actorData(type, raw = {}, quick = false) {
     origin: text(raw.origin) || (animal || monster ? "Criatura" : ""),
     race:"",
     perseverancaUsed:raw.perseverancaUsed===true,
+    runeShieldFreeUsed:raw.runeShieldFreeUsed===true,
+    spiritualSpheres:{count:integer(raw.spiritualSpheres?.count,0,5),createdThisRound:integer(raw.spiritualSpheres?.createdThisRound,0,5),round:""},
     virtue: text(raw.virtue),
     personality: text(raw.personality),
     notes: text(raw.notes, 5000),
@@ -66,7 +68,7 @@ export function actorData(type, raw = {}, quick = false) {
   if(usesRacialRules(system)&&raw.race!==""){
     const race=Object.hasOwn(RACES,raw.race)?raw.race:"humano";
     const recorded=Array.isArray(raw.racialInitialAttributes)?raw.racialInitialAttributes.filter(key=>RACES[race].favored.includes(key)):[];
-    system=withRacialOrigin({...system,race,racialInitialAttributes:recorded},{...raw,race});
+    system=withRacialOrigin({...system,race,runeElements:Array.isArray(raw.runeElements)?raw.runeElements.slice(0,2).map(value=>text(value,20)):[],racialInitialAttributes:recorded},{...raw,race});
   }
   system.pp = integer(raw.pp, 0, maxPP(system.level));
   system.life = {value: integer(raw.life ?? lifeMax(system), 0, lifeMax(system))};
@@ -108,6 +110,7 @@ function webItem(raw) {
       weight: (Object.hasOwn(weights, raw.weight) ? weights[raw.weight] : weights.leve) * (properties.includes("Muito Leve") ? .5 : 1),
       category: Object.values(categories).includes(category) ? category : className,
       die: [6, 10, 12].includes(Number(raw.die)) ? Number(raw.die) : 0,
+      focusCharges:kind==='focus'?integer(raw.focusCharges??raw.grade??1,0,integer(raw.grade,1,7)):null,
       equipped: raw.equipped === true, range: integer(raw.range, 0, 1000),
       priceVT: integer(raw.priceVT, 0, 10000), properties, element: text(raw.element, 40),
       integrity: {value: integer(raw.hp ?? max, 0, max), max},

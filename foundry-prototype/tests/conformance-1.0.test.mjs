@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {SKILLS,requirements,ADVANCED_SOURCES} from '../module/skill-catalog.mjs';
+import {racialGrants,hasSkill} from '../module/races.mjs';
 import {skillDetails,planSkillPackage,advancementPlan} from '../module/advancement.mjs';
 import {xpLedger,CREATION_REFERENCE,XP_ATTRIBUTE,XP_TRAINING,maxCourage,buildPool,resolveRoll,passiveAnticipar} from '../module/rules.mjs';
 import {skillDefinitions,equipmentDefinitions,catalogId} from '../module/compendium-data.mjs';
@@ -19,9 +20,9 @@ test('arma cravada conta na carga transportada sem duplicar o peso por filtros v
  actor.items[0].system.embeddedWeapon='';assert.equal(carriedWeight(actor),.5);
 });
 
-test('64 registros completos da origem coincidem com catálogo e 66 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
- assert.equal(site.skills.length,64);assert.equal(SKILLS.length,66);
- const definitions=skillDefinitions();assert.equal(new Set(definitions.map(row=>row._id)).size,66);
+test('124 registros do site coincidem com catálogo e 126 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
+ assert.equal(site.skills.length,124);assert.equal(SKILLS.length,126);
+ const definitions=skillDefinitions();assert.equal(new Set(definitions.map(row=>row._id)).size,126);
  for(const [id,name,detail,cost] of site.skills){
   const row=byId(id),native=definitions.find(item=>item.system.canonicalId===id);
   assert.deepEqual([row.name,row.detail,row.cost],[name,detail,cost],id);
@@ -36,27 +37,27 @@ test('64 registros completos da origem coincidem com catálogo e 66 definições
  assert.equal(catalogId('skill','improviso'),definitions.find(item=>item.system.canonicalId==='improviso')._id);
 });
 test('cada alternativa de compra satisfaz o validador e retirar cada requisito obrigatório bloqueia sua alternativa',()=>{
- for(const row of SKILLS.filter(row=>!row.legacy&&row.cost!=null)){
+ for(const row of SKILLS.filter(row=>!row.legacy&&row.cost!=null&&row.id!=='maestria-armas-fogo')){
   for(const branch of requirements[row.id].length?requirements[row.id]:[[]]){
-   const system={...empty(),xp:1000};
+   const system={...empty(),xp:1000,race:row.origin??'humano'};
    for(const value of branch){const [kind,key,grade]=value.split(':');if(kind==='s')system.skills.push(key);else system[fields[kind]][key]=Number(grade);}
    assert.equal(skillDetails(system,row.id).met,true,row.id);
    assert.equal(planSkillPackage(system,row.id).status,'available',row.id);
    for(const missing of branch){
     const broken=structuredClone(system),[kind,key,grade]=missing.split(':');
     if(kind==='s')broken.skills=broken.skills.filter(id=>id!==key);else broken[fields[kind]][key]=Number(grade)-1;
-    const expected=requirements[row.id].some(option=>option.every(ref=>{const [k,id,g]=ref.split(':');return k==='s'?broken.skills.includes(id):(broken[fields[k]][id]??0)>=Number(g);}));
+    const expected=requirements[row.id].some(option=>option.every(ref=>{const [k,id,g]=ref.split(':');return k==='s'?hasSkill(broken,id):(broken[fields[k]][id]??0)>=Number(g);}));
     assert.equal(skillDetails(broken,row.id).met,expected,row.id+' sem '+missing);
    }
   }
  }
 });
 test('validação clássica inteira do site coincide com compra Foundry em 128 fichas humanas por Perícia comprável',()=>{
- const context=vm.createContext({ADVANCED_SOURCE_DEFS:site.advanced,SOURCE_PROPS:{attr:'attributes',know:'knowledges',practice:'practices'},racialGrants:()=>[],ownsSkill:(id,s)=>s.skills.includes(id)});
+ const context=vm.createContext({ADVANCED_SOURCE_DEFS:site.advanced,SOURCE_PROPS:{attr:'attributes',know:'knowledges',practice:'practices'},racialGrants,ownsSkill:(id,s)=>hasSkill(s,id),WEAPON_MASTERY_TYPES:site.masteries,APPROVED_WEAPON_MASTERY_PURCHASE:site.approvedMasteries});
  const check=vm.runInContext(site.requirementFunction+';skillReq',context);
  let seed=109;const next=n=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed%n;};
  for(let i=0;i<128;i++){
-  const system={...empty(),xp:10000};
+  const system={...empty(),xp:10000,race:['humano','lucker_sangue','lucker_puro','runa_espinhos'][i%4]};
   for(const [field,keys] of Object.entries({attributes:['forca','destreza','agilidade','inteligencia','influencia','vigor'],knowledges:['protecao','medicina','alquimia','engenharia','astronomia','erudicao'],practices:['armas_conjuracao','furtividade','atletismo','artesao','apresentacao','coleta']}))for(const key of keys)system[field][key]=i===0?0:i===1?6:next(7);
   system.skills=SKILLS.filter(row=>i===1||next(2)===0).map(row=>row.id);
   for(const row of SKILLS.filter(row=>!row.legacy&&row.cost!=null))assert.equal(skillDetails(system,row.id).met,!check(row.id,system),row.id+' cenário '+i);

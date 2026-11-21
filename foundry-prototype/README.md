@@ -1,8 +1,17 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.23.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.24.** Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
+
+## Conteúdo sincronizado com o site
+
+- O Codex Genético tem 18 constelações temáticas, seletor de ramos, filtro de Perícias futuras e 124 entradas do site. O Compendium preserva ainda dois verbetes legados. Custos ou requisitos pendentes continuam bloqueados para compra.
+- A ficha usa a referência de progressão da v0.83. Criação com 15 XP e teto de 260 XP totais no nível 20. A tabela orienta a mesa e o Narrador concede XP no Codex Genético. Valores legados permanecem na ficha.
+- **Conjurar** oferece elemento, foco, G1–G3, declaração de preparação, cargas para acelerar G3 e amplificação. Cargas e custo da magia são debitados ao finalizar.
+- Runa Espinhos recebe um elemento inicial, conserva o segundo antigo como histórico e usa Escudo Rúnico para registrar sua barreira. O Narrador pode renovar o uso gratuito pelo Codex Genético. A aplicação da resistência e o desgaste da barreira são resolvidos na mesa.
+- A preparação registra a metragem total de Ar. Consulte as instruções de Ácido no rolador de Fogo ou Veneno quando habilitado. A mesa resolve o trajeto, a mistura, Queimar e os acúmulos de Veneno.
+- Esferas Espirituais, Asura, Mãos Leves, Golpe Furtivo e Pesquisa Avançada em Poções têm ações de ficha ou de rolagem. Passo Etéreo, disparos de esferas, Sentido Elemental, Corpo Fechado e Impacto Psíquico registram o custo; a mesa resolve seus efeitos.
 
 ## Desenvolvimento local
 

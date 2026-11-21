@@ -124,12 +124,28 @@
     <div class="codex-actions codex-action-bar">
       {{#if codex.canAttack}}<button type="button" class="codex-primary" data-action="prepareAction" data-kind="attack">Atacar</button>{{/if}}
       {{#if codex.canCast}}<button type="button" class="codex-primary" data-action="prepareAction" data-kind="spell">Conjurar</button>{{/if}}
+      {{#if codex.lightHands}}<button type="button" data-action="lightHands">Mãos Leves</button>{{/if}}
       {{#if codex.canAttack}}{{#each codex.equipment.shortcuts}}
         <button type="button" data-action="prepareEquipment" data-id="{{id}}" {{#unless enabledDie}}disabled{{/unless}}>{{{icon}}} {{name}}</button>
       {{/each}}{{/if}}
       {{#if codex.hasPending}}<button type="button" data-action="showRoll">Retomar rolagem</button>{{else}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/if}}
     </div>
   {{/unless}}
+  {{#with codex.sphere}}
+  <details class="codex-help">
+    <summary>Esferas Espirituais · {{count}}/5</summary>
+    <p>{{createdThisRound}}/5 criadas nesta rodada. {{#if ready}}Punho Supremo de Asura disponível em Atacar.{{/if}}</p>
+    <div class="codex-actions">
+      <button type="button" data-action="sphere" data-kind="create" {{#unless canCreate}}disabled{{/unless}}>Criar esfera (−1 Coragem)</button>
+      {{#if manualRound}}<button type="button" data-action="sphere" data-kind="nextRound" {{#unless createdThisRound}}disabled{{/unless}}>Confirmar próxima rodada</button>{{/if}}
+      {{#if count}}
+        {{#if absorb}}<button type="button" data-action="sphere" data-kind="absorb">Absorver todas</button>{{/if}}
+        {{#if step}}<button type="button" data-action="sphere" data-kind="passo-etereo" title="Registre o movimento de até 8 m na mesa">Passo Etéreo (−1 esfera)</button>{{/if}}
+        {{#if ranged}}<button type="button" data-action="sphere" data-kind="disparo-esferas-espirituais" title="Resolva o disparo físico na mesa">Declarar disparo (−1 esfera)</button>{{/if}}
+      {{/if}}
+    </div>
+  </details>
+  {{/with}}
   <div class="codex-rune-legend" role="note" aria-label="Símbolos oficiais do Codex RPG">
     <span class="legend-e"><b aria-hidden="true">ᛋ</b> Êxito</span>
     <span class="legend-a"><b aria-hidden="true">ᚨ</b> Antecipar</span>
@@ -215,10 +231,10 @@
     <section class="codex-block codex-roll-prep" aria-label="Preparação da rolagem">
       <div class="codex-block-title"><h2>{{codex.prepare.actionLabel}}</h2></div>
       <div class="codex-compose">
-        <div><small>BASE</small>{{#if codex.prepare.lockedDiscipline}}<strong>Disciplina</strong>{{else}}
-          <select data-roll-source="base" aria-label="Fonte base">{{#each codex.prepare.baseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}</div>
+        <div><small>BASE</small>{{#if codex.prepare.lockedDiscipline}}<strong>Disciplina</strong>{{else}}{{#if codex.prepare.fixedSources}}<strong>{{codex.prepare.baseName}}</strong>{{else}}
+          <select data-roll-source="base" aria-label="Fonte base">{{#each codex.prepare.baseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}{{/if}}</div>
         <div><small>{{#if codex.prepare.lockedDiscipline}}ATRIBUTO{{else}}2ª FONTE{{/if}}</small>
-          <select data-roll-source="second" aria-label="Segunda fonte">{{#each codex.prepare.secondOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></div>
+          {{#if codex.prepare.fixedSources}}<strong>{{codex.prepare.secondName}}</strong>{{else}}<select data-roll-source="second" aria-label="Segunda fonte">{{#each codex.prepare.secondOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}</div>
         {{#if codex.prepare.complementOptions.length}}<div><small>COMPLEMENTO</small>
           {{#if codex.prepare.repeatedDiscipline}}<strong>Disciplina</strong>{{else}}
           <select data-roll-source="complement" aria-label="Complemento"><option value="">Nenhum</option>{{#each codex.prepare.complementOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
@@ -232,13 +248,34 @@
         {{#each codex.prepare.equipmentOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>{{/each}}
        </select>{{#if codex.prepare.effectiveRange}}<small>Alcance efetivo {{codex.prepare.effectiveRange}} m</small>{{/if}}</label>
        {{/unless}}{{/if}}
-       {{#if codex.prepare.canChooseFocus}}
-       <label>Fonte de conjuração<select data-roll-option="equipmentId">
-        <option value="">Elemento</option>
-        {{#each codex.prepare.equipmentOptions}}<option value="{{id}}" {{#if selected}}selected{{/if}}>Foco · {{name}}</option>{{/each}}
+       {{#if codex.prepare.casting}}
+       <label>Elemento<select data-roll-option="element">{{#each codex.prepare.elements}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+       {{#if codex.prepare.magic.foci}}
+       <label>Foco<select data-roll-option="focusId">
+        <option value="">Sem foco</option>
+        {{#each codex.prepare.magic.foci}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}} · {{charges}}/{{grade}} cargas</option>{{/each}}
        </select></label>
        {{/if}}
-       {{#if codex.prepare.useElement}}<label>Elemento<select data-roll-option="element"><option value="">Selecione</option>{{#each codex.prepare.elements}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>{{/if}}
+       <label>Grau da magia<select data-roll-option="magicGrade">{{#each codex.prepare.magic.grades}}<option value="{{value}}" {{#if selected}}selected{{/if}}>G{{value}}</option>{{/each}}</select></label>
+       {{#with codex.prepare.magic}}
+        {{#if maxCharges}}<label>Cargas para acelerar<input type="number" min="0" max="{{maxCharges}}" step="1" value="{{charges}}" data-roll-option="magicCharges"></label>{{/if}}
+        {{#if hasFocus}}<label class="codex-check"><input type="checkbox" data-roll-option="magicAmplify" {{#if amplify}}checked{{/if}}> Amplificar com foco (+1 Coragem)</label>{{/if}}
+        {{#if confirmGrade}}<label class="codex-check"><input type="checkbox" data-roll-option="magicGradeConfirmed" {{#if gradeConfirmed}}checked{{/if}}> Grau e efeito autorizados</label>{{/if}}
+        {{#if showTime}}<label class="codex-check"><input type="checkbox" data-roll-option="magicTimeConfirmed" {{#if timeConfirmed}}checked{{/if}}> {{turns}} turnos de preparação cumpridos</label>{{/if}}
+        {{#if wind}}<label>Trajetória de Ar em metros<input type="number" min="0" max="{{windRange}}" step="any" value="{{pathMeters}}" placeholder="Opcional" data-roll-option="magicPathMeters"><small>Até {{windRange}} m somando todos os trechos por passagem aberta.</small></label>{{/if}}
+        {{#if canShield}}<label class="codex-check"><input type="checkbox" data-roll-option="runeShield" {{#if shield}}checked{{/if}}> Erguer Escudo Rúnico</label>{{/if}}
+        {{#if courage}}<p>Conjuração · {{courage}} Coragem ao finalizar.</p>{{/if}}
+        {{#if acid}}<details><summary>Ácido · Fogo + Veneno</summary><p>Registre a mistura na mesa e reserve 1A. {{#if mastery}}Em acerto, se aplicar Queimar junto ao efeito de Veneno, registre um acúmulo por 2 rodadas.{{else}}Improviso adapta o tipo de dano. Para aplicar ambos os efeitos, exige Maestria Elemental.{{/if}}</p></details>{{/if}}
+       {{/with}}
+       {{/if}}
+       {{#if codex.prepare.stealthAvailable}}<label class="codex-check"><input type="checkbox" data-roll-option="stealthAttack" {{#if codex.prepare.stealthAttack}}checked{{/if}}> Golpe Furtivo · +1 dado de arma</label>{{/if}}
+       {{#if codex.prepare.potionAvailable}}<label class="codex-check"><input type="checkbox" data-roll-option="potionResearch" {{#if codex.prepare.potionResearch}}checked{{/if}}> Criar poção · Pesquisa Avançada (+1 Êxito)</label>{{/if}}
+       {{#if codex.prepare.asuraAvailable}}
+       <label>Punho Supremo de Asura<select data-roll-option="asuraDieId">
+        <option value="">Sem Asura</option>
+        {{#each codex.prepare.asuraOptions}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}} → d20</option>{{/each}}
+       </select><small>5 esferas e 1 Coragem ao finalizar.</small></label>
+       {{/if}}
        {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
         <label>Custo local<select data-roll-option="activationPavor">
           {{#each codex.prepare.localCostOptions}}<option value="{{cost}}" {{#if selected}}selected{{/if}}>{{cost}}P local no total</option>{{/each}}
@@ -271,7 +308,7 @@
          {{/if}}
          {{/unless}}
         {{#if codex.prepare.hasCombatSkill}}<label class="codex-check"><input type="checkbox" data-roll-option="combatBonus" {{#if codex.prepare.combatBonus}}checked{{/if}}> Perícia Combate: +1A (se pertinente)</label>{{/if}}
-        <label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>
+        {{#unless codex.prepare.fixedSources}}<label class="codex-check"><input type="checkbox" data-roll-option="weightEnabled" {{#if codex.prepare.weightEnabled}}checked{{/if}}> Aplicar afinidade de peso e balanço (somente se pertinente)</label>{{/unless}}
         {{#if codex.prepare.weightEnabled}}
           <label>Peso do ataque<select data-roll-option="attackWeight">
             <option value="leve" {{#if codex.prepare.attackWeightLeve}}selected{{/if}}>Leve</option>

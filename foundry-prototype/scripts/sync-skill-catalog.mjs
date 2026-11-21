@@ -9,21 +9,29 @@ const cwd=fileURLToPath(new URL('../../',import.meta.url));
 const prior=execFileSync('git',['show','79dc1e1:foundry-prototype/module/skill-catalog.mjs'],{cwd,encoding:'utf8'});
 const old=JSON.parse(prior.match(/export const SKILLS=(\[[\s\S]*?\]);/)[1]);
 const oldRequirements=JSON.parse(vm.runInNewContext(prior.replaceAll('export ','')+';JSON.stringify(requirements)',{},{timeout:2000}));
-const requirements={...site.requirements,
+const requirements={
  'concentracao-refinada':[['p:armas_conjuracao:2']],
  'recuperacao-vigorosa':[['a:vigor:3']],
  'recuperacao-movimento':[['a:vigor:6','s:recuperacao-vigorosa']],
  'instinto-sobrevivencia':[['a:vigor:3']],
  'manejo-perfeito':[['a:destreza:2','s:disciplina-avancada']],
  'transfusao-sanguinaria':[['s:transfusao','s:sangue']],
- 'maestria-arremesso-armas':['armas-leves','armas-medias','armas-pesadas'].map(id=>['a:forca:2','a:destreza:2','a:agilidade:1','s:'+id])};
+ 'maestria-armas-fogo':[['s:armas-fogo']],
+ 'maestria-em-apresentacao':[['p:apresentacao:4','a:influencia:4','a:destreza:4','s:apresentacao-avancada','s:pericia-em-instrumentos']],
+ 'voz-encantadora':[['a:influencia:4','p:apresentacao:4','a:vigor:3']],
+ 'melodia-psiquica':[['p:armas_conjuracao:4','s:criar-item-foco-magia','s:maestria-em-apresentacao']],
+ ...site.requirements};
 const hidden=new Set(['combate','armas']);
-const automated=new Set(['furtividade','improviso','mestre','olhos-de-aguia',...site.advanced.map(row=>row.id)]);
+const origins={'maestria-armas-fogo':'humano','transfusao-sanguinaria':'lucker_sangue'};
+const automated=new Set(['furtividade','improviso','mestre','olhos-de-aguia','escudo-arcano','invocar-esfera-espiritual',
+ 'passo-etereo','absorver-esferas','disparo-esferas-espirituais','maos-leves','pesquisa-avancada-pocoes','golpe-furtivo',
+ 'sentido-elemental','corpo-fechado','impacto-psiquico',...site.advanced.map(row=>row.id)]);
 const skills=site.skills.map(([id,name,detail,cost])=>({id,name,detail,cost,legacy:hidden.has(id),
  ...(old.find(row=>row.id===id)?.legacyCost!=null?{legacyCost:old.find(row=>row.id===id).legacyCost}:{}),
+ ...(origins[id]?{origin:origins[id]}:{}),
  family:site.families.find(row=>row.skills.includes(id))?.id??({'concentracao-refinada':'armas','olhos-de-aguia':'disparos','transfusao-sanguinaria':'alquimia','transformacao-elemental':'natureza'}[id]??'outros'),
- requirements:requirements[id]??[[]],state:cost==null?'PENDENTE':'DEFINIDO',
- source:'SRD Playtest Nível 1 v1.0; Continuidade v0.82 subsidiária',sourceCommit:site.commit,
+ requirements:requirements[id]??[[]],state:/^EXPERIMENTAL\b/i.test(detail)?'EXPERIMENTAL':/^PROPOST[OA]\b/i.test(detail)?'PROPOSTO':cost==null?'PENDENTE':'DEFINIDO',
+ source:'SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85',sourceCommit:site.commit,
  grades:['pericia-druidica','transformacao-elemental'].includes(id)?[1,2,3]:['vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(id)?[1,2,3]:[],
  automation:automated.has(id)?'parcial':'manual',
  effects:[{description:detail,kind:automated.has(id)?'passivo ou condicionado':'ativo ou narrativo',
@@ -33,6 +41,7 @@ let module='// Catálogo único revisado contra o SRD ativo. Gerado por scripts/
 module+='export const SKILLS='+JSON.stringify(skills,null,2)+';\n';
 module+='export const requirements=Object.fromEntries(SKILLS.map(row=>[row.id,row.requirements]));\n';
 module+='export const ADVANCED_SOURCES='+JSON.stringify(site.advanced)+';\n';
+module+='export const XP_LEVEL_REFERENCE='+JSON.stringify(site.levels)+';\n';
 module+='export const showSkill=(row,system)=>!row.legacy||Boolean(system.skills?.includes(row.id));\n';
 module+='const normalizeName=value=>value.normalize("NFD").replace(/\\p{M}/gu,"").toLocaleLowerCase("pt-BR");\n';
 module+='export const searchSkills=(query,system)=>SKILLS.filter(row=>showSkill(row,system)&&normalizeName(row.name).includes(normalizeName(query.trim())));\n';

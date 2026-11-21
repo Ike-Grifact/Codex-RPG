@@ -9,6 +9,9 @@ const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  concept:t(),origin:new F.StringField({required:true,initial:monster||animal?"Criatura":"Humano"}),
  race:t(),pureElement:t(),runeElements:new F.ArrayField(t(),{initial:[]}),
  racialInitialAttributes:new F.ArrayField(t(),{initial:[]}),perseverancaUsed:new F.BooleanField({initial:false}),
+ runeShieldFreeUsed:new F.BooleanField({initial:false}),
+ spiritualSpheres:new F.SchemaField({count:new F.NumberField({integer:true,min:0,max:5,initial:0}),
+  createdThisRound:new F.NumberField({integer:true,min:0,max:5,initial:0}),round:t()}),
  virtue:t(),personality:t(),notes:t(),abilities:t(),leader:new F.BooleanField({initial:false}),bodySize:new F.StringField({initial:'medio'}),
  attributes:grades(["forca","agilidade","destreza","inteligencia","influencia","vigor"]),
  knowledges:grades(["protecao","astronomia","medicina","alquimia","engenharia","erudicao"]),
@@ -46,6 +49,7 @@ export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
   range:nn(1),priceVT:nn(0),
   properties:new F.ArrayField(new F.StringField(),{required:true,initial:[]}),
   ammo:new F.SchemaField({value:nn(0),max:nn(0),reload:nn(0),cartucho:t()}),
+  focusCharges:new F.NumberField({integer:true,min:0,nullable:true,initial:null}),
   element:t(),catalogId:t(),associatedEquipment:t(),embeddedWeapon:t(),packSize:nn(0),storageCapacity:nn(0)
  };}
 }

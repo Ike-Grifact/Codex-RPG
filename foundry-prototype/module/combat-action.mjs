@@ -1,16 +1,9 @@
 import {ATTRIBUTES,GROUPS,attributesOnly,isDiscipline,sourcePairError,mayComplement,disciplineNeedsAttribute} from "./rules.mjs";
 import {equippedDie} from "./equipment-logic.mjs";
-import {hasSkill} from "./races.mjs";
 import {preferredQuickAttribute} from "./equipment-workflow.mjs";
 
-export const ELEMENTS = [
- ["psiquico","Psíquico"],["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"],
- ["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"],
-];
-
-export function availableElements(system){
- return ELEMENTS.filter(([id])=>hasSkill(system,id==="psiquico"?"criar-item-foco-magia":id));
-}
+import {availableElements} from "./conjuration.mjs";
+export {availableElements};
 
 export const sameSource=(a,b)=>!!a&&!!b&&a.group===b.group&&a.key===b.key;
 

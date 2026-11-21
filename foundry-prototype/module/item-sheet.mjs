@@ -2,6 +2,8 @@
 import {applyCatalogArmorMigration,catalogArmorMigration} from "./equipment-migration.mjs";
 import {itemKinds} from "./creation.mjs";
 import {dieSvg} from "./dice-icons.mjs";
+import {focusCharges} from "./conjuration.mjs";
+import {isRuna} from "./races.mjs";
 import {pendingRollFor} from "./roll-resolution.mjs";
 export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-item-sheet"],actions:{migrateArmor(){return applyCatalogArmorMigration(this.item);}},window:{resizable:true},position:{width:550,height:590}};
@@ -10,6 +12,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
   const ctx=await super._prepareContext(options);
   const s=this.item.system;
   ctx.equipment={
+   isFocus:s.kind==="focus",focusCharges:focusCharges(this.item),
    pricePending:this.item.getFlag('codex-rpg-foundry','pricePending')===true,
    canMigrateArmor:game.user.isGM&&!!catalogArmorMigration(this.item),
    name:this.item.name,dieIcon:dieSvg(s.die),img:this.item.img,kind:s.kind,grade:s.grade,weight:s.weight,
@@ -28,7 +31,7 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
    if(pendingRollFor(this.item.parent)){ui.notifications.warn('Finalize a rolagem antes de editar o equipamento.');return this.render();}
    const input=event.target,path=input.dataset.field;
    const fields=["name","system.kind","system.grade","system.weight","system.quantity",
-    "system.equipped","system.integrity.value","system.integrity.max","system.description",
+    "system.equipped","system.focusCharges","system.integrity.value","system.integrity.max","system.description",
     "system.category","system.die","system.range","system.priceVT","system.element","system.properties",
     "system.ammo.value","system.ammo.max","system.ammo.reload","system.ammo.cartucho","system.durability.value","system.durability.max"];
    if(!fields.includes(path))return;
@@ -40,6 +43,12 @@ export class CodexEquipmentSheet extends foundry.applications.api.HandlebarsAppl
      if(path.includes("integrity"))val=Math.floor(val);
    }
    if(path==="system.properties")val=String(val).split(",").map(x=>x.trim()).filter(Boolean);
+   if(path==="system.focusCharges")val=Math.min(this.item.system.grade,Math.max(0,Math.floor(Number(val)||0)));
+   const kind=path==="system.kind"?val:this.item.system.kind;
+   const equipped=path==="system.equipped"?val:this.item.system.equipped;
+   if(kind==="armor"&&equipped&&this.item.parent&&isRuna(this.item.parent.system)){
+    ui.notifications.warn("Runa Espinhos não pode equipar armaduras físicas.");return this.render();
+   }
    await this.item.update({[path]:val});
   });
  }

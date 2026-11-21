@@ -3,7 +3,8 @@ import {equippedDie} from "./equipment-logic.mjs";
 import {lookupTarget} from "./roll-targets.mjs";
 import {escapeHTML, rollPool} from "./roll-engine.mjs";
 import {faceIcons} from "./dice-icons.mjs";
-import {hasSkill} from "./races.mjs";
+import {canAsura,canUseTechnique,sphereRound,sphereState} from "./techniques.mjs";
+import {spellPlan,focusCharges,runeBarrier,ELEMENTS} from "./conjuration.mjs";
 
 export const rollNamespace = "codex-rpg-foundry";
 export function pendingRollEntry(actor) {
@@ -38,10 +39,8 @@ export async function preparePendingRoll(actor, request, user, game) {
   if (!["normal", "armas", "conjuracao"].includes(mode)) throw Error("Modo de rolagem inválido.");
   if (!["","attack","spell"].includes(actionType) ||
       (actionType==="attack"&&mode!=="armas") || (actionType==="spell"&&mode!=="conjuracao")) throw Error("Ação ofensiva inválida.");
-  if(mode==='conjuracao'&&!equipmentId){
-    const skill=input.element==='psiquico'?'criar-item-foco-magia':input.element;
-    if(!['psiquico','vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(input.element)||!hasSkill(system,skill))throw Error('Selecione um elemento adquirido.');
-  }
+  const magic=mode==="conjuracao"?spellPlan(actor,input):null;
+  if(magic?.shield&&targetIds.length)throw Error("O Escudo Rúnico é uma ação defensiva.");
   if (!Number.isInteger(de) || de < 0 || de > 30) throw Error("Informe uma DE inteira de 0 a 30.");
   if (![stepDieId, equipmentId].every(id => typeof id === "string")) throw Error("Fonte de dado inválida.");
   const step = !system.animalRules && input.step === true;
@@ -49,18 +48,31 @@ export async function preparePendingRoll(actor, request, user, game) {
   const health = actor.type==="character" && system.life ? healthByLife(system,system.life.value) : null;
   if(health?.id==="morto")throw Error("Vida zero: o personagem não pode agir.");
   if(step&&system.courage<1)throw Error("Coragem insuficiente para reforçar o dado.");
-  if((health?.coragem??0)+Number(step)>system.courage)throw Error("Coragem insuficiente para agir neste estado de Saúde.");
+  if((health?.coragem??0)+Number(step)+(magic?.courage??0)>system.courage)throw Error("Coragem insuficiente para agir neste estado de Saúde.");
   const scene = game.scenes.get(sceneId);
   const combat = game.combats.find(entry => entry.started && entry.scene?.id === scene?.id);
   const target = lookupTarget(game, user, sceneId, targetIds, input.targetDodges === true);
   if(actionType&&target?.actorUuid===actor.uuid)throw Error("Escolha outro token como alvo do ataque.");
-  const item = actor.items.get(equipmentId);
+  const item = actor.items.get(magic?.focusId??equipmentId);
   const equipmentDie = item ? equippedDie(actor, item, mode) : 0;
-  if (equipmentId && !equipmentDie) throw Error("Equipamento não habilitado por Perícia ou elemento.");
-  const focusElement=String(item?.system.element??"").normalize("NFD").replace(/\p{M}/gu,"").trim().toLowerCase();
-  const element=mode==="conjuracao"?(equipmentId?(focusElement==="ar"?"vento":focusElement||"psiquico"):input.element):"";
+  if (!magic && equipmentId && !equipmentDie) throw Error("Equipamento não habilitado por Perícia ou elemento.");
+  const element=magic?.element??"";
+  const lightHands=input.lightHands===true,potionResearch=input.potionResearch===true,stealthAttack=input.stealthAttack===true;
+  const asuraDieId=input.asuraDieId??"";
+  const round=sphereRound(combat);
+  if(lightHands&&(actionType||input.weightEnabled||!canUseTechnique(system,"maos-leves")))throw Error("Mãos Leves indisponível para esta ação.");
+  if(potionResearch&&(mode!=="normal"||lightHands||!canUseTechnique(system,"pesquisa-avancada-pocoes")))throw Error("Pesquisa Avançada em Poções exige criação de poção em teste não mágico.");
+  if(stealthAttack&&(actionType!=="attack"||item?.system.kind!=="weapon"||!equipmentDie||!canUseTechnique(system,"golpe-furtivo")))
+    throw Error("Golpe Furtivo exige ataque com arma equipada e Perícia válida.");
+  if(typeof asuraDieId!=="string"||asuraDieId&&(actionType!=="attack"||!canAsura(system,round,item)))
+    throw Error("Asura exige Disciplina corpo a corpo e 5 esferas de rodada anterior.");
+  const additionalCost=(magic?.courage??0)+Number(Boolean(asuraDieId));
+  const preparationCost=(health?.coragem??0)+Number(step)+additionalCost+(!usesLocal(actor)?extraKeep:0);
+  if(magic&&preparationCost>5)throw Error("Máximo de 5 Coragens por rolagem de conjuração.");
+  if(preparationCost>system.courage)
+    throw Error("Coragem insuficiente para os custos de preparação.");
   const plan = buildPool(system, selection, {
-    mode, actionType, contextApproved: input.contextApproved === true, step, stepDieId, equipmentDie,
+    mode, actionType, contextApproved: input.contextApproved === true, step, stepDieId, equipmentDie,lightHands,stealthAttack,asuraDieId,
   });
   if (!plan.ok) throw Error(plan.errors.join(" "));
   const elevation = combat ? `${combat.id}:${combat.round}` : null;
@@ -76,7 +88,7 @@ export async function preparePendingRoll(actor, request, user, game) {
     version: 6, id: foundry.utils.randomID(), created: Date.now(), requester: user.id,
     base: selection.base, second: selection.second ?? selection.attribute, complement: selection.complement ?? null,
     formula, dice, selected: [], options: {
-      health, mode, actionType, equipmentId, element, manualDamage:input.manualDamage===true,de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,bonusA:passiveAnticipar(system,selection),
+      health, mode, actionType, equipmentId:item?.id??"", element, magic,asura:Boolean(asuraDieId),sphereRound:round,lightHands,potionResearch,stealthAttack,manualDamage:input.manualDamage===true,de: target && !target.publicDefense ? null : (target?.de ?? de), privateDefense: Boolean(target && !target.publicDefense), situation, step, extraKeep,bonusA:passiveAnticipar(system,selection),
       stepPaid: step, activationCost, combatId: combat?.id ?? null, combatRound: combat?.round ?? null, threatGrade: system.threatGrade,
       attackWeight, targetWeight, weightEnabled: input.weightEnabled === true,
       noisy: Boolean(item?.system.properties?.includes("Barulhenta")),
@@ -95,7 +107,7 @@ export async function preparePendingRoll(actor, request, user, game) {
 function optionsFor(actor, options) {
   const s = actor.system;
   return {
-    ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage - (options.health?.coragem??0), monster: s.monsterRules,
+    ...options, step: options.step && !options.stepPaid, level: keepLevel(actor), courage: s.courage - (options.health?.coragem??0) - (options.magic?.courage??0) - Number(Boolean(options.asura)), skillBonusE:Number(Boolean(options.potionResearch)), monster: s.monsterRules,
     animal: s.animalRules, threatGrade: s.threatGrade, hostile: actor.type !== "character", requireAttributeInPool:Boolean(options.actionType),
     weight: options.weightEnabled ? affinity(options.attackWeight, options.targetWeight) : 0,
   };
@@ -123,7 +135,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   if (!result.ok) throw Error(result.errors.join(" "));
 
   const extra = Math.max(0, pending.selected.length - keepForActor(actor, 0));
-  let courage = (o.health?.coragem??0) + Number(Boolean(o.step && !o.stepPaid)) + (usesLocal(actor) ? 0 : extra);
+  let courage = (o.health?.coragem??0) + (o.magic?.courage??0) + Number(Boolean(o.asura)) + Number(Boolean(o.step && !o.stepPaid)) + (usesLocal(actor) ? 0 : extra);
   const pavor = (o.activationCost ?? costToActivate(actor, game.combat?.started)) + (usesLocal(actor) ? extra : 0);
   const item = actor.items.get(o.equipmentId);
   const active = [o.characteristic, o.secondCharacteristic].filter(Boolean);
@@ -141,6 +153,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     }
   }
 
+  if(o.magic&&courage+Number(Boolean(o.stepPaid))>5)throw Error("Máximo de 5 Coragens por rolagem de conjuração.");
   if (courage > s.courage || pavor > s.pavorLocal) throw Error("Recursos insuficientes para confirmar.");
   let ally;
   if (o.passAllyId) {
@@ -153,6 +166,21 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const localAfterCost = s.pavorLocal - pavor;
   const localReward = Math.min(result.monsterCriticalPavor, Math.max(0, monsterCap(s.threatGrade) - localAfterCost));
   const changes = {};
+  const magic=o.magic;
+  if(o.asura){
+    const spheres=sphereState(s,o.sphereRound);
+    if(!canAsura(s,o.sphereRound,item))throw Error("O Punho Supremo de Asura exige 5 Esferas Espirituais.");
+    changes["system.spiritualSpheres"]={...spheres,count:0};
+  }
+  if(magic?.charges){
+    if(!item||focusCharges(item)<magic.charges)throw Error("Cargas insuficientes no foco antes de finalizar.");
+    changes.items=[...actor.items.values()].map(owned=>{
+      const data=owned.toObject();
+      if(owned.id===item.id)data.system.focusCharges=focusCharges(item)-magic.charges;
+      return data;
+    });
+  }
+  if(magic?.shield&&!s.runeShieldFreeUsed)changes["system.runeShieldFreeUsed"]=true;
   const form=s.transformation;
   if(form?.kind==='animal'&&((form.size==='media'&&result.p>result.e)||(form.size==='grande'&&result.p>0)))changes['system.transformation']={};
   if (courage || result.criticalRefundCourage) changes["system.courage"] = Math.min(Math.max(s.courage,maxCourage(s.level)), s.courage - courage + result.criticalRefundCourage);
@@ -163,7 +191,7 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
     const chosen=chosenIds.has(die.id),symbols=die.symbols??faceSymbols(die.sides,die.face,pending.version<4);
     const maximum=isMaximumFace(die),marks=faceIcons(symbols,maximum);
     return '<div class="codex-chat-die '+(chosen?'is-kept':'is-discarded')+'" role="listitem">'+
-      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.elevated?" · Elevação":die.reinforced?" · Reforço legado":"")+'</div>'+
+      '<div class="codex-chat-die-kind">d'+die.sides+' · '+escapeHTML(sourceLabel(die.group,die.key))+(die.asura?" · Asura":die.elevated?" · Elevação":die.reinforced?" · Reforço legado":"")+'</div>'+
       '<div class="codex-chat-die-face codex-face-icons" role="img" aria-label="Face '+die.face+(maximum?' · máxima':'')+'">'+marks+'</div>'+
       '<div class="codex-chat-die-marks">'+(chosen?'Mantido na ação':'Não mantido')+'</div>'+
       '<small>'+(chosen?'MANTIDO':'DESCARTADO')+'</small></div>';
@@ -172,16 +200,23 @@ export function resolvePendingRoll(actor, pending, game, de = pending.options.de
   const sources = [pending.base, pending.second ?? pending.attribute, pending.complement].filter(Boolean)
     .map(source => escapeHTML(sourceLabel(source.group, source.key))).join(" + ");
   const overflow = result.monsterCriticalPavor - localReward;
-  const offensive=Boolean(o.actionType);
+  const offensive=Boolean(o.actionType&&!magic?.shield);
   const impact=offensive&&o.targetTokenUuid?{
     tokenUuid:o.targetTokenUuid,actorUuid:o.targetActorUuid,damage:result.damage,pavor:result.p,mode:o.mode,element:o.element,
     manualDamage:o.manualDamage,special:active.length>0||item?.system.kind==="firearm"&&item.system.properties?.includes("Perfurante"),
   }:null;
   const generic=pending.version>=6&&!offensive;
-  const label=o.actionType==="attack"?"Ataque":o.actionType==="spell"?"Conjuração":"Codex RPG";
+  const label=o.asura?"Punho Supremo de Asura":o.lightHands?"Mãos Leves":magic?.shield?"Escudo Rúnico":o.actionType==="attack"?"Ataque":o.actionType==="spell"?"Conjuração":"Codex RPG";
+  const barrier=magic?.shield?runeBarrier(result.e,result.p):null;
   const content = `<div class="codex-chat-result"><h3>${label} · ${escapeHTML(result.outcome)}</h3>
     <p>${sources}${o.targetName ? ` · Alvo ${escapeHTML(o.targetName)}` : ""}</p>
+    ${o.asura?'<p>5 Esferas Espirituais consumidas · dano neutro.</p>':""}
+    ${o.stealthAttack?'<p>Golpe Furtivo · um dado adicional da arma.</p>':""}
+    ${o.potionResearch?'<p>Pesquisa Avançada em Poções · +1 Êxito.</p>':""}
     ${o.element?'<p>Elemento · '+escapeHTML(o.element)+'</p>':''}
+    ${magic?'<p>G'+magic.grade+' · '+(magic.turns===1?'imediata':magic.turns+' turnos')+' · '+magic.charges+' cargas'+(magic.amplify?' · amplificada':'')+(magic.pathMeters?' · trajetória '+magic.pathMeters+' m':'')+'</p>':''}
+    ${barrier?'<p>Barreira por 1 rodada · '+barrier.e+' E e '+barrier.p+' P · DE e Integridade simbólica '+barrier.de+
+     '. Resistência a '+escapeHTML(ELEMENTS.find(([id])=>id===magic.element)[1])+': 0,5 de dano por E e 0 por P. Resolva a barreira na mesa.</p>':''}
     <p>Total ${result.reached} · DE ${o.privateDefense ? "reservada" : result.de} · ᛋ ${result.e} · ᚨ ${result.aRemaining} · ᚦ ${result.p}</p>
     ${result.critical ? `<p>Crítico · ${result.critical} faces máximas mantidas.</p>` : ""}
     ${active.length ? `<p>Características · ${active.map(escapeHTML).join(", ")}.</p>` : ""}

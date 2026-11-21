@@ -1,6 +1,270 @@
 {
   "skills": [
     [
+      "dueto-improvisado",
+      "Dueto Improvisado",
+      "PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",
+      null
+    ],
+    [
+      "contratempo",
+      "Contratempo",
+      "PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",
+      null
+    ],
+    [
+      "solo-provocador",
+      "Solo Provocador",
+      "PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",
+      null
+    ],
+    [
+      "cancoes-sustentadas",
+      "Canções Sustentadas",
+      "PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",
+      null
+    ],
+    [
+      "pericia-em-instrumentos",
+      "Perícia em Instrumentos",
+      "Meio instrumental para habilidades do Bardo. Efeitos próprios e XP pendentes.",
+      null
+    ],
+    [
+      "maestria-em-apresentacao",
+      "Maestria em Apresentação",
+      "EXPERIMENTAL — Perícia ÚNICA do Bardo. Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos. Gera até 3A musicais totais de apoio, distribuídos conforme a DE de cada aliado. Repertório interno: Inspiração 3A→1 Coragem, Ressonância Arcana 3A→1 carga de foco, Acorde de Proteção 1A→anula 1P, Acorde Triunfal 2A→1E, passagem de protagonismo, Ritmo Acelerado e Harmonia Musical. Desarmonia após falha com Pavor. Melodia Psíquica é opção condicional com Disciplina 4 + Criar Item de Foco e Magia e instrumento para até dois alvos; procedimentos de alvos pendentes. Custo de aquisição XP PENDENTE.",
+      null
+    ],
+    [
+      "voz-encantadora",
+      "Voz Encantadora",
+      "EXPERIMENTAL: Influência 4 + Apresentação 4 + Vigor 3. Voz substitui instrumento para apresentações comuns, sem substituir instrumentos específicos da Melodia Psíquica. XP pendente.",
+      null
+    ],
+    [
+      "ritmo-de-batalha",
+      "Ritmo de Batalha",
+      "EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",
+      null
+    ],
+    [
+      "inspiracao",
+      "Inspiração",
+      "EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",
+      null
+    ],
+    [
+      "ressonancia-arcana",
+      "Ressonância Arcana",
+      "EXPERIMENTAL: 3A musicais para recuperar 1 carga de foco de aliado, sem ultrapassar sua capacidade. XP pendente.",
+      null
+    ],
+    [
+      "acorde-de-protecao",
+      "Acorde de Proteção",
+      "EXPERIMENTAL: 1A musical para anular 1 Pavor mantido de aliado antes de encerrar sua rolagem. XP pendente.",
+      null
+    ],
+    [
+      "acorde-triunfal",
+      "Acorde Triunfal",
+      "EXPERIMENTAL: 2A musicais para conceder 1E a aliado elegível, sem duplicação. XP pendente.",
+      null
+    ],
+    [
+      "compasso-adiantado",
+      "Compasso Adiantado",
+      "EXPERIMENTAL: 1A musical para favorecer protagonismo de aliado, sem turno extra; procedimento pendente.",
+      null
+    ],
+    [
+      "ritmo-acelerado",
+      "Ritmo Acelerado",
+      "EXPERIMENTAL: distribuir 3A totais entre até três aliados, máximo de 1A cada. XP pendente.",
+      null
+    ],
+    [
+      "harmonia-musical",
+      "Harmonia Musical",
+      "EXPERIMENTAL: neutraliza Vantagem/Desvantagem comuns em área 16x16 m, inclui inimigos. Duração e XP pendentes.",
+      null
+    ],
+    [
+      "piada-infame",
+      "Piada Infame",
+      "PROPOSTO: rerrolar um dado de inimigo; novo resultado vale mesmo se melhor. Custos e procedimento pendentes.",
+      null
+    ],
+    [
+      "elevacao-harmonica",
+      "Elevação Harmônica",
+      "PROPOSTO: elevar um passo de um dado por aliado, sem d20. Custos e procedimento pendentes.",
+      null
+    ],
+    [
+      "acao-em-conjunto-musical",
+      "Ação em Conjunto",
+      "EXPERIMENTAL: proposta Apresentação + Disciplina + Influência com +1E e +1A, mas combinar duas Práticas ainda não autorizado.",
+      null
+    ],
+    [
+      "presenca-de-palco",
+      "Presença de Palco",
+      "EXPERIMENTAL: proposta +1E em apresentações; condições e compra XP pendentes.",
+      null
+    ],
+    [
+      "melodia-psiquica",
+      "Melodia Psíquica",
+      "EXPERIMENTAL: Disciplina 4 + Criar Item de Foco e Magia. Instrumento canaliza efeitos de armas OU psíquicos em até 2 alvos; não duplica dados/dano nem concede perícias. XP e procedimentos pendentes.",
+      null
+    ],
+    [
+      "maos-leves",
+      "Mãos Leves",
+      "1 XP. Requisitos: Furtividade 3 + Disciplina 3 + Proteção 2. Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",
+      1
+    ],
+    [
+      "pericia-armadilha",
+      "Perícia em Armadilha",
+      "1 XP. Requisitos: Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1. Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",
+      1
+    ],
+    [
+      "golpe-furtivo",
+      "Golpe Furtivo",
+      "1 XP. Requisitos: Disciplina 2 + Furtividade 2. Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",
+      1
+    ],
+    [
+      "bioetica",
+      "Bioética",
+      "1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",
+      1
+    ],
+    [
+      "pesquisa-avancada-pocoes",
+      "Pesquisa Avançada em Poções",
+      "1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
+      1
+    ],
+    [
+      "corpo-fechado",
+      "Corpo Fechado",
+      "1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
+      1
+    ],
+    [
+      "invocar-esfera-espiritual",
+      "Invocar Esfera Espiritual",
+      "1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",
+      1
+    ],
+    [
+      "passo-etereo",
+      "Passo Etéreo",
+      "1 XP. Requisitos: Invocar Esfera Espiritual. Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
+      1
+    ],
+    [
+      "absorver-esferas",
+      "Absorver Esferas",
+      "1 XP. Requisitos: Invocar Esfera Espiritual. Recupera Coragem em quantidade igual ao total de Esferas Espirituais; consome TODAS as esferas disponíveis. Recupera 1 Coragem por esfera consumida, limitada ao teto; esferas ficam em zero após a absorção.",
+      1
+    ],
+    [
+      "disparo-esferas-espirituais",
+      "Disparo de Esferas Espirituais",
+      "1 XP. Requisitos: Invocar Esfera Espiritual. Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
+      1
+    ],
+    [
+      "dilema",
+      "Dilema",
+      "1 XP. Requisitos: Vigor 4 + Artista Marcial. Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",
+      1
+    ],
+    [
+      "impacto-psiquico",
+      "Impacto Psíquico",
+      "1 XP. Requisitos: Criar Item de Foco e Magia + Artista Marcial. Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
+      1
+    ],
+    [
+      "maestria-adagas",
+      "Maestria em Adagas e Facas",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-espadas",
+      "Maestria em Espadas",
+      "1 XP. Requisitos de aquisição: Força 2 + Destreza 2. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      1
+    ],
+    [
+      "maestria-machados",
+      "Maestria em Machados",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-macas",
+      "Maestria em Maças e Clavas",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-hastes",
+      "Maestria em Lanças e Hastes",
+      "1 XP. Requisitos de aquisição: Força 2 + Agilidade 1 + Destreza 1. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      1
+    ],
+    [
+      "maestria-cajados",
+      "Maestria em Cajados e Bastões",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Armas Leves/Médias/Pesadas conforme peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-arcos",
+      "Maestria em Arcos",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Perícia em Armas de Longo Alcance para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-bestas",
+      "Maestria em Bestas",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Perícia em Armas de Longo Alcance para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-arremessos",
+      "Maestria em Armas Arremessadas",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Maestria em Arremesso de Armas e Perícia de Armas do peso para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-punhos",
+      "Maestria em Armas de Punho",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Pugilismo para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-longo-alcance",
+      "Maestria em Armas de Longo Alcance Diversas",
+      "Custo de XP e atributos de compra PENDENTES. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Perícia em Armas de Longo Alcance para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
+      "maestria-armas-fogo",
+      "Maestria em Armas de Fogo",
+      "Exclusiva de Humanos: gratuita desde a criação. Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige Perícia em Armas de Fogo para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+      null
+    ],
+    [
       "combate",
       "Combate",
       "+1A em combate pertinente.",
@@ -15,8 +279,20 @@
     [
       "montar",
       "Montar Animal",
-      "Requer Influência grau 2.",
+      "2 XP. Requer Influência 2. Nos testes com montaria concede Vantagem, não +1A. Vantagem e Antecipar são benefícios distintos.",
       2
+    ],
+    [
+      "pericia-montaria",
+      "Perícia em Montaria",
+      "Requisitos: Influência 1 + Destreza 2. Concede +1A (um símbolo Antecipar) nos testes com montaria, não Vantagem nem dado extra. Custo de XP PENDENTE; compra bloqueada até decisão autoral.",
+      null
+    ],
+    [
+      "montaria-epica",
+      "Montaria Épica",
+      "PROPOSTO / PENDENTE: Cavalaria para montarias gigantes, aladas ou exóticas. Requisitos, custo de XP e efeitos ainda não definidos; não concede montaria, voo ou bônus automaticamente.",
+      null
     ],
     [
       "provocacao-sofisticada",
@@ -46,6 +322,30 @@
       "improviso",
       "Improviso Elemental",
       "Requisitos Disciplina 1, Inteligência 1 e Destreza 1, sem Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
+      1
+    ],
+    [
+      "cancelar-magia",
+      "Cancelar Magia",
+      "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
+      1
+    ],
+    [
+      "desencantar",
+      "Desencantar",
+      "1 XP. Requer Cancelar Magia. Remove elementos ou imunidades até 8 m. Pode remover elementos ou imunidades a até 8 m (inclusive em alvos encantados), exceto o elemento natural constituinte de criatura realmente feita daquele elemento. Custo, teste e duração pendentes; não destruir automaticamente objeto ou criatura.",
+      1
+    ],
+    [
+      "espelho-magico",
+      "Espelho Mágico",
+      "1 XP. Requer Cancelar Magia. Passivo: permite refletir contra o conjurador a parcela do dano mágico causada pelos Pavor(es) mantidos por ele na rolagem. Reflete a parcela mágica de dano de Pavor calculada ANTES de a armadura do alvo absorver ou anular o dano; mesmo quando a armadura bloqueia tudo. Não reflete ataques físicos nem Pavor que não causaria dano antes da proteção. Proteção do conjurador e cumulação com Escudo Refletor pendentes.",
+      1
+    ],
+    [
+      "encantar-com-elemento",
+      "Encantar com Elemento",
+      "1 XP. Requisitos: uma Perícia Elemental adquirida + Criar Item de Foco e Magia. Armaduras ou escudos: 1 Coragem para resistência ao elemento habilitado; dano do elemento resistido é 0,5 por Êxito de ataque, Pavor causa 0 dano (não elimina riscos). Armas: tornam-se temporariamente do elemento escolhido. Duração igual para arma, armadura e escudo: E-P, somente com E-P>0. Unidade temporal, DE/fontes e custo específico de arma pendentes; sem efeitos extras ou automação.",
       1
     ],
     [
@@ -163,6 +463,30 @@
       1
     ],
     [
+      "maestria-escudos",
+      "Maestria em Escudos",
+      "1 XP. Requisitos: Destreza 2 + Vigor 2. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 12, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
+      1
+    ],
+    [
+      "sacrificio-heroico",
+      "Sacrifício Heroico",
+      "1 XP. Requer Vigor 4. Permite se colocar à frente de alguém a até 8 m e receber o dano no lugar da pessoa, mesmo sem antecipação do próprio turno. Dano vai à armadura ou Vida do protetor conforme as defesas aplicáveis. Sem custo de Coragem informado; posição e dano exigem confirmação do Narrador.",
+      1
+    ],
+    [
+      "escudo-refletor",
+      "Escudo Refletor",
+      "1 XP. Requer Maestria em Escudos. Com escudo físico equipado, ao receber dano reflete ao inimigo atacante os pontos de dano efetivamente causados por Pavor. Não reflete dano de Êxitos ou Pavor que não causou dano; dano original permanece. Aplicação manual conforme Narrador.",
+      1
+    ],
+    [
+      "escudo-bumerangue",
+      "Escudo Bumerangue",
+      "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite ataque com escudo a até 8 m, rolando Disciplina (Armas) + Atributo(s) escolhido(s). Se alcançar a DE, escudo retorna no MESMO TURNO, com ou sem Pavor; se falhar, cai no chão conforme Arremesso de Armas: falha limpa no caminho (1A pode permitir correr e recuperar); com Pavor próximo ao alvo, podendo atingir aliado próximo se alcançar sua DE. Queda em metros: E mantidos + P não anulado + E convertido de 2A. Lançar custa 1 Coragem; no acerto, causa dano físico normal da rolagem (E válidos + piso(P/2), com crítico) e permite características da peça conforme gatilhos e custos normais. Obstáculos e economia de ação permanecem PENDENTES.",
+      1
+    ],
+    [
       "maestria-arremesso-armas",
       "Perícia em Arremesso de Armas",
       "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Alcances efetivos: leve 12 m; média 8 m; pesada 4 m. Cada metro além impõe um patamar: +1 m −1A, +2 m −1E, +3 m −2E (Acerto de Sorte); além do terceiro metro excedido, resolução PENDENTE; não sofre Desvantagem por proximidade. Aliados próximos ao alvo podem impor Desvantagem. A arma acerta e aloja, com penalidade pertinente. Acerto sem Pavor permite nova jogada, avançar, recuperar a arma e atacar novamente; acerto com Pavor pode permitir ao inimigo usar a arma. Falha sem Pavor: cai no caminho e 1A permite correr para recuperá-la; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Em falha a distância de queda é E mantido + P mantido não anulado + E convertido de 2A, em metros. Retirar arma alojada usa Armas + Força + Atletismo contra resistência de Força + Vigor + Atletismo do inimigo, com cálculo da DE PENDENTE. Habilita Disparo Fulminante/Múltiplo/Tático; Disparo Violento só com arremesso MÉDIO ou PESADO.",
@@ -236,8 +560,8 @@
     ],
     [
       "transfusao-sanguinaria",
-      "Transfusão Sanguinária (protótipo)",
-      "Compra 1 XP; exige Transfusão e Perícia em Elemento Sangue. Conjuração ATIVA: a cada 3 marcas disponíveis de sangue derramado de inimigos registra recuperação de 1 Vida (até o máximo), após resolver a técnica com o Narrador. Cada 1 Vida efetivamente perdida pelo inimigo gera 1 marca; Sangramento sem dano e dano à Integridade não geram marcas. Não existe reserva extraída separada. As mesmas marcas não podem ser gastas em outra magia e depois na Transfusão. Procedimento, duração, alcance e ativação ainda pendentes.",
+      "Transfusão Sanguinária (exclusiva Lucker de Sangue)",
+      "Exclusiva de Lucker de Sangue; compra 1 XP, exige Transfusão e Perícia em Elemento Sangue. Não é concedida pela origem. Conjuração ATIVA: a cada 3 marcas disponíveis de sangue derramado de inimigos registra recuperação de 1 Vida (até o máximo), após resolver a técnica com o Narrador. Cada 1 Vida efetivamente perdida pelo inimigo gera 1 marca; Sangramento sem dano e dano à Integridade não geram marcas. Não existe reserva extraída separada. As mesmas marcas não podem ser gastas em outra magia e depois na Transfusão. Procedimento, duração, alcance e ativação ainda pendentes.",
       1
     ],
     [
@@ -325,6 +649,30 @@
       1
     ],
     [
+      "maestria-martelos",
+      "Maestria em Martelos",
+      "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
+      1
+    ],
+    [
+      "ferreiro",
+      "Ferreiro",
+      "1 XP. Requisitos: Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (que exige Artesão 2). Habilita criar armas, armaduras Médias e Pesadas de Grau 1, consertar e modificar armas e preparar minérios e metais. +1 Êxito (E) apenas em testes de Forja; demais procedimentos de fabricação pendentes.",
+      1
+    ],
+    [
+      "ferreiro-elemental",
+      "Ferreiro Elemental",
+      "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
+      1
+    ],
+    [
+      "resistencia-a-fogo",
+      "Resistência a Fogo",
+      "1 XP. Requisitos: Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2. Somente o próprio personagem reduz pela metade o dano de Fogo que atingiria a Vida. O +1 direto à Vida de Derreter G3 é anulado (0), sem reduzir E+P de dano à Integridade de armadura. Não é imunidade. Frações e interação com outras resistências pendentes.",
+      1
+    ],
+    [
       "apresentacao-avancada",
       "Apresentação Avançada",
       "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
@@ -379,13 +727,163 @@
       1
     ],
     [
+      "sentido-elemental",
+      "Sentido Elemental",
+      "1 XP. Requer Inteligência 3 e Improviso Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
+      1
+    ],
+    [
+      "mudanca-elemental",
+      "Mudança Elemental",
+      "1 XP. Requer Transformação Elemental, Destreza 4 e Inteligência 4. Permite mudar o elemento de criatura, armadura ou ambiente a até 8 m para um elemento cuja Perícia o personagem possua. Duração E − P, válida apenas quando E − P > 0. Unidade temporal, resistência e custo de ativação pendentes; aplicar manualmente, sem conceder outras imunidades automaticamente.",
+      1
+    ],
+    [
       "transformacao-elemental",
       "Transformação Elemental",
-      "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+      "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
       1
     ]
   ],
   "requirements": {
+    "maos-leves": [
+      [
+        "p:furtividade:3",
+        "p:armas_conjuracao:3",
+        "k:protecao:2"
+      ]
+    ],
+    "pericia-armadilha": [
+      [
+        "p:artesao:1",
+        "p:armas_conjuracao:1",
+        "k:engenharia:1",
+        "a:destreza:1",
+        "a:inteligencia:1",
+        "k:protecao:2",
+        "p:furtividade:1"
+      ]
+    ],
+    "golpe-furtivo": [
+      [
+        "p:armas_conjuracao:2",
+        "p:furtividade:2"
+      ]
+    ],
+    "bioetica": [
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:vento",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:agua",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:terra",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:fogo",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:sagrado",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:trevas",
+        "s:domar-criatura-media"
+      ],
+      [
+        "k:alquimia:3",
+        "a:inteligencia:3",
+        "a:destreza:3",
+        "s:sangue",
+        "s:criar-item-foco-magia",
+        "s:veneno",
+        "s:domar-criatura-media"
+      ]
+    ],
+    "pesquisa-avancada-pocoes": [
+      [
+        "k:alquimia:3",
+        "s:improviso",
+        "p:artesao:3",
+        "a:destreza:2"
+      ]
+    ],
+    "corpo-fechado": [
+      [
+        "a:vigor:4",
+        "s:artista-marcial"
+      ]
+    ],
+    "invocar-esfera-espiritual": [
+      [
+        "s:criar-item-foco-magia",
+        "a:destreza:4",
+        "a:inteligencia:3",
+        "a:vigor:3"
+      ]
+    ],
+    "passo-etereo": [
+      [
+        "s:invocar-esfera-espiritual"
+      ]
+    ],
+    "absorver-esferas": [
+      [
+        "s:invocar-esfera-espiritual"
+      ]
+    ],
+    "disparo-esferas-espirituais": [
+      [
+        "s:invocar-esfera-espiritual"
+      ]
+    ],
+    "dilema": [
+      [
+        "a:vigor:4",
+        "s:artista-marcial"
+      ]
+    ],
+    "impacto-psiquico": [
+      [
+        "s:criar-item-foco-magia",
+        "s:artista-marcial"
+      ]
+    ],
     "invocacao-elemental": [
       [
         "s:criar-item-foco-magia",
@@ -459,6 +957,12 @@
     "montar": [
       [
         "a:influencia:2"
+      ]
+    ],
+    "pericia-montaria": [
+      [
+        "a:influencia:1",
+        "a:destreza:2"
       ]
     ],
     "provocacao-sofisticada": [
@@ -560,6 +1064,86 @@
     "artesao-avancado": [
       [
         "p:artesao:2"
+      ]
+    ],
+    "maestria-martelos": [
+      [
+        "a:forca:3",
+        "a:destreza:1",
+        "a:vigor:1"
+      ]
+    ],
+    "maestria-hastes": [
+      [
+        "a:forca:2",
+        "a:agilidade:1",
+        "a:destreza:1"
+      ]
+    ],
+    "maestria-espadas": [
+      [
+        "a:forca:2",
+        "a:destreza:2"
+      ]
+    ],
+    "ferreiro": [
+      [
+        "p:artesao:1",
+        "a:forca:1",
+        "a:destreza:1",
+        "a:inteligencia:1",
+        "s:artesao-avancado"
+      ]
+    ],
+    "ferreiro-elemental": [
+      [
+        "a:inteligencia:2",
+        "a:destreza:2",
+        "s:ferreiro",
+        "s:improviso",
+        "s:criar-item-foco-magia",
+        "s:encantar-com-elemento"
+      ]
+    ],
+    "resistencia-a-fogo": [
+      [
+        "a:vigor:2",
+        "s:ferreiro-elemental",
+        "s:fogo"
+      ]
+    ],
+    "encantar-com-elemento": [
+      [
+        "s:criar-item-foco-magia",
+        "s:vento"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:agua"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:terra"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:fogo"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:sagrado"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:sangue"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:trevas"
+      ],
+      [
+        "s:criar-item-foco-magia",
+        "s:veneno"
       ]
     ],
     "apresentacao-avancada": [
@@ -690,6 +1274,62 @@
         "a:destreza:3",
         "p:armas_conjuracao:3",
         "s:armas-fogo"
+      ]
+    ],
+    "sacrificio-heroico": [
+      [
+        "a:vigor:4"
+      ]
+    ],
+    "escudo-refletor": [
+      [
+        "s:maestria-escudos"
+      ]
+    ],
+    "sentido-elemental": [
+      [
+        "a:inteligencia:3",
+        "s:improviso"
+      ]
+    ],
+    "cancelar-magia": [
+      [
+        "s:criar-item-foco-magia",
+        "s:improviso",
+        "a:inteligencia:4",
+        "a:agilidade:4",
+        "a:destreza:4"
+      ]
+    ],
+    "mudanca-elemental": [
+      [
+        "s:transformacao-elemental",
+        "a:destreza:4",
+        "a:inteligencia:4"
+      ]
+    ],
+    "desencantar": [
+      [
+        "s:cancelar-magia"
+      ]
+    ],
+    "espelho-magico": [
+      [
+        "s:cancelar-magia"
+      ]
+    ],
+    "maestria-escudos": [
+      [
+        "a:destreza:2",
+        "a:vigor:2"
+      ]
+    ],
+    "escudo-bumerangue": [
+      [
+        "a:destreza:2",
+        "a:forca:3",
+        "s:maestria-arremesso-armas",
+        "s:maestria-escudos"
       ]
     ],
     "maestria-arremesso-armas": [
@@ -1039,6 +1679,17 @@
   ],
   "families": [
     {
+      "id": "escudos",
+      "label": "ESCUDOS FÍSICOS",
+      "column": 0,
+      "skills": [
+        "maestria-escudos",
+        "escudo-refletor",
+        "escudo-bumerangue",
+        "sacrificio-heroico"
+      ]
+    },
+    {
       "id": "armas",
       "label": "ARMAS E MANEJO",
       "column": 0,
@@ -1046,6 +1697,13 @@
         "armas-leves",
         "armas-medias",
         "armas-pesadas",
+        "maestria-martelos",
+        "maestria-adagas",
+        "maestria-espadas",
+        "maestria-machados",
+        "maestria-macas",
+        "maestria-hastes",
+        "maestria-cajados",
         "disciplina-avancada",
         "manejo-perfeito",
         "maestria-manejo-duplo",
@@ -1058,10 +1716,13 @@
       "column": 0,
       "skills": [
         "pugilismo",
+        "maestria-punhos",
         "artista-marcial",
         "golpe-fulminante",
         "espalhar-golpe",
-        "golpe-baixo"
+        "golpe-baixo",
+        "corpo-fechado",
+        "dilema"
       ]
     },
     {
@@ -1070,7 +1731,40 @@
       "column": 0,
       "skills": [
         "furtividade",
-        "furtividade-avancada"
+        "furtividade-avancada",
+        "maos-leves",
+        "golpe-furtivo",
+        "pericia-armadilha"
+      ]
+    },
+    {
+      "id": "disparos",
+      "label": "ARMAS DE LONGO ALCANCE",
+      "column": 0,
+      "skills": [
+        "armas-longo-alcance",
+        "olhos-de-aguia",
+        "maestria-arcos",
+        "maestria-bestas",
+        "maestria-longo-alcance",
+        "maestria-arremesso-armas",
+        "maestria-arremessos",
+        "disparo-fulminante",
+        "disparo-multiplo",
+        "disparo-violento",
+        "disparo-tatico",
+        "armas-fogo",
+        "maestria-armas-fogo"
+      ]
+    },
+    {
+      "id": "cavalaria",
+      "label": "CAVALARIA E MONTARIAS",
+      "column": 0,
+      "skills": [
+        "montar",
+        "pericia-montaria",
+        "montaria-epica"
       ]
     },
     {
@@ -1079,11 +1773,13 @@
       "column": 1,
       "skills": [
         "criar-item-foco-magia",
+        "encantar-com-elemento",
         "escudo-arcano",
         "conjuracao-equilibrada",
-        "improviso",
-        "mestre",
-        "invocacao-elemental"
+        "concentracao-refinada",
+        "cancelar-magia",
+        "desencantar",
+        "espelho-magico"
       ]
     },
     {
@@ -1098,7 +1794,25 @@
         "sagrado",
         "veneno",
         "sangue",
-        "trevas"
+        "trevas",
+        "improviso",
+        "mestre",
+        "invocacao-elemental",
+        "transformacao-elemental",
+        "mudanca-elemental",
+        "sentido-elemental"
+      ]
+    },
+    {
+      "id": "psiquico",
+      "label": "PSÍQUICO E ESFERAS",
+      "column": 1,
+      "skills": [
+        "invocar-esfera-espiritual",
+        "passo-etereo",
+        "absorver-esferas",
+        "disparo-esferas-espirituais",
+        "impacto-psiquico"
       ]
     },
     {
@@ -1113,27 +1827,47 @@
       ]
     },
     {
-      "id": "disparos",
-      "label": "ARREMESSO E DISPAROS",
-      "column": 2,
+      "id": "alquimia",
+      "label": "ALQUIMIA E POÇÕES",
+      "column": 1,
       "skills": [
-        "armas-longo-alcance",
-        "maestria-arremesso-armas",
-        "disparo-fulminante",
-        "disparo-multiplo",
-        "disparo-violento",
-        "disparo-tatico",
-        "armas-fogo"
+        "alquimia-avancada",
+        "criar-veneno",
+        "criar-antidoto",
+        "pesquisa-avancada-pocoes",
+        "bioetica",
+        "transfusao",
+        "transfusao-sanguinaria"
       ]
     },
     {
-      "id": "alquimia",
-      "label": "ALQUIMIA E TRANSFUSÃO",
+      "id": "apresentacao",
+      "label": "APRESENTAÇÃO E BARDO",
       "column": 2,
       "skills": [
-        "criar-veneno",
-        "criar-antidoto",
-        "transfusao"
+        "apresentacao-avancada",
+        "pericia-em-instrumentos",
+        "maestria-em-apresentacao",
+        "voz-encantadora"
+      ]
+    },
+    {
+      "id": "artesao",
+      "label": "ARTESÃO E FORJA",
+      "column": 2,
+      "skills": [
+        "artesao-avancado",
+        "ferreiro",
+        "ferreiro-elemental",
+        "resistencia-a-fogo"
+      ]
+    },
+    {
+      "id": "coleta",
+      "label": "COLETA",
+      "column": 2,
+      "skills": [
+        "coleta-avancada"
       ]
     },
     {
@@ -1144,7 +1878,8 @@
         "medicina-avancada",
         "recuperacao-vigorosa",
         "recuperacao-movimento",
-        "instinto-sobrevivencia"
+        "instinto-sobrevivencia",
+        "recobrar-coragem"
       ]
     },
     {
@@ -1154,35 +1889,153 @@
       "skills": [
         "protecao-avancada",
         "astronomia-avancada",
-        "alquimia-avancada",
         "engenharia-avancada",
         "erudicao-avancada"
       ]
     },
     {
-      "id": "praticas-avancadas",
-      "label": "PRÁTICAS AVANÇADAS",
-      "column": 0,
+      "id": "influencia",
+      "label": "INFLUÊNCIA E INTERAÇÃO",
+      "column": 2,
       "skills": [
-        "atletismo-avancado",
-        "artesao-avancado",
-        "apresentacao-avancada",
-        "coleta-avancada"
+        "provocacao-sofisticada"
       ]
     },
     {
-      "id": "influencia",
-      "label": "INFLUÊNCIA E MOBILIDADE",
+      "id": "atletismo",
+      "label": "ATLETISMO",
       "column": 2,
       "skills": [
-        "provocacao-sofisticada",
-        "recobrar-coragem",
-        "montar"
+        "atletismo-avancado"
       ]
     }
   ],
+  "levels": [
+    0,
+    15,
+    28,
+    37,
+    46,
+    56,
+    66,
+    77,
+    88,
+    100,
+    112,
+    125,
+    138,
+    152,
+    166,
+    181,
+    196,
+    212,
+    228,
+    245,
+    260
+  ],
+  "masteries": [
+    {
+      "id": "maestria-adagas",
+      "name": "Maestria em Adagas e Facas",
+      "family": "adagas",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-espadas",
+      "name": "Maestria em Espadas",
+      "family": "espadas",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-machados",
+      "name": "Maestria em Machados",
+      "family": "machados",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-macas",
+      "name": "Maestria em Maças e Clavas",
+      "family": "macas",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-hastes",
+      "name": "Maestria em Lanças e Hastes",
+      "family": "hastes",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-cajados",
+      "name": "Maestria em Cajados e Bastões",
+      "family": "cajados",
+      "activationReq": "Armas Leves/Médias/Pesadas conforme peso"
+    },
+    {
+      "id": "maestria-arcos",
+      "name": "Maestria em Arcos",
+      "family": "arcos",
+      "activationReq": "Perícia em Armas de Longo Alcance"
+    },
+    {
+      "id": "maestria-bestas",
+      "name": "Maestria em Bestas",
+      "family": "bestas",
+      "activationReq": "Perícia em Armas de Longo Alcance"
+    },
+    {
+      "id": "maestria-arremessos",
+      "name": "Maestria em Armas Arremessadas",
+      "family": "arremessos",
+      "activationReq": "Maestria em Arremesso de Armas e Perícia de Armas do peso"
+    },
+    {
+      "id": "maestria-punhos",
+      "name": "Maestria em Armas de Punho",
+      "family": "punhos",
+      "activationReq": "Pugilismo"
+    },
+    {
+      "id": "maestria-longo-alcance",
+      "name": "Maestria em Armas de Longo Alcance Diversas",
+      "family": "longo-alcance",
+      "activationReq": "Perícia em Armas de Longo Alcance"
+    },
+    {
+      "id": "maestria-armas-fogo",
+      "name": "Maestria em Armas de Fogo",
+      "family": "fogo",
+      "activationReq": "Perícia em Armas de Fogo"
+    }
+  ],
+  "approvedMasteries": {
+    "maestria-hastes": "Força 2 + Agilidade 1 + Destreza 1",
+    "maestria-espadas": "Força 2 + Destreza 2"
+  },
   "cards": {
     "activation": {
+      "maos-leves": "Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
+      "pericia-armadilha": "Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
+      "golpe-furtivo": "Dado da arma adicional no ataque furtivo; sem custo de Coragem informado.",
+      "bioetica": "Cria homúnculo com ficha própria e XP como Domar Criaturas, conforme porte; materiais e procedimento pendentes.",
+      "pesquisa-avancada-pocoes": "+1E na criação de poções; habilita poções elementais.",
+      "corpo-fechado": "1 Coragem; protege Vitalidade de efeitos e danos de armas físicas por 1 rodada.",
+      "invocar-esfera-espiritual": "1 Coragem por esfera · Até 5 criadas por rodada e 5 armazenadas",
+      "passo-etereo": "1 esfera; deslocamento rápido de 8 m.",
+      "absorver-esferas": "Recupera Coragem = total de esferas; consome todas as esferas.",
+      "disparo-esferas-espirituais": "1 esfera por ataque físico à distância; alcance/dano pendentes.",
+      "dilema": "Pacto impede movimento de ambos até um ficar inconsciente; custo de ativação não informado.",
+      "impacto-psiquico": "1 Coragem; golpe psíquico pode aplicar efeitos de armas.",
+      "sacrificio-heroico": "Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
+      "escudo-refletor": "Passiva com escudo físico equipado ao sofrer dano de Pavor",
+      "sentido-elemental": "1 Coragem por análise",
+      "cancelar-magia": "1 Coragem por tentativa, em até 8 m; exige Pavor mantido na magia",
+      "mudanca-elemental": "Mudança de elemento a 8 m; custo de ativação não informado",
+      "desencantar": "Remoção elemental a 8 m; custo de ativação não informado",
+      "espelho-magico": "Passiva; devolve dano mágico originado de Pavor mantido",
+      "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
+      "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal e características registradas na peça conforme habilitação",
+      "montar": "Vantagem nos testes com montaria; não é +1A",
+      "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
       "invocacao-elemental": "1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
       "domar-criatura-media": "1 Coragem + teste de Influência + Apresentação",
       "domar-criatura-grande": "1 Coragem + teste de Influência + Apresentação",
@@ -1227,16 +2080,56 @@
       "erudicao-avancada": "Passiva",
       "atletismo-avancado": "Passiva",
       "artesao-avancado": "Passiva",
+      "maestria-martelos": "Acerto comum: 1 efeito grátis. Crítico: 2 efeitos diferentes grátis e uma terceira por 1 Coragem; requer arma e Perícia de peso habilitadas. Escolha manual",
+      "maestria-adagas": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-espadas": "1 XP; Força 2 + Destreza 2. Ao acertar: 1 característica grátis; crítico mantém 2 diferentes grátis e terceira diferente por 1 Coragem. Exige Perícia em Armas do peso.",
+      "maestria-machados": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-macas": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-hastes": "1 XP; Força 2 + Agilidade 1 + Destreza 1. Ao acertar: 1 característica grátis; crítico mantém 2 diferentes grátis e terceira diferente por 1 Coragem. Exige Perícia em Armas do peso.",
+      "maestria-cajados": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-arcos": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-bestas": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-arremessos": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-punhos": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-longo-alcance": "Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+      "maestria-armas-fogo": "Racial Humano · 0 XP; efeitos dependem de Perícia em Armas de Fogo.",
+      "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
+      "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
+      "resistencia-a-fogo": "Passiva pessoal: metade do dano de Fogo à Vida e 0 Vida direta por Derreter. Não protege Integridade; cálculos automáticos pendentes",
+      "encantar-com-elemento": "Armadura/escudo: 1 Coragem. Arma: custo PENDENTE. Duração E-P>0 para ambos",
       "apresentacao-avancada": "Passiva",
       "coleta-avancada": "Passiva"
     },
     "effects": {
+      "maos-leves": "Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",
+      "pericia-armadilha": "Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",
+      "golpe-furtivo": "Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",
+      "bioetica": "Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",
+      "pesquisa-avancada-pocoes": "Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
+      "corpo-fechado": "Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
+      "invocar-esfera-espiritual": "Converte Coragem em Esferas Espirituais, com limite de 5 criações por rodada e teto de 5 esferas armazenadas. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Cada esfera custa 1 Coragem; até 5 podem ser criadas na rodada, com teto de 5 armazenadas. Punho Supremo de Asura consome 5 esferas e 1 Coragem ao finalizar um golpe corpo a corpo com Disciplina, substituindo um dado escolhido por d20; o d20 contribui para atingir a DE e calcular o dano básico por seus símbolos mantidos; esse dano é sempre neutro e não tem parcela extra.",
+      "passo-etereo": "Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
+      "absorver-esferas": "Recupera Coragem em quantidade igual ao total de Esferas Espirituais; consome TODAS as esferas disponíveis. Recupera 1 Coragem por esfera consumida, limitada ao teto; esferas ficam em zero após a absorção.",
+      "disparo-esferas-espirituais": "Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
+      "dilema": "Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",
+      "impacto-psiquico": "Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
+      "sacrificio-heroico": "Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
+      "escudo-refletor": "Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
+      "sentido-elemental": "Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
+      "cancelar-magia": "Ao perceber magia a até 8 m com Pavor mantido, gasta 1 Coragem e tenta alcançar DE igual ou maior (≥) que a magia adversária; empate cancela. Requer a Perícia do elemento cancelado.",
+      "mudanca-elemental": "Altera o elemento de criatura, armadura ou ambiente até 8 m para um elemento em que possui Perícia; duração E − P (>0); unidade temporal e resistência pendentes.",
+      "desencantar": "Remove elementos ou imunidades a até 8 m; não remove o elemento natural constitutivo de criatura feita desse elemento. Teste, custo e duração pendentes.",
+      "espelho-magico": "Passivo: reflete ao conjurador a parcela do dano mágico provocada por Pavor mantido, mesmo se a armadura da vítima absorveu ou anulou totalmente o dano. Não funciona contra dano físico.",
+      "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
+      "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
+      "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
+      "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
       "invocacao-elemental": "Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
       "domar-criatura-media": "Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
       "domar-criatura-grande": "Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
       "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
       "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
-      "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+      "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
       "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
       "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
       "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -1253,7 +2146,7 @@
       "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
       "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
       "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
-      "transfusao-sanguinaria": "Protótipo: 3 marcas ainda disponíveis de sangue de inimigos recuperam +1 Vida; conjuração ativa.",
+      "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue; conjuração ativa. 3 marcas disponíveis de sangue inimigo recuperam +1 Vida, mantendo custo 1 XP e requisitos Transfusão + Elemento Sangue.",
       "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
       "golpe-fulminante": "Dano de Pavor válido passa a 1 por P no alvo corpo a corpo",
       "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
@@ -1275,16 +2168,56 @@
       "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
       "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
       "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
+      "maestria-martelos": "Martelo habilitado pelo peso: acerto comum ativa 1 característica gratuita; crítico ativa até 2 características diferentes gratuitas e pode pagar 1 Coragem para mais uma terceira, se existente. Não exige Perícia de Armas para compra, só para ativação",
+      "maestria-adagas": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-espadas": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-machados": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-macas": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-hastes": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-cajados": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-arcos": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-bestas": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-arremessos": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-punhos": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-longo-alcance": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-armas-fogo": "Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "ferreiro": "Cria armas e armaduras Médias/Pesadas G1; conserta/modifica armas; prepara minérios e metais. +1E apenas em testes de Forja, sem alterar outras rolagens de Artesão",
+      "ferreiro-elemental": "Habilita criar armas elementais e pedras elementais. Receita, custo, DE e propriedades de fabricação pendentes; Encantar com Elemento é requisito comprável e nunca é concedido automaticamente",
+      "resistencia-a-fogo": "Resistência pessoal à Vida: dano de Fogo que alcança a Vida do portador é reduzido à metade. Derreter G3 causa 0 de Vida direta (seu +1 fixo é anulado), mas E+P à Integridade da armadura continua normal. Não concede imunidade ou proteção à armadura",
+      "encantar-com-elemento": "Armadura/escudo: 1 Coragem para aplicar resistência ao elemento adquirido. Arma: adquire temporariamente o elemento. Duração igual para os três: E-P>0; unidade temporal, DE/fontes, custo da arma e automação pendentes",
       "apresentacao-avancada": "Apresentação predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
       "coleta-avancada": "Coleta predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha"
     },
     "briefs": {
+      "maos-leves": "1 XP; retira arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso se equipado (Leve +1, Médio +2 nos exemplos).",
+      "pericia-armadilha": "1 XP; Vantagem (+1A) para armar ou desarmar armadilhas usando Proteção.",
+      "golpe-furtivo": "1 XP; ataque furtivo recebe mais 1 dado da arma, respeitando limite de 9 dados rolados.",
+      "bioetica": "1 XP; Destreza 3 confirmada. Cria homúnculo com sangue e tecidos vivos, ficha própria e XP igual ao total atual do criador, seguindo Domar Criaturas.",
+      "pesquisa-avancada-pocoes": "1 XP; +1E em testes para criar poções; pode produzir poções elementais.",
+      "corpo-fechado": "1 XP; 1 Coragem: sem efeitos ou dano na Vitalidade de golpes de armas físicas por 1 rodada.",
+      "invocar-esfera-espiritual": "1 XP; 1 Coragem cria 1 esfera, até 1 por rodada. Em golpe corpo a corpo com Disciplina, Punho Supremo de Asura consome 5 esferas e converte um dado em d20.",
+      "passo-etereo": "1 XP; gasta 1 Esfera Espiritual para se projetar até 8 m.",
+      "absorver-esferas": "1 XP; recupera Coragem igual ao total de Esferas Espirituais, consumindo todas as esferas.",
+      "disparo-esferas-espirituais": "1 XP; 1 esfera por golpe para ataque físico à distância.",
+      "dilema": "1 XP; prende desafiante e alvo sem deslocamento até que um fique inconsciente.",
+      "impacto-psiquico": "1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
+      "sacrificio-heroico": "1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
+      "escudo-refletor": "1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
+      "sentido-elemental": "1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
+      "cancelar-magia": "1 XP; Criar Item de Foco e Magia, Improviso Elemental, Inteligência/Agilidade/Destreza 4. Reage a magia até 8 m com Pavor mantido; 1 Coragem; resultado ≥ DE adversária, empate cancela; Perícia do mesmo elemento.",
+      "mudanca-elemental": "1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente até 8 m para elemento habilitado; duração E − P, exigindo resultado positivo.",
+      "desencantar": "1 XP; Cancelar Magia. Remove elementos ou imunidades em 8 m, exceto elemento natural constituinte de criatura elemental; teste e ativação pendentes.",
+      "espelho-magico": "1 XP; Cancelar Magia. Passivo; reflete dano mágico por Pavor mantido antes da armadura absorver ou anular, mesmo se a Vida não for atingida; somente magia.",
+      "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
+      "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
+      "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
+      "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
       "invocacao-elemental": "Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
       "domar-criatura-media": "1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
       "domar-criatura-grande": "1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
       "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
       "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
-      "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+      "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
       "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
       "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
       "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -1297,10 +2230,10 @@
       "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
       "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
       "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
-      "transfusao-sanguinaria": "PROTÓTIPO: 1 XP. Requer Transfusão + Elemento Sangue. Conjuração ativa, 3 marcas disponíveis de sangue inimigo → +1 Vida, sem contagem dupla. Procedimento pendente.",
+      "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue. 1 XP; exige Transfusão + Elemento Sangue. Conjuração ativa; 3 marcas inimigas por 1 Vida; compra prévia de Transfusão pendente.",
       "fogo": "SRD v0.76: G1 disparo convencional; G2 Queimar causa E+P à Integridade; G3 Derreter mantém esse dano e acrescenta só 1 Vida direta, não dobrada no crítico. Áreas e custos mantidos; validação dos Graus pelo Narrador.",
       "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
-      "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão e diferentes formas de manifestação.",
+      "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
       "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
       "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
       "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
@@ -1323,10 +2256,27 @@
       "erudicao-avancada": "1 XP; requisito Erudição 2. Com Erudição como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
       "atletismo-avancado": "1 XP; requisito Atletismo 2. Com Atletismo como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
       "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
+      "maestria-martelos": "1 XP; exige Força 3, Destreza 1 e Vigor 1. Com Perícia de Armas do peso, em acerto comum ativa 1 efeito grátis; em crítico, 2 diferentes grátis + possibilidade de terceira por 1 Coragem. Apenas efeitos existentes na arma.",
+      "maestria-adagas": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-espadas": "1 XP; Força 2, Destreza 2. Ao acertar com espada, ativa uma característica existente da arma sem Coragem, exigindo a Perícia do peso; crítico mantém até 2 diferentes gratuitas e terceira diferente por 1 Coragem.",
+      "maestria-machados": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-macas": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-hastes": "1 XP; Força 2, Agilidade 1, Destreza 1. Ao acertar com lança da família atual Lanças e Hastes, ativa uma característica existente sem Coragem, exigindo a Perícia do peso; crítico mantém até 2 diferentes gratuitas e terceira diferente por 1 Coragem.",
+      "maestria-cajados": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-arcos": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-bestas": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-arremessos": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-punhos": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-longo-alcance": "Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "maestria-armas-fogo": "Exclusiva Humano: concessão racial gratuita; Perícia em Armas de Fogo necessária para ativar. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+      "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
+      "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
+      "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O portador reduz à metade o dano de Fogo à Vida, sem proteger a armadura. O +1 de Vida direta de Derreter é 0, enquanto E+P à Integridade permanece normal. Frações e interações pendentes.",
+      "encantar-com-elemento": "1 XP. Exige uma Perícia Elemental + Criar Item de Foco e Magia. Armaduras e escudos: 1 Coragem por resistência elemental; armas tornam-se do elemento habilitado. Mesma duração E-P>0 para todos. Custo da arma e unidade temporal pendentes.",
       "apresentacao-avancada": "1 XP; requisito Apresentação 2. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
       "coleta-avancada": "1 XP; requisito Coleta 2. Com Coleta como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos."
     }
   },
-  "requirementFunction": "function skillReq(id,s=state){\n if(racialGrants(s).includes(id))return null;\n const has=x=>ownsSkill(x,s);\n if(id===\"invocacao-elemental\"&&(!has(\"criar-item-foco-magia\")||!has(\"domar-criatura-pequena\")))\n  return\"Requer Criar Item de Foco e Magia e Domar Criatura Pequena. O próprio foco habilita Psique; os demais elementos exigem suas Perícias.\";\n if(id===\"domar-criatura-media\"&&!has(\"domar-criatura-pequena\"))return\"Requer a Perícia Domar Criatura Pequena antes de comprar Domar Criatura Média.\";\n if(id===\"domar-criatura-grande\"&&(!has(\"domar-criatura-pequena\")||!has(\"domar-criatura-media\")))\n  return\"Requer Domar Criatura Pequena e Domar Criatura Média antes de comprar Domar Criatura Grande.\";\n if((id===\"domar-criatura-media\"||id===\"domar-criatura-grande\")&&((s.attributes.influencia||0)<(id===\"domar-criatura-media\"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return\"Requer Influência \"+(id===\"domar-criatura-media\"?3:4)+\", Inteligência 1 e Apresentação 1.\";\n if(id===\"domar-criatura-pequena\"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return\"Requer Influência 2, Inteligência 1 e Apresentação 1.\";\n if(id===\"pericia-druidica\" && ![\"criar-item-foco-magia\",\"terra\"].every(has))return\"Compra única de 1 XP: exige Criar Item de Foco e Magia e Perícia Terra; não exige Domar nem Influência.\";\n if(id===\"transformacao-elemental\" && (!has(\"criar-item-foco-magia\")||![\"vento\",\"agua\",\"terra\",\"fogo\",\"sagrado\",\"sangue\",\"trevas\",\"veneno\"].some(has)))return\"Requer Criar Item de Foco e Magia e pelo menos uma Perícia em Elemento.\";\n\n const disc=s.practices.armas_conjuracao||0;\n const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;\n const meleeSpecialty=[\"armas-leves\",\"armas-medias\",\"armas-pesadas\",\"maestria-manejo-duplo\",\"pugilismo\"].some(has);\n const rangedSpecialty=has(\"armas-longo-alcance\")||has(\"maestria-arremesso-armas\");\n const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;\n if(id===\"armas-longo-alcance\"&&(disc<1||dex<2))return\"Requer Disciplina 1 e Destreza 2.\";\n if(id===\"olhos-de-aguia\"&&(dex<3||disc<3||!(has(\"armas-longo-alcance\")||has(\"armas-fogo\"))))return\"Requer Destreza 3, Disciplina 3 e Armas de Longo Alcance OU Armas de Fogo.\";\n if(id===\"armas-fogo\"&&(disc<2||dex<2))return\"Requer Disciplina 2 e Destreza 2.\";\n if(id===\"disparo-fulminante\"&&(disc<2||dex<2||strength<1||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Força 1 e Armas Longo Alcance OU Arremesso.\";\n if(id===\"disparo-multiplo\"&&(disc<2||dex<2||agi<2||!has(\"disparo-fulminante\")||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Agilidade 2, Disparo Fulminante e Longo Alcance OU Arremesso.\";\n if(id===\"disparo-violento\"&&(disc<2||dex<2||!(strength>=2||(strength>=1&&(s.practices.atletismo||0)>=1))||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Força 2 OU Força 1 + Atletismo 1, Longo Alcance OU Arremesso.\";\n if(id===\"disparo-tatico\")return\"Regras, requisitos e XP pendentes.\";\n if(id===\"golpe-baixo\"&&(dex<2||strength<1||agi<1))return\"Requer Destreza 2, Força 1 e Agilidade 1.\";\n if(id===\"furtividade\"&&(stealth<2||dex<2||agi<1))return\"Requer Furtividade 2, Destreza 2 e Agilidade 1.\";\n if(id===\"furtividade-avancada\"&&(stealth<2||!has(\"furtividade\")))return\"Requer Furtividade 2 e Perícia em Furtividade.\";\n  const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);\n  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)\n   return\"Requer \"+advancedSource.label+\" 2.\";\n if(id===\"criar-veneno\"&&(art<1||intelligence<2||alch<2||med<2))return\"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.\";\n // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.\n if(id===\"armas-leves\"&&disc<1)return\"Requer Disciplina 1.\";\n if(id===\"armas-medias\"&&(disc<1||strength<1))return\"Requer Disciplina 1 e Força 1.\";\n if(id===\"armas-pesadas\"&&(disc<2||strength<2))return\"Requer Disciplina 2 e Força 2.\";\n if(id===\"disciplina-avancada\"&&disc<2)return\"Requer Disciplina 2.\";\n if(id===\"concentracao-refinada\"&&disc<2)return\"Requer Disciplina 2.\";\n if(id===\"criar-item-foco-magia\"&&(disc<1||(s.attributes.inteligencia||0)<1||art<1))return\"Requer Disciplina 1, Inteligência 1 e Artesão 1.\";\n if([\"vento\",\"agua\",\"terra\",\"fogo\"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1))return\"Requer Disciplina 1 e Inteligência 1. Criar Foco é opcional.\";\n if(id===\"sagrado\"&&(disc<2||(s.attributes.inteligencia||0)<2))return\"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.\";\n if(id===\"escudo-arcano\"&&((s.attributes.inteligencia||0)<2||vig<1||!has(\"criar-item-foco-magia\")))return\"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.\";\n if(id===\"conjuracao-equilibrada\"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has(\"criar-item-foco-magia\")))return\"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.\";\n if(id===\"golpe-fulminante\"&&(disc<2||strength<2||!meleeSpecialty))return\"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.\";\n if(id===\"espalhar-golpe\"&&(disc<2||dex<1||agi<1||!has(\"golpe-fulminante\")||!meleeSpecialty))return\"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.\";\n if(id===\"pugilismo\"&&(disc<1||strength<2||dex<1))return\"Requer Disciplina 1, Força 2 e Destreza 1.\";\n if(id===\"artista-marcial\"&&(disc<2||dex<2||!has(\"pugilismo\")))return\"Requer Disciplina 2, Destreza 2 e Pugilismo.\";\n if(id===\"maestria-arremesso-armas\"&&(![\"armas-leves\",\"armas-medias\",\"armas-pesadas\"].some(has)||strength<2||dex<2||agi<1))return\"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.\";\n if([\"recuperacao-vigorosa\",\"instinto-sobrevivencia\"].includes(id)&&vig<3)return\"Requer Vigor 3; custo XP pendente.\";\n if(id===\"recuperacao-movimento\"&&(vig<6||!has(\"recuperacao-vigorosa\")))return\"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.\";\n if(id===\"manejo-perfeito\")return\"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.\";\n if(id===\"maestria-manejo-duplo\"&&(strength<2||dex<2||agi<1||!has(\"disciplina-avancada\")||![\"armas-leves\",\"armas-medias\",\"armas-pesadas\",\"maestria-arremesso-armas\",\"armas-fogo\",\"armas-longo-alcance\"].some(has)))return\"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.\";\n if(id===\"arma-certa\")return\"Custo de XP e requisitos definitivos ainda pendentes.\";\n\n if(id===\"montar\"&&(s.attributes.influencia||0)<2)return\"Requer Influência grau 2.\";\n if(id===\"provocacao-sofisticada\"&&(s.attributes.influencia||0)<2)return\"Requer Influência grau 2.\";\n if(id===\"improviso\"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return\"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.\";\n if(id===\"mestre\"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has(\"criar-item-foco-magia\")||!has(\"improviso\")||![\"vento\",\"sangue\",\"agua\",\"fogo\",\"terra\",\"veneno\",\"sagrado\",\"trevas\"].some(has)))return\"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.\";\n if([\"sangue\",\"trevas\"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return\"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.\";\n if(id===\"veneno\"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return\"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.\";\n if(id===\"criar-antidoto\"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has(\"criar-veneno\")))return\"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.\";\n if(id===\"transfusao-sanguinaria\"&&(!has(\"transfusao\")||!has(\"sangue\")))\n  return\"Requer Transfusão e Perícia em Elemento Sangue. Transfusão original ainda tem aquisição pendente.\";\n if(id===\"transfusao\")return\"Compra ainda pendente de custo ou regras de aquisição.\";\n return null;\n}\n",
-  "commit": "6957ad45032bffef98c10c6160bc85fda1871fd1"
+  "requirementFunction": "function skillReq(id,s=state){\n if(id===\"transfusao-sanguinaria\"&&s.race!==\"lucker_sangue\")return\"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.\";\n if(id===\"maestria-armas-fogo\"&&s.race!==\"humano\")return\"Maestria em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.\";\n if(id!==\"maestria-armas-fogo\"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return\"Custo de XP e requisitos de aquisição desta Maestria ainda PENDENTES; consultar os efeitos e aguardar aprovação.\";\n if(racialGrants(s).includes(id))return null;\n const has=x=>ownsSkill(x,s);\n if(id===\"invocacao-elemental\"&&(!has(\"criar-item-foco-magia\")||!has(\"domar-criatura-pequena\")))\n  return\"Requer Criar Item de Foco e Magia e Domar Criatura Pequena. O próprio foco habilita Psique; os demais elementos exigem suas Perícias.\";\n if(id===\"domar-criatura-media\"&&!has(\"domar-criatura-pequena\"))return\"Requer a Perícia Domar Criatura Pequena antes de comprar Domar Criatura Média.\";\n if(id===\"domar-criatura-grande\"&&(!has(\"domar-criatura-pequena\")||!has(\"domar-criatura-media\")))\n  return\"Requer Domar Criatura Pequena e Domar Criatura Média antes de comprar Domar Criatura Grande.\";\n if((id===\"domar-criatura-media\"||id===\"domar-criatura-grande\")&&((s.attributes.influencia||0)<(id===\"domar-criatura-media\"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return\"Requer Influência \"+(id===\"domar-criatura-media\"?3:4)+\", Inteligência 1 e Apresentação 1.\";\n if(id===\"domar-criatura-pequena\"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return\"Requer Influência 2, Inteligência 1 e Apresentação 1.\";\n if(id===\"pericia-druidica\" && ![\"criar-item-foco-magia\",\"terra\"].every(has))return\"Compra única de 1 XP: exige Criar Item de Foco e Magia e Perícia Terra; não exige Domar nem Influência.\";\n if(id===\"transformacao-elemental\" && (!has(\"criar-item-foco-magia\")||![\"vento\",\"agua\",\"terra\",\"fogo\",\"sagrado\",\"sangue\",\"trevas\",\"veneno\"].some(has)))return\"Requer Criar Item de Foco e Magia e pelo menos uma Perícia em Elemento.\";\n\n const disc=s.practices.armas_conjuracao||0;\n const strength=s.attributes.forca||0,dex=s.attributes.destreza||0,agi=s.attributes.agilidade||0,vig=s.attributes.vigor||0;\n const meleeSpecialty=[\"armas-leves\",\"armas-medias\",\"armas-pesadas\",\"maestria-manejo-duplo\",\"pugilismo\"].some(has);\n const rangedSpecialty=has(\"armas-longo-alcance\")||has(\"maestria-arremesso-armas\");\n const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;\n // Requisitos explícitos das Perícias experimentais de Bardo; XP null continua bloqueando compras.\n if(id===\"maestria-em-apresentacao\"&&((s.practices.apresentacao||0)<4||(s.attributes.influencia||0)<4||dex<4||!has(\"apresentacao-avancada\")||!has(\"pericia-em-instrumentos\")))\n  return\"Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos.\";\n if(id===\"voz-encantadora\"&&((s.attributes.influencia||0)<4||(s.practices.apresentacao||0)<4||vig<3))\n  return\"Requer Influência 4, Apresentação 4 e Vigor 3.\";\n // Melodia Psíquica é um modo da Maestria, não outra compra.\n if(id===\"melodia-psiquica\")return\"Integrada à Maestria em Apresentação; para usar, requer Disciplina 4, Criar Item de Foco e Magia e instrumento.\";\n if(id===\"montaria-epica\")return\"Requisitos, custo e efeito de Montaria Épica ainda PENDENTES de decisão autoral.\";\n  // Perícias definidas em 21/11/2026: compras por 1 XP; sem graus ou elementos gratuitos.\n  const protection=s.knowledges.protecao||0,engineering=s.knowledges.engenharia||0;\n  if(id===\"maos-leves\"&&(stealth<3||disc<3||protection<2))return\"Requer Furtividade 3, Disciplina 3 e Proteção 2.\";\n  if(id===\"pericia-armadilha\"&&(art<1||disc<1||engineering<1||dex<1||intelligence<1||protection<2||stealth<1))\n    return\"Requer Artesão 1, Disciplina 1, Engenharia 1, Destreza 1, Inteligência 1, Proteção 2 e Furtividade 1.\";\n  if(id===\"golpe-furtivo\"&&(disc<2||stealth<2))return\"Requer Disciplina 2 e Furtividade 2.\";\n  if(id===\"bioetica\"&&(alch<3||intelligence<3||dex<3||!has(\"sangue\")||!has(\"criar-item-foco-magia\")||\n    ![\"vento\",\"agua\",\"terra\",\"fogo\",\"sagrado\",\"trevas\",\"veneno\"].some(has)||!has(\"domar-criatura-media\")))\n    return\"Requer Alquimia 3, Inteligência 3, Destreza 3, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia elemental (diferente de Sangue) e Domar Criatura Média.\";\n  if(id===\"pesquisa-avancada-pocoes\"&&(alch<3||!has(\"improviso\")||art<3||dex<2))\n    return\"Requer Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2.\";\n  if(id===\"corpo-fechado\"&&(vig<4||!has(\"artista-marcial\")))return\"Requer Vigor 4 e Artista Marcial (Artes Marciais).\";\n  if(id===\"invocar-esfera-espiritual\"&&(!has(\"criar-item-foco-magia\")||dex<4||intelligence<3||vig<3))\n    return\"Requer Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3.\";\n  if([\"passo-etereo\",\"absorver-esferas\",\"disparo-esferas-espirituais\"].includes(id)&&!has(\"invocar-esfera-espiritual\"))\n    return\"Requer Invocar Esfera Espiritual.\";\n  if(id===\"dilema\"&&(vig<4||!has(\"artista-marcial\")))return\"Requer Vigor 4 e Artista Marcial (Artes Marciais).\";\n  if(id===\"impacto-psiquico\"&&(!has(\"criar-item-foco-magia\")||!has(\"artista-marcial\")))\n    return\"Requer Criar Item de Foco e Magia e Artista Marcial (Artes Marciais).\";\n\n if(id===\"armas-longo-alcance\"&&(disc<1||dex<2))return\"Requer Disciplina 1 e Destreza 2.\";\n if(id===\"olhos-de-aguia\"&&(dex<3||disc<3||!(has(\"armas-longo-alcance\")||has(\"armas-fogo\"))))return\"Requer Destreza 3, Disciplina 3 e Armas de Longo Alcance OU Armas de Fogo.\";\n if(id===\"armas-fogo\"&&(disc<2||dex<2))return\"Requer Disciplina 2 e Destreza 2.\";\n if(id===\"disparo-fulminante\"&&(disc<2||dex<2||strength<1||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Força 1 e Armas Longo Alcance OU Arremesso.\";\n if(id===\"disparo-multiplo\"&&(disc<2||dex<2||agi<2||!has(\"disparo-fulminante\")||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Agilidade 2, Disparo Fulminante e Longo Alcance OU Arremesso.\";\n if(id===\"disparo-violento\"&&(disc<2||dex<2||!(strength>=2||(strength>=1&&(s.practices.atletismo||0)>=1))||!rangedSpecialty))return\"Requer Disciplina 2, Destreza 2, Força 2 OU Força 1 + Atletismo 1, Longo Alcance OU Arremesso.\";\n if(id===\"disparo-tatico\")return\"Regras, requisitos e XP pendentes.\";\n if(id===\"golpe-baixo\"&&(dex<2||strength<1||agi<1))return\"Requer Destreza 2, Força 1 e Agilidade 1.\";\n if(id===\"furtividade\"&&(stealth<2||dex<2||agi<1))return\"Requer Furtividade 2, Destreza 2 e Agilidade 1.\";\n if(id===\"furtividade-avancada\"&&(stealth<2||!has(\"furtividade\")))return\"Requer Furtividade 2 e Perícia em Furtividade.\";\n  const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);\n  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)\n   return\"Requer \"+advancedSource.label+\" 2.\";\n if(id===\"maestria-martelos\"&&(strength<3||dex<1||vig<1))return\"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.\";\n  if(id===\"maestria-hastes\"&&(strength<2||agi<1||dex<1))return\"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.\";\n  if(id===\"maestria-espadas\"&&(strength<2||dex<2))return\"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.\";\n if(id===\"ferreiro\"&&(art<1||strength<1||dex<1||intelligence<1||!has(\"artesao-avancado\")))return\"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).\";\n if(id===\"ferreiro-elemental\"&&(!has(\"ferreiro\")||intelligence<2||dex<2||!has(\"improviso\")||!has(\"criar-item-foco-magia\")))return\"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.\";\n if(id===\"ferreiro-elemental\"&&!has(\"encantar-com-elemento\"))return\"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.\";\n if(id===\"resistencia-a-fogo\"&&(!has(\"ferreiro-elemental\")||!has(\"fogo\")||vig<2))return\"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2.\"; \n if(id===\"encantar-com-elemento\"&&(!has(\"criar-item-foco-magia\")||![\"vento\",\"agua\",\"terra\",\"fogo\",\"sagrado\",\"sangue\",\"trevas\",\"veneno\"].some(has)))return\"Requer Criar Item de Foco e Magia e pelo menos uma Perícia Elemental adquirida (Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas ou Veneno).\";\n if(id===\"criar-veneno\"&&(art<1||intelligence<2||alch<2||med<2))return\"Requer Artesão 1, Inteligência 2, Alquimia 2 e Medicina 2.\";\n // IDs antigos das Perícias renomeadas preservados para compatibilidade de fichas salvas.\n if(id===\"armas-leves\"&&disc<1)return\"Requer Disciplina 1.\";\n if(id===\"armas-medias\"&&(disc<1||strength<1))return\"Requer Disciplina 1 e Força 1.\";\n if(id===\"armas-pesadas\"&&(disc<2||strength<2))return\"Requer Disciplina 2 e Força 2.\";\n if(id===\"disciplina-avancada\"&&disc<2)return\"Requer Disciplina 2.\";\n if(id===\"concentracao-refinada\"&&disc<2)return\"Requer Disciplina 2.\";\n if(id===\"criar-item-foco-magia\"&&(disc<1||(s.attributes.inteligencia||0)<1||art<1))return\"Requer Disciplina 1, Inteligência 1 e Artesão 1.\";\n if([\"vento\",\"agua\",\"terra\",\"fogo\"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1))return\"Requer Disciplina 1 e Inteligência 1. Criar Foco é opcional.\";\n if(id===\"sagrado\"&&(disc<2||(s.attributes.inteligencia||0)<2))return\"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.\";\n if(id===\"escudo-arcano\"&&((s.attributes.inteligencia||0)<2||vig<1||!has(\"criar-item-foco-magia\")))return\"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.\";\n if(id===\"conjuracao-equilibrada\"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has(\"criar-item-foco-magia\")))return\"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.\";\n if(id===\"golpe-fulminante\"&&(disc<2||strength<2||!meleeSpecialty))return\"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.\";\n if(id===\"espalhar-golpe\"&&(disc<2||dex<1||agi<1||!has(\"golpe-fulminante\")||!meleeSpecialty))return\"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.\";\n if(id===\"pugilismo\"&&(disc<1||strength<2||dex<1))return\"Requer Disciplina 1, Força 2 e Destreza 1.\";\n if(id===\"artista-marcial\"&&(disc<2||dex<2||!has(\"pugilismo\")))return\"Requer Disciplina 2, Destreza 2 e Pugilismo.\";\n if(id===\"cancelar-magia\"&&(!has(\"criar-item-foco-magia\")||!has(\"improviso\")||intelligence<4||agi<4||dex<4))return\"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.\";\n  if(id===\"mudanca-elemental\"&&(!has(\"transformacao-elemental\")||intelligence<4||dex<4))return\"Requer Transformação Elemental, Inteligência 4 e Destreza 4.\";\n  if(id===\"desencantar\"&&!has(\"cancelar-magia\"))return\"Requer Cancelar Magia.\";\n  if(id===\"espelho-magico\"&&!has(\"cancelar-magia\"))return\"Requer Cancelar Magia.\";\n  if(id===\"sacrificio-heroico\"&&vig<4)return\"Requer Vigor 4.\";\n  if(id===\"escudo-refletor\"&&!has(\"maestria-escudos\"))return\"Requer Maestria em Escudos.\";\n  if(id===\"sentido-elemental\"&&(intelligence<3||!has(\"improviso\")))return\"Requer Inteligência 3 e Improviso Elemental.\";\n  if(id===\"maestria-escudos\"&&(dex<2||vig<2))return\"Requer Destreza 2 e Vigor 2.\";\n if(id===\"escudo-bumerangue\"&&(dex<2||strength<3||!has(\"maestria-arremesso-armas\")||!has(\"maestria-escudos\")))return\"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.\";\n if(id===\"maestria-arremesso-armas\"&&(![\"armas-leves\",\"armas-medias\",\"armas-pesadas\"].some(has)||strength<2||dex<2||agi<1))return\"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.\";\n if([\"recuperacao-vigorosa\",\"instinto-sobrevivencia\"].includes(id)&&vig<3)return\"Requer Vigor 3; custo XP pendente.\";\n if(id===\"recuperacao-movimento\"&&(vig<6||!has(\"recuperacao-vigorosa\")))return\"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.\";\n if(id===\"manejo-perfeito\")return\"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.\";\n if(id===\"maestria-manejo-duplo\"&&(strength<2||dex<2||agi<1||!has(\"disciplina-avancada\")||![\"armas-leves\",\"armas-medias\",\"armas-pesadas\",\"maestria-arremesso-armas\",\"armas-fogo\",\"armas-longo-alcance\"].some(has)))return\"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.\";\n if(id===\"arma-certa\")return\"Custo de XP e requisitos definitivos ainda pendentes.\";\n\n if(id===\"montar\"&&(s.attributes.influencia||0)<2)return\"Requer Influência grau 2.\";\n if(id===\"pericia-montaria\"&&((s.attributes.influencia||0)<1||dex<2))return\"Requer Influência 1 e Destreza 2.\";\n if(id===\"pericia-montaria\")return\"Custo XP de Perícia em Montaria PENDENTE: compra indisponível até a definição autoral.\";\n if(id===\"provocacao-sofisticada\"&&(s.attributes.influencia||0)<2)return\"Requer Influência grau 2.\";\n if(id===\"improviso\"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return\"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.\";\n if(id===\"mestre\"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has(\"criar-item-foco-magia\")||!has(\"improviso\")||![\"vento\",\"sangue\",\"agua\",\"fogo\",\"terra\",\"veneno\",\"sagrado\",\"trevas\"].some(has)))return\"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.\";\n if([\"sangue\",\"trevas\"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return\"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.\";\n if(id===\"veneno\"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return\"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.\";\n if(id===\"criar-antidoto\"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has(\"criar-veneno\")))return\"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.\";\n if(id===\"transfusao-sanguinaria\"&&(!has(\"transfusao\")||!has(\"sangue\")))\n  return\"Requer Transfusão e Perícia em Elemento Sangue. Transfusão original ainda tem aquisição pendente.\";\n if(id===\"transfusao\")return\"Compra ainda pendente de custo ou regras de aquisição.\";\n return null;\n}\n",
+  "commit": "874de82d788228ca5fb3c01b1ac06733218585a2"
 }

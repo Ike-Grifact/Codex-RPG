@@ -28,6 +28,7 @@
   <label>Integridade máxima<input type="number" min="0" step="1" value="{{equipment.integrityMax}}" data-field="system.integrity.max"></label>
   <label>Durabilidade atual<input type="number" min="0" value="{{equipment.durability}}" data-field="system.durability.value"></label>
 <label>Durabilidade máxima<input type="number" min="0" value="{{equipment.durabilityMax}}" data-field="system.durability.max"></label>
+{{#if equipment.isFocus}}<label>Cargas atuais do foco<input type="number" min="0" max="{{equipment.grade}}" step="1" value="{{equipment.focusCharges}}" data-field="system.focusCharges"></label>{{/if}}
 <label>Elemento (foco/magia)<input type="text" value="{{equipment.element}}" data-field="system.element"></label>
 <label>Características (separadas por vírgula)<input type="text" value="{{equipment.properties}}" data-field="system.properties"></label>
 <label>Munição atual<input type="number" min="0" value="{{equipment.ammo.value}}" data-field="system.ammo.value"></label>

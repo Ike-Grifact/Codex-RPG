@@ -1,7 +1,7 @@
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, xpLedger, starterPurchasePlan, lifeMax} from "./rules.mjs";
-import {hasSkill, racialGrants, racialChoicesComplete, racialGradeFloor, gradeXPTable, racialBand, withRacialOrigin} from "./races.mjs";
+import {hasSkill, racialGrants, racialChoicesComplete, racialGradeFloor, gradeXPTable, racialBand, withRacialOrigin, canUseRacialSkill, RACES, skillNameFor} from "./races.mjs";
 
-import {requirements} from "./skill-catalog.mjs";
+import {requirements,XP_LEVEL_REFERENCE} from "./skill-catalog.mjs";
 
 export const developmentGroups = {
   attribute: {field:"attributes", label:"Atributos", graph:"attr", list:ATTRIBUTES, description:"Capacidades naturais que entram na pilha de dados."},
@@ -15,9 +15,10 @@ const ownsSkill=hasSkill;
 const purchasable=skill=>skill&&!skill.legacy&&Number.isSafeInteger(skill.cost)&&skill.cost>=0;
 const branchesFor=(id,rules)=>Object.hasOwn(rules,id)?rules[id]:[[]];
 
-function purchaseBlocker(skill){
+function purchaseBlocker(skill,system){
   if(!skill)return "Perícia indisponível.";
   if(skill.legacy)return "Compra encerrada. Perícia preservada em fichas existentes.";
+  if(!canUseRacialSkill(system,skill.id))return "Perícia exclusiva da origem "+RACES[skill.origin].name+".";
   return purchasable(skill)?"":"Compra pendente de custo ou regra de aquisição.";
 }
 
@@ -50,12 +51,13 @@ export function skillDetails(system,id){
   if(!skill)throw Error("Perícia indisponível.");
   const alternatives=(requirements[id]??[]).map(branch=>branch.map(entry=>requirement(system,entry)));
   const owned=ownsSkill(system,id);
-  const met=!alternatives.length||alternatives.some(branch=>branch.every(item=>item.met));
+  const racial=racialGrants(system).includes(id);
+  const met=racial||canUseRacialSkill(system,id)&&(!alternatives.length||alternatives.some(branch=>branch.every(item=>item.met)));
   const pending=!Number.isSafeInteger(skill.cost)||skill.cost<0;
   const left=xpLedger(system).left;
   const missing=alternatives.filter(branch=>branch.some(item=>!item.met)).map(branch=>branch.filter(item=>!item.met).map(item=>item.name).join(" + "));
-  const blocker=purchaseBlocker(skill)||(!met?"Falta "+missing.join(" ou ")+".":left<skill.cost?"XP insuficiente.":"");
-  return {...skill, alternatives, owned:Boolean(owned), canBuy:!owned&&!blocker, pending, met, blocker};
+  const blocker=purchaseBlocker(skill,system)||(!met?"Falta "+missing.join(" ou ")+".":left<skill.cost?"XP insuficiente.":"");
+  return {...skill, name:skillNameFor(system,skill), alternatives, owned:Boolean(owned), canBuy:!owned&&!blocker, pending, met, blocker};
 }
 
 export function gradeDetails(system,group,key,creationPending=false){
@@ -111,7 +113,7 @@ function gradeRemovalBlocker(previous,next){
 
 export function originChangePlan(system, request, creationPending=false) {
   const next=withRacialOrigin(system,request);
-  if(!racialChoicesComplete(next))throw Error("Escolha os elementos iniciais exigidos pela origem, sem repetir.");
+  if(!racialChoicesComplete(next))throw Error("Escolha os elementos iniciais exigidos pela origem.");
   if(racialGrants(next).some(id=>system.skills?.includes(id)&&!racialGrants(system).includes(id))){
     throw Error("Devolva primeiro a Perícia comprada que será concedida pela nova origem.");
   }
@@ -124,7 +126,15 @@ export function originChangePlan(system, request, creationPending=false) {
   }
   const life=system.life.value===0?0:Math.min(lifeMax(next),Math.max(0,system.life.value+lifeMax(next)-lifeMax(system)));
   return {"system.race":next.race,"system.pureElement":next.pureElement,"system.runeElements":next.runeElements,
+    "system.runeShieldFreeUsed":system.race===next.race&&system.runeShieldFreeUsed===true,
     "system.racialInitialAttributes":next.racialInitialAttributes,"system.attributes":next.attributes,"system.life.value":life};
+}
+
+export function xpProgression(system){
+  if(system.monsterRules||system.animalRules||system.monsterHumanoidRules)return null;
+  const cap=XP_LEVEL_REFERENCE.at(-1),formation=xpLedger(system).formation;
+  return {levelReference:XP_LEVEL_REFERENCE[system.level]??XP_LEVEL_REFERENCE[1],cap,
+    maxAdditional:Math.max(0,Math.min(cap-XP_LEVEL_REFERENCE[1],cap-formation))};
 }
 
 export function xpAdjustmentPlan(system,request){
@@ -135,6 +145,8 @@ export function xpAdjustmentPlan(system,request){
   if(!Number.isSafeInteger(next)||!Number.isSafeInteger(ledger.formation+next)||next<0){
     throw Error("O XP adicional deve ser um inteiro não negativo.");
   }
+  const cap=xpProgression(system)?.maxAdditional;
+  if(delta>0&&cap!=null&&next>cap)throw Error("A concessão ultrapassa o teto de "+cap+" XP adicionais.");
   if(delta<0&&ledger.formation+next<ledger.spent)throw Error("O XP total ficaria abaixo do XP já investido.");
   return {previous:ledger.additional,next,delta};
 }
@@ -142,7 +154,7 @@ export function xpAdjustmentPlan(system,request){
 
 function* resolvePackage(id,draft,ancestors,rules){
   if(ownsSkill(draft.system,id)){yield draft;return;}
-  if(!purchasable(entries.get(id))||ancestors.includes(id))return;
+  if(purchaseBlocker(entries.get(id),draft.system)||ancestors.includes(id))return;
   const branches=branchesFor(id,rules);
   if(!Array.isArray(branches))return;
   for(const [option,branch] of branches.entries()){
@@ -182,7 +194,7 @@ export function planSkillPackage(system,id,{creationPending=false,rules=requirem
   }
   if(ownsSkill(system,id))return {status:"owned"};
   if(system.monsterRules||system.animalRules)return blocked("Este tipo de ficha não usa formação humana.");
-  const reason=purchaseBlocker(skill);
+  const reason=purchaseBlocker(skill,system);
   if(reason)return blocked(reason);
   const grades=Object.values(developmentGroups).flatMap(group=>group.list.map(([key,name])=>({
     field:group.field,key,name,from:system[group.field]?.[key]??0,
@@ -223,7 +235,7 @@ export function planSkillPackage(system,id,{creationPending=false,rules=requirem
 export function skillRefundPlan(system,id){
   const row=skillDetails(system,id);
   if(racialGrants(system).includes(id)&&!system.skills?.includes(id))return {blocker:"Perícia concedida pela origem, sem reembolso."};
-  if(!row.owned)return {blocker:"Perícia ainda não adquirida."};
+  if(!row.owned&&!system.skills?.includes(id))return {blocker:"Perícia ainda não adquirida."};
   const skills=(system.skills??[]).filter(key=>key!==id&&!(id==="maestria-manejo-duplo"&&key==="manejo-duplo"));
   const next={...system,skills},before=xpLedger(system),after=xpLedger(next);
   return {name:row.name,refund:before.spent-after.spent,spentBefore:before.spent,spentAfter:after.spent,
