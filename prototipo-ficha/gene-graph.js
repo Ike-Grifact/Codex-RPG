@@ -69,20 +69,27 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
  "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar","terra":"elemento-terra",
  "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
 });
+// Cada Perícia visualmente ativa pertence a uma única constelação temática.
+// Esta classificação é independente do catálogo e NÃO é pré-requisito de compra.
 const GENE_CONSTELLATIONS=[
  {id:"escudos",label:"ESCUDOS FÍSICOS",column:0,skills:["maestria-escudos","escudo-refletor","escudo-bumerangue","sacrificio-heroico"]},
  {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
- {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo","corpo-fechado","dilema","impacto-psiquico"]},
+ {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo","corpo-fechado","dilema"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada","maos-leves","golpe-furtivo","pericia-armadilha"]},
- {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","improviso","sentido-elemental","cancelar-magia","desencantar","espelho-magico","mestre","invocacao-elemental","mudanca-elemental","invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais"]},
- {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
- {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica","bioetica"]},
- {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arcos","maestria-bestas","maestria-longo-alcance","maestria-arremesso-armas","maestria-arremessos","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","maestria-armas-fogo"]},
- {id:"alquimia",label:"ALQUIMIA E TRANSFUSÃO",column:2,skills:["criar-veneno","criar-antidoto","transfusao","pesquisa-avancada-pocoes"]},
- {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia"]},
- {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","alquimia-avancada","engenharia-avancada","erudicao-avancada"]},
- {id:"praticas-avancadas",label:"PRÁTICAS AVANÇADAS",column:0,skills:["atletismo-avancado","artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo","apresentacao-avancada","coleta-avancada"]},
- {id:"influencia",label:"INFLUÊNCIA E MOBILIDADE",column:2,skills:["provocacao-sofisticada","recobrar-coragem","montar","pericia-montaria"]}
+ {id:"disparos",label:"ARMAS DE LONGO ALCANCE",column:0,skills:["armas-longo-alcance","olhos-de-aguia","maestria-arcos","maestria-bestas","maestria-longo-alcance","maestria-arremesso-armas","maestria-arremessos","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","maestria-armas-fogo"]},
+ {id:"cavalaria",label:"CAVALARIA E MONTARIAS",column:0,skills:["montar","pericia-montaria","montaria-epica"]},
+ {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","concentracao-refinada","cancelar-magia","desencantar","espelho-magico"]},
+ {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas","improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental"]},
+ {id:"psiquico",label:"PSÍQUICO E ESFERAS",column:1,skills:["invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais","impacto-psiquico"]},
+ {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
+ {id:"alquimia",label:"ALQUIMIA E POÇÕES",column:1,skills:["alquimia-avancada","criar-veneno","criar-antidoto","pesquisa-avancada-pocoes","bioetica","transfusao","transfusao-sanguinaria"]},
+ {id:"apresentacao",label:"APRESENTAÇÃO E BARDO",column:2,skills:["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora"]},
+ {id:"artesao",label:"ARTESÃO E FORJA",column:2,skills:["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"]},
+ {id:"coleta",label:"COLETA",column:2,skills:["coleta-avancada"]},
+ {id:"recuperacao",label:"RECUPERAÇÃO E SOBREVIVÊNCIA",column:2,skills:["medicina-avancada","recuperacao-vigorosa","recuperacao-movimento","instinto-sobrevivencia","recobrar-coragem"]},
+ {id:"conhecimentos-avancados",label:"CONHECIMENTOS AVANÇADOS",column:2,skills:["protecao-avancada","astronomia-avancada","engenharia-avancada","erudicao-avancada"]},
+ {id:"influencia",label:"INFLUÊNCIA E INTERAÇÃO",column:2,skills:["provocacao-sofisticada"]},
+ {id:"atletismo",label:"ATLETISMO",column:2,skills:["atletismo-avancado"]}
 ];
 function position(nodes,branches=[]){
  const byId=new Map(nodes.map(n=>[n.id,n]));
