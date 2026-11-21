@@ -1,7 +1,7 @@
-<section class="codex-foundry-root {{#if codex.editing}}is-edit-mode{{else}}is-play-mode{{/if}}">
+<section class="codex-foundry-root codex-sheet {{#if codex.editing}}is-edit-mode{{else}}is-play-mode{{/if}}">
   <header class="codex-hero">
     <div class="codex-portrait-column">
-      <div class="codex-portrait"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
+      <div class="codex-portrait {{#if codex.defaultPortrait}}is-placeholder{{/if}}"><img src="{{codex.portrait}}" alt="Retrato de {{codex.actorName}}"></div>
       {{#if codex.editing}}
       <button class="codex-edit-portrait" type="button" data-action="editPortrait"><i class="fa-solid fa-image" aria-hidden="true"></i> Alterar retrato</button>
       {{/if}}
@@ -10,20 +10,26 @@
       <div class="codex-brand">
         <div>
           <span class="codex-overline">{{codex.actorTypeLabel}}{{#if codex.sheetLocation}} · {{codex.sheetLocation}}{{/if}}</span>
-          <h2>{{codex.actorName}}</h2>
+          {{#if codex.editing}}<label class="codex-hero-name">Nome do personagem<input type="text" value="{{codex.actorName}}" data-field="name"></label>{{else}}<h2>{{codex.actorName}}</h2>{{/if}}
         </div>
         {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
-        {{#if codex.canOpenDNA}}<button type="button" data-action="openDNA">Codex Genético</button>{{/if}}
       </div>
       <div class="codex-identity-fields">
-        <label>Nome <input type="text" value="{{codex.actorName}}" data-field="name" {{#unless codex.editing}}readonly{{/unless}}></label>
         <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept" {{#unless codex.editing}}readonly{{/unless}}></label>
         {{#if codex.isHostile}}
           <label>Grau <input type="number" min="1" max="6" value="{{codex.threatGrade}}" data-field="system.threatGrade" {{#unless codex.editing}}readonly{{/unless}}></label>
         {{else}}
           <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level" {{#unless codex.editing}}readonly{{/unless}}></label>
         {{/if}}
-        <label>Origem narrativa <input type="text" value="{{codex.origin}}" data-field="system.origin" {{#unless codex.editing}}readonly{{/unless}}>{{#if codex.race}}<small>{{codex.race}}</small>{{/if}}</label>
+        {{#if codex.editing}}
+        <label>Origem narrativa<input type="text" value="{{codex.origin}}" data-field="system.origin">{{#if codex.race}}<small>{{codex.race}}</small>{{/if}}</label>
+        {{else}}
+        <div class="codex-origin-display">
+          <span>{{#if codex.race}}Linhagem{{else}}Origem narrativa{{/if}}</span>
+          <strong>{{#if codex.race}}{{codex.race}}{{else}}{{#if codex.origin}}{{codex.origin}}{{else}}—{{/if}}{{/if}}</strong>
+          {{#if codex.race}}{{#if codex.origin}}<small>{{codex.origin}}</small>{{/if}}{{/if}}
+        </div>
+        {{/if}}
       </div>
       <details data-sync="identity" class="codex-identity-details" {{#if codex.identityOpen}}open{{/if}}>
         <summary>Virtude e personalidade</summary>
@@ -35,58 +41,100 @@
     </div>
   </header>
 
-  <div class="codex-resources">
-    <div class="codex-resource">
-      <span><img class="codex-atlas-icon" src="systems/codex-rpg-foundry/assets/icons/codex/status-vida.svg" alt=""> VIDA</span><strong>{{codex.life}} / {{codex.lifeMax}}</strong>
-      <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
-      <small>{{codex.health.label}}{{#if codex.healthApplied}}{{#if codex.health.coragem}} · {{codex.health.coragem}} Coragem por ação{{/if}}{{/if}}</small>
+  <div class="codex-vitals" aria-label="Recursos do personagem">
+    <div class="codex-vital-row">
+      <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="life" aria-expanded="false" aria-controls="{{codex.appId}}-vital-life" aria-label="Vida {{codex.life}} / {{codex.lifeMax}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-vida.svg" alt=""><strong>{{codex.life}} / {{codex.lifeMax}}</strong></button>
+      <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="integrity" aria-expanded="false" aria-controls="{{codex.appId}}-vital-integrity" aria-label="Integridade {{#if codex.armorCard}}{{#if codex.armorCard.hasMaximum}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{else}}—{{/if}}{{else}}—{{/if}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-integridade.svg" alt=""><strong>{{#if codex.armorCard}}{{#if codex.armorCard.hasMaximum}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{else}}—{{/if}}{{else}}—{{/if}}</strong></button>
+      <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="defense" aria-expanded="false" aria-controls="{{codex.appId}}-vital-defense" aria-label="DE defensiva {{codex.de}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-de.svg" alt=""><strong>{{codex.de}}</strong></button>
+      <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="movement" aria-expanded="false" aria-controls="{{codex.appId}}-vital-movement" aria-label="Deslocamento {{codex.movement}} m"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-movimento.svg" alt=""><strong>{{codex.movement}} m</strong></button>
+      {{#unless codex.attributesOnly}}
+      <button type="button" class="codex-vital " data-action="resourceDetails" data-vital="courage" aria-expanded="false" aria-controls="{{codex.appId}}-vital-courage" aria-label="Coragem {{codex.courage}} / {{codex.courageMax}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-coragem.svg" alt=""><strong>{{codex.courage}} / {{codex.courageMax}}</strong></button>
+      {{/unless}}
+      {{#if codex.isHostile}}
+      <button type="button" class="codex-vital codex-vital-pavor" data-action="resourceDetails" data-vital="pavor" aria-expanded="false" aria-controls="{{codex.appId}}-vital-pavor" aria-label="Pavor local {{codex.pavorLocal}} de {{codex.pavorCap}}"><span aria-hidden="true">ᚦ</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong></button>
+      {{/if}}
+      <button type="button" class="codex-vital codex-vital-load {{#if codex.overloaded}}is-overloaded{{/if}}" data-action="resourceDetails" data-vital="load" aria-expanded="false" aria-controls="{{codex.appId}}-vital-load" aria-label="Balanço e carga {{codex.balance}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-balanco.svg" alt=""><strong>{{codex.balance}}</strong></button>
+      <button type="button" class="codex-vital codex-vital-inventory" data-action="sheetPage" data-page="inventory" aria-label="Abrir Inventário"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-inventario.svg" alt=""><span>Inventário</span></button>
     </div>
-    {{#unless codex.attributesOnly}}<div class="codex-resource">
-      <span>CORAGEM</span><strong>{{codex.courage}} / {{codex.courageMax}}</strong>
-      <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1">+</button></div>
-      <small>Gasto no reforço ou na retenção</small>
+    <section id="{{codex.appId}}-vital-life" class="codex-vital-detail" data-vital-panel="life" hidden>
+      <h3>Vida</h3>
+      <p>{{codex.life}} / {{codex.lifeMax}} · {{codex.health.label}}{{#if codex.healthApplied}}{{#if codex.health.coragem}} · {{codex.health.coragem}} Coragem por ação{{/if}}{{/if}}</p>
+      {{#if codex.isOwner}}
+        <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
+      {{/if}}
+    </section>
+    <section id="{{codex.appId}}-vital-integrity" class="codex-vital-detail" data-vital-panel="integrity" hidden>
+      <h3>Integridade</h3>
+      {{#if codex.armorCard}}
+      <p>{{codex.armorCard.name}} · {{#if codex.armorCard.hasMaximum}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{else}}Integridade máxima não definida{{/if}}</p>
+      {{#if codex.armorCard.hasMaximum}}
+        <meter min="0" max="{{codex.armorCard.maximum}}" value="{{codex.armorCard.integrity}}" aria-label="Integridade da armadura"></meter>
+        {{#if codex.isOwner}}<div class="codex-step">
+          <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="-1" aria-label="Reduzir Integridade">−</button>
+          <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="1" aria-label="Recuperar Integridade">+</button>
+        </div>{{/if}}
+      {{else}}
+        {{#if codex.editing}}<button type="button" data-action="openEquipment" data-id="{{codex.armorCard.id}}">Configurar equipamento</button>{{/if}}
+      {{/if}}
+      {{else}}<p>Sem armadura equipada.</p>{{/if}}
+    </section>
+    <section id="{{codex.appId}}-vital-defense" class="codex-vital-detail" data-vital-panel="defense" hidden>
+      <h3>DE defensiva</h3>
+      <p>{{codex.deCalculation}}</p>
+      <p>{{codex.deCondition}}</p>
+    </section>
+    <section id="{{codex.appId}}-vital-movement" class="codex-vital-detail" data-vital-panel="movement" hidden>
+      <h3>Deslocamento</h3>
+      <p><strong>{{codex.movement}} m</strong> · 8 m + Agilidade + Atletismo ÷ 3 (graus completos)</p>
+    </section>
+    {{#unless codex.attributesOnly}}
+    <section id="{{codex.appId}}-vital-courage" class="codex-vital-detail" data-vital-panel="courage" hidden>
+      <h3>Coragem</h3>
+      <p>{{codex.courage}} / {{codex.courageMax}}</p>
+      {{#if codex.isOwner}}
+        <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1" aria-label="Retirar 1 Coragem">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1" aria-label="Recuperar 1 Coragem">+</button></div>
       <div class="codex-actions"><button type="button" data-action="rest" data-kind="short">Descanso curto</button><button type="button" data-action="rest" data-kind="long">Descanso longo</button></div>
       {{#if codex.hasDruidic}}<button type="button" data-action="transform">{{#if codex.transformed}}Reverter forma{{else}}Transformação Druídica{{/if}}</button>{{/if}}
-    </div>
-
-{{/unless}}
-    {{#if codex.isMonster}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div><small>Ativação ofensiva em combate custa 1P.</small></div>{{/if}}
-    {{#if codex.isAnimal}}<div class="codex-resource"><span>PAVOR LOCAL</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
-    {{#if codex.isHumanoid}}<div class="codex-resource"><span>PAVOR LOCAL (oposição)</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong><div class="codex-step"><button type="button" data-action="adjustPavor" data-delta="-1">−</button><button type="button" data-action="adjustPavor" data-delta="1">+</button></div></div>{{/if}}
-    <div class="codex-resource codex-defense-resource">
-      <span><img class="codex-atlas-icon" src="systems/codex-rpg-foundry/assets/icons/codex/status-de.svg" alt=""> DE DEFENSIVA · FINAL</span><strong>{{codex.de}}</strong>
-      <small class="codex-de-calculation">{{codex.deCalculation}}</small>
-      <small class="codex-de-condition">{{codex.deCondition}}</small>
-      {{#if codex.armorCard}}
-      <div class="codex-defense-armor">
-        <div class="codex-defense-armor-head">
-          <span><img class="codex-atlas-icon" src="systems/codex-rpg-foundry/assets/icons/codex/status-integridade.svg" alt=""> INTEGRIDADE · {{codex.armorCard.name}}</span>
-          <strong>{{#if codex.armorCard.noIntegrity}}Não possui{{else}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{/if}}</strong>
-        </div>
-        {{#unless codex.armorCard.noIntegrity}}
-          {{#if codex.armorCard.hasMaximum}}
-          <div class="codex-defense-armor-meter" role="progressbar" aria-label="Integridade da armadura" aria-valuemin="0" aria-valuemax="{{codex.armorCard.maximum}}" aria-valuenow="{{codex.armorCard.integrity}}"><span style="width:{{codex.armorCard.percent}}%"></span></div>
-          <div class="codex-defense-armor-buttons">
-            <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="-1" aria-label="Reduzir Integridade">−</button>
-            <button type="button" data-action="adjustIntegrity" data-id="{{codex.armorCard.id}}" data-delta="1" aria-label="Recuperar Integridade">+</button>
-          </div>
-          {{else}}
-          <small>Integridade máxima não definida.</small>
-          {{#if codex.editing}}<button type="button" class="codex-defense-configure" data-action="openEquipment" data-id="{{codex.armorCard.id}}">Configurar equipamento</button>{{/if}}
-          {{/if}}
-        {{/unless}}
-      </div>
       {{/if}}
-    </div>
-    <div class="codex-resource"><span>BALANÇO</span><strong>{{codex.balance}}</strong><small>Corporal, antes dos efeitos</small></div>
-    <div class="codex-resource"><span>DESLOCAMENTO</span><strong>{{codex.movement}} m</strong><small>8 m + Agilidade + Atletismo ÷ 3 (graus completos)</small></div>
-    <div class="codex-resource {{#if codex.overloaded}}is-overloaded{{/if}}">
-     <span>CARGA · ALTO</span><strong>{{codex.loadUsed}} / {{codex.capacity}}</strong>
-     <small>Espaço restante: {{codex.loadFree}} Alto</small>
-     <small>Alternativas: {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</small>
-     {{#if codex.overloaded}}<small class="codex-warning">Sobrecarga anotada · alcance da penalidade sob adjudicação do Narrador.</small>{{/if}}
-    </div>
+    </section>
+    {{/unless}}
+    {{#if codex.isHostile}}
+    <section id="{{codex.appId}}-vital-pavor" class="codex-vital-detail" data-vital-panel="pavor" hidden>
+      <h3>Pavor local</h3>
+      <p>{{codex.pavorLocal}} / {{codex.pavorCap}}</p>
+      {{#if codex.isMonster}}<p>Ativação ofensiva em combate custa 1P.</p>{{/if}}
+      {{#if codex.isGM}}<div class="codex-step">
+        <button type="button" data-action="adjustPavor" data-delta="-1" aria-label="Retirar 1 Pavor">−</button>
+        <button type="button" data-action="adjustPavor" data-delta="1" aria-label="Adicionar 1 Pavor">+</button>
+      </div>{{/if}}
+    </section>
+    {{/if}}
+    <section id="{{codex.appId}}-vital-load" class="codex-vital-detail" data-vital-panel="load" hidden>
+      <h3>Balanço e carga</h3>
+      <p>{{codex.balance}} · {{codex.loadUsed}} / {{codex.capacity}} Alto</p>
+      <p>Espaço restante: {{codex.loadFree}} Alto · {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</p>
+      {{#if codex.overloaded}}<p class="codex-warning">Sobrecarga anotada.</p>{{/if}}
+    </section>
   </div>
+
+  <nav class="codex-sheet-tabs" aria-label="Áreas da ficha">
+    {{#each codex.pages}}
+    <button type="button" data-action="sheetPage" data-page="{{id}}" aria-controls="{{@root.codex.appId}}-page-{{id}}"><strong>{{label}}</strong><small>{{description}}</small></button>
+    {{/each}}
+  </nav>
+  {{#if codex.hasPending}}<button type="button" class="codex-resume-roll" data-action="showRoll">Retomar rolagem</button>{{/if}}
+
+  <section id="{{codex.appId}}-page-evolution" class="codex-block codex-evolution" data-sheet-panel="evolution" aria-label="Evolução" hidden>
+    <h2>Evolução</h2>
+    <dl class="codex-stat-cards">
+      <div><dt>XP disponíveis</dt><dd>{{codex.xpLedger.left}}</dd></div>
+      <div><dt>XP investidos</dt><dd>{{codex.xpLedger.spent}}</dd></div>
+      <div><dt>XP totais</dt><dd>{{codex.xpLedger.grant}}</dd></div>
+    </dl>
+    <div class="codex-actions">
+      {{#if codex.canOpenDNA}}<button type="button" data-action="sheetPage" data-page="genetic">Ver Perícias no Codex Genético</button>{{/if}}
+      <button type="button" data-action="sheetPage" data-page="play">Ver fontes na ficha</button>
+    </div>
 
   {{#if codex.editing}}
   <details data-sync="progress" class="codex-creation-panel" {{#if codex.progressOpen}}open{{/if}}>
@@ -113,8 +161,16 @@
      {{/unless}}{{/unless}}
   </details>
   {{/if}}
+  </section>
 
-  <div class="codex-help">
+  {{#if codex.canOpenDNA}}
+  <section id="{{codex.appId}}-page-genetic" data-sheet-panel="genetic" aria-label="Codex Genético" hidden>
+    <div data-genetic-host></div>
+  </section>
+  {{/if}}
+
+  <section id="{{codex.appId}}-page-play" data-sheet-panel="play" aria-label="Jogar">
+  <div class="codex-help codex-play-guide">
     <strong>{{#if codex.editing}}Editar personagem{{else}}Componha a ação pela ficha{{/if}}</strong>
     {{#if codex.editing}}<span>Use −/+ para comprar ou ajustar graus. Clique em <b>Concluir edição · Jogar</b> quando terminar.</span>{{else}}{{#if codex.attributesOnly}}<span><b>1.</b> Escolha um Atributo. <b>2.</b> Escolha outro Atributo.</span>{{else}}<span>Escolha duas fontes de categorias diferentes, em qualquer ordem. Clique no cartão novamente para retirar a fonte.</span>{{/if}}{{/if}}
 
@@ -128,11 +184,11 @@
       {{#if codex.canAttack}}{{#each codex.equipment.shortcuts}}
         <button type="button" data-action="prepareEquipment" data-id="{{id}}" {{#unless enabledDie}}disabled{{/unless}}>{{{icon}}} {{name}}</button>
       {{/each}}{{/if}}
-      {{#if codex.hasPending}}<button type="button" data-action="showRoll">Retomar rolagem</button>{{else}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/if}}
+      {{#unless codex.hasPending}}{{#if codex.preparing}}<button type="button" data-action="showRoll">Ver rolagem</button>{{/if}}{{/unless}}
     </div>
   {{/unless}}
   {{#with codex.sphere}}
-  <details class="codex-help">
+  <details class="codex-help" data-sync="spiritual-spheres">
     <summary>Esferas Espirituais · {{count}}/5</summary>
     <p>{{createdThisRound}}/5 criadas nesta rodada. {{#if ready}}Punho Supremo de Asura disponível em Atacar.{{/if}}</p>
     <div class="codex-actions">
@@ -174,6 +230,24 @@
 
     {{#unless codex.attributesOnly}}
     <section class="codex-block">
+      <div class="codex-block-title"><h2>Práticas</h2></div>
+      {{#each codex.practices}}
+        <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
+          {{#if @root.codex.editing}}
+          <div class="codex-source-static"><strong class="codex-source-name">{{this.label}}</strong>{{#if this.xpLabel}}<small>{{this.xpLabel}}</small>{{/if}}<span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span></div>
+          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
+          {{else}}
+          <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
+            <span class="codex-source-name">{{this.label}}</span>
+             <span class="codex-source-order" aria-hidden="true">{{#if this.isBase}}1ª{{else}}{{#if this.isSecond}}2ª{{else}}{{#if this.isComplement}}3ª{{/if}}{{/if}}{{/if}}</span>
+            <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
+          <span class="codex-source-grade-tag">G{{this.grade}}</span>
+           </button>
+          {{/if}}
+        </div>
+      {{/each}}
+    </section>
+    <section class="codex-block">
       <div class="codex-block-title"><h2>Conhecimentos</h2></div>
       {{#each codex.knowledges}}
         <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
@@ -192,24 +266,6 @@
       {{/each}}
     </section>
 
-    <section class="codex-block">
-      <div class="codex-block-title"><h2>Práticas</h2></div>
-      {{#each codex.practices}}
-        <div class="codex-source {{#if @root.codex.editing}}is-editing{{else}}is-playing{{/if}} {{#if this.isSecond}}is-attribute{{/if}} {{#if this.isBase}}is-base{{/if}} {{#if this.isComplement}}is-complement{{/if}}">
-          {{#if @root.codex.editing}}
-          <div class="codex-source-static"><strong class="codex-source-name">{{this.label}}</strong>{{#if this.xpLabel}}<small>{{this.xpLabel}}</small>{{/if}}<span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span></div>
-          <div class="codex-grade"><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="-1">−</button><b>{{this.grade}}</b><button type="button" data-action="adjustGrade" data-grade="{{this.grade}}" data-group="{{this.group}}" data-key="{{this.key}}" data-delta="1">+</button></div>
-          {{else}}
-          <button type="button" class="codex-source-pick" data-action="chooseSource" data-group="{{this.group}}" data-key="{{this.key}}" aria-pressed="{{#if this.isSelected}}true{{else}}false{{/if}}">
-            <span class="codex-source-name">{{this.label}}</span>
-             <span class="codex-source-order" aria-hidden="true">{{#if this.isBase}}1ª{{else}}{{#if this.isSecond}}2ª{{else}}{{#if this.isComplement}}3ª{{/if}}{{/if}}{{/if}}</span>
-            <span class="codex-dice-strip">{{#each this.dice}}<span class="codex-small-die" title="d{{this.sides}}">{{{this.icon}}}<b>d{{this.sides}}</b></span>{{/each}}</span>
-          <span class="codex-source-grade-tag">G{{this.grade}}</span>
-           </button>
-          {{/if}}
-        </div>
-      {{/each}}
-    </section>
     {{/unless}}
   </div>
 
@@ -403,9 +459,34 @@
   {{/if}}
 
   </div>
-  <div class="codex-bottom-layout">
-    <section class="codex-block codex-equipment">
-      <h2>Repertório</h2>
+  </section>
+
+  <section id="{{codex.appId}}-page-inventory" class="codex-block codex-equipment codex-inventory" data-sheet-panel="inventory" aria-label="Inventário" hidden>
+    <header class="codex-inventory-heading">
+      <div class="codex-inventory-title">
+        <img src="systems/codex-rpg-foundry/assets/icons/codex/status-inventario.svg" alt="">
+        <div><h2>Inventário</h2><p>Equipamentos, carga e Valor de Troca</p></div>
+      </div>
+      {{#if codex.editing}}<button type="button" data-action="addEquipment">+ Adicionar item</button>{{/if}}
+    </header>
+
+    <nav class="codex-inventory-tabs" aria-label="Áreas do Inventário">
+      {{#each codex.inventoryPages}}
+      <button type="button" data-action="inventoryPage" data-pane="{{id}}" aria-controls="{{@root.codex.appId}}-inventory-{{id}}"><span aria-hidden="true">{{icon}}</span> {{label}}</button>
+      {{/each}}
+    </nav>
+    <section id="{{codex.appId}}-inventory-bag" data-inventory-panel="bag" aria-label="Mochila e equipamentos">
+      <dl class="codex-stat-cards">
+        <div><dt>Itens</dt><dd>{{codex.equipment.itemCount}}</dd></div>
+        <div><dt>Equipados</dt><dd>{{codex.equipment.equippedCount}}</dd></div>
+        <div><dt>Carga</dt><dd>{{codex.loadUsed}} / {{codex.capacity}} Alto</dd></div>
+      </dl>
+      <div class="codex-load-track {{#if codex.overloaded}}is-overloaded{{/if}}" role="progressbar" aria-label="Capacidade de carga" aria-valuemin="0" aria-valuemax="{{codex.capacity}}" aria-valuenow="{{codex.loadMeter}}" aria-valuetext="{{codex.loadUsed}} de {{codex.capacity}} Alto{{#if codex.overloaded}} · sobrecarga{{/if}}"><span style="width:{{codex.loadPercent}}%"></span></div>
+      <p class="codex-inventory-caption">Balanço {{codex.balance}} · {{codex.loadFree}} Alto livres{{#if codex.overloaded}} · Sobrecarga{{/if}}</p>
+      <div class="codex-inventory-surface">
+      <h3>Mochila e equipamentos</h3>
+      <details class="codex-repertoire-panel" data-sync="repertoire">
+      <summary>Repertório de armas, focos e proteção</summary>
       <div class="codex-repertoire">
       {{#each codex.equipment.repertoire}}
         <article data-repertoire-id="{{this.id}}">
@@ -420,7 +501,7 @@
         </article>
       {{else}}<p>Nenhuma arma, foco ou proteção no inventário.</p>{{/each}}
       </div>
-      <h2>Inventário</h2>
+      </details>
       <div class="codex-equipment-filters">
         <label>Tipo<select data-equipment-filter="family">{{#each codex.equipment.families}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
         <label>Peso<select data-equipment-filter="weight">{{#each codex.equipment.weights}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
@@ -428,7 +509,7 @@
       {{#each codex.equipment.gear}}
         {{#if this.groupTitle}}<h3>{{this.groupTitle}}</h3>{{/if}}
         <details data-sync="equipment-{{this.id}}" class="codex-equipment-row">
-          <summary>{{{this.icon}}}<strong>{{this.name}}</strong><small>{{this.quantity}} × · {{this.weightName}} · {{this.weight}} Alto · {{#if this.equipped}}Equipado{{else}}Guardado{{/if}}</small></summary>
+          <summary><span class="codex-inventory-icon">{{{this.icon}}}</span><strong>{{this.name}}</strong><small>{{this.quantity}} × · {{this.weightName}} · {{this.weight}} Alto</small><span class="codex-item-state {{#if this.equipped}}is-equipped{{/if}}">{{#if this.equipped}}Equipado{{else}}Guardado{{/if}}</span></summary>
           <div class="codex-item-fields">
             <p>{{this.description}}</p>
             <label>Quantidade<input type="number" min="1" value="{{this.quantity}}" data-item-field="quantity" data-id="{{this.id}}"></label>
@@ -451,16 +532,31 @@
           </div>
         </details>
       {{else}}<p>Nenhum item corresponde aos filtros.</p>{{/each}}
-      {{#if codex.editing}}<button type="button" data-action="addEquipment">Criar equipamento personalizado</button>{{/if}}
-      <details data-sync="shop" class="codex-shop">
-        <summary>Loja · {{codex.equipment.balance}} VT em recursos</summary>
+      </div>
+    </section>
+    <section id="{{codex.appId}}-inventory-wallet" data-inventory-panel="wallet" aria-label="Bolsa e Valor de Troca" hidden>
+      <div class="codex-inventory-surface">
+        <div class="codex-wallet-head">
+          <div><h3>Bolsa e Valor de Troca</h3><p>Recursos disponíveis para negociar e comprar.</p></div>
+          <output>{{codex.equipment.balance}} VT</output>
+        </div>
+        <dl class="codex-stat-cards codex-wallet-resources">
+          {{#each codex.equipment.resources}}
+          <div><dt>{{name}}</dt><dd>{{quantity}}</dd></div>
+          {{/each}}
+        </dl>
+      </div>
+    </section>
+    <section id="{{codex.appId}}-inventory-shop" data-inventory-panel="shop" aria-label="Mercado e compras" hidden>
+      <div class="codex-inventory-surface">
+        <div class="codex-wallet-head"><h3>Mercado e compras</h3><output>{{codex.equipment.balance}} VT</output></div>
         <div class="codex-equipment-filters">
           <label>Tipo<select data-equipment-filter="shopFamily">{{#each codex.equipment.shopFamilies}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
           <label>Peso<select data-equipment-filter="shopWeight">{{#each codex.equipment.shopWeights}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}</select></label>
         </div>
         {{#each codex.equipment.shop}}
           <details data-sync="shop-{{this.id}}" data-shop-row class="codex-equipment-row">
-            <summary>{{{this.icon}}}<strong>{{this.name}}</strong><small>{{this.family}} · {{this.weightName}} · {{this.price}} VT{{#if this.hasDie}} · d{{this.die}} habilitável{{/if}} · {{this.propertiesText}}</small></summary>
+            <summary><span class="codex-inventory-icon">{{{this.icon}}}</span><strong>{{this.name}}</strong><small>{{this.family}} · {{this.weightName}}{{#if this.hasDie}} · d{{this.die}}{{/if}}</small><span class="codex-item-state">{{#if this.canBuy}}{{this.price}} VT{{else}}Consultar{{/if}}</span></summary>
             <div class="codex-item-fields">
               <p>{{this.description}}</p>
               <p>{{#if this.attack}}Uso condicionado à Perícia de manejo ou foco, Disciplina e Grau permitido.{{/if}}{{#if this.armor}}Proteção · Integridade {{this.integrity.max}} · {{this.defense}} DE{{/if}}</p>
@@ -471,9 +567,9 @@
             </div>
           </details>
         {{else}}<p>Nenhum equipamento corresponde aos filtros.</p>{{/each}}
-      </details>
+      </div>
     </section>
-  </div>
+  </section>
 
   <details data-sync="notes" class="codex-block">
     <summary>Notas da ficha</summary>
@@ -483,5 +579,4 @@
     {{/if}}
     <label>Notas <textarea data-field="system.notes" {{#unless codex.editing}}readonly{{/unless}}>{{codex.notes}}</textarea></label>
   </details>
-  <footer class="codex-footer">Protótipo Foundry v14 · Referência SRD Playtest Nível 1 v1.0 · formação registrada na ficha · automação de Pavor sob validação.</footer>
 </section>

@@ -9,8 +9,8 @@
       <div><dt>Disponível</dt><dd data-dna-xp="left"></dd></div>
     </dl>
   </header>
-  {{#if canManageXP}}
   <p data-dna-xp-reference hidden></p>
+  {{#if canManageXP}}
   <details class="codex-dna-xp-management" data-dna-xp-management>
     <summary>Gerenciar XP</summary>
     <div class="codex-dna-xp-actions">
@@ -54,7 +54,7 @@
   </section>
   <footer class="codex-dna-footer">
     <span data-dna-creation></span>
-    <button type="button" data-action="classic">Ficha clássica</button>
+    {{#unless embedded}}<button type="button" data-action="classic">Ficha clássica</button>{{/unless}}
     <button type="button" data-action="complete">Concluir criação</button>
   </footer>
 </div>

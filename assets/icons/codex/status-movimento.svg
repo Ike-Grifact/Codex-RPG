@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="icon-title">
+  <title id="icon-title">Movimento — duas pegadas de sola de bota</title>
+  <g fill="none" stroke="#2369BB" stroke-width="3.1" stroke-linejoin="round" stroke-linecap="round">
+    <g transform="translate(7 4) rotate(-10 14 24)">
+      <path d="M9 29C7 24 5.5 17 6.5 12C7.8 5 12.6 3 16.5 3.5C23 4 25 11 23 17C21.4 22 18.4 26 18 29Z"/>
+      <path d="M9.5 34.5H18V39C18 43 15.9 45 13.5 45C10.5 45 9 42.5 9.5 39Z"/>
+    </g>
+    <g transform="translate(30 14) rotate(10 14 24)">
+      <path d="M9 29C7 24 5.5 17 6.5 12C7.8 5 12.6 3 16.5 3.5C23 4 25 11 23 17C21.4 22 18.4 26 18 29Z"/>
+      <path d="M9.5 34.5H18V39C18 43 15.9 45 13.5 45C10.5 45 9 42.5 9.5 39Z"/>
+    </g>
+  </g>
+</svg>

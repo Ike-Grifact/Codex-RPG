@@ -62,6 +62,7 @@
  .codex-dna-detail{max-height:none}
 }
 
+.codex-dna-map .fp-gene-orbit-guide {fill:none;stroke:var(--cx-gold);stroke-width:2;stroke-opacity:.13;stroke-dasharray:10 18;pointer-events:none}
 .codex-dna-map .fp-gene-constellation {pointer-events:none}
 .codex-dna-map .fp-gene-constellation-border {fill:var(--cx-panel2);fill-opacity:.8;stroke:var(--cx-line);stroke-width:2;stroke-dasharray:6 7}
 .codex-dna-map .fp-gene-constellation-cap {stroke:var(--cx-gold);stroke-width:3}
@@ -82,7 +83,7 @@
 .codex-summon-plan [data-summon-split] {display:grid;gap:5px}
 
 .codex-dna-budget {display:flex;flex-wrap:wrap;gap:5px 15px;margin:0}
-.codex-dna-budget dt {color:var(--cx-muted);font-size:.78rem}
+.codex-dna-budget dt {color:var(--cx-muted);font-size:.78rem;text-shadow:none}
 .codex-dna-budget dd {margin:0;color:var(--cx-gold);font-weight:700;font-variant-numeric:tabular-nums}
 .codex-dna-xp-management {margin-bottom:9px;padding:7px 10px;border:1px solid var(--cx-line);border-radius:8px}
 .codex-dna-xp-management summary {cursor:pointer}

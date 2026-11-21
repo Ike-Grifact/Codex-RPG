@@ -25,6 +25,14 @@ const defaults=()=>({mode:"normal",actionType:"",manualDamage:false,de:1,situati
  lightHands:false,potionResearch:false,stealthAttack:false,asuraDieId:"",characteristic:"",secondCharacteristic:"",activationPayment:"courage"});
 const eq=(x,y)=>!!x&&x.group===y.group&&x.key===y.key;
 const desktopRollMedia="(min-width: 851px) and (hover: hover) and (pointer: fine)";
+const sheetTabs=[
+ ["play","Jogar","Rolagens e ações"],["evolution","Evolução","XP e investimentos"],
+ ["genetic","Codex Genético","Mapa de Perícias"],["inventory","Inventário","Equipamentos e VT"]
+];
+const inventoryTabs=[
+ ["bag","Mochila e equipamentos","▣"],["wallet","Bolsa · VT","◈"],
+ ["shop","Mercado e compras","✧"]
+];
 function cards(list,group,s,d){
  return list.map(([key])=>({key,group,label:sourceLabel(group,key,s),
  xpLabel:{discount:"↓ XP reduzido",elevated:"↑ XP aumentado"}[racialBand(s,group,key)],
@@ -42,9 +50,12 @@ const isRepeat=d=>isDiscipline(d.complement)&&[d.base,d.second].some(isDisciplin
 export class CodexCharacterSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
  static DEFAULT_OPTIONS={classes:["codex-rpg","codex-character-sheet"],position:{width:1120,height:820},
  window:{resizable:true},actions:{
+ sheetPage(_event,target){return this._selectSheetPage(target.dataset.page);},
+ inventoryPage(_event,target){this._inventoryPage=target.dataset.pane;this._showSheetState(this.element);},
+ resourceDetails(_event,target){this._selectResource(target.dataset.vital);},
  lightHands:CodexCharacterSheet.lightHands,
  sphere(_event,target){return this._request({action:"sphere",kind:target.dataset.kind});},
- openDNA:CodexCharacterSheet.openDNA,chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
+ chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
  adjustResource:CodexCharacterSheet.adjustResource,closeRoll:CodexCharacterSheet.closeRoll,
  clearDraft:CodexCharacterSheet.clearDraft,executeRoll:CodexCharacterSheet.executeRoll,
  toggleKept:CodexCharacterSheet.toggleKept,discardRoll:CodexCharacterSheet.discardRoll,applyComparison:CodexCharacterSheet.applyComparison,
@@ -61,7 +72,16 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  }};
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/character-sheet.hbs",scrollable:[""]}};
- constructor(options={}){super(options);this._draft=draft();this._opts=defaults();this._pending=null;this._rollOpen=false;this._busy=false;this._editing=false;this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};}
+ constructor(options={}){
+  super(options);
+  this._draft=draft();this._opts=defaults();this._pending=null;
+  this._rollOpen=false;this._busy=false;this._editing=false;
+  this._equipmentFilters={family:'all',weight:'all',shopFamily:'all',shopWeight:'all'};
+  this._sheetPage="play";
+  this._inventoryPage="bag";
+  this._scrollPositions=new Map();
+ }
+ get title(){return [actorKinds[this.actor?.type],this.actor?.name].filter(Boolean).join(" · ")||super.title;}
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal||s.transformation?.kind==='animal',ledger=xpLedger(s),
    used=carriedItems(actor),carryMax=loadCapacity(s),
@@ -71,14 +91,15 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const canPrepare=actor.isOwner&&!this._editing&&!this._pending&&!actor.getFlag(NS,"creationPending");
   const elements=availableElements(s),round=sphereRound(game.combat),spheres=sphereState(s,round);
   if(this._pending)this._editing=false;
+  const canOpenDNA=actor.isOwner&&!attributesOnly;
+  if(!canOpenDNA&&this._sheetPage==="genetic")this._sheetPage="play";
   const defense=defenseDisplay(actor);
   const wornArmor=equippedArmor(actor);
   const armorSys=wornArmor?.system,armorMax=Math.max(0,Number(armorSys?.integrity?.max)||0);
   const armorCurrent=Math.min(armorMax,Math.max(0,Number(armorSys?.integrity?.value)||0));
   const armorCard=wornArmor?{
    id:wornArmor.id,name:wornArmor.name,integrity:armorCurrent,maximum:armorMax,
-   noIntegrity:armorMax===0,hasMaximum:armorMax>0,
-   percent:armorMax?Math.round(100*armorCurrent/armorMax):0
+   hasMaximum:armorMax>0
   }:null;
   ctx.codex={
    sphere:canPrepare&&!attributesOnly&&canUseTechnique(s,"invocar-esfera-espiritual")?{
@@ -90,8 +111,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    lightHands:canPrepare&&!attributesOnly&&canUseTechnique(s,"maos-leves"),
    equipment:equipmentView(actor,this._equipmentFilters),hasDruidic:s.skills.includes('pericia-druidica'),transformed:!!s.transformation?.kind,
    movement:standardMovement(s),canAttack:canPrepare,canCast:canPrepare&&!attributesOnly&&elements.length>0,
-   actorName:actor.name,portrait:actor.img,editing:this._editing&&actor.isOwner,
-   canOpenDNA:actor.isOwner&&!attributesOnly&&!this._pending,
+   actorName:actor.name,portrait:actor.img,defaultPortrait:actor.img==="icons/svg/mystery-man.svg",editing:this._editing&&actor.isOwner,
+   canOpenDNA,appId:this.id,isGM:game.user.isGM,
+   pages:sheetTabs.filter(([id])=>id!=="genetic"||canOpenDNA).map(([id,label,description])=>({id,label,description})),
+   inventoryPages:inventoryTabs.map(([id,label,icon])=>({id,label,icon})),
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
@@ -103,6 +126,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    courage:s.courage,courageMax:maxCourage(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
+    loadPercent:Math.min(100,Math.round(100*used/carryMax)),loadMeter:Math.min(used,carryMax),
     xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
     starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
     starterTraining:[
@@ -246,13 +270,24 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  }
  _syncPartState(partId,newElement,priorElement,state){
   super._syncPartState(partId,newElement,priorElement,state);
+  for(const detail of newElement.querySelectorAll('details[data-sync]'))detail.open=state.openDetails?.includes(detail.dataset.sync)??false;
+  this._showSheetState(newElement);
   const content=newElement.closest(".window-content");
   if(content&&state.contentScroll!=null)content.scrollTop=state.contentScroll;
-  for(const detail of newElement.querySelectorAll('details[data-sync]'))detail.open=state.openDetails?.includes(detail.dataset.sync)??false;
  }
  async _onRender(ctx,options){
   await super._onRender(ctx,options);
-  this.element?.querySelector(".codex-foundry-root")?.addEventListener("change",event=>this._change(event));
+  const root=this.element.querySelector(".codex-sheet");
+  root.addEventListener("change",event=>this._change(event));
+  root.addEventListener("keydown",event=>{
+   if(event.key==="Escape"&&this._resource&&event.target.closest(".codex-vitals")){
+    event.stopPropagation();
+    const button=root.querySelector('[data-vital="'+this._resource+'"]');
+    this._selectResource();
+    button?.focus({preventScroll:true});
+   }
+  });
+  this._showSheetState(root);
   if(!this._rollMedia){
    this._rollMedia=window.matchMedia(desktopRollMedia);
    this._rollMediaChanged=()=>this._configureRollSurface();
@@ -272,6 +307,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    window.addEventListener("resize",this._rollResize);
   }
   this._configureRollSurface();
+  if(this._sheetPage==="genetic")await this._showGeneticMap();
   this._targetHooks??=[
    ["targetToken",Hooks.on("targetToken",(user,token,targeted)=>{
     if(user.id!==game.user.id||this._pending)return;
@@ -364,20 +400,68 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(!confirm(message))return;
   await this._request({action:"advance",advance:{kind:"starter",attribute:attr,group,key}});
  }
- static async openDNA(){
-  if(!this.actor.isOwner)return;
-  const {openCodexDNA}=await import("./dna.mjs");
-  await openCodexDNA(this.actor,this.actor.getFlag(NS,"creationPending")?"development":"map");
+ _showSheetState(root){
+  for(const panel of root.querySelectorAll("[data-sheet-panel]"))panel.hidden=panel.dataset.sheetPanel!==this._sheetPage;
+  for(const button of root.querySelectorAll(".codex-sheet-tabs [data-page]")){
+   if(button.dataset.page===this._sheetPage)button.setAttribute("aria-current","page");
+   else button.removeAttribute("aria-current");
+  }
+  for(const panel of root.querySelectorAll("[data-inventory-panel]"))panel.hidden=panel.dataset.inventoryPanel!==this._inventoryPage;
+  for(const button of root.querySelectorAll(".codex-inventory-tabs [data-pane]")){
+   if(button.dataset.pane===this._inventoryPage)button.setAttribute("aria-current","page");
+   else button.removeAttribute("aria-current");
+  }
+  this._showResource(root);
+  const host=root.querySelector("[data-genetic-host]");
+  if(host&&this._embeddedDNA?.element&&!host.contains(this._embeddedDNA.element))host.append(this._embeddedDNA.element);
+ }
+ _showResource(root){
+  for(const panel of root.querySelectorAll("[data-vital-panel]"))panel.hidden=panel.dataset.vitalPanel!==this._resource;
+  for(const button of root.querySelectorAll("[data-vital]"))button.setAttribute("aria-expanded",String(button.dataset.vital===this._resource));
+ }
+ _selectResource(vital){
+  this._resource=this._resource===vital?null:vital;
+  this._showResource(this.element.querySelector(".codex-sheet"));
+ }
+ async _selectSheetPage(page){
+  if(!sheetTabs.some(([id])=>id===page)||page==="genetic"&&(!this.actor.isOwner||attributesOnly(this.actor.system)))return;
+  const content=this.element.querySelector(".window-content");
+  if(this._sheetPage!==page){
+   this._scrollPositions.set(this._sheetPage,content.scrollTop);
+   this._sheetPage=page;
+   this._selectResource();
+   this._showSheetState(content);
+   this._configureRollSurface();
+   content.scrollTop=this._scrollPositions.get(page)??0;
+  }
+  if(page==="genetic")await this._showGeneticMap();
+ }
+ async _showGeneticMap(){
+  if(this._embeddedDNA){
+   this._embeddedDNA.refresh();
+   return;
+  }
+  this._embeddingDNA??=import("./dna.mjs").then(({embedCodexDNA})=>
+   embedCodexDNA(this.actor,()=>this.element?.querySelector("[data-genetic-host]")));
+  try{this._embeddedDNA=await this._embeddingDNA;}
+  catch(error){ui.notifications.error("Codex Genético: "+error.message);}
+  finally{this._embeddingDNA=null;}
  }
  static async toggleEditing(){
   if(!this.actor.isOwner||this._busy||this._pending)return;
   this._editing=!this._editing;
   this._draft=draft();this._opts=defaults();
+  if(!this._editing&&this._sheetPage==="evolution")await this._selectSheetPage("play");
   return this.render();
  }
  _configureRollSurface(){
   const panel=this.element?.querySelector(".codex-roll-surface");
   if(!panel?.querySelector(".codex-roll-prep,.codex-roll-results"))return;
+  if(this._sheetPage!=="play"){
+   // Preserve a posição do rolador quando a ficha mudar de aba.
+   if(panel.matches(":popover-open")){panel.rollIntent=null;panel.hidePopover();}
+   return;
+  }
   if(!this._rollMedia.matches||typeof panel.showPopover!=="function"){
    panel.removeAttribute("popover");
    panel.removeAttribute("role");
@@ -449,8 +533,10 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   this._rollAnchor=target?.getBoundingClientRect()??null;
   this._rollScroll=0;
  }
- static showRoll(event,target){
-  this._openRollNear(target);
+ static async showRoll(event,target){
+  const near=this._sheetPage==="play"?target:null;
+  if(this._sheetPage!=="play")await this._selectSheetPage("play");
+  this._openRollNear(near);
   this._configureRollSurface();
   const panel=this.element?.querySelector(".codex-roll-surface");
   if(panel?.matches(":popover-open")){
@@ -622,6 +708,8 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   if(this._editing){ui.notifications.warn('Conclua a edição antes de rolar.');return;}
   if(this._busy||this._pending||pendingRollFor(this.actor)){ui.notifications.warn('Finalize a rolagem pendente.');return;}
   try{
+   const near=this._sheetPage==="play"?target:null;
+   if(this._sheetPage!=="play")await this._selectSheetPage("play");
    this._draft=prepareCombatAction(this.actor,actionType,this._draft,equipmentId);
    this._opts={...defaults(),de:this._opts.de,actionType,mode:actionType==="spell"?"conjuracao":"armas",equipmentId};
    if(actionType==="spell"){
@@ -630,7 +718,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     this._opts.focusId=equipmentId;
     this._opts.equipmentId="";
    }
-   this._openRollNear(target);
+   this._openRollNear(near);
    await this.render();
    if(!this._rollMedia.matches)this.element?.querySelector(".codex-roll-prep")?.scrollIntoView({block:"start"});
   }catch(error){ui.notifications.warn(error.message);}
@@ -688,6 +776,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await this.actor.update({"system.pavorLocal":Math.max(0,Math.min(monsterCap(s.threatGrade),s.pavorLocal+delta))});
  }
  async close(options={}){
+  await (this._embeddedDNA??await this._embeddingDNA?.catch(()=>null))?.close();
+  this._embeddedDNA=null;
+  this._sheetPage="play";
+  this._inventoryPage="bag";
+  this._resource=null;
+  this._scrollPositions.clear();
   this._draft=draft();
   this._opts=defaults();
   this._editing=false;

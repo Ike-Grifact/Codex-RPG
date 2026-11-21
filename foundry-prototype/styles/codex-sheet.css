@@ -823,3 +823,240 @@
 .codex-shop{margin-top:16px}
 .codex-shop>summary{cursor:pointer;font-weight:750}
 .codex-equipment h3{font-size:15px;margin-top:14px}
+
+/* Identidade, navegação e inventário da ficha. O tema acompanha o Foundry. */
+.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root) {
+  --cx-bg:#070707;
+  --cx-panel:#171717;
+  --cx-field:#101010;
+  --cx-panel2:#232323;
+  --cx-line:#373737;
+  --cx-text:#f3efe7;
+  --cx-muted:#b9b9b9;
+  --cx-gold:#d7bc88;
+}
+.theme-light .codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root),
+.theme-light.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root) {
+  --cx-bg:#f7f5f0;
+  --cx-panel:#fffefa;
+  --cx-field:#f5f0e7;
+  --cx-panel2:#eee8dd;
+  --cx-line:#d8d2c8;
+  --cx-text:#2e3036;
+  --cx-muted:#626a75;
+  --cx-gold:#946b22;
+}
+.codex-sheet {
+  --button-focus-outline-color:var(--cx-gold);
+  background:var(--cx-bg);
+  color:var(--cx-text);
+}
+.codex-sheet [hidden] { display:none!important; }
+.codex-character-sheet .codex-sheet .codex-hero {
+  background:var(--cx-panel);
+  border:1px solid var(--cx-line);
+  border-radius:16px !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  padding:clamp(12px,2cqi,20px);
+}
+.codex-sheet .codex-portrait {
+  border:1px solid var(--cx-gold);
+  border-radius:13px;
+  min-height:0;
+}
+.codex-sheet .codex-portrait.is-placeholder { background:#232323; }
+.codex-sheet .codex-brand { border:0; padding-bottom:0; }
+.codex-sheet .codex-brand > div { flex:1 1 200px;min-width:0; }
+.codex-sheet .codex-hero-name input {
+  background:var(--cx-field);
+  color:var(--cx-text);
+  border-color:var(--cx-line);
+  font:400 clamp(20px,3.5cqi,29px)/1.1 Georgia,serif;
+}
+.codex-sheet .codex-identity-fields { grid-template-columns:minmax(0,1.4fr) minmax(62px,.35fr) minmax(0,1fr); }
+.codex-sheet .codex-identity-fields label, .codex-origin-display { font-size:11px; }
+.codex-origin-display { display:grid; align-content:start; gap:2px; color:var(--cx-muted); }
+.codex-origin-display strong {
+  background:var(--cx-field);
+  color:var(--cx-text);
+  border:1px solid var(--cx-line);
+  border-radius:8px;
+  padding:5px 8px;
+}
+.codex-sheet .codex-identity-fields input,
+.codex-sheet.is-play-mode .codex-identity-fields input[readonly] {
+  background:var(--cx-field);
+  color:var(--cx-text);
+  border:1px solid var(--cx-line);
+  border-radius:8px;
+  min-width:0;
+  box-shadow:none;
+  padding:5px 8px;
+}
+.codex-vitals { display:grid; gap:8px; margin:8px 0 12px; }
+.codex-vital-row { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+.codex-sheet .codex-vital {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:36px;
+  padding:5px 9px;
+  border:1px solid var(--cx-line);
+  border-radius:8px;
+  background:var(--cx-panel);
+  color:var(--cx-text);
+  white-space:nowrap;
+}
+.codex-sheet .codex-vital-primary { min-height:46px; }
+.codex-vital img { display:block; width:20px; height:20px; object-fit:contain; }
+.codex-vital-primary img { width:28px; height:28px; }
+.codex-sheet .codex-vital strong {
+  font:400 16px/1.05 Georgia,serif;
+  font-variant-numeric:tabular-nums;
+}
+.codex-sheet .codex-vital-primary strong { font-size:23px; }
+.codex-vital-pavor span { color:var(--cx-P); font-size:19px; }
+.codex-sheet .codex-vital-inventory { color:var(--cx-gold); font-size:12px; font-weight:750; }
+.codex-sheet .codex-vital[aria-expanded="true"], .codex-sheet .codex-vital:hover { border-color:var(--cx-gold); background:var(--cx-panel2); }
+.codex-sheet .codex-vital[data-vital="movement"], .codex-sheet .codex-vital[data-vital="defense"] { border-color:color-mix(in srgb,#2369bb 65%,var(--cx-line)); }
+.codex-sheet .codex-vital-load.is-overloaded { border-color:#c05561; }
+.codex-vital-detail {
+  background:var(--cx-panel2);
+  border:1px solid var(--cx-line);
+  border-inline-start:3px solid var(--cx-gold);
+  border-radius:8px;
+  padding:10px 12px;
+  display:grid;
+  justify-items:start;
+  gap:6px;
+}
+.codex-vital-detail meter { width:min(100%,240px); }
+.codex-sheet-tabs { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr)); gap:7px; margin-bottom:12px; }
+.codex-sheet .codex-sheet-tabs button {
+  display:grid;
+  height:auto;
+  gap:2px;
+  padding:8px 11px;
+  border:1px solid var(--cx-line);
+  border-radius:12px;
+  background:var(--cx-panel);
+  text-align:start;
+  justify-content:start;
+  justify-items:start;
+  line-height:1.3;
+}
+.codex-sheet-tabs small { font-size:10px; color:var(--cx-muted); }
+.codex-sheet :is(.codex-sheet-tabs,.codex-inventory-tabs) button { transition:none; }
+.codex-sheet :is(.codex-sheet-tabs,.codex-inventory-tabs) button:hover { border-color:var(--cx-gold); background:var(--cx-panel2); }
+.codex-sheet .codex-sheet-tabs button[aria-current="page"] {
+  background:var(--cx-panel2);
+  border-color:var(--cx-gold);
+  box-shadow:inset 3px 0 var(--cx-gold);
+}
+.codex-resume-roll { margin:0 0 10px; }
+.codex-sheet .codex-play-guide { padding:7px 10px; margin-bottom:8px; }
+.codex-sheet .codex-action-bar { justify-content:flex-start; }
+.codex-sheet .codex-source-layout { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.codex-sheet .codex-source-layout.is-attributes-only { grid-template-columns:minmax(0,1fr); }
+.codex-sheet .codex-dna-inline { position:static; width:auto; min-width:0; max-width:none; }
+.codex-sheet .codex-dna-inline .codex-dna-root { padding:12px; border:1px solid var(--cx-line); border-radius:12px; }
+.codex-sheet .codex-inventory, .codex-sheet .codex-evolution { border-top:1px solid var(--cx-line); }
+.codex-inventory-heading, .codex-wallet-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.codex-inventory-title { display:flex; align-items:center; gap:10px; }
+.codex-inventory-title img {
+  width:34px;
+  height:34px;
+  padding:6px;
+  border:1px solid var(--cx-line);
+  border-radius:9px;
+  background:var(--cx-panel2);
+}
+.codex-inventory-heading p, .codex-inventory-caption, .codex-wallet-head p { color:var(--cx-muted); font-size:11px; }
+.codex-inventory-tabs { display:flex; flex-wrap:wrap; gap:7px; padding:0 0 10px; margin:12px 0; border-bottom:1px solid var(--cx-line); }
+.codex-sheet .codex-inventory-tabs button {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:38px;
+  border-radius:8px;
+  background:var(--cx-field);
+  color:var(--cx-muted);
+  font-size:12px;
+  font-weight:700;
+}
+.codex-inventory-tabs button span { color:var(--cx-gold); font-size:16px; }
+.codex-sheet .codex-inventory-tabs [aria-current="page"] {
+  border-color:var(--cx-gold);
+  background:var(--cx-panel2);
+  color:var(--cx-text);
+  box-shadow:inset 0 -2px var(--cx-gold);
+}
+.codex-stat-cards { display:flex; flex-wrap:wrap; gap:7px; margin:9px 0; }
+.codex-stat-cards div {
+  padding:7px 11px;
+  border:1px solid var(--cx-line);
+  border-radius:9px;
+  background:var(--cx-field);
+}
+.codex-stat-cards dt { font-size:10px; font-weight:700; color:var(--cx-muted); text-shadow:none; }
+.codex-stat-cards dd { margin:2px 0 0; font-weight:750; color:var(--cx-gold); font-variant-numeric:tabular-nums; }
+.codex-load-track { height:8px; overflow:hidden; border:1px solid var(--cx-line); border-radius:8px; background:var(--cx-field); margin:8px 0 5px; }
+.codex-load-track span { display:block; height:100%; background:var(--cx-gold); }
+.codex-load-track.is-overloaded span { background:#c05561; }
+.codex-inventory-surface { margin-top:10px; padding:12px; border:1px solid var(--cx-line); border-radius:12px; background:var(--cx-field); }
+.codex-sheet .codex-inventory-surface h3 { color:var(--cx-gold); }
+.codex-inventory-surface > h3 { margin-top:0; }
+.codex-inventory-surface .codex-repertoire-panel { margin:8px 0; }
+.codex-repertoire-panel > summary { color:var(--cx-muted); cursor:pointer; }
+.codex-wallet-head h3 { margin:0; }
+.codex-wallet-head output {
+  padding:6px 10px;
+  border:1px solid var(--cx-gold);
+  border-radius:8px;
+  background:var(--cx-panel);
+  color:var(--cx-gold);
+  font-size:19px;
+  font-weight:750;
+}
+.codex-sheet .codex-equipment-row { margin:5px 0; padding:0; border:1px solid var(--cx-line); border-radius:8px; background:var(--cx-panel); }
+.codex-sheet .codex-equipment-row > summary {
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) minmax(0,.8fr) auto;
+  min-height:41px;
+  gap:8px;
+  padding:6px 9px;
+  list-style:none;
+}
+.codex-sheet .codex-equipment-row > summary :is(strong,small) { min-width:0; overflow-wrap:anywhere; }
+.codex-sheet .codex-equipment-row:hover, .codex-sheet .codex-equipment-row[open] { border-color:var(--cx-gold); }
+.codex-inventory-icon { display:grid; place-items:center; width:22px; height:22px; color:var(--cx-gold); }
+.codex-inventory-icon img { width:21px; height:21px; }
+.codex-item-state { color:var(--cx-muted); font-size:10px; }
+.codex-item-state.is-equipped { color:var(--cx-gold); font-weight:700; }
+.codex-sheet .codex-equipment-row .codex-item-fields { padding:10px; border-top:1px solid var(--cx-line); }
+@container (max-width:720px) {
+  .codex-sheet-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .codex-sheet .codex-source-layout:not(.is-attributes-only) { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@container (max-width:500px) {
+  .codex-character-sheet .codex-sheet .codex-hero { grid-template-columns:68px minmax(0,1fr); gap:8px; }
+  .codex-character-sheet .codex-sheet .codex-portrait-column { width:auto; }
+  .codex-sheet .codex-identity-fields { grid-template-columns:minmax(0,1fr) minmax(56px,.45fr); }
+  .codex-sheet .codex-identity-fields > :last-child { grid-column:1/-1; }
+  .codex-sheet .codex-vital { padding:5px 7px; gap:4px; }
+  .codex-sheet .codex-vital-primary strong { font-size:19px; }
+  .codex-vital-primary img { width:22px; height:22px; }
+  .codex-sheet .codex-source-layout:not(.is-attributes-only) { grid-template-columns:minmax(0,1fr); }
+  .codex-sheet .codex-equipment-row > summary { grid-template-columns:22px minmax(0,1fr) auto; gap:3px 6px; }
+  .codex-equipment-row > summary small { grid-area:2/2; }
+  .codex-equipment-row > summary .codex-item-state { grid-area:1/3; }
+}
+@media(pointer:coarse) {
+  .codex-sheet :is(.codex-vital,.codex-inventory-tabs button,.codex-sheet-tabs button,.codex-equipment-row > summary) { min-height:44px; }
+}

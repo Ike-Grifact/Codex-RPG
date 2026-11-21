@@ -1,7 +1,7 @@
 import {G1_CATALOG} from './catalog.mjs';
 import {equipmentFamily,equipmentWeight,equipmentGroupName,equipmentWeightName,equipmentMatches,EQUIPMENT_FAMILIES,EQUIPMENT_WEIGHT_OPTIONS} from './equipment-catalog.mjs';
 import {equippedDie,effectiveWeaponRange} from './equipment-logic.mjs';
-import {walletValue} from './equipment-workflow.mjs';
+import {walletValue,isTradeResource,RESOURCE_NAMES} from './equipment-workflow.mjs';
 import {dieSvg} from './dice-icons.mjs';
 import {equipmentIconId,iconMarkup} from './iconography.mjs';
 
@@ -19,12 +19,21 @@ function rowView(name,s,id){
   attack,requiredSkill,hasDie:attack&&s.die>0};
 }
 export function equipmentView(actor,filters){
+ const items=[...actor.items].filter(item=>item.type==='equipment');
+ const balance=walletValue(actor);
+ const quantities=new Map(Object.values(RESOURCE_NAMES).map(name=>[name,0]));
+ for(const item of items.filter(isTradeResource)){
+  const key=item.flags?.['codex-rpg-foundry']?.resourceKey;
+  const name=Object.hasOwn(RESOURCE_NAMES,key)?RESOURCE_NAMES[key]:item.name;
+  quantities.set(name,quantities.get(name)+item.system.quantity);
+ }
+ const resources=Array.from(quantities,([name,quantity])=>({name,quantity}));
  const shortcutIds=new Set(actor.getFlag?.('codex-rpg-foundry','attackShortcuts')??[]);
  const options=(rows,value)=>rows.map(([id,label])=>({id,label,selected:id===value}));
  const shop=G1_CATALOG.filter(row=>equipmentMatches(row,filters.shopFamily,filters.shopWeight)).map(row=>({
   ...rowView(row.name,row,row.name),canBuy:row.kind!=='focus'&&row.category!=='pendente'&&Number.isFinite(row.priceVT)&&row.priceVT>0,
-  price:row.priceVT??'Pendente',canAfford:Number.isFinite(row.priceVT)&&row.priceVT<=walletValue(actor)}));
- const inventory=[...actor.items].filter(i=>i.type==='equipment'&&equipmentMatches({name:i.name,...i.system},filters.family,filters.weight));
+  price:row.priceVT??'Pendente',canAfford:Number.isFinite(row.priceVT)&&row.priceVT<=balance}));
+ const inventory=items.filter(i=>equipmentMatches({name:i.name,...i.system},filters.family,filters.weight));
  inventory.sort((a,b)=>{
   const family=i=>EQUIPMENT_FAMILIES.findIndex(([id])=>id===equipmentFamily({name:i.name,...i.system}));
   const weight=i=>EQUIPMENT_WEIGHT_OPTIONS.findIndex(([id])=>id===equipmentWeight(i.system));
@@ -39,11 +48,11 @@ export function equipmentView(actor,filters){
   previous=group;
   return result;
  });
- const repertoire=[...actor.items].filter(i=>i.type==='equipment'&&['weapon','firearm','focus','armor','shield'].includes(i.system.kind)).map(item=>({
+ const repertoire=items.filter(i=>['weapon','firearm','focus','armor','shield'].includes(i.system.kind)).map(item=>({
   ...rowView(item.name,item.system,item.id),range:effectiveWeaponRange(actor.system,item.system)||item.system.range,
   enabledDie:equippedDie(actor,item,item.system.kind==='focus'?'conjuracao':'armas')}));
- const shortcuts=repertoire.filter(row=>shortcutIds.has(row.id)&&['weapon','firearm'].includes(row.kind));
- return {balance:walletValue(actor),shop,gear,repertoire,shortcuts,
+ const shortcuts=repertoire.filter(row=>row.equipped&&(row.kind==='focus'||row.attack&&shortcutIds.has(row.id)));
+ return {balance,resources,itemCount:items.length,equippedCount:items.filter(item=>item.system.equipped).length,shop,gear,repertoire,shortcuts,
   families:options(EQUIPMENT_FAMILIES,filters.family),weights:options(EQUIPMENT_WEIGHT_OPTIONS,filters.weight),
   shopFamilies:options(EQUIPMENT_FAMILIES,filters.shopFamily),shopWeights:options(EQUIPMENT_WEIGHT_OPTIONS,filters.shopWeight)};
 }
