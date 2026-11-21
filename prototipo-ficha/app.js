@@ -382,7 +382,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",
+  "PENDENTE: descrição e efeito próprios ainda não fornecidos. O efeito de Vantagem Absoluta/Golpe Certo pertence somente a Arma Certa. Requisitos históricos Disciplina Avançada + Destreza 2 aguardam confirmação; XP pendente.",
   null
  ],
  [
@@ -483,9 +483,9 @@ const SKILLS=[
  ],
  [
   "arma-certa",
-  "Maestria Arma Certa",
-  "+1E com peso favorável. Custo de XP pendente.",
-  null
+  "Arma Certa",
+  "1 XP. Requer Disciplina Avançada + Destreza 2. Usar a arma correta contra oponente que tem Desvantagem contra ela concede Vantagem Absoluta (+1E em vez do +1A natural); se já houver Vantagem Absoluta, aplica Golpe Certo. Procedimento de Golpe Certo PENDENTE, sem bônus numérico adicional.",
+  1
  ],
  [
   "criar-veneno",
@@ -918,7 +918,8 @@ const SKILL_AFFINITY={
   "know:protecao"
  ],
  "arma-certa": [
-  "practice:armas_conjuracao"
+  "practice:armas_conjuracao",
+  "attr:destreza"
  ],
  "armas-longo-alcance": [
   "practice:armas_conjuracao",
@@ -1300,6 +1301,8 @@ const CARD_REQUIREMENTS={
  "mudanca-elemental":"Transformação Elemental + Destreza 4 + Inteligência 4",
  "desencantar":"Cancelar Magia",
  "espelho-magico":"Cancelar Magia",
+ "arma-certa": "Disciplina Avançada + Destreza 2",
+ "manejo-perfeito": "PENDENTE: requisitos históricos Disciplina Avançada + Destreza 2, sem confirmação",
  "maestria-escudos": "Destreza 2 + Vigor 2",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
@@ -2568,9 +2571,9 @@ function skillReq(id,s=state){
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
- if(id==="manejo-perfeito")return"Requer Disciplina Avançada e Destreza 2; XP e Golpe Certo pendentes.";
+ if(id==="manejo-perfeito")return"Descrição, custo de XP e confirmação dos requisitos de Manejo Perfeito PENDENTES; compra indisponível.";
  if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
- if(id==="arma-certa")return"Custo de XP e requisitos definitivos ainda pendentes.";
+ if(id==="arma-certa"&&(!has("disciplina-avancada")||dex<2))return"Requer Disciplina Avançada adquirida e Destreza 2.";
 
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="pericia-montaria"&&((s.attributes.influencia||0)<1||dex<2))return"Requer Influência 1 e Destreza 2.";
