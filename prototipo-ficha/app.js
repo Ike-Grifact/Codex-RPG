@@ -737,6 +737,9 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:destreza"
  ],
+ "sacrificio-heroico":["attr:vigor","practice:atletismo","know:protecao"],
+ "escudo-refletor":["know:protecao","attr:vigor","attr:destreza"],
+ "sentido-elemental":["attr:inteligencia","practice:armas_conjuracao","know:erudicao"],
  "maestria-escudos": ["attr:destreza","attr:vigor","know:protecao"],
  "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
  "maestria-arremesso-armas": [
@@ -886,7 +889,9 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["maestria-escudos","escudo-bumerangue","maestria-arremesso-armas"],
+ ["maestria-escudos","escudo-refletor","escudo-bumerangue","maestria-arremesso-armas"],
+  ["sacrificio-heroico","maestria-escudos"],
+  ["improviso","sentido-elemental","transformacao-elemental"],
  ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental"],
  ["criar-item-foco-magia","terra","pericia-druidica"],
  ["criar-item-foco-magia","terra","transformacao-elemental"],
@@ -1014,6 +1019,9 @@ const SKILL_PERMALINKS={
  "espalhar-golpe": "golpe-colossal",
  "pugilismo": "pugilismo",
  "artista-marcial": "artista-marcial",
+ "sacrificio-heroico":"sacrificio-heroico",
+ "escudo-refletor":"escudo-refletor",
+ "sentido-elemental":"sentido-elemental",
  "maestria-escudos": "maestria-em-escudos",
  "escudo-bumerangue": "escudo-bumerangue",
  "maestria-arremesso-armas": "pericia-em-arremesso-de-armas",
@@ -1066,6 +1074,9 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "sacrificio-heroico":"Vigor 4",
+ "escudo-refletor":"Maestria em Escudos",
+ "sentido-elemental":"Inteligência 3 + Improviso Elemental",
  "maestria-escudos": "Destreza 2 + Vigor 2",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
@@ -1137,6 +1148,9 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
+ "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
+ "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
  "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
  "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
@@ -1207,6 +1221,9 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
+ "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
+ "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
  "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
  "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
@@ -1277,6 +1294,9 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "sacrificio-heroico":"Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
+ "escudo-refletor":"Passiva com escudo físico equipado ao sofrer dano de Pavor",
+ "sentido-elemental":"1 Coragem por análise",
  "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
  "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal e características registradas na peça conforme habilitação",
  "montar": "Vantagem nos testes com montaria; não é +1A",
