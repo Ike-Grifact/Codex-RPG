@@ -4510,7 +4510,7 @@ function finalize(){
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
   shieldThrowId:p.shieldThrowId||"",shieldThrowMeters:p.opts.shieldThrowMeters||0,
   shieldThrowReturned:!!s.shieldThrowOutcome?.returned,shieldThrowFallCase:s.shieldThrowOutcome?.grounded?s.shieldThrowOutcome.where:"",shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null,
-  asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraDamageProportional:true,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
+  asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraDamageProportional:!!p.opts.asura,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
