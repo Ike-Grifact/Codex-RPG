@@ -27,7 +27,9 @@ Quando um personagem legalmente **combina Fogo e Veneno**, o efeito recebe o nom
 
 A mistura respeita os requisitos já vigentes dos dois elementos, as exigências e custos do Grau de conjuração, a resolução de ataque, Êxito, Pavor e a área/Geometria de Fogo. **Não empilhar duas vezes o dano de Queimar, nem conceder dano direto novo à Vida.** O elemento Veneno já possui condições próprias para acúmulos, Ferido, Incapacitado e Inconsciente, e seus acúmulos não causam dano direto automático à Vida.
 
-**PENDENTE — procedimento da aplicação por queimadura:** a regra antiga de Veneno depende de Sangramento do alvo. O autor definiu a transmissão na queimadura, mas ainda não especificou se **Queimar substitui Sangramento** como gatilho para receber o primeiro acúmulo, se o alvo deve estar simultaneamente Sangrando, quantos acúmulos aplicar ou se há checagens de resistência adicionais. Não presumir que a combinação ignora o gatilho antigo sem essa definição. A ficha mostra a opção tática, com cálculo/registro manual dos efeitos de Veneno até resolver esses pontos.
+**DEFINIDO — gatilho próprio de Ácido:** quando o ataque combinado **acerta e aplica Queimar**, a **queimadura substitui a exigência de Sangramento** para transmitir Veneno **somente nessa mistura**. Aplica-se **um acúmulo de Veneno** conforme o Grau G1/G2 habilitado, com duração normal de **2 rodadas**, sem renovar automaticamente os anteriores. O Veneno conjurado isoladamente **continua exigindo Sangramento**; uma magia de Fogo que não tenha aplicado Queimar não transmite Veneno por essa exceção. A regra não duplica acúmulos por múltiplas propriedades da mesma ação nem modifica o dano de Integridade de Queimar.
+
+**PENDENTE — demais procedimentos do Ácido:** confirmação dos Graus elegíveis para misturar a magia elevada, tempo e custo da mistura por ação, resolução de resistências específicas e interação com imunidades. Enquanto o rolador não automatiza a combinação, declarar o acerto, Queimar e o acúmulo conforme a regra normal de Veneno, sem criar custos ou danos novos.
 
 ## 3. Ar — correntes e trajetórias táticas (DEFINIDO quanto às formas)
 
@@ -41,6 +43,6 @@ A corrente deve ter um percurso físico coerente: **pode contornar um obstáculo
 
 - **DEFINIDO (21/11/2026):** Runa sem armadura, um elemento racial no lugar de dois, Escudo Rúnico gratuito em aquisição e uma ativação por dia, resistência a um elemento, conversão de 2P em 1E na barreira; Ácido = Fogo + Veneno com aplicação pela queimadura; Ar pode usar correntes e formas curvas em L/X.
 - **EXPERIMENTAL:** testes de eficiência defensiva e utilidade tática das formas curvas.
-- **PENDENTE:** coeficiente de resistência elemental do Escudo Rúnico; resolução exata da mistura Ácido versus Sangramento; dimensões e curvaturas máximas de Ar. Nenhum requisito, custo ou dano omitido foi criado por inferência.
+- **PENDENTE:** coeficiente de resistência elemental do Escudo Rúnico; procedimentos completos da mistura Ácido (custos, resistência, Graus superiores), **não o seu gatilho por queimadura, que está definido**; dimensões e curvaturas máximas de Ar. Nenhum requisito, custo ou dano omitido foi criado por inferência.
 - **HISTÓRICO SUBSTITUÍDO:** Runa Espinhos receber dois elementos distintos gratuitamente; Escudo Arcano racial com imunidade indistinta do Escudo Arcano regular; necessidade de equipar armadura física para obter Integridade defensiva.
 - **Não alterar** regra geral de Escudo Arcano para outras origens; Perícia em Ar para outras origens continua a mesma compra; limites de 9 rolados/4 mantidos e o SRD v0.83 permanecem.
