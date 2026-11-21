@@ -142,6 +142,42 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-espadas":"Força 2 + Destreza 2"
 });
 const SKILLS=[
+ [
+  "maos-leves","Mãos Leves","1 XP. Requisitos: Furtividade 3 + Disciplina 3 + Proteção 2. Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",1
+ ],
+ [
+  "pericia-armadilha","Perícia em Armadilha","1 XP. Requisitos: Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1. Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",1
+ ],
+ [
+  "golpe-furtivo","Golpe Furtivo","1 XP. Requisitos: Disciplina 2 + Furtividade 2. Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",1
+ ],
+ [
+  "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",1
+ ],
+ [
+  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
+ ],
+ [
+  "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
+ ],
+ [
+  "invocar-esfera-espiritual","Invocar Esfera Espiritual","1 XP. Requisitos: Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3. Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",1
+ ],
+ [
+  "passo-etereo","Passo Etéreo","1 XP. Requisitos: Invocar Esfera Espiritual. Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",1
+ ],
+ [
+  "absorver-esferas","Absorver Esferas","1 XP. Requisitos: Invocar Esfera Espiritual. Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",1
+ ],
+ [
+  "disparo-esferas-espirituais","Disparo de Esferas Espirituais","1 XP. Requisitos: Invocar Esfera Espiritual. Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",1
+ ],
+ [
+  "dilema","Dilema","1 XP. Requisitos: Vigor 4 + Artista Marcial. Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",1
+ ],
+ [
+  "impacto-psiquico","Impacto Psíquico","1 XP. Requisitos: Criar Item de Foco e Magia + Artista Marcial. Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",1
+ ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
   (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de aquisição: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
@@ -629,6 +665,18 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "maos-leves":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "pericia-armadilha":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "golpe-furtivo":["practice:furtividade","practice:armas_conjuracao","know:protecao"],
+ "bioetica":["know:alquimia","attr:inteligencia","attr:destreza"],
+ "pesquisa-avancada-pocoes":["know:alquimia","practice:artesao","attr:destreza"],
+ "corpo-fechado":["attr:vigor","practice:armas_conjuracao"],
+ "invocar-esfera-espiritual":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "passo-etereo":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "absorver-esferas":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "disparo-esferas-espirituais":["attr:destreza","attr:inteligencia","practice:armas_conjuracao"],
+ "dilema":["attr:vigor","practice:armas_conjuracao"],
+ "impacto-psiquico":["attr:inteligencia","practice:armas_conjuracao"],
  "invocacao-elemental":["attr:influencia","attr:inteligencia","practice:apresentacao","practice:armas_conjuracao"],
  "domar-criatura-media":["attr:influencia","attr:inteligencia","practice:apresentacao"],
  "domar-criatura-grande":["attr:influencia","attr:inteligencia","practice:apresentacao"],
@@ -921,6 +969,11 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
+ ["furtividade","maos-leves","golpe-furtivo"],
+ ["protecao","pericia-armadilha"],
+ ["alquimia","pesquisa-avancada-pocoes","bioetica"],
+ ["artista-marcial","corpo-fechado","dilema","impacto-psiquico"],
+ ["criar-item-foco-magia","invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais"],
  ["maestria-escudos","escudo-refletor","escudo-bumerangue","maestria-arremesso-armas"],
   ["sacrificio-heroico","maestria-escudos"],
   ["improviso","sentido-elemental","transformacao-elemental","mudanca-elemental"],
@@ -1019,6 +1072,18 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "maos-leves":"maos-leves",
+ "pericia-armadilha":"pericia-armadilha",
+ "golpe-furtivo":"golpe-furtivo",
+ "bioetica":"bioetica",
+ "pesquisa-avancada-pocoes":"pesquisa-avancada-pocoes",
+ "corpo-fechado":"corpo-fechado",
+ "invocar-esfera-espiritual":"invocar-esfera-espiritual",
+ "passo-etereo":"passo-etereo",
+ "absorver-esferas":"absorver-esferas",
+ "disparo-esferas-espirituais":"disparo-esferas-espirituais",
+ "dilema":"dilema",
+ "impacto-psiquico":"impacto-psiquico",
  "invocacao-elemental":"invocacao-elemental",
  "domar-criatura-media":"domar-criatura-media",
  "domar-criatura-grande":"domar-criatura-grande",
@@ -1111,6 +1176,18 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "maos-leves":"Furtividade 3 + Disciplina 3 + Proteção 2",
+ "pericia-armadilha":"Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1",
+ "golpe-furtivo":"Disciplina 2 + Furtividade 2",
+ "bioetica":"Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média",
+ "pesquisa-avancada-pocoes":"Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2",
+ "corpo-fechado":"Vigor 4 + Artista Marcial",
+ "invocar-esfera-espiritual":"Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3",
+ "passo-etereo":"Invocar Esfera Espiritual",
+ "absorver-esferas":"Invocar Esfera Espiritual",
+ "disparo-esferas-espirituais":"Invocar Esfera Espiritual",
+ "dilema":"Vigor 4 + Artista Marcial",
+ "impacto-psiquico":"Criar Item de Foco e Magia + Artista Marcial",
  "sacrificio-heroico":"Vigor 4",
  "escudo-refletor":"Maestria em Escudos",
  "sentido-elemental":"Inteligência 3 + Improviso Elemental",
@@ -1189,6 +1266,18 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "maos-leves":"Em combate, remove itens de inventário inimigo (armas, escudos ou armaduras), rolando Disciplina + Furtividade. DE = DE inimiga + Grau do item + peso, somente se equipado. Ex.: DE 3 + item G1 equipado Leve = DE 5; Médio = DE 6. A combinação de duas Práticas é exceção específica desta Perícia e não é habilitada genericamente.",
+ "pericia-armadilha":"Concede Vantagem ao armar ou desarmar armadilhas; os testes utilizam Proteção. Vantagem segue a regra geral de +1A e não concede dado extra.",
+ "golpe-furtivo":"Ao atacar furtivamente, adiciona mais um dado da arma à pilha, respeitando o limite geral de dados e a habilitação da arma. Não adiciona dado ao ataque que não seja furtivo nem converte dado em dano automático.",
+ "bioetica":"Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. O requisito escrito «De 3» foi interpretado como Destreza 3; custos de criação, duração e ficha do homúnculo ainda não definidos.",
+ "pesquisa-avancada-pocoes":"Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",
+ "corpo-fechado":"Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas Espirituais, com limite de criação de 1 esfera por rodada. Ao reunir 5 esferas permite transformar um dado em d20 para o golpe corpo a corpo de Disciplina conhecido como Punho Supremo de Asura. Proporção da conversão, consumo das cinco esferas, requisitos próprios de Asura e escolha do dado ainda pendentes; não conceder d20 por simples aquisição.",
+ "passo-etereo":"Arremessa uma Esfera Espiritual e se projeta em deslocamento rápido de até 8 metros, consumindo 1 esfera. Movimento e obstáculos dependem do mapa do combate.",
+ "absorver-esferas":"Recupera Coragem em quantidade igual ao total de Esferas Espirituais; a natureza do consumo das esferas, teto de recuperação e momento de ativação devem seguir as regras gerais e decisão autoral. Não criar esferas ou Coragem acima do teto por suposição.",
+ "disparo-esferas-espirituais":"Permite ataques físicos à distância por disparo de Esferas Espirituais, gastando 1 esfera por golpe. Alcance, dados, DE e cálculo de dano não informados; não presumir ataque de magia.",
+ "dilema":"Desafia um inimigo para pacto de combate que impede ambos de se moverem até que um dos dois fique inconsciente. Procedimentos de resistência, interrupção, distância e condição em caso de fuga não foram especificados.",
+ "impacto-psiquico":"Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
  "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
  "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
  "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
@@ -1266,6 +1355,18 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "maos-leves":"1 XP; retira arma, escudo ou armadura de inimigo em combate. DE inimiga + Grau + peso se equipado (Leve +1, Médio +2 nos exemplos).",
+ "pericia-armadilha":"1 XP; Vantagem (+1A) para armar ou desarmar armadilhas usando Proteção.",
+ "golpe-furtivo":"1 XP; ataque furtivo recebe mais 1 dado da arma, respeitando limite de 9 dados rolados.",
+ "bioetica":"1 XP; cria homúnculo elemental de carne misturando o DNA de duas criaturas; procedimento pendente.",
+ "pesquisa-avancada-pocoes":"1 XP; +1E em testes para criar poções; pode produzir poções elementais.",
+ "corpo-fechado":"1 XP; 1 Coragem: sem efeitos ou dano na Vitalidade de golpes de armas físicas por 1 rodada.",
+ "invocar-esfera-espiritual":"1 XP; gera no máximo 1 esfera por rodada via Coragem. Com 5 esferas, d20 para golpe corpo a corpo de Disciplina, Punho Supremo de Asura; procedimento pendente.",
+ "passo-etereo":"1 XP; gasta 1 Esfera Espiritual para se projetar até 8 m.",
+ "absorver-esferas":"1 XP; recupera Coragem igual ao total de Esferas Espirituais, sem assumir consumo não especificado.",
+ "disparo-esferas-espirituais":"1 XP; 1 esfera por golpe para ataque físico à distância.",
+ "dilema":"1 XP; prende desafiante e alvo sem deslocamento até que um fique inconsciente.",
+ "impacto-psiquico":"1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
  "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
  "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
  "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
@@ -1343,6 +1444,18 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
+ "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
+ "golpe-furtivo":"Dado da arma adicional no ataque furtivo; sem custo de Coragem informado.",
+ "bioetica":"Criação de homúnculo com DNA de duas criaturas; custo/resultado pendentes.",
+ "pesquisa-avancada-pocoes":"+1E na criação de poções; habilita poções elementais.",
+ "corpo-fechado":"1 Coragem; protege Vitalidade de efeitos e danos de armas físicas por 1 rodada.",
+ "invocar-esfera-espiritual":"Converte Coragem em Esferas: 1 criada por rodada; com 5 habilita d20 para Punho Supremo de Asura.",
+ "passo-etereo":"1 esfera; deslocamento rápido de 8 m.",
+ "absorver-esferas":"Recupera Coragem = total de esferas; consumo das esferas PENDENTE.",
+ "disparo-esferas-espirituais":"1 esfera por ataque físico à distância; alcance/dano pendentes.",
+ "dilema":"Pacto impede movimento de ambos até um ficar inconsciente; custo de ativação não informado.",
+ "impacto-psiquico":"1 Coragem; golpe psíquico pode aplicar efeitos de armas.",
  "sacrificio-heroico":"Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
  "escudo-refletor":"Passiva com escudo físico equipado ao sofrer dano de Pavor",
  "sentido-elemental":"1 Coragem por análise",
@@ -2932,6 +3045,18 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
+ "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],
+ "golpe-furtivo":[["p:armas_conjuracao:2","p:furtividade:2"]],
+ "bioetica":[["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:domar-criatura-media"]],
+ "pesquisa-avancada-pocoes":[["k:alquimia:3","s:improviso","p:artesao:3","a:destreza:2"]],
+ "corpo-fechado":[["a:vigor:4","s:artista-marcial"]],
+ "invocar-esfera-espiritual":[["s:criar-item-foco-magia","a:destreza:4","a:inteligencia:3","a:vigor:3"]],
+ "passo-etereo":[["s:invocar-esfera-espiritual"]],
+ "absorver-esferas":[["s:invocar-esfera-espiritual"]],
+ "disparo-esferas-espirituais":[["s:invocar-esfera-espiritual"]],
+ "dilema":[["a:vigor:4","s:artista-marcial"]],
+ "impacto-psiquico":[["s:criar-item-foco-magia","s:artista-marcial"]],
  "invocacao-elemental":[["s:criar-item-foco-magia","s:domar-criatura-pequena"]],
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1","p:apresentacao:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]],
