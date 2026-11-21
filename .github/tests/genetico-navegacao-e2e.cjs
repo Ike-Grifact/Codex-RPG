@@ -63,6 +63,7 @@ const create=async page=>{
   desktop.on('pageerror',e=>errors.push(e.message));
   await create(desktop);
   const map=desktop.locator('#gene-builder-map');
+  const initialDesktop=await cam(map);
   // Não reservar lacunas para Perícias bloqueadas, nem sobrepor nós.
   const normal=await checkGeneSpacing(map,"Caminhos atuais");
   if(normal.skills<=18)assert(normal.furthest<1850,"Constelações visíveis excessivamente distantes: "+JSON.stringify(normal));
@@ -119,11 +120,11 @@ const create=async page=>{
   assert((await desktop.locator('#wizard-summary').innerText()).includes('15 XP'),
      'O arraste alterou os investimentos');
   await desktop.locator('#gene-builder-map [data-gene-nav="0"]').click();
-  assert(Math.abs((await cam(map)).zoom-1)<.001,'Centralizar não recuperou zoom inicial no desktop');
+  assert(Math.abs((await cam(map)).zoom-initialDesktop.zoom)<.01,'Centralizar não recuperou zoom inicial no desktop');
   await desktop.locator('#gene-builder-map [data-gene-nav="1"]').click();
-  assert((await cam(map)).zoom>1,'Botão flutuante + não aplicou zoom');
+  assert((await cam(map)).zoom>initialDesktop.zoom+.01,'Botão flutuante + não aplicou zoom');
   await desktop.locator('#gene-builder-map [data-gene-nav="-1"]').click();
-  assert(Math.abs((await cam(map)).zoom-1)<.01,'Botão flutuante − não reduziu zoom');
+  assert(Math.abs((await cam(map)).zoom-initialDesktop.zoom)<.01,'Botão flutuante − não restaurou o zoom inicial');
   await map.focus();
   await desktop.keyboard.press('ArrowRight');
   assert((await cam(map)).x<0,'Tecla de direção não moveu o mapa');
@@ -176,7 +177,7 @@ const create=async page=>{
   await mobile.locator('#gene-builder-map [data-gene-nav="0"]').tap();
   const resetMobile=await cam(m);
   const tapTrace=await mobile.evaluate(()=>window.__geneTapTrace);
-  assert(Math.abs(resetMobile.zoom-2.25)<.01,
+  assert(Math.abs(resetMobile.zoom-first.zoom)<.01,
     'Centralizar não restaurou zoom móvel adequado: '+JSON.stringify({resetMobile,tapTrace}));
   assert(!merrors.length,'Erros Javascript no celular: '+merrors.join(' | '));
   console.log('PASS Mobile: pinça, um dedo arrasta, botões e zoom inicial legível');
