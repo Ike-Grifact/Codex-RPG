@@ -59,6 +59,7 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
  "maestria-escudos":"armadura-escudo","escudo-bumerangue":"arma-arremesso",
   "sacrificio-heroico":"armadura-escudo","escudo-refletor":"armadura-escudo","sentido-elemental":"magia-circulo",
  "improviso":"magia-circulo","invocacao-elemental":"magia-circulo",
+  "cancelar-magia":"magia-circulo","mudanca-elemental":"magia-transformacao","desencantar":"magia-circulo","espelho-magico":"armadura-escudo-arcano",
  "pericia-druidica":"categoria-natureza","transformacao-elemental":"magia-transformacao",
  "fogo":"elemento-fogo","agua":"elemento-agua","vento":"elemento-ar","terra":"elemento-terra",
  "sagrado":"elemento-sagrado","sangue":"elemento-sangue","trevas":"elemento-trevas","veneno":"elemento-veneno"
@@ -68,7 +69,7 @@ const GENE_CONSTELLATIONS=[
  {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo","arma-certa"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada"]},
- {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","improviso","sentido-elemental","mestre","invocacao-elemental"]},
+ {id:"conjuracao",label:"CONJURAÇÃO",column:1,skills:["criar-item-foco-magia","encantar-com-elemento","escudo-arcano","conjuracao-equilibrada","improviso","sentido-elemental","cancelar-magia","desencantar","espelho-magico","mestre","invocacao-elemental","mudanca-elemental"]},
  {id:"elementos",label:"ELEMENTOS",column:1,skills:["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"]},
  {id:"natureza",label:"NATUREZA E DRUIDISMO",column:1,skills:["domar-criatura-pequena","domar-criatura-media","domar-criatura-grande","pericia-druidica"]},
  {id:"disparos",label:"ARREMESSO E DISPAROS",column:2,skills:["armas-longo-alcance","maestria-arcos","maestria-bestas","maestria-longo-alcance","maestria-arremesso-armas","maestria-arremessos","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","maestria-armas-fogo"]},

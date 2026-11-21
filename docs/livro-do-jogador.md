@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Jogador
 
+> **Antimagia e alteração elemental — decisões de 20/11/2026 [DEFINIDO / detalhes PENDENTES]:** **Cancelar Magia** (1 XP; Criar Item de Foco e Magia + Improviso Elemental + Inteligência/Agilidade/Destreza 4) permite tentar cancelar magia percebida a até 8 m com Pavor mantido: 1 Coragem, Perícia no elemento e **resultado igual ou maior (≥) que a DE da conjuração**. **Mudança Elemental** (1 XP; Transformação Elemental + Destreza/Inteligência 4) altera o elemento de criatura, armadura ou ambiente a até 8 m, para elemento conhecido, por **E − P > 0**. **Desencantar** (1 XP; Cancelar Magia) remove elementos ou imunidades até 8 m, exceto o elemento natural constituinte de criatura realmente feita dele. **Espelho Mágico** (1 XP; Cancelar Magia) reflete passivamente dano mágico de Pavor mantido, **mesmo se a armadura da vítima o absorveu/anulou totalmente**. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--cancelar-magia-mudança-elemental-desencantar-e-espelho-mágico-20112026).
+
 > **Novas especializações — 20/11/2026 [DEFINIDO / procedimentos PENDENTES]:** **Sacrifício Heroico** (1 XP, Vigor 4): a até 8 m protege alguém e recebe o dano na própria armadura/Vida, mesmo sem turno antecipado. **Escudo Refletor** (1 XP, Maestria em Escudos): com escudo físico equipado, reflete ao inimigo a parcela realmente danosa do Pavor recebido. **Sentido Elemental** (1 XP, Inteligência 3 + Improviso Elemental): por 1 Coragem analisa um alvo e conhece sua afinidade elemental. **Aura Sagrada** é efeito da **Transformação Elemental em Sagrado**, sem outra compra: pessoas no raio de 3 m recebem +1 Coragem ao transformar-se, respeitando o teto. [SRD ativo](srd-playtest-nivel-1-v1.0.md#adendo-normativo--sacrifício-heroico-escudo-refletor-aura-sagrada-e-sentido-elemental-20112026).
 
 > **Escudos — decisão de 20/11/2026 [DEFINIDO / PENDENTE]:** **Maestria em Escudos**, 1 XP, **Destreza 2 + Vigor 2**: com escudo equipado, **+1 DE defensiva** (teto 12) e **+1 Integridade material**, sem somar à Integridade simbólica de Levantar Escudo. **Escudo Bumerangue**, 1 XP, **Destreza 2 + Força 3 + Arremesso de Armas + Maestria em Escudos**: lança escudo físico a **8 m**, rolando **Disciplina + Atributo(s)**. **Em acerto, retorna no mesmo turno**; **em falha, cai conforme Arremesso de Armas** (falha limpa: no caminho, 1A pode permitir recuperar; com Pavor: próximo ao alvo ou risco ao aliado). **DEFINIDO:** 1 Coragem pelo lançamento, dano físico normal da rolagem no acerto e características existentes na peça conforme regras normais; **PENDENTE:** economia de ação e obstáculos. [SRD](srd-playtest-nivel-1-v1.0.md#adendo-normativo--maestria-em-escudos-e-escudo-bumerangue-20112026) · [Maestria](../pericias/maestria-em-escudos.html) · [Bumerangue](../pericias/escudo-bumerangue.html).
@@ -188,6 +190,26 @@ Ao **transformar-se em Sagrado**, pessoas a até **3 metros** do personagem rece
 ## Sentido Elemental [DEFINIDO — nova Perícia, 20/11/2026]
 
 **Custo 1 XP; requisitos Inteligência 3 e Improviso Elemental; ativação 1 Coragem.** Ao analisar um alvo, identifica sua **afinidade elemental**. O Narrador informa a afinidade real do alvo; não acrescenta fraqueza, resistência, bônus ofensivo ou nova DE automaticamente. O gasto é registrado no criador quando a análise é declarada.
+
+## Quatro novas Perícias: antimagia, Mudança Elemental e reflexão [DEFINIDO / procedimento PENDENTE — 20/11/2026]
+
+### Cancelar Magia
+
+**Custo de aquisição: 1 XP. Requisitos:** Criar Item de Foco e Magia, Improviso Elemental, **Inteligência 4**, **Agilidade 4** e **Destreza 4**. Ao perceber uma magia sendo conjurada em **raio de 8 metros**, quando a conjuração inimiga **manteve Pavor**, pode gastar **1 Coragem** para tentar anulá-la. É obrigatório possuir a **Perícia do mesmo elemento da magia a cancelar**.
+
+A tentativa cancela a magia quando o resultado do teste de cancelamento alcança **DE igual ou maior que a DE da magia inimiga (≥)**. **Empate é suficiente.** A referência adversária considera **todos os valores mantidos** na conjuração original. **Exemplo:** se a DE adversária for 6, um resultado de 6 cancela a magia; 5 não cancela. O Narrador informa o valor de DE; a ficha ainda não calcula esse valor a partir de rolagens de duas fichas. **PENDENTE:** fórmula da DE com cada símbolo mantido, fontes da reação e janela da interrupção. O Pavor mantido habilita a tentativa, mas não garante o cancelamento.
+
+### Mudança Elemental
+
+**Custo: 1 XP. Requisitos:** Transformação Elemental, **Destreza 4** e **Inteligência 4**. Permite mudar o elemento de **criatura, armadura ou ambiente** em até **8 metros**, para **um elemento que o personagem tenha habilitado por Perícia**. A duração usa **E − P** da rolagem e exige **E − P > 0**. Por exemplo, **3 E e 1 P → duração 2** na unidade pertinente; **1 E e 2 P → resultado −1**, sem duração válida. **PENDENTE:** unidade temporal exata, custo de ativação, fontes do teste, resistência da criatura e interação com efeitos de elementos trocados. Não conceder automaticamente imunidades ou graus adicionais.
+
+### Desencantar
+
+**Custo: 1 XP. Requisito:** Cancelar Magia. A até **8 metros**, permite remover **elementos ou imunidades**, incluindo os aplicados por foco e encantamento; não se limita exclusivamente a itens de foco. **Exceção:** não remove o próprio elemento natural de uma criatura **realmente constituída daquele elemento**. Assim, pode retirar o elemento Fogo ou uma imunidade de uma armadura encantada, mas não apagar a constituição elemental de um ser que seja naturalmente feito de Fogo. **PENDENTE:** custo de ativação, teste, oposição e duração da remoção. A Perícia não destrói automaticamente o objeto ou a criatura afetada.
+
+### Espelho Mágico
+
+**Custo: 1 XP. Requisito:** Cancelar Magia. **Passivo. Somente contra magia.** Reflete ao conjurador a parcela de **dano mágico provocada pelo Pavor que ele manteve**. Essa parcela é calculada **antes da armadura da vítima absorver ou anular dano**: o reflexo acontece mesmo se a vítima perder 0 Vida porque a armadura bloqueou tudo. **Exemplo:** magia causaria 3 de dano por Êxitos e 2 por Pavor; a armadura absorve 5; a vítima perde 0 Vida, mas **o conjurador recebe reflexão de 2 de dano** (sujeita às próprias proteções, ainda em definição). Não funciona contra dano físico, não reflete dano de Êxitos, nem inventa dano a partir de Pavor que não causaria dano antes da proteção. **PENDENTE:** resistência e proteção do conjurador contra o reflexo, efeitos substitutivos de Pavor e cumulação com Escudo Refletor. Não pressupor que a reflexão elimina o ataque original.
 
 ## Transformação Elemental — nova Perícia [DEFINIDO / procedimentos PENDENTES — Playtest Nível 1 v1.0]
 
