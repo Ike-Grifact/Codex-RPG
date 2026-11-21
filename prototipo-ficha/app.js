@@ -324,6 +324,18 @@ const SKILLS=[
   1
  ],
  [
+  "sacrificio-heroico",
+  "Sacrifício Heroico",
+  "1 XP. Requer Vigor 4. Permite se colocar à frente de alguém a até 8 m e receber o dano no lugar da pessoa, mesmo sem antecipação do próprio turno. Dano vai à armadura ou Vida do protetor conforme as defesas aplicáveis. Sem custo de Coragem informado; posição e dano exigem confirmação do Narrador.",
+  1
+ ],
+ [
+  "escudo-refletor",
+  "Escudo Refletor",
+  "1 XP. Requer Maestria em Escudos. Com escudo físico equipado, ao receber dano reflete ao inimigo atacante os pontos de dano efetivamente causados por Pavor. Não reflete dano de Êxitos ou Pavor que não causou dano; dano original permanece. Aplicação manual conforme Narrador.",
+  1
+ ],
+ [
   "escudo-bumerangue",
   "Escudo Bumerangue",
   "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite ataque com escudo a até 8 m, rolando Disciplina (Armas) + Atributo(s) escolhido(s). Se alcançar a DE, escudo retorna no MESMO TURNO, com ou sem Pavor; se falhar, cai no chão conforme Arremesso de Armas: falha limpa no caminho (1A pode permitir correr e recuperar); com Pavor próximo ao alvo, podendo atingir aliado próximo se alcançar sua DE. Queda em metros: E mantidos + P não anulado + E convertido de 2A. Lançar custa 1 Coragem; no acerto, causa dano físico normal da rolagem (E válidos + piso(P/2), com crítico) e permite características da peça conforme gatilhos e custos normais. Obstáculos e economia de ação permanecem PENDENTES.",
@@ -568,9 +580,15 @@ const SKILLS=[
   1
  ],
  [
+  "sentido-elemental",
+  "Sentido Elemental",
+  "1 XP. Requer Inteligência 3 e Improviso Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
+  1
+ ],
+ [
   "transformacao-elemental",
   "Transformação Elemental",
-  "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+  "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
   1
  ]
 ];
@@ -719,6 +737,9 @@ const SKILL_AFFINITY={
   "practice:armas_conjuracao",
   "attr:destreza"
  ],
+ "sacrificio-heroico":["attr:vigor","practice:atletismo","know:protecao"],
+ "escudo-refletor":["know:protecao","attr:vigor","attr:destreza"],
+ "sentido-elemental":["attr:inteligencia","practice:armas_conjuracao","know:erudicao"],
  "maestria-escudos": ["attr:destreza","attr:vigor","know:protecao"],
  "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
  "maestria-arremesso-armas": [
@@ -868,7 +889,9 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["maestria-escudos","escudo-bumerangue","maestria-arremesso-armas"],
+ ["maestria-escudos","escudo-refletor","escudo-bumerangue","maestria-arremesso-armas"],
+  ["sacrificio-heroico","maestria-escudos"],
+  ["improviso","sentido-elemental","transformacao-elemental"],
  ["criar-item-foco-magia","domar-criatura-pequena","invocacao-elemental"],
  ["criar-item-foco-magia","terra","pericia-druidica"],
  ["criar-item-foco-magia","terra","transformacao-elemental"],
@@ -996,6 +1019,9 @@ const SKILL_PERMALINKS={
  "espalhar-golpe": "golpe-colossal",
  "pugilismo": "pugilismo",
  "artista-marcial": "artista-marcial",
+ "sacrificio-heroico":"sacrificio-heroico",
+ "escudo-refletor":"escudo-refletor",
+ "sentido-elemental":"sentido-elemental",
  "maestria-escudos": "maestria-em-escudos",
  "escudo-bumerangue": "escudo-bumerangue",
  "maestria-arremesso-armas": "pericia-em-arremesso-de-armas",
@@ -1048,6 +1074,9 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "sacrificio-heroico":"Vigor 4",
+ "escudo-refletor":"Maestria em Escudos",
+ "sentido-elemental":"Inteligência 3 + Improviso Elemental",
  "maestria-escudos": "Destreza 2 + Vigor 2",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
@@ -1119,6 +1148,9 @@ const CARD_REQUIREMENTS={
  };
 
 const CARD_EFFECTS={
+ "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
+ "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
+ "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
  "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
  "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
@@ -1128,7 +1160,7 @@ const CARD_EFFECTS={
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
- "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+ "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
@@ -1189,6 +1221,9 @@ const CARD_EFFECTS={
 };
 
 const CARD_BRIEFS={
+ "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
+ "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
+ "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
  "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
  "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
@@ -1198,7 +1233,7 @@ const CARD_BRIEFS={
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2, Apresentação 1 e Inteligência 1. Domar consome 1 Coragem e teste de Influência + Apresentação. Compra não é domesticação.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
- "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+ "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
@@ -1259,6 +1294,9 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "sacrificio-heroico":"Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
+ "escudo-refletor":"Passiva com escudo físico equipado ao sofrer dano de Pavor",
+ "sentido-elemental":"1 Coragem por análise",
  "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
  "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal e características registradas na peça conforme habilitação",
  "montar": "Vantagem nos testes com montaria; não é +1A",
@@ -2208,7 +2246,10 @@ function skillReq(id,s=state){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
- if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
+ if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
+  if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
+  if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
+  if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
@@ -2882,6 +2923,9 @@ const GENE_AUTO_REQUIREMENTS={
  "armas-longo-alcance":[["p:armas_conjuracao:1","a:destreza:2"]],
  "armas-fogo":[["p:armas_conjuracao:2","a:destreza:2"]],
   "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
+ "sacrificio-heroico":[["a:vigor:4"]],
+ "escudo-refletor":[["s:maestria-escudos"]],
+ "sentido-elemental":[["a:inteligencia:3","s:improviso"]],
  "maestria-escudos":[["a:destreza:2","a:vigor:2"]],
  "escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]],
  "maestria-arremesso-armas":[
@@ -4231,8 +4275,12 @@ function adjustResource(resource,delta){
 }
 function renderSkills(){
  const bar=$("skills-filterbar");if(bar&&!bar.firstChild)bar.innerHTML=skillFilterControls();
+ const defensiveNotes=(ownsSkill("sacrificio-heroico")?'<p class="fp-alert"><strong>Sacrifício Heroico:</strong> proteja alguém a até 8 m, mesmo sem antecipação de seu turno. O dano segue para sua armadura ou Vida, conforme o Narrador; não é um ataque adicional.</p>':"")+
+  (ownsSkill("escudo-refletor")?'<p class="fp-alert"><strong>Escudo Refletor:</strong> com escudo físico equipado, reflita ao inimigo apenas o dano efetivo da parcela de Pavor do ataque recebido. Não diminui o golpe original; proteções e resultado devem ser resolvidos pelo Narrador.</p>':"")+
+  (ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")?'<p class="fp-alert"><strong>Aura Sagrada:</strong> ao assumir efetivamente a forma Sagrada, pessoas a até 3 m recebem +1 Coragem, até o próprio teto. É um efeito da Transformação Elemental; não se repete automaticamente a cada turno. Registre o efeito nas fichas.</p>':"")+
+  (ownsSkill("sentido-elemental")?'<p class="fp-alert"><strong>Sentido Elemental:</strong> gaste 1 Coragem para analisar um alvo e conhecer sua afinidade elemental (informada pelo Narrador). <button type="button" class="fp-secondary" data-action="sentido-elemental-use"'+(state.pending||state.courage<1?' disabled':'')+'>Analisar alvo (−1 Coragem)</button></p>':"");
  const fireResistanceNote=ownsSkill("resistencia-a-fogo")?'<p class="fp-alert"><strong>Resistência pessoal a Fogo ativa:</strong> metade do dano de Fogo que atingir a <strong>Vida</strong> do portador; <strong>0 dano direto à Vida por Derreter G3</strong>. <strong>Não reduz dano à Integridade da armadura.</strong> Aplicação numérica manual; frações pendentes.</p>':"";
- $("skills-list").innerHTML=fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
+ $("skills-list").innerHTML=defensiveNotes+fireResistanceNote+(filteredSkills().map(item=>skillCompactCard(item,false)).join("")||'<div class="fp-skill-empty">Nenhuma Perícia corresponde aos filtros.</div>');
  $("weapon-focus-wrap").hidden=true;
  $("weapon-focus").value=state.weaponFocus;
  $("weapon-focus").disabled=(state.creationLocked&&!editMode)||!!state.pending;
@@ -4659,6 +4707,20 @@ function onClick(event){
  }
  case "repertoire-roll":quickRollItem(id);break;
  case "shield-throw-prepare":prepareShieldBoomerang(id);break;
+ case "sentido-elemental-use":{
+  if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
+  if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
+  if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.");break;}
+  const input=prompt("Sentido Elemental: qual alvo deseja analisar? A afinidade será informada pelo Narrador.");
+  if(input===null)break;
+  const target=input.trim().slice(0,90);
+  if(!target){toast("Informe o alvo da análise.");break;}
+  if(!confirm("Gastar 1 Coragem para analisar "+target+"? O Narrador informa a afinidade elemental."))break;
+  state.courage-=1;
+  state.history.unshift({date:new Date().toISOString(),name:"Sentido Elemental · "+target,outcome:"Alvo analisado — afinidade informada pelo Narrador",de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
+  state.history=state.history.slice(0,20);
+  render();save();toast("Sentido Elemental: −1 Coragem. Solicite ao Narrador a afinidade elemental de "+target+".");break;
+ }
  case "shield-ground-recover":{
   const it=state.items.find(x=>x.id===id&&x.type==="escudo"&&x.shieldGrounded);
   if(!it||state.pending){toast("Finalize a rolagem e confirme a recuperação do escudo no chão.");break;}
