@@ -20,11 +20,12 @@ const experimental=[
 ];
 const optional=["dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas"];
 const all=[...experimental,...optional];
+const registry=app.slice(app.indexOf('const SKILLS=['),app.indexOf('const HIDDEN_CATALOG_SKILLS='));
 
 test("Playtest Bardo: 20 Perícias catalogadas, links únicos e compra XP pendente",()=>{
  for(const id of all){
   const sig=' ["'+id+'",';
-  assert.equal(app.split(sig).length-1,1,"Uma entrada no criador: "+id);
+  assert.equal(registry.split(sig).length-1,1,"Uma entrada no criador: "+id);
   const start=app.indexOf(sig),end=app.indexOf("],",start);
   assert.ok(end>start&&app.slice(start,end+1).endsWith(",null]"),"Custo XP não foi inventado: "+id);
   assert.equal(catalog.split('href="'+id+'.html"').length-1,1,"Link único no catálogo: "+id);
