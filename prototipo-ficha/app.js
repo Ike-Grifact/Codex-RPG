@@ -2377,6 +2377,26 @@ function skillReq(id,s=state){
  const meleeSpecialty=["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].some(has);
  const rangedSpecialty=has("armas-longo-alcance")||has("maestria-arremesso-armas");
  const intelligence=s.attributes.inteligencia||0,art=s.practices.artesao||0,alch=s.knowledges.alquimia||0,med=s.knowledges.medicina||0,stealth=s.practices.furtividade||0;
+  // Perícias definidas em 21/11/2026: compras por 1 XP; sem graus ou elementos gratuitos.
+  const protection=s.knowledges.protecao||0,engineering=s.knowledges.engenharia||0;
+  if(id==="maos-leves"&&(stealth<3||disc<3||protection<2))return"Requer Furtividade 3, Disciplina 3 e Proteção 2.";
+  if(id==="pericia-armadilha"&&(art<1||disc<1||engineering<1||dex<1||intelligence<1||protection<2||stealth<1))
+    return"Requer Artesão 1, Disciplina 1, Engenharia 1, Destreza 1, Inteligência 1, Proteção 2 e Furtividade 1.";
+  if(id==="golpe-furtivo"&&(disc<2||stealth<2))return"Requer Disciplina 2 e Furtividade 2.";
+  if(id==="bioetica"&&(alch<3||intelligence<3||dex<3||!has("sangue")||!has("criar-item-foco-magia")||
+    !["vento","agua","terra","fogo","sagrado","trevas","veneno"].some(has)||!has("domar-criatura-media")))
+    return"Requer Alquimia 3, Inteligência 3, Destreza 3, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia elemental (diferente de Sangue) e Domar Criatura Média.";
+  if(id==="pesquisa-avancada-pocoes"&&(alch<3||!has("improviso")||art<3||dex<2))
+    return"Requer Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2.";
+  if(id==="corpo-fechado"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
+  if(id==="invocar-esfera-espiritual"&&(!has("criar-item-foco-magia")||dex<4||intelligence<3||vig<3))
+    return"Requer Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3.";
+  if(["passo-etereo","absorver-esferas","disparo-esferas-espirituais"].includes(id)&&!has("invocar-esfera-espiritual"))
+    return"Requer Invocar Esfera Espiritual.";
+  if(id==="dilema"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
+  if(id==="impacto-psiquico"&&(!has("criar-item-foco-magia")||!has("artista-marcial")))
+    return"Requer Criar Item de Foco e Magia e Artista Marcial (Artes Marciais).";
+
  if(id==="armas-longo-alcance"&&(disc<1||dex<2))return"Requer Disciplina 1 e Destreza 2.";
  if(id==="olhos-de-aguia"&&(dex<3||disc<3||!(has("armas-longo-alcance")||has("armas-fogo"))))return"Requer Destreza 3, Disciplina 3 e Armas de Longo Alcance OU Armas de Fogo.";
  if(id==="armas-fogo"&&(disc<2||dex<2))return"Requer Disciplina 2 e Destreza 2.";
@@ -3048,7 +3068,7 @@ const GENE_AUTO_REQUIREMENTS={
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
  "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],
  "golpe-furtivo":[["p:armas_conjuracao:2","p:furtividade:2"]],
- "bioetica":[["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:domar-criatura-media"]],
+ "bioetica":[["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:vento","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:agua","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:terra","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:fogo","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:sagrado","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:trevas","s:domar-criatura-media"],["k:alquimia:3","a:inteligencia:3","a:destreza:3","s:sangue","s:criar-item-foco-magia","s:veneno","s:domar-criatura-media"]],
  "pesquisa-avancada-pocoes":[["k:alquimia:3","s:improviso","p:artesao:3","a:destreza:2"]],
  "corpo-fechado":[["a:vigor:4","s:artista-marcial"]],
  "invocar-esfera-espiritual":[["s:criar-item-foco-magia","a:destreza:4","a:inteligencia:3","a:vigor:3"]],
