@@ -326,7 +326,7 @@ const SKILLS=[
  [
   "escudo-bumerangue",
   "Escudo Bumerangue",
-  "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite arremessar escudo físico até 8 m; o escudo retorna ao personagem. Dados, dano, custo de ação e momento de retorno PENDENTES: não concede ataque ou dano extra automático.",
+  "1 XP. Requisitos: Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos. Permite ataque com escudo a até 8 m, rolando Disciplina (Armas) + Atributo(s) escolhido(s). Se alcançar a DE, escudo retorna no MESMO TURNO, com ou sem Pavor; se falhar, cai no chão conforme Arremesso de Armas: falha limpa no caminho (1A pode permitir correr e recuperar); com Pavor próximo ao alvo, podendo atingir aliado próximo se alcançar sua DE. Queda em metros: E mantidos + P não anulado + E convertido de 2A. Dano do impacto, custo adicional e obstáculos PENDENTES.",
   1
  ],
  [
@@ -1120,7 +1120,7 @@ const CARD_REQUIREMENTS={
 
 const CARD_EFFECTS={
  "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
- "escudo-bumerangue": "Permite arremessar escudos físicos a até 8 metros e recuperá-los pelo retorno ao portador; não fornece dado/dano automático nem modifica o alcance de armas.",
+ "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Não concede dado de arma extra nem dano automático.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
  "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
@@ -1190,7 +1190,7 @@ const CARD_EFFECTS={
 
 const CARD_BRIEFS={
  "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
- "escudo-bumerangue": "1 XP; Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos. Arremessa escudo a 8 m, que retorna. Procedimento do ataque pendente.",
+ "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; dano específico pendente.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
@@ -1260,7 +1260,7 @@ const CARD_BRIEFS={
 
 const CARD_ACTIVATIONS={
  "maestria-escudos": "Passiva com escudo físico equipado · +1 DE e +1 Integridade da peça",
- "escudo-bumerangue": "Arremesso de escudo: 8 m, com retorno · custo/rolagem PENDENTES",
+ "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Dano pendente",
  "montar": "Vantagem nos testes com montaria; não é +1A",
  "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
  "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
@@ -1731,6 +1731,7 @@ const WIZARD_TRAINING_GUIDE={
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
+  shieldThrowId:"",shieldThrowMeters:8,
   magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
@@ -2049,7 +2050,10 @@ function normalizeItem(it={}){
  const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
   (!["alto","extremo"].includes(weight)||it.embeddedWeapon==="pesado")?it.embeddedWeapon:"";
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
-  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped,
+  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped&&!it.shieldGrounded,
+  shieldGrounded:type==="escudo"&&!!it.shieldGrounded,
+  shieldFallCase:type==="escudo"&&["caminho","perto-alvo"].includes(it.shieldFallCase)?it.shieldFallCase:"",
+  shieldFallMeters:type==="escudo"?clamp(Math.floor(Number(it.shieldFallMeters)||0),0,1000):0,
   embeddedWeapon:embed,
   shieldMasteryBonusSpent:type==="escudo"&&!!it.shieldMasteryBonusSpent,
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
@@ -2299,10 +2303,34 @@ function loseShieldIntegrity(item,amount,s=state){
  return loss;
 }
 function shieldBoomerangReady(item,s=state){
- return !!(item?.type==="escudo"&&item.equipped&&
+ return !!(item?.type==="escudo"&&item.equipped&&!item.shieldGrounded&&
   ownsSkill("escudo-bumerangue",s)&&ownsSkill("maestria-escudos",s)&&
   ownsSkill("maestria-arremesso-armas",s)&&
   (s.attributes?.destreza||0)>=2&&(s.attributes?.forca||0)>=3);
+}
+// Resultado da rolagem de Escudo Bumerangue: mesma queda de Arremesso de Armas.
+// E/P são contados dos dados mantidos; 2A convertido vale 1E na distância.
+function shieldBoomerangResult(success,pavor,keptE,keptP,convertedE){
+ if(success)return {returned:true,grounded:false,where:"portador",distance:null};
+ return {returned:false,grounded:true,where:pavor>0?"perto-alvo":"caminho",
+  distance:Math.max(0,Math.floor(keptE)+Math.floor(keptP)+Math.floor(convertedE))};
+}
+function prepareShieldBoomerang(id){
+ if(state.pending){toast("Finalize a rolagem pendente antes de arremessar um escudo.");return;}
+ if(editMode){toast("Conclua a edição da ficha antes de lançar o escudo.");return;}
+ const shield=state.items.find(it=>it.id===id);
+ if(!shieldBoomerangReady(shield)){toast("Escudo Bumerangue exige escudo físico equipado, Destreza 2, Força 3, Maestria em Escudos e Arremesso de Armas.");return;}
+ if((state.practices.armas_conjuracao||0)<1){toast("O ataque exige Disciplina treinada para rolar os dados.");return;}
+ const attribute=preferredQuickAttribute({type:"escudo"});
+ if(!attribute){toast("O ataque requer ao menos um Atributo treinado.");return;}
+ draft=freshDraft();
+ draft.base={group:"practice",key:"armas_conjuracao"};
+ draft.attribute={group:"attr",key:attribute};
+ draft.mode="armas";draft.shieldThrowId=id;draft.shieldThrowMeters=8;
+ draft.equipmentId="";draft.shieldRaise=false;
+ sheetPage="play";render();save();
+ $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"start"});
+ toast("Escudo Bumerangue: Disciplina + Atributo(s), alcance máximo de 8 m. Em acerto retorna no mesmo turno; falha deixa o escudo no chão.");
 }
 function equippedArmor(s=state){return s.items.find(it=>it.type==="armadura"&&it.equipped&&canEquipArmor(s,it))||null;}
 function armorDePenalty(s=state){
@@ -2331,6 +2359,7 @@ function defensePresentation(s=state){
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function itemLoad(it){
+ if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
  const regular=WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);
  // A arma presa soma peso real categórico enquanto o escudo permanecer carregado
  // (mesmo se abaixado). O item é retirado do inventário ao abandonar o escudo.
