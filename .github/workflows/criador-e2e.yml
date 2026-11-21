@@ -34,6 +34,8 @@ jobs:
         run: node --test prototipo-ficha/runa-escudo-acido-ar.test.mjs
       - name: Validar esclarecimentos elementais no SRD v0.85
         run: node --test prototipo-ficha/elemental-confirmation-v085.test.mjs
+      - name: Validar Arma Certa e correção de Manejo Perfeito no SRD v0.86
+        run: node --test prototipo-ficha/arma-certa-v086.test.mjs
       - name: Instalar navegador de teste
         run: |
           npm install --no-save playwright@1.58.2
