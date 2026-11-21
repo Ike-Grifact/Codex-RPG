@@ -291,6 +291,18 @@ function zoomAt(root,factor,clientX,clientY){
  cam.zoom=newZoom;
  applyTransform(root);
 }
+// Acesso rápido às constelações sem perder zoom, arraste nem seleção existente.
+function jumpToFamily(root,id){
+ const family=(root.__geneFamilies||[]).find(g=>g.id===id),svg=canvasSvg(root);
+ if(!family||!svg)return;
+ const box=svg.viewBox.baseVal,cam=getCamera(root),isMobile=root.clientWidth<620;
+ const target=isMobile?2.3:1.8;
+ const fitX=box.width/(family.width+90),fitY=box.height/(family.height+110);
+ cam.zoom=clamp(Math.min(target,fitX,fitY),MIN_ZOOM,MAX_ZOOM);
+ cam.x=box.width/2-(family.x+family.width/2)*cam.zoom;
+ cam.y=box.height/2-(family.y+family.height/2)*cam.zoom;
+ applyTransform(root);
+}
 function panBy(root,fromX,fromY,toX,toY){
  const cam=getCamera(root),a=svgPoint(root,fromX,fromY),b=svgPoint(root,toX,toY);
  cam.x+=b.x-a.x;cam.y+=b.y-a.y;applyTransform(root);
@@ -311,6 +323,7 @@ function bind(root){
  root.tabIndex=0;
  root.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight + - 0");
  const nodePosition=node=>node.getBoundingClientRect().top-root.getBoundingClientRect().top;
+ root.addEventListener("change",event=>{const picker=event.target.closest("[data-gene-family-jump]");if(picker){jumpToFamily(root,picker.value);picker.value="";}});
  const pointers=new Map(),handledTouchNav=new WeakSet();
  let pinch=null,dragging=false,suppressClick=false;
  const setMoving=value=>{dragging=value;root.classList.toggle("is-dragging",value);};
@@ -368,7 +381,7 @@ function bind(root){
   // O click originado no gesto anterior continua protegido até sua conclusão.
   if(!pointers.size)suppressClick=false;
   if(event.pointerType==="mouse"&&event.button!==0)return;
-  if(event.target.closest("[data-gene-nav],[data-gene-grade]"))return;
+  if(event.target.closest("[data-gene-nav],[data-gene-grade],[data-gene-family-jump]"))return;
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,downX:event.clientX,downY:event.clientY});
   if(pointers.size===2){
    pinch=midpoint();setMoving(true);
@@ -425,6 +438,7 @@ function bind(root){
   if(!pointers.size){pinch=null;setMoving(false);}
  });
  root.addEventListener("wheel",event=>{
+  if(event.target.closest("[data-gene-family-jump]"))return;
   if(!event.deltaY&&!event.deltaX)return;
   event.preventDefault();
   if(event.shiftKey&&event.deltaX)panBy(root,0,0,-event.deltaX,0);
@@ -453,8 +467,10 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
  const {height,groups}=position(visible,branches),cam=getCamera(root);
+ root.__geneFamilies=groups;
  root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
+  '<div class="fp-gene-family-jump"><label for="fp-gene-family-'+(root.id||"map")+'">Ir para ramo</label><select id="fp-gene-family-'+esc(root.id||"map")+'" data-gene-family-jump aria-label="Ir diretamente para um ramo temático do Codex Genético"><option value="">Escolher ramo…</option>'+groups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.label)+'</option>').join("")+'</select></div>'+
   '<div class="fp-gene-nav-float" aria-label="Navegação do Codex Genético">'+
   '<button type="button" data-gene-nav="-1" aria-label="Afastar o mapa">−</button>'+
   '<button type="button" data-gene-nav="0" aria-label="Centralizar o mapa">⦿</button>'+
