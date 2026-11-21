@@ -50,7 +50,7 @@ repository: "Ike-Grifact/Codex-RPG"
 
 **DEFINIDO — Disparo de Esferas Espirituais (1 XP):** exige **Invocar Esfera Espiritual**. **Consome 1 esfera por golpe** e permite **ataques FÍSICOS à distância**. **PENDENTE:** alcance, DE, fontes e dados do ataque, dano e efeitos associados; não tratar como conjuração elemental automática.
 
-**Implementação conservadora:** custo e todos os requisitos são validados no criador e no Codex Genético. Mãos Leves possui preparação de teste exclusivo; Golpe Furtivo permite um dado da arma por ação furtiva confirmada; efeitos que dependem de ficha alheia, criação, d20, recursos espirituais ou duração de rodada exigem confirmação/registro de mesa até procedimentos aprovados.
+**Implementação conservadora:** custo e todos os requisitos são validados no criador e no Codex Genético. Mãos Leves possui preparação de teste exclusivo; Golpe Furtivo permite um dado da arma por ação furtiva confirmada; Pesquisa Avançada em Poções disponibiliza +1E apenas quando o jogador confirma no rolador um teste de criação; Perícia em Armadilha prepara Proteção com Vantagem (+1A). Corpo Fechado e Impacto Psíquico registram Coragem, e as Esferas Espirituais têm controle persistente de uma criação por rodada com custo informado pelo Narrador. Efeitos que dependem de ficha alheia, homúnculos, d20 e economia de ação exigem resolução na mesa até procedimentos aprovados.
 
 **Precedência:** esta decisão posterior atualiza apenas as doze novas Perícias; não revoga a combinação normal de aptidões, as regras genéricas de Dados, os custos de recursos existentes, nem a progressão de outras Perícias.
 
