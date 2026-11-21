@@ -5336,7 +5336,17 @@ function onClick(event){
   case "gene-auto-buy":geneAutoBuy(id);break;
   case "gene-confirm":geneCommit();break;
   case "gene-reset":geneDiscard();break;
-  case "gene-future":geneShowFuture=!geneShowFuture;if(viewMode==="builder")renderWizard();else renderGenetic();break;
+  case "gene-future":{
+   geneShowFuture=!geneShowFuture;
+   // Alterna a visibilidade sem recriar a etapa inteira do assistente.
+   // Assim, a câmera do Codex não volta ao início ao tocar no botão interno.
+   renderGenetic();
+   for(const control of document.querySelectorAll('[data-action="gene-future"]')){
+    control.textContent=geneShowFuture?(control.classList.contains("fp-gene-future-float")?"Ocultar futuras":"Ocultar futuras ramificações"):(control.classList.contains("fp-gene-future-float")?"Mostrar futuras":"Mostrar futuras ramificações");
+    control.setAttribute("aria-pressed",String(geneShowFuture));
+   }
+   break;
+  }
   case "gene-close-detail":geneInspectorOpen=false;renderGenetic();break;
  case "clear":draft=freshDraft();renderSources();renderComposer();break;
  case "roll":roll();break;
