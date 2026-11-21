@@ -943,9 +943,9 @@ test("Poções, Corpo Fechado e Esferas: bônus, custo e persistência contextua
  assert.ok(app.includes('data-option="potionResearch"'),"Requer confirmar contexto de criação de poções");
  assert.ok(app.includes('case "corpo-fechado-use"'),"Corpo Fechado usa 1 Coragem");
  assert.ok(app.includes('case "impacto-psiquico-use"'),"Impacto Psíquico usa 1 Coragem");
- assert.ok(app.includes('spiritualSpheres:{count:0,createdThisRound:false}'),"Contador está na ficha");
+ assert.ok(app.includes('spiritualSpheres:{count:0,createdThisRound:0}'),"Contador está na ficha");
  assert.ok(app.includes('v.spiritualSpheres?.count'),"Contador persiste importação/exportação");
- assert.ok(app.includes('case "sphere-create"')&&app.includes('state.spiritualSpheres.createdThisRound=true'),"Apenas 1 esfera criada por rodada");
+ assert.ok(app.includes('case "sphere-create"')&&app.includes('state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1'),"Até 5 esferas criadas por rodada");
  assert.ok(app.includes('case "sphere-next-round"'),"Liberação manual na rodada seguinte");
  assert.ok(app.includes('case "sphere-spend"')&&app.includes('state.spiritualSpheres.count=sphereCount()-1'),"Passo e Disparo gastam 1 esfera");
  assert.ok(app.includes('case "sphere-absorb"')&&app.includes('state.spiritualSpheres.count=0;'),"Absorver consome todas as esferas");
@@ -975,33 +975,41 @@ test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()
  assert.ok(srd.includes("Destreza 3")&&srd.includes("«De 3» significa **Destreza 3**"),"Destreza 3 confirmada pelo autor");
 });
 
-test("Esferas DEFINIDAS: conversão 1 Coragem/1 esfera, absorção total e teto de Coragem",()=>{
+test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorção total",()=>{
  const caseCode=extract('case "sphere-create":{','case "sphere-next-round":{');
  const handler=new Function("action","state","ownsSkill","skillReq","sphereCount","maxCourage","clamp","logSkillAction","render","save","toast","confirm","editMode",
    "switch(action){"+caseCode+"default:break;}");
  const records=[];
- const state={courage:7,spiritualSpheres:{count:0,createdThisRound:false},pending:null};
+ const state={courage:10,spiritualSpheres:{count:0,createdThisRound:0},pending:null};
  const invoke=(action)=>handler(action,state,()=>true,()=>null,()=>state.spiritualSpheres.count,
    ()=>10,(n,min,max)=>Math.max(min,Math.min(max,n)),(name,result)=>records.push([name,result]),()=>{},()=>{},()=>{},()=>true,false);
+ for(let i=1;i<=5;i++){
+  invoke("sphere-create");
+  assert.equal(state.courage,10-i,"Cada esfera consome 1 Coragem");
+  assert.equal(state.spiritualSpheres.count,i,"Armazena até 5 esferas");
+  assert.equal(state.spiritualSpheres.createdThisRound,i,"Contador de criação por rodada");
+ }
  invoke("sphere-create");
- assert.equal(state.courage,6,"A criação custa exatamente 1 Coragem");
- assert.equal(state.spiritualSpheres.count,1,"Cria uma esfera");
- assert.equal(state.spiritualSpheres.createdThisRound,true);
+ assert.equal(state.spiritualSpheres.count,5,"Sexta criação da mesma rodada é bloqueada");
+ assert.equal(state.courage,5,"Bloqueio não consome Coragem");
+ state.spiritualSpheres.createdThisRound=0;
  invoke("sphere-create");
- assert.equal(state.spiritualSpheres.count,1,"Não cria segunda esfera na mesma rodada");
- state.spiritualSpheres.createdThisRound=false;
+ assert.equal(state.spiritualSpheres.count,5,"Não ultrapassa estoque de 5 mesmo numa nova rodada");
+ state.spiritualSpheres.count=4;
  invoke("sphere-create");
- assert.equal(state.courage,5);
- assert.equal(state.spiritualSpheres.count,2,"Próxima rodada pode criar outra esfera");
+ assert.equal(state.spiritualSpheres.count,5,"Pode criar uma esfera após gastar outra em nova rodada");
+ assert.equal(state.spiritualSpheres.createdThisRound,1);
  state.spiritualSpheres.count=5;state.courage=6;
  invoke("sphere-absorb");
  assert.equal(state.courage,10,"Recuperação respeita teto");
- assert.equal(state.spiritualSpheres.count,0,"Todas as cinco esferas foram consumidas, mesmo quando só faltam quatro Coragens");
+ assert.equal(state.spiritualSpheres.count,0,"Todas as cinco esferas são consumidas");
  assert.ok(records.some(x=>x[0]==="Absorver Esferas"));
  state.courage=10;state.spiritualSpheres.count=2;
  invoke("sphere-absorb");
  assert.equal(state.courage,10,"Não ultrapassa teto");
- assert.equal(state.spiritualSpheres.count,0,"Mesmo no teto de Coragem, a absorção confirmada consome esferas");
+ assert.equal(state.spiritualSpheres.count,0,"Mesmo no teto de Coragem, absorção consome todas");
+ assert.ok(app.includes('count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,5)'),"Importação limita armazenamento a 5");
+ assert.ok(app.includes('typeof v.spiritualSpheres?.createdThisRound==="boolean"'),"Migração das fichas antigas");
 });
 
 test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco esferas",()=>{
@@ -1028,11 +1036,15 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  assert.equal(converted.pool.filter(x=>x.sides===20&&x.asuraSpecial).length,1,"Um dado convertido em d20");
  assert.equal(converted.pool.find(x=>x.asuraSpecial).baseSides,10,"Dado original preservado para identificação");
  assert.ok(factory({...state,spiritualSpheres:{count:4}},draft,false)().errors.length>0,"Quatro esferas não bastam");
+ assert.ok(factory({...state,courage:0},draft,false)().errors.length>0,"Asura exige 1 Coragem além das cinco esferas");
  assert.ok(factory(state,{...draft,mode:"conjuracao"},false)().errors.length>0,"Asura não funciona como magia à distância");
  const rangeState={...state,items:[{id:"r",type:"arma",equipped:true,range:12,die:6,properties:["À Distância"]}]};
  assert.ok(factory(rangeState,{...draft,equipmentId:"r"},false)().errors.length>0,"Arma à distância não habilita Asura");
  const start=app.indexOf("function finalize(){");const source=app.slice(start,app.indexOf("\nfunction ",start+1));
  assert.ok(source.includes("state.spiritualSpheres.count=sphereCount()-5"),"Finalização consome 5 esferas");
+ assert.ok(app.includes("health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura)"),"Asura adiciona 1 Coragem ao custo de resolução");
+ assert.ok(source.includes("state.courage=clamp(state.courage-s.courageCost"),"Finalização desconta Coragem após validar custo");
+ assert.ok(source.includes("asuraCourageSpent:p.opts.asura?1:0"),"Histórico registra 1 Coragem de Asura");
  assert.ok(source.includes("if(!p||s.errors.length)"),"Não consome se a rolagem é inválida");
  assert.ok(app.includes("d20")&&app.includes("asuraDieId"),"Permite escolher o dado a substituir");
 });
@@ -1048,4 +1060,6 @@ test("Bioética: Destreza 3 e ficha separada, sem atribuir Atributos não defini
  }
  assert.ok(app.includes('href="../criar-conflito/"'),"Criador oferece caminho para ficha separada de criatura");
  assert.ok(srd.includes("não gera uma criatura automaticamente"),"Não inventa estatísticas do homúnculo");
+ assert.ok(srd.includes("sangue e tecidos vivos")&&srd.includes("proporcional ao nível do criador"),"Materiais e proporcionalidade definidos");
+ assert.ok(srd.includes("efeito adicional")&&srd.includes("PENDENTE"),"Não inventa efeito adicional de Asura");
 });
