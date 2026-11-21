@@ -137,11 +137,15 @@ const WEAPON_MASTERY_TYPES=Object.freeze([
  {id:"maestria-longo-alcance",name:"Maestria em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
  {id:"maestria-armas-fogo",name:"Maestria em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
 ]);
+const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
+ "maestria-hastes":"Força 2 + Agilidade 1 + Destreza 1",
+ "maestria-espadas":"Força 2 + Destreza 2"
+});
 const SKILLS=[
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
-  null
+  (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de aquisição: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null
  ]),
  [
   "combate",
@@ -869,10 +873,10 @@ const SKILL_AFFINITY={
   "attr:vigor"
  ],
  "maestria-adagas":["practice:armas_conjuracao", "attr:forca"],
- "maestria-espadas":["practice:armas_conjuracao", "attr:forca"],
+ "maestria-espadas":["practice:armas_conjuracao","attr:forca","attr:destreza"],
  "maestria-machados":["practice:armas_conjuracao", "attr:forca"],
  "maestria-macas":["practice:armas_conjuracao", "attr:forca"],
- "maestria-hastes":["practice:armas_conjuracao", "attr:forca"],
+ "maestria-hastes":["practice:armas_conjuracao","attr:forca","attr:agilidade","attr:destreza"],
  "maestria-cajados":["practice:armas_conjuracao", "attr:forca"],
  "maestria-arcos":["practice:armas_conjuracao", "attr:destreza"],
  "maestria-bestas":["practice:armas_conjuracao", "attr:destreza"],
@@ -1164,10 +1168,10 @@ const CARD_REQUIREMENTS={
  "artesao-avancado": "Artesão 2",
  "maestria-martelos": "Força 3 + Destreza 1 + Vigor 1 (Perícia de Armas do peso é exigida somente na ativação)",
  "maestria-adagas":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
- "maestria-espadas":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
+ "maestria-espadas":"1 XP; Força 2 + Destreza 2 para compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso da espada",
  "maestria-machados":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
  "maestria-macas":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
- "maestria-hastes":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
+ "maestria-hastes":"1 XP; Força 2 + Agilidade 1 + Destreza 1 para compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso da lança ou haste",
  "maestria-cajados":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Armas Leves/Médias/Pesadas conforme peso",
  "maestria-arcos":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Perícia em Armas de Longo Alcance",
  "maestria-bestas":"PENDENTE: custo de XP e requisitos de compra. Ativação exige Perícia em Armas de Longo Alcance",
@@ -1319,10 +1323,10 @@ const CARD_BRIEFS={
  "artesao-avancado": "1 XP; requisito Artesão 2. Com Artesão como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
  "maestria-martelos": "1 XP; exige Força 3, Destreza 1 e Vigor 1. Com Perícia de Armas do peso, em acerto comum ativa 1 efeito grátis; em crítico, 2 diferentes grátis + possibilidade de terceira por 1 Coragem. Apenas efeitos existentes na arma.",
  "maestria-adagas":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
- "maestria-espadas":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+ "maestria-espadas":"1 XP; Força 2, Destreza 2. Ao acertar com espada, ativa uma característica existente da arma sem Coragem, exigindo a Perícia do peso; crítico mantém até 2 diferentes gratuitas e terceira diferente por 1 Coragem.",
  "maestria-machados":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-macas":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
- "maestria-hastes":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
+ "maestria-hastes":"1 XP; Força 2, Agilidade 1, Destreza 1. Ao acertar com lança da família atual Lanças e Hastes, ativa uma característica existente sem Coragem, exigindo a Perícia do peso; crítico mantém até 2 diferentes gratuitas e terceira diferente por 1 Coragem.",
  "maestria-cajados":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-arcos":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-bestas":"Aquisição PENDENTE: custo e requisitos próprios não definidos. Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
@@ -1396,10 +1400,10 @@ const CARD_ACTIVATIONS={
  "artesao-avancado": "Passiva",
  "maestria-martelos": "Acerto comum: 1 efeito grátis. Crítico: 2 efeitos diferentes grátis e uma terceira por 1 Coragem; requer arma e Perícia de peso habilitadas. Escolha manual",
  "maestria-adagas":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
- "maestria-espadas":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+ "maestria-espadas":"1 XP; Força 2 + Destreza 2. Ao acertar: 1 característica grátis; crítico mantém 2 diferentes grátis e terceira diferente por 1 Coragem. Exige Perícia em Armas do peso.",
  "maestria-machados":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
  "maestria-macas":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
- "maestria-hastes":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
+ "maestria-hastes":"1 XP; Força 2 + Agilidade 1 + Destreza 1. Ao acertar: 1 característica grátis; crítico mantém 2 diferentes grátis e terceira diferente por 1 Coragem. Exige Perícia em Armas do peso.",
  "maestria-cajados":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
  "maestria-arcos":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
  "maestria-bestas":"Aquisição pendente; efeito: 1 grátis comum, 2 grátis crítico e +1 Coragem para terceiro, conforme habilitação.",
@@ -2242,7 +2246,7 @@ function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().
 function skillReq(id,s=state){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Maestria em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
- if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id))return"Custo de XP e requisitos de aquisição desta Maestria ainda PENDENTES; consultar os efeitos e aguardar aprovação.";
+ if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Custo de XP e requisitos de aquisição desta Maestria ainda PENDENTES; consultar os efeitos e aguardar aprovação.";
  if(racialGrants(s).includes(id))return null;
  const has=x=>ownsSkill(x,s);
  if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
@@ -2274,6 +2278,8 @@ function skillReq(id,s=state){
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
    return"Requer "+advancedSource.label+" 2.";
  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
+  if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.";
+  if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.";
  if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
@@ -2953,6 +2959,8 @@ const GENE_AUTO_REQUIREMENTS={
  "atletismo-avancado":[["p:atletismo:2"]],
  "artesao-avancado":[["p:artesao:2"]],
  "maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]],
+ "maestria-hastes":[["a:forca:2","a:agilidade:1","a:destreza:1"]],
+ "maestria-espadas":[["a:forca:2","a:destreza:2"]],
  "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],
  "ferreiro-elemental":[["a:inteligencia:2","a:destreza:2","s:ferreiro","s:improviso","s:criar-item-foco-magia","s:encantar-com-elemento"]],
  "resistencia-a-fogo":[["a:vigor:2","s:ferreiro-elemental","s:fogo"]],
