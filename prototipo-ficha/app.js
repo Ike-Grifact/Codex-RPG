@@ -3901,6 +3901,17 @@ function score(){
  const p=state.pending;if(!p)return null;
  const health=LIFE_STATES[p.opts.healthId]||lifeStage();
  const dice=p.dice.filter(x=>p.selected.includes(x.id)),errs=[];
+ if(p.shieldThrowId){
+  const shield=state.items.find(it=>it.id===p.shieldThrowId);
+  if(!shieldBoomerangReady(shield))errs.push("Escudo Bumerangue inválido: escudo não equipado ou requisitos não atendidos.");
+  if(p.base?.group!=="practice"||p.base?.key!=="armas_conjuracao"||p.mode!=="armas"||
+    p.attribute?.group!=="attr"||(p.third&&p.third.group!=="attr"))
+   errs.push("Escudo Bumerangue exige Disciplina (Armas) e Atributo(s) escolhido(s).");
+  if(p.opts.shieldRaise||p.cravarRemovalShieldId||p.opts.equipmentId||p.opts.magicElement||p.characteristic||p.secondCharacteristic)
+   errs.push("Arremesso de escudo não admite Levantar Escudo, dados de arma ou características automáticas.");
+  if(!Number.isInteger(p.opts.shieldThrowMeters)||p.opts.shieldThrowMeters<1||p.opts.shieldThrowMeters>8)
+   errs.push("Escudo Bumerangue atinge no máximo 8 metros.");
+ }
  if(p.cravarRemovalShieldId){
   const shield=state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon);
   if(!shield)errs.push("O escudo já não possui a arma cravada declarada.");
@@ -3956,6 +3967,8 @@ function score(){
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
+ const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
+  Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem;
  if(p.mode==="conjuracao"&&p.opts.magicElement){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
@@ -4034,7 +4047,7 @@ function score(){
  const damageBasic=success?E+Math.floor(P/2):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Retirada é ação de teste, não ataque
+ const damage=p.shieldThrowId?null:p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Dano do escudo Bumerangue PENDENTE, nunca inventar.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -4055,8 +4068,8 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,active,range:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
@@ -4125,7 +4138,7 @@ function renderPending(){
  (p.cravarRemovalShieldId?'<p class="fp-caption"><strong>RETIRAR CRAVAR — '+(s.success?'SUCESSO':'FALHA')+':</strong> '+s.reached+' contra DE '+p.opts.de+
   '. '+(s.success?'Ao finalizar, a arma será retirada do escudo e sua carga/penalidade serão removidas.':'A arma permanecerá cravada no escudo.')+
   ' Não é ataque e não causa dano; Pavor continua produzindo risco.</p>':
-  '<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>')+
+  (p.shieldThrowId?'<p class="fp-caption"><strong>ESCUDO BUMERANGUE:</strong> Ataque de Disciplina + Atributo(s), até 8 m. <strong>'+(s.shieldThrowOutcome?.returned?'ACERTO — escudo retorna no mesmo turno, mesmo com Pavor.':'FALHA — escudo cai no chão; '+(s.shieldThrowOutcome?.where==='caminho'?'queda no caminho, 1A pode permitir correr e recuperar.':'queda próxima ao alvo; pode atingir aliado próximo se alcançar a DE dele.')+' Distância de queda: '+s.shieldThrowOutcome?.distance+' m (E mantidos + P não anulado + E convertido por 2A).')+'</strong> O dano do escudo permanece PENDENTE; Pavor conserva seus riscos. A situação será registrada ao finalizar.</p>':'<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'))+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+
@@ -4161,11 +4174,19 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
- const name=(p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
+ const name=(p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalSuccess=!!(removalShield&&s.success);
+ const thrownShield=p.shieldThrowId?state.items.find(it=>it.id===p.shieldThrowId&&it.type==="escudo"):null;
+ if(thrownShield&&s.shieldThrowOutcome?.grounded){
+  thrownShield.equipped=false;thrownShield.shieldGrounded=true;
+  thrownShield.shieldFallCase=s.shieldThrowOutcome.where;
+  thrownShield.shieldFallMeters=s.shieldThrowOutcome.distance;
+ }
  state.history.unshift({date:new Date().toISOString(),name,outcome:s.outcome,de:p.opts.de,reached:s.reached,
   cravarRemovalAttempt:!!p.cravarRemovalShieldId,cravarRemovalSuccess:removalSuccess,cravarRemovalShieldName:removalShield?.name||"",
+  shieldThrowId:p.shieldThrowId||"",shieldThrowMeters:p.opts.shieldThrowMeters||0,
+  shieldThrowReturned:!!s.shieldThrowOutcome?.returned,shieldThrowFallCase:s.shieldThrowOutcome?.grounded?s.shieldThrowOutcome.where:"",shieldThrowFallMeters:s.shieldThrowOutcome?.distance??null,
   E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
@@ -4176,7 +4197,10 @@ function finalize(){
  if(s.hemomancyLinked)state.hemomancy.directLifeResolved=true;
  if(removalSuccess)removalShield.embeddedWeapon=""; // Remover −2E e massa extra somente após sucesso
  state.history=state.history.slice(0,20);state.pending=null;save();render();
- toast(p.cravarRemovalShieldId?(removalSuccess?"Sucesso: arma retirada do escudo; carga e penalidade atualizadas.":"Falha: arma permanece cravada no escudo."):
+ toast(p.shieldThrowId?(s.shieldThrowOutcome?.returned?
+  "Escudo Bumerangue acertou e retornou no mesmo turno. Pavor mantém seus riscos.":
+  "Escudo Bumerangue falhou e caiu "+(s.shieldThrowOutcome?.where==="caminho"?"no caminho":"próximo ao alvo")+". Recupere conforme Arremesso de Armas; ficou desequipado."):
+  p.cravarRemovalShieldId?(removalSuccess?"Sucesso: arma retirada do escudo; carga e penalidade atualizadas.":"Falha: arma permanece cravada no escudo."):
   (s.critTier?"Crítico de "+s.critTier+" dados! · ":"")+s.outcome+" · DE "+s.reached+"/"+p.opts.de);
 }
 function updateGrade(group,id,delta){
