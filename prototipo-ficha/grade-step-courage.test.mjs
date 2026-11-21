@@ -922,7 +922,10 @@ test("Mãos Leves e Golpe Furtivo: validação real da pilha, exceção restrita
  assert.deepEqual(ok.errors,[],"Mãos Leves pode usar duas Práticas e não exige Atributo");
  assert.equal(ok.pool.length,6,"Disciplina 3 e Furtividade 3 compõem os dados respectivos");
  assert.ok(build(state,{...hands,maosLeves:false},false)().errors.length>0,"Duas Práticas são proibidas sem Mãos Leves");
- assert.deepEqual(build(state,{...hands,maosLeves:false},true)().errors,[],"Modelo NPC de criaturas preservado");
+ assert.ok(build(state,{...hands,maosLeves:false},true)().errors.length>0,"Humanoides NPC não podem combinar duas Práticas");
+ const monster={...hands,maosLeves:false,base:{group:"attr",key:"destreza"},attribute:{group:"attr",key:"forca"}};
+ const monsterState={...state,attributes:{...state.attributes,forca:2}};
+ assert.deepEqual(build(monsterState,monster,true)().errors,[],"Criaturas só de Atributos podem combinar dois Atributos");
  const melee={...hands,maosLeves:false,attribute:{group:"attr",key:"destreza"},equipmentId:"w",stealthAttack:true};
  const sneak=build(state,melee,false)(),normal=build(state,{...melee,stealthAttack:false},false)();
  assert.deepEqual(sneak.errors,[]);
