@@ -756,20 +756,77 @@ test("Cancelar Magia: gatilhos Pavor, elemento conhecido, alcance e custo de 1 C
  assert.ok(app.includes('!Number.isSafeInteger(enemyDe)||enemyDe<0'),"Valida DE");
  assert.ok(app.includes('MANTEVE ao menos um símbolo de Pavor'),"Pavor adversário mantido");
  assert.ok(app.includes('a até 8 m'),"Distância exata");
- assert.ok(app.includes('resultado estritamente maior'),"Empatar não basta");
+ assert.ok(app.includes('resultado ≥ "+enemyDe+"'),"Empate cancela: comparação inclusiva");
  assert.ok(app.includes('if(!confirm("Gastar 1 Coragem para TENTAR cancelar'),"Cobrança confirmada");
  assert.ok(app.includes('state.courage-=1;'),"Debita 1 Coragem");
  assert.ok(app.includes('name:"Cancelar Magia · "+elementName'),"Registra sem cancelar automaticamente");
  const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
- assert.ok(srd.includes("todos os valores mantidos")&&srd.includes("estritamente maior"));
+ assert.ok(srd.includes("todos os valores mantidos")&&srd.includes("IGUAL OU MAIOR (≥)"));
+ assert.ok(srd.includes("Empate cancela"));
+ assert.ok(!app.slice(app.indexOf('case "cancelar-magia-use"'),app.indexOf('case "sentido-elemental-use"')).includes("estritamente maior"));
 });
 
 test("Mudança Elemental, Desencantar e Espelho Mágico não inventam dados e pagamentos",()=>{
  const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
  const page=readFileSync(join(root,"../pericias/espelho-magico.html"),"utf8");
  assert.ok(srd.includes("criatura, armadura ou ambiente")&&srd.includes("um elemento cuja Perícia"));
- assert.ok(srd.includes("não informado")&&srd.includes("não destruir")===false||srd.includes("Não destruir nem excluir"));
+ assert.ok(srd.includes("custo de ativação (não informado)"),"Custo não inventado");
+ assert.ok(srd.includes("Não destruir, apagar nem remover automaticamente"),"Não destrói fichas nem itens");
  assert.ok(page.includes("passivo")||page.includes("Passivo"));
  assert.ok(page.includes("Pavor que não provocou dano"));
  assert.ok(srd.includes("cumulação com **Escudo Refletor**"));
+});
+
+test("Decisões autorais: Cancelar Magia aceita empate e nunca exige vencer estritamente",()=>{
+ const action=app.slice(app.indexOf('case "cancelar-magia-use"'),app.indexOf('case "sentido-elemental-use"'));
+ assert.ok(action.includes("resultado ≥"),"A ação declara resultado maior OU IGUAL");
+ assert.ok(action.includes("empate cancela"),"Empate anula na reação");
+ assert.ok(action.includes('state.courage-=1;'),"Cobra 1 Coragem quando confirmado");
+ assert.ok(!action.includes("estritamente maior")&&!action.includes("exige resultado > "));
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/cancelar-magia.html"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const text of [book,srd,page,index]){
+  assert.ok(text.includes("Empate cancela")||text.includes("empate cancela")||text.includes("igual ou maior"),"Empate permitido em todos os canais");
+ }
+});
+
+test("Decisões autorais: Mudança Elemental tem duração E − P estritamente positiva",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/mudanca-elemental.html"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const text of [app,srd,book,page,index]){
+  assert.ok(text.includes("E − P"),"Fórmula E−P presente");
+  assert.ok(text.includes("E − P > 0")||text.includes("E − P (>0)")||text.includes("E − P, exigindo resultado positivo"),"Fórmula requer duração positiva");
+ }
+ assert.ok(srd.includes("unidade de duração")||srd.includes("unidade temporal"),"Não inventa turnos/rodadas");
+});
+
+test("Decisões autorais: Desencantar remove imunidades, preserva criaturas elementais naturais",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/desencantar.html"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const text of [app,srd,book,page,index]){
+  assert.ok(text.includes("elementos ou imunidades"),"Remove ambos");
+  assert.ok(text.includes("natural")||text.includes("constitut"),"Exceção para criatura naturalmente feita do elemento");
+ }
+ assert.ok(srd.includes("não está limitado ao próprio item de foco"),"Não limita arbitrariamente o desencantamento a itens de foco");
+});
+
+test("Decisões autorais: Espelho Mágico reflete Pavor mágico antes da absorção da armadura",()=>{
+ const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
+ const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const page=readFileSync(join(root,"../pericias/espelho-magico.html"),"utf8");
+ const index=readFileSync(join(root,"../pericias/index.html"),"utf8");
+ for(const text of [app,srd,book,page,index]){
+  assert.ok(text.includes("mágic"),"Somente magia");
+  assert.ok(text.includes("armadura"),"Regra de armadura incluída");
+  assert.ok(text.includes("Pavor"),"O reflexo depende de Pavor");
+ }
+ assert.ok(srd.includes("Mesmo que a armadura")&&srd.includes("0 Vida"),"Reflete quando armadura bloqueia 100%");
+ assert.ok(book.includes("a armadura absorve 5")&&book.includes("2 de dano são refletidos"),"Exemplo confirma conta antes da absorção");
+ assert.ok(page.includes("ataque físico")&&page.includes("antes da absorção"),"Não funciona contra ataque físico");
 });
