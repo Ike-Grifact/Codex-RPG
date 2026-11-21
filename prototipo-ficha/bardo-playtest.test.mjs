@@ -123,11 +123,11 @@ test("Órbitas temáticas cercam fontes, sem sobreposição e sem alongar o mapa
 const baseAttr=["forca","agilidade","destreza","inteligencia","influencia","vigor"];
 const baseKnow=["protecao","medicina","astronomia","alquimia","engenharia","erudicao"];
 const basePractice=["atletismo","armas_conjuracao","furtividade","artesao","apresentacao","coleta"];
-`+graph.slice(from,to)+"\\nreturn position(nodes);";
+`+graph.slice(from,to)+"\nreturn position(nodes);";
  const run=new Function("nodes",program);
  const source=group=>[...(group==="attr"?["forca","agilidade","destreza","inteligencia","influencia","vigor"]:group==="know"?["protecao","medicina","astronomia","alquimia","engenharia","erudicao"]:["atletismo","armas_conjuracao","furtividade","artesao","apresentacao","coleta"])].map(id=>({id:group+":"+id,type:group}));
  const raw=app.slice(app.indexOf("const SKILLS=["),app.indexOf("// IDs de Perícias legadas"));
- const ids=[...raw.matchAll(/\\[\\s*"([\\w-]+)"\\s*,\\s*"/g)].map(m=>m[1]);
+ const ids=[...raw.matchAll(/\[\s*"([\w-]+)"\s*,\s*"/g)].map(m=>m[1]);
  const skills=ids.filter(id=>!hidden.includes(id)&&id!=="combate"&&id!=="armas").map(id=>({id,type:"skill",name:id}));
  const sources=[...source("attr"),...source("know"),...source("practice")];
  for(const subset of [skills,skills.filter((_,i)=>i%3===0)]){
@@ -151,7 +151,7 @@ const basePractice=["atletismo","armas_conjuracao","furtividade","artesao","apre
 test("Montaria: nomes completos, efeitos distintos e especialização épica em consulta",()=>{
  const begin=graph.indexOf("function splitSkillLabel("),end=graph.indexOf("function skill(",begin);
  assert.ok(begin>0&&end>begin);
- const fn=new Function(graph.slice(begin,end)+"\\nreturn splitSkillLabel;")();
+ const fn=new Function(graph.slice(begin,end)+"\nreturn splitSkillLabel;")();
  assert.deepEqual(fn("Perícia em Montaria",16),["Perícia em","Montaria"],"Não abreviar para apenas Montaria");
  assert.deepEqual(fn("Montar Animal",16),["Montar Animal"]);
  assert.ok(registry.includes('"montar",')&&registry.includes("Vantagem, não +1A"),"Montar Animal preserva Vantagem");
