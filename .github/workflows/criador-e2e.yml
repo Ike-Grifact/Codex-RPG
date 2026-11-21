@@ -30,6 +30,8 @@ jobs:
           node-version: '22'
       - name: Validar Elevar dado por Grau e contornos de XP apenas na edição
         run: node --test prototipo-ficha/grade-step-courage.test.mjs
+      - name: Validar Runa-Espinhos, Escudo Rúnico, Ácido e Ar
+        run: node --test prototipo-ficha/runa-escudo-acido-ar.test.mjs
       - name: Instalar navegador de teste
         run: |
           npm install --no-save playwright@1.58.2
