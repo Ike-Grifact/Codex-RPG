@@ -147,7 +147,7 @@ const SKILLS=[
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
  ["cancoes-sustentadas","Canções Sustentadas","PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",null],
  ["pericia-em-instrumentos","Perícia em Instrumentos","Meio instrumental para habilidades do Bardo. Efeitos próprios e XP pendentes.",null],
- ["maestria-em-apresentacao","Maestria em Apresentação","EXPERIMENTAL: Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos; 3A musicais totais para distribuir entre aliados. Desarmonia na falha com Pavor. Compra XP pendente.",null],
+ ["maestria-em-apresentacao","Maestria em Apresentação","EXPERIMENTAL — Perícia ÚNICA do Bardo. Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos. Gera até 3A musicais totais de apoio, distribuídos conforme a DE de cada aliado. Repertório interno: Inspiração 3A→1 Coragem, Ressonância Arcana 3A→1 carga de foco, Acorde de Proteção 1A→anula 1P, Acorde Triunfal 2A→1E, passagem de protagonismo, Ritmo Acelerado e Harmonia Musical. Desarmonia após falha com Pavor. Melodia Psíquica é opção condicional com Disciplina 4 + Criar Item de Foco e Magia e instrumento para até dois alvos; procedimentos de alvos pendentes. Custo de aquisição XP PENDENTE.",null],
  ["voz-encantadora","Voz Encantadora","EXPERIMENTAL: Influência 4 + Apresentação 4 + Vigor 3. Voz substitui instrumento para apresentações comuns, sem substituir instrumentos específicos da Melodia Psíquica. XP pendente.",null],
  ["ritmo-de-batalha","Ritmo de Batalha","EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",null],
  ["inspiracao","Inspiração","EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",null],
@@ -225,6 +225,12 @@ const SKILLS=[
   "pericia-montaria",
   "Perícia em Montaria",
   "Requisitos: Influência 1 + Destreza 2. Concede +1A (um símbolo Antecipar) nos testes com montaria, não Vantagem nem dado extra. Custo de XP PENDENTE; compra bloqueada até decisão autoral.",
+  null
+ ],
+ [
+  "montaria-epica",
+  "Montaria Épica",
+  "PROPOSTO / PENDENTE: Cavalaria para montarias gigantes, aladas ou exóticas. Requisitos, custo de XP e efeitos ainda não definidos; não concede montaria, voo ou bônus automaticamente.",
   null
  ],
  [
@@ -679,7 +685,9 @@ const SKILLS=[
 
 // IDs de Perícias legadas continuam nas fichas salvas e no cálculo de XP,
 // mas não aparecem nas opções novas de compra.
-const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);
+// Efeitos internos do Bardo não são Perícias individuais; preservar IDs legados sem ofertar compras.
+const BARD_INTERNAL_EFFECTS=Object.freeze(["dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas","ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao","acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical","piada-infame","elevacao-harmonica","acao-em-conjunto-musical","presenca-de-palco","melodia-psiquica"]);
+const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas",...BARD_INTERNAL_EFFECTS]);
 const RETIRED_PROTOTYPES=new Set(["marciais","combinacao","peritoconj"]);
 const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
@@ -736,6 +744,7 @@ const SKILL_AFFINITY={
   "attr:influencia",
   "attr:destreza"
  ],
+ "montaria-epica":["attr:influencia","attr:destreza"],
  "provocacao-sofisticada": [
   "attr:influencia",
   "practice:apresentacao"
@@ -1009,9 +1018,13 @@ const SKILL_AFFINITY={
  ]
 };
 const SKILL_BRANCHES=[
- ["maestria-em-apresentacao","dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas"],
- ["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora","ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao","acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical","piada-infame","elevacao-harmonica","acao-em-conjunto-musical","presenca-de-palco"],
- ["criar-item-foco-magia","melodia-psiquica"],
+ // Compra única de Maestria, com Voz e Instrumentos separados.
+ ["apresentacao-avancada","pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora"],
+ ["montar","pericia-montaria","montaria-epica"],
+ ["coleta-avancada"],
+ ["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"],
+ ["alquimia-avancada","pesquisa-avancada-pocoes","bioetica"],
+ ["improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental"],
  ["furtividade","maos-leves","golpe-furtivo"],
  ["protecao","pericia-armadilha"],
  ["alquimia","pesquisa-avancada-pocoes","bioetica"],
@@ -1157,6 +1170,7 @@ const SKILL_PERMALINKS={
  "armas": "armas-1",
  "montar": "montar-animal",
  "pericia-montaria": "pericia-em-montaria",
+ "montaria-epica":"montaria-epica",
  "provocacao-sofisticada": "provocacao-sofisticada",
  "criar-item-foco-magia": "criar-item-de-foco-e-magia",
  "escudo-arcano": "escudo-arcano",
@@ -1282,6 +1296,7 @@ const CARD_REQUIREMENTS={
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
  "pericia-montaria": "Influência 1 + Destreza 2; custo em XP PENDENTE",
+ "montaria-epica":"PROPOSTO — montarias gigantes, aladas ou exóticas; requisitos e XP pendentes",
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
  "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
@@ -2470,8 +2485,9 @@ function skillReq(id,s=state){
   return"Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos.";
  if(id==="voz-encantadora"&&((s.attributes.influencia||0)<4||(s.practices.apresentacao||0)<4||vig<3))
   return"Requer Influência 4, Apresentação 4 e Vigor 3.";
- if(id==="melodia-psiquica"&&(disc<4||!has("criar-item-foco-magia")))
-  return"Requer Disciplina 4 e Criar Item de Foco e Magia. Instrumento obrigatório para uso.";
+ // Melodia Psíquica é um modo da Maestria, não outra compra.
+ if(id==="melodia-psiquica")return"Integrada à Maestria em Apresentação; para usar, requer Disciplina 4, Criar Item de Foco e Magia e instrumento.";
+ if(id==="montaria-epica")return"Requisitos, custo e efeito de Montaria Épica ainda PENDENTES de decisão autoral.";
   // Perícias definidas em 21/11/2026: compras por 1 XP; sem graus ou elementos gratuitos.
   const protection=s.knowledges.protecao||0,engineering=s.knowledges.engenharia||0;
   if(id==="maos-leves"&&(stealth<3||disc<3||protection<2))return"Requer Furtividade 3, Disciplina 3 e Proteção 2.";

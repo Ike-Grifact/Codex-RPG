@@ -1018,6 +1018,18 @@ html:not([data-theme="light"]) .fp-gene-card.type-practice{--gene-tint:#f5f5f5}
 .fp-gene-grade-button:hover:not(.is-disabled) rect,
 .fp-gene-grade-button:focus-visible:not(.is-disabled) rect{stroke-width:3}
 .fp-gene-branch-rule{stroke:var(--fp-stroke);stroke-width:2}
+
+/* Navegação temática do Codex Genético: atalho independente de arraste e pinça. */
+.fp-gene-family-jump{position:absolute;top:12px;right:12px;z-index:4;display:flex;flex-direction:column;gap:3px;
+ max-width:min(270px,52%);padding:8px;border:1px solid var(--fp-stroke);border-radius:10px;
+ background:color-mix(in srgb,var(--fp-surface) 95%,transparent);box-shadow:0 4px 16px rgba(0,0,0,.24);
+ touch-action:manipulation}
+.fp-gene-family-jump label{font-size:10px;font-weight:700;color:var(--fp-muted);letter-spacing:.03em}
+.fp-gene-family-jump select{width:100%;min-width:0;min-height:36px;padding:6px 7px;border-radius:7px;
+ border:1px solid var(--fp-stroke);background:var(--fp-raised);color:var(--fp-text);font-size:12px;touch-action:manipulation}
+@media(max-width:620px){.fp-gene-family-jump{top:8px;right:8px;max-width:57%;padding:6px}
+ .fp-gene-family-jump select{min-height:38px;font-size:11px}.fp-gene-gesture-hint{max-width:38%;font-size:9px}}
+
 /* Grupos orbitais do Codex Genético. Ícones individuais podem ocupar o nó
    sem modificar os IDs nem a lógica de compra das Perícias. */
 .fp-gene-constellation{pointer-events:none}

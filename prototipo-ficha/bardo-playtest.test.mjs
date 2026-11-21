@@ -6,73 +6,111 @@ import {fileURLToPath} from "node:url";
 
 const root=dirname(fileURLToPath(import.meta.url));
 const app=readFileSync(join(root,"app.js"),"utf8");
+const graph=readFileSync(join(root,"gene-graph.js"),"utf8");
 const srd=readFileSync(join(root,"../docs/srd-playtest-nivel-1-v1.0.md"),"utf8");
 const book=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
 const playtest=readFileSync(join(root,"../docs/playtest-bardo-2026-11-21.md"),"utf8");
 const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
 
-const experimental=[
- "pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora",
+const activeBard=["pericia-em-instrumentos","maestria-em-apresentacao","voz-encantadora"];
+const expectedInternal=[
+ "dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas",
  "ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao",
  "acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical",
  "piada-infame","elevacao-harmonica","acao-em-conjunto-musical",
  "presenca-de-palco","melodia-psiquica"
 ];
-const optional=["dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas"];
-const all=[...experimental,...optional];
-const registry=app.slice(app.indexOf('const SKILLS=['),app.indexOf('const HIDDEN_CATALOG_SKILLS='));
+const registry=app.slice(app.indexOf("const SKILLS=["),app.indexOf("const HIDDEN_CATALOG_SKILLS="));
+const hiddenMatch=app.match(/const BARD_INTERNAL_EFFECTS=Object\.freeze\((\[[^\n]+\])\)/);
+const hidden=hiddenMatch?JSON.parse(hiddenMatch[1]):[];
+const cStart=graph.indexOf("const GENE_CONSTELLATIONS=");
+const cEnd=graph.indexOf("function position(",cStart);
+const constellations=new Function(graph.slice(cStart,cEnd)+"\nreturn GENE_CONSTELLATIONS;")();
+const families=new Map(constellations.map(f=>[f.id,f]));
+const membership=id=>constellations.filter(f=>f.skills.includes(id)).map(f=>f.id);
+const page=id=>readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
 
-test("Playtest Bardo: 20 Perícias catalogadas, links únicos e compra XP pendente",()=>{
- for(const id of all){
-  const sig=' ["'+id+'",';
-  assert.equal(registry.split(sig).length-1,1,"Uma entrada no criador: "+id);
-  const start=app.indexOf(sig),end=app.indexOf("],",start);
-  assert.ok(end>start&&app.slice(start,end+1).endsWith(",null]"),"Custo XP não foi inventado: "+id);
-  assert.equal(catalog.split('href="'+id+'.html"').length-1,1,"Link único no catálogo: "+id);
-  const page=readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
-  assert.ok(page.includes("XP")&&page.includes("PENDENTE"),"Verbete bloqueia compra: "+id);
-  assert.ok(page.includes("../docs/playtest-bardo-2026-11-21.md"),"Link à referência: "+id);
+test("Bardo: UMA Maestria e somente Voz/Instrumentos como Perícias distintas",()=>{
+ assert.ok(hiddenMatch,"Registro de efeitos internos existe");
+ assert.deepEqual([...hidden].sort(),[...expectedInternal].sort());
+ for(const id of activeBard){
+  assert.equal(membership(id).join(","),"apresentacao","Bardo ativo no ramo Apresentação: "+id);
+  assert.ok(catalog.includes('href="'+id+'.html"'),"Catálogo com compra única: "+id);
+  assert.ok(page(id).includes("XP")&&page(id).includes("PENDENTE"));
  }
- assert.ok(app.includes("if(!Number.isInteger(cost)"),"Trava de compra por XP não definido preservada");
-});
-
-test("Bardo: requisitos autorais de Maestria e Voz preservados",()=>{
- for(const [id,text] of [
-  ["maestria-em-apresentacao","Apresentação 4 + Influência 4 + Destreza 4 + Apresentação Avançada + Perícia em Instrumentos"],
-  ["voz-encantadora","Influência 4 + Apresentação 4 + Vigor 3"],
-  ["melodia-psiquica","Disciplina 4 + Criar Item de Foco e Magia"]
- ]){
-  const page=readFileSync(join(root,"../pericias/"+id+".html"),"utf8");
-  assert.ok(page.includes(text),"Requisitos no verbete: "+id);
+ for(const id of expectedInternal){
+  assert.equal(membership(id).length,0,"Efeito interno NÃO é nó de perícia: "+id);
+  assert.ok(!catalog.includes('href="'+id+'.html"'),"Efeito interno não deve ser uma compra no catálogo: "+id);
+  assert.ok(page(id).includes("EFEITO INTERNO DA MAESTRIA"),"Verbete legado redireciona à Maestria: "+id);
  }
- assert.ok(app.includes('id==="maestria-em-apresentacao"'),"Requisito da Maestria validado na ficha");
- assert.ok(app.includes('id==="voz-encantadora"'),"Requisito da Voz validado na ficha");
- assert.ok(app.includes('id==="melodia-psiquica"'),"Requisito da Melodia validado na ficha");
+ assert.ok(playtest.includes("UMA única Perícia")&&playtest.includes("sem novo nó"),"Documento canônico consolida");
+ assert.ok(srd.includes("multiplicação inicial dos nomes de técnicas musicais"),"Errata substitui entradas antigas");
+ assert.ok(book.includes("ÚNICA Maestria"),"Livro atualizado");
 });
 
-test("Economia do Bardo: 3A totais, foco a 3A e Desarmonia sem apagar A naturais",()=>{
- for(const doc of [srd,playtest,book]){
-  assert.ok(doc.includes("3A"),"Reserva musical documentada");
-  assert.ok(doc.includes("Ressonância Arcana"),"Recarga de foco consta nas regras");
+test("Economia de 3A e Melodia Psíquica sem custo inventado ou dano duplicado",()=>{
+ const mastery=page("maestria-em-apresentacao");
+ for(const marker of ["3A musicais totais","Ressonância Arcana","Inspiração","Acorde de Proteção","Voz Encantadora","Melodia Psíquica"]){
+  assert.ok(mastery.includes(marker),"Maestria documenta "+marker);
  }
- assert.ok(playtest.includes("**3A musicais → 1 carga de foco**"),"Recarga não custa menos que 3A");
- assert.ok(playtest.includes("não são armazenados")&&playtest.includes("3A por destinatário"),"Sem acumulação ou duplicação");
- assert.ok(playtest.includes("Antecipares naturais")&&playtest.includes("Desarmonia"),"Punição preserva dados naturais");
- assert.ok(!playtest.includes("recuperação de Integridade de armadura")||playtest.includes("não incluir recuperação de Integridade de armaduras"),"Não readmite reparo de armadura");
+ assert.ok(playtest.includes("**3A → 1 carga de foco**")&&playtest.includes("**3A → 1 Coragem**"),"Custo 3A preservado");
+ assert.ok(playtest.includes("**Disciplina 4 + Criar Item de Foco e Magia**"),"Melodia condicional");
+ assert.ok(playtest.includes("Não automatizar Melodia Psíquica"),"Não inventar dupla aplicação");
+ assert.ok(playtest.includes("Antecipares naturais"),"Desarmonia não apaga símbolos naturais");
+ assert.ok(registry.includes('["maestria-em-apresentacao"')&&app.includes("const HIDDEN_CATALOG_SKILLS="));
 });
 
-test("Melodia Psíquica: instrumento, até dois alvos e limites explícitos",()=>{
- const page=readFileSync(join(root,"../pericias/melodia-psiquica.html"),"utf8");
- assert.ok(page.includes("até dois alvos")&&page.includes("instrumento"),"Instrumento e dois alvos");
- assert.ok(page.includes("armas OU psíquicos"),"Alternativa de efeito, sem juntar tipos automaticamente");
- assert.ok(playtest.includes("**Disciplina 4**")&&playtest.includes("**Criar Item de Foco e Magia**"),"Requisitos de Melodia");
- assert.ok(srd.includes("**até dois alvos**"),"SRD não autoriza alvos ilimitados");
- assert.ok(playtest.includes("NÃO automatizar dano duplo"),"Não duplicar dano sem definição");
+test("Ramos do mapa: nenhuma Perícia visível perdida ou repetida",()=>{
+ const raw=app.slice(app.indexOf("const SKILLS=["),app.indexOf("// IDs de Perícias legadas"));
+ const skillIds=[...raw.matchAll(/\[\s*"([\w-]+)"\s*,\s*"/g)].map(m=>m[1]);
+ const visible=skillIds.filter(id=>!hidden.includes(id)&&id!=="armas"&&id!=="combate");
+ const duplicated=visible.filter(id=>membership(id).length!==1);
+ assert.deepEqual(duplicated,[],"Cada Perícia visível pertence a um único ramo");
+ for(const [id,f] of families){
+  assert.ok(f.column>=0&&f.column<=2,"Coluna válida: "+id);
+  assert.equal(f.skills.length,new Set(f.skills).size,"Sem nós duplicados no ramo "+id);
+ }
+ assert.equal(families.get("apresentacao").skills.length,4);
+ assert.ok(families.get("coleta").skills.includes("coleta-avancada"));
+ assert.ok(families.get("artesao").skills.includes("ferreiro"));
+ assert.ok(families.get("alquimia").skills.includes("bioetica"));
+ assert.ok(families.get("alquimia").skills.includes("pesquisa-avancada-pocoes"));
 });
 
-test("Precedência: notas do Bardo não reescrevem Apresentação Avançada nem autorizam duas Práticas",()=>{
- assert.ok(srd.includes("não introduzir classe fixa")||srd.includes("sem introduzir classe fixa"));
- assert.ok(playtest.includes("proibição de misturar duas Práticas"),"Misturas de duas Práticas exigem definição");
- assert.ok(playtest.includes("custos de aquisição de XP"),"XP ainda pendente");
- assert.ok(book.includes("[EXPERIMENTAL / XP PENDENTE]"),"Livro indica estado correto");
+test("Correção temática: Olhos de Águia, Elementos, Psíquico e Cavalaria",()=>{
+ assert.deepEqual(membership("olhos-de-aguia"),["disparos"]);
+ for(const id of ["improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental"])
+  assert.deepEqual(membership(id),["elementos"],"Perícia elemental no ramo Elementos: "+id);
+ for(const id of ["invocar-esfera-espiritual","passo-etereo","absorver-esferas","disparo-esferas-espirituais"])
+  assert.deepEqual(membership(id),["psiquico"],"Esfera no ramo Psíquico: "+id);
+ for(const id of ["montar","pericia-montaria","montaria-epica"])
+  assert.deepEqual(membership(id),["cavalaria"],"Montaria no ramo Cavalaria: "+id);
+});
+
+test("Montaria Épica não altera Montar Animal nem inventa XP ou voo",()=>{
+ const item=registry.slice(registry.indexOf('  "montaria-epica",'));
+ assert.ok(item.startsWith('  "montaria-epica",')&&item.includes("null"),"Compra sem preço permanece bloqueada");
+ assert.ok(app.includes('if(id==="montaria-epica")return'),"Pendente explícito em skillReq()");
+ assert.ok(page("montaria-epica").includes("gigantes, aladas ou exóticas"),"Tipos da proposta");
+ assert.ok(catalog.includes('href="montaria-epica.html"'),"Cavalaria no catálogo");
+ assert.ok(srd.includes("PROPOSTO / PENDENTE — Montaria Épica"));
+ assert.ok(registry.includes('"montar",\n  "Montar Animal"')&&registry.includes("2 XP. Requer Influência 2"),"Montar Animal inalterada");
+ assert.ok(registry.includes('"pericia-montaria"')&&registry.includes("Custo de XP PENDENTE"),"Perícia em Montaria inalterada");
+});
+
+test("Persistem limitações centrais das rolagens, ações e Antecipar",()=>{
+ assert.ok(playtest.includes("sem somar dados de duas Práticas"),"Sem liberar combinações proibidas");
+ assert.ok(playtest.includes("9 dados")||srd.includes("9 dados"),"Limite de 9 dados");
+ assert.ok(!app.includes('const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas"]);'),"Ocultação agora considera efeitos internos");
+});
+
+
+test("Navegação móvel: mapa oferece salto direto às constelações sem nova mecânica",()=>{
+ assert.ok(graph.includes("function jumpToFamily(root,id)"),"Função de salto entre ramos");
+ assert.ok(graph.includes('data-gene-family-jump'),"Seletor de grupos no mapa");
+ assert.ok(graph.includes("cam.zoom=clamp"),"Salto controla zoom sem alterar nós");
+ assert.ok(graph.includes("root.__geneFamilies=groups"),"Ramos acompanham filtros e ficha atual");
+ const styles=readFileSync(join(root,"styles.css"),"utf8");
+ assert.ok(styles.includes(".fp-gene-family-jump"),"Navegação estilizada");
+ assert.ok(styles.includes("@media(max-width:620px)"),"Compatibilidade móvel preservada");
 });
