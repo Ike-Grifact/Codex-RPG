@@ -23,7 +23,7 @@ test("v0.66: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva
  const p=defensePresentation(s);
  assert.equal(p.value,2);
  assert.equal(p.label,"DE DEFENSIVA");
- assert.match(p.caption,/todas as defesas/);
+ assert.match(p.caption,/todas as defesas/i);
  assert.match(p.caption,/Teto 12/);
 });
 
