@@ -269,6 +269,41 @@ function inventory(t,x){
 }
 
 
+function armorPanel(t){
+ const x=stats(t),armor=equippedArmor(t),items=(t.items||[]).filter(it=>it.kind==="armor"||it.kind==="shield");
+ const human=isHumanoidKind(t.kind);
+ return '<section class="cf-panel cf-armor-panel" aria-label="Armadura e Integridade durante o conflito">'+
+  '<h3>Armadura e Integridade</h3>'+
+  (human?'<p class="cf-note">DE '+x.de+' = base '+x.baseDE+
+    (x.armorDE?' · armadura '+(x.armorDE>0?'+':'')+x.armorDE:'')+
+    (x.shieldDE?' · Maestria em Escudos +1':'')+
+    '. Apenas uma armadura equipada modifica a DE.</p>':
+   '<p class="cf-note">Integridade registrada manualmente; a DE natural da criatura mantém sua regra própria.</p>')+
+  (!items.length?'<p class="cf-note">Nenhuma armadura ou escudo cadastrado'+
+   (human?'. Abra Edição → Equipamento e carga para adicionar uma armadura G1.':'.')+'</p>':
+   '<div class="cf-armor-list">'+items.map(it=>{
+    const armored=it.kind==="armor",allowed=canEquipArmor(t,it);
+    return '<div class="cf-armor-row"><div><strong>'+esc(it.name)+'</strong>'+
+     '<small>'+(armored?"Armadura":"Escudo")+' · '+(it.equipped?"Equipado":"Guardado")+
+     (armored&&itemCategory(it)?" · "+esc(itemCategory(it)):"")+'</small></div>'+
+     '<div class="cf-integrity-actions">'+
+     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="-1"'+
+       (it.integrity<=0?' disabled':'')+' aria-label="Reduzir Integridade de '+esc(it.name)+'">−</button>'+
+     '<label class="cf-integrity-entry">Integridade atual <input type="number" min="0" max="'+it.integrityMax+
+       '" step="1" data-integrity-set="'+esc(it.id)+'" value="'+it.integrity+'" aria-label="Integridade atual de '+esc(it.name)+'"></label>'+
+     '<span> / '+it.integrityMax+'</span>'+
+     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="1"'+
+       (it.integrity>=it.integrityMax?' disabled':'')+' aria-label="Recuperar Integridade de '+esc(it.name)+'">+</button>'+
+     '<button type="button" data-equip-item="'+esc(it.id)+'"'+
+       (armored&&!it.equipped&&!allowed?' disabled title="Requisitos de equipamento não atendidos"':'')+
+       ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+
+       (it.equipped?"Guardar":"Equipar")+'</button></div></div>';
+   }).join("")+'</div>')+
+   (armor?'<p class="cf-note">Armadura equipada: '+esc(armor.name)+' · '+
+     armor.integrity+' / '+armor.integrityMax+'. Dano na armadura não é descontado automaticamente da Vida.</p>':'')+
+  '</section>';
+}
+
 function rollSourceCards(t){
  const d=draftFor(t),human=isHumanoidKind(t.kind);
  const rows=[
@@ -388,7 +423,7 @@ function rollWorkspace(t){
   (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / '+maxCourage(t.level)+'</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
+  '</div></div>'+armorPanel(t)+'<div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
   '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
 }
 
@@ -582,7 +617,7 @@ function editorHTML(t){
    '<section class="cf-panel"><h3>Práticas · Disciplina é uma única Prática</h3>'+gradeCards(t,"practice",PRACTICES)+'</section>':"")+
   '<section class="cf-panel"><h3>Perícias e capacidades</h3>'+skillPanel(t)+
   '<label class="cf-form-row" style="display:flex;flex-direction:column;align-items:stretch;margin-top:12px">Capacidades naturais, imunidades e observações de uso<textarea class="cf-note-input" data-field="abilities" rows="4" maxlength="4000">'+esc(t.abilities)+'</textarea></label></section>'+
-  inventory(t,x)+
+  armorPanel(t)+inventory(t,x)+
   '<section class="cf-panel"><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
   '<textarea class="cf-note-input" data-field="notes" rows="4" maxlength="4000">'+esc(t.notes)+'</textarea></label>'+
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
