@@ -118,3 +118,16 @@ test("Busca as várias fichas de jogador, NPC e Criar Conflito do navegador sem 
  assert.deepEqual(profiles.map(x=>x.name),["Primeiro","Segundo","NPC de teste","Ameaça"]);
  assert.deepEqual([...storage.entries()],contentsBefore);
 });
+
+test("Arco e revólver usam a tabela própria, sem copiar a matriz genérica",()=>{
+ const t=armor();
+ assert.equal(weightAffinity({kind:"weapon",name:"Arco Curto",category:"leve"},t).delta,-1);
+ assert.equal(weightAffinity({kind:"weapon",name:"Arco Curto",category:"leve"},t,{skills:["armas-longo-alcance"]}).delta,0);
+ assert.equal(weightAffinity({kind:"weapon",name:"Arco Longo",category:"medio"},t).delta,-1);
+ assert.equal(weightAffinity({kind:"weapon",name:"Besta de uma mão",category:"leve"},t).delta,0);
+ assert.equal(weightAffinity({kind:"firearm",name:"Revólver",category:"leve"},t).delta,-1);
+ assert.equal(weightAffinity({kind:"firearm",name:"Revólver",category:"leve"},t,{skills:["armas-fogo"]}).delta,0);
+ assert.equal(weightAffinity({kind:"firearm",name:"Sniper",category:"pesado"},t).delta,1);
+ assert.equal(weightAffinity({kind:"firearm",name:"Escopeta",category:"pesado"},t).delta,1);
+ assert.equal(weightAffinity({kind:"weapon",name:"Besta Pesada",category:"pesado"},t).status,"manual");
+});
