@@ -110,6 +110,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
    "A última rolagem confirmada deve continuar disponível após recarregar.");
   // Elevação de Grau no comparador: fonte inteira e custo real, sem alterar a ficha original.
+  await page.evaluate(()=>{Math.random=()=>.7;});
   await page.locator("#step-source").selectOption("practice:armas_conjuracao");
   await page.locator("#active-skill").selectOption("armas-leves");
   await page.locator("#skill-courage").fill("1");
