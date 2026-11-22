@@ -93,7 +93,7 @@ test("UI seleciona fonte e mostra composições completas, não um dado isolado"
  assert.ok(!app.includes("stepDieId"));
  assert.ok(app.includes("const band=editMode?racialXpBand(group,id):\"normal\""));
  assert.ok(app.includes('(editMode?racialXpMarker(group,id):"")'));
- assert.match(html,/app\.js\?v=20261120-magic-icons-v3/);
+ assert.match(html,/app\.js\?v=20261122-srd-v089/);
 });
 
 test("Ações acessíveis, inventário como posses e indicadores prioritários",()=>{
