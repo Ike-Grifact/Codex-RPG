@@ -498,7 +498,7 @@ test("Maestria em Escudos: 1 XP, Destreza/Vigor 2, +1 DE com escudo único e Int
  assert.equal(sheet.items[0].hp,4,"Cravar e desgaste material respeitam ponto consumido");
  const noSkill={...sheet,skills:[]};
  assert.equal(f.deDefense(noSkill),f.deNatural(noSkill),"Sem Maestria DE normal");
- const cap={...sheet,attributes:{...sheet.attributes,agilidade:0,destreza:6,vigor:6},items:[sheet.items[0],
+ const cap={...sheet,attributes:{...sheet.attributes,agilidade:6,destreza:6,vigor:6},items:[sheet.items[0],
   {id:"armor",type:"armadura",weight:"muito_leve",equipped:true,grade:1}]};
  assert.equal(f.deDefense(cap),12,"Maestria + armadura não ultrapassam teto 12");
  const file=readFileSync(join(root,"../pericias/maestria-em-escudos.html"),"utf8");
