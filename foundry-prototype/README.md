@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
-> **SRD v0.89 — 22/11/2026 [DEFINIDO]:** humanoides: `min(9, Agilidade + piso((Vigor + Destreza)/2) + piso(Atletismo/3))`, sem +1. Armadura Muito Leve/Roupas Simples **+2 DE em todas as defesas**, inclusive esquiva, uma única vez; teto final 12. Criação **15 XP compartilhados**, sem reservas. Magias declaradas rolam no início e recebem **um dado por Grau** (G1 d6, G2 d10, G3 d12); foco **não adiciona dado**, apenas acelera G2/G3 nas condições normativas. [SRD v0.89](../docs/srd-continuidade-v0.89.md). Instalações locais do Foundry não se atualizam automaticamente.
+> **SRD v0.89 — 22/11/2026 [DEFINIDO]:** humanoides: `min(9, Agilidade + piso((Vigor + Destreza)/2) + piso(Atletismo/3))`, sem +1. Armadura Muito Leve/Roupas Simples **+2 DE em todas as defesas**, inclusive esquiva, uma única vez; teto final 12. Criação **15 XP compartilhados**, sem reservas. Magias declaradas rolam no início e recebem **dados pelo Grau** (G1 d6, G2 d10, G3 d12, G4 **2d12** com dois elementos G3 distintos); foco **não adiciona dado**. **G2 acelera a 1 turno gastando 1 carga**; G3/G4 seguem a escala própria de cargas (G4: dois focos). [SRD v0.89](../docs/srd-continuidade-v0.89.md). Instalações locais do Foundry não se atualizam automaticamente.
 
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
