@@ -42,6 +42,7 @@ function load(){
    s.active=s.roster.some(x=>x.id===raw.active)?raw.active:s.roster[0]?.id||null;
     s.lastRoll=raw.lastRoll&&typeof raw.lastRoll==="object"?raw.lastRoll:null;
    s.rollHistory=Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300).filter(e=>e&&typeof e==="object"):[];
+   s.combat=raw.combat&&typeof raw.combat==="object"?raw.combat:null;
   }
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
@@ -50,7 +51,7 @@ let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraf
 // O estado do comparador vive apenas no JSON de Criar Conflito; fichas originais ficam intactas.
 let combatRoll=null;
 function combatState(){
- if(!model.combat||typeof model.combat!=="object")model.combat={players:[],actor:"",target:"",weightOverride:"",weaponId:"",base:"practice:armas_conjuracao",attribute:"forca",second:"vigor",mode:"armas",extraKeep:false,pending:null,last:null,log:[]};
+ if(!model.combat||typeof model.combat!=="object")model.combat={players:[],actor:"",target:"",weightOverride:"",weaponId:"",base:"practice:armas_conjuracao",attribute:"forca",second:"vigor",mode:"armas",attackKind:"fisico",extraKeep:false,pending:null,last:null,log:[]};
  const c=model.combat;
  if(!Array.isArray(c.players))c.players=[];
  if(!Array.isArray(c.log))c.log=[];
@@ -142,11 +143,12 @@ function renderCombat(){
  const armorText=armor?esc(armor.name)+" · "+Number(armor.integrity||0)+"/"+Number(armor.integrityMax||0):
   "Sem armadura equipada";
  const sourceControls=a?'<div class="cf-combat-controls"><label>Fonte base<select id="combat-base">'+combatOptions(baseList,c.base)+'</select></label>'+
-  '<label>Atributo<select id="combat-attribute">'+combatOptions(attrs,c.attribute)+'</select></label>'+
+  (isHumanoidKind(a.kind)?'<label>Atributo<select id="combat-attribute">'+combatOptions(attrs,c.attribute)+'</select></label>':'')+
   (!isHumanoidKind(a.kind)?'<label>Segundo Atributo<select id="combat-second">'+combatOptions(attrs,c.second)+'</select></label>':'')+
   '<label>Arma equipada<select id="combat-weapon">'+combatOptions([["","Sem arma (peso não aplicado)"],...weapons.map(w=>[w.id,w.name])],c.weaponId)+'</select></label>'+
-  '<label>Porte do alvo / peso<select id="combat-target-weight">'+combatOptions([["","Automático pela armadura (ou pendente)"],["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],c.weightOverride)+'</select></label>'+
-  '<label><input id="combat-extra-keep" type="checkbox"'+(c.extraKeep?' checked':'')+'> Permitir 1 mantido extra (Coragem)</label></div>':"";
+  '<label>Tipo de ação<select id="combat-attack-kind">'+combatOptions([["fisico","Ataque físico comum"],["outro","Magia ou efeito especial (dano manual)"]],c.attackKind||"fisico")+'</select></label>'+ 
+   '<label>Porte do alvo / peso<select id="combat-target-weight">'+combatOptions([["","Automático pela armadura (ou pendente)"],["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],c.weightOverride)+'</select></label>'+
+  (isHumanoidKind(a.kind)?'<label><input id="combat-extra-keep" type="checkbox"'+(c.extraKeep?' checked':'')+'> Permitir 1 mantido extra (Coragem)</label>':'')+'</div>':"";
  const infoText=a&&t?'<div class="cf-combat-stats"><span>DE do alvo <b>'+defensiveDE(t)+'</b></span>'+
   '<span>Vida <b>'+Number(t.life||0)+'</b></span><span>Integridade <b>'+armorText+'</b></span>'+
   '<span>Peso da arma <b>'+(info.weight?esc(info.weight):"Pendente/sem arma")+'</b></span>'+
@@ -176,11 +178,11 @@ function renderCombat(){
  const lastHTML=last?'<div class="cf-combat-result"><h3>Último confronto · '+esc(last.attackerName)+" → "+esc(last.targetName)+'</h3>'+
   '<p>'+esc(last.outcome)+' · '+last.e+'E / '+last.p+'P · Dano básico '+last.damage+
   (last.success?' · Acerto confirmado':' · Falha')+'</p>'+
-  (last.success&&last.damage>0?'<p>Dano físico comum: '+(armorDamagePreview(combatUnit(last.target),last).physicalImmune?
+  (last.physical&&last.success&&last.damage>0?'<p>Dano físico comum: '+(armorDamagePreview(combatUnit(last.target),last).physicalImmune?
    "armadura G4 imune (não aplicar dano físico comum)":
    "Integridade −"+armorDamagePreview(combatUnit(last.target),last).removed+"; Vida −"+
    armorDamagePreview(combatUnit(last.target),last).lifeLoss+" (5E ou mais: 2 Vida quando o dano atravessa a proteção)")+'</p>':"")+
-  '<button type="button" id="combat-apply-damage"'+(last.applied||!last.success||!last.damage?' disabled':'')+'>Aplicar dano físico comum ao alvo (uma vez)</button>'+
+  '<button type="button" id="combat-apply-damage"'+(last.applied||!last.success||!last.damage||!last.physical?' disabled':'')+'>Aplicar dano físico comum ao alvo (uma vez)</button>'+
   '<p class="cf-note">Magias, imunidades, resistências, propriedades e consequências especiais não são aplicadas automaticamente. Ajuste manualmente quando necessário.</p></div>':"";
  const manual=t?'<div class="cf-combat-manual"><h3>Ajustes manuais no alvo</h3>'+
   '<div class="cf-combat-actions"><span>Vida '+t.life+' <button data-combat-adjust="life" data-delta="-1">−</button><button data-combat-adjust="life" data-delta="1">+</button></span>'+
@@ -199,7 +201,7 @@ function beginCombatRoll(){
  const c=combatState(),a=combatAttacker(),t=combatDefender();
  if(!a||!t||a===t)return notice("Selecione atacante e alvo diferentes.");
  const human=isHumanoidKind(a.kind),[group,key]=(c.base||"").split(":");
- if(!human&&key===c.attribute)return notice("Escolha dois Atributos diferentes para criaturas.");
+ if(!human&&key===c.second)return notice("Escolha dois Atributos diferentes para criaturas.");
  const selection=human?{baseGroup:group,baseKey:key,attribute:c.attribute,mode:key==="armas_conjuracao"?"armas":"normal"}:
   {first:key,second:c.second};
  const pool=composeActionPool(a,selection);
@@ -209,7 +211,7 @@ function beginCombatRoll(){
  const firstOther=rolled.find(d=>d.id!==firstAttr?.id);
  const kept=[firstAttr?.id,firstOther?.id].filter(Boolean);
  combatRoll={actor:c.actor,target:c.target,dice:rolled,kept,de:defensiveDE(t),bonusA:info.bonus,
-  weaponName:info.weapon?.name||"",extraKeep:!!c.extraKeep,cancelP:0,convertPairs:0,passA:false};
+  weaponName:info.weapon?.name||"",physical:c.attackKind!=="outro",extraKeep:!!c.extraKeep,cancelP:0,convertPairs:0,passA:false};
  renderCombat();
 }
 function confirmCombatRoll(){
@@ -227,7 +229,7 @@ function confirmCombatRoll(){
   model.roster[idx]=settled.unit;model.publicPavor=settled.publicPavor;
  }
  c.last={attacker:p.actor,target:p.target,attackerName:a.name,targetName:t.name,
-  outcome:r.outcome,success:r.success,e:r.e,p:r.p,damage:r.damage,applied:false};
+  outcome:r.outcome,success:r.success,e:r.e,p:r.p,damage:r.damage,physical:p.physical,applied:false};
  if(a.sourceId&&r.p>0)c.pending={type:"pavor",remaining:r.p};
  else if(!a.sourceId&&!r.success&&r.p>0)c.pending={type:"coragem",remaining:r.p};
  else c.pending=null;
@@ -239,7 +241,7 @@ function confirmCombatRoll(){
 }
 function applyCombatDamage(){
  const c=combatState(),last=c.last,t=last&&combatUnit(last.target);
- if(!t||!last||last.applied||!last.success)return notice("Nenhum acerto pendente para aplicar.");
+ if(!t||!last||last.applied||!last.success||!last.physical)return notice("Nenhum ataque físico comum pendente para aplicar.");
  const r=applyCommonDamage(t,last);
  if(!r.applied)return notice(r.reason||"Dano não aplicado.");
  last.applied=true;combatLog("Dano",t.name+": −"+r.removed+" Integridade, −"+r.lifeRemoved+" Vida. "+
@@ -938,7 +940,8 @@ async function importJson(file){
   if(!confirm("Substituir o conflito atual pelo arquivo importado?"))return;
   model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,lastRoll:raw.lastRoll||null,
    rollHistory:Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300):[],
-   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),companions:normalizeCompanions(raw.companions,raw.players),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
+   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),companions:normalizeCompanions(raw.companions,raw.players),roster:raw.roster.slice(0,80).map(normalize),active:raw.active,
+    combat:raw.combat&&typeof raw.combat==="object"?raw.combat:null};
   model.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(model.players)));
   if(!model.roster.some(t=>t.id===model.active))model.active=model.roster[0]?.id||null;
   save();render();notice("Conflito importado com "+model.roster.length+" fichas.");
@@ -1056,6 +1059,43 @@ document.addEventListener("change",event=>{
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}
  if(target.dataset.field)update(target.dataset.field,target.type==="checkbox"?target.checked:target.value);
 });
+
+// Fluxo do comparador independente dos botões do editor de ameaças.
+document.addEventListener("click",event=>{
+ const b=event.target.closest("button");if(!b)return;
+ if(b.id==="combat-import-players")return importCombatPlayers();
+ if(b.id==="combat-roll")return beginCombatRoll();
+ if(b.id==="combat-confirm-roll")return confirmCombatRoll();
+ if(b.id==="combat-discard-roll"){combatRoll=null;renderCombat();return;}
+ if(b.id==="combat-apply-damage")return applyCombatDamage();
+ if(b.id==="combat-transfer")return combatTransfer();
+ if(b.dataset.combatAdjust)return adjustCombatTarget(b.dataset.combatAdjust,Number(b.dataset.delta)||0);
+});
+document.addEventListener("change",event=>{
+ const b=event.target,c=combatState();
+ if(b.id==="combat-attacker"){c.actor=b.value;c.weaponId="";c.base="";combatRoll=null;combatPickDefaults();save();renderCombat();return;}
+ if(b.id==="combat-target"){c.target=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-weapon"){c.weaponId=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-attack-kind"){c.attackKind=b.value==="outro"?"outro":"fisico";combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-target-weight"){c.weightOverride=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-base"){c.base=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-attribute"){c.attribute=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-second"){c.second=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-extra-keep"){c.extraKeep=b.checked;combatRoll=null;save();renderCombat();return;}
+ if(b.dataset.combatDie&&combatRoll){
+  if(b.checked&&!combatRoll.kept.includes(b.dataset.combatDie))combatRoll.kept.push(b.dataset.combatDie);
+  if(!b.checked)combatRoll.kept=combatRoll.kept.filter(x=>x!==b.dataset.combatDie);
+  renderCombat();return;
+ }
+ if(combatRoll&&["combat-cancel","combat-pairs","combat-pass"].includes(b.id)){
+  if(b.id==="combat-pass")combatRoll.passA=b.checked;
+  else if(b.id==="combat-cancel")combatRoll.cancelP=Math.floor(clamp(b.value,0,9));
+  else combatRoll.convertPairs=Math.floor(clamp(b.value,0,4));
+  renderCombat();return;
+ }
+ if(b.id==="combat-recipient"){c.recipient=b.value;save();return;}
+});
+
 const quickImportNotice=consumeQuickHumanoid();
 render();
 if(quickImportNotice)notice(quickImportNotice);
