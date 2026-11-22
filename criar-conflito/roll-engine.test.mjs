@@ -158,10 +158,10 @@ test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=
  m.items=[{id:"arm1",name:"Armadura Leve",kind:"armor",qty:1,weight:0.125,
   integrityMax:7,integrity:5,equipped:true}];
  const saved=normalize(m);
- assert.equal(saved.items[0].integrityMax,7);
- assert.equal(saved.items[0].integrity,5);
+ assert.equal(saved.items[0].integrityMax,5);
+ assert.equal(saved.items[0].integrity,3);
  const restored=normalize(saved);
- assert.equal(restored.items[0].integrity,5);
+ assert.equal(restored.items[0].integrity,3);
 });
 
 

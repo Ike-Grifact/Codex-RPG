@@ -12,7 +12,7 @@ function humanoid(){
  return t;
 }
 
-test("Armadura Muito Leve equipada: 3 de Integridade e +2 DE defensiva",()=>{
+test("Armadura Muito Leve: migração de 3 para 2 de Integridade, +2 DE defensiva",()=>{
  const t=humanoid(),base=stats(t).de;
  t.items=[{id:"a",name:"Roupas Simples",kind:"armor",category:"muito-leve",
   weight:.125,qty:1,grade:1,integrityMax:3,integrity:2,equipped:false}];
@@ -22,8 +22,8 @@ test("Armadura Muito Leve equipada: 3 de Integridade e +2 DE defensiva",()=>{
  assert.equal(stats(t).de,base+2);
  assert.equal(equippedArmor(t)?.integrity,2,"dano já recebido é mantido");
  const saved=normalize(JSON.parse(JSON.stringify(t)));
- assert.equal(saved.items[0].integrity,2);
- assert.equal(saved.items[0].integrityMax,3);
+ assert.equal(saved.items[0].integrity,1);
+ assert.equal(saved.items[0].integrityMax,2);
  assert.equal(saved.items[0].equipped,true);
  assert.equal(stats(saved).de,base+2);
  assert.equal(saved.life,t.life,"a Integridade não modifica Vida automaticamente");
@@ -46,8 +46,8 @@ test("Importação legada e item da ficha do jogador mantêm a armadura",()=>{
  assert.ok(armor);
  assert.equal(armor.kind,"armor");
  assert.equal(armor.category,"leve");
- assert.equal(armor.integrity,4);
- assert.equal(armor.integrityMax,7);
+ assert.equal(armor.integrity,2);
+ assert.equal(armor.integrityMax,5);
  assert.equal(armor.equipped,true);
  assert.equal(itemCategory({name:"Roupas Simples"}),"muito-leve","armaduras antigas ainda são reconhecidas");
 });
@@ -81,7 +81,7 @@ test("Envio do NPC transporta inventário, Integridade e equipamento",()=>{
  const creature=humanoid();
  creature.items=exported;
  const received=normalize(creature);
- assert.equal(equippedArmor(received).integrity,5);
+ assert.equal(equippedArmor(received).integrity,1);
  assert.ok(npcSrc.includes("items:npcConflictItems()"),"envio real não usa lista vazia");
 });
 

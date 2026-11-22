@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,armorOf,defense,equippedWeapons,
+import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
  weightAffinity,lifeAtFive,transferPavor,updateResource} from "./comparador-logic.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -30,7 +30,7 @@ test("Cinco Êxitos contra alvo sem armadura: exatamente 2 Vida (não +2 Integri
 
 test("Armadura equipada impede os 2 Vida diretos por patamar de cinco",()=>{
  const target=armor(),def=defense(target),source=bare();
- assert.equal(armorOf(target).integrity,2);
+ assert.equal(armorOf(target).integrity,1);
  assert.equal(def,4,"DE base 2 e armadura Muito Leve +2");
  const actual=lifeAtFive({success:true,e:5,p:0},target);
  assert.equal(actual.eligible,false);assert.equal(actual.damage,0);
@@ -96,11 +96,11 @@ test("Pavor de ataque inimigo restaura Coragem do alvo jogador até o teto",()=>
 test("Integridade de armadura da ficha e JSON é preservada",()=>{
  const item=normalizeEquipment({id:"a",name:"Armadura Leve",type:"armadura",weight:"leve",
   grade:1,max:7,hp:4,equipped:true});
- assert.equal(item.kind,"armor");assert.equal(item.integrity,4);
- assert.equal(item.integrityMax,7);assert.equal(item.category,"leve");
+ assert.equal(item.kind,"armor");assert.equal(item.integrity,2);
+ assert.equal(item.integrityMax,5);assert.equal(item.category,"leve");
  const asCatalog=normalizeEquipment({name:"Roupas Simples",kind:"armor",
   category:"muito-leve",integrity:{value:3,max:3},equipped:true});
- assert.equal(asCatalog.integrity,3);assert.equal(asCatalog.integrityMax,3);
+ assert.equal(asCatalog.integrity,2);assert.equal(asCatalog.integrityMax,2);
 });
 
 test("Busca as várias fichas de jogador, NPC e Criar Conflito do navegador sem escrever",()=>{
@@ -181,4 +181,72 @@ test("Ficha explicita quando Disciplina Avançada não existe ou não cumpre Gra
  assert.equal(sheet.skills.length,0);
  assert.equal(sheet.attributes.find(x=>x.id==="forca").grade,2);
  assert.equal(sheet.abilities,"Fareja rastros");
+});
+
+
+test("Nerf G1: Integridade 2/5/8/12 com conservação de dano, idempotência e escudos preservados",()=>{
+ const expected=[["Roupas Simples",3,2],["Armadura Leve",7,5],
+  ["Armadura Média",12,8],["Armadura Pesada",17,12]];
+ for(const [name,oldMax,nextMax] of expected){
+  const old=normalizeEquipment({name,kind:"armor",grade:1,
+   integrityMax:oldMax,integrity:oldMax-1,equipped:true});
+  assert.equal(old.integrityMax,nextMax,name);
+  assert.equal(old.integrity,nextMax-1,"Dano sofrido permanece 1");
+  const again=normalizeEquipment(old);
+  assert.deepEqual([again.integrityMax,again.integrity],[nextMax,nextMax-1]);
+ }
+ const shield=normalizeEquipment({name:"Escudo Leve",kind:"shield",integrityMax:9,integrity:6});
+ assert.equal(shield.integrityMax,9);
+ assert.equal(shield.integrity,6);
+ const higher=normalizeEquipment({name:"Armadura Leve",kind:"armor",grade:2,
+  integrityMax:12,integrity:7});
+ assert.equal(higher.integrityMax,12,"G2 não foi modificado");
+});
+
+test("Saúde prejudica inimigos e jogadores pelos mesmos estados de Vida",()=>{
+ const a=bare(),b=armor();
+ for(const life of [0,1,2,3,4,5]){
+  a.life=life;b.life=life;
+  const one=combatHealth(a),two=combatHealth(b);
+  assert.equal(one.id,two.id);
+  assert.deepEqual([one.e,one.a,one.p,one.coragem],[two.e,two.a,two.p,two.coragem]);
+ }
+ assert.deepEqual([combatHealth({...a,life:2}).e,combatHealth({...a,life:2}).p],[-1,1]);
+ assert.equal(combatHealth({...a,life:1}).coragem,2);
+ assert.equal(combatHealth({...a,life:0}).id,"morto");
+});
+
+test("Elevar uma fonte inteira altera sua tabela de dados sem comprar Grau",()=>{
+ const npc=normalizeCombatant({kind:"humanoide",practices:{armas_conjuracao:2},attributes:{vigor:1}});
+ let boost=boostCombatSource(npc,"practice","armas_conjuracao");
+ assert.equal(boost.ok,true);
+ assert.deepEqual(boost.before,[10,10]);
+ assert.deepEqual(boost.after,[10,10,10]);
+ assert.equal(npc.practices.armas_conjuracao,2,"Grau comprado nunca muda");
+ npc.practices.armas_conjuracao=3;
+ boost=boostCombatSource(npc,"practice","armas_conjuracao");
+ assert.deepEqual(boost.after,[10,10,12]);
+ assert.equal(boostCombatSource({...npc,practices:{armas_conjuracao:6}},
+  "practice","armas_conjuracao").ok,false);
+ const beast=normalizeCombatant({kind:"monstro",attributes:{forca:1}});
+ assert.deepEqual(boostCombatSource(beast,"attribute","forca").after,[10,10]);
+ assert.equal(boostCombatSource(beast,"practice","armas_conjuracao").ok,false);
+});
+
+test("Rastreio de símbolos identifica origem das faces, equipamento e descartes",()=>{
+ const rolls=[{id:"p.0",group:"practice",key:"armas_conjuracao",sides:10,face:10},
+  {id:"a.0",group:"attribute",key:"forca",sides:6,face:5,boosted:true},
+  {id:"w",group:"equipment",key:"adaga",sides:6,face:3}];
+ const rows=rollProvenance(rolls,["p.0","a.0"],{weapon:"Adaga"});
+ assert.deepEqual(rows.map(x=>[x.source,x.e,x.a,x.p,x.kept]),[
+  ["Disciplina",2,1,0,true],["Força",0,1,1,true],["Adaga",0,0,1,false]]);
+ assert.equal(rows[1].step,true);
+});
+
+test("Perícia ativa só pode ser registrada se adquirida na ficha",()=>{
+ const a=bare();
+ assert.equal(selectedActiveSkill(a,"disciplina-avancada"),null);
+ const owned=selectedActiveSkill(a,"armas-leves");
+ assert.equal(owned.id,"armas-leves");
+ assert.match(owned.name,/Armas Leves/);
 });

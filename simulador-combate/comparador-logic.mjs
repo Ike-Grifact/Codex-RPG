@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap} from "../criar-conflito/codex-rules.mjs";
-import {blank,isHumanoidKind,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS} from "../criar-conflito/rules.mjs";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs";
+import {blank,isHumanoidKind,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -11,7 +11,8 @@ export function categoryOf(it={}){
  const raw=String(it.category||it.weightCategory||it.weightClass||(typeof it.weight==="string"?it.weight:"")||"").toLowerCase().replaceAll(" ","-");
  return alias[raw]||raw||({"Roupas Simples":"muito-leve","Armadura Leve":"leve","Armadura Média":"medio","Armadura Pesada":"pesado"})[it.name]||"";
 }
-export function normalizeEquipment(raw={}){
+export function normalizeEquipment(original={}){
+ const raw=migrateArmorIntegrity(original);
  const kind=["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
  const category=categoryOf(raw),sourceIntegrity=raw.integrity;
  const max=int(raw.integrityMax??raw.max??(typeof sourceIntegrity==="object"?sourceIntegrity.max:undefined)??0);
@@ -66,6 +67,43 @@ export function combatantSheetData(c={}){
  };
 }
 
+/** Saúde segue os quatro estados do jogador (inclusive inimigos). */
+export function combatHealth(c){
+ const max=4+Number(c?.attributes?.vigor||0)+Math.floor(Number(c?.attributes?.forca||0)/2);
+ return healthByLife(c,Math.max(0,Math.min(max,Math.floor(Number(c?.life??max)))));
+}
+/** Elevação: uma fonte inteira, até G6, nunca o dado de equipamento. */
+export function boostCombatSource(unit,group,key){
+ const field={attribute:"attributes",knowledge:"knowledges",practice:"practices"}[group];
+ const grade=Number(unit?.[field]?.[key]);
+ if(!field||!Number.isInteger(grade)||grade<0||grade>=6)return {ok:false,error:"Fonte sem Grau elegível (máximo G6)."};
+ const human=isHumanoidKind(unit.kind);
+ if(!human&&group!=="attribute")return {ok:false,error:"Monstro usa somente seus Atributos."};
+ const boosted={...unit,[field]:{...unit[field],[key]:grade+1}};
+ const monsterRules=!human;
+ return {ok:true,unit:boosted,oldGrade:grade,newGrade:grade+1,
+  before:sourceDice(group,key,{...unit,monsterRules}),
+  after:sourceDice(group,key,{...boosted,monsterRules})};
+}
+export function rollProvenance(rolled,ids,options={}){
+ const names={attribute:"Atributo",knowledge:"Conhecimento",practice:"Prática",equipment:"Equipamento",magic:"Grau mágico"};
+ const kept=new Set(ids||[]);
+ return (rolled||[]).map(d=>{
+  const [e,a,p]=faceSymbols(d.sides,d.face);
+  const idName=({attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES})[d.group]?.find(x=>x[0]===d.key)?.[1];
+  const source=d.group==="equipment"?String(options.weapon||"Equipamento"):
+   d.group==="magic"?"Magia "+String(d.key||""):idName||String(d.key||"Fonte");
+  return {id:d.id,source,group:names[d.group]||"Fonte",sides:d.sides,face:d.face,
+   kept:kept.has(d.id),e,a,p,step:!!d.boosted};
+ });
+}
+/** Custos de perícias não determinados globalmente são declarados pelo Narrador. */
+export function selectedActiveSkill(c,id){
+ if(!id)return null;
+ if(!isHumanoidKind(c?.kind)||!c?.skills?.includes(id))return null;
+ const row=SKILLS.find(x=>x.id===id);
+ return row?{id,name:row.name,detail:row.detail}:null;
+}
 export function armorOf(c){
  return (c?.items||[]).find(it=>it.kind==="armor"&&it.equipped)||null;
 }

@@ -2295,18 +2295,21 @@ function normalize(v){
   createdThisRound:clamp(Math.floor(typeof v.spiritualSpheres?.createdThisRound==="boolean"?(v.spiritualSpheres.createdThisRound?1:0):Number(v.spiritualSpheres?.createdThisRound)||0),0,5)
  };
  s.xp=clamp(Math.floor(v.xp),0,1e9);
- // Migração idempotente: peças G1 do catálogo padrão 10/15/20 -> 7/12/17;
- // abate 3 do saldo para conservar dano sofrido, sem reescrever armaduras personalizadas.
+ // Migração idempotente (playtest 22/11): G1 3/7/12/17 → 2/5/8/12.
+ // Conserva o dano já sofrido, inclusive após alterações históricas 10/15/20.
  s.items=Array.isArray(v.items)?v.items.slice(0,150).map(raw=>{
   const item=normalizeItem(raw);
-  const old={"Armadura Leve":10,"Armadura Média":15,"Armadura Pesada":20};
-  if(item.type==="armadura"&&item.grade===1&&item.catalogId==="Roupas Simples"&&item.max===0){
-   // Anteriormente não havia Integridade; G1 agora tem 3. Item de catálogo apenas.
-   item.max=3;item.hp=3;
-  }
-  const previous=old[item.catalogId];
-  if(item.type==="armadura"&&item.grade===1&&previous&&item.max===previous){
-   item.max=previous-3;item.hp=Math.min(item.max,Math.max(0,item.hp-3));
+  if(item.type!=="armadura"||item.grade!==1)return item;
+  const updates={
+   "Roupas Simples":{0:2,3:2},
+   "Armadura Leve":{7:5,10:5},
+   "Armadura Média":{12:8,15:8},
+   "Armadura Pesada":{17:12,20:12}
+  };
+  const map=updates[item.catalogId||item.name],nextMax=map?.[item.max];
+  if(nextMax!==undefined){
+   const loss=Math.max(0,item.max-item.hp),newMax=nextMax;
+   item.max=newMax;item.hp=Math.max(0,newMax-loss);
   }
   return item;
  }):[];
@@ -4884,7 +4887,7 @@ function renderInventory(){
    '<small>Apenas quando o ataque acertou e Cravar foi ativada conforme a Perícia. -1 Integridade por Êxito. Não implica remoção automática das armas cravadas.</small></div>'
   );
   const armorFields=it.type!=="armadura"?"":(
-   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 3 de Integridade e +2 DE em todas as defesas (valores corrigidos).</div>':"")+
+   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade e +2 DE em todas as defesas (valores corrigidos).</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
@@ -4892,7 +4895,7 @@ function renderInventory(){
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 3, Leve 7, Média 12, Pesada 17 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 2, Leve 5, Média 8, Pesada 12 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
   const shieldMasteryHint=it.type!=="escudo"?"":(

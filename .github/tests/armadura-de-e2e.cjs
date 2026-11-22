@@ -86,7 +86,7 @@ const assert=require("node:assert/strict");
   await page.locator('button[data-sheet-page="play"]').first().click();
   assert.equal(await page.locator(".fp-vital-inventory").isVisible(),true,"Indicadores continuam acessíveis após voltar a Jogar");
 
-  assert.equal(await page.locator("#armor-integrity-text").textContent(),"7 / 7");
+  assert.equal(await page.locator("#armor-integrity-text").textContent(),"5 / 5");
   await page.reload({waitUntil:"load"});
   assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
