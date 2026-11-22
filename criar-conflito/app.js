@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
+ PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
  from "./rules.mjs?v=20261117-fogo-g2-free";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -158,14 +158,14 @@ function publicJointSpend(n){
 }
 function renderRoster(){
  el("roster").innerHTML=model.roster.length?model.roster.map(t=>{
-  const x=stats(t),chosen=t.id===model.active,over=x.xp.remaining<0;
+  const x=stats(t),chosen=t.id===model.active,over=x.xp.remaining<0,armor=equippedArmor(t);
   return '<article class="cf-threat-card'+(chosen?' is-active':'')+'">'+
    '<button type="button" class="cf-threat-pick" data-open="'+esc(t.id)+'" aria-pressed="'+chosen+'"><span><strong>'+esc(t.name||"Sem nome")+'</strong><small>'+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+
    ' · Grau '+t.threatGrade+'</small></span><span aria-hidden="true">'+(t.leader?'★':'›')+'</span></button>'+
    '<div class="cf-threat-counts"><span>'+t.life+'/'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
    '<span class="is-purple">'+t.pavorLocal+'/'+x.limitLocal+' P</span>'+
    '<span'+(over?' style="color:#e6a1a1"':'')+'>'+x.xp.spent+'/'+x.xp.grant+' XP</span>'+
-   (t.items.some(it=>it.kind==="armor")?'<span>Armadura '+t.items.filter(it=>it.kind==="armor").map(it=>it.integrity+"/"+it.integrityMax).join(", ")+'</span>':'')+
+   (armor?'<span>Armadura equipada: '+esc(armor.name)+' · '+armor.integrity+'/'+armor.integrityMax+'</span>':isHumanoidKind(t.kind)?'<span>Sem armadura equipada</span>':'')+
    '</div>'+
    '<div class="cf-threat-actions"><button type="button" data-copy="'+esc(t.id)+'">Duplicar</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></article>';
@@ -219,7 +219,14 @@ function skillPanel(t){
   }).join("")+'</div></details>';
 }
 function itemOptions(){
- return catalog.map((it,i)=>'<option value="'+i+'">'+esc(it.name)+' · '+it.priceVT+' VT* · '+fmt(catalogWeight(it))+' Alto</option>').join("");
+ const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
+  ["firearm","Armas de fogo G1"],["other","Outros equipamentos G1"]];
+ return groups.map(([kind,label])=>{
+  const options=catalog.map((it,i)=>({it,i})).filter(({it})=>
+   kind==="other"?!["armor","shield","weapon","firearm"].includes(it.kind):it.kind===kind);
+  return options.length?'<optgroup label="'+label+'">'+options.map(({it,i})=>
+   '<option value="'+i+'">'+esc(it.name)+' · '+esc(it.priceVT??"Preço pendente")+' VT* · '+fmt(catalogWeight(it))+' Alto</option>').join("")+'</optgroup>':"";
+ }).join("");
 }
 function catalogWeight(it){
  const base=Number(it.weight)||WEIGHT[it.category==="pesado"?"pesado":it.category==="medio"?"medio":"leve"];
