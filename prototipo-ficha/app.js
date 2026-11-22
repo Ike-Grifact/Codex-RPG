@@ -1936,12 +1936,8 @@ function combatItem(item,mode){
  const die=[6,10,12].includes(item.die)?item.die:({leve:6,medio:10,pesado:12}[cat]||0);
  if(!die)return [];
  if(mode==="conjuracao"){
-  if(item.type!=="foco"||!skills.includes("criar-item-foco-magia"))return [];
-  const element=(item.element||"psiquico").toLowerCase();
-  const map={ar:"vento",água:"agua",agua:"agua",terra:"terra",fogo:"fogo",sagrado:"sagrado",sangue:"sangue",veneno:"veneno",trevas:"trevas"};
-  if(!["psiquico","psíquico"].includes(element)&&!skills.includes(map[element]||element))return [];
-  // O peso físico de um cetro G1 não habilita automaticamente magia Média/Pesada.
-  return [cat==="leve"?die:6]; // Conjuração Refinada não concede dado maior pelo peso físico do foco (SRD v0.44).
+  // SRD v0.89: apenas o Grau da magia adiciona seu dado, nunca o foco.
+  return [];
  }
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
@@ -2607,7 +2603,8 @@ function renderXP(){
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
- return Math.min(9,1+(s.attributes.vigor||0)+Math.floor((s.attributes.destreza||0)/2));
+ const a=s.attributes||{},p=s.practices||{};
+ return Math.min(9,(a.agilidade||0)+Math.floor(((a.vigor||0)+(a.destreza||0))/2)+Math.floor((p.atletismo||0)/3));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -2940,8 +2937,8 @@ function magicCompatibleFoci(element){
 function magicSelectedFocus(plan=draft){
  return magicCompatibleFoci(plan.magicElement).find(item=>item.id===plan.magicFocusId)||null;
 }
-function magicPreparationTurns(grade,charges){
- return grade===1?1:grade===2?2:Math.max(1,3-Math.min(2,charges));
+function magicPreparationTurns(grade,charges,hasFocus=false){
+ return grade===1?1:grade===2?(hasFocus?1:2):Math.max(1,3-Math.min(2,charges));
 }
 function magicCourageCost(plan=draft){
  return (plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
@@ -2956,7 +2953,7 @@ function alignMagicDraft(){
    Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
  if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
  if(draft.mode==="conjuracao"&&draft.magicElement){
-  draft.equipmentId=focus&&combatItem(focus,"conjuracao").length?focus.id:"";
+  draft.equipmentId=""; // SRD v0.89: foco não adiciona dado.
  }
 }
 function prepareMagic(element=""){
@@ -4119,8 +4116,7 @@ function buildPool(){
   const focus=magicSelectedFocus();
   if(!known)errors.push("Elemento não habilitado para esta conjuração.");
   if(draft.magicGrade>1&&!draft.magicGradeConfirmed)errors.push("Confirme com Narrador o acesso ao Grau e efeito G"+draft.magicGrade+".");
-  if(magicPreparationTurns(draft.magicGrade,draft.magicCharges)>1&&!draft.magicTimeConfirmed)
-   errors.push("Confirme que os turnos exigidos para preparar esta magia já foram cumpridos.");
+  // SRD v0.89: rolar ao declarar; confirmar preparação APÓS o resultado.
   if(draft.magicFocusId&&!focus)errors.push("Foco deve estar no inventário e corresponder ao elemento.");
   if(draft.magicCharges>0&&(!focus||draft.magicGrade!==3||
      draft.magicCharges>2||draft.magicCharges>(focus?.focusCharges??0)))
@@ -4141,6 +4137,11 @@ function buildPool(){
   temporaryGradeDice(s.group,grade,raised).forEach((sides,index)=>pool.push({
    id:key(s)+":"+index,group:s.group,key:s.key,sides,baseSides:sides,temporaryStep:raised
   }));
+ }
+ if(draft.mode==="conjuracao"&&draft.magicElement){
+  const magicDie={1:6,2:10,3:12}[Number(draft.magicGrade)]||0;
+  if(!magicDie)errors.push("Dado do Grau mágico ainda PENDENTE.");
+  else pool.push({id:"magia:grau:"+draft.magicGrade,group:"magic",key:"Magia G"+draft.magicGrade,sides:magicDie,baseSides:magicDie});
  }
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
@@ -4312,7 +4313,7 @@ function roll(){
     magicCharges:draft.mode==="conjuracao"?draft.magicCharges:0,
     magicAmplify:draft.mode==="conjuracao"&&!!draft.magicAmplify,
     magicGradeConfirmed:!!draft.magicGradeConfirmed,
-    magicTimeConfirmed:!!draft.magicTimeConfirmed},
+    magicTimeConfirmed:draft.mode!=="conjuracao"||!draft.magicElement||magicPreparationTurns(draft.magicGrade,draft.magicCharges,!!magicSelectedFocus())===1},
   dice:data.pool.map(d=>({...d,face:randomFace(d.sides)})),selected:[],cancelP:0,pairs:0,pass:0,characteristic:"",secondCharacteristic:"",payment:"courage",
   cravarTargetShield:"",
   fireMode:"",fireGradeConfirmed:false};
@@ -4424,7 +4425,7 @@ function score(){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
   if(grade>1&&!p.opts.magicGradeConfirmed)errs.push("Grau avançado não confirmado pelo Narrador.");
-  if(magicPreparationTurns(grade,p.opts.magicCharges||0)>1&&!p.opts.magicTimeConfirmed)
+  if(magicPreparationTurns(grade,p.opts.magicCharges||0,!!p.opts.magicFocusId)>1&&!p.opts.magicTimeConfirmed)
    errs.push("Turnos de conjuração não confirmados.");
   const focus=state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"&&
    magicElementId(it.element||"psiquico")===element);
@@ -4532,7 +4533,7 @@ function renderPending(){
  '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
  const magicSummary=p.opts.magicElement?
   '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
-  '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0)+' turno(s) · '+(p.opts.magicCharges||0)+
+  '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId)+' turno(s) · '+(p.opts.magicCharges||0)+
   ' carga(s) de foco reservadas; custos efetivos ao finalizar. Amplificação: '+(p.opts.magicAmplify?"declarada":"não")+" (sem bônus numérico automático).</div>":"";
 
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
@@ -4651,7 +4652,7 @@ function finalize(){
   asura:!!p.opts.asura,asuraSpheresSpent:p.opts.asura?5:0,asuraCourageSpent:p.opts.asura?1:0,asuraD20Face:p.opts.asura?(p.dice.find(d=>d.asuraSpecial&&d.sides===20)?.face??null):null,asuraNeutral:!!p.opts.asura,E:s.E,A:s.remainingA,P:s.P,critTier:s.critTier,critConverted:s.criticalConverted,item:state.items.find(x=>x.id===p.opts.equipmentId)?.name||"",active:s.active,
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
-  magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0):0,
+  magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId):0,
   cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
    manejoPerfeitoActive:!!s.manejoPerfeitoActive,golpeCertoTriggered:!!s.manejoPerfeitoGolpeCerto,
   faces:s.dice.map(d=>({id:d.id,sides:d.sides,face:d.face}))});
