@@ -217,7 +217,7 @@ function actorInfo(){
  const nat=t.side==="jogadores"?naturalDE(t):stats(t).de;
  const arm=armorOf(t),move=movementAllowance(t);
  $("actor-summary").textContent=t.name+"\nVida "+t.life+" · Integridade "+arm.integrity+"/"+arm.max+
-  " · DE natural "+nat+"\nArmadura: "+arm.name+(arm.equipped?" (DE geral +"+dodgeBonus(arm)+", penalidade "+armorPenalty(arm)+")":"")+
+  " · DE base "+nat+"\nArmadura: "+arm.name+(arm.equipped?" (DE geral +"+dodgeBonus(arm)+", penalidade "+armorPenalty(arm)+")":"")+
   "\nDeslocamento por rodada: "+move+" m; gasto "+(t.moved||0)+" m"+
   "\n"+(isHumanoidKind(t.kind)?"Coragem "+t.courage:"Pavor local "+t.pavorLocal)+
   (t.shieldRound>=state.round?"\nEscudo Arcano declarado: DE de ruptura "+(t.shieldDe??"pendente"):"");
