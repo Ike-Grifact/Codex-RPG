@@ -9,33 +9,32 @@ supersedes: "Fórmula anterior da DE natural para personagens e humanoides; dema
 
 # Codex RPG — SRD de Continuidade v0.88
 
-## Decisão autoral — 22/11/2026: DE base defensiva
+## Decisão autoral — 22/11/2026: remover a DE natural antiga
 
-**DEFINIDO:** a fórmula anterior de **DE natural de personagens e humanoides** deixa de ser aplicada. Em seu lugar existe um **único cálculo de DE base**, sem somar um valor anterior nem um segundo bônus de DE natural:
+**DEFINIDO:** a antiga **DE natural** de personagens e humanoides é **substituída por completo**. Não conservar nem somar os termos anteriores de Agilidade, Vigor pela metade e Atletismo. Fica **somente o novo cálculo** aprovado pelo autor:
 
-**DE base = mínimo(9; 1 + Agilidade + Vigor + ⌊Destreza / 2⌋ + ⌊Atletismo / 3⌋).**
+**DE base = mínimo(9; 1 + Vigor + ⌊Destreza / 2⌋).**
 
-- Agilidade e Vigor contribuem com os respectivos **Graus inteiros**.
-- Destreza contribui com metade do Grau, arredondada para baixo.
-- Atletismo contribui com um ponto por três Graus completos.
-- **1 DE base** é conferido a todos os personagens e humanoides elegíveis, inclusive quem ainda possui esses Graus em 0.
-- Aplica-se o teto **9** ao cálculo base. Em seguida, permanecem os modificadores da **única armadura válida equipada**, as Perícias defensivas e a Maestria em Escudos quando aplicável; a **DE defensiva final permanece de 0 a 12**. Não atribuir novamente o ponto base ao aplicar modificadores.
-- Aplica-se aos **Aprendizes/personagens**, **NPCs humanoides** e **humanoides monstros** construídos pelo modelo de fontes humanoides, independentemente do lado do conflito.
-- **Monstros extraordinários não humanoides** preservam sua fórmula separada **mínimo(9; Agilidade + ⌊Destreza / 2⌋)**, sem Vigor inteiro e sem +1 DE base, até nova decisão explícita.
-- **Não alterados:** dados simbólicos, DE de tarefas sem ficha defensiva, investimento de XP, custos, fontes, Vida, Pavor, Coragem, dano, características de armas, defesa de armaduras e escudos, Integridade, retenção de dados e regras de críticos.
+- **1 DE base** para cada personagem humanoide, mesmo com todos os Graus em 0.
+- **Vigor inteiro** contribui na proporção de 1 ponto de DE para cada Grau.
+- **Destreza** contribui com metade do Grau arredondada para baixo; **Agilidade e Atletismo não integram a nova DE base**.
+- Aplicar o teto **9** ao cálculo da DE base. Depois, somar o modificador da única armadura válida equipada, Maestria em Escudos e outros efeitos defensivos já definidos, respeitando **DE final mínima 0 e máxima 12**. A base +1 entra **uma vez** apenas.
+- Aplica-se a **personagens/Aprendizes**, **NPCs humanoides** e **humanoides monstros** que seguem o modelo de fontes humanoides.
+- **Monstros extraordinários não humanoides** continuam usando seu cálculo específico **mínimo(9; Agilidade + ⌊Destreza/2⌋)**. Não recebem o ponto básico nem Vigor integral nesta revisão.
+- **Sem alterações** nos dados simbólicos, limites de retenção, XP, fontes, Vida, Pavor, Coragem, dano, equipamentos, Integridade, custos de ativação ou DE de tarefas sem ficha defensiva.
 
-### Verificação de substituição (DEFINIDO)
+### Exemplos para o playtest
 
-Personagem humanoide com Agilidade 1, Destreza 2, Vigor 3 e Atletismo 3: **DE base = 1 + 1 + 1 + 3 + 1 = 7**. O cálculo anterior seria diferente e **não se soma** a 7. Com armadura Leve (+1), DE final = **8**; com armadura Pesada (−1), DE final = **6**, salvo outras condições/Perícias.
+Humanoide com Vigor 3, Destreza 2, Agilidade 1 e Atletismo 3: **DE base = 1 + 3 + 1 = 5**. Agilidade e Atletismo não acrescentam pontos. Usando armadura Leve (+1): **DE final 6**. Usando armadura Pesada (−1): **DE final 4**, antes de outros modificadores definidos.
 
-Exemplos do playtest nível 1, já considerando armadura e Maestria em Escudos previamente selecionadas: Samurai **5**, Guerreiro **5**, Mago **5**, Berserker **5**, Tanque com armadura Pesada **5**, Atirador **7**. Valores de fichas específicas, não bônus gerais.
+Seis fichas do confronto proposto, já com armaduras e Maestria em Escudos indicadas: **Samurai DE 4**, **Guerreiro DE 3**, **Mago DE 4**, **Berserker DE 5**, **Tanque com armadura Pesada DE 4**, **Atirador DE 5**. Valores próprios dessas builds, não bônus universais.
 
-## Estado, riscos e testes
+## Estado, histórico e validação
 
-**DEFINIDO:** substituição da fórmula de personagens/humanoides, base fixa de 1 DE, contribuição integral de Vigor, pisos de Destreza e Atletismo e manutenção dos tetos/modificadores anteriores.
+**DEFINIDO:** substituição integral da DE natural para personagens humanoides, fórmula **1 + Vigor + ⌊Destreza/2⌋**, teto 9 para o cálculo base e 0–12 para resultado final, modificadores de armadura e Perícias preservados.
 
-**EXPERIMENTAL:** o equilíbrio dessa DE no nível 1 e nos Marcos posteriores, impacto no acerto limpo ou com Pavor, eficiência de ataques com armas/foco e gasto de Coragem. O primeiro confronto 3 × 3 servirá para medir tempo para acertar, custo de oportunidade e durabilidade de escudos/armaduras. Nenhuma outra regra foi ajustada como compensação.
+**EXPERIMENTAL:** equilíbrio das chances de acerto limpo/com Pavor, impacto em opções de combate defensivas/ofensivas, papel de Agilidade e Atletismo após a mudança, durabilidade da armadura e gasto de Coragem nos Marcos e no nível 1. O playtest 3 × 3 servirá para mensurar esses efeitos; nenhuma outra mecânica foi alterada como compensação.
 
-**IMPLEMENTAÇÃO:** unificar a fórmula no criador/ficha, na ferramenta Criar Conflito e no Foundry, respeitando a diferença entre humanoides e monstros não humanoides. Recalcular DE pela ficha atual sem alterar Graus, XP nem registros de ataques históricos. Validar DE com fontes zeradas, Vigor ímpar, teto 9, armaduras, Maestria em Escudos, NPCs humanoides e não humanoides, inclusive em testes de interface.
+**IMPLEMENTAÇÃO:** atualizar criador/ficha, Criar Conflito e Foundry para recalcular a defesa sem mudar XP, fontes nem histórico de rolagens. Regressões de Vigor ímpar, Destreza ímpar, personagens com Graus zero, teto, armaduras, NPCs humanoides e não humanoides e interface do simulador.
 
-**Histórico:** substituir apenas a fórmula humana anterior, que continha `⌊Vigor/2⌋` e nenhuma base fixa. A v0.87 (Manejo Perfeito), SRD Playtest Nível 1 v1.0 e demais documentos anteriores permanecem históricos e vigentes nos demais tópicos não revogados.
+**Histórico:** esta decisão de 22/11/2026 revoga **somente a fórmula anterior de DE humana**. A v0.87 (Manejo Perfeito), o SRD Playtest Nível 1 v1.0 e demais decisões permanecem vigentes nos outros tópicos.
