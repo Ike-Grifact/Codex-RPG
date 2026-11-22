@@ -258,11 +258,15 @@ function inventory(t,x){
    '<div class="cf-item"><div class="cf-item-descriptor"><strong>'+esc(it.name)+'</strong>'+
    '<small>'+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
    (rangedInventoryRange(t,it)?'<small>Alcance efetivo: '+rangedInventoryRange(t,it).effective+' m'+(rangedInventoryRange(t,it).bonus?' (base '+rangedInventoryRange(t,it).base+' m + Olhos de Águia)':'')+'</small>':'')+
+   (it.kind==="armor"||it.kind==="shield"?'<small>'+(it.equipped?"Equipado":"Guardado")+'</small>':'')+
    (it.kind==="armor"||it.kind==="shield"?'<span class="cf-integrity-label">Integridade: <strong>'+
     (it.integrityMax?it.integrity+" / "+it.integrityMax:"Sem Integridade definida")+'</strong></span>':'')+'</div>'+
    ((it.kind==="armor"||it.kind==="shield")&&it.integrityMax?'<div class="cf-integrity-actions">'+
     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'">−</button>'+
     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="1" aria-label="Recuperar Integridade de '+esc(it.name)+'">+</button></div>':'')+
+   ((it.kind==="armor"||it.kind==="shield")?'<button type="button" data-equip-item="'+esc(it.id)+'"'+
+    (!it.equipped&&it.kind==="armor"&&!canEquipArmor(t,it)?' disabled title="Requisitos não atendidos"':'')+
+    ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
   '<p class="cf-note">Integridades G1 vigentes: Roupas Simples/Muito Leve 3, Leve 7, Média 12, Pesada 17. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
