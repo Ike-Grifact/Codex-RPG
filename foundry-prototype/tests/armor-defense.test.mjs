@@ -28,10 +28,17 @@ test("DE natural não excede 9, limite final 12, sem empilhar duas armaduras",()
 });
 
 
-test("v0.88: Vigor inteiro, Destreza/2 e +1; Agilidade só permanece para monstros" ,()=>{
+test("v0.89: Agilidade + piso((Vigor+Destreza)/2) + piso(Atletismo/3)" ,()=>{
  const attrs={agilidade:1,destreza:2,vigor:4};
  const humanoid={...base(),attributes:attrs,practices:{atletismo:3}};
  const monster={...humanoid,monsterRules:true};
- assert.equal(defenseDE(actor(null,true,humanoid)),6);
+ assert.equal(defenseDE(actor(null,true,humanoid)),5);
  assert.equal(defenseDE(actor(null,true,monster)),2);
+ const merged={...base(),attributes:{agilidade:0,vigor:1,destreza:1},practices:{atletismo:0}};
+ assert.equal(defenseDE(actor(null,true,merged)),1,"somar os dois ímpares antes de dividir");
+ assert.equal(defenseDE(actor("muito-leve",true,merged)),3,"Roupas Simples como armadura Muito Leve: +2 DE");
+ const shield={...merged,skills:["maestria-escudos"]};
+ const shieldActor=actor("medio",true,shield);
+ shieldActor.items.push({type:"equipment",system:{kind:"shield",equipped:true}});
+ assert.equal(defenseDE(shieldActor),2,"Maestria em Escudos só com peça equipada");
 });
