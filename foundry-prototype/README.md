@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
-> **DE base humana [DEFINIDO — 22/11/2026]:** substitui a DE antiga por `min(9, 1 + Vigor + piso(Destreza/2))`, sem Agilidade nem Atletismo, antes dos modificadores de armadura e com teto final 12. Monstros não humanoides preservam sua própria regra. Uma instalação local do Foundry não é atualizada automaticamente por mudanças neste repositório. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+> **DE base humana [DEFINIDO — 22/11/2026]:** `min(9, Agilidade + piso((Vigor + Destreza)/2) + piso(Atletismo/3))`, sem +1 fixo; armadura e Maestria em Escudos depois, com teto final 12. Roupas Simples são Muito Leves (+2 DE). Monstros não humanoides preservam sua regra própria. **15 XP iniciais no playtest.** Uma instalação local do Foundry não é atualizada automaticamente. [SRD v0.89](../docs/srd-continuidade-v0.89.md).
 
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
@@ -21,7 +21,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 ## Fichas disponíveis
 
-- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, DE e Carga.
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; 15 XP iniciais compartilhados no playtest, após compras mínimas obrigatórias; Vida, Coragem, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
@@ -53,7 +53,7 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 ## Limites da automação atual
 
-Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de distribuição livre de 15 XP**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
 
 ## Testes de regras
 
