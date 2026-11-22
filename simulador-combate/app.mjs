@@ -654,12 +654,22 @@ function bind(){
   state.target=event.target.value;pending=null;
   persist();render(false);$("difficulty").value=String(defense(target()));
  });
- $("weapon-source").addEventListener("change",renderAffinity);
- $("apply-affinity").addEventListener("click",()=>{
-  const hint=renderAffinity();
-  if(hint.status!=="known")return;
-  $("situation").value=hint.delta===1?"advantage":hint.delta===-1?"disadvantage":"neutral";
-  notice("Condição sugerida pelo peso selecionada, sem acumular outros modificadores.");
+ $("weapon-source").addEventListener("change",()=>{pending=null;renderAffinity();renderDice();});
+ for(const id of ["base-source","attribute-source","extra-source"]){
+  $(id).addEventListener("change",()=>{pending=null;renderStepChoices();renderDice();});
+ }
+ $("step-source").addEventListener("change",()=>{pending=null;renderDice();});
+ $("discipline-mode").addEventListener("change",()=>{pending=null;renderDice();});
+ $("active-skill").addEventListener("change",()=>{
+  $("skill-approved").checked=false;updateSkillInfo();if(pending)renderDice();
+ });
+ for(const id of ["skill-courage","skill-approved"]){
+  $(id).addEventListener("change",()=>{updateSkillInfo();if(pending)renderDice();});
+ }
+ $("monster-keep").addEventListener("change",event=>{
+  const a=actor(),n=Number(event.target.value);
+  if(!a||a.kind!=="monstro"||!Number.isInteger(n)||n<2||n>stats(a).keepMax)return;
+  a.keep=n;pending=null;persist();render(false);
  });
  $("roll").addEventListener("click",roll);
  $("suggest").addEventListener("click",suggest);
