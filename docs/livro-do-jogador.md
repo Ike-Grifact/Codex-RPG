@@ -1,5 +1,8 @@
 # Codex RPG — Livro do Jogador
 
+> **DE base defensiva revisada — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** para personagens e humanoides, a fórmula antiga foi **substituída**, não acrescida: **DE base = mínimo(9; 1 + Agilidade + Vigor + ⌊Destreza/2⌋ + ⌊Atletismo/3⌋)**. A armadura e a Maestria em Escudos continuam incidindo depois, com DE final entre 0 e 12. Monstros extraordinários não humanoides mantêm sua fórmula própria. [SRD v0.88](srd-continuidade-v0.88.md).
+
+
 > **Errata autoral v0.87 — 21/11/2026 [DEFINIDO / PENDENTE]:** **Manejo Perfeito — Armas Corpo a Corpo** é a única Perícia (1 XP, exige Disciplina Avançada + Destreza 2) que aplica **Vantagem Absoluta** quando se usa a arma correta contra oponente em Desvantagem; se já houver Vantagem Absoluta, aplica **Golpe Certo**. A entrada duplicada **Arma Certa** foi retirada. O +1E da Vantagem Absoluta substitui o +1A natural do mesmo confronto favorável. **Golpe Certo** continua PENDENTE em seu procedimento, sem efeito numérico inventado. Veja [SRD v0.87](srd-continuidade-v0.87.md); a v0.86 fica como registro histórico substituído neste ponto.
 
 
@@ -618,7 +621,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE (Dificuldade de Êxito) defensiva natural:** **Agilidade + (Destreza ÷ 2, arredondada para baixo)**. Exemplo: Agilidade **4**, Destreza **3** → metade de Destreza é 1,5, arredondada para baixo fica **1** → **DE = 4 + 1 = 5**. A metade é arredondada antes de somar Agilidade.
+**DE base defensiva — v0.88 [DEFINIDO]:** **1 + Agilidade + Vigor + ⌊Destreza/2⌋ + ⌊Atletismo/3⌋**. Exemplo: Agilidade **4**, Destreza **3**, Vigor **2** e Atletismo **0** → **DE base = 1 + 4 + 2 + 1 + 0 = 8**. Os pisos são aplicados antes de somar. Limitar a DE base a **9**; depois aplicar o modificador da armadura válida e eventuais bônus de Perícias/escudo, limitando a DE defensiva final entre **0 e 12**. Não acrescentar a fórmula histórica como bônus separado. Para monstros extraordinários não humanoides, preservar a regra defensiva própria; ver [v0.88](srd-continuidade-v0.88.md).
 
 **Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
 
