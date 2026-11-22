@@ -35,12 +35,13 @@ jobs:
       - name: Validar sintaxe da interface
         run: |
           node --check criar-conflito/app.js
+          node --check criar-conflito/combat-summary.mjs
           node --check simulador-combate/app.mjs
           node --check simulador-combate/logic.mjs
           node --check criar-conflito/roll-engine.mjs
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
-        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/roll-engine.test.mjs criar-conflito/combat-summary.test.mjs simulador-combate/logic.test.mjs
       - name: Testar ativação de Perícias, Domar Média e Foundry
         run: |
           node --check foundry-prototype/module/sheet.mjs
