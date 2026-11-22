@@ -120,6 +120,21 @@ export function remainingKinds(t){
  const free=Math.max(0,loadCapacity(toSystem(t))-weightUsed(t));
  return {leve:Math.floor((free+1e-9)/WEIGHT.leve),medio:Math.floor((free+1e-9)/WEIGHT.medio),pesado:Math.floor((free+1e-9)/WEIGHT.pesado)};
 }
+/** Atualização de Integridade G1 de 22/11: preserva dano já sofrido e idempotência. */
+export function migrateArmorIntegrity(it){
+ if(!it||typeof it!=="object")return it;
+ const kind=it.kind||({armadura:"armor"})[it.type];
+ if(kind!=="armor"||Number(it.grade??1)!==1)return it;
+ const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[5,[7,10]],"Armadura Média":[8,[12,15]],"Armadura Pesada":[12,[17,20]]};
+ const spec=newValues[it.catalogId||it.name]||newValues[it.name];
+ if(!spec)return it;
+ const oldMax=Number(it.integrityMax??it.max??0);
+ if(!spec[1].includes(oldMax))return it;
+ const had=Number(it.integrity?.value??(typeof it.integrity==="number"?it.integrity:it.hp??oldMax));
+ const current=Math.min(spec[0],Math.max(0,spec[0]-Math.max(0,oldMax-had)));
+ if(typeof it.integrity==="object")return {...it,integrity:{...it.integrity,max:spec[0],value:current},integrityMax:spec[0],max:spec[0],hp:current};
+ return {...it,integrityMax:spec[0],integrity:current,max:spec[0],hp:current};
+}
 export function normalize(raw){
  if(!raw||typeof raw!=="object")return blank("monstro");
  const kind=Object.hasOwn(KINDS,raw.kind)||Object.hasOwn(LEGACY_KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
@@ -133,7 +148,8 @@ export function normalize(raw){
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)t[group][key]=Math.floor(clamp(raw[group]?.[key],0,6));
  t.skills=Array.isArray(raw.skills)?[...new Set(raw.skills.filter(id=>SKILLS.some(s=>s.id===id)))]:[];
- t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(i=>{
+ t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(original=>{
+  const i=migrateArmorIntegrity(original);
   const max=Math.floor(clamp(i.integrityMax??i.max??0,0,999));
   const kind=["armor","shield","weapon","other"].includes(i.kind)?i.kind:
    ({armadura:"armor",escudo:"shield",arma:"weapon"})[i.type]||"other";
