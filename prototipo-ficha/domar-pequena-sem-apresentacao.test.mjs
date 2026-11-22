@@ -32,7 +32,7 @@ test("Codex Genético remove Apresentação apenas de Domar Pequena",()=>{
  assert.ok(app.includes('"domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1"]]'));
  assert.ok(app.includes('"domar-criatura-pequena": ["attr:influencia","attr:inteligencia"]'));
  assert.ok(app.includes('"domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]]'));
- assert.ok(app.includes('"domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena","s:domar-criatura-media"]]'));
+ assert.ok(app.includes('"domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:2","s:domar-criatura-pequena","s:domar-criatura-media"]]'));
  assert.match(app,/id==="domar-criatura-media"\|\|id==="domar-criatura-grande"/);
 });
 
@@ -42,4 +42,20 @@ test("Documentação e catálogo refletem compra sem alterar teste de domestica�
  assert.match(catalog,/1 XP; Influência 2 \+ Inteligência 1 \(sem Apresentação como requisito\)/);
  assert.match(book,/Domar Criatura Pequena\*\* requer \*\*Influência 2 \+ Inteligência 1/);
  assert.match(srd,/Apresentação Grau 1 deixa de ser requisito de compra para Domar Pequena/);
+});
+
+
+test("Domar Média e Grande preservam os limites distintos de Apresentação",()=>{
+ const combined=app.match(/if\\(\\(id==="domar-criatura-media"\\|\\|id==="domar-criatura-grande"\\)[^\\n]*return"Requer Influência "[^\\n]*;/);
+ assert.ok(combined,"validação conjunta encontrada");
+ const check=new Function("id","s",combined[0]+"return null;");
+ const base=(apresentacao)=>({
+  attributes:{influencia:4,inteligencia:1},
+  practices:{apresentacao}
+ });
+ assert.equal(check("domar-criatura-media",base(1)),null);
+ assert.match(check("domar-criatura-grande",base(1)),/Apresentação 2/);
+ assert.equal(check("domar-criatura-grande",base(2)),null);
+ assert.match(check("domar-criatura-grande",{attributes:{influencia:3,inteligencia:1},practices:{apresentacao:2}}),/Influência 4/);
+ assert.match(page,/Influência 2 \\+ Inteligência 1/,"Pequena não foi modificada");
 });
