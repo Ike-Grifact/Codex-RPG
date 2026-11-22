@@ -13,12 +13,12 @@ test("Criaturas comuns têm d6 por grau 1; extraordinários d10",()=>{
  assert.deepEqual(dice(monster,"agilidade"),[10,10]);
  assert.equal(ledger(monster).spent,10);
 });
-test("Humanoide utiliza 20 XP experimentais mais XP extra; Formação compartilhada",()=>{
+test("Humanoide utiliza 15 XP definidos no playtest mais XP extra; Formação compartilhada",()=>{
  const h=blank("humanoide");
  h.attributes.forca=1;h.practices.atletismo=1;
  assert.deepEqual({spent:ledger(h).spent,grant:ledger(h).grant,remaining:ledger(h).remaining},
-  {spent:3,grant:20,remaining:17});
- h.xp=4;assert.equal(ledger(h).grant,24);
+  {spent:3,grant:15,remaining:12});
+ h.xp=4;assert.equal(ledger(h).grant,19);
 });
 test("Monstro tem Vida, DE e teto local por grau, retenção condicionada",()=>{
  const m=blank("monstro");m.attributes.forca=2;m.attributes.vigor=1;
@@ -59,11 +59,11 @@ test("Humano comum rápido começa com investimento mínimo, saldo livre e Perí
  assert.equal(t.attributes.forca,1);
  assert.equal(t.practices.armas_conjuracao,1);
  assert.deepEqual({spent:ledger(t).spent,grant:ledger(t).grant,remaining:ledger(t).remaining},
-  {spent:3,grant:20,remaining:17});
+  {spent:3,grant:15,remaining:12});
  assert.equal(t.life,stats(t).life);
  assert.deepEqual(t.skills,[]);
  t.skills.push("armas-leves");
- assert.equal(ledger(t).remaining,15);
+ assert.equal(ledger(t).remaining,10);
  const restored=normalize(t);
  assert.equal(restored.skills.includes("armas-leves"),true);
  assert.equal(restored.practices.armas_conjuracao,1);
@@ -85,7 +85,7 @@ test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
  assert.deepEqual(copy.skills,["combate","armas"]);
  assert.equal(ledger(copy).skills,3);
  assert.equal(ledger(copy).spent,6);
- assert.equal(ledger(copy).remaining,14);
+ assert.equal(ledger(copy).remaining,9);
 });
 
 
@@ -98,8 +98,8 @@ test("Os três tipos novos de ameaça possuem custos distintos sem alterar hist�
  assert.equal(ledger(hybrid).attrs,2);
  assert.deepEqual(dice(beast,"forca"),[10]);
  assert.deepEqual(dice(hybrid,"forca"),[6],"Tabela de XP não inventa dado extraordinário para Humanoide Monstro");
- assert.equal(ledger(human).grant,20);
- assert.equal(ledger(hybrid).grant,0,"Orçamento monstruoso é fornecido pelo Narrador, não gera 20 XP automáticos");
+ assert.equal(ledger(human).grant,15);
+ assert.equal(ledger(hybrid).grant,0,"Orçamento monstruoso é fornecido pelo Narrador, não gera XP iniciais automáticos");
  assert.equal(ledger(beast).grant,0);
  human.practices.atletismo=1;hybrid.practices.atletismo=1;
  human.knowledges.protecao=1;hybrid.knowledges.protecao=1;
@@ -263,14 +263,17 @@ test("Domar Grande exige explicitamente Pequena e Média, sem novas cobranças",
 });
 
 
-test("v0.88: humanoides usam 1 + Vigor + piso(Destreza/2); monstros preservados",()=>{
+test("v0.89: humanoides somam AGI + piso((VIG+DES)/2) + piso(Atletismo/3); monstros preservados",()=>{
  const h=blank("humanoide");
  h.attributes.agilidade=1;h.attributes.destreza=2;h.attributes.vigor=3;h.practices.atletismo=3;
- assert.equal(stats(h).de,5);
+ assert.equal(stats(h).de,4);
  const hm=blank("humanoide-monstro");
  hm.attributes.agilidade=1;hm.attributes.destreza=2;hm.attributes.vigor=3;hm.practices.atletismo=3;
- assert.equal(stats(hm).de,5);
+ assert.equal(stats(hm).de,4);
  const m=blank("monstro");
  m.attributes.agilidade=1;m.attributes.destreza=2;m.attributes.vigor=3;
  assert.equal(stats(m).de,2);
+ const zero=blank("humanoide");assert.equal(stats(zero).de,0,"sem +1 fixo");
+ const odd=blank("humanoide");odd.attributes.vigor=1;odd.attributes.destreza=1;
+ assert.equal(stats(odd).de,1,"Vigor 1 + Destreza 1 juntos antes do piso");
 });

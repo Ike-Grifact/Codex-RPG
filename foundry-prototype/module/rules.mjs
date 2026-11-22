@@ -24,7 +24,7 @@ export const SITUATIONS={
 };
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
-export const CREATION_REFERENCE={attributes:6,training:8,skills:5,total:19}; // 6+8+5 experimental.
+export const CREATION_REFERENCE={total:15}; // DEFINIDO para o playtest: 15 XP compartilhados, sem reservas por categoria.
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -56,7 +56,7 @@ export const healthByLife=(s,currentLife)=>{
  return {id:"saudavel",e:0,a:0,p:0,coragem:0};
 };
 // DE base humana v0.88: substitui integralmente a fórmula anterior; armaduras/escudos modificam depois.
-export const naturalDE=s=>Math.min(9,1+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.destreza||0)/2));
+export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
@@ -69,9 +69,9 @@ export function xpLedger(s){
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:19);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:15);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
+  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"15 XP iniciais compartilhados no nível 1; compras mínimas obrigatórias, restante livre."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];
