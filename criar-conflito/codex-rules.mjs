@@ -134,7 +134,8 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
    const dice=MAGIC_GRADE_DICE[Number(magicGrade)]||[];
    if(!dice.length)errors.push("Grau mágico inválido ou sem dado definido.");
    else if(Number(magicGrade)===4){
-    const habilitado=(id)=>id==="psiquico"?skills.includes("criar-item-foco-magia"):skills.includes(id);
+    const learned=system.skills||[];
+    const habilitado=(id)=>id==="psiquico"?learned.includes("criar-item-foco-magia"):learned.includes(id);
     if(!magicElement||!magicSecondElement||magicElement===magicSecondElement||
        !habilitado(magicElement)||!habilitado(magicSecondElement))
      errors.push("G4 exige dois elementos diferentes, cada qual com Perícia G3 habilitada, e confirmação do Narrador.");
