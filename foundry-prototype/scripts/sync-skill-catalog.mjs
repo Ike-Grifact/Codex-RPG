@@ -19,9 +19,9 @@ const requirements={
  'maestria-armas-fogo':[['s:armas-fogo']],
  'maestria-em-apresentacao':[['p:apresentacao:4','a:influencia:4','a:destreza:4','s:apresentacao-avancada','s:pericia-em-instrumentos']],
  'voz-encantadora':[['a:influencia:4','p:apresentacao:4','a:vigor:3']],
- 'melodia-psiquica':[['p:armas_conjuracao:4','s:criar-item-foco-magia','s:maestria-em-apresentacao']],
  ...site.requirements};
 const hidden=new Set(['combate','armas']);
+const internal=new Set(site.bard.effects.map(effect=>effect.id));
 const origins={'maestria-armas-fogo':'humano','transfusao-sanguinaria':'lucker_sangue'};
 const automated=new Set(['furtividade','improviso','mestre','olhos-de-aguia','escudo-arcano','invocar-esfera-espiritual',
  'passo-etereo','absorver-esferas','disparo-esferas-espirituais','maos-leves','pesquisa-avancada-pocoes','golpe-furtivo',
@@ -34,13 +34,14 @@ const skills=site.skills.map(([id,name,detail,cost])=>({id,name,detail,cost,lega
  source:'SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85',sourceCommit:site.commit,
  grades:['pericia-druidica','transformacao-elemental'].includes(id)?[1,2,3]:['vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(id)?[1,2,3]:[],
  automation:automated.has(id)?'parcial':'manual',
- effects:[{description:detail,kind:automated.has(id)?'passivo ou condicionado':'ativo ou narrativo',
+ effects:id==='maestria-em-apresentacao'?site.bard.effects:[{description:detail,kind:automated.has(id)?'passivo ou condicionado':'ativo ou narrativo',
   activation:site.cards.activation[id]??'Consultar descrição normativa',conditions:detail,source:site.commit,automation:automated.has(id)?'parcial':'manual'}]}));
-for(const row of old)if(!skills.some(item=>item.id===row.id))skills.push({...row,legacy:true,state:'LEGADO',requirements:oldRequirements[row.id]??[],family:'outros',grades:[],effects:[{description:row.detail,automation:'manual'}],automation:'manual',source:'Registro histórico 0.2.1.15'});
+for(const row of old)if(!internal.has(row.id)&&!skills.some(item=>item.id===row.id))skills.push({...row,legacy:true,state:'LEGADO',requirements:oldRequirements[row.id]??[],family:'outros',grades:[],effects:[{description:row.detail,automation:'manual'}],automation:'manual',source:'Registro histórico 0.2.1.15'});
 let module='// Catálogo único revisado contra o SRD ativo. Gerado por scripts/sync-skill-catalog.mjs.\n';
 module+='export const SKILLS='+JSON.stringify(skills,null,2)+';\n';
 module+='export const requirements=Object.fromEntries(SKILLS.map(row=>[row.id,row.requirements]));\n';
 module+='export const ADVANCED_SOURCES='+JSON.stringify(site.advanced)+';\n';
+module+='export const BARD_MASTERY_SUMMARY='+JSON.stringify(site.bard.summary)+';\n';
 module+='export const XP_LEVEL_REFERENCE='+JSON.stringify(site.levels)+';\n';
 module+='export const showSkill=(row,system)=>!row.legacy||Boolean(system.skills?.includes(row.id));\n';
 module+='const normalizeName=value=>value.normalize("NFD").replace(/\\p{M}/gu,"").toLocaleLowerCase("pt-BR");\n';

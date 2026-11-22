@@ -10,6 +10,7 @@ import {RACES,PURE_ELEMENTS,RUNE_ELEMENTS,usesRacialRules,racialChoicesComplete,
 
 import {canUseTechnique} from "./techniques.mjs";
 import {summonPlan} from "./summon-planning.mjs";
+import {bardMasteryId,bardRepertoire} from "./bard.mjs";
 import {searchSkills, showSkill} from "./skill-catalog.mjs";
 
 const ns="codex-rpg-foundry";
@@ -70,12 +71,16 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
   (refund.blocker?" disabled":disabled)+'>Devolver Perícia — recuperar '+refund.refund+' XP</button>'+
   (refund.blocker?'<p class="codex-dna-note">'+esc(refund.blocker)+'</p>':
    !creationPending?'<p class="codex-dna-note">A devolução exige autorização do Narrador.</p>':""):"";
+ const repertoire=id===bardMasteryId?'<section class="codex-bard-repertoire"><h4>Repertório da Maestria</h4><p>'+
+  esc(bardRepertoire.summary)+'</p>'+bardRepertoire.effects.map(effect=>
+   '<details><summary>'+esc(effect.name)+' <small>'+esc(effect.state)+'</small></summary><p>'+
+   esc(effect.description)+'</p>'+(effect.conditions?'<p>'+esc(effect.conditions)+'</p>':'')+'</details>').join('')+'</section>':"";
  const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
  const declared=["sentido-elemental","corpo-fechado","impacto-psiquico"].includes(id)&&canUseTechnique(system,id)
   ?'<button type="button" data-action="declareTechnique"'+(locked||system.courage<1?" disabled":disabled)+'>Declarar efeito (−1 Coragem)</button>':"";
  return '<h3>'+iconMarkup(skillIconId(row.id,row.family))+' '+esc(row.name)+'</h3>'+(granted?'':'<p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p>')+'<p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
-  '<button type="button" data-action="consultSkill">Consultar no Compendium</button>'+(refund?ownedMarkup:packageButton)+declared+
+  '<button type="button" data-action="consultSkill">Consultar no Compendium</button>'+(refund?ownedMarkup:packageButton)+declared+repertoire+
   (plan.blocker?'<p class="codex-dna-note">'+esc(plan.blocker+requiredXP)+'</p>':'')+
   (locked&&plan.status!=="owned"?'<p class="codex-dna-note">Compra indisponível durante uma rolagem ou alteração em andamento.</p>':'');
 }

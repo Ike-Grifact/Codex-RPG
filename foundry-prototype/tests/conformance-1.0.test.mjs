@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {SKILLS,requirements,ADVANCED_SOURCES} from '../module/skill-catalog.mjs';
+import {SKILLS,requirements,ADVANCED_SOURCES,searchSkills} from '../module/skill-catalog.mjs';
+import {bardMasteryId,bardRepertoire,historicalBardNames} from '../module/bard.mjs';
+import {importSiteData} from '../module/creation.mjs';
 import {racialGrants,hasSkill} from '../module/races.mjs';
 import {skillDetails,planSkillPackage,advancementPlan} from '../module/advancement.mjs';
 import {xpLedger,CREATION_REFERENCE,XP_ATTRIBUTE,XP_TRAINING,maxCourage,buildPool,resolveRoll,passiveAnticipar} from '../module/rules.mjs';
@@ -20,9 +22,9 @@ test('arma cravada conta na carga transportada sem duplicar o peso por filtros v
  actor.items[0].system.embeddedWeapon='';assert.equal(carriedWeight(actor),.5);
 });
 
-test('124 registros do site coincidem com catálogo e 126 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
- assert.equal(site.skills.length,124);assert.equal(SKILLS.length,126);
- const definitions=skillDefinitions();assert.equal(new Set(definitions.map(row=>row._id)).size,126);
+test('107 Perícias do site coincidem com catálogo e 109 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
+ assert.equal(site.skills.length,107);assert.equal(SKILLS.length,109);
+ const definitions=skillDefinitions();assert.equal(new Set(definitions.map(row=>row._id)).size,109);
  for(const [id,name,detail,cost] of site.skills){
   const row=byId(id),native=definitions.find(item=>item.system.canonicalId===id);
   assert.deepEqual([row.name,row.detail,row.cost],[name,detail,cost],id);
@@ -30,12 +32,59 @@ test('124 registros do site coincidem com catálogo e 126 definições nativas, 
   assert.equal(native.system.description,detail,id);assert.equal(native.system.costPending,cost==null,id);
   assert.deepEqual(native.system.grades,row.grades,id);assert.equal(native.system.automation,row.automation,id);
   assert.equal(native.system.state,row.legacy?'LEGADO':row.state,id);
-  assert.equal(row.effects[0].activation,site.cards.activation[id]??'Consultar descrição normativa',id);
+  if(id!==bardMasteryId)assert.equal(row.effects[0].activation,site.cards.activation[id]??'Consultar descrição normativa',id);
+  else assert.deepEqual(native.system.effects,site.bard.effects);
   if(site.requirements[id])assert.deepEqual(requirements[id],site.requirements[id],id);
  }
  assert.equal(equipmentDefinitions().length,90);
  assert.equal(catalogId('skill','improviso'),definitions.find(item=>item.system.canonicalId==='improviso')._id);
 });
+test('o Bardo tem quatro nós e os 17 efeitos consultáveis não são compras ou fontes',()=>{
+ const mastery=byId(bardMasteryId);
+ assert.deepEqual(site.families.find(row=>row.id==='apresentacao').skills,
+  ['apresentacao-avancada','pericia-em-instrumentos',bardMasteryId,'voz-encantadora']);
+ assert.deepEqual(SKILLS.filter(row=>row.family==='apresentacao').map(row=>row.id).sort(),
+  ['apresentacao-avancada','pericia-em-instrumentos',bardMasteryId,'voz-encantadora'].sort());
+ assert.deepEqual(mastery.requirements,[['p:apresentacao:4','a:influencia:4','a:destreza:4','s:apresentacao-avancada','s:pericia-em-instrumentos']]);
+ assert.deepEqual(byId('voz-encantadora').requirements,[['a:influencia:4','p:apresentacao:4','a:vigor:3']]);
+ assert.equal(byId('apresentacao-avancada').cost,1);
+ for(const id of ['pericia-em-instrumentos',bardMasteryId,'voz-encantadora']){
+  assert.equal(byId(id).cost,null);
+  assert.equal(skillDetails({...empty(),xp:1000},id).canBuy,false);
+ }
+ assert.equal(mastery.effects.length,17);
+ assert.match(bardRepertoire.summary,/3 Antecipares \(3A\) musicais no total/);
+ assert.match(mastery.effects.find(row=>row.id==='inspiracao').description,/3A → 1 Coragem/);
+ assert.match(mastery.effects.find(row=>row.id==='ressonancia-arcana').description,/3A → 1 carga de foco/);
+ const melody=mastery.effects.find(row=>row.id==='melodia-psiquica');
+ assert.match(melody.conditions,/Disciplina 4 \+ Criar Item de Foco e Magia.*instrumento.*PENDENTE/s);
+ for(const effect of mastery.effects){
+  assert.equal(effect.automation,'manual');
+  const legacy={...empty(),skills:[effect.id]};
+  assert.equal(hasSkill(legacy,effect.id),false,effect.id);
+  assert.equal(xpLedger(legacy).spent,xpLedger(empty()).spent,effect.id);
+  assert.equal(byId(effect.id),undefined,effect.id);
+  assert.equal(searchSkills(effect.name,legacy).some(row=>row.name===effect.name),false,effect.id);
+  assert.equal(planSkillPackage(legacy,effect.id).status,'locked',effect.id);
+  assert.throws(()=>advancementPlan(legacy,{kind:'skill',key:effect.id}),/indisponível/,effect.id);
+ }
+});
+
+test('importação arquiva técnicas internas sem promover a Maestria ou perder itens da ficha',()=>{
+ const item={name:'Contratempo',type:'skill',system:{canonicalId:'contratempo',description:'Registro anterior'}};
+ const effects=['inspiracao','Ação em Conjunto','melodia-psiquica'];
+ const [imported]=importSiteData({schema:'codex-html-playtest-v1',skills:[...effects,'apresentacao-avancada'],items:[item,{name:'Espada antiga',type:'arma'}],xpEarned:12});
+ assert.deepEqual(imported.system.skills,['apresentacao-avancada']);
+ assert.equal(imported.system.xp,12);
+ assert.deepEqual(imported.items.map(item=>item.name),['Espada antiga']);
+ const flag=imported.flags['codex-rpg-foundry'].bardLegacy;
+ assert.deepEqual(flag,{ids:effects,items:[item]});
+ assert.deepEqual(historicalBardNames({...imported,getFlag:()=>flag}),['Ação em Conjunto','Contratempo','Inspiração','Melodia Psíquica']);
+ const existing={...imported,items:[item],system:{...imported.system,skills:['inspiracao']},getFlag:()=>undefined};
+ assert.deepEqual(historicalBardNames(existing),['Contratempo','Inspiração']);
+ assert.deepEqual(existing.system.skills,['inspiracao']);
+});
+
 test('cada alternativa de compra satisfaz o validador e retirar cada requisito obrigatório bloqueia sua alternativa',()=>{
  for(const row of SKILLS.filter(row=>!row.legacy&&row.cost!=null&&row.id!=='maestria-armas-fogo')){
   for(const branch of requirements[row.id].length?requirements[row.id]:[[]]){

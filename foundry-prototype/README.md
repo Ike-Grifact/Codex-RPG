@@ -1,12 +1,14 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.25.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.26.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
+A **Maestria em Apresentação** reúne os 17 efeitos do Bardo no Codex Genético e no Compendium. Perícia em Instrumentos e Voz Encantadora continuam independentes, com XP de aquisição pendente. Registros antigos podem ser conferidos em **Evolução → Histórico do Bardo para revisão**.
+
 ## Conteúdo sincronizado com o site
 
-- O Codex Genético tem 18 constelações temáticas, seletor de ramos, filtro de Perícias futuras e 124 entradas do site. O Compendium preserva ainda dois verbetes legados. Custos ou requisitos pendentes continuam bloqueados para compra.
+- O Codex Genético tem 18 constelações temáticas, seletor de ramos e filtro de Perícias futuras. O Compendium distribui 109 verbetes, incluindo os registros legados. Custos ou requisitos pendentes continuam bloqueados para compra.
 - A ficha usa a referência de progressão da v0.83. Criação com 15 XP e teto de 260 XP totais no nível 20. A tabela orienta a mesa e o Narrador concede XP no Codex Genético. Valores legados permanecem na ficha.
 - **Conjurar** oferece elemento, foco, G1–G3, declaração de preparação, cargas para acelerar G3 e amplificação. Cargas e custo da magia são debitados ao finalizar.
 - Runa Espinhos recebe um elemento inicial, conserva o segundo antigo como histórico e usa Escudo Rúnico para registrar sua barreira. O Narrador pode renovar o uso gratuito pelo Codex Genético. A aplicação da resistência e o desgaste da barreira são resolvidos na mesa.

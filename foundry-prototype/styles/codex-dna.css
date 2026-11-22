@@ -113,3 +113,13 @@
 .codex-dna-search [data-dna-skill-results] button {display:grid;gap:2px;justify-items:start;text-align:left;height:auto;padding:6px 9px;white-space:normal}
 .codex-dna-search [data-dna-skill-results] button[aria-current="true"] {border-color:var(--cx-gold)}
 .codex-dna-search small {color:var(--cx-muted)}
+.codex-bard-repertoire,.codex-bard-history {
+  margin-top:12px;
+  padding:9px;
+  border:1px solid var(--cx-line);
+  border-radius:8px;
+}
+.codex-bard-repertoire details {padding:6px 0;border-top:1px solid var(--cx-line)}
+.codex-bard-repertoire summary,.codex-bard-history summary {cursor:pointer;font-weight:700}
+.codex-bard-repertoire summary small {color:var(--cx-muted);font-size:.75em}
+.codex-bard-repertoire details p {margin:5px 0;overflow-wrap:anywhere}

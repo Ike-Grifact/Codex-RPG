@@ -1,110 +1,6 @@
 // Catálogo único revisado contra o SRD ativo. Gerado por scripts/sync-skill-catalog.mjs.
 export const SKILLS=[
   {
-    "id": "dueto-improvisado",
-    "name": "Dueto Improvisado",
-    "detail": "PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "contratempo",
-    "name": "Contratempo",
-    "detail": "PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "solo-provocador",
-    "name": "Solo Provocador",
-    "detail": "PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "cancoes-sustentadas",
-    "name": "Canções Sustentadas",
-    "detail": "PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: uma composição musical ativa por Bardo; duração, interrupção e ação pendentes. XP de compra PENDENTE.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
     "id": "pericia-em-instrumentos",
     "name": "Perícia em Instrumentos",
     "detail": "Meio instrumental para habilidades do Bardo. Efeitos próprios e XP pendentes.",
@@ -153,11 +49,139 @@ export const SKILLS=[
     "automation": "manual",
     "effects": [
       {
-        "description": "EXPERIMENTAL — Perícia ÚNICA do Bardo. Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos. Gera até 3A musicais totais de apoio, distribuídos conforme a DE de cada aliado. Repertório interno: Inspiração 3A→1 Coragem, Ressonância Arcana 3A→1 carga de foco, Acorde de Proteção 1A→anula 1P, Acorde Triunfal 2A→1E, passagem de protagonismo, Ritmo Acelerado e Harmonia Musical. Desarmonia após falha com Pavor. Melodia Psíquica é opção condicional com Disciplina 4 + Criar Item de Foco e Magia e instrumento para até dois alvos; procedimentos de alvos pendentes. Custo de aquisição XP PENDENTE.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL — Perícia ÚNICA do Bardo. Requer Apresentação 4, Influência 4, Destreza 4, Apresentação Avançada e Perícia em Instrumentos. Gera até 3A musicais totais de apoio, distribuídos conforme a DE de cada aliado. Repertório interno: Inspiração 3A→1 Coragem, Ressonância Arcana 3A→1 carga de foco, Acorde de Proteção 1A→anula 1P, Acorde Triunfal 2A→1E, passagem de protagonismo, Ritmo Acelerado e Harmonia Musical. Desarmonia após falha com Pavor. Melodia Psíquica é opção condicional com Disciplina 4 + Criar Item de Foco e Magia e instrumento para até dois alvos; procedimentos de alvos pendentes. Custo de aquisição XP PENDENTE.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
+        "id": "dueto-improvisado",
+        "name": "Dueto Improvisado",
+        "description": "Transferência dirigida de 1A sem duplicar símbolo",
+        "state": "PROPOSTO",
+        "conditions": "requisitos e momento pendentes",
+        "automation": "manual"
+      },
+      {
+        "id": "contratempo",
+        "name": "Contratempo",
+        "description": "Interferir na seleção de dados mantidos pelo inimigo",
+        "state": "PROPOSTO",
+        "conditions": "custo/teste/momento pendentes",
+        "automation": "manual"
+      },
+      {
+        "id": "solo-provocador",
+        "name": "Solo Provocador",
+        "description": "Apresentação para chamar atenção de ameaça",
+        "state": "PROPOSTO",
+        "conditions": "sem controle mental gratuito",
+        "automation": "manual"
+      },
+      {
+        "id": "cancoes-sustentadas",
+        "name": "Canções Sustentadas",
+        "description": "Sustentar modalidades de ritmo, harmonia ou ressonância",
+        "state": "PROPOSTO",
+        "conditions": "manutenção, duração e troca pendentes",
+        "automation": "manual"
+      },
+      {
+        "id": "ritmo-de-batalha",
+        "name": "Ritmo de Batalha",
+        "description": "Apoiar enquanto ataca/conjura com ação normalmente habilitada",
+        "state": "EXPERIMENTAL",
+        "conditions": "resolução de combinação pendente",
+        "automation": "manual"
+      },
+      {
+        "id": "inspiracao",
+        "name": "Inspiração",
+        "description": "3A → 1 Coragem recuperada por aliado",
+        "state": "EXPERIMENTAL",
+        "conditions": "respeita teto de Coragem",
+        "automation": "manual"
+      },
+      {
+        "id": "ressonancia-arcana",
+        "name": "Ressonância Arcana",
+        "description": "3A → 1 carga de foco de aliado",
+        "state": "EXPERIMENTAL",
+        "conditions": "respeita capacidade original do foco",
+        "automation": "manual"
+      },
+      {
+        "id": "acorde-de-protecao",
+        "name": "Acorde de Proteção",
+        "description": "1A → anula 1 Pavor mantido por aliado",
+        "state": "EXPERIMENTAL",
+        "conditions": "antes de finalizar resultado",
+        "automation": "manual"
+      },
+      {
+        "id": "acorde-triunfal",
+        "name": "Acorde Triunfal",
+        "description": "2A → 1 Êxito para aliado",
+        "state": "EXPERIMENTAL",
+        "conditions": "não retroativo",
+        "automation": "manual"
+      },
+      {
+        "id": "compasso-adiantado",
+        "name": "Compasso Adiantado",
+        "description": "1A para favorecer passagem do protagonismo",
+        "state": "EXPERIMENTAL",
+        "conditions": "não concede outro turno/ação",
+        "automation": "manual"
+      },
+      {
+        "id": "ritmo-acelerado",
+        "name": "Ritmo Acelerado",
+        "description": "Distribui até 3A totais entre até três aliados, máx. 1A a cada",
+        "state": "EXPERIMENTAL",
+        "conditions": "",
+        "automation": "manual"
+      },
+      {
+        "id": "harmonia-musical",
+        "name": "Harmonia Musical",
+        "description": "Neutraliza Vantagem/Desvantagem comuns em área 16 × 16 m, inclusive inimigos",
+        "state": "EXPERIMENTAL",
+        "conditions": "duração/sustentação pendentes",
+        "automation": "manual"
+      },
+      {
+        "id": "piada-infame",
+        "name": "Piada Infame",
+        "description": "Inimigo rerrola um dado e aceita novo resultado",
+        "state": "PROPOSTO",
+        "conditions": "custo/DE/timing pendentes",
+        "automation": "manual"
+      },
+      {
+        "id": "elevacao-harmonica",
+        "name": "Elevação Harmônica",
+        "description": "Elevar um dado de aliado",
+        "state": "PROPOSTO",
+        "conditions": "custo/teto/momento pendentes, nunca d20",
+        "automation": "manual"
+      },
+      {
+        "id": "acao-em-conjunto-musical",
+        "name": "Ação em Conjunto",
+        "description": "Proposta anterior de +1E e +1A com Apresentação + Disciplina + Influência",
+        "state": "PROPOSTO",
+        "conditions": "não libera duas Práticas em mesma pilha",
+        "automation": "manual"
+      },
+      {
+        "id": "presenca-de-palco",
+        "name": "Presença de Palco",
+        "description": "Proposta anterior de +1E em Apresentações",
+        "state": "PROPOSTO",
+        "conditions": "não é bônus geral de ataque",
+        "automation": "manual"
+      },
+      {
+        "id": "melodia-psiquica",
+        "name": "Melodia Psíquica",
+        "description": "Intenção autoral: utilizar instrumento para canalizar efeitos de armas OU psíquicos em até dois alvos, preservando as Perícias, equipamentos, habilitações, dados, recursos e Graus que o personagem já possui.",
+        "state": "EXPERIMENTAL",
+        "conditions": "EXPERIMENTAL. Para utilizar a opção Melodia Psíquica da Maestria, o Bardo deve cumprir Disciplina 4 + Criar Item de Foco e Magia (a Perícia vigente que substitui a referência informal “Criar Magia”), além de utilizar instrumento. Não há compra independente de Melodia Psíquica neste playtest consolidado. PROPOSTO para o teste mais conservador: uma única ação e uma única rolagem, avaliando separadamente a DE de cada alvo; nenhum novo ataque ou dano duplicado é gerado automaticamente. PENDENTE: alcance, duplicação ou divisão de E/P e dano, propriedades de arma transmitidas pelo instrumento, interação com cargas e tempo de conjuração, alvo aliado versus inimigo, interrupção e custo de uso. Não automatizar Melodia Psíquica antes dessa definição.",
         "automation": "manual"
       }
     ]
@@ -187,348 +211,6 @@ export const SKILLS=[
         "kind": "ativo ou narrativo",
         "activation": "Consultar descrição normativa",
         "conditions": "EXPERIMENTAL: Influência 4 + Apresentação 4 + Vigor 3. Voz substitui instrumento para apresentações comuns, sem substituir instrumentos específicos da Melodia Psíquica. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "ritmo-de-batalha",
-    "name": "Ritmo de Batalha",
-    "detail": "EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: apoiar na mesma rodada de ataque ou conjuração. Não habilita duas Práticas na mesma pilha nem ação extra. Procedimento e XP pendentes.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "inspiracao",
-    "name": "Inspiração",
-    "detail": "EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: 3A musicais para recuperar 1 Coragem de um aliado, sem ultrapassar seu teto. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "ressonancia-arcana",
-    "name": "Ressonância Arcana",
-    "detail": "EXPERIMENTAL: 3A musicais para recuperar 1 carga de foco de aliado, sem ultrapassar sua capacidade. XP pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: 3A musicais para recuperar 1 carga de foco de aliado, sem ultrapassar sua capacidade. XP pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: 3A musicais para recuperar 1 carga de foco de aliado, sem ultrapassar sua capacidade. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "acorde-de-protecao",
-    "name": "Acorde de Proteção",
-    "detail": "EXPERIMENTAL: 1A musical para anular 1 Pavor mantido de aliado antes de encerrar sua rolagem. XP pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: 1A musical para anular 1 Pavor mantido de aliado antes de encerrar sua rolagem. XP pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: 1A musical para anular 1 Pavor mantido de aliado antes de encerrar sua rolagem. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "acorde-triunfal",
-    "name": "Acorde Triunfal",
-    "detail": "EXPERIMENTAL: 2A musicais para conceder 1E a aliado elegível, sem duplicação. XP pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: 2A musicais para conceder 1E a aliado elegível, sem duplicação. XP pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: 2A musicais para conceder 1E a aliado elegível, sem duplicação. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "compasso-adiantado",
-    "name": "Compasso Adiantado",
-    "detail": "EXPERIMENTAL: 1A musical para favorecer protagonismo de aliado, sem turno extra; procedimento pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: 1A musical para favorecer protagonismo de aliado, sem turno extra; procedimento pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: 1A musical para favorecer protagonismo de aliado, sem turno extra; procedimento pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "ritmo-acelerado",
-    "name": "Ritmo Acelerado",
-    "detail": "EXPERIMENTAL: distribuir 3A totais entre até três aliados, máximo de 1A cada. XP pendente.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: distribuir 3A totais entre até três aliados, máximo de 1A cada. XP pendente.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: distribuir 3A totais entre até três aliados, máximo de 1A cada. XP pendente.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "harmonia-musical",
-    "name": "Harmonia Musical",
-    "detail": "EXPERIMENTAL: neutraliza Vantagem/Desvantagem comuns em área 16x16 m, inclui inimigos. Duração e XP pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: neutraliza Vantagem/Desvantagem comuns em área 16x16 m, inclui inimigos. Duração e XP pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: neutraliza Vantagem/Desvantagem comuns em área 16x16 m, inclui inimigos. Duração e XP pendentes.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "piada-infame",
-    "name": "Piada Infame",
-    "detail": "PROPOSTO: rerrolar um dado de inimigo; novo resultado vale mesmo se melhor. Custos e procedimento pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: rerrolar um dado de inimigo; novo resultado vale mesmo se melhor. Custos e procedimento pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: rerrolar um dado de inimigo; novo resultado vale mesmo se melhor. Custos e procedimento pendentes.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "elevacao-harmonica",
-    "name": "Elevação Harmônica",
-    "detail": "PROPOSTO: elevar um passo de um dado por aliado, sem d20. Custos e procedimento pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "PROPOSTO",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "PROPOSTO: elevar um passo de um dado por aliado, sem d20. Custos e procedimento pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "PROPOSTO: elevar um passo de um dado por aliado, sem d20. Custos e procedimento pendentes.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "acao-em-conjunto-musical",
-    "name": "Ação em Conjunto",
-    "detail": "EXPERIMENTAL: proposta Apresentação + Disciplina + Influência com +1E e +1A, mas combinar duas Práticas ainda não autorizado.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: proposta Apresentação + Disciplina + Influência com +1E e +1A, mas combinar duas Práticas ainda não autorizado.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: proposta Apresentação + Disciplina + Influência com +1E e +1A, mas combinar duas Práticas ainda não autorizado.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "presenca-de-palco",
-    "name": "Presença de Palco",
-    "detail": "EXPERIMENTAL: proposta +1E em apresentações; condições e compra XP pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      []
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: proposta +1E em apresentações; condições e compra XP pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: proposta +1E em apresentações; condições e compra XP pendentes.",
-        "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
-        "automation": "manual"
-      }
-    ]
-  },
-  {
-    "id": "melodia-psiquica",
-    "name": "Melodia Psíquica",
-    "detail": "EXPERIMENTAL: Disciplina 4 + Criar Item de Foco e Magia. Instrumento canaliza efeitos de armas OU psíquicos em até 2 alvos; não duplica dados/dano nem concede perícias. XP e procedimentos pendentes.",
-    "cost": null,
-    "legacy": false,
-    "family": "outros",
-    "requirements": [
-      [
-        "p:armas_conjuracao:4",
-        "s:criar-item-foco-magia",
-        "s:maestria-em-apresentacao"
-      ]
-    ],
-    "state": "EXPERIMENTAL",
-    "source": "SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85",
-    "sourceCommit": "874de82d788228ca5fb3c01b1ac06733218585a2",
-    "grades": [],
-    "automation": "manual",
-    "effects": [
-      {
-        "description": "EXPERIMENTAL: Disciplina 4 + Criar Item de Foco e Magia. Instrumento canaliza efeitos de armas OU psíquicos em até 2 alvos; não duplica dados/dano nem concede perícias. XP e procedimentos pendentes.",
-        "kind": "ativo ou narrativo",
-        "activation": "Consultar descrição normativa",
-        "conditions": "EXPERIMENTAL: Disciplina 4 + Criar Item de Foco e Magia. Instrumento canaliza efeitos de armas OU psíquicos em até 2 alvos; não duplica dados/dano nem concede perícias. XP e procedimentos pendentes.",
         "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
         "automation": "manual"
       }
@@ -3938,6 +3620,7 @@ export const SKILLS=[
 ];
 export const requirements=Object.fromEntries(SKILLS.map(row=>[row.id,row.requirements]));
 export const ADVANCED_SOURCES=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:2"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:2"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:2"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:2"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:2"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:2"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:2"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:2"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:2"}];
+export const BARD_MASTERY_SUMMARY="Ao realizar atuação válida que envolva Apresentação + Influência e um complemento pertinente quando aplicável, usando instrumento ou Voz Encantadora habilitada, o Bardo pode gerar 3 Antecipares (3A) musicais no total, para distribuir ou converter em apoio coletivo. São três por atuação, não três por aliado, não entram automaticamente no ataque/dano ou na própria DE e não duplicam os A naturais da rolagem. A reserva adicional não se acumula entre rodadas e cada A só financia um efeito.";
 export const XP_LEVEL_REFERENCE=[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260];
 export const showSkill=(row,system)=>!row.legacy||Boolean(system.skills?.includes(row.id));
 const normalizeName=value=>value.normalize("NFD").replace(/\p{M}/gu,"").toLocaleLowerCase("pt-BR");

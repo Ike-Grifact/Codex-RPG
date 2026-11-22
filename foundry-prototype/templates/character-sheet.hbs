@@ -126,6 +126,13 @@
 
   <section id="{{codex.appId}}-page-evolution" class="codex-block codex-evolution" data-sheet-panel="evolution" aria-label="Evolução" hidden>
     <h2>Evolução</h2>
+    {{#if codex.historicalBard}}
+    <details data-sync="bard-history" class="codex-bard-history">
+      <summary>Histórico do Bardo para revisão</summary>
+      <p>Os registros abaixo foram preservados. Consulte os efeitos na Maestria em Apresentação.</p>
+      <ul>{{#each codex.historicalBard}}<li>{{this}}</li>{{/each}}</ul>
+    </details>
+    {{/if}}
     <dl class="codex-stat-cards">
       <div><dt>XP disponíveis</dt><dd>{{codex.xpLedger.left}}</dd></div>
       <div><dt>XP investidos</dt><dd>{{codex.xpLedger.spent}}</dd></div>

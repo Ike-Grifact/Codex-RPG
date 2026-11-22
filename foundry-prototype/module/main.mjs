@@ -1,5 +1,6 @@
 /* Codex RPG — sistema Foundry VTT v14. */
 import {CodexCharacterData,CodexHumanoidData,CodexAnimalData,CodexMonsterData,CodexMonsterHumanoidData,CodexEquipmentData,CodexSkillData} from "./data-model.mjs";
+import {bardEffectItem,splitBardSkills} from "./bard.mjs";
 import {CodexSkillSheet} from './skill-sheet.mjs';
 import {migrateRules} from './rules-migration.mjs';
 import {registerCombatAdjudication} from "./combat-adjudication.mjs";
@@ -46,25 +47,50 @@ Hooks.once("ready",()=>{
  game.codex={openPavorPanel:openPublicPavor};
  if(game.user.isGM)game.codex.openPavorPanel();
 });
+const rejectBardSkill=()=>{
+ ui.notifications.warn('Esta técnica integra a Maestria em Apresentação. Consulte seu repertório.');
+ return false;
+};
 Hooks.on('preCreateItem',(item)=>{
+ if(bardEffectItem(item))return rejectBardSkill();
  if(!item.parent)return;
  if(item.type==='skill'){
   ui.notifications.warn('Adquira a Perícia pelo Codex Genético. O Item define uma regra consultável.');return false;
  }
  if(!game.user.isGM){ui.notifications.warn('Compre pela Loja ou solicite a concessão ao Narrador.');return false;}
 });
-Hooks.on('preCreateActor',(actor,data)=>{
- actor.updateSource({'system.creationBudget':15});
- if(data.type==='character'&&!data.flags?.['codex-rpg-foundry']?.imported&&!data.items?.some(item=>item.system?.kind==='resource')){
-  actor.updateSource({items:[...(data.items??[]),...startingResources()]});
+Hooks.on("preUpdateItem",(item,changes)=>{
+ if(item.type!=="skill")return;
+ const updated={type:item.type,name:changes.name??item.name,
+  system:{canonicalId:foundry.utils.getProperty(changes,"system.canonicalId")??item.system.canonicalId}};
+ if(!bardEffectItem(item)&&bardEffectItem(updated))return rejectBardSkill();
+});
+Hooks.on('preCreateActor',(actor)=>{
+ const data=actor.toObject(),namespace='codex-rpg-foundry';
+ const flags=data.flags?.[namespace];
+ const {skills,historical}=splitBardSkills(data.system.skills??[]);
+ const items=data.items??[],legacyItems=items.filter(bardEffectItem);
+ const changes={'system.creationBudget':15};
+ if(historical.length)changes['system.skills']=skills;
+ if(historical.length||legacyItems.length){
+  const old=flags?.bardLegacy;
+  changes['flags.'+namespace+'.bardLegacy']={
+   ids:[...new Set([...(old?.ids??[]),...historical])],
+   items:[...(old?.items??[]),...legacyItems]
+  };
  }
+ const needsResources=data.type==='character'&&!flags?.imported&&!items.some(item=>item.system?.kind==='resource');
+ if(needsResources)changes.items=startingResources();
+ actor.updateSource(changes);
+ // Antes da criação, a coleção só modifica o rascunho. O original já está na flag de histórico.
+ for(const item of legacyItems)actor.items.delete(item._id);
 });
 Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
  const life=foundry.utils.getProperty(changes,'system.life.value');
  if(game.users.get(userId)?.isGM&&_actor.system.transformation?.size==='pequena'&&typeof life==='number'&&life<_actor.system.life.value)foundry.utils.setProperty(changes,'system.transformation',{});
  if(game.users.get(userId)?.isGM)return;
  const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
- const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts))(\.|$)/;
+ const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts|bardLegacy))(\.|$)/;
  if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
    (options.recursive===false&&("system" in changes||"flags" in changes))){
   ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");

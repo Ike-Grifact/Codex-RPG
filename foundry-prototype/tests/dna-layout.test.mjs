@@ -56,7 +56,7 @@ test("constelações incluem todo o catálogo visível sem colisões no plano vi
   assert.equal(groups.flatMap(group=>[...group.nodes]).length,count);
   if(count===skills.length){
    assert.equal(groups.filter(group=>group.id!=="outros").length,18);
-   assert.ok(groups.some(group=>group.id==="outros"));
+   assert.ok(!groups.some(group=>group.id==="outros"),"O catálogo ativo usa somente os ramos temáticos.");
    const byId=new Map(nodes.map(n=>[n.id,n]));
    for(const [id,family] of [["invocacao-elemental","elementos"],["pericia-druidica","natureza"],["fogo","elementos"],["concentracao-refinada","conjuracao"],["olhos-de-aguia","disparos"]])
     assert.equal(byId.get(id)?.geneFamily,family);

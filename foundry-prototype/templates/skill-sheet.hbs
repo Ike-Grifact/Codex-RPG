@@ -1,5 +1,11 @@
 <section class="codex-foundry-root">
  <h2>{{skill.name}}</h2>
+ {{#if history}}
+ <p>Registro histórico · Efeito interno da Maestria em Apresentação</p>
+ <p>{{history.state}} · {{history.description}}</p>
+ {{#if history.conditions}}<p>{{history.conditions}}</p>{{/if}}
+ {{#if skill.description}}<details><summary>Texto do registro anterior</summary><p>{{skill.description}}</p></details>{{/if}}
+ {{else}}
  <p>{{skill.state}} · {{skill.family}} · {{#if skill.costPending}}XP pendente{{else}}{{skill.xpCost}} XP{{/if}}</p>
  <p>{{skill.description}}</p>
  <h3>Requisitos de aquisição</h3>
@@ -7,4 +13,18 @@
  <p>{{#if skill.grades.length}}Graus {{#each skill.grades}}{{this}} {{/each}} · {{/if}}Automação {{skill.automation}}</p>
  <p>{{skill.source}}</p>
  <p>{{purchaseNote}}</p>
+ {{#if repertoire}}
+ <section class="codex-bard-repertoire">
+  <h3>Repertório da Maestria</h3>
+  <p>{{repertoire.summary}}</p>
+  {{#each repertoire.effects}}
+  <details>
+   <summary>{{name}} <small>{{state}}</small></summary>
+   <p>{{description}}</p>
+   {{#if conditions}}<p>{{conditions}}</p>{{/if}}
+  </details>
+  {{/each}}
+ </section>
+ {{/if}}
+ {{/if}}
 </section>

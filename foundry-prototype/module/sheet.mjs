@@ -15,6 +15,7 @@ import {RACES,hasSkill,racialBand,isRuna} from "./races.mjs";
 import {spellPlan,compatibleFoci,focusElement,focusCharges,magicTiming,availableElements} from "./conjuration.mjs";
 import {prepareCombatAction,selectionOptions,changeRollSource} from "./combat-action.mjs";
 import {canAsura,canUseTechnique,sphereRound,sphereState} from "./techniques.mjs";
+import {historicalBardNames} from "./bard.mjs";
 import {standardMovement} from "./movement.mjs";
 const NS="codex-rpg-foundry";
 const draft=()=>({base:null,second:null,complement:null});
@@ -127,6 +128,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
     carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
     loadPercent:Math.min(100,Math.round(100*used/carryMax)),loadMeter:Math.min(used,carryMax),
+    historicalBard:historicalBardNames(actor),
     xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
     starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
     starterTraining:[

@@ -1,3 +1,5 @@
+import {internalBardEffect} from "./bard.mjs";
+
 // Tabelas acumuladas de G0 a G6 do Criador oficial, revisão 3948f58.
 export const XP_ATTRIBUTE = [0,1,3,6,9,18,32];
 export const XP_TRAINING = [0,2,4,8,16,32,64];
@@ -58,8 +60,8 @@ const exclusiveOrigins = {"maestria-armas-fogo":"humano","transfusao-sanguinaria
 export const canUseRacialSkill = (system,id) => !Object.hasOwn(exclusiveOrigins,id) ||
   (usesRacialRules(system) && system.race === exclusiveOrigins[id]);
 export const allOwnedSkills = system => [...new Set([...(system.skills ?? []), ...racialGrants(system)])]
- .filter(id=>canUseRacialSkill(system,id));
-export const hasSkill = (system, id) => canUseRacialSkill(system,id) && Boolean(system.skills?.includes(id) ||
+ .filter(id=>!internalBardEffect(id)&&canUseRacialSkill(system,id));
+export const hasSkill = (system, id) => !internalBardEffect(id) && canUseRacialSkill(system,id) && Boolean(system.skills?.includes(id) ||
   (id === "maestria-manejo-duplo" && system.skills?.includes("manejo-duplo")) || racialGrants(system).includes(id));
 export const isRuna = system => usesRacialRules(system) && system.race === "runa_espinhos";
 export const skillNameFor = (system,skill) => isRuna(system) && skill.id === "escudo-arcano" ? "Escudo Rúnico" : skill.name;

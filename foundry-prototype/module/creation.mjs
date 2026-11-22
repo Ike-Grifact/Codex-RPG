@@ -1,5 +1,6 @@
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP,maxCourage, monsterCap} from "./rules.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
+import {bardEffectItem,internalBardEffect,splitBardSkills} from "./bard.mjs";
 import {RACES, withRacialOrigin, usesRacialRules} from "./races.mjs";
 
 export const actorKinds = {
@@ -34,6 +35,9 @@ export function actorData(type, raw = {}, quick = false) {
   if (!Object.hasOwn(actorKinds, type)) throw new Error("Escolha um tipo de ficha válido.");
   const animal = type === "animal";
   const monster = type === "creature";
+  const ids=animal||monster||!Array.isArray(raw.skills)?[]:
+    [...new Set(raw.skills.filter(id=>typeof id==='string'&&id.length<=100).slice(0,500))];
+  const {skills,historical}=splitBardSkills(ids);
   let system = {
     creationBudget:15,
     level: integer(raw.level, 1, 20),
@@ -56,8 +60,7 @@ export function actorData(type, raw = {}, quick = false) {
     attributes: grades(ATTRIBUTES, raw.attributes),
     knowledges: animal || monster ? {} : grades(KNOWLEDGES, raw.knowledges),
     practices: animal || monster ? {} : grades(PRACTICES, raw.practices),
-    skills: animal || monster ? [] : [...new Set(Array.isArray(raw.skills)
-      ? raw.skills.filter(id=>typeof id==='string'&&id.length<=100).slice(0,500) : [])],
+    skills,
     courage: integer(raw.courage ?? 10, 0, maxCourage(integer(raw.level,1,20))),
     pavorLocal: integer(raw.pavorLocal, 0, monsterCap(raw.threatGrade)),
   };
@@ -72,7 +75,8 @@ export function actorData(type, raw = {}, quick = false) {
   }
   system.pp = integer(raw.pp, 0, maxPP(system.level));
   system.life = {value: integer(raw.life ?? lifeMax(system), 0, lifeMax(system))};
-  return {name: text(raw.name) || (quick && type === "humanoid" ? "Humano comum" : actorKinds[type]), type, system};
+  return {name: text(raw.name) || (quick && type === "humanoid" ? "Humano comum" : actorKinds[type]), type, system,
+    ...(historical.length?{flags:{"codex-rpg-foundry":{bardLegacy:{ids:historical}}}}:{})};
 }
 
 export function equipmentData(kind, name, catalogIndex = "") {
@@ -158,14 +162,15 @@ export function importSiteData(payload, characterType = "character") {
   const xp = integer(raw.xpEarned ?? raw.xp, 0, 1000000) + integer(raw.legacyXPRefund, 0, 1000000);
   const actor = actorData(characterType, {...raw,race:Object.hasOwn(RACES,raw.race)?raw.race:"",xp});
   const unknown = Array.isArray(raw.skills)
-    ? raw.skills.filter(id => typeof id === "string" && !supportedSkills.has(id)) : [];
+    ? raw.skills.filter(id => typeof id === "string" && !supportedSkills.has(id) && !internalBardEffect(id)) : [];
   if (unknown.length) {
     actor.system.notes = [actor.system.notes, "Perícias do site sem equivalente automatizado: " + unknown.join(", ")]
       .filter(Boolean).join("\n").slice(0, 5000);
   }
-  return [{
-    ...actor,
-    flags:{'codex-rpg-foundry':{imported:true,sourceTrade:structuredClone(raw.trade??{})}},
-    items: [...validEntries(raw.items, 100).map(webItem), ...tradeItems(raw.trade?.resources)],
-  }];
+  const items=validEntries(raw.items,100);
+  const historicalItems=items.filter(bardEffectItem);
+  const codexFlags={...actor.flags?.["codex-rpg-foundry"],imported:true,sourceTrade:structuredClone(raw.trade??{})};
+  if(historicalItems.length)codexFlags.bardLegacy={...codexFlags.bardLegacy,items:structuredClone(historicalItems)};
+  return [{...actor,flags:{"codex-rpg-foundry":codexFlags},
+    items:[...items.filter(item=>!bardEffectItem(item)).map(webItem),...tradeItems(raw.trade?.resources)]}];
 }
