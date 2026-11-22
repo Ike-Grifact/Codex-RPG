@@ -70,13 +70,27 @@ export function weightAffinity(weapon,target,attacker=null){
  if(!weapon)return {status:"manual",delta:0,description:"Sem peso de arma declarado."};
  const armor=armorOf(target);
  if(!armor)return {status:"manual",delta:0,description:"Alvo sem armadura: afinidade de peso sem critério automático aprovado."};
- if(weapon.kind==="firearm")return {status:"manual",delta:0,description:"Arma de fogo: consultar tabela específica de cada modelo e suas habilitações."};
  const atk=weapon.category==="muito-leve"?"leve":weapon.category;
  const def=armor.category==="muito-leve"?"leve":armor.category==="muito-pesado"?"pesado":armor.category;
  const table={leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}};
- const value=table[atk]?.[def];
- if(value===-1&&attacker?.skills?.includes(({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk]))
-  return {status:"known",delta:0,description:"A especialização do peso ignora esta Desvantagem natural (−1A)."};
+ const name=String(weapon.name||"").toLocaleLowerCase("pt-BR");
+ // SRD: arcos, bestas e armas de fogo têm suas próprias tabelas, não a matriz genérica de peso.
+ let natural=null,expertise=null;
+ if(weapon.kind==="firearm"){
+  expertise="armas-fogo";
+  if(/sniper/.test(name))natural={leve:1,medio:1,pesado:1};
+  else if(/shotgun|escopeta/.test(name))natural={leve:1,medio:0,pesado:0};
+  else if(/revólver|revolver|pistola|metralhadora|lança.granadas|lanca.granadas/.test(name))
+   natural={leve:-1,medio:0,pesado:0};
+ }else if(/^arco curto/.test(name)){natural={leve:-1,medio:1,pesado:0};expertise="armas-longo-alcance";}
+ else if(/^arco longo/.test(name)){natural={leve:-1,medio:0,pesado:1};expertise="armas-longo-alcance";}
+ else if(/^besta de uma mão/.test(name)){natural={leve:0,medio:0,pesado:0};expertise="armas-longo-alcance";}
+ else if(/^besta de duas mãos/.test(name)){natural={leve:-1,medio:0,pesado:1};expertise="armas-longo-alcance";}
+ else if(/^besta|^zarabatana/.test(name))return {status:"manual",delta:0,description:"Modelo à distância sem correspondência exata na tabela de afinidade: aplicar manualmente."};
+ if(weapon.kind==="firearm"&&!natural)return {status:"manual",delta:0,description:"Modelo de arma de fogo sem tabela própria validada: aplicar manualmente."};
+ const value=(natural||table[atk])?.[def];
+ if(value===-1&&attacker?.skills?.includes(expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk]))
+  return {status:"known",delta:0,description:"A especialização do peso/arma ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};
 }
