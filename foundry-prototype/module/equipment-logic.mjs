@@ -5,10 +5,8 @@ export function equippedDie(actor,item,mode){
  const s=actor.system,k=item.system.kind,cat=item.system.category;
  const keys=s.skills||[];
  if(mode==="conjuracao"){
-  if(k!=="focus"&&!["spell","magic"].includes(k))return 0;
-  if(!keys.includes("criar-item-foco-magia"))return 0;
-  const el=(item.system.element||"").toLowerCase().trim();
-  if(el&&el!=="psiquico"&&el!=="psíquico"&&!keys.some(x=>x.includes("elemento")&&x.includes(el)))return 0;
+  // SRD v0.89: foco habilita/encurta a conjuração, mas NUNCA concede dado.
+  return 0;
  }else if(mode==="armas"){
   if(!["weapon","firearm"].includes(k))return 0;
   if(k==="firearm"){if(!keys.includes("armas-fogo"))return 0;}
@@ -53,8 +51,9 @@ export function canSpendXP(system,delta){
 }
 export function defenseDE(actor){
  const s=actor.system,a=s.attributes||{};
- const natural=Math.min(9,Math.max(0,Math.floor(Number(a.destreza||0)/2)+
-  (s.monsterRules?Number(a.agilidade||0):1+Number(a.vigor||0))));
+ const natural=Math.min(9,Math.max(0,s.monsterRules?
+  Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2):
+  Number(a.agilidade||0)+Math.floor((Number(a.vigor||0)+Number(a.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3)));
  let modifier=0;
  // O modificador do primeiro equipamento válido afeta TODA defesa, não apenas esquiva.
  for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
