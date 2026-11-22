@@ -1,4 +1,5 @@
 import test from "node:test";
+import "./armor-integrity.test.mjs"; // Inclui regressões de armadura no CI do Criar Conflito.
 import assert from "node:assert/strict";
 import {blank,normalize,stats,dice,ledger,encounterSummary,remainingKinds,WEIGHT,quickHumanoid,KINDS,isHumanoidKind,SKILLS,canBuyDomarMedium,canBuyDomarGrande,normalizeCompanions,companionEncounterXP} from "./rules.mjs";
 
