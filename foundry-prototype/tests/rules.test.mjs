@@ -20,7 +20,7 @@ test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurado
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
- assert.deepEqual(faceSymbols(10,10),[2,0,1]);
+ assert.deepEqual(faceSymbols(10,10),[2,1,0]); // face máxima d10: 2E + 1A, sem Pavor
  assert.deepEqual(faceSymbols(12,12),[0,0,2]);
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
