@@ -116,7 +116,7 @@ function preset(){
   {equipped:true,name:"Armadura Média G1",weight:"medio",max:12,integrity:12});
  unit("Tank","humanoide","jogadores",{forca:2,agilidade:2,vigor:3},{armas_conjuracao:1},["armas-medias","recobrar-coragem"],0,1,
   {equipped:true,name:"Armadura Pesada G1",weight:"alto",max:17,integrity:17});
- state.tokens.find(t=>t.name==="Tank").knowledges.protecao=1; // 20 XP completos do Tank.
+ state.tokens.find(t=>t.name==="Tank").knowledges.protecao=1; // Cenário histórico: não tratar como build aprovada de 15 XP.
  unit("Lobo ágil","monstro","inimigos",{agilidade:2,destreza:2,forca:1,vigor:1},{},[],20,1);
  unit("Atirador","humanoide","inimigos",{destreza:2,agilidade:2,vigor:1},{armas_conjuracao:2},
   ["armas-fogo","disciplina-avancada","recobrar-coragem"],0,1,{equipped:true,name:"Armadura Leve G1",weight:"leve",max:7,integrity:7});
