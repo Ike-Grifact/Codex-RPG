@@ -4122,7 +4122,7 @@ function buildPool(){
    errors.push("Cargas insuficientes ou aceleração não permitida para esse Grau.");
   if(draft.magicAmplify&&!focus)errors.push("Amplificação com foco exige um foco compatível.");
   if(draft.equipmentId&&draft.equipmentId!==(focus?.id||""))
-   errors.push("O dado do foco deve corresponder à magia escolhida.");
+   errors.push("O foco selecionado deve corresponder ao elemento da magia; ele não adiciona dado.");
  }
  const sources=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])];
  const selectedStep=draft.step?draft.stepSourceId:"";
@@ -4233,8 +4233,8 @@ function renderComposer(){
  const throwingShield=!!draft.shieldThrowId;
  const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
  const gearOptions=throwingShield?"":spellSelection?magicComposerFields():
-  usingDiscipline()?'<label class="fp-form-field full">Arma ou foco (dado extra sujeito a Perícia)'+
-   select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&["arma","foco"].includes(x.type))
+  usingDiscipline()?'<label class="fp-form-field full">Arma (dado extra somente de arma habilitada)'+
+   select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&x.type==="arma")
      .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':"";
  const stepOptions=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])].filter(source=>
