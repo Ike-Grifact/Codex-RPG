@@ -56,6 +56,8 @@ test("Peso tático usa armadura equipada, não peso total do inventário",()=>{
  assert.equal(weightAffinity(medium,e).delta,1);
  const heavy={kind:"weapon",category:"pesado"};
  assert.equal(weightAffinity(heavy,e).delta,-1);
+ assert.equal(weightAffinity(heavy,e,{skills:["armas-pesadas"]}).delta,0,
+  "Especialista ignora Desvantagem por peso correspondente");
  const againstMedium={...e,items:[{...e.items[0],category:"medio"}]};
  assert.equal(weightAffinity(light,againstMedium).delta,1);
  assert.equal(weightAffinity(medium,againstMedium).delta,-1);
