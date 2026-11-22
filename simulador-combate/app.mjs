@@ -459,7 +459,7 @@ function demo(){
  setup("Saqueador","inimigos","humanoide",
   {agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
   [{id:"armadura-1",name:"Roupas Simples",kind:"armor",category:"muito-leve",grade:1,
-   integrityMax:3,integrity:3,equipped:true}]);
+   integrityMax:2,integrity:2,equipped:true}]);
  setup("Lobo","inimigos","monstro",{agilidade:2,forca:1,destreza:1},{},[]);
  log("cenário","Exemplo 2 × 2 criado. As builds de demonstração não substituem fichas reais de 15 XP.");
  persist();render();if(target())$("difficulty").value=String(defense(target()));
