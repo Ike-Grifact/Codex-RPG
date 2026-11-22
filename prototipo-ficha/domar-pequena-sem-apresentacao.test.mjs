@@ -46,7 +46,7 @@ test("Documentação e catálogo refletem compra sem alterar teste de domestica�
 
 
 test("Domar Média e Grande preservam os limites distintos de Apresentação",()=>{
- const combined=app.match(/if\\(\\(id==="domar-criatura-media"\\|\\|id==="domar-criatura-grande"\\)[^\\n]*return"Requer Influência "[^\\n]*;/);
+ const combined=app.match(/if\(\(id==="domar-criatura-media"\|\|id==="domar-criatura-grande"\)[^\n]*return"Requer Influência "[^\n]*;/);
  assert.ok(combined,"validação conjunta encontrada");
  const check=new Function("id","s",combined[0]+"return null;");
  const base=(apresentacao)=>({
@@ -57,5 +57,5 @@ test("Domar Média e Grande preservam os limites distintos de Apresentação",()
  assert.match(check("domar-criatura-grande",base(1)),/Apresentação 2/);
  assert.equal(check("domar-criatura-grande",base(2)),null);
  assert.match(check("domar-criatura-grande",{attributes:{influencia:3,inteligencia:1},practices:{apresentacao:2}}),/Influência 4/);
- assert.match(page,/Influência 2 \\+ Inteligência 1/,"Pequena não foi modificada");
+ assert.match(page,/Influência 2 \+ Inteligência 1/,"Pequena não foi modificada");
 });
