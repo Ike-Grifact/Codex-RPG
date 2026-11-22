@@ -67,8 +67,8 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   await page.locator('[data-select="'+shooterId+'"]').click();
   await page.locator('[data-target="'+mageId+'"]').click();
   await page.locator("#dodge").check();
-  assert((await page.locator("#target-info").innerText()).includes("DE 2 (esquiva)"),
-   "Armadura Muito Leve deve conceder +2 DE somente quando o Mago esquiva");
+  assert((await page.locator("#target-info").innerText()).includes("DE 4 (esquiva)"),
+   "Armadura Muito Leve concede +2 DE em toda defesa, sem duplicar ao esquivar");
   await page.locator("#attribute-source").selectOption("destreza");
   await page.locator("#discipline-mode").selectOption("armas");
   await page.locator("#equipment-source").selectOption({label:"Revólver · d6"});

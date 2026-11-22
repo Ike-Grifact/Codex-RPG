@@ -1,5 +1,7 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
+> **DE base humana [DEFINIDO — 22/11/2026]:** substitui a DE antiga por `min(9, 1 + Vigor + piso(Destreza/2))`, sem Agilidade nem Atletismo, antes dos modificadores de armadura e com teto final 12. Monstros não humanoides preservam sua própria regra. Uma instalação local do Foundry não é atualizada automaticamente por mudanças neste repositório. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
 > **Perícia em Elemento Fogo [DEFINIDO]:** na preparação de uma conjuração de personagem com essa Perícia, o jogador declara o Grau e confirma sua habilitação e fonte elemental com o Narrador. **G1/G2 = 0 Coragem** mesmo sem foco se houver fonte de Fogo válida; **G3 = 1 Coragem** ao ativar com sucesso. A cobrança de característica **Elemental** não duplica o custo dessa mesma ativação. **G4** continua manual por combinar dois elementos G3 (1 Antecipar + 2 Coragens no total). Sem a Perícia ou confirmação do Grau, a declaração não é válida.

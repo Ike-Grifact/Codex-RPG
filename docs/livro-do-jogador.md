@@ -1,5 +1,8 @@
 # Codex RPG — Livro do Jogador
 
+> **DE base defensiva revisada — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** para personagens e humanoides, a fórmula antiga foi **substituída**, não acrescida: **DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋)**. A armadura e a Maestria em Escudos continuam incidindo depois, com DE final entre 0 e 12. Monstros extraordinários não humanoides mantêm sua fórmula própria. [SRD v0.88](srd-continuidade-v0.88.md).
+
+
 > **Errata autoral v0.87 — 21/11/2026 [DEFINIDO / PENDENTE]:** **Manejo Perfeito — Armas Corpo a Corpo** é a única Perícia (1 XP, exige Disciplina Avançada + Destreza 2) que aplica **Vantagem Absoluta** quando se usa a arma correta contra oponente em Desvantagem; se já houver Vantagem Absoluta, aplica **Golpe Certo**. A entrada duplicada **Arma Certa** foi retirada. O +1E da Vantagem Absoluta substitui o +1A natural do mesmo confronto favorável. **Golpe Certo** continua PENDENTE em seu procedimento, sem efeito numérico inventado. Veja [SRD v0.87](srd-continuidade-v0.87.md); a v0.86 fica como registro histórico substituído neste ponto.
 
 
@@ -72,7 +75,7 @@ As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](
 
 ### Atualização defensiva de 17/11/2026 — DE geral de armaduras [DEFINIDO, SRD v0.66]
 
-**Decisão posterior do autor (substitui a restrição antiga de esquiva):** a Armadura **Muito Leve concede +2 DE**, a **Leve concede +1 DE** e esses bônus valem **em todas as defesas**, não somente ao esquivar. Armadura Média modifica 0; Pesada −1; Muito Pesada −2. Aplique após a DE natural (teto 9) e respeite **teto máximo absoluto de 12 na DE defensiva final**. O bônus da mesma armadura não pode ser somado novamente por postura de esquiva. O exemplo da ficha com DE natural 1 e Armadura Leve equipada deve mostrar **DE defensiva 2**. Sem armadura, volta a 1. Integridade é proteção separada; não altera a fórmula de DE.
+**Decisão posterior do autor (substitui a restrição antiga de esquiva):** a Armadura **Muito Leve concede +2 DE**, a **Leve concede +1 DE** e esses bônus valem **em todas as defesas**, não somente ao esquivar. Armadura Média modifica 0; Pesada −1; Muito Pesada −2. Aplique após a DE base (teto 9) e respeite **teto máximo absoluto de 12 na DE defensiva final**. O bônus da mesma armadura não pode ser somado novamente por postura de esquiva. O exemplo da ficha com DE natural 1 e Armadura Leve equipada deve mostrar **DE defensiva 2**. Sem armadura, volta a 1. Integridade é proteção separada; não altera a fórmula de DE.
 
 ### Atualização defensiva de 16/11/2026 — Levantar Escudo e Perfurante [DEFINIDO / PENDENTE]
 
@@ -618,7 +621,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE (Dificuldade de Êxito) defensiva natural:** **Agilidade + (Destreza ÷ 2, arredondada para baixo)**. Exemplo: Agilidade **4**, Destreza **3** → metade de Destreza é 1,5, arredondada para baixo fica **1** → **DE = 4 + 1 = 5**. A metade é arredondada antes de somar Agilidade.
+**DE base defensiva — v0.88 [DEFINIDO]:** **1 + Vigor + ⌊Destreza/2⌋**. **Agilidade e Atletismo não participam desse cálculo**, conforme a substituição autoral da antiga DE natural. Exemplo: Destreza **3**, Vigor **2** → **DE base = 1 + 2 + 1 = 4**. Arredondar a metade de Destreza para baixo antes de somar; limitar a DE base a **9**. Depois aplicar a armadura válida e benefícios de Perícias/escudo, com **DE defensiva final entre 0 e 12**. Não acrescentar a fórmula antiga. Para monstros extraordinários não humanoides preservar sua fórmula própria; ver [v0.88](srd-continuidade-v0.88.md).
 
 **Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
 
@@ -688,7 +691,7 @@ A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autor
 ## IV. Resolver ações
 
 1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
-2. Estabeleça a DE adequada ao alvo ou tarefa. A DE natural defensiva não é substituída por uma dificuldade inventada se houver ficha.
+2. Estabeleça a DE adequada ao alvo ou tarefa. A DE base defensiva não é substituída por uma dificuldade inventada se houver ficha.
 3. Role a pilha permitida, **incluindo pelo menos um dado de Atributo**, e escolha livremente os dados mantidos, **sem precisar manter nenhum dado de Atributo**. Respeite o limite de retenção.
 4. Conte Êxitos (E), Antecipar (A) e Pavor (P) **somente dos dados mantidos**.
 5. Gaste Antecipar:
@@ -808,21 +811,22 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
-### DE defensiva — Vigor e Atletismo [DEFINIDO]
+### DE defensiva — Vigor e Destreza [DEFINIDO, v0.88]
 
-A **Dificuldade de Êxito (DE) defensiva natural** considera o treinamento de mobilidade, precisão e resistência física:
+**A antiga DE natural foi revogada.** Para personagens e NPCs humanoides, usar **exclusivamente** a nova **DE base**, sem Agilidade, Atletismo ou acréscimo da fórmula histórica:
 
-**DE natural = mínimo entre 9 e Agilidade + parte inteira(Destreza ÷ 2) + parte inteira(Vigor ÷ 2) + parte inteira(Atletismo ÷ 3).** **DE defensiva final = mínimo(12, máximo(0, DE natural + modificador da armadura equipada))**, aplicável a toda defesa.
+**DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋).**
 
 ```text
-DE natural = min(9, AGI + ⌊DES/2⌋ + ⌊VIG/2⌋ + ⌊ATL/3⌋)
+DE base = min(9, 1 + VIG + ⌊DES/2⌋)
+DE final = min(12, max(0, DE base + armadura + efeitos defensivos válidos))
 ```
 
-Arredonde cada divisão **para baixo antes de somar**. Cada 3 graus completos de Atletismo aumentam a defesa em **1 DE**: graus 0–2 concedem 0, graus 3–5 concedem +1, e grau 6 concede **+2 DE**. O limite 9 se refere à **DE individual natural**. Defesas conjuntas continuam com seu **teto 30**, nas condições já definidas.
+O Grau de **Vigor é contado inteiro**, enquanto apenas Destreza é dividida por dois, arredondada para baixo. Agilidade e Atletismo continuam relevantes em deslocamento e outras regras próprias, mas **não alteram a DE base**. O limite 9 refere-se somente ao resultado base; Maestria em Escudos e demais efeitos definidos são aplicados depois, sem bônus duplicado. **Defesas conjuntas preservam o teto 30**, nas condições já definidas.
 
-**Exemplo:** Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6 → 2 + 0 + 3 + 2 = **DE natural 7**. Vestindo armadura **Leve**, fica com **DE 8** (+1 em toda defesa); com armadura **Pesada**, **DE 6** (−1); com armadura **Muito Pesada**, **DE 5** (−2), **independentemente do Grau**.
+**Exemplo:** Vigor 6, Destreza 0, Agilidade 2 e Atletismo 6 → **DE base 7**, pois apenas 1 + Vigor 6 contribuem. Armadura **Leve:** DE 8 (+1); **Pesada:** DE 6 (−1); **Muito Pesada:** DE 5 (−2, se cumprir os requisitos de uso). O Grau da armadura não altera esses modificadores.
 
-**DE mínima no protótipo:** 0, respeitando o limite inferior do cálculo já implementado. **Teto final definido:** 12 após a armadura; o teto natural permanece 9. Nenhuma defesa negativa é permitida.
+A **DE final** nunca é inferior a 0 nem superior a **12**, depois de somar os efeitos aplicáveis. **Monstros extraordinários não humanoides** preservam sua regra de defesa própria; consultar a [continuidade v0.88](srd-continuidade-v0.88.md).
 
 ### Condições da ação
 
@@ -944,7 +948,7 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 **Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE natural com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
+**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE base com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Pavor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 

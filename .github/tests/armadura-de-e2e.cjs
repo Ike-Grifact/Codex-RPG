@@ -24,7 +24,7 @@ const assert=require("node:assert/strict");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
   assert.equal(await de.textContent(),"2","DE total com Armadura Leve equipada");
   assert.equal(await label.textContent(),"DE DEFENSIVA");
-  assert.match(await caption.textContent(),/Natural 1 · armadura \+1/,"O cartão mostra só o resumo");
+  assert.match(await caption.textContent(),/Base 1 · armadura \+1/,"O cartão mostra só o resumo");
   assert.equal(await page.locator(".fp-vitals").evaluate(el=>getComputedStyle(el).display),"flex","Indicadores compactos");
   assert.equal(await caption.isVisible(),false,"Subtexto deixa de ocupar espaço visual");
   await page.locator('[data-vital-open="defense"]').click();

@@ -55,7 +55,8 @@ export const healthByLife=(s,currentLife)=>{
  if(currentLife<=2+bands[1])return {id:"ferido",e:0,a:-1,p:0,coragem:0};
  return {id:"saudavel",e:0,a:0,p:0,coragem:0};
 };
-export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor(Number(s.attributes?.destreza||0)/2)+Math.floor(Number(s.attributes?.vigor||0)/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
+// DE base humana v0.88: substitui integralmente a fórmula anterior; armaduras/escudos modificam depois.
+export const naturalDE=s=>Math.min(9,1+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.destreza||0)/2));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
