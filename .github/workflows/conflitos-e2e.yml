@@ -73,5 +73,7 @@ jobs:
         run: node .github/tests/conflito-dna-respec-e2e.cjs
       - name: Três tipos de ameaça, XP e leitura de verbetes no Codex Genético
         run: node .github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs
+      - name: Novo comparador de combate sem VTT e regressao PR99
+        run: node .github/tests/conflito-comparativo-e2e.cjs
       - name: Simulador tático com mapa, dados e escudo no desktop e celular
         run: node .github/tests/simulador-tatico-e2e.cjs
