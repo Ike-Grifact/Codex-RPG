@@ -140,6 +140,10 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 ### Líder, ação conjunta e Antecipar dos inimigos [DEFINIDO / PENDENTE]
 
+> **Esclarecimento autoral — 22/11/2026, SRD v0.90 [DEFINIDO]:** uma **Ação Conjunta** precisa ser declarada por **2 ou 3 participantes antes de rolar**, contra um único alvo. Cada participante mantém seus dados e gasta a própria Coragem normalmente; **1A de um participante pode anular 1P mantido por outro**, usando o símbolo apenas uma vez. **Todos os participantes consomem sua oportunidade da rodada**, inclusive em acerto limpo; **se todos os jogadores agiram juntos, a vez passa aos inimigos**, sem reutilizar as mesmas ações. O dano é somado em **um único impacto**, não em ataques duplicados. **O custo já estabelecido dos inimigos permanece: Líder + 1P público por aliado** (até três participantes). [SRD v0.90](srd-continuidade-v0.90.md).
+
+
+
 - **Todo conflito começa com pelo menos um Líder** da oposição; uma criatura sozinha lidera a si mesma. Grupos podem ter **múltiplos Líderes**. Liderança permite estratégia e observação de fragilidades, não dá ataque gratuito.
 - **Antecipar normal de inimigos:** gastar **1A para passar a oportunidade a um aliado**, antecipando **um turno individual**. Respeitar o limite vigente de cada combatente ser antecipado no máximo uma vez por rodada. **Não é ação conjunta** e não combina dano/dados automaticamente. Inimigos provocados mantêm o foco ao receber a ação.
 - **Iniciativa da oposição:** quando todos os jogadores passam ou acumulam falhas sem Pavor, o Narrador pode gastar **Pavor de sua reserva pública**, limitada a **2 + jogadores**, para fazer uma ameaça sob liderança **agir visando seus objetivos** (não necessariamente atacar). **PENDENTE:** custo dessa iniciativa comum e sua integração com ativações locais; não presumir 1P fixo.
