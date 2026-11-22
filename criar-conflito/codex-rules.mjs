@@ -123,7 +123,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   const skills=system.skills||[];
   const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","manejo-duplo"];
   if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
-  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))errors.push("Conjuração exige Criar Item de Foco e Magia.");
+  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia")&&!["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].some(id=>skills.includes(id)))errors.push("Conjuração exige Perícia elemental ou Criar Item de Foco e Magia (Psique).");
   if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
  }
  if(!errors.length){
