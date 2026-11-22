@@ -81,6 +81,8 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.reload({waitUntil:"domcontentloaded"});
   assert(await page.locator("#allies .cc-card").count()===1&&await page.locator("#enemies .cc-card").count()===1,
    "Confronto deve sobreviver a reload.");
+  assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
+   "A última rolagem confirmada deve continuar disponível após recarregar.");
   assert(errs.length===0,"Erros JS no desktop: "+errs.join(" | "));
   console.log("PASS comparador desktop: fichas locais, alvo, DE, Integridade, Pavor, rodada e persistência");
 
