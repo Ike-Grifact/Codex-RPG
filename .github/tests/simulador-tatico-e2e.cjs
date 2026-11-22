@@ -1,102 +1,101 @@
+/* E2E do Comparador de Combate: sem mapa VTT, com fichas locais e recursos separados. */
 const {chromium}=require("playwright");
-const assert=(v,m)=>{if(!v)throw Error(m);};
+const assert=(condition,message)=>{if(!condition)throw Error(message);};
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
   const page=await browser.newPage({viewport:{width:1450,height:950}});
   const errs=[];page.on("pageerror",e=>errs.push(e.stack||e.message));
-  await page.goto("http://127.0.0.1:8000/simulador-combate/",{waitUntil:"domcontentloaded"});
-  assert(await page.locator("#board [data-x][data-y]").count()===240,"Mapa precisa exibir 20×12 células");
-  await page.locator("#preset").click();
-  assert(await page.locator(".tc-roster-item").count()===6,"Preset de seis fichas não foi carregado");
-  assert((await page.locator("#actor-name").innerText())==="Mago","Primeira ação deve partir do Mago");
-  assert((await page.locator("#actor-summary").innerText()).includes("Armadura Muito Leve"),"Mago precisa começar com Muito Leve");
-  const snap=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1")));
-  assert(snap.tokens.find(t=>t.name==="Lobo pesado").threatGrade===2,"Lobo pesado deve ser Grau 2");
-  assert(snap.tokens.find(t=>t.name==="Lobo pesado").xp===40,"Lobo pesado deve possuir 40 XP");
-  assert(snap.tokens.find(t=>t.name==="Mago").armor.integrity===0,"Muito Leve não possui Integridade");
-  const spent=await page.evaluate(async()=>{
-   const {ledger}=await import("/criar-conflito/rules.mjs?v=20261115-kinds1");
-   const state=JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1"));
-   return Object.fromEntries(state.tokens.map(t=>[t.name,ledger(t).spent]));
+  await page.addInitScript(()=>{
+   const player={
+    name:"Aprendiz de teste",kind:"humanoide",level:1,
+    attributes:{forca:1,agilidade:1,vigor:1,destreza:1},
+    practices:{armas_conjuracao:1},
+    skills:["armas-leves"],courage:9,
+    items:[{id:"adaga",name:"Adaga",kind:"weapon",category:"leve",die:6,equipped:true}]
+   };
+   const opponent={
+    name:"Saqueador de teste",kind:"humanoide",level:1,pavorLocal:1,
+    attributes:{agilidade:1,destreza:1,vigor:1},
+    practices:{armas_conjuracao:1},skills:["armas-leves"],
+    items:[{id:"simples",name:"Roupas Simples",kind:"armor",category:"muito-leve",
+     integrityMax:3,integrity:3,grade:1,equipped:true}]
+   };
+   localStorage.setItem("codex-rpg-jogadores-index-v1",JSON.stringify({
+    version:1,activeId:"j1",sheets:[{id:"j1",name:player.name}]
+   }));
+   localStorage.setItem("codex-rpg-jogador-ficha-v1:j1",JSON.stringify({
+    schema:"codex-jogador-ficha-v1",character:player,wizard:{}
+   }));
+   localStorage.setItem("codex-rpg-criar-conflito-v1",JSON.stringify({
+    version:1,roster:[opponent]
+   }));
   });
-  for(const name of ["Mago","Guerreiro","Tank","Atirador","Lobo ágil"])
-   assert(spent[name]===20,name+" deveria ter 20 XP: "+JSON.stringify(spent));
-  assert(spent["Lobo pesado"]===40,"Lobo pesado precisa de 40 XP: "+JSON.stringify(spent));
-  assert((await page.locator("#distance").innerText()).includes("m"),"Distância entre mago e atirador não foi medida");
-  await page.locator("#range").fill("30");
-  await page.locator("#roll").click();
-  assert((await page.locator("#notice").innerText()).includes("Parede bloqueia"),"Parede deve impedir disparo");
-  page.once("dialog",d=>void d.accept());
-  await page.locator("#clear-map").click();
-  await page.locator("#range").fill("12");
-  await page.locator("#roll").click();
-  assert((await page.locator("#notice").innerText()).includes("além do alcance"),"Alvo fora de alcance deve impedir ataque");
-  await page.locator("#range").fill("30");
-  await page.locator("#spell-grade").selectOption("1");
-  await page.locator("#roll").click();
-  assert(await page.locator("#dice button.tc-die").count()===4,"Mago do cenário preserva composição de Disciplina G2 e Inteligência G2");
-  assert((await page.locator("#roll-result").innerText()).includes("G1: somente efeitos"),"Magia G1 deve mostrar zero dano");
-  await page.locator("#suggest").click();
-  assert(await page.locator("#dice button.tc-die.picked").count()>0,"Seleção de dados sugeridos não funcionou");
-  await page.locator("#confirm").click();
-  const after=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1")));
-  assert(after.history[0].kind==="rolagem","A ação não entrou no histórico");
-  assert(after.history[0].damagePotential===0,"Magia G1 não pode aplicar dano");
-  assert(after.tokens.find(t=>t.name==="Atirador").life===snap.tokens.find(t=>t.name==="Atirador").life,
-   "O VTT não pode causar dano automático antes da decisão do Narrador");
-  page.on("dialog",d=>{if(d.type()==="prompt")void d.accept("3");else void d.accept();});
-  await page.locator("#arcane-shield").click();
-  assert((await page.locator("#actor-summary").innerText()).includes("Escudo Arcano declarado"),"Escudo não foi registrado");
-  const shield=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1")));
-  assert(shield.tokens.find(t=>t.name==="Mago").armor.integrity===0,"Escudo não pode criar Integridade automática");
-  assert(shield.history[0].kind==="escudo","Escudo precisa entrar no histórico");
-  await page.locator("#next-round").click();
-  assert(!(await page.locator("#actor-summary").innerText()).includes("Escudo Arcano declarado"),"Escudo deveria expirar em uma rodada");
-  await page.locator("#roll-shield").click();
-  assert(await page.locator("#dice button.tc-die").count()===4,"Conjuração de Escudo Arcano deveria usar Disciplina G2 + INT G2");
-  await page.locator("#suggest").click();
-  await page.locator("#confirm").click();
-  const recast=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-simulador-tatico-v1")));
-  assert(recast.history[0].kind==="escudo","Rolagem do Escudo não registrou a DE da barreira");
-  assert(Number.isInteger(recast.history[0].barrierDe),"A DE de ruptura deve resultar dos dados");
-  assert(await page.locator("#board .tc-cell.shield-area").count()>=4,"Área circular aproximada 3×3 deve ficar visível");
-  assert(recast.tokens.find(t=>t.name==="Mago").armor.integrity===0,"Rolagem de Escudo não pode gerar Integridade automática");
-  const shooterId=shield.tokens.find(t=>t.name==="Atirador").id;
-  const mageId=shield.tokens.find(t=>t.name==="Mago").id;
-  await page.locator('[data-select="'+shooterId+'"]').click();
-  await page.locator('[data-target="'+mageId+'"]').click();
-  await page.locator("#dodge").check();
-  assert((await page.locator("#target-info").innerText()).includes("DE 2 (esquiva)"),
-   "Armadura Muito Leve concede +2 DE em toda defesa, sem duplicar ao esquivar");
-  await page.locator("#attribute-source").selectOption("destreza");
-  await page.locator("#discipline-mode").selectOption("armas");
-  await page.locator("#equipment-source").selectOption({label:"Revólver · d6"});
-  assert(await page.locator("#range").inputValue()==="16","Revólver G1 tem alcance de 16 m no catálogo");
-  await page.locator("#extra-source").selectOption("attribute:agilidade");
-  await page.locator("#context-approved").check();
-  await page.locator("#range").fill("30");
-  await page.locator("#roll").click();
-  assert(await page.locator("#dice button.tc-die").count()===7,
-   "Atirador precisa rolar Disciplina G2 + Destreza G2 + Agilidade G2 pertinente + revólver G1");
+  await page.goto("http://127.0.0.1:8000/simulador-combate/",{waitUntil:"domcontentloaded"});
+  assert(await page.locator("#board").count()===0,"O comparador não deve carregar mapa VTT");
+  assert(await page.locator("#available option").count()===2,"Precisamos ler fichas de jogador e do Criar Conflito.");
+  await page.locator("#available").selectOption("0");
+  await page.locator("#add-ally").click();
+  await page.locator("#available").selectOption("1");
+  await page.locator("#add-enemy").click();
+  assert(await page.locator("#allies .cc-card").count()===1,"Faltou jogador.");
+  assert(await page.locator("#enemies .cc-card").count()===1,"Faltou inimigo.");
+  assert((await page.locator("#target-info").innerText()).includes("DE 4"),
+   "Roupas Simples fornecem +2 DE em qualquer defesa.");
+  const before=await page.evaluate(()=>({
+   comparison:JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")),
+   original:localStorage.getItem("codex-rpg-jogador-ficha-v1:j1")
+  }));
+  const enemy=before.comparison.combatants.find(x=>x.side==="inimigos");
+  await page.locator("#resource-actor").selectOption(enemy.id);
+  await page.locator("#resource-kind").selectOption("integridade");
+  await page.locator("#resource-amount").fill("1");
+  await page.locator("#resource-minus").click();
+  let snapshot=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
+  assert(snapshot.combatants.find(x=>x.id===enemy.id).items[0].integrity===2,
+   "Integridade deve diminuir sem alterar a Vida.");
+  const life=snapshot.combatants.find(x=>x.id===enemy.id).life;
+  assert(life===before.comparison.combatants.find(x=>x.id===enemy.id).life,
+   "A Vida não pode mudar quando se registra dano à armadura.");
 
-  assert(errs.length===0,"Erros JS desktop: "+errs.join(" | "));
-  console.log("PASS VTT desktop: fichas, LOS, alcance, magia G1, dados, escudo, histórico e duração");
+  await page.evaluate(()=>{Math.random=()=>.7;});
+  await page.locator("#difficulty").fill("4");
+  await page.locator("#roll").click();
+  assert(await page.locator("#dice button.cc-die").count()>=2,"A rolagem deve exibir dados simbólicos.");
+  assert((await page.locator("#roll-result").innerText()).includes("Pavor"),
+   "O comparador deve mostrar o Pavor antes de confirmar.");
+  await page.locator("#confirm").click();
+  snapshot=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
+  const e=snapshot.combatants.find(x=>x.id===enemy.id);
+  assert(e.pavorLocal===2,"Pavor não anulado deve passar ao alvo (1 → 2; d10 face 8 sem P, d6 face 5 com 1P).");
+  assert(e.items[0].integrity===2,"Confirmar rolagem não deve aplicar dano de armadura automaticamente.");
+  assert(snapshot.history[0].kind==="rolagem","Histórico deve registrar a resolução.");
+  assert(snapshot.combatants.find(x=>x.side==="jogadores").acted===true,
+   "Atacante consome a oportunidade de agir na rodada.");
+  const originalAfter=await page.evaluate(()=>localStorage.getItem("codex-rpg-jogador-ficha-v1:j1"));
+  assert(originalAfter===before.original,"O comparador não pode alterar a ficha salva no Criador.");
+  await page.locator("#next-round").click();
+  snapshot=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
+  assert(snapshot.round===2&&snapshot.combatants.every(x=>!x.acted),
+   "Nova rodada deve restaurar oportunidades sem curar Integridade.");
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert(await page.locator("#allies .cc-card").count()===1&&await page.locator("#enemies .cc-card").count()===1,
+   "Confronto deve sobreviver a reload.");
+  assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
+   "A última rolagem confirmada deve continuar disponível após recarregar.");
+  assert(errs.length===0,"Erros JS no desktop: "+errs.join(" | "));
+  console.log("PASS comparador desktop: fichas locais, alvo, DE, Integridade, Pavor, rodada e persistência");
 
   const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   const mobileErrors=[];mobile.on("pageerror",e=>mobileErrors.push(e.message));
   await mobile.goto("http://127.0.0.1:8000/simulador-combate/",{waitUntil:"domcontentloaded"});
-  await mobile.locator("#preset").click();
-  assert(await mobile.locator(".tc-roster-item").count()===6,"Celular sem fichas do confronto");
-  assert(await mobile.locator("#board .tc-cell").count()===240,"Mapa incompleto no celular");
-  const geometry=await mobile.evaluate(()=>({
-   page:document.documentElement.scrollWidth,screen:window.innerWidth,
-   map:document.querySelector(".tc-map-scroll").scrollWidth,
-   viewport:document.querySelector(".tc-map-scroll").clientWidth
-  }));
-  assert(geometry.map>geometry.viewport,"Mapa deve poder rolar horizontalmente");
-  assert(geometry.page<geometry.screen+5,"Layout extravasou o celular: "+JSON.stringify(geometry));
+  await mobile.locator("#demo").click();
+  assert(await mobile.locator(".cc-card").count()===4,"Exemplo 2 × 2 deve abrir no celular.");
+  const sizes=await mobile.evaluate(()=>({width:document.documentElement.scrollWidth,
+   viewport:window.innerWidth,columns:getComputedStyle(document.querySelector(".cc-columns")).gridTemplateColumns}));
+  assert(sizes.width<=sizes.viewport+5,"Layout extravasou celular: "+JSON.stringify(sizes));
+  assert(!sizes.columns.includes(" "),"As colunas devem empilhar no celular: "+sizes.columns);
   assert(mobileErrors.length===0,"Erros JS mobile: "+mobileErrors.join(" | "));
-  console.log("PASS VTT mobile: fichas, mapa rolável e layout");
+  console.log("PASS comparador mobile: cards, controles e layout sem VTT");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e.stack||e);process.exitCode=1;});

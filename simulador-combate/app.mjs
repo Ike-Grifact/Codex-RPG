@@ -1,530 +1,513 @@
-/* Simulador de combate Codex RPG — experimento de VTT para análise, sem novas regras.
-   Reutiliza os dados e validações simbólicas do Criar Conflito; decisões pendentes são manuais. */
-import {WIDTH,HEIGHT,MAX_TOKENS,cellKey,inBounds,distance,tileAt,lineOfSight,movementAllowance,plannedMove,
- dodgeBonus,armorPenalty,defenseWithStance,initialScenario,validateTerrain,limitTokens} from "./logic.mjs";
-import {blank,normalize,stats,isHumanoidKind,ATTRIBUTES,KNOWLEDGES,PRACTICES} from "../criar-conflito/rules.mjs?v=20261115-kinds1";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll,settleCreatureRoll,faceSymbols}
- from "../criar-conflito/roll-engine.mjs";
-import {naturalDE,lifeMax,resolveRoll,keepLimit,SITUATIONS} from "../criar-conflito/codex-rules.mjs";
+/* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
+import {normalizeCombatant,listBrowserSheets,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs";
 
-const SAVE="codex-rpg-simulador-tatico-v1",PLAYER_SAVE="codex-html-ficha-prototipo-v1",
- CONFLICT_SAVE="codex-rpg-criar-conflito-v1";
-const $=id=>document.getElementById(id),freshId=()=>globalThis.crypto?.randomUUID?.()||"t-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-const clamp=(v,a,b)=>Math.min(b,Math.max(a,Number.isFinite(Number(v))?Number(v):a));
-const defs={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
-let state=load(),pending=null,lastActor="",lastTarget="",noticeHandle=null;
-function notice(message){
- const el=$("notice");el.textContent=message;el.hidden=false;clearTimeout(noticeHandle);
- noticeHandle=setTimeout(()=>el.hidden=true,5000);
-}
-function record(kind,message,extra={}){
- state.history.unshift({id:freshId(),date:new Date().toISOString(),round:state.round,kind,message,...extra});
- state.history=state.history.slice(0,350);
-}
-function persist(){
- try{localStorage.setItem(SAVE,JSON.stringify(state));}catch(err){notice("Não foi possível salvar no navegador: "+err.message);}
-}
+const unique=()=>globalThis.crypto?.randomUUID?.()||"c-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+const clamp=(v,min,max)=>Math.max(min,Math.min(max,Number.isFinite(Number(v))?Number(v):min));
+const catalog=()=>Array.isArray(window.CODEX_G1_CATALOG)?window.CODEX_G1_CATALOG:[];
+const sources={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
+function empty(){return {version:1,round:1,combatants:[],actor:"",target:"",resourceActor:"",publicPavor:0,history:[]};}
 function load(){
  try{
-  const raw=JSON.parse(localStorage.getItem(SAVE)||"null");if(!raw||raw.version!==1)return initialScenario();
-  return {...initialScenario(),round:Math.floor(clamp(raw.round,1,9999)),
-   terrain:validateTerrain(raw.terrain),tokens:limitTokens(raw.tokens).filter(t=>inBounds(t.x,t.y)&&t.name),
-   history:Array.isArray(raw.history)?raw.history.slice(0,350):[],
-   selected:String(raw.selected||""),target:String(raw.target||""),tool:"mover"};
- }catch{return initialScenario();}
+  const data=JSON.parse(localStorage.getItem(SAVE)||"null");
+  if(data?.version!==1)return empty();
+  return {...empty(),round:Math.floor(clamp(data.round,1,9999)),
+   combatants:(Array.isArray(data.combatants)?data.combatants:[]).slice(0,MAX)
+    .filter(x=>x&&x.name&&["jogadores","inimigos"].includes(x.side))
+    .map(x=>normalizeCombatant(x,x.side,x.source||"comparador")),
+   actor:String(data.actor||""),target:String(data.target||""),
+   resourceActor:String(data.resourceActor||""),
+   publicPavor:Math.floor(clamp(data.publicPavor,0,100)),
+   history:(Array.isArray(data.history)?data.history:[]).slice(0,350),
+   lastResult:data.lastResult&&typeof data.lastResult==="object"?data.lastResult:null};
+ }catch{return empty();}
 }
-function tokenById(id){return state.tokens.find(t=>t.id===id)||null;}
-const selected=()=>tokenById(state.selected),target=()=>tokenById(state.target);
-function standardArmor(raw){
- const arr=Array.isArray(raw.items)?raw.items:[];
- const it=arr.find(x=>(x.type==="armadura"||x.kind==="armor")&&x.equipped);
- if(!it)return {equipped:false,weight:"",integrity:0,max:0,name:"Nenhuma"};
- let w=typeof it.weight==="string"?it.weight:(it.category||it.weightClass||"");
- w=String(w).toLowerCase().replace(/[- ]/g,"_");
- if(w==="muito_pesado")w="extremo";
- if(w==="pesado")w="alto";
- return {equipped:true,weight:w,integrity:Math.floor(clamp(it.integrity??it.hp??it.integrityMax??it.max,0,999)),
-  max:Math.floor(clamp(it.integrityMax??it.max,0,999)),name:String(it.name||"Armadura")};
+let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer;
+const byId=id=>state.combatants.find(x=>x.id===id)||null;
+const actor=()=>byId(state.actor),target=()=>byId(state.target);
+function notice(msg){const el=$("notice");el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,4500);}
+function persist(){try{state.lastResult=last;localStorage.setItem(SAVE,JSON.stringify(state));}catch(e){notice("Não foi possível salvar o combate: "+e.message);}}
+function log(kind,message,data={}){
+ state.history.unshift({id:unique(),at:new Date().toISOString(),round:state.round,kind,message,...data});
+ state.history=state.history.slice(0,350);
 }
-function equippedWeapons(actor){
- const catalog=Array.isArray(window.CODEX_G1_CATALOG)?window.CODEX_G1_CATALOG:[];
- const skills=actor?.skills||[];
- return (actor?.items||[]).filter(it=>it.equipped&&(it.type==="arma"||it.kind==="weapon"||it.kind==="firearm"))
-  .map(it=>{
-   const entry=catalog.find(row=>row.name?.toLowerCase()===String(it.name||"").toLowerCase());
-   const category=String(entry?.category||it.category||"leve");
-   const firearm=!!it.firearm||it.kind==="firearm"||entry?.kind==="firearm";
-   const expected=firearm?"armas-fogo":category==="medio"?"armas-medias":
-    category==="pesado"?"armas-pesadas":"armas-leves";
-   const die=Number(it.die||entry?.die||0),range=Number(it.range||entry?.range||0);
-   return {id:String(it.id||it.name),name:String(it.name||"Arma"),die,range,expected,
-    allowed:skills.includes(expected)&&[6,10,12].includes(die)};
-  });
-}
-function formatPlayer(raw){
- const t=blank("humanoide");t.kind="humanoide";
- t.name=String(raw.name||raw.nome||"Jogador").slice(0,100);
- t.level=Math.floor(clamp(raw.level||1,1,20));
- for(const [field,entries] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]]){
-  for(const [key] of entries)t[field][key]=Math.floor(clamp(raw[field]?.[key],0,6));
- }
- t.skills=Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,100):[];
- t.life=Math.floor(clamp(raw.life??lifeMax(t),0,999));
- t.courage=Math.floor(clamp(raw.courage??10,0,10));
- t.items=Array.isArray(raw.items)?raw.items.slice(0,70):[];
- return t;
-}
-function placeFor(side){
- const placements=side==="jogadores"?[[2,2],[3,5],[3,8],[1,10],[5,2],[5,10]]:
-  [[17,2],[17,6],[16,10],[14,4],[18,9],[13,10]];
- const occupied=new Set(state.tokens.map(t=>cellKey(t.x,t.y)));
- for(const [x,y] of placements){
-  if(!occupied.has(cellKey(x,y))&&tileAt(state.terrain,x,y)!=="parede")return {x,y};
- }
- for(let y=0;y<HEIGHT;y++)for(let x=0;x<WIDTH;x++)
-  if(!occupied.has(cellKey(x,y))&&tileAt(state.terrain,x,y)!=="parede")return {x,y};
- return null;
-}
-function insert(source,side="inimigos",player=false){
- if(state.tokens.length>=MAX_TOKENS)return false;
- const at=placeFor(side);if(!at)return false;
- const unit=player?formatPlayer(source):normalize(source);
- const armor=standardArmor(source);
- const t={...unit,id:freshId(),side,x:at.x,y:at.y,moved:0,armor,shieldRound:0,shieldDe:null,
-  sourceId:String(source?.id||"").slice(0,100)};
- if(!Number.isFinite(t.life))t.life=lifeMax(t);
- if(t.kind==="monstro")t.keep=stats(t).keepMax; // Limite disponível, não retenção já paga.
- state.tokens.push(t);
- if(!state.selected)state.selected=t.id;
+function add(raw,side,source){
+ if(state.combatants.length>=MAX)return false;
+ const item=normalizeCombatant(raw,side,source);
+ item.id=unique();item.sourceId=String(raw.id||"");item.acted=false;
+ state.combatants.push(item);
+ if(!state.actor&&side==="jogadores")state.actor=item.id;
+ if(!state.target&&side==="inimigos")state.target=item.id;
+ if(!state.resourceActor)state.resourceActor=item.id;
  return true;
 }
-function preset(){
- if(state.tokens.length&&!confirm("Substituir o mapa e as fichas atuais pelo confronto 3×3?"))return;
- state=initialScenario();pending=null;lastActor="";lastTarget="";
- function unit(name,kind,side,attrs={},practices={},skills=[],xp=0,grade=1,armor={}){
-  const u=blank(kind);u.name=name;Object.assign(u.attributes,attrs);Object.assign(u.practices,practices);
-  u.skills=skills;u.xp=xp;u.threatGrade=grade;u.life=lifeMax(u);u.pavorLocal=stats(u).limitLocal;
-  u.items=armor.equipped?[{id:freshId(),name:armor.name,kind:"armor",equipped:true,
-   weight:0,category:armor.weight,integrityMax:armor.max,integrity:armor.integrity}]:[];
-  insert(u,side,false);
- }
- unit("Mago","humanoide","jogadores",{inteligencia:2,vigor:1},{armas_conjuracao:2,artesao:1},
-  ["disciplina-avancada","criar-item-foco-magia","vento","trevas","escudo-arcano"],0,1,
-  {equipped:true,name:"Armadura Muito Leve G1",weight:"muito_leve",max:0,integrity:0});
- unit("Guerreiro","humanoide","jogadores",{forca:2,agilidade:2,destreza:1,vigor:2},{armas_conjuracao:2},["armas-medias"],0,1,
-  {equipped:true,name:"Armadura Média G1",weight:"medio",max:12,integrity:12});
- unit("Tank","humanoide","jogadores",{forca:2,agilidade:2,vigor:3},{armas_conjuracao:1},["armas-medias","recobrar-coragem"],0,1,
-  {equipped:true,name:"Armadura Pesada G1",weight:"alto",max:17,integrity:17});
- state.tokens.find(t=>t.name==="Tank").knowledges.protecao=1; // Cenário histórico: não tratar como build aprovada de 15 XP.
- unit("Lobo ágil","monstro","inimigos",{agilidade:2,destreza:2,forca:1,vigor:1},{},[],20,1);
- unit("Atirador","humanoide","inimigos",{destreza:2,agilidade:2,vigor:1},{armas_conjuracao:2},
-  ["armas-fogo","disciplina-avancada","recobrar-coragem"],0,1,{equipped:true,name:"Armadura Leve G1",weight:"leve",max:7,integrity:7});
- unit("Lobo pesado","monstro","inimigos",{agilidade:3,vigor:3},{},[],40,2);
- for(const [name,weapon,die] of [["Guerreiro","Espada Longa",10],["Tank","Espada Longa",10],["Atirador","Revólver",6]]){
-  const actor=state.tokens.find(t=>t.name===name);
-  actor.items.push({id:freshId(),name:weapon,kind:"weapon",die,equipped:true,qty:1,weight:0});
- }
- state.target=state.tokens.find(t=>t.name==="Atirador").id;
- record("cenário","Confronto 3×3 preparado. Magia G2 causa dano; G1 só efeitos. Mago começa ativo, com Muito Leve.");
- persist();renderAll();notice("Confronto carregado. Mago começa; distância, paredes e cobertura importam.");
+function scan(){
+ available=listBrowserSheets(localStorage);
+ $("available").innerHTML=available.length?available.map((x,i)=>
+  '<option value="'+i+'">'+esc(x.name)+' · '+esc(x.source)+'</option>').join(""):
+  '<option value="">Nenhuma ficha encontrada</option>';
+ $("available-info").textContent=available.length?
+  available.length+" fichas neste navegador. Adicione uma cópia ao confronto sem alterar a ficha original.":
+  "Não há fichas neste navegador e endereço. Crie fichas no Criador ou importe JSON.";
+}
+function addSelected(side){
+ const previousTarget=state.target;
+ const profile=available[Number($("available").value)];
+ if(!profile)return notice("Selecione uma ficha.");
+ if(!add(profile.raw,side,profile.source))return notice("Limite de "+MAX+" fichas.");
+ log("importação",profile.name+" entrou do "+profile.source+".");persist();render();
+ if(!previousTarget&&target())$("difficulty").value=String(defense(target()));
+}
+function selectOptions(rows,value){
+ return '<option value="">Selecione</option>'+rows.map(x=>'<option value="'+esc(x.id)+'"'+(x.id===value?" selected":"")+
+  '>'+esc(x.name)+' ('+(x.side==="jogadores"?"J":"I")+')</option>').join("");
+}
+function rosterSide(side){
+ const cards=state.combatants.filter(x=>x.side===side);
+ return cards.length?cards.map(c=>{
+  const armor=armorOf(c);
+  return '<article class="cc-card'+(c.id===state.actor?" cc-attacker":"")+(c.id===state.target?" cc-target":"")+'">'+
+   '<div class="cc-card-title"><strong>'+esc(c.name)+'</strong><small>'+esc(c.source||"Local")+'</small></div>'+
+   '<div class="cc-card-stats"><span>DE '+defense(c)+'</span><span>Vida '+c.life+'</span>'+
+   '<span>Coragem '+c.courage+'</span><span>Pavor '+c.pavorLocal+'</span><span>Integridade '+
+   (armor?armor.integrity+"/"+armor.integrityMax:"—")+'</span></div>'+
+   (c.acted?'<small class="cc-used">Já agiu nesta rodada</small>':'')+
+   '<div class="cc-card-actions"><button type="button" data-actor="'+esc(c.id)+'">Atacar</button>'+
+   '<button type="button" data-target="'+esc(c.id)+'">Alvo</button>'+
+   '<button type="button" data-remove="'+esc(c.id)+'">Retirar</button></div></article>';
+ }).join(""):'<p class="cc-help">Nenhum combatente.</p>';
 }
 function renderRoster(){
- $("counter").textContent=state.tokens.length+" fichas";
- $("roster").innerHTML=state.tokens.map(t=>{
-  const ally=t.side==="jogadores",letter=esc(t.name.slice(0,2).toUpperCase());
-  return '<div class="tc-roster-row"><button type="button" class="tc-roster-item'+(t.id===state.selected?' is-selected':'')+
-   (t.id===state.target?' is-target':'')+'" data-select="'+esc(t.id)+'">'+
-   '<span class="tc-token-icon '+(ally?"ally":"enemy")+'">'+letter+'</span><span><strong>'+esc(t.name)+'</strong>'+
-   '<small>'+(ally?"Aliado":"Inimigo")+' · Vida '+t.life+' · '+(t.side==="jogadores"||isHumanoidKind(t.kind)?"Coragem "+t.courage:"Pavor "+t.pavorLocal)+
-   ' · ('+t.x+','+t.y+')</small></span></button><button type="button" class="tc-target-button" data-target="'+esc(t.id)+'" title="Escolher como alvo">Alvo</button></div>';
- }).join("");
-}
-function renderBoard(){
- const occupied=new Map(state.tokens.map(t=>[cellKey(t.x,t.y),t]));
- let html="";
- for(let y=0;y<HEIGHT;y++)for(let x=0;x<WIDTH;x++){
-  const spot=cellKey(x,y),unit=occupied.get(spot),kind=tileAt(state.terrain,x,y);
-  const shieldArea=state.tokens.some(u=>u.shieldRound>=state.round&&distance(u,{x,y})<=1.5);
-  const cls="tc-cell "+(shieldArea?" shield-area ":"")+(kind!=="livre"?(kind==="parede"?"wall":"cover"):"")+
-    (unit?" has-actor":"")+(unit?.id===state.selected?" is-selected":"")+(unit?.id===state.target?" is-target":"");
-  const label="Linha "+(y+1)+", coluna "+(x+1)+(unit?", "+unit.name:"")+(kind!=="livre"?", "+kind:"");
-  html+='<button class="'+cls+'" type="button" role="gridcell" aria-label="'+esc(label)+'" data-x="'+x+'" data-y="'+y+'">'+
-   (unit?'<span class="tc-cell-token '+(unit.side==="jogadores"?"ally":"enemy")+'">'+esc(unit.name.slice(0,2).toUpperCase())+'</span>'+
-    (unit.shieldRound>=state.round?'<span class="tc-shield-mark" title="Escudo Arcano declarado"></span>':""):"")+'</button>';
- }
- $("board").innerHTML=html;
- document.querySelectorAll(".tc-tools button[data-tool]").forEach(button=>
-  button.setAttribute("aria-pressed",String(state.tool===button.dataset.tool)));
+ $("allies").innerHTML=rosterSide("jogadores");$("enemies").innerHTML=rosterSide("inimigos");
  $("round").textContent="Rodada "+state.round;
+ $("counter").textContent=state.combatants.length+" combatentes";
+ const playerCount=state.combatants.filter(x=>x.side==="jogadores").length;
+ const remaining=state.combatants.filter(x=>x.side==="jogadores"&&!x.acted).length;
+ $("opportunity").textContent=playerCount&&!remaining?
+  "Todos os jogadores agiram: oportunidade dos inimigos.":"Jogadores ainda disponíveis: "+remaining;
+ $("public-pavor-label").textContent="Pavor público: "+state.publicPavor+"/"+narratorCap(playerCount);
 }
-function armorOf(t){return t?.armor||{equipped:false};}
-function defense(t,dodging=false){
- if(!t)return 0;
- const d=t.side==="jogadores"?naturalDE(t):stats(t).de;
- return defenseWithStance(d,armorOf(t),dodging?"esquiva":"normal");
+function renderChoices(){
+ $("actor").innerHTML=selectOptions(state.combatants,state.actor);
+ $("target").innerHTML=selectOptions(state.combatants,state.target);
+ $("resource-actor").innerHTML=selectOptions(state.combatants,state.resourceActor);
+ $("actor-name").textContent=actor()?.name||"—";
+ $("target-name").textContent=target()?.name||"—";
 }
-function renderSourceOptions(force=false){
- const t=selected();if(!force&&lastActor===t?.id)return;
- lastActor=t?.id||"";
- const base=$("base-source"),attr=$("attribute-source");
- const sourceOpts=[];
- if(t){
-  if(isHumanoidKind(t.kind)){
-   for(const group of ["practice","knowledge"])for(const [k,name] of defs[group])
-    if(Number(t[group==="practice"?"practices":"knowledges"]?.[k])>0)
-     sourceOpts.push({value:group+":"+k,label:name+" G"+t[group==="practice"?"practices":"knowledges"][k]});
-  }else for(const [k,name] of ATTRIBUTES)
-    if(Number(t.attributes?.[k])>0)sourceOpts.push({value:"attribute:"+k,label:name+" G"+t.attributes[k]});
- }
- base.innerHTML=sourceOpts.length?sourceOpts.map(o=>'<option value="'+esc(o.value)+'">'+esc(o.label)+'</option>').join(""):
-  '<option value="">Nenhuma fonte disponível</option>';
- let attrs=[];
- if(t)attrs=ATTRIBUTES.filter(([k])=>Number(t.attributes?.[k])>0).map(([k,name])=>({value:k,label:name+" G"+t.attributes[k]}));
- attr.innerHTML=attrs.length?attrs.map(o=>'<option value="'+esc(o.value)+'">'+esc(o.label)+'</option>').join(""):
-  '<option value="">Nenhum Atributo comprado</option>';
- if(t&&isHumanoidKind(t.kind)&&t.practices?.armas_conjuracao>0){
-  base.value="practice:armas_conjuracao";
-  $("discipline-mode").value=t.skills?.includes("criar-item-foco-magia")?"conjuracao":"armas";
- }else $("discipline-mode").value="normal";
- $("spell-grade").value="2";
- const extras=[];
- if(t)for(const [g,rows,field] of [["attribute",ATTRIBUTES,"attributes"],["practice",PRACTICES,"practices"],["knowledge",KNOWLEDGES,"knowledges"]])
-  for(const [k,name] of rows)if(Number(t[field]?.[k])>0)extras.push({value:g+":"+k,label:name+" G"+t[field][k]});
- $("extra-source").innerHTML='<option value="">Sem terceira fonte</option>'+extras.map(o=>
-  '<option value="'+esc(o.value)+'">'+esc(o.label)+'</option>').join("");
- $("context-approved").checked=false;
- const weapons=t?equippedWeapons(t):[];
- $("equipment-source").innerHTML='<option value="">Sem dado de equipamento</option>'+
-  weapons.map(w=>'<option value="'+esc(w.id)+'"'+(!w.allowed?' disabled':'')+'>'+esc(w.name)+
-   ' · '+(w.die?'d'+w.die:'dado pendente')+(w.allowed?'':' · requer '+w.expected)+'</option>').join("");
- $("extra-keep").checked=false;
+function armorText(t){
+ const a=armorOf(t);return a?esc(a.name)+" ("+a.integrity+"/"+a.integrityMax+")":"Nenhuma equipada";
 }
-function targetInfo(resetDE=false){
- const a=selected(),t=target();
- $("actor-name").textContent=a?.name||"—";$("target-name").textContent=t?.name||"—";
- if(!a||!t){$("distance").textContent="Selecione origem e alvo";$("target-info").textContent="Escolha dois combatentes.";return;}
- const m=distance(a,t),los=lineOfSight(a,t,state.terrain),dodging=$("dodge").checked;
- const def=defense(t,dodging);
- $("distance").textContent=m.toFixed(1)+" m · "+(los.clear?"visada livre":"sem visada")+(los.cover?" · cobertura":"");
- $("target-info").textContent="DE "+def+(dodging?" (esquiva)":"")+" · "+m.toFixed(1)+
-  " m · "+los.reason+(t.shieldRound>=state.round?" Escudo Arcano declarado (resolver ruptura manualmente).":"");
- if(resetDE)$("difficulty").value=String(def);
+function renderTarget(){
+ const t=target();
+ $("target-info").textContent=t?
+  "DE "+defense(t)+" · armadura "+(armorOf(t)?.name||"nenhuma")+
+  " · Vida "+t.life+". Alcance e linha de visão são decisões da mesa, sem mapa.":
+  "Escolha um alvo.";
+ renderAffinity();
 }
-function actorInfo(){
- const t=selected();
- if(!t){$("actor-summary").textContent="Selecione um combatente para conferir fontes, Vida e deslocamento.";return;}
- const nat=t.side==="jogadores"?naturalDE(t):stats(t).de;
- const arm=armorOf(t),move=movementAllowance(t);
- $("actor-summary").textContent=t.name+"\nVida "+t.life+" · Integridade "+arm.integrity+"/"+arm.max+
-  " · DE base "+nat+"\nArmadura: "+arm.name+(arm.equipped?" (DE geral +"+dodgeBonus(arm)+", penalidade "+armorPenalty(arm)+")":"")+
-  "\nDeslocamento por rodada: "+move+" m; gasto "+(t.moved||0)+" m"+
-  "\n"+(isHumanoidKind(t.kind)?"Coragem "+t.courage:"Pavor local "+t.pavorLocal)+
-  (t.shieldRound>=state.round?"\nEscudo Arcano declarado: DE de ruptura "+(t.shieldDe??"pendente"):"");
-}
-function renderAll(refreshSources=true){
- renderBoard();renderRoster();
- if(refreshSources)renderSourceOptions();
- actorInfo();targetInfo(refreshSources);
- renderHistory();renderPending();
- $("action-state").textContent=pending?"Em rolagem":"Pronto";
+function renderResources(){
+ const c=byId(state.resourceActor);
+ if(!c){$("resource-summary").textContent="Escolha uma ficha.";return;}
+ $("resource-summary").innerHTML='<strong>'+esc(c.name)+'</strong><div class="cc-card-stats">'+
+  '<span>Vida '+c.life+'</span><span>DE '+defense(c)+'</span>'+
+  '<span>Coragem '+c.courage+'/'+maxCourage(c.level)+'</span>'+
+  '<span>P local '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+'</span></div><p>Armadura: '+armorText(c)+'</p>';
+ const elig=c.items.filter(x=>["armor","shield"].includes(x.kind)),previous=$("resource-item").value;
+ $("resource-item").innerHTML=elig.length?elig.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+
+  ' · '+x.integrity+'/'+x.integrityMax+'</option>').join(""):'<option value="">Nenhum equipamento</option>';
+ if(elig.some(x=>x.id===previous))$("resource-item").value=previous;
+ $("resource-item").disabled=$("resource-kind").value!=="integridade";
 }
 function renderHistory(){
- const list=$("history");
- if(!state.history.length){list.innerHTML="<p>Nenhum registro ainda.</p>";return;}
- list.innerHTML=state.history.slice(0,100).map(x=>
-  '<article class="tc-history-entry"><time>'+esc(x.date?.slice(11,16)||"")+" · R"+x.round+'</time>'+
-  '<div><strong>'+esc(x.kind)+"</strong> · "+esc(x.message)+'</div></article>').join("");
+ $("history").innerHTML=state.history.length?state.history.slice(0,100).map(x=>
+  '<article class="cc-event"><small>R'+x.round+' · '+esc((x.at||"").slice(11,16))+'</small>'+
+  '<strong>'+esc(x.kind)+'</strong><span>'+esc(x.message)+'</span></article>').join(""):
+  '<p class="cc-help">Nenhuma ação registrada.</p>';
 }
-function renderPending(){
- const el=$("dice");$("suggest").disabled=!pending;$("preview").disabled=!pending;$("confirm").disabled=!pending;
- if(!pending){el.innerHTML="<p>Prepare uma pilha antes de rolar.</p>";$("roll-result").textContent="Nenhum resultado pendente.";return;}
- el.innerHTML=pending.rolled.map(d=>{
-  const [e,a,p]=faceSymbols(d.sides,d.face);
-  const selectedDie=pending.kept.includes(d.id);
-  return '<button type="button" class="tc-die'+(selectedDie?" picked":"")+'" data-die="'+esc(d.id)+'" aria-pressed="'+selectedDie+'" title="Clique para manter ou descartar">'+
-  '<strong class="tc-face">'+d.face+'</strong><span class="tc-die-label">d'+d.sides+'</span>'+
-  '<span class="tc-runes">'+(e?'<span class="tc-e">ᛋ'+e+'</span>':"")+
-   (a?'<span class="tc-a">ᚨ'+a+'</span>':"")+(p?'<span class="tc-p">ᚦ'+p+'</span>':"")+
-   (!e&&!a&&!p?"—":"")+'</span></button>';
+function renderLast(){
+ if(!last){
+  $("last-action").textContent="Nenhuma rolagem confirmada.";
+  $("apply-integrity").disabled=true;$("apply-life").disabled=true;return;
+ }
+ const t=byId(last.target),a=armorOf(t);
+ $("apply-integrity").disabled=!(a&&last.integrityDamage>0&&!last.integrityApplied);
+ $("apply-life").disabled=!!(a||last.lifeDamage!==2||last.lifeApplied);
+ $("last-action").innerHTML='<strong>'+esc(last.name)+' contra '+esc(t?.name||last.targetName)+'</strong>'+
+  '<p>'+last.e+'E + '+last.p+'P · DE '+last.de+' · '+esc(last.outcome)+'</p>'+
+  '<p>Dano à Integridade: '+(a?last.integrityDamage:"sem armadura")+
+  ' · Dano à Vida por 5 pontos: '+(!a&&last.lifeDamage===2?"2":"não automático")+'</p>'+
+  '<small>'+(last.integrityApplied?"Integridade aplicada. ":"")+(last.lifeApplied?"Vida aplicada. ":"")+
+  'Nenhum dano excedente ou efeito especial é aplicado automaticamente.</small>';
+}
+function render(refresh=true){
+ renderRoster();renderChoices();
+ if(refresh){lastActor="";renderSources();}
+ renderTarget();renderResources();renderHistory();renderLast();renderDice();
+}
+
+function renderSources(){
+ const a=actor();
+ if(lastActor===a?.id)return;
+ lastActor=a?.id||"";
+ const human=isHumanoidKind(a?.kind),base=[];
+ if(a){
+  if(human)for(const g of ["practice","knowledge"]){
+   const field=g==="practice"?"practices":"knowledges";
+   for(const [key,name] of sources[g])if(Number(a[field]?.[key])>0)
+    base.push({value:g+":"+key,label:name+" G"+a[field][key]});
+  }else for(const [key,name] of ATTRIBUTES)if(Number(a.attributes?.[key])>0)
+    base.push({value:"attribute:"+key,label:name+" G"+a.attributes[key]});
+ }
+ $("base-source").innerHTML=base.length?base.map(x=>'<option value="'+esc(x.value)+'">'+esc(x.label)+'</option>').join(""):
+  '<option value="">Nenhuma fonte adquirida</option>';
+ const attrs=a?ATTRIBUTES.filter(([key])=>Number(a.attributes?.[key])>0):[];
+ $("attribute-source").innerHTML=attrs.length?attrs.map(([key,name])=>'<option value="'+key+'">'+
+  esc(name)+" G"+a.attributes[key]+'</option>').join(""):'<option value="">Sem Atributo</option>';
+ const extras=[];
+ if(a)for(const g of ["attribute","practice","knowledge"]){
+  const field={attribute:"attributes",practice:"practices",knowledge:"knowledges"}[g];
+  for(const [key,name] of sources[g])if(Number(a[field]?.[key])>0)
+   extras.push({value:g+":"+key,label:name+" G"+a[field][key]});
+ }
+ $("extra-source").innerHTML='<option value="">Sem terceira fonte</option>'+extras.map(x=>
+  '<option value="'+x.value+'">'+esc(x.label)+'</option>').join("");
+ $("discipline-mode").value=human&&a?.skills.includes("criar-item-foco-magia")?"conjuracao":
+  human&&a?.practices?.armas_conjuracao>0?"armas":"normal";
+ $("spell-grade").value="1";$("extra-keep").checked=false;$("context-approved").checked=false;
+ renderWeapons();
+}
+function renderWeapons(){
+ const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
+ $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
+  '<option value="'+esc(w.id)+'"'+(w.eligible?"":" disabled")+'>'+esc(w.name)+
+  ' · '+(w.die?"d"+w.die:"dado não cadastrado")+
+  (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
+ if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
+ renderAffinity();
+}
+function chosenWeapon(){
+ return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
+}
+function renderAffinity(){
+ const hint=weightAffinity(chosenWeapon(),target(),actor());
+ $("weight-affinity").textContent=hint.description+" Carga do atacante: "+
+  (actor()?weightUsed(actor()).toFixed(3):"—")+
+  ". A categoria da armadura equipada determina a afinidade defensiva.";
+ $("apply-affinity").disabled=hint.status!=="known"||hint.delta===0;
+ return hint;
+}
+function options(){
+ return {de:Number($("difficulty").value),situation:$("situation").value,extraKeep:$("extra-keep").checked,
+  cancelP:Number($("cancel-p").value),convertPairs:Number($("convert-a").value)};
+}
+function evaluate(a,rolled,kept,opts){
+ if(a.side==="inimigos"&&a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
+ if(a.side==="inimigos"&&isHumanoidKind(a.kind))return previewHumanoidRoll(a,rolled,kept,opts);
+ if(a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
+ const r=resolveRoll(rolled,kept,{de:opts.de,situation:opts.situation,level:a.level,
+  extraKeep:opts.extraKeep,courage:a.courage,cancelP:opts.cancelP,convertPairs:opts.convertPairs});
+ if(!r.ok)return {ok:false,error:r.errors.join("; ")};
+ const free=keepLimit(a.level,false,false);
+ return {ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
+}
+function preview(){
+ if(!pending)return {ok:false,error:"Não existem dados rolados."};
+ const a=byId(pending.actor),t=byId(pending.target);
+ if(!a||!t)return {ok:false,error:"Atacante ou alvo não encontrado."};
+ const pre=evaluate(a,pending.rolled,pending.kept,options());
+ if(!pre.ok)return pre;
+ const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
+ const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:
+  lifeAtFive(pre.result,t);
+ return {...pre,integrityDamage:g1?0:pre.result.damage,life};
+}
+function renderDice(){
+ const element=$("dice");
+ $("confirm").disabled=!pending;$("suggest").disabled=!pending;
+ if(!pending){
+  element.innerHTML='<p>Selecione atacante e alvo antes de rolar.</p>';
+  $("roll-result").textContent="Nenhuma rolagem pendente.";
+  $("action-state").textContent="Aguardando declaração";return;
+ }
+ element.innerHTML=pending.rolled.map(d=>{
+  const [e,a,p]=faceSymbols(d.sides,d.face),kept=pending.kept.includes(d.id);
+  return '<button type="button" class="cc-die'+(kept?" kept":"")+'" data-die="'+esc(d.id)+
+   '" aria-pressed="'+kept+'" title="Selecionar como mantido"><strong>'+d.face+
+   '</strong><small>d'+d.sides+'</small><span>'+
+   (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
+   (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
  }).join("");
- previewAction();
+ const pre=preview();
+ if(!pre.ok){$("roll-result").textContent=pre.error;return;}
+ const r=pre.result;
+ $("roll-result").innerHTML='<strong>'+esc(r.outcome)+'</strong>'+
+  '<p><span class="cc-e">'+r.e+' Êxitos</span> + <span class="cc-p">'+r.p+
+  ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
+  '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
+  pre.integrityDamage+' · Vida no patamar 5: '+(pre.life.damage===null?"PENDENTE":pre.life.damage)+
+  '</p><small>'+esc(pre.life.reason)+' Custo: '+(pre.courageCost||0)+
+  ' Coragem / '+(pre.cost||0)+' Pavor local.</small>';
+ $("action-state").textContent="Rolado, aguardando confirmação";
 }
-function currentOptions(){return {de:Number($("difficulty").value),situation:$("situation").value,
- extraKeep:$("extra-keep").checked,cancelP:Number($("cancel-p").value),convertPairs:Number($("convert-a").value)};}
-function previewFor(unit,rolled,kept,options){
- if(unit.side==="jogadores"){
-  const result=resolveRoll(rolled,kept,{de:options.de,situation:options.situation,level:unit.level||1,
-   extraKeep:options.extraKeep,courage:unit.courage,cancelP:options.cancelP,convertPairs:options.convertPairs});
-  const free=keepLimit(unit.level||1,false,false),courageCost=Number(options.extraKeep&&kept.length>free);
-  return result.ok?{ok:true,result,courageCost,cost:0}:{ok:false,error:result.errors.join("; ")};
+function roll(){
+ const a=actor(),t=target();
+ if(!a||!t||a.id===t.id)return notice("Escolha um atacante e um alvo distintos.");
+ if(a.acted)return notice(a.name+" já agiu nesta rodada. Avance a rodada.");
+ const human=isHumanoidKind(a.kind),[group,key]=String($("base-source").value||"").split(":");
+ const attribute=$("attribute-source").value,[eg,ek]=String($("extra-source").value||"").split(":");
+ const mode=$("discipline-mode").value;
+ const choice=human?{baseGroup:group,baseKey:key,attribute,mode}:
+  {first:key,second:attribute,mode:"normal"};
+ if(eg){choice.extra={group:eg,key:ek};choice.contextOK=$("context-approved").checked;}
+ const pool=composeActionPool(a,choice);
+ if(!pool.ok)return notice(pool.error||"Combinação de dados inválida.");
+ const w=chosenWeapon();
+ if(w){
+  if(!w.eligible||!human||mode!=="armas"||key!=="armas_conjuracao")
+   return notice("Dado de arma exige Disciplina em modo Armas e especialização do peso.");
+  if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
+  pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});
  }
- if(isHumanoidKind(unit.kind))return previewHumanoidRoll(unit,rolled,kept,options);
- return previewCreatureRoll(unit,rolled,kept,options);
-}
-function previewAction(){
- if(!pending)return;
- const actor=tokenById(pending.actor),t=tokenById(pending.target);
- if(!actor||!t){$("roll-result").textContent="Origem ou alvo retirado do tabuleiro.";return;}
- const options=currentOptions(),preview=previewFor(actor,pending.rolled,pending.kept,options);
- pending.preview=preview;
- if(!preview.ok){$("roll-result").textContent=preview.error||"Escolha uma retenção válida.";return;}
- const result=preview.result,spell=pending.mode==="conjuracao";
- const damage=pending.shield||spell&&$("spell-grade").value==="1"?0:result.damage;
- pending.damage=damage;
- $("roll-result").innerHTML='<strong>'+esc(result.outcome)+'</strong> · <span class="tc-e">'+result.e+'E</span> + '+
-  '<span class="tc-p">'+result.p+'P</span> · <span class="tc-a">'+result.aRemaining+'A livre</span>'+
-  '<div>DE '+result.de+' · '+result.reached+' pontos · dano ofensivo potencial '+damage+
-  (pending.shield?" (Escudo: DE de ruptura igual "+result.reached+"; sem dano)":spell&&$("spell-grade").value==="1"?" (G1: somente efeitos)":"")+
-  ' · '+(preview.courageCost||0)+' Coragem / '+(preview.cost||0)+' Pavor para retenção</div>'+
-  '<small>Não aplica dano, efeitos de área nem Escudo Arcano automaticamente.</small>';
-}
-function startRoll({shield=false}={}){
- const a=selected(),t=shield?a:target();
- if(!a||!t)return notice("Selecione origem e alvo.");
- if(a.id===t.id&&!shield)return notice("Escolha um alvo distinto.");
- const los=shield?{clear:true,cover:false}:lineOfSight(a,t,state.terrain);
- const d=shield?0:distance(a,t),maxRange=Number($("range").value);
- if(!los.clear)return notice("Parede bloqueia o ataque. Mova-se para obter linha de visão.");
- if(!shield&&(!Number.isFinite(maxRange)||maxRange<0||d>maxRange+0.001))
-  return notice("Alvo além do alcance declarado ("+d.toFixed(1)+" m).");
- const [group,key]=($("base-source").value||"").split(":");
- const human=isHumanoidKind(a.kind),attr=$("attribute-source").value;
- const extra=$("extra-source").value;const [extraGroup,extraKey]=(extra||"").split(":");
- const selection=human?{baseGroup:group,baseKey:key,attribute:attr,mode:$("discipline-mode").value}:
-  {first:key,second:attr,mode:"normal"};
- if(extra){selection.extra={group:extraGroup,key:extraKey};selection.contextOK=$("context-approved").checked;}
- const pool=composeActionPool(a,selection);
- if(!pool.ok)return notice(pool.error);
- const chosenWeapon=$("equipment-source").value;
- let equipmentName="";
- if(chosenWeapon){
-  const weapon=equippedWeapons(a).find(w=>w.id===chosenWeapon&&w.allowed);
-  if(!weapon||selection.mode!=="armas"||!human||selection.baseKey!=="armas_conjuracao")
-   return notice("Dado de arma exige Disciplina em modo Armas e Perícia correspondente.");
-  if(pool.pool.length>=9)return notice("O dado de equipamento ultrapassaria os 9 rolados.");
-  pool.pool.push({id:"equipment.0",group:"equipment",key:weapon.id,sides:weapon.die,baseSides:weapon.die});
-  equipmentName=weapon.name;
+ let grade=null;
+ if(human&&mode==="conjuracao"){
+  if(key!=="armas_conjuracao"||!a.skills.includes("criar-item-foco-magia"))
+   return notice("Conjuração exige Disciplina e Criar Item de Foco e Magia.");
+  grade=Number($("spell-grade").value);
+  const bonus=MAGIC_GRADE_DICE[grade]||[];
+  if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
+  if(grade>=2&&!confirm("Este Grau exige elementos, habilitação, focos e tempo adequados. O comparador só adiciona os dados do Grau e não resolve a preparação. Confirma a validação manual do Narrador?"))return;
+  bonus.forEach((sides,i)=>pool.pool.push({id:"magic."+grade+"."+i,group:"magic",key:"G"+grade,sides}));
  }
- const rolled=rollCreatureFaces(pool.pool),kept=rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id);
- pending={actor:a.id,target:t.id,rolled,kept,mode:selection.mode,shield,sources:pool.sources,
-  distance:d,cover:los.cover,situation:$("situation").value,equipmentName,preview:null};
+ const rolled=rollCreatureFaces(pool.pool);
+ pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
+  mode,spellGrade:grade,weapon:w?.name||""};
  $("cancel-p").value="0";$("convert-a").value="0";
- renderPending();$("action-state").textContent="Em rolagem";
+ renderDice();
 }
-function suggestKept(){
+function suggest(){
  if(!pending)return;
- const a=tokenById(pending.actor),rolled=pending.rolled,options=currentOptions();
- const free=a.side==="jogadores"?keepLimit(a.level||1,false,false):stats(a).keepBase;
- const cap=a.side==="jogadores"?keepLimit(a.level||1,options.extraKeep,false):
-  isHumanoidKind(a.kind)?stats(a).keepBase+Number(options.extraKeep):Math.min(stats(a).keepMax,a.keep||2);
- let best=null;const n=rolled.length;
- function evaluate(ids){
-  for(let cancel=0;cancel<=5;cancel++)for(let pairs=0;pairs<=2;pairs++){
-   const p=previewFor(a,rolled,ids,{...options,cancelP:cancel,convertPairs:pairs});
-   if(!p.ok)continue;
-   const res=p.result,score=(res.success?1000:0)+(res.success&&res.p===0?250:0)+
-    (res.aRemaining>0?25:0)-res.p*38-(p.courageCost||0)*55-(p.cost||0)*55+
-    res.damage*2+res.aRemaining*.5;
-   if(!best||score>best.score)best={ids:[...ids],cancel,pairs,score};
+ const a=byId(pending.actor),rolled=pending.rolled,opts=options();
+ const maximum=a.kind==="monstro"?Math.min(stats(a).keepMax,a.keep||2):
+  a.side==="inimigos"&&isHumanoidKind(a.kind)?Math.min(4,(a.threatGrade>=2?3:2)+Number(opts.extraKeep)):
+  keepLimit(a.level,opts.extraKeep,false);
+ let best=null;
+ function explore(from,indices){
+  if(indices.length){
+   const ids=indices.map(x=>rolled[x].id);
+   for(let cancel=0;cancel<=3;cancel++)for(let convert=0;convert<=2;convert++){
+    const pre=evaluate(a,rolled,ids,{...opts,cancelP:cancel,convertPairs:convert});
+    if(!pre.ok)continue;
+    const r=pre.result,score=100*Number(r.success)+r.reached*10-r.p*6+
+     (r.p===0?18:0)-(pre.courageCost||0)*8-(pre.cost||0)*8;
+    if(!best||score>best.score)best={ids,cancel,convert,score};
+   }
   }
+  if(indices.length>=maximum)return;
+  for(let i=from;i<rolled.length;i++){indices.push(i);explore(i+1,indices);indices.pop();}
  }
- function scan(i,keep){
-  if(keep.length&&keep.length<=cap)evaluate(keep.map(index=>rolled[index].id));
-  if(keep.length>=cap)return;
-  for(let j=i;j<n;j++){keep.push(j);scan(j+1,keep);keep.pop();}
- }
- scan(0,[]);
- if(!best)return notice("Nenhuma combinação válida com os recursos atuais.");
- pending.kept=best.ids;$("cancel-p").value=best.cancel;$("convert-a").value=best.pairs;
- renderPending();
+ explore(0,[]);
+ if(!best)return notice("Sem combinação de dados mantidos válida.");
+ pending.kept=[...best.ids];$("cancel-p").value=String(best.cancel);
+ $("convert-a").value=String(best.convert);renderDice();
 }
+
 function confirmRoll(){
  if(!pending)return;
- const p=pending,a=tokenById(p.actor),t=tokenById(p.target);if(!a||!t)return;
- const pre=previewFor(a,p.rolled,p.kept,currentOptions());
- if(!pre.ok)return notice(pre.error);
- const r=pre.result,spell=p.mode==="conjuracao",grade=spell?Number($("spell-grade").value):null;
- const possibleDamage=p.shield||spell&&grade===1?0:r.damage;
- if(a.side==="jogadores"){
-  a.courage=Math.max(0,a.courage-(pre.courageCost||0));
-  a.courage=Math.min(10,a.courage+Number(r.criticalRefundCourage||0));
+ const a=byId(pending.actor),t=byId(pending.target),pre=preview();
+ if(!a||!t||!pre.ok)return notice(pre.error||"Rolagem inválida.");
+ if(a.acted)return notice("Este combatente já agiu na rodada.");
+ const r=pre.result;
+ if((pre.courageCost||0)>a.courage||(pre.cost||0)>a.pavorLocal)
+  return notice("Coragem ou Pavor local insuficiente.");
+ a.courage=Math.max(0,a.courage-(pre.courageCost||0));
+ a.pavorLocal=Math.max(0,a.pavorLocal-(pre.cost||0));
+ if(a.side==="jogadores")a.courage=Math.min(maxCourage(a.level),a.courage+Number(r.criticalRefundCourage||0));
+ if(a.side==="inimigos"&&r.monsterCriticalPavor){
+  const cap=monsterCap(a.threatGrade),free=Math.max(0,cap-a.pavorLocal);
+  const own=Math.min(free,r.monsterCriticalPavor);
+  a.pavorLocal+=own;
+  const publicCap=narratorCap(state.combatants.filter(x=>x.side==="jogadores").length);
+  state.publicPavor=Math.min(publicCap,state.publicPavor+Math.max(0,r.monsterCriticalPavor-own));
+ }
+ const moved=transferPavor(a,t,r.p,state.publicPavor);
+ Object.assign(t,moved.target);
+ a.acted=true;
+ last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
+  de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
+  integrityApplied:false,lifeApplied:false};
+ log("rolagem",a.name+" → "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.p+"P). "+
+  "Dano convencional potencial "+pre.integrityDamage+" à Integridade. Vida pelo patamar 5: "+
+  (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
+  moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
+   damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
+   courageCost:pre.courageCost||0,pavorCost:pre.cost||0,weapon:pending.weapon});
+ state.resourceActor=t.id;pending=null;persist();render(false);
+ $("action-state").textContent="Rolagem confirmada";
+ notice("Rolagem confirmada. Pavor atualizado. Dano à Integridade e Vida ainda exigem aplicação.");
+}
+function change(field,delta,itemId=null){
+ const c=byId(state.resourceActor);
+ if(!c)return notice("Selecione o combatente a ajustar.");
+ const result=updateResource(c,itemId,field,delta);
+ if(!result.ok)return notice(result.error);
+ Object.assign(c,result.actor);
+ const equipment=field==="integridade"?c.items.find(x=>x.id===itemId):null;
+ log("recurso",c.name+": "+(delta>0?"+":"")+delta+" "+field+
+  (equipment?" em "+equipment.name:"")+". Limites e tetos respeitados.");
+ persist();render(false);
+}
+function applyConfirmed(which){
+ if(!last)return notice("Nenhuma rolagem confirmada.");
+ const t=byId(last.target),armor=armorOf(t);
+ if(!t)return notice("Alvo não está mais no confronto.");
+ if(which==="integridade"){
+  if(!armor||last.integrityApplied||last.integrityDamage<1)
+   return notice("Sem Integridade aplicável nesta rolagem.");
+  const before=armor.integrity;
+  const changed=updateResource(t,armor.id,"integridade",-last.integrityDamage);
+  if(!changed.ok)return notice(changed.error);
+  Object.assign(t,changed.actor);last.integrityApplied=true;
+  log("integridade",t.name+": −"+(before-Math.max(0,before-last.integrityDamage))+
+   " de Integridade em "+armor.name+". Excedente de dano não é lançado automaticamente na Vida.");
  }else{
-  const done=settleCreatureRoll(a,0,state.tokens.filter(x=>x.side==="jogadores").length,pre);
-  if(!done.ok)return notice(done.error);
-  a.courage=done.unit.courage;a.pavorLocal=done.unit.pavorLocal;
+  if(armor||last.lifeApplied||last.lifeDamage!==2)
+   return notice("Patamar de 2 Vida só vale para alvo sem armadura equipada.");
+  const before=t.life;t.life=Math.max(0,t.life-2);last.lifeApplied=true;
+  log("vida",t.name+": −"+(before-t.life)+" Vida direta pelo acerto com cinco pontos válidos (E + P), sem armadura.");
  }
- if(p.shield){
-  a.shieldRound=state.round;a.shieldDe=r.reached;
-  record("escudo",a.name+" rolou Escudo Arcano (DE de ruptura "+r.reached+") para a rodada "+state.round+
-   ". Custo de ativação e proteção corporal permanecem sob controle do Narrador.",{
-   actor:a.id,rolled:p.rolled,kept:p.kept,raw:r,damagePotential:0,barrierDe:r.reached});
- }else record("rolagem",a.name+" contra "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.aRemaining+"A, "+r.p+
-  "P). Dano potencial "+possibleDamage+". "+(spell?"Magia G"+grade+". ":"")+"Aplicação manual.",{
-   actor:a.id,target:t.id,rolled:p.rolled,kept:p.kept,raw:r,damagePotential:possibleDamage,
-   distance:p.distance,cover:p.cover,spellGrade:grade,equipment:p.equipmentName||"",
-   courageCost:pre.courageCost||0,pavorCost:pre.cost||0});
- pending=null;persist();renderAll(false);notice("Rolagem registrada. Aplique dano e efeitos manualmente após confirmar alcance e proteção.");
+ persist();render(false);
 }
-function onBoardCell(x,y){
- if(!inBounds(x,y))return;
- const found=state.tokens.find(t=>t.x===x&&t.y===y);
- if(["parede","cobertura","apagar"].includes(state.tool)){
-  if(found)return notice("Remova ou mova o combatente antes de editar o terreno ocupado.");
-  const k=cellKey(x,y);
-  if(state.tool==="apagar")delete state.terrain[k];else state.terrain[k]=state.tool;
-  persist();renderBoard();targetInfo();return;
+function nextRound(){
+ state.round=Math.min(9999,state.round+1);
+ for(const c of state.combatants)c.acted=false;
+ pending=null;log("rodada","Rodada "+state.round+". Oportunidades restauradas; não há cura automática.");
+ persist();render();
+}
+function demo(){
+ if(state.combatants.length&&!confirm("Substituir o confronto atual? Fichas originais do Criador não serão alteradas."))return;
+ state=empty();pending=null;last=null;lastActor="";
+ function setup(name,side,kind,attributes,practices,skills,items=[]){
+  add({name,kind,level:1,attributes,practices,skills,items},side,"Exemplo visual (XP não homologado)");
  }
- if(found){
-  if(state.tool==="alvo"||(state.selected&&state.selected!==found.id&&state.tool==="mover")){
-   state.target=found.id;lastTarget=found.id;targetInfo(true);
-  }else{state.selected=found.id;pending=null;renderSourceOptions(true);targetInfo(true);}
-  persist();renderAll(false);return;
- }
- if(state.tool==="alvo")return notice("Clique no combatente que será o alvo.");
- const u=selected();if(!u)return notice("Selecione primeiro um combatente.");
- const move=plannedMove(u,{x,y},state.terrain,state.tokens);
- if(!move.ok)return notice(move.reason);
- u.x=x;u.y=y;u.moved=(u.moved||0)+move.distanceM;pending=null;
- record("movimento",u.name+" moveu "+move.distanceM+" m para ("+x+","+y+"). Total nesta rodada: "+u.moved+" m.");
- persist();renderAll();$("map-status").textContent="Deslocamento validado por percurso ortogonal de "+move.distanceM+" m. Enquadramento da ação depende do Narrador.";
+ setup("Aprendiz armado","jogadores","humanoide",
+  {forca:1,agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
+  [{id:"arma-1",name:"Adaga",kind:"weapon",category:"leve",die:6,grade:1,qty:1,equipped:true}]);
+ setup("Apoio","jogadores","humanoide",{inteligencia:1,destreza:1,vigor:1},{atletismo:1},[]);
+ setup("Saqueador","inimigos","humanoide",
+  {agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
+  [{id:"armadura-1",name:"Roupas Simples",kind:"armor",category:"muito-leve",grade:1,
+   integrityMax:3,integrity:3,equipped:true}]);
+ setup("Lobo","inimigos","monstro",{agilidade:2,forca:1,destreza:1},{},[]);
+ log("cenário","Exemplo 2 × 2 criado. As builds de demonstração não substituem fichas reais de 15 XP.");
+ persist();render();if(target())$("difficulty").value=String(defense(target()));
 }
-function setSelected(id){if(!tokenById(id))return;state.selected=id;pending=null;renderAll(true);persist();}
-function setTarget(id){
- if(!tokenById(id))return;
- state.target=id;pending=null;lastTarget=id;renderAll(false);targetInfo(true);persist();
-}
-function applyResource(){
- const t=target();if(!t)return notice("Selecione quem recebe a alteração.");
- const field=$("resource").value,num=Math.floor(Number($("resource-amount").value));
- if(!Number.isInteger(num)||num<1||num>100)return notice("Informe quantidade positiva até 100.");
- if(field==="integridade")t.armor.integrity=Math.max(0,t.armor.integrity-num);
- else if(["vida","coragem","pavorLocal"].includes(field)){
-  const prop=field==="vida"?"life":field;t[prop]=Math.max(0,Number(t[prop]||0)-num);
- }else return;
- record("recurso",t.name+": -"+num+" "+field+" aplicado manualmente pelo Narrador.");
- persist();renderAll(false);
-}
-function rollShield(){
- const a=selected();
- if(!a||!Array.isArray(a.skills)||!a.skills.includes("escudo-arcano")||
-  !a.skills.includes("criar-item-foco-magia")||Number(a.attributes?.inteligencia)<2)
-  return notice("O conjurador precisa de Escudo Arcano, Foco/Magia e Inteligência 2.");
- if(!confirm("Escudo Arcano usa uma rolagem de Conjuração para a DE de ruptura. Confirme que pagará o custo de ativação conforme o SRD (recurso contabilizado manualmente)."))return;
- $("base-source").value="practice:armas_conjuracao";
- $("attribute-source").value="inteligencia";
- $("discipline-mode").value="conjuracao";
- $("equipment-source").value="";
- $("extra-source").value="";
- $("difficulty").value="0";
- $("cancel-p").value="0";$("convert-a").value="0";
- startRoll({shield:true});
-}
-function declareShield(){
- const a=selected();if(!a)return notice("Selecione quem conjura Escudo Arcano.");
- if(!Array.isArray(a.skills)||!a.skills.includes("escudo-arcano")||
-  !a.skills.includes("criar-item-foco-magia")||Number(a.attributes?.inteligencia)<2)
-  return notice("A ficha não possui Escudo Arcano e seus requisitos de conjuração.");
- const n=prompt("Escudo Arcano: informe a DE para romper calculada na rolagem de Conjuração (ou deixe vazio para pendente). O custo de PP/Coragem e a resolução da barreira são manuais.","");
- if(n===null)return;
- if(n!==""&&(!Number.isInteger(Number(n))||Number(n)<0||Number(n)>30))return notice("DE deve ser inteira entre 0 e 30.");
- if(!confirm("Confirma que o custo de ativação e o teste de Conjuração foram resolvidos pelo Narrador? O Escudo dura 1 rodada e NÃO gera Integridade ou imunidade física automática."))return;
- a.shieldRound=state.round;a.shieldDe=n===""?null:Number(n);
- record("escudo",a.name+" declarou Escudo Arcano para a rodada "+state.round+
-  " (DE de ruptura "+(a.shieldDe??"pendente")+"). Custo e efeitos resolvidos manualmente.");
- persist();renderAll(false);
-}
-function advanceRound(){
- state.round=Math.min(9999,state.round+1);for(const t of state.tokens){t.moved=0;if(t.shieldRound<state.round){t.shieldRound=0;t.shieldDe=null;}}
- pending=null;record("rodada","Início da rodada "+state.round+". Movimento reiniciado; escudos de uma rodada expirados.");
- persist();renderAll();
-}
-function takeFromSaves(){
- let count=0;
- try{
-  const own=JSON.parse(localStorage.getItem(PLAYER_SAVE)||"null");
-  if(own?.attributes&&state.tokens.length<MAX_TOKENS){if(insert(own,"jogadores",true))count++;}
-  const encounter=JSON.parse(localStorage.getItem(CONFLICT_SAVE)||"null");
-  if(Array.isArray(encounter?.roster))for(const threat of encounter.roster){
-   if(!insert(threat,"inimigos",false))break;count++;
+function importJson(file){
+ if(!file)return;
+ if(file.size>3e6)return notice("JSON deve ter até 3 MB.");
+ file.text().then(str=>{
+  const raw=JSON.parse(str);
+  if(raw?.version===1&&Array.isArray(raw.combatants)){
+   if(state.combatants.length&&!confirm("Substituir o confronto por este arquivo?"))return;
+   state=empty();for(const c of raw.combatants.slice(0,MAX))
+    add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Comparador importado");
+   state.round=Math.floor(clamp(raw.round,1,9999));
+  }else if(Array.isArray(raw?.roster)||Array.isArray(raw?.tokens)){
+   for(const c of raw.roster||raw.tokens)
+    if(!add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Arquivo de conflito"))break;
+  }else{
+   const c=raw.character||raw;
+   if(!c?.attributes||!add(c,"jogadores","Ficha JSON"))
+    throw Error("Formato incompatível ou limite de fichas atingido.");
   }
- }catch(e){return notice("Erro ao ler fichas salvas: "+e.message);}
- if(!count)return notice("Não foram encontradas Fichas ou ameaças salvas para importar.");
- record("importação",count+" ficha(s) importada(s) do armazenamento do navegador.");
- persist();renderAll(true);notice(count+" ficha(s) importada(s).");
+  pending=null;last=null;log("importação","Fichas carregadas de arquivo JSON.");
+  persist();render();if(target())$("difficulty").value=String(defense(target()));
+ }).catch(e=>notice("Falha ao ler JSON: "+e.message));
 }
-function importedFile(file){
- if(!file||file.size>2e6)return notice("Arquivo inválido ou maior que 2 MB.");
- file.text().then(text=>{
-  const parsed=JSON.parse(text);let count=0;
-  if(parsed?.version===1&&Array.isArray(parsed.tokens)){
-   if(state.tokens.length&&!confirm("Substituir o mapa pelo playtest importado?"))return;
-   state={...initialScenario(),...parsed,terrain:validateTerrain(parsed.terrain),
-    tokens:limitTokens(parsed.tokens).filter(t=>inBounds(t.x,t.y)&&t.name),
-    history:Array.isArray(parsed.history)?parsed.history.slice(0,350):[],tool:"mover"};
-   count=state.tokens.length;
-  }else if(Array.isArray(parsed?.roster)){
-   for(const threat of parsed.roster){if(!insert(threat,"inimigos"))break;count++;}
-  }else if(parsed?.attributes&&parsed?.practices){
-   if(insert(parsed,"jogadores",true))count++;
-  }else throw Error("JSON não corresponde à Ficha, ao Conflito ou a um playtest.");
-  record("importação",count+" ficha(s) carregada(s) via JSON.");
-  persist();renderAll();notice(count+" ficha(s) carregada(s).");
- }).catch(e=>notice("Não foi possível importar: "+e.message));
-}
-function download(text,name,mime){
- const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
-}
-function exportHistory(){
- const cols=["Data","Rodada","Tipo","Descrição","Dano potencial","Distância (m)","Cobertura"];
- const csv=[cols,...state.history.slice().reverse().map(e=>[e.date,e.round,e.kind,e.message,e.damagePotential??"",e.distance??"",e.cover??""])]
- .map(row=>row.map(x=>'"'+String(x??"").replaceAll('"','""')+'"').join(";")).join("\r\n");
- download("\uFEFF"+csv,"codex-playtest-historico.csv","text/csv;charset=utf-8");
+function exportJson(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="codex-comparador-de-combate.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1600);
 }
 function bind(){
  document.addEventListener("click",event=>{
-  const b=event.target.closest("button");if(!b)return;
-  if(b.dataset.x!==undefined&&b.dataset.y!==undefined)return onBoardCell(Number(b.dataset.x),Number(b.dataset.y));
-  if(b.dataset.select)return setSelected(b.dataset.select);
-  if(b.dataset.target)return setTarget(b.dataset.target);
-  if(b.dataset.tool){state.tool=b.dataset.tool;renderBoard();return;}
-  if(b.dataset.die&&pending){
-   if(pending.kept.includes(b.dataset.die))pending.kept=pending.kept.filter(x=>x!==b.dataset.die);
-   else pending.kept.push(b.dataset.die);
-   renderPending();return;
+  const button=event.target.closest("button");if(!button)return;
+  if(button.dataset.actor){
+   state.actor=button.dataset.actor;pending=null;lastActor="";
+   persist();render();return;
+  }
+  if(button.dataset.target){
+   state.target=button.dataset.target;pending=null;
+   persist();render(false);$("difficulty").value=String(defense(target()));return;
+  }
+  if(button.dataset.remove){
+   state.combatants=state.combatants.filter(x=>x.id!==button.dataset.remove);
+   if(state.actor===button.dataset.remove)state.actor="";
+   if(state.target===button.dataset.remove)state.target="";
+   if(state.resourceActor===button.dataset.remove)state.resourceActor="";
+   pending=null;last=null;persist();render();return;
+  }
+  if(button.dataset.die&&pending){
+   pending.kept=pending.kept.includes(button.dataset.die)?
+    pending.kept.filter(x=>x!==button.dataset.die):[...pending.kept,button.dataset.die];
+   renderDice();
   }
  });
- $("preset").addEventListener("click",preset);
- $("load-saves").addEventListener("click",takeFromSaves);
- $("json-import").addEventListener("change",e=>{importedFile(e.target.files?.[0]);e.target.value="";});
- $("export").addEventListener("click",()=>download(JSON.stringify({...state,selected:state.selected,target:state.target},null,2),
-   "codex-playtest-tatico.json","application/json"));
- $("export-csv").addEventListener("click",exportHistory);
- $("clear-history").addEventListener("click",()=>{if(!confirm("Apagar o histórico do playtest?"))return;state.history=[];persist();renderHistory();});
- $("clear-map").addEventListener("click",()=>{if(!confirm("Apagar todas as paredes e coberturas?"))return;state.terrain={};persist();renderBoard();targetInfo();});
- $("next-round").addEventListener("click",advanceRound);
- $("add-token").addEventListener("click",()=>{
-  const t=blank($("new-side").value==="jogadores"?"humanoide":"monstro");
-  t.name="Ficha de teste "+(state.tokens.length+1);t.attributes.agilidade=1;t.attributes.vigor=1;
-  t.life=lifeMax(t);if(!insert(t,$("new-side").value))return notice("Limite de fichas ou mapa cheio.");
-  record("ficha",t.name+" adicionada; ajuste os graus na Ficha ou importe um JSON.");
-  persist();renderAll();
+ $("scan-sheets").addEventListener("click",scan);
+ $("add-ally").addEventListener("click",()=>addSelected("jogadores"));
+ $("add-enemy").addEventListener("click",()=>addSelected("inimigos"));
+ $("json-import").addEventListener("change",event=>{importJson(event.target.files?.[0]);event.target.value="";});
+ $("demo").addEventListener("click",demo);
+ $("next-round").addEventListener("click",nextRound);
+ $("export").addEventListener("click",exportJson);
+ $("actor").addEventListener("change",event=>{
+  state.actor=event.target.value;pending=null;lastActor="";persist();render();
  });
- $("roll").addEventListener("click",()=>startRoll());
- $("roll-shield").addEventListener("click",rollShield);
- $("suggest").addEventListener("click",suggestKept);
- $("preview").addEventListener("click",previewAction);
+ $("target").addEventListener("change",event=>{
+  state.target=event.target.value;pending=null;
+  persist();render(false);$("difficulty").value=String(defense(target()));
+ });
+ $("weapon-source").addEventListener("change",renderAffinity);
+ $("apply-affinity").addEventListener("click",()=>{
+  const hint=renderAffinity();
+  if(hint.status!=="known")return;
+  $("situation").value=hint.delta===1?"advantage":hint.delta===-1?"disadvantage":"neutral";
+  notice("Condição sugerida pelo peso selecionada, sem acumular outros modificadores.");
+ });
+ $("roll").addEventListener("click",roll);
+ $("suggest").addEventListener("click",suggest);
  $("confirm").addEventListener("click",confirmRoll);
- $("apply-resource").addEventListener("click",applyResource);
- $("arcane-shield").addEventListener("click",declareShield);
- $("equipment-source").addEventListener("change",()=>{
-  const w=equippedWeapons(selected()).find(x=>x.id===$("equipment-source").value&&x.allowed);
-  if(w?.range>0)$("range").value=String(w.range);
+ for(const field of ["extra-keep","cancel-p","convert-a","situation","difficulty","spell-grade"])
+  $(field).addEventListener("change",()=>{if(pending)renderDice();});
+ $("resource-actor").addEventListener("change",event=>{
+  state.resourceActor=event.target.value;persist();renderResources();
  });
- for(const id of ["difficulty","situation","extra-keep","cancel-p","convert-a","spell-grade","extra-source","context-approved","equipment-source"])
-  $(id).addEventListener("change",()=>{if(pending)previewAction();});
- $("dodge").addEventListener("change",()=>{targetInfo(true);if(pending)previewAction();});
- $("narrator-cover").addEventListener("change",()=>{if(pending)previewAction();});
+ $("resource-kind").addEventListener("change",renderResources);
+ for(const [button,sign] of [["resource-minus",-1],["resource-plus",1]])
+  $(button).addEventListener("click",()=>{
+   const n=Number($("resource-amount").value);
+   if(!Number.isInteger(n)||n<=0||n>100)return notice("Quantidade inválida: use inteiro de 1 a 100.");
+   change($("resource-kind").value,sign*n,$("resource-item").value);
+  });
+ $("apply-integrity").addEventListener("click",()=>applyConfirmed("integridade"));
+ $("apply-life").addEventListener("click",()=>applyConfirmed("vida"));
+ $("public-minus").addEventListener("click",()=>{
+  state.publicPavor=Math.max(0,state.publicPavor-1);
+  log("Pavor público","−1P público manual.");persist();render(false);
+ });
+ $("public-plus").addEventListener("click",()=>{
+  const limit=narratorCap(state.combatants.filter(x=>x.side==="jogadores").length);
+  if(state.publicPavor>=limit)return notice("Teto de Pavor público: "+limit+".");
+  state.publicPavor++;log("Pavor público","+1P público manual.");persist();render(false);
+ });
+ $("clear-history").addEventListener("click",()=>{
+  if(!confirm("Apagar o histórico deste confronto?"))return;
+  state.history=[];persist();renderHistory();
+ });
 }
-bind();renderAll();
+bind();scan();render();

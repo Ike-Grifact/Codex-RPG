@@ -1,3 +1,4 @@
+import "./comparador-logic.test.mjs"; // Regressões normativas do comparador sem VTT.
 import test from "node:test";
 import assert from "node:assert/strict";
 import {WIDTH,HEIGHT,initialScenario,cellKey,lineOfSight,distance,movementAllowance,shortestPath,plannedMove,

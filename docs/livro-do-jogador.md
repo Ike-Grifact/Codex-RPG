@@ -866,6 +866,9 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 
 ## VI. Dano, armadura e Vida
 
+> **DEFINIDO — adendo autoral de 22/11/2026, nova escala de Vida em playtest:** quando um ataque **acerta** e soma **5 ou mais pontos válidos (E + P não anulado)**, o alvo **SEM armadura equipada sofre 2 de dano à Vida**. **Com armadura equipada, NÃO existe esse dano direto de 2 Vida:** resolver o dano à **Integridade separadamente**, pelo cálculo convencional abaixo e pelas propriedades habilitadas. O dano à Vida para resultados menores que cinco e o tratamento de excedentes de Integridade na nova escala seguem **PENDENTES**. [Detalhes e exemplos](adendo-playtest-dano-vida-5-pontos-2026-11-22.md). Os parágrafos históricos abaixo sobre dano convencional à armadura não autorizam aplicar 5E como 5 Vida diretos.
+
+
 **Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Pavor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Pavor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `P/2` sem mudar a matemática.
 
 **DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
