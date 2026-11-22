@@ -310,3 +310,16 @@
 .cf-companions label{display:flex;flex-direction:column;gap:4px;font-size:.8rem}
 .cf-companions input{width:100%;min-width:0}
 @media(max-width:620px){.cf-companions{grid-template-columns:1fr}}
+
+/* Armadura e Integridade aparecem tanto na ficha de Edição quanto na Rolagem. */
+.cf-armor-panel{margin:14px 0}
+.cf-armor-panel h3{margin-top:0}
+.cf-armor-list{display:grid;gap:9px;margin:12px 0}
+.cf-armor-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2)}
+.cf-armor-row>div:first-child{display:grid;gap:4px;min-width:140px;flex:1}
+.cf-armor-row small{font-size:11px;color:var(--muted)}
+.cf-armor-row .cf-integrity-actions{align-items:center;flex-wrap:wrap;gap:8px}
+.cf-integrity-entry{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:11px}
+.cf-integrity-entry input{width:68px;max-width:68px;min-height:34px;text-align:center}
+@media(max-width:600px){.cf-armor-row{align-items:stretch}.cf-armor-row .cf-integrity-actions{width:100%;justify-content:flex-start}}
