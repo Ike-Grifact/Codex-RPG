@@ -7,10 +7,10 @@
 <title>Comparador de Combate — Codex RPG</title>
 <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
 <link rel="stylesheet" href="../assets/theme.css">
-<link rel="stylesheet" href="./styles.css?v=20261122-fichas-v1">
+<link rel="stylesheet" href="./styles.css?v=20261122-playtest-v2">
 <script src="../assets/site.js" defer></script>
-<script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
-<script type="module" src="./app.mjs?v=20261122-fichas-v1"></script>
+<script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
+<script type="module" src="./app.mjs?v=20261122-playtest-v2"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -76,6 +76,8 @@
     <label>Fonte base (ou 1º Atributo do monstro) <select id="base-source"></select></label>
     <label>Atributo de apoio <select id="attribute-source"></select></label>
     <label>Terceira fonte habilitada <select id="extra-source"><option value="">Não usar</option></select></label>
+    <label>Elevar uma fonte (G+1 temporário) <select id="step-source"><option value="">Não elevar</option></select></label>
+    <label>Retenção do monstro <select id="monster-keep"><option value="2">2 dados</option></select></label>
     <label>Disciplina <select id="discipline-mode"><option value="normal">Normal</option><option value="armas">Armas</option><option value="conjuracao">Conjuração</option></select></label>
     <label>Arma equipada <select id="weapon-source"><option value="">Sem dado de arma</option></select></label>
     <label>Grau da magia (conjuração habilitada) <select id="spell-grade"><option value="1">G1 · +1d6, sem dano ofensivo automático</option><option value="2">G2 · +1d10</option><option value="3">G3 · +1d12</option><option value="4">G4 · +2d12</option></select></label>
@@ -87,12 +89,23 @@
     <label><input id="extra-keep" type="checkbox"> Manter dado adicional (custo conforme ficha)</label>
    </div>
    <div class="cc-affinity" id="weight-affinity">Peso da arma: selecione uma arma e um alvo.</div>
-   <button id="apply-affinity" type="button" disabled>Usar condição sugerida pelo peso</button>
+   <p id="marco-info" class="cc-help">Marcos e custos de retenção aparecerão após selecionar o atacante.</p>
+   <p id="health-info" class="cc-help">Estado de Saúde do atacante aparecerá aqui.</p>
+   <section class="cc-activation" aria-label="Ativação de Perícias adquiridas">
+    <h3>Ativar Perícia adquirida</h3>
+    <div class="cc-form cc-duo">
+     <label>Perícia da ficha <select id="active-skill"><option value="">Sem ativação adicional</option></select></label>
+     <label>Coragem a gastar <input id="skill-courage" type="number" min="0" max="5" step="1" value="0"></label>
+    </div>
+    <label class="cc-activation-confirm"><input id="skill-approved" type="checkbox"> Conferi no verbete da Perícia o custo, gatilho e aplicação com o Narrador</label>
+    <p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. O custo declarado será descontado ao confirmar; o efeito especializado não é inventado nem aplicado automaticamente.</p>
+   </section>
    <div class="cc-actions">
     <button id="roll" type="button" class="cc-primary">Rolar</button>
     <button id="suggest" type="button" disabled>Sugerir dados mantidos</button>
    </div>
    <div class="cc-dice" id="dice" aria-live="polite"><p>Declare o atacante e o alvo antes de rolar.</p></div>
+   <div id="roll-origins" class="cc-origins" aria-live="polite">Os símbolos mantidos serão identificados por fonte, equipamento e modificadores.</div>
    <div class="cc-form cc-duo">
     <label>Anular P com A <input id="cancel-p" type="number" min="0" max="9" value="0"></label>
     <label>Converter 2A → 1E (pares) <input id="convert-a" type="number" min="0" max="4" value="0"></label>
