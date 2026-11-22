@@ -85,7 +85,7 @@ test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
  assert.deepEqual(copy.skills,["combate","armas"]);
  assert.equal(ledger(copy).skills,3);
  assert.equal(ledger(copy).spent,6);
- assert.equal(ledger(copy).remaining,14);
+ assert.equal(ledger(copy).remaining,9); // 15 XP iniciais menos 6 investidos
 });
 
 
