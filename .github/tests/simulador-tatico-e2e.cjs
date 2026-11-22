@@ -109,6 +109,45 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.locator("#close-combatant-sheet").click();
   assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
    "A última rolagem confirmada deve continuar disponível após recarregar.");
+  // Elevação de Grau no comparador: fonte inteira e custo real, sem alterar a ficha original.
+  await page.locator("#step-source").selectOption("practice:armas_conjuracao");
+  await page.locator("#active-skill").selectOption("armas-leves");
+  await page.locator("#skill-courage").fill("1");
+  await page.locator("#skill-approved").check();
+  await page.locator("#roll").click();
+  assert(await page.locator("#dice .cc-die").count()>=4,
+   "Disciplina G1 elevada para G2 deve acrescentar o segundo d10, sem perder o dado de arma.");
+  const trace=await page.locator("#roll-origins").innerText();
+  assert(trace.includes("Disciplina")&&trace.includes("Elevado")&&trace.includes("Adaga"),
+   "O rastreio deve identificar perícia, fonte elevada e arma.");
+  assert((await page.locator("#roll-result").innerText()).includes("2 Coragem"),
+   "Elevação de fonte e Perícia declarada devem cobrar 2 Coragens juntas.");
+  await page.locator("#confirm").click();
+  let resources=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
+  assert(resources.history.some(x=>x.kind==="Perícia"&&x.message.includes("Armas Leves")),
+   "Ativação da Perícia adquirida deve ser registrada no histórico.");
+  assert(resources.combatants.find(x=>x.side==="jogadores").courage===7,
+   "O gasto de 2 Coragens deve ser debitado uma única vez.");
+  assert(resources.combatants.find(x=>x.side==="jogadores").practices.armas_conjuracao===1,
+   "Elevação não compra Grau nem modifica a ficha em confronto.");
+  await page.locator("#next-round").click();
+  // Inimigo Ferido/Incapacitado: aplicar a mesma tabela de Saúde dos jogadores.
+  const humanoid=resources.combatants.find(x=>x.side==="inimigos");
+  const hero=resources.combatants.find(x=>x.side==="jogadores");
+  await page.locator("#resource-actor").selectOption(humanoid.id);
+  await page.locator("#resource-kind").selectOption("vida");
+  await page.locator("#resource-amount").fill("3");
+  await page.locator("#resource-minus").click();
+  await page.locator("#actor").selectOption(humanoid.id);
+  await page.locator("#target").selectOption(hero.id);
+  assert((await page.locator("#health-info").innerText()).includes("incapacitado"),
+   "Inimigo com 2 de Vida deve ser Incapacitado como um jogador.");
+  await page.locator("#roll").click();
+  assert((await page.locator("#roll-origins").innerText()).includes("Saúde incapacitado"),
+   "Rastreio deve discriminar a penalidade de Saúde do inimigo.");
+  assert((await page.locator("#roll-result").innerText()).includes("1 Coragem"),
+   "Ação do inimigo humanoide Incapacitado custa 1 Coragem.");
+
   assert(errs.length===0,"Erros JS no desktop: "+errs.join(" | "));
   console.log("PASS comparador desktop: fichas locais, alvo, DE, Integridade, Pavor, rodada e persistência");
 
@@ -117,6 +156,18 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await mobile.goto("http://127.0.0.1:8000/simulador-combate/",{waitUntil:"domcontentloaded"});
   await mobile.locator("#demo").click();
   assert(await mobile.locator(".cc-card").count()===4,"Exemplo 2 × 2 deve abrir no celular.");
+  const beast=await mobile.evaluate(()=>{
+   const state=JSON.parse(localStorage.getItem("codex-rpg-comparador-v1"));
+   return state.combatants.find(x=>x.kind==="monstro").id;
+  });
+  await mobile.locator("#actor").selectOption(beast);
+  await mobile.locator("#monster-keep").selectOption("3");
+  assert((await mobile.locator("#marco-info").innerText()).includes("Pavor local"),
+   "Monstros devem exibir limite por Grau e custo de Pavor para reter dados.");
+  const kept=await mobile.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1"))
+   .combatants.find(x=>x.kind==="monstro").keep);
+  assert(kept===3,"Retenção escolhida do monstro deve persistir no confronto.");
+
   await mobile.locator("#enemies [data-inspect]").first().click();
   assert(await mobile.locator("#combatant-sheet").evaluate(dialog=>dialog.open),
    "Ficha da criatura deve ser acessível também no celular.");
