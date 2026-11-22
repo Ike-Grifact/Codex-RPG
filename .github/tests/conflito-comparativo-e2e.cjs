@@ -8,7 +8,7 @@ const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
   const units=[
    {name:"Aprendiz de teste",level:1,life:7,courage:10,attributes:{forca:2,agilidade:1,vigor:1,destreza:1},
     practices:{atletismo:1,armas_conjuracao:1},skills:["armas-leves"],items:[]},
-   {name:"Defensor equipado",level:1,life:8,courage:10,attributes:{vigor:1,agilidade:1,destreza:1},
+   {name:"Defensor equipado",level:1,life:8,courage:10,attributes:{vigor:0,agilidade:0,destreza:0},
     practices:{atletismo:1},skills:[],items:[
      {id:"armor-1",name:"Roupas Simples",type:"armadura",weight:"muito_leve",max:3,hp:3,equipped:true}
     ]}
