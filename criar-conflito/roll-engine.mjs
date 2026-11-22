@@ -54,7 +54,8 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
   return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
  const result=resolveRoll(rolled,kept,{de,situation,level:Number(unit.level||1),
   monster:false,hostile:true,enemyKeepLimit:limit,extraKeep:paidExtraKeep,
-  courage:Number(unit.courage??10),cancelP,convertPairs});
+  courage:Number(unit.courage??10),cancelP,convertPairs,
+  weight:Number(options.weight||0),bonusA:Number(options.bonusA||0),bonusP:Number(options.bonusP||0),skillBonusE:Number(options.skillBonusE||0)});
  if(!result.ok)return {ok:false,error:result.errors.join("; ")};
  if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
  return {ok:true,cost:0,courageCost,result,passA,remainingA:result.aRemaining-Number(passA),
@@ -127,7 +128,8 @@ export function previewCreatureRoll(unit,rolled,keptIds,options={}){
  const cancelP=Number(options.cancelP||0),convertPairs=Number(options.convertPairs||0),passA=!!options.passA;
  if(!Number.isInteger(cancelP)||!Number.isInteger(convertPairs))return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
  const result=resolveRoll(rolled,kept,{de,situation,monster:true,hostile:true,threatGrade:unit.threatGrade,
-   extraKeep:Math.max(0,count-2),cancelP,convertPairs});
+   extraKeep:Math.max(0,count-2),cancelP,convertPairs,
+  weight:Number(options.weight||0),bonusA:Number(options.bonusA||0),bonusP:Number(options.bonusP||0),skillBonusE:Number(options.skillBonusE||0)});
  if(!result.ok)return {ok:false,error:result.errors.join("; ")};
  if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
  return {ok:true,cost,result,passA,remainingA:result.aRemaining-Number(passA),
