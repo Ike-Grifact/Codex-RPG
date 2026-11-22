@@ -7,9 +7,9 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_
 const PLAYER_DNA_EXTRA_SKILLS=[
  {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
  {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
- {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Apresentação 1 + Inteligência 1. Compra não é domesticação automática.",cost:1},
+ {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Inteligência 1; Apresentação não é requisito de compra. Compra não é domesticação automática.",cost:1},
  {id:"domar-criatura-media",name:"Domar Criatura Média",detail:"1 XP; Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena.",cost:1},
- {id:"domar-criatura-grande",name:"Domar Criatura Grande",detail:"1 XP; Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média.",cost:1},
+ {id:"domar-criatura-grande",name:"Domar Criatura Grande",detail:"1 XP; Influência 4 + Apresentação 2 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média.",cost:1},
  {id:"olhos-de-aguia",name:"Olhos de Águia",detail:"1 XP. Destreza 3 + Disciplina 3 + (Armas de Longo Alcance OU Armas de Fogo). Aumenta em 8 m o alcance efetivo das armas à distância e de fogo habilitadas, sem custo adicional.",cost:1},
  {id:"concentracao-refinada",name:"Concentração Refinada",detail:"1 XP; Disciplina 2. Ao guardar 1 Antecipar em rolagem com Disciplina para a próxima rolagem, o símbolo vira 1 Êxito e você recebe Vantagem. Não pode usar a Perícia com inimigo a até 8 metros; 1E e Vantagem expiram ao usar, realizar outra ação ou completar descanso longo.",cost:1},
  {id:"invocacao-elemental",name:"Invocação Elemental",detail:"1 XP; Criar Item de Foco e Magia (habilita Psique) e Domar Pequena. Demais elementos exigem Perícia específica. Invocação: 1 Coragem; XP do invocador; porte por Domar. Dados de Atributo por porte: Pequena 1, Média 2, Grande 3; um dado por parte, até 3 mantidos na Grande. Jogador escolhe os dados e quais manter. Pode agir sozinho ou ajudar UM único personagem (conjurador ou aliado) em ação conjunta, passando a ele todos os dados mantidos, até três na Grande. Não dividir entre vários beneficiários. Uma ficha e um turno antecipável, sem duplicar dados ou ações.",cost:1}
@@ -23,7 +23,7 @@ export function canBuyDomarMedium(t){
 export function canBuyDomarGrande(t){
  return Number(t?.attributes?.influencia||0)>=4
   &&Number(t?.attributes?.inteligencia||0)>=1
-  &&Number(t?.practices?.apresentacao||0)>=1
+  &&Number(t?.practices?.apresentacao||0)>=2
   &&Array.isArray(t?.skills)
   &&t.skills.includes("domar-criatura-pequena")
   &&t.skills.includes("domar-criatura-media");
@@ -42,12 +42,35 @@ export const enemyHumanoidFreeKeep=grade=>Number(grade)>=2?3:2;
 // Equivalência autoral conhecida: G2 ameaça ≈ nível 5 de jogador. Outros Graus pendentes.
 export const threatPlayerEquivalentLevel=grade=>Number(grade)===2?5:null;
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
+export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
+const ARMOR_NAMES=Object.freeze({"Roupas Simples":"muito-leve","Armadura Leve":"leve","Armadura Média":"medio","Armadura Pesada":"pesado"});
+export function itemCategory(it={}){
+ const raw=String(it.category|| (typeof it.weight==="string"?it.weight:"")||"").toLowerCase().replaceAll("_","-");
+ const category=({alto:"pesado",extremo:"muito-pesado","muito-leve":"muito-leve",leve:"leve",medio:"medio",pesado:"pesado","muito-pesado":"muito-pesado"})[raw];
+ return category||ARMOR_NAMES[it.name]||"";
+}
+export function canEquipArmor(t,it){
+ if(!it||it.kind!=="armor")return true;
+ if(t.race==="runa_espinhos")return false;
+ const minLevel=Number(it.grade)>=4?20:Number(it.grade)>=3?10:Number(it.grade)>=2?5:1;
+ if(Number(t.level||1)<minLevel)return false;
+ if(itemCategory(it)==="muito-pesado"&&
+   (Number(t.attributes?.vigor||0)<6||Number(t.practices?.atletismo||0)<6))return false;
+ return true;
+}
+export function equippedArmor(t){
+ return (t.items||[]).find(it=>it.kind==="armor"&&it.equipped&&canEquipArmor(t,it))||null;
+}
+export function armorDeModifier(t){
+ const armor=equippedArmor(t);
+ return armor?(ARMOR_DE[itemCategory(armor)]??0):0;
+}
 export const uid=()=>globalThis.crypto?.randomUUID?.()||"cr-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
 export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(n))?Number(n):min));
 export function blank(kind="monstro"){
  const humanoid=isHumanoidKind(kind),monster=kind==="monstro";
  return {id:uid(),kind,name:kind==="humanoide-monstro"?"Novo humanoide monstro":humanoid?"Novo humanoide":monster?"Novo monstro":"Nova criatura",
- concept:"",notes:"",leader:false,threatGrade:1,level:1,
+ concept:"",notes:"",race:"",leader:false,threatGrade:1,level:1,
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
@@ -81,10 +104,13 @@ export function ledger(t){
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
  const s=toSystem(t),monster=t.kind==="monstro",human=isHumanoidKind(t.kind),grade=clamp(t.threatGrade,1,6);
- const life=lifeMax(s),defense=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
+ const life=lifeMax(s),baseDE=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
+ const armorDE=human?armorDeModifier(t):0;
+ const shieldDE=human&&t.skills?.includes("maestria-escudos")&&t.items?.some(it=>it.kind==="shield"&&it.equipped)?1:0;
+ const defense=human?Math.min(12,Math.max(0,baseDE+armorDE+shieldDE)):baseDE;
  const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
- return {life,de:defense,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
+ return {life,de:defense,baseDE,armorDE,shieldDE,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
 }
@@ -98,6 +124,7 @@ export function normalize(raw){
  if(!raw||typeof raw!=="object")return blank("monstro");
  const kind=Object.hasOwn(KINDS,raw.kind)||Object.hasOwn(LEGACY_KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
  for(const k of ["name","concept","notes","abilities"])t[k]=String(raw[k]||"").slice(0,k==="notes"||k==="abilities"?4000:160);
+ t.race=String(raw.race||"").slice(0,80);
  t.leader=!!raw.leader;
  for(const k of ["level","threatGrade","xp","life","pavorLocal","keep","courage"]){
   const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,maxCourage(raw.level??t.level)]:k==="xp"?[0,50000]:[0,999];
@@ -108,9 +135,14 @@ export function normalize(raw){
  t.skills=Array.isArray(raw.skills)?[...new Set(raw.skills.filter(id=>SKILLS.some(s=>s.id===id)))]:[];
  t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(i=>{
   const max=Math.floor(clamp(i.integrityMax??i.max??0,0,999));
+  const kind=["armor","shield","weapon","other"].includes(i.kind)?i.kind:
+   ({armadura:"armor",escudo:"shield",arma:"weapon"})[i.type]||"other";
+  const category=itemCategory(i);
+  const weight=typeof i.weight==="number"?clamp(i.weight,0,100):
+   (WEIGHT[category]??0);
   return {id:String(i.id||uid()).slice(0,100),name:String(i.name||"Item").slice(0,90),
-   weight:clamp(i.weight,0,100),qty:Math.floor(clamp(i.qty,1,99)),
-   kind:["armor","shield","weapon","other"].includes(i.kind)?i.kind:"other",
+   weight,qty:Math.floor(clamp(i.qty,1,99)),kind,category,
+   grade:Math.floor(clamp(i.grade??1,1,4)),
    integrityMax:max,integrity:Math.floor(clamp(i.integrity??i.hp??max,0,max)),
    equipped:!!i.equipped};
  }):[];

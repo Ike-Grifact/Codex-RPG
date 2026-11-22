@@ -48,7 +48,7 @@ const assert=(ok,message)=>{if(!ok)throw Error(message);};
   await equip.locator("#catalog-choose").selectOption(await armorOpt.getAttribute("value"));
   await equip.locator("[data-add-catalog]").click();
   assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 7 / 7"),"Integridade G1 não aparece");
-  await equip.locator('[data-integrity][data-delta="-1"]').click();
+  await equip.locator('.cf-items [data-integrity][data-delta="-1"]').click();
   assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Não reduziu integridade");
   await equip.reload({waitUntil:"domcontentloaded"});
   assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Integridade não persistiu");

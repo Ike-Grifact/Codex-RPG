@@ -1,7 +1,7 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP}
- from "./rules.mjs?v=20261117-fogo-g2-free";
+ PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ from "./rules.mjs?v=20261122-armor-humanoid";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261115-kinds1";
@@ -158,14 +158,14 @@ function publicJointSpend(n){
 }
 function renderRoster(){
  el("roster").innerHTML=model.roster.length?model.roster.map(t=>{
-  const x=stats(t),chosen=t.id===model.active,over=x.xp.remaining<0;
+  const x=stats(t),chosen=t.id===model.active,over=x.xp.remaining<0,armor=equippedArmor(t);
   return '<article class="cf-threat-card'+(chosen?' is-active':'')+'">'+
    '<button type="button" class="cf-threat-pick" data-open="'+esc(t.id)+'" aria-pressed="'+chosen+'"><span><strong>'+esc(t.name||"Sem nome")+'</strong><small>'+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+
    ' · Grau '+t.threatGrade+'</small></span><span aria-hidden="true">'+(t.leader?'★':'›')+'</span></button>'+
    '<div class="cf-threat-counts"><span>'+t.life+'/'+x.life+' Vida</span><span>DE '+x.de+'</span>'+
    '<span class="is-purple">'+t.pavorLocal+'/'+x.limitLocal+' P</span>'+
    '<span'+(over?' style="color:#e6a1a1"':'')+'>'+x.xp.spent+'/'+x.xp.grant+' XP</span>'+
-   (t.items.some(it=>it.kind==="armor")?'<span>Armadura '+t.items.filter(it=>it.kind==="armor").map(it=>it.integrity+"/"+it.integrityMax).join(", ")+'</span>':'')+
+   (armor?'<span>Armadura equipada: '+esc(armor.name)+' · '+armor.integrity+'/'+armor.integrityMax+'</span>':isHumanoidKind(t.kind)?'<span>Sem armadura equipada</span>':'')+
    '</div>'+
    '<div class="cf-threat-actions"><button type="button" data-copy="'+esc(t.id)+'">Duplicar</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></article>';
@@ -206,7 +206,7 @@ function canBuySkill(t,id){
  if(id==="domar-criatura-media")return canBuyDomarMedium(t);
  if(id==="domar-criatura-grande")return canBuyDomarGrande(t);
  if(id==="domar-criatura-pequena")
-  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
+  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1;
  return skillPrerequisite({...t,monsterRules:false},id);
 }
 function skillPanel(t){
@@ -219,7 +219,14 @@ function skillPanel(t){
   }).join("")+'</div></details>';
 }
 function itemOptions(){
- return catalog.map((it,i)=>'<option value="'+i+'">'+esc(it.name)+' · '+it.priceVT+' VT* · '+fmt(catalogWeight(it))+' Alto</option>').join("");
+ const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
+  ["firearm","Armas de fogo G1"],["other","Outros equipamentos G1"]];
+ return groups.map(([kind,label])=>{
+  const options=catalog.map((it,i)=>({it,i})).filter(({it})=>
+   kind==="other"?!["armor","shield","weapon","firearm"].includes(it.kind):it.kind===kind);
+  return options.length?'<optgroup label="'+label+'">'+options.map(({it,i})=>
+   '<option value="'+i+'">'+esc(it.name)+' · '+esc(it.priceVT??"Preço pendente")+' VT* · '+fmt(catalogWeight(it))+' Alto</option>').join("")+'</optgroup>':"";
+ }).join("");
 }
 function catalogWeight(it){
  const base=Number(it.weight)||WEIGHT[it.category==="pesado"?"pesado":it.category==="medio"?"medio":"leve"];
@@ -251,16 +258,55 @@ function inventory(t,x){
    '<div class="cf-item"><div class="cf-item-descriptor"><strong>'+esc(it.name)+'</strong>'+
    '<small>'+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
    (rangedInventoryRange(t,it)?'<small>Alcance efetivo: '+rangedInventoryRange(t,it).effective+' m'+(rangedInventoryRange(t,it).bonus?' (base '+rangedInventoryRange(t,it).base+' m + Olhos de Águia)':'')+'</small>':'')+
+   (it.kind==="armor"||it.kind==="shield"?'<small>'+(it.equipped?"Equipado":"Guardado")+'</small>':'')+
    (it.kind==="armor"||it.kind==="shield"?'<span class="cf-integrity-label">Integridade: <strong>'+
     (it.integrityMax?it.integrity+" / "+it.integrityMax:"Sem Integridade definida")+'</strong></span>':'')+'</div>'+
    ((it.kind==="armor"||it.kind==="shield")&&it.integrityMax?'<div class="cf-integrity-actions">'+
     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir Integridade de '+esc(it.name)+'">−</button>'+
     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="1" aria-label="Recuperar Integridade de '+esc(it.name)+'">+</button></div>':'')+
+   ((it.kind==="armor"||it.kind==="shield")?'<button type="button" data-equip-item="'+esc(it.id)+'"'+
+    (!it.equipped&&it.kind==="armor"&&!canEquipArmor(t,it)?' disabled title="Requisitos não atendidos"':'')+
+    ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
-  '<p class="cf-note">Integridades G1 conforme SRD v0.44: Muito Leve 0, Leve 7, Média 12, Pesada 17. Para Graus superiores sem valor documentado, o total permanece PENDENTE. O dano deve ser registrado manualmente.</p></div></section>';
+  '<p class="cf-note">Integridades G1 vigentes: Roupas Simples/Muito Leve 3, Leve 7, Média 12, Pesada 17. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
 }
 
+
+function armorPanel(t){
+ const x=stats(t),armor=equippedArmor(t),items=(t.items||[]).filter(it=>it.kind==="armor"||it.kind==="shield");
+ const human=isHumanoidKind(t.kind);
+ return '<section class="cf-panel cf-armor-panel" aria-label="Armadura e Integridade durante o conflito">'+
+  '<h3>Armadura e Integridade</h3>'+
+  (human?'<p class="cf-note">DE '+x.de+' = base '+x.baseDE+
+    (x.armorDE?' · armadura '+(x.armorDE>0?'+':'')+x.armorDE:'')+
+    (x.shieldDE?' · Maestria em Escudos +1':'')+
+    '. Apenas uma armadura equipada modifica a DE.</p>':
+   '<p class="cf-note">Integridade registrada manualmente; a DE natural da criatura mantém sua regra própria.</p>')+
+  (!items.length?'<p class="cf-note">Nenhuma armadura ou escudo cadastrado'+
+   (human?'. Abra Edição → Equipamento e carga para adicionar uma armadura G1.':'.')+'</p>':
+   '<div class="cf-armor-list">'+items.map(it=>{
+    const armored=it.kind==="armor",allowed=canEquipArmor(t,it);
+    return '<div class="cf-armor-row"><div><strong>'+esc(it.name)+'</strong>'+
+     '<small>'+(armored?"Armadura":"Escudo")+' · '+(it.equipped?"Equipado":"Guardado")+
+     (armored&&itemCategory(it)?" · "+esc(itemCategory(it)):"")+'</small></div>'+
+     '<div class="cf-integrity-actions">'+
+     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="-1"'+
+       (it.integrity<=0?' disabled':'')+' aria-label="Reduzir Integridade de '+esc(it.name)+'">−</button>'+
+     '<label class="cf-integrity-entry">Integridade atual <input type="number" min="0" max="'+it.integrityMax+
+       '" step="1" data-integrity-set="'+esc(it.id)+'" value="'+it.integrity+'" aria-label="Integridade atual de '+esc(it.name)+'"></label>'+
+     '<span> / '+it.integrityMax+'</span>'+
+     '<button type="button" data-integrity="'+esc(it.id)+'" data-delta="1"'+
+       (it.integrity>=it.integrityMax?' disabled':'')+' aria-label="Recuperar Integridade de '+esc(it.name)+'">+</button>'+
+     '<button type="button" data-equip-item="'+esc(it.id)+'"'+
+       (armored&&!it.equipped&&!allowed?' disabled title="Requisitos de equipamento não atendidos"':'')+
+       ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+
+       (it.equipped?"Guardar":"Equipar")+'</button></div></div>';
+   }).join("")+'</div>')+
+   (armor?'<p class="cf-note">Armadura equipada: '+esc(armor.name)+' · '+
+     armor.integrity+' / '+armor.integrityMax+'. Dano na armadura não é descontado automaticamente da Vida.</p>':'')+
+  '</section>';
+}
 
 function rollSourceCards(t){
  const d=draftFor(t),human=isHumanoidKind(t.kind);
@@ -381,7 +427,7 @@ function rollWorkspace(t){
   (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / '+maxCourage(t.level)+'</b>'+
    ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
    ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
-  '</div></div><div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
+  '</div></div>'+armorPanel(t)+'<div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
   '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
 }
 
@@ -539,7 +585,7 @@ function editorHTML(t){
   field("Grau da ameaça","threatGrade",{type:"number",min:1,max:6})+
   field("Conceito / origem","concept",{wide:true})+
   (human?field("Nível do humanoide","level",{type:"number",min:1,max:20}):"")+
-  field(t.kind==="humanoide"?"XP adicional (20 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
+  field(t.kind==="humanoide"?"XP adicional (15 iniciais)":"Orçamento de XP definido pelo Mestre","xp",{type:"number",min:0,max:50000})+
   '<label class="cf-check"><input type="checkbox" data-field="leader"'+(t.leader?' checked':'')+'> É Líder</label></div>'+
   (x.playerEquivalentLevel?'<p class="cf-note">Equivalência de ameaça: Grau 2 ≈ jogador de nível 5. O Grau define seu teto próprio de 4 dados mantidos; a equivalência não altera XP nem nível da ficha.</p>':'')+
   '<div class="cf-stat-grid">'+
@@ -575,7 +621,7 @@ function editorHTML(t){
    '<section class="cf-panel"><h3>Práticas · Disciplina é uma única Prática</h3>'+gradeCards(t,"practice",PRACTICES)+'</section>':"")+
   '<section class="cf-panel"><h3>Perícias e capacidades</h3>'+skillPanel(t)+
   '<label class="cf-form-row" style="display:flex;flex-direction:column;align-items:stretch;margin-top:12px">Capacidades naturais, imunidades e observações de uso<textarea class="cf-note-input" data-field="abilities" rows="4" maxlength="4000">'+esc(t.abilities)+'</textarea></label></section>'+
-  inventory(t,x)+
+  armorPanel(t)+inventory(t,x)+
   '<section class="cf-panel"><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
   '<textarea class="cf-note-input" data-field="notes" rows="4" maxlength="4000">'+esc(t.notes)+'</textarea></label>'+
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
@@ -672,10 +718,20 @@ function toggleSkill(id,checked){
  if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
  save();render();
 }
-function adjustIntegrity(id,delta){
+function adjustIntegrity(id,delta,absolute=false){
  const t=selected(),item=t?.items.find(x=>x.id===id);
- if(!item||item.integrityMax<=0)return;
- item.integrity=Math.floor(clamp(item.integrity+delta,0,item.integrityMax));
+ if(!item||!["armor","shield"].includes(item.kind)||item.integrityMax<=0)return;
+ item.integrity=Math.floor(clamp(absolute?delta:item.integrity+delta,0,item.integrityMax));
+ save();render();
+}
+function toggleEquipment(id){
+ const t=selected(),item=t?.items.find(x=>x.id===id);
+ if(!item||!["armor","shield"].includes(item.kind))return;
+ if(!item.equipped&&item.kind==="armor"){
+  if(!canEquipArmor(t,item))return notice("Esta armadura não pode ser equipada: confira origem, Grau, nível e requisitos.");
+  for(const other of t.items)if(other!==item&&other.kind==="armor")other.equipped=false;
+ }
+ item.equipped=!item.equipped;
  save();render();
 }
 function addCatalogItem(){
@@ -684,6 +740,7 @@ function addCatalogItem(){
  const next=afterItem(t,{weight,qty}),limit=stats(t).capacity;
  if(next>limit+1e-9&&!confirm("ATENÇÃO: "+qty+" × "+it.name+" ultrapassam a carga ("+fmt(next)+" / "+fmt(limit)+" Alto). A penalidade por sobrecarga está PENDENTE. Adicionar mesmo assim?"))return;
  t.items.push({id:uid(),name:it.name,weight,qty,kind:it.kind,
+ category:itemCategory(it),grade:Number(it.grade)||1,
  integrityMax:Math.max(0,Number(it.integrity?.max)||0),
  integrity:Math.max(0,Number(it.integrity?.value)||0),equipped:false});
  save();render();notice("Item adicionado à ficha: "+it.name+".");
@@ -720,6 +777,7 @@ document.addEventListener("click",event=>{
  if(b.dataset.courage){const t=selected();if(!t||!isHumanoidKind(t.kind))return;
   t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,maxCourage(t.level)));save();render();return;}
  if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
+ if(b.dataset.equipItem){toggleEquipment(b.dataset.equipItem);return;}
  if(b.hasAttribute("data-export-rolls")){exportRollHistory();return;}
  if(b.hasAttribute("data-clear-rolls")){if(confirm("Apagar todo o histórico de rolagens? Exporte CSV ou JSON antes de limpar.")){
    model.rollHistory=[];save();render();}return;}
@@ -815,6 +873,7 @@ document.addEventListener("change",event=>{
    model.companions=normalizeCompanions(data,model.players);
    save();renderSummary();return;
   }
+ if(target.dataset.integritySet){adjustIntegrity(target.dataset.integritySet,Number(target.value),true);return;}
  if(target.id==="import-encounter"){void importJson(target.files?.[0]);target.value="";return;}
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}
  if(target.dataset.field)update(target.dataset.field,target.type==="checkbox"?target.checked:target.value);

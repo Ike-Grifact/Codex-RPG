@@ -5171,6 +5171,18 @@ function refundSkillForPlaytest(id){
  if(draft?.base?.key==="armas_conjuracao")draft.mode=modeDefault();
  render();save();toast("Playtest: "+row[3]+" XP devolvidos. Saldo atual: "+xpCosts().free+" XP.");
 }
+/** Leva equipamentos à ficha de conflito preservando Integridade atual e estado equipado. */
+function npcConflictItems(items=state.items){
+ const categories={muito_leve:"muito-leve",leve:"leve",medio:"medio",alto:"pesado",extremo:"muito-pesado"};
+ const kinds={armadura:"armor",escudo:"shield",arma:"weapon"};
+ return (Array.isArray(items)?items:[]).slice(0,70).map(it=>({
+  id:it.id,name:it.name,kind:kinds[it.type]||"other",
+  category:categories[it.weight]||"",
+  weight:typeof it.weight==="number"?it.weight:(WEIGHTS[it.weight]?.[1]??0),
+  qty:it.qty,grade:it.grade,
+  integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped
+ }));
+}
 /** Transferir uma ficha NPC independente, feita pelo próprio Codex Genético, para o encontro. */
 function sendNpcToConflict(){
  if(!NPC_MODE)return;
@@ -5185,14 +5197,14 @@ function sendNpcToConflict(){
   kind:"humanoide",name:state.name.trim(),concept:state.concept||state.origin||"Humano comum",
   notes:[state.notes,state.origin?"Origem: "+state.origin:"",state.virtue?"Virtude: "+state.virtue:"",
    state.personality?"Personalidade: "+state.personality:""].filter(Boolean).join("\n").slice(0,4000),
-  leader:false,threatGrade:1,level:state.level||1,xp:extra,
+  leader:false,threatGrade:1,level:state.level||1,xp:extra,race:state.race||"",
   attributes:{...state.attributes},knowledges:{...state.knowledges},
   practices:{...state.practices},skills:[...state.skills],
   life:Math.max(0,Number(state.life)||0),pavorLocal:4,keep:2,courage:state.courage??10,
-  abilities:"Construído no Codex Genético. Equipamentos e efeitos especiais devem ser conferidos pelo Narrador.",
-  items:[]
+  abilities:"Construído no Codex Genético. Equipamentos copiados; efeitos especiais devem ser conferidos pelo Narrador.",
+  items:npcConflictItems()
  };
- if(!confirm("Enviar o NPC "+character.name+" para Criar Conflito?\nA construção usa o mesmo DNA da Ficha e não substitui seu personagem de jogador.\nEquipamentos deverão ser conferidos e adicionados no encontro."))return;
+ if(!confirm("Enviar o NPC "+character.name+" para Criar Conflito?\nA construção usa o mesmo DNA da Ficha e não substitui seu personagem de jogador.\nOs equipamentos e a Integridade atual serão levados ao encontro. Confira-os antes do combate."))return;
  try{
   localStorage.setItem(CONFLICT_NPC_INBOX,JSON.stringify({schema:"codex-humanoide-rapido-v1",
    exportedAt:new Date().toISOString(),source:"codex-genetico-npc-v1",character}));
@@ -5527,7 +5539,7 @@ function onClick(event){
   break;
  }
  case "integrity":{
-  const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();save();}break;
+  const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderVitals();save();}break;
  }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;

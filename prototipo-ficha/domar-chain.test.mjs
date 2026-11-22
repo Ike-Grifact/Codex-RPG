@@ -22,7 +22,7 @@ const prices=new Map(Function(weaponMasteryDefs+"return "+source.slice(listStart
  .map(([id,, ,xp])=>[id,xp]));
 const base=()=>({
  attributes:{influencia:4,inteligencia:1},
- practices:{apresentacao:1,armas_conjuracao:0},
+ practices:{apresentacao:2,armas_conjuracao:0},
  knowledges:{alquimia:0,medicina:0},
  skills:[]
 });
@@ -46,6 +46,9 @@ test("Domar Grande exige Pequena E Média expressamente",()=>{
  assert.match(skillReq(grande,s),/Domar Criatura Média/);
  s.skills=[pequena,media];
  assert.equal(skillReq(grande,s),null);
+ s.practices.apresentacao=1;
+ assert.match(skillReq(grande,s),/Apresentação 2/,"Domar Grande não aceita Apresentação 1");
+ s.practices.apresentacao=2;
  s.attributes.influencia=3;
  assert.match(skillReq(grande,s),/Influência 4/);
 });
