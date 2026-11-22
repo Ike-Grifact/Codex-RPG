@@ -23,7 +23,8 @@ function load(){
    actor:String(data.actor||""),target:String(data.target||""),
    resourceActor:String(data.resourceActor||""),
    publicPavor:Math.floor(clamp(data.publicPavor,0,100)),
-   history:(Array.isArray(data.history)?data.history:[]).slice(0,350)};
+   history:(Array.isArray(data.history)?data.history:[]).slice(0,350),
+   lastResult:data.lastResult&&typeof data.lastResult==="object"?data.lastResult:null};
  }catch{return empty();}
 }
 let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer;
