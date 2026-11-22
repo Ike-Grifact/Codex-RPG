@@ -2010,11 +2010,11 @@ const WIZARD_CATEGORIES=[
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
- agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Participa da DE defensiva natural e do deslocamento, conforme o SRD."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui para deslocamento e reação; não é somada à DE base defensiva."],
  destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
  inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
  influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
- vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Representa resistência e capacidade corporal."]
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Contribui integralmente para a DE base e a Vida, conforme o SRD v0.88."]
 };
 const WIZARD_TRAINING_GUIDE={
  "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
@@ -2689,7 +2689,7 @@ function armorDodgeBonus(s=state){
  return it?.weight==="muito_leve"?2:it?.weight==="leve"?1:0;
 }
 // Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
-// Teto da DE natural: 9. Teto absoluto após modificadores: 12.
+// Teto da DE base: 9. Teto absoluto após modificadores: 12.
 function deDefense(s=state){
  return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
 }
