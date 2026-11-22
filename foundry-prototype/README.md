@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
-> **DE base humana [DEFINIDO — 22/11/2026]:** substitui a DE antiga por `min(9, 1 + Vigor + piso(Destreza/2))`, sem Agilidade nem Atletismo, antes dos modificadores de armadura e com teto final 12. Monstros não humanoides preservam sua própria regra. Uma instalação local do Foundry não é atualizada automaticamente por mudanças neste repositório. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+> **SRD v0.89 — 22/11/2026 [DEFINIDO]:** humanoides: `min(9, Agilidade + piso((Vigor + Destreza)/2) + piso(Atletismo/3))`, sem +1. Armadura Muito Leve/Roupas Simples **+2 DE em todas as defesas**, inclusive esquiva, uma única vez; teto final 12. Criação **15 XP compartilhados**, sem reservas. Magias declaradas rolam no início e recebem **dados pelo Grau** (G1 d6, G2 d10, G3 d12, G4 **2d12** com dois elementos G3 distintos); foco **não adiciona dado**. **G2 acelera a 1 turno gastando 1 carga**; G3/G4 seguem a escala própria de cargas (G4: dois focos). [SRD v0.89](../docs/srd-continuidade-v0.89.md). Instalações locais do Foundry não se atualizam automaticamente.
 
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
@@ -21,7 +21,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 
 ## Fichas disponíveis
 
-- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; XP experimental de criação 6/8/5, total 19; Vida, Coragem, DE e Carga.
+- **Personagem:** criação por Atributos, Conhecimentos, Práticas e Perícias; 15 XP compartilhados sem reservas obrigatórias; Vida, Coragem, DE e Carga.
 - **Criatura/Monstro Humanoide:** mesmos dados e progressão de Personagem, com Pavor local da oposição em combate.
 - **Criatura/Monstro não humanoide:** Atributos monstruosos próprios (Grau 0 d4; Grau 1 d10; Grau 2 2d10; até 3d12), orçamento de XP a informar pelo Narrador e reserva de Pavor local limitada ao Grau. Graus 1–4 podem manter até três dados; Graus 5–6 até quatro, pagando **1P por dado além dos dois básicos**. Custos extraordinários e formas naturais específicas ainda requerem ficha do Narrador.
 
@@ -48,12 +48,12 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 - Itens Foundry `equipment`: arma, arma de fogo, armadura, escudo, foco e recursos genéricos. Campos de Grau, Carga, dado adicional, alcance, Integridade, Durabilidade, VT, características, elemento, munição, cartucho e recarga.
 - Catálogo experimental G1 selecionável da ficha: armas, armaduras, escudos e foco Psíquico. **Os preços e alcances dos arcos, bestas e revólver são propostas**; Integridade das armaduras 10/15/20 é experimental e escudos 6/9/12 propostos.
-- O dado da arma ou foco é acrescentado à pilha quando o equipamento está equipado e a Perícia habilitadora é possuída. A Besta de uma mão com Manejo Duplo, múltiplos focos e efeitos simultâneos complexos ainda exigem código adicional.
+- Somente dados de armas habilitadas são acrescentados como dados de equipamento; **focos não concedem dado**. Magia adiciona o dado único de seu **Grau** (G1 d6, G2 d10, G3 d12), com habilitação, sem acumular Graus. A Besta de uma mão com Manejo Duplo, múltiplos focos e efeitos simultâneos complexos ainda exigem código adicional.
 - A Perícia **Criar Item de Foco e Magia** custa 1 XP e exige **Disciplina 1 + Inteligência 1 + Artesão 1**. Seu Cristal Elemental inicial é uma regra definida, mas a escolha e entrega automática do item ainda não têm formulário próprio.
 
 ## Limites da automação atual
 
-Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **ainda não oferece um assistente de compras completo para os 15 XP compartilhados**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
 
 ## Testes de regras
 

@@ -43,7 +43,7 @@ const assert=(yes,message)=>{if(!yes)throw Error(message)};
   await page.locator("#new-kind").selectOption("humanoide");
   await page.locator("#add-threat").click();
   await page.locator('#editor [data-grade="attr"][data-key="forca"][data-delta="1"]').click();
-  assert((await page.locator(".cf-stat-grid").innerText()).includes("1 / 20"),
+  assert((await page.locator(".cf-stat-grid").innerText()).includes("1 / 15"),
    "Humanoide comum deve pagar 1 XP no Atributo G1");
   assert(!errors.length,"Erros JavaScript da Ficha de Conflito: "+errors.join(" | "));
   console.log("PASS ameaça: três tipos, XP, Perícias, fontes e persistência");

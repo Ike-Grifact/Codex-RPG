@@ -125,7 +125,7 @@ test("Preparação exige decisão de gastar recursos no compositor e não confir
  assert.ok(app.includes('toast("Ação preparada com "+item.name'));
 });
 
-test("Magia G1/G2/G3: custos, tempo, foco e normalização de elementos",()=>{
+test("Magia G1/G2/G3/G4: dados por Grau, 1 carga G2 e focos pareados",()=>{
  const id=app.slice(app.indexOf("function magicElementId("),app.indexOf("function magicKnownElements("));
  const prep=app.slice(app.indexOf("function magicPreparationTurns("),app.indexOf("function alignMagicDraft("));
  assert.ok(id.length>70&&prep.length>120,"Funções de magia ausentes");
@@ -134,14 +134,19 @@ test("Magia G1/G2/G3: custos, tempo, foco e normalização de elementos",()=>{
  assert.equal(helpers.magicElementId("Água"),"agua");
  assert.equal(helpers.magicElementId("Psíquico"),"psiquico");
  assert.equal(helpers.magicElementId("Ar"),"vento");
- for(const [grade,charges,expected] of [[1,0,1],[2,0,2],[3,0,3],[3,1,2],[3,2,1]]){
-  assert.equal(helpers.magicPreparationTurns(grade,charges),expected);
+ for(const [grade,charges,focus,second,expected] of [
+  [1,0,false,false,1],[2,0,true,false,2],[2,1,false,false,2],[2,1,true,false,1],
+  [3,0,true,false,3],[3,1,true,false,2],[3,2,true,false,1],
+  [4,0,true,true,6],[4,1,true,true,5],[4,3,true,true,3],[4,3,true,false,6]]){
+  assert.equal(helpers.magicPreparationTurns(grade,charges,focus,second),expected);
  }
- for(const [grade,amplify,expected] of [[1,false,0],[2,false,0],[3,false,1],[3,true,2]]){
+ for(const [grade,amplify,expected] of [[1,false,0],[2,false,0],[3,false,1],[3,true,2],[4,false,2],[4,true,3]]){
   assert.equal(helpers.magicCourageCost({magicGrade:grade,magicAmplify:amplify}),expected);
  }
  assert.ok(app.includes('if(usedFocus&&p.opts.magicCharges)'),"Cargas gastas só ao finalizar");
- assert.ok(app.includes('data-magic-field="magicTimeConfirmed"'),"G2 e G3 exigem registro dos turnos de preparação");
+ assert.ok(app.includes('case "magic-preparation-complete"'),"G2/G3/G4 confirmam o preparo após rolar");
+ assert.ok(app.includes('data-magic-field="magicSecondElement"'),"G4 escolhe segundo elemento");
+ assert.ok(app.includes('data-magic-field="magicSecondFocusId"'),"G4 escolhe segundo foco");
  assert.ok(app.includes('case "magic-element":prepareMagic(id)'),"Botão de elemento prepara Disciplina");
  assert.ok(app.includes('case "repertoire-roll":quickRollItem(id)'),"Atalhos de armas preservados");
  assert.ok(html.includes('id="magic-actions"'),"Atalho de magia presente junto das Ações");

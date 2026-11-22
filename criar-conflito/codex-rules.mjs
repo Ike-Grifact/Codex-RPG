@@ -28,7 +28,9 @@ export const SITUATIONS={
 };
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
-export const CREATION_REFERENCE={attributes:6,training:8,skills:5,total:19}; // 6+8+5 experimental.
+export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // Compatibilidade com G1-G3.
+export const MAGIC_GRADE_DICE={1:[6],2:[10],3:[12],4:[12,12]}; // SRD v0.89: G4 com dois d12.
+export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD v0.89: 15 XP compartilhados, sem reservas por categoria.
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -59,8 +61,8 @@ export const healthByLife=(s,currentLife)=>{
  if(currentLife<=2+bands[1])return {id:"ferido",e:0,a:-1,p:0,coragem:0};
  return {id:"saudavel",e:0,a:0,p:0,coragem:0};
 };
-// DE base humana v0.88: substitui integralmente a fórmula anterior; armaduras/escudos modificam depois.
-export const naturalDE=s=>Math.min(9,1+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.destreza||0)/2));
+// SRD v0.89: Agilidade integral, somar Vigor+Destreza antes de dividir; Atletismo/3.
+export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
@@ -92,9 +94,9 @@ export function xpLedger(s){
  const knowledge=KNOWLEDGES.reduce((n,[k])=>n+XP_TRAINING[Number(s.knowledges?.[k]||0)],0);
  const practices=PRACTICES.reduce((n,[k])=>n+XP_TRAINING[Number(s.practices?.[k]||0)],0);
  const perks=(s.skills||[]).reduce((n,id)=>n+(SKILLS.find(x=>x.id===id)?.cost||0),0);
- const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:19);
+ const spent=attr+knowledge+practices+perks,grant=Number(s.xp||0)+(s.monsterRules?0:15);
  return {attributes:attr,training:knowledge+practices,skills:perks,spent,grant,left:grant-spent,
-  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"19 XP iniciais: orçamento 6/8/5 experimental; excedentes não são autorizados pelo cálculo."};
+  state:s.monsterRules?"XP monstruoso: definir orçamento por Grau.":"15 XP iniciais compartilhados, sem reservas obrigatórias; excedentes não são autorizados."};
 }
 export function mayComplement(system,base,mode){
  const sk=system.skills||[];
@@ -105,7 +107,7 @@ export function mayComplement(system,base,mode){
   return sk.includes("disciplina-avancada");
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0}={}){
+export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0,magicGrade=1,magicElement="",magicSecondElement=""}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
  if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(monster&&b.group!=="attribute")||(!monster&&b.group==="attribute"))
   errors.push(monster?"Monstro: selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
@@ -122,13 +124,26 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   const skills=system.skills||[];
   const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","manejo-duplo"];
   if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
-  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))errors.push("Conjuração exige Criar Item de Foco e Magia.");
+  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia")&&!["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].some(id=>skills.includes(id)))errors.push("Conjuração exige Perícia elemental ou Criar Item de Foco e Magia (Psique).");
   if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
  }
  if(!errors.length){
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
     pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides,baseSides:sides});
-  if(equipmentDie){
+  if(mode==="conjuracao"){
+   const dice=MAGIC_GRADE_DICE[Number(magicGrade)]||[];
+   if(!dice.length)errors.push("Grau mágico inválido ou sem dado definido.");
+   else if(Number(magicGrade)===4){
+    const learned=system.skills||[];
+    const habilitado=(id)=>id==="psiquico"?learned.includes("criar-item-foco-magia"):learned.includes(id);
+    if(!magicElement||!magicSecondElement||magicElement===magicSecondElement||
+       !habilitado(magicElement)||!habilitado(magicSecondElement))
+     errors.push("G4 exige dois elementos diferentes, cada qual com Perícia G3 habilitada, e confirmação do Narrador.");
+   }
+   dice.forEach((sides,i)=>pool.push({id:"magic.grade."+magicGrade+"."+i,group:"magic",
+    key:"Grau "+magicGrade+" · dado "+(i+1),sides,baseSides:sides}));
+  }
+  if(equipmentDie&&mode!=="conjuracao"){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
    else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie),baseSides:Number(equipmentDie)});
   }

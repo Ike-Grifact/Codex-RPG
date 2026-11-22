@@ -151,8 +151,8 @@ const assert=require("node:assert/strict");
   assert.match(await page.locator("#composer-content").textContent(),/1 turno\(s\)/);
   await page.locator("#composer-content [data-action='roll']").click();
   assert.equal(await page.locator('#composer-content .fp-roll-die').count(),5,
-   "Disciplina G2 + Inteligência G2 + foco d6");
-  assert.match(await page.locator("#composer-content").textContent(),/2 carga\(s\) de foco reservadas/);
+   "Disciplina G2 + Inteligência G2 + dado mágico G3 d12 (foco não fornece dado)");
+  assert.match(await page.locator("#composer-content").textContent(),/2 carga\(s\) do foco reservadas/);
   await page.locator("#composer-content .fp-roll-die").first().click();
   await page.locator("#composer-content .fp-roll-die").nth(1).click();
   assert.equal(await page.locator("#composer-content [data-action='finalize']").isDisabled(),false);

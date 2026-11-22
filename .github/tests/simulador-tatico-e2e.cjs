@@ -35,7 +35,7 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   await page.locator("#range").fill("30");
   await page.locator("#spell-grade").selectOption("1");
   await page.locator("#roll").click();
-  assert(await page.locator("#dice button.tc-die").count()===4,"Mago de 20XP deveria rolar 2d10+2d6");
+  assert(await page.locator("#dice button.tc-die").count()===4,"Mago do cenário preserva composição de Disciplina G2 e Inteligência G2");
   assert((await page.locator("#roll-result").innerText()).includes("G1: somente efeitos"),"Magia G1 deve mostrar zero dano");
   await page.locator("#suggest").click();
   assert(await page.locator("#dice button.tc-die.picked").count()>0,"Seleção de dados sugeridos não funcionou");
@@ -67,7 +67,7 @@ const assert=(v,m)=>{if(!v)throw Error(m);};
   await page.locator('[data-select="'+shooterId+'"]').click();
   await page.locator('[data-target="'+mageId+'"]').click();
   await page.locator("#dodge").check();
-  assert((await page.locator("#target-info").innerText()).includes("DE 4 (esquiva)"),
+  assert((await page.locator("#target-info").innerText()).includes("DE 2 (esquiva)"),
    "Armadura Muito Leve concede +2 DE em toda defesa, sem duplicar ao esquivar");
   await page.locator("#attribute-source").selectOption("destreza");
   await page.locator("#discipline-mode").selectOption("armas");

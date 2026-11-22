@@ -14,7 +14,7 @@ const character=(weight="leve",equipped=true,more={})=>({
  items:[{name:"Armadura de teste",type:"armadura",weight,grade:1,equipped,max:7,hp:7}],...more
 });
 
-test("v0.88: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva",()=>{
+test("v0.89: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva",()=>{
  const s=character();
  assert.equal(deNatural(s),1);
  assert.equal(armorDodgeBonus(s),1);
@@ -47,8 +47,8 @@ test("v0.66: Muito Leve +2, Média 0, Pesada -1, Muito Pesada -2",()=>{
  assert.equal(deDefense(denied),1,"armadura não permitida não concede modificador");
  const allowed=character("extremo",true,{attributes:{agilidade:1,destreza:0,vigor:6},practices:{atletismo:6}});
  assert.equal(canEquipArmor(allowed,allowed.items[0]),true);
- assert.equal(deNatural(allowed),7);
- assert.equal(deDefense(allowed),5);
+ assert.equal(deNatural(allowed),6);
+ assert.equal(deDefense(allowed),4);
 });
 
 test("v0.66: teto natural 9 e teto defensivo total 12 no código",()=>{
@@ -72,11 +72,11 @@ test("v0.66: a UI, inventário e resumo usam DE geral já modificada",()=>{
 });
 
 
-test("v0.88: base 1 + Vigor inteiro + piso de Destreza, sem Agilidade ou Atletismo na DE",()=>{
+test("v0.89: AGI + piso((VIG+DES)/2) + piso(ATL/3), sem base 1",()=>{
  const zero=character("medio",true,{attributes:{agilidade:0,destreza:0,vigor:0},practices:{atletismo:0}});
- assert.equal(deNatural(zero),1);
+ assert.equal(deNatural(zero),0);
  const s=character("medio",true,{attributes:{agilidade:1,destreza:2,vigor:3},practices:{atletismo:3}});
- assert.equal(deNatural(s),5,"1+3+1, sem Agilidade, Atletismo ou DE antiga");
- assert.equal(deDefense(s),5);
- assert.equal(deDefense(character("leve",true,{attributes:s.attributes,practices:s.practices})),6);
+ assert.equal(deNatural(s),4,"AGI1 + piso((VIG3+DES2)/2)=2 + ATL3/3=1");
+ assert.equal(deDefense(s),4);
+ assert.equal(deDefense(character("leve",true,{attributes:s.attributes,practices:s.practices})),5);
 });
