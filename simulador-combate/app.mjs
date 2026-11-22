@@ -26,11 +26,11 @@ function load(){
    history:(Array.isArray(data.history)?data.history:[]).slice(0,350)};
  }catch{return empty();}
 }
-let state=load(),available=[],pending=null,last=null,lastActor="",toastTimer;
+let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer;
 const byId=id=>state.combatants.find(x=>x.id===id)||null;
 const actor=()=>byId(state.actor),target=()=>byId(state.target);
 function notice(msg){const el=$("notice");el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,4500);}
-function persist(){try{localStorage.setItem(SAVE,JSON.stringify(state));}catch(e){notice("Não foi possível salvar o combate: "+e.message);}}
+function persist(){try{state.lastResult=last;localStorage.setItem(SAVE,JSON.stringify(state));}catch(e){notice("Não foi possível salvar o combate: "+e.message);}}
 function log(kind,message,data={}){
  state.history.unshift({id:unique(),at:new Date().toISOString(),round:state.round,kind,message,...data});
  state.history=state.history.slice(0,350);
@@ -55,10 +55,12 @@ function scan(){
   "Não há fichas neste navegador e endereço. Crie fichas no Criador ou importe JSON.";
 }
 function addSelected(side){
+ const previousTarget=state.target;
  const profile=available[Number($("available").value)];
  if(!profile)return notice("Selecione uma ficha.");
  if(!add(profile.raw,side,profile.source))return notice("Limite de "+MAX+" fichas.");
  log("importação",profile.name+" entrou do "+profile.source+".");persist();render();
+ if(!previousTarget&&target())$("difficulty").value=String(defense(target()));
 }
 function selectOptions(rows,value){
  return '<option value="">Selecione</option>'+rows.map(x=>'<option value="'+esc(x.id)+'"'+(x.id===value?" selected":"")+
@@ -191,7 +193,7 @@ function chosenWeapon(){
  return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
 }
 function renderAffinity(){
- const hint=weightAffinity(chosenWeapon(),target());
+ const hint=weightAffinity(chosenWeapon(),target(),actor());
  $("weight-affinity").textContent=hint.description+" Carga do atacante: "+
   (actor()?weightUsed(actor()).toFixed(3):"—")+
   ". A categoria da armadura equipada determina a afinidade defensiva.";
@@ -277,7 +279,7 @@ function roll(){
   grade=Number($("spell-grade").value);
   const bonus=MAGIC_GRADE_DICE[grade]||[];
   if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
-  if(grade>=3&&!confirm("Graus 3 e 4 exigem habilitações, elementos, focos e tempo válidos. Confirme que o Narrador autorizou esta conjuração antes de rolar."))return;
+  if(grade>=2&&!confirm("Este Grau exige elementos, habilitação, focos e tempo adequados. O comparador só adiciona os dados do Grau e não resolve a preparação. Confirma a validação manual do Narrador?"))return;
   bonus.forEach((sides,i)=>pool.pool.push({id:"magic."+grade+"."+i,group:"magic",key:"G"+grade,sides}));
  }
  const rolled=rollCreatureFaces(pool.pool);
@@ -401,7 +403,7 @@ function demo(){
    integrityMax:3,integrity:3,equipped:true}]);
  setup("Lobo","inimigos","monstro",{agilidade:2,forca:1,destreza:1},{},[]);
  log("cenário","Exemplo 2 × 2 criado. As builds de demonstração não substituem fichas reais de 15 XP.");
- persist();render();
+ persist();render();if(target())$("difficulty").value=String(defense(target()));
 }
 function importJson(file){
  if(!file)return;
@@ -422,7 +424,7 @@ function importJson(file){
     throw Error("Formato incompatível ou limite de fichas atingido.");
   }
   pending=null;last=null;log("importação","Fichas carregadas de arquivo JSON.");
-  persist();render();
+  persist();render();if(target())$("difficulty").value=String(defense(target()));
  }).catch(e=>notice("Falha ao ler JSON: "+e.message));
 }
 function exportJson(){
