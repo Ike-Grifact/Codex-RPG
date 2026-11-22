@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
 import {naturalDE,maxCourage,monsterCap} from "../criar-conflito/codex-rules.mjs";
-import {blank,isHumanoidKind,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES} from "../criar-conflito/rules.mjs";
+import {blank,isHumanoidKind,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS} from "../criar-conflito/rules.mjs";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -22,10 +22,13 @@ export function normalizeEquipment(raw={}){
   die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[]};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
- const kind=["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide";
+ const kind=raw.kind==="criatura"?"monstro":(["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide");
  const base=blank(kind),out={...base,
   id:String(raw.id||"").slice(0,110),name:String(raw.name||raw.nome||"Sem nome").slice(0,110),
-  side,source,level:int(raw.level||1,1,20),threatGrade:int(raw.threatGrade||1,1,6),
+  side,source,sourceId:String(raw.sourceId||raw.id||"").slice(0,110),
+  concept:String(raw.concept||raw.origin||"").slice(0,500),
+  abilities:String(raw.abilities||"").slice(0,4000),notes:String(raw.notes||"").slice(0,4000),
+  level:int(raw.level||1,1,20),threatGrade:int(raw.threatGrade||1,1,6),
   leader:!!raw.leader,race:String(raw.race||"").slice(0,70),
   attributes:{...base.attributes},knowledges:{...base.knowledges},practices:{...base.practices},
   skills:Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,130):[],
@@ -39,6 +42,30 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  out.acted=!!raw.acted;
  return out;
 }
+/** Consulta somente a cópia do combatente: não abre nem modifica a ficha de origem. */
+export function combatantSheetData(c={}){
+ const human=isHumanoidKind(c.kind),owned=Array.isArray(c.skills)?c.skills:[];
+ const levels=(defs,field)=>defs.map(([id,name])=>({id,name,grade:int(c[field]?.[id],0,6)}));
+ const disciplineGrade=int(c.practices?.armas_conjuracao,0,6);
+ return {
+  kindName:KINDS[c.kind]||(c.kind==="monstro"?"Criatura/Monstro":"Tipo não identificado"),
+  human,disciplineGrade,
+  advancedDiscipline:human&&owned.includes("disciplina-avancada"),
+  advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=2,
+  attributes:levels(ATTRIBUTES,"attributes"),
+  knowledges:human?levels(KNOWLEDGES,"knowledges"):[],
+  practices:human?levels(PRACTICES,"practices"):[],
+  skills:human?owned.map(id=>{
+   const ref=SKILLS.find(s=>s.id===id);
+   return {id,name:ref?.name||id,detail:ref?.detail||"Descrição não encontrada no catálogo atual.",known:!!ref};
+  }):[],
+  items:Array.isArray(c.items)?c.items:[],
+  abilities:String(c.abilities||""),notes:String(c.notes||""),concept:String(c.concept||""),
+  source:String(c.source||"Importação"),name:String(c.name||"Sem nome"),
+  level:int(c.level,1,20),threatGrade:int(c.threatGrade,1,6)
+ };
+}
+
 export function armorOf(c){
  return (c?.items||[]).find(it=>it.kind==="armor"&&it.equipped)||null;
 }

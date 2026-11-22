@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeCombatant,normalizeEquipment,listBrowserSheets,armorOf,defense,equippedWeapons,
+import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,armorOf,defense,equippedWeapons,
  weightAffinity,lifeAtFive,transferPavor,updateResource} from "./comparador-logic.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -130,4 +130,55 @@ test("Arco e revólver usam a tabela própria, sem copiar a matriz genérica",()
  assert.equal(weightAffinity({kind:"firearm",name:"Sniper",category:"pesado"},t).delta,1);
  assert.equal(weightAffinity({kind:"firearm",name:"Escopeta",category:"pesado"},t).delta,1);
  assert.equal(weightAffinity({kind:"weapon",name:"Besta Pesada",category:"pesado"},t).status,"manual");
+});
+
+
+test("Ficha de humanoide exportado preserva Perícias, Disciplina Avançada e observações após recarregar",()=>{
+ const raw={
+  id:"npc-original",kind:"humanoide",name:"Feiticeiro do Conflito",
+  concept:"Guarda arcano",abilities:"Imune a medo ritual",notes:"Vigiar a ponte",
+  attributes:{inteligencia:2,destreza:1},
+  knowledges:{erudicao:1},
+  practices:{armas_conjuracao:2},
+  skills:["disciplina-avancada","armas-leves"],
+  items:[{id:"escudo",type:"escudo",name:"Escudo Rúnico",weight:"leve",max:8,hp:6,equipped:true}]
+ };
+ const first=normalizeCombatant(raw,"inimigos","Criar Conflito");
+ const copied=normalizeCombatant(JSON.parse(JSON.stringify(first)),first.side,first.source);
+ const sheet=combatantSheetData(copied);
+ assert.equal(sheet.name,"Feiticeiro do Conflito");
+ assert.equal(sheet.source,"Criar Conflito");
+ assert.equal(copied.sourceId,"npc-original");
+ assert.equal(sheet.advancedDiscipline,true);
+ assert.equal(sheet.advancedReady,true);
+ assert.equal(sheet.disciplineGrade,2);
+ assert(sheet.skills.some(x=>x.name==="Disciplina Avançada"));
+ assert(sheet.skills.some(x=>x.name==="Perícia em Armas Leves"));
+ assert.equal(sheet.practices.find(x=>x.id==="armas_conjuracao").grade,2);
+ assert.equal(sheet.knowledges.find(x=>x.id==="erudicao").grade,1);
+ assert.equal(sheet.items[0].integrity,6);
+ assert.equal(sheet.concept,"Guarda arcano");
+ assert.equal(sheet.abilities,"Imune a medo ritual");
+ assert.equal(sheet.notes,"Vigiar a ponte");
+ assert.deepEqual(raw.skills,["disciplina-avancada","armas-leves"],"Consulta não altera origem");
+});
+
+test("Ficha explicita quando Disciplina Avançada não existe ou não cumpre Grau",()=>{
+ const absent=combatantSheetData(bare());
+ assert.equal(absent.advancedDiscipline,false);
+ assert.equal(absent.advancedReady,false);
+ const onlyBought=normalizeCombatant({name:"Aprendiz",practices:{armas_conjuracao:1},
+  skills:["disciplina-avancada"]});
+ const needsGrade=combatantSheetData(onlyBought);
+ assert.equal(needsGrade.advancedDiscipline,true);
+ assert.equal(needsGrade.advancedReady,false);
+ const creature=normalizeCombatant({kind:"criatura",name:"Lobo",attributes:{forca:2},
+  abilities:"Fareja rastros"}, "inimigos");
+ const sheet=combatantSheetData(creature);
+ assert.equal(creature.kind,"monstro","Fichas legadas de criatura continuam com regras de monstro");
+ assert.equal(sheet.human,false);
+ assert.equal(sheet.advancedReady,false);
+ assert.equal(sheet.skills.length,0);
+ assert.equal(sheet.attributes.find(x=>x.id==="forca").grade,2);
+ assert.equal(sheet.abilities,"Fareja rastros");
 });

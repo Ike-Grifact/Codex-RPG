@@ -16,6 +16,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
    };
    const opponent={
     name:"Saqueador de teste",kind:"humanoide",level:1,pavorLocal:1,
+    concept:"Guardião da ponte",abilities:"Visão noturna",notes:"Guarda o portão.",
     attributes:{agilidade:1,destreza:1,vigor:1},
     practices:{armas_conjuracao:1},skills:["armas-leves"],
     items:[{id:"simples",name:"Roupas Simples",kind:"armor",category:"muito-leve",
@@ -42,6 +43,24 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   assert(await page.locator("#enemies .cc-card").count()===1,"Faltou inimigo.");
   assert((await page.locator("#target-info").innerText()).includes("DE 4"),
    "Roupas Simples fornecem +2 DE em qualquer defesa.");
+  await page.locator("#enemies [data-inspect]").click();
+  assert(await page.locator("#combatant-sheet").evaluate(dialog=>dialog.open),
+   "Ver ficha deve abrir um diálogo acessível.");
+  const enemySheet=await page.locator("#combatant-sheet-content").innerText();
+  assert(enemySheet.includes("Perícia em Armas Leves"),"A ficha deve mostrar a Perícia adquirida.");
+  assert(enemySheet.includes("Disciplina Avançada:")&&enemySheet.includes("Não adquirida"),
+   "A ficha deve declarar quando Disciplina Avançada não pertence ao inimigo.");
+  assert(enemySheet.includes("Disciplina")&&enemySheet.includes("G1"),
+   "A ficha deve mostrar o grau real da Prática Disciplina.");
+  assert(enemySheet.includes("Roupas Simples")&&enemySheet.includes("3/3"),
+   "O inventário e a Integridade devem constar na consulta.");
+  assert(enemySheet.includes("Visão noturna")&&enemySheet.includes("Guarda o portão."),
+   "Capacidades naturais e anotações importadas devem ser consultáveis.");
+  await page.locator("#close-combatant-sheet").click();
+  await page.locator('[data-inspect-selected="actor"]').click();
+  assert((await page.locator("#combatant-sheet-title").innerText())==="Aprendiz de teste",
+   "Atalho do atacante deve abrir a ficha do jogador.");
+  await page.locator("#close-combatant-sheet").click();
   const before=await page.evaluate(()=>({
    comparison:JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")),
    original:localStorage.getItem("codex-rpg-jogador-ficha-v1:j1")
@@ -81,6 +100,13 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.reload({waitUntil:"domcontentloaded"});
   assert(await page.locator("#allies .cc-card").count()===1&&await page.locator("#enemies .cc-card").count()===1,
    "Confronto deve sobreviver a reload.");
+  await page.locator("#enemies [data-inspect]").click();
+  const savedSheet=await page.locator("#combatant-sheet-content").innerText();
+  assert(savedSheet.includes("Visão noturna")&&savedSheet.includes("Guarda o portão."),
+   "A ficha da criatura/humanoide importado deve persistir após recarregar.");
+  assert(savedSheet.includes("2/3"),
+   "A consulta recarregada deve refletir Integridade gasta no combate.");
+  await page.locator("#close-combatant-sheet").click();
   assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
    "A última rolagem confirmada deve continuar disponível após recarregar.");
   assert(errs.length===0,"Erros JS no desktop: "+errs.join(" | "));
@@ -91,6 +117,10 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await mobile.goto("http://127.0.0.1:8000/simulador-combate/",{waitUntil:"domcontentloaded"});
   await mobile.locator("#demo").click();
   assert(await mobile.locator(".cc-card").count()===4,"Exemplo 2 × 2 deve abrir no celular.");
+  await mobile.locator("#enemies [data-inspect]").first().click();
+  assert(await mobile.locator("#combatant-sheet").evaluate(dialog=>dialog.open),
+   "Ficha da criatura deve ser acessível também no celular.");
+  await mobile.locator("#close-combatant-sheet").click();
   const sizes=await mobile.evaluate(()=>({width:document.documentElement.scrollWidth,
    viewport:window.innerWidth,columns:getComputedStyle(document.querySelector(".cc-columns")).gridTemplateColumns}));
   assert(sizes.width<=sizes.viewport+5,"Layout extravasou celular: "+JSON.stringify(sizes));

@@ -7,10 +7,10 @@
 <title>Comparador de Combate — Codex RPG</title>
 <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
 <link rel="stylesheet" href="../assets/theme.css">
-<link rel="stylesheet" href="./styles.css?v=20261122-comparador-v1">
+<link rel="stylesheet" href="./styles.css?v=20261122-fichas-v1">
 <script src="../assets/site.js" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
-<script type="module" src="./app.mjs?v=20261122-comparador-v1"></script>
+<script type="module" src="./app.mjs?v=20261122-fichas-v1"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -43,7 +43,7 @@
    <button id="add-enemy" type="button">Adicionar aos inimigos</button>
    <label class="cc-file">Importar JSON <input id="json-import" type="file" accept=".json,application/json"></label>
   </div>
-  <p class="cc-help" id="available-info">Fichas de jogadores, NPCs e elenco do Criar Conflito são lidos do mesmo navegador e endereço do site. As fichas originais não são modificadas pelo comparador.</p>
+  <p class="cc-help" id="available-info">Fichas de jogadores, NPCs e elenco do Criar Conflito são lidos do mesmo navegador e endereço do site. Após adicionar ao confronto, use “Ver ficha” para consultar graus, Perícias e equipamento da cópia, mesmo sem voltar ao editor de origem. As fichas originais não são modificadas.</p>
  </section>
  <section class="cc-panel" aria-label="Resumo de combatentes">
   <div class="cc-section-head"><h2>2. Resumo do combate</h2><span id="round">Rodada 1</span></div>
@@ -67,6 +67,10 @@
     <label>Alvo <select id="target"><option value="">Escolha</option></select></label>
    </div>
    <div class="cc-versus"><div><small>Atacante</small><strong id="actor-name">—</strong></div><span>contra</span><div><small>Alvo</small><strong id="target-name">—</strong></div></div>
+   <div class="cc-sheet-quick-actions" role="group" aria-label="Consultar fichas selecionadas">
+    <button type="button" data-inspect-selected="actor">Ver ficha do atacante</button>
+    <button type="button" data-inspect-selected="target">Ver ficha do alvo</button>
+   </div>
    <div id="target-info" class="cc-help">Escolha um alvo para conferir defesa e proteção.</div>
    <div class="cc-form cc-duo">
     <label>Fonte base (ou 1º Atributo do monstro) <select id="base-source"></select></label>
@@ -125,6 +129,13 @@
   <div class="cc-section-head"><h2>5. Histórico</h2><button id="clear-history" type="button">Limpar histórico</button></div>
   <div id="history" class="cc-history" aria-live="polite">Nenhuma ação registrada.</div>
  </section>
+ <dialog id="combatant-sheet" class="cc-sheet-dialog" aria-labelledby="combatant-sheet-title">
+  <div class="cc-sheet-head">
+   <div><small>FICHA DO COMBATENTE · CONSULTA</small><h2 id="combatant-sheet-title">Ficha</h2></div>
+   <button type="button" id="close-combatant-sheet" aria-label="Fechar ficha do combatente">Fechar ficha</button>
+  </div>
+  <div id="combatant-sheet-content" class="cc-sheet-content"></div>
+ </dialog>
 </main>
 <div id="notice" class="cc-notice" role="status" aria-live="polite" hidden></div>
 <footer class="footer shell"><div class="footer-inner"><p>Codex RPG · comparador de combate experimental · regras registradas separadamente</p><a href="../criar-conflito/">Criar Conflito</a></div></footer>
