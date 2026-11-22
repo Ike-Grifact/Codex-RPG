@@ -312,3 +312,199 @@ function suggest(){
  pending.kept=[...best.ids];$("cancel-p").value=String(best.cancel);
  $("convert-a").value=String(best.convert);renderDice();
 }
+
+function confirmRoll(){
+ if(!pending)return;
+ const a=byId(pending.actor),t=byId(pending.target),pre=preview();
+ if(!a||!t||!pre.ok)return notice(pre.error||"Rolagem inválida.");
+ if(a.acted)return notice("Este combatente já agiu na rodada.");
+ const r=pre.result;
+ if((pre.courageCost||0)>a.courage||(pre.cost||0)>a.pavorLocal)
+  return notice("Coragem ou Pavor local insuficiente.");
+ a.courage=Math.max(0,a.courage-(pre.courageCost||0));
+ a.pavorLocal=Math.max(0,a.pavorLocal-(pre.cost||0));
+ if(a.side==="jogadores")a.courage=Math.min(maxCourage(a.level),a.courage+Number(r.criticalRefundCourage||0));
+ if(a.side==="inimigos"&&r.monsterCriticalPavor){
+  const cap=monsterCap(a.threatGrade),free=Math.max(0,cap-a.pavorLocal);
+  const own=Math.min(free,r.monsterCriticalPavor);
+  a.pavorLocal+=own;
+  const publicCap=narratorCap(state.combatants.filter(x=>x.side==="jogadores").length);
+  state.publicPavor=Math.min(publicCap,state.publicPavor+Math.max(0,r.monsterCriticalPavor-own));
+ }
+ const moved=transferPavor(a,t,r.p,state.publicPavor);
+ Object.assign(t,moved.target);
+ a.acted=true;
+ last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
+  de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
+  integrityApplied:false,lifeApplied:false};
+ log("rolagem",a.name+" → "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.p+"P). "+
+  "Dano convencional potencial "+pre.integrityDamage+" à Integridade. Vida pelo patamar 5: "+
+  (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
+  moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
+   damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
+   courageCost:pre.courageCost||0,pavorCost:pre.cost||0,weapon:pending.weapon});
+ state.resourceActor=t.id;pending=null;persist();render(false);
+ $("action-state").textContent="Rolagem confirmada";
+ notice("Rolagem confirmada. Pavor atualizado. Dano à Integridade e Vida ainda exigem aplicação.");
+}
+function change(field,delta,itemId=null){
+ const c=byId(state.resourceActor);
+ if(!c)return notice("Selecione o combatente a ajustar.");
+ const result=updateResource(c,itemId,field,delta);
+ if(!result.ok)return notice(result.error);
+ Object.assign(c,result.actor);
+ const equipment=field==="integridade"?c.items.find(x=>x.id===itemId):null;
+ log("recurso",c.name+": "+(delta>0?"+":"")+delta+" "+field+
+  (equipment?" em "+equipment.name:"")+". Limites e tetos respeitados.");
+ persist();render(false);
+}
+function applyConfirmed(which){
+ if(!last)return notice("Nenhuma rolagem confirmada.");
+ const t=byId(last.target),armor=armorOf(t);
+ if(!t)return notice("Alvo não está mais no confronto.");
+ if(which==="integridade"){
+  if(!armor||last.integrityApplied||last.integrityDamage<1)
+   return notice("Sem Integridade aplicável nesta rolagem.");
+  const before=armor.integrity;
+  const changed=updateResource(t,armor.id,"integridade",-last.integrityDamage);
+  if(!changed.ok)return notice(changed.error);
+  Object.assign(t,changed.actor);last.integrityApplied=true;
+  log("integridade",t.name+": −"+(before-Math.max(0,before-last.integrityDamage))+
+   " de Integridade em "+armor.name+". Excedente de dano não é lançado automaticamente na Vida.");
+ }else{
+  if(armor||last.lifeApplied||last.lifeDamage!==2)
+   return notice("Patamar de 2 Vida só vale para alvo sem armadura equipada.");
+  const before=t.life;t.life=Math.max(0,t.life-2);last.lifeApplied=true;
+  log("vida",t.name+": −"+(before-t.life)+" Vida direta pelo acerto com cinco pontos válidos (E + P), sem armadura.");
+ }
+ persist();render(false);
+}
+function nextRound(){
+ state.round=Math.min(9999,state.round+1);
+ for(const c of state.combatants)c.acted=false;
+ pending=null;log("rodada","Rodada "+state.round+". Oportunidades restauradas; não há cura automática.");
+ persist();render();
+}
+function demo(){
+ if(state.combatants.length&&!confirm("Substituir o confronto atual? Fichas originais do Criador não serão alteradas."))return;
+ state=empty();pending=null;last=null;lastActor="";
+ function setup(name,side,kind,attributes,practices,skills,items=[]){
+  add({name,kind,level:1,attributes,practices,skills,items},side,"Exemplo visual (XP não homologado)");
+ }
+ setup("Aprendiz armado","jogadores","humanoide",
+  {forca:1,agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
+  [{id:"arma-1",name:"Adaga",kind:"weapon",category:"leve",die:6,grade:1,qty:1,equipped:true}]);
+ setup("Apoio","jogadores","humanoide",{inteligencia:1,destreza:1,vigor:1},{atletismo:1},[]);
+ setup("Saqueador","inimigos","humanoide",
+  {agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
+  [{id:"armadura-1",name:"Roupas Simples",kind:"armor",category:"muito-leve",grade:1,
+   integrityMax:3,integrity:3,equipped:true}]);
+ setup("Lobo","inimigos","monstro",{agilidade:2,forca:1,destreza:1},{},[]);
+ log("cenário","Exemplo 2 × 2 criado. As builds de demonstração não substituem fichas reais de 15 XP.");
+ persist();render();
+}
+function importJson(file){
+ if(!file)return;
+ if(file.size>3e6)return notice("JSON deve ter até 3 MB.");
+ file.text().then(str=>{
+  const raw=JSON.parse(str);
+  if(raw?.version===1&&Array.isArray(raw.combatants)){
+   if(state.combatants.length&&!confirm("Substituir o confronto por este arquivo?"))return;
+   state=empty();for(const c of raw.combatants.slice(0,MAX))
+    add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Comparador importado");
+   state.round=Math.floor(clamp(raw.round,1,9999));
+  }else if(Array.isArray(raw?.roster)||Array.isArray(raw?.tokens)){
+   for(const c of raw.roster||raw.tokens)
+    if(!add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Arquivo de conflito"))break;
+  }else{
+   const c=raw.character||raw;
+   if(!c?.attributes||!add(c,"jogadores","Ficha JSON"))
+    throw Error("Formato incompatível ou limite de fichas atingido.");
+  }
+  pending=null;last=null;log("importação","Fichas carregadas de arquivo JSON.");
+  persist();render();
+ }).catch(e=>notice("Falha ao ler JSON: "+e.message));
+}
+function exportJson(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="codex-comparador-de-combate.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1600);
+}
+function bind(){
+ document.addEventListener("click",event=>{
+  const button=event.target.closest("button");if(!button)return;
+  if(button.dataset.actor){
+   state.actor=button.dataset.actor;pending=null;lastActor="";
+   persist();render();return;
+  }
+  if(button.dataset.target){
+   state.target=button.dataset.target;pending=null;
+   persist();render(false);$("difficulty").value=String(defense(target()));return;
+  }
+  if(button.dataset.remove){
+   state.combatants=state.combatants.filter(x=>x.id!==button.dataset.remove);
+   if(state.actor===button.dataset.remove)state.actor="";
+   if(state.target===button.dataset.remove)state.target="";
+   if(state.resourceActor===button.dataset.remove)state.resourceActor="";
+   pending=null;last=null;persist();render();return;
+  }
+  if(button.dataset.die&&pending){
+   pending.kept=pending.kept.includes(button.dataset.die)?
+    pending.kept.filter(x=>x!==button.dataset.die):[...pending.kept,button.dataset.die];
+   renderDice();
+  }
+ });
+ $("scan-sheets").addEventListener("click",scan);
+ $("add-ally").addEventListener("click",()=>addSelected("jogadores"));
+ $("add-enemy").addEventListener("click",()=>addSelected("inimigos"));
+ $("json-import").addEventListener("change",event=>{importJson(event.target.files?.[0]);event.target.value="";});
+ $("demo").addEventListener("click",demo);
+ $("next-round").addEventListener("click",nextRound);
+ $("export").addEventListener("click",exportJson);
+ $("actor").addEventListener("change",event=>{
+  state.actor=event.target.value;pending=null;lastActor="";persist();render();
+ });
+ $("target").addEventListener("change",event=>{
+  state.target=event.target.value;pending=null;
+  persist();render(false);$("difficulty").value=String(defense(target()));
+ });
+ $("weapon-source").addEventListener("change",renderAffinity);
+ $("apply-affinity").addEventListener("click",()=>{
+  const hint=renderAffinity();
+  if(hint.status!=="known")return;
+  $("situation").value=hint.delta===1?"advantage":hint.delta===-1?"disadvantage":"neutral";
+  notice("Condição sugerida pelo peso selecionada, sem acumular outros modificadores.");
+ });
+ $("roll").addEventListener("click",roll);
+ $("suggest").addEventListener("click",suggest);
+ $("confirm").addEventListener("click",confirmRoll);
+ for(const field of ["extra-keep","cancel-p","convert-a","situation","difficulty","spell-grade"])
+  $(field).addEventListener("change",()=>{if(pending)renderDice();});
+ $("resource-actor").addEventListener("change",event=>{
+  state.resourceActor=event.target.value;persist();renderResources();
+ });
+ $("resource-kind").addEventListener("change",renderResources);
+ for(const [button,sign] of [["resource-minus",-1],["resource-plus",1]])
+  $(button).addEventListener("click",()=>{
+   const n=Number($("resource-amount").value);
+   if(!Number.isInteger(n)||n<=0||n>100)return notice("Quantidade inválida: use inteiro de 1 a 100.");
+   change($("resource-kind").value,sign*n,$("resource-item").value);
+  });
+ $("apply-integrity").addEventListener("click",()=>applyConfirmed("integridade"));
+ $("apply-life").addEventListener("click",()=>applyConfirmed("vida"));
+ $("public-minus").addEventListener("click",()=>{
+  state.publicPavor=Math.max(0,state.publicPavor-1);
+  log("Pavor público","−1P público manual.");persist();render(false);
+ });
+ $("public-plus").addEventListener("click",()=>{
+  const limit=narratorCap(state.combatants.filter(x=>x.side==="jogadores").length);
+  if(state.publicPavor>=limit)return notice("Teto de Pavor público: "+limit+".");
+  state.publicPavor++;log("Pavor público","+1P público manual.");persist();render(false);
+ });
+ $("clear-history").addEventListener("click",()=>{
+  if(!confirm("Apagar o histórico deste confronto?"))return;
+  state.history=[];persist();renderHistory();
+ });
+}
+bind();scan();render();
