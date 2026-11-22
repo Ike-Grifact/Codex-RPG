@@ -1,4 +1,4 @@
-> **DE base de humanoides [DEFINIDO — 22/11/2026]:** `min(9, 1 + Agilidade + Vigor + piso(Destreza/2) + piso(Atletismo/3))`, substituindo a fórmula anterior, sem soma dupla. Monstros não humanoides preservam a própria DE `min(9, Agilidade + piso(Destreza/2))`. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+> **DE base de humanoides [DEFINIDO — 22/11/2026]:** `min(9, 1 + Vigor + piso(Destreza/2))`, substituindo a fórmula anterior por completo (sem Agilidade, sem Atletismo e sem soma dupla). Monstros não humanoides preservam a própria DE `min(9, Agilidade + piso(Destreza/2))`. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
 
 # Criar Conflito — Codex RPG (prévia)
 
