@@ -55,7 +55,7 @@ export function defenseDE(actor){
  const s=actor.system,a=s.attributes||{},p=s.practices||{};
  const natural=Math.min(9,Math.max(0,
   Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2)+
-  (s.monsterRules?0:Math.floor(Number(a.vigor||0)/2)+Math.floor(Number(p.atletismo||0)/3))));
+  (s.monsterRules?0:1+Number(a.vigor||0)+Math.floor(Number(p.atletismo||0)/3))));
  let modifier=0;
  // O modificador do primeiro equipamento válido afeta TODA defesa, não apenas esquiva.
  for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
