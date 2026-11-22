@@ -2,6 +2,19 @@
 
 # Criar Conflito — Codex RPG (prévia)
 
+## Resumo de combate comparativo, sem VTT [DEFINIDO / EXPERIMENTAL]
+
+Em **Resumo de combate** há um botão **Importar fichas do navegador**. A importação lê o índice `codex-rpg-jogadores-index-v1` e os registros individuais do próprio navegador; personagens são copiados para o estado local de Criar Conflito. **As fichas originais não são sobrescritas**. Para atualizar uma cópia, use um novo encontro ou reimporte depois de removê-la do estado de combate; importar repetidamente não desfaz dano/coragem já usados.
+
+Escolha **atacante**, **alvo**, fontes (Atributo e Conhecimento/Prática; monstros usam dois Atributos), arma equipada e **peso defensivo**. A DE defensiva usa a fórmula vigente da v0.89. O peso do ataque contra armadura equipada informa afinidade natural do ataque; porte de criatura sem armadura requer seleção explícita. Escolha dados mantidos, gaste Antecipar e confirme a rolagem. Dano físico comum é **uma segunda confirmação** que aplica uma única vez Integridade antes de Vida, permitindo ajustes manuais na ficha e histórico local. Magias/técnicas devem ser declaradas como **outro efeito**, sem aplicação automática de dano físico. O painel **não** cria tabuleiro, deslocamentos ou iniciativa de VTT.
+
+**DEFINIDO — decisão autoral 22/11/2026:** ataque comum que realmente alcançar a Vida com **5 Êxitos válidos ou mais** retira **2 Vida** em vez do parâmetro de **1 Vida** quando tiver menos de 5 Êxitos. A Integridade absorve o dano básico primeiro; não se concedem 2 Vida quando todo dano ficou na proteção. Isso não dobra dano à armadura nem retira o teto de 3 Vida de ataques não colossais. Exceções (Perfurante, Sangue, Derreter, imunidade, colossais, tipos especiais e resistências) permanecem em adjudicação manual.
+
+**Pavor e Coragem:** depois da rolagem de um PJ, o Pavor não anulado pode ser enviado **manualmente** à ameaça elegível mais próxima; somente quando não há ameaça elegível vai para a reserva pública do Narrador. Uma falha inimiga com Pavor pode gerar Coragem distribuída entre os PJs, sem multiplicar Pavor pelo número deles. A interface exibe saldo pendente, limita a capacidade de cada destinatário e mantém o restante aguardando resolução. Nenhuma ameaça, distância ou transferência é presumida automaticamente sem mapa.
+
+**PENDENTE / fora do escopo:** alcance/posicionamento, transferência automática pela distância, defesa ativa comparativa por duas rolagens, rolagens especiais de magia com dados de Grau, efeitos de Perícias, custos de ativação e reconhecimento de armaduras especiais. O painel oferece comparação de ataque **contra a DE do alvo**, não oposições automáticas completas; magias são manuais. O novo painel usa armazenamento local e entra no JSON do conflito exportado.
+
+
 Área de preparação de encontros em `criar-conflito/`. Ferramenta web experimental em `criar-conflito/`, incorporada ao portal na revisão v0.44. A transferência de humanoides comuns pelo Codex Genético está implementada.
 
 ## Três tipos de ameaça — decisão autoral de 15/11/2026
