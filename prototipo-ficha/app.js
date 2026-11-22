@@ -650,7 +650,7 @@ const SKILLS=[
  ],
  [
   "domar-criatura-grande","Domar Criatura Grande",
-  "1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+  "1 XP. Influência 4, Apresentação 2, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
   1
  ],
  [
@@ -1298,7 +1298,7 @@ const CARD_REQUIREMENTS={
  "montaria-epica":"PROPOSTO — montarias gigantes, aladas ou exóticas; requisitos e XP pendentes",
  "invocacao-elemental":"Criar Item de Foco e Magia (habilita Psique) + Domar Criatura Pequena; outros elementos exigem Perícia própria",
  "domar-criatura-media":"Influência 3 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena",
- "domar-criatura-grande":"Influência 4 + Apresentação 1 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
+ "domar-criatura-grande":"Influência 4 + Apresentação 2 + Inteligência 1 + Domar Criatura Pequena + Domar Criatura Média",
  "domar-criatura-pequena": "Influência 2 + Inteligência 1",
  "pericia-druidica": "Criar Item de Foco e Magia + Perícia em Elemento Terra",
  "transformacao-elemental": "Criar Item de Foco e Magia + ao menos uma Perícia Elemental",
@@ -1477,7 +1477,7 @@ const CARD_BRIEFS={
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
  "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
- "domar-criatura-grande":"1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
+ "domar-criatura-grande":"1 XP. Influência 4, Apresentação 2, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2 e Inteligência 1, sem Apresentação como requisito de compra. Domar consome 1 Coragem; o teste publicado de Influência + Apresentação não foi alterado. Compra não é domesticação.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
@@ -2470,7 +2470,7 @@ function skillReq(id,s=state){
  if(id==="domar-criatura-media"&&!has("domar-criatura-pequena"))return"Requer a Perícia Domar Criatura Pequena antes de comprar Domar Criatura Média.";
  if(id==="domar-criatura-grande"&&(!has("domar-criatura-pequena")||!has("domar-criatura-media")))
   return"Requer Domar Criatura Pequena e Domar Criatura Média antes de comprar Domar Criatura Grande.";
- if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<1))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação 1.";
+ if((id==="domar-criatura-media"||id==="domar-criatura-grande")&&((s.attributes.influencia||0)<(id==="domar-criatura-media"?3:4)||(s.attributes.inteligencia||0)<1||(s.practices.apresentacao||0)<(id==="domar-criatura-media"?1:2)))return"Requer Influência "+(id==="domar-criatura-media"?3:4)+", Inteligência 1 e Apresentação "+(id==="domar-criatura-media"?1:2)+".";
  if(id==="domar-criatura-pequena"&&((s.attributes.influencia||0)<2||(s.attributes.inteligencia||0)<1))return"Requer Influência 2 e Inteligência 1.";
  if(id==="pericia-druidica" && !["criar-item-foco-magia","terra"].every(has))return"Compra única de 1 XP: exige Criar Item de Foco e Magia e Perícia Terra; não exige Domar nem Influência.";
  if(id==="transformacao-elemental" && (!has("criar-item-foco-magia")||!["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"].some(has)))return"Requer Criar Item de Foco e Magia e pelo menos uma Perícia em Elemento.";
@@ -3228,7 +3228,7 @@ const GENE_AUTO_REQUIREMENTS={
  "invocacao-elemental":[["s:criar-item-foco-magia","s:domar-criatura-pequena"]],
  "domar-criatura-pequena":[["a:influencia:2","a:inteligencia:1"]],
  "domar-criatura-media":[["a:influencia:3","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena"]],
- "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:1","s:domar-criatura-pequena","s:domar-criatura-media"]],
+ "domar-criatura-grande":[["a:influencia:4","a:inteligencia:1","p:apresentacao:2","s:domar-criatura-pequena","s:domar-criatura-media"]],
  "pericia-druidica":[["s:criar-item-foco-magia","s:terra"]],
  "transformacao-elemental":[["s:criar-item-foco-magia","s:vento"],["s:criar-item-foco-magia","s:agua"],["s:criar-item-foco-magia","s:terra"],["s:criar-item-foco-magia","s:fogo"],["s:criar-item-foco-magia","s:sagrado"],["s:criar-item-foco-magia","s:sangue"],["s:criar-item-foco-magia","s:trevas"],["s:criar-item-foco-magia","s:veneno"]],
  "montar":[["a:influencia:2"]],
