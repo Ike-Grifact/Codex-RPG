@@ -1,3 +1,5 @@
+> **DE base de humanoides [DEFINIDO — 22/11/2026]:** `min(9, 1 + Agilidade + Vigor + piso(Destreza/2) + piso(Atletismo/3))`, substituindo a fórmula anterior, sem soma dupla. Monstros não humanoides preservam a própria DE `min(9, Agilidade + piso(Destreza/2))`. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+
 # Criar Conflito — Codex RPG (prévia)
 
 Área de preparação de encontros em `criar-conflito/`. Ferramenta web experimental em `criar-conflito/`, incorporada ao portal na revisão v0.44. A transferência de humanoides comuns pelo Codex Genético está implementada.
