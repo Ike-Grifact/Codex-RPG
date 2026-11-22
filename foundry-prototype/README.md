@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v0.2.0
 
-> **DE base humana [DEFINIDO — 22/11/2026]:** substitui a DE antiga por `min(9, 1 + Agilidade + Vigor + piso(Destreza/2) + piso(Atletismo/3))`, antes dos modificadores de armadura, com teto final 12. Monstros não humanoides preservam sua própria regra. Uma instalação local do Foundry não é atualizada automaticamente por mudanças neste repositório. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+> **DE base humana [DEFINIDO — 22/11/2026]:** substitui a DE antiga por `min(9, 1 + Vigor + piso(Destreza/2))`, sem Agilidade nem Atletismo, antes dos modificadores de armadura e com teto final 12. Monstros não humanoides preservam sua própria regra. Uma instalação local do Foundry não é atualizada automaticamente por mudanças neste repositório. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
 
 > **Rework em PR revisável (17/11/2026):** o protótipo elimina PP do modelo e da ficha. Ativações pagas custam Coragem; crítico recupera somente Coragem. A mudança neste repositório não atualiza automaticamente instalações externas do Foundry.
 
