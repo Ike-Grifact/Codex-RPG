@@ -1,5 +1,5 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs";
@@ -27,7 +27,7 @@ function load(){
    lastResult:data.lastResult&&typeof data.lastResult==="object"?data.lastResult:null};
  }catch{return empty();}
 }
-let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer;
+let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer,inspectingId="";
 const byId=id=>state.combatants.find(x=>x.id===id)||null;
 const actor=()=>byId(state.actor),target=()=>byId(state.target);
 function notice(msg){const el=$("notice");el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,4500);}
@@ -39,7 +39,7 @@ function log(kind,message,data={}){
 function add(raw,side,source){
  if(state.combatants.length>=MAX)return false;
  const item=normalizeCombatant(raw,side,source);
- item.id=unique();item.sourceId=String(raw.id||"");item.acted=false;
+ item.id=unique();item.sourceId=String(raw.sourceId||raw.id||"");item.acted=false;
  state.combatants.push(item);
  if(!state.actor&&side==="jogadores")state.actor=item.id;
  if(!state.target&&side==="inimigos")state.target=item.id;
@@ -77,11 +77,65 @@ function rosterSide(side){
    '<span>Coragem '+c.courage+'</span><span>Pavor '+c.pavorLocal+'</span><span>Integridade '+
    (armor?armor.integrity+"/"+armor.integrityMax:"—")+'</span></div>'+
    (c.acted?'<small class="cc-used">Já agiu nesta rodada</small>':'')+
-   '<div class="cc-card-actions"><button type="button" data-actor="'+esc(c.id)+'">Atacar</button>'+
+   '<div class="cc-card-actions"><button type="button" data-inspect="'+esc(c.id)+'">Ver ficha</button>'+
+   '<button type="button" data-actor="'+esc(c.id)+'">Atacar</button>'+
    '<button type="button" data-target="'+esc(c.id)+'">Alvo</button>'+
    '<button type="button" data-remove="'+esc(c.id)+'">Retirar</button></div></article>';
  }).join(""):'<p class="cc-help">Nenhum combatente.</p>';
 }
+function sheetGrades(title,rows){
+ return '<section class="cc-sheet-block"><h3>'+esc(title)+'</h3><div class="cc-sheet-grades">'+rows.map(row=>
+  '<div class="cc-sheet-grade'+(row.grade>0?' is-trained':'')+'"><span>'+esc(row.name)+
+  '</span><strong>G'+row.grade+'</strong></div>').join("")+'</div></section>';
+}
+function renderCombatantSheet(c){
+ const s=combatantSheetData(c);
+ const advance=s.human?(s.advancedReady?'Adquirida · Disciplina G'+s.disciplineGrade:
+  s.advancedDiscipline?'Registrada, mas requer Disciplina G2; atual G'+s.disciplineGrade:
+  'Não adquirida'):'Não se aplica à ficha de criatura';
+ const skills=s.human?(s.skills.length?s.skills.map(skill=>
+  '<details class="cc-sheet-skill"><summary>'+esc(skill.name)+'</summary><p>'+
+  esc(skill.detail)+'</p></details>').join(""):
+  '<p class="cc-help">Nenhuma Perícia adquirida nesta cópia da ficha.</p>'):
+  '<p class="cc-help">Criaturas/monstros deste tipo usam Atributos e não compram Perícias na ficha.</p>';
+ const itemKinds={armor:"Armadura",shield:"Escudo",weapon:"Arma",firearm:"Arma de fogo",
+  focus:"Foco",kit:"Kit",other:"Item"};
+ const items=s.items.length?s.items.map(it=>
+  '<div class="cc-sheet-item"><strong>'+esc(it.name)+'</strong><span>'+
+  esc(itemKinds[it.kind]||"Item")+' · G'+Number(it.grade||1)+' · '+
+  (it.equipped?'Equipado':'No inventário')+
+  (it.integrityMax>0?' · Integridade '+it.integrity+'/'+it.integrityMax:'')+
+  (it.die?' · d'+it.die:'')+'</span></div>').join(""):
+  '<p class="cc-help">Nenhum equipamento registrado nesta cópia.</p>';
+ $("combatant-sheet-title").textContent=s.name;
+ $("combatant-sheet-content").innerHTML=
+  '<p class="cc-sheet-origin">'+esc(s.kindName)+' · '+esc(s.source)+
+  ' · '+(s.human?'Nível '+s.level+' · ':'')+'Grau da ameaça '+s.threatGrade+'</p>'+
+  '<p class="cc-help">Cópia armazenada no confronto. A consulta não modifica a ficha original; alterações feitas no editor de origem não atualizam automaticamente esta cópia.</p>'+
+  (s.concept?'<p class="cc-sheet-notes"><strong>Conceito / origem:</strong> '+esc(s.concept)+'</p>':'')+
+  '<div class="cc-sheet-stats"><span>Vida: <strong>'+c.life+'</strong></span>'+
+  '<span>DE: <strong>'+defense(c)+'</strong></span>'+
+  '<span>Coragem: <strong>'+c.courage+'</strong></span>'+
+  '<span>Pavor: <strong>'+c.pavorLocal+'</strong></span></div>'+
+  '<section class="cc-sheet-block"><h3>Habilitação da terceira fonte</h3>'+
+  '<p><strong>Disciplina Avançada:</strong> '+esc(advance)+'.</p>'+
+  (s.human?'<p class="cc-help">A terceira fonte de uma ação com Disciplina exige a Perícia, Disciplina G2 e pertinência confirmada pelo Narrador.</p>':'')+
+  '</section>'+
+  sheetGrades("Atributos",s.attributes)+
+  (s.human?sheetGrades("Conhecimentos",s.knowledges)+sheetGrades("Práticas",s.practices):'')+
+  '<section class="cc-sheet-block"><h3>Perícias adquiridas ('+s.skills.length+')</h3>'+skills+'</section>'+
+  '<section class="cc-sheet-block"><h3>Equipamentos ('+s.items.length+')</h3><div class="cc-sheet-items">'+items+'</div></section>'+
+  (s.abilities?'<section class="cc-sheet-block"><h3>Capacidades especiais / imunidades</h3><p class="cc-sheet-notes">'+esc(s.abilities)+'</p></section>':'')+
+  (s.notes?'<section class="cc-sheet-block"><h3>Anotações da ficha</h3><p class="cc-sheet-notes">'+esc(s.notes)+'</p></section>':'');
+}
+function openCombatantSheet(id){
+ const c=byId(id);
+ if(!c)return notice("Escolha um combatente para consultar.");
+ inspectingId=id;renderCombatantSheet(c);
+ const dialog=$("combatant-sheet");
+ if(!dialog.open)dialog.showModal();
+}
+
 function renderRoster(){
  $("allies").innerHTML=rosterSide("jogadores");$("enemies").innerHTML=rosterSide("inimigos");
  $("round").textContent="Rodada "+state.round;
@@ -148,6 +202,10 @@ function render(refresh=true){
  renderRoster();renderChoices();
  if(refresh){lastActor="";renderSources();}
  renderTarget();renderResources();renderHistory();renderLast();renderDice();
+ if(inspectingId&&$("combatant-sheet").open){
+  const c=byId(inspectingId);
+  if(c)renderCombatantSheet(c);else $("combatant-sheet").close();
+ }
 }
 
 function renderSources(){
@@ -437,6 +495,10 @@ function exportJson(){
 function bind(){
  document.addEventListener("click",event=>{
   const button=event.target.closest("button");if(!button)return;
+  if(button.dataset.inspect){openCombatantSheet(button.dataset.inspect);return;}
+  if(button.dataset.inspectSelected){
+   openCombatantSheet(button.dataset.inspectSelected==="actor"?state.actor:state.target);return;
+  }
   if(button.dataset.actor){
    state.actor=button.dataset.actor;pending=null;lastActor="";
    persist();render();return;
@@ -458,6 +520,8 @@ function bind(){
    renderDice();
   }
  });
+ $("combatant-sheet").addEventListener("close",()=>{inspectingId="";});
+ $("close-combatant-sheet").addEventListener("click",()=>$("combatant-sheet").close());
  $("scan-sheets").addEventListener("click",scan);
  $("add-ally").addEventListener("click",()=>addSelected("jogadores"));
  $("add-enemy").addEventListener("click",()=>addSelected("inimigos"));
