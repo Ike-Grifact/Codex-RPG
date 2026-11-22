@@ -75,7 +75,7 @@ export function ledger(t){
  const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges",x[0]]),...PRACTICES.map(x=>["practices",x[0]])]
   .reduce((n,[group,key])=>n+XP_TRAINING[clamp(s[group][key],0,6)],0):0;
  const skills=humanoid?s.skills.reduce((n,id)=>n+Number(SKILLS.find(x=>x.id===id)?.cost||0),0):0;
- const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?20:0);
+ const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?15:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
