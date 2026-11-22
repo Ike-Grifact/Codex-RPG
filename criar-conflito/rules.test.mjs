@@ -59,11 +59,11 @@ test("Humano comum rápido começa com investimento mínimo, saldo livre e Perí
  assert.equal(t.attributes.forca,1);
  assert.equal(t.practices.armas_conjuracao,1);
  assert.deepEqual({spent:ledger(t).spent,grant:ledger(t).grant,remaining:ledger(t).remaining},
-  {spent:3,grant:20,remaining:17});
+  {spent:3,grant:15,remaining:12});
  assert.equal(t.life,stats(t).life);
  assert.deepEqual(t.skills,[]);
  t.skills.push("armas-leves");
- assert.equal(ledger(t).remaining,15);
+ assert.equal(ledger(t).remaining,10);
  const restored=normalize(t);
  assert.equal(restored.skills.includes("armas-leves"),true);
  assert.equal(restored.practices.armas_conjuracao,1);
@@ -85,7 +85,7 @@ test("NPC DNA conserva Combate e Armas 1 com XP oficial da Ficha",()=>{
  assert.deepEqual(copy.skills,["combate","armas"]);
  assert.equal(ledger(copy).skills,3);
  assert.equal(ledger(copy).spent,6);
- assert.equal(ledger(copy).remaining,14);
+ assert.equal(ledger(copy).remaining,9);
 });
 
 
