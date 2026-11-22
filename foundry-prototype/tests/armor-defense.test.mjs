@@ -28,10 +28,10 @@ test("DE natural não excede 9, limite final 12, sem empilhar duas armaduras",()
 });
 
 
-test("v0.88: Vigor inteiro, Destreza/2 e +1; Agilidade só permanece para monstros" ,()=>{
+test("v0.89: Agilidade, metade de Vigor+Destreza e Atletismo; monstros preservados" ,()=>{
  const attrs={agilidade:1,destreza:2,vigor:4};
  const humanoid={...base(),attributes:attrs,practices:{atletismo:3}};
  const monster={...humanoid,monsterRules:true};
- assert.equal(defenseDE(actor(null,true,humanoid)),6);
+ assert.equal(defenseDE(actor(null,true,humanoid)),5);
  assert.equal(defenseDE(actor(null,true,monster)),2);
 });
