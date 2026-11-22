@@ -2,6 +2,8 @@
 
 O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. As regras de referência são mantidas em notas internas de continuidade; o portal não publica atalhos para esses documentos.
 
+> **Atualização autoral prioritária — SRD v0.89 (22/11/2026), DEFINIDO:** **15 XP iniciais compartilhados**, sem reservas 6/8/5 ou 7/7/5. DE humana `min(9, AGI + piso((VIG + DES)/2) + piso(Atletismo/3))`; Roupas Simples/Muito Leve **+2 DE em toda defesa, inclusive esquiva, sem somar de novo**. Conjuração: **role ao declarar**, +1d6 G1 / +1d10 G2 / +1d12 G3 pelo Grau, **nenhum dado do foco**; foco compatível acelera G2 para um turno, G3 por suas cargas. Pavor na preparação oferece oportunidade ao inimigo; interrupção é mediada pelo Narrador. [Continuidade v0.89](srd-continuidade-v0.89.md).
+
 > **Atualização normativa em 18/11/2026:** a referência ativa agora é [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos (DEFINIDO)**, com 12 XP livres após o mínimo de 3 XP para um Humano sem descontos raciais. A Druídica requer Foco + Terra, sem Domar, e Transformação Elemental é nova Perícia (Foco + elemento); a compra é validada, mas os efeitos de transformação permanecem manuais quando procedimentos estão pendentes. Este guia conserva explicações antigas apenas para o fluxo da interface; a seção normativa do novo SRD prevalece.
 
 ## Criação nível 1: investimentos mínimos e XP livre
@@ -63,7 +65,7 @@ Na ficha jogável, os **contornos/etiquetas de XP reduzido e aumentado** ficam o
 ## Como testar no laboratório
 
 1. Crie um Aprendiz e utilize o catálogo de equipamentos G1 do protótipo. Itens sem preço aprovado e focos de fabricação não podem ser comprados por zero VT.
-2. Escolha Atributo e fonte adicional. A terceira fonte depende de Perícia de combinação e pertinência **acordada verbalmente com o Narrador**; não há checkbox de confirmação. Clicar em arma/foco equipado no Repertório apenas monta a ação: revise a preparação e pressione **Rolar dados** quando estiver pronto.
+2. Escolha Atributo e fonte adicional. A terceira fonte depende de Perícia de combinação e pertinência **acordada verbalmente com o Narrador**; não há checkbox de confirmação. Clicar em arma equipada no Repertório monta a ação; para magia, use Conjurar Magia, selecione Grau e foco e pressione **Rolar dados na declaração**, antes de cumprir o tempo. O resultado permanece pendente até a confirmação do Narrador; **foco não adiciona dados**.
 3. Escolha DE de teste e balanço do alvo. Nos níveis 1–5, DE 2 é uma referência de confronto comum para playtest, DE 3 treinado e DE 4 excepcional — todas EXPERIMENTAIS, não obrigações.
 4. Se desejar, gaste **1 Coragem** para **elevar uma fonte participante (Atributo, Conhecimento ou Prática) em um Grau temporário**, substituindo os dados dessa fonte pela composição do Grau seguinte. Exemplos: **2d6 → 3d6**, **2d10 → 3d10**, **3d10 → 2d10 + 1d12**. Não eleva dado de equipamento isolado, não gasta XP nem altera o Grau comprado; o aumento pode acrescentar um dado à pilha, até o limite de 9 dados rolados.
 5. **Some antes os custos de Coragem** do mesmo teste, respeitando o **máximo de 5 Coragens por rolagem**. Só então role e **selecione livremente os dados mantidos**. É obrigatório **rolar** pelo menos um dado de Atributo, mas **não mantê-lo**. O terceiro dado mantido nos níveis 1–5 custa 1 Coragem.
