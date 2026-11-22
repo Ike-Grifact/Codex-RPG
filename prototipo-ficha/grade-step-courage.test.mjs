@@ -129,9 +129,10 @@ test("Ações acessíveis, inventário como posses e indicadores prioritários",
  assert.ok(html.indexOf('id="owned-skills"')>html.indexOf('id="progressao"'),"Lista de Perícias fica abaixo da área de XP");
  assert.ok(app.includes('function magicComposerFields()'),"Grau e foco devem ser renderizados no compositor");
  assert.ok(!app.includes('data-magic-field="magicEnvironmentConfirmed"'),"Sem checkbox para disponibilidade ambiental");
- for(const field of ["magicGrade","magicFocusId","magicCharges","magicAmplify","magicTimeConfirmed"]){
+ for(const field of ["magicGrade","magicFocusId","magicCharges","magicAmplify"]){
   assert.ok(app.includes('data-magic-field="'+field+'"'),"Campo de conjuração ausente: "+field);
  }
+ assert.ok(app.includes('case "magic-preparation-complete"'),"Preparação confirmada após rolar, não antes.");
  assert.ok(app.includes('const spellCost=draft.mode==="conjuracao"'),"Gastos de magia devem entrar no limite de Coragem");
  assert.ok(app.includes('focusCharges:type==="foco"'),"Cargas precisam ser persistidas no inventário");
  assert.ok(app.includes('if(usedFocus&&p.opts.magicCharges)'),"Gasto de foco deve ocorrer ao finalizar");
@@ -498,7 +499,7 @@ test("Maestria em Escudos: 1 XP, Destreza/Vigor 2, +1 DE com escudo único e Int
  assert.equal(sheet.items[0].hp,4,"Cravar e desgaste material respeitam ponto consumido");
  const noSkill={...sheet,skills:[]};
  assert.equal(f.deDefense(noSkill),f.deNatural(noSkill),"Sem Maestria DE normal");
- const cap={...sheet,attributes:{...sheet.attributes,agilidade:0,destreza:6,vigor:6},items:[sheet.items[0],
+ const cap={...sheet,attributes:{...sheet.attributes,agilidade:6,destreza:6,vigor:6},items:[sheet.items[0],
   {id:"armor",type:"armadura",weight:"muito_leve",equipped:true,grade:1}]};
  assert.equal(f.deDefense(cap),12,"Maestria + armadura não ultrapassam teto 12");
  const file=readFileSync(join(root,"../pericias/maestria-em-escudos.html"),"utf8");
