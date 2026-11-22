@@ -66,7 +66,7 @@ O dado do Grau **substitui** o de Graus anteriores: G2 recebe **+1d10, não +1d6
 ### Foco — DEFINIDO
 
 - **O foco NÃO adiciona dado**: nem d6, nem d10, nem outro. Ele permite usar seu elemento quando válido e **acelerar** a preparação, respeitando cargas e requisitos. Não alterar dados de Atributos/Conhecimentos/Práticas.
-- **G2 com foco compatível** pode ser conjurada em **1 turno**, conservando o dado de Grau **+1d10** e os efeitos G2; sem foco, exige **2 turnos**. Consumo exato de carga G2: **PENDENTE de formalização** (não inventar preço automático além de procedimento expressamente aprovado; interface experimental pode usar 1 carga mediante confirmação do Narrador).
+- **G2 com foco compatível** pode ser conjurada em **1 turno**, conservando o dado de Grau **+1d10** e os efeitos G2; sem foco, exige **2 turnos**. **O custo em cargas para acelerar G2 não foi definido**: não cobrar carga automaticamente até decisão autoral. A escolha de usar ou não o foco continua dependente de sua presença e correspondência elemental.
 - **G3 com foco:** regras de aceleração já definidas permanecem: 3 turnos sem carga, 2 turnos com 1 carga, 1 turno com 2 cargas do foco correspondente. G4 plena mantém sua regra própria, inclusive o mínimo de 3 turnos.
 - Um foco precisa corresponder ao elemento; **basta estar no inventário**. Graus, efeitos, fontes elementais, preparação e cargas permanecem sujeitos às habilitações existentes. O foco não cria uma Perícia, Grau nem dado adicional.
 
