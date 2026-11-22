@@ -26,12 +26,23 @@ test("v0.89: foco encurta G2, sem aumentar dado",()=>{
  const tempo=readFunction("magicPreparationTurns");
  assert.equal(tempo(1,0,false),1);
  assert.equal(tempo(2,0,false),2);
- assert.equal(tempo(2,0,true),1);
+ assert.equal(tempo(2,0,true),2,"foco sem carga não acelera G2");
+ assert.equal(tempo(2,1,true),1,"G2 com foco consome 1 carga");
+ assert.equal(tempo(2,1,false),2,"sem foco, carga não acelera");
  assert.equal(tempo(3,0,true),3);
  assert.equal(tempo(3,1,true),2);
  assert.equal(tempo(3,2,true),1);
+ assert.equal(tempo(4,0,true,true),6);
+ assert.equal(tempo(4,1,true,true),5);
+ assert.equal(tempo(4,3,true,true),3);
+ assert.equal(tempo(4,3,true,false),6,"G4 não usa foco único");
  assert.match(src,/if\(mode==="conjuracao"\)\{\s*\/\/ SRD v0\.89: apenas o Grau da magia adiciona seu dado, nunca o foco\.\s*return \[\];/);
- assert.match(src,/const magicDie=\{1:6,2:10,3:12\}\[Number\(draft\.magicGrade\)\]/);
+ assert.ok(src.includes("const magicDice={1:[6],2:[10],3:[12],4:[12,12]}"));
+ assert.ok(src.includes("magicDice.forEach((sides,i)"));
+ assert.ok(src.includes("magicSecondElement"));
+ assert.ok(src.includes("magicSecondFocusId"));
+ assert.ok(src.includes("magicMixA"));
+ assert.ok(src.includes("magicG4MixASpent"));
  assert.match(src,/group:"magic",key:"Magia G"/);
 });
 
