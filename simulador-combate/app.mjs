@@ -322,14 +322,24 @@ function options(){
   cancelP:Number($("cancel-p").value),convertPairs:Number($("convert-a").value)};
 }
 function evaluate(a,rolled,kept,opts){
- if(a.side==="inimigos"&&a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
- if(a.side==="inimigos"&&isHumanoidKind(a.kind))return previewHumanoidRoll(a,rolled,kept,opts);
- if(a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
- const r=resolveRoll(rolled,kept,{de:opts.de,situation:opts.situation,level:a.level,
-  extraKeep:opts.extraKeep,courage:a.courage,cancelP:opts.cancelP,convertPairs:opts.convertPairs});
- if(!r.ok)return {ok:false,error:r.errors.join("; ")};
- const free=keepLimit(a.level,false,false);
- return {ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
+ const health=combatHealth(a),t=byId(pending?.target);
+ const weapon=pending?.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
+ const affinity=weightAffinity(weapon,t,a),weight=affinity.status==="known"?affinity.delta:0;
+ const stealth=!!(a.skills?.includes("furtividade")&&pending?.baseGroup==="practice"&&pending?.baseKey==="furtividade");
+ const conf={...opts,weight,bonusA:health.a+Number(stealth),bonusP:health.p,
+  skillBonusE:health.e,stepDieId:pending?.boosted||""};
+ let pre;
+ if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
+ else if(a.side==="inimigos"&&isHumanoidKind(a.kind))pre=previewHumanoidRoll(a,rolled,kept,conf);
+ else {
+  const r=resolveRoll(rolled,kept,{de:conf.de,situation:conf.situation,level:a.level,
+   extraKeep:conf.extraKeep,courage:a.courage,cancelP:conf.cancelP,convertPairs:conf.convertPairs,
+   weight:conf.weight,bonusA:conf.bonusA,bonusP:conf.bonusP,skillBonusE:conf.skillBonusE});
+  if(!r.ok)return {ok:false,error:r.errors.join("; ")};
+  const free=keepLimit(a.level,false,false);
+  pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
+ }
+ return {...pre,health,affinity,stealth};
 }
 function preview(){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
@@ -337,10 +347,22 @@ function preview(){
  if(!a||!t)return {ok:false,error:"Atacante ou alvo não encontrado."};
  const pre=evaluate(a,pending.rolled,pending.kept,options());
  if(!pre.ok)return pre;
+ if(pre.health.id==="morto")return {ok:false,error:"Combatente morto não pode agir."};
+ const skillId=$("active-skill").value,activation=selectedActiveSkill(a,skillId);
+ if(skillId&&!activation)return {ok:false,error:"Perícia não adquirida por este combatente."};
+ const skillAmount=Number($("skill-courage").value);
+ if(skillId&&(!$("skill-approved").checked||!Number.isInteger(skillAmount)||skillAmount<0||skillAmount>5))
+  return {ok:false,error:"Confira custo e gatilho da Perícia na ficha; confirme a ativação antes de concluir."};
+ const human=isHumanoidKind(a.kind),healthCost=pre.health.coragem||0;
+ const stepCost=human&&a.side==="jogadores"&&pending.boosted?1:0;
+ const courageCost=(pre.courageCost||0)+(human?healthCost:0)+stepCost+(activation?skillAmount:0);
+ if(human&&courageCost>5)return {ok:false,error:"O gasto conjunto ultrapassa 5 Coragens na rolagem."};
+ if(courageCost>a.courage)return {ok:false,error:"Coragem insuficiente: requer "+courageCost+", possui "+a.courage+"."};
+ if((pre.cost||0)>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente para a retenção/elevação."};
  const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
- const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:
-  lifeAtFive(pre.result,t);
- return {...pre,integrityDamage:g1?0:pre.result.damage,life};
+ const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t);
+ return {...pre,courageCost,activation,skillAmount:activation?skillAmount:0,
+  integrityDamage:g1?0:pre.result.damage,life};
 }
 function renderDice(){
  const element=$("dice");
