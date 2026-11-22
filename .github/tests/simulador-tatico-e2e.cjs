@@ -52,7 +52,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
    "A ficha deve declarar quando Disciplina Avançada não pertence ao inimigo.");
   assert(enemySheet.includes("Disciplina")&&enemySheet.includes("G1"),
    "A ficha deve mostrar o grau real da Prática Disciplina.");
-  assert(enemySheet.includes("Roupas Simples")&&enemySheet.includes("3/3"),
+  assert(enemySheet.includes("Roupas Simples")&&enemySheet.includes("2/2"),
    "O inventário e a Integridade devem constar na consulta.");
   assert(enemySheet.includes("Visão noturna")&&enemySheet.includes("Guarda o portão."),
    "Capacidades naturais e anotações importadas devem ser consultáveis.");
@@ -71,7 +71,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.locator("#resource-amount").fill("1");
   await page.locator("#resource-minus").click();
   let snapshot=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
-  assert(snapshot.combatants.find(x=>x.id===enemy.id).items[0].integrity===2,
+  assert(snapshot.combatants.find(x=>x.id===enemy.id).items[0].integrity===1,
    "Integridade deve diminuir sem alterar a Vida.");
   const life=snapshot.combatants.find(x=>x.id===enemy.id).life;
   assert(life===before.comparison.combatants.find(x=>x.id===enemy.id).life,
@@ -104,7 +104,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   const savedSheet=await page.locator("#combatant-sheet-content").innerText();
   assert(savedSheet.includes("Visão noturna")&&savedSheet.includes("Guarda o portão."),
    "A ficha da criatura/humanoide importado deve persistir após recarregar.");
-  assert(savedSheet.includes("2/3"),
+  assert(savedSheet.includes("1/2"),
    "A consulta recarregada deve refletir Integridade gasta no combate.");
   await page.locator("#close-combatant-sheet").click();
   assert((await page.locator("#last-action").innerText()).includes("Aprendiz de teste contra Saqueador de teste"),
