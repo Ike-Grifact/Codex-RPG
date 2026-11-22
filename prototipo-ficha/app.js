@@ -2030,7 +2030,7 @@ const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,si
   extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
   shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
-  magicElement:"",magicGrade:1,magicFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
+  magicElement:"",magicSecondElement:"",magicGrade:1,magicFocusId:"",magicSecondFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
 // O SAVE_KEY antigo não é apagado: é cópia de segurança da ficha anterior à migração.
 function playerSheetKey(id){return PLAYER_SHEET_PREFIX+id;}
@@ -2937,31 +2937,45 @@ function magicCompatibleFoci(element){
 function magicSelectedFocus(plan=draft){
  return magicCompatibleFoci(plan.magicElement).find(item=>item.id===plan.magicFocusId)||null;
 }
-function magicPreparationTurns(grade,charges,hasFocus=false){
- return grade===1?1:grade===2?(hasFocus?1:2):Math.max(1,3-Math.min(2,charges));
+function magicSelectedSecondFocus(plan=draft){
+ return magicCompatibleFoci(plan.magicSecondElement).find(item=>item.id===plan.magicSecondFocusId)||null;
+}
+function magicPreparationTurns(grade,charges,hasFocus=false,hasSecondFocus=false){
+ if(grade===1)return 1;
+ if(grade===2)return hasFocus&&charges>=1?1:2;
+ if(grade===3)return Math.max(1,3-(hasFocus?Math.min(2,charges):0));
+ if(grade===4)return Math.max(3,6-(hasFocus&&hasSecondFocus?Math.min(3,charges):0));
+ return 1;
 }
 function magicCourageCost(plan=draft){
- return (plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
+ return (plan.magicGrade===4?2:plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
 }
 function alignMagicDraft(){
  const known=magicKnownElements();
  if(!known.some(([id])=>id===draft.magicElement))draft.magicElement=known[0]?.[0]||"";
- draft.magicGrade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
- const focus=magicSelectedFocus();
- if(!focus){draft.magicFocusId="";draft.magicCharges=0;draft.magicAmplify=false;}
- else draft.magicCharges=Math.min(Number(draft.magicGrade)===3?2:0,focus.focusCharges||0,
-   Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
- if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
- if(draft.mode==="conjuracao"&&draft.magicElement){
-  draft.equipmentId=""; // SRD v0.89: foco não adiciona dado.
+ draft.magicGrade=[1,2,3,4].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ if(draft.magicGrade!==4){
+  draft.magicSecondElement="";draft.magicSecondFocusId="";
+ }else if(!known.some(([id])=>id===draft.magicSecondElement&&id!==draft.magicElement)){
+  draft.magicSecondElement="";draft.magicSecondFocusId="";
  }
+ const focus=magicSelectedFocus(),second=magicSelectedSecondFocus();
+ if(!focus){draft.magicFocusId="";draft.magicAmplify=false;}
+ if(!second)draft.magicSecondFocusId="";
+ const cap=draft.magicGrade===4?(focus&&second?Math.min(3,focus.focusCharges??0,second.focusCharges??0):0):
+  draft.magicGrade===3?(focus?Math.min(2,focus.focusCharges??0):0):
+  draft.magicGrade===2?(focus?Math.min(1,focus.focusCharges??0):0):0;
+ draft.magicCharges=Math.min(cap,Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
+ if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
+ if(draft.mode==="conjuracao"&&draft.magicElement)draft.equipmentId="";
 }
+
 function prepareMagic(element=""){
  if(state.pending){toast("Finalize a rolagem pendente antes de preparar uma conjuração.");return;}
  if(editMode){toast("Encerre a edição da ficha antes de conjurar.");return;}
  const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
  if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
- const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId;
+ const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId,secondFocusId=previous.magicSecondFocusId,secondElement=previous.magicSecondElement;
  const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,timeConfirmed=previous.magicTimeConfirmed;
  const de=Number.isInteger(previous.de)?previous.de:1;
  draft=freshDraft();draft.mode="conjuracao";draft.de=de;
@@ -2970,9 +2984,10 @@ function prepareMagic(element=""){
  const attr=(state.attributes.inteligencia||0)>0?"inteligencia":
   A.find(([id])=>(state.attributes[id]||0)>0)?.[0]||"";
  if(attr)draft.attribute={group:"attr",key:attr};
- draft.magicElement=chosen;draft.magicGrade=grade;
+ draft.magicElement=chosen;draft.magicSecondElement=secondElement;draft.magicGrade=grade;
  const compatible=magicCompatibleFoci(chosen);
  draft.magicFocusId=focusId||(previous.mode!=="conjuracao"&&compatible.length===1?compatible[0].id:"");
+ draft.magicSecondFocusId=secondFocusId;
  draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;
  draft.magicTimeConfirmed=chosen===previous.magicElement&&!!timeConfirmed;
  alignMagicDraft();sheetPage="play";render();
@@ -2996,11 +3011,12 @@ function renderMagicActions(){
 }
 function magicComposerFields(){
  if(draft.mode!=="conjuracao"||!draft.magicElement)return "";
- const chosen=draft.magicElement,grade=[1,2,3].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
- const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),charges=grade===3?Math.min(2,focus?.focusCharges??0):0;
+ const chosen=draft.magicElement,grade=[1,2,3,4].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
+ const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),secondFocus=magicSelectedSecondFocus(),
+  charges=grade===4?Math.min(3,focus?.focusCharges??0,secondFocus?.focusCharges??0):grade===3?Math.min(2,focus?.focusCharges??0):grade===2?Math.min(1,focus?.focusCharges??0):0;
  const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
- const time=magicPreparationTurns(grade,draft.magicCharges,!!focus);
+ const time=magicPreparationTurns(grade,draft.magicCharges,!!focus,!!secondFocus);
  const tacticalHint=chosen==="vento"?
  "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 16 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
  chosen==="fogo"&&ownsSkill("veneno")?
@@ -3011,17 +3027,25 @@ function magicComposerFields(){
  const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas · sem dado adicional"])];
  return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
   '<div class="fp-magic-config">'+
-  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 · +1d6 · imediato"],[2,"G2 · +1d10 · 2 turnos / 1 com foco"],[3,"G3 · +1d12 · 3 turnos (acelerável)"]],grade)+'</select></label>'+
-  '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
-  (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
-   options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+(3-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
+  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 · +1d6 · imediato"],[2,"G2 · +1d10 · 2 turnos / 1 carga = 1 turno"],[3,"G3 · +1d12 · até 2 cargas"],[4,"G4 · +2d12 · dois elementos G3 · mínimo 3 turnos"]],grade)+'</select></label>'+
+  '<label>Foco elemental principal<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
+  (grade===4?'<label>Segundo elemento G3<select data-magic-field="magicSecondElement">'+options(
+    [["","Escolha outro elemento habilitado"],...magicKnownElements().filter(([id])=>id!==chosen)],draft.magicSecondElement)+'</select></label>'+
+   '<label>Foco do segundo elemento<select data-magic-field="magicSecondFocusId">'+options(
+    [["","Sem foco"],...magicCompatibleFoci(draft.magicSecondElement).map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+" carga(s)"])],
+    secondFocus?.id||"")+'</select></label>':"")+
+  (grade>=2&&focus&&grade!==4?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
+   options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+magicPreparationTurns(grade,n,true)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
+  (grade===4&&focus&&secondFocus?'<label>Pares de cargas (um de cada foco)<select data-magic-field="magicCharges">'+
+   options(Array.from({length:charges+1},(_,n)=>[n,n+" par(es) de cargas · "+(6-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
   (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+
    '> Grau e efeito habilitados (confirmado com Narrador)</label>':"")+
+  (grade===4?'<p class="fp-magic-note">G4 plena exige dois elementos G3 diferentes, 1A + 2 Coragens e 6 turnos, reduzidos até 3 com pares de cargas: uma de cada foco. Habilitação e efeitos confirmados com Narrador.</p>':"")+
   '<p class="fp-magic-note">Role AGORA, ao declarar. Se houver espera, os dados ficam visíveis enquanto o inimigo pode reagir ao Pavor.</p>'+
   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
   '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
   (tacticalHint?'<p class="fp-magic-note">'+esc(tacticalHint)+'</p>':'')+
-  '<small class="fp-magic-note">Dado mágico: +1d'+({1:6,2:10,3:12}[grade])+' (pelo Grau, nunca pelo foco) · Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
+  '<small class="fp-magic-note">Dados mágicos: '+(grade===4?'+2d12':'+1d'+({1:6,2:10,3:12}[grade]))+' (pelo Grau, nunca pelo foco) · Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
   ' Coragem · '+draft.magicCharges+' carga(s). Intervenções do inimigo conforme Narrador.</small></div>';
 }
 
