@@ -66,7 +66,7 @@ export function equippedWeapons(c,catalog=[]){
   return {...it,kind,category,die,range,skill,eligible:eligible&&[6,10,12].includes(die)};
  });
 }
-export function weightAffinity(weapon,target){
+export function weightAffinity(weapon,target,attacker=null){
  if(!weapon)return {status:"manual",delta:0,description:"Sem peso de arma declarado."};
  const armor=armorOf(target);
  if(!armor)return {status:"manual",delta:0,description:"Alvo sem armadura: afinidade de peso sem critério automático aprovado."};
@@ -75,6 +75,8 @@ export function weightAffinity(weapon,target){
  const def=armor.category==="muito-leve"?"leve":armor.category==="muito-pesado"?"pesado":armor.category;
  const table={leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}};
  const value=table[atk]?.[def];
+ if(value===-1&&attacker?.skills?.includes(({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk]))
+  return {status:"known",delta:0,description:"A especialização do peso ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};
 }
