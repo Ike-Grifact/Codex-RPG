@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261122-fichas-v1";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261122-playtest-v2";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs";
@@ -73,8 +73,8 @@ function rosterSide(side){
   const armor=armorOf(c);
   return '<article class="cc-card'+(c.id===state.actor?" cc-attacker":"")+(c.id===state.target?" cc-target":"")+'">'+
    '<div class="cc-card-title"><strong>'+esc(c.name)+'</strong><small>'+esc(c.source||"Local")+'</small></div>'+
-   '<div class="cc-card-stats"><span>DE '+defense(c)+'</span><span>Vida '+c.life+'</span>'+
-   '<span>Coragem '+c.courage+'</span><span>Pavor '+c.pavorLocal+'</span><span>Integridade '+
+   '<div class="cc-card-stats"><span>DE '+defense(c)+'</span><span>Vida '+c.life+' · '+esc(combatHealth(c).id)+'</span>'+
+   '<span>Coragem '+c.courage+'</span><span>Pavor '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+' · G'+c.threatGrade+'</span><span>Integridade '+
    (armor?armor.integrity+"/"+armor.integrityMax:"—")+'</span></div>'+
    (c.acted?'<small class="cc-used">Já agiu nesta rodada</small>':'')+
    '<div class="cc-card-actions"><button type="button" data-inspect="'+esc(c.id)+'">Ver ficha</button>'+
@@ -238,7 +238,65 @@ function renderSources(){
   human&&a?.practices?.armas_conjuracao>0?"armas":"normal";
  $("spell-grade").value="1";$("extra-keep").checked=false;$("context-approved").checked=false;
  renderWeapons();
+ renderStepChoices();renderCombatControls();
 }
+function renderStepChoices(){
+ const a=actor(),prev=$("step-source").value;
+ const keys=[String($("base-source").value||""),
+  $("attribute-source").value?"attribute:"+$("attribute-source").value:"",
+  String($("extra-source").value||"")].filter(Boolean);
+ const distinct=[...new Set(keys)],opts=distinct.map(value=>{
+  const [group,key]=value.split(":");
+  const field={attribute:"attributes",practice:"practices",knowledge:"knowledges"}[group];
+  const grade=Number(a?.[field]?.[key]??-1);
+  const label=sources[group]?.find(x=>x[0]===key)?.[1];
+  return grade>=0&&grade<6&&label?{value,label:label+" G"+grade+" → G"+(grade+1)}:null;
+ }).filter(Boolean);
+ $("step-source").innerHTML='<option value="">Não elevar</option>'+opts.map(x=>
+  '<option value="'+esc(x.value)+'">'+esc(x.label)+'</option>').join("");
+ if(opts.some(x=>x.value===prev))$("step-source").value=prev;
+}
+function renderCombatControls(){
+ const a=actor();if(!a)return;
+ const cap=a.kind==="monstro"?stats(a).keepMax:0;
+ $("monster-keep").disabled=a.kind!=="monstro";
+ $("monster-keep").innerHTML=a.kind==="monstro"?
+  Array.from({length:Math.max(0,cap-1)},(_,i)=>i+2).map(n=>
+   '<option value="'+n+'"'+(a.keep===n?' selected':'')+'>'+n+' dados</option>').join(""):
+  '<option value="2">Apenas monstros</option>';
+ const capP=monsterCap(a.threatGrade);
+ const natural=a.kind==="monstro"?2:a.side==="inimigos"?(a.threatGrade>=2?3:2):
+  (a.level>=6?3:2);
+ const maximum=a.kind==="monstro"?cap:a.side==="inimigos"?Math.min(4,natural+1):
+  Math.min(4,natural+1);
+ $("marco-info").textContent="Retenção: "+natural+" dados sem gasto; máximo "+maximum+
+  " com recursos disponíveis. "+(a.kind==="monstro"?"Monstro usa Pavor local: +1P por dado acima de 2. ":
+  "Humanoides usam Coragem na retenção adicional. ")+
+  "Reserva local G"+a.threatGrade+": "+a.pavorLocal+"/"+capP+" P (G1 4P, +1 por Grau até 8P).";
+ const health=combatHealth(a);
+ $("health-info").textContent="Saúde: "+health.id+" · Vida "+a.life+
+  " · modificadores "+(health.e||0)+"E, "+(health.a||0)+"A, "+(health.p||0)+
+  "P · custo para agir "+(health.coragem===null?"indisponível":health.coragem+" Coragem")+
+  (a.kind==="monstro"&&health.coragem>0?
+   ". Em monstros sem reserva de Coragem, o custo para agir exige decisão manual; penalidades de símbolos são aplicadas.":"");
+ const previous=$("active-skill").value;
+ const purchased=a.skills||[];
+ const rows=purchased.map(id=>selectedActiveSkill(a,id)).filter(Boolean);
+ $("active-skill").innerHTML='<option value="">Sem ativação adicional</option>'+
+  rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name)+'</option>').join("");
+ if(rows.some(r=>r.id===previous))$("active-skill").value=previous;
+ if(!rows.some(r=>r.id===previous)){$("skill-courage").value="0";$("skill-approved").checked=false;}
+ updateSkillInfo();
+}
+function updateSkillInfo(){
+ const skill=selectedActiveSkill(actor(),$("active-skill").value);
+ const cost=$("skill-courage").value;
+ $("skill-info").textContent=skill?
+  skill.name+": "+skill.detail+" | Coragem declarada: "+cost+
+  ". Confira a ativação; o efeito narrativo deve ser aplicado pelo Narrador.":
+  "Selecione uma Perícia adquirida. O custo só é descontado ao confirmar a rolagem e seus efeitos não são automatizados.";
+}
+
 function renderWeapons(){
  const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
  $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
@@ -246,6 +304,7 @@ function renderWeapons(){
   ' · '+(w.die?"d"+w.die:"dado não cadastrado")+
   (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
  if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
+ else $("weapon-source").value=weapons.find(w=>w.eligible)?.id||"";
  renderAffinity();
 }
 function chosenWeapon(){
@@ -253,10 +312,9 @@ function chosenWeapon(){
 }
 function renderAffinity(){
  const hint=weightAffinity(chosenWeapon(),target(),actor());
- $("weight-affinity").textContent=hint.description+" Carga do atacante: "+
+ $("weight-affinity").textContent="Comparação por peso: "+hint.description+" A afinidade será aplicada na rolagem quando definida. Carga física do atacante: "+
   (actor()?weightUsed(actor()).toFixed(3):"—")+
   ". A categoria da armadura equipada determina a afinidade defensiva.";
- $("apply-affinity").disabled=hint.status!=="known"||hint.delta===0;
  return hint;
 }
 function options(){
