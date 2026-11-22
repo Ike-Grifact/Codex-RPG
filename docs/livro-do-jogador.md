@@ -1,6 +1,6 @@
 # Codex RPG — Livro do Jogador
 
-> **DE base defensiva revisada — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** para personagens e humanoides, a fórmula antiga foi **substituída**, não acrescida: **DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋)**. A armadura e a Maestria em Escudos continuam incidindo depois, com DE final entre 0 e 12. Monstros extraordinários não humanoides mantêm sua fórmula própria. [SRD v0.88](srd-continuidade-v0.88.md).
+> **Correção autoral da DE — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** humanoides usam **DE base = mínimo(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**. Vigor e Destreza são somados **antes** da divisão; não existe +1 fixo nem adição de uma segunda DE natural. Armadura e Maestria em Escudos modificam depois (teto base 9, final 12); **Roupas Simples são Muito Leves e concedem +2 DE**. Monstros extraordinários não humanoides mantêm a fórmula própria. **15 XP iniciais estão DEFINIDOS neste playtest.** [SRD v0.89](srd-continuidade-v0.89.md).
 
 
 > **Errata autoral v0.87 — 21/11/2026 [DEFINIDO / PENDENTE]:** **Manejo Perfeito — Armas Corpo a Corpo** é a única Perícia (1 XP, exige Disciplina Avançada + Destreza 2) que aplica **Vantagem Absoluta** quando se usa a arma correta contra oponente em Desvantagem; se já houver Vantagem Absoluta, aplica **Golpe Certo**. A entrada duplicada **Arma Certa** foi retirada. O +1E da Vantagem Absoluta substitui o +1A natural do mesmo confronto favorável. **Golpe Certo** continua PENDENTE em seu procedimento, sem efeito numérico inventado. Veja [SRD v0.87](srd-continuidade-v0.87.md); a v0.86 fica como registro histórico substituído neste ponto.
@@ -617,11 +617,11 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
 
-**EXPERIMENTAL — orçamento do SRD v0.79:** a ferramenta utiliza **15 XP iniciais compartilhados**. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reserva por categoria. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
+**DEFINIDO para o ciclo do playtest — 21/11/2026:** a ferramenta utiliza **15 XP iniciais compartilhados**. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reserva por categoria. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE base defensiva — v0.88 [DEFINIDO]:** **1 + Vigor + ⌊Destreza/2⌋**. **Agilidade e Atletismo não participam desse cálculo**, conforme a substituição autoral da antiga DE natural. Exemplo: Destreza **3**, Vigor **2** → **DE base = 1 + 2 + 1 = 4**. Arredondar a metade de Destreza para baixo antes de somar; limitar a DE base a **9**. Depois aplicar a armadura válida e benefícios de Perícias/escudo, com **DE defensiva final entre 0 e 12**. Não acrescentar a fórmula antiga. Para monstros extraordinários não humanoides preservar sua fórmula própria; ver [v0.88](srd-continuidade-v0.88.md).
+**DE base defensiva — v0.89 [DEFINIDO]:** **Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋**, com teto **9**. Some Vigor e Destreza antes de arredondar para baixo a metade. Exemplo: AGI 1, VIG 3, DES 2 e Atletismo 3 → **DE base = 1 + 2 + 1 = 4**. Não há +1 automático nem soma com DE natural antiga. A armadura equipada e Maestria em Escudos modificam em seguida, deixando a **DE final entre 0 e 12**; **Roupas Simples são Muito Leves (+2 DE)**. Monstros extraordinários não humanoides preservam sua fórmula própria; ver [v0.89](srd-continuidade-v0.89.md).
 
 **Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
 
@@ -811,22 +811,22 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
-### DE defensiva — Vigor e Destreza [DEFINIDO, v0.88]
+### DE defensiva — Agilidade + metade de (Vigor e Destreza) + Atletismo [DEFINIDO, v0.89]
 
-**A antiga DE natural foi revogada.** Para personagens e NPCs humanoides, usar **exclusivamente** a nova **DE base**, sem Agilidade, Atletismo ou acréscimo da fórmula histórica:
+A regra publicada na v0.88 foi corrigida por decisão autoral em 22/11/2026: **Vigor não é somado inteiro**, e **Agilidade e Atletismo permanecem na defesa**. A intenção era reunir Vigor e Destreza antes de dividir por dois, substituindo a DE natural antiga, sem adicionar um segundo valor ou um +1 automático.
 
-**DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋).**
+**DE base = mínimo(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋).**
 
 ```text
-DE base = min(9, 1 + VIG + ⌊DES/2⌋)
+DE base = min(9, AGI + ⌊(VIG + DES)/2⌋ + ⌊Atletismo/3⌋)
 DE final = min(12, max(0, DE base + armadura + efeitos defensivos válidos))
 ```
 
-O Grau de **Vigor é contado inteiro**, enquanto apenas Destreza é dividida por dois, arredondada para baixo. Agilidade e Atletismo continuam relevantes em deslocamento e outras regras próprias, mas **não alteram a DE base**. O limite 9 refere-se somente ao resultado base; Maestria em Escudos e demais efeitos definidos são aplicados depois, sem bônus duplicado. **Defesas conjuntas preservam o teto 30**, nas condições já definidas.
+A metade de **Vigor + Destreza** deve ser calculada **depois** da soma; dividir cada um e arredondar separadamente pode produzir um resultado diferente quando ambos são ímpares. **Atletismo** concede 1 DE a cada 3 graus completos. O teto da base permanece **9**, e a DE final fica entre **0 e 12**, após os modificadores aplicáveis. **Defesas conjuntas preservam o teto 30** nas condições já definidas.
 
-**Exemplo:** Vigor 6, Destreza 0, Agilidade 2 e Atletismo 6 → **DE base 7**, pois apenas 1 + Vigor 6 contribuem. Armadura **Leve:** DE 8 (+1); **Pesada:** DE 6 (−1); **Muito Pesada:** DE 5 (−2, se cumprir os requisitos de uso). O Grau da armadura não altera esses modificadores.
+**Exemplo:** Agilidade 2, Vigor 3, Destreza 1 e Atletismo 3 → **DE base 5** (2 + 2 + 1). Com **Armadura Leve**, fica DE 6; com **Roupas Simples, que são Muito Leves (+2 DE)**, fica DE 7. Armadura **Pesada** dá −1; **Muito Pesada** dá −2 (se cumprir os requisitos). O Grau da armadura não altera esses modificadores. **Maestria em Escudos** continua concedendo +1 com escudo físico equipado e requisitos atendidos, sem duplicação.
 
-A **DE final** nunca é inferior a 0 nem superior a **12**, depois de somar os efeitos aplicáveis. **Monstros extraordinários não humanoides** preservam sua regra de defesa própria; consultar a [continuidade v0.88](srd-continuidade-v0.88.md).
+Personagem sem investimento nessas fontes começa com **DE base 0**, antes dos equipamentos. Não existe um +1 fixo universal. **Monstros extraordinários não humanoides** mantêm **min(9; Agilidade + ⌊Destreza/2⌋)**; não recebem os termos de Vigor e Atletismo humanos. [SRD v0.89](srd-continuidade-v0.89.md).
 
 ### Condições da ação
 
