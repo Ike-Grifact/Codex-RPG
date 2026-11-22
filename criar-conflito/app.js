@@ -99,7 +99,14 @@ function combatWeaponInfo(actor,target){
  const range=/distância|arco|besta|revólver|pistola|shotgun|metralhadora/i.test(String(weapon?.name||""))||!!weapon?.firearm;
  const trained=range&&(actor.skills||[]).some(k=>k==="armas-fogo"||k==="armas-longo-alcance");
  const bonus=raw===null?0:raw<0&&trained?0:raw;
- return {weapon,weight,defenderWeight,raw,bonus,trained};
+ const catalogItem=catalog.find(x=>x.name?.toLowerCase()===String(weapon?.name||"").toLowerCase());
+ const die=Number(weapon?.die||catalogItem?.die||0);
+ const firearm=!!weapon?.firearm||weapon?.kind==="firearm"||catalogItem?.kind==="firearm";
+ const ranged=firearm||range;
+ const skill=ranged?(firearm?"armas-fogo":"armas-longo-alcance"):
+  ({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[weight];
+ const permitted=!!(skill&&(actor?.skills||[]).includes(skill)&&[6,10,12].includes(die));
+ return {weapon,weight,defenderWeight,raw,bonus,trained,die,skill,permitted};
 }
 function combatPreview(){
  if(!combatRoll)return null;
@@ -139,6 +146,9 @@ function renderCombat(){
  const attrs=a?ATTRIBUTES.map(([id,name])=>[id,name+" G"+(a.attributes?.[id]||0)]):[];
  const weapons=equippedWeapons(a);
  if(!weapons.some(w=>w.id===c.weaponId))c.weaponId="";
+ if(a&&Number(a.attributes?.[c.attribute]||0)===0)c.attribute=ATTRIBUTES.find(([id])=>Number(a.attributes?.[id]||0)>0)?.[0]||c.attribute;
+ if(a&&!isHumanoidKind(a.kind)&&(Number(a.attributes?.[c.second]||0)===0||c.second===c.base.split(":")[1]))
+  c.second=ATTRIBUTES.find(([id])=>id!==c.base.split(":")[1]&&Number(a.attributes?.[id]||0)>0)?.[0]||c.second;
  const armor=itemArmor(t),preview=combatPreview(),last=c.last;
  const armorText=armor?esc(armor.name)+" · "+Number(armor.integrity||0)+"/"+Number(armor.integrityMax||0):
   "Sem armadura equipada";
@@ -153,7 +163,9 @@ function renderCombat(){
   '<span>Vida <b>'+Number(t.life||0)+'</b></span><span>Integridade <b>'+armorText+'</b></span>'+
   '<span>Peso da arma <b>'+(info.weight?esc(info.weight):"Pendente/sem arma")+'</b></span>'+
   '<span>Peso defensivo <b>'+(info.defenderWeight?esc(info.defenderWeight):"PENDENTE (porte natural)")+'</b></span>'+
-  '<span>Afinidade <b>'+(info.raw===null?"Não aplicada":(info.raw>0?"+":"")+info.bonus+"A")+'</b></span></div>'+
+  '<span>Afinidade <b>'+(info.raw===null?"Não aplicada":(info.bonus>0?"+":"")+info.bonus+"A")+'</b></span></div>'+
+  (info.weapon?'<p class="cf-note">Arma equipada: '+esc(info.weapon.name)+
+   (info.permitted?' · dado d'+info.die+' habilitado (adicionado à pilha).':' · dado de arma não concedido; requer '+esc(info.skill||"Perícia correspondente")+'.')+'</p>':'')+
   (info.trained&&info.raw<0?'<p class="cf-note">Perícia de arma à distância neutraliza a Desvantagem natural de peso.</p>':"")+
   (!armor&&c.weightOverride===""?'<p class="cf-note">Sem armadura: selecione manualmente o porte do alvo se a afinidade de peso for pertinente.</p>':""):"";
  const dice=combatRoll?'<div class="cf-combat-roll"><h3>Dados mantidos · ataque de '+esc(a?.name||"")+'</h3>'+
@@ -171,10 +183,13 @@ function renderCombat(){
  const transfer=c.pending&&c.pending.remaining>0?'<div class="cf-combat-transfer"><h3>Transferência pendente · '+c.pending.remaining+' ponto(s)</h3>'+
   '<p class="cf-note">'+(c.pending.type==="pavor"?"Pavor do PJ: escolha a ameaça elegível mais próxima; sem ameaça elegível, use a reserva pública.":"Falha inimiga com Pavor: distribua Coragem entre os PJs, sem multiplicar por número de jogadores.")+'</p>'+
   '<label>Destino<select id="combat-recipient">'+combatOptions(
-   c.pending.type==="pavor"?[["public","Reserva pública (somente se sem ameaça elegível)"],...model.roster.map(u=>["threat:"+u.id,u.name+" · P local "+u.pavorLocal+"/"+stats(u).limitLocal])]:
+   c.pending.type==="pavor"?(model.roster.some(u=>u.pavorLocal<stats(u).limitLocal)?
+     model.roster.filter(u=>u.pavorLocal<stats(u).limitLocal).map(u=>["threat:"+u.id,u.name+" · P local "+u.pavorLocal+"/"+stats(u).limitLocal]):
+     [["public","Reserva pública (sem ameaça com capacidade)"]]):
    c.players.map(u=>[u.id,u.name+" · Coragem "+u.courage]),c.recipient||"")+'</select></label>'+
   '<label>Quantidade<input type="number" id="combat-transfer-amount" min="1" max="'+c.pending.remaining+'" value="'+c.pending.remaining+'"></label>'+
-  '<button type="button" id="combat-transfer">Transferir recurso</button></div>':"";
+  '<button type="button" id="combat-transfer">Transferir recurso</button>'+
+  '<button type="button" id="combat-dismiss-transfer">Encerrar saldo por decisão do Narrador</button></div>':"";
  const lastHTML=last?'<div class="cf-combat-result"><h3>Último confronto · '+esc(last.attackerName)+" → "+esc(last.targetName)+'</h3>'+
   '<p>'+esc(last.outcome)+' · '+last.e+'E / '+last.p+'P · Dano básico '+last.damage+
   (last.success?' · Acerto confirmado':' · Falha')+'</p>'+
@@ -199,6 +214,7 @@ function renderCombat(){
 }
 function beginCombatRoll(){
  const c=combatState(),a=combatAttacker(),t=combatDefender();
+ if(c.pending?.remaining>0)return notice("Conclua ou encerre manualmente a transferência de Pavor/Coragem antes de uma nova rolagem.");
  if(!a||!t||a===t)return notice("Selecione atacante e alvo diferentes.");
  const human=isHumanoidKind(a.kind),[group,key]=(c.base||"").split(":");
  if(!human&&key===c.second)return notice("Escolha dois Atributos diferentes para criaturas.");
@@ -206,7 +222,12 @@ function beginCombatRoll(){
   {first:key,second:c.second};
  const pool=composeActionPool(a,selection);
  if(!pool.ok)return notice(pool.error);
- const info=combatWeaponInfo(a,t),rolled=rollCreatureFaces(pool.pool);
+ const info=combatWeaponInfo(a,t);
+ if(info.weapon&&info.permitted){
+  if(pool.pool.length>=9)return notice("O dado da arma ultrapassaria o teto de 9 dados.");
+  pool.pool.push({id:"equipment.0",group:"equipment",key:info.weapon.id,sides:info.die,baseSides:info.die});
+ }
+ const rolled=rollCreatureFaces(pool.pool);
  const firstAttr=rolled.find(d=>d.group==="attribute");
  const firstOther=rolled.find(d=>d.id!==firstAttr?.id);
  const kept=[firstAttr?.id,firstOther?.id].filter(Boolean);
@@ -253,7 +274,11 @@ function combatTransfer(){
  if(!p||p.remaining<=0||!recipient)return notice("Escolha um destino válido.");
  const request=Math.floor(clamp(el("combat-transfer-amount")?.value,1,p.remaining));
  let current=0,cap=0,ref=null,label="";
- if(recipient==="public"&&p.type==="pavor"){current=model.publicPavor;cap=narratorCap(model.players);label="Reserva pública";}
+ if(recipient==="public"&&p.type==="pavor"){
+  if(model.roster.some(u=>u.pavorLocal<stats(u).limitLocal))
+   return notice("O Pavor deve ser alocado primeiro a uma ameaça elegível. Escolha o destinatário manualmente.");
+  current=model.publicPavor;cap=narratorCap(model.players);label="Reserva pública";
+ }
  else if(p.type==="pavor"&&recipient.startsWith("threat:")){
   ref=combatUnit(recipient);if(!ref)return notice("Ameaça indisponível.");
   current=ref.pavorLocal;cap=stats(ref).limitLocal;label=ref.name;
@@ -1128,6 +1153,12 @@ document.addEventListener("click",event=>{
  if(b.id==="combat-discard-roll"){combatRoll=null;renderCombat();return;}
  if(b.id==="combat-apply-damage")return applyCombatDamage();
  if(b.id==="combat-transfer")return combatTransfer();
+ if(b.id==="combat-dismiss-transfer"){
+  const c=combatState();
+  if(!c.pending?.remaining||!confirm("Registrar "+c.pending.remaining+" ponto(s) não transferido(s) como pendência encerrada manualmente pelo Narrador?"))return;
+  combatLog("Pendência",c.pending.remaining+" ponto(s) sem destinatário; encerrados por decisão manual do Narrador.");
+  c.pending=null;save();render();return;
+ }
  if(b.dataset.combatAdjust)return adjustCombatTarget(b.dataset.combatAdjust,Number(b.dataset.delta)||0);
 });
 document.addEventListener("change",event=>{
