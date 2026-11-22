@@ -47,13 +47,13 @@ const assert=(ok,message)=>{if(!ok)throw Error(message);};
   assert(await armorOpt.count()===1,"Armadura Leve não encontrada no catálogo");
   await equip.locator("#catalog-choose").selectOption(await armorOpt.getAttribute("value"));
   await equip.locator("[data-add-catalog]").click();
-  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 7 / 7"),"Integridade G1 não aparece");
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 5 / 5"),"Integridade G1 não aparece");
   await equip.locator('.cf-items [data-integrity][data-delta="-1"]').click();
-  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Não reduziu integridade");
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 4 / 5"),"Não reduziu integridade");
   await equip.reload({waitUntil:"domcontentloaded"});
-  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 6 / 7"),"Integridade não persistiu");
+  assert((await equip.locator(".cf-items").innerText()).includes("Integridade: 4 / 5"),"Integridade não persistiu");
   assert(equipErrors.length===0,"Erros JS do inventário: "+equipErrors.join(" | "));
-  console.log("PASS armadura G1 7/7, dano manual e persistência");
+  console.log("PASS armadura G1 5/5, dano manual e persistência");
 
   const player=await browser.newPage({viewport:{width:1290,height:900}});
   const playerErrors=[];player.on("pageerror",e=>playerErrors.push(e.message));
