@@ -212,6 +212,8 @@ function renderSources(){
  const a=actor();
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
+ // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
+ $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
  const human=isHumanoidKind(a?.kind),base=[];
  if(a){
   if(human)for(const g of ["practice","knowledge"]){
