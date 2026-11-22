@@ -2,13 +2,16 @@
 title: "Codex RPG — SRD Playtest Nível 1 v1.0"
 version: "1.0"
 cycle: "playtest-nivel-1"
-updated: "2026-11-21"
+updated: "2026-11-22"
 status: "DEFINIDO / PENDENTE DE PROCEDIMENTO"
 supersedes_as_active: "docs/srd-continuidade-v0.82.md"
 repository: "Ike-Grifact/Codex-RPG"
 ---
 
 # Codex RPG — SRD Playtest Nível 1 · v1.0
+
+> **DE base defensiva revisada — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** para personagens e humanoides, a fórmula antiga foi **substituída**, não acrescida: **DE base = mínimo(9; 1 + Agilidade + Vigor + ⌊Destreza/2⌋ + ⌊Atletismo/3⌋)**. A armadura e a Maestria em Escudos continuam incidindo depois, com DE final entre 0 e 12. Monstros extraordinários não humanoides mantêm sua fórmula própria. [SRD v0.88](srd-continuidade-v0.88.md).
+
 
 > **Decisão posterior — Runa Espinhos, Escudo Rúnico, Ácido e Ar (21/11/2026) [DEFINIDO / PROCEDIMENTOS PENDENTES]:** Runa Espinhos deixa de ganhar dois elementos gratuitos: recebe **somente um elemento entre Ar/Água/Terra/Fogo + Escudo Arcano racial, denominado Escudo Rúnico**, preservando Pugilismo, Criar Item de Foco e Magia e os graus raciais anteriores. Runa **não pode equipar armaduras físicas**; o Escudo Rúnico possui **um uso de ativação gratuito por dia**, **resistência a apenas um elemento** (não a imunidade do Escudo Arcano comum) e converte **cada 2P mantidos válidos em 1E na composição da barreira**, sem apagar efeitos de Pavor da rolagem. **Fogo + Veneno = Ácido:** ao acertar com Queimar combinado, a queimadura **substitui o requisito de Sangramento somente em Ácido**, transmitindo **1 acúmulo de Veneno (2 rodadas)**; Veneno isolado mantém sua condição normal. Custos/procedimentos extras da mistura continuam PENDENTES. **Ar:** admite correntes com curvas em **L**, além de linha/círculo/cone/X, para contornar cobertura por caminho livre e desalojar alvos, sem atravessar paredes sólidas nem garantir acerto. Não modificar custos, dados ou limites por inferência. Detalhes e histórico em [Continuidade v0.84](srd-continuidade-v0.84.md). Este adendo substitui qualquer referência anterior ao **segundo elemento gratuito de Runa Espinhos**.
 
