@@ -2006,11 +2006,11 @@ const WIZARD_CATEGORIES=[
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
- agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui para deslocamento e reação; não é somada à DE base defensiva."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui integralmente à DE defensiva, além do deslocamento."],
  destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
  inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
  influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
- vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Contribui integralmente para a DE base e a Vida, conforme o SRD v0.88."]
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Destreza e então divide por 2 (SRD v0.89). Contribui para a Vida."]
 };
 const WIZARD_TRAINING_GUIDE={
  "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
@@ -3000,7 +3000,7 @@ function magicComposerFields(){
  const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),charges=grade===3?Math.min(2,focus?.focusCharges??0):0;
  const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
- const time=magicPreparationTurns(grade,draft.magicCharges);
+ const time=magicPreparationTurns(grade,draft.magicCharges,!!focus);
  const tacticalHint=chosen==="vento"?
  "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 16 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
  chosen==="fogo"&&ownsSkill("veneno")?
@@ -3008,22 +3008,21 @@ function magicComposerFields(){
  "Ácido: Fogo + Veneno, em acerto com Queimar aplica 1 acúmulo de Veneno por 2 rodadas (sem Sangramento), somente na mistura com Maestria Elemental e habilitações válidas. Misturar custa 1A e a elevação G3 segue a regra comum (+1 Coragem por elemento G3). Sem dano duplicado; registro manual.":
  "Ácido: Fogo + Veneno exige Maestria Elemental para ativar juntos Queimar e Veneno. Improviso Elemental só adapta o tipo de dano, sem transmitir Veneno. A mistura normal custa 1A e respeita Graus; registro manual."):
  "";
- const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas"+(combatItem(item,"conjuracao").length?" · dado extra":"")])];
+ const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas · sem dado adicional"])];
  return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
   '<div class="fp-magic-config">'+
-  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 — imediato · 0 Coragem"],[2,"G2 — 2 turnos · 0 Coragem"],[3,"G3 — 3 turnos · 1 Coragem"]],grade)+'</select></label>'+
+  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 · +1d6 · imediato"],[2,"G2 · +1d10 · 2 turnos / 1 com foco"],[3,"G3 · +1d12 · 3 turnos (acelerável)"]],grade)+'</select></label>'+
   '<label>Foco elemental<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
   (grade===3&&focus?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
    options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+(3-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
   (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+
    '> Grau e efeito habilitados (confirmado com Narrador)</label>':"")+
-  (time>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicTimeConfirmed"'+(draft.magicTimeConfirmed?" checked":"")+
-   '> '+time+' turno(s) de preparação cumpridos</label>':"")+
+  '<p class="fp-magic-note">Role AGORA, ao declarar. Se houver espera, os dados ficam visíveis enquanto o inimigo pode reagir ao Pavor.</p>'+
   '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
   '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
   (tacticalHint?'<p class="fp-magic-note">'+esc(tacticalHint)+'</p>':'')+
-  '<small class="fp-magic-note">Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
-  ' Coragem · '+draft.magicCharges+' carga(s) de foco. Fonte elemental, efeitos e amplificação são resolvidos conforme regras e Narrador.</small></div>';
+  '<small class="fp-magic-note">Dado mágico: +1d'+({1:6,2:10,3:12}[grade])+' (pelo Grau, nunca pelo foco) · Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
+  ' Coragem · '+draft.magicCharges+' carga(s). Intervenções do inimigo conforme Narrador.</small></div>';
 }
 
 let inventoryPane="bag";
@@ -3936,7 +3935,7 @@ function vitalHelpDetails(kind){
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
  defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 9 e total com modificadores limitado a 12.",
- "DE base: 1 + Vigor ("+(a.vigor||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
+ "DE base: AGI "+(a.agilidade||0)+" + ⌊(VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋ + ⌊ATL "+(p.atletismo||0)+"/3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve +2 em todas as defesas). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
@@ -4531,6 +4530,9 @@ function renderPending(){
    'Confronto favorável com arma equipada: <strong>Vantagem Absoluta (+1E)</strong> aplicada no lugar do +1A natural de afinidade.')+'</div>':"";
  const asuraSummary=p.opts.asura?
  '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
+ const magicWait=p.opts.magicElement&&!p.opts.magicTimeConfirmed?
+   '<div class="fp-alert"><strong>Conjuração em preparação.</strong> Os dados já foram rolados e os símbolos são conhecidos. Pavor mantido oferece ao inimigo oportunidade de revidar, fugir ou tentar interromper, conforme o Narrador; não é cancelamento automático.</div>'+
+   '<button type="button" class="fp-secondary" data-action="magic-preparation-complete">Confirmar preparação cumprida com o Narrador</button>':"";
  const magicSummary=p.opts.magicElement?
   '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
   '</strong> · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId)+' turno(s) · '+(p.opts.magicCharges||0)+
@@ -4611,7 +4613,7 @@ function renderPending(){
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
- return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+asuraSummary+manejoPerfeitoSummary+
+ return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
   '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
@@ -5416,7 +5418,12 @@ function onClick(event){
   else selected.add(id);
   p.selected=[...selected];p.cancelP=0;p.pairs=0;p.pass=0;save();renderComposer();break;
  }
- case "finalize":finalize();break;
+ case "magic-preparation-complete":{
+   const p=state.pending;if(!p?.opts?.magicElement)return;
+   p.opts.magicTimeConfirmed=true;save();renderComposer();
+   toast("Tempo confirmado. Resolva as oportunidades de Pavor antes de finalizar.");break;
+  }
+  case "finalize":finalize();break;
  case "discard":
   if(!state.pending)return;
   if(confirm("Descartar a rolagem já revelada? Isso deve ocorrer apenas por decisão do Narrador; os dados não serão reaproveitados.")){
