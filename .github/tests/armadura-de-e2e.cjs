@@ -31,7 +31,7 @@ const assert=require("node:assert/strict");
   const tooltip=page.locator("#fp-vital-tooltip");
   assert.equal(await tooltip.isVisible(),true,"O detalhe deve abrir ao toque");
   assert.match(await tooltip.textContent(),/todas as defesas/,"A explicação detalhada fica no tooltip");
-  assert.match(await tooltip.textContent(),/Total = 2/,"O tooltip usa a defesa calculada e não um exemplo fixo");
+  assert.match(await tooltip.textContent(),/Total = 3/,"O tooltip usa a defesa calculada e não um exemplo fixo");
   await page.keyboard.press("Escape");
   assert.equal(await tooltip.isVisible(),false,"Escape fecha a explicação");
   await page.setViewportSize({width:1200,height:900});
