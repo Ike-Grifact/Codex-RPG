@@ -8,6 +8,7 @@ on:
       - '.github/tests/simulador-tatico-e2e.cjs'
       - '.github/workflows/conflitos-e2e.yml'
       - '.github/tests/conflito-e2e.cjs'
+      - '.github/tests/conflito-comparativo-e2e.cjs'
       - '.github/tests/conflito-rolagens-e2e.cjs'
       - '.github/tests/conflito-humanoides-e2e.cjs'
       - '.github/tests/conflito-playtest-historico-e2e.cjs'
