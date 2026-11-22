@@ -214,6 +214,8 @@ function renderSources(){
  lastActor=a?.id||"";
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
+ // Elevação temporária da fonte também não atravessa combatentes ou rodadas.
+ $("step-source").value="";
  const human=isHumanoidKind(a?.kind),base=[];
  if(a){
   if(human)for(const g of ["practice","knowledge"]){
