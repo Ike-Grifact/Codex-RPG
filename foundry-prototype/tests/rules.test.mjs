@@ -90,7 +90,7 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.training,2);
  assert.equal(xp.skills,2);
  assert.equal(xp.grant,19);
- assert.equal(naturalDE(s),3); // base1 + AGI1 + VIG1 + DES/2=0
+ assert.equal(naturalDE(s),2); // base1 + VIG1 + DES/2=0; sem Agilidade
  assert.equal(lifeMax(s),5);
  assert.equal(maxCourage(1),10);assert.equal(maxCourage(5),11);assert.equal(maxCourage(10),12);assert.equal(maxCourage(20),13);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
@@ -150,8 +150,8 @@ test("DE do alvo soma modificador de todas as armaduras e mantém teto 12",()=>{
  const s=human();s.attributes.agilidade=2;s.attributes.destreza=2;s.attributes.vigor=2;
  const heavy={type:"equipment",system:{kind:"armor",equipped:true,category:"pesado"}};
  const light={type:"equipment",system:{kind:"armor",equipped:true,category:"leve"}};
- assert.equal(defenseDE({system:s,items:[heavy]}),5); // base1+AGI2+VIG2+DES/2=1-1
- assert.equal(defenseDE({system:s,items:[light]}),7); // base1+AGI2+VIG2+DES/2=1+1 da armadura
+ assert.equal(defenseDE({system:s,items:[heavy]}),3); // base1+VIG2+DES/2=1-1
+ assert.equal(defenseDE({system:s,items:[light]}),5); // base1+VIG2+DES/2=1+1 da armadura
 });
 
 
