@@ -245,9 +245,9 @@ test("Domar Média exige Domar Pequena e Influência 3, Inteligência 1, Apresen
  t.attributes.influencia=3;t.practices.apresentacao=0;assert.equal(canBuyDomarMedium(t),false);
 });
 
-test("Domar Grande exige explicitamente Pequena e Média, sem novas cobranças",()=>{
+test("Domar Grande exige explicitamente Pequena, Média e Apresentação 2, sem novas cobranças",()=>{
  const t=blank("humanoide");
- t.attributes.influencia=4;t.attributes.inteligencia=1;t.practices.apresentacao=1;
+ t.attributes.influencia=4;t.attributes.inteligencia=1;t.practices.apresentacao=2;
  assert.equal(canBuyDomarGrande(t),false,"não pode comprar Grande sem antecedente");
  t.skills=["domar-criatura-pequena"];
  assert.equal(canBuyDomarGrande(t),false,"falta Média");
@@ -259,7 +259,8 @@ test("Domar Grande exige explicitamente Pequena e Média, sem novas cobranças",
  assert.match(SKILLS.find(x=>x.id==="domar-criatura-grande")?.detail||"",/Domar Criatura Pequena/);
  assert.match(SKILLS.find(x=>x.id==="domar-criatura-grande")?.detail||"",/Domar Criatura Média/);
  t.attributes.influencia=3;assert.equal(canBuyDomarGrande(t),false);
- t.attributes.influencia=4;t.practices.apresentacao=0;assert.equal(canBuyDomarGrande(t),false);
+ t.attributes.influencia=4;t.practices.apresentacao=1;assert.equal(canBuyDomarGrande(t),false,"Grande exige Apresentação 2");
+ t.practices.apresentacao=0;assert.equal(canBuyDomarGrande(t),false);
 });
 
 
