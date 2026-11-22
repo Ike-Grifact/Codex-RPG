@@ -52,22 +52,22 @@ O modificador da **única armadura válida equipada** vale **em TODAS as defesas
 
 ## 3. Conjuração por Grau — DEFINIDO; probabilidades EXPERIMENTAIS
 
-**O dado mágico adicional pertence ao GRAU DA MAGIA, e NÃO ao foco.** Para cada conjuração habilitada, acrescentar exatamente **um** dado mágico à pilha, conforme o Grau declarado:
+**O dado mágico adicional pertence ao GRAU DA MAGIA, e NÃO ao foco.** Para cada conjuração habilitada, acrescentar os **dados mágicos correspondentes ao Grau declarado** à pilha:
 
 | Magia | Dado extra do Grau | Preparação básica |
 |---|---|---|
 | G1 | **+1d6** | 1 turno, imediata |
 | G2 | **+1d10** | 2 turnos sem aceleração |
 | G3 | **+1d12** | 3 turnos sem aceleração |
-| G4 | **PENDENTE** (não extrapolar d20 ou outro dado) | G4 plena: 6 turnos, mínimo 3, conforme regras existentes |
+| G4 | **+2d12** (dois dados d12 distintos) | G4 plena: 6 turnos, mínimo 3, conforme regras existentes |
 
-O dado do Grau **substitui** o de Graus anteriores: G2 recebe **+1d10, não +1d6+1d10**. Não se aplica +1E fixo pela preparação, não se concede dado duplicado pelo foco e não se acrescenta dado a uma ação que não seja conjuração de Grau habilitado. Respeitar até **9 dados rolados** e a retenção por Marco (**nível 1: 2; até 3 gastando 1 Coragem**). Não transformar a elevação temporária de uma fonte por Coragem em elevação automática do Grau da magia, de seus efeitos ou do dado adicional.
+Os dados do Grau **substituem** os de Graus anteriores: G2 recebe **+1d10**, G3 **+1d12** e G4 **+2d12**, nunca a soma acumulada dos Graus. **DEFINIDO — adendo autoral de 22/11/2026:** G4 exige as duas magias G3 de elementos diferentes, habilitadas, e utiliza dois dados d12 separados para rolagem/retenção, sujeitos aos limites de 9 rolados/4 mantidos. Não se aplica +1E fixo pela preparação, não se concede dado duplicado pelo foco e não se acrescenta dado a uma ação que não seja conjuração de Grau habilitado. Respeitar até **9 dados rolados** e a retenção por Marco (**nível 1: 2; até 3 gastando 1 Coragem**). Não transformar a elevação temporária de uma fonte por Coragem em elevação automática do Grau da magia, de seus efeitos ou do dado adicional.
 
 ### Foco — DEFINIDO
 
 - **O foco NÃO adiciona dado**: nem d6, nem d10, nem outro. Ele permite usar seu elemento quando válido e **acelerar** a preparação, respeitando cargas e requisitos. Não alterar dados de Atributos/Conhecimentos/Práticas.
-- **G2 com foco compatível** pode ser conjurada em **1 turno**, conservando o dado de Grau **+1d10** e os efeitos G2; sem foco, exige **2 turnos**. **O custo em cargas para acelerar G2 não foi definido**: não cobrar carga automaticamente até decisão autoral. A escolha de usar ou não o foco continua dependente de sua presença e correspondência elemental.
-- **G3 com foco:** regras de aceleração já definidas permanecem: 3 turnos sem carga, 2 turnos com 1 carga, 1 turno com 2 cargas do foco correspondente. G4 plena mantém sua regra própria, inclusive o mínimo de 3 turnos.
+- **G2 com foco compatível** pode ser conjurada em **1 turno**, conservando o dado de Grau **+1d10** e os efeitos G2; sem foco, exige **2 turnos**. **Custo DEFINIDO em 22/11/2026: exatamente 1 carga do foco compatível é gasta para reduzir G2 de 2 para 1 turno.** Sem carga disponível ou sem gastar a carga, G2 continua com 2 turnos. Nenhum dado extra é recebido do foco.
+- **G3 com foco:** regras de aceleração já definidas permanecem: 3 turnos sem carga, 2 turnos com 1 carga, 1 turno com 2 cargas do foco correspondente. G4 plena mantém sua regra própria: **2d12**, dois elementos G3 diferentes, base de 6 turnos, redução de 1 turno por **1 carga de cada um dos dois focos correspondentes** quando usados, até 3 turnos; custos da mistura **1A + 2 Coragens** conforme o Livro do Jogador. Nunca acelerar G4 com um foco único, nem abaixo de 3 turnos.
 - Um foco precisa corresponder ao elemento; **basta estar no inventário**. Graus, efeitos, fontes elementais, preparação e cargas permanecem sujeitos às habilitações existentes. O foco não cria uma Perícia, Grau nem dado adicional.
 
 ## 4. Rolagem no início da preparação — DEFINIDO
@@ -88,6 +88,6 @@ O dado do Grau **substitui** o de Graus anteriores: G2 recebe **+1d10, não +1d6
 
 ## 6. Implementação e pendências
 
-**Implementar no criador/ficha, simulação e superfícies compatíveis:** 15 XP iniciais e nenhuma reserva 6/8/5; DE com Agilidade + metade da soma Vigor/Destreza + Atletismo/3; Roupas Simples/Muito Leve +2 em qualquer defesa; conjuração rola ao declarar, recebe um dado por Grau, e não recebe dado do foco; foco acelera conforme Grau e cargas, sem efeitos numéricos inventados.
+**Implementar no criador/ficha, simulação e superfícies compatíveis (adendo autoral DEFINIDO em 22/11/2026: G2 = 1 carga; G4 = 2d12):** 15 XP iniciais e nenhuma reserva 6/8/5; DE com Agilidade + metade da soma Vigor/Destreza + Atletismo/3; Roupas Simples/Muito Leve +2 em qualquer defesa; conjuração rola ao declarar, recebe os dados de seu Grau (G1 d6, G2 d10, G3 d12, G4 2d12), e não recebe dado do foco; foco acelera conforme Grau e cargas, sem efeitos numéricos inventados.
 
-**PENDENTE:** Grau 4 e seu dado, custos específicos de G2 com foco e procedimento universal para interrupções. **EXPERIMENTAL:** balanceamento de acertos limpos, acertos com Pavor, oportunidades de resposta, mobilidade de atiradores e eficiência dos conjuradores com 15 XP.
+**DEFINIDO:** G2 usa exatamente 1 carga do foco para acelerar a 1 turno; G4 utiliza dois dados d12 e segue os custos, os dois elementos e os tempos já fixados. **PENDENTE:** procedimento universal para interrupções, Grau mínimo de focos de G4 e equivalência entre abundância ambiental e cargas. Não inventar esses parâmetros. **EXPERIMENTAL:** balanceamento de acertos limpos, acertos com Pavor, oportunidades de resposta, mobilidade de atiradores e eficiência dos conjuradores com 15 XP.
