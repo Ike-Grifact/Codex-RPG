@@ -269,7 +269,7 @@ function inventory(t,x){
     ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
-  '<p class="cf-note">Integridades G1 vigentes: Roupas Simples/Muito Leve 3, Leve 7, Média 12, Pesada 17. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
+  '<p class="cf-note">Integridades G1 vigentes: Roupas Simples/Muito Leve 2, Leve 5, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
 }
 
 
