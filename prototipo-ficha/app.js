@@ -2607,8 +2607,7 @@ function renderXP(){
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
- return Math.min(9,1+(s.attributes.agilidade||0)+(s.attributes.vigor||0)+
-  Math.floor((s.attributes.destreza||0)/2)+Math.floor((s.practices.atletismo||0)/3));
+ return Math.min(9,1+(s.attributes.vigor||0)+Math.floor((s.attributes.destreza||0)/2));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -3940,7 +3939,7 @@ function vitalHelpDetails(kind){
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
  defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 9 e total com modificadores limitado a 12.",
- "DE base: 1 + Agilidade ("+(a.agilidade||0)+") + Vigor ("+(a.vigor||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
+ "DE base: 1 + Vigor ("+(a.vigor||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
