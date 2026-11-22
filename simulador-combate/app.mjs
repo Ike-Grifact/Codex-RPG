@@ -2,7 +2,7 @@
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261122-playtest-v2";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261122-playtest-v2";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
