@@ -20,11 +20,11 @@ const assert=require("node:assert/strict");
   });
   await page.waitForSelector('#inventory-list [data-action="equip"]',{state:"attached"});
   const de=page.locator("#de-text"),label=page.locator("#de-label"),caption=page.locator("#de-caption");
-  assert.equal(await de.textContent(),"1");
+  assert.equal(await de.textContent(),"2");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
-  assert.equal(await de.textContent(),"2","DE total com Armadura Leve equipada");
+  assert.equal(await de.textContent(),"3","DE total com Armadura Leve equipada");
   assert.equal(await label.textContent(),"DE DEFENSIVA");
-  assert.match(await caption.textContent(),/Natural 1 · armadura \+1/,"O cartão mostra só o resumo");
+  assert.match(await caption.textContent(),/Base 2 · armadura \+1/,"O cartão mostra só o resumo");
   assert.equal(await page.locator(".fp-vitals").evaluate(el=>getComputedStyle(el).display),"flex","Indicadores compactos");
   assert.equal(await caption.isVisible(),false,"Subtexto deixa de ocupar espaço visual");
   await page.locator('[data-vital-open="defense"]').click();
@@ -88,9 +88,9 @@ const assert=require("node:assert/strict");
 
   assert.equal(await page.locator("#armor-integrity-text").textContent(),"7 / 7");
   await page.reload({waitUntil:"load"});
-  assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
+  assert.equal(await de.textContent(),"3","DE geral persiste após recarregar ficha equipada");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
-  assert.equal(await de.textContent(),"1","Desequipar elimina bônus");
+  assert.equal(await de.textContent(),"2","Desequipar elimina bônus");
 
   // Conjuração: foco compatível apenas no inventário, G3 acelerado para 1 turno.
   const mage={schema:"codex-html-playtest-v1",character:{
