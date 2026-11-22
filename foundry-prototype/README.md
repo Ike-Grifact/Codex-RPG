@@ -1,6 +1,6 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.27.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.28.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
@@ -8,7 +8,7 @@ A **Maestria em Apresentação** reúne os 17 efeitos do Bardo no Codex Genétic
 
 ## Criador de personagem
 
-Na aba Actors, use **Criar personagem**. O assistente passa por Identidade, Escolhas iniciais, Distribuir XP, VT e equipamentos e Revisão. O rascunho é salvo neste cliente para o usuário e mundo atuais. O Actor só é criado ao concluir a revisão. O Narrador encontra o fluxo de NPCs e ameaças em **Criação rápida / NPC**.
+Na ficha, use **Criar personagem**, ao lado de **Editar ficha**. O diretório de Actors oferece o mesmo botão para quem ainda não tem uma ficha própria. O assistente passa por Identidade, Escolhas iniciais, Distribuir XP, VT e equipamentos e Revisão. O rascunho é salvo neste cliente para o usuário e mundo atuais. O Actor só é criado ao concluir a revisão. O Narrador encontra o fluxo de NPCs e ameaças em **Criação rápida / NPC**.
 
 ## Conteúdo sincronizado com o site
 
@@ -75,7 +75,7 @@ Se o atualizador no Windows mostrar `EBUSY` ao remover `Data/systems/codex-rpg-f
 
 ### Criação pelo diretório do Foundry
 
-Use **Criar personagem** no diretório de Actors para montar um Aprendiz em etapas. O Narrador pode usar **Criação rápida / NPC** para criar Aprendiz, Humanoide, Criatura comum ou Monstro extraordinário. **Importar do site** recebe o JSON do Criador de Fichas ou do Criar Conflito. No diretório de Items e em **+ Novo equipamento** na ficha, use o catálogo de playtest ou crie um item personalizado.
+Use **Criar personagem** na ficha para montar um Aprendiz em etapas. O Narrador pode usar **Criação rápida / NPC** para criar Aprendiz, Humanoide, Criatura comum ou Monstro extraordinário. **Importar do site** recebe o JSON do Criador de Fichas ou do Criar Conflito. No diretório de Items e em **+ Novo equipamento** na ficha, use o catálogo de playtest ou crie um item personalizado.
 
 Para animar as faces rúnicas em 3D, ative o módulo **Dice So Nice** no mundo. O mesmo lançamento alimenta a animação sincronizada da mesa e as cartas dos dados mantidos. Nenhum cliente rerrola para animar; o resultado confirmado vai para o chat.
 

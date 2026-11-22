@@ -179,7 +179,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   for(const type of ["click","auxclick"])element.addEventListener(type,event=>event.stopPropagation());
  }
  async _prepareContext(){
-  return {embedded:Boolean(this.host),draftBuilder:Boolean(this.draftAdvance),canManageXP:game.user.isGM&&!this.draftAdvance,actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
+  return {embedded:Boolean(this.host),draftBuilder:Boolean(this.draftAdvance),canManageXP:game.user.isGM&&!this.draftAdvance,actorName:this.actor.name,concept:this.actor.system.concept,
    hasOrigin:usesRacialRules(this.actor.system),categories:groups.map(([key,group])=>({label:group.label,description:group.description})),
   };
  }
@@ -203,7 +203,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    const planner=event.target.closest("[data-summon-plan]");
    if(planner){this.updateSummonPlan(planner);return;}
    const field=event.target.dataset.identity;
-   if(!["name","system.concept","system.origin"].includes(field)||!this.actor.isOwner)return;
+   if(!["name","system.concept"].includes(field)||!this.actor.isOwner)return;
    const value=event.target.value.trim();
    if(field==="name"&&!value){event.target.value=this.actor.name;return;}
    try{await this.actor.update({[field]:value});}catch(error){ui.notifications.error(error.message);}

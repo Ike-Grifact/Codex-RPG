@@ -12,7 +12,12 @@
           <span class="codex-overline">{{codex.actorTypeLabel}}{{#if codex.sheetLocation}} · {{codex.sheetLocation}}{{/if}}</span>
           {{#if codex.editing}}<label class="codex-hero-name">Nome do personagem<input type="text" value="{{codex.actorName}}" data-field="name"></label>{{else}}<h2>{{codex.actorName}}</h2>{{/if}}
         </div>
-        {{#if codex.isOwner}}<button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>{{/if}}
+        {{#if codex.isOwner}}
+        <div class="codex-sheet-actions">
+          <button type="button" class="codex-mode-toggle" data-action="toggleEditing" {{#if codex.hasPending}}disabled{{/if}} aria-pressed="{{#if codex.editing}}true{{else}}false{{/if}}">{{#if codex.editing}}Concluir edição · Jogar{{else}}Editar ficha{{/if}}</button>
+          {{#if codex.canCreateCharacter}}<button type="button" data-action="createCharacter">Criar personagem</button>{{/if}}
+        </div>
+        {{/if}}
       </div>
       <div class="codex-identity-fields">
         <label>Conceito / profissão <input type="text" value="{{codex.concept}}" data-field="system.concept" {{#unless codex.editing}}readonly{{/unless}}></label>
@@ -21,13 +26,10 @@
         {{else}}
           <label>Nível <input type="number" min="1" max="20" value="{{codex.level}}" data-field="system.level" {{#unless codex.editing}}readonly{{/unless}}></label>
         {{/if}}
-        {{#if codex.editing}}
-        <label>Origem narrativa<input type="text" value="{{codex.origin}}" data-field="system.origin">{{#if codex.race}}<small>{{codex.race}}</small>{{/if}}</label>
-        {{else}}
+        {{#if codex.race}}
         <div class="codex-origin-display">
-          <span>{{#if codex.race}}Linhagem{{else}}Origem narrativa{{/if}}</span>
-          <strong>{{#if codex.race}}{{codex.race}}{{else}}{{#if codex.origin}}{{codex.origin}}{{else}}—{{/if}}{{/if}}</strong>
-          {{#if codex.race}}{{#if codex.origin}}<small>{{codex.origin}}</small>{{/if}}{{/if}}
+          <span>Linhagem</span>
+          <strong>{{codex.race}}</strong>
         </div>
         {{/if}}
       </div>

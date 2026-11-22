@@ -20,7 +20,6 @@
           <label>Linhagem<select data-wizard-select="race">{{#each races}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
           <label>Virtude<input type="text" maxlength="60" value="{{identity.virtue}}" data-wizard-text="virtue"></label>
           <label>Personalidade<input type="text" maxlength="100" value="{{identity.personality}}" data-wizard-text="personality"></label>
-          <label class="is-wide">Origem narrativa<input type="text" maxlength="120" value="{{identity.origin}}" data-wizard-text="origin"></label>
           {{#if elements}}
           <label class="is-wide">Elemento inicial<select data-wizard-select="element">
             <option value="">Escolha um elemento</option>{{#each elements}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}

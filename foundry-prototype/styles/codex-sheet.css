@@ -866,7 +866,8 @@
 }
 .codex-sheet .codex-portrait.is-placeholder { background:#232323; }
 .codex-sheet .codex-brand { border:0; padding-bottom:0; }
-.codex-sheet .codex-brand > div { flex:1 1 200px;min-width:0; }
+.codex-sheet .codex-brand > div:first-child { flex:1 1 200px;min-width:0; }
+.codex-sheet .codex-brand .codex-sheet-actions { flex-direction:row; flex-wrap:wrap; gap:6px; }
 .codex-sheet .codex-hero-name input {
   background:var(--cx-field);
   color:var(--cx-text);
@@ -1048,7 +1049,7 @@
   .codex-character-sheet .codex-sheet .codex-hero { grid-template-columns:68px minmax(0,1fr); gap:8px; }
   .codex-character-sheet .codex-sheet .codex-portrait-column { width:auto; }
   .codex-sheet .codex-identity-fields { grid-template-columns:minmax(0,1fr) minmax(56px,.45fr); }
-  .codex-sheet .codex-identity-fields > :last-child { grid-column:1/-1; }
+  .codex-sheet .codex-identity-fields > .codex-origin-display { grid-column:1/-1; }
   .codex-sheet .codex-vital { padding:5px 7px; gap:4px; }
   .codex-sheet .codex-vital-primary strong { font-size:19px; }
   .codex-vital-primary img { width:22px; height:22px; }

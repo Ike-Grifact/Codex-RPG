@@ -6,7 +6,7 @@ import {purchaseItemsPlan,startingResources,walletValue,RESOURCE_NAMES} from "./
 
 export function newCharacterDraft(){
  return {
-  step:0,identity:{name:"",concept:"",origin:"",race:"humano",element:"",virtue:"",personality:"",img:""},
+  step:0,identity:{name:"",concept:"",race:"humano",element:"",virtue:"",personality:"",img:""},
   starter:{attribute:"",training:""},confirmed:"",advances:[],
   allocation:Object.fromEntries(Object.keys(RESOURCE_NAMES).map(key=>[key,4])),
   preferredResource:"ervas",orders:[],

@@ -7,7 +7,7 @@ import {keepForActor,rollResult,alternativesFor,usesLocal,pendingRollFor} from "
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
 import {equippedDie,equippedArmor,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
-import {createCodexItem} from "./creation-ui.mjs";
+import {createCodexActor,createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {equipmentView} from './equipment-view.mjs';
@@ -54,6 +54,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  sheetPage(_event,target){return this._selectSheetPage(target.dataset.page);},
  inventoryPage(_event,target){this._inventoryPage=target.dataset.pane;this._showSheetState(this.element);},
  resourceDetails(_event,target){this._selectResource(target.dataset.vital);},
+ createCharacter(){return createCodexActor();},
  lightHands:CodexCharacterSheet.lightHands,
  sphere(_event,target){return this._request({action:"sphere",kind:target.dataset.kind});},
  chooseSource:CodexCharacterSheet.chooseSource,repeatDiscipline:CodexCharacterSheet.repeatDiscipline,showRoll:CodexCharacterSheet.showRoll,adjustGrade:CodexCharacterSheet.adjustGrade,toggleEditing:CodexCharacterSheet.toggleEditing,
@@ -113,14 +114,14 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    equipment:equipmentView(actor,this._equipmentFilters),hasDruidic:s.skills.includes('pericia-druidica'),transformed:!!s.transformation?.kind,
    movement:standardMovement(s),canAttack:canPrepare,canCast:canPrepare&&!attributesOnly&&elements.length>0,
    actorName:actor.name,portrait:actor.img,defaultPortrait:actor.img==="icons/svg/mystery-man.svg",editing:this._editing&&actor.isOwner,
-   canOpenDNA,appId:this.id,isGM:game.user.isGM,
+   canOpenDNA,canCreateCharacter:Actor.implementation.canUserCreate(game.user),appId:this.id,isGM:game.user.isGM,
    pages:sheetTabs.filter(([id])=>id!=="genetic"||canOpenDNA).map(([id,label,description])=>({id,label,description})),
    inventoryPages:inventoryTabs.map(([id,label,icon])=>({id,label,icon})),
    identityOpen:this.element?.querySelector(".codex-identity-details")?.open,
    progressOpen:this.element?.querySelector(".codex-creation-panel")?.open ?? (!attributesOnly&&!s.monsterHumanoidRules&&!(hasFirstAttribute&&hasTraining)),
    actorTypeLabel:actorKinds[actor.type],
    sheetLocation:actor.isToken?"Token na cena":actor.prototypeToken?.actorLink===false?"Ficha-base":"",
-   concept:s.concept,origin:s.origin,race:RACES[s.race]?.name,virtue:s.virtue,personality:s.personality,
+   concept:s.concept,race:RACES[s.race]?.name,virtue:s.virtue,personality:s.personality,
    notes:s.notes,abilities:s.abilities,leader:s.leader,isHostile:actor.type!=="character",
    level:s.level,life:s.life.value,lifeMax:lifeMax(s),medical:s.life.medical,
    health:healthByLife(s,s.life.value),healthApplied:actor.type==="character",
@@ -341,7 +342,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   }
   if(el.dataset.field){
    if(!this.actor.isOwner||!this._editing)return;
-   const fields=["name","system.concept","system.origin","system.virtue","system.personality","system.notes","system.abilities","system.leader","system.level","system.xp","system.threatGrade"];
+   const fields=["name","system.concept","system.virtue","system.personality","system.notes","system.abilities","system.leader","system.level","system.xp","system.threatGrade"];
    if(!fields.includes(el.dataset.field))return;
    let value=el.type==="checkbox"?el.checked:el.value;
    if(el.dataset.field==="system.level")value=Math.max(1,Math.min(20,Math.floor(Number(value)||1)));

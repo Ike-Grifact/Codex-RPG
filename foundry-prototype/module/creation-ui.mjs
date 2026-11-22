@@ -145,7 +145,8 @@ function addDirectoryButton(root, id, label, callback) {
 export function registerCodexCreation() {
   Hooks.on("renderActorDirectory", (_application, root) => {
     if (!Actor.implementation.canUserCreate(game.user)) return;
-    addDirectoryButton(root, "actor", "Criar personagem", createCodexActor);
+    if (game.actors.some(actor => actor.isOwner)) root.querySelector('[data-codex-create="actor"]')?.remove();
+    else addDirectoryButton(root, "actor", "Criar personagem", createCodexActor);
     if(game.user.isGM)addDirectoryButton(root, "quick", "Criação rápida / NPC", createQuickActor);
     addDirectoryButton(root, "import", "Importar do site", importCodexActors);
   });
