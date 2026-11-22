@@ -2607,8 +2607,8 @@ function renderXP(){
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
- return Math.min(9,(s.attributes.agilidade||0)+Math.floor((s.attributes.destreza||0)/2)+
-  Math.floor((s.attributes.vigor||0)/2)+Math.floor((s.practices.atletismo||0)/3));
+ return Math.min(9,1+(s.attributes.agilidade||0)+(s.attributes.vigor||0)+
+  Math.floor((s.attributes.destreza||0)/2)+Math.floor((s.practices.atletismo||0)/3));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -2701,9 +2701,9 @@ function defensePresentation(s=state){
  const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
  const modifier=bonus-penalty,shieldBonus=masteredShield(s)?1:0;
  const baseCaption=armor?
-  "DE natural "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
-  "DE natural "+natural;
- return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto natural 9 / final 12"};
+  "DE base "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
+  "DE base "+natural;
+ return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 9 / final 12"};
 }
 function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
 function itemLoad(it){
@@ -3906,7 +3906,7 @@ function renderVitals(){
  const integrity=$("armor-integrity-text"),integrityCaption=$("armor-integrity-caption");
  if(integrity)integrity.textContent=protection?(protection.max>0?protection.hp+" / "+protection.max:"0 / 0"):"—";
  if(integrityCaption)integrityCaption.textContent=protection?protection.name:"Sem armadura";
- $("de-caption").textContent="Natural "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
+ $("de-caption").textContent="Base "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
  if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
@@ -3939,8 +3939,8 @@ function vitalHelpDetails(kind){
  courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
- defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto natural 9 e total com modificadores limitado a 12.",
- "Natural: Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Vigor ("+(a.vigor||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 9 e total com modificadores limitado a 12.",
+ "DE base: 1 + Agilidade ("+(a.agilidade||0)+") + Vigor ("+(a.vigor||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+". ":"Sem armadura. ")+"Total = "+deDefense()+".",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
