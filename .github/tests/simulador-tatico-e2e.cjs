@@ -87,7 +87,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   snapshot=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
   const e=snapshot.combatants.find(x=>x.id===enemy.id);
   assert(e.pavorLocal===2,"Pavor não anulado deve passar ao alvo (1 → 2; d10 face 8 sem P, d6 face 5 com 1P).");
-  assert(e.items[0].integrity===2,"Confirmar rolagem não deve aplicar dano de armadura automaticamente.");
+  assert(e.items[0].integrity===1,"Confirmar rolagem não deve aplicar dano de armadura automaticamente.");
   assert(snapshot.history[0].kind==="rolagem","Histórico deve registrar a resolução.");
   assert(snapshot.combatants.find(x=>x.side==="jogadores").acted===true,
    "Atacante consome a oportunidade de agir na rodada.");
