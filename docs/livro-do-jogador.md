@@ -1,6 +1,6 @@
 # Codex RPG — Livro do Jogador
 
-> **DE base defensiva revisada — 22/11/2026 [DEFINIDO / equilíbrio EXPERIMENTAL]:** para personagens e humanoides, a fórmula antiga foi **substituída**, não acrescida: **DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋)**. A armadura e a Maestria em Escudos continuam incidindo depois, com DE final entre 0 e 12. Monstros extraordinários não humanoides mantêm sua fórmula própria. [SRD v0.88](srd-continuidade-v0.88.md).
+> **Atualização normativa — 22/11/2026, SRD v0.89 [DEFINIDO]:** **15 XP iniciais compartilhados**; **DE base = min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, sem +1 fixo; **Roupas Simples/Armadura Muito Leve +2 DE em TODAS as defesas**, sem duplicar esquiva; **conjuração rola no início**, com **um único dado pelo Grau** (G1 +1d6; G2 +1d10; G3 +1d12; G4 pendente), **foco não adiciona dado**, apenas pode habilitar a fonte elemental e acelerar, inclusive G2 para 1 turno. A versão v0.89 substitui a fórmula indevida da v0.88. [Continuidade v0.89](srd-continuidade-v0.89.md).
 
 
 > **Errata autoral v0.87 — 21/11/2026 [DEFINIDO / PENDENTE]:** **Manejo Perfeito — Armas Corpo a Corpo** é a única Perícia (1 XP, exige Disciplina Avançada + Destreza 2) que aplica **Vantagem Absoluta** quando se usa a arma correta contra oponente em Desvantagem; se já houver Vantagem Absoluta, aplica **Golpe Certo**. A entrada duplicada **Arma Certa** foi retirada. O +1E da Vantagem Absoluta substitui o +1A natural do mesmo confronto favorável. **Golpe Certo** continua PENDENTE em seu procedimento, sem efeito numérico inventado. Veja [SRD v0.87](srd-continuidade-v0.87.md); a v0.86 fica como registro histórico substituído neste ponto.
@@ -314,7 +314,7 @@ Pode usar elemento de um **foco** para amplificar a forma ou um elemento present
 
 **Conjuração Refinada [DEFINIDO no nome e propósito]:** substitui Conjuração Equilibrada. Sua finalidade será **ampliar o alcance de disparos e efeitos mágicos**; metros, custo e procedimento serão reescritos pelo autor. Mantém o identificador de aquisição legado e histórico de XP. **A antiga alteração de peso tático Leve/Pesada por essa Perícia está revogada**. Amplificação de peso por 1 Coragem e redução gratuita com recarga são regras independentes da técnica, conforme SRD v0.43.
 
-**Integridade de armaduras G1 [DEFINIDO o abatimento; valores sujeitos a playtest]:** Muito Leve **0**, Leve **7**, Média **12**, Pesada **17**; redução de 3 em cada peça convencional. Escudos G1 **6/9/12** permanecem **PROPOSTOS e inalterados**. Escudo Arcano permanece **sem mudança**. **Não haverá nova regra de iniciativa.** Para G2–G4, aplicar −3 apenas sobre valores-base existentes; onde o valor anterior não foi aprovado, a Integridade permanece PENDENTE.
+**Integridade de armaduras G1 [DEFINIDO o abatimento; valores sujeitos a playtest]:** Muito Leve **3** (Roupas Simples; DE +2 em todas as defesas), Leve **7**, Média **12**, Pesada **17**; redução de 3 em cada peça convencional. Escudos G1 **6/9/12** permanecem **PROPOSTOS e inalterados**. Escudo Arcano permanece **sem mudança**. **Não haverá nova regra de iniciativa.** Para G2–G4, aplicar −3 apenas sobre valores-base existentes; onde o valor anterior não foi aprovado, a Integridade permanece PENDENTE.
 
 **Pedras elementais [DEFINIDO]:** preço comum = **B VT**, preço de **Veneno, Sagrado e Trevas = 3B VT**. As comuns compartilham preço e Sangue/Pedra da Alma não se compra no nível 1. **B é PENDENTE** em VT oficial; a ficha aceita referência **EXPERIMENTAL de mesa** e calcula 3B automaticamente.
 
@@ -617,11 +617,11 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
 
-**EXPERIMENTAL — orçamento do SRD v0.79:** a ferramenta utiliza **15 XP iniciais compartilhados**. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reserva por categoria. O XP conquistado depois da criação continua livre. Os custos e os dados por grau da tabela acima não mudam.
+**DEFINIDO — orçamento inicial vigente, SRD v0.89:** a criação possui **15 XP iniciais compartilhados**, não 18, 19 ou 20. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reservas 6/8/5 ou 7/7/5. Níveis não concedem XP automaticamente. O teto de referência é 260 XP acumulados no nível 20, incluindo os 15 iniciais. Custos por Grau e dados de fonte permanecem.
 
 **Vida máxima:** 3 + Vigor + piso(Força/2).
 
-**DE base defensiva — v0.88 [DEFINIDO]:** **1 + Vigor + ⌊Destreza/2⌋**. **Agilidade e Atletismo não participam desse cálculo**, conforme a substituição autoral da antiga DE natural. Exemplo: Destreza **3**, Vigor **2** → **DE base = 1 + 2 + 1 = 4**. Arredondar a metade de Destreza para baixo antes de somar; limitar a DE base a **9**. Depois aplicar a armadura válida e benefícios de Perícias/escudo, com **DE defensiva final entre 0 e 12**. Não acrescentar a fórmula antiga. Para monstros extraordinários não humanoides preservar sua fórmula própria; ver [v0.88](srd-continuidade-v0.88.md).
+**DE defensiva — SRD v0.89 [DEFINIDO]:** **min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, **sem +1 fixo**. Depois aplicar a armadura (Muito Leve/Roupas Simples **+2 em todas as defesas**, sem duplicação na esquiva) e os efeitos autorizados; teto final 12. A fórmula v0.88 está substituída. [v0.89](srd-continuidade-v0.89.md).
 
 **Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
 
@@ -811,22 +811,22 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
-### DE defensiva — Vigor e Destreza [DEFINIDO, v0.88]
+### DE defensiva — Agilidade, Vigor, Destreza e Atletismo [DEFINIDO, SRD v0.89]
 
-**A antiga DE natural foi revogada.** Para personagens e NPCs humanoides, usar **exclusivamente** a nova **DE base**, sem Agilidade, Atletismo ou acréscimo da fórmula histórica:
+**A fórmula apresentada na continuidade v0.88 foi corrigida por decisão autoral de 22/11/2026.** Não usar `1 + Vigor + ⌊Destreza/2⌋`, nem somar Vigor inteiro ou o bônus de +1 fixo.
 
-**DE base = mínimo(9; 1 + Vigor + ⌊Destreza/2⌋).**
+**DE base = mínimo(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋).**
 
 ```text
-DE base = min(9, 1 + VIG + ⌊DES/2⌋)
-DE final = min(12, max(0, DE base + armadura + efeitos defensivos válidos))
+DE base = min(9, AGI + piso((VIG + DES)/2) + piso(ATL/3))
+DE final = min(12, max(0, DE base + modificador da única armadura equipada + efeitos defensivos autorizados))
 ```
 
-O Grau de **Vigor é contado inteiro**, enquanto apenas Destreza é dividida por dois, arredondada para baixo. Agilidade e Atletismo continuam relevantes em deslocamento e outras regras próprias, mas **não alteram a DE base**. O limite 9 refere-se somente ao resultado base; Maestria em Escudos e demais efeitos definidos são aplicados depois, sem bônus duplicado. **Defesas conjuntas preservam o teto 30**, nas condições já definidas.
+**Somar Vigor com Destreza antes de dividir por 2**, arredondando para baixo uma única vez. Agilidade conta integralmente; Atletismo vale +1 a cada três Graus completos. Sem armadura, um personagem com AGI 1, VIG 1 e DES 1 tem DE base 2. Um personagem com AGI 1, VIG 2, DES 2 e ATL 3 tem DE base 4. Não existe DE mínima 1 por construção.
 
-**Exemplo:** Vigor 6, Destreza 0, Agilidade 2 e Atletismo 6 → **DE base 7**, pois apenas 1 + Vigor 6 contribuem. Armadura **Leve:** DE 8 (+1); **Pesada:** DE 6 (−1); **Muito Pesada:** DE 5 (−2, se cumprir os requisitos de uso). O Grau da armadura não altera esses modificadores.
+**Modificadores de armadura em todas as defesas, inclusive esquiva:** Muito Leve, incluindo **Roupas Simples: +2**; Leve +1; Média 0; Pesada −1; Muito Pesada −2 quando permitida. Aplicar depois do teto 9 da DE base. **Não duplicar +2 na esquiva.** Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez, limitada ao teto final 12. Integridade e Vida são contabilizadas separadamente.
 
-A **DE final** nunca é inferior a 0 nem superior a **12**, depois de somar os efeitos aplicáveis. **Monstros extraordinários não humanoides** preservam sua regra de defesa própria; consultar a [continuidade v0.88](srd-continuidade-v0.88.md).
+**Monstros extraordinários não humanoides** preservam sua fórmula própria. Referência prioritária: [SRD v0.89](srd-continuidade-v0.89.md).
 
 ### Condições da ação
 
@@ -958,6 +958,18 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 
 ## VII. Conjuração, elementos e possibilidades
+
+### Regra geral de dados, foco e declaração [DEFINIDO — SRD v0.89, 22/11/2026]
+
+**A magia adiciona um único dado pelo seu Grau: G1 +1d6; G2 +1d10; G3 +1d12.** Não acumular dados dos Graus anteriores; **o dado da magia não vem do item de foco**. O Grau 4 e seu dado permanecem **PENDENTES**, sem d20 presumido. Este dado integra a pilha normal (máximo 9 rolados, retenção por Marco) e não é uma fonte Atributo, Conhecimento ou Prática extra a ser comprada. A substituição da regra anterior de dado de foco vale para novas rolagens; não reescrever resultados históricos.
+
+**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Pavor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Pavor não é falha automática nem ataque bem-sucedido automático. **1A pode passar o protagonismo a um aliado**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Pavor.
+
+**Tempo da magia:** G1 imediato (1 turno); G2 2 turnos sem foco e **1 turno com foco compatível**, conservando G2 e +1d10; G3 3 turnos, reduzíveis para 2 por 1 carga ou 1 por 2 cargas do foco correspondente. G4 plena 6 turnos e mínimo 3 conforme regra própria. **O foco não soma dado** à rolagem e sua aceleração não muda o Grau nem concede Êxitos automáticos. **O custo exato de cargas de foco para G2 está PENDENTE:** o uso de foco compatível para acelerar está DEFINIDO, mas não impor 1 carga não aprovada. A rolagem inicia na declaração; **somente concluir/aplicar efeito após o tempo devido**. Critérios genéricos para interromper pela ação inimiga permanecem PENDENTES; aplicar as exceções aprovadas para técnicas específicas.
+
+Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substituída por **um dado pelo Grau**. Criação continua em **15 XP iniciais compartilhados**, com custos e requisitos normais.
+
+
 
 **Criar Item de Foco e Magia (1 XP; Disciplina 1 + Inteligência 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
 
