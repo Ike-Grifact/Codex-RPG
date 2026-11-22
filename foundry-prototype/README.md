@@ -53,7 +53,7 @@ Com combate ativo e um único alvo selecionado, o sistema tenta transferir **Pav
 
 ## Limites da automação atual
 
-Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **não é um wizard completo de compra de 6/8/5**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
+Esta versão **não** aplica dano automaticamente à Vida ou Integridade do alvo, nem estados especiais como Sangramento, Cravar, Derrubar, Enganchar, Explosivo, Perfuração direta ou travamento de arma. A seleção da característica registra a intenção no chat para resolução supervisionada. A criação tem XP calculado e requisitos básicos de Perícia, mas **ainda não oferece um assistente de compras completo para os 15 XP compartilhados**, não controla a despesa VT de compras, e a Perícia de comércio não tem fórmula aprovada. Magias de múltiplos elementos, Manejo Duplo e equipamento com duas fontes acumuláveis aguardam implementação específica. **Domar e Montar** continuam em revisão.
 
 ## Testes de regras
 
