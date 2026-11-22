@@ -7,10 +7,10 @@
  <title>Criar Conflito — Codex RPG</title>
  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
  <link rel="stylesheet" href="../assets/theme.css">
- <link rel="stylesheet" href="./styles.css?v=0.44-domar1">
+ <link rel="stylesheet" href="./styles.css?v=20261122-combat1">
  <script src="../assets/site.js" defer></script>
  <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
- <script type="module" src="./app.js?v=20261117-fogo-g2-free"></script>
+ <script type="module" src="./app.js?v=20261122-combat1"></script>
 </head>
 <body>
  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -31,7 +31,7 @@
  </header>
  <main class="cf-main shell" id="conteudo">
   <section class="cf-hero">
-   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.47 (em revisão)</span>
+   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.89 · Combate em playtest</span>
    <h1>Criar <em>Conflito.</em></h1>
    <p>Prepare um encontro com Humanoides, Criaturas/Monstros e Humanoides Monstros. Controle graus, dados, recursos e liderança sem trocar de página.</p>
    <div class="cf-hero-actions">
@@ -93,6 +93,12 @@
  <label>XP total das Grandes<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-grande" data-companion="grande" data-companion-field="xpTotal"></label>
  </div><strong id="companion-xp-total">0 XP dos companheiros</strong><small id="party-effective-xp">Grupo + companheiros: 80 XP</small>
  </div></section>
+  <section class="cf-combat-shell" id="resumo-combate" aria-label="Resumo comparativo de combate">
+   <div class="cf-section-title"><div><span class="eyebrow">COMPARATIVO · SEM VTT</span><h2>Resumo de combate</h2></div>
+    <button type="button" id="combat-import-players" class="cf-primary">Importar fichas do navegador</button></div>
+   <p class="cf-description">Use cópias dos personagens salvos na Ficha e as ameaças deste encontro. Escolha atacante e alvo, confira peso e proteção, role e distribua recursos. Sem mapa ou movimento. As fichas originais dos jogadores não são alteradas.</p>
+   <div id="combat-panel" aria-live="polite"></div>
+  </section>
 <section class="cf-layout">
    <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
     <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Suas ameaças</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
@@ -106,7 +112,7 @@
   </section>
   <section class="cf-guidance">
    <h2>Regras e limites desta versão</h2>
-   <p><strong>Humanoides</strong> usam as fontes, os dados e a economia dos jogadores, com 20 XP iniciais compartilhados em caráter experimental. <strong>Monstros extraordinários</strong> usam a escala própria de Atributos com d10 e d12. <strong>Criaturas comuns</strong> possuem atributos e XP próprios, sem receber automaticamente a progressão extraordinária.</p>
+   <p><strong>Humanoides</strong> usam as fontes, os dados e a economia dos jogadores, com 15 XP iniciais compartilhados conforme o SRD v0.89. <strong>Monstros extraordinários</strong> usam a escala própria de Atributos com d10 e d12. <strong>Criaturas comuns</strong> possuem atributos e XP próprios, sem receber automaticamente a progressão extraordinária.</p>
    <p>O painel <strong>Rolar dados</strong> de cada ameaça permite executar testes simbólicos com as fontes apropriadas. Humanoides usam Conhecimento ou Prática + Atributo; monstros e criaturas comuns usam dois Atributos na rolagem básica. O dano e os efeitos especiais não são aplicados automaticamente.</p>
    <p>O Pavor local começa cheio no início de cada confronto: G1 4P, G2 5P, G3 6P, G4 7P e G5–G6 8P. O Grau de ameaça limita o Pavor local. Monstros de grau 1–4 podem manter até três dados; grau 5–6 até quatro, pagando 1P por cada dado além dos dois básicos. Capacidades próprias, alterações extraordinárias e efeitos específicos dependem do SRD. A ficha não concede automaticamente ações, êxitos nem pontos de Pavor.</p>
    <p class="cf-note"><strong>PENDENTE:</strong> XP máximo por Grau monstruoso, escala exata de recompensas, procedimento de animais pequenos, divisão do Pavor entre ameaças e equilíbrio entre fichas. Estas lacunas não serão preenchidas por números fictícios.</p>
