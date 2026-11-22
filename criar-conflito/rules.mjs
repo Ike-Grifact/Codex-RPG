@@ -128,7 +128,7 @@ export function migrateArmorIntegrity(it){
  const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[5,[7,10]],"Armadura Média":[8,[12,15]],"Armadura Pesada":[12,[17,20]]};
  const spec=newValues[it.catalogId||it.name]||newValues[it.name];
  if(!spec)return it;
- const oldMax=Number(it.integrityMax??it.max??0);
+ const oldMax=Number(it.integrityMax??it.max??(typeof it.integrity==="object"?it.integrity.max:undefined)??0);
  if(!spec[1].includes(oldMax))return it;
  const had=Number(it.integrity?.value??(typeof it.integrity==="number"?it.integrity:it.hp??oldMax));
  const current=Math.min(spec[0],Math.max(0,spec[0]-Math.max(0,oldMax-had)));
