@@ -261,3 +261,16 @@ test("Domar Grande exige explicitamente Pequena e Média, sem novas cobranças",
  t.attributes.influencia=3;assert.equal(canBuyDomarGrande(t),false);
  t.attributes.influencia=4;t.practices.apresentacao=0;assert.equal(canBuyDomarGrande(t),false);
 });
+
+
+test("v0.88: humanoide usa DE base 1 + Agilidade + Vigor + pisos de Destreza e Atletismo; monstro preservado",()=>{
+ const h=blank("humanoide");
+ h.attributes.agilidade=1;h.attributes.destreza=2;h.attributes.vigor=3;h.practices.atletismo=3;
+ assert.equal(stats(h).de,7);
+ const hm=blank("humanoide-monstro");
+ hm.attributes.agilidade=1;hm.attributes.destreza=2;hm.attributes.vigor=3;hm.practices.atletismo=3;
+ assert.equal(stats(hm).de,7);
+ const m=blank("monstro");
+ m.attributes.agilidade=1;m.attributes.destreza=2;m.attributes.vigor=3;
+ assert.equal(stats(m).de,2);
+});
