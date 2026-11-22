@@ -206,7 +206,7 @@ function canBuySkill(t,id){
  if(id==="domar-criatura-media")return canBuyDomarMedium(t);
  if(id==="domar-criatura-grande")return canBuyDomarGrande(t);
  if(id==="domar-criatura-pequena")
-  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1&&Number(t?.practices?.apresentacao||0)>=1;
+  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1;
  return skillPrerequisite({...t,monsterRules:false},id);
 }
 function skillPanel(t){
