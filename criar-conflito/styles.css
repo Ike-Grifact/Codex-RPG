@@ -310,3 +310,31 @@
 .cf-companions label{display:flex;flex-direction:column;gap:4px;font-size:.8rem}
 .cf-companions input{width:100%;min-width:0}
 @media(max-width:620px){.cf-companions{grid-template-columns:1fr}}
+
+
+/* Resumo comparativo de combate — sem tabuleiro; conserva identidade do Criar Conflito. */
+.cf-combat-shell{margin:24px 0;padding:clamp(16px,2.3vw,32px);border:1px solid var(--border,#726e67);border-radius:14px;background:var(--panel,#171a1e)}
+.cf-combat-shell .cf-section-title{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.cf-combat-shell button{max-width:100%}
+.cf-combat-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));gap:12px;margin:15px 0}
+.cf-combat-controls label,.cf-combat-transfer label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:.9rem}
+.cf-combat-controls label:has(input[type=checkbox]){flex-direction:row;align-items:center}
+.cf-combat-controls select,.cf-combat-controls input:not([type=checkbox]),.cf-combat-transfer input,.cf-combat-transfer select{box-sizing:border-box;max-width:100%;width:100%;padding:9px;border-radius:7px;border:1px solid #777;background:#101319;color:inherit}
+.cf-combat-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr));gap:8px;margin:14px 0}
+.cf-combat-stats>span{padding:11px;border:1px solid #676563;border-radius:8px;display:flex;flex-direction:column;gap:7px;font-size:.85rem}
+.cf-combat-stats b{font-size:1.03rem;overflow-wrap:anywhere}
+.cf-combat-roll,.cf-combat-result,.cf-combat-transfer,.cf-combat-manual{margin-top:18px;padding:15px;border:1px solid #666;border-radius:10px}
+.cf-combat-roll h3,.cf-combat-result h3,.cf-combat-transfer h3,.cf-combat-manual h3{margin-top:0}
+.cf-combat-dice{display:flex;gap:9px;flex-wrap:wrap}
+.cf-combat-dice .cf-roll-die{flex:1 1 105px;max-width:155px;min-width:90px;padding:10px}
+.cf-combat-dice .cf-roll-die span{display:block;overflow-wrap:anywhere}
+.cf-combat-verdict{line-height:1.8;font-weight:500}
+.cf-combat-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cf-combat-actions span{border:1px solid #777;border-radius:8px;padding:7px;display:inline-flex;align-items:center;gap:8px}
+.cf-combat-actions button{min-width:32px;min-height:32px}
+.cf-combat-transfer{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+.cf-combat-transfer h3,.cf-combat-transfer p{flex-basis:100%;margin:0}
+.cf-combat-transfer label{flex:1 1 220px}
+.cf-combat-shell details{margin-top:18px;padding:8px 0}
+.cf-combat-shell details p{border-bottom:1px solid #5555;padding-bottom:9px}
+@media(max-width:700px){.cf-combat-shell{margin:12px 0;padding:12px}.cf-combat-shell .cf-section-title>button{width:100%}.cf-combat-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cf-combat-actions span{flex-grow:1;justify-content:space-between}}
