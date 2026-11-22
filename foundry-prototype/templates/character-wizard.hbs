@@ -1,5 +1,5 @@
-<div class="codex-foundry-root codex-wizard">
-  <header class="codex-wizard-header"><h2>Criar personagem</h2><p>Aprendiz G1 · 15 XP iniciais</p></header>
+<div class="codex-foundry-root codex-wizard{{#if developmentStep}} is-development{{/if}}">
+  {{#unless developmentStep}}<header class="codex-wizard-header"><h2>Criar personagem</h2><p>Aprendiz G1 · 15 XP iniciais</p></header>{{/unless}}
 
   <nav class="codex-wizard-steps" aria-label="Etapas da criação">
     {{#each steps}}<button type="button" data-action="wizardJump" data-step="{{index}}"

@@ -276,6 +276,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   }
   if(!this.listMode)window.CodexGeneGraph.render(map,{
    skills:nodes,selected:this.selected,showFuture:this.showFuture,edit:true,iconBase,
+   responsiveCamera:Boolean(this.draftAdvance),
    onAdjust:(id,delta)=>{
     const row=nodes.find(node=>node.id===id);
     if(!row||(delta>0?!row.canRaise:!row.canLower))return;

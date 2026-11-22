@@ -51,7 +51,7 @@
 .codex-wizard-source-grid small {color:var(--cx-muted)}
 .codex-wizard-source-dice {display:flex;align-items:center;gap:4px}
 .codex-wizard-source-dice .codex-die-svg {width:16px;height:16px}
-.codex-wizard .codex-dna-inline {position:static;max-width:100%;min-width:0;height:auto!important}
+.codex-wizard .codex-dna-inline {position:static;width:100%!important;max-width:100%;min-width:0;height:auto!important}
 .codex-wizard .codex-dna-root {padding:8px;background:transparent}
 .codex-dna-draft-lists {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:8px}
 .codex-dna-draft-lists section {display:grid;align-content:start;gap:4px}
@@ -80,4 +80,35 @@
  .codex-wizard-portrait {width:100px}
  .codex-wizard-fields {grid-template-columns:minmax(0,1fr)}
  .codex-wizard-steps {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+.codex-character-wizard .window-content {container-type:size;min-height:0;overflow-anchor:none}
+.codex-wizard.is-development .codex-wizard-summary {display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap}
+.codex-wizard.is-development .codex-wizard-summary dl {margin:0}
+.codex-wizard.is-development .codex-wizard-steps {margin-bottom:8px}
+.codex-wizard.is-development .codex-wizard-step {padding:10px}
+.codex-wizard .codex-dna-map {height:clamp(240px,55cqh,520px)}
+.codex-wizard .codex-dna-footer:has([data-dna-creation]:empty) {display:none}
+
+@container (max-width:759px) {
+ .codex-wizard .codex-dna-workspace {grid-template-columns:minmax(0,1fr)}
+ .codex-wizard .codex-dna-detail {max-height:none}
+}
+@container (min-width:760px) {
+ .codex-wizard .codex-dna-workspace {grid-template-columns:minmax(0,1fr) clamp(220px,23cqw,360px)}
+ .codex-wizard .codex-dna-detail {max-height:clamp(240px,55cqh,520px)}
+}
+@container (min-width:760px) and (min-height:560px) {
+ .codex-wizard.is-development:has(.codex-dna-map:not([hidden])) {display:flex;flex-direction:column;height:100%}
+ .codex-wizard-layout.is-development:has(.codex-dna-map:not([hidden])) {
+  flex:1;min-height:0;grid-template-rows:auto minmax(0,1fr);align-items:stretch
+ }
+ .codex-wizard-layout:has(.codex-dna-map:not([hidden])) :is(.codex-wizard-step,[data-wizard-dna],.codex-dna-inline,.codex-dna-root) {
+  display:flex;flex-direction:column;flex:1;min-height:0
+ }
+ .codex-wizard .codex-dna-workspace:has(.codex-dna-map:not([hidden])) {
+  flex:1;min-height:0;grid-template-rows:auto minmax(0,1fr);align-items:stretch
+ }
+ .codex-wizard .codex-dna-map {height:auto;min-height:0}
+ .codex-wizard .codex-dna-detail {min-height:0;max-height:none}
 }

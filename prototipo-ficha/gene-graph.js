@@ -332,17 +332,27 @@ function syncCanvas(root){
  const svg=canvasSvg(root);if(!svg)return;
  // O mapa usa uma janela real. Todo o grafo continua no SVG e é visitável por arraste.
  const w=root.clientWidth,h=root.clientHeight;
- if(w&&h)svg.setAttribute("viewBox","0 0 "+W+" "+(W*h/w));
+ if(!w||!h)return;
+ const screenH=W*h/w;
+ svg.setAttribute("viewBox","0 0 "+W+" "+screenH);
  const cam=getCamera(root);
- if(!cam.initialized&&w&&h){
+ if(!cam.initialized){
   cam.initialized=true;
   cam.zoom=clamp(W/w*(w<620?.76:.62),MIN_ZOOM,MAX_ZOOM);
   // Inicializar sobre as fontes centrais, com constelações ao redor.
   // O seletor de ramo evita ter de aproximar ou afastar manualmente tudo.
-  const screenH=W*h/w;
   cam.x=W/2-SOURCE_CENTER_X*cam.zoom;
   cam.y=screenH/2-(BASE_Y+ROW*2.5)*cam.zoom;
+ }else if(cam.responsive&&cam.width&&(w!==cam.width||screenH!==cam.viewHeight)){
+  // Mantém o mesmo ponto central do grafo e a escala em pixels após o resize.
+  const nextZoom=clamp(cam.zoom*cam.width/w,MIN_ZOOM,MAX_ZOOM);
+  const ratio=nextZoom/cam.zoom;
+  cam.x=W/2-(W/2-cam.x)*ratio;
+  cam.y=screenH/2-(cam.viewHeight/2-cam.y)*ratio;
+  cam.zoom=nextZoom;
  }
+ cam.width=w;
+ cam.viewHeight=screenH;
 }
 function applyTransform(root){
  const cam=getCamera(root),v=root.querySelector(".fp-gene-viewport");
@@ -524,7 +534,7 @@ function bind(root){
   observer.observe(root);
  }
 }
-function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,iconBase="../assets/icons/codex/",onSelect=()=>{},onAdjust=()=>{}}={}){
+function render(root,{skills=[],branches=[],affinity={},selected="",filter="related",query="",showFuture=false,edit=false,responsiveCamera=false,iconBase="../assets/icons/codex/",onSelect=()=>{},onAdjust=()=>{}}={}){
  if(!root)return;
  root.__geneActions={onSelect,onAdjust};
  const all=skills.filter(n=>n&&n.type&&n.type!=="hidden").map(n=>({...n,key:n.key||n.id?.split(":")[1]}));
@@ -536,6 +546,7 @@ function render(root,{skills=[],branches=[],affinity={},selected="",filter="rela
    filter==="owned"?n.state==="owned":filter==="available"?n.state==="available":true));
  }
  const {height,groups}=position(visible,branches),cam=getCamera(root);
+ cam.responsive=responsiveCamera;
  root.__geneFamilies=groups;
  root.innerHTML=draw(visible,height,selected,affinity,branches,groups,edit,cam,iconBase)+
   '<div class="fp-gene-gesture-hint" aria-hidden="true">Arraste para mover · Roda do mouse ou pinça para zoom</div>'+
