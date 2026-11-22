@@ -52,9 +52,10 @@ export function canSpendXP(system,delta){
  return !!system.monsterRules||ledger.spent+delta<=ledger.grant;
 }
 export function defenseDE(actor){
- const s=actor.system,a=s.attributes||{};
- const natural=Math.min(9,Math.max(0,Math.floor(Number(a.destreza||0)/2)+
-  (s.monsterRules?Number(a.agilidade||0):1+Number(a.vigor||0))));
+ const s=actor.system,a=s.attributes||{},p=s.practices||{};
+ const natural=Math.min(9,Math.max(0,s.monsterRules?
+  Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2):
+  Number(a.agilidade||0)+Math.floor((Number(a.vigor||0)+Number(a.destreza||0))/2)+Math.floor(Number(p.atletismo||0)/3)));
  let modifier=0;
  // O modificador do primeiro equipamento válido afeta TODA defesa, não apenas esquiva.
  for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
@@ -62,5 +63,7 @@ export function defenseDE(actor){
   modifier=({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2})[cat]||0;
   break; // Mais de uma armadura: não empilhar sem regra.
  }
- return Math.min(12,Math.max(0,natural+modifier));
+ const shieldMastery=Array.isArray(s.skills)&&s.skills.includes("maestria-escudos")&&
+  (actor.items||[]).some(i=>i.type==="equipment"&&i.system.kind==="shield"&&i.system.equipped);
+ return Math.min(12,Math.max(0,natural+modifier+(shieldMastery?1:0)));
 }
