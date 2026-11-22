@@ -1,4 +1,4 @@
-> **DE base de humanoides [DEFINIDO — 22/11/2026]:** `min(9, 1 + Vigor + piso(Destreza/2))`, substituindo a fórmula anterior por completo (sem Agilidade, sem Atletismo e sem soma dupla). Monstros não humanoides preservam a própria DE `min(9, Agilidade + piso(Destreza/2))`. [SRD v0.88](../docs/srd-continuidade-v0.88.md).
+> **DE base de humanoides [DEFINIDO — 22/11/2026]:** `min(9, Agilidade + piso((Vigor + Destreza)/2) + piso(Atletismo/3))`, sem +1 fixo; armadura depois (Roupas Simples Muito Leve +2). Monstros não humanoides preservam `min(9, Agilidade + piso(Destreza/2))`. [SRD v0.89](../docs/srd-continuidade-v0.89.md).
 
 # Criar Conflito — Codex RPG (prévia)
 
@@ -12,7 +12,7 @@
 | **Criatura/Monstro** | 0 / 2 / 8 / 20 / 38 / 66 / 102 | Não participam da compra normal deste tipo | Não |
 | **Humanoide Monstro** | 0 / 2 / 8 / 20 / 38 / 66 / 102 | 0 / 2 / 8 / 20 / 38 / 66 / 102 | Sim, por seus custos próprios |
 
-**DEFINIDO:** a seleção para novas ameaças contém exatamente os três tipos acima. Humanoide comum recebe os **20 XP iniciais experimentais** da Ficha; para os dois tipos de monstro o orçamento de XP é inserido pelo Narrador, pois não foi definido outro valor inicial. O nível, os graus e o orçamento não atribuem recompensas automaticamente.
+**DEFINIDO:** a seleção para novas ameaças contém exatamente os três tipos acima. Humanoide comum recebe os **15 XP iniciais definidos para o playtest** da Ficha; para os dois tipos de monstro o orçamento de XP é inserido pelo Narrador, pois não foi definido outro valor inicial. O nível, os graus e o orçamento não atribuem recompensas automaticamente.
 
 **IMPLEMENTAÇÃO / PENDENTE:** até definição de escala própria, o Humanoide Monstro rola uma Base (Conhecimento ou Prática) + Atributo com os dados e retenção humanoides já existentes; sua tabela monstruosa altera o **custo da compra**, não inventa automaticamente novos dados nem outro custo de Coragem/Pavor. Criatura/Monstro mantém as faces monstruosas anteriores. A edição de Perícias do Humanoide Monstro preserva requisitos e XP.
 
@@ -37,7 +37,7 @@ Em **Criar Conflito**, o botão **+ NPC básico imediato** cria um humanoide de 
 
 **IMPLEMENTADO (interface experimental de playtest):** o botão **Criar humano comum pelo DNA** abre `prototipo-ficha/?npc=1`, com o Codex Genético e salvamento separado da Ficha de jogador. Use **Enviar NPC ao Conflito** para transferir Atributos, Conhecimentos, Práticas, Perícias, nível, XP e recursos básicos. Equipamentos continuam manuais no conflito, assim como efeitos não automatizados.
 
-A ficha de humanoide usa o orçamento experimental de 20 XP (com saldo livre após as compras mínimas). Não usa a progressão extraordinária de monstros.
+A ficha de humanoide usa o orçamento de 15 XP definido para o playtest (com saldo livre após as compras mínimas). Não usa a progressão extraordinária de monstros.
 
 ## Rolagens básicas e gasto de Pavor (playtest do editor web)
 
