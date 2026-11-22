@@ -119,8 +119,10 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   assert(await page.locator("#dice .cc-die").count()>=4,
    "Disciplina G1 elevada para G2 deve acrescentar o segundo d10, sem perder o dado de arma.");
   const trace=await page.locator("#roll-origins").innerText();
-  assert(trace.includes("Disciplina")&&trace.includes("Elevado")&&trace.includes("Adaga"),
-   "O rastreio deve identificar perícia, fonte elevada e arma.");
+  const diceTrace=await page.locator("#dice").innerText();
+  assert(trace.includes("Disciplina")&&trace.includes("Elevação")&&
+   diceTrace.includes("Elevado")&&diceTrace.includes("Adaga"),
+   "O rastreio deve identificar fontes mantidas, elevação e dado de arma rolado.");
   assert((await page.locator("#roll-result").innerText()).includes("2 Coragem"),
    "Elevação de fonte e Perícia declarada devem cobrar 2 Coragens juntas.");
   await page.locator("#confirm").click();
