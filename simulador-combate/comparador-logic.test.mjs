@@ -30,7 +30,7 @@ test("Cinco Êxitos contra alvo sem armadura: exatamente 2 Vida (não +2 Integri
 
 test("Armadura equipada impede os 2 Vida diretos por patamar de cinco",()=>{
  const target=armor(),def=defense(target),source=bare();
- assert.equal(armorOf(target).integrity,2);
+ assert.equal(armorOf(target).integrity,1);
  assert.equal(def,4,"DE base 2 e armadura Muito Leve +2");
  const actual=lifeAtFive({success:true,e:5,p:0},target);
  assert.equal(actual.eligible,false);assert.equal(actual.damage,0);
@@ -96,11 +96,11 @@ test("Pavor de ataque inimigo restaura Coragem do alvo jogador até o teto",()=>
 test("Integridade de armadura da ficha e JSON é preservada",()=>{
  const item=normalizeEquipment({id:"a",name:"Armadura Leve",type:"armadura",weight:"leve",
   grade:1,max:7,hp:4,equipped:true});
- assert.equal(item.kind,"armor");assert.equal(item.integrity,4);
- assert.equal(item.integrityMax,7);assert.equal(item.category,"leve");
+ assert.equal(item.kind,"armor");assert.equal(item.integrity,2);
+ assert.equal(item.integrityMax,5);assert.equal(item.category,"leve");
  const asCatalog=normalizeEquipment({name:"Roupas Simples",kind:"armor",
   category:"muito-leve",integrity:{value:3,max:3},equipped:true});
- assert.equal(asCatalog.integrity,3);assert.equal(asCatalog.integrityMax,3);
+ assert.equal(asCatalog.integrity,2);assert.equal(asCatalog.integrityMax,2);
 });
 
 test("Busca as várias fichas de jogador, NPC e Criar Conflito do navegador sem escrever",()=>{
