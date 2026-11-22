@@ -201,7 +201,7 @@ function renderLast(){
 function render(refresh=true){
  renderRoster();renderChoices();
  if(refresh){lastActor="";renderSources();}
- renderTarget();renderResources();renderHistory();renderLast();renderDice();
+ renderTarget();renderCombatControls();renderResources();renderHistory();renderLast();renderDice();
  if(inspectingId&&$("combatant-sheet").open){
   const c=byId(inspectingId);
   if(c)renderCombatantSheet(c);else $("combatant-sheet").close();
@@ -366,30 +366,54 @@ function preview(){
 }
 function renderDice(){
  const element=$("dice");
- $("confirm").disabled=!pending;$("suggest").disabled=!pending;
+ $("confirm").disabled=true;$("suggest").disabled=!pending;
  if(!pending){
   element.innerHTML='<p>Selecione atacante e alvo antes de rolar.</p>';
   $("roll-result").textContent="Nenhuma rolagem pendente.";
+  $("roll-origins").textContent="Os símbolos aparecerão separados por fonte, dado e modificador após a rolagem.";
   $("action-state").textContent="Aguardando declaração";return;
  }
- element.innerHTML=pending.rolled.map(d=>{
-  const [e,a,p]=faceSymbols(d.sides,d.face),kept=pending.kept.includes(d.id);
-  return '<button type="button" class="cc-die'+(kept?" kept":"")+'" data-die="'+esc(d.id)+
-   '" aria-pressed="'+kept+'" title="Selecionar como mantido"><strong>'+d.face+
-   '</strong><small>d'+d.sides+'</small><span>'+
+ const origins=rollProvenance(pending.rolled,pending.kept,{weapon:pending.weapon});
+ element.innerHTML=origins.map(d=>{
+  const {e,a,p}=d;
+  return '<button type="button" class="cc-die'+(d.kept?" kept":"")+'" data-die="'+esc(d.id)+
+   '" aria-pressed="'+d.kept+'" title="Selecionar como mantido"><strong>'+d.face+
+   '</strong><small>d'+d.sides+'</small><small class="cc-die-origin">'+esc(d.source)+
+   (d.step?" (Elevado)":"")+'</small><span>'+
    (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
    (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
  }).join("");
- const pre=preview();
+ const pre=preview(),raw=origins.filter(x=>x.kept).map(x=>
+  '<li><strong>'+esc(x.source)+'</strong> (d'+x.sides+', face '+x.face+'): '+
+  '<span class="cc-e">'+x.e+'E</span>, <span class="cc-a">'+x.a+'A</span>, '+
+  '<span class="cc-p">'+x.p+'P</span></li>').join("");
+ const bonuses=pre.ok?[
+  "Peso: "+pre.affinity.description,
+  "Situação: "+$("situation").selectedOptions[0]?.textContent,
+  "Saúde "+pre.health.id+": "+pre.health.e+"E, "+pre.health.a+"A, +"+pre.health.p+"P",
+  pre.stealth?"Perícia em Furtividade: +1A":null,
+  pending.boosted?"Elevação temporária de fonte "+pending.boosted+": +1 Grau (dados já mostrados)":null,
+  pre.result.critical?"Crítico: "+pre.result.critical+" dados mantidos nas faces máximas":null,
+  Number($("cancel-p").value)?"Anulação: "+$("cancel-p").value+" P com Antecipar":null,
+  Number($("convert-a").value)?"Conversão: "+$("convert-a").value+" Êxito(s) por pares de Antecipar":null,
+  pre.activation?"Ativação declarada: "+pre.activation.name+" ("+pre.skillAmount+" Coragem)":null
+ ].filter(Boolean).map(x=>'<li>'+esc(x)+'</li>').join(""):"";
+ $("roll-origins").innerHTML='<strong>Origem das runas mantidas</strong>'+
+  (raw?'<ul>'+raw+'</ul>':'<p>Escolha dados para manter.</p>')+
+  (bonuses?'<strong>Modificadores e conversões</strong><ul>'+bonuses+'</ul>':"")+
+  '<small>Dados descartados não geram E, A ou P. Cada símbolo de Antecipar é gasto uma única vez.</small>';
  if(!pre.ok){$("roll-result").textContent=pre.error;return;}
+ $("confirm").disabled=false;
  const r=pre.result;
  $("roll-result").innerHTML='<strong>'+esc(r.outcome)+'</strong>'+
   '<p><span class="cc-e">'+r.e+' Êxitos</span> + <span class="cc-p">'+r.p+
   ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
   '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
   pre.integrityDamage+' · Vida no patamar 5: '+(pre.life.damage===null?"PENDENTE":pre.life.damage)+
-  '</p><small>'+esc(pre.life.reason)+' Custo: '+(pre.courageCost||0)+
-  ' Coragem / '+(pre.cost||0)+' Pavor local.</small>';
+  '</p><small>'+esc(pre.life.reason)+' Custo confirmado na rolagem: '+pre.courageCost+
+  ' Coragem / '+(pre.cost||0)+' Pavor local. '+(pre.health.id!=="saudavel"?"Estado: "+pre.health.id+". ":"")+
+  (actor()?.kind==="monstro"&&pre.health.coragem>0?
+   "Gasto para agir da criatura incapacitada/inconsciente: PENDENTE de procedimento.":"")+'</small>';
  $("action-state").textContent="Rolado, aguardando confirmação";
 }
 function roll(){
