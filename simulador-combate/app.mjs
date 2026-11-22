@@ -402,8 +402,16 @@ function roll(){
  const choice=human?{baseGroup:group,baseKey:key,attribute,mode}:
   {first:key,second:attribute,mode:"normal"};
  if(eg){choice.extra={group:eg,key:ek};choice.contextOK=$("context-approved").checked;}
- const pool=composeActionPool(a,choice);
+ const selected=String($("step-source").value||"");
+ const valid=new Set([$("base-source").value,
+  "attribute:"+$("attribute-source").value,$("extra-source").value]);
+ if(selected&&!valid.has(selected))return notice("Só é possível elevar uma fonte presente na rolagem.");
+ const [sg,sk]=selected.split(":");
+ const boosted=selected?boostCombatSource(a,sg,sk):null;
+ if(boosted&&!boosted.ok)return notice(boosted.error);
+ const pool=composeActionPool(boosted?.unit||a,choice);
  if(!pool.ok)return notice(pool.error||"Combinação de dados inválida.");
+ if(boosted)for(const die of pool.pool)if(die.group===sg&&die.key===sk)die.boosted=true;
  const w=chosenWeapon();
  if(w){
   if(!w.eligible||!human||mode!=="armas"||key!=="armas_conjuracao")
@@ -423,7 +431,8 @@ function roll(){
  }
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
-  mode,spellGrade:grade,weapon:w?.name||""};
+  mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
+  weaponId:w?.id||"",boosted:selected};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
 }
@@ -464,6 +473,9 @@ function confirmRoll(){
   return notice("Coragem ou Pavor local insuficiente.");
  a.courage=Math.max(0,a.courage-(pre.courageCost||0));
  a.pavorLocal=Math.max(0,a.pavorLocal-(pre.cost||0));
+ if(pre.activation)log("Perícia",a.name+" ativou "+pre.activation.name+
+  " (gasto declarado: "+pre.skillAmount+" Coragem; efeito condicionado à validação do Narrador).");
+ $("skill-approved").checked=false;
  if(a.side==="jogadores")a.courage=Math.min(maxCourage(a.level),a.courage+Number(r.criticalRefundCourage||0));
  if(a.side==="inimigos"&&r.monsterCriticalPavor){
   const cap=monsterCap(a.threatGrade),free=Math.max(0,cap-a.pavorLocal);
@@ -483,7 +495,9 @@ function confirmRoll(){
   (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
   moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
    damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
-   courageCost:pre.courageCost||0,pavorCost:pre.cost||0,weapon:pending.weapon});
+   courageCost:pre.courageCost||0,pavorCost:pre.cost||0,weapon:pending.weapon,
+   elevation:pending.boosted||"",activeSkill:pre.activation?.id||"",
+   skillCourage:pre.skillAmount||0,health:pre.health.id,weight:pre.affinity.description});
  state.resourceActor=t.id;pending=null;persist();render(false);
  $("action-state").textContent="Rolagem confirmada";
  notice("Rolagem confirmada. Pavor atualizado. Dano à Integridade e Vida ainda exigem aplicação.");
