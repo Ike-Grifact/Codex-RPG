@@ -29,7 +29,12 @@ function dialog(title, content, submit) {
   return window.render({force: true});
 }
 
-export async function createCodexActor() {
+export async function createCodexActor(){
+  const {openCharacterWizard}=await import("./character-wizard.mjs");
+  return openCharacterWizard();
+}
+
+async function createQuickActor() {
   if (!Actor.implementation.canUserCreate(game.user)) return;
   const typeOptions = game.user.isGM ? Object.fromEntries(Object.entries(actorKinds).filter(([id])=>id!=="animal")) : {character: actorKinds.character};
   try {
@@ -140,7 +145,8 @@ function addDirectoryButton(root, id, label, callback) {
 export function registerCodexCreation() {
   Hooks.on("renderActorDirectory", (_application, root) => {
     if (!Actor.implementation.canUserCreate(game.user)) return;
-    addDirectoryButton(root, "actor", "Criar ficha Codex", createCodexActor);
+    addDirectoryButton(root, "actor", "Criar personagem", createCodexActor);
+    if(game.user.isGM)addDirectoryButton(root, "quick", "Criação rápida / NPC", createQuickActor);
     addDirectoryButton(root, "import", "Importar do site", importCodexActors);
   });
   Hooks.on("renderItemDirectory", (_application, root) => {

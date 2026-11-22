@@ -177,13 +177,13 @@ export function buildPool(system,selection,{mode="normal",actionType="",contextA
 // consome recursos: apenas apresenta alternativas legais de manutenção.
 // Compra inicial orientada: os únicos gastos obrigatórios são Atributo G1
 // e Conhecimento OU Prática G1. O saldo continua livre, sem reservas por categoria.
-export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey){
+export function starterPurchasePlan(system,attributeId,trainingGroup,trainingKey,{specificAttribute=false}={}){
  if(system?.monsterRules||system?.animalRules)return{ok:false,error:"Esta criatura não usa a compra inicial humana."};
  const attributes=system?.attributes||{},knowledge=system?.knowledges||{},practice=system?.practices||{};
  if(!ATTRIBUTES.some(([id])=>id===attributeId))return{ok:false,error:"Escolha um Atributo válido."};
  const group=trainingGroup==="knowledge"?KNOWLEDGES:trainingGroup==="practice"?PRACTICES:[];
  if(!group.some(([id])=>id===trainingKey))return{ok:false,error:"Escolha um Conhecimento ou Prática válido."};
- const hasAttribute=ATTRIBUTES.some(([id])=>Number(attributes[id]||0)>=1);
+ const hasAttribute=specificAttribute?(attributes[attributeId]??0)>=1:ATTRIBUTES.some(([id])=>Number(attributes[id]||0)>=1);
  const hasTraining=[...KNOWLEDGES.map(([id])=>knowledge[id]),...PRACTICES.map(([id])=>practice[id])]
    .some(grade=>Number(grade||0)>=1);
  const changes={};

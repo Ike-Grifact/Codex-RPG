@@ -3,8 +3,15 @@ import {equippedDie} from './equipment-logic.mjs';
 
 export const RESOURCE_NAMES={ervas:'Ervas',espolios:'Espólios',couro:'Couro',comida:'Comida',minerios:'Minérios'};
 const ns='codex-rpg-foundry';
-export function startingResources(){
- return Object.entries(RESOURCE_NAMES).map(([key,name])=>({name,type:'equipment',system:{kind:'resource',quantity:4,weight:.0125,priceVT:1},flags:{[ns]:{resourceKey:key}}}));
+export const STARTING_VT=20;
+export function startingResources(allocation){
+ const resources=Object.entries(RESOURCE_NAMES);
+ if(allocation){
+  const values=resources.map(([key])=>allocation[key]);
+  if(values.some(value=>!Number.isInteger(value)||value<0)||values.reduce((total,value)=>total+value,0)!==STARTING_VT)
+   throw Error("Distribua exatamente "+STARTING_VT+" VT entre os cinco recursos.");
+ }
+ return resources.map(([key,name])=>({name,type:'equipment',system:{kind:'resource',quantity:allocation?.[key]??4,weight:.0125,priceVT:1},flags:{[ns]:{resourceKey:key}}}));
 }
 export function isTradeResource(item){
  return item.type==='equipment'&&item.system.kind==='resource'&&Object.entries(RESOURCE_NAMES).some(([key,name])=>
@@ -13,19 +20,33 @@ export function isTradeResource(item){
 export function walletValue(actor){return [...actor.items].filter(isTradeResource).reduce((n,item)=>n+item.system.quantity,0);}
 
 export function purchasePlan(actor,request){
+ return purchaseItemsPlan([...actor.items].map(item=>item.toObject()),request);
+}
+
+export function purchasableEquipment(row){
+ return Boolean(row&&row.kind!=='focus'&&row.category!=='pendente'&&Number.isFinite(row.priceVT)&&row.priceVT>0);
+}
+
+export function purchaseItemsPlan(inventory,request){
  if(typeof request.id!=='string'||!/^[a-zA-Z0-9-]{8,80}$/.test(request.id))throw Error('Identificador de compra inválido.');
  const quantity=request.quantity;
  if(!Number.isInteger(quantity)||quantity<1||quantity>99)throw Error('Informe quantidade de 1 a 99.');
  const row=G1_CATALOG.find(row=>row.name===request.name);
- if(!row||row.kind==='focus'||row.category==='pendente'||!Number.isFinite(row.priceVT)||row.priceVT<=0)throw Error('Preço ou fabricação pendente. Item indisponível para compra.');
+ if(!purchasableEquipment(row))throw Error('Preço ou fabricação pendente. Item indisponível para compra.');
  const total=row.priceVT*quantity;
- const balance=walletValue(actor);
+ const balance=walletValue({items:inventory});
  if(total>balance)throw Error('Recursos insuficientes. A compra exige '+total+' VT e a ficha possui '+balance+' VT.');
- if(actor.items.size>=150)throw Error('Inventário cheio.');
- const items=[...actor.items].map(item=>item.toObject());
+ if(inventory.length>=150)throw Error('Inventário cheio.');
+ const items=structuredClone(inventory);
+ const resources=items.filter(isTradeResource);
+ if(request.preferredResource&&Object.hasOwn(RESOURCE_NAMES,request.preferredResource)){
+  const preferred=resources.findIndex(item=>item.flags?.[ns]?.resourceKey===request.preferredResource||
+   item.name===RESOURCE_NAMES[request.preferredResource]);
+  if(preferred>0)resources.unshift(...resources.splice(preferred,1));
+ }
  let due=total;
  const spent=[];
- for(const item of items.filter(isTradeResource)){
+ for(const item of resources){
   const used=Math.min(item.system.quantity,due);
   item.system.quantity-=used;due-=used;
   if(used)spent.push({itemId:item._id,name:item.name,quantity:used});

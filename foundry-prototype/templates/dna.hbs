@@ -1,4 +1,5 @@
 <div class="codex-foundry-root codex-dna-root">
+  {{#unless draftBuilder}}
   <header class="codex-dna-header">
     <h2 data-dna-name>{{actorName}}</h2>
     <dl class="codex-dna-budget" aria-label="Experiência do personagem" aria-live="polite">
@@ -31,7 +32,14 @@
     <button type="button" data-action="stage" data-stage="development">Desenvolvimento</button>
     <button type="button" data-action="stage" data-stage="map">Codex Genético</button>
   </nav>
+  {{else}}
+  <nav class="codex-dna-stages" aria-label="Forma de distribuir XP">
+    <button type="button" data-action="draftMode" data-mode="map" aria-pressed="true">Codex Genético</button>
+    <button type="button" data-action="draftMode" data-mode="list" aria-pressed="false">Listas</button>
+  </nav>
+  {{/unless}}
   <p class="codex-dna-note" data-dna-status role="status" hidden>Aguardando autorização do Narrador.</p>
+  {{#unless draftBuilder}}
   <section data-dna-panel="identity" class="codex-dna-panel">
     <label>Nome<input data-identity="name" value="{{actorName}}"></label>
     <label>Conceito<input data-identity="system.concept" value="{{concept}}"></label>
@@ -44,11 +52,13 @@
     <div><strong>Perícias</strong><p>Habilitações adquiridas com XP conforme seus requisitos.</p></div>
     <button type="button" data-action="stage" data-stage="map">Abrir mapa</button>
   </section>
+  {{/unless}}
   <section data-dna-panel="map" class="codex-dna-workspace">
     <section class="codex-dna-search">
       <input type="search" data-dna-skill-query placeholder="Buscar Perícia..." aria-label="Buscar Perícia" autocomplete="off">
       <div data-dna-skill-results hidden></div>
     </section>
+    {{#if draftBuilder}}<div class="codex-dna-draft-lists" data-dna-draft-lists hidden></div>{{/if}}
     <div class="codex-dna-map" data-dna-map tabindex="0" aria-label="Mapa genético interativo"></div>
     <aside class="codex-dna-detail" data-dna-detail aria-live="polite"></aside>
   </section>

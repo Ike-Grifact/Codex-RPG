@@ -2,7 +2,7 @@
   "id": "codex-rpg-foundry",
   "title": "Codex RPG — Foundry (playtest)",
   "description": "Codex RPG · fichas de personagens, humanoides e monstros, dados simbólicos e Pavor.",
-  "version": "0.2.1.26",
+  "version": "0.2.1.27",
   "compatibility": {
     "minimum": "14",
     "verified": "14",
@@ -19,7 +19,8 @@
   ],
   "styles": [
     "styles/codex-sheet.css",
-    "styles/codex-dna.css"
+    "styles/codex-dna.css",
+    "styles/codex-wizard.css"
   ],
   "languages": [
     {
@@ -43,7 +44,7 @@
   },
   "url": "https://github.com/Ike-Grifact/Codex-RPG",
   "manifest": "https://raw.githubusercontent.com/Ike-Grifact/Codex-RPG/foundry-playtest-manifest/system.json",
-  "download": "https://github.com/Ike-Grifact/Codex-RPG/releases/download/foundry-playtest-v0.2.1.26/codex-rpg-foundry.zip",
+  "download": "https://github.com/Ike-Grifact/Codex-RPG/releases/download/foundry-playtest-v0.2.1.27/codex-rpg-foundry.zip",
   "persistentStorage": true,
   "packs": [
     {

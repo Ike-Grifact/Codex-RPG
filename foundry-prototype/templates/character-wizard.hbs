@@ -1,0 +1,136 @@
+<div class="codex-foundry-root codex-wizard">
+  <header class="codex-wizard-header"><h2>Criar personagem</h2><p>Aprendiz G1 · 15 XP iniciais</p></header>
+
+  <nav class="codex-wizard-steps" aria-label="Etapas da criação">
+    {{#each steps}}<button type="button" data-action="wizardJump" data-step="{{index}}"
+      {{#if active}}aria-current="step"{{/if}} {{#if disabled}}disabled{{/if}}>{{label}}</button>{{/each}}
+  </nav>
+
+  <div class="codex-wizard-layout {{#if developmentStep}}is-development{{/if}}">
+    <section class="codex-wizard-step" aria-label="Etapa atual">
+      {{#if identityStep}}
+      <h3>Identidade</h3>
+      <div class="codex-wizard-identity">
+        <button class="codex-wizard-portrait {{#unless hasPortrait}}is-placeholder{{/unless}}" type="button" data-action="wizardPortrait">
+          <img src="{{portrait}}" alt=""><span>Escolher retrato</span>
+        </button>
+        <div class="codex-wizard-fields">
+          <label class="is-wide">Nome do personagem<input type="text" maxlength="70" value="{{identity.name}}" data-wizard-text="name" required></label>
+          <label>Conceito / profissão<input type="text" maxlength="100" value="{{identity.concept}}" data-wizard-text="concept"></label>
+          <label>Linhagem<select data-wizard-select="race">{{#each races}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+          <label>Virtude<input type="text" maxlength="60" value="{{identity.virtue}}" data-wizard-text="virtue"></label>
+          <label>Personalidade<input type="text" maxlength="100" value="{{identity.personality}}" data-wizard-text="personality"></label>
+          <label class="is-wide">Origem narrativa<input type="text" maxlength="120" value="{{identity.origin}}" data-wizard-text="origin"></label>
+          {{#if elements}}
+          <label class="is-wide">Elemento inicial<select data-wizard-select="element">
+            <option value="">Escolha um elemento</option>{{#each elements}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+          </select></label>
+          {{/if}}
+        </div>
+      </div>
+      <div class="codex-wizard-notice">
+        <strong>{{raceName}}</strong><p>{{raceDescription}}</p>
+        {{#if racialGifts}}<p>G1 gratuito em {{racialGifts}}.</p>{{/if}}
+      </div>
+      {{/if}}
+
+      {{#if starterStep}}
+      <h3>Escolhas iniciais</h3>
+      <p>Escolha um Atributo e um Conhecimento ou uma Prática. As duas escolhas começam no Grau 1.</p>
+      {{#each choices}}
+      <section class="codex-wizard-sources">
+        <h4>{{label}}</h4>
+        <div class="codex-wizard-source-grid">
+          {{#each options}}
+          <button type="button" data-action="wizardSource" data-group="{{../starterGroup}}" data-value="{{value}}"
+            aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+            <strong>{{label}}</strong>
+            <span class="codex-wizard-source-dice">
+              <span class="codex-small-die">{{{dice}}}<b>d{{sides}}</b></span>
+              {{#if cost}}<span aria-hidden="true">→</span><span class="codex-small-die">{{{targetDice}}}<b>d{{targetSides}}</b></span>{{/if}}
+            </span>
+            <small>{{cost}} XP · G1</small>
+          </button>
+          {{/each}}
+        </div>
+      </section>
+      {{/each}}
+      {{#if plan}}<p class="codex-wizard-notice"><strong>{{plan.cost}} XP</strong> para confirmar as escolhas. <strong>{{plan.remaining}} XP</strong> livres após a formação.</p>{{/if}}
+      {{/if}}
+
+      {{#if developmentStep}}
+      <h3>Distribuir XP</h3>
+      <div data-wizard-dna></div>
+      {{/if}}
+
+      {{#if tradeStep}}
+      <h3>VT e equipamentos</h3>
+      <p>Distribua {{startingVT}} VT entre os recursos de troca. Você pode começar sem comprar itens.</p>
+      <div class="codex-wizard-vt">
+        {{#each resources}}<label>{{label}}<input type="number" min="0" max="{{@root.startingVT}}" step="1" value="{{qty}}" data-wizard-vt="{{id}}"></label>{{/each}}
+      </div>
+      <button type="button" data-action="wizardAllocation">Aplicar distribuição</button>
+      <div class="codex-wizard-shop">
+        <h4>Catálogo de equipamentos G1</h4>
+        <div class="codex-wizard-shop-form">
+          <label>Equipamento<select data-wizard-equipment><option value="">Escolha um item</option>{{#each catalog}}<option value="{{name}}">{{name}} · {{cost}} VT</option>{{/each}}</select></label>
+          <label>Quantidade<input type="number" step="1" min="1" max="99" value="1" data-wizard-quantity></label>
+          <label>Usar primeiro<select data-wizard-payment>{{#each payment}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+          <button type="button" data-action="wizardBuy">Comprar</button>
+        </div>
+      </div>
+      {{#if purchases}}<h4>Equipamentos escolhidos</h4>{{/if}}
+      <ul class="codex-wizard-purchases">
+        {{#each purchases}}
+        <li><strong>{{{icon}}} {{name}} · {{quantity}}×</strong>
+          <div class="codex-actions">
+            <button type="button" data-action="wizardEquip" data-index="{{index}}" {{#if cannotEquip}}disabled title="Runa Espinhos não equipa armaduras físicas"{{/if}}>{{#if equipped}}Guardar{{else}}Equipar{{/if}}</button>
+            <button type="button" data-action="wizardRemove" data-index="{{index}}" aria-label="Remover {{name}}">Remover</button>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+      <p>Carga prevista · {{weight}} Alto</p>
+      {{/if}}
+
+      {{#if reviewStep}}
+      <h3>Revisão</h3>
+      <div class="codex-wizard-review-id">
+        <img src="{{portrait}}" class="{{#unless hasPortrait}}is-placeholder{{/unless}}" alt="">
+        <div><h4>{{identity.name}}</h4><p>{{raceName}}{{#if identity.concept}} · {{identity.concept}}{{/if}}</p></div>
+      </div>
+      <div class="codex-wizard-review-grid">
+        {{#each sources}}
+        <section><h4>{{label}}</h4><ul>{{#each rows}}<li>{{label}} · G{{grade}}</li>{{else}}<li>Sem graus investidos</li>{{/each}}</ul></section>
+        {{/each}}
+        <section><h4>Perícias</h4><ul>{{#each skills}}<li>{{this}}</li>{{else}}<li>Sem Perícias adquiridas</li>{{/each}}</ul></section>
+        <section><h4>Equipamentos</h4><ul>{{#each purchases}}<li>{{name}} · {{quantity}}×{{#if equipped}} · Equipado{{/if}}</li>{{else}}<li>Sem compras iniciais</li>{{/each}}</ul></section>
+        <section><h4>Recursos de troca</h4><ul>{{#each wallet}}<li>{{name}} · {{quantity}}</li>{{/each}}</ul></section>
+      </div>
+      {{/if}}
+    </section>
+
+    <aside class="codex-wizard-summary" aria-label="Resumo do personagem">
+      <div><strong data-wizard-name>{{#if identity.name}}{{identity.name}}{{else}}Novo Aprendiz{{/if}}</strong><p>{{raceName}}</p></div>
+      <dl>
+        <div><dt>XP disponíveis</dt><dd data-wizard-xp="left">{{ledger.left}} XP</dd></div>
+        <div><dt>XP investidos</dt><dd data-wizard-xp="spent">{{ledger.spent}} XP</dd></div>
+        <div><dt>Saldo de troca</dt><dd>{{vt}} VT</dd></div>
+        <div><dt>Vida</dt><dd data-wizard-stat="life">{{life}}</dd></div>
+        <div><dt>Coragem</dt><dd>{{courage}}</dd></div>
+        <div><dt>Deslocamento</dt><dd data-wizard-stat="movement">{{movement}} m</dd></div>
+      </dl>
+    </aside>
+  </div>
+
+  <footer class="codex-wizard-footer">
+    {{#if canBack}}<button type="button" data-action="wizardBack">Voltar</button>{{/if}}
+    {{#if reviewStep}}
+    <button class="codex-primary" type="button" data-action="wizardFinish">Criar personagem e abrir ficha</button>
+    {{else}}
+    <button class="codex-primary" type="button" data-action="wizardNext" {{#if starterStep}}{{#unless plan}}disabled{{/unless}}{{/if}}>
+      {{#if starterStep}}Confirmar escolhas e continuar{{else}}Continuar{{/if}}
+    </button>
+    {{/if}}
+  </footer>
+</div>

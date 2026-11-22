@@ -37,7 +37,7 @@ function graphicalNodes(system,creationPending,locked,plans){
  return [...sources,...skills];
 }
 
-function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
+function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan,draftBuilder}){
  const [type,key] = id.split(":");
  const disabled=locked?" disabled":"";
  if(graphGroups[type]){
@@ -76,7 +76,7 @@ function detailMarkup(system,id,{locked,creationPending,requiresApproval,plan}){
    '<details><summary>'+esc(effect.name)+' <small>'+esc(effect.state)+'</small></summary><p>'+
    esc(effect.description)+'</p>'+(effect.conditions?'<p>'+esc(effect.conditions)+'</p>':'')+'</details>').join('')+'</section>':"";
  const requiredXP=plan.status==="locked"&&plan.cost!=null?" Pacote completo: "+plan.cost+" XP.":"";
- const declared=["sentido-elemental","corpo-fechado","impacto-psiquico"].includes(id)&&canUseTechnique(system,id)
+ const declared=!draftBuilder&&["sentido-elemental","corpo-fechado","impacto-psiquico"].includes(id)&&canUseTechnique(system,id)
   ?'<button type="button" data-action="declareTechnique"'+(locked||system.courage<1?" disabled":disabled)+'>Declarar efeito (−1 Coragem)</button>':"";
  return '<h3>'+iconMarkup(skillIconId(row.id,row.family))+' '+esc(row.name)+'</h3>'+(granted?'':'<p>'+(row.pending?'XP de aquisição pendente':row.cost+' XP')+'</p>')+'<p>'+esc(row.detail)+'</p>'+
   (alternativeMarkup?'<h4>Requisitos</h4>'+alternativeMarkup:'')+
@@ -157,14 +157,16 @@ function summoningMarkup(rules,system){
 export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
  static DEFAULT_OPTIONS={
   classes:["codex-rpg","codex-dna"],position:{width:1040,height:780},window:{title:"Codex Genético",resizable:true},
-  actions:{declareTechnique:CodexDNA.declareTechnique,'gene-future'(){this.showFuture=!this.showFuture;this.refresh();},consultSkill(){return openSkillDefinition(this.selected);},stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic,
+  actions:{draftMode(_event,target){this.listMode=target.dataset.mode==="list";this.refresh();},
+   draftSource(_event,target){this.selected=target.dataset.source;this.refresh();},declareTechnique:CodexDNA.declareTechnique,'gene-future'(){this.showFuture=!this.showFuture;this.refresh();},consultSkill(){return openSkillDefinition(this.selected);},stage:CodexDNA.stage,buy:CodexDNA.buy,buyPackage:CodexDNA.buyPackage,refundSkill:CodexDNA.refundSkill,chooseSkill:CodexDNA.chooseSkill,adjustGrade:CodexDNA.adjustGrade,adjustXP:CodexDNA.adjustXP,complete:CodexDNA.complete,classic:CodexDNA.classic,
    saveOrigin:CodexDNA.saveOrigin,resetRuneShield(){return this.submit({action:"resetRuneShield"});},perseverance(){return this.submit({action:"perseverance"});}}
  };
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
- constructor(actor,stage,host){
+ constructor(actor,stage,host,draftAdvance){
   super(host?{window:{frame:false},classes:["codex-dna","codex-dna-inline"]}:{});
   this.host=host;
+  this.draftAdvance=draftAdvance;
   this.actor=actor;
   this.stageName=stage;
   this.selected="attr:forca";
@@ -177,7 +179,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   for(const type of ["click","auxclick"])element.addEventListener(type,event=>event.stopPropagation());
  }
  async _prepareContext(){
-  return {embedded:Boolean(this.host),canManageXP:game.user.isGM,actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
+  return {embedded:Boolean(this.host),draftBuilder:Boolean(this.draftAdvance),canManageXP:game.user.isGM&&!this.draftAdvance,actorName:this.actor.name,concept:this.actor.system.concept,origin:this.actor.system.origin,
    hasOrigin:usesRacialRules(this.actor.system),categories:groups.map(([key,group])=>({label:group.label,description:group.description})),
   };
  }
@@ -206,7 +208,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
    if(field==="name"&&!value){event.target.value=this.actor.name;return;}
    try{await this.actor.update({[field]:value});}catch(error){ui.notifications.error(error.message);}
   });
-  this.actorHook??=Hooks.on("updateActor",actor=>{if(actor.uuid===this.actor.uuid)this.refresh();});
+  if(!this.draftAdvance)this.actorHook??=Hooks.on("updateActor",actor=>{if(actor.uuid===this.actor.uuid)this.refresh();});
   this.refresh();
  }
  refresh(){
@@ -218,10 +220,12 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const locked=pendingRoll||Boolean(this.busy);
   const creationPending=Boolean(this.actor.getFlag(ns,"creationPending"));
   const missing=creationMissing(system);
-  this.renderOrigin(root);
-  root.querySelector("[data-dna-name]").textContent=this.actor.name;
-  for(const field of ["formation","additional","grant","spent","left"]){
-   root.querySelector('[data-dna-xp="'+field+'"]').textContent=ledger[field]+" XP";
+  if(!this.draftAdvance){
+   this.renderOrigin(root);
+   root.querySelector("[data-dna-name]").textContent=this.actor.name;
+   for(const field of ["formation","additional","grant","spent","left"]){
+    root.querySelector('[data-dna-xp="'+field+'"]').textContent=ledger[field]+" XP";
+   }
   }
   const progression=xpProgression(system),guidance=root.querySelector("[data-dna-xp-reference]");
   if(guidance){
@@ -245,7 +249,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   }
   for(const stage of root.querySelectorAll("[data-dna-panel]"))stage.hidden=stage.dataset.dnaPanel!==this.stageName;
   for(const element of root.querySelectorAll('[data-action="stage"]'))element.setAttribute("aria-pressed",String(element.dataset.stage===this.stageName));
-  root.querySelector('[data-action="complete"]').hidden=!creationPending;
+  root.querySelector('[data-action="complete"]').hidden=Boolean(this.draftAdvance)||!creationPending;
   root.querySelector('[data-action="complete"]').disabled=locked||missing.attr||missing.training||ledger.left<0||!racialChoicesComplete(system);
   root.querySelector("[data-dna-creation]").textContent=creationPending
    ? [missing.attr?"Falta um Atributo G1.":"",missing.training?"Falta um Conhecimento ou uma Prática G1.":"",
@@ -258,7 +262,19 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   this.skillPlans=new Map(SKILLS.filter(row=>showSkill(row,system))
    .map(row=>[row.id,planSkillPackage(system,row.id,{creationPending})]));
   const nodes=graphicalNodes(system,creationPending,locked,this.skillPlans);
-  window.CodexGeneGraph.render(map,{
+  const lists=root.querySelector("[data-dna-draft-lists]");
+  if(lists){
+   lists.hidden=!this.listMode;
+   map.hidden=Boolean(this.listMode);
+   for(const button of root.querySelectorAll('[data-action="draftMode"]')){
+    button.setAttribute("aria-pressed",String((button.dataset.mode==="list")===Boolean(this.listMode)));
+   }
+   if(this.listMode)lists.innerHTML=groups.map(([,group])=>
+    '<section><h4>'+esc(group.label)+'</h4>'+nodes.filter(node=>node.type===group.graph).map(node=>
+    '<button type="button" data-action="draftSource" data-source="'+esc(node.id)+'" aria-pressed="'+
+    (node.id===this.selected)+'">'+esc(node.name)+' · G'+node.grade+'</button>').join("")+'</section>').join("");
+  }
+  if(!this.listMode)window.CodexGeneGraph.render(map,{
    skills:nodes,selected:this.selected,showFuture:this.showFuture,edit:true,iconBase,
    onAdjust:(id,delta)=>{
     const row=nodes.find(node=>node.id===id);
@@ -271,7 +287,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
     this.refresh();
    },
   });
-  markRequirements(map,this.selected,system);
+  if(!this.listMode)markRequirements(map,this.selected,system);
   this.renderSkillResults(root);
   if(mapFocus){
    const card=map.querySelector('.fp-gene-node[data-gene-id="'+CSS.escape(mapFocus.geneId)+'"]');
@@ -280,9 +296,9 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   }
   const detail=root.querySelector("[data-dna-detail]");
   const gradeFocus=detail.contains(active)?active.dataset.delta:null;
-  detail.innerHTML=detailMarkup(system,this.selected,{locked,creationPending,requiresApproval:!game.user.isGM&&!creationPending,plan:this.skillPlans.get(this.selected)});
+  detail.innerHTML=detailMarkup(system,this.selected,{locked,creationPending,requiresApproval:!game.user.isGM&&!creationPending,plan:this.skillPlans.get(this.selected),draftBuilder:Boolean(this.draftAdvance)});
   if(gradeFocus)detail.querySelector('[data-delta="'+gradeFocus+'"]:enabled')?.focus({preventScroll:true});
-  if(this.selected==="invocacao-elemental"&&system.skills.includes(this.selected)){
+  if(!this.draftAdvance&&this.selected==="invocacao-elemental"&&system.skills.includes(this.selected)){
    detail.insertAdjacentHTML("beforeend",summoningMarkup(this.summonRules,system));
    const planner=detail.querySelector("[data-summon-plan]");
    if(planner)this.updateSummonPlan(planner);
@@ -291,19 +307,19 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  renderSkillResults(root){
   const results=root.querySelector("[data-dna-skill-results]");
   const query=root.querySelector("[data-dna-skill-query]").value.trim();
-  results.hidden=!query;
-  if(!query){results.replaceChildren();return;}
+  results.hidden=!query&&!this.listMode;
+  if(!query&&!this.listMode){results.replaceChildren();return;}
   const system=this.actor.system,map=root.querySelector("[data-dna-map]");
   const labels={owned:"Adquirida",available:"Disponível",potential:"Potencial",locked:"Bloqueada"};
   const families=new Map([...map.querySelectorAll(".fp-gene-constellation")].map(el=>
    [el.dataset.geneFamily,el.querySelector(".fp-gene-constellation-title")?.textContent]));
   const items=searchSkills(query,system).map(row=>{
    const node=map.querySelector('.fp-gene-skill[data-gene-id="'+CSS.escape(row.id)+'"]');
-   const state=Object.keys(labels).find(key=>node?.classList.contains("is-"+key))??"locked";
    const plan=this.skillPlans?.get(row.id);
+   const state=this.listMode?plan?.status??"locked":Object.keys(labels).find(key=>node?.classList.contains("is-"+key))??"locked";
    const granted=racialGrants(system).includes(row.id)&&!system.skills.includes(row.id);
    const cost=granted?0:plan?.cost??row.legacyCost??row.cost;
-   const family=families.get(node?.dataset.geneFamily)??"Outras Perícias";
+   const family=families.get(node?.dataset.geneFamily)??(this.listMode?"Perícia":"Outras Perícias");
    return '<button type="button" data-action="chooseSkill" data-key="'+esc(row.id)+'" class="is-'+state+'"'+
     (this.selected===row.id?' aria-current="true"':"")+'><strong>'+esc(skillNameFor(system,row))+'</strong><small>'+
     esc(family)+' · '+(granted?"Origem":labels[state])+' · '+(cost==null?"XP pendente":cost+" XP")+'</small></button>';
@@ -316,6 +332,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(selected?.status==="locked")this.showFuture=true;
   this.refresh();
   const map=this.element.querySelector("[data-dna-map]");
+  if(this.listMode)return;
   window.CodexGeneGraph.reveal(map,this.selected);
   map.querySelector('.fp-gene-skill[data-gene-id="'+CSS.escape(this.selected)+'"]')?.focus({preventScroll:true});
  }
@@ -434,7 +451,10 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   try{
    if(confirmation&&!await confirmation())return false;
    if(status&&asksNarrator)status.hidden=false;
-   await requestRoll(this.actor,request);
+   if(this.draftAdvance){
+    if(request.action!=="advance")return false;
+    this.draftAdvance(request.advance);
+   }else await requestRoll(this.actor,request);
    return true;
   }catch(error){ui.notifications.warn(error.message);return false;}
   finally{if(status)status.hidden=true;this.busy=false;this.refresh();}
@@ -460,6 +480,11 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   if(applications.get(this.actor.uuid)===this)applications.delete(this.actor.uuid);
   return super.close(options);
  }
+}
+
+export async function embedDraftDNA(actor,host,advance){
+ if(!window.CodexGeneGraph)await import("./codex-gene-graph.js");
+ return new CodexDNA(actor,"map",host,advance).render({force:true});
 }
 
 export async function embedCodexDNA(actor,host){

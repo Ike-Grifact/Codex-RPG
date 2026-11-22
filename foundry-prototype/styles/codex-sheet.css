@@ -825,7 +825,7 @@
 .codex-equipment h3{font-size:15px;margin-top:14px}
 
 /* Identidade, navegação e inventário da ficha. O tema acompanha o Foundry. */
-.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root) {
+.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root,.codex-wizard) {
   --cx-bg:#070707;
   --cx-panel:#171717;
   --cx-field:#101010;
@@ -835,8 +835,8 @@
   --cx-muted:#b9b9b9;
   --cx-gold:#d7bc88;
 }
-.theme-light .codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root),
-.theme-light.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root) {
+.theme-light .codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root,.codex-wizard),
+.theme-light.codex-rpg .codex-foundry-root:is(.codex-sheet,.codex-dna-root,.codex-wizard) {
   --cx-bg:#f7f5f0;
   --cx-panel:#fffefa;
   --cx-field:#f5f0e7;
