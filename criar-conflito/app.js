@@ -5,6 +5,9 @@ import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261115-kinds1";
+import {savedPlayerCopies,defensiveDE,itemArmor,armorWeightClass,targetWeightClass,weaponWeightClass,weaponAffinity,equippedWeapons,applyCommonDamage,armorDamagePreview,transferTo}
+ from "./combat-summary.mjs";
+import {resolveRoll,keepLimit} from "./codex-rules.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -39,11 +42,247 @@ function load(){
    s.active=s.roster.some(x=>x.id===raw.active)?raw.active:s.roster[0]?.id||null;
     s.lastRoll=raw.lastRoll&&typeof raw.lastRoll==="object"?raw.lastRoll:null;
    s.rollHistory=Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300).filter(e=>e&&typeof e==="object"):[];
+   s.combat=raw.combat&&typeof raw.combat==="object"?raw.combat:null;
   }
  }catch(e){console.warn("Codex: dados locais de conflito inválidos",e);}
  return s;
 }
 let model=load(),noticeTimer=null,creatureRoll=null,conflictMode="edit",rollDraft=null,conflictActionTab="skills";
+// O estado do comparador vive apenas no JSON de Criar Conflito; fichas originais ficam intactas.
+let combatRoll=null;
+function combatState(){
+ if(!model.combat||typeof model.combat!=="object")model.combat={players:[],actor:"",target:"",weightOverride:"",weaponId:"",base:"practice:armas_conjuracao",attribute:"forca",second:"vigor",mode:"armas",attackKind:"fisico",extraKeep:false,pending:null,last:null,log:[]};
+ const c=model.combat;
+ if(!Array.isArray(c.players))c.players=[];
+ if(!Array.isArray(c.log))c.log=[];
+ return c;
+}
+function combatUnits(){
+ const c=combatState();
+ return [...c.players.map(p=>({...p,role:"jogador"})),...model.roster.map(t=>({...t,role:"ameaca",id:"threat:"+t.id}))];
+}
+function combatUnit(id){
+ if(String(id).startsWith("player:"))return combatState().players.find(t=>t.id===id)||null;
+ if(String(id).startsWith("threat:"))return model.roster.find(t=>"threat:"+t.id===id)||null;
+ return null;
+}
+function combatPickDefaults(){
+ const c=combatState(),units=combatUnits();
+ if(!units.some(t=>t.id===c.actor))c.actor=units[0]?.id||"";
+ if(!units.some(t=>t.id===c.target)||c.target===c.actor)c.target=units.find(t=>t.id!==c.actor&&t.role!==(combatUnit(c.actor)?.role==="jogador"?"jogador":"ameaca"))?.id||
+  units.find(t=>t.id!==c.actor)?.id||"";
+}
+function combatLog(kind,description){
+ const c=combatState();
+ c.log=[{date:new Date().toISOString(),kind,description},...c.log].slice(0,100);
+}
+function importCombatPlayers(){
+ const c=combatState(),{units,errors}=savedPlayerCopies(localStorage);
+ let added=0;
+ for(const u of units){
+  if(c.players.some(p=>p.sourceId===u.sourceId))continue; // Não sobrescrever dano/gastos já registrados.
+  if(c.players.length>=40)break;
+  c.players.push(u);added++;
+ }
+ combatPickDefaults();save();render();
+ notice(added+" personagem(ns) importado(s) como cópias. "+
+   (errors.length?"Fichas indisponíveis: "+errors.slice(0,3).join(", ")+". ":
+    !added?"Nenhuma cópia nova; as atuais foram preservadas.":""));
+}
+function combatAttacker(){return combatUnit(combatState().actor);}
+function combatDefender(){return combatUnit(combatState().target);}
+function combatOptions(list,current){return list.map(v=>'<option value="'+esc(v[0])+'"'+(current===v[0]?' selected':'')+'>'+esc(v[1])+'</option>').join("");}
+function combatWeaponInfo(actor,target){
+ const c=combatState(),weapon=equippedWeapons(actor).find(it=>it.id===c.weaponId);
+ const weight=weaponWeightClass(weapon),defenderWeight=targetWeightClass(target,c.weightOverride);
+ const raw=weight&&defenderWeight?weaponAffinity(weight,defenderWeight):null;
+ const range=/distância|arco|besta|revólver|pistola|shotgun|metralhadora/i.test(String(weapon?.name||""))||!!weapon?.firearm;
+ const trained=range&&(actor.skills||[]).some(k=>k==="armas-fogo"||k==="armas-longo-alcance");
+ const bonus=raw===null?0:raw<0&&trained?0:raw;
+ return {weapon,weight,defenderWeight,raw,bonus,trained};
+}
+function combatPreview(){
+ if(!combatRoll)return null;
+ const attacker=combatUnit(combatRoll.actor),ids=combatRoll.kept;
+ if(!attacker)return {ok:false,error:"Atacante não encontrado."};
+ const rolled=combatRoll.dice,kept=rolled.filter(d=>ids.includes(d.id));
+ if(!kept.some(d=>d.group==="attribute"))return {ok:false,error:"Mantenha pelo menos um dado de Atributo."};
+ const isPlayer=!!attacker.sourceId,monster=attacker.kind==="monstro"||attacker.kind==="criatura";
+ const natural=isPlayer?keepLimit(attacker.level||1,false,false):
+  monster?2:stats(attacker).keepBase;
+ const cap=isPlayer?keepLimit(attacker.level||1,combatRoll.extraKeep,false):
+  monster?Math.min(stats(attacker).keepMax,Number(attacker.keep||2)):
+   Math.min(4,natural+Number(combatRoll.extraKeep));
+ if(kept.length<1||kept.length>cap)return {ok:false,error:"Retenção fora do limite deste combatente ("+cap+")."};
+ const courageCost=!monster&&kept.length>natural?1:0;
+ const pavorCost=monster?Math.max(0,kept.length-2):0;
+ if(courageCost>Number(attacker.courage||0)||pavorCost>Number(attacker.pavorLocal||0))return {ok:false,error:"Coragem ou Pavor local insuficiente."};
+ const r=resolveRoll(rolled,ids,{de:combatRoll.de,level:attacker.level||1,monster,
+  hostile:!isPlayer,threatGrade:attacker.threatGrade||1,enemyKeepLimit:isPlayer?null:cap,
+  extraKeep:!!combatRoll.extraKeep,courage:attacker.courage||0,
+  cancelP:combatRoll.cancelP,convertPairs:combatRoll.convertPairs,bonusA:combatRoll.bonusA});
+ if(!r.ok)return {ok:false,error:r.errors.join("; ")};
+ if(combatRoll.passA&&r.aRemaining<1)return {ok:false,error:"Falta 1 Antecipar para passar a oportunidade."};
+ return {ok:true,result:r,courageCost,pavorCost,natural,cap,passA:combatRoll.passA};
+}
+function renderCombat(){
+ const root=el("combat-panel");if(!root)return;
+ const c=combatState();combatPickDefaults();
+ const units=combatUnits(),a=combatAttacker(),t=combatDefender(),info=combatWeaponInfo(a,t);
+ const unitOptions=combatOptions(units.map(u=>[u.id,u.name+" · "+(u.role==="jogador"?"PJ":"Ameaça")]),c.actor);
+ const targetOptions=combatOptions(units.filter(u=>u.id!==c.actor).map(u=>[u.id,u.name+" · "+(u.role==="jogador"?"PJ":"Ameaça")]),c.target);
+ const baseList=a?isHumanoidKind(a.kind)?
+  [...KNOWLEDGES.map(([id,name])=>["knowledge:"+id,name+" · Conhecimento G"+(a.knowledges?.[id]||0)]),
+   ...PRACTICES.map(([id,name])=>["practice:"+id,name+" · Prática G"+(a.practices?.[id]||0)])]:
+  ATTRIBUTES.map(([id,name])=>["attribute:"+id,name+" G"+(a.attributes?.[id]||0)]):[];
+ if(a&&!baseList.some(([key])=>key===c.base))c.base=baseList.find(([key])=>key==="practice:armas_conjuracao")?.[0]||baseList[0]?.[0]||"";
+ const attrs=a?ATTRIBUTES.map(([id,name])=>[id,name+" G"+(a.attributes?.[id]||0)]):[];
+ const weapons=equippedWeapons(a);
+ if(!weapons.some(w=>w.id===c.weaponId))c.weaponId="";
+ const armor=itemArmor(t),preview=combatPreview(),last=c.last;
+ const armorText=armor?esc(armor.name)+" · "+Number(armor.integrity||0)+"/"+Number(armor.integrityMax||0):
+  "Sem armadura equipada";
+ const sourceControls=a?'<div class="cf-combat-controls"><label>Fonte base<select id="combat-base">'+combatOptions(baseList,c.base)+'</select></label>'+
+  (isHumanoidKind(a.kind)?'<label>Atributo<select id="combat-attribute">'+combatOptions(attrs,c.attribute)+'</select></label>':'')+
+  (!isHumanoidKind(a.kind)?'<label>Segundo Atributo<select id="combat-second">'+combatOptions(attrs,c.second)+'</select></label>':'')+
+  '<label>Arma equipada<select id="combat-weapon">'+combatOptions([["","Sem arma (peso não aplicado)"],...weapons.map(w=>[w.id,w.name])],c.weaponId)+'</select></label>'+
+  '<label>Tipo de ação<select id="combat-attack-kind">'+combatOptions([["fisico","Ataque físico comum"],["outro","Magia ou efeito especial (dano manual)"]],c.attackKind||"fisico")+'</select></label>'+ 
+   '<label>Porte do alvo / peso<select id="combat-target-weight">'+combatOptions([["","Automático pela armadura (ou pendente)"],["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],c.weightOverride)+'</select></label>'+
+  (isHumanoidKind(a.kind)?'<label><input id="combat-extra-keep" type="checkbox"'+(c.extraKeep?' checked':'')+'> Permitir 1 mantido extra (Coragem)</label>':'')+'</div>':"";
+ const infoText=a&&t?'<div class="cf-combat-stats"><span>DE do alvo <b>'+defensiveDE(t)+'</b></span>'+
+  '<span>Vida <b>'+Number(t.life||0)+'</b></span><span>Integridade <b>'+armorText+'</b></span>'+
+  '<span>Peso da arma <b>'+(info.weight?esc(info.weight):"Pendente/sem arma")+'</b></span>'+
+  '<span>Peso defensivo <b>'+(info.defenderWeight?esc(info.defenderWeight):"PENDENTE (porte natural)")+'</b></span>'+
+  '<span>Afinidade <b>'+(info.raw===null?"Não aplicada":(info.raw>0?"+":"")+info.bonus+"A")+'</b></span></div>'+
+  (info.trained&&info.raw<0?'<p class="cf-note">Perícia de arma à distância neutraliza a Desvantagem natural de peso.</p>':"")+
+  (!armor&&c.weightOverride===""?'<p class="cf-note">Sem armadura: selecione manualmente o porte do alvo se a afinidade de peso for pertinente.</p>':""):"";
+ const dice=combatRoll?'<div class="cf-combat-roll"><h3>Dados mantidos · ataque de '+esc(a?.name||"")+'</h3>'+
+  '<div class="cf-combat-dice">'+combatRoll.dice.map(d=>'<label class="cf-roll-die'+(combatRoll.kept.includes(d.id)?" is-kept":"")+'">'+
+   '<input type="checkbox" data-combat-die="'+esc(d.id)+'"'+(combatRoll.kept.includes(d.id)?" checked":"")+'>'+
+   '<b>d'+d.sides+' · face '+d.face+'</b><span>'+faceSymbols(d.sides,d.face).map((v,i)=>v?["ᛋ","ᚨ","ᚦ"][i]+v:"").filter(Boolean).join(" · ")||"Vazio"+'</span></label>').join("")+'</div>'+
+  '<div class="cf-combat-controls"><label>Anular Pavor (1A:1P)<input id="combat-cancel" type="number" min="0" max="9" value="'+combatRoll.cancelP+'"></label>'+
+  '<label>Converter Antecipar (2A:1E)<input id="combat-pairs" type="number" min="0" max="4" value="'+combatRoll.convertPairs+'"></label>'+
+  '<label><input id="combat-pass" type="checkbox"'+(combatRoll.passA?' checked':'')+'> Gastar 1A para passar a ação</label></div>'+
+  (preview?.ok?'<p class="cf-combat-verdict"><strong>'+esc(preview.result.outcome)+'</strong> · ᛋ '+preview.result.e+'E · ᚨ '+(preview.result.aRemaining-Number(preview.passA))+'A · ᚦ '+preview.result.p+'P · '+preview.result.reached+' / DE '+preview.result.de+' · Dano básico '+preview.result.damage+
+   ' · '+preview.courageCost+' Coragem / '+preview.pavorCost+' Pavor local</p>':
+   '<p class="cf-warning">'+esc(preview?.error||"Rolagem inválida.")+'</p>')+
+  '<button type="button" class="cf-primary" id="combat-confirm-roll"'+(preview?.ok?"":" disabled")+'>Confirmar resultado comparativo</button>'+
+  '<button type="button" id="combat-discard-roll">Descartar rolagem</button></div>':"";
+ const transfer=c.pending&&c.pending.remaining>0?'<div class="cf-combat-transfer"><h3>Transferência pendente · '+c.pending.remaining+' ponto(s)</h3>'+
+  '<p class="cf-note">'+(c.pending.type==="pavor"?"Pavor do PJ: escolha a ameaça elegível mais próxima; sem ameaça elegível, use a reserva pública.":"Falha inimiga com Pavor: distribua Coragem entre os PJs, sem multiplicar por número de jogadores.")+'</p>'+
+  '<label>Destino<select id="combat-recipient">'+combatOptions(
+   c.pending.type==="pavor"?[["public","Reserva pública (somente se sem ameaça elegível)"],...model.roster.map(u=>["threat:"+u.id,u.name+" · P local "+u.pavorLocal+"/"+stats(u).limitLocal])]:
+   c.players.map(u=>[u.id,u.name+" · Coragem "+u.courage]),c.recipient||"")+'</select></label>'+
+  '<label>Quantidade<input type="number" id="combat-transfer-amount" min="1" max="'+c.pending.remaining+'" value="'+c.pending.remaining+'"></label>'+
+  '<button type="button" id="combat-transfer">Transferir recurso</button></div>':"";
+ const lastHTML=last?'<div class="cf-combat-result"><h3>Último confronto · '+esc(last.attackerName)+" → "+esc(last.targetName)+'</h3>'+
+  '<p>'+esc(last.outcome)+' · '+last.e+'E / '+last.p+'P · Dano básico '+last.damage+
+  (last.success?' · Acerto confirmado':' · Falha')+'</p>'+
+  (last.physical&&last.success&&last.damage>0?'<p>Dano físico comum: '+(armorDamagePreview(combatUnit(last.target),last).physicalImmune?
+   "armadura G4 imune (não aplicar dano físico comum)":
+   "Integridade −"+armorDamagePreview(combatUnit(last.target),last).removed+"; Vida −"+
+   armorDamagePreview(combatUnit(last.target),last).lifeLoss+" (5E ou mais: 2 Vida quando o dano atravessa a proteção)")+'</p>':"")+
+  '<button type="button" id="combat-apply-damage"'+(last.applied||!last.success||!last.damage||!last.physical?' disabled':'')+'>Aplicar dano físico comum ao alvo (uma vez)</button>'+
+  '<p class="cf-note">Magias, imunidades, resistências, propriedades e consequências especiais não são aplicadas automaticamente. Ajuste manualmente quando necessário.</p></div>':"";
+ const manual=t?'<div class="cf-combat-manual"><h3>Ajustes manuais no alvo</h3>'+
+  '<div class="cf-combat-actions"><span>Vida '+t.life+' <button data-combat-adjust="life" data-delta="-1">−</button><button data-combat-adjust="life" data-delta="1">+</button></span>'+
+  (armor?'<span>Armadura '+armor.integrity+'/'+armor.integrityMax+' <button data-combat-adjust="armor" data-delta="-1">−</button><button data-combat-adjust="armor" data-delta="1">+</button></span>':"")+
+  (String(c.target).startsWith("threat:")?'<span>Pavor '+t.pavorLocal+'/'+stats(t).limitLocal+' <button data-combat-adjust="pavor" data-delta="-1">−</button><button data-combat-adjust="pavor" data-delta="1">+</button></span>':
+   '<span>Coragem '+t.courage+' <button data-combat-adjust="courage" data-delta="-1">−</button><button data-combat-adjust="courage" data-delta="1">+</button></span>')+
+  '</div></div>':"";
+ root.innerHTML=units.length?'<div class="cf-combat-controls"><label>Atacante<select id="combat-attacker">'+unitOptions+'</select></label>'+
+  '<label>Alvo<select id="combat-target">'+targetOptions+'</select></label></div>'+
+  infoText+sourceControls+'<button type="button" id="combat-roll" class="cf-primary"'+(!a||!t?' disabled':'')+'>Rolar confronto</button>'+dice+lastHTML+transfer+manual+
+  '<details><summary>Histórico de combate ('+c.log.length+')</summary>'+
+  c.log.slice(0,30).map(x=>'<p><small>'+esc(x.date.slice(11,16))+' · '+esc(x.kind)+'</small> '+esc(x.description)+'</p>').join("")+'</details>':
+  '<p class="cf-note">Adicione ameaças ou importe personagens deste navegador para iniciar o comparativo.</p>';
+}
+function beginCombatRoll(){
+ const c=combatState(),a=combatAttacker(),t=combatDefender();
+ if(!a||!t||a===t)return notice("Selecione atacante e alvo diferentes.");
+ const human=isHumanoidKind(a.kind),[group,key]=(c.base||"").split(":");
+ if(!human&&key===c.second)return notice("Escolha dois Atributos diferentes para criaturas.");
+ const selection=human?{baseGroup:group,baseKey:key,attribute:c.attribute,mode:key==="armas_conjuracao"?"armas":"normal"}:
+  {first:key,second:c.second};
+ const pool=composeActionPool(a,selection);
+ if(!pool.ok)return notice(pool.error);
+ const info=combatWeaponInfo(a,t),rolled=rollCreatureFaces(pool.pool);
+ const firstAttr=rolled.find(d=>d.group==="attribute");
+ const firstOther=rolled.find(d=>d.id!==firstAttr?.id);
+ const kept=[firstAttr?.id,firstOther?.id].filter(Boolean);
+ combatRoll={actor:c.actor,target:c.target,dice:rolled,kept,de:defensiveDE(t),bonusA:info.bonus,
+  weaponName:info.weapon?.name||"",physical:c.attackKind!=="outro",extraKeep:!!c.extraKeep,cancelP:0,convertPairs:0,passA:false};
+ renderCombat();
+}
+function confirmCombatRoll(){
+ const p=combatRoll,c=combatState(),a=p&&combatUnit(p.actor),t=p&&combatUnit(p.target),pre=combatPreview();
+ if(!a||!t||!pre?.ok)return notice(pre?.error||"Rolagem incompleta.");
+ const r=pre.result;
+ if(a.sourceId){
+  a.courage=Math.max(0,a.courage-pre.courageCost);
+  a.courage=Math.min(maxCourage(a.level),a.courage+Number(r.criticalRefundCourage||0));
+ }else{
+  const settled=settleCreatureRoll(a,model.publicPavor,model.players,{ok:true,cost:pre.pavorCost,courageCost:pre.courageCost,
+   result:r,criticalPavor:r.monsterCriticalPavor||0});
+  if(!settled.ok)return notice(settled.error);
+  const idx=model.roster.findIndex(u=>u.id===a.id);
+  model.roster[idx]=settled.unit;model.publicPavor=settled.publicPavor;
+ }
+ c.last={attacker:p.actor,target:p.target,attackerName:a.name,targetName:t.name,
+  outcome:r.outcome,success:r.success,e:r.e,p:r.p,damage:r.damage,physical:p.physical,applied:false};
+ if(a.sourceId&&r.p>0)c.pending={type:"pavor",remaining:r.p};
+ else if(!a.sourceId&&!r.success&&r.p>0)c.pending={type:"coragem",remaining:r.p};
+ else c.pending=null;
+ combatLog("Rolagem",a.name+" → "+t.name+": "+r.outcome+"; "+r.e+"E, "+r.p+"P, "+
+   r.damage+" dano potencial, "+pre.courageCost+" Coragem e "+pre.pavorCost+"P locais gastos."+
+   (p.passA?" Passagem com Antecipar.":""));
+ combatRoll=null;save();render();
+ notice("Rolagem confirmada. Dano e transferências são etapas separadas.");
+}
+function applyCombatDamage(){
+ const c=combatState(),last=c.last,t=last&&combatUnit(last.target);
+ if(!t||!last||last.applied||!last.success||!last.physical)return notice("Nenhum ataque físico comum pendente para aplicar.");
+ const r=applyCommonDamage(t,last);
+ if(!r.applied)return notice(r.reason||"Dano não aplicado.");
+ last.applied=true;combatLog("Dano",t.name+": −"+r.removed+" Integridade, −"+r.lifeRemoved+" Vida. "+
+  (last.e>=5?"Limiar de 5 Êxitos verificado.":""));
+ save();render();notice("Dano físico comum aplicado somente à cópia ou ficha deste encontro.");
+}
+function combatTransfer(){
+ const c=combatState(),p=c.pending,recipient=el("combat-recipient")?.value;
+ if(!p||p.remaining<=0||!recipient)return notice("Escolha um destino válido.");
+ const request=Math.floor(clamp(el("combat-transfer-amount")?.value,1,p.remaining));
+ let current=0,cap=0,ref=null,label="";
+ if(recipient==="public"&&p.type==="pavor"){current=model.publicPavor;cap=narratorCap(model.players);label="Reserva pública";}
+ else if(p.type==="pavor"&&recipient.startsWith("threat:")){
+  ref=combatUnit(recipient);if(!ref)return notice("Ameaça indisponível.");
+  current=ref.pavorLocal;cap=stats(ref).limitLocal;label=ref.name;
+ }else if(p.type==="coragem"&&recipient.startsWith("player:")){
+  ref=combatUnit(recipient);if(!ref)return notice("Personagem indisponível.");
+  current=ref.courage;cap=maxCourage(ref.level);label=ref.name;
+ }else return notice("Destino incompatível com esta transferência.");
+ const moved=transferTo(request,current,cap);
+ if(!moved.moved)return notice("Destino atingiu o limite. Escolha outro destino.");
+ if(recipient==="public")model.publicPavor=moved.after;
+ else if(p.type==="pavor")ref.pavorLocal=moved.after;
+ else ref.courage=moved.after;
+ p.remaining-=moved.moved;
+ combatLog("Transferência",moved.moved+(p.type==="pavor"?" Pavor → ":" Coragem → ")+label);
+ if(p.remaining===0)c.pending=null;
+ save();render();
+ notice(moved.moved+" ponto(s) transferido(s)."+(p.remaining?" "+p.remaining+" ainda sem destino.":""));
+}
+function adjustCombatTarget(resource,delta){
+ const t=combatDefender();if(!t)return;
+ const armor=itemArmor(t),type=resource==="armor"?armor:null;
+ if(resource==="armor"&&type)type.integrity=Math.floor(clamp(type.integrity+delta,0,type.integrityMax));
+ else if(resource==="life")t.life=Math.floor(clamp(t.life+delta,0,999));
+ else if(resource==="pavor"&&!t.sourceId)t.pavorLocal=Math.floor(clamp(t.pavorLocal+delta,0,stats(t).limitLocal));
+ else if(resource==="courage"&&t.sourceId)t.courage=Math.floor(clamp(t.courage+delta,0,maxCourage(t.level)));
+ else return;
+ combatLog("Ajuste manual",t.name+" · "+resource+" "+(delta>0?"+":"")+delta);
+ save();render();
+}
 function draftFor(t){
  if(rollDraft?.id!==t.id){
   const trained=[...KNOWLEDGES.map(([key])=>({group:"knowledge",key,grade:t.knowledges[key]})),
@@ -627,7 +866,7 @@ function editorHTML(t){
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
 }
 function render(){
- renderSummary();renderRoster();
+ renderSummary();renderRoster();renderCombat();
  const t=selected();
  const tabs=t?'<div class="cf-mode-tabs" role="group" aria-label="Modo da ficha">'+
   '<button type="button" data-conflict-mode="edit" aria-pressed="'+(conflictMode==="edit")+
@@ -758,7 +997,9 @@ async function importJson(file){
   if(!confirm("Substituir o conflito atual pelo arquivo importado?"))return;
   model={players:Math.floor(clamp(raw.players,0,30)),publicPavor:0,lastRoll:raw.lastRoll||null,
    rollHistory:Array.isArray(raw.rollHistory)?raw.rollHistory.slice(0,300):[],
-   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),companions:normalizeCompanions(raw.companions,raw.players),roster:raw.roster.slice(0,80).map(normalize),active:raw.active};
+   partyXp:Math.floor(clamp(raw.partyXp,0,99999)),companions:normalizeCompanions(raw.companions,raw.players),roster:raw.roster.slice(0,80).map(normalize),active:raw.active,
+    combat:raw.combat&&typeof raw.combat==="object"?raw.combat:null};
+   combatRoll=null;
   model.publicPavor=Math.floor(clamp(raw.publicPavor,0,narratorCap(model.players)));
   if(!model.roster.some(t=>t.id===model.active))model.active=model.roster[0]?.id||null;
   save();render();notice("Conflito importado com "+model.roster.length+" fichas.");
@@ -878,6 +1119,42 @@ document.addEventListener("change",event=>{
  if(target.dataset.skill){toggleSkill(target.dataset.skill,target.checked);return;}
  if(target.dataset.field)update(target.dataset.field,target.type==="checkbox"?target.checked:target.value);
 });
+// Fluxo do comparador independente dos botões do editor de ameaças.
+document.addEventListener("click",event=>{
+ const b=event.target.closest("button");if(!b)return;
+ if(b.id==="combat-import-players")return importCombatPlayers();
+ if(b.id==="combat-roll")return beginCombatRoll();
+ if(b.id==="combat-confirm-roll")return confirmCombatRoll();
+ if(b.id==="combat-discard-roll"){combatRoll=null;renderCombat();return;}
+ if(b.id==="combat-apply-damage")return applyCombatDamage();
+ if(b.id==="combat-transfer")return combatTransfer();
+ if(b.dataset.combatAdjust)return adjustCombatTarget(b.dataset.combatAdjust,Number(b.dataset.delta)||0);
+});
+document.addEventListener("change",event=>{
+ const b=event.target,c=combatState();
+ if(b.id==="combat-attacker"){c.actor=b.value;c.weaponId="";c.base="";combatRoll=null;combatPickDefaults();save();renderCombat();return;}
+ if(b.id==="combat-target"){c.target=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-weapon"){c.weaponId=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-attack-kind"){c.attackKind=b.value==="outro"?"outro":"fisico";combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-target-weight"){c.weightOverride=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-base"){c.base=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-attribute"){c.attribute=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-second"){c.second=b.value;combatRoll=null;save();renderCombat();return;}
+ if(b.id==="combat-extra-keep"){c.extraKeep=b.checked;combatRoll=null;save();renderCombat();return;}
+ if(b.dataset.combatDie&&combatRoll){
+  if(b.checked&&!combatRoll.kept.includes(b.dataset.combatDie))combatRoll.kept.push(b.dataset.combatDie);
+  if(!b.checked)combatRoll.kept=combatRoll.kept.filter(x=>x!==b.dataset.combatDie);
+  renderCombat();return;
+ }
+ if(combatRoll&&["combat-cancel","combat-pairs","combat-pass"].includes(b.id)){
+  if(b.id==="combat-pass")combatRoll.passA=b.checked;
+  else if(b.id==="combat-cancel")combatRoll.cancelP=Math.floor(clamp(b.value,0,9));
+  else combatRoll.convertPairs=Math.floor(clamp(b.value,0,4));
+  renderCombat();return;
+ }
+ if(b.id==="combat-recipient"){c.recipient=b.value;save();return;}
+});
+
 const quickImportNotice=consumeQuickHumanoid();
 render();
 if(quickImportNotice)notice(quickImportNotice);
