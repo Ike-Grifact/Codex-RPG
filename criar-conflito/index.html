@@ -7,10 +7,10 @@
  <title>Criar Conflito — Codex RPG</title>
  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
  <link rel="stylesheet" href="../assets/theme.css">
- <link rel="stylesheet" href="./styles.css?v=20261122-armor-humanoid">
+ <link rel="stylesheet" href="./styles.css?v=20261122-armor-combat">
  <script src="../assets/site.js" defer></script>
  <script src="../prototipo-ficha/catalog.js?v=0.50-1" defer></script>
- <script type="module" src="./app.js?v=20261122-armor-humanoid"></script>
+ <script type="module" src="./app.js?v=20261122-armor-combat"></script>
 </head>
 <body>
  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -93,6 +93,12 @@
  <label>XP total das Grandes<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-grande" data-companion="grande" data-companion-field="xpTotal"></label>
  </div><strong id="companion-xp-total">0 XP dos companheiros</strong><small id="party-effective-xp">Grupo + companheiros: 80 XP</small>
  </div></section>
+  <section class="cf-combat-shell" id="resumo-combate" aria-label="Resumo comparativo de combate">
+   <div class="cf-section-title"><div><span class="eyebrow">COMPARATIVO · SEM VTT</span><h2>Resumo de combate</h2></div>
+    <button type="button" id="combat-import-players" class="cf-primary">Importar fichas do navegador</button></div>
+   <p class="cf-description">Use cópias dos personagens salvos na Ficha e as ameaças deste encontro. Escolha atacante e alvo, confira peso e proteção, role e distribua recursos. Sem mapa ou movimento. As fichas originais dos jogadores não são alteradas.</p>
+   <div id="combat-panel" aria-live="polite"></div>
+  </section>
 <section class="cf-layout">
    <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
     <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Suas ameaças</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
