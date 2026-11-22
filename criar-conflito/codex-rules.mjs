@@ -28,7 +28,8 @@ export const SITUATIONS={
 };
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
-export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // G4 PENDENTE.
+export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // Compatibilidade com G1-G3.
+export const MAGIC_GRADE_DICE={1:[6],2:[10],3:[12],4:[12,12]}; // SRD v0.89: G4 com dois d12.
 export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD v0.89: 15 XP compartilhados, sem reservas por categoria.
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
@@ -106,7 +107,7 @@ export function mayComplement(system,base,mode){
   return sk.includes("disciplina-avancada");
  return false;
 }
-export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0,magicGrade=1}={}){
+export function buildPool(system,selection,{mode="normal",contextApproved=false,step=false,stepDieId="",equipmentDie=0,magicGrade=1,magicElement="",magicSecondElement=""}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.attribute,c=selection?.complement,monster=!!system.monsterRules;
  if(!b||!(GROUPS[b.group]||[]).some(x=>x[0]===b.key)||(monster&&b.group!=="attribute")||(!monster&&b.group==="attribute"))
   errors.push(monster?"Monstro: selecione primeiro um Atributo.":"Selecione primeiro Conhecimento ou Prática.");
@@ -130,9 +131,16 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
     pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides,baseSides:sides});
   if(mode==="conjuracao"){
-   const die=MAGIC_GRADE_DIE[Number(magicGrade)]||0;
-   if(!die)errors.push("O dado da magia G4 ainda está PENDENTE.");
-   else pool.push({id:"magic.grade."+magicGrade,group:"magic",key:"Grau "+magicGrade,sides:die,baseSides:die});
+   const dice=MAGIC_GRADE_DICE[Number(magicGrade)]||[];
+   if(!dice.length)errors.push("Grau mágico inválido ou sem dado definido.");
+   else if(Number(magicGrade)===4){
+    const habilitado=(id)=>id==="psiquico"?skills.includes("criar-item-foco-magia"):skills.includes(id);
+    if(!magicElement||!magicSecondElement||magicElement===magicSecondElement||
+       !habilitado(magicElement)||!habilitado(magicSecondElement))
+     errors.push("G4 exige dois elementos diferentes, cada qual com Perícia G3 habilitada, e confirmação do Narrador.");
+   }
+   dice.forEach((sides,i)=>pool.push({id:"magic.grade."+magicGrade+"."+i,group:"magic",
+    key:"Grau "+magicGrade+" · dado "+(i+1),sides,baseSides:sides}));
   }
   if(equipmentDie&&mode!=="conjuracao"){
    if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
