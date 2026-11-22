@@ -146,3 +146,169 @@ function render(refresh=true){
  if(refresh){lastActor="";renderSources();}
  renderTarget();renderResources();renderHistory();renderLast();renderDice();
 }
+
+function renderSources(){
+ const a=actor();
+ if(lastActor===a?.id)return;
+ lastActor=a?.id||"";
+ const human=isHumanoidKind(a?.kind),base=[];
+ if(a){
+  if(human)for(const g of ["practice","knowledge"]){
+   const field=g==="practice"?"practices":"knowledges";
+   for(const [key,name] of sources[g])if(Number(a[field]?.[key])>0)
+    base.push({value:g+":"+key,label:name+" G"+a[field][key]});
+  }else for(const [key,name] of ATTRIBUTES)if(Number(a.attributes?.[key])>0)
+    base.push({value:"attribute:"+key,label:name+" G"+a.attributes[key]});
+ }
+ $("base-source").innerHTML=base.length?base.map(x=>'<option value="'+esc(x.value)+'">'+esc(x.label)+'</option>').join(""):
+  '<option value="">Nenhuma fonte adquirida</option>';
+ const attrs=a?ATTRIBUTES.filter(([key])=>Number(a.attributes?.[key])>0):[];
+ $("attribute-source").innerHTML=attrs.length?attrs.map(([key,name])=>'<option value="'+key+'">'+
+  esc(name)+" G"+a.attributes[key]+'</option>').join(""):'<option value="">Sem Atributo</option>';
+ const extras=[];
+ if(a)for(const g of ["attribute","practice","knowledge"]){
+  const field={attribute:"attributes",practice:"practices",knowledge:"knowledges"}[g];
+  for(const [key,name] of sources[g])if(Number(a[field]?.[key])>0)
+   extras.push({value:g+":"+key,label:name+" G"+a[field][key]});
+ }
+ $("extra-source").innerHTML='<option value="">Sem terceira fonte</option>'+extras.map(x=>
+  '<option value="'+x.value+'">'+esc(x.label)+'</option>').join("");
+ $("discipline-mode").value=human&&a?.skills.includes("criar-item-foco-magia")?"conjuracao":
+  human&&a?.practices?.armas_conjuracao>0?"armas":"normal";
+ $("spell-grade").value="1";$("extra-keep").checked=false;$("context-approved").checked=false;
+ renderWeapons();
+}
+function renderWeapons(){
+ const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
+ $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
+  '<option value="'+esc(w.id)+'"'+(w.eligible?"":" disabled")+'>'+esc(w.name)+
+  ' · '+(w.die?"d"+w.die:"dado não cadastrado")+
+  (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
+ if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
+ renderAffinity();
+}
+function chosenWeapon(){
+ return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
+}
+function renderAffinity(){
+ const hint=weightAffinity(chosenWeapon(),target());
+ $("weight-affinity").textContent=hint.description+" Carga do atacante: "+
+  (actor()?weightUsed(actor()).toFixed(3):"—")+
+  ". A categoria da armadura equipada determina a afinidade defensiva.";
+ $("apply-affinity").disabled=hint.status!=="known"||hint.delta===0;
+ return hint;
+}
+function options(){
+ return {de:Number($("difficulty").value),situation:$("situation").value,extraKeep:$("extra-keep").checked,
+  cancelP:Number($("cancel-p").value),convertPairs:Number($("convert-a").value)};
+}
+function evaluate(a,rolled,kept,opts){
+ if(a.side==="inimigos"&&a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
+ if(a.side==="inimigos"&&isHumanoidKind(a.kind))return previewHumanoidRoll(a,rolled,kept,opts);
+ if(a.kind==="monstro")return previewCreatureRoll(a,rolled,kept,opts);
+ const r=resolveRoll(rolled,kept,{de:opts.de,situation:opts.situation,level:a.level,
+  extraKeep:opts.extraKeep,courage:a.courage,cancelP:opts.cancelP,convertPairs:opts.convertPairs});
+ if(!r.ok)return {ok:false,error:r.errors.join("; ")};
+ const free=keepLimit(a.level,false,false);
+ return {ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
+}
+function preview(){
+ if(!pending)return {ok:false,error:"Não existem dados rolados."};
+ const a=byId(pending.actor),t=byId(pending.target);
+ if(!a||!t)return {ok:false,error:"Atacante ou alvo não encontrado."};
+ const pre=evaluate(a,pending.rolled,pending.kept,options());
+ if(!pre.ok)return pre;
+ const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
+ const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:
+  lifeAtFive(pre.result,t);
+ return {...pre,integrityDamage:g1?0:pre.result.damage,life};
+}
+function renderDice(){
+ const element=$("dice");
+ $("confirm").disabled=!pending;$("suggest").disabled=!pending;
+ if(!pending){
+  element.innerHTML='<p>Selecione atacante e alvo antes de rolar.</p>';
+  $("roll-result").textContent="Nenhuma rolagem pendente.";
+  $("action-state").textContent="Aguardando declaração";return;
+ }
+ element.innerHTML=pending.rolled.map(d=>{
+  const [e,a,p]=faceSymbols(d.sides,d.face),kept=pending.kept.includes(d.id);
+  return '<button type="button" class="cc-die'+(kept?" kept":"")+'" data-die="'+esc(d.id)+
+   '" aria-pressed="'+kept+'" title="Selecionar como mantido"><strong>'+d.face+
+   '</strong><small>d'+d.sides+'</small><span>'+
+   (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
+   (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
+ }).join("");
+ const pre=preview();
+ if(!pre.ok){$("roll-result").textContent=pre.error;return;}
+ const r=pre.result;
+ $("roll-result").innerHTML='<strong>'+esc(r.outcome)+'</strong>'+
+  '<p><span class="cc-e">'+r.e+' Êxitos</span> + <span class="cc-p">'+r.p+
+  ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
+  '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
+  pre.integrityDamage+' · Vida no patamar 5: '+(pre.life.damage===null?"PENDENTE":pre.life.damage)+
+  '</p><small>'+esc(pre.life.reason)+' Custo: '+(pre.courageCost||0)+
+  ' Coragem / '+(pre.cost||0)+' Pavor local.</small>';
+ $("action-state").textContent="Rolado, aguardando confirmação";
+}
+function roll(){
+ const a=actor(),t=target();
+ if(!a||!t||a.id===t.id)return notice("Escolha um atacante e um alvo distintos.");
+ if(a.acted)return notice(a.name+" já agiu nesta rodada. Avance a rodada.");
+ const human=isHumanoidKind(a.kind),[group,key]=String($("base-source").value||"").split(":");
+ const attribute=$("attribute-source").value,[eg,ek]=String($("extra-source").value||"").split(":");
+ const mode=$("discipline-mode").value;
+ const choice=human?{baseGroup:group,baseKey:key,attribute,mode}:
+  {first:key,second:attribute,mode:"normal"};
+ if(eg){choice.extra={group:eg,key:ek};choice.contextOK=$("context-approved").checked;}
+ const pool=composeActionPool(a,choice);
+ if(!pool.ok)return notice(pool.error||"Combinação de dados inválida.");
+ const w=chosenWeapon();
+ if(w){
+  if(!w.eligible||!human||mode!=="armas"||key!=="armas_conjuracao")
+   return notice("Dado de arma exige Disciplina em modo Armas e especialização do peso.");
+  if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
+  pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});
+ }
+ let grade=null;
+ if(human&&mode==="conjuracao"){
+  if(key!=="armas_conjuracao"||!a.skills.includes("criar-item-foco-magia"))
+   return notice("Conjuração exige Disciplina e Criar Item de Foco e Magia.");
+  grade=Number($("spell-grade").value);
+  const bonus=MAGIC_GRADE_DICE[grade]||[];
+  if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
+  if(grade>=3&&!confirm("Graus 3 e 4 exigem habilitações, elementos, focos e tempo válidos. Confirme que o Narrador autorizou esta conjuração antes de rolar."))return;
+  bonus.forEach((sides,i)=>pool.pool.push({id:"magic."+grade+"."+i,group:"magic",key:"G"+grade,sides}));
+ }
+ const rolled=rollCreatureFaces(pool.pool);
+ pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
+  mode,spellGrade:grade,weapon:w?.name||""};
+ $("cancel-p").value="0";$("convert-a").value="0";
+ renderDice();
+}
+function suggest(){
+ if(!pending)return;
+ const a=byId(pending.actor),rolled=pending.rolled,opts=options();
+ const maximum=a.kind==="monstro"?Math.min(stats(a).keepMax,a.keep||2):
+  a.side==="inimigos"&&isHumanoidKind(a.kind)?Math.min(4,(a.threatGrade>=2?3:2)+Number(opts.extraKeep)):
+  keepLimit(a.level,opts.extraKeep,false);
+ let best=null;
+ function explore(from,indices){
+  if(indices.length){
+   const ids=indices.map(x=>rolled[x].id);
+   for(let cancel=0;cancel<=3;cancel++)for(let convert=0;convert<=2;convert++){
+    const pre=evaluate(a,rolled,ids,{...opts,cancelP:cancel,convertPairs:convert});
+    if(!pre.ok)continue;
+    const r=pre.result,score=100*Number(r.success)+r.reached*10-r.p*6+
+     (r.p===0?18:0)-(pre.courageCost||0)*8-(pre.cost||0)*8;
+    if(!best||score>best.score)best={ids,cancel,convert,score};
+   }
+  }
+  if(indices.length>=maximum)return;
+  for(let i=from;i<rolled.length;i++){indices.push(i);explore(i+1,indices);indices.pop();}
+ }
+ explore(0,[]);
+ if(!best)return notice("Sem combinação de dados mantidos válida.");
+ pending.kept=[...best.ids];$("cancel-p").value=String(best.cancel);
+ $("convert-a").value=String(best.convert);renderDice();
+}
