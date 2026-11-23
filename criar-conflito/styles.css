@@ -428,7 +428,7 @@
  --fp-gold:var(--accent);--fp-e:#267A45;--fp-a:#2369BB;--fp-p:#542176;
 }
 .cf-enemy-skill-genetic .fp-gene-canvas{min-height:570px;max-height:none;height:610px;aspect-ratio:auto;
- border-color:var(--line);touch-action:pan-x pan-y;overscroll-behavior:contain}
+ border-color:var(--line);overscroll-behavior:contain}
 .cf-enemy-skill-genetic .fp-gene-canvas:focus-visible{outline:2px solid var(--accent)}
 .cf-enemy-skill-genetic>.cf-note{font-size:11px;line-height:1.5;margin:0 0 10px}
 .cf-gene-inspector{position:sticky;top:10px;border:1px solid var(--line);background:var(--surface);
