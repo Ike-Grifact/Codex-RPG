@@ -746,11 +746,34 @@ function bind(){
  $("step-source").addEventListener("change",()=>{pending=null;renderDice();});
  $("discipline-mode").addEventListener("change",()=>{pending=null;renderDice();});
  $("active-skill").addEventListener("change",()=>{
-  $("skill-approved").checked=false;updateSkillInfo();if(pending)renderDice();
+  $("skill-approved").checked=false;pending=null;
+  if(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes($("active-skill").value))$("skill-courage").value="1";
+  renderAdditionalSkills((actor()?.skills||[]).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
+  updateSkillInfo();renderDice();
  });
  for(const id of ["skill-courage","skill-approved"]){
-  $(id).addEventListener("change",()=>{updateSkillInfo();if(pending)renderDice();});
+  $(id).addEventListener("change",()=>{pending=null;updateSkillInfo();renderDice();});
  }
+ $("active-extra-skills").addEventListener("change",event=>{
+  const el=event.target;
+  const key=el.dataset.extraSkill||el.dataset.extraSkillCost;
+  if(!key)return;
+  if(el.dataset.extraSkill){
+   if(el.checked){
+    const value=$("active-extra-skills").querySelector('[data-extra-skill-cost="'+key+'"]')?.value||"1";
+    activeExtraSelections.set(key,Number(value));
+   }else activeExtraSelections.delete(key);
+  }else if(activeExtraSelections.has(key))activeExtraSelections.set(key,Number(el.value));
+  pending=null;renderDice();
+ });
+ $("attack-thrown").addEventListener("change",()=>{pending=null;renderDice();});
+ $("target-bleeding").addEventListener("change",event=>{
+  const t=target();if(!t)return;
+  const changed=markCondition(t,"sangramento",event.target.checked);
+  if(changed.ok){Object.assign(t,changed.actor);pending=null;
+   log("condição",t.name+(event.target.checked?" entrou em Sangramento.":" deixou Sangramento."));
+   persist();render(false);}
+ });
  $("monster-keep").addEventListener("change",event=>{
   const a=actor(),n=Number(event.target.value);
   if(!a||a.kind!=="monstro"||!Number.isInteger(n)||n<2||n>stats(a).keepMax)return;
