@@ -7,7 +7,8 @@ const livro=readFileSync(new URL("../livro.html",import.meta.url),"utf8");
 test("Criação usa orçamento de 15 XP compartilhados em todas as categorias",()=>{
  assert.match(app,/const CREATE_BUDGET=\{attr:15,training:15,skills:15,total:15\}/);
  assert.match(ficha,/15 XP iniciais compartilhados/);
- assert.match(livro,/SRD v0\.79 — 15 XP iniciais/);
+ assert.match(livro,/15 XP iniciais compartilhados/);
+ assert.doesNotMatch(livro,/SRD v0\.79 — 15 XP iniciais/,"A criação deve ensinar a regra, não o nome da versão");
 });
 test("Nível 1 passa a 15 XP sem mudar referências 2 a 20",()=>{
  assert.match(app,/const XP_LEVEL_REFERENCE=\[0,15,28,37,46,56,66,77,88,100,112,125,138,152,166,181,196,212,228,245,260\]/);
