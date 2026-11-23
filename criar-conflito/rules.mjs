@@ -74,7 +74,7 @@ export function blank(kind="monstro"){
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
- skills:[],life:4,pavorLocal:4,keep:2,courage:humanoid?10:0,abilities:"",items:[]};
+ skills:[],life:4,pavorLocal:4,keep:2,courage:0,abilities:"",items:[]};
 }
 /* Criação rápida de NPC: mínimo humano aprovado (1 XP atributo + 2 XP prática).
    Sem habilidades, itens ou XP adicionais gratuitos. */
@@ -111,7 +111,7 @@ export function stats(t){
  const naturalKeep=human?enemyHumanoidFreeKeep(grade):2;
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
  return {life,de:defense,baseDE,armorDE,shieldDE,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
-  keepCostP:human?0:Math.max(0,Number(t.keep||2)-2),
+  keepCostP:Math.max(0,Number(t.keep||2)-naturalKeep),
   xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
 }
 export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+Number(it.weight||0)*Math.max(1,Number(it.qty||1)),0);}
@@ -145,6 +145,7 @@ export function normalize(raw){
   const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,maxCourage(raw.level??t.level)]:k==="xp"?[0,50000]:[0,999];
   t[k]=Math.floor(clamp(raw[k]??t[k],min,max));
  }
+ t.courage=0; // Nenhum inimigo, inclusive humanoide, possui Coragem.
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)t[group][key]=Math.floor(clamp(raw[group]?.[key],0,6));
  t.skills=Array.isArray(raw.skills)?[...new Set(raw.skills.filter(id=>SKILLS.some(s=>s.id===id)))]:[];
