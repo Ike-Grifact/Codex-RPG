@@ -5346,8 +5346,9 @@ function sendNpcToConflict(){
   notes:[state.notes,state.origin?"Origem: "+state.origin:"",state.virtue?"Virtude: "+state.virtue:"",
    state.personality?"Personalidade: "+state.personality:""].filter(Boolean).join("\n").slice(0,4000),
   leader:false,threatGrade:1,level:state.level||1,xp:extra,race:state.race||"",
+  pureElement:state.pureElement||"",runeElements:[...(state.runeElements||["",""])],
   attributes:{...state.attributes},knowledges:{...state.knowledges},
-  practices:{...state.practices},skills:[...state.skills],
+  practices:{...state.practices},skills:allOwnedSkills(state),
   life:Math.max(0,Number(state.life)||0),pavorLocal:4,keep:2,courage:state.courage??10,
   abilities:"Construído no Codex Genético. Equipamentos copiados; efeitos especiais devem ser conferidos pelo Narrador.",
   items:npcConflictItems()
