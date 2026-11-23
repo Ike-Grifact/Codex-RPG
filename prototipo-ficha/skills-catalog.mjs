@@ -25,7 +25,7 @@ const WEAPON_MASTERY_TYPES=Object.freeze([
  {id:"maestria-cajados",name:"Especialização em Armas — Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-arcos",name:"Especialização em Armas — Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
  {id:"maestria-bestas",name:"Especialização em Armas — Bestas",family:"bestas",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-arremessos",name:"Especialização em Armas Arremessadas",family:"arremessos",activationReq:"Maestria em Arremesso de Armas e Perícia de Armas do peso"},
+ {id:"maestria-arremessos",name:"Especialização em Armas Arremessadas",family:"arremessos",activationReq:"Perícia em Arremesso de Armas e Perícia de Armas do peso"},
  {id:"maestria-punhos",name:"Especialização em Armas de Punho",family:"punhos",activationReq:"Pugilismo"},
  {id:"maestria-longo-alcance",name:"Especialização em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
  {id:"maestria-armas-fogo",name:"Especialização em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
@@ -644,8 +644,8 @@ function skillReq(id,s){
   if(id==="maestria-adagas"&&(agi<2||dex<2))return"Requer Agilidade 2 e Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
   if(id==="maestria-machados"&&(strength<2||dex<1))return"Requer Força 2 e Destreza 1 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
   if(id==="maestria-cajados"&&dex<2)return"Requer Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
-  if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.";
-  if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.";
+  if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Especialização.";
+  if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Especialização.";
  if(id==="ferreiro"&&(art<3||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
