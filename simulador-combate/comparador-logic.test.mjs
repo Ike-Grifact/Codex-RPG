@@ -497,7 +497,7 @@ test("Maestrias requerem atributos próprios e habilitação da arma para usar g
   assert.equal(planWeaponEffects({...actor,skills:[id]},weapon,["Cortante"],{success:true}).ok,false,
    "Sem Perícia de peso, Maestria não substitui habilitação da arma");
  }
- for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-punhos","maestria-longo-alcance"])
+ for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-longo-alcance"])
   assert.equal(canUseWeaponMastery({skills:[id]},id),false,id+" depende de requisitos pendentes");
  assert.equal(canUseWeaponMastery({race:"humano",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),true);
  assert.equal(canUseWeaponMastery({race:"runa_espinhos",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),false);
@@ -561,4 +561,27 @@ test("Propriedades do catálogo sobrevivem à importação de arma sem lista no 
   items:[{id:"f",name:"Faca",kind:"weapon",equipped:true,die:6}]},"jogadores");
  const list=equippedWeapons(pc,[{name:"Faca",kind:"weapon",category:"leve",die:6,properties:["Cortante"]}]);
  assert.deepEqual(activeWeaponProperties(list[0]),["Cortante"]);
+});
+
+test("Especialização em Armas de Punho: compra separada da ativação, acerto e crítico",()=>{
+ const weapon={id:"p",kind:"weapon",name:"Soqueira",category:"leve",equipped:true,
+  properties:["Cortante","Perfurante","Contundente"]};
+ const base={skills:["maestria-punhos"],attributes:{forca:1,agilidade:1,destreza:1,vigor:1},
+  practices:{armas_conjuracao:0}};
+ assert.equal(weaponMasteryFor(weapon),"maestria-punhos");
+ assert.equal(weaponMasteryFor({...weapon,name:"Soco inglês"}),"maestria-punhos");
+ assert.equal(weaponMasteryFor({...weapon,name:"Manopla"}),"maestria-punhos");
+ assert.equal(canUseWeaponMastery(base,"maestria-punhos"),true,"Requisito de compra não exige Pugilismo");
+ assert.equal(planWeaponEffects(base,weapon,["Cortante"],{success:true}).ok,false,"Pugilismo exigido na ativação");
+ const ready={...base,skills:["maestria-punhos","pugilismo"]};
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante"],{success:true}).cost,0);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,0);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante","Contundente"],{success:true,critical:2}).cost,1);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Cortante"],{success:true,critical:2}).ok,false);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante"],{success:false}).cost,0);
+ for(const a of ["forca","agilidade","destreza","vigor"]){
+  const invalid={...ready,attributes:{...ready.attributes,[a]:0}};
+  assert.equal(canUseWeaponMastery(invalid,"maestria-punhos"),false,a+" em zero bloqueia a gratuidade");
+  assert.equal(planWeaponEffects(invalid,weapon,["Cortante"],{success:true}).cost,1);
+ }
 });
