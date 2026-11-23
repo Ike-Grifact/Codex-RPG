@@ -387,3 +387,28 @@
  .cf-companion-pair{grid-template-columns:repeat(2,minmax(0,1fr))}
  .cf-companion-result{justify-self:stretch;border-top:1px solid var(--line);padding-top:10px}
 }
+
+/* Perícias completas do Codex: busca e leitura de efeitos sem liberar XP pendente. */
+.cf-skills-panel .cf-skills{max-height:min(52vh,550px);padding:3px;gap:9px;align-content:start}
+.cf-skill-toolbar{display:grid;grid-template-columns:minmax(0,2fr) minmax(160px,1fr);align-items:end;gap:10px;margin:12px 0}
+.cf-skill-toolbar label{display:grid;gap:5px;min-width:0;font-size:12px;font-weight:650;color:var(--muted)}
+.cf-skill-toolbar input,.cf-skill-toolbar select{max-width:100%;width:100%;min-width:0;min-height:38px}
+.cf-skill-toolbar>small{grid-column:1/-1;font-size:11px;color:var(--muted)}
+.cf-skill-card{min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px;
+ background:var(--surface2);display:grid;gap:6px;align-content:start}
+.cf-skill-card[hidden]{display:none!important}
+.cf-skill-card[data-skill-status="owned"]{border-color:var(--accent)}
+.cf-skill-card[data-skill-status="pending"]{opacity:.78}
+.cf-skill-card .cf-skill{align-items:flex-start;min-width:0;line-height:1.45}
+.cf-skill-card .cf-skill input{margin-top:3px}
+.cf-skill-card .cf-skill>span{min-width:0;display:grid;gap:4px}
+.cf-skill-card .cf-skill strong{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+.cf-skill-card .cf-skill small{font-size:10px;color:var(--muted);line-height:1.4;overflow-wrap:anywhere}
+.cf-skill-info{font-size:11px;color:var(--muted)}
+.cf-panel .cf-skill-info summary{font-size:11px;line-height:1.3}
+.cf-skill-info p{margin:6px 0 0;white-space:normal;line-height:1.5}
+@media(max-width:650px){
+ .cf-skill-toolbar{grid-template-columns:minmax(0,1fr)}
+ .cf-skill-toolbar>small{grid-column:1}
+ .cf-skills-panel .cf-skills{grid-template-columns:minmax(0,1fr);max-height:55vh}
+}
