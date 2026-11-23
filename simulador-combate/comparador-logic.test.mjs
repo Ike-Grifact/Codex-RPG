@@ -573,7 +573,10 @@ test("Especialização em Armas de Punho: compra separada da ativação, acerto 
  assert.equal(weaponMasteryFor({...weapon,name:"Manopla"}),"maestria-punhos");
  assert.equal(canUseWeaponMastery(base,"maestria-punhos"),true,"Requisito de compra não exige Pugilismo");
  assert.equal(planWeaponEffects(base,weapon,["Cortante"],{success:true}).ok,false,"Pugilismo exigido na ativação");
- const ready={...base,skills:["maestria-punhos","pugilismo"]};
+ const ready={...base,skills:["maestria-punhos","pugilismo"],
+  attributes:{...base.attributes,forca:2},practices:{armas_conjuracao:1}};
+ assert.equal(planWeaponEffects({...ready,practices:{armas_conjuracao:0}},weapon,["Cortante"],{success:true}).ok,false,"Disciplina 1 ativa Pugilismo");
+ assert.equal(planWeaponEffects({...base,skills:["maestria-punhos","pugilismo"]},weapon,["Cortante"],{success:true}).ok,false,"Força 2 ativa Pugilismo");
  assert.equal(planWeaponEffects(ready,weapon,["Cortante"],{success:true}).cost,0);
  assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,0);
  assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante","Contundente"],{success:true,critical:2}).cost,1);
@@ -582,6 +585,8 @@ test("Especialização em Armas de Punho: compra separada da ativação, acerto 
  for(const a of ["forca","agilidade","destreza","vigor"]){
   const invalid={...ready,attributes:{...ready.attributes,[a]:0}};
   assert.equal(canUseWeaponMastery(invalid,"maestria-punhos"),false,a+" em zero bloqueia a gratuidade");
-  assert.equal(planWeaponEffects(invalid,weapon,["Cortante"],{success:true}).cost,1);
+  const effects=planWeaponEffects(invalid,weapon,["Cortante"],{success:true});
+  if(a==="forca"||a==="destreza")assert.equal(effects.ok,false,"Pugilismo também exige "+a);
+  else assert.equal(effects.cost,1,"Pugilismo ativo, porém requisito da Especialização ausente: "+a);
  }
 });
