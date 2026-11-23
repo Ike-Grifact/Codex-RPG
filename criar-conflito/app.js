@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
  from "./rules.mjs?v=20261122-pavor-hostil-v1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
@@ -220,17 +220,21 @@ function gradeCards(t,group,entries){
  return '<div class="cf-grade-group">'+entries.map(([key,name])=>{
   const grade=Number(t[prop][key]||0);
   const numbers=group==="attr"?dice(t,key):(()=>{const diceTable=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];return diceTable[grade];})();
-  const cost=group==="attr"?(monsterAttributeCost(t.kind)?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
+  const cost=t.kind==="humanoide"?humanoidSourceCost(t,group,key):
+   group==="attr"?(monsterAttributeCost(t.kind)?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
    [0,2,8,20,38,66,102];
-  const note=grade<6?"Próximo grau: "+(cost[grade+1]-cost[grade])+" XP":"Grau máximo";
+  const racialG1=t.kind==="humanoide"&&group==="attr"&&cost[1]===0;
+  const note=grade<6?"Próximo grau: "+(cost[grade+1]-cost[grade])+" XP":
+   "Grau máximo";
   return '<div class="cf-grade is-'+group+'"><strong>'+esc(name)+' · Grau '+grade+'</strong>'+
-   '<div class="cf-grade-controls"><button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="-1"'+(grade===0?' disabled':'')+' aria-label="Diminuir '+esc(name)+'">−</button>'+
+   '<div class="cf-grade-controls"><button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="-1"'+(grade===0||racialG1&&grade<=1?' disabled':'')+' aria-label="Diminuir '+esc(name)+'">−</button>'+
    '<div class="cf-die-row">'+dieIcons(numbers)+'</div>'+
    '<button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="1"'+(grade===6?' disabled':'')+' aria-label="Aumentar '+esc(name)+'">+</button></div>'+
-   '<small>'+note+'</small></div>';
+   '<small>'+(racialG1&&grade===1?'Grau 1 gratuito de origem · ':'')+note+'</small></div>';
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
+ if(humanoidRacialGrants(t).includes(id))return true;
  if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
  if(id==="olhos-de-aguia")return Number(t?.attributes?.destreza||0)>=3&&Number(t?.practices?.armas_conjuracao||0)>=3&&(t?.skills||[]).some(s=>s==="armas-longo-alcance"||s==="armas-fogo");
  if(id==="invocacao-elemental"){
@@ -248,9 +252,9 @@ function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
   '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
-   const valid=canBuySkill(t,it.id);
+   const racial=humanoidRacialGrants(t).includes(it.id),valid=canBuySkill(t,it.id);
    return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
-    (valid?'':' disabled')+'><span>'+esc(it.name)+' · '+it.cost+' XP'+(valid?'':' (requisito pendente)')+'</span></label>';
+    (racial||!valid?' disabled':'')+'><span>'+esc(it.name)+(racial?' · Origem (0 XP)':' · '+it.cost+' XP'+(valid?'':' (requisito pendente)'))+'</span></label>';
   }).join("")+'</div></details>';
 }
 function itemOptions(){
@@ -612,6 +616,9 @@ function editorHTML(t){
   '<p class="cf-human-guide-note">Fluxo sugerido: identidade → graus e XP → Perícias → itens → combate. As mudanças são salvas aqui mesmo; XP livre: <strong>'+x.xp.remaining+'</strong>.</p>':'';
  return guide+'<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
+  (t.kind==="humanoide"&&t.race?
+   '<p class="cf-identity-origin">Origem: <strong>'+esc(({humano:"Humano",lucker_sangue:"Lucker de Sangue",lucker_puro:"Lucker Puro",runa_espinhos:"Runa Espinhos"})[t.race]||t.race)+
+   '</strong> · benefícios raciais gratuitos preservados do criador</p>':'')+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
   '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Modo Rolagem</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
@@ -700,7 +707,9 @@ function gradeChange(group,key,delta){
  const t=selected();if(!t)return;
  const prop={attr:"attributes",know:"knowledges",practice:"practices"}[group];
  if(!prop||(group!=="attr"&&!isHumanoidKind(t.kind))||!Object.hasOwn(t[prop],key))return;
- const prev=t[prop][key],next=Math.floor(clamp(prev+delta,0,6));if(prev===next)return;
+ const prev=t[prop][key],next=Math.floor(clamp(prev+delta,0,6));
+ if(t.kind==="humanoide"&&group==="attr"&&humanoidSourceCost(t,"attr",key)[1]===0&&next<1)
+  return notice("Grau 1 é gratuito pela origem e não pode ser removido.");if(prev===next)return;
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
  t.life=Math.min(t.life,stats(t).life);
@@ -743,6 +752,7 @@ function remove(id){
 }
 function toggleSkill(id,checked){
  const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
+ if(humanoidRacialGrants(t).includes(id))return notice("Perícia de origem é gratuita e não pode ser removida.");
  if(checked&&!canBuySkill(t,id))return notice("Requisitos não atendidos.");
  if(!checked&&id==="domar-criatura-pequena"&&t.skills.some(s=>s==="domar-criatura-media"||s==="domar-criatura-grande"))
   return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
