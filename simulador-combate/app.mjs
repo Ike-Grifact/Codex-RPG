@@ -631,26 +631,53 @@ function confirmRoll(){
   const publicCap=narratorCap(state.combatants.filter(x=>x.side==="jogadores").length);
   state.publicPavor=Math.min(publicCap,state.publicPavor+Math.max(0,r.monsterCriticalPavor-own));
  }
+ const alreadyBleeding=!!t.statuses?.sangramento;
  const moved=transferPavor(a,t,r.p,state.publicPavor);
  Object.assign(t,moved.target);
- if(pre.companion&&r.success&&a.smallCompanion?.species==="serpente"&&t.statuses?.sangramento){
+ if(pre.status.applied?.sangramento){
+  const changed=markCondition(t,"sangramento",true);
+  if(changed.ok){Object.assign(t,changed.actor);log("status",t.name+" recebeu Sangramento por Cortante de "+a.name+
+   " (sem dano direto; armadura não impede a condição).");}
+ }
+ if(pre.status.applied?.cravar){
+  const shield=t.items.find(x=>x.kind==="shield"&&x.equipped);
+  const stuckWeapon=a.items.find(x=>x.id===pending.weaponId);
+  if(shield&&stuckWeapon){
+   t.statuses={...t.statuses,cravadas:[...(t.statuses?.cravadas||[]),{
+    name:stuckWeapon.name,weaponId:stuckWeapon.id,attackerId:a.id,shieldId:shield.id,category:stuckWeapon.category}]};
+   stuckWeapon.equipped=false;
+   log("status",a.name+" cravou "+stuckWeapon.name+" no escudo de "+t.name+
+    " (−1E cumulativo somente em Levantar Escudo; retirar conforme DE da arma).");
+  }
+ }
+ for(const note of pre.status.notes)log("arma",a.name+": "+note);
+ if(pre.companion&&r.success&&a.smallCompanion?.species==="serpente"&&alreadyBleeding){
   const changed=markCondition(t,"envenenado",true);
   if(changed.ok){Object.assign(t,changed.actor);log("companheiro",a.name+
    ": serpente "+(a.smallCompanion.name||"domesticada")+" aplicou Envenenado ao alvo em Sangramento (sem dano direto automático).");}
  }
  a.acted=true;
+ const crit=criticalFaces(pending.rolled,pending.kept);
+ const keptFaces=crit.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ");
  last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
+  critical:r.critical,keptFaces,activeWeaponEffects:pre.weaponPlan.active,
+  criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0,
   de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
   integrityApplied:false,lifeApplied:false};
  log("rolagem",a.name+" → "+t.name+": "+r.outcome+" ("+r.e+"E, "+r.p+"P). "+
+  (r.critical?"CRÍTICO "+r.critical+": "+keptFaces+". ":"Faces mantidas: "+keptFaces+". ")+
   "Dano convencional potencial "+pre.integrityDamage+" à Integridade. Vida pelo patamar 5: "+
   (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
   moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
    damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
    courageCost:pre.courageCost,pavorCost:pre.pavorCost,weapon:pending.weapon,
    elevation:pending.boosted||"",activeSkills:pre.activations.map(x=>({id:x.id,cost:x.cost})),
-   fulminante:pending.fulminanteId||"",companion:pre.companion,health:pre.health.id,weight:pre.affinity.description});
- state.resourceActor=t.id;pending=null;persist();render(false);
+   fulminante:pending.fulminanteId||"",companion:pre.companion,health:pre.health.id,weight:pre.affinity.description,
+   critical:r.critical,keptFaces,weaponEffects:pre.weaponPlan.active,weaponEffectCost:pre.weaponPlan.cost,
+   weaponNotes:pre.status.notes,criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0});
+ state.resourceActor=t.id;pending=null;
+ $("weapon-effects").querySelectorAll("[data-weapon-property]:checked").forEach(el=>el.checked=false);
+ persist();render(false);renderWeapons();
  $("action-state").textContent="Rolagem confirmada";
  notice("Rolagem confirmada. Pavor atualizado. Dano à Integridade e Vida ainda exigem aplicação.");
 }
