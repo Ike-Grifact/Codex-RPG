@@ -288,9 +288,16 @@ function enemyGeneInspector(t,id){
   (pending?"Aquisição PENDENTE: sem custo autorizado.":owned?"Já adquirida na ficha.":canBuy?"Compra disponível.":"Compre os requisitos e confira o orçamento.")+'</p>'+
   '<div class="cf-gene-detail-actions">'+button+'</div>';
 }
+function enemyGeneInspectorMarkup(t){
+ return '<div class="cf-gene-inspector-top"><strong>DETALHES DO CODEX</strong>'+
+  '<button type="button" data-enemy-inspector-close aria-label="Fechar detalhes da Perícia">×</button></div>'+
+  enemyGeneInspector(t,enemyGeneUI.selected);
+}
 function refreshEnemyGeneInspector(t){
  const inspector=el("cf-gene-inspector");
- if(inspector&&t)inspector.innerHTML=enemyGeneInspector(t,enemyGeneUI.selected);
+ if(!inspector||!t)return;
+ inspector.hidden=!enemyGeneUI.selected;
+ if(enemyGeneUI.selected)inspector.innerHTML=enemyGeneInspectorMarkup(t);
 }
 function renderEnemyGeneMap(t){
  if(enemyGeneUI.view!=="genetic"||!t)return;
@@ -306,8 +313,14 @@ function renderEnemyGeneMap(t){
    label:owned?"Adquirida":ready?"Comprável agora":humanoidSkillRequirement(t,it.id)||"XP ou custo pendente"};
  }));
  window.CodexGeneGraph.render(root,{skills:nodes,branches:[],affinity:{},
-  selected:enemyGeneUI.selected||"attr:forca",showFuture:enemyGeneUI.showFuture,filter:"all",edit:true,
-  onSelect:id=>{enemyGeneUI.selected=id;refreshEnemyGeneInspector(selected());renderEnemyGeneMap(selected());},
+  selected:enemyGeneUI.selected,showFuture:enemyGeneUI.showFuture,filter:"all",edit:true,
+  onSelect:id=>{
+   enemyGeneUI.selected=id;
+   refreshEnemyGeneInspector(selected());
+   renderEnemyGeneMap(selected());
+   if(window.matchMedia("(max-width:780px)").matches)
+    el("cf-gene-inspector")?.scrollIntoView({block:"nearest",behavior:"smooth"});
+  },
   onAdjust:(id,delta)=>{const [group,key]=id.split(":");gradeChange(group,key,delta);}
  });
 }
@@ -356,13 +369,13 @@ function skillPanel(t){
   '<div class="cf-skill-view-switch" role="group" aria-label="Visualização do Codex">'+
   '<button type="button" data-enemy-skill-view="list" aria-pressed="'+(enemyGeneUI.view==="list")+'">Lista de Perícias</button>'+
   '<button type="button" data-enemy-skill-view="genetic" aria-pressed="'+(enemyGeneUI.view==="genetic")+'">Codex Genético</button></div>'+
-  '<div class="cf-enemy-skill-layout">'+
+  '<div class="cf-enemy-skill-layout is-'+enemyGeneUI.view+'">'+
   '<section class="cf-enemy-skill-list"'+(enemyGeneUI.view!=="list"?' hidden':'')+' aria-label="Lista de Perícias">'+list+'</section>'+
   '<section class="cf-enemy-skill-genetic"'+(enemyGeneUI.view!=="genetic"?' hidden':'')+' aria-label="Mapa genético do inimigo">'+
   '<p class="cf-note">As conexões são afinidades temáticas, não pré-requisitos. Toque em um nó para consultar; + e − usam as mesmas compras da ficha.</p>'+
   '<div id="cf-enemy-gene-map" class="fp-gene-canvas" aria-label="Codex Genético do inimigo"></div></section>'+
-  '<aside id="cf-gene-inspector" class="cf-gene-inspector" aria-label="Detalhes da capacidade selecionada">'+
-  enemyGeneInspector(t,enemyGeneUI.selected)+'</aside></div>';
+  '<aside id="cf-gene-inspector" class="cf-gene-inspector" aria-label="Detalhes da capacidade selecionada"'+
+  (enemyGeneUI.selected?'':' hidden')+'>'+enemyGeneInspectorMarkup(t)+'</aside></div>';
 }
 function itemOptions(){
  const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
@@ -948,6 +961,12 @@ document.addEventListener("click",event=>{
  if(b.dataset.enemySkillOpen){enemyGeneUI.selected=b.dataset.enemySkillOpen;
   refreshEnemyGeneInspector(selected());
   el("cf-gene-inspector")?.scrollIntoView({block:"nearest",behavior:"smooth"});return;}
+ if(b.hasAttribute("data-enemy-inspector-close")){
+  enemyGeneUI.selected="";
+  refreshEnemyGeneInspector(selected());
+  if(enemyGeneUI.view==="genetic")renderEnemyGeneMap(selected());
+  return;
+ }
  if(b.dataset.enemySkillBuy)return toggleSkill(b.dataset.enemySkillBuy,true);
  if(b.dataset.enemySkillRefund){
   if(!confirm("Devolver esta Perícia e o XP correspondente? Requisitos de outras Perícias adquiridas serão conferidos."))return;
