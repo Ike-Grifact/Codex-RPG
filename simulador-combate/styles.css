@@ -155,3 +155,13 @@
  .cc-die{min-width:calc((100% - 27px)/4);padding:8px 4px;min-height:96px}
  .cc-controls button{flex:1 1 auto}
 }
+
+
+.cc-skill-multi{display:grid;gap:8px;margin:10px 0}
+.cc-skill-multi>strong{display:block;font-size:13px}
+.cc-extra-skill{display:grid;grid-template-columns:minmax(0,1fr)110px;gap:12px;align-items:center;padding:9px 12px;border:1px solid var(--line,#bbb);border-radius:8px}
+.cc-extra-skill label:first-child{display:flex;align-items:center;gap:8px}
+.cc-extra-skill input[type=number]{width:100%;min-height:34px}
+.cc-check-throw{display:flex!important;align-items:center;gap:8px;margin:6px 0;line-height:1.4}
+.cc-check-throw input{flex:none}
+@media(max-width:600px){.cc-extra-skill{grid-template-columns:minmax(0,1fr)80px;padding:8px}}
