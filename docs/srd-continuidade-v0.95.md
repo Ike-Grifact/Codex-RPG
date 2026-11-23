@@ -31,3 +31,14 @@ No inspetor do Codex Genético, mostrar separadamente o XP acumulado no grau atu
 - **PENDENTE:** testes do autor com Runa Espinhos; nenhuma mudança racial para Runa é aprovada por esta revisão.
 
 **Escopo fechado:** esta revisão não altera bônus de raças, custos de fontes, Perícias elementais, armaduras, dano, carga, combate, nem outras regras do sistema.
+
+## 4. Integração da Ficha com Criar Conflito e Simulador de Combate — 23/11/2026
+
+**DEFINIDO — correção de implementação; não constitui nova habilidade racial.**
+
+- A ficha de jogador registra Criar Item de Foco e Magia no campo de **Perícias adquiridas** somente depois da compra explícita por 0 XP, ao cumprir Disciplina 1 + Inteligência 1 + Artesão 1. Custos das fontes não mudam.
+- No editor **Criar Conflito**, Lucker Puro não recebe essa Perícia na normalização racial. A compra, o planejador de requisitos e o resumo de XP cobram 0 XP pela Perícia e os valores normais dos Graus faltantes.
+- No **Simulador de Combate**, as Perícias efetivamente compradas são importadas da ficha do navegador. O rolador só habilita Foco no Lucker Puro se a Perícia estiver registrada e as três fontes estiverem em G1 ou acima. Foco apenas presumido pela origem antiga não deve ser inventado; o comparador explica o motivo do bloqueio e informa que é preciso comprar na ficha e importar uma nova cópia.
+- Cópias antigas com a Perícia registrada sem todos os requisitos não recebem conjuração válida automaticamente. Registros legítimos e o histórico da ficha de origem são preservados. A importação e as validações não retiram XP ou itens da ficha original.
+- **Runa Espinhos permanece inalterado:** Criar Item de Foco e Magia continua uma concessão racial imediata, e é reconhecida no simulador quando a origem é importada. Demais Perícias raciais também são deduplicadas.
+- Regressão: conferir Lucker Puro sem Foco, com requisitos mas sem compra, com compra efetivada, cópias antigas, fluxo de compra do editor NPC, reimportação do navegador, Runa Espinhos e outras origens; preservar o cálculo de Artesão acumulado e as regras de combate.
