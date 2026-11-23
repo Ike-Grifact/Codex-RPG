@@ -10,7 +10,7 @@ const assert=(p,msg)=>{if(!p)throw Error(msg);};
   cdp.on("Runtime.exceptionThrown",({exceptionDetails:d})=>errors.push("CDP "+d.url+":"+(d.lineNumber+1)+":"+(d.columnNumber+1)+" "+d.text+" "+(d.exception?.description||"")));
   page.on("console",m=>{if(m.type()==="error")errors.push("CONSOLE: "+m.text());});
   await page.goto("http://127.0.0.1:8000/criar-conflito/",{waitUntil:"domcontentloaded"});
-  assert(await page.getByText("Criar Conflito").count()>0,"Não abriu a área Criar Conflito");
+  assert(await page.locator(".cf-hero h1").innerText().then(s=>s.includes("Meus")&&s.includes("inimigos")),"Não abriu a área Meus inimigos");
   await page.locator("#new-kind").selectOption("monstro");
   await page.locator("#add-threat").click();
   assert(await page.locator(".cf-threat-card").count()===1,"Não criou o primeiro monstro. Erros: "+errors.join(" | ")+" · editor: "+(await page.locator("#editor").innerText()).slice(0,250));
