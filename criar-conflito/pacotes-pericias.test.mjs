@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {blank,SKILLS,ledger,humanoidRacialGrants,humanoidSkillRequirement,
- isVisiblePlayerSkill,ATTRIBUTES,KNOWLEDGES,PRACTICES} from "./rules.mjs";
+ isVisiblePlayerSkill,ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS} from "./rules.mjs";
 import {HIDDEN_PLAYER_SKILL_IDS,PLAYER_SKILLS} from "../prototipo-ficha/skills-catalog.mjs";
 import {GENE_AUTO_REQUIREMENTS,planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs";
 
@@ -71,6 +71,32 @@ test("Pacote de Foco no Lucker Puro custa só os graus faltantes e registra aqui
  assert.equal(free.state.skills.includes("criar-item-foco-magia"),true);
  assert.equal(plan(blank("humanoide"),"criar-item-foco-magia").cost,6,
   "Origem humana comum continua pagando 1 XP da Perícia e os três graus");
+});
+
+test("12 Perícias Avançadas requerem Grau 3, preservando custos, extras e compras conjuntas",()=>{
+ assert.equal(ADVANCED_SOURCE_DEFS.length,12);
+ for(const spec of ADVANCED_SOURCE_DEFS){
+  const t=blank("humanoide"),field=spec.group==="practice"?"practices":"knowledges";
+  t[field][spec.key]=2;
+  if(spec.id==="furtividade-avancada"){
+   t.attributes.destreza=2;t.attributes.agilidade=1;t.skills.push("furtividade");
+  }
+  assert.match(humanoidSkillRequirement(t,spec.id),/Requer/,spec.id+" inválida em G2");
+  t[field][spec.key]=3;
+  assert.equal(humanoidSkillRequirement(t,spec.id),null,spec.id+" válida em G3");
+  const token=(spec.group==="practice"?"p:":"k:")+spec.key+":3";
+  assert.equal(GENE_AUTO_REQUIREMENTS[spec.id][0].includes(token),true,spec.id+" autocompra usa G3");
+ }
+ const base=blank("humanoide"),p=plan(base,"disciplina-avancada");
+ assert.ok(p);
+ assert.equal(p.cost,9,"Disciplina G3 8 XP + Perícia 1 XP");
+ assert.equal(p.after,6);
+ assert.equal(p.state.practices.armas_conjuracao,3);
+ assert.ok(p.state.skills.includes("disciplina-avancada"));
+ const older=blank("humanoide");older.practices.armas_conjuracao=2;older.skills=["disciplina-avancada"];
+ assert.match(humanoidSkillRequirement(older,"disciplina-avancada"),/Disciplina 3/,
+  "Ficha antiga mantém o registro, mas G2 não satisfaz o novo requisito");
+ assert.equal(ledger(older).skills,1,"Não modifica nem devolve o custo original");
 });
 
 test("Perícia avançada monta cadeia de dependências e evita XP parcial",()=>{
