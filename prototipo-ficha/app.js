@@ -4565,7 +4565,9 @@ function score(){
  // Substitui somente o +1A natural deste confronto por Vantagem Absoluta (+1E).
  // Situação em Vantagem Absoluta: Manejo eleva o bônus total a Golpe Certo (+2E).
  const manejoPerfeitoActive=ownsSkill("manejo-perfeito")&&!skillReq("manejo-perfeito")&&p.mode==="armas"&&
-  item?.type==="arma"&&item.equipped&&!p.opts.maosLeves&&!p.shieldThrowId&&w>0;
+  item?.type==="arma"&&item.equipped&&!item.firearm&&
+   !(item.properties||[]).includes("À Distância")&&!/^(arco|besta|zarabatana)/i.test(String(item.name||""))&&
+   !p.opts.maosLeves&&!p.shieldThrowId&&w>0;
  const manejoPerfeitoGolpeCerto=manejoPerfeitoActive&&p.opts.situation==="absoluta";
  const eBase=Math.max(0,raw[0]+situation[1]+(manejoPerfeitoActive?1:0)+criticalConverted+(critTier>=3?1:0)+
   (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
