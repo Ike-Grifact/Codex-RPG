@@ -265,10 +265,12 @@ Antes de interpretar um Lucker, responda:
 |---|---|---|
 | **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Maestria em Armas de Fogo gratuita; a Maestria não concede automaticamente a Perícia em Armas de Fogo |
 | **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
-| **Lucker Puro** | Inteligência e Destreza | Criar Item de Foco e Magia e **uma Perícia elemental gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
+| **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
 | **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
 
 **Lucker Puro — DEFINIDO (23/11/2026, SRD v0.94):** escolhe **exatamente uma** Perícia elemental inicial gratuita entre **Fogo, Água, Ar, Terra e Sagrado**. A escolha não concede os cinco elementos de uma vez. **Sangue, Trevas e Veneno não são opções iniciais gratuitas**. Esses elementos especiais continuam sujeitos às próprias regras de aquisição posterior por XP e requisitos; Transfusão Sanguinária permanece exclusiva do Lucker de Sangue. Fichas antigas preservam o registro da escolha de origem revogada sem continuar concedendo sua Perícia gratuitamente, e compras explícitas de Perícias por XP são preservadas. O jogador pode regularizar uma escolha revogada, sem custo, uma única vez, inclusive em ficha já concluída.
+
+**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.95):** Criar Item de Foco e Magia tem **custo de aquisição 0 XP**, sem concessão automática. É obrigatório comprar Disciplina 1, Inteligência 1 e Artesão 1 pelos custos de fontes vigentes antes de confirmar a Perícia gratuitamente. A escolha elemental racial é separada, não dispensa requisitos e não habilita efeitos Psíquicos por si só.
 
 **Runa Espinhos:** o elemento gratuito pode ser somente **um** entre Ar, Água, Terra e Fogo. Os demais precisam ser adquiridos normalmente. Escudo Rúnico é a concessão racial de Escudo Arcano, com uma ativação base gratuita por dia; aplicações posteriores têm custo normal e a barreira ganha resistência a um elemento habilitado por utilização, não imunidade irrestrita. A segunda opção elemental de fichas antigas é apenas histórica, sem segundo benefício gratuito.
 
@@ -623,7 +625,7 @@ Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substitu�
 
 
 
-**Criar Item de Foco e Magia (1 XP; Disciplina 1 + Inteligência 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
+**Criar Item de Foco e Magia (1 XP; Lucker Puro: 0 XP após requisitos; Disciplina 1 + Inteligência 1 + Artesão 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
 
 **Ácido (Fogo + Veneno) [DEFINIDO — v0.85]:** segue toda a regra geral de mistura: **1A** para introduzir o segundo elemento e os custos e habilitações dos Graus. **Improviso Elemental** troca a natureza do dano, mas não ativa Veneno; **Maestria Elemental** é necessária para usar Queimar e o efeito especial de Veneno conjuntamente. Quando houver acerto com Queimar, a queimadura substitui Sangramento para transmitir **1 acúmulo de Veneno por 2 rodadas**, sem novo dano ou custo exclusivo. Defesa mista segue a matriz geral. [SRD v0.85](srd-continuidade-v0.85.md).
 
@@ -647,7 +649,7 @@ Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substitu�
 
 ### Criar Item de Foco e Magia [DEFINIDO / efeitos avançados PENDENTES]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita os efeitos iniciais de **Psíquico**, magias **Leves**, criação de itens de foco e moldagem de magias segundo a capacidade de conjuração.
+**Custo: 1 XP (Lucker Puro: 0 XP após compra); requisitos: Disciplina 1 + Inteligência 1 + Artesão 1.** A gratuidade racial não dispensa requisitos nem concede a Perícia automaticamente. Habilita os efeitos iniciais de **Psíquico**, magias **Leves**, criação de itens de foco e moldagem de magias segundo a capacidade de conjuração.
 
 **Efeitos especiais de Psíquico:** com a Perícia habilitadora e o Grau apropriado, **a ativação-base dos efeitos G1/G2 é gratuita** conforme a decisão posterior do SRD v0.79. A aplicação ainda exige alcançar a DE quando pertinente, e efeitos G3 precisam de elevação/habilitação e **1 Coragem**. A cobrança histórica de 1 Coragem para ativação-base G1/G2 foi substituída; custos próprios de técnicas especiais não foram automaticamente eliminados.
 
