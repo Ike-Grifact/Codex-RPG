@@ -4810,6 +4810,10 @@ function updateGrade(group,id,delta){
 }
 function adjustResource(resource,delta){
  if(!["life","courage"].includes(resource)||![-1,1].includes(Number(delta)))return;
+ if(resource==="courage"&&delta<0&&state.courage>0){
+  if((state.courageRoundSpent||0)>=5){toast("Já gastou 5 Coragens nesta rodada.");return;}
+  state.courageRoundSpent=(state.courageRoundSpent||0)+1;
+ }
  const max=resource==="life"?maxLife():maxCourage();
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
@@ -5323,14 +5327,18 @@ function onClick(event){
  case "maos-leves-prepare":prepareMaosLeves();break;
  case "armadilha-prepare":prepareArmadilha();break;
  case "corpo-fechado-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("corpo-fechado")||skillReq("corpo-fechado")||state.pending||editMode||state.courage<1){toast("Corpo Fechado indisponível: confira a compra, Coragem e rolagem.");break;}
   if(!confirm("Gastar 1 Coragem para proteger a Vitalidade contra dano e efeitos de golpes com armas FÍSICAS por 1 rodada? O Narrador encerra o efeito ao término da rodada."))break;
-  state.courage-=1;logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
+  state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
  }
  case "impacto-psiquico-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("impacto-psiquico")||skillReq("impacto-psiquico")||state.pending||editMode||state.courage<1){toast("Impacto Psíquico indisponível.");break;}
   if(!confirm("Gastar 1 Coragem para declarar Impacto Psíquico? O golpe e os efeitos de arma são resolvidos pelo Narrador."))break;
-  state.courage-=1;logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
+  state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
  }
  case "sphere-create":{
   if((state.courageRoundSpent||0)>=5){toast("Limite de 5 Coragens na rodada. Confirme nova rodada.");break;}
@@ -5375,6 +5383,7 @@ function onClick(event){
   render();save();toast(label+": −1 esfera.");break;
  }
  case "cancelar-magia-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
   if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}
   if(state.courage<1){toast("Coragem insuficiente para tentar Cancelar Magia.");break;}
@@ -5395,6 +5404,7 @@ function onClick(event){
   if(!confirm("Confirmar: você percebe a conjuração de "+elementName+" a até 8 m, e o conjurador adversário MANTEVE ao menos um símbolo de Pavor? Sem isso, não é possível cancelar."))break;
   if(!confirm("Gastar 1 Coragem para TENTAR cancelar "+elementName+"? É preciso igualar ou superar a DE "+enemyDe+" (resultado ≥ "+enemyDe+"); empate cancela, sem sucesso automático."))break;
   state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   state.history.unshift({date:new Date().toISOString(),name:"Cancelar Magia · "+elementName,
    outcome:"Tentativa declarada · DE adversária "+enemyDe+" · exige resultado ≥ "+enemyDe+"; empate cancela; Narrador resolve",
    de:enemyDe,reached:0,E:0,A:0,P:0,faces:[],damage:0});
@@ -5403,6 +5413,7 @@ function onClick(event){
   toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e alcance DE ≥ "+enemyDe+" (empate cancela); o Narrador confirma o resultado.");break;
  }
  case "sentido-elemental-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
   if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
   if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.");break;}
@@ -5412,6 +5423,7 @@ function onClick(event){
   if(!target){toast("Informe o alvo da análise.");break;}
   if(!confirm("Gastar 1 Coragem para analisar "+target+"? O Narrador informa a afinidade elemental."))break;
   state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   state.history.unshift({date:new Date().toISOString(),name:"Sentido Elemental · "+target,outcome:"Alvo analisado — afinidade informada pelo Narrador",de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
   state.history=state.history.slice(0,20);
   render();save();toast("Sentido Elemental: −1 Coragem. Solicite ao Narrador a afinidade elemental de "+target+".");break;
