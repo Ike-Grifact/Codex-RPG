@@ -165,3 +165,26 @@
 .cc-check-throw{display:flex!important;align-items:center;gap:8px;margin:6px 0;line-height:1.4}
 .cc-check-throw input{flex:none}
 @media(max-width:600px){.cc-extra-skill{grid-template-columns:minmax(0,1fr)80px;padding:8px}}
+
+
+/* Face numérica máxima é dourada mesmo se vazia (d4 face 4).
+   Crítico: TODOS os dados mantidos na face máxima, pelo menos dois. */
+.cc-die.is-max{border-color:#bf8e31!important;
+ background:linear-gradient(160deg,rgba(231,188,82,.18),rgba(141,89,19,.09))!important;
+ box-shadow:inset 0 0 0 1px rgba(191,142,49,.55),0 0 8px rgba(201,149,45,.24)!important}
+.cc-die.is-max strong{color:#b48425;text-shadow:0 0 8px rgba(215,168,69,.35)}
+.cc-die.is-max.kept{border-color:#d5ad55!important;box-shadow:0 0 0 2px #c79b42,0 0 14px #bb8e3f66!important}
+.cc-die.is-critical.kept{background:linear-gradient(150deg,rgba(243,204,109,.3),rgba(160,108,26,.17))!important;
+ box-shadow:0 0 0 3px #d3ad56,0 0 19px rgba(215,164,53,.65)!important}
+.cc-face-max{font-size:9px!important;letter-spacing:.075em;font-weight:800;opacity:1!important;color:#b28320}
+.cc-critical-result{padding:10px 12px;margin:5px 0 12px;border:1px solid #bf8d32;
+ border-radius:8px;background:linear-gradient(125deg,rgba(232,180,63,.18),rgba(185,120,25,.09));display:grid;gap:5px}
+.cc-critical-result strong{color:#b48425;letter-spacing:.04em}
+.cc-critical-result small{font-size:12px;opacity:1!important}
+.cc-weapon-effect{display:flex;align-items:center;gap:9px;padding:8px 10px;
+ border-radius:7px;border:1px solid var(--line,#aa9985)}
+.cc-weapon-effect:has(input:checked){border-color:var(--accent,#ab7a35)}
+.cc-weapon-effect input{width:17px;height:17px;flex:none}
+.cc-auto-goal{display:flex;gap:7px;align-items:center;font-size:13px;flex-wrap:wrap}
+.cc-auto-goal select{min-height:37px;max-width:215px}
+@media(max-width:600px){.cc-die{min-width:70px}.cc-auto-goal{flex-basis:100%}}
