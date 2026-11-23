@@ -7,7 +7,7 @@ export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
- {id:"maestria-armas-fogo",name:"Maestria em Armas de Fogo (Humano)",detail:"Benefício gratuito exclusivo do Humano. Só ativa seus efeitos com a Perícia em Armas de Fogo habilitada.",cost:0},
+ {id:"maestria-armas-fogo",name:"Especialização em Armas de Fogo (Humano)",detail:"Benefício gratuito exclusivo do Humano. Só ativa seus efeitos com a Perícia em Armas de Fogo habilitada.",cost:0},
  {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
  {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
  {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Inteligência 1; Apresentação não é requisito de compra. Compra não é domesticação automática.",cost:1},
