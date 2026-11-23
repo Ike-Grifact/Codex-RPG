@@ -234,6 +234,7 @@ function gradeCards(t,group,entries){
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
+ if(id==="maestria-armas-fogo")return humanoidRacialGrants(t).includes(id);
  if(humanoidRacialGrants(t).includes(id))return true;
  if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
  if(id==="olhos-de-aguia")return Number(t?.attributes?.destreza||0)>=3&&Number(t?.practices?.armas_conjuracao||0)>=3&&(t?.skills||[]).some(s=>s==="armas-longo-alcance"||s==="armas-fogo");
