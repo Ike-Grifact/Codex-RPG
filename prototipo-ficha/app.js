@@ -2,7 +2,8 @@
 (function(){
 "use strict";
 const NPC_MODE=new URLSearchParams(location.search).get("npc")==="1";
-const SAVE_KEY=NPC_MODE?"codex-html-ficha-npc-dna-v1":"codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-html-ficha-tema-v1",WIZARD_KEY=NPC_MODE?"codex-html-ficha-npc-wizard-v1":"codex-html-ficha-wizard-v1";
+const EMBED_NPC=NPC_MODE&&new URLSearchParams(location.search).get("embedded")==="1";
+const SAVE_KEY=NPC_MODE?"codex-html-ficha-npc-dna-v1":"codex-html-ficha-prototipo-v1",OLD_SAVE_KEY="codex-rpg-ficha-nivel1-v1",THEME_KEY="codex-rpg-color-theme",WIZARD_KEY=NPC_MODE?"codex-html-ficha-npc-wizard-v1":"codex-html-ficha-wizard-v1";
 const CONFLICT_NPC_INBOX="codex-rpg-conflito-humanoide-inbox-v1";
 const PLAYER_SHEETS_INDEX="codex-rpg-jogadores-index-v1",PLAYER_SHEET_PREFIX="codex-rpg-jogador-ficha-v1:";
 const A=[["forca","Força"],["agilidade","Agilidade"],["destreza","Destreza"],["inteligencia","Inteligência"],["influencia","Influência"],["vigor","Vigor"]];
@@ -2199,7 +2200,12 @@ function load(){
  try{restoreWizard(playerPayload?.wizard||JSON.parse(localStorage.getItem(WIZARD_KEY)||"{}"));}
  catch(e){restoreWizard({});}
  viewMode=state.creationLocked?"sheet":"builder";
- try{document.documentElement.dataset.theme=localStorage.getItem(THEME_KEY)==="light"?"light":"dark";}catch(e){}
+ try{
+  const savedTheme=localStorage.getItem(THEME_KEY)||localStorage.getItem("codex-html-ficha-tema-v1");
+  if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme;
+ }catch(e){}
+ const themeButton=$("theme-toggle");
+ if(themeButton){themeButton.textContent=document.documentElement.dataset.theme==="light"?"☀ Claro":"☾ Escuro";themeButton.setAttribute("aria-pressed",String(document.documentElement.dataset.theme==="light"));}
  syncFields();render();
  if(!NPC_MODE&&!playerPayload){
   const id=playerSheetId();playerSheets=[playerSheetMeta(state,id)];activePlayerSheetId=id;
@@ -5334,7 +5340,11 @@ function sendNpcToConflict(){
  try{
   localStorage.setItem(CONFLICT_NPC_INBOX,JSON.stringify({schema:"codex-humanoide-rapido-v1",
    exportedAt:new Date().toISOString(),source:"codex-genetico-npc-v1",character}));
-  save();location.href="../criar-conflito/";
+  save();
+  if(EMBED_NPC&&window.parent!==window){
+   window.parent.postMessage({type:"codex-rpg:npc-enviado-v1"},window.location.origin);
+   toast("Humanoide enviado ao encontro. Continue pelo painel Meus inimigos.");
+  }else location.href="../criar-conflito/";
  }catch(e){toast("Não foi possível enviar o NPC: "+e.message);}
 }
 
@@ -5960,6 +5970,15 @@ function bind(){
   const next=document.documentElement.dataset.theme==="light"?"dark":"light";
   document.documentElement.dataset.theme=next;
   localStorage.setItem(THEME_KEY,next);
+  const button=$("theme-toggle");button.textContent=next==="light"?"☀ Claro":"☾ Escuro";
+  button.setAttribute("aria-pressed",String(next==="light"));
+ });
+ const menuToggle=document.querySelector(".fp-site-header [data-menu]");
+ const siteNav=document.querySelector(".fp-site-header .site-nav");
+ menuToggle?.addEventListener("click",()=>{
+  const open=siteNav?.classList.toggle("open")||false;
+  menuToggle.setAttribute("aria-expanded",String(open));
+  menuToggle.setAttribute("aria-label",open?"Fechar menu":"Abrir menu");
  });
  $("edit-sheet").addEventListener("click",()=>{
   if(state.pending){toast("Finalize ou descarte a rolagem antes de editar.");return;}
@@ -5995,6 +6014,16 @@ function bind(){
   state=defaultState();resetPlayerView({});wizardPersist();syncFields();render();save();toast("Ficha atual reiniciada. As demais fichas foram preservadas.");
  });
  const sendNpc=$("send-to-conflito");
+ if(EMBED_NPC){
+  document.body.classList.add("fp-npc-embedded");
+  const toolbar=$("npc-embed-toolbar");if(toolbar)toolbar.hidden=false;
+  $("npc-embed-send")?.addEventListener("click",sendNpcToConflict);
+  $("npc-embed-new")?.addEventListener("click",()=>{
+   if(state.name.trim()&&!confirm("Criar outro humanoide? O rascunho anterior permanecerá no encontro apenas se foi enviado."))return;
+   state=defaultState();resetPlayerView({});render();wizardPersist();save();
+   window.scrollTo({top:0,behavior:"smooth"});
+  });
+ }
  if(sendNpc&&NPC_MODE){
   sendNpc.hidden=false;
   sendNpc.addEventListener("click",sendNpcToConflict);
