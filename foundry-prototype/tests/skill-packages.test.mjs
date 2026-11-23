@@ -25,7 +25,7 @@ test("calcula fontes, custos e Perícias intermediárias dos sete pacotes solici
   ["criar-antidoto",15,["criar-veneno"],{inteligencia:2,alquimia:2,medicina:2,artesao:1}],
   ["mestre",26,["criar-item-foco-magia","improviso","vento"],{inteligencia:3,destreza:3,armas_conjuracao:3,artesao:1}],
   ["olhos-de-aguia",17,["armas-longo-alcance"],{destreza:3,armas_conjuracao:3}],
-  ["invocacao-elemental",13,["criar-item-foco-magia","domar-criatura-pequena"],{inteligencia:1,influencia:2,armas_conjuracao:1,artesao:1,apresentacao:1}],
+  ["invocacao-elemental",11,["criar-item-foco-magia","domar-criatura-pequena"],{inteligencia:1,influencia:2,armas_conjuracao:1,artesao:1}],
   ["pericia-druidica",8,["criar-item-foco-magia","terra"],
    {inteligencia:1,armas_conjuracao:1,artesao:1}],
  ];

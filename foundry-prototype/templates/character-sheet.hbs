@@ -43,13 +43,19 @@
     </div>
   </header>
 
+  {{#if codex.castingPending}}<section class="codex-block" aria-label="Conjuração em preparação">
+    <p>Conjuração G{{codex.castingPending.grade}} em preparação · {{codex.castingPending.turns}} turnos</p>
+    {{#if codex.isGM}}<button type="button" data-action="resolveCast" data-id="{{codex.castingPending.id}}">Confirmar efeito</button>
+    <button type="button" data-action="resolveCast" data-id="{{codex.castingPending.id}}" data-cancel="true">Encerrar sem efeito</button>{{/if}}
+  </section>{{/if}}
+
   <div class="codex-vitals" aria-label="Recursos do personagem">
     <div class="codex-vital-row">
       <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="life" aria-expanded="false" aria-controls="{{codex.appId}}-vital-life" aria-label="Vida {{codex.life}} / {{codex.lifeMax}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-vida.svg" alt=""><strong>{{codex.life}} / {{codex.lifeMax}}</strong></button>
       <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="integrity" aria-expanded="false" aria-controls="{{codex.appId}}-vital-integrity" aria-label="Integridade {{#if codex.armorCard}}{{#if codex.armorCard.hasMaximum}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{else}}—{{/if}}{{else}}—{{/if}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-integridade.svg" alt=""><strong>{{#if codex.armorCard}}{{#if codex.armorCard.hasMaximum}}{{codex.armorCard.integrity}} / {{codex.armorCard.maximum}}{{else}}—{{/if}}{{else}}—{{/if}}</strong></button>
       <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="defense" aria-expanded="false" aria-controls="{{codex.appId}}-vital-defense" aria-label="DE defensiva {{codex.de}}"><img src="systems/codex-rpg-foundry/assets/icons/status-de.svg" alt=""><strong>{{codex.de}}</strong></button>
       <button type="button" class="codex-vital codex-vital-primary" data-action="resourceDetails" data-vital="movement" aria-expanded="false" aria-controls="{{codex.appId}}-vital-movement" aria-label="Deslocamento {{codex.movement}} m"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-movimento.svg" alt=""><strong>{{codex.movement}} m</strong></button>
-      {{#unless codex.attributesOnly}}
+      {{#unless codex.isHostile}}
       <button type="button" class="codex-vital " data-action="resourceDetails" data-vital="courage" aria-expanded="false" aria-controls="{{codex.appId}}-vital-courage" aria-label="Coragem {{codex.courage}} / {{codex.courageMax}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-coragem.svg" alt=""><strong>{{codex.courage}} / {{codex.courageMax}}</strong></button>
       {{/unless}}
       {{#if codex.isHostile}}
@@ -60,9 +66,19 @@
     </div>
     <section id="{{codex.appId}}-vital-life" class="codex-vital-detail" data-vital-panel="life" hidden>
       <h3>Vida</h3>
-      <p>{{codex.life}} / {{codex.lifeMax}} · {{codex.health.label}}{{#if codex.healthApplied}}{{#if codex.health.coragem}} · {{codex.health.coragem}} Coragem por ação{{/if}}{{/if}}</p>
+      {{#if codex.sangramento}}<p>Sangramento</p>{{/if}}
+      {{#if codex.envenenado}}<p>Envenenado</p>{{/if}}
+      <p>{{codex.life}} / {{codex.lifeMax}} · {{codex.health.label}}{{#if codex.healthActionCost}} · {{codex.healthActionCost}} {{codex.resourceName}} por ação{{/if}}</p>
       {{#if codex.isOwner}}
         <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="-1" aria-label="Retirar 1 Vida">−</button><button type="button" data-action="adjustResource" data-resource="system.life.value" data-delta="1" aria-label="Recuperar 1 Vida">+</button></div>
+      {{/if}}
+      {{#if codex.companion}}
+      <fieldset data-small-companion><legend>Companheiro Pequeno</legend>
+        <label>Nome <input type="text" maxlength="70" value="{{codex.companion.name}}" data-companion-name></label>
+        <label>Espécie <select data-companion-species><option value="outro">Outra</option><option value="serpente" {{#if codex.companion.serpente}}selected{{/if}}>Serpente</option></select></label>
+        <label><input type="checkbox" data-companion-present {{#if codex.companion.present}}checked{{/if}}> Domesticado e presente</label>
+        {{#if codex.isOwner}}<button type="button" data-action="saveCompanion" {{#if codex.hasPending}}disabled{{/if}}>Salvar vínculo</button>{{/if}}
+      </fieldset>
       {{/if}}
     </section>
     <section id="{{codex.appId}}-vital-integrity" class="codex-vital-detail" data-vital-panel="integrity" hidden>
@@ -92,6 +108,7 @@
     {{#unless codex.attributesOnly}}
     <section id="{{codex.appId}}-vital-courage" class="codex-vital-detail" data-vital-panel="courage" hidden>
       <h3>Coragem</h3>
+      {{#if codex.inCombat}}<p>Gasto nesta rodada · {{codex.courageSpent}} / 5</p>{{/if}}
       <p>{{codex.courage}} / {{codex.courageMax}}</p>
       {{#if codex.isOwner}}
         <div class="codex-step"><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="-1" aria-label="Retirar 1 Coragem">−</button><button type="button" data-action="adjustResource" data-resource="system.courage" data-delta="1" aria-label="Recuperar 1 Coragem">+</button></div>
@@ -323,29 +340,33 @@
        {{/if}}
        <label>Grau da magia<select data-roll-option="magicGrade">{{#each codex.prepare.magic.grades}}<option value="{{value}}" {{#if selected}}selected{{/if}}>G{{value}}</option>{{/each}}</select></label>
        {{#with codex.prepare.magic}}
+        {{#if fullMagic}}
+        <label>Segundo elemento <select data-roll-option="magicSecondElement"><option value="">Escolha outro elemento</option>
+         {{#each secondElements}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        {{#if secondFoci}}<label>Segundo foco <select data-roll-option="magicSecondFocusId"><option value="">Sem segundo foco</option>
+         {{#each secondFoci}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}} · {{charges}} cargas</option>{{/each}}</select></label>{{/if}}
+        <p>Mistura G4 · 1 Antecipar e 2 {{@root.codex.resourceName}}.</p>
+        {{/if}}
         {{#if maxCharges}}<label>Cargas para acelerar<input type="number" min="0" max="{{maxCharges}}" step="1" value="{{charges}}" data-roll-option="magicCharges"></label>{{/if}}
-        {{#if hasFocus}}<label class="codex-check"><input type="checkbox" data-roll-option="magicAmplify" {{#if amplify}}checked{{/if}}> Amplificar com foco (+1 Coragem)</label>{{/if}}
+        {{#if hasFocus}}<label class="codex-check"><input type="checkbox" data-roll-option="magicAmplify" {{#if amplify}}checked{{/if}}> Amplificar com foco (+1 {{@root.codex.resourceName}})</label>{{/if}}
         {{#if confirmGrade}}<label class="codex-check"><input type="checkbox" data-roll-option="magicGradeConfirmed" {{#if gradeConfirmed}}checked{{/if}}> Grau e efeito autorizados</label>{{/if}}
-        {{#if showTime}}<label class="codex-check"><input type="checkbox" data-roll-option="magicTimeConfirmed" {{#if timeConfirmed}}checked{{/if}}> {{turns}} turnos de preparação cumpridos</label>{{/if}}
+        <p>Preparação · {{turns}} turno(s). Role na declaração.</p>
         {{#if wind}}<label>Trajetória de Ar em metros<input type="number" min="0" max="{{windRange}}" step="any" value="{{pathMeters}}" placeholder="Opcional" data-roll-option="magicPathMeters"><small>Até {{windRange}} m somando todos os trechos por passagem aberta.</small></label>{{/if}}
         {{#if canShield}}<label class="codex-check"><input type="checkbox" data-roll-option="runeShield" {{#if shield}}checked{{/if}}> Erguer Escudo Rúnico</label>{{/if}}
-        {{#if courage}}<p>Conjuração · {{courage}} Coragem ao finalizar.</p>{{/if}}
+        {{#if courage}}<p>Conjuração · {{courage}} {{@root.codex.resourceName}} ao finalizar.</p>{{/if}}
         {{#if acid}}<details><summary>Ácido · Fogo + Veneno</summary><p>Registre a mistura na mesa e reserve 1A. {{#if mastery}}Em acerto, se aplicar Queimar junto ao efeito de Veneno, registre um acúmulo por 2 rodadas.{{else}}Improviso adapta o tipo de dano. Para aplicar ambos os efeitos, exige Maestria Elemental.{{/if}}</p></details>{{/if}}
        {{/with}}
        {{/if}}
+       {{#if codex.prepare.fulminante}}<label class="codex-check"><input type="checkbox" data-roll-option="fulminante" {{#if codex.prepare.fulminanteActive}}checked{{/if}}> Fulminante · elevar o dado da arma por 1 {{codex.resourceName}}</label>{{/if}}
+       {{#if codex.prepare.companionHelp}}<label class="codex-check"><input type="checkbox" data-roll-option="companionHelp" {{#if codex.prepare.companionActive}}checked{{/if}}> Auxílio do companheiro · +1 Antecipar por 1 {{codex.resourceName}}</label>{{/if}}
        {{#if codex.prepare.stealthAvailable}}<label class="codex-check"><input type="checkbox" data-roll-option="stealthAttack" {{#if codex.prepare.stealthAttack}}checked{{/if}}> Golpe Furtivo · +1 dado de arma</label>{{/if}}
        {{#if codex.prepare.potionAvailable}}<label class="codex-check"><input type="checkbox" data-roll-option="potionResearch" {{#if codex.prepare.potionResearch}}checked{{/if}}> Criar poção · Pesquisa Avançada (+1 Êxito)</label>{{/if}}
        {{#if codex.prepare.asuraAvailable}}
        <label>Punho Supremo de Asura<select data-roll-option="asuraDieId">
         <option value="">Sem Asura</option>
         {{#each codex.prepare.asuraOptions}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}} → d20</option>{{/each}}
-       </select><small>5 esferas e 1 Coragem ao finalizar.</small></label>
+       </select><small>5 esferas e 1 {{codex.resourceName}} ao finalizar.</small></label>
        {{/if}}
-       {{#if codex.prepare.inCombat}}{{#if codex.isHostile}}{{#unless codex.isAnimal}}
-        <label>Custo local<select data-roll-option="activationPavor">
-          {{#each codex.prepare.localCostOptions}}<option value="{{cost}}" {{#if selected}}selected{{/if}}>{{cost}}P local no total</option>{{/each}}
-        </select></label>
-        {{/unless}}{{/if}}{{/if}}
         {{#unless codex.prepare.hasTarget}}<label>DE manual<input type="number" min="0" max="30" value="{{codex.prepare.de}}" data-roll-option="de"></label>{{/unless}}
         <label>Condição<select data-roll-option="situation">{{#each codex.prepare.situations}}
           <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -361,13 +382,13 @@
           <option value="2" {{#if codex.prepare.extraTwo}}selected{{/if}}>+2 (4 dados, Graus 2–6)</option>
         </select></label>
         {{else}}
-        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 Coragem</label>{{/unless}}
+        {{#unless codex.isAnimal}}<label class="codex-check"><input type="checkbox" data-roll-option="extraKeep" {{#if codex.prepare.extraKeep}}checked{{/if}}> Manter +1 dado por 1 {{codex.resourceName}}</label>{{/unless}}
         {{/if}}
         {{#unless codex.isAnimal}}
-         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar um dado da pilha por 1 Coragem</label>
+         <label class="codex-check"><input type="checkbox" data-roll-option="step" {{#if codex.prepare.step}}checked{{/if}}> Elevar uma fonte inteira por 1 {{codex.resourceName}}</label>
          {{#if codex.prepare.step}}
-         <label>Escolha o dado<select data-roll-option="stepDieId">
-           <option value="">Selecione um dado para subir uma categoria</option>
+         <label>Fonte a elevar<select data-roll-option="stepDieId">
+           <option value="">Selecione uma fonte para subir um Grau</option>
            {{#each codex.prepare.stepOptions}}<option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>{{/each}}
          </select></label>
          {{/if}}
@@ -426,10 +447,10 @@
           <option value="{{this.name}}" {{#if this.selectedSecond}}selected{{/if}}>{{this.name}}</option>
          {{/each}}
         </select></label>
-        <label>Pagamento da característica paga<select data-pending-option="activationPayment">
-         <option value="courage" {{#if codex.pending.paymentCourage}}selected{{/if}}>1 Coragem (custo-base de ativação)</option>
-
-        </select></label>
+        {{#if codex.pending.canThird}}<label>Terceira característica (Maestria em crítico)<select data-pending-option="thirdCharacteristic">
+         <option value="">Nenhuma</option>{{#each codex.pending.properties}}<option value="{{name}}" {{#if selectedThird}}selected{{/if}}>{{name}}</option>{{/each}}
+        </select></label>{{/if}}
+        {{#if codex.pending.canBlockPiercing}}<label class="codex-check"><input type="checkbox" data-pending-option="piercingBlocked" {{#if codex.pending.piercingBlocked}}checked{{/if}}> Escudo levantado ou psíquico bloqueia Perfurante</label>{{/if}}
         {{/if}}
         {{#if codex.pending.hasTarget}}<p>Alvo travado: <strong>{{codex.pending.targetName}}</strong>.</p>{{/if}}
         <label>Anular Pavor (1A por 1P)<input type="number" data-pending-option="cancelP" min="0" value="{{codex.pending.cancelP}}"></label>

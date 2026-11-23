@@ -62,22 +62,20 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  assert.deepEqual(faceSymbols(12,12),[0,0,2]);
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
-test("Elevação comum sobe a categoria de um dado e impede ultrapassar d12",()=>{
+test("Elevação aplica a composição inteira da fonte e para em G6",()=>{
  const s=human();s.attributes.inteligencia=2;s.knowledges.medicina=1;
  const p={base:{group:"knowledge",key:"medicina"},attribute:{group:"attribute",key:"inteligencia"}};
  const before=buildPool(s,p,{equipmentDie:6});
  const mod=buildPool(s,p,{step:true,stepDieId:"knowledge.medicina.0",equipmentDie:6});
  assert.ok(before.ok&&mod.ok);
- assert.equal(mod.pool.length,before.pool.length);
- assert.deepEqual(mod.pool[0],{id:"knowledge.medicina.0",group:"knowledge",key:"medicina",sides:12,elevated:true});
+ assert.equal(mod.pool.length,before.pool.length+1);
+ assert.deepEqual(mod.pool.filter(d=>d.elevated).map(d=>d.sides),[10,10]);
  const gear=buildPool(s,p,{step:true,stepDieId:"equipment.0",equipmentDie:6});
- assert.ok(gear.ok);
- assert.equal(gear.pool.at(-1).sides,10);
+ assert.equal(gear.ok,false);
  assert.equal(buildPool(s,p,{step:true}).ok,false,"Não escolher dado automaticamente");
- const higher={...s,knowledges:{medicina:4}};
+ const higher={...s,knowledges:{medicina:6}};
  const trained=buildPool(higher,p,{step:true,stepDieId:"knowledge.medicina.2"});
  assert.equal(trained.ok,false);
- assert.equal(trained.pool.filter(d=>d.sides===12).length,1);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
  assert.deepEqual(Object.keys(SITUATIONS),["superior","advantage","neutral","disadvantage","inferior","luck"]);
@@ -177,7 +175,7 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.training,2);
  assert.equal(xp.skills,2);
  assert.equal(xp.grant,15);
- assert.equal(naturalDE(s),1); // AGI1 + VIG/2 arred.0 + DES/2 arred.0
+ assert.equal(naturalDE(s),2); // AGI1 + piso((VIG1 + DES1)/2)
  assert.equal(lifeMax(s),5);
  assert.equal(maxPP(1),0);assert.equal(maxPP(5),0);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
@@ -200,9 +198,9 @@ test("Catálogo experimental contém arma mista e armaduras G1",()=>{
  const rev=G1_CATALOG.find(x=>x.name==="Revólver");
  assert.deepEqual(montante.properties,["Cortante","Contundente","Longa"]);
  assert.deepEqual(rev.properties,["À Distância","Barulhenta"]);
- assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Leve").integrity.max,7);
- assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Média").integrity.max,12);
- assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,17);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Leve").integrity.max,5);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Média").integrity.max,8);
+ assert.equal(G1_CATALOG.find(x=>x.name==="Armadura Pesada").integrity.max,12);
  assert.equal(G1_CATALOG.find(x=>x.name==="Escudo Pesado").integrity.max,4);
 });
 test("DE do alvo inclui o modificador de armadura em todas as defesas",()=>{
@@ -234,7 +232,7 @@ test("Armadura: Muito Leve +2 e Leve +1 na DE geral sem acumular peças",()=>{
  assert.match(displayed.condition,/todas as defesas/);
  assert.equal(defenseDisplay(light).de,5);
  assert.equal(defenseDisplay(heavy).de,3);
- assert.equal(defenseDisplay(normal).calculation,"Natural 4 · sem modificador = 4");
+ assert.equal(defenseDisplay(normal).calculation,"Natural 4 · sem modificadores = 4");
 });
 test("Orçamento monstruoso usa tabela da Formação e humanoide novo usa 15 XP compartilhados",()=>{
  const m={monsterRules:true,xp:20,attributes:{forca:1,agilidade:2},skills:[],knowledges:{},practices:{}};
@@ -361,12 +359,12 @@ test("Olhos de Águia amplia apenas alcance de arma elegível e habilitada",()=>
  assert.equal(effectiveWeaponRange(s,{kind:"weapon",range:8,properties:["Arremesso"]}),8);
  assert.equal(effectiveWeaponRange(s,{kind:"focus",range:8}),0);
 });
-test("Foco usa IDs de habilitações elementais sem liberar elementos por analogia",()=>{
+test("Foco nunca adiciona dados à pilha mágica",()=>{
  const actor={system:{skills:["criar-item-foco-magia","agua","vento"]}};
  const focus={system:{equipped:true,kind:"focus",die:6}};
  for(const element of ["Psique","Psíquico","Água","Ar","vento"]){
   focus.system.element=element;
-  assert.equal(equippedDie(actor,focus,"conjuracao"),6);
+  assert.equal(equippedDie(actor,focus,"conjuracao"),0);
  }
  focus.system.element="Terra";
  assert.equal(equippedDie(actor,focus,"conjuracao"),0);

@@ -17,7 +17,10 @@ export function planAttackImpact(target,impact,{autoLife=true}={}) {
  const current=Number(system[field])||0;
  const pavor=Math.min(Math.max(0,cap-current),impact.pavor);
  const changes=pavor?{["system."+field]:current+pavor}:{};
- const receipt={pavor,pavorField:field,overflow:impact.pavor-pavor,integrity:0,life:0,manual:0,complex:false};
+ if(impact.sangramento)changes["system.status.sangramento"]=true;
+ if(impact.veneno&&system.status?.sangramento)changes["system.status.envenenado"]=true;
+ const receipt={pavor,pavorField:field,overflow:impact.pavor-pavor,integrity:0,life:0,manual:0,complex:false,
+  sangramento:!!changes["system.status.sangramento"],envenenado:!!changes["system.status.envenenado"]};
  if(!impact.damage)return {changes,receipt};
 
  const armor=equippedArmor(target);
@@ -40,14 +43,16 @@ export function planAttackImpact(target,impact,{autoLife=true}={}) {
  }
  const remaining=impact.damage-absorbed;
  // A consequência do golpe colossal depende da mesa.
+ const legacy=impact.reached==null;
  const colossal=remaining>=3*lifeMax(system);
- const loss=autoLife&&!colossal?Math.min(system.life.value,basicLifeLoss(remaining)):0;
+ const definedLife=legacy?!colossal&&basicLifeLoss(remaining):!armor&&!impact.critical&&impact.reached>=5?2:0;
+ const loss=autoLife&&definedLife?Math.min(system.life.value,definedLife):0;
  if(loss){
   receipt.lifeBefore=system.life.value;
   receipt.lifeAfter=system.life.value-loss;
   changes["system.life.value"]=receipt.lifeAfter;
  }
- return {changes,receipt:{...receipt,integrity:absorbed,life:loss,manual:colossal||!autoLife?remaining:0}};
+ return {changes,receipt:{...receipt,integrity:absorbed,life:loss,manual:!autoLife||!definedLife?remaining:0}};
 }
 
 export async function applyAttackImpact(impact,rollId,game,resolveUuid) {
@@ -78,6 +83,8 @@ export function impactSummary(receipt,privateDefense) {
   messages.push(privateDefense?"Dano aplicado à Vida.":detail);
  }
  if(receipt.manual)messages.push(receipt.complex?"Proteção ou efeito especial: resolva o dano na mesa.":"Dano restante para resolução na mesa.");
+ if(receipt.sangramento)messages.push("Sangramento registrado.");
+ if(receipt.envenenado)messages.push("Envenenado registrado pelo auxílio da serpente.");
  if(receipt.pavor)messages.push(receipt.pavorField==="courage"?"Coragem concedida ao alvo.":"Pavor transferido ao alvo.");
  if(receipt.overflow)messages.push("Pavor excedente para adjudicação.");
  return messages.join(" ");

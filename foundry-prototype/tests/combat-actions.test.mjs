@@ -172,7 +172,8 @@ test("conjurador com elemento adquirido rola sem consulta de aprovação do Narr
   assert.equal(focused.started,true);
   const roll=caster.getFlag(ns,"pendingRoll");
   assert.equal(roll.options.element,"fogo");
-  assert.equal(roll.dice.filter(d=>d.group==="equipment").length,1);
+  assert.deepEqual(roll.dice.filter(d=>d.group==="magic").map(d=>d.sides),[6]);
+  assert.equal(roll.dice.filter(d=>d.group==="equipment").length,0);
  }finally{delete globalThis.Roll;delete globalThis.foundry;}
 });
 
@@ -183,7 +184,7 @@ test("conjuração reserva cargas e Coragem, valida o alcance curva e só debita
  caster.items.set(focus.id,focus);
  const input={focusId:"f",element:"vento",magicGrade:3,magicAmplify:true,magicCharges:2,magicGradeConfirmed:true,magicPathMeters:16};
  assert.throws(()=>spellPlan(caster,{...input,magicPathMeters:16.1}),/trajetória/);
- assert.throws(()=>spellPlan(caster,{...input,magicCharges:1}),/turnos/);
+ assert.equal(spellPlan(caster,{...input,magicCharges:1}).turns,2);
  assert.throws(()=>spellPlan(caster,{...input,element:"fogo"}),/elemento/);
  const magic=spellPlan(caster,input);
  assert.deepEqual([magic.courage,magic.turns,magic.charges],[2,1,2]);

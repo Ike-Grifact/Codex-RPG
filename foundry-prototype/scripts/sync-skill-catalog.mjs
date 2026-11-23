@@ -31,7 +31,7 @@ const skills=site.skills.map(([id,name,detail,cost])=>({id,name,detail,cost,lega
  ...(origins[id]?{origin:origins[id]}:{}),
  family:site.families.find(row=>row.skills.includes(id))?.id??({'concentracao-refinada':'armas','olhos-de-aguia':'disparos','transfusao-sanguinaria':'alquimia','transformacao-elemental':'natureza'}[id]??'outros'),
  requirements:requirements[id]??[[]],state:/^EXPERIMENTAL\b/i.test(detail)?'EXPERIMENTAL':/^PROPOST[OA]\b/i.test(detail)?'PROPOSTO':cost==null?'PENDENTE':'DEFINIDO',
- source:'SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.85',sourceCommit:site.commit,
+ source:'SRD Playtest Nível 1 v1.0 e decisões autorais de continuidade até v0.91',sourceCommit:site.commit,
  grades:['pericia-druidica','transformacao-elemental'].includes(id)?[1,2,3]:['vento','agua','terra','fogo','sagrado','sangue','trevas','veneno'].includes(id)?[1,2,3]:[],
  automation:automated.has(id)?'parcial':'manual',
  effects:id==='maestria-em-apresentacao'?site.bard.effects:[{description:detail,kind:automated.has(id)?'passivo ou condicionado':'ativo ou narrativo',

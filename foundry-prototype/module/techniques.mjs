@@ -1,6 +1,7 @@
 import {hasSkill} from "./races.mjs";
 import {skillDetails} from "./advancement.mjs";
 import {maxCourage} from "./rules.mjs";
+import {equippedDie} from "./equipment-logic.mjs";
 
 export const canUseTechnique=(system,id)=>hasSkill(system,id)&&skillDetails(system,id).met;
 export const sphereRound=combat=>combat?.started?combat.id+":"+combat.round:"";
@@ -33,7 +34,30 @@ export function isMeleeWeapon(item){
   !item.system.properties?.includes("À Distância");
 }
 
-export function canAsura(system,round,item){
+export function canAsura(system,round,item,available=system.courage){
  const spheres=sphereState(system,round);
- return canUseTechnique(system,"invocar-esfera-espiritual")&&spheres.count===5&&spheres.createdThisRound===0&&system.courage>=1&&isMeleeWeapon(item);
+ return canUseTechnique(system,"invocar-esfera-espiritual")&&spheres.count===5&&spheres.createdThisRound===0&&available>=1&&isMeleeWeapon(item);
+}
+
+export function fulminanteFor(actor,item){
+ if(item?.system.kind!=="weapon"||!equippedDie(actor,item,"armas"))return "";
+ const properties=item.system.properties??[];
+ const thrown=properties.includes("Arremesso");
+ const ranged=properties.includes("À Distância");
+ const id=thrown||ranged?"disparo-fulminante":isMeleeWeapon(item)?"golpe-fulminante":"";
+ return id&&canUseTechnique(actor.system,id)?id:"";
+}
+
+export function weaponMastery(item){
+ if(!item)return "";
+ if(item.system.kind==="firearm")return "maestria-armas-fogo";
+ const name=(item.system.catalogId||item.name||"").toLowerCase();
+ const families=[
+  [/^(faca|punhal|adaga|kunai|shuriken)/,"adagas"],[/^(espada|montante|katana)/,"espadas"],
+  [/^machado/,"machados"],[/^(maça|clava)/,"macas"],[/^(lança|naginata)/,"hastes"],[/^(cajado|bastão)/,"cajados"],
+  [/^(martelo|marreta)/,"martelos"],[/^arco/,"arcos"],[/^besta/,"bestas"],[/^(luvas|punhos)/,"punhos"],
+ ];
+ if(item.system.properties?.includes("Arremesso"))return "maestria-arremessos";
+ const family=families.find(([pattern])=>pattern.test(name))?.[1];
+ return family?"maestria-"+family:item.system.properties?.includes("À Distância")?"maestria-longo-alcance":"";
 }

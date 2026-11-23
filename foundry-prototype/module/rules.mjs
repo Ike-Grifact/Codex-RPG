@@ -34,7 +34,7 @@ export function faceSymbols(sides,face,legacyD4Faces=false){
 export const isMaximumFace=die=>die.face===die.sides&&Object.hasOwn(FACES,die.sides);
 export const criticalCount=kept=>kept.length>=2&&kept.every(isMaximumFace)?kept.length:0;
 export function sourceLabel(group,key){
- return (GROUPS[group]||[]).find(x=>x[0]===key)?.[1]|| (group==="equipment"?(key==="golpe-furtivo"?"Golpe Furtivo":"Equipamento"):"");
+ return (GROUPS[group]||[]).find(x=>x[0]===key)?.[1]|| (group==="equipment"?(key==="golpe-furtivo"?"Golpe Furtivo":key==="equipment"?"Equipamento":key):group==="magic"?key:"");
 }
 export function sourceDice(group,key,system){
  if(!(GROUPS[group]||[]).some(x=>x[0]===key))throw Error("Fonte inválida.");
@@ -45,10 +45,12 @@ export function sourceDice(group,key,system){
  if(group==='attribute'&&system.transformation?.kind==='animal'&&(system.transformation.enhancedAttributes??system.transformation.attributes??[]).includes(key))return [10,10,12];
  return dice;
 }
-export const lifeMax=s=>4+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.forca||0)/2);
+export const hasSmallCompanion=s=>Boolean(s.companion?.present&&s.companion.name&&s.companion.species&&allOwnedSkills(s).includes("domar-criatura-pequena"));
+export const lifeMax=s=>4+Number(s.attributes?.vigor||0)+Math.floor(Number(s.attributes?.forca||0)/2)+Number(hasSmallCompanion(s));
 export function healthByLife(s,currentLife){
- const extra=lifeMax(s)-4;
- const bands=[1+Math.ceil(extra/2),1+Math.floor(extra/2),1,1];
+ const companion=Number(hasSmallCompanion(s));
+ const extra=lifeMax(s)-4-companion;
+ const bands=[1+Math.ceil(extra/2)+companion,1+Math.floor(extra/2),1,1];
  const life=Math.min(lifeMax(s),Math.max(0,Math.trunc(currentLife)||0));
  if(life===0)return {id:"morto",label:"Morto",e:0,a:0,p:0,coragem:0,bands};
  if(life===1)return {id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2,bands};
@@ -56,7 +58,12 @@ export function healthByLife(s,currentLife){
  if(life<=2+bands[1])return {id:"ferido",label:"Ferido",e:0,a:-1,p:0,coragem:0,bands};
  return {id:"saudavel",label:"Saudável",e:0,a:0,p:0,coragem:0,bands};
 }
-export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor(Number(s.attributes?.destreza||0)/2)+Math.floor(Number(s.attributes?.vigor||0)/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
+export const naturalDE=s=>{
+ const {agilidade=0,destreza=0,vigor=0}=s.attributes??{};
+ const human=!s.monsterRules&&!s.animalRules;
+ const base=agilidade+Math.floor((destreza+(human?vigor:0))/2)+(human?Math.floor((s.practices?.atletismo??0)/3):0);
+ return Math.min(9,Math.max(0,base));
+};
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxPP=()=>0; // Saldo histórico preservado, recurso operacional revogado.
 export const maxCourage=level=>10+Number(level>=5)+Number(level>=10)+Number(level>=20);
@@ -106,7 +113,11 @@ export function mayComplement(system,base,second){
   [base,second].some(source=>source?.group===(row.group==='know'?'knowledge':row.group)&&source.key===row.key));
 }
 
-export const canReinforceDie = die => [4,6,10].includes(die?.sides);
+const sourceField={attribute:"attributes",knowledge:"knowledges",practice:"practices"};
+export const canElevateSource=(system,source)=>Object.hasOwn(sourceField,source?.group)&&
+ !(source.group==="attribute"&&system.transformation?.kind==="animal")&&
+ Number(system[sourceField[source.group]]?.[source.key]??0)<6;
+export const MAGIC_GRADE_DICE=Object.freeze({1:[6],2:[10],3:[12],4:[12,12]});
 export function passiveAnticipar(system,selection){
  const sources=[selection.base,selection.second??selection.attribute,selection.complement].filter(Boolean);
  const skills=allOwnedSkills(system);
@@ -114,7 +125,7 @@ export function passiveAnticipar(system,selection){
   (sources.some(isDiscipline)?Number(skills.includes('improviso'))+Number(skills.includes('mestre')):0);
 }
 
-export function buildPool(system,selection,{mode="normal",actionType="",contextApproved=false,step=false,stepDieId="",equipmentDie=0,stealthAttack=false,asuraDieId="",lightHands=false}={}){
+export function buildPool(system,selection,{mode="normal",actionType="",contextApproved=false,step=false,stepDieId="",equipmentDie=0,magicGrade=1,fulminante="",stealthAttack=false,asuraDieId="",lightHands=false}={}){
  const errors=[],pool=[],b=selection?.base,a=selection?.second??selection?.attribute,c=selection?.complement;
  const lightHandsPair=lightHands&&isDiscipline(b)&&a?.group==="practice"&&a.key==="furtividade"&&!c&&!equipmentDie&&mode==="normal";
  const pairError=lightHandsPair?"":sourcePairError(system,b,a);
@@ -144,24 +155,33 @@ export function buildPool(system,selection,{mode="normal",actionType="",contextA
  }
  if(!errors.length){
   const occurrences=new Map();
+  const elevation=step&&sources.find(src=>src.group+"."+src.key===stepDieId||stepDieId.startsWith(src.group+"."+src.key+"."));
+  if(step&&!canElevateSource(system,elevation))errors.push("Escolha uma fonte presente na pilha e abaixo do Grau 6.");
   for(const src of sources){
    const sourceId=src.group+"."+src.key;
    const occurrence=occurrences.get(sourceId)??0;
    occurrences.set(sourceId,occurrence+1);
-   for(const [i,sides] of sourceDice(src.group,src.key,system).entries()){
+   const raised=src===elevation&&canElevateSource(system,src);
+   const field=sourceField[src.group];
+   const build=raised?{...system,[field]:{...system[field],[src.key]:(system[field]?.[src.key]??0)+1}}:system;
+   for(const [i,sides] of sourceDice(src.group,src.key,build).entries()){
     const id=sourceId+"."+i+(occurrence?"."+occurrence:"");
-    pool.push({id,group:src.group,key:src.key,sides});
+    pool.push({id,group:src.group,key:src.key,sides,...(raised?{elevated:true}:{})});
    }
   }
-  if(equipmentDie){
-   if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
-   else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
-   if(stealthAttack)pool.push({id:"equipment.stealth",group:"equipment",key:"golpe-furtivo",sides:Number(equipmentDie)});
+  if(mode==="conjuracao"){
+   const dice=MAGIC_GRADE_DICE[magicGrade];
+   if(!dice)errors.push("Grau mágico inválido.");
+   else dice.forEach((sides,i)=>pool.push({id:"magic."+i,group:"magic",key:"Magia G"+magicGrade,sides}));
   }
-  if(step){
-   const die=pool.find(d=>d.id===stepDieId);
-   if(!canReinforceDie(die))errors.push("Escolha um d4, d6 ou d10 para elevar até d12.");
-   else {die.sides=({4:6,6:10,10:12})[die.sides];die.elevated=true;}
+  if(equipmentDie&&mode!=="conjuracao"){
+   if(![6,10,12].includes(equipmentDie))errors.push("Dado de equipamento inválido.");
+   else {
+    const sides=fulminante?({6:10,10:12,12:12})[equipmentDie]:equipmentDie;
+    pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides});
+    if(fulminante&&equipmentDie===12)pool.push({id:"equipment.fulminante",group:"equipment",key:fulminante,sides});
+    if(stealthAttack)pool.push({id:"equipment.stealth",group:"equipment",key:"golpe-furtivo",sides:equipmentDie});
+   }
   }
   if(asuraDieId){
    const die=pool.find(d=>d.id===asuraDieId&&d.sides!==20);
@@ -201,7 +221,7 @@ export function compareKeptOptions(rolled,options={},limit=5){
  const results=[];
  function visit(start,ids){
   if(ids.length){
-   const bonusP=options.noisy?(criticalCount(rolled.filter(d=>ids.includes(d.id)))?2:1):Number(options.bonusP||0);
+   const bonusP=options.noisy?(options.legacyNoisy&&criticalCount(rolled.filter(d=>ids.includes(d.id)))?2:1):Number(options.bonusP||0);
    const r=resolveRoll(rolled,ids,{...options,bonusP,cancelP:0,convertPairs:0});
    if(r.ok)results.push({ids:[...ids],dice:r.selected.map(d=>"d"+d.sides+": "+d.face),
     e:r.e,p:r.p,a:r.aRemaining,reached:r.reached,damage:r.damage,
@@ -218,7 +238,7 @@ export function compareKeptOptions(rolled,options={},limit=5){
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,legacyD4Faces=false,requireAttributeInPool=false}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,animal=false,threatGrade=1,bonusA=0,bonusP=0,health=null,fulminante=false,fullPavorDamage=false,magicMixA=0,legacyD4Faces=false,requireAttributeInPool=false}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  const maxKeep=animal?2:keepLimit(monster?threatGrade:level,extraKeep,monster);
@@ -235,12 +255,12 @@ export function resolveRoll(rolled,selectedIds,options={}){
  const a=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA)+(health?.a??0));
  const pBefore=Math.max(0,raw[2]-convertedCrit+Number(bonusP)+(health?.p??0));
  if(!Number.isInteger(cancelP)||cancelP<0||cancelP>Math.min(pBefore,a))errors.push("Anulação de Pavor inválida.");
- if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs>a)errors.push("Conversão 2A → 1E inválida.");
+ if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs+magicMixA>a)errors.push("Conversão 2A → 1E inválida.");
  const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)+(health?.e??0)),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
  const outcome=success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
- const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(critical===4?2:1):0;
+ const rawDamage=e+(fulminante||fullPavorDamage?p:Math.floor(p/2)),damage=success?rawDamage*(critical===4?2:1):0;
  const refund=critical?(critical>=3?2:1):0;
- return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
+ return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs-magicMixA,
   reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,
   criticalRefundPP:0,monsterCriticalPavor:!animal&&(monster||hostile)?2*refund:0,
   freeCharacteristics:success&&critical?1:0,selected:kept};

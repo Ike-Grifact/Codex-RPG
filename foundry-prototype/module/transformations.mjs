@@ -3,7 +3,7 @@ import {sourceDice} from './rules.mjs';
 export function druidicOptions(system){
  return system.skills?.includes('pericia-druidica')?['pequena','media','grande']:[];
 }
-export function animalTransformationPlan(system,{size,attributes}){
+export function animalTransformationPlan(system,{size,attributes},available=system.courage){
  if(!druidicOptions(system).includes(size))throw Error('Forma Druídica não habilitada.');
  const amount={pequena:1,media:2,grande:3}[size];
  if(!Array.isArray(attributes)||attributes.length!==amount||new Set(attributes).size!==amount)throw Error('Escolha '+amount+' Atributos distintos.');
@@ -12,7 +12,7 @@ export function animalTransformationPlan(system,{size,attributes}){
  const enhancedAttributes=attributes.filter(key=>JSON.stringify(sourceDice('attribute',key,{...system,transformation:{}}))===JSON.stringify([6,6,10]));
  const pendingAttributes=attributes.filter(key=>!enhancedAttributes.includes(key));
  const courage=size==='pequena'?0:1;
- if(system.courage<courage)throw Error('Coragem insuficiente para transformar.');
+ if(available<courage)throw Error('Coragem insuficiente para transformar.');
  return {courage,state:{kind:'animal',size,attributes,enhancedAttributes,pendingAttributes,lifePending:attributes.includes('vigor'),lifeAtStart:system.life?.value??0}};
 }
 export function elementalDuration(e,p){

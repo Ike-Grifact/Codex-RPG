@@ -2,7 +2,7 @@ import {ATTRIBUTES,GROUPS,attributesOnly,isDiscipline,sourcePairError,mayComplem
 import {equippedDie} from "./equipment-logic.mjs";
 import {preferredQuickAttribute} from "./equipment-workflow.mjs";
 
-import {availableElements} from "./conjuration.mjs";
+import {availableElements,compatibleFoci,focusElement} from "./conjuration.mjs";
 export {availableElements};
 
 export const sameSource=(a,b)=>!!a&&!!b&&a.group===b.group&&a.key===b.key;
@@ -14,7 +14,10 @@ export function prepareCombatAction(actor,action,previous={},equipmentId=""){
  }
  const mode=action==="spell"?"conjuracao":"armas";
  const item=actor.items.get(equipmentId);
- if(equipmentId&&!equippedDie(actor,item,mode))throw Error("Equipe o item e confira sua habilitação.");
+ if(equipmentId){
+  const valid=action==="spell"?compatibleFoci(actor,focusElement(item)).some(focus=>focus.id===equipmentId):equippedDie(actor,item,mode);
+  if(!valid)throw Error("Confira o equipamento e sua habilitação.");
+ }
  if(attributesOnly(system)){
   const keys=[...ATTRIBUTES].sort(([a],[b])=>(system.attributes?.[b]??0)-(system.attributes?.[a]??0)).map(([key])=>key);
   const chosen=[previous.base,previous.second].filter(source=>source?.group==="attribute").map(source=>source.key);

@@ -22,8 +22,8 @@ test('arma cravada conta na carga transportada sem duplicar o peso por filtros v
  actor.items[0].system.embeddedWeapon='';assert.equal(carriedWeight(actor),.5);
 });
 
-test('107 Perícias do site coincidem com catálogo e 109 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
- assert.equal(site.skills.length,107);assert.equal(SKILLS.length,109);
+test('106 Perícias do site coincidem com catálogo e 109 definições nativas, incluindo nomes, custo, texto, requisitos, estados e efeitos',()=>{
+ assert.equal(site.skills.length,106);assert.equal(SKILLS.length,109);
  const definitions=skillDefinitions();assert.equal(new Set(definitions.map(row=>row._id)).size,109);
  for(const [id,name,detail,cost] of site.skills){
   const row=byId(id),native=definitions.find(item=>item.system.canonicalId===id);
@@ -136,11 +136,11 @@ test('Druídica segue v1.0 posterior à v0.82: 1 XP, Foco + Terra e três formas
  const manual=animalTransformationPlan(beginner,{size:'pequena',attributes:['forca']});
  assert.deepEqual(manual.state.pendingAttributes,['forca']);assert.deepEqual(manual.state.enhancedAttributes,[]);
 });
-test('elevação comum v1.0 sobe um dado sem ampliar a pilha. Passivos e avanços não concedem graus ou símbolos extra',()=>{
+test('elevação v0.90 aplica a tabela de um Grau temporário da fonte. Passivos e avanços não concedem graus ou símbolos extra',()=>{
  const s={...empty(),attributes:{influencia:4},practices:{apresentacao:1}};
  const selection={base:{group:'practice',key:'apresentacao'},second:{group:'attribute',key:'influencia'}};
  const pool=buildPool(s,selection,{step:true,stepDieId:'practice.apresentacao.0'});
- assert(pool.ok);assert.equal(pool.pool.length,4);assert.equal(pool.pool[0].sides,12);
+ assert(pool.ok);assert.equal(pool.pool.length,5);assert.deepEqual(pool.pool.filter(d=>d.elevated).map(d=>d.sides),[10,10]);
  const other={...empty(),skills:['improviso','mestre','furtividade']};
  assert.equal(passiveAnticipar(other,{base:{group:'practice',key:'armas_conjuracao'},second:{group:'attribute',key:'forca'}}),2);
  assert.equal(passiveAnticipar(other,{base:{group:'practice',key:'furtividade'},second:{group:'attribute',key:'destreza'}}),1);
@@ -149,7 +149,7 @@ test('elevação comum v1.0 sobe um dado sem ampliar a pilha. Passivos e avanço
  assert.equal(resolveRoll([{id:'a',sides:6,face:6},{id:'b',sides:10,face:10}],['a','b']).criticalRefundPP,0);
 });
 test('descanso exige confirmação e habilitação, e duração/proteção elementais seguem as fórmulas definidas sem arredondar',async()=>{
- const actor={uuid:'Actor.rest',system:{...empty(),courage:2,attributes:{vigor:2}},getFlag(){},testUserPermission(){return true;},async update(changes){if(changes['system.courage']!=null)this.system.courage=changes['system.courage'];}};
+ const actor={uuid:'Actor.rest',type:'character',system:{...empty(),courage:2,attributes:{vigor:2}},getFlag(){},testUserPermission(){return true;},async update(changes){if(changes['system.courage']!=null)this.system.courage=changes['system.courage'];}};
  const game={user:{isActiveGM:true}},user={isGM:true};
  await assert.rejects(enqueueRoll(actor,user,{action:'rest',kind:'short'},{game,confirm:async()=>true}),/Recobrar/);
  await enqueueRoll(actor,user,{action:'rest',kind:'long'},{game,confirm:async()=>true});assert.equal(actor.system.courage,5);

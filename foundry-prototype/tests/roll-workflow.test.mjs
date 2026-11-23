@@ -134,11 +134,12 @@ import {catalogArmorMigration} from "../module/equipment-migration.mjs";
 import {actorData} from "../module/creation.mjs";
 import {sourceDice, xpLedger} from "../module/rules.mjs";
 
-test("migração opcional de armadura G1 conserva histórico de dano e ignora peças personalizadas", () => {
+test("migração de armadura G1 conserva histórico de dano e ignora peças personalizadas", () => {
   const original = {name:"Armadura Leve", type:"equipment", system:{
     kind:"armor", category:"leve", grade:1, weight:.125, priceVT:5, integrity:{max:10,value:8},
   }};
-  assert.deepEqual(catalogArmorMigration(original), {max:7,value:5});
+  assert.deepEqual(catalogArmorMigration(original), {max:5,value:3});
+  assert.deepEqual(catalogArmorMigration({...original,system:{...original.system,integrity:{max:7,value:5}}}),{max:5,value:3});
   assert.deepEqual(original.system.integrity, {max:10,value:8});
   for (const changes of [{grade:2}, {kind:"shield"}, {description:"Armadura única"}, {integrity:{max:11,value:8}}]) {
     assert.equal(catalogArmorMigration({...original,system:{...original.system,...changes}}),undefined);

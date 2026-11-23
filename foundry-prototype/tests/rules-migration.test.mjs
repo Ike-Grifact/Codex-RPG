@@ -15,9 +15,9 @@ test('carregamento histórico conserva formação 20, enquanto atualizações pa
  assert.deepEqual(partial,{attributes:{inteligencia:1},skills:['fogo']});
 });
 test('migração registra a origem uma única vez e conserva XP, Perícias e PP histórico sem converter recursos',async()=>{
- const actor={system:{level:1,creationBudget:20,attributes:{forca:1},knowledges:{},practices:{atletismo:1},skills:['futura','manejo-duplo'],xp:7,pp:3,courage:12},_stats:{systemVersion:'0.2.1.15'},
+ const actor={type:"character",items:[],system:{level:1,creationBudget:20,attributes:{forca:1},knowledges:{},practices:{atletismo:1},skills:['futura','manejo-duplo'],xp:7,pp:3,courage:12},_stats:{systemVersion:'0.2.1.15'},
   getFlag(){return this.record;},async update(changes){this.updates=(this.updates??0)+1;this.record=changes['flags.codex-rpg-foundry.rulesMigration'];}};
- globalThis.game={user:{isActiveGM:true,id:'gm'},actors:[actor]};
+ globalThis.game={user:{isActiveGM:true,id:'gm'},actors:[actor],items:[],scenes:[]};
  const before=structuredClone(actor.system);await migrateRules();await migrateRules();
  assert.equal(actor.updates,1);assert.deepEqual(actor.system,before);
  assert.deepEqual(actor.record.skills,before.skills);assert.equal(actor.record.legacyPP,3);assert.equal(actor.record.xp,7);

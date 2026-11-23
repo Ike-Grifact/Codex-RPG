@@ -4,7 +4,7 @@ const grade=()=>new F.NumberField({required:true,integer:true,min:0,max:6,initia
 const t=()=>new F.StringField({required:true,initial:""});
 const nn=(i=0)=>new F.NumberField({required:true,integer:true,min:0,initial:i});
 function grades(keys){return new F.SchemaField(Object.fromEntries(keys.map(k=>[k,grade()])));}
-const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
+const schema=(monster=false,animal=false,monsterHumanoid=false,hostile=false)=>({
  level:new F.NumberField({required:true,integer:true,min:1,max:20,initial:1}),
  concept:t(),origin:new F.StringField({required:true,initial:monster||animal?"Criatura":"Humano"}),
  race:t(),pureElement:t(),runeElements:new F.ArrayField(t(),{initial:[]}),
@@ -18,10 +18,11 @@ const schema=(monster=false,animal=false,monsterHumanoid=false)=>({
  practices:grades(["armas_conjuracao","atletismo","furtividade","artesao","apresentacao","coleta"]),
  skills:new F.ArrayField(new F.StringField({required:true}),{required:true,initial:[]}),
  life:new F.SchemaField({value:nn(4),medical:new F.BooleanField({initial:false})}),
- courage:nn(10),pp:nn(0),xp:nn(0),creationBudget:nn(15),transformation:new F.ObjectField({initial:{}}),
+ companion:new F.SchemaField({name:t(),species:t(),present:new F.BooleanField({initial:false})}),
+ courage:nn(hostile?0:10),pp:nn(0),xp:nn(0),creationBudget:nn(15),transformation:new F.ObjectField({initial:{}}),
  threatGrade:new F.NumberField({required:true,integer:true,min:1,max:6,initial:1}),
  pavorLocal:nn(0),animalRules:new F.BooleanField({initial:animal}),monsterHumanoidRules:new F.BooleanField({initial:monsterHumanoid}),monsterRules:new F.BooleanField({initial:monster}),
- status:new F.SchemaField({hidden:new F.BooleanField({initial:false}),note:t()})
+ status:new F.SchemaField({sangramento:new F.BooleanField({initial:false}),envenenado:new F.BooleanField({initial:false}),hidden:new F.BooleanField({initial:false}),note:t()})
 });
 class HistoricalFormationData extends foundry.abstract.TypeDataModel {
  static migrateData(source){
@@ -31,10 +32,10 @@ class HistoricalFormationData extends foundry.abstract.TypeDataModel {
  }
 }
 export class CodexCharacterData extends HistoricalFormationData {static defineSchema(){return schema(false);}}
-export class CodexHumanoidData extends HistoricalFormationData {static defineSchema(){return schema(false);}}
-export class CodexAnimalData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,true);}}
-export class CodexMonsterHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,false,true);}}
-export class CodexMonsterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(true);}}
+export class CodexHumanoidData extends HistoricalFormationData {static defineSchema(){return schema(false,false,false,true);}}
+export class CodexAnimalData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,true,false,true);}}
+export class CodexMonsterHumanoidData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(false,false,true,true);}}
+export class CodexMonsterData extends foundry.abstract.TypeDataModel {static defineSchema(){return schema(true,false,false,true);}}
 export class CodexEquipmentData extends foundry.abstract.TypeDataModel {
  static defineSchema(){return{
   kind:new F.StringField({required:true,initial:"weapon"}),

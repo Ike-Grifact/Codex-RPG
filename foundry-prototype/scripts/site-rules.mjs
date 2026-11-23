@@ -2,8 +2,8 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
-export const SOURCE_COMMIT='874de82d788228ca5fb3c01b1ac06733218585a2';
-// O Bardo foi conferido na main da v0.87. Os demais verbetes mantêm a revisão do playtest Foundry.
+export const SOURCE_COMMIT='2ca8aadbc29b0f4b51d75aad0d1817b988097dc3';
+// O repertório do Bardo mantém a decisão autoral publicada na v0.87.
 const BARD_SOURCE_COMMIT='d48a886395b1fb50c0be40212ffbf0d2a01592a8';
 const BARD_SOURCE_PATH='docs/playtest-bardo-2026-11-21.md';
 const plain=text=>text.replaceAll('**','').trim();
@@ -21,6 +21,8 @@ export function readSiteRules(){
   section(app,'const XP_LEVEL_REFERENCE=','const MAX_EARNED_XP=')+
   '\nJSON.stringify({skills:SKILLS,requirements:GENE_AUTO_REQUIREMENTS,advanced:ADVANCED_SOURCE_DEFS,families:GENE_CONSTELLATIONS,levels:XP_LEVEL_REFERENCE,masteries:WEAPON_MASTERY_TYPES,approvedMasteries:APPROVED_WEAPON_MASTERY_PURCHASE})';
  const data=JSON.parse(vm.runInContext(code,context,{timeout:2000}));
+ // O validador clássico e o verbete aprovado exigem a Perícia adquirida e Destreza 2.
+ data.requirements["manejo-perfeito"]=[["a:destreza:2","s:disciplina-avancada"]];
  const bardApp=read('prototipo-ficha/app.js',BARD_SOURCE_COMMIT);
  const bardIds=JSON.parse(vm.runInNewContext(
   section(bardApp,'const BARD_INTERNAL_EFFECTS=','const HIDDEN_CATALOG_SKILLS=')+'JSON.stringify(BARD_INTERNAL_EFFECTS)',

@@ -1,4 +1,5 @@
 import {G1_CATALOG} from './catalog.mjs';
+import {compatibleFoci,focusElement} from "./conjuration.mjs";
 import {equippedDie} from './equipment-logic.mjs';
 
 export const RESOURCE_NAMES={ervas:'Ervas',espolios:'Espólios',couro:'Couro',comida:'Comida',minerios:'Minérios'};
@@ -66,10 +67,11 @@ export function preferredQuickAttribute(system,item,selection){
 }
 export function quickEquipmentPlan(actor,id,selection={},options={}){
  const item=actor.items.get(id);
- if(!item?.system.equipped)throw Error('Equipe a arma ou foco antes de rolar.');
+ if(!item||(item.system.kind!=='focus'&&!item.system.equipped))throw Error('Equipe a arma antes de rolar.');
  const mode=item.system.kind==='focus'?'conjuracao':'armas';
  if(!['weapon','firearm','focus'].includes(item.system.kind))throw Error('Este equipamento não é fonte de ataque.');
- if(!equippedDie(actor,item,mode))throw Error('O equipamento exige a Perícia de manejo ou foco pertinente e Grau permitido.');
+ const enabled=mode==="conjuracao"?compatibleFoci(actor,focusElement(item)).some(focus=>focus.id===id):equippedDie(actor,item,mode);
+ if(!enabled)throw Error('O equipamento exige a Perícia de manejo ou foco pertinente e Grau permitido.');
  if(!(actor.system.practices.armas_conjuracao>0))throw Error('A rolagem pelo equipamento exige Disciplina treinada.');
  const attribute=preferredQuickAttribute(actor.system,item,selection);
  if(!attribute)throw Error('Selecione um Atributo treinado para combinar com Disciplina.');

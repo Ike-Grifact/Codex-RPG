@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {advancementPlan,planSkillPackage,skillRefundPlan} from "../module/advancement.mjs";
 import {searchSkills} from "../module/skill-catalog.mjs";
-import {buildPool,canReinforceDie,xpLedger} from "../module/rules.mjs";
+import {buildPool,canElevateSource,xpLedger} from "../module/rules.mjs";
 import {enqueueRoll} from "../module/roll-workflow.mjs";
 import {keepForActor,rollNamespace as NS} from "../module/roll-resolution.mjs";
 
@@ -66,16 +66,16 @@ const selection={base:{group:"practice",key:"apresentacao"},second:{group:"attri
 const traits={attributes:{influencia:4},practices:{apresentacao:1},knowledges:{},skills:[]};
 const opts={step:true,stepDieId:"practice.apresentacao.0"};
 
-test("Influência G4 e Apresentação G1 elevam um d10 para d12 no SRD ativo",()=>{
+test("Influência G4 e Apresentação G1 elevam a Prática inteira para G2",()=>{
  const original=buildPool(traits,selection);
  const plan=buildPool(traits,selection,opts);
  assert.equal(original.pool.length,4);
  assert.ok(plan.ok);
- assert.deepEqual(plan.pool.map(d=>d.sides).sort((a,b)=>a-b),[6,6,10,12]);
- assert.equal(new Set(plan.pool.map(d=>d.id)).size,4);
- assert.equal(plan.pool.filter(d=>d.key==="apresentacao").length,1);
- assert.deepEqual(plan.pool.slice(1),original.pool.slice(1));
- assert.equal(canReinforceDie({sides:20}),false);
+ assert.deepEqual(plan.pool.map(d=>d.sides).sort((a,b)=>a-b),[6,6,10,10,10]);
+ assert.equal(new Set(plan.pool.map(d=>d.id)).size,5);
+ assert.equal(plan.pool.filter(d=>d.key==="apresentacao").length,2);
+ assert.deepEqual(plan.pool.slice(2),original.pool.slice(1));
+ assert.equal(canElevateSource(traits,{group:"magic",key:"Magia G4"}),false);
  const full={...traits,practices:{apresentacao:3},knowledges:{medicina:3},skills:["combinacao"]};
  const overflow=buildPool(full,{...selection,complement:{group:"knowledge",key:"medicina"}},{...opts,contextApproved:true,equipmentDie:6});
  assert.match(overflow.errors.join(" "),/nove dados/);
@@ -110,14 +110,14 @@ test("o uso por rodada e o débito único são persistidos no início. Retençã
   assert.equal(keepForActor(actor,0),2);
   assert.equal(actor.system.courage,9);
   const pending=flags.pendingRoll;
-  assert.equal(pending.dice.length,4);
+  assert.equal(pending.dice.length,5);
   assert.equal(pending.dice[0].elevated,true);
   const command={id:pending.id};
   await assert.rejects(enqueueRoll(actor,user,{...command,action:"keep",ids:pending.dice.slice(0,3).map(x=>x.id)},deps),/limite/);
   await enqueueRoll(actor,user,{...command,action:"keep",ids:[pending.dice[0].id]},deps);
   await enqueueRoll(actor,user,{...command,action:"finish"},deps);
   assert.equal(actor.system.courage,9);
-  assert.match(messages.get(pending.id).data.content,/d12 · Apresentação/);
+  assert.match(messages.get(pending.id).data.content,/d10 · Apresentação/);
   assert.equal(updates.filter(x=>Object.hasOwn(x,"system.courage")).length,1);
   await assert.rejects(enqueueRoll(actor,user,start,deps),/nesta rodada/);
   assert.equal(actor.system.courage,9);

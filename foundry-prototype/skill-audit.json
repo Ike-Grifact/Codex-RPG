@@ -1,5 +1,5 @@
 {
-  "source": "874de82d788228ca5fb3c01b1ac06733218585a2",
+  "source": "2ca8aadbc29b0f4b51d75aad0d1817b988097dc3",
   "active": "SRD Playtest Nível 1 v1.0",
   "skills": [
     {
@@ -1562,15 +1562,15 @@
     {
       "id": "manejo-perfeito",
       "name": "Manejo Perfeito — Armas Corpo a Corpo",
-      "state": "PENDENTE",
+      "state": "DEFINIDO",
       "legacy": false,
       "previousCost": null,
-      "currentCost": null,
+      "currentCost": 1,
       "added": false,
       "nameChanged": false,
-      "costChanged": false,
+      "costChanged": true,
       "requirementsChanged": false,
-      "descriptionChanged": false,
+      "descriptionChanged": true,
       "previousRequirements": [
         [
           "a:destreza:2",
@@ -1584,7 +1584,7 @@
         ]
       ],
       "previousDescription": "Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",
-      "currentDescription": "Disciplina Avançada + Destreza 2. Arma certa: Vantagem Absoluta; se já possui, Golpe Certo. XP e Golpe Certo PENDENTES.",
+      "currentDescription": "1 XP. Requer Disciplina Avançada + Destreza 2. Ao usar a arma correta contra oponente que possui Desvantagem contra ela, concede Vantagem Absoluta (+1E substituindo o +1A natural); se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo. Procedimento de Golpe Certo PENDENTE, sem bônus numérico adicional.",
       "automation": "manual"
     },
     {
@@ -1598,7 +1598,7 @@
       "nameChanged": false,
       "costChanged": false,
       "requirementsChanged": false,
-      "descriptionChanged": false,
+      "descriptionChanged": true,
       "previousRequirements": [
         [
           "p:armas_conjuracao:2",
@@ -1654,7 +1654,7 @@
         ]
       ],
       "previousDescription": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.",
-      "currentDescription": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.",
+      "currentDescription": "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.",
       "automation": "manual"
     },
     {
@@ -1966,7 +1966,7 @@
       "nameChanged": false,
       "costChanged": false,
       "requirementsChanged": false,
-      "descriptionChanged": false,
+      "descriptionChanged": true,
       "previousRequirements": [
         [
           "p:armas_conjuracao:2",
@@ -1996,7 +1996,7 @@
         ]
       ],
       "previousDescription": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.",
-      "currentDescription": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.",
+      "currentDescription": "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.",
       "automation": "manual"
     },
     {
@@ -2249,26 +2249,6 @@
       ],
       "previousDescription": "Vigor 3; antigo efeito de remover −1A em Incapacitado está incompatível com −1E/+1P. Novo efeito PENDENTE, sem aplicar bônus automático.",
       "currentDescription": "Vigor 3; antigo efeito de remover −1A em Incapacitado está incompatível com −1E/+1P. Novo efeito PENDENTE, sem aplicar bônus automático.",
-      "automation": "manual"
-    },
-    {
-      "id": "arma-certa",
-      "name": "Maestria Arma Certa",
-      "state": "PENDENTE",
-      "legacy": false,
-      "previousCost": null,
-      "currentCost": null,
-      "added": false,
-      "nameChanged": false,
-      "costChanged": false,
-      "requirementsChanged": false,
-      "descriptionChanged": false,
-      "previousRequirements": [],
-      "currentRequirements": [
-        []
-      ],
-      "previousDescription": "+1E com peso favorável. Custo de XP pendente.",
-      "currentDescription": "+1E com peso favorável. Custo de XP pendente.",
       "automation": "manual"
     },
     {
@@ -2987,7 +2967,7 @@
       "added": false,
       "nameChanged": false,
       "costChanged": false,
-      "requirementsChanged": false,
+      "requirementsChanged": true,
       "descriptionChanged": true,
       "previousRequirements": [
         [
@@ -2999,12 +2979,11 @@
       "currentRequirements": [
         [
           "a:influencia:2",
-          "a:inteligencia:1",
-          "p:apresentacao:1"
+          "a:inteligencia:1"
         ]
       ],
       "previousDescription": "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 PP ou 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
-      "currentDescription": "1 XP · Influência 2, Apresentação 1, Inteligência 1. Domar por 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
+      "currentDescription": "1 XP · Influência 2, Inteligência 1 (Apresentação não é requisito de compra). Domar por 1 Coragem e teste de Influência + Apresentação contra a DE defensiva atual do domador. A Perícia não domestica automaticamente. Uma Pequena começa com 1 Vida própria quando exposta a risco direto; com ficha independente opcional de mesmo XP total atual do jogador, pode ganhar Vida própria por Vigor e Força (base 1 + Vigor + piso(Força/2)), pagando 2x XP para esses Atributos desde G1. Uma Pequena aliada por personagem, concedendo +1A em combate e +1 ponto de Vida (integração às quatro caixas PENDENTE). Atacar a criatura cancela a domesticação; pacificação durante combate tem procedimento PENDENTE. Pode sacrificar-se contra dano letal, ou o personagem pode protegê-la, receber o golpe fatal e fazê-la fugir. Criar Item de Foco e Magia permite domar criaturas pequenas mágicas. XP da pequena sem ficha PENDENTE; companheiros contam no XP do grupo em Criar Conflito.",
       "automation": "manual"
     },
     {
@@ -3061,13 +3040,13 @@
         [
           "a:influencia:4",
           "a:inteligencia:1",
-          "p:apresentacao:1",
+          "p:apresentacao:2",
           "s:domar-criatura-pequena",
           "s:domar-criatura-media"
         ]
       ],
       "previousDescription": "1 XP. Influência 4, Apresentação 1, Inteligência 1. Tentativa 1 PP ou 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
-      "currentDescription": "1 XP. Influência 4, Apresentação 1, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
+      "currentDescription": "1 XP. Influência 4, Apresentação 2, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média. Tentativa 1 Coragem; teste Influência + Apresentação contra DE defensiva do domador. Ficha independente; +1 Vida ao domador.",
       "automation": "manual"
     },
     {
@@ -3226,6 +3205,24 @@
       ],
       "previousDescription": "",
       "currentDescription": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
+      "automation": "manual"
+    },
+    {
+      "id": "arma-certa",
+      "name": "Maestria Arma Certa",
+      "state": "LEGADO",
+      "legacy": true,
+      "previousCost": null,
+      "currentCost": null,
+      "added": false,
+      "nameChanged": false,
+      "costChanged": false,
+      "requirementsChanged": false,
+      "descriptionChanged": false,
+      "previousRequirements": [],
+      "currentRequirements": [],
+      "previousDescription": "+1E com peso favorável. Custo de XP pendente.",
+      "currentDescription": "+1E com peso favorável. Custo de XP pendente.",
       "automation": "manual"
     },
     {

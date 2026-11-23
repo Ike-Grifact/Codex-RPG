@@ -25,7 +25,7 @@ export function compatibleFoci(actor,element){
 }
 
 export function magicTiming(grade,charges){
- return grade<=2?grade:3-charges;
+ return grade===4?6-charges:grade-charges;
 }
 
 export function spellPlan(actor,input){
@@ -35,21 +35,29 @@ export function spellPlan(actor,input){
  const element=input.element||(!Object.hasOwn(input,"focusId")&&focus?focusElement(focus):"");
  const grade=input.magicGrade??1,charges=input.magicCharges??0,amplify=input.magicAmplify===true;
  const shield=input.runeShield===true;
- if(![1,2,3].includes(grade))throw Error("Escolha um Grau de G1 a G3.");
+ if(![1,2,3,4].includes(grade))throw Error("Escolha um Grau de G1 a G4.");
  if(!availableElements(system).some(([id])=>id===element))throw Error("Escolha um elemento ou um foco habilitado.");
  if(focusId&&!compatibleFoci(actor,element).some(item=>item.id===focusId))throw Error("O foco deve corresponder ao elemento.");
- if(!Number.isInteger(charges)||charges<0||charges>2||charges>0&&(grade!==3||!focus||charges>focusCharges(focus)))
-  throw Error("Somente G3 pode gastar até duas cargas de um foco compatível.");
+ const secondElement=grade===4?input.magicSecondElement:"";
+ const secondFocusId=grade===4?(input.magicSecondFocusId??""):"";
+ const secondFocus=actor.items.get(secondFocusId);
+ if(grade===4&&(!secondElement||element===secondElement||!availableElements(system).some(([id])=>id===secondElement)))
+  throw Error("G4 exige duas magias G3 habilitadas de elementos distintos.");
+ if(secondFocusId&&!compatibleFoci(actor,secondElement).some(item=>item.id===secondFocusId))
+  throw Error("O segundo foco deve corresponder ao segundo elemento.");
+ const maxCharges={1:0,2:1,3:2,4:3}[grade];
+ if(!Number.isInteger(charges)||charges<0||charges>maxCharges||
+    charges>0&&(!focus||charges>focusCharges(focus)||grade===4&&(!secondFocus||charges>focusCharges(secondFocus))))
+  throw Error("Confira as cargas dos focos compatíveis para acelerar a magia.");
  if(amplify&&!focus)throw Error("A amplificação exige um foco compatível.");
  if(shield&&(!isRuna(system)||element==="psiquico"||grade!==1))throw Error("O Escudo Rúnico usa um elemento habilitado no teste básico.");
  const turns=magicTiming(grade,charges);
  if(grade>1&&input.magicGradeConfirmed!==true)throw Error("Confirme o acesso ao efeito e ao Grau da magia.");
- if(turns>1&&input.magicTimeConfirmed!==true)throw Error("Confirme que os turnos de preparação foram cumpridos.");
  const pathMeters=input.magicPathMeters??0;
- if(!Number.isFinite(pathMeters)||pathMeters<0||pathMeters>0&&(element!=="vento"||pathMeters>[4,8,16][grade-1]))
+ if(!Number.isFinite(pathMeters)||pathMeters<0||pathMeters>0&&(element!=="vento"||pathMeters>[4,8,16,16][grade-1]))
   throw Error("Confira a distância total da trajetória de Ar para este Grau.");
- const courage=Number(grade===3)+Number(amplify)+Number(shield&&system.runeShieldFreeUsed===true);
- return {element,focusId,grade,charges,amplify,turns,courage,shield,pathMeters};
+ const courage=(grade===4?2:Number(grade===3))+Number(amplify)+Number(shield&&system.runeShieldFreeUsed===true);
+ return {element,secondElement,focusId,secondFocusId,grade,charges,amplify,turns,courage,shield,pathMeters};
 }
 
 export function runeBarrier(e,p){

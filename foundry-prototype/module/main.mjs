@@ -38,7 +38,7 @@ Hooks.once("init",()=>{
  registerCodexMovement();
  game.settings.register("codex-rpg-foundry","experimentalLifeDamage",{
   name:"Aplicar perda experimental de Vida",
-  hint:"Dano que chega à Vida: 1–5 tira 1, 6–8 tira 2, 9 ou mais tira 3. Golpes colossais e efeitos especiais ficam com a mesa.",
+  hint:"Acerto com pelo menos 5 Êxitos + Pavor válidos tira 2 de Vida de alvo sem armadura. Abaixo do patamar e o excedente de Integridade são adjudicados.",
   scope:"world",config:true,type:Boolean,default:true
  });
 });
@@ -68,10 +68,12 @@ Hooks.on("preUpdateItem",(item,changes)=>{
 Hooks.on('preCreateActor',(actor)=>{
  const data=actor.toObject(),namespace='codex-rpg-foundry';
  const flags=data.flags?.[namespace];
- const {skills,historical}=splitBardSkills(data.system.skills??[]);
+ const stored=data.system.skills??[];
+ const {skills,historical}=splitBardSkills([...new Set(stored.map(id=>id==="arma-certa"?"manejo-perfeito":id))]);
  const items=data.items??[],legacyItems=items.filter(bardEffectItem);
  const changes={'system.creationBudget':15};
- if(historical.length)changes['system.skills']=skills;
+ if(data.type!=='character')changes['system.courage']=0;
+ if(historical.length||stored.includes("arma-certa"))changes['system.skills']=skills;
  if(historical.length||legacyItems.length){
   const old=flags?.bardLegacy;
   changes['flags.'+namespace+'.bardLegacy']={
@@ -90,7 +92,7 @@ Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
  if(game.users.get(userId)?.isGM&&_actor.system.transformation?.size==='pequena'&&typeof life==='number'&&life<_actor.system.life.value)foundry.utils.setProperty(changes,'system.transformation',{});
  if(game.users.get(userId)?.isGM)return;
  const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
- const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts|bardLegacy))(\.|$)/;
+ const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres|companion)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts|bardLegacy|courageSpent|casting))(\.|$)/;
  if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
    (options.recursive===false&&("system" in changes||"flags" in changes))){
   ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");

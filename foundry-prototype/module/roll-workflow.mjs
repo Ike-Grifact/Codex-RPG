@@ -1,4 +1,4 @@
-import { rollNamespace as NS, pendingRollEntry, pendingRollFor, preparePendingRoll, resolvePendingRoll, keepForActor, alternativesFor, rollResult, publicRollResult } from "./roll-resolution.mjs";
+import { rollNamespace as NS, pendingRollEntry, pendingRollFor, preparePendingRoll, resolvePendingRoll, keepForActor, alternativesFor, rollResult, publicRollResult, castingFor } from "./roll-resolution.mjs";
 
 import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
@@ -6,11 +6,13 @@ import {xpLedger} from "./rules.mjs";
 import {escapeHTML} from "./roll-engine.mjs";
 import {purchasePlan} from "./equipment-workflow.mjs";
 import {animalTransformationPlan} from './transformations.mjs';
-import {maxCourage,lifeMax} from './rules.mjs';
+import {maxCourage,lifeMax,hasSmallCompanion} from './rules.mjs';
 import {advancementPlan, creationMissing, gradeDetails, originChangePlan, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
 import {racialChoicesComplete,usesRacialRules,hasSkill,isRuna} from "./races.mjs";
 import {spherePlan,sphereRound,canUseTechnique} from "./techniques.mjs";
 import {applyAttackImpact,impactSummary} from "./attack-impact.mjs";
+
+import {actionResource,spendActionResource,usesLocal} from "./combat-resources.mjs";
 
 const query = `${NS}.roll`;
 const xpHistory = "xpHistory";
@@ -18,7 +20,7 @@ const refundHistory = "skillRefundHistory";
 const approvalTimeout = 45000;
 const queues = new Map();
 let publishing = Promise.resolve();
-const options = ["cancelP", "convertPairs", "characteristic", "secondCharacteristic", "activationPayment", "passAllyId"];
+const options = ["cancelP", "convertPairs", "characteristic", "secondCharacteristic", "thirdCharacteristic", "piercingBlocked", "activationPayment", "passAllyId"];
 
 export function enqueueRoll(actor, user, request, dependencies = {}) {
   const previous = queues.get(actor.uuid) ?? Promise.resolve();
@@ -77,17 +79,45 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     await actor.update(changes);
     return;
   }
+  if(request.action==="resolveCast"){
+    if(!user.isGM)throw Error("A conclusão da conjuração exige o Narrador.");
+    if(pending)throw Error("Publique a rolagem antes de resolver a conjuração.");
+    const cast=castingFor(actor);
+    if(!cast||cast.id!==request.id)return;
+    const combat=game.combats.get(cast.combatId);
+    if(!request.cancel&&combat?.started&&combat.round<cast.round+cast.turns-1)
+      throw Error("A conjuração ainda está em preparação.");
+    if(!request.cancel&&cast.impact)await applyAttackImpact(cast.impact,cast.id+"-efeito",game,resolveUuid);
+    await actor.unsetFlag(NS,"casting");
+    return;
+  }
+  if(request.action==="companion"){
+    if(pending||!hasSkill(actor.system,"domar-criatura-pequena"))throw Error("Finalize a rolagem e verifique Domar Criatura Pequena.");
+    const name=String(request.name??"").trim().slice(0,70);
+    const species=request.species==="serpente"?"serpente":"outro";
+    const companion={name,species,present:request.present===true};
+    if(companion.present&&!name)throw Error("Informe o nome da criatura domesticada.");
+    const next={...buildOf(actor),companion};
+    const life=actor.system.life.value;
+    const difference=lifeMax(next)-lifeMax(actor.system);
+    await actor.update({"system.companion":companion,"system.life.value":life?Math.max(0,Math.min(lifeMax(next),life+difference)):0});
+    return;
+  }
   if(request.action==="sphere"){
     if(pending)throw Error("Finalize a rolagem antes de mudar as Esferas Espirituais.");
-    await actor.update(spherePlan(actor.system,request.kind,sphereRound(game.combat),user.isGM));
+    if(usesLocal(actor)&&request.kind==="absorb")throw Error("Absorver Esferas recupera Coragem e exige adjudicação para inimigos.");
+    const spend=request.kind==="create"?spendActionResource(actor,1,game.combat):{};
+    const changes=spherePlan({...buildOf(actor),courage:actor.system[actionResource(actor)]},request.kind,sphereRound(game.combat),user.isGM);
+    if(usesLocal(actor)&&request.kind==="create")delete changes["system.courage"];
+    await actor.update({...changes,...spend});
     return;
   }
   if(request.action==="declareTechnique"){
     const names={"sentido-elemental":"Sentido Elemental","corpo-fechado":"Corpo Fechado","impacto-psiquico":"Impacto Psíquico"};
     const id=request.kind;
-    if(!Object.hasOwn(names,id)||pending||actor.system.courage<1||!canUseTechnique(actor.system,id))
+    if(!Object.hasOwn(names,id)||pending||!canUseTechnique(actor.system,id))
       throw Error("A Perícia não está disponível ou falta Coragem.");
-    await actor.update({"system.courage":actor.system.courage-1});
+    await actor.update(spendActionResource(actor,1,game.combat));
     return {declared:names[id]};
   }
   if(request.action==="resetRuneShield"){
@@ -104,6 +134,7 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     return;
   }
   if(request.action==='resource'){
+    if(usesLocal(actor)&&request.field==='system.courage')throw Error('Inimigos operam com Pavor local.');
     if(!['system.life.value','system.courage'].includes(request.field)||![-1,1].includes(request.delta))throw Error('Recurso inválido.');
     const current=request.field==='system.courage'?actor.system.courage:actor.system.life.value;
     const limit=request.field==='system.courage'?Math.max(current,maxCourage(actor.system.level)):lifeMax(actor.system);
@@ -113,10 +144,11 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if(pending)throw Error('Finalize a rolagem antes de transformar.');
     if(request.revert){await actor.update({'system.transformation':{}});return;}
     if(actor.system.transformation?.kind)throw Error('Reverta a forma atual antes de transformar novamente.');
-    const plan=animalTransformationPlan(actor.system,request);
-    await actor.update({'system.transformation':plan.state,'system.courage':actor.system.courage-plan.courage});return;
+    const plan=animalTransformationPlan(actor.system,request,actor.system[actionResource(actor)]);
+    await actor.update({'system.transformation':plan.state,...spendActionResource(actor,plan.courage,game.combat)});return;
   }
   if(request.action==='rest'){
+    if(usesLocal(actor))throw Error('O descanso de Coragem é exclusivo de personagens jogadores.');
     if(pending)throw Error('Finalize a rolagem antes de descansar.');
     if(!['short','long'].includes(request.kind))throw Error('Descanso inválido.');
     if(request.kind==='short'&&!hasSkill(actor.system,'recobrar-coragem'))throw Error('Descanso curto exige Recobrar Coragem.');
@@ -281,10 +313,13 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const {key, value} = request;
     if (["cancelP", "convertPairs"].includes(key)) {
       if (!Number.isSafeInteger(value) || value < 0 || value > 100) throw Error("Quantidade de Antecipar inválida.");
+    } else if(key==="piercingBlocked"){
+      if(!user.isGM||typeof value!=="boolean")throw Error("O Narrador confirma o bloqueio da propriedade.");
     } else if (typeof value !== "string" || value.length > 200) throw Error("Opção inválida.");
     if (key === "activationPayment" && value!=="courage") throw Error("A ativação usa Coragem. PP foi revogado.");
     config[key] = value;
     if (key === "characteristic") config.secondCharacteristic = "";
+    if (key === "characteristic"||key==="secondCharacteristic") config.thirdCharacteristic="";
   } else return;
   await actor.update(pendingChanges(actor, {...pending, selected, options: config}));
 }

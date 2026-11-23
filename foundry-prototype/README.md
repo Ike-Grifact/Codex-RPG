@@ -1,10 +1,18 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.31.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.32.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
 A **Maestria em Apresentação** reúne os 17 efeitos do Bardo no Codex Genético e no Compendium. Perícia em Instrumentos e Voz Encantadora continuam independentes, com XP de aquisição pendente. Registros antigos podem ser conferidos em **Evolução → Histórico do Bardo para revisão**.
+
+## Sincronização com o SRD v0.91
+
+- Roupas Simples, Armadura Leve, Média e Pesada G1 têm respectivamente 2, 5, 8 e 12 de Integridade. Ao abrir o mundo com o Narrador ativo, peças padrão com máximos conhecidos são migradas em itens do mundo, de Actors e de tokens desvinculados. A migração conserva o dano, ignora equipamentos customizados e é idempotente.
+- A DE humana soma Agilidade, metade da soma de Vigor e Destreza arredondada para baixo e um ponto por três graus de Atletismo. Armadura e Maestria em Escudos são contabilizadas uma vez. Criaturas não humanoides seguem sua fórmula própria.
+- O grau da magia fornece d6, d10, d12 ou 2d12. Focos compatíveis gastam cargas para acelerar. A mesa rola e publica na declaração; para preparações de vários turnos, o Narrador confirma ou encerra o efeito na ficha.
+- A Saúde afeta ambos os lados. Inimigos usam Pavor local e PCs têm teto de 5 Coragens por rodada no rastreador. A elevação temporária usa o Grau inteiro da fonte. Fulminantes e auxílio do companheiro são selecionados antes de rolar.
+- Acertos com pelo menos 5 E + P válidos causam 2 de Vida a quem estiver sem armadura, conforme o adendo. Dano inferior, crítico complexo e excedente de Integridade exigem adjudicação. A ficha registra Sangramento e Envenenado sem dano periódico automático.
 
 ## Criador de personagem
 
@@ -116,12 +124,12 @@ Ao finalizar um ataque ou conjuração com um único alvo, o Narrador ativo sinc
 - Itens Foundry `equipment`: arma, arma de fogo, armadura, escudo, foco e recursos genéricos. Campos de Grau, Carga, dado adicional, alcance, Integridade, Durabilidade, VT, características, elemento, munição, cartucho e recarga.
 - O Compendium **Codex RPG — Equipamentos** contém as 90 entradas do catálogo oficial, com IDs estáveis, dados estruturados e indicação de preços pendentes. A Loja usa os mesmos dados e debita VT. O Narrador pode conceder equipamento por arrasto nativo; o jogador deve comprar pela Loja.
 - O Compendium **Codex RPG — Perícias** contém 66 definições consultáveis, incluindo registros legados. Consulta, aquisição e devolução ficam no Codex Genético. Aquisições pagas continuam em `Actor.system.skills` e as de origem são calculadas a partir da linhagem. Arrastar uma definição não concede uma Perícia.
-- O dado da arma ou foco é acrescentado à pilha quando o equipamento está equipado e a Perícia habilitadora é possuída. A Besta de uma mão com Manejo Duplo, múltiplos focos e efeitos simultâneos complexos ainda exigem código adicional.
+- O dado da arma exige equipamento válido e Perícia. Na magia, o dado vem do Grau declarado e focos compatíveis aceleram por meio de cargas. Efeitos simultâneos complexos continuam com o Narrador.
 - A Perícia **Criar Item de Foco e Magia** custa 1 XP e exige **Disciplina 1 + Inteligência 1 + Artesão 1**. Seu Cristal Elemental inicial é uma regra definida, mas a escolha e entrega automática do item ainda não têm formulário próprio.
 
 ## Limites da automação atual
 
-Em **Atacar** e **Conjurar**, o dano básico de um acerto usa a Integridade da armadura equipada antes da Vida. A opção de mundo **Aplicar perda experimental de Vida** faz 1–5 de dano restante tirar 1 Vida, 6–8 tirar 2 e 9 ou mais tirar 3. A carta separa o dano básico da redução efetiva de Vida para quem pode consultar o alvo. O Livro atual mantém os limiares definitivos em aberto. Barreiras ativas podem ser resolvidas na mesa pela opção avançada de dano manual. Efeitos especiais, proteção elemental e golpes colossais sinalizados ficam para adjudicação, juntamente com casos de múltiplos alvos e transformações pendentes.
+Em **Atacar** e **Conjurar**, o dano convencional desgasta a Integridade da armadura equipada. A opção de mundo **Aplicar perda experimental de Vida** aplica o patamar de 2 Vida definido no adendo. Os demais casos ficam sinalizados no chat. Barreiras e proteções especiais podem ser resolvidas na mesa pela opção avançada de dano manual.
 
 ## Testes de regras
 

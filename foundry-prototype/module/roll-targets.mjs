@@ -1,4 +1,4 @@
-import {defenseDE, dodgeDE} from "./equipment-logic.mjs";
+import {defenseDE, dodgeDE,equippedArmor} from "./equipment-logic.mjs";
 
 const namespace = "codex-rpg-foundry";
 const setting = "defenseKey";
@@ -23,6 +23,7 @@ export function lookupTarget(game, user, sceneId, targetIds = [], dodges = false
     actorUuid: token.hidden ? null : actor.uuid,
     de: dodges ? dodgeDE(actor) : defenseDE(actor),
     publicDefense: !token.hidden && Number(actor.ownership?.default ?? 0) >= 2,
+    armorCategory: actor.system.monsterRules||actor.system.animalRules?"":equippedArmor(actor)?.system.category??"",
     canInspect: user.isGM || actor.testUserPermission(user, "OBSERVER"),
   };
 }

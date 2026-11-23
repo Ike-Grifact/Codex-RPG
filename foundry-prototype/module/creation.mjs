@@ -1,3 +1,4 @@
+import {catalogArmorMigration} from "./equipment-migration.mjs";
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP,maxCourage, monsterCap} from "./rules.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {bardEffectItem,internalBardEffect,splitBardSkills} from "./bard.mjs";
@@ -61,7 +62,7 @@ export function actorData(type, raw = {}, quick = false) {
     knowledges: animal || monster ? {} : grades(KNOWLEDGES, raw.knowledges),
     practices: animal || monster ? {} : grades(PRACTICES, raw.practices),
     skills,
-    courage: integer(raw.courage ?? 10, 0, maxCourage(integer(raw.level,1,20))),
+    courage: type==="character"?integer(raw.courage ?? 10, 0, maxCourage(integer(raw.level,1,20))):0,
     pavorLocal: integer(raw.pavorLocal, 0, monsterCap(raw.threatGrade)),
   };
   if (quick && type === "humanoid") {
@@ -74,6 +75,8 @@ export function actorData(type, raw = {}, quick = false) {
     system=withRacialOrigin({...system,race,runeElements:Array.isArray(raw.runeElements)?raw.runeElements.slice(0,2).map(value=>text(value,20)):[],racialInitialAttributes:recorded},{...raw,race});
   }
   system.pp = integer(raw.pp, 0, maxPP(system.level));
+  const companion=raw.smallCompanion??raw.companion;
+  if(companion)system.companion={name:text(companion.name,70),species:companion.species==="serpente"?"serpente":"outro",present:companion.present===true};
   system.life = {value: integer(raw.life ?? lifeMax(system), 0, lifeMax(system))};
   return {name: text(raw.name) || (quick && type === "humanoid" ? "Humano comum" : actorKinds[type]), type, system,
     ...(historical.length?{flags:{"codex-rpg-foundry":{bardLegacy:{ids:historical}}}}:{})};
@@ -102,7 +105,7 @@ function webItem(raw) {
   const category = Object.hasOwn(categories, raw.category) ? categories[raw.category] : raw.category;
   const resistance = ["elementalResistance", "secondResistance", "specificImmunity"]
     .map(field => text(raw[field])).filter(Boolean);
-  return {
+  const item = {
     name: text(raw.name) || itemKinds[kind],
     type: "equipment",
     flags:{'codex-rpg-foundry':{webOriginal:structuredClone(raw)}},
@@ -122,6 +125,8 @@ function webItem(raw) {
       description: resistance.length ? "Proteção registrada no site: " + resistance.join(" · ") : "",
     },
   };
+  item.system.integrity = catalogArmorMigration(item) ?? item.system.integrity;
+  return item;
 }
 
 function encounterItem(raw) {
