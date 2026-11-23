@@ -1,6 +1,6 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
  from "./rules.mjs?v=20261123-skill-package-v1";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261123-skills-dashboard-v1";
@@ -269,7 +269,7 @@ function buyEnemySkillPackage(id){
  if(!plan)return notice("Requisitos ou XP insuficientes para a compra conjunta desta Perícia.");
  const chosen=SKILLS.find(x=>x.id===id);
  const gradeSummary=plan.grades.map(g=>g.name+" "+g.from+" → "+g.to);
- const skillSummary=plan.skills.map(sk=>sk.name+" ("+sk.cost+" XP)");
+ const skillSummary=plan.skills.map(sk=>sk.name+" ("+humanoidSkillCost(plan.state,sk.id)+" XP)");
  const prompt="Comprar "+(chosen?.name||id)+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
   (gradeSummary.length?"Graus:\n• "+gradeSummary.join("\n• ")+"\n\n":"")+
   (skillSummary.length?"Perícias:\n• "+skillSummary.join("\n• ")+"\n\n":"")+
@@ -321,11 +321,11 @@ function enemyGeneInspector(t,id){
  const skill=SKILLS.find(x=>x.id===id&&isVisiblePlayerSkill(x.id));
  if(!skill)return '<p class="cf-note">Selecione uma capacidade disponível no catálogo do Codex.</p>';
  const racial=humanoidRacialGrants(t).includes(id),owned=(t.skills||[]).includes(id);
- const pending=!Number.isInteger(skill.cost);
+ const purchaseCost=humanoidSkillCost(t,id),pending=!Number.isInteger(purchaseCost);
  const reason=racial?"Concedida gratuitamente pela origem":humanoidSkillRequirement(t,id);
- const canBuy=!owned&&!racial&&canBuySkill(t,id)&&ledger(t).remaining>=skill.cost;
+ const canBuy=!owned&&!racial&&canBuySkill(t,id)&&ledger(t).remaining>=purchaseCost;
  const packagePlan=!owned&&!racial&&!pending&&!canBuy?enemySkillPackage(t,id):null;
- const cost=racial?"0 XP (origem)":pending?"XP PENDENTE":skill.cost+" XP";
+ const cost=racial?"0 XP (origem)":pending?"XP PENDENTE":purchaseCost+" XP";
  const button=racial?'<p class="cf-gene-skill-owned">Perícia racial gratuita, não removível.</p>':
   owned?'<button type="button" data-enemy-skill-refund="'+esc(id)+'">Devolver Perícia · revisar XP</button>':
   packagePlan?'<button type="button" class="cf-primary" data-enemy-skill-package="'+esc(id)+'">'+
@@ -397,16 +397,16 @@ function skillPanel(t){
  const remaining=ledger(t).remaining,owned=new Set(t.skills||[]),free=new Set(humanoidRacialGrants(t));
  const listed=SKILLS.filter(it=>isVisiblePlayerSkill(it.id));
  const cards=listed.map(it=>{
-  const racial=free.has(it.id),has=owned.has(it.id),pending=!Number.isInteger(it.cost);
+  const racial=free.has(it.id),has=owned.has(it.id),purchaseCost=humanoidSkillCost(t,it.id),pending=!Number.isInteger(purchaseCost);
   const requirement=!racial?humanoidSkillRequirement(t,it.id):null;
-  const ready=!pending&&!requirement&&remaining>=it.cost;
+  const ready=!pending&&!requirement&&remaining>=purchaseCost;
   const potential=!has&&!ready&&!pending?enemySkillPackage(t,it.id):null;
   const status=has?"owned":pending?"pending":ready?"ready":potential?"potential":"locked";
   const disabled=racial||pending||!has&&!ready;
   const explanation=racial?"Origem · 0 XP":pending?"Aquisição / custo de XP PENDENTE":
-   has?"Adquirida · "+it.cost+" XP":
+   has?"Adquirida · "+purchaseCost+" XP":
    potential?"Comprar Perícia + requisitos · "+potential.cost+" XP":
-   requirement?requirement:remaining<it.cost?"XP insuficiente":"Disponível · "+it.cost+" XP";
+   requirement?requirement:remaining<purchaseCost?"XP insuficiente":"Disponível · "+purchaseCost+" XP";
   return '<article class="cf-skill-card'+(enemyGeneUI.selected===it.id?' is-inspected':'')+'" data-skill-status="'+status+'">'+
    '<label class="cf-skill" title="'+esc(explanation)+'">'+
    '<input type="checkbox" data-skill="'+esc(it.id)+'"'+(has?' checked':'')+(disabled?' disabled':'')+' aria-label="Adquirir '+esc(it.name)+'">'+
@@ -624,7 +624,7 @@ function prepareThreatAction(kind,skillId,itemId){
  if(kind==="skill"&&!row)return notice("A Perícia não foi adquirida neste NPC.");
  if(kind==="weapon"&&!item)return notice("O equipamento não pertence à ficha.");
  if(kind==="skill"&&ELEMENTAL_NPC_SKILLS.has(skillId)){
-  if(!t.skills.includes("criar-item-foco-magia"))return notice("Conjuração requer Criar Item de Foco e Magia e foco habilitado.");
+  if(!humanoidHasFocus(t))return notice("Conjuração requer Criar Item de Foco e Magia realmente adquirido; Lucker Puro deve comprar por 0 XP após Disciplina 1, Inteligência 1 e Artesão 1.");
   d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="conjuracao";
  }else if(kind==="weapon"&&isHumanoidKind(t.kind)){
   d.baseGroup="practice";d.baseKey="armas_conjuracao";d.mode="armas";
