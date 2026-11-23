@@ -813,7 +813,16 @@ function bind(){
   state.target=event.target.value;pending=null;
   persist();render(false);$("difficulty").value=String(defense(target()));
  });
- $("weapon-source").addEventListener("change",()=>{pending=null;renderAffinity();renderDice();});
+ $("weapon-source").addEventListener("change",()=>{
+  pending=null;$("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
+  renderAffinity();renderWeaponEffects();renderDice();
+ });
+ $("weapon-effects").addEventListener("change",event=>{
+  if(!event.target.matches("[data-weapon-property]"))return;
+  if(pending)pending.weaponEffects=selectedWeaponEffects();
+  renderDice(); // escolha após ver o crítico, sem repetir a rolagem
+ });
+ $("perfurante-blocked").addEventListener("change",()=>{if(pending)renderDice();});
  for(const id of ["base-source","attribute-source","extra-source"]){
   $(id).addEventListener("change",()=>{pending=null;renderStepChoices();renderDice();});
  }
@@ -840,7 +849,7 @@ function bind(){
   }else if(activeExtraSelections.has(key))activeExtraSelections.set(key,Number(el.value));
   pending=null;renderDice();
  });
- $("attack-thrown").addEventListener("change",()=>{pending=null;renderDice();});
+ $("attack-thrown").addEventListener("change",()=>{pending=null;renderWeaponEffects();renderDice();});
  $("target-bleeding").addEventListener("change",event=>{
   const t=target();if(!t)return;
   const changed=markCondition(t,"sangramento",event.target.checked);
