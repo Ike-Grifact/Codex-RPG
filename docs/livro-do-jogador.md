@@ -313,6 +313,27 @@ O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a ca
 
 **Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
 
+### Perícias de especialização: o que você pode aprender
+
+As **Perícias** detalham técnicas específicas e só produzem os efeitos de seus verbetes quando os requisitos e os gatilhos são atendidos. As seguintes Perícias custam **1 XP cada**, compradas individualmente; efeitos em que falta procedimento específico dependem do Narrador.
+
+| Perícia | Uso permitido |
+|---|---|
+| [Mãos Leves](../pericias/maos-leves.html) | Em combate, teste **Disciplina + Furtividade** para retirar item inimigo; DE do alvo + Grau do item + peso se equipado. É uma exceção específica à restrição de combinar duas Práticas. |
+| [Perícia em Armadilha](../pericias/pericia-armadilha.html) | **Vantagem** ao armar e desarmar armadilhas, usando Proteção como Conhecimento pertinente. |
+| [Golpe Furtivo](../pericias/golpe-furtivo.html) | Em ataque furtivo com arma habilitada, acrescenta **um dado da própria arma**, sem criar dano fixo ou +1E. |
+| [Bioética](../pericias/bioetica.html) | Com os requisitos de Alquimia, Sangue, elementos e Domar, pode criar homúnculos com **ficha própria**. |
+| [Pesquisa Avançada em Poções](../pericias/pesquisa-avancada-pocoes.html) | **+1E** ao criar poções, e permite poções elementais habilitadas. |
+| [Corpo Fechado](../pericias/corpo-fechado.html) | **1 Coragem** protege a Vitalidade contra golpes físicos de armas por uma rodada, sem conceder imunidade a magia. |
+| [Invocar Esfera Espiritual](../pericias/invocar-esfera-espiritual.html) | Cada esfera custa **1 Coragem**; cria até **5 por rodada** e mantém até **5 armazenadas**. |
+| [Passo Etéreo](../pericias/passo-etereo.html) | Técnica especializada que consome uma esfera; demais condições seguem seu verbete. |
+| [Absorver Esferas](../pericias/absorver-esferas.html) | Consome todas as esferas armazenadas para o efeito próprio da Perícia, sem duplicar recursos. |
+| [Disparo de Esferas Espirituais](../pericias/disparo-esferas-espirituais.html) | Utiliza esfera espiritual conforme o ataque especializado e suas condições. |
+| [Dilema](../pericias/dilema.html) | Com a habilitação marcial, estabelece duelo sem deslocamento até que um combatente fique inconsciente; aplicação resistida permanece pendente. |
+| [Impacto Psíquico](../pericias/impacto-psiquico.html) | Por **1 Coragem**, permite golpes psíquicos com efeitos de armas quando habilitados, sem acrescentar dano fictício. |
+
+**Bioética:** exige **Alquimia 3, Inteligência 3, Destreza 3**, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia Elemental diferente de Sangue e Domar Criatura Média. O homúnculo é produzido com **sangue e tecidos vivos** de duas criaturas. Cada homúnculo possui **ficha própria**, com XP proporcional ao total atual do criador e custos da ficha de criatura do porte correspondente; a compra não gera automaticamente um homúnculo. Porte, tempo, materiais exatos e controle ainda dependem de procedimento.
+
 ## III. Rolar dados e mantê-los
 
 O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado mantido deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Pavor.
@@ -848,6 +869,18 @@ Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fr
 
 **Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** quando o custo era exclusivamente em PP, passa a ser 1 Coragem por ativação, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
 
+
+### Transformação Elemental e Perícias de antimagia
+
+**Aura Sagrada** não é uma Perícia adicional a comprar. Ao realizar uma **Transformação Elemental em Sagrado**, as pessoas a até **3 metros** recebem **1 Coragem**, respeitando seus tetos. O benefício ocorre pela transformação, não a cada turno de permanência na aura.
+
+**Cancelar Magia (1 XP):** requer Criar Item de Foco e Magia, Improviso Elemental e Inteligência, Agilidade e Destreza **grau 4**. Se perceber a conjuração inimiga a até **8 metros**, com **Pavor mantido** pelo conjurador, pode gastar **1 Coragem** e tentar anular a magia com a Perícia do elemento apropriado. O resultado deve ser **igual ou maior** que a DE da conjuração adversária: **Empate cancela**. A comparação e a interrupção seguem o procedimento definido pelo Narrador quando houver lacunas.
+
+**Mudança Elemental (1 XP):** com Transformação Elemental e Destreza 4 + Inteligência 4, permite alterar o elemento de uma criatura, armadura ou ambiente a até **8 metros**, para um elemento habilitado. A duração calculada é **E − P**, exigindo **E − P > 0**. Unidade temporal e custos não informados continuam pendentes.
+
+**Desencantar (1 XP):** exige Cancelar Magia e pode remover **elementos ou imunidades** presentes em um alvo a até 8 metros. Não apaga o elemento **natural constitutivo** de uma criatura realmente formada por aquele elemento. Isso não destrói a criatura ou o equipamento.
+
+**Espelho Mágico (1 XP):** exige Cancelar Magia e é **passivo**. Reflete ao conjurador a parte do dano **mágico de Pavor** mantido, calculada **antes da absorção da armadura** da vítima. **Exemplo:** uma magia causaria 3 de dano por Êxitos e 2 por Pavor; a armadura absorve 5, a vítima perde 0 Vida, mas o conjurador recebe **reflexão de 2 de dano**, sujeita às próprias proteções ainda em definição. Não funciona contra ataques físicos e não reflete Êxitos.
 
 ## VIII. Armas e seus efeitos
 
