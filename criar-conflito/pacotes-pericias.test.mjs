@@ -52,6 +52,27 @@ test("Compra automática de Golpe Furtivo inclui Disciplina 2 e Furtividade 2, c
  assert.equal(JSON.stringify(t),before,"Simulação não pode alterar a ficha antes da confirmação");
 });
 
+test("Pacote de Foco no Lucker Puro custa só os graus faltantes e registra aquisição",()=>{
+ const t=blank("humanoide");t.race="lucker_puro";t.pureElement="fogo";
+ t.attributes.inteligencia=1;t.attributes.destreza=1;
+ const initial=ledger(t),purchase=plan(t,"criar-item-foco-magia");
+ assert.ok(purchase);
+ assert.equal(purchase.cost,4,"Disciplina 1 (2 XP) + Artesão 1 (2 XP), Foco 0 XP");
+ assert.equal(purchase.state.practices.armas_conjuracao,1);
+ assert.equal(purchase.state.practices.artesao,1);
+ assert.ok(purchase.state.skills.includes("criar-item-foco-magia"));
+ assert.equal(ledger(purchase.state).skills,0);
+ assert.equal(plan(purchase.state,"criar-item-foco-magia"),null,"Não compra duas vezes");
+ assert.equal(ledger(t).spent,initial.spent,"Simulação não cobra antes de confirmar");
+ const spent=t.practices; // Compra exclusivamente gratuita após os três graus.
+ t.practices={...spent,armas_conjuracao:1,artesao:1};
+ const free=plan(t,"criar-item-foco-magia");
+ assert.equal(free.cost,0);
+ assert.equal(free.state.skills.includes("criar-item-foco-magia"),true);
+ assert.equal(plan(blank("humanoide"),"criar-item-foco-magia").cost,6,
+  "Origem humana comum continua pagando 1 XP da Perícia e os três graus");
+});
+
 test("Perícia avançada monta cadeia de dependências e evita XP parcial",()=>{
  const t=blank("humanoide"),purchase=plan(t,"furtividade-avancada");
  assert.ok(purchase,"Furtividade Avançada tem pacote dentro do orçamento inicial");

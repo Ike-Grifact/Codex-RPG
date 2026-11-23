@@ -6,8 +6,8 @@ const source=readFileSync(new URL("./app.js",import.meta.url),"utf8");
 const start=source.indexOf("const AT_COST=");
 const end=source.indexOf("const CREATE_BUDGET=");
 assert.ok(start>=0&&end>start,"Constantes e funções raciais devem existir no criador");
-const {RACES,racialGrants,ownsSkill,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
- source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
+const {RACES,racialGrants,ownsSkill,skillXpCost,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED}=new Function(
+ source.slice(start,end)+";return {RACES,racialGrants,ownsSkill,skillXpCost,racialCostTable,racialXpBand,racialXpLabel,raceChoicesComplete,racialStartingAttributes,applyRacialStartingAttributes,AT_COST,TRAIN_COST,AT_DISCOUNT,AT_ELEVATED,TRAIN_DISCOUNT,TRAIN_ELEVATED};"
 )();
 
 function character(race,more={}){
@@ -96,25 +96,39 @@ test("Lucker de Sangue inicia só com a Perícia de Sangue, sem Foco inventado",
  assert.equal(ownsSkill("criar-item-foco-magia",c),false);
 });
 
-test("Lucker Puro recebe Foco e exatamente um entre Fogo, Água, Ar, Terra ou Sagrado",()=>{
+test("Lucker Puro recebe só o elemento racial; Foco custa zero mas precisa ser adquirido",()=>{
  const valid=["fogo","agua","vento","terra","sagrado"];
  for(const element of valid){
   const c=character("lucker_puro",{pureElement:element});
-  assert.deepEqual(racialGrants(c),["criar-item-foco-magia",element]);
+  assert.deepEqual(racialGrants(c),[element]);
+   assert.equal(ownsSkill("criar-item-foco-magia",c),false);
+   assert.equal(skillXpCost("criar-item-foco-magia",1,c),0);
   assert.equal(raceChoicesComplete(c),true,element+" deve completar a escolha inicial");
  }
  assert.equal(raceChoicesComplete(character("lucker_puro")),false);
  for(const invalid of ["sangue","trevas","veneno","psiquico"]){
   const other=character("lucker_puro",{pureElement:invalid});
-  assert.deepEqual(racialGrants(other),["criar-item-foco-magia"],invalid+" não é uma concessão gratuita");
+  assert.deepEqual(racialGrants(other),[],invalid+" não é uma concessão gratuita");
   assert.equal(raceChoicesComplete(other),false,invalid+" não completa a origem");
  }
  const bought=character("lucker_puro",{pureElement:"",skills:["sangue","trevas","veneno"]});
  for(const element of ["sangue","trevas","veneno"])
   assert.equal(ownsSkill(element,bought),true,"Compra manual preservada: "+element);
- assert.deepEqual(racialGrants(bought),["criar-item-foco-magia"]);
+ assert.deepEqual(racialGrants(bought),[]);
 });
 
+test("Foco do Lucker Puro não ignora Disciplina, Inteligência ou Artesão",()=>{
+ const c=character("lucker_puro",{attributes:{inteligencia:1,destreza:1},practices:{armas_conjuracao:1,artesao:1}});
+ assert.equal(skillXpCost("criar-item-foco-magia",1,c),0);
+ assert.equal(ownsSkill("criar-item-foco-magia",c),false,"Requisitos completos não concedem Perícia automaticamente");
+ c.skills.push("criar-item-foco-magia");
+ assert.equal(ownsSkill("criar-item-foco-magia",c),true,"Compra explícita registra Perícia");
+ assert.equal(skillXpCost("criar-item-foco-magia",1,character("humano")),1);
+ assert.equal(skillXpCost("criar-item-foco-magia",1,character("lucker_sangue")),1);
+ const requirements=source.slice(source.indexOf("function skillReq("),source.indexOf("function geneLayout("));
+ assert.match(requirements,/id==="criar-item-foco-magia"&&\(disc<1\|\|\(s.attributes.inteligencia\|\|0\)<1\|\|art<1\)/);
+ assert.match(source,/"criar-item-foco-magia":\[\["p:armas_conjuracao:1","a:inteligencia:1","p:artesao:1"\]\]/);
+});
 test("Livro e portal não apresentam opções raciais revogadas como gratuitas",()=>{
  const book=readFileSync(new URL("../docs/livro-do-jogador.md",import.meta.url),"utf8");
  const portal=readFileSync(new URL("../livro.html",import.meta.url),"utf8");
@@ -222,7 +236,7 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
   ["vento","Perícia em Elemento Ar","",1],
   ["trevas","Perícia em Elemento Trevas","",2]
  ];
- const calculate=new Function("racialCostTable","SKILLS",sourceLists+"\n"+accounting+"\nreturn rawCreationCosts;")(racialCostTable,SKILLS);
+ const calculate=new Function("racialCostTable","SKILLS","skillXpCost",sourceLists+"\n"+accounting+"\nreturn rawCreationCosts;")(racialCostTable,SKILLS,skillXpCost);
  const sangue=calculate(character("lucker_sangue",{
   attributes:{influencia:1,vigor:1},
   practices:{apresentacao:1}
@@ -230,6 +244,16 @@ test("perícias raciais não são lançadas no ledger de XP como compras",()=>{
  assert.equal(sangue.attr,2); // Influência elevada 2 + Vigor favorecido G1 grátis
  assert.equal(sangue.training,3); // Apresentação na faixa elevada (não 2x)
  assert.equal(sangue.skills,0); // Perícia de Sangue gratuita
+ for(const [grade,spent] of [[0,0],[1,2],[2,4]]){
+  const sheet=calculate(character("lucker_sangue",{practices:{artesao:grade}}));
+  assert.equal(sheet.training,spent,"Artesão G"+grade+" é custo acumulado: sem cobrança duplicada");
+ }
+ const pure=calculate(character("lucker_puro",{
+  attributes:{inteligencia:1,destreza:1},practices:{armas_conjuracao:1,artesao:1},
+  skills:["criar-item-foco-magia"]
+ }));
+ assert.equal(pure.training,4,"Pré-requisitos de Foco permanecem pagos");
+ assert.equal(pure.skills,0,"Foco do Lucker Puro só tem custo 0 depois da compra");
  const rune=calculate(character("runa_espinhos",{runeElements:["fogo","agua"]}));
  assert.equal(rune.skills,0); // Foco, Pugilismo, Escudo Rúnico e primeiro elemento são grátis
  const bought=calculate(character("humano",{skills:["pugilismo"]}));

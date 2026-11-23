@@ -64,11 +64,22 @@ export function humanoidRacialGrants(t){
  if(t.kind!=="humanoide")return [];
  if(t.race==="humano")return ["maestria-armas-fogo"];
  if(t.race==="lucker_sangue")return ["sangue"];
- if(t.race==="lucker_puro")return ["criar-item-foco-magia",
-  ...(PURE_ELEMENT_IDS.includes(t.pureElement)?[t.pureElement]:[])];
+ if(t.race==="lucker_puro")return PURE_ELEMENT_IDS.includes(t.pureElement)?[t.pureElement]:[];
  if(t.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia","escudo-arcano",
   ...(RUNE_ELEMENT_IDS.includes(t.runeElements?.[0])?[t.runeElements[0]]:[])];
  return [];
+}
+// Preço racial de Perícia: isenção de Foco não concede sua aquisição.
+export function humanoidSkillCost(t,id){
+ if(humanoidRacialGrants(t).includes(id))return 0;
+ if(t.kind==="humanoide"&&t.race==="lucker_puro"&&id==="criar-item-foco-magia")return 0;
+ return SKILLS.find(row=>row.id===id)?.cost??null;
+}
+// Foco do Lucker Puro só habilita a conjuração após compra e requisitos reais.
+export function humanoidHasFocus(t){
+ if(!isHumanoidKind(t?.kind)||!Array.isArray(t.skills)||!t.skills.includes("criar-item-foco-magia"))return false;
+ return t.race!=="lucker_puro"||Number(t.attributes?.inteligencia||0)>=1&&
+  Number(t.practices?.armas_conjuracao||0)>=1&&Number(t.practices?.artesao||0)>=1;
 }
 export function humanoidSourceCost(t,group,key){
  const attr=group==="attr",normal=attr?PLAYER_ATTRIBUTE_XP:PLAYER_TRAINING_XP;
@@ -154,8 +165,7 @@ export function ledger(t){
   ...PRACTICES.map(x=>["practices","practice",x[0]])]
   .reduce((n,[field,group,key])=>n+
    (t.kind==="humanoide"?humanoidSourceCost(t,group,key):XP_TRAINING)[clamp(s[field][key],0,6)],0):0;
- const free=new Set(humanoidRacialGrants(t));
- const skills=humanoid?s.skills.reduce((n,id)=>n+(free.has(id)?0:Number(SKILLS.find(x=>x.id===id)?.cost||0)),0):0;
+ const skills=humanoid?s.skills.reduce((n,id)=>n+Number(humanoidSkillCost(t,id)||0),0):0;
  const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?15:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
