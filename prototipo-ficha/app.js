@@ -29,7 +29,7 @@ const TRAIN_ELEVATED=[0,3,6,12,24,48,96];
 const RACES={
  humano:["Humano","Perseverança Humana + Maestria em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue gratuita; linhagem exclusiva de Transfusão Sanguinária (que não é gratuita).","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
- lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento gratuito à escolha: Fogo, Água, Ar, Terra ou Sagrado. Veneno, Sangue e Trevas não são opções iniciais.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
+ lucker_puro:["Lucker Puro","Criar Item de Foco e Magia custa 0 XP somente após cumprir Disciplina 1, Inteligência 1 e Artesão 1; um elemento gratuito à escolha: Fogo, Água, Ar, Terra ou Sagrado. Veneno, Sangue e Trevas não são opções iniciais.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
  runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
 // v0.94: Lucker Puro escolhe um elemento básico ou Sagrado; especiais não são gratuitos.
@@ -47,11 +47,13 @@ function runeShieldBarrier(successes,pavores){
 function racialGrants(s=state){
  if(s.race==="humano")return ["maestria-armas-fogo"];
  if(s.race==="lucker_sangue")return ["sangue"];
- if(s.race==="lucker_puro")return ["criar-item-foco-magia",...(PURE_ELEMENTS.some(([id])=>id===s.pureElement)?[s.pureElement]:[])];
+ if(s.race==="lucker_puro")return PURE_ELEMENTS.some(([id])=>id===s.pureElement)?[s.pureElement]:[];
  if(s.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia","escudo-arcano",
   ...((s.runeElements||[]).slice(0,1).filter(id=>RUNE_ELEMENTS.some(([k])=>k===id)))];
  return [];
 }
+// Lucker Puro isenta somente o preço de Foco: requisitos e compra permanecem.
+function skillXpCost(id,baseCost,s=state){return s.race==="lucker_puro"&&id==="criar-item-foco-magia"?0:baseCost;}
 function ownsSkill(id,s=state){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return false;
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return false;
@@ -253,7 +255,7 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativação-base G1/G2 Psíquica gratuita com a Perícia e o Grau habilitados; foco por Artesão recarrega em N rodadas no Grau N. Magias são criadas e narradas livremente na própria ação, conforme conceitos dos elementos, Perícias adquiridas, Graus, fontes e combinações habilitadas. Não há magias memorizadas, spellslots, peso mental, desconto de −1 por Criar Magia nem custo de 2 Coragens por criação fora de combate. Preparação G2/G3/G4 é tempo de conjuração em cena, não memorização, mantendo custos, DE, Pavor, focos e outros requisitos publicados.",
+  "1 XP (0 XP para Lucker Puro após requisitos) · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativação-base G1/G2 Psíquica gratuita com a Perícia e o Grau habilitados; foco por Artesão recarrega em N rodadas no Grau N. Magias são criadas e narradas livremente na própria ação, conforme conceitos dos elementos, Perícias adquiridas, Graus, fontes e combinações habilitadas. Não há magias memorizadas, spellslots, peso mental, desconto de −1 por Criar Magia nem custo de 2 Coragens por criação fora de combate. Preparação G2/G3/G4 é tempo de conjuração em cena, não memorização, mantendo custos, DE, Pavor, focos e outros requisitos publicados.",
   1
  ],
  [
@@ -1634,16 +1636,16 @@ const CARD_ACTIVATIONS={
 
 function skillCompactCard([id,baseName,detail,cost],wizard){
  const name=id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":baseName;
- const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),affordable=Number.isInteger(cost)&&canAfford("skills",cost);
+ const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),price=skillXpCost(id,cost),affordable=Number.isInteger(price)&&canAfford("skills",price);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
  const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
- const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(cost)?cost:"?")+" XP · playtest"):cost===null?"Pendente":"Comprar · "+cost+" XP";
+ const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(price)?price:"?")+" XP · playtest"):price===null?"Pendente":"Comprar · "+price+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
- '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":cost===null?"Pendente":cost+" XP")+'</dd></div>'+
+ '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":price===null?"Pendente":price+" XP")+'</dd></div>'+
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
  '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
  '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(CARD_BRIEFS[id]||detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
@@ -1656,7 +1658,7 @@ function openSkillDetails(id){
 }
 
 const skillFilter={scope:"all",ready:false,query:""};
-function skillRequirementsMet(id){const s=SKILLS.find(x=>x[0]===id);return !!s&&Number.isInteger(s[3])&&!skillReq(id);}
+function skillRequirementsMet(id){const s=SKILLS.find(x=>x[0]===id);return !!s&&Number.isInteger(skillXpCost(id,s[3]))&&!skillReq(id);}
 
 function filteredSkills(){
  const query=skillFilter.query.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -2474,7 +2476,7 @@ function maxCourage(s=state){
 function rawCreationCosts(s=state){
  return {attr:A.reduce((n,[k])=>n+racialCostTable("attr",k,s)[s.attributes[k]||0],0),
   training:K.reduce((n,[k])=>n+racialCostTable("know",k,s)[s.knowledges[k]||0],0)+P.reduce((n,[k])=>n+racialCostTable("practice",k,s)[s.practices[k]||0],0),
-  skills:s.skills.reduce((n,id)=>n+(SKILLS.find(x=>x[0]===id)?.[3]||0),0)};
+  skills:s.skills.reduce((n,id)=>n+skillXpCost(id,SKILLS.find(x=>x[0]===id)?.[3]||0,s),0)};
 }
 function unusedInitialXP(spent){return Math.max(0,CREATE_BUDGET.total-(spent.attr+spent.training+spent.skills));}
 function xpCosts(s=state){
@@ -3395,8 +3397,8 @@ function geneAutoPlan(id,base=genePreviewState()){
  const addSkill=(skillId,current,stack)=>{
   const row=catalog.get(skillId);
   if(ownsSkill(skillId,current))return current;
-  if(!row||HIDDEN_CATALOG_SKILLS.has(skillId)||!Number.isInteger(row[3])||
-    row[3]<0||stack.includes(skillId))return null;
+  if(!row||HIDDEN_CATALOG_SKILLS.has(skillId)||!Number.isInteger(skillXpCost(skillId,row[3],current))||
+    skillXpCost(skillId,row[3],current)<0||stack.includes(skillId))return null;
   const alternatives=GENE_AUTO_REQUIREMENTS[skillId]||
    (skillReq(skillId,current)?[]:[[]]);
   let best=null;
@@ -3471,7 +3473,7 @@ function geneStageSkill(id){
  if(genePendingSkills.has(id)){
   genePendingSkills.delete(id);geneRefresh();return;
  }
- const cost=row[3],preview=genePreviewState();
+ const preview=genePreviewState(),cost=skillXpCost(id,row[3],preview);
  if(!Number.isInteger(cost)||skillReq(id,preview)||xpCosts(preview).free<cost){
   toast("Esta Perícia ainda não reúne os requisitos ou o XP necessário.");return;
  }
@@ -3519,7 +3521,8 @@ function sourceGeneInfo(id,s=state){
   state:previewGrade>0?"owned":canRaise?"available":"locked",
   label:(racialG1?"Origem: Grau 1 gratuito · ":"")+(next===null?"Grau máximo":"Próximo avanço: "+next+" XP")};
 }
-function geneSkillStatus([id,,,cost],s=state){
+function geneSkillStatus([id,,,baseCost],s=state){
+ const cost=skillXpCost(id,baseCost,s);
  if(ownsSkill(id,s))return"owned";
  if(!Number.isInteger(cost)||xpCosts(s).free<cost||state.pending)return"locked";
  if(!skillReq(id,s))return"available";
@@ -3544,7 +3547,7 @@ function geneDetailHTML(id,s=state){
  }
  const skill=SKILLS.find(([sid])=>sid===id&&!HIDDEN_CATALOG_SKILLS.has(sid));
  if(!skill)return '<p>Selecione um nó para consultar seus graus e requisitos.</p>';
- const [sid,baseName,baseDetail,cost]=skill,owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
+ const [sid,baseName,baseDetail,baseCost]=skill,cost=skillXpCost(sid,baseCost,s),owned=ownsSkill(sid),racial=racialGrants(state).includes(sid),staged=genePendingSkills.has(sid);
  const name=sid==="escudo-arcano"&&s.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const detail=sid==="escudo-arcano"&&s.race==="runa_espinhos"?
  "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Resistência elemental padrão contra o elemento escolhido: cada E do ataque vale 0,5 de dano e P vale 0 dano elemental, preservadas as consequências de Pavor. Arredondamento geral ainda pendente.":baseDetail;
