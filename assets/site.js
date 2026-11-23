@@ -19,13 +19,14 @@ function standardNavigation(header){
  var prefix=brandUrl.endsWith("index.html")?brandUrl.slice(0,-"index.html".length):"";
  var routes=[
   ["index.html","Início"],["livro.html","Livro do Jogador"],["pericias/","Perícias"],
+  ["mecanicas/","Mecânicas"],
   ["narrador.html","Livro do Mestre"],["prototipo-ficha/","Meus personagens"],
   ["criar-conflito/","Meus inimigos"],["simulador-combate/","Simulador tático"]
  ];
  var path=window.location.pathname;
- var active=path.includes("/prototipo-ficha/")?4:path.includes("/criar-conflito/")?5:
-  path.includes("/simulador-combate/")?6:path.includes("/pericias/")?2:
-  path.endsWith("/narrador.html")?3:path.endsWith("/livro.html")||path.includes("/mecanicas/")?1:0;
+ var active=path.includes("/prototipo-ficha/")?5:path.includes("/criar-conflito/")?6:
+  path.includes("/simulador-combate/")?7:path.includes("/pericias/")?2:
+  path.includes("/mecanicas/")?3:path.endsWith("/narrador.html")?4:path.endsWith("/livro.html")?1:0;
  nav.setAttribute("aria-label","Menu principal");
  nav.innerHTML=routes.map(function(route,i){
   return '<a href="'+prefix+route[0]+'"'+(active===i?' class="active" aria-current="page"':'')+'>'+route[1]+'</a>';

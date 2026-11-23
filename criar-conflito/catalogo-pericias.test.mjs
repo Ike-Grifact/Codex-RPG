@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {SKILLS,blank,humanoidSkillRequirement,isPlayerCatalogSkill,ledger} from "./rules.mjs";
 import {PLAYER_SKILLS,playerSkillRequirement} from "../prototipo-ficha/skills-catalog.mjs";
+import {GENE_AUTO_REQUIREMENTS} from "../prototipo-ficha/skill-auto-plan.mjs";
 
 function canonicalSource(){
  const source=readFileSync(new URL("../prototipo-ficha/app.js",import.meta.url),"utf8");
@@ -28,11 +29,15 @@ test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e cus
 });
 
 test("Custo pendente permanece visível e não se transforma em compra gratuita",()=>{
- for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica","maestria-adagas"]){
+ for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
   const skill=SKILLS.find(x=>x.id===id);
   assert.ok(skill,"Perícia pendente precisa estar visível: "+id);
   assert.equal(skill.cost,null);
  }
+ const adagas=SKILLS.find(x=>x.id==="maestria-adagas");
+ assert.equal(adagas?.cost,1,"Preço de Maestria em Adagas agora é DEFINIDO");
+ assert.match(humanoidSkillRequirement(blank("humanoide"),"maestria-adagas"),/Agilidade 2/,
+  "Custo aprovado não dispensa os graus de compra");
  const t=blank("humanoide");t.skills=["dueto-improvisado"];
  assert.equal(ledger(t).skills,0,"Ficha legada pendente não cobra XP inventado");
 });
@@ -75,4 +80,22 @@ test("Editor oferece busca por nome/efeito e estados de aquisição sem esconder
   assert.ok(app.includes(marker),marker+" não apareceu no editor");
  }
  assert.ok(!app.includes("SKILLS.filter(it=>Number.isInteger(it.cost)"),"Filtro antigo escondia Perícias pendentes");
+});
+
+test("Especialização em Armas de Punho: 1 XP, quatro atributos e compra sem Pugilismo",()=>{
+ const row=PLAYER_SKILLS.find(x=>x.id==="maestria-punhos");
+ assert.equal(row?.name,"Especialização em Armas de Punho");
+ assert.equal(row?.cost,1);
+ const t=blank("humanoide");
+ assert.match(playerSkillRequirement("maestria-punhos",t),/Força 1/);
+ for(const a of ["forca","agilidade","destreza","vigor"])t.attributes[a]=1;
+ assert.equal(playerSkillRequirement("maestria-punhos",t),null,"Pugilismo não é pré-requisito de compra");
+ assert.equal(humanoidSkillRequirement(t,"maestria-punhos"),null,"Ficha do NPC segue os mesmos requisitos");
+ assert.deepEqual(GENE_AUTO_REQUIREMENTS["maestria-punhos"],
+  [["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]]);
+ for(const a of ["forca","agilidade","destreza","vigor"]){
+  t.attributes[a]=0;
+  assert.match(playerSkillRequirement("maestria-punhos",t),new RegExp(a==="forca"?"Força":a==="agilidade"?"Agilidade":a==="destreza"?"Destreza":"Vigor"));
+  t.attributes[a]=1;
+ }
 });

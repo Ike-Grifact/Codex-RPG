@@ -263,7 +263,7 @@ Antes de interpretar um Lucker, responda:
 
 | Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
 |---|---|---|
-| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Maestria em Armas de Fogo gratuita; a Maestria não concede automaticamente a Perícia em Armas de Fogo |
+| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Especialização em Armas de Fogo gratuita; a Especialização não concede automaticamente a Perícia em Armas de Fogo |
 | **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
 | **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
 | **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
@@ -506,6 +506,7 @@ DE final = min(12, max(0, DE base + modificador da única armadura equipada + ef
 
 | Condição | Efeito |
 |---|---|
+| **Golpe Certo** (somente quando habilitado) | **+2E totais**, substituindo o +1E da Vantagem Absoluta |
 | Vantagem absoluta | +1E |
 | Vantagem | +1A |
 | Normal | Nenhum |
@@ -550,13 +551,32 @@ Até **três participantes** podem coordenar um ataque conjunto; a DE defensiva 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Pavor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊P/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊P/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 
 
-### Maestria em Lanças e Maestria em Espadas [DEFINIDO — 21/11/2026]
+### Especializações por família de arma [DEFINIDO — requisitos e nomenclatura v0.99]
 
-**Maestria em Lanças — 1 XP:** exige **Força 2, Agilidade 1 e Destreza 1** para comprar. A ficha atual agrupa essa Maestria na família **Lanças e Hastes**, conservando o ID `maestria-hastes`. Ao **acertar ataque com lança habilitada**, aplica **uma característica própria existente da arma gratuitamente**. Para ativação, exige a **Perícia em Armas Leves, Médias ou Pesadas correspondente ao peso** da lança utilizada; não concede essa Perícia automaticamente.
+**Especialização em Armas — Lanças — 1 XP:** exige **Força 2, Agilidade 1 e Destreza 1** para comprar. A ficha atual agrupa essa Especialização na família **Lanças e Hastes**, conservando o ID `maestria-hastes`. Ao **acertar ataque com lança habilitada**, aplica **uma característica própria existente da arma gratuitamente**. Para ativação, exige a **Perícia em Armas Leves, Médias ou Pesadas correspondente ao peso** da lança utilizada; não concede essa Perícia automaticamente.
 
-**Maestria em Espadas — 1 XP:** exige **Força 2 e Destreza 2** para comprar. Ao **acertar ataque com espada habilitada**, aplica **uma característica própria existente da espada sem gastar Coragem**. Também requer a **Perícia em Armas do peso correspondente** para ativar o benefício.
+**Especialização em Armas — Espadas — 1 XP:** exige **Força 2 e Destreza 2** para comprar. Ao **acertar ataque com espada habilitada**, aplica **uma característica própria existente da espada sem gastar Coragem**. Também requer a **Perícia em Armas do peso correspondente** para ativar o benefício.
 
-**Regras comuns mantidas:** a compra das Maestrias depende apenas dos requisitos próprios acima; a especialização por **peso** condiciona seu **uso em combate**. A Maestria não cria propriedades adicionais na arma nem amplia dano, DE ou dados automaticamente. A regra geral anterior para críticos permanece: até **duas características distintas gratuitas**, mais uma terceira diferente por **1 Coragem**, se a arma possuir os efeitos elegíveis e os respectivos gatilhos forem atendidos. Os requisitos das demais famílias continuam pendentes.
+**Regra comum:** o preço nominal de todas as Especializações por família de armas é **1 XP**. A compra exige apenas os **Atributos aprovados para aquela Especialização**; a especialização de armas por **peso ou modalidade** condiciona seu **uso em combate**, não a compra. **Acerto comum:** uma característica gratuita. **Crítico com acerto:** até duas características distintas gratuitas, mais uma terceira diferente por **1 Coragem**, caso a arma tenha os efeitos elegíveis e os gatilhos sejam cumpridos. Não cria características ou bônus de DE/dano/dados automaticamente. Para famílias sem requisitos de aquisição informados, o custo está aprovado, mas **a compra permanece bloqueada até definição dos graus**. A Especialização em Armas de Fogo segue exclusiva de Humanos e concedida gratuitamente pela origem.
+
+
+
+**Requisitos das Especializações em Armas por família [DEFINIDO — SRD v0.99]:**
+
+| Maestria | Custo nominal | Requisitos para comprar |
+|---|---:|---|
+| Adagas e Facas | 1 XP | Agilidade 2 + Destreza 2 |
+| Espadas | 1 XP | Força 2 + Destreza 2 |
+| Machados | 1 XP | Força 2 + Destreza 1 |
+| Maças e Clavas | 1 XP | Força 3 + Destreza 1 + Vigor 1 |
+| Martelos | 1 XP | Força 3 + Destreza 1 + Vigor 1 |
+| Lanças e Hastes | 1 XP | Força 2 + Agilidade 1 + Destreza 1 |
+| Cajados e Bastões | 1 XP | Destreza 2 |
+| Armas de Punho | 1 XP | **Força 1 + Agilidade 1 + Destreza 1 + Vigor 1**; Pugilismo exigido somente para ativar efeitos |
+| Arcos, Bestas, Armas Arremessadas e demais Armas de Longo Alcance | 1 XP | **PENDENTE — não comprar antes dos graus serem definidos** |
+| Armas de Fogo | 1 XP nominal | Exclusiva de Humanos, **0 XP por concessão racial** |
+
+**Artista Marcial [DEFINIDO]:** acrescenta **Atletismo 1** aos requisitos já existentes de **Disciplina 2, Destreza 2 e Pugilismo**, mantendo **1 XP** e o funcionamento atual das manobras. O Codex Genético considera Atletismo 1 na compra automática.
 
 ### Sacrifício Heroico e Escudo Refletor [DEFINIDO — 20/11/2026]
 
@@ -988,15 +1008,15 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 | Perícia | XP | Requisitos (decisões mais recentes) | Função |
 |---|---:|---|---|
-| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Ignora Desvantagem do confronto com oponente pesado; efeitos da arma ativados em crítico gratuitamente ou no acerto não crítico por **1 Coragem** |
-| **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente médio |
-| **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente leve |
+| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Em acerto com arma Leve, **1 Coragem ativa uma característica**; no **crítico, uma característica é gratuita**. Contra alvo com armadura Pesada/Muito Pesada, ignora apenas o **−1A natural de peso**, sem anular outras penalidades. Efeitos e custos automatizados no rolador |
+| **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Em acerto com arma **Média**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Média**, mantendo outras penalidades. Automatizada nos roladores |
+| **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Em acerto com arma **Pesada**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Leve/Muito Leve**, mantendo outras penalidades. Automatizada nos roladores |
 | **Disciplina Avançada** | **1** | **Disciplina 3** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
-| **Manejo Perfeito — Armas Corpo a Corpo** | **1** | **Disciplina Avançada + Destreza 2** | Arma correta contra oponente em Desvantagem: **Vantagem Absoluta** (substitui +1A natural do confronto); se a condição já é Vantagem Absoluta, aplica **Golpe Certo** (procedimento pendente) |
+| **Manejo Perfeito — Armas Corpo a Corpo** | **1** | **Disciplina Avançada (Disciplina 3) + Destreza 2** | Arma correta contra oponente em Desvantagem: **Vantagem Absoluta (+1E)** no lugar do +1A natural do peso; se já estava em Vantagem Absoluta, aplica **Golpe Certo (+2E no total, não +3E)** |
 | **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | **1 Coragem antes de rolar:** eleva um dado da arma (d6→d10; d10→d12; d12→2d12). No acerto, cada Pavor não anulado causa 1 dano em vez de metade, respeitando 9 dados |
 | **Espalhar Golpe** | **1** | **Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo** | **1 Coragem por alvo adicional** no **raio de 2 m ao redor do atacante**; cada adicional recebe **metade do dano de Êxitos arredondada para baixo**; **sem +1E** |
 | **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Desarmado: 1 Coragem permite mudar o peso do soco; limites pendentes |
-| **Artista Marcial** | **1** | **Disciplina 2 + Pugilismo + Destreza 2** | Crítico que ativa Pugilismo ou 1 Coragem por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
+| **Artista Marcial** | **1** | **Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo** | Crítico que ativa Pugilismo ou 1 Coragem por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Pavor não anulado vale 1 dano. Não se aplica a armas de fogo |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
@@ -1006,7 +1026,9 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
 | **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
 
-**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. Os benefícios por crítico e o custo de 1 Coragem em acerto não crítico permanecem como anteriormente definidos. Desvantagens ignoradas são as da relação de peso indicada, não penalidades independentes.
+**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. **Armas por peso [revisão autoral de 23/11/2026, SRD v0.97]:** gastar 1 Coragem após um acerto ativa **uma característica própria da arma da categoria habilitada**; no crítico, uma é gratuita. Uma segunda diferente, quando permitida, custa 1 Coragem. Não permite selecionar características não presentes no equipamento ou usar uma arma de outro peso como se fosse da categoria adquirida. **Leves** ignoram −1A contra armadura **Pesada/Muito Pesada**; **Médias** ignoram −1A contra armadura **Média**; **Pesadas** ignoram −1A contra armadura **Leve/Muito Leve**. Só é ignorada a Desvantagem natural da relação de peso, nunca as penalidades independentes. Os três grupos exigem seus graus e custos de XP próprios; a automatização não libera efeitos sem requisitos.
+
+**Golpe Certo [DEFINIDO — SRD v0.97]:** é uma mecânica de <a href="../mecanicas/golpe-certo.html">vantagem além da Absoluta</a>, não uma Perícia comprável. Quando **Manejo Perfeito** tem arma corpo a corpo apropriada, afinidade favorável contra a armadura do alvo e a ação **já estava em Vantagem Absoluta (+1E)**, o bônus final daquela condição com Manejo torna-se **+2E (ᛋ)**. O valor é **total**, não são +2E adicionais nem +3E; a Vantagem natural de peso (+1A) é substituída e não acumulada. Sem Vantagem Absoluta prévia, Manejo concede apenas +1E substituindo +1A. Consulte também [Vantagens e Desvantagens](../mecanicas/vantagens-e-desvantagens.html).
 
 **Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia de armas adicional**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Disciplina Avançada (1 XP, Disciplina 3)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
 
@@ -1019,9 +1041,9 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 **Encantar com Elemento [DEFINIDO — 20/11/2026]:** custa **1 XP**; requisitos **uma Perícia Elemental adquirida + Criar Item de Foco e Magia**. Em **armaduras e escudos**, paga **1 Coragem** para aplicar resistência ao elemento habilitado. Em **armas**, muda temporariamente o elemento da arma para o escolhido. **Todas as modalidades duram E − P, somente quando E − P > 0**, com símbolos válidos e sem duração-base adicional. Resistência: o elemento correspondente causa metade do dano dos Êxitos, e Pavor não acrescenta dano desse elemento, embora conserve seus riscos. Não concede imunidade, dano extra ou efeitos elementais adicionais. **PENDENTE:** duração em turnos/rodadas, fontes/DE, custo específico para arma, resistências preexistentes e automação.
 
 
-**Maestrias por famílias de armas [DEFINIDO — 20/11/2026]:** Maestrias equivalentes existem para **Adagas e Facas, Espadas, Machados, Maças e Clavas, Lanças e Hastes, Cajados e Bastões, Arcos, Bestas, Armas de Arremesso, Punhos, demais Armas de Longo Alcance, Martelos e Armas de Fogo**. Elas compartilham **um efeito da arma gratuito em acerto comum; dois diferentes gratuitos no crítico; terceiro diferente por 1 Coragem no crítico**, sempre limitado às características presentes no equipamento, à DE e à Perícia de Armas adequada. Para corpo a corpo, habilitação pelo peso; para longa distância, Armas de Longo Alcance; para arremesso, a habilitação de Arremesso; para Punhos, Pugilismo; para armas de fogo, Perícia em Armas de Fogo. **Maestria em Armas de Fogo é exclusiva da origem Humano e vem de graça**, sem conceder a Perícia em Armas de Fogo. **PENDENTE:** custos e Atributos de compra das demais Maestrias — não extrapolar o 1 XP e Força 3/Destreza 1/Vigor 1 de Martelos. A Perícia preexistente Maestria em Arremesso de Armas **não é renomeada nem substituída**.
+**Especializações por famílias de armas [DEFINIDO — 20/11/2026]:** Especializações individuais existem para **Adagas e Facas, Espadas, Machados, Maças e Clavas, Lanças e Hastes, Cajados e Bastões, Arcos, Bestas, Armas de Arremesso, Punhos, demais Armas de Longo Alcance, Martelos e Armas de Fogo**. Elas compartilham **um efeito da arma gratuito em acerto comum; dois diferentes gratuitos no crítico; terceiro diferente por 1 Coragem no crítico**, sempre limitado às características presentes no equipamento, à DE e à Perícia de Armas adequada. Para corpo a corpo, habilitação pelo peso; para longa distância, Armas de Longo Alcance; para arremesso, a habilitação de Arremesso; para Punhos, Pugilismo; para armas de fogo, Perícia em Armas de Fogo. **Especialização em Armas de Fogo é exclusiva da origem Humano e vem de graça**, sem conceder a Perícia em Armas de Fogo. **DEFINIDO:** todas as Maestrias de famílias de armas custam **1 XP nominal**. A aquisição de Adagas/Facas, Machados, Cajados/Bastões e Maças/Clavas tem requisitos próprios definidos na revisão v0.98; os graus para comprar Arcos, Bestas, Armas Arremessadas, Punhos e Armas de Longo Alcance Diversas continuam **PENDENTES**, mas o preço já não é pendente. A Perícia preexistente Maestria em Arremesso de Armas **não é renomeada nem substituída**.
 
-**Maestria em Martelos [DEFINIDO — 20/11/2026]:** custa **1 XP**, exige **Força 3, Destreza 1 e Vigor 1**. Esses Atributos permitem comprar sem especialização prévia. **Para usar o efeito com um martelo, deve possuir a Perícia em Armas correspondente ao peso**: Leves/Leve, Médias/Médio, Pesadas/Pesado. **Acerto comum:** ativa **1 característica do martelo gratuitamente**. **Acerto crítico:** ativa **até 2 características diferentes gratuitamente** e **pode gastar 1 Coragem para uma terceira característica diferente**, se a arma tiver três características disponíveis. Não se repetem características nem se inventam efeitos; manter DE, acerto, gatilhos e dano básico normais. **PENDENTE:** maças/clavas e categorias não padronizadas; seleção automática das características no motor.
+**Especialização em Armas — Martelos [DEFINIDO — 20/11/2026]:** custa **1 XP**, exige **Força 3, Destreza 1 e Vigor 1**. Esses Atributos permitem comprar sem especialização prévia. **Para usar o efeito com um martelo, deve possuir a Perícia em Armas correspondente ao peso**: Leves/Leve, Médias/Médio, Pesadas/Pesado. **Acerto comum:** ativa **1 característica do martelo gratuitamente**. **Acerto crítico:** ativa **até 2 características diferentes gratuitamente** e **pode gastar 1 Coragem para uma terceira característica diferente**, se a arma tiver três características disponíveis. Não se repetem características nem se inventam efeitos; manter DE, acerto, gatilhos e dano básico normais. **DEFINIDO:** Maças e Clavas exigem os mesmos Atributos para compra: **Força 3 + Destreza 1 + Vigor 1**, como Martelos, mas são Maestrias separadas. Categorias de peso não padronizadas seguem sujeitas ao Narrador.
 
 **Resistência a Fogo [DEFINIDO — 20/11/2026]:** **1 XP**, exige **Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2**. O portador sofre **metade do dano de ataques de Fogo que alcançaria a Vida**, sem proteção à Integridade da armadura. O dano direto à Vida de **Derreter G3 é 0** contra ele (o +1 fixo é anulado); **Derreter/Queimar continuam aplicando E + P à Integridade** normalmente. Não é imunidade e não há segunda redução cumulativa ao dano à Vida. Pavor mantém seus riscos, outros elementos não recebem redução e não se alteram equipamentos. **PENDENTE:** arredondamento de frações na Vida e interações com outras resistências.
 
@@ -1163,3 +1185,8 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 
 > **Decisão autoral posterior — 12/11/2026 [DEFINIDO]:** qualquer requisito Armas 1 é substituído por Disciplina 1, sem Perícia intermediária. Armas 1 e Combate não estão disponíveis para novas compras. IDs e custos antigos permanecem em fichas anteriores para compatibilidade, sem reembolso automático.
+
+
+### Atualização de nomenclatura — SRD v0.99 [DEFINIDO — 23/11/2026]
+
+As **Maestrias por família de armas** foram renomeadas para **Especializações em Armas**, mantendo os identificadores `maestria-*` para compatibilidade com fichas existentes e o custo de **1 XP por aquisição**. A **Especialização em Armas de Punho** agora pode ser comprada com **Força 1 + Agilidade 1 + Destreza 1 + Vigor 1**; **Pugilismo** não é requisito de compra, apenas de ativação das características da arma. **Arcos, Bestas, Armas Arremessadas e Longo Alcance Diversas** continuam com requisitos de compra pendentes. Consultar o [SRD de Continuidade v0.99](srd-continuidade-v0.99.md). Outras Maestrias fora das famílias de armas não foram renomeadas.

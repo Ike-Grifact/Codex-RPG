@@ -17,22 +17,27 @@ function ownsSkill(id,s){return (s.skills||[]).includes(id)||racialGrants(s).inc
 export const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:3"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:3"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:3"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:3"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:3"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:3"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:3"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:3"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:3"}];
 
 const WEAPON_MASTERY_TYPES=Object.freeze([
- {id:"maestria-adagas",name:"Maestria em Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-espadas",name:"Maestria em Espadas",family:"espadas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-machados",name:"Maestria em Machados",family:"machados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-macas",name:"Maestria em Maças e Clavas",family:"macas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-hastes",name:"Maestria em Lanças e Hastes",family:"hastes",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-cajados",name:"Maestria em Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-arcos",name:"Maestria em Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-bestas",name:"Maestria em Bestas",family:"bestas",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-arremessos",name:"Maestria em Armas Arremessadas",family:"arremessos",activationReq:"Maestria em Arremesso de Armas e Perícia de Armas do peso"},
- {id:"maestria-punhos",name:"Maestria em Armas de Punho",family:"punhos",activationReq:"Pugilismo"},
- {id:"maestria-longo-alcance",name:"Maestria em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-armas-fogo",name:"Maestria em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
+ {id:"maestria-adagas",name:"Especialização em Armas — Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-espadas",name:"Especialização em Armas — Espadas",family:"espadas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-machados",name:"Especialização em Armas — Machados",family:"machados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-macas",name:"Especialização em Armas — Maças e Clavas",family:"macas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-hastes",name:"Especialização em Armas — Lanças e Hastes",family:"hastes",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-cajados",name:"Especialização em Armas — Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-arcos",name:"Especialização em Armas — Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-bestas",name:"Especialização em Armas — Bestas",family:"bestas",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-arremessos",name:"Especialização em Armas Arremessadas",family:"arremessos",activationReq:"Perícia em Arremesso de Armas e Perícia de Armas do peso"},
+ {id:"maestria-punhos",name:"Especialização em Armas de Punho",family:"punhos",activationReq:"Pugilismo"},
+ {id:"maestria-longo-alcance",name:"Especialização em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-armas-fogo",name:"Especialização em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
 ]);
 const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-hastes":"Força 2 + Agilidade 1 + Destreza 1",
- "maestria-espadas":"Força 2 + Destreza 2"
+ "maestria-espadas":"Força 2 + Destreza 2",
+ "maestria-adagas":"Agilidade 2 + Destreza 2",
+ "maestria-machados":"Força 2 + Destreza 1",
+ "maestria-cajados":"Destreza 2",
+ "maestria-macas":"Força 3 + Destreza 1 + Vigor 1",
+ "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 
 const SKILLS=[
@@ -94,8 +99,8 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de aquisição: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
-  APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  1
  ]),
  [
   "combate",
@@ -238,19 +243,19 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 Coragem. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  "Disciplina 1; 2 XP. Em acerto com arma Leve: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra médios. Não automatizado.",
+  "Disciplina 1 + Força 1; 2 XP. Em acerto com arma Média: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra leves. Não automatizado.",
+  "Disciplina 2 + Força 2; 2 XP. Em acerto com arma Pesada: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
@@ -268,7 +273,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada + Destreza 2. Ao usar a arma correta contra oponente que possui Desvantagem contra ela, concede Vantagem Absoluta (+1E substituindo o +1A natural); se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo. Procedimento de Golpe Certo PENDENTE, sem bônus numérico adicional.",
+  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Ao usar arma correta contra oponente que possui Desvantagem natural perante ela, substitui a Vantagem de peso (+1A) por Vantagem Absoluta (+1E). Se a condição da ação já era Vantagem Absoluta, aplica Golpe Certo (+2E no total da condição + Manejo, nunca +3E).",
   1
  ],
  [
@@ -292,7 +297,7 @@ const SKILLS=[
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Pugilismo + Destreza 2. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo; 1 XP. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
   1
  ],
  [
@@ -477,7 +482,7 @@ const SKILLS=[
  ],
  [
   "maestria-martelos",
-  "Maestria em Martelos",
+  "Especialização em Armas — Martelos",
   "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
@@ -573,8 +578,8 @@ const SKILLS=[
 
 function skillReq(id,s){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
- if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Maestria em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
- if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Custo de XP e requisitos de aquisição desta Maestria ainda PENDENTES; consultar os efeitos e aguardar aprovação.";
+ if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Especialização em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
+ if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";
  if(racialGrants(s).includes(id))return null;
  const has=x=>ownsSkill(x,s);
  if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
@@ -633,9 +638,14 @@ function skillReq(id,s){
   const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<3)
    return"Requer "+advancedSource.label+" 3.";
+ if(id==="maestria-punhos"&&(strength<1||agi<1||dex<1||vig<1))return"Requer Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar. Pugilismo é exigido somente para ativar os efeitos da Especialização.";
  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
-  if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.";
-  if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.";
+  if(id==="maestria-macas"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1. A Perícia de Armas do peso da maça ou clava é exigida só para ativar.";
+  if(id==="maestria-adagas"&&(agi<2||dex<2))return"Requer Agilidade 2 e Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
+  if(id==="maestria-machados"&&(strength<2||dex<1))return"Requer Força 2 e Destreza 1 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
+  if(id==="maestria-cajados"&&dex<2)return"Requer Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
+  if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Especialização.";
+  if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Especialização.";
  if(id==="ferreiro"&&(art<3||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
@@ -656,7 +666,7 @@ function skillReq(id,s){
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.";
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
- if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
+ if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
  if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
   if(id==="mudanca-elemental"&&(!has("transformacao-elemental")||intelligence<4||dex<4))return"Requer Transformação Elemental, Inteligência 4 e Destreza 4.";
   if(id==="desencantar"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";

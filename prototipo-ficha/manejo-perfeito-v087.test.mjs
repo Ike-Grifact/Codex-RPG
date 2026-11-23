@@ -9,6 +9,7 @@ const load=path=>readFileSync(join(dir,path),"utf8");
 const app=load("app.js");
 const book=load("../docs/livro-do-jogador.md");
 const srd=load("../docs/srd-continuidade-v0.87.md");
+const srdNew=load("../docs/srd-continuidade-v0.97.md");
 const graph=load("gene-graph.js");
 const index=load("../pericias/index.html");
 const manejo=load("../pericias/manejo-perfeito-armas-corpo-a-corpo.html");
@@ -33,11 +34,12 @@ const roller=part(" const situation=SITUATIONS[p.opts.situation]||SITUATIONS.nor
 const evaluate=new Function("hasSkill","itemKind","equipped","attackWeight","targetWeight","condition","mode","weightEnabled",
  'const p={mode,base:{group:"practice",key:"armas_conjuracao"},third:null,opts:{'+
  'situation:condition,attackWeight,targetWeight,weightEnabled,maosLeves:false,shieldThrowId:""}};'+
- 'const item=itemKind?{type:itemKind,equipped}:null;'+
+ 'const item=itemKind?{type:itemKind,equipped,category:attackWeight}:null;'+
  'const SITUATIONS={normal:["Normal",0,0],absoluta:["Vantagem absoluta",1,0]};'+
- 'const ownsSkill=id=>id==="manejo-perfeito"&&hasSkill;'+
+ 'const ownsSkill=id=>["manejo-perfeito","armas-leves","armas-medias","armas-pesadas"].includes(id)&&hasSkill;'+
+ 'const skillReq=()=>null,equipmentWeight=item=>item.category;'+
  'const raw=[2,1,0],critTier=0,criticalConverted=0,properties=[],health={a:0};'+
- aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto};');
+ aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored};');
 function scenario({hasSkill=true,itemKind="arma",equipped=true,attackWeight="leve",targetWeight="medio",condition="normal",mode="armas",weightEnabled=true}={}){
  return evaluate(hasSkill,itemKind,equipped,attackWeight,targetWeight,condition,mode,weightEnabled);
 }
@@ -69,16 +71,48 @@ test("O confronto favorável substitui +1A por +1E somente com Manejo Perfeito e
  ])assert.equal(scenario(ctx).manejoPerfeitoActive,false,JSON.stringify(ctx));
 });
 
-test("Golpe Certo é gatilho condicional com Vantagem Absoluta preexistente, sem segundo +1E",()=>{
+test("Golpe Certo aplica +2E totais quando Manejo eleva Vantagem Absoluta preexistente",()=>{
  const result=scenario({condition:"absoluta"});
  assert.equal(result.manejoPerfeitoActive,true);
  assert.equal(result.manejoPerfeitoGolpeCerto,true);
- assert.deepEqual({E:result.eBase,A:result.aPool},{E:3,A:1});
+ assert.deepEqual({E:result.eBase,A:result.aPool},{E:4,A:1});
  assert.match(app,/golpeCertoTriggered:!!s\.manejoPerfeitoGolpeCerto/);
- assert.match(app,/efeito numérico está PENDENTE/);
- assert.match(srd,/PENDENTE:[^\n]*Golpe Certo/);
+ assert.match(app,/Golpe Certo aplicado \(\+2E no total\)/);
+ assert.match(srd,/PENDENTE:[^\n]*Golpe Certo/,"SRD histórico v0.87 permanece intacto");
+ assert.match(srdNew,/Golpe Certo[\s\S]*\+2E/,"Nova regra v0.97 é DEFINIDA");
 });
 
+test("Armas Leves remove só a Desvantagem natural contra Pesadas",()=>{
+ const noSkill=scenario({hasSkill:false,targetWeight:"pesado"});
+ const trained=scenario({targetWeight:"pesado"});
+ assert.equal(noSkill.lightWeightIgnored,false);
+ assert.equal(noSkill.aPool,0,"−1A natural sem Perícia");
+ assert.equal(trained.lightWeightIgnored,true);
+ assert.equal(trained.aPool,1,"Perícia remove −1A natural, sem criar +1A");
+ assert.equal(scenario({targetWeight:"medio"}).lightWeightIgnored,false);
+ assert.equal(scenario({targetWeight:"pesado",weightEnabled:false}).lightWeightIgnored,false);
+ assert.equal(scenario({targetWeight:"pesado",itemKind:"foco"}).lightWeightIgnored,false);
+});
+test("Armas Médias ignoram −1A apenas ao atacar Média com Perícia de mesma categoria",()=>{
+ const unqualified=scenario({hasSkill:false,attackWeight:"medio",targetWeight:"medio"});
+ const qualified=scenario({attackWeight:"medio",targetWeight:"medio"});
+ assert.equal(unqualified.mediumWeightIgnored,false);
+ assert.equal(unqualified.aPool,0);
+ assert.equal(qualified.mediumWeightIgnored,true);
+ assert.equal(qualified.aPool,1);
+ assert.equal(scenario({attackWeight:"medio",targetWeight:"leve"}).mediumWeightIgnored,false);
+ assert.equal(scenario({attackWeight:"medio",targetWeight:"medio",weightEnabled:false}).mediumWeightIgnored,false);
+});
+test("Armas Pesadas ignoram −1A apenas contra Leve/Muito Leve",()=>{
+ const unqualified=scenario({hasSkill:false,attackWeight:"pesado",targetWeight:"leve"});
+ const qualified=scenario({attackWeight:"pesado",targetWeight:"leve"});
+ assert.equal(unqualified.heavyWeightIgnored,false);
+ assert.equal(unqualified.aPool,0);
+ assert.equal(qualified.heavyWeightIgnored,true);
+ assert.equal(qualified.aPool,1);
+ assert.equal(scenario({attackWeight:"pesado",targetWeight:"pesado"}).heavyWeightIgnored,false);
+ assert.equal(scenario({attackWeight:"pesado",targetWeight:"leve",itemKind:"foco"}).heavyWeightIgnored,false);
+});
 test("Arma Certa não é comprável, não aparece no mapa nem no catálogo, mas seu link histórico funciona",()=>{
  const skillList=part("const SKILLS=[","const CARD_REQUIREMENTS=");
  assert.doesNotMatch(skillList,/\"arma-certa\"/);

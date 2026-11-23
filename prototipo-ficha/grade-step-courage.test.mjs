@@ -281,7 +281,7 @@ test("Resistência a Fogo: custo 1 XP, pré-requisitos e resistência pessoal no
 });
 
 
-test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia do peso do martelo",()=>{
+test("Especialização em Armas — Martelos: comprar com Atributos, ativar somente com Perícia do peso do martelo",()=>{
  const code=extract("function skillReq(id,s=state){","function dependentsValid(");
  const fn=new Function("state","racialGrants","ownsSkill",
   "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+code+"\nreturn skillReq;")({},()=>[],(id,s)=>s.skills.includes(id));
@@ -292,7 +292,7 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
  assert.ok(fn("maestria-martelos",make({destreza:0})),"Destreza 1 requerida");
  assert.ok(fn("maestria-martelos",make({vigor:0})),"Vigor 1 requerido");
  assert.equal(fn("maestria-martelos",make()),null,"Não exige Perícia de Armas para comprar");
- assert.match(app,/"maestria-martelos",\s*"Maestria em Martelos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.match(app,/"maestria-martelos",\s*"Especialização em Armas — Martelos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
  assert.ok(app.includes('"maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]]'),"Compra assistida não obriga especializações");
  const start=app.indexOf("function hammerMasteryRequiredSkill(item){");
  const end=app.indexOf("function equipmentGroupName(id)",start);
@@ -322,11 +322,11 @@ test("Maestria em Martelos: comprar com Atributos, ativar somente com Perícia d
  assert.ok(page.includes("Força 3")&&page.includes("Destreza 1")&&page.includes("Vigor 1"));
  assert.ok(page.includes("Perícia em Armas")&&page.includes("1 Coragem")&&page.includes("duas características diferentes do martelo gratuitamente"),"Verbete registra crítico com dois gratuitos");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
- assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Maestria em Martelos</a>'));
+ assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Especialização em Armas — Martelos</a>'));
 });
 
 
-test("Exclusividades: Maestria em Armas de Fogo inicial só para Humano; Transfusão Sanguinária só para Lucker de Sangue",()=>{
+test("Exclusividades: Especialização em Armas de Fogo inicial só para Humano; Transfusão Sanguinária só para Lucker de Sangue",()=>{
  const racial=extract("function racialGrants(s=state){","function racialCostTable(");
  const race=new Function("state",
   "const PURE_ELEMENTS=[['sangue','Sangue'],['trevas','Trevas'],['veneno','Veneno']];"+
@@ -362,19 +362,21 @@ test("Exclusividades: Maestria em Armas de Fogo inicial só para Humano; Transfu
  const verbete=readFileSync(join(root,"../pericias/transfusao-sanguinaria.html"),"utf8");
  assert.match(verbete,/somente Luckers de Sangue podem comprar e utilizar/);
  const fogo=readFileSync(join(root,"../pericias/maestria-em-armas-fogo.html"),"utf8");
- assert.match(fogo,/Todo Humano começa com Maestria em Armas de Fogo/);
+ assert.match(fogo,/Todo Humano começa com Especialização em Armas de Fogo/);
 });
 
-test("Maestrias por família: regra compartilhada, compra não inventada e habilitação apropriada",()=>{
+test("Especializações por família: regra compartilhada, compra não inventada e habilitação apropriada",()=>{
  const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
  const specs=new Function(defs+"\nreturn WEAPON_MASTERY_TYPES;")();
  assert.equal(specs.length,12,"Doze especializações novas, além de Martelos");
  assert.ok(specs.some(x=>x.id==="maestria-armas-fogo"),"Inclui Armas de Fogo");
  const snippet=extract("function hammerMasteryRequiredSkill(item){","function equipmentGroupName(id)");
  const own=(id,s)=>id==="maestria-armas-fogo"?(s.race==="humano"):(s.skills||[]).includes(id);
- const mastery=new Function("state","ownsSkill","equipmentWeight",snippet+
+ const allowedMasteries=new Set(["maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","maestria-punhos","maestria-armas-fogo"]);
+ const reqStub=id=>id.startsWith("maestria-")&&!allowedMasteries.has(id)?"PENDENTE":null;
+ const mastery=new Function("state","ownsSkill","equipmentWeight","skillReq",snippet+
   "\nreturn {id:weaponMasteryId,required:weaponMasteryRequiredSkill,can:weaponMasteryCanActivate,onHit:weaponMasteryOnHit};")(
-    {},own,it=>it.weight==="alto"?"pesado":it.weight
+    {},own,it=>it.weight==="alto"?"pesado":it.weight,reqStub
   );
  const table=[
   ["Adaga","leve","maestria-adagas","armas-leves"],
@@ -397,10 +399,11 @@ test("Maestrias por família: regra compartilhada, compra não inventada e habil
   assert.equal(mastery.required(item),required,"Requisito de manejo de "+name);
   const extra=id==="maestria-arremessos"?["armas-leves"]:[];
   const hero={race:"humano",skills:[id,required,...extra]};
-  assert.equal(mastery.can(item,hero),true,name+" habilitado");
-  assert.deepEqual(mastery.onHit(item,false,false,hero),{free:1,paid:0,courageCost:0,maxEffects:1});
-  assert.deepEqual(mastery.onHit(item,true,false,hero),{free:2,paid:0,courageCost:0,maxEffects:2});
-  assert.deepEqual(mastery.onHit(item,true,true,hero),{free:2,paid:1,courageCost:1,maxEffects:3});
+  const approved=allowedMasteries.has(id);
+  assert.equal(mastery.can(item,hero),approved,name+" Maestria conforme requisitos aprovados");
+  assert.deepEqual(mastery.onHit(item,false,false,hero),approved?{free:1,paid:0,courageCost:0,maxEffects:1}:{free:0,paid:0,courageCost:0,maxEffects:0});
+  assert.deepEqual(mastery.onHit(item,true,false,hero),approved?{free:2,paid:0,courageCost:0,maxEffects:2}:{free:0,paid:0,courageCost:0,maxEffects:0});
+  assert.deepEqual(mastery.onHit(item,true,true,hero),approved?{free:2,paid:1,courageCost:1,maxEffects:3}:{free:0,paid:0,courageCost:0,maxEffects:0});
   assert.equal(mastery.can(item,{race:"humano",skills:[id]}),false,name+" requer Perícia de manejo");
  }
  const pistol={type:"arma",name:"Pistola",weight:"leve",firearm:true};
@@ -412,7 +415,7 @@ test("Maestrias por família: regra compartilhada, compra não inventada e habil
  assert.equal(mastery.id({type:"arma",name:"Arma improvisada não catalogada",weight:"leve"}),null,"Sem grupo confirmado não concede Maestria arbitrária");
  const schema=app.slice(app.indexOf("const SKILLS=["),app.indexOf("// IDs de Perícias legadas"));
  assert.ok(schema.includes("...WEAPON_MASTERY_TYPES.map"),"Novos nomes no catálogo");
- assert.ok(schema.includes("  null"),"Novos custos sem homologação ficam pendentes");
+ assert.ok(schema.includes("1 XP. Requisitos de compra ainda PENDENTES."),"Preço universal 1 XP, aquisição bloqueada sem requisitos");
  for(const spec of specs){
   const slug=spec.id.replace("maestria-","maestria-em-");
   const page=readFileSync(join(root,"../pericias/"+slug+".html"),"utf8");
@@ -840,7 +843,7 @@ test("Maestria em Lanças e Espadas: custos de 1 XP e requisitos de atributos ap
  const catalog=new Function(defs+"\nreturn APPROVED_WEAPON_MASTERY_PURCHASE;")();
  assert.equal(catalog["maestria-hastes"],"Força 2 + Agilidade 1 + Destreza 1");
  assert.equal(catalog["maestria-espadas"],"Força 2 + Destreza 2");
- assert.ok(app.includes("APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null"),"Compra custa 1 XP; outras não aprovadas continuam sem custo");
+ assert.ok(app.includes("1 XP. Requisitos de compra ainda PENDENTES."),"Preço aprovado e requisitos pendentes podem coexistir");
  assert.ok(app.includes('WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id]'),"Apenas Maestrias aprovadas passam bloqueio");
  const req=new Function("state","racialGrants","ownsSkill",
   "const ADVANCED_SOURCE_DEFS=[]; const SOURCE_PROPS={practice:'practices'};"+defs+reqs+"\nreturn skillReq;")({},()=>[],(id,s)=>(s.skills||[]).includes(id));
@@ -855,7 +858,8 @@ test("Maestria em Lanças e Espadas: custos de 1 XP e requisitos de atributos ap
  assert.match(req("maestria-espadas",make(1,2,1)),/Força 2/);
  assert.match(req("maestria-espadas",make(2,1,1)),/Destreza 2/);
  assert.equal(req("maestria-espadas",make(2,2,0)),null,"Agilidade não foi exigida em espadas");
- assert.match(req("maestria-adagas",make(6,6,6)),/PENDENTES/,"Demais Maestrias seguem bloqueadas");
+ assert.equal(req("maestria-adagas",make(6,6,6)),null,"Compra de Adagas liberada com requisitos");
+  assert.match(req("maestria-arcos",make(6,6,6)),/PENDENTES/,"Requisitos de Arcos ainda pendentes");
 });
 
 test("Maestrias Lanças e Espadas: site e SRD refletem somente as duas compras aprovadas",()=>{

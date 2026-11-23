@@ -2,7 +2,7 @@
  * O mapa de alternativas abaixo é copiado de prototipo-ficha/app.js.
  * A CI compara as alternativas com o criador e impede divergências silenciosas.
  */
-import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261123-advanced-g3-v096";
+import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261123-especializacao-punhos-v099";
 export const GENE_AUTO_REQUIREMENTS={
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
@@ -31,7 +31,7 @@ export const GENE_AUTO_REQUIREMENTS={
  "armas-pesadas":[["p:armas_conjuracao:2","a:forca:2"]],
  "disciplina-avancada":[["p:armas_conjuracao:3"]],
  "pugilismo":[["p:armas_conjuracao:1","a:forca:2","a:destreza:1"]],
- "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","s:pugilismo"]],
+ "artista-marcial":[["p:armas_conjuracao:2","a:destreza:2","p:atletismo:1","s:pugilismo"]],
  "golpe-baixo":[["a:destreza:2","a:forca:1","a:agilidade:1"]],
  "furtividade":[["p:furtividade:2","a:destreza:2","a:agilidade:1"]],
  "furtividade-avancada":[["p:furtividade:3","s:furtividade"]],
@@ -44,6 +44,11 @@ export const GENE_AUTO_REQUIREMENTS={
  "atletismo-avancado":[["p:atletismo:3"]],
  "artesao-avancado":[["p:artesao:3"]],
  "maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]],
+ "maestria-punhos":[["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]],
+  "maestria-adagas":[["a:agilidade:2","a:destreza:2"]],
+  "maestria-machados":[["a:forca:2","a:destreza:1"]],
+  "maestria-macas":[["a:forca:3","a:destreza:1","a:vigor:1"]],
+  "maestria-cajados":[["a:destreza:2"]],
  "maestria-hastes":[["a:forca:2","a:agilidade:1","a:destreza:1"]],
  "maestria-espadas":[["a:forca:2","a:destreza:2"]],
  "ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]],

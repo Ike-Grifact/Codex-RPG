@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
 import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-advanced-g3-v096";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-especializacao-punhos-v099";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -122,6 +122,11 @@ export function rollProvenance(rolled,ids,options={}){
 export function selectedActiveSkill(c,id){
  if(!id)return null;
  if(!isHumanoidKind(c?.kind)||!c?.skills?.includes(id))return null;
+ // Uma compra antiga permanece na ficha, mas Artista Marcial não ativa sem Atletismo 1.
+ if(id==="artista-marcial"&&
+   (Number(c?.practices?.atletismo||0)<1||
+    Number(c?.practices?.armas_conjuracao||0)<2||
+    Number(c?.attributes?.destreza||0)<2||!c?.skills?.includes("pugilismo")))return null;
  const row=SKILLS.find(x=>x.id===id);
  return row?{id,name:row.name,detail:row.detail}:null;
 }
@@ -167,9 +172,23 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
  const ranged=(weapon.properties||[]).includes("À Distância")||/^(arco|besta|zarabatana)/.test(name);
  const required=weapon.kind==="firearm"?"armas-fogo":
   thrown?"maestria-arremesso-armas":
-  /^(luvas|punhos|soco)/.test(name)?"pugilismo":
+  /^(luva|punho|soco|soqueira|manopla)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(required==="pugilismo"&&
+   (Number(c?.practices?.armas_conjuracao||0)<1||
+    Number(c?.attributes?.forca||0)<2||Number(c?.attributes?.destreza||0)<1))
+  return {ok:false,error:"Pugilismo exige Disciplina 1, Força 2 e Destreza 1 para ativar características.",required};
+ const weightRequirements={
+  "armas-leves":{disc:1,strength:0},
+  "armas-medias":{disc:1,strength:1},
+  "armas-pesadas":{disc:2,strength:2}
+ };
+ const req=weightRequirements[required];
+ if(req&&(Number(c?.practices?.armas_conjuracao||0)<req.disc||
+   Number(c?.attributes?.forca||0)<req.strength))
+  return {ok:false,error:"A Perícia de armas "+required+" não cumpre Disciplina "+req.disc+
+   (req.strength?" e Força "+req.strength:"")+" para habilitar efeitos.",required};
  if(thrown&&!skills.includes(weightSkill))
   return {ok:false,error:"Arremesso exige também a Perícia da categoria "+weightSkill+".",required:weightSkill};
  return {ok:true,required};
@@ -188,9 +207,29 @@ export function weaponMasteryFor(weapon,{thrown=false}={}){
  if(/^martelo|^marreta/.test(name))return "maestria-martelos";
  if(/^arco/.test(name))return "maestria-arcos";
  if(/^besta/.test(name))return "maestria-bestas";
- if(/^(luvas|punhos)/.test(name))return "maestria-punhos";
+ if(/^(luva|punho|soco|soqueira|manopla)/.test(name))return "maestria-punhos";
  if((weapon.properties||[]).includes("À Distância"))return "maestria-longo-alcance";
  return "";
+}
+/** Valida requisitos atuais de compra para o efeito gratuito da Especialização, sem
+ * confundi-los com a habilitação por peso verificada separadamente. */
+export function canUseWeaponMastery(c,id){
+ if(!id||!(c?.skills||[]).includes(id))return false;
+ if(id==="maestria-armas-fogo")return c?.race==="humano";
+ const requirements={
+  "maestria-martelos":{forca:3,destreza:1,vigor:1},
+  "maestria-adagas":{agilidade:2,destreza:2},
+  "maestria-espadas":{forca:2,destreza:2},
+  "maestria-machados":{forca:2,destreza:1},
+  "maestria-macas":{forca:3,destreza:1,vigor:1},
+  "maestria-hastes":{forca:2,agilidade:1,destreza:1},
+  "maestria-cajados":{destreza:2},
+  "maestria-punhos":{forca:1,agilidade:1,destreza:1,vigor:1}
+ };
+ const req=requirements[id];
+ // Custo 1 XP não equivale a requisitos de compra aprovados.
+ if(!req)return false;
+ return Object.entries(req).every(([attr,grade])=>Number(c?.attributes?.[attr]||0)>=grade);
 }
 export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,thrown=false}={}){
  const selected=Array.isArray(chosen)?chosen:[];
@@ -199,9 +238,14 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(new Set(selected).size!==selected.length||selected.some(x=>!eligible.includes(x)))
   return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
  const access=weaponActivationSkill(c,weapon,{thrown});
- if(!access.ok)return access;
+ // Exceção preservada da v0.77: Cravar Médio/Pesado pode ativar UM efeito
+ // gratuitamente por crítico, mesmo sem a Perícia de peso correspondente.
+ const cravarOnCritical=!!critical&&selected.length===1&&selected[0]==="Cravar"&&
+  weapon?.kind==="weapon"&&weapon.equipped!==false&&
+  ["medio","pesado"].includes(weapon.category)&&!thrown;
+ if(!access.ok&&!cravarOnCritical)return access;
  const masteryId=weaponMasteryFor(weapon,{thrown});
- const mastery=!!masteryId&&(c.skills||[]).includes(masteryId);
+ const mastery=canUseWeaponMastery(c,masteryId);
  // Fracasso não consome a ativação condicionada ao acerto.
  if(!success)return {ok:true,active:[],cost:0,mastery,free:0};
  const free=mastery?(critical?2:1):(critical?1:0);
@@ -341,10 +385,35 @@ export function weightAffinity(weapon,target,attacker=null){
  else if(/^besta|^zarabatana/.test(name))return {status:"manual",delta:0,description:"Modelo à distância sem correspondência exata na tabela de afinidade: aplicar manualmente."};
  if(weapon.kind==="firearm"&&!natural)return {status:"manual",delta:0,description:"Modelo de arma de fogo sem tabela própria validada: aplicar manualmente."};
  const value=(natural||table[atk])?.[def];
- if(value===-1&&attacker?.skills?.includes(expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk]))
+ const relevantSkill=expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk];
+ const validWeightRequirements={
+  "armas-leves":{disc:1,strength:0},
+  "armas-medias":{disc:1,strength:1},
+  "armas-pesadas":{disc:2,strength:2}
+ };
+ const weightReq=validWeightRequirements[relevantSkill];
+ const trained=!weightReq||
+  (Number(attacker?.practices?.armas_conjuracao||0)>=weightReq.disc&&
+   Number(attacker?.attributes?.forca||0)>=weightReq.strength);
+ if(value===-1&&attacker?.skills?.includes(relevantSkill)&&trained)
   return {status:"known",delta:0,description:"A especialização do peso/arma ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};
+}
+/** Manejo Perfeito substitui Vantagem de peso por +1E; Golpe Certo totaliza +2E na absoluta. */
+export function manejoPerfeitoBonus(attacker,weapon,affinity,{situation="normal",mode="armas",baseKey="armas_conjuracao",thrown=false}={}){
+ const p=attacker?.practices||{},a=attacker?.attributes||{},skills=attacker?.skills||[];
+ const ready=weapon?.kind==="weapon"&&weapon.equipped&&
+  !weapon.firearm&&!(weapon.properties||[]).includes("À Distância")&&
+  !/^(arco|besta|zarabatana)/i.test(String(weapon.name||""))&&!thrown&&
+  mode==="armas"&&baseKey==="armas_conjuracao"&&
+  skills.includes("manejo-perfeito")&&skills.includes("disciplina-avancada")&&
+  Number(p.armas_conjuracao||0)>=3&&Number(a.destreza||0)>=2&&
+  affinity?.status==="known"&&affinity.delta===1;
+ const golpeCerto=!!ready&&situation==="absoluta";
+ return {active:!!ready,golpeCerto,bonusE:ready?1:0,suppressWeightA:!!ready,
+  description:!ready?"":golpeCerto?"Golpe Certo: +2E no total (Vantagem Absoluta + Manejo Perfeito), sem +1A de peso.":
+   "Manejo Perfeito: Vantagem Absoluta (+1E), substituindo o +1A natural do peso."};
 }
 /** Patamar novo: cinco símbolos válidos (E + P) em acerto contra alvo SEM armadura = 2 Vida.
  *  Abaixo de cinco: regra específica de Vida ainda não definida neste adendo.

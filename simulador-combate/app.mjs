@@ -1,7 +1,7 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261123-advanced-g3-v096";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs?v=20261123-advanced-g3-v096";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261123-especializacao-punhos-v099";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-especializacao-punhos-v099";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
 
@@ -366,15 +366,18 @@ function renderWeaponEffects(){
  const props=activeWeaponProperties(weapon);
  const access=weaponActivationSkill(attacker,weapon,{thrown:$("attack-thrown").checked});
  const mastery=weaponMasteryFor(weapon,{thrown:$("attack-thrown").checked});
+ const cravarCriticalPossible=weapon?.kind==="weapon"&&weapon.equipped!==false&&
+  ["medio","pesado"].includes(weapon.category)&&!$("attack-thrown").checked;
  $("weapon-effects").innerHTML=props.length?
   props.map(prop=>'<label class="cc-weapon-effect"><input type="checkbox" data-weapon-property="'+esc(prop)+
-   '"'+(chosen.has(prop)?' checked':'')+(!access.ok?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
+   '"'+(chosen.has(prop)?' checked':'')+(!access.ok&&!(prop==="Cravar"&&cravarCriticalPossible)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
   '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
-  ((attacker?.skills||[]).includes(mastery)&&mastery?" Maestria "+mastery+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 recurso.":
-   " Sem Maestria: um efeito custa 1 recurso no acerto comum; no crítico um é grátis e o segundo custa 1.")+
+  (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
+   " Sem Especialização: um efeito custa 1 Coragem no acerto comum; no crítico um é grátis e o segundo custa 1.")+
+  (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
   " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
 }
@@ -406,12 +409,16 @@ function options(){
 function evaluate(a,rolled,kept,opts){
  const health=combatHealth(a),t=byId(pending?.target);
  const weapon=pending?.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
- const affinity=weightAffinity(weapon,t,a),weight=affinity.status==="known"?affinity.delta:0;
+ const affinity=weightAffinity(weapon,t,a);
+ const manejo=manejoPerfeitoBonus(a,weapon,affinity,{
+  situation:opts.situation,mode:pending?.mode,baseKey:pending?.baseKey,thrown:!!pending?.thrown
+ });
+ const weight=affinity.status==="known"&&!manejo.suppressWeightA?affinity.delta:0;
  const stealth=!!(a.skills?.includes("furtividade")&&pending?.baseGroup==="practice"&&pending?.baseKey==="furtividade");
  const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
  const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
  const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion),bonusP:health.p+Number(noisy),
-  skillBonusE:health.e,stepDieId:pending?.boosted||""};
+  skillBonusE:health.e+manejo.bonusE,stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
  else if(a.side==="inimigos"&&isHumanoidKind(a.kind))pre=previewHumanoidRoll(a,rolled,kept,conf);
@@ -423,7 +430,7 @@ function evaluate(a,rolled,kept,opts){
   const free=keepLimit(a.level,false,false);
   pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
  }
- return {...pre,health,affinity,stealth,companion,noisy};
+ return {...pre,health,affinity,manejo,stealth,companion,noisy};
 }
 function preview(opts=options(),selectedIds=pending?.kept){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
@@ -497,6 +504,7 @@ function renderDice(){
   '<span class="cc-p">'+x.p+'P</span></li>').join("");
  const bonuses=pre.ok?[
   "Peso: "+pre.affinity.description,
+   pre.manejo?.active?pre.manejo.description:null,
   "Situação: "+$("situation").selectedOptions[0]?.textContent,
   "Saúde "+pre.health.id+": "+pre.health.e+"E, "+pre.health.a+"A, +"+pre.health.p+"P",
   pre.stealth?"Perícia em Furtividade: +1A":null,

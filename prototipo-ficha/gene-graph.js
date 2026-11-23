@@ -232,7 +232,10 @@ function splitSkillLabel(name,maxChars){
  const original=String(name||"").trim();
  // Montar Animal (Vantagem) e Perícia em Montaria (+1A) são Perícias distintas;
  // não esconder o prefixo de Perícia em Montaria, como acontecia no mapa.
- const compact=/^Perícia em Montaria$/i.test(original)?original:original
+ // No grafo o nome completo permanece no title e aria-label; o rótulo curto
+ // evita repetir "Especialização em Armas" e sobrepor famílias vizinhas.
+ const weaponFamily=/^Especialização em Armas(?:\s+—\s+|\s+de\s+|\s+)(.+)$/i.exec(original);
+ const compact=weaponFamily?weaponFamily[1]:/^Perícia em Montaria$/i.test(original)?original:original
   .replace(/^Perícia em Elemento\s+/i,"Elemento ")
   .replace(/^Perícia em\s+/i,"").replace(/^Perícia\s+/i,"");
  const parts=compact.split(/\s+/),lines=[];let current="";

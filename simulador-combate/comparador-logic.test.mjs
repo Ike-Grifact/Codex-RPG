@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
- weightAffinity,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+ weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -57,7 +57,7 @@ test("Peso tático usa armadura equipada, não peso total do inventário",()=>{
  assert.equal(weightAffinity(medium,e).delta,1);
  const heavy={kind:"weapon",category:"pesado"};
  assert.equal(weightAffinity(heavy,e).delta,-1);
- assert.equal(weightAffinity(heavy,e,{skills:["armas-pesadas"]}).delta,0,
+ assert.equal(weightAffinity(heavy,e,{skills:["armas-pesadas"],practices:{armas_conjuracao:2},attributes:{forca:2}}).delta,0,
   "Especialista ignora Desvantagem por peso correspondente");
  const againstMedium={...e,items:[{...e.items[0],category:"medio"}]};
  assert.equal(weightAffinity(light,againstMedium).delta,1);
@@ -353,7 +353,7 @@ test("Domar Pequena requer animal domesticado presente para +1 Vida e serpente a
 
 
 test("Características reais da arma só são ativadas com a Perícia e acerto, gratuito no crítico",()=>{
- const pc={skills:["armas-leves"]},weapon={id:"k",kind:"weapon",name:"Faca",category:"leve",
+ const pc={skills:["armas-leves"],practices:{armas_conjuracao:1}},weapon={id:"k",kind:"weapon",name:"Faca",category:"leve",
   properties:["Cortante","Muito Leve"]};
  assert.deepEqual(activeWeaponProperties(weapon),["Cortante"]);
  assert.equal(weaponActivationSkill(pc,weapon).ok,true);
@@ -371,10 +371,87 @@ test("Características reais da arma só são ativadas com a Perícia e acerto, 
  const repeat=planWeaponEffects(pc,weapon,["Cortante","Cortante"],{success:true,critical:4});
  assert.equal(repeat.ok,false);
 });
+test("Perícia em Armas Leves ignora somente peso pesado e exige Disciplina 1",()=>{
+ const weapon={id:"f",kind:"weapon",name:"Faca",category:"leve",equipped:true,properties:["Cortante"]};
+ const heavy=normalizeCombatant({kind:"humanoide",items:[
+  {id:"h",kind:"armor",name:"Armadura Pesada",category:"pesado",equipped:true}]}, "inimigos");
+ const special=normalizeCombatant({kind:"humanoide",practices:{armas_conjuracao:1},skills:["armas-leves"]});
+ const untrained=normalizeCombatant({kind:"humanoide",skills:["armas-leves"],practices:{armas_conjuracao:0}});
+ assert.equal(weightAffinity(weapon,heavy).delta,-1,"−1A sem habilitação");
+ assert.equal(weightAffinity(weapon,heavy,untrained).delta,-1,"Sem Disciplina 1 não ignora penalidade");
+ assert.equal(weightAffinity(weapon,heavy,special).delta,0,"Perícia anula −1A e não cria +1A");
+ assert.equal(weaponActivationSkill(special,weapon).ok,true);
+ assert.equal(weaponActivationSkill(untrained,weapon).ok,false);
+ assert.equal(planWeaponEffects(special,weapon,["Cortante"],{success:true}).cost,1);
+ assert.equal(planWeaponEffects(special,weapon,["Cortante"],{success:true,critical:2}).cost,0);
+ assert.equal(planWeaponEffects(special,weapon,["Cortante"],{success:false}).cost,0);
+ assert.equal(planWeaponEffects(special,weapon,["Inexistente"],{success:true,critical:2}).ok,false);
+ assert.equal(planWeaponEffects(untrained,weapon,["Cortante"],{success:true,critical:2}).ok,false);
+});
+test("Armas Médias e Pesadas exigem seus graus, 1 Coragem no acerto e crítico gratuito",()=>{
+ const cases=[
+  {id:"armas-medias",category:"medio",armor:"medio",disc:1,strength:1,otherArmor:"leve"},
+  {id:"armas-pesadas",category:"pesado",armor:"leve",disc:2,strength:2,otherArmor:"pesado"}
+ ];
+ for(const spec of cases){
+  const weapon={id:"t",name:spec.id,kind:"weapon",equipped:true,category:spec.category,
+   properties:["Cortante","Perfurante"]};
+  const target=normalizeCombatant({kind:"humanoide",items:[
+   {id:"armor",kind:"armor",name:"Armadura",category:spec.armor,equipped:true}]},"inimigos");
+  const proper=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc},attributes:{forca:spec.strength}});
+  const missingDisc=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc-1},attributes:{forca:spec.strength}});
+  const missingForce=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc},attributes:{forca:spec.strength-1}});
+  for(const unqualified of [missingDisc,missingForce]){
+   assert.equal(weaponActivationSkill(unqualified,weapon).ok,false,spec.id+" sem requisito");
+   assert.equal(weightAffinity(weapon,target,unqualified).delta,-1,spec.id+" mantém −1A sem requisito");
+   assert.equal(planWeaponEffects(unqualified,weapon,["Cortante"],{success:true,critical:2}).ok,false,
+    "Crítico sem requisitos não habilita efeito");
+  }
+  assert.equal(weightAffinity(weapon,target).delta,-1);
+  assert.equal(weightAffinity(weapon,target,proper).delta,0,spec.id+" cancela somente −1A natural");
+  assert.equal(weaponActivationSkill(proper,weapon).ok,true);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:true}).cost,1);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:true,critical:2}).cost,0);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:false}).cost,0);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,1);
+  assert.equal(planWeaponEffects(proper,weapon,["Desconhecida"],{success:true}).ok,false);
+  const other={...target,items:target.items.map(x=>({...x,category:spec.otherArmor}))};
+  assert.notEqual(weightAffinity(weapon,other,proper).delta,-1,"Não cria nova desvantagem fora da faixa");
+  assert.equal(weightAffinity(weapon,target,{...proper,skills:[]}).delta,-1,"Sem Perícia, penalidade permanece");
+ }
+});
+test("Manejo Perfeito substitui +1A e Golpe Certo totaliza +2E sem duplicação",()=>{
+ const weapon={id:"f",kind:"weapon",name:"Faca",category:"leve",equipped:true,properties:["Cortante"]};
+ const medium=normalizeCombatant({kind:"humanoide",items:[
+  {id:"m",kind:"armor",name:"Armadura Média",category:"medio",equipped:true}]},"inimigos");
+ const attacker=normalizeCombatant({kind:"humanoide",attributes:{destreza:2},
+  practices:{armas_conjuracao:3},skills:["manejo-perfeito","disciplina-avancada","armas-leves"]});
+ const affinity=weightAffinity(weapon,medium,attacker);
+ assert.equal(affinity.delta,1,"Afinidade concede +1A antes do Manejo");
+ const defaults={mode:"armas",baseKey:"armas_conjuracao"};
+ const normal=manejoPerfeitoBonus(attacker,weapon,affinity,{...defaults,situation:"normal"});
+ assert.equal(normal.active,true);
+ assert.equal(normal.bonusE,1);
+ assert.equal(normal.golpeCerto,false);
+ assert.equal(normal.suppressWeightA,true,"A afinidade +1A é substituída, não somada");
+ const absolute=manejoPerfeitoBonus(attacker,weapon,affinity,{...defaults,situation:"absoluta"});
+ assert.equal(absolute.active,true);
+ assert.equal(absolute.golpeCerto,true);
+ assert.equal(absolute.bonusE,1,"+1E sobre +1E da condição = +2E, nunca +3E");
+ assert.match(absolute.description,/\+2E no total/);
+ assert.equal(manejoPerfeitoBonus(attacker,weapon,affinity,{...defaults,situation:"absoluta",thrown:true}).active,false);
+ assert.equal(manejoPerfeitoBonus({...attacker,practices:{armas_conjuracao:2}},weapon,affinity,defaults).active,false);
+ assert.equal(manejoPerfeitoBonus({...attacker,skills:["manejo-perfeito"]},weapon,affinity,defaults).active,false);
+ assert.equal(manejoPerfeitoBonus(attacker,weapon,{status:"known",delta:0},defaults).active,false);
+ assert.equal(manejoPerfeitoBonus(attacker,{...weapon,equipped:false},affinity,defaults).active,false);
+});
 test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; normal apenas um",()=>{
  const weapon={id:"e",name:"Espada Longa",category:"medio",kind:"weapon",
   properties:["Cortante","Perfurante","Cravar"]};
- const pc={skills:["armas-medias","maestria-espadas"]};
+ const pc={skills:["armas-medias","maestria-espadas"],practices:{armas_conjuracao:1},attributes:{forca:2,destreza:2}};
  assert.equal(weaponMasteryFor(weapon),"maestria-espadas");
  assert.equal(planWeaponEffects(pc,weapon,["Cortante"],{success:true}).cost,0);
  assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true,critical:3}).cost,0);
@@ -382,6 +459,62 @@ test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; nor
  assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true}).ok,false);
  assert.equal(planWeaponEffects({skills:["maestria-espadas"]},weapon,["Cortante"],{success:true}).ok,false,
   "Maestria sozinha não substitui a Perícia do peso");
+});
+test("Artista Marcial adquirido só habilita manobras se Atletismo 1 e requisitos forem satisfeitos",()=>{
+ const a=normalizeCombatant({kind:"humanoide",skills:["artista-marcial","pugilismo"],
+  practices:{armas_conjuracao:2,atletismo:0},attributes:{destreza:2}});
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Compra histórica não ativa sem Atletismo 1");
+ a.practices.atletismo=1;
+ assert.ok(selectedActiveSkill(a,"artista-marcial"),"Atletismo 1 reabilita a Perícia");
+ a.attributes.destreza=1;
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Destreza 2 ainda é requisito");
+ a.attributes.destreza=2;
+ a.skills=a.skills.filter(x=>x!=="pugilismo");
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Pugilismo ainda é requisito");
+});
+test("Maestrias requerem atributos próprios e habilitação da arma para usar gratuidade",()=>{
+ const cases=[
+  ["maestria-adagas","Faca",{agilidade:2,destreza:2}],
+  ["maestria-espadas","Espada Longa",{forca:2,destreza:2}],
+  ["maestria-machados","Machado",{forca:2,destreza:1}],
+  ["maestria-macas","Maça",{forca:3,destreza:1,vigor:1}],
+  ["maestria-martelos","Martelo",{forca:3,destreza:1,vigor:1}],
+  ["maestria-hastes","Lança",{forca:2,agilidade:1,destreza:1}],
+  ["maestria-cajados","Cajado",{destreza:2}]
+ ];
+ for(const [id,name,req] of cases){
+  const weapon={id:"x",kind:"weapon",name,category:"leve",equipped:true,properties:["Cortante","Perfurante","Contundente"]};
+  const actor={skills:[id,"armas-leves"],practices:{armas_conjuracao:1},attributes:req};
+  assert.equal(canUseWeaponMastery(actor,id),true,id+" habilitada pelos Atributos");
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante"],{success:true}).cost,0,id+" acerto gratuito");
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,0);
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante","Perfurante","Contundente"],{success:true,critical:2}).cost,1);
+  for(const [attr,grade] of Object.entries(req)){
+   const missing={...actor,attributes:{...req,[attr]:grade-1}};
+   assert.equal(canUseWeaponMastery(missing,id),false,id+" exige "+attr);
+   assert.equal(planWeaponEffects(missing,weapon,["Cortante"],{success:true}).cost,1,id+" sem requisito não tem gratuidade");
+  }
+  assert.equal(planWeaponEffects({...actor,skills:[id]},weapon,["Cortante"],{success:true}).ok,false,
+   "Sem Perícia de peso, Maestria não substitui habilitação da arma");
+ }
+ for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-longo-alcance"])
+  assert.equal(canUseWeaponMastery({skills:[id]},id),false,id+" depende de requisitos pendentes");
+ assert.equal(canUseWeaponMastery({race:"humano",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),true);
+ assert.equal(canUseWeaponMastery({race:"runa_espinhos",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),false);
+});
+test("Cravar mantém exceção histórica: crítico com arma Média/Pesada não exige Perícia",()=>{
+ for(const category of ["medio","pesado"]){
+  const weapon={id:"cravar",kind:"weapon",name:"Lança",equipped:true,category,
+   properties:["Cravar","Perfurante"]};
+  const noSkill={skills:[],practices:{armas_conjuracao:0},attributes:{forca:0}};
+  const crit=planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:2});
+  assert.equal(crit.ok,true,"Cravar excepcional no crítico "+category);
+  assert.equal(crit.cost,0);
+  assert.deepEqual(crit.active,["Cravar"]);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:0}).ok,false);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Perfurante"],{success:true,critical:2}).ok,false);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar","Perfurante"],{success:true,critical:2}).ok,false);
+ }
 });
 test("Cravar valida escudo físico e categoria; demais efeitos não inventam condição",()=>{
  const medium={name:"Lança de Arremesso",kind:"weapon",category:"medio",properties:["Cravar"]};
@@ -428,4 +561,32 @@ test("Propriedades do catálogo sobrevivem à importação de arma sem lista no 
   items:[{id:"f",name:"Faca",kind:"weapon",equipped:true,die:6}]},"jogadores");
  const list=equippedWeapons(pc,[{name:"Faca",kind:"weapon",category:"leve",die:6,properties:["Cortante"]}]);
  assert.deepEqual(activeWeaponProperties(list[0]),["Cortante"]);
+});
+
+test("Especialização em Armas de Punho: compra separada da ativação, acerto e crítico",()=>{
+ const weapon={id:"p",kind:"weapon",name:"Soqueira",category:"leve",equipped:true,
+  properties:["Cortante","Perfurante","Contundente"]};
+ const base={skills:["maestria-punhos"],attributes:{forca:1,agilidade:1,destreza:1,vigor:1},
+  practices:{armas_conjuracao:0}};
+ assert.equal(weaponMasteryFor(weapon),"maestria-punhos");
+ assert.equal(weaponMasteryFor({...weapon,name:"Soco inglês"}),"maestria-punhos");
+ assert.equal(weaponMasteryFor({...weapon,name:"Manopla"}),"maestria-punhos");
+ assert.equal(canUseWeaponMastery(base,"maestria-punhos"),true,"Requisito de compra não exige Pugilismo");
+ assert.equal(planWeaponEffects(base,weapon,["Cortante"],{success:true}).ok,false,"Pugilismo exigido na ativação");
+ const ready={...base,skills:["maestria-punhos","pugilismo"],
+  attributes:{...base.attributes,forca:2},practices:{armas_conjuracao:1}};
+ assert.equal(planWeaponEffects({...ready,practices:{armas_conjuracao:0}},weapon,["Cortante"],{success:true}).ok,false,"Disciplina 1 ativa Pugilismo");
+ assert.equal(planWeaponEffects({...base,skills:["maestria-punhos","pugilismo"]},weapon,["Cortante"],{success:true}).ok,false,"Força 2 ativa Pugilismo");
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante"],{success:true}).cost,0);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,0);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Perfurante","Contundente"],{success:true,critical:2}).cost,1);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante","Cortante"],{success:true,critical:2}).ok,false);
+ assert.equal(planWeaponEffects(ready,weapon,["Cortante"],{success:false}).cost,0);
+ for(const a of ["forca","agilidade","destreza","vigor"]){
+  const invalid={...ready,attributes:{...ready.attributes,[a]:0}};
+  assert.equal(canUseWeaponMastery(invalid,"maestria-punhos"),false,a+" em zero bloqueia a gratuidade");
+  const effects=planWeaponEffects(invalid,weapon,["Cortante"],{success:true});
+  if(a==="forca"||a==="destreza")assert.equal(effects.ok,false,"Pugilismo também exige "+a);
+  else assert.equal(effects.cost,1,"Pugilismo ativo, porém requisito da Especialização ausente: "+a);
+ }
 });
