@@ -366,15 +366,18 @@ function renderWeaponEffects(){
  const props=activeWeaponProperties(weapon);
  const access=weaponActivationSkill(attacker,weapon,{thrown:$("attack-thrown").checked});
  const mastery=weaponMasteryFor(weapon,{thrown:$("attack-thrown").checked});
+ const cravarCriticalPossible=weapon?.kind==="weapon"&&weapon.equipped!==false&&
+  ["medio","pesado"].includes(weapon.category)&&!$("attack-thrown").checked;
  $("weapon-effects").innerHTML=props.length?
   props.map(prop=>'<label class="cc-weapon-effect"><input type="checkbox" data-weapon-property="'+esc(prop)+
-   '"'+(chosen.has(prop)?' checked':'')+(!access.ok?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
+   '"'+(chosen.has(prop)?' checked':'')+(!access.ok&&!(prop==="Cravar"&&cravarCriticalPossible)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
   '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   ((attacker?.skills||[]).includes(mastery)&&mastery?" Maestria "+mastery+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 recurso.":
    " Sem Maestria: um efeito custa 1 recurso no acerto comum; no crítico um é grátis e o segundo custa 1.")+
+  (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
   " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
 }
