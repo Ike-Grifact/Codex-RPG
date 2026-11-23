@@ -202,6 +202,25 @@ export function weaponMasteryFor(weapon,{thrown=false}={}){
  if((weapon.properties||[]).includes("À Distância"))return "maestria-longo-alcance";
  return "";
 }
+/** Valida requisitos atuais de compra para o efeito gratuito da Maestria, sem
+ * confundi-los com a habilitação por peso verificada separadamente. */
+export function canUseWeaponMastery(c,id){
+ if(!id||!(c?.skills||[]).includes(id))return false;
+ if(id==="maestria-armas-fogo")return c?.race==="humano";
+ const requirements={
+  "maestria-martelos":{forca:3,destreza:1,vigor:1},
+  "maestria-adagas":{agilidade:2,destreza:2},
+  "maestria-espadas":{forca:2,destreza:2},
+  "maestria-machados":{forca:2,destreza:1},
+  "maestria-macas":{forca:3,destreza:1,vigor:1},
+  "maestria-hastes":{forca:2,agilidade:1,destreza:1},
+  "maestria-cajados":{destreza:2}
+ };
+ const req=requirements[id];
+ // Custo 1 XP não equivale a requisitos de compra aprovados.
+ if(!req)return false;
+ return Object.entries(req).every(([attr,grade])=>Number(c?.attributes?.[attr]||0)>=grade);
+}
 export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,thrown=false}={}){
  const selected=Array.isArray(chosen)?chosen:[];
  if(!selected.length)return {ok:true,active:[],cost:0,mastery:false,free:0};
@@ -216,7 +235,7 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
   ["medio","pesado"].includes(weapon.category)&&!thrown;
  if(!access.ok&&!cravarOnCritical)return access;
  const masteryId=weaponMasteryFor(weapon,{thrown});
- const mastery=!!masteryId&&(c.skills||[]).includes(masteryId);
+ const mastery=canUseWeaponMastery(c,masteryId);
  // Fracasso não consome a ativação condicionada ao acerto.
  if(!success)return {ok:true,active:[],cost:0,mastery,free:0};
  const free=mastery?(critical?2:1):(critical?1:0);
