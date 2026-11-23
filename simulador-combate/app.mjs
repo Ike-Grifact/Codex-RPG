@@ -62,6 +62,8 @@ function addSelected(side){
  if(!profile)return notice("Selecione uma ficha.");
  if(!add(profile.raw,side,profile.source))return notice("Limite de "+MAX+" fichas.");
  log("importação",profile.name+" entrou do "+profile.source+".");persist();render();
+  const imported=state.combatants.at(-1);
+  if(imported?.race==="lucker_puro"&&!hasCombatFocus(imported))notice(focusCombatStatus(imported));
  if(!previousTarget&&target())$("difficulty").value=String(defense(target()));
 }
 function selectOptions(rows,value){
@@ -577,9 +579,10 @@ function roll(){
  }
  let grade=null;
  if(human&&mode==="conjuracao"){
-  if(key!=="armas_conjuracao"||!hasCombatFocus(a))
+  if(key!=="armas_conjuracao")return notice("Conjuração exige Disciplina como fonte base.");
+  if(!hasCombatFocus(a))
    return notice(a.race==="lucker_puro"?focusCombatStatus(a):
-    "Conjuração exige Disciplina e Criar Item de Foco e Magia.");
+    "Conjuração exige Criar Item de Foco e Magia adquirido.");
   grade=Number($("spell-grade").value);
   const bonus=MAGIC_GRADE_DICE[grade]||[];
   if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
