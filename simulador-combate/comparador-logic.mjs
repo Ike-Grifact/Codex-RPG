@@ -138,6 +138,131 @@ export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
  }
  return {ok:true,pool:output,before:[base.sides],after:elevated};
 }
+/** Características reais da arma, com efeitos condicionados ao acerto e à Perícia. */
+export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa"]);
+export function activeWeaponProperties(weapon){
+ return [...new Set((weapon?.properties||[]).filter(x=>ACTIVE_WEAPON_PROPERTIES.includes(x)))];
+}
+export function weaponActivationSkill(c,weapon,{thrown=false}={}){
+ const skills=c?.skills||[];
+ if(!weapon)return {ok:false,error:"Equipe uma arma para ativar sua característica."};
+ const weightSkill=weapon.category==="medio"?"armas-medias":weapon.category==="pesado"?"armas-pesadas":"armas-leves";
+ const name=String(weapon.name||"").toLowerCase();
+ const ranged=(weapon.properties||[]).includes("À Distância")||/^(arco|besta|zarabatana)/.test(name);
+ const required=weapon.kind==="firearm"?"armas-fogo":
+  thrown?"maestria-arremesso-armas":
+  /^(luvas|punhos|soco)/.test(name)?"pugilismo":
+  ranged?"armas-longo-alcance":weightSkill;
+ if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(thrown&&!skills.includes(weightSkill))
+  return {ok:false,error:"Arremesso exige também a Perícia da categoria "+weightSkill+".",required:weightSkill};
+ return {ok:true,required};
+}
+export function weaponMasteryFor(weapon,{thrown=false}={}){
+ if(!weapon)return "";
+ const name=String(weapon.name||"").toLowerCase();
+ if(weapon.kind==="firearm")return "maestria-armas-fogo";
+ if(thrown)return "maestria-arremessos";
+ if(/^(faca|punhal|adaga|kunai|shuriken)/.test(name))return "maestria-adagas";
+ if(/^(espada|montante|katana)/.test(name))return "maestria-espadas";
+ if(/^machado/.test(name))return "maestria-machados";
+ if(/^(maça|clava)/.test(name))return "maestria-macas";
+ if(/^(lança|naginata)/.test(name))return "maestria-hastes";
+ if(/^(cajado|bastão)/.test(name))return "maestria-cajados";
+ if(/^martelo|^marreta/.test(name))return "maestria-martelos";
+ if(/^arco/.test(name))return "maestria-arcos";
+ if(/^besta/.test(name))return "maestria-bestas";
+ if(/^(luvas|punhos)/.test(name))return "maestria-punhos";
+ if((weapon.properties||[]).includes("À Distância"))return "maestria-longo-alcance";
+ return "";
+}
+export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,thrown=false}={}){
+ const selected=Array.isArray(chosen)?chosen:[];
+ if(!selected.length)return {ok:true,active:[],cost:0,mastery:false,free:0};
+ const eligible=activeWeaponProperties(weapon);
+ if(new Set(selected).size!==selected.length||selected.some(x=>!eligible.includes(x)))
+  return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
+ const access=weaponActivationSkill(c,weapon,{thrown});
+ if(!access.ok)return access;
+ const masteryId=weaponMasteryFor(weapon,{thrown});
+ const mastery=!!masteryId&&(c.skills||[]).includes(masteryId);
+ // Fracasso não consome a ativação condicionada ao acerto.
+ if(!success)return {ok:true,active:[],cost:0,mastery,free:0};
+ const free=mastery?(critical?2:1):(critical?1:0);
+ const max=mastery?(critical?3:1):(critical?2:1);
+ if(selected.length>max)
+  return {ok:false,error:"Este resultado permite no máximo "+max+" característica(s) da arma (sem repetir)."};
+ return {ok:true,active:[...selected],cost:Math.max(0,selected.length-free),mastery,free:Math.min(free,selected.length)};
+}
+export function weaponEffectOutcome(properties=[],target={},weapon=null){
+ const effects=Array.isArray(properties)?properties:[];
+ const notes=[];
+ const applied={};
+ if(effects.includes("Cortante"))applied.sangramento=true;
+ if(effects.includes("Perfurante"))notes.push("Perfurante: cada Pavor não anulado vale 1 dano à Integridade, sem somar o piso(P/2). Conferir escudo levantado e proteção psíquica.");
+ if(effects.includes("Cravar")){
+  const shield=(target?.items||[]).find(i=>i.kind==="shield"&&i.equipped);
+  if(!shield||!["medio","pesado"].includes(weapon?.category))
+   return {ok:false,error:"Cravar exige arma Média/Pesada e escudo físico equipado no alvo."};
+  if(shield.category==="pesado"&&weapon.category!=="pesado")
+   return {ok:false,error:"Só arma Pesada pode Cravar em escudo Pesado."};
+  notes.push("Cravar: arma fica presa ao escudo; registrar remoção, peso e −1E acumulativo somente em Levantar Escudo.");
+  applied.cravar=true;
+ }
+ for(const property of effects.filter(x=>["Contundente","Enganchar","Longa"].includes(x)))
+  notes.push(property+": característica ativada; desfecho numérico/manobra exige procedimento do Narrador.");
+ if(effects.includes("Cortante"))notes.push("Cortante: estado Sangramento aplicado mesmo com armadura, sem dano direto de condição.");
+ return {ok:true,applied,notes};
+}
+export function criticalFaces(rolled=[],ids=[]){
+ const kept=new Set(ids);
+ const selected=rolled.filter(x=>kept.has(x.id));
+ const critical=selected.length>=2&&selected.every(x=>x.face===x.sides);
+ return {critical:critical?selected.length:0,
+  faces:selected.map(x=>({id:x.id,sides:x.sides,face:x.face,max:x.face===x.sides}))};
+}
+export function candidateScore(pre,mode="balanced"){
+ const r=pre?.result;if(!pre?.ok||!r)return -Infinity;
+ const success=Number(!!r.success),clean=Number(!!r.success&&r.p===0);
+ const crit=Number(r.critical||0),reach=Number(r.reached||0);
+ const dmg=Number(pre.integrityDamage??r.damage??0),life=Number(pre.life?.damage===2);
+ const fear=Number(r.p||0),anticipation=Number(r.aRemaining||0);
+ const effectiveCourage=Math.max(0,Number(pre.courageCost||0)-Number(r.criticalRefundCourage||0));
+ const resource=effectiveCourage+Number(pre.pavorCost??pre.cost??0);
+ if(mode==="damage")return success*1e7+crit*9000+dmg*2500+life*15000+reach*100+anticipation*4-fear*220-resource*140;
+ if(mode==="safety")return success*1e7+clean*100000+crit*4000+reach*85+dmg*55+anticipation*18-fear*7000-resource*700;
+ return success*1e7+clean*65000+crit*8000+life*11000+dmg*700+reach*120+anticipation*22-fear*1800-resource*450;
+}
+/** Busca exaustiva 1..4 mantidos e todos os gastos A pertinentes, sem criar dados. */
+export function bestKeepSelection(rolled,maxKeep,evaluateCandidate,mode="balanced"){
+ if(!Array.isArray(rolled)||!Number.isInteger(maxKeep)||maxKeep<1)return null;
+ let best=null;
+ const n=rolled.length,limit=Math.min(maxKeep,n,4);
+ function test(ids){
+  const chosen=rolled.filter(x=>ids.includes(x.id)),raw=chosen.map(d=>faceSymbols(d.sides,d.face));
+  const p=raw.reduce((sum,v)=>sum+v[2],0),a=raw.reduce((sum,v)=>sum+v[1],0);
+  // Bônus situacionais e de crítico podem elevar P e A; o motor filtra opções inválidas.
+  const maxCancel=Math.min(9,p+4),maxConvert=Math.min(9,Math.floor((a+10)/2));
+  for(let cancelP=0;cancelP<=maxCancel;cancelP++)for(let convertPairs=0;convertPairs<=maxConvert;convertPairs++){
+   const pre=evaluateCandidate(ids,{cancelP,convertPairs});
+   if(!pre?.ok)continue;
+   const score=candidateScore(pre,mode);
+   if(!best||score>best.score+1e-7||
+    (score===best.score&&ids.length>best.ids.length))
+    best={ids:[...ids],cancelP,convertPairs,score,preview:pre};
+  }
+ }
+ function search(start,ids){
+  if(ids.length)test(ids);
+  if(ids.length>=limit)return;
+  for(let i=start;i<n;i++){
+   ids.push(rolled[i].id);search(i+1,ids);ids.pop();
+  }
+ }
+ search(0,[]);
+ return best;
+}
+
 export function markCondition(c,id,value){
  if(!["sangramento","envenenado"].includes(id))return {ok:false,error:"Condição não reconhecida."};
  return {ok:true,actor:{...c,statuses:{...c.statuses,[id]:!!value}}};
@@ -163,11 +288,12 @@ export function equippedWeapons(c,catalog=[]){
   const cat=catalog.find(x=>x.name?.toLowerCase()===it.name.toLowerCase())||{};
   const kind=it.kind==="firearm"||cat.kind==="firearm"?"firearm":"weapon";
   const category=cat.category||it.category;
-  const long=Array.isArray(cat.properties)&&cat.properties.includes("À Distância");
+  const properties=[...new Set([...(Array.isArray(it.properties)?it.properties:[]),...(Array.isArray(cat.properties)?cat.properties:[])])];
+  const long=properties.includes("À Distância");
   const skill=kind==="firearm"?"armas-fogo":category==="medio"?"armas-medias":category==="pesado"?"armas-pesadas":"armas-leves";
   const eligible=(c.skills||[]).includes(skill)||(long&&(c.skills||[]).includes("armas-longo-alcance"));
   const die=Number(it.die||cat.die||0),range=Number(it.range||cat.range||0);
-  return {...it,kind,category,die,range,skill,eligible:eligible&&[6,10,12].includes(die)};
+  return {...it,kind,category,die,range,properties,skill,eligible:eligible&&[6,10,12].includes(die)};
  });
 }
 export function weightAffinity(weapon,target,attacker=null){
