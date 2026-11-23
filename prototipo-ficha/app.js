@@ -2714,7 +2714,7 @@ function defensePresentation(s=state){
   "DE base "+natural;
  return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 9 / final 12"};
 }
-function capacity(){return 1+Math.floor((state.attributes.forca||0)/3)+Math.floor((state.attributes.vigor||0)/3)+Math.floor((state.practices.armas_conjuracao||0)/3)+Math.floor((state.practices.atletismo||0)/3);}
+function capacity(){return 1+Math.floor(((state.attributes.forca||0)+(state.attributes.vigor||0)+(state.practices.atletismo||0))/3);}
 function itemLoad(it){
  if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
  const regular=WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1);
@@ -2726,7 +2726,26 @@ function itemLoad(it){
 }
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
-function balance(){if(NPC_MODE)return "Pendente";const p=loadPercent();return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
+function balanceForPercent(p){return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
+function balance(){return NPC_MODE?"Pendente":balanceForPercent(loadPercent());}
+// A prévia subtrai o peso dos recursos de troca realmente gastos na compra.
+function purchaseLoadPreview(entry,price){
+ const current=loadUsed(),added=itemLoad(normalizedCatalogItem(entry));
+ const paid=Math.min(Math.max(0,Number(price)||0),walletValue());
+ const released=paid/10*WEIGHTS.leve[1];
+ const after=Math.max(0,current+added-released),max=capacity(),percent=100*after/max;
+ return {current,added,released,after,max,percent,balance:balanceForPercent(percent),
+  status:percent>=100?"over":percent>=75?"heavy":"normal"};
+}
+function purchaseLoadMarkup(preview){
+ const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso). A compra não é bloqueada.":
+  preview.status==="heavy"?"Atenção: ficará Pesado, com pouca margem para transportar outros itens.":
+  "A compra permanece abaixo do patamar Pesado.";
+ return '<div class="fp-purchase-load fp-purchase-load-'+preview.status+'"><strong>Carga após compra: '+
+  pad(preview.after)+' / '+preview.max+' Alto ('+pad(preview.percent)+'%) · '+preview.balance+'</strong>'+
+  '<small>Agora: '+pad(preview.current)+' · Item: +'+pad(preview.added)+' · Recursos gastos: −'+pad(preview.released)+' Alto</small>'+
+  '<span>'+warning+'</span></div>';
+}
 function loadBlocksMarkup(){
  const p=loadPercent(),over=p>=100;
  return Array.from({length:20},(_,i)=>{
@@ -2742,14 +2761,13 @@ function cargoCapacitySources(){
  const sources=[
   ["Base",null,1],["Força",state.attributes.forca||0,0],
   ["Vigor",state.attributes.vigor||0,0],
-  ["Disciplina",state.practices.armas_conjuracao||0,0],
   ["Atletismo",state.practices.atletismo||0,0]
  ];
- return sources.map(([name,grade,base])=>({name,grade,gain:grade===null?base:Math.floor(grade/3)}));
+ return sources.map(([name,grade,base])=>({name,grade,gain:grade===null?base:grade}));
 }
 function cargoCapacitySourcesMarkup(){
  return cargoCapacitySources().map(src=>
-  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>+'+src.gain+' Alto</strong></div>'
+  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>'+(src.grade===null?'+1 Alto':src.gain+' graus')+'</strong></div>'
  ).join("");
 }
 function cargoGridMarkup(){
@@ -3785,6 +3803,7 @@ function wizardBuild(){
 function wizardEquipment(){
  if(tradeOwner!==state){tradeOwner=state;tradeDraft={...state.trade.resources};}
  const spent=state.trade.purchases.reduce((n,p)=>n+Number(p.price||0),0),remaining=walletValue();
+  const currentPercent=loadPercent(),currentLoadStatus=currentPercent>=100?"over":currentPercent>=75?"heavy":"normal";
  const editable=!state.trade.purchases.length&&!state.trade.collected;
  // Depois da primeira compra, mostrar recursos restantes, não a distribuição original.
  if(!editable)tradeDraft={...state.trade.resources};
@@ -3809,12 +3828,14 @@ function wizardEquipment(){
   previousGroup=group;
   const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.priceVT!=null&&Number(it.priceVT)>0;
   const price=Number(it.priceVT);
+  const preview=purchasable?purchaseLoadPreview(it,price):null;
   const priceText=purchasable?price+" VT":it.kind==="focus"?(it.priceFormula?it.priceFormula+" VT · foco":"Fabricação por Artesão"):
    it.priceVT!=null?it.priceVT+" VT · categoria pendente":"Preço pendente";
   return groupTitle+'<details class="fp-wiz-shop-item fp-shop-compact"><summary class="fp-shop-summary">'+
-   codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong><small>'+esc(equipmentDetails(it))+'</small>'+
+   codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong><small>'+esc(equipmentDetails(it))+(preview?' <span class="fp-shop-weight-risk'+(preview.status==="normal"?"":' is-'+preview.status)+'">· Após compra '+pad(preview.percent)+'% ('+preview.balance+')</span>':'')+'</small>'+
    '<b>'+esc(priceText)+'</b></summary><div class="fp-shop-expand">'+
    (it.description?'<p>'+esc(it.description)+'</p>':'<p>As características exigem Perícia apropriada; não concedem bônus automáticos.</p>')+
+   (preview?purchaseLoadMarkup(preview):'')+
    (purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+
     (remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar · '+price+' VT')+'</button>':
     '<span class="fp-wiz-muted">Não disponível para compra automática</span>')+
@@ -3826,6 +3847,7 @@ function wizardEquipment(){
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
+  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+balance()+'</strong><small>Capacidade = 1 + ⌊(Força + Vigor + Atletismo) / 3⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
  '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
@@ -3849,7 +3871,8 @@ function wizardReview(){
   '<div class="fp-wiz-reminder"><strong>'+CREATE_BUDGET.total+' XP iniciais · orçamento compartilhado</strong>'+
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
   '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
-  '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>';
+  '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>'+
+  '<div class="fp-purchase-load fp-purchase-load-'+(loadPercent()>=100?"over":loadPercent()>=75?"heavy":"normal")+'"><strong>Revisão de carga: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(loadPercent())+'%) · '+balance()+'</strong><small>Confira o peso antes de concluir o personagem. Itens transportados e recursos de troca contam na carga.</small></div>';
 }
 function wizardOverview(){
  const x=xpCosts();
@@ -4917,7 +4940,7 @@ function renderInventory(){
   grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+balance()+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
   const parts=cargoCapacitySources();
   $("inventory-capacity-sources").innerHTML=cargoCapacitySourcesMarkup();
-  $("inventory-capacity-equation").textContent=parts.map(x=>x.gain).join(" + ")+" = "+max+" Alto · 1 Alto a cada 3 Graus completos";
+  $("inventory-capacity-equation").textContent="1 + ⌊(Força "+(state.attributes.forca||0)+" + Vigor "+(state.attributes.vigor||0)+" + Atletismo "+(state.practices.atletismo||0)+") / 3⌋ = "+max+" Alto · somar os três graus antes de dividir";
   const overflow=$("inventory-cargo-overflow");
   overflow.hidden=!(load>max);
   overflow.textContent=load>max?"Capacidade excedida em "+pad(load-max)+" Alto. Nenhuma nova penalidade foi definida.":"";
@@ -5051,7 +5074,7 @@ function renderTrade(){
  $("shop-preferred").innerHTML=RESOURCES.map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join("");
  if(catalog.some(x=>x.name===currentShop))$("shop-items").value=currentShop;
  if(RESOURCES.some(x=>x[0]===currentPreferred))$("shop-preferred").value=currentPreferred;
- renderStoneShop();
+ renderStoneShop();renderPurchaseLoadPreview();
  // Seleção do navegador é preservada quando possível para evitar reset do formulário.
 }
 function renderStoneShop(){
@@ -5091,6 +5114,14 @@ function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-p
  state.trade.purchases.push({name:"Pedra Elemental de "+element,price});
  save();render();toast("Pedra de "+element+" adquirida por "+price+" VT. Efeitos seguem requisitos de Perícia e foco.");
 }
+function renderPurchaseLoadPreview(){
+ const preview=$("trade-purchase-load");if(!preview)return;
+ const item=CATALOG.find(x=>x.name===$("shop-items")?.value);
+ if(!item||item.kind==="focus"||item.category==="pendente"||!(Number(item.priceVT)>0)){
+  preview.innerHTML='<small>Escolha um equipamento para visualizar a carga e o balanço após a compra.</small>';return;
+ }
+ preview.innerHTML=purchaseLoadMarkup(purchaseLoadPreview(item,Number(item.priceVT)));
+}
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
@@ -5098,7 +5129,12 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}
- if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"))return;
+ const preview=purchaseLoadPreview(item,price);
+  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso).":
+   preview.status==="heavy"?"\nATENÇÃO: após esta compra ficará PESADO.":"";
+  if(!confirm("Comprar "+item.name+" por "+price+" VT em recursos de Grau 1?"+
+   "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Alto ("+pad(preview.percent)+"%) · "+preview.balance+
+   "\nInclui o peso do item e desconta o peso dos recursos gastos."+risk+"\nDeseja confirmar?"))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
  for(const k of order){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
@@ -5680,7 +5716,8 @@ function onChange(event){
   renderInventory();return;
  }
 
- if(el.dataset.tradeShopType!==undefined||el.dataset.tradeShopWeight!==undefined){
+ if(el.id==="shop-items"){renderPurchaseLoadPreview();return;}
+  if(el.dataset.tradeShopType!==undefined||el.dataset.tradeShopWeight!==undefined){
   if(el.dataset.tradeShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))tradeShopType=el.value;
   if(el.dataset.tradeShopWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))tradeShopWeight=el.value;
   renderTrade();return;

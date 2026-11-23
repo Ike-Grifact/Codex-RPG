@@ -1929,3 +1929,18 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-companion-panel label input:not([type=checkbox]),.fp-companion-panel select{max-width:240px;min-height:32px}
 .fp-round-budget button{width:max-content;max-width:100%}
 @media(max-width:640px){.fp-companion-panel label{align-items:flex-start;flex-direction:column}}
+
+/* Carga projetada na compra: informa sem bloquear escolhas de equipamento. */
+.fp-purchase-load{display:grid;gap:4px;min-width:180px;padding:10px 12px;margin:8px 0;border:1px solid var(--fp-stroke);border-radius:9px;background:var(--fp-raised);line-height:1.45}
+.fp-purchase-load strong{font-size:12px;color:var(--fp-text)}
+.fp-purchase-load small{font-size:11px;color:var(--fp-muted)}
+.fp-purchase-load span{font-size:11px;color:var(--fp-muted)}
+.fp-purchase-load-heavy{border-color:var(--fp-gold)}
+.fp-purchase-load-heavy span,.fp-shop-weight-risk.is-heavy{color:var(--fp-gold)}
+.fp-purchase-load-over{border-color:#c76754;background:var(--fp-raised)}
+.fp-purchase-load-over span,.fp-shop-weight-risk.is-over{color:#e28f7c;font-weight:700}
+.fp-shop-weight-risk{display:block;margin-top:3px}
+.fp-trade-load-preview{margin:4px 0 9px}
+.fp-trade-load-preview>.fp-purchase-load{margin-top:0}
+.fp-shop-compact .fp-purchase-load{flex-basis:100%;margin:0}
+@media(max-width:740px){.fp-shop-compact .fp-shop-expand{padding-left:12px}.fp-shop-compact .fp-purchase-load{width:100%}}
