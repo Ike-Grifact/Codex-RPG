@@ -164,7 +164,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
  static PARTS={body:{template:"systems/codex-rpg-foundry/templates/dna.hbs"}};
 
  constructor(actor,stage,host,draftAdvance){
-  super(host?{window:{frame:false},classes:["codex-dna","codex-dna-inline"]}:{});
+  super(host?{window:{frame:false},position:{width:"auto",height:"auto"},classes:["codex-dna","codex-dna-inline"]}:{});
   this.host=host;
   this.draftAdvance=draftAdvance;
   this.actor=actor;
@@ -276,7 +276,7 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   }
   if(!this.listMode)window.CodexGeneGraph.render(map,{
    skills:nodes,selected:this.selected,showFuture:this.showFuture,edit:true,iconBase,
-   responsiveCamera:Boolean(this.draftAdvance),
+   responsiveCamera:Boolean(this.host),
    onAdjust:(id,delta)=>{
     const row=nodes.find(node=>node.id===id);
     if(!row||(delta>0?!row.canRaise:!row.canLower))return;

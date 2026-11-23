@@ -51,7 +51,7 @@
 .codex-wizard-source-grid small {color:var(--cx-muted)}
 .codex-wizard-source-dice {display:flex;align-items:center;gap:4px}
 .codex-wizard-source-dice .codex-die-svg {width:16px;height:16px}
-.codex-wizard .codex-dna-inline {position:static;width:100%!important;max-width:100%;min-width:0;height:auto!important}
+
 .codex-wizard .codex-dna-root {padding:8px;background:transparent}
 .codex-dna-draft-lists {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:8px}
 .codex-dna-draft-lists section {display:grid;align-content:start;gap:4px}

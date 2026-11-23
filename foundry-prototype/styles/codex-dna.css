@@ -1,3 +1,4 @@
+.codex-dna-inline{position:static;width:100%;min-width:0;max-width:100%}
 .codex-dna-root [hidden]{display:none!important}
 .codex-dna-header,.codex-dna-stages,.codex-dna-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .codex-dna-header{justify-content:space-between;margin-bottom:10px}

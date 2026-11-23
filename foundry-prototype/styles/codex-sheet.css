@@ -959,7 +959,7 @@
 .codex-sheet .codex-action-bar { justify-content:flex-start; }
 .codex-sheet .codex-source-layout { grid-template-columns:repeat(3,minmax(0,1fr)); }
 .codex-sheet .codex-source-layout.is-attributes-only { grid-template-columns:minmax(0,1fr); }
-.codex-sheet .codex-dna-inline { position:static; width:auto; min-width:0; max-width:none; }
+
 .codex-sheet .codex-dna-inline .codex-dna-root { padding:12px; border:1px solid var(--cx-line); border-radius:12px; }
 .codex-sheet .codex-inventory, .codex-sheet .codex-evolution { border-top:1px solid var(--cx-line); }
 .codex-inventory-heading, .codex-wallet-head {
