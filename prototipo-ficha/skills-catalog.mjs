@@ -14,7 +14,7 @@ function racialGrants(s){
 }
 function ownsSkill(id,s){return (s.skills||[]).includes(id)||racialGrants(s).includes(id);}
 
-const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:2"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:2"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:2"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:2"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:2"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:2"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:2"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:2"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:2"}];
+const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:3"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:3"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:3"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:3"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:3"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:3"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:3"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:3"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:3"}];
 
 const WEAPON_MASTERY_TYPES=Object.freeze([
  {id:"maestria-adagas",name:"Maestria em Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
@@ -256,7 +256,7 @@ const SKILLS=[
  [
   "disciplina-avancada",
   "Disciplina Avançada",
-  "Disciplina 2; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
+  "Disciplina 3; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
   1
  ],
  [
@@ -436,43 +436,43 @@ const SKILLS=[
  [
   "protecao-avancada",
   "Proteção Avançada",
-  "1 XP. Requisito: Proteção 2. Com Proteção como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Proteção 3. Com Proteção como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "astronomia-avancada",
   "Astronomia Avançada",
-  "1 XP. Requisito: Astronomia 2. Com Astronomia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Astronomia 3. Com Astronomia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "alquimia-avancada",
   "Alquimia Avançada",
-  "1 XP. Requisito: Alquimia 2. Com Alquimia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Alquimia 3. Com Alquimia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "engenharia-avancada",
   "Engenharia Avançada",
-  "1 XP. Requisito: Engenharia 2. Com Engenharia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Engenharia 3. Com Engenharia como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "erudicao-avancada",
   "Erudição Avançada",
-  "1 XP. Requisito: Erudição 2. Com Erudição como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Erudição 3. Com Erudição como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "atletismo-avancado",
   "Atletismo Avançado",
-  "1 XP. Requisito: Atletismo 2. Com Atletismo como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Atletismo 3. Com Atletismo como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "artesao-avancado",
   "Artesão Avançado",
-  "1 XP. Requisito: Artesão 2. Com Artesão como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Artesão 3. Com Artesão como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
@@ -484,7 +484,7 @@ const SKILLS=[
  [
   "ferreiro",
   "Ferreiro",
-  "1 XP. Requisitos: Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (que exige Artesão 2). Habilita criar armas, armaduras Médias e Pesadas de Grau 1, consertar e modificar armas e preparar minérios e metais. +1 Êxito (E) apenas em testes de Forja; demais procedimentos de fabricação pendentes.",
+  "1 XP. Requisitos: Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (que exige Artesão 3). Habilita criar armas, armaduras Médias e Pesadas de Grau 1, consertar e modificar armas e preparar minérios e metais. +1 Êxito (E) apenas em testes de Forja; demais procedimentos de fabricação pendentes.",
   1
  ],
  [
@@ -502,25 +502,25 @@ const SKILLS=[
  [
   "apresentacao-avancada",
   "Apresentação Avançada",
-  "1 XP. Requisito: Apresentação 2. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Apresentação 3. Com Apresentação como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "coleta-avancada",
   "Coleta Avançada",
-  "1 XP. Requisito: Coleta 2. Com Coleta como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
+  "1 XP. Requisito: Coleta 3. Com Coleta como fonte predominante, permite até duas fontes adicionais pertinentes (três no total), incluindo ao menos um Atributo na pilha. Não concede efeitos automáticos, bônus ou nova técnica exclusiva.",
   1
  ],
  [
   "medicina-avancada",
   "Medicina Avançada",
-  "1 XP. Requisito Medicina 2. Em teste com Medicina como Base, acrescenta até duas fontes pertinentes (total de três), incluindo Atributo na pilha. Para tratar Sangrando, testa contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove o estado, falha mantém. Não dispensa rolagem nem concede cura automática.",
+  "1 XP. Requisito Medicina 3. Em teste com Medicina como Base, acrescenta até duas fontes pertinentes (total de três), incluindo Atributo na pilha. Para tratar Sangrando, testa contra a DE defensiva do alvo com Desvantagem (−1A); sucesso remove o estado, falha mantém. Não dispensa rolagem nem concede cura automática.",
   1
  ],
  [
   "furtividade-avancada",
   "Furtividade Avançada",
-  "Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
+  "1 XP. Requisitos: Furtividade 3 + Perícia em Furtividade. Em teste com Furtividade habilita terceira fonte pertinente com seus dados comprados, respeitando teto de dados rolados e mantidos e confirmação do Narrador. Não concede +1E automático nem modifica fonte sem pertinência. Funciona em combinação Furtividade + Atributo + complemento e permite segundo Atributo pertinente no simulador, sem custo de ativação.",
   1
  ],
  [
@@ -629,14 +629,14 @@ function skillReq(id,s){
  if(id==="disparo-tatico")return"Regras, requisitos e XP pendentes.";
  if(id==="golpe-baixo"&&(dex<2||strength<1||agi<1))return"Requer Destreza 2, Força 1 e Agilidade 1.";
  if(id==="furtividade"&&(stealth<2||dex<2||agi<1))return"Requer Furtividade 2, Destreza 2 e Agilidade 1.";
- if(id==="furtividade-avancada"&&(stealth<2||!has("furtividade")))return"Requer Furtividade 2 e Perícia em Furtividade.";
+ if(id==="furtividade-avancada"&&(stealth<3||!has("furtividade")))return"Requer Furtividade 3 e Perícia em Furtividade.";
   const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
-  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<2)
-   return"Requer "+advancedSource.label+" 2.";
+  if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<3)
+   return"Requer "+advancedSource.label+" 3.";
  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
   if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.";
   if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.";
- if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 2).";
+ if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
  if(id==="resistencia-a-fogo"&&(!has("ferreiro-elemental")||!has("fogo")||vig<2))return"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2."; 
@@ -646,7 +646,7 @@ function skillReq(id,s){
  if(id==="armas-leves"&&disc<1)return"Requer Disciplina 1.";
  if(id==="armas-medias"&&(disc<1||strength<1))return"Requer Disciplina 1 e Força 1.";
  if(id==="armas-pesadas"&&(disc<2||strength<2))return"Requer Disciplina 2 e Força 2.";
- if(id==="disciplina-avancada"&&disc<2)return"Requer Disciplina 2.";
+ if(id==="disciplina-avancada"&&disc<3)return"Requer Disciplina 3.";
  if(id==="concentracao-refinada"&&disc<2)return"Requer Disciplina 2.";
  if(id==="criar-item-foco-magia"&&(disc<1||(s.attributes.inteligencia||0)<1||art<1))return"Requer Disciplina 1, Inteligência 1 e Artesão 1.";
  if(["vento","agua","terra","fogo"].includes(id)&&(disc<1||(s.attributes.inteligencia||0)<1))return"Requer Disciplina 1 e Inteligência 1. Criar Foco é opcional.";
