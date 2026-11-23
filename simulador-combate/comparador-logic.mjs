@@ -242,17 +242,23 @@ export function bestKeepSelection(rolled,maxKeep,evaluateCandidate,mode="balance
  let best=null;
  const n=rolled.length,limit=Math.min(maxKeep,n,4);
  function test(ids){
-  const chosen=rolled.filter(x=>ids.includes(x.id)),raw=chosen.map(d=>faceSymbols(d.sides,d.face));
-  const p=raw.reduce((sum,v)=>sum+v[2],0),a=raw.reduce((sum,v)=>sum+v[1],0);
-  // Bônus situacionais e de crítico podem elevar P e A; o motor filtra opções inválidas.
-  const maxCancel=Math.min(9,p+4),maxConvert=Math.min(9,Math.floor((a+10)/2));
-  for(let cancelP=0;cancelP<=maxCancel;cancelP++)for(let convertPairs=0;convertPairs<=maxConvert;convertPairs++){
-   const pre=evaluateCandidate(ids,{cancelP,convertPairs});
-   if(!pre?.ok)continue;
-   const score=candidateScore(pre,mode);
-   if(!best||score>best.score+1e-7||
-    (score===best.score&&ids.length>best.ids.length))
-    best={ids:[...ids],cancelP,convertPairs,score,preview:pre};
+  // A prévia sem gastos de Antecipar contém exatamente o número disponível de A e P
+  // (inclui bônus de Saúde, circunstância e crítico), sem supor valores extras.
+  const initial=evaluateCandidate(ids,{cancelP:0,convertPairs:0});
+  if(!initial?.ok)return;
+  const a=Math.max(0,Number(initial.result.aRemaining||0));
+  const p=Math.max(0,Number(initial.result.p||0));
+  const maxCancel=Math.min(9,a,p);
+  for(let cancelP=0;cancelP<=maxCancel;cancelP++){
+   const maxConvert=Math.min(9,Math.floor((a-cancelP)/2));
+   for(let convertPairs=0;convertPairs<=maxConvert;convertPairs++){
+    const pre=cancelP===0&&convertPairs===0?initial:evaluateCandidate(ids,{cancelP,convertPairs});
+    if(!pre?.ok)continue;
+    const score=candidateScore(pre,mode);
+    if(!best||score>best.score+1e-7||
+     (score===best.score&&ids.length>best.ids.length))
+     best={ids:[...ids],cancelP,convertPairs,score,preview:pre};
+   }
   }
  }
  function search(start,ids){
