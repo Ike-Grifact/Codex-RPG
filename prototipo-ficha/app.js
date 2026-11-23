@@ -1833,7 +1833,6 @@ function weaponMasteryId(item){
 function weaponMasteryRequiredSkill(item){
  const id=weaponMasteryId(item);
  if(!id)return null;
- if(id==="maestria-punhos"&&(strength<1||agi<1||dex<1||vig<1))return"Requer Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar. Pugilismo é exigido somente para ativar os efeitos da Especialização.";
  if(id==="maestria-martelos")return hammerMasteryRequiredSkill(item);
  if(id==="maestria-armas-fogo")return "armas-fogo";
  if(id==="maestria-punhos")return "pugilismo";
@@ -2576,7 +2575,8 @@ function skillReq(id,s=state){
   const advancedSource=ADVANCED_SOURCE_DEFS.find(row=>row.id===id);
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<3)
    return"Requer "+advancedSource.label+" 3.";
- if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
+ if(id==="maestria-punhos"&&(strength<1||agi<1||dex<1||vig<1))return"Requer Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar. Pugilismo é exigido somente para ativar os efeitos da Especialização.";
+  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
   if(id==="maestria-macas"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1. A Perícia de Armas do peso da maça ou clava é exigida só para ativar.";
   if(id==="maestria-adagas"&&(agi<2||dex<2))return"Requer Agilidade 2 e Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
   if(id==="maestria-machados"&&(strength<2||dex<1))return"Requer Força 2 e Destreza 1 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
