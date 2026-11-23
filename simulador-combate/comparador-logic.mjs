@@ -33,11 +33,15 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
   leader:!!raw.leader,race:String(raw.race||"").slice(0,70),
   attributes:{...base.attributes},knowledges:{...base.knowledges},practices:{...base.practices},
   skills:Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,130):[],
-  items:Array.isArray(raw.items)?raw.items.slice(0,70).map(normalizeEquipment):[]};
+  items:Array.isArray(raw.items)?raw.items.slice(0,70).map(normalizeEquipment):[],
+  smallCompanion:{present:!!raw.smallCompanion?.present,name:String(raw.smallCompanion?.name||"").slice(0,70),
+   species:String(raw.smallCompanion?.species||"").slice(0,50)},
+  statuses:{sangramento:!!raw.statuses?.sangramento,envenenado:!!raw.statuses?.envenenado},
+  courageRoundSpent:int(raw.courageRoundSpent||0,0,5)};
  for(const [field,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)out[field][key]=int(raw[field]?.[key],0,6);
- out.life=int(raw.life??stats(out).life,0,999);
- out.courage=int(raw.courage??10,0,maxCourage(out.level));
+ out.life=int(raw.life??(stats(out).life+Number(hasSmallCompanion(out))),0,999);
+ out.courage=side==="inimigos"?0:int(raw.courage??10,0,maxCourage(out.level));
  out.pavorLocal=int(raw.pavorLocal??(kind==="monstro"?monsterCap(out.threatGrade):4),0,monsterCap(out.threatGrade));
  out.keep=int(raw.keep??2,2,4);
  out.acted=!!raw.acted;
@@ -68,6 +72,7 @@ export function combatantSheetData(c={}){
 }
 
 /** Saúde segue os quatro estados do jogador (inclusive inimigos). */
+export function hasSmallCompanion(c){return !!(c?.smallCompanion?.present&&c?.skills?.includes("domar-criatura-pequena"));}
 export function combatHealth(c){
  const max=4+Number(c?.attributes?.vigor||0)+Math.floor(Number(c?.attributes?.forca||0)/2);
  return healthByLife(c,Math.max(0,Math.min(max,Math.floor(Number(c?.life??max)))));
@@ -94,7 +99,7 @@ export function rollProvenance(rolled,ids,options={}){
   const source=d.group==="equipment"?String(options.weapon||"Equipamento"):
    d.group==="magic"?"Magia "+String(d.key||""):idName||String(d.key||"Fonte");
   return {id:d.id,source,group:names[d.group]||"Fonte",sides:d.sides,face:d.face,
-   kept:kept.has(d.id),e,a,p,step:!!d.boosted};
+   kept:kept.has(d.id),e,a,p,step:!!d.boosted,fulminante:!!d.fulminante};
  });
 }
 /** Custos de perícias não determinados globalmente são declarados pelo Narrador. */
@@ -104,6 +109,40 @@ export function selectedActiveSkill(c,id){
  const row=SKILLS.find(x=>x.id===id);
  return row?{id,name:row.name,detail:row.detail}:null;
 }
+/** Técnica Fulminante: melhora um ÚNICO dado de arma por ativação.
+ * Não extrapola automaticamente para d20, Perícias de armas de fogo ou magia.
+ */
+export function fulminanteWeaponDice(die){
+ if(![6,10,12].includes(Number(die)))return null;
+ return Number(die)===6?[10]:Number(die)===10?[12]:[12,12];
+}
+export function validFulminanteForWeapon(weapon,skill,thrown=false){
+ if(!weapon||weapon.kind==="firearm")return false;
+ const ranged=/(?:^arco\b|^besta\b|zarabatana)/i.test(weapon.name||"")||
+  (weapon.properties||[]).includes("À Distância");
+ if(skill==="golpe-fulminante")return !ranged&&!thrown;
+ if(skill==="disparo-fulminante")return ranged||thrown;
+ return false;
+}
+export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
+ if(!validFulminanteForWeapon(weapon,skill,thrown))return {ok:false,error:"Fulminante incompatível com arma/modo de ataque."};
+ const index=(pool||[]).findIndex(d=>d.group==="equipment"&&d.key===weapon.id);
+ if(index<0)return {ok:false,error:"O dado da arma deve estar na pilha."};
+ const base=pool[index],elevated=fulminanteWeaponDice(base.sides);
+ if(!elevated)return {ok:false,error:"Só é possível elevar um dado de arma d6, d10 ou d12."};
+ const output=pool.map(d=>({...d}));
+ output[index].sides=elevated[0];output[index].fulminante=true;output[index].originalSides=base.sides;
+ if(elevated.length===2){
+  if(output.length>=9)return {ok:false,error:"O segundo d12 ultrapassaria o teto de 9 dados rolados."};
+  output.push({...base,id:base.id+".fulminante",sides:12,fulminante:true,originalSides:12});
+ }
+ return {ok:true,pool:output,before:[base.sides],after:elevated};
+}
+export function markCondition(c,id,value){
+ if(!["sangramento","envenenado"].includes(id))return {ok:false,error:"Condição não reconhecida."};
+ return {ok:true,actor:{...c,statuses:{...c.statuses,[id]:!!value}}};
+}
+
 export function armorOf(c){
  return (c?.items||[]).find(it=>it.kind==="armor"&&it.equipped)||null;
 }
@@ -193,7 +232,10 @@ export function updateResource(actor,itemId,field,delta){
   if(!item)return {ok:false,error:"Selecione armadura ou escudo."};
   item.integrity=int(item.integrity+delta,0,item.integrityMax);
  }else if(field==="vida")copy.life=int(copy.life+delta,0,999);
- else if(field==="coragem")copy.courage=int(copy.courage+delta,0,maxCourage(copy.level||1));
+ else if(field==="coragem"){
+  if(copy.side==="inimigos")return {ok:false,error:"Inimigos não possuem Coragem; use Pavor local."};
+  copy.courage=int(copy.courage+delta,0,maxCourage(copy.level||1));
+ }
  else if(field==="pavor")copy.pavorLocal=int(copy.pavorLocal+delta,0,monsterCap(copy.threatGrade||1));
  else return {ok:false,error:"Recurso desconhecido."};
  return {ok:true,actor:copy};
