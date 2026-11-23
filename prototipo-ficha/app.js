@@ -4632,7 +4632,12 @@ function score(){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
   const weaponSkillId=weaponWeight==="leve"?"armas-leves":weaponWeight==="medio"?"armas-medias":
    weaponWeight==="pesado"?"armas-pesadas":null;
-  if(weaponSkillId&&(p.mode!=="armas"||!ownsSkill(weaponSkillId)||skillReq(weaponSkillId)))
+  // Cravar conserva a exceção da v0.77: crítico permite essa única característica
+  // com arma Média/Pesada, sem exigir compra da Perícia de peso.
+  const freeCravarCritical=!!critTier&&p.characteristic==="Cravar"&&!p.secondCharacteristic&&
+   ["medio","pesado"].includes(weaponWeight)&&p.mode==="armas";
+  if(weaponSkillId&&!freeCravarCritical&&
+    (p.mode!=="armas"||!ownsSkill(weaponSkillId)||skillReq(weaponSkillId)))
    errs.push("Ativar características desta arma exige a Perícia de Armas do peso correspondente e seus requisitos atuais.");
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
    errs.push("A característica escolhida não é ativável neste equipamento.");
