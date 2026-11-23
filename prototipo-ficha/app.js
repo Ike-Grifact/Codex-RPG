@@ -27,7 +27,7 @@ const TRAIN_COST=[0,2,4,8,16,32,64];
 const TRAIN_DISCOUNT=[0,1,3,6,9,18,32];
 const TRAIN_ELEVATED=[0,3,6,12,24,48,96];
 const RACES={
- humano:["Humano","Perseverança Humana + Maestria em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
+ humano:["Humano","Perseverança Humana + Especialização em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue gratuita; linhagem exclusiva de Transfusão Sanguinária (que não é gratuita).","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
  lucker_puro:["Lucker Puro","Criar Item de Foco e Magia custa 0 XP somente após cumprir Disciplina 1, Inteligência 1 e Artesão 1; um elemento gratuito à escolha: Fogo, Água, Ar, Terra ou Sagrado. Veneno, Sangue e Trevas não são opções iniciais.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
  runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
@@ -137,18 +137,18 @@ const MAX_EARNED_XP=XP_LEVEL_REFERENCE[20]-CREATE_BUDGET.total; // 245 XP novos 
 // na respectiva fonte e custam 1 XP; outras exigências históricas permanecem.
 const ADVANCED_SOURCE_DEFS=[{"id":"disciplina-avancada","group":"practice","key":"armas_conjuracao","label":"Disciplina"},{"id":"furtividade-avancada","group":"practice","key":"furtividade","label":"Furtividade"},{"id":"medicina-avancada","group":"know","key":"medicina","label":"Medicina"},{"id":"protecao-avancada","name":"Proteção Avançada","group":"know","key":"protecao","label":"Proteção","ref":"k:protecao:3"},{"id":"astronomia-avancada","name":"Astronomia Avançada","group":"know","key":"astronomia","label":"Astronomia","ref":"k:astronomia:3"},{"id":"alquimia-avancada","name":"Alquimia Avançada","group":"know","key":"alquimia","label":"Alquimia","ref":"k:alquimia:3"},{"id":"engenharia-avancada","name":"Engenharia Avançada","group":"know","key":"engenharia","label":"Engenharia","ref":"k:engenharia:3"},{"id":"erudicao-avancada","name":"Erudição Avançada","group":"know","key":"erudicao","label":"Erudição","ref":"k:erudicao:3"},{"id":"atletismo-avancado","name":"Atletismo Avançado","group":"practice","key":"atletismo","label":"Atletismo","ref":"p:atletismo:3"},{"id":"artesao-avancado","name":"Artesão Avançado","group":"practice","key":"artesao","label":"Artesão","ref":"p:artesao:3"},{"id":"apresentacao-avancada","name":"Apresentação Avançada","group":"practice","key":"apresentacao","label":"Apresentação","ref":"p:apresentacao:3"},{"id":"coleta-avancada","name":"Coleta Avançada","group":"practice","key":"coleta","label":"Coleta","ref":"p:coleta:3"}];
 const WEAPON_MASTERY_TYPES=Object.freeze([
- {id:"maestria-adagas",name:"Maestria em Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-espadas",name:"Maestria em Espadas",family:"espadas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-machados",name:"Maestria em Machados",family:"machados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-macas",name:"Maestria em Maças e Clavas",family:"macas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-hastes",name:"Maestria em Lanças e Hastes",family:"hastes",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-cajados",name:"Maestria em Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-arcos",name:"Maestria em Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-bestas",name:"Maestria em Bestas",family:"bestas",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-arremessos",name:"Maestria em Armas Arremessadas",family:"arremessos",activationReq:"Maestria em Arremesso de Armas e Perícia de Armas do peso"},
- {id:"maestria-punhos",name:"Maestria em Armas de Punho",family:"punhos",activationReq:"Pugilismo"},
- {id:"maestria-longo-alcance",name:"Maestria em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
- {id:"maestria-armas-fogo",name:"Maestria em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
+ {id:"maestria-adagas",name:"Especialização em Armas — Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-espadas",name:"Especialização em Armas — Espadas",family:"espadas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-machados",name:"Especialização em Armas — Machados",family:"machados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-macas",name:"Especialização em Armas — Maças e Clavas",family:"macas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-hastes",name:"Especialização em Armas — Lanças e Hastes",family:"hastes",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-cajados",name:"Especialização em Armas — Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
+ {id:"maestria-arcos",name:"Especialização em Armas — Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-bestas",name:"Especialização em Armas — Bestas",family:"bestas",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-arremessos",name:"Especialização em Armas Arremessadas",family:"arremessos",activationReq:"Maestria em Arremesso de Armas e Perícia de Armas do peso"},
+ {id:"maestria-punhos",name:"Especialização em Armas de Punho",family:"punhos",activationReq:"Pugilismo"},
+ {id:"maestria-longo-alcance",name:"Especialização em Armas de Longo Alcance Diversas",family:"longo-alcance",activationReq:"Perícia em Armas de Longo Alcance"},
+ {id:"maestria-armas-fogo",name:"Especialização em Armas de Fogo",family:"fogo",activationReq:"Perícia em Armas de Fogo"},
 ]);
 const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-hastes":"Força 2 + Agilidade 1 + Destreza 1",
@@ -156,7 +156,8 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-adagas":"Agilidade 2 + Destreza 2",
  "maestria-machados":"Força 2 + Destreza 1",
  "maestria-cajados":"Destreza 2",
- "maestria-macas":"Força 3 + Destreza 1 + Vigor 1"
+ "maestria-macas":"Força 3 + Destreza 1 + Vigor 1",
+ "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
@@ -217,7 +218,7 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
   1
  ]),
  [
@@ -600,7 +601,7 @@ const SKILLS=[
  ],
  [
   "maestria-martelos",
-  "Maestria em Martelos",
+  "Especialização em Armas — Martelos",
   "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
@@ -1359,7 +1360,7 @@ const CARD_REQUIREMENTS={
  "maestria-arcos":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
  "maestria-bestas":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
  "maestria-arremessos":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
- "maestria-punhos":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
+ "maestria-punhos":"1 XP; compra: Força 1 + Agilidade 1 + Destreza 1 + Vigor 1. Ativação exige Pugilismo.",
  "maestria-longo-alcance":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
  "maestria-armas-fogo":"Origem Humano: 0 XP por concessão racial (nominal 1 XP); Perícia em Armas de Fogo para ativar.",
  "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 3)",
@@ -1538,7 +1539,7 @@ const CARD_BRIEFS={
  "maestria-arcos":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
  "maestria-bestas":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
  "maestria-arremessos":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
- "maestria-punhos":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
+ "maestria-punhos":"1 XP; exige Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar; Pugilismo para ativar. Acerto 1 efeito grátis; crítico 2 grátis e terceira por 1 Coragem.",
  "maestria-longo-alcance":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
  "maestria-armas-fogo":"Concedida ao Humano (0 XP racial; nominal 1 XP). Acerto: 1 grátis; crítico: 2 grátis + terceira por 1 Coragem.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
@@ -1791,8 +1792,8 @@ function equipmentWeight(item){
  if(item.weight==="extremo")return "extremo";
  return "leve";
 }
-// Maestria em Martelos: Perícia de Armas conforme o PESO é exigida na ativação,
-// e não como requisito para comprar Maestria em Martelos.
+// Especialização em Armas — Martelos: Perícia de Armas conforme o PESO é exigida na ativação,
+// e não como requisito para comprar Especialização em Armas — Martelos.
 function hammerMasteryRequiredSkill(item){
  if(!item||!["weapon","arma"].includes(item.type))return null;
  const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -1832,6 +1833,7 @@ function weaponMasteryId(item){
 function weaponMasteryRequiredSkill(item){
  const id=weaponMasteryId(item);
  if(!id)return null;
+ if(id==="maestria-punhos"&&(strength<1||agi<1||dex<1||vig<1))return"Requer Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar. Pugilismo é exigido somente para ativar os efeitos da Especialização.";
  if(id==="maestria-martelos")return hammerMasteryRequiredSkill(item);
  if(id==="maestria-armas-fogo")return "armas-fogo";
  if(id==="maestria-punhos")return "pugilismo";
@@ -2514,7 +2516,7 @@ function xpStepCost(group,k,delta){
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
- if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Maestria em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
+ if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Especialização em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
  if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";
  if(racialGrants(s).includes(id))return null;
  const has=x=>ownsSkill(x,s);
@@ -3335,6 +3337,7 @@ const GENE_AUTO_REQUIREMENTS={
  "atletismo-avancado":[["p:atletismo:3"]],
  "artesao-avancado":[["p:artesao:3"]],
  "maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]],
+  "maestria-punhos":[["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]],
   "maestria-adagas":[["a:agilidade:2","a:destreza:2"]],
   "maestria-machados":[["a:forca:2","a:destreza:1"]],
   "maestria-macas":[["a:forca:3","a:destreza:1","a:vigor:1"]],
@@ -5103,7 +5106,7 @@ function renderInventory(){
    '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
-  (weaponMasteryId(it)&&ownsSkill(weaponMasteryId(it))?'<div class="fp-item-hint"><strong>Maestria por tipo de arma:</strong> '+(weaponMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas/manejo apropriada para este equipamento ou peso não definido.')+' Não concede Perícias de Armas, nem ativa efeitos automaticamente.</div>':"")+ 
+  (weaponMasteryId(it)&&ownsSkill(weaponMasteryId(it))?'<div class="fp-item-hint"><strong>Especialização por família de arma:</strong> '+(weaponMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas/manejo apropriada para este equipamento ou peso não definido.')+' Não concede Perícias de Armas, nem ativa efeitos automaticamente.</div>':"")+ 
   (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
