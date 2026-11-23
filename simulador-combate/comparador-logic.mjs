@@ -72,7 +72,7 @@ export function combatantSheetData(c={}){
   kindName:KINDS[c.kind]||(c.kind==="monstro"?"Criatura/Monstro":"Tipo não identificado"),
   human,disciplineGrade,focusStatus:focusCombatStatus(c),
   advancedDiscipline:human&&owned.includes("disciplina-avancada"),
-  advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=2,
+  advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=3,
   attributes:levels(ATTRIBUTES,"attributes"),
   knowledges:human?levels(KNOWLEDGES,"knowledges"):[],
   practices:human?levels(PRACTICES,"practices"):[],
