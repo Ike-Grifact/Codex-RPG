@@ -2,7 +2,7 @@
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
 import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,toSystem,stats} from "./rules.mjs?v=20261123-skill-package-v1";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,humanoidHasFocus,toSystem,stats} from "./rules.mjs?v=20261123-skill-package-v1";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
@@ -79,7 +79,7 @@ export function composeActionPool(unit,selection={},stepDieId=""){
   ids.add(id);
  }
  if(human&&!["knowledge","practice"].includes(selection.baseGroup))errors.push("Escolha Conhecimento ou Prática como Base.");
- if(human&&selection.baseKey==="armas_conjuracao"&&selection.mode==="conjuracao"&&!unit.skills.includes("criar-item-foco-magia"))
+ if(human&&selection.baseKey==="armas_conjuracao"&&selection.mode==="conjuracao"&&!humanoidHasFocus(unit))
   errors.push("Conjuração exige Criar Item de Foco e Magia.");
  if(extra){
   const advanced=human&&(
