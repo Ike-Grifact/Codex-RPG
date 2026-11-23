@@ -1978,6 +1978,7 @@ function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,runeShieldFreeUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
  xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
+ smallCompanion:{present:false,name:"",species:"outro"},
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
@@ -2264,6 +2265,11 @@ function normalize(v){
  if(Array.isArray(v.skills)&&v.skills.includes("raio")&&!s.notes.includes("Legado Raio:")){
   s.notes=(s.notes+"\nLegado Raio: habilitação antiga removida; Raio agora é condição, não elemento. O XP da compra antiga foi liberado para redistribuição.").trim().slice(0,5000);
  }
+ s.smallCompanion={
+  present:!!v.smallCompanion?.present&&s.skills.includes("domar-criatura-pequena"),
+  name:String(v.smallCompanion?.name||"").slice(0,70),
+  species:v.smallCompanion?.species==="serpente"?"serpente":"outro"
+ };
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
  s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
  s.legacyXPRefund=clamp(Math.floor(v.legacyXPRefund||0),0,1000000);
@@ -2411,11 +2417,14 @@ const LIFE_STATES={
  inconsciente:{id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2},
  morto:{id:"morto",label:"Morto",e:0,a:0,p:0,coragem:Infinity}
 };
+function companionLifeBonus(s=state){return Number(!!(s.smallCompanion?.present&&s.skills?.includes("domar-criatura-pequena")));}
 function lifeBands(s=state){
  const vigor=Math.max(0,Math.floor(s.attributes.vigor||0));
  const forca=Math.max(0,Math.floor(s.attributes.forca||0));
  const extras=vigor+Math.floor(forca/2);
- return [1+Math.ceil(extras/2),1+Math.floor(extras/2),1,1];
+ // Exibir o bônus no segmento superior apenas como convenção técnica de interface.
+ // Alocação normativa do +1 nas quatro faixas continua PENDENTE.
+ return [1+Math.ceil(extras/2)+companionLifeBonus(s),1+Math.floor(extras/2),1,1];
 }
 function maxLife(s=state){return lifeBands(s).reduce((n,k)=>n+k,0);}
 function lifeStage(s=state){
@@ -3560,7 +3569,7 @@ function prepareElementSkill(id){
  prepareMagic(id);
 }
 
-function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderSmallCompanion();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Etapas guiadas: Codex Genético padrão e listas opcionais compartilham o mesmo XP e ficha. */
 function wizardPersist(){
@@ -3917,6 +3926,20 @@ function renderWizard(){
   (stage===4?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
+function renderSmallCompanion(){
+ const panel=$("small-companion-panel");if(!panel)return;
+ const owned=state.skills.includes("domar-criatura-pequena");
+ panel.hidden=!owned;
+ const present=owned&&!!state.smallCompanion?.present;
+ $("small-companion-present").checked=present;
+ $("small-companion-name").value=state.smallCompanion?.name||"";
+ $("small-companion-name").disabled=!present;
+ $("small-companion-species").value=state.smallCompanion?.species==="serpente"?"serpente":"outro";
+ $("small-companion-species").disabled=!present;
+ $("small-companion-info").textContent=present?
+  "+1 Vida máxima registrado. Auxílio ativo: 1 Coragem por turno; a serpente aplica Envenenado se o alvo estiver em Sangramento, sem dano automático não definido.":
+  "Comprar Domar Criatura Pequena não cria automaticamente um companheiro nem concede +1 Vida. Registre-o após a domesticação.";
+}
 function renderVitals(){
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.courage=clamp(state.courage,0,maxCourage());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
@@ -5562,6 +5585,16 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(["small-companion-present","small-companion-name","small-companion-species"].includes(el.id)){
+  if(!state.skills.includes("domar-criatura-pequena")){toast("Adquira Domar Criatura Pequena e realize a domesticação antes de registrar o animal.");renderSmallCompanion();return;}
+  const oldMax=maxLife();
+  if(el.id==="small-companion-present")state.smallCompanion.present=!!el.checked;
+  else if(el.id==="small-companion-name")state.smallCompanion.name=String(el.value).slice(0,70);
+  else if(el.id==="small-companion-species")state.smallCompanion.species=el.value==="serpente"?"serpente":"outro";
+  const difference=maxLife()-oldMax;
+  if(difference)state.life=clamp(state.life+difference,0,maxLife()); // Preserva o dano sofrido.
+  renderVitals();renderSmallCompanion();save();return;
+ }
  if(el.dataset.magicField!==undefined){
   if(state.pending){toast("Finalize a rolagem antes de alterar a magia.");renderOwnedPanel();return;}
   const field=el.dataset.magicField;
