@@ -1924,6 +1924,7 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 
 
 .fp-round-budget,.fp-companion-panel{display:grid;gap:8px;margin:10px 0;padding:12px;border-radius:10px}
+.fp-companion-panel[hidden]{display:none!important}
 .fp-companion-panel label{display:flex;align-items:center;flex-wrap:wrap;gap:8px;line-height:1.5}
 .fp-companion-panel label input:not([type=checkbox]),.fp-companion-panel select{max-width:240px;min-height:32px}
 .fp-round-budget button{width:max-content;max-width:100%}
