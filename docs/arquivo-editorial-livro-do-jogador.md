@@ -349,3 +349,67 @@ Pode usar elemento de um **foco** para amplificar a forma ou um elemento present
 ## Atualização normativa — 13/11/2026: características e Perícias [HISTÓRICO nos custos]
 
 **Ativação:** ataque comum acertado pode gastar **1 Coragem para ativar uma característica especial escolhida**; um crítico que acertar pode ativar **uma característica gratuitamente**, e **mais uma** mediante novo pagamento. Não ativar todos os efeitos de arma mista automaticamente. Efeitos passivos não exigem pagamento. **Criar Item de Foco e Magia (1 XP)** agora exige **Disciplina 1 + Inteligência 1 + Artesão 1**; criar foco usa teste de Artesão. O conjurador com Criar Magia recebe um Cristal Elemental inicial do elemento escolhido. **VT** significa Valor de Troca, não moeda física; recursos comuns são Ervas, Espólios, Couro, Comida e Minérios, com o mesmo valor-base por Grau. Armaduras G1 **7/12/17 de Integridade são valores em playtest após redução de 3**, e 20 VT iniciais são hipótese econômica de playtest. Limites de características especiais em G1: **2 Leve, 2 Média, 3 Pesada**; Elemental, Precisa e Explosiva não são G1. Veja a seção 0-X do SRD para o catálogo e os estados.
+
+
+---
+
+### REWORK PROPOSTO/EM CONSOLIDAÇÃO — Coragem e identidades de Maestria (17/11/2026)
+
+> **Documento de transição.** O autor aprovou a **retirada de PP como recurso separado**, substituindo essa economia por **Coragem com mecanismos de recuperação ligados às Maestrias**. Os parágrafos históricos anteriores e posteriores ainda descrevem PP, Perícia em Coragem, recuperação de PP em críticos (**agora revogada**) e custos de técnicas **1 Coragem**. **Eles exigem migração antes de se considerar esta revisão implementada** no criador/Foundry; não são exemplos prontos de custos convertidos.
+
+**DEFINIDO — objetivo da nova economia:** Maestrias representam identidades de build sem impor classe obrigatória. **A progressão neutra de Coragem é automática e concede +1 ao teto nos níveis 5, 10 e 20**, independentemente de Maestria especializada. Cada Maestria especializada é obtida gratuitamente ao cumprir **seus próprios requisitos**, a definir, e **não precisa ter o mesmo nível mínimo das demais**. O nível 20 completa a progressão neutra/identidade neutra, e continua possível escolher **uma Maestria especializada opcional**, no máximo duas identidades no total quando se conta a neutra. **Todas as recuperações de Coragem** — pelos mecanismos convencionais relacionados ao Pavor e pelos gatilhos específicos de Maestrias — alimentam **a mesma reserva geral**, até o teto alcançado.
+
+**DEFINIDO — bônus neutros por nível, Maestria e teto máximo (opção A, 17/11/2026):** o personagem começa com teto **10 Coragens**; recebe **+1 neutro no nível 5 (teto 11), +1 no nível 10 (teto 12) e +1 no nível 20 (teto 13)**, independentemente de Maestria especializada. Maestrias especializadas são obtidas gratuitamente ao cumprir os **requisitos próprios**, cujos níveis ainda serão definidos; o bônus descrito é **+3 se obtida antes do nível 20** ou **+2 se obtida após o nível 20**. No exemplo autoral de personagem nível 5 com especialização, o teto é **10 + 1 neutro + 3 de Maestria = 14**; no nível 10, mais +1 neutro resulta em **15**. **DEFINIDO — opção A:** no nível 20, o bônus neutro final de +1 permanece na progressão, mas **não ultrapassa o teto absoluto de 15**. A soma nominal 16 é limitada a **15**; o ponto excedente **não é guardado, convertido em recarga, redistribuído nem transportado para outra reserva**. Toda recuperação abastece uma única reserva de Coragem até o teto do personagem.
+
+| Nível | Bônus neutro acumulado | Teto sem Maestria especializada |
+|---|---:|---:|
+| 1–4 | 0 | **10** |
+| 5–9 | +1 | **11** |
+| 10–19 | +2 | **12** |
+| 20 | +3 | **13** |
+
+**Exemplo de especialização obtida no nível 5 — teto absoluto definido:** **10 básicos +1 neutro (nível 5) +3 da Maestria = 14**. No nível 10, +1 neutro aumenta para **15**. No nível 20, o marco neutro de +1 é alcançado, mas **o teto permanece 15**, pois o excedente nominal não é concedido acima do máximo. A progressão nos níveis 5/10/20 é neutra e **não determina o nível de aquisição** das especializações.
+
+| Identidade / Maestria | Gatilho/benefício descrito pelo autor | Ainda precisa definir |
+|---|---|---|
+| **Conjuração** | Especialização com recuperação temática de combate | Requisitos e gatilho |
+| **Elemental** | Identidade de maestria; escolha sujeita ao limite de duas | Gatilho e migração da **Perícia Maestria Elemental** atual |
+| **Trevas** | Roubar medo | Alvo, tipo/quantidade de medo e recuperação |
+| **Sagrada** | Coragem adicional para conjurar; críticos sagrados recuperam; conjuração sagrada pode anular **Pavor próprio** convertendo-o em **Êxito** | Quantidades, momento, limites e relação com crítico/DE |
+| **Sangue** | Acumular sangue em combate, concentrando aqui a mecânica de Hemomancia associada | Que regras históricas são transferidas, custos, acúmulos e duração |
+| **Precisão** | **3 ativações de efeitos de armas → recupera 1 Coragem**; **crítico com 2 dados** também permite recuperação | Se soma à recuperação normal do crítico e como registrar contagens |
+| **Mestre de Armas** | **3 armas diferentes trocadas/utilizadas em combate → recupera 1 Coragem** | Condições válidas de troca e repetição |
+| **Combo (Pugilista)** | **3 aplicações de status → recupera 1 Coragem** | Quais condições contam e quando zerar a contagem |
+
+**DEFINIDO — recuperação unificada:** quando o gatilho de uma Maestria recupera Coragem, **restaura a reserva geral**, até o teto total já desbloqueado. O mesmo vale para a recuperação convencional relacionada ao **Pavor**, sem carteiras separadas para Maestria neutra, especializada e Coragem básica. **PENDENTE:** cumulação de gatilhos na mesma ação, interação com a recuperação já existente por **crítico comum**, retenção de contadores entre combates e prevenção de recuperações repetidas indevidas. **DEFINIDO:** o crítico comum recupera Coragem conforme a tabela e **não recupera PP**. **PENDENTE/ADIADO:** se a Maestria Precisão acrescenta recuperação ou substitui a recuperação comum; não conceder duplicação automática e não escolher A ou B antes da revisão específica das Maestrias.
+
+**PENDENTE — Maestrias e regras especiais ainda não revisadas:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. As alternativas de pagamento em PP foram retiradas dos textos e do motor das fichas desta branch: quando havia alternativa de Coragem, ela foi preservada; custos exclusivamente em PP passaram a 1 Coragem por decisão autoral. As Maestrias e exceções de funcionamento ainda não especificadas permanecem para etapa própria. A implantação numa instalação externa de Foundry não foi realizada. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
+
+
+---
+
+### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
+
+A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
+
+| Estado da Saúde | Penalidade | Coragem para agir |
+|---|---|---|
+| **Saudável (3/3)** | Nenhuma | Sem custo adicional de Saúde |
+| **Machucado (2/3)** | **−1A** | Pode pagar **1 Coragem** para ignorar a penalidade nessa ação |
+| **Incapacitado (1/3)** | **−2E e −1A** | **1 Coragem para agir** com penalidade; **2 Coragens no total** para agir e ignorar as penalidades dessa ação |
+| **Morto (0 Vida)** | Não pode agir | Não se aplica |
+
+As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
+
+
+---
+
+### Histórico de recuperação em três caixas [PENDENTE DE ADAPTAÇÃO]
+
+| Caixa em recuperação | Tempo por ponto de Vida |
+|---|---|
+| **Saudável (3/3)** | **1 dia** |
+| **Machucado (2/3)** | **1 semana** |
+| **Incapacitado (1/3)** | **Tratamento médico obrigatório** e depois **1 semana** |
+
+O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condições de repouso, interrupção e duração do tratamento seguem **PENDENTES**.
