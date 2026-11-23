@@ -418,7 +418,7 @@
             <span class="fp-cargo-key fp-cargo-key-recurso">Recursos</span>
           </div>
           <div class="fp-capacity-breakdown">
-            <div><strong>De onde vem a capacidade?</strong><small id="inventory-capacity-equation">Base + Força + Vigor + Disciplina + Atletismo</small></div>
+            <div><strong>De onde vem a capacidade?</strong><small id="inventory-capacity-equation">1 + ⌊(Força + Vigor + Atletismo) / 3⌋</small></div>
             <div class="fp-capacity-sources" id="inventory-capacity-sources"></div>
           </div>
           <p class="fp-cargo-overflow" id="inventory-cargo-overflow" hidden></p>
@@ -467,6 +467,7 @@
               <label>Pagar preferencialmente com <select id="shop-preferred"></select></label>
               <button type="button" class="fp-primary-btn" data-action="trade-buy">Comprar por VT</button>
             </div>
+            <div id="trade-purchase-load" class="fp-trade-load-preview" aria-live="polite"><small>Escolha um equipamento para visualizar a carga após a compra.</small></div>
             <small>Preços e alcances sugeridos para playtest. A compra usa recursos reais na ficha, descontando primeiro o recurso escolhido e depois os demais.</small>
           </div>
           <div class="fp-trade-shop" id="stone-shop" aria-label="Pedras elementais">
