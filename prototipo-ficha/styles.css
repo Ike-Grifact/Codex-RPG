@@ -1970,3 +1970,11 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
  .fp-npc-embed-actions button{flex:1;min-width:125px}
  .fp-body.fp-npc-embedded .fp-wizard-intro{padding:10px 12px}
 }
+
+.fp-npc-embed-bottom[hidden]{display:none!important}
+.fp-npc-embed-bottom{display:none}
+.fp-body.fp-npc-embedded .fp-npc-embed-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:15px;margin:12px 0;border:1px solid var(--fp-gold);background:var(--fp-raised);border-radius:12px}
+.fp-npc-embed-bottom span{font-size:12px;color:var(--fp-text)}
+@media(max-width:650px){.fp-body.fp-npc-embedded .fp-npc-embed-bottom{flex-direction:column;align-items:stretch}
+ .fp-npc-embed-bottom button{width:100%}}
