@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261123-maestrias-v098";
+ from "./rules.mjs?v=20261123-especializacao-punhos-v099";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261123-advanced-g3-v096";
-import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261123-maestrias-v098";
+import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261123-especializacao-punhos-v099";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
