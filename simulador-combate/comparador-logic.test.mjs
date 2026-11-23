@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
- weightAffinity,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition} from "./comparador-logic.mjs";
+ weightAffinity,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
  id:"p",name:"Aprendiz",kind:"humanoide",level:1,
@@ -305,4 +306,83 @@ test("Domar Pequena requer animal domesticado presente para +1 Vida e serpente a
  assert.equal(poison.actor.statuses.envenenado,true);
  assert.equal(poison.actor.life,pet.life,"Envenenamento não causa Vida direta inventada");
  assert.equal(markCondition(pet,"purificar",true).ok,false);
+});
+
+
+test("Características reais da arma só são ativadas com a Perícia e acerto, gratuito no crítico",()=>{
+ const pc={skills:["armas-leves"]},weapon={id:"k",kind:"weapon",name:"Faca",category:"leve",
+  properties:["Cortante","Muito Leve"]};
+ assert.deepEqual(activeWeaponProperties(weapon),["Cortante"]);
+ assert.equal(weaponActivationSkill(pc,weapon).ok,true);
+ assert.equal(weaponActivationSkill({skills:[]},weapon).ok,false);
+ const common=planWeaponEffects(pc,weapon,["Cortante"],{success:true});
+ assert.equal(common.ok,true);assert.equal(common.cost,1);
+ assert.deepEqual(common.active,["Cortante"]);
+ const crit=planWeaponEffects(pc,weapon,["Cortante"],{success:true,critical:2});
+ assert.equal(crit.ok,true);assert.equal(crit.cost,0);
+ const fail=planWeaponEffects(pc,weapon,["Cortante"],{success:false});
+ assert.equal(fail.cost,0);assert.deepEqual(fail.active,[]);
+ const effect=weaponEffectOutcome(common.active,armor(),weapon);
+ assert.equal(effect.ok,true);assert.equal(effect.applied.sangramento,true);
+ assert.equal(effect.applied.damage,undefined,"Sangramento não cria dano à Vida");
+ const repeat=planWeaponEffects(pc,weapon,["Cortante","Cortante"],{success:true,critical:4});
+ assert.equal(repeat.ok,false);
+});
+test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; normal apenas um",()=>{
+ const weapon={id:"e",name:"Espada Longa",category:"medio",kind:"weapon",
+  properties:["Cortante","Perfurante","Cravar"]};
+ const pc={skills:["armas-medias","maestria-espadas"]};
+ assert.equal(weaponMasteryFor(weapon),"maestria-espadas");
+ assert.equal(planWeaponEffects(pc,weapon,["Cortante"],{success:true}).cost,0);
+ assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true,critical:3}).cost,0);
+ assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante","Cravar"],{success:true,critical:3}).cost,1);
+ assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true}).ok,false);
+ assert.equal(planWeaponEffects({skills:["maestria-espadas"]},weapon,["Cortante"],{success:true}).ok,false,
+  "Maestria sozinha não substitui a Perícia do peso");
+});
+test("Cravar valida escudo físico e categoria; demais efeitos não inventam condição",()=>{
+ const medium={name:"Lança de Arremesso",kind:"weapon",category:"medio",properties:["Cravar"]};
+ const shieldTarget=normalizeCombatant({kind:"humanoide",items:[
+  {name:"Escudo Pesado",kind:"shield",category:"pesado",equipped:true}]},"inimigos");
+ assert.equal(weaponEffectOutcome(["Cravar"],shieldTarget,medium).ok,false);
+ assert.equal(weaponEffectOutcome(["Cravar"],armor(),medium).ok,false);
+ const heavy={...medium,category:"pesado"};
+ const ok=weaponEffectOutcome(["Cravar"],shieldTarget,heavy);
+ assert.equal(ok.ok,true);assert.equal(ok.applied.cravar,true);
+ const pending=weaponEffectOutcome(["Contundente","Enganchar","Longa"],armor(),{});
+ assert.deepEqual(pending.applied,{});
+ assert.equal(pending.notes.length,3);
+});
+test("Face máxima dourada: d4 face 4 vazia conta, d10 face 10 e d6 face 6 formam crítico",()=>{
+ const dice=[{id:"d4",sides:4,face:4},{id:"d10",sides:10,face:10},
+  {id:"d6",sides:6,face:6},{id:"d12",sides:12,face:11}];
+ const crit=criticalFaces(dice,["d4","d10","d6"]);
+ assert.equal(crit.critical,3);
+ assert.deepEqual(crit.faces.map(x=>x.face),[4,10,6]);
+ assert.equal(crit.faces[0].max,true);
+ assert.equal(criticalFaces(dice,["d10","d12"]).critical,0);
+ assert.equal(criticalFaces(dice,["d10"]).critical,0);
+});
+test("Sugestão exaustiva prefere crítico limpo e valida custos e conversões",()=>{
+ const pool=[{id:"a",group:"attribute",key:"forca",sides:10,face:10},
+  {id:"b",group:"practice",key:"armas_conjuracao",sides:6,face:6},
+  {id:"c",group:"equipment",key:"faca",sides:4,face:3}];
+ function evaluate(ids,opts){
+  const r=resolveRoll(pool,ids,{de:2,level:1,courage:10,...opts});
+  return {ok:r.ok,result:r,integrityDamage:r.damage,courageCost:0,pavorCost:0,life:{damage:0}};
+ }
+ const result=bestKeepSelection(pool,2,evaluate);
+ assert.deepEqual(result.ids,["a","b"]);
+ assert.equal(result.preview.result.critical,2);
+ assert.equal(result.preview.result.p,0);
+ const budget=bestKeepSelection(pool,2,(ids,opts)=>
+  ids.includes("b")?{ok:false,error:"Recurso insuficiente"}:evaluate(ids,opts));
+ assert.equal(budget?.ids.includes("b"),false,"Jamais sugere combinação inválida por recursos");
+ assert.equal(bestKeepSelection([],4,evaluate),null);
+});
+test("Propriedades do catálogo sobrevivem à importação de arma sem lista no item",()=>{
+ const pc=normalizeCombatant({kind:"humanoide",skills:["armas-leves"],
+  items:[{id:"f",name:"Faca",kind:"weapon",equipped:true,die:6}]},"jogadores");
+ const list=equippedWeapons(pc,[{name:"Faca",kind:"weapon",category:"leve",die:6,properties:["Cortante"]}]);
+ assert.deepEqual(activeWeaponProperties(list[0]),["Cortante"]);
 });
