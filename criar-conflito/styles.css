@@ -323,3 +323,31 @@
 .cf-integrity-entry{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:11px}
 .cf-integrity-entry input{width:68px;max-width:68px;min-height:34px;text-align:center}
 @media(max-width:600px){.cf-armor-row{align-items:stretch}.cf-armor-row .cf-integrity-actions{width:100%;justify-content:flex-start}}
+
+/* Fluxo de humanoides integrado: o DNA verdadeiro funciona na mesma página. */
+.cf-npc-workspace[hidden]{display:none!important}
+.cf-npc-workspace{margin:22px 0;padding:clamp(12px,2.4vw,26px);border:1px solid var(--accent);border-radius:17px;
+ background:var(--surface);scroll-margin-top:12px}
+.cf-npc-workspace-head{display:flex;justify-content:space-between;gap:20px;align-items:start;flex-wrap:wrap;margin-bottom:14px}
+.cf-npc-workspace-head>div:first-child{flex:1 1 480px;min-width:0}
+.cf-npc-workspace-head h2{margin:7px 0 9px;font:normal clamp(22px,3vw,32px)/1.1 Georgia,serif}
+.cf-npc-workspace-head p{margin:0;max-width:820px;color:var(--muted);font-size:13px;line-height:1.55}
+.cf-npc-workspace-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cf-npc-workspace-actions a{color:var(--accent);font-size:12px;text-decoration:underline}
+.cf-main #cf-npc-frame{width:100%;height:790px;min-height:520px;display:block;border:1px solid var(--line);
+ border-radius:12px;background:var(--surface);overflow:auto}
+.cf-npc-workspace>.cf-note{margin:10px 0 0}
+.cf-human-navigation{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 9px}
+.cf-main .cf-human-navigation button{font-size:12px;min-height:39px;font-weight:700;padding:7px 10px;border-color:var(--line)}
+.cf-main .cf-human-navigation button:hover{border-color:var(--accent);color:var(--accent)}
+.cf-human-guide-note{margin:2px 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+.cf-human-guide-note strong{color:var(--accent)}
+#cf-identity,#cf-training,#cf-specialties,#cf-equipment,#cf-notes{scroll-margin-top:16px}
+@media(max-width:650px){
+ .cf-npc-workspace{padding:10px}
+ .cf-main #cf-npc-frame{height:76vh;min-height:470px}
+ .cf-npc-workspace-actions{width:100%;justify-content:space-between}
+ .cf-human-navigation{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-main .cf-human-navigation button{padding:8px 4px}
+}
+@media print{.cf-npc-workspace,.cf-human-navigation{display:none!important}}
