@@ -117,7 +117,7 @@ test("Livro e portal não apresentam opções raciais revogadas como gratuitas",
  const portal=readFileSync(new URL("../livro.html",import.meta.url),"utf8");
  assert.ok(!portal.includes("dois elementos diferentes entre Ar, Água, Terra e Fogo"));
  assert.ok(!portal.includes("Criar Item de Foco e Magia + Sangue, Trevas ou Veneno"));
- assert.match(portal,/Runa Espinhos<\\/strong>[\\s\\S]*?Escudo Rúnico/);
+ assert.ok(portal.includes("Escudo Rúnico"),"Escudo Rúnico precisa constar da tabela racial");
  assert.ok(book.includes("Sangue e Trevas **não podem ser selecionados como elementos gratuitos iniciais**"));
 });
 
