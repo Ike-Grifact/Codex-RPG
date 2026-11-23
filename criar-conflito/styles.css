@@ -461,3 +461,40 @@
  .cf-skill-view-switch button{flex:1}
  .cf-gene-inspector{max-height:none}
 }
+
+/* Layout amplo para a ferramenta de encontro, sem mudar a largura dos Livros e do portal. */
+.cf-main.shell{width:100%;max-width:1880px;padding-inline:clamp(12px,1.8vw,32px)}
+@media(min-width:1151px){
+ .cf-layout{grid-template-columns:minmax(230px,270px) minmax(0,1fr);gap:18px}
+}
+/* O painel de detalhes não reserva uma coluna ao lado do Codex Genético. */
+.cf-enemy-skill-layout{display:block;position:relative;min-width:0}
+.cf-enemy-skill-list,.cf-enemy-skill-genetic{width:100%;min-width:0}
+.cf-enemy-skill-genetic .fp-gene-canvas{
+ width:100%;height:clamp(610px,55vw,730px);max-height:none;min-height:570px;aspect-ratio:auto}
+.cf-gene-inspector[hidden]{display:none!important}
+.cf-enemy-skill-layout.is-genetic .cf-gene-inspector{
+ position:absolute;z-index:8;top:115px;right:16px;left:auto;
+ width:min(360px,calc(100% - 32px));max-height:min(420px,58vh);
+ margin:0;overflow-y:auto;border-color:var(--accent);
+ background:var(--surface);box-shadow:0 14px 42px rgba(0,0,0,.22);
+}
+.cf-enemy-skill-layout.is-list .cf-gene-inspector{
+ position:static;top:auto;right:auto;width:100%;max-height:none;margin-top:14px;
+ box-shadow:none;
+}
+.cf-gene-inspector-top{display:flex;justify-content:space-between;gap:12px;align-items:center;
+ padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.cf-gene-inspector-top strong{color:var(--accent);font-size:11px;letter-spacing:.08em}
+.cf-main .cf-gene-inspector-top button{min-width:38px;min-height:36px;padding:2px 9px;
+ border-radius:8px;font-size:22px;line-height:1}
+@media(max-width:1150px){
+ /* Tablet: o painel desce para não encobrir a metade do mapa. */
+ .cf-enemy-skill-layout.is-genetic .cf-gene-inspector{
+  position:static;top:auto;left:auto;right:auto;width:100%;
+  max-height:none;margin-top:12px;box-shadow:none}
+}
+@media(max-width:780px){
+ .cf-main.shell{padding-inline:clamp(10px,3vw,20px)}
+ .cf-enemy-skill-genetic .fp-gene-canvas{height:540px;min-height:470px}
+}
