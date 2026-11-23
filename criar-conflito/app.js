@@ -250,11 +250,11 @@ function enemyGeneSource(t,id){
  const grade=Number(t[entry[0]][key]||0),costs=humanoidSourceCost(t,group,key);
  const next=grade<6?costs[grade+1]-costs[grade]:null;
  const remaining=ledger(t).remaining,minimum=t.kind==="humanoide"&&group==="attr"&&costs[1]===0?1:0;
- const dice=group==="attr"?dice(t,key):
+ const diceFaces=group==="attr"?dice(t,key):
   ([[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade]);
  return {id,group,key,type:group,name:row[1],grade,previewGrade:grade,minGrade:minimum,
   next,canRaise:next!==null&&remaining>=next,
-  dice:dice.map(x=>"d"+x),state:grade>0?"owned":next!==null&&remaining>=next?"available":"locked",
+  dice:diceFaces.map(x=>"d"+x),state:grade>0?"owned":next!==null&&remaining>=next?"available":"locked",
   label:(minimum?"Grau 1 gratuito da origem. ":"")+(next===null?"Grau máximo.":"Próximo grau: "+next+" XP.")};
 }
 function enemyGeneInspector(t,id){
@@ -821,6 +821,10 @@ function gradeChange(group,key,delta){
   return notice("Grau 1 é gratuito pela origem e não pode ser removido.");if(prev===next)return;
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
+ if(delta<0){
+  const affected=t.skills.find(id=>isPlayerCatalogSkill(id)&&!humanoidRacialGrants(t).includes(id)&&humanoidSkillRequirement(t,id));
+  if(affected){t[prop][key]=prev;return notice("O grau é necessário para "+(SKILLS.find(s=>s.id===affected)?.name||affected)+".");}
+ }
  t.life=Math.min(t.life,stats(t).life);
  t.courage=0;
  save();render();
@@ -868,10 +872,13 @@ function toggleSkill(id,checked){
   return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
  if(!checked&&id==="domar-criatura-media"&&t.skills.includes("domar-criatura-grande"))
   return notice("Domar Criatura Média é requisito de Domar Criatura Grande. Remova Grande primeiro.");
+ const before=[...t.skills];
  if(checked&&!t.skills.includes(id))t.skills.push(id);
  else if(!checked)t.skills=t.skills.filter(x=>x!==id);
- if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
- save();render();
+ const invalid=t.skills.find(sid=>isPlayerCatalogSkill(sid)&&!humanoidRacialGrants(t).includes(sid)&&humanoidSkillRequirement(t,sid));
+ if(invalid){t.skills=before;return notice("Esta alteração invalidaria os requisitos de "+(SKILLS.find(x=>x.id===invalid)?.name||invalid)+".");}
+ if(ledger(t).remaining<0){t.skills=before;return notice("XP insuficiente para esta Perícia.");}
+ enemyGeneUI.selected=id;save();render();
 }
 function adjustIntegrity(id,delta,absolute=false){
  const t=selected(),item=t?.items.find(x=>x.id===id);
@@ -925,6 +932,23 @@ document.addEventListener("click",event=>{
  if(b.id==="add-human-quick"){toggleNpcWorkspace(true);return;}
  if(b.id==="cf-close-npc"){toggleNpcWorkspace(false,false);return;}
  if(b.dataset.editorJump){document.getElementById(b.dataset.editorJump)?.scrollIntoView({behavior:"smooth",block:"start"});return;}
+ if(b.dataset.enemySkillView){
+  enemyGeneUI.view=b.dataset.enemySkillView==="genetic"?"genetic":"list";render();
+  el("cf-specialties")?.scrollIntoView({block:"start",behavior:"smooth"});return;
+ }
+ if(b.dataset.enemySkillOpen){enemyGeneUI.selected=b.dataset.enemySkillOpen;
+  refreshEnemyGeneInspector(selected());
+  el("cf-gene-inspector")?.scrollIntoView({block:"nearest",behavior:"smooth"});return;}
+ if(b.dataset.enemySkillBuy)return toggleSkill(b.dataset.enemySkillBuy,true);
+ if(b.dataset.enemySkillRefund){
+  if(!confirm("Devolver esta Perícia e o XP correspondente? Requisitos de outras Perícias adquiridas serão conferidos."))return;
+  return toggleSkill(b.dataset.enemySkillRefund,false);
+ }
+ if(b.dataset.enemyGeneGrade)return gradeChange(b.dataset.enemyGeneGrade,b.dataset.key,Number(b.dataset.delta));
+ if(b.dataset.action==="gene-future"){
+  enemyGeneUI.showFuture=!enemyGeneUI.showFuture;
+  renderEnemyGeneMap(selected());return;
+ }
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
