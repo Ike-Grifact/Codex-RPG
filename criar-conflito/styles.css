@@ -351,3 +351,7 @@
  .cf-main .cf-human-navigation button{padding:8px 4px}
 }
 @media print{.cf-npc-workspace,.cf-human-navigation{display:none!important}}
+
+.cf-npc-preview{margin:0 0 12px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;
+ background:var(--bg2);color:var(--muted);font-size:12px;line-height:1.55}
+.cf-npc-preview.is-ready{border-color:var(--accent);color:var(--ink)}
