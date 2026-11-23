@@ -591,7 +591,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto):** 1 + piso(Força/3) + piso(Vigor/3) + piso(Armas/3) + piso(Atletismo/3), conforme as fontes de grau válidas. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento.
+**Capacidade de carga (unidades Alto) [DEFINIDO — 23/11/2026, SRD v0.92]:** **1 + piso((Força + Vigor + Atletismo)/3)**. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento. **Compras:** mostrar carga e balanço projetados antes de confirmar, descontando também o peso dos recursos gastos. Os avisos de Pesado/Muito Pesado não bloqueiam compras nem criam penalidades novas.
 
 
 ## VII. Conjuração, elementos e possibilidades
