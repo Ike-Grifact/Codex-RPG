@@ -175,6 +175,10 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
   /^(luva|punho|soco|soqueira|manopla)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(required==="pugilismo"&&
+   (Number(c?.practices?.armas_conjuracao||0)<1||
+    Number(c?.attributes?.forca||0)<2||Number(c?.attributes?.destreza||0)<1))
+  return {ok:false,error:"Pugilismo exige Disciplina 1, Força 2 e Destreza 1 para ativar características.",required};
  const weightRequirements={
   "armas-leves":{disc:1,strength:0},
   "armas-medias":{disc:1,strength:1},
