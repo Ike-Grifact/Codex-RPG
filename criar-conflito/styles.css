@@ -488,10 +488,13 @@
 .cf-gene-inspector-top strong{color:var(--accent);font-size:11px;letter-spacing:.08em}
 .cf-main .cf-gene-inspector-top button{min-width:38px;min-height:36px;padding:2px 9px;
  border-radius:8px;font-size:22px;line-height:1}
-@media(max-width:780px){
- .cf-main.shell{padding-inline:clamp(10px,3vw,20px)}
+@media(max-width:1150px){
+ /* Tablet: o painel desce para não encobrir a metade do mapa. */
  .cf-enemy-skill-layout.is-genetic .cf-gene-inspector{
   position:static;top:auto;left:auto;right:auto;width:100%;
   max-height:none;margin-top:12px;box-shadow:none}
+}
+@media(max-width:780px){
+ .cf-main.shell{padding-inline:clamp(10px,3vw,20px)}
  .cf-enemy-skill-genetic .fp-gene-canvas{height:540px;min-height:470px}
 }
