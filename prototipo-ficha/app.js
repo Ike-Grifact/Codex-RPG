@@ -4564,7 +4564,7 @@ function score(){
  // v0.87: Manejo Perfeito (ex-"Arma Certa") exige arma física equipada e alvo com Desvantagem.
  // Substitui somente o +1A natural deste confronto por Vantagem Absoluta (+1E).
  // Situação em Vantagem Absoluta: Manejo eleva o bônus total a Golpe Certo (+2E).
- const manejoPerfeitoActive=ownsSkill("manejo-perfeito")&&p.mode==="armas"&&
+ const manejoPerfeitoActive=ownsSkill("manejo-perfeito")&&!skillReq("manejo-perfeito")&&p.mode==="armas"&&
   item?.type==="arma"&&item.equipped&&!p.opts.maosLeves&&!p.shieldThrowId&&w>0;
  const manejoPerfeitoGolpeCerto=manejoPerfeitoActive&&p.opts.situation==="absoluta";
  const eBase=Math.max(0,raw[0]+situation[1]+(manejoPerfeitoActive?1:0)+criticalConverted+(critTier>=3?1:0)+
