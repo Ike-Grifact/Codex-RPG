@@ -17,7 +17,7 @@
 
 ## 2. Golpe Certo [DEFINIDO]
 
-**Golpe Certo é uma MECÂNICA**, não uma Perícia comprável e não custa XP de aquisição próprio.
+**Golpe Certo é uma MECÂNICA**, não uma Perícia comprável e não custa XP de aquisição próprio. Na escala de condições, situa-se **acima de Vantagem Absoluta**: Golpe Certo (+2E total) / Vantagem Absoluta (+1E) / Vantagem (+1A). **Não é uma condição livremente selecionável** sem gatilho de Perícia ou efeito que a habilite.
 
 **Efeito: +2 Êxitos (2E ᛋ) NO TOTAL.** É o grau de vantagem quando uma ação já em **Vantagem Absoluta (+1E)** recebe a melhoria de **Manejo Perfeito** habilitado, em uma situação de peso/arma favorável. O efeito é **+2E no total da condição somada ao Manejo, não +2E adicionais à Vantagem Absoluta**: a implementação acrescenta somente **mais +1E** ao +1E preexistente e **não** soma o +1A natural de afinidade de peso substituído.
 
