@@ -5,6 +5,7 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
+ {id:"maestria-armas-fogo",name:"Maestria em Armas de Fogo (Humano)",detail:"Benefício gratuito exclusivo do Humano. Só ativa seus efeitos com a Perícia em Armas de Fogo habilitada.",cost:0},
  {id:"combate",name:"Combate",detail:"+1A em combate pertinente.",cost:1},
  {id:"armas",name:"Armas 1",detail:"Habilita uma categoria de arma, inclusive Punhos.",cost:2},
  {id:"domar-criatura-pequena",name:"Domar Criatura Pequena",detail:"1 XP; Influência 2 + Inteligência 1; Apresentação não é requisito de compra. Compra não é domesticação automática.",cost:1},
@@ -35,6 +36,44 @@ export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-
 export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};
 export const isHumanoidKind=kind=>kind==="humanoide"||kind==="humanoide-monstro";
 export const monsterAttributeCost=kind=>kind==="monstro"||kind==="humanoide-monstro";
+// As tabelas de Aprendizes da ficha atual são aplicadas somente a humanoides comuns.
+// As escalas extraordinárias de monstros não são alteradas nesta sincronização.
+const PLAYER_ATTRIBUTE_XP=[0,1,3,6,9,18,32];
+const PLAYER_TRAINING_XP=[0,2,4,8,16,32,64];
+const PLAYER_ATTRIBUTE_DISCOUNT=[0,0,2,4,7,12,24];
+const PLAYER_ATTRIBUTE_ELEVATED=[0,2,4,8,16,32,64];
+const PLAYER_TRAINING_ELEVATED=[0,3,6,12,24,48,96];
+const PURE_ELEMENT_IDS=["fogo","agua","vento","terra","sagrado"];
+const RUNE_ELEMENT_IDS=["vento","agua","terra","fogo"];
+export function humanoidRacialGrants(t){
+ if(t.kind!=="humanoide")return [];
+ if(t.race==="humano")return ["maestria-armas-fogo"];
+ if(t.race==="lucker_sangue")return ["sangue"];
+ if(t.race==="lucker_puro")return ["criar-item-foco-magia",
+  ...(PURE_ELEMENT_IDS.includes(t.pureElement)?[t.pureElement]:[])];
+ if(t.race==="runa_espinhos")return ["pugilismo","criar-item-foco-magia","escudo-arcano",
+  ...(RUNE_ELEMENT_IDS.includes(t.runeElements?.[0])?[t.runeElements[0]]:[])];
+ return [];
+}
+export function humanoidSourceCost(t,group,key){
+ const attr=group==="attr",normal=attr?PLAYER_ATTRIBUTE_XP:PLAYER_TRAINING_XP;
+ if(t.kind!=="humanoide")return attr?(monsterAttributeCost(t.kind)?XP_TRAINING:XP_ATTRIBUTE):XP_TRAINING;
+ if(t.race==="lucker_sangue"){
+  if(attr&&["vigor","agilidade"].includes(key))return PLAYER_ATTRIBUTE_DISCOUNT;
+  if(attr&&key==="influencia"||group==="practice"&&key==="apresentacao")
+   return attr?PLAYER_ATTRIBUTE_ELEVATED:PLAYER_TRAINING_ELEVATED;
+ }
+ if(t.race==="lucker_puro"){
+  if(attr&&["inteligencia","destreza"].includes(key))return PLAYER_ATTRIBUTE_DISCOUNT;
+  if(attr&&key==="forca"||group==="practice"&&key==="atletismo")
+   return attr?PLAYER_ATTRIBUTE_ELEVATED:PLAYER_TRAINING_ELEVATED;
+ }
+ if(t.race==="runa_espinhos"&&attr){
+  if(["vigor","forca"].includes(key))return PLAYER_ATTRIBUTE_DISCOUNT;
+  if(["agilidade","destreza"].includes(key))return PLAYER_ATTRIBUTE_ELEVATED;
+ }
+ return normal;
+}
 // Decisão autoral posterior à v0.44: ameaças G2+ podem reter até 4 dados.
 // O custo adicional continua conforme a economia do tipo, sem retenção gratuita implícita.
 export const enemyKeepCap=grade=>Number(grade)>=2?4:3;
@@ -70,7 +109,7 @@ export const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number
 export function blank(kind="monstro"){
  const humanoid=isHumanoidKind(kind),monster=kind==="monstro";
  return {id:uid(),kind,name:kind==="humanoide-monstro"?"Novo humanoide monstro":humanoid?"Novo humanoide":monster?"Novo monstro":"Nova criatura",
- concept:"",notes:"",race:"",leader:false,threatGrade:1,level:1,
+ concept:"",notes:"",race:"",pureElement:"",runeElements:["",""],leader:false,threatGrade:1,level:1,
  xp:0,attributes:Object.fromEntries(ATTRIBUTES.map(([k])=>[k,0])),
  knowledges:Object.fromEntries(KNOWLEDGES.map(([k])=>[k,0])),
  practices:Object.fromEntries(PRACTICES.map(([k])=>[k,0])),
@@ -94,10 +133,14 @@ export function toSystem(t){
 }
 export function ledger(t){
  const s=toSystem(t),monster=monsterAttributeCost(t.kind),humanoid=isHumanoidKind(t.kind);
- const attrs=ATTRIBUTES.reduce((n,[k])=>n+(monster?XP_TRAINING:XP_ATTRIBUTE)[clamp(s.attributes[k],0,6)],0);
- const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges",x[0]]),...PRACTICES.map(x=>["practices",x[0]])]
-  .reduce((n,[group,key])=>n+XP_TRAINING[clamp(s[group][key],0,6)],0):0;
- const skills=humanoid?s.skills.reduce((n,id)=>n+Number(SKILLS.find(x=>x.id===id)?.cost||0),0):0;
+ const attrs=ATTRIBUTES.reduce((n,[k])=>n+
+  (t.kind==="humanoide"?humanoidSourceCost(t,"attr",k):(monster?XP_TRAINING:XP_ATTRIBUTE))[clamp(s.attributes[k],0,6)],0);
+ const training=humanoid?[...KNOWLEDGES.map(x=>["knowledges","know",x[0]]),
+  ...PRACTICES.map(x=>["practices","practice",x[0]])]
+  .reduce((n,[field,group,key])=>n+
+   (t.kind==="humanoide"?humanoidSourceCost(t,group,key):XP_TRAINING)[clamp(s[field][key],0,6)],0):0;
+ const free=new Set(humanoidRacialGrants(t));
+ const skills=humanoid?s.skills.reduce((n,id)=>n+(free.has(id)?0:Number(SKILLS.find(x=>x.id===id)?.cost||0)),0):0;
  const spent=attrs+training+skills,grant=clamp(t.xp,0,50000)+(t.kind==="humanoide"?15:0);
  return {attrs,training,skills,spent,grant,remaining:grant-spent};
 }
@@ -112,7 +155,9 @@ export function stats(t){
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
  return {life,de:defense,baseDE,armorDE,shieldDE,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:Math.max(0,Number(t.keep||2)-naturalKeep),
-  xp:ledger(t),capacity:loadCapacity(s),used:weightUsed(t)};
+  xp:ledger(t),capacity:t.kind==="humanoide"?
+   1+Math.floor((Number(s.attributes.forca||0)+Number(s.attributes.vigor||0)+Number(s.practices.atletismo||0))/3):
+   loadCapacity(s),used:weightUsed(t)};
 }
 export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+Number(it.weight||0)*Math.max(1,Number(it.qty||1)),0);}
 export function afterItem(t,item){const x=Number(item.weight)||0,qty=Math.max(1,Number(item.qty||1));return weightUsed(t)+x*qty;}
@@ -140,6 +185,10 @@ export function normalize(raw){
  const kind=Object.hasOwn(KINDS,raw.kind)||Object.hasOwn(LEGACY_KINDS,raw.kind)?raw.kind:"monstro",t=blank(kind);
  for(const k of ["name","concept","notes","abilities"])t[k]=String(raw[k]||"").slice(0,k==="notes"||k==="abilities"?4000:160);
  t.race=String(raw.race||"").slice(0,80);
+ t.pureElement=PURE_ELEMENT_IDS.includes(raw.pureElement)?raw.pureElement:"";
+ t.runeElements=Array.isArray(raw.runeElements)?
+  [RUNE_ELEMENT_IDS.includes(raw.runeElements[0])?raw.runeElements[0]:"",
+   RUNE_ELEMENT_IDS.includes(raw.runeElements[1])?raw.runeElements[1]:""]:["",""];
  t.leader=!!raw.leader;
  for(const k of ["level","threatGrade","xp","life","pavorLocal","keep","courage"]){
   const [min,max]=k==="level"?[1,20]:k==="threatGrade"?[1,6]:k==="keep"?[2,4]:k==="courage"?[0,maxCourage(raw.level??t.level)]:k==="xp"?[0,50000]:[0,999];
@@ -148,7 +197,8 @@ export function normalize(raw){
  t.courage=0; // Nenhum inimigo, inclusive humanoide, possui Coragem.
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)t[group][key]=Math.floor(clamp(raw[group]?.[key],0,6));
- t.skills=Array.isArray(raw.skills)?[...new Set(raw.skills.filter(id=>SKILLS.some(s=>s.id===id)))]:[];
+ t.skills=[...new Set([...(Array.isArray(raw.skills)?raw.skills.filter(id=>SKILLS.some(s=>s.id===id)):[]),
+  ...humanoidRacialGrants(t).filter(id=>SKILLS.some(s=>s.id===id))])];
  t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(original=>{
   const i=migrateArmorIntegrity(original);
   const max=Math.floor(clamp(i.integrityMax??i.max??0,0,999));

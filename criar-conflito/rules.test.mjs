@@ -211,7 +211,7 @@ test("Concentração Refinada custa 1 XP no catálogo de humanoides, sem nova co
  const npc=blank("humanoide");npc.practices.armas_conjuracao=2;
  npc.skills=["concentracao-refinada"];
  assert.equal(ledger(npc).skills,1);
- assert.equal(ledger(npc).spent,9); // Disciplina 2 (8 XP acumulados) + Perícia 1 XP.
+ assert.equal(ledger(npc).spent,5); // Disciplina 2 (4 XP na ficha atual) + Perícia 1 XP.
  const restored=normalize(npc);
  assert.ok(restored.skills.includes("concentracao-refinada"));
 });

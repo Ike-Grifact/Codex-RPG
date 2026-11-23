@@ -90,3 +90,22 @@ html[data-theme="light"] .symbol-p{color:#542176}
 .source-group-title:first-child{border-top:0;padding-top:0}
 html[data-theme="light"] .faces-table thead th:first-child,html[data-theme="light"] .faces-table tbody th{background:#fffdfa}
 @media(max-width:720px){.faces-table th,.faces-table td{padding:8px 7px}.faces-table .symbol-face{font-size:1.1rem;gap:2px}.faces-scroll .faces-table{min-width:660px}}
+
+/* Navegação consistente em todas as ferramentas, inclusive tablets. */
+.site-header .site-nav{gap:3px}
+.site-header .site-nav a{font-size:.81rem;padding:8px 9px;white-space:nowrap}
+@media(max-width:1250px){
+ .site-header{position:relative}
+ .site-header .mobile-toggle{display:block;flex-shrink:0}
+ .site-header .site-nav{display:none;position:absolute;top:calc(100% - 3px);left:14px;right:14px;z-index:75;
+  border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface);box-shadow:var(--shadow);
+  flex-direction:column;align-items:stretch;gap:2px}
+ .site-header .site-nav.open{display:flex}
+ .site-header .site-nav a{padding:12px;font-size:.91rem}
+}
+@media(max-width:450px){
+ .site-header .brand-text{font-size:.91rem}
+ .site-header .brand-logo{width:42px;height:42px}
+ .site-header{gap:8px;padding-inline:12px}
+ .site-header .theme-toggle{font-size:.72rem;padding:7px 9px}
+}

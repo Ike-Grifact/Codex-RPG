@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261122-pavor-hostil-v1";
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ from "./rules.mjs?v=20261123-npc-hub-v1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261122-pavor-hostil-v1";
+ from "./roll-engine.mjs?v=20261123-npc-hub-v1";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -105,6 +105,41 @@ function consumeQuickHumanoid(){
  }catch(e){return "Não foi possível importar a ficha rápida. A construção permanece no criador de humanoides.";}
 }
 
+// Criador NPC reutiliza a Ficha real por iframe de mesma origem, sem navegação externa.
+// A transferência mantém o protocolo de inbox para compatibilidade com fichas antigas.
+function toggleNpcWorkspace(show,scroll=true){
+ const workspace=el("cf-npc-workspace"),trigger=el("add-human-quick");
+ if(!workspace||!trigger)return;
+ workspace.hidden=!show;
+ trigger.setAttribute("aria-expanded",String(show));
+ trigger.textContent=show?"Criador aberto abaixo":"Criar humanoide pelo DNA aqui";
+ if(show&&scroll)workspace.scrollIntoView({behavior:"smooth",block:"start"});
+}
+window.addEventListener("message",event=>{
+ const frame=el("cf-npc-frame");
+ if(!frame||event.origin!==window.location.origin||event.source!==frame.contentWindow)return;
+ if(event.data?.type==="codex-rpg:npc-resumo-v1"){
+  const p=event.data,summary=el("cf-npc-preview");if(!summary)return;
+  const remaining=Number.isFinite(p.xpRemaining)?Math.floor(p.xpRemaining):0;
+  summary.textContent="Rascunho: "+String(p.name||"Sem nome").slice(0,70)+" · "+String(p.race||"Humano").slice(0,50)+
+   " · XP livre "+remaining+" · Perícias "+(Number(p.skills)||0)+" · Itens "+(Number(p.items)||0)+
+   (p.ready?" · Pronto para adicionar ao encontro":p.hasStarter?" · Revise os requisitos antes de enviar":" · Compre o mínimo de Atributo e Formação");
+  summary.classList.toggle("is-ready",!!p.ready);
+  return;
+ }
+ if(event.data?.type!=="codex-rpg:npc-enviado-v1")return;
+ const raw=localStorage.getItem(HUMANOID_INBOX_KEY);
+ if(!raw)return;
+ const result=consumeQuickHumanoid();
+ if(!result)return;
+ if(result.startsWith("Humano comum adicionado")){
+  conflictMode="edit";creatureRoll=null;rollDraft=null;
+  toggleNpcWorkspace(false,false);render();
+  el("editor-shell")?.scrollIntoView({behavior:"smooth",block:"start"});
+ }
+ notice(result);
+});
+
 const selected=()=>model.roster.find(x=>x.id===model.active)||null;
 function save(){
  try{localStorage.setItem(KEY,JSON.stringify(model));}
@@ -185,17 +220,22 @@ function gradeCards(t,group,entries){
  return '<div class="cf-grade-group">'+entries.map(([key,name])=>{
   const grade=Number(t[prop][key]||0);
   const numbers=group==="attr"?dice(t,key):(()=>{const diceTable=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];return diceTable[grade];})();
-  const cost=group==="attr"?(monsterAttributeCost(t.kind)?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
+  const cost=t.kind==="humanoide"?humanoidSourceCost(t,group,key):
+   group==="attr"?(monsterAttributeCost(t.kind)?[0,2,8,20,38,66,102]:[0,1,3,7,15,31,55]):
    [0,2,8,20,38,66,102];
-  const note=grade<6?"Próximo grau: "+(cost[grade+1]-cost[grade])+" XP":"Grau máximo";
+  const racialG1=t.kind==="humanoide"&&group==="attr"&&cost[1]===0;
+  const note=grade<6?"Próximo grau: "+(cost[grade+1]-cost[grade])+" XP":
+   "Grau máximo";
   return '<div class="cf-grade is-'+group+'"><strong>'+esc(name)+' · Grau '+grade+'</strong>'+
-   '<div class="cf-grade-controls"><button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="-1"'+(grade===0?' disabled':'')+' aria-label="Diminuir '+esc(name)+'">−</button>'+
+   '<div class="cf-grade-controls"><button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="-1"'+(grade===0||racialG1&&grade<=1?' disabled':'')+' aria-label="Diminuir '+esc(name)+'">−</button>'+
    '<div class="cf-die-row">'+dieIcons(numbers)+'</div>'+
    '<button type="button" data-grade="'+group+'" data-key="'+key+'" data-delta="1"'+(grade===6?' disabled':'')+' aria-label="Aumentar '+esc(name)+'">+</button></div>'+
-   '<small>'+note+'</small></div>';
+   '<small>'+(racialG1&&grade===1?'Grau 1 gratuito de origem · ':'')+note+'</small></div>';
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
+ if(id==="maestria-armas-fogo")return humanoidRacialGrants(t).includes(id);
+ if(humanoidRacialGrants(t).includes(id))return true;
  if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
  if(id==="olhos-de-aguia")return Number(t?.attributes?.destreza||0)>=3&&Number(t?.practices?.armas_conjuracao||0)>=3&&(t?.skills||[]).some(s=>s==="armas-longo-alcance"||s==="armas-fogo");
  if(id==="invocacao-elemental"){
@@ -213,9 +253,9 @@ function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
   '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
-   const valid=canBuySkill(t,it.id);
+   const racial=humanoidRacialGrants(t).includes(it.id),valid=canBuySkill(t,it.id);
    return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
-    (valid?'':' disabled')+'><span>'+esc(it.name)+' · '+it.cost+' XP'+(valid?'':' (requisito pendente)')+'</span></label>';
+    (racial||!valid?' disabled':'')+'><span>'+esc(it.name)+(racial?' · Origem (0 XP)':' · '+it.cost+' XP'+(valid?'':' (requisito pendente)'))+'</span></label>';
   }).join("")+'</div></details>';
 }
 function itemOptions(){
@@ -570,12 +610,20 @@ function confirmCreatureRoll(){
 function editorHTML(t){
  const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal;
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
- return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
+ const guide=human?'<nav class="cf-human-navigation" aria-label="Ir à etapa da ficha de humanoide">'+
+  [['cf-identity','1 · Identidade'],['cf-training','2 · Graus / XP'],['cf-specialties','3 · Perícias'],
+   ['cf-equipment','4 · Equipamento'],['cf-notes','5 · Narrativa']].map(([id,label])=>
+   '<button type="button" data-editor-jump="'+id+'">'+label+'</button>').join('')+'</nav>'+
+  '<p class="cf-human-guide-note">Fluxo sugerido: identidade → graus e XP → Perícias → itens → combate. As mudanças são salvas aqui mesmo; XP livre: <strong>'+x.xp.remaining+'</strong>.</p>':'';
+ return guide+'<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
+  (t.kind==="humanoide"&&t.race?
+   '<p class="cf-identity-origin">Origem: <strong>'+esc(({humano:"Humano",lucker_sangue:"Lucker de Sangue",lucker_puro:"Lucker Puro",runa_espinhos:"Runa Espinhos"})[t.race]||t.race)+
+   '</strong> · benefícios raciais gratuitos preservados do criador</p>':'')+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
   '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Modo Rolagem</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
-  '<div class="cf-fields">'+field("Nome","name",{wide:true})+
+  '<div class="cf-fields"'+(human?' id="cf-identity"':'')+'>'+field("Nome","name",{wide:true})+
   field("Tipo de criatura","kind",{type:"select",choices:Object.entries({...KINDS,...(t.kind==="criatura"?LEGACY_KINDS:{})})})+
   field("Grau da ameaça","threatGrade",{type:"number",min:1,max:6})+
   field("Conceito / origem","concept",{wide:true})+
@@ -606,7 +654,7 @@ function editorHTML(t){
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
   (keepAvail<t.keep&&!human?'<p class="cf-note">Acumule Pavor antes de executar a retenção pretendida.</p>':"")+'</section>'+
 
-  '<section class="cf-panel"><h3>Atributos · dados e graus</h3>'+
+  '<section class="cf-panel"'+(human?' id="cf-training"':'')+'><h3>Atributos · dados e graus</h3>'+
   '<p>'+(t.kind==="monstro"?'Criatura/Monstro: Atributos usam a tabela de Conhecimentos/Práticas, com a escala de dados de criaturas extraordinárias.':
   t.kind==="humanoide-monstro"?'Humanoide Monstro: Atributos, Conhecimentos e Práticas usam a tabela de treinamento; Perícias mantêm os próprios custos. Sua rolagem permanece no modelo humanoide até definição específica.':
   'Humanoide: Atributo grau 1 custa 1 XP; Conhecimentos e Práticas seguem a tabela de treinamento.')+
@@ -614,10 +662,10 @@ function editorHTML(t){
   gradeCards(t,"attr",ATTRIBUTES)+'</section>'+
   (human?'<section class="cf-panel"><h3>Conhecimentos</h3>'+gradeCards(t,"know",KNOWLEDGES)+'</section>'+
    '<section class="cf-panel"><h3>Práticas · Disciplina é uma única Prática</h3>'+gradeCards(t,"practice",PRACTICES)+'</section>':"")+
-  '<section class="cf-panel"><h3>Perícias e capacidades</h3>'+skillPanel(t)+
+  '<section class="cf-panel"'+(human?' id="cf-specialties"':'')+'><h3>Perícias e capacidades</h3>'+skillPanel(t)+
   '<label class="cf-form-row" style="display:flex;flex-direction:column;align-items:stretch;margin-top:12px">Capacidades naturais, imunidades e observações de uso<textarea class="cf-note-input" data-field="abilities" rows="4" maxlength="4000">'+esc(t.abilities)+'</textarea></label></section>'+
-  armorPanel(t)+inventory(t,x)+
-  '<section class="cf-panel"><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
+  (human?'<div id="cf-equipment">':'')+armorPanel(t)+inventory(t,x)+(human?'</div>':'')+
+  '<section class="cf-panel"'+(human?' id="cf-notes"':'')+'><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
   '<textarea class="cf-note-input" data-field="notes" rows="4" maxlength="4000">'+esc(t.notes)+'</textarea></label>'+
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
 }
@@ -660,7 +708,9 @@ function gradeChange(group,key,delta){
  const t=selected();if(!t)return;
  const prop={attr:"attributes",know:"knowledges",practice:"practices"}[group];
  if(!prop||(group!=="attr"&&!isHumanoidKind(t.kind))||!Object.hasOwn(t[prop],key))return;
- const prev=t[prop][key],next=Math.floor(clamp(prev+delta,0,6));if(prev===next)return;
+ const prev=t[prop][key],next=Math.floor(clamp(prev+delta,0,6));
+ if(t.kind==="humanoide"&&group==="attr"&&humanoidSourceCost(t,"attr",key)[1]===0&&next<1)
+  return notice("Grau 1 é gratuito pela origem e não pode ser removido.");if(prev===next)return;
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
  t.life=Math.min(t.life,stats(t).life);
@@ -703,6 +753,7 @@ function remove(id){
 }
 function toggleSkill(id,checked){
  const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
+ if(humanoidRacialGrants(t).includes(id))return notice("Perícia de origem é gratuita e não pode ser removida.");
  if(checked&&!canBuySkill(t,id))return notice("Requisitos não atendidos.");
  if(!checked&&id==="domar-criatura-pequena"&&t.skills.some(s=>s==="domar-criatura-media"||s==="domar-criatura-grande"))
   return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
@@ -762,7 +813,9 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
- if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?npc=1");return;}
+ if(b.id==="add-human-quick"){toggleNpcWorkspace(true);return;}
+ if(b.id==="cf-close-npc"){toggleNpcWorkspace(false,false);return;}
+ if(b.dataset.editorJump){document.getElementById(b.dataset.editorJump)?.scrollIntoView({behavior:"smooth",block:"start"});return;}
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
