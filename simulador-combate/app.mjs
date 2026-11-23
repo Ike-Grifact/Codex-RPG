@@ -586,25 +586,19 @@ function suggest(){
  const maximum=a.kind==="monstro"?Math.min(stats(a).keepMax,a.keep||2):
   a.side==="inimigos"&&isHumanoidKind(a.kind)?Math.min(4,(a.threatGrade>=2?3:2)+Number(opts.extraKeep)):
   keepLimit(a.level,opts.extraKeep,false);
- let best=null;
- function explore(from,indices){
-  if(indices.length){
-   const ids=indices.map(x=>rolled[x].id);
-   for(let cancel=0;cancel<=3;cancel++)for(let convert=0;convert<=2;convert++){
-    const pre=evaluate(a,rolled,ids,{...opts,cancelP:cancel,convertPairs:convert});
-    if(!pre.ok)continue;
-    const r=pre.result,score=100*Number(r.success)+r.reached*10-r.p*6+
-     (r.p===0?18:0)-(pre.courageCost||0)*8-(pre.cost||0)*8;
-    if(!best||score>best.score)best={ids,cancel,convert,score};
-   }
-  }
-  if(indices.length>=maximum)return;
-  for(let i=from;i<rolled.length;i++){indices.push(i);explore(i+1,indices);indices.pop();}
- }
- explore(0,[]);
- if(!best)return notice("Sem combinação de dados mantidos válida.");
- pending.kept=[...best.ids];$("cancel-p").value=String(best.cancel);
- $("convert-a").value=String(best.convert);renderDice();
+ const mode=$("auto-goal").value;
+ const best=bestKeepSelection(rolled,maximum,(ids,uses)=>
+  preview({...opts,...uses},ids),mode);
+ if(!best)return notice("Nenhuma combinação válida com os recursos, limite de retenção e efeitos declarados.");
+ pending.kept=best.ids;
+ $("cancel-p").value=String(best.cancelP);$("convert-a").value=String(best.convertPairs);
+ const r=best.preview.result;
+ $("suggest-info").textContent="Sugestão "+(mode==="damage"?"ofensiva":mode==="safety"?"segura":"equilibrada")+
+  ": "+best.ids.length+" mantidos, "+best.cancelP+"P anulados e "+best.convertPairs+
+  " conversão(ões). "+r.outcome+(r.critical?" · CRÍTICO "+r.critical:"")+
+  ". E "+r.e+" / A livre "+r.aRemaining+" / P "+r.p+
+  ". Custos: "+best.preview.courageCost+" Coragem, "+best.preview.pavorCost+"P local. Todas as opções válidas foram comparadas.";
+ renderDice();
 }
 
 function confirmRoll(){
