@@ -161,7 +161,8 @@ function renderTarget(){
  const t=target();
  $("target-info").textContent=t?
   "DE "+defense(t)+" · armadura "+(armorOf(t)?.name||"nenhuma")+
-  " · Vida "+t.life+". Alcance e linha de visão são decisões da mesa, sem mapa.":
+  " · Vida "+t.life+((t.statuses?.cravadas||[]).length?" · "+t.statuses.cravadas.length+" arma(s) cravada(s) no escudo (−1E cada ao Levantar Escudo)":"")+
+  ". Alcance e linha de visão são decisões da mesa, sem mapa.":
   "Escolha um alvo.";
  $("target-bleeding").disabled=!t;
  $("target-bleeding").checked=!!t?.statuses?.sangramento;
@@ -431,7 +432,12 @@ function preview(opts=options(),selectedIds=pending?.kept){
  if(!weaponPlan.ok)return weaponPlan;
  const status=weaponEffectOutcome(weaponPlan.active,t,weapon);
  if(!status.ok)return status;
- const totalSkillCost=activations.reduce((sum,x)=>sum+x.cost,0);
+ const propertySkills=(pending.weaponEffects||[]).length?
+  [weaponActivationSkill(a,weapon,{thrown:!!pending.thrown}).required,
+   weaponMasteryFor(weapon,{thrown:!!pending.thrown})]:[];
+ // Uma mesma Perícia de arma não é cobrada duas vezes se também estiver no seletor genérico.
+ const paidActivations=activations.filter(x=>!propertySkills.includes(x.id));
+ const totalSkillCost=paidActivations.reduce((sum,x)=>sum+x.cost,0);
  const hostile=a.side==="inimigos",human=isHumanoidKind(a.kind);
  const healthCost=pre.health.coragem||0;
  // previewHumanoidRoll já debita Pavor por retenção e elevação; não cobrar de novo.
@@ -454,7 +460,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
  const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- return {...pre,courageCost,pavorCost,activations,totalSkillCost,weaponPlan,status,
+ return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,
   integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderDice(){
@@ -576,7 +582,8 @@ function roll(){
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
   mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
-  weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown};
+  weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown,
+  weaponEffects:selectedWeaponEffects()};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
 }
