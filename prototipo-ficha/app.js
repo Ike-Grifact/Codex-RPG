@@ -4556,11 +4556,20 @@ function score(){
  const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const naturalWeight=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
-  // Armas Leves: contra Pesada/Muito Pesada, cancela só a Desvantagem natural (−1A).
-  const lightWeightIgnored=naturalWeight===-1&&p.opts.attackWeight==="leve"&&p.opts.targetWeight==="pesado"&&
-   p.mode==="armas"&&item?.type==="arma"&&item.equipped&&!item.firearm&&
-   equipmentWeight(item)==="leve"&&ownsSkill("armas-leves")&&!skillReq("armas-leves");
-  const w=lightWeightIgnored?0:naturalWeight;
+  // Perícias de armas anulam SOMENTE a Desvantagem natural (−1A) contra a armadura especificada.
+  const weaponWeight=item?.type==="arma"&&item.equipped&&!item.firearm?equipmentWeight(item):null;
+  const weightSpecialty={
+   leve:{id:"armas-leves",versus:"pesado"},
+   medio:{id:"armas-medias",versus:"medio"},
+   pesado:{id:"armas-pesadas",versus:"leve"}
+  }[p.opts.attackWeight];
+  const weightSpecialtyIgnored=naturalWeight===-1&&p.mode==="armas"&&
+   weaponWeight===p.opts.attackWeight&&p.opts.targetWeight===weightSpecialty?.versus&&
+   ownsSkill(weightSpecialty.id)&&!skillReq(weightSpecialty.id);
+  const lightWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="leve";
+  const mediumWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="medio";
+  const heavyWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="pesado";
+  const w=weightSpecialtyIgnored?0:naturalWeight;
  // v0.87: Manejo Perfeito (ex-"Arma Certa") exige arma física equipada e alvo com Desvantagem.
  // Substitui somente o +1A natural deste confronto por Vantagem Absoluta (+1E).
  // Situação em Vantagem Absoluta: Manejo eleva o bônus total a Golpe Certo (+2E).
@@ -4620,10 +4629,11 @@ function score(){
  }
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
-  // O crítico não libera efeitos de Arma Leve sem a Perícia do peso correspondente.
-  if(item?.type==="arma"&&item.equipped&&!item.firearm&&equipmentWeight(item)==="leve"&&
-    (p.mode!=="armas"||!ownsSkill("armas-leves")||skillReq("armas-leves")))
-   errs.push("Ativar características da arma Leve exige Perícia em Armas Leves (Disciplina 1) adquirida.");
+  // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
+  const weaponSkillId=weaponWeight==="leve"?"armas-leves":weaponWeight==="medio"?"armas-medias":
+   weaponWeight==="pesado"?"armas-pesadas":null;
+  if(weaponSkillId&&(p.mode!=="armas"||!ownsSkill(weaponSkillId)||skillReq(weaponSkillId)))
+   errs.push("Ativar características desta arma exige a Perícia de Armas do peso correspondente e seus requisitos atuais.");
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
    errs.push("A característica escolhida não é ativável neste equipamento.");
   else if(!active.includes(p.characteristic))active.push(p.characteristic);
@@ -4711,14 +4721,14 @@ function score(){
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
  return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
-   manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored};
+   manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored,weightSpecialtyIgnored};
 }
 function renderPending(){
  const p=state.pending,s=score(),de=p.opts.de,cost=s.courageCost;
  const manejoPerfeitoSummary=s.manejoPerfeitoActive?'<div class="fp-alert"><strong>MANEJO PERFEITO:</strong> '+
   (s.manejoPerfeitoGolpeCerto?'A ação já estava em Vantagem Absoluta: <strong>Golpe Certo aplicado (+2E no total)</strong>, substituindo o +1E anterior; a vantagem de peso (+1A) não é acumulada.':
    'Confronto favorável com arma equipada: <strong>Vantagem Absoluta (+1E)</strong> aplicada no lugar do +1A natural de afinidade.')+'</div>':"";
- const lightWeightSummary=s.lightWeightIgnored?'<div class="fp-alert"><strong>ARMAS LEVES:</strong> Desvantagem natural de peso contra armadura Pesada/Muito Pesada (−1A) anulada pela Perícia. Outras penalidades continuam valendo.</div>':"";
+ const weightSpecialtySummary=s.weightSpecialtyIgnored?'<div class="fp-alert"><strong>PERÍCIA EM ARMAS '+(s.lightWeightIgnored?'LEVES':s.mediumWeightIgnored?'MÉDIAS':'PESADAS')+':</strong> Desvantagem natural de peso (−1A) anulada pela especialização; demais penalidades permanecem.</div>':"";
   const asuraSummary=p.opts.asura?
  '<div class="fp-alert"><strong>Punho Supremo de Asura:</strong> um dado da pilha foi transformado em <strong>d20</strong> em golpe corpo a corpo com Disciplina. <strong>5 Esferas Espirituais + 1 Coragem reservadas</strong>; consumidas ao finalizar a rolagem, mesmo em falha. Os símbolos do d20 mantido entram na DE e no dano básico, sem dano extra. Natureza neutra.</div>':"";
  const magicWait=p.opts.magicElement&&!p.opts.magicTimeConfirmed?
@@ -4807,7 +4817,7 @@ function renderPending(){
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
- return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+lightWeightSummary+
+ return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+weightSpecialtySummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
   '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
