@@ -636,7 +636,7 @@ function skillReq(id,s){
  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
   if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Maestria.";
   if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Maestria.";
- if(id==="ferreiro"&&(art<1||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
+ if(id==="ferreiro"&&(art<3||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
  if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
  if(id==="resistencia-a-fogo"&&(!has("ferreiro-elemental")||!has("fogo")||vig<2))return"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2."; 
@@ -669,8 +669,8 @@ function skillReq(id,s){
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
- if(id==="manejo-perfeito"&&(!has("disciplina-avancada")||dex<2))return"Requer Disciplina Avançada adquirida e Destreza 2.";
- if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
+ if(id==="manejo-perfeito"&&(!has("disciplina-avancada")||disc<3||dex<2))return"Requer Disciplina Avançada (Disciplina 3) adquirida e Destreza 2.";
+ if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||disc<3||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="pericia-montaria"&&((s.attributes.influencia||0)<1||dex<2))return"Requer Influência 1 e Destreza 2.";
