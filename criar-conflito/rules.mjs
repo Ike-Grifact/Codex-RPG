@@ -2,7 +2,7 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs?v=20261122-fulminantes-v1";
-import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill} from "../prototipo-ficha/skills-catalog.mjs?v=20261123-hidden-skill-v1";
+import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261123-advanced-g3-v096";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
@@ -45,7 +45,7 @@ export function humanoidSkillRequirement(t,id){
  const skills=[...new Set([...(t.skills||[]),...humanoidRacialGrants(t)])];
  return playerSkillRequirement(id,{...t,skills});
 }
-export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage};
+export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage,ADVANCED_SOURCE_DEFS};
 // Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
 export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};
 export const LEGACY_KINDS={criatura:"Criatura comum (ficha antiga)"};

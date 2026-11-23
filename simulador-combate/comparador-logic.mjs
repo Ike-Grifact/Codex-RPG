@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
 import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-foco-v095";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-advanced-g3-v096";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -72,7 +72,7 @@ export function combatantSheetData(c={}){
   kindName:KINDS[c.kind]||(c.kind==="monstro"?"Criatura/Monstro":"Tipo não identificado"),
   human,disciplineGrade,focusStatus:focusCombatStatus(c),
   advancedDiscipline:human&&owned.includes("disciplina-avancada"),
-  advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=2,
+  advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=3,
   attributes:levels(ATTRIBUTES,"attributes"),
   knowledges:human?levels(KNOWLEDGES,"knowledges"):[],
   practices:human?levels(PRACTICES,"practices"):[],

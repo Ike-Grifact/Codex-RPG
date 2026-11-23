@@ -203,7 +203,41 @@ test("Perito Conjurador não concede terceira fonte em humanos antigos",()=>{
   mode:"conjuracao",extra:{group:"attribute",key:"destreza"},contextOK:true};
  assert.equal(composeActionPool(h,sources).ok,false);
  h.skills.push("disciplina-avancada");
- assert.equal(composeActionPool(h,sources).ok,true);
+ assert.equal(composeActionPool(h,sources).ok,false,"G2 não habilita terceira fonte");
+ h.practices.armas_conjuracao=3;
+ assert.equal(composeActionPool(h,sources).ok,true,"G3 habilita terceira fonte");
+});
+test("Todas as 12 especializações exigem sua própria fonte G3 para terceira fonte",()=>{
+ const defs=[
+  ["disciplina-avancada","practice","armas_conjuracao"],
+  ["furtividade-avancada","practice","furtividade"],
+  ["medicina-avancada","knowledge","medicina"],
+  ["protecao-avancada","knowledge","protecao"],
+  ["astronomia-avancada","knowledge","astronomia"],
+  ["alquimia-avancada","knowledge","alquimia"],
+  ["engenharia-avancada","knowledge","engenharia"],
+  ["erudicao-avancada","knowledge","erudicao"],
+  ["atletismo-avancado","practice","atletismo"],
+  ["artesao-avancado","practice","artesao"],
+  ["apresentacao-avancada","practice","apresentacao"],
+  ["coleta-avancada","practice","coleta"]
+ ];
+ for(const [id,group,key] of defs){
+  const h=blank("humanoide");
+  h.attributes.forca=1;h.attributes.destreza=1;
+  h.practices.armas_conjuracao=1;
+  h[group==="practice"?"practices":"knowledges"][key]=2;
+  h.skills.push(id);
+  const choice={baseGroup:group,baseKey:key,attribute:"forca",
+   extra:{group:"attribute",key:"destreza"},contextOK:true};
+  assert.equal(composeActionPool(h,choice).ok,false,id+" G2 não libera terceira fonte");
+  h[group==="practice"?"practices":"knowledges"][key]=3;
+  if(id==="furtividade-avancada"){
+   assert.equal(composeActionPool(h,choice).ok,false,"Furtividade Avançada conserva requisito Perícia em Furtividade");
+   h.attributes.destreza=2;h.attributes.agilidade=1;h.skills.push("furtividade");
+  }
+  assert.equal(composeActionPool(h,choice).ok,true,id+" G3 e demais requisitos liberam terceira fonte");
+ }
 });
 test("Inimigo não humanoide Grau 2 mantém quatro dados por 2P; Grau 1 não mantém quatro",()=>{
  const enemy=blank("monstro");

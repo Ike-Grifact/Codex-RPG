@@ -2,7 +2,7 @@
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
 import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,humanoidHasFocus,toSystem,stats} from "./rules.mjs?v=20261123-foco-v095";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261123-advanced-g3-v096";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
@@ -82,9 +82,10 @@ export function composeActionPool(unit,selection={},stepDieId=""){
  if(human&&selection.baseKey==="armas_conjuracao"&&selection.mode==="conjuracao"&&!humanoidHasFocus(unit))
   errors.push("Conjuração exige Criar Item de Foco e Magia.");
  if(extra){
-  const advanced=human&&(
-    selection.baseKey==="armas_conjuracao"&&unit.skills.includes("disciplina-avancada")&&Number(unit.practices.armas_conjuracao)>=2||
-    selection.baseKey==="furtividade"&&unit.skills.includes("furtividade-avancada")&&Number(unit.practices.furtividade)>=2
+  const advanced=human&&ADVANCED_SOURCE_DEFS.some(row=>
+    (row.group==="know"?"knowledge":row.group)===selection.baseGroup&&row.key===selection.baseKey&&unit.skills.includes(row.id)&&
+    Number(unit[row.group==="practice"?"practices":"knowledges"]?.[row.key]||0)>=3&&
+    !humanoidSkillRequirement(unit,row.id)
   );
   if(!(advanced||!human&&Number(unit.threatGrade)>=5))errors.push("Terceira fonte exige habilitação apropriada.");
   if(!selection.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");

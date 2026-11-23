@@ -140,7 +140,7 @@ test("Ficha de humanoide exportado preserva Perícias, Disciplina Avançada e ob
   concept:"Guarda arcano",abilities:"Imune a medo ritual",notes:"Vigiar a ponte",
   attributes:{inteligencia:2,destreza:1},
   knowledges:{erudicao:1},
-  practices:{armas_conjuracao:2},
+  practices:{armas_conjuracao:3},
   skills:["disciplina-avancada","armas-leves"],
   items:[{id:"escudo",type:"escudo",name:"Escudo Rúnico",weight:"leve",max:8,hp:6,equipped:true}]
  };
@@ -152,10 +152,10 @@ test("Ficha de humanoide exportado preserva Perícias, Disciplina Avançada e ob
  assert.equal(copied.sourceId,"npc-original");
  assert.equal(sheet.advancedDiscipline,true);
  assert.equal(sheet.advancedReady,true);
- assert.equal(sheet.disciplineGrade,2);
+ assert.equal(sheet.disciplineGrade,3);
  assert(sheet.skills.some(x=>x.name==="Disciplina Avançada"));
  assert(sheet.skills.some(x=>x.name==="Perícia em Armas Leves"));
- assert.equal(sheet.practices.find(x=>x.id==="armas_conjuracao").grade,2);
+ assert.equal(sheet.practices.find(x=>x.id==="armas_conjuracao").grade,3);
  assert.equal(sheet.knowledges.find(x=>x.id==="erudicao").grade,1);
  assert.equal(sheet.items[0].integrity,6);
  assert.equal(sheet.concept,"Guarda arcano");
@@ -211,7 +211,7 @@ test("Ficha explicita quando Disciplina Avançada não existe ou não cumpre Gra
  const absent=combatantSheetData(bare());
  assert.equal(absent.advancedDiscipline,false);
  assert.equal(absent.advancedReady,false);
- const onlyBought=normalizeCombatant({name:"Aprendiz",practices:{armas_conjuracao:1},
+ const onlyBought=normalizeCombatant({name:"Aprendiz",practices:{armas_conjuracao:2},
   skills:["disciplina-avancada"]});
  const needsGrade=combatantSheetData(onlyBought);
  assert.equal(needsGrade.advancedDiscipline,true);

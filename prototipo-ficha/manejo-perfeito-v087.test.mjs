@@ -24,8 +24,8 @@ const reqFactory=new Function("state","owned",
  'const ADVANCED_SOURCE_DEFS=[];const SOURCE_PROPS={};'+
  'const racialGrants=()=>[];const ownsSkill=id=>owned.includes(id);'+
  part("function skillReq(","function dependentsValid(")+"return skillReq;");
-function requirement(skills,destreza=2){
- const state={race:"humano",attributes:{destreza},practices:{armas_conjuracao:2},knowledges:{}};
+function requirement(skills,destreza=2,disciplina=3){
+ const state={race:"humano",attributes:{destreza},practices:{armas_conjuracao:disciplina},knowledges:{}};
  return reqFactory(state,skills)("manejo-perfeito",state);
 }
 const aff=part("function affinity(","function score(){");
@@ -47,10 +47,12 @@ test("Manejo Perfeito é uma compra única de 1 XP, condicionada a Disciplina Av
  assert.match(row,/"Manejo Perfeito — Armas Corpo a Corpo"/);
  assert.match(row,/\n  1\n \]/);
  assert.equal(requirement(["disciplina-avancada"],2),null);
+ assert.match(requirement(["disciplina-avancada"],2,2),/Disciplina 3/,
+  "Disciplina Avançada antiga em G2 não libera nova aquisição dependente");
  assert.match(requirement([],2),/Disciplina Avançada/);
  assert.match(requirement(["disciplina-avancada"],1),/Destreza 2/);
  assert.match(app,/"manejo-perfeito": "Disciplina Avançada \+ Destreza 2"/);
- assert.match(app,/"manejo-perfeito":\[\["p:armas_conjuracao:2","a:destreza:2","s:disciplina-avancada"\]\]/);
+ assert.match(app,/"manejo-perfeito":\[\["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"\]\]/);
  assert.match(manejo,/Custo de aquisição<\/dt><dd>1 XP/);
  assert.match(manejo,/Disciplina Avançada \+ Destreza 2/);
 });

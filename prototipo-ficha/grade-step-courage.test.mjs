@@ -172,7 +172,7 @@ test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a F
   "const ADVANCED_SOURCE_DEFS="+JSON.stringify(ADVANCED_SOURCE_DEFS)+";const SOURCE_PROPS={practice:'practices'};"+weaponMasteryDefs+sourceReq+"\nreturn skillReq;")(
    {},()=>[],(id,s)=>s.skills.includes(id)
   );
- const ficha=({art=2,forca=1,destreza=1,inteligencia=1,skills=["artesao-avancado"]}={})=>({
+ const ficha=({art=3,forca=1,destreza=1,inteligencia=1,skills=["artesao-avancado"]}={})=>({
   attributes:{forca,destreza,inteligencia},practices:{artesao:art},knowledges:{},skills
  });
  assert.ok(getReq("ferreiro",ficha({skills:[]})),"Exige Artesão Avançado adquirido");
@@ -180,8 +180,9 @@ test("Ferreiro: requisitos completos, aquisição por 1 XP e bônus restrito a F
  assert.ok(getReq("ferreiro",ficha({destreza:0})),"Exige Destreza 1");
  assert.ok(getReq("ferreiro",ficha({inteligencia:0})),"Exige Inteligência 1");
  assert.ok(getReq("ferreiro",ficha({art:0})),"Exige Artesão 1 explícito");
- assert.equal(getReq("ferreiro",ficha()),null,"Compra autorizada com Artesão Avançado e os três Atributos");
- assert.ok(getReq("artesao-avancado",ficha({art:1,skills:[]})),"Artesão Avançado exige grau 2");
+ assert.ok(getReq("ferreiro",ficha({art:2})),"Artesão Avançado comprado no histórico não basta: Grau 3");
+  assert.equal(getReq("ferreiro",ficha()),null,"Compra autorizada com Artesão G3, Avançado e os três Atributos");
+ assert.ok(getReq("artesao-avancado",ficha({art:2,skills:[]})),"Artesão Avançado exige grau 3");
  assert.match(app,/"ferreiro",\s*"Ferreiro",[\s\S]*?\n  1\n \]/,"Ferreiro custa 1 XP");
  assert.ok(app.includes('"ferreiro":[["p:artesao:1","a:forca:1","a:destreza:1","a:inteligencia:1","s:artesao-avancado"]]'),"Compra assistida exige todas as fontes e a Perícia");
  assert.ok(app.includes('"ferreiro": "ferreiro"'),"Verbete cadastrado");
