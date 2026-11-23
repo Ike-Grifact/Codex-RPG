@@ -94,7 +94,7 @@ function sheetGrades(title,rows){
 function renderCombatantSheet(c){
  const s=combatantSheetData(c);
  const advance=s.human?(s.advancedReady?'Adquirida · Disciplina G'+s.disciplineGrade:
-  s.advancedDiscipline?'Registrada, mas requer Disciplina G2; atual G'+s.disciplineGrade:
+  s.advancedDiscipline?'Registrada, mas requer Disciplina G3; atual G'+s.disciplineGrade:
   'Não adquirida'):'Não se aplica à ficha de criatura';
  const skills=s.human?(s.skills.length?s.skills.map(skill=>
   '<details class="cc-sheet-skill"><summary>'+esc(skill.name)+'</summary><p>'+
@@ -122,7 +122,7 @@ function renderCombatantSheet(c){
   '<span>Pavor: <strong>'+c.pavorLocal+'</strong></span></div>'+
   '<section class="cc-sheet-block"><h3>Habilitação da terceira fonte</h3>'+
   '<p><strong>Disciplina Avançada:</strong> '+esc(advance)+'.</p>'+
-  (s.human?'<p class="cc-help">A terceira fonte de uma ação com Disciplina exige a Perícia, Disciplina G2 e pertinência confirmada pelo Narrador.</p>':'')+
+  (s.human?'<p class="cc-help">A terceira fonte de uma ação com Disciplina exige a Perícia, Disciplina G3 e pertinência confirmada pelo Narrador.</p>':'')+
   '</section>'+
   sheetGrades("Atributos",s.attributes)+
   (s.human?sheetGrades("Conhecimentos",s.knowledges)+sheetGrades("Práticas",s.practices):'')+
