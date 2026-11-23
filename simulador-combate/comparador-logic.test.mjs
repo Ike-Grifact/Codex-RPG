@@ -460,6 +460,18 @@ test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; nor
  assert.equal(planWeaponEffects({skills:["maestria-espadas"]},weapon,["Cortante"],{success:true}).ok,false,
   "Maestria sozinha não substitui a Perícia do peso");
 });
+test("Artista Marcial adquirido só habilita manobras se Atletismo 1 e requisitos forem satisfeitos",()=>{
+ const a=normalizeCombatant({kind:"humanoide",skills:["artista-marcial","pugilismo"],
+  practices:{armas_conjuracao:2,atletismo:0},attributes:{destreza:2}});
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Compra histórica não ativa sem Atletismo 1");
+ a.practices.atletismo=1;
+ assert.ok(selectedActiveSkill(a,"artista-marcial"),"Atletismo 1 reabilita a Perícia");
+ a.attributes.destreza=1;
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Destreza 2 ainda é requisito");
+ a.attributes.destreza=2;
+ a.skills=a.skills.filter(x=>x!=="pugilismo");
+ assert.equal(selectedActiveSkill(a,"artista-marcial"),null,"Pugilismo ainda é requisito");
+});
 test("Maestrias requerem atributos próprios e habilitação da arma para usar gratuidade",()=>{
  const cases=[
   ["maestria-adagas","Faca",{agilidade:2,destreza:2}],
