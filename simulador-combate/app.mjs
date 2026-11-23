@@ -571,13 +571,15 @@ function confirmRoll(){
  if(!a||!t||!pre.ok)return notice(pre.error||"Rolagem inválida.");
  if(a.acted)return notice("Este combatente já agiu na rodada.");
  const r=pre.result;
- if((pre.courageCost||0)>a.courage||(pre.cost||0)>a.pavorLocal)
+ if(pre.courageCost>a.courage||pre.pavorCost>a.pavorLocal)
   return notice("Coragem ou Pavor local insuficiente.");
- a.courage=Math.max(0,a.courage-(pre.courageCost||0));
- a.pavorLocal=Math.max(0,a.pavorLocal-(pre.cost||0));
- if(pre.activation)log("Perícia",a.name+" ativou "+pre.activation.name+
-  " (gasto declarado: "+pre.skillAmount+" Coragem; efeito condicionado à validação do Narrador).");
+ a.courage=Math.max(0,a.courage-pre.courageCost);
+ a.pavorLocal=Math.max(0,a.pavorLocal-pre.pavorCost);
+ if(a.side==="jogadores")a.courageRoundSpent=Math.min(5,(a.courageRoundSpent||0)+pre.courageCost);
+ for(const skill of pre.activations)log("Perícia",a.name+" ativou "+skill.name+
+  " (−"+skill.cost+(a.side==="inimigos"?" Pavor local":" Coragem")+").");
  $("skill-approved").checked=false;
+ activeExtraSelections.clear();
  if(a.side==="jogadores")a.courage=Math.min(maxCourage(a.level),a.courage+Number(r.criticalRefundCourage||0));
  if(a.side==="inimigos"&&r.monsterCriticalPavor){
   const cap=monsterCap(a.threatGrade),free=Math.max(0,cap-a.pavorLocal);
@@ -588,6 +590,11 @@ function confirmRoll(){
  }
  const moved=transferPavor(a,t,r.p,state.publicPavor);
  Object.assign(t,moved.target);
+ if(pre.companion&&r.success&&a.smallCompanion?.species==="serpente"&&t.statuses?.sangramento){
+  const changed=markCondition(t,"envenenado",true);
+  if(changed.ok){Object.assign(t,changed.actor);log("companheiro",a.name+
+   ": serpente "+(a.smallCompanion.name||"domesticada")+" aplicou Envenenado ao alvo em Sangramento (sem dano direto automático).");}
+ }
  a.acted=true;
  last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
   de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
@@ -597,9 +604,9 @@ function confirmRoll(){
   (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
   moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
    damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
-   courageCost:pre.courageCost||0,pavorCost:pre.cost||0,weapon:pending.weapon,
-   elevation:pending.boosted||"",activeSkill:pre.activation?.id||"",
-   skillCourage:pre.skillAmount||0,health:pre.health.id,weight:pre.affinity.description});
+   courageCost:pre.courageCost,pavorCost:pre.pavorCost,weapon:pending.weapon,
+   elevation:pending.boosted||"",activeSkills:pre.activations.map(x=>({id:x.id,cost:x.cost})),
+   fulminante:pending.fulminanteId||"",companion:pre.companion,health:pre.health.id,weight:pre.affinity.description});
  state.resourceActor=t.id;pending=null;persist();render(false);
  $("action-state").textContent="Rolagem confirmada";
  notice("Rolagem confirmada. Pavor atualizado. Dano à Integridade e Vida ainda exigem aplicação.");
@@ -638,7 +645,7 @@ function applyConfirmed(which){
 }
 function nextRound(){
  state.round=Math.min(9999,state.round+1);
- for(const c of state.combatants)c.acted=false;
+ for(const c of state.combatants){c.acted=false;c.courageRoundSpent=0;}
  pending=null;log("rodada","Rodada "+state.round+". Oportunidades restauradas; não há cura automática.");
  persist();render();
 }
