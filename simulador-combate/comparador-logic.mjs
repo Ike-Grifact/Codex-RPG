@@ -354,7 +354,8 @@ export function weightAffinity(weapon,target,attacker=null){
 export function manejoPerfeitoBonus(attacker,weapon,affinity,{situation="normal",mode="armas",baseKey="armas_conjuracao",thrown=false}={}){
  const p=attacker?.practices||{},a=attacker?.attributes||{},skills=attacker?.skills||[];
  const ready=weapon?.kind==="weapon"&&weapon.equipped&&
-  !weapon.firearm&&!(weapon.properties||[]).includes("À Distância")&&!thrown&&
+  !weapon.firearm&&!(weapon.properties||[]).includes("À Distância")&&
+  !/^(arco|besta|zarabatana)/i.test(String(weapon.name||""))&&!thrown&&
   mode==="armas"&&baseKey==="armas_conjuracao"&&
   skills.includes("manejo-perfeito")&&skills.includes("disciplina-avancada")&&
   Number(p.armas_conjuracao||0)>=3&&Number(a.destreza||0)>=2&&
