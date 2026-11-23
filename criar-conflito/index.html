@@ -29,9 +29,9 @@
  </header>
  <main class="cf-main shell" id="conteudo">
   <section class="cf-hero">
-   <span class="eyebrow">FERRAMENTAS DO NARRADOR · SRD v0.89 · Integridade manual</span>
-   <h1>Criar <em>Conflito.</em></h1>
-   <p>Prepare um encontro com Humanoides, Criaturas/Monstros e Humanoides Monstros. Controle graus, dados, recursos e liderança sem trocar de página.</p>
+   <span class="eyebrow">MEUS INIMIGOS · FERRAMENTAS DO NARRADOR · INTEGRIDADE MANUAL</span>
+   <h1>Meus <em>inimigos.</em></h1>
+   <p>Crie inimigos, prepare conflitos e reúna suas fichas de Humanoides, Criaturas/Monstros e Humanoides Monstros. Controle capacidades, recursos e rolagens no mesmo lugar.</p>
    <div class="cf-hero-actions">
     <label>Tipo da nova ficha<select id="new-kind">
      <option value="humanoide">Humanoide</option>
@@ -44,15 +44,29 @@
    </div>
    <section class="cf-npc-launch" aria-label="Criação rápida de NPC e humanoide comum">
     <div><span class="eyebrow">NPC / HUMANOIDE COMUM</span>
-     <h2>Criação rápida de inimigo humanoide</h2>
-     <p>Crie um NPC básico imediatamente e ajuste seus Atributos, Conhecimentos, Práticas e Perícias na ficha. Use o mesmo Codex Genético dos jogadores para desenvolver graus e comprar Perícias. O NPC é salvo separadamente da sua Ficha principal e enviado ao encontro com um clique.</p></div>
+     <h2>Crie um humanoide sem sair do conflito</h2>
+     <p>Use o mesmo Codex Genético dos personagens aqui dentro: identidade, capacidades, Perícias e equipamentos numa única jornada. Ao concluir, o humanoide entra diretamente na lista de inimigos. Também é possível começar por um NPC básico e ajustá-lo abaixo.</p></div>
     <div class="cf-npc-buttons">
-     <button id="add-human-quick" class="cf-primary cf-quick-humanoid" type="button" title="Abrir o Codex Genético em ficha separada para NPC">Criar humano comum pelo DNA</button>
-     <button id="add-human-basic" type="button">+ NPC básico imediato</button>
+     <button id="add-human-quick" class="cf-primary cf-quick-humanoid" type="button" aria-controls="cf-npc-workspace" aria-expanded="false" title="Criar humanoide com o Codex Genético sem sair do conflito">Criar humanoide pelo DNA aqui</button>
+     <button id="add-human-basic" type="button">+ NPC básico para ajustar</button>
     </div>
    </section>
    <p class="cf-note">Tipos: Humanoide usa XP comum; Criatura/Monstro paga Atributos pela tabela de Conhecimentos/Práticas; Humanoide Monstro usa essa tabela para todas as aptidões, exceto Perícias. Orçamentos de monstros são definidos pelo Narrador.</p>
    <p class="cf-note">Salvo automaticamente neste navegador. Ferramenta em playtest: grau e XP não atribuem dificuldade ou recompensa automática.</p>
+  </section>
+  <section class="cf-npc-workspace" id="cf-npc-workspace" aria-label="Criador integrado de inimigos humanoides" hidden>
+    <div class="cf-npc-workspace-head">
+      <div><span class="eyebrow">CRIAÇÃO INTEGRADA · MESMO CODEX GENÉTICO</span>
+        <h2>Novo inimigo humanoide</h2>
+        <p>1. Identidade e origem → 2. Capacidades e XP → 3. Perícias e equipamentos → 4. Adicionar ao encontro. As compras, requisitos e saldos são os mesmos da ficha. Você poderá ajustar o inimigo e rolar os dados logo abaixo.</p>
+      </div>
+      <div class="cf-npc-workspace-actions">
+        <a href="../prototipo-ficha/?npc=1" target="_blank" rel="noopener">Abrir criador completo em outra aba</a>
+        <button type="button" id="cf-close-npc">Fechar criação</button>
+      </div>
+    </div>
+    <iframe id="cf-npc-frame" src="../prototipo-ficha/?npc=1&amp;embedded=1" title="Criador de humanoide com Codex Genético" loading="lazy"></iframe>
+    <p class="cf-note">Salvamento independente: sua ficha de jogador não é substituída. Depois de importar, edite a ficha do inimigo diretamente neste conflito.</p>
   </section>
   <section class="cf-top-dashboard" aria-label="Painel do confronto">
    <div class="cf-dash">
@@ -71,7 +85,7 @@
      <small>Teto 2 + jogadores. Líder + 1 aliado custa 1P; Líder + 2 custa 2P. Início comum do conflito: custo PENDENTE.</small>
    </div>
    <div class="cf-dash">
-    <span>FICHAS / LIDERANÇA</span><strong id="roster-count">0 fichas</strong>
+    <span>INIMIGOS / LIDERANÇA</span><strong id="roster-count">0 fichas</strong>
     <small id="leader-count">Liderança opcional; necessária apenas para ações conjuntas específicas.</small>
    </div>
    <div class="cf-dash">
@@ -93,7 +107,7 @@
  </div></section>
 <section class="cf-layout">
    <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
-    <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Suas ameaças</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
+    <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Inimigos do encontro</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
     <p class="cf-description">Selecione uma ficha para alternar entre Edição e Rolagem. Clique nas capacidades e registre os resultados de playtest.</p>
     <div id="roster" class="cf-roster" aria-live="polite"></div>
     <p class="cf-note">Oponentes possuem Pavor <strong>local individual</strong>; a reserva pública do Mestre não é somada automaticamente.</p>
