@@ -832,6 +832,14 @@ function bind(){
  $("active-skill").addEventListener("change",()=>{
   $("skill-approved").checked=false;pending=null;
   if(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes($("active-skill").value))$("skill-courage").value="1";
+  // Selecionar a Perícia da arma habilita sua única propriedade automaticamente;
+  // com várias propriedades o jogador decide qual ativar, sem adivinhar.
+  const weapon=chosenWeapon(),access=weaponActivationSkill(actor(),weapon,{thrown:$("attack-thrown").checked});
+  const props=activeWeaponProperties(weapon);
+  if(props.length===1&&access.ok&&$("active-skill").value===access.required){
+   const single=$("weapon-effects").querySelector("[data-weapon-property]");
+   if(single&&!single.disabled)single.checked=true;
+  }
   renderAdditionalSkills((actor()?.skills||[]).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
   updateSkillInfo();renderDice();
  });
