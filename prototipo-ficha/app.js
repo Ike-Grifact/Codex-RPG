@@ -1977,7 +1977,7 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,runeShieldFreeUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,courageRoundSpent:0,xp:0,
  smallCompanion:{present:false,name:"",species:"outro"},
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
@@ -2295,6 +2295,7 @@ function normalize(v){
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
   s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+  s.courageRoundSpent=clamp(Math.floor(v.courageRoundSpent??0),0,5);
  s.spiritualSpheres={
   count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,5),
   // Migra fichas antigas: true equivalia a uma criação na rodada.
@@ -3941,6 +3942,7 @@ function renderSmallCompanion(){
   "Comprar Domar Criatura Pequena não cria automaticamente um companheiro nem concede +1 Vida. Registre-o após a domesticação.";
 }
 function renderVitals(){
+ const roundLabel=$("round-spent-label");if(roundLabel)roundLabel.textContent="Coragem gasta nesta rodada: "+(state.courageRoundSpent||0)+"/5";
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.courage=clamp(state.courage,0,maxCourage());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / "+maxCourage();
@@ -4255,6 +4257,7 @@ function buildPool(){
  const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+spellCost+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
+ if(totalPreparationCost+Number(state.courageRoundSpent||0)>5)errors.push("Máximo de 5 Coragens por rodada. Confirme a próxima rodada antes de agir novamente.");
  if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
  if(draft.cravarRemovalShieldId){
@@ -4384,7 +4387,7 @@ function roll(){
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
  const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
- if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
+ if(precoPrevisto>5||precoPrevisto+Number(state.courageRoundSpent||0)>5){toast("Limite de 5 Coragens por rodada (e por rolagem) excedido.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
@@ -4597,6 +4600,7 @@ function score(){
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
  if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
+ if(courageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
@@ -4739,6 +4743,7 @@ function finalize(){
   state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
  }
  state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
+ state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.courageCost,0,5);
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
  const gainedCourage=state.courage-oldCourage;
@@ -5327,12 +5332,13 @@ function onClick(event){
   state.courage-=1;logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
  }
  case "sphere-create":{
+  if((state.courageRoundSpent||0)>=5){toast("Limite de 5 Coragens na rodada. Confirme nova rodada.");break;}
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
   if(state.spiritualSpheres.createdThisRound>=5){toast("Limite de 5 esferas criadas nesta rodada; confirme a próxima rodada antes de repetir.");break;}
   if(sphereCount()>=5){toast("Teto de 5 Esferas Espirituais armazenadas atingido.");break;}
   if(state.courage<1){toast("Invocar Esfera Espiritual exige 1 Coragem.");break;}
   if(!confirm("Converter 1 Coragem em 1 Esfera Espiritual? Limite de 5 criações por rodada e de 5 esferas armazenadas."))break;
-  state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
+  state.courage-=1;state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
   logSkillAction("Invocar Esfera Espiritual","−1 Coragem; +1 esfera; "+state.spiritualSpheres.createdThisRound+"/5 criadas na rodada.");
   render();save();toast("1 esfera criada; "+state.spiritualSpheres.createdThisRound+"/5 nesta rodada.");break;
  }
@@ -5347,10 +5353,16 @@ function onClick(event){
   logSkillAction("Absorver Esferas","−"+amount+" esferas; +"+received+" Coragem (teto respeitado).");
   render();save();toast("Absorver Esferas: −"+amount+" esferas, +"+received+" Coragem.");break;
  }
+ case "advance-round":{
+  if(state.pending||editMode){toast("Finalize a ação ou edição antes de avançar a rodada.");break;}
+  if(!confirm("O Narrador confirmou uma nova rodada? O orçamento de 5 Coragens será reiniciado."))break;
+  state.courageRoundSpent=0;state.spiritualSpheres.createdThisRound=0;
+  render();save();toast("Nova rodada registrada.");break;
+ }
  case "sphere-next-round":{
   if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
   if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto zera o contador de até 5 criações permitidas por rodada."))break;
-  state.spiritualSpheres.createdThisRound=0;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
+  state.spiritualSpheres.createdThisRound=0;state.courageRoundSpent=0;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
  }
  case "sphere-spend":{
   const skillId=id;
@@ -5708,7 +5720,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
+  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.fulminante="";draft.attackThrown=false;draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
   if(k==="asura"&&!draft.asura)draft.asuraDieId="";
   if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
