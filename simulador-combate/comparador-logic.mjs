@@ -209,7 +209,12 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(new Set(selected).size!==selected.length||selected.some(x=>!eligible.includes(x)))
   return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
  const access=weaponActivationSkill(c,weapon,{thrown});
- if(!access.ok)return access;
+ // Exceção preservada da v0.77: Cravar Médio/Pesado pode ativar UM efeito
+ // gratuitamente por crítico, mesmo sem a Perícia de peso correspondente.
+ const cravarOnCritical=!!critical&&selected.length===1&&selected[0]==="Cravar"&&
+  weapon?.kind==="weapon"&&weapon.equipped!==false&&
+  ["medio","pesado"].includes(weapon.category)&&!thrown;
+ if(!access.ok&&!cravarOnCritical)return access;
  const masteryId=weaponMasteryFor(weapon,{thrown});
  const mastery=!!masteryId&&(c.skills||[]).includes(masteryId);
  // Fracasso não consome a ativação condicionada ao acerto.
