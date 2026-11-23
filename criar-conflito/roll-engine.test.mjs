@@ -134,8 +134,9 @@ test("Composição por clique: Disciplina + Força, elevação escolhida e XP in
  assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"},contextOK:true}).ok,false,
   "Terceira fonte não pode ser grátis");
 });
-test("Coragem é debitada somente ao confirmar: retenção mais elevação custa 2",()=>{
+test("Humanoide hostil gasta exclusivamente Pavor por retenção + elevação",()=>{
  const npc=quickHumanoid();npc.attributes.forca=2;
+ assert.equal(npc.courage,0);
  const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
  const pool=composeActionPool(npc,selection,"attribute.forca.0");
  assert.equal(pool.ok,true);
@@ -144,13 +145,14 @@ test("Coragem é debitada somente ao confirmar: retenção mais elevação custa
  const kept=rolled.map(x=>x.id);
  const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"});
  assert.equal(preview.ok,true);
- assert.equal(preview.courageCost,2);
- assert.equal(npc.courage,10);
+ assert.equal(preview.cost,2);assert.equal(preview.courageCost,0);
+ assert.equal(npc.pavorLocal,4);
  const result=settleCreatureRoll(npc,2,4,preview);
  assert.equal(result.ok,true);
- assert.equal(result.unit.courage,8);
- assert.equal(npc.courage,10);
- npc.courage=1;
+ assert.equal(result.unit.pavorLocal,2);
+ assert.equal(result.unit.courage,0);
+ assert.equal(npc.pavorLocal,4);
+ npc.pavorLocal=1;
  assert.equal(previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"}).ok,false);
 });
 test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=>{
