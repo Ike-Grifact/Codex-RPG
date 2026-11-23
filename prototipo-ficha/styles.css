@@ -1952,7 +1952,7 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-body .fp-site-header .fp-sound-toggle{font-size:11px;padding:8px 10px;margin-left:5px;white-space:nowrap}
 .fp-body .fp-site-header .site-nav.open{background:var(--surface)}
 .fp-npc-embed-toolbar[hidden]{display:none!important}
-.fp-npc-embed-toolbar{position:sticky;top:0;z-index:32;display:flex;justify-content:space-between;align-items:center;gap:14px;
+.fp-npc-embed-toolbar{position:static;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:14px;
  padding:12px 16px;margin:0 0 8px;border:1px solid var(--fp-stroke);border-radius:0 0 13px 13px;background:var(--fp-surface);
  box-shadow:0 4px 18px rgba(0,0,0,.12)}
 .fp-npc-embed-toolbar>div:first-child{display:grid;gap:4px;min-width:0}
@@ -1965,7 +1965,7 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-body.fp-npc-embedded .fp-shell{max-width:none;padding:0 clamp(8px,2vw,22px) 35px}
 .fp-body.fp-npc-embedded .fp-wizard{margin:0}
 @media(max-width:650px){
- .fp-npc-embed-toolbar{position:sticky;padding:10px;flex-direction:column;align-items:stretch}
+ .fp-npc-embed-toolbar{position:static;padding:10px;flex-direction:column;align-items:stretch}
  .fp-npc-embed-actions{width:100%;justify-content:stretch}
  .fp-npc-embed-actions button{flex:1;min-width:125px}
  .fp-body.fp-npc-embedded .fp-wizard-intro{padding:10px 12px}
