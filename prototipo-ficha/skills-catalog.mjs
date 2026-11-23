@@ -244,13 +244,13 @@ const SKILLS=[
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra médios. Não automatizado.",
+  "Disciplina 1 + Força 1; 2 XP. Em acerto com arma Média: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Crítico ativa UMA característica; acerto não crítico 1 Coragem. Ignora Desvantagem de peso contra leves. Não automatizado.",
+  "Disciplina 2 + Força 2; 2 XP. Em acerto com arma Pesada: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
