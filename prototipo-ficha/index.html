@@ -15,22 +15,23 @@
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
+<header class="site-header fp-site-header">
+  <a class="brand" href="../index.html" aria-label="Codex RPG, início"><img class="brand-logo" src="../assets/codex-logo.svg" alt="" width="64" height="58"><span class="brand-text">CODEX <strong>RPG</strong></span></a>
+  <nav class="site-nav" aria-label="Menu principal">
+   <a href="../index.html">Início</a>
+   <a href="../livro.html">Livro do Jogador</a>
+   <a href="../pericias/">Perícias</a>
+   <a href="../narrador.html">Livro do Mestre</a>
+   <a href="../prototipo-ficha/" class="active" aria-current="page">Meus personagens</a>
+   <a href="../criar-conflito/">Meus inimigos</a>
+   <a href="../simulador-combate/">Simulador tático</a>
+   <button class="fp-secondary fp-sound-toggle" type="button" id="sound-toggle" aria-pressed="true" aria-label="Silenciar rolagens" title="Som das rolagens">Som: ligado</button>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">☾ Escuro</button>
+  <button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu" aria-expanded="false">☰</button>
+ </header>
 <div class="fp-shell" id="ficha">
-  <header class="fp-topbar">
-    <a class="fp-brand" href="../index.html" aria-label="Codex RPG, página inicial">
-      <img src="../assets/codex-logo.svg" alt="" width="48" height="48">
-      <span><strong>CODEX <em>RPG</em></strong><small>O INÍCIO DE UMA HISTÓRIA</small></span>
-    </a>
-    <div class="fp-nav">
-      <a href="../index.html" class="fp-text-link">Início</a>
-      <a href="../livro.html" class="fp-text-link">Jogador</a><a href="../pericias/" class="fp-text-link">Perícias</a>
-      <a href="../narrador.html" class="fp-text-link">Narrador</a><a href="../criar-conflito/" class="fp-text-link">Criar Conflito</a>
-      <button class="fp-secondary fp-sound-toggle" type="button" id="sound-toggle" aria-pressed="true" aria-label="Silenciar rolagens" title="Som da rolagem; também funciona sem áudio externo">Som: ligado</button>
-      <button class="fp-icon-button" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
-      </button>
-    </div>
-  </header>
+ 
 
   <div class="fp-page-label">
     <div><span class="fp-kicker">FICHA · CODEX RPG</span>
@@ -50,14 +51,14 @@
     </div>
   </div>
 
-  <section class="fp-player-sheets fp-panel" id="player-sheets" aria-label="Minhas fichas de jogadores">
+  <section class="fp-player-sheets fp-panel" id="player-sheets" aria-label="Meus personagens">
     <div class="fp-player-sheets-picker">
-      <label for="player-sheet-select">MINHAS FICHAS DE JOGADORES</label>
+      <label for="player-sheet-select">MEUS PERSONAGENS</label>
       <select id="player-sheet-select" aria-label="Selecionar ficha de jogador"></select>
       <small id="player-sheets-count">Carregando fichas locais...</small>
     </div>
     <div class="fp-player-sheets-actions">
-      <button type="button" class="fp-primary-btn" id="start-wizard">+ Nova ficha</button>
+      <button type="button" class="fp-primary-btn" id="start-wizard">+ Novo personagem</button>
       <button type="button" class="fp-secondary" id="player-sheet-duplicate">Duplicar</button>
       <button type="button" class="fp-secondary fp-danger-button" id="player-sheet-delete" disabled>Excluir ficha</button>
     </div>
