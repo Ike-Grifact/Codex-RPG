@@ -714,7 +714,7 @@ function confirmCreatureRoll(){
  notice("Rolagem confirmada e registrada no histórico para playtest.");
 }
 function editorHTML(t){
- const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal;
+ const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal,armor=equippedArmor(t);
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
  const guide=human?'<nav class="cf-human-navigation" aria-label="Ir à etapa da ficha de humanoide">'+
   [['cf-identity','1 · Identidade'],['cf-training','2 · Graus / XP'],['cf-specialties','3 · Perícias'],
@@ -746,7 +746,16 @@ function editorHTML(t){
   '<small>Máximo calculado pelos Atributos; aumentos não curam automaticamente.</small></div>'+
   [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',(human?x.keepMax:t.keep)+' / '+x.keepMax]]
    .map(([label,val],i)=>'<div class="cf-stat'+(i===2&&x.xp.remaining<0?' is-warning':i===3?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
-  '</div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
+  '<div class="cf-stat cf-stat-armor"><small>INTEGRIDADE DA ARMADURA</small>'+
+  (armor?'<strong>'+armor.integrity+' / '+armor.integrityMax+'</strong>'+
+   '<small title="'+esc(armor.name)+'">'+esc(armor.name)+'</small>'+
+   '<div class="cf-armor-summary-actions">'+
+   '<button type="button" data-integrity="'+esc(armor.id)+'" data-delta="-1"'+(armor.integrity<=0?' disabled':'')+' aria-label="Reduzir Integridade da armadura">−</button>'+
+   '<button type="button" data-integrity="'+esc(armor.id)+'" data-delta="1"'+(armor.integrity>=armor.integrityMax?' disabled':'')+' aria-label="Restaurar Integridade da armadura">+</button></div>'+
+   '<small>Desgaste manual · Vida independente</small>':
+   '<strong>—</strong><small>Sem armadura equipada</small>'+
+   (human?'<button type="button" data-editor-jump="cf-equipment">Ver equipamentos</button>':''))+
+  '</div></div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
   '<section class="cf-panel"><h3>Pavor local e retenção</h3>'+
   '<div class="cf-local-row"><strong>Pavor '+t.pavorLocal+' / '+pLocal+'</strong>'+
   '<button type="button" data-local="-1"'+(t.pavorLocal===0?' disabled':'')+'>− P local</button>'+
