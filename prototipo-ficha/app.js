@@ -6034,7 +6034,9 @@ function bind(){
  if(EMBED_NPC){
   document.body.classList.add("fp-npc-embedded");
   const toolbar=$("npc-embed-toolbar");if(toolbar)toolbar.hidden=false;
+  const bottom=$("npc-embed-bottom");if(bottom)bottom.hidden=false;
   $("npc-embed-send")?.addEventListener("click",sendNpcToConflict);
+  $("npc-embed-send-bottom")?.addEventListener("click",sendNpcToConflict);
   $("npc-embed-new")?.addEventListener("click",()=>{
    if(state.name.trim()&&!confirm("Criar outro humanoide? O rascunho anterior permanecerá no encontro apenas se foi enviado."))return;
    state=defaultState();resetPlayerView({});render();wizardPersist();save();
