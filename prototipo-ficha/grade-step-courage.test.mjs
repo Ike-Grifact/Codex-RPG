@@ -583,7 +583,7 @@ test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características p
  assert.ok(book.includes("arremessar o escudo consome **1 Coragem**")&&srd.includes("cada lançamento de Escudo Bumerangue consome **1 Coragem**"));
  assert.ok(index.includes("dano físico normal e características próprias do escudo"));
  assert.ok(app.includes("const damageBasic=success?E+Math.floor(P/2):0"),"Usa a fórmula universal E + piso(P/2)");
- assert.ok(app.includes("const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1)"),"Sem ramo null e com crítico normal");
+ assert.ok(app.includes("const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:fulminanteDamageBasic*(critTier===4?2:1)"),"Dano básico preservado; Fulminante só altera P com Perícia ativa");
  assert.ok(app.includes("Number(!!draft.shieldThrowId)"),"Preparação inclui 1 Coragem por arremesso");
  assert.ok(app.includes("Number(!!p.shieldThrowId)"),"Pontuação/finalização inclui custo em Coragem mesmo em falha");
  assert.ok(app.includes('const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));'),"Consulta características do escudo sem usar seus dados como arma");
@@ -994,7 +994,7 @@ test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorç
  invoke("sphere-create");
  assert.equal(state.spiritualSpheres.count,5,"Sexta criação da mesma rodada é bloqueada");
  assert.equal(state.courage,5,"Bloqueio não consome Coragem");
- state.spiritualSpheres.createdThisRound=0;
+ state.spiritualSpheres.createdThisRound=0;state.courageRoundSpent=0;
  invoke("sphere-create");
  assert.equal(state.spiritualSpheres.count,5,"Não ultrapassa estoque de 5 mesmo numa nova rodada");
  state.spiritualSpheres.count=4;
