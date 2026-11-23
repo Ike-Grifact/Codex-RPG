@@ -96,12 +96,36 @@ test("Lucker de Sangue inicia só com a Perícia de Sangue, sem Foco inventado",
  assert.equal(ownsSkill("criar-item-foco-magia",c),false);
 });
 
-test("Lucker Puro recebe Foco e exatamente uma Perícia elemental escolhida",()=>{
+test("Lucker Puro recebe Foco e somente Veneno como opção inicial da lista remanescente",()=>{
  const c=character("lucker_puro",{pureElement:"veneno"});
  assert.deepEqual(racialGrants(c),["criar-item-foco-magia","veneno"]);
  assert.equal(raceChoicesComplete(c),true);
  assert.equal(raceChoicesComplete(character("lucker_puro")),false);
- assert.deepEqual(racialGrants(character("lucker_puro",{pureElement:"fogo"})),["criar-item-foco-magia"]);
+ for(const invalid of ["sangue","trevas","fogo","agua","vento","terra","sagrado"]){
+  const other=character("lucker_puro",{pureElement:invalid});
+  assert.deepEqual(racialGrants(other),["criar-item-foco-magia"],invalid+" não é uma concessão de origem");
+  assert.equal(raceChoicesComplete(other),false,invalid+" não completa a origem");
+ }
+ const bought=character("lucker_puro",{pureElement:"",skills:["sangue","trevas"]});
+ assert.equal(ownsSkill("sangue",bought),true,"Compra de Sangue por XP permanece");
+ assert.equal(ownsSkill("trevas",bought),true,"Compra de Trevas por XP permanece");
+ assert.deepEqual(racialGrants(bought),["criar-item-foco-magia"]);
+});
+
+test("Livro e portal não apresentam opções raciais revogadas como gratuitas",()=>{
+ const book=readFileSync(new URL("../docs/livro-do-jogador.md",import.meta.url),"utf8");
+ const portal=readFileSync(new URL("../livro.html",import.meta.url),"utf8");
+ assert.ok(!portal.includes("dois elementos diferentes entre Ar, Água, Terra e Fogo"));
+ assert.ok(!portal.includes("Criar Item de Foco e Magia + Sangue, Trevas ou Veneno"));
+ assert.ok(portal.includes("Escudo Rúnico"),"Escudo Rúnico precisa constar da tabela racial");
+ assert.ok(book.includes("Sangue e Trevas **não podem ser selecionados como elementos gratuitos iniciais**"));
+});
+
+test("Migração da concessão Lucker Puro legada não vira XP nem apaga Perícia comprada",()=>{
+ assert.ok(source.includes('s.race==="lucker_puro"&&["sangue","trevas"].includes(v.pureElement)'));
+ assert.ok(source.includes('s.notes.includes("Elemento de origem Lucker Puro (legado):")'));
+ assert.ok(source.includes('racialElementMigrated=raw.race==="lucker_puro"'));
+ assert.ok(!source.includes('const PURE_ELEMENTS=[["sangue","Sangue"]'));
 });
 
 test("Runa Espinhos recebe Pugilismo, Foco, Escudo Rúnico e somente um elemento gratuito",()=>{

@@ -24,7 +24,7 @@ No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão p
 
 ### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
 
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das linhagens agora aprovadas na seção de regras acima**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. Sua economia de XP reduzida ou majorada sem fórmula numérica permanece **PENDENTE**; a seleção de linhagem não revoga os limites e requisitos gerais.
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo II — Criar o Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
 
 #### Dois destinos para um povo antigo
 
@@ -258,6 +258,21 @@ Antes de interpretar um Lucker, responda:
 
 
 ## II. Criar o Aprendiz
+
+### Linhagens e benefícios na criação [DEFINIDO / opções PENDENTES]
+
+| Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
+|---|---|---|
+| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Maestria em Armas de Fogo gratuita; a Maestria não concede automaticamente a Perícia em Armas de Fogo |
+| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
+| **Lucker Puro** | Inteligência e Destreza | Criar Item de Foco e Magia e **uma Perícia em Veneno** gratuita. Sangue e Trevas **não podem ser selecionados como elementos gratuitos iniciais** |
+| **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
+
+**Lucker Puro:** a lista antiga de escolhas gratuitas Sangue/Trevas/Veneno foi parcialmente revogada em 23/11/2026. **Veneno é a única opção restante da lista anterior**; outras alternativas de elemento gratuito permanecem **PENDENTES** de decisão autoral. Sangue ou Trevas, quando obtidos por compras legais de XP, não são removidos por essa correção. Fichas antigas preservam o registro histórico da escolha antiga sem continuar concedendo a Perícia gratuitamente.
+
+**Runa Espinhos:** o elemento gratuito pode ser somente **um** entre Ar, Água, Terra e Fogo. Os demais precisam ser adquiridos normalmente. Escudo Rúnico é a concessão racial de Escudo Arcano, com uma ativação base gratuita por dia; aplicações posteriores têm custo normal e a barreira ganha resistência a um elemento habilitado por utilização, não imunidade irrestrita. A segunda opção elemental de fichas antigas é apenas histórica, sem segundo benefício gratuito.
+
+**Custos raciais vigentes:** Lucker de Sangue favorece Vigor e Agilidade, com Influência/Apresentação elevados; Lucker Puro favorece Inteligência e Destreza, com Força/Atletismo elevados; Runa Espinhos favorece Vigor e Força, com Agilidade/Destreza elevados. As faixas usam os preços raciais existentes, sem criar multiplicadores novos.
 
 Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
 
