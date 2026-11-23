@@ -416,22 +416,28 @@ function evaluate(a,rolled,kept,opts){
  }
  return {...pre,health,affinity,stealth,companion,noisy};
 }
-function preview(){
+function preview(opts=options(),selectedIds=pending?.kept){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
  const a=byId(pending.actor),t=byId(pending.target);
  if(!a||!t)return {ok:false,error:"Atacante ou alvo não encontrado."};
- const pre=evaluate(a,pending.rolled,pending.kept,options());
+ const pre=evaluate(a,pending.rolled,selectedIds,opts);
  if(!pre.ok)return pre;
  if(pre.health.id==="morto")return {ok:false,error:"Combatente morto não pode agir."};
  const activations=pending.activations||[];
  if(activations.some(x=>!selectedActiveSkill(a,x.id)))return {ok:false,error:"Ativação de Perícia não adquirida."};
+ const weapon=pending.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
+ const weaponPlan=planWeaponEffects(a,weapon,pending.weaponEffects||[],{
+  success:pre.result.success,critical:pre.result.critical,thrown:!!pending.thrown});
+ if(!weaponPlan.ok)return weaponPlan;
+ const status=weaponEffectOutcome(weaponPlan.active,t,weapon);
+ if(!status.ok)return status;
  const totalSkillCost=activations.reduce((sum,x)=>sum+x.cost,0);
  const hostile=a.side==="inimigos",human=isHumanoidKind(a.kind);
  const healthCost=pre.health.coragem||0;
- // previewHumanoidRoll já debita Pavor por retenção e por elevação. Não cobrar de novo.
+ // previewHumanoidRoll já debita Pavor por retenção e elevação; não cobrar de novo.
  const stepCost=!hostile&&!!pending.boosted?1:0;
- const courageCost=hostile?0:(pre.courageCost||0)+healthCost+stepCost+totalSkillCost;
- const pavorCost=(pre.cost||0)+(hostile?(human?healthCost:0)+totalSkillCost:0);
+ const courageCost=hostile?0:(pre.courageCost||0)+healthCost+stepCost+totalSkillCost+weaponPlan.cost;
+ const pavorCost=(pre.cost||0)+(hostile?(human?healthCost:0)+totalSkillCost+weaponPlan.cost:0);
  if(!hostile&&courageCost>5)return {ok:false,error:"Máximo de 5 Coragens por rolagem."};
  if(!hostile&&courageCost+Number(a.courageRoundSpent||0)>5)
   return {ok:false,error:"Rodada: limite de 5 Coragens já seria excedido."};
@@ -440,13 +446,16 @@ function preview(){
  if(pavorCost>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente: requer "+pavorCost+"P, possui "+a.pavorLocal+"P."};
  const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
  const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t);
- // Pavor Fulminante passa a valer 1 de dano ao invés da metade arredondada.
  const fulminanteActive=!!pending.fulminanteId;
  const criticalMultiplier=pre.result.critical===4?2:1;
  const extraP=fulminanteActive&&pre.result.success?
   (pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- return {...pre,courageCost,pavorCost,activations,totalSkillCost,
-  integrityDamage:g1?0:pre.result.damage+extraP,extraP,life};
+ const blocked=!!$("perfurante-blocked").checked;
+ // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
+ const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
+ const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
+ return {...pre,courageCost,pavorCost,activations,totalSkillCost,weaponPlan,status,
+  integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderDice(){
  const element=$("dice");
