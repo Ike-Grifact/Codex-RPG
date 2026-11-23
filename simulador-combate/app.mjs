@@ -223,6 +223,7 @@ function renderSources(){
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
  activeExtraSelections.clear();$("attack-thrown").checked=false;
+ $("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
  // Elevação temporária da fonte também não atravessa combatentes ou rodadas.
