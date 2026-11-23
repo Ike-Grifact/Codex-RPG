@@ -1,7 +1,7 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261123-npc-hub-v1";
+ from "./rules.mjs?v=20261123-skills-dashboard-v1";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261123-npc-hub-v1";
 const KEY="codex-rpg-criar-conflito-v1";
@@ -250,12 +250,13 @@ function refreshSkillFilters(){
   if(!card.hidden)visible++;
  });
  const result=el("cf-skill-filter-count");
- if(result)result.textContent=visible+" de "+SKILLS.length+" Perícias listadas";
+ if(result)result.textContent=visible+" de "+document.querySelectorAll("#cf-skills .cf-skill-card").length+" Perícias listadas";
 }
 function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  const remaining=ledger(t).remaining,owned=new Set(t.skills||[]),free=new Set(humanoidRacialGrants(t));
- const cards=SKILLS.filter(it=>isPlayerCatalogSkill(it.id)||owned.has(it.id)).map(it=>{
+ const listed=SKILLS.filter(it=>isPlayerCatalogSkill(it.id)||owned.has(it.id));
+ const cards=listed.map(it=>{
   const racial=free.has(it.id),selected=owned.has(it.id),pending=!Number.isInteger(it.cost);
   const requirement=!racial?humanoidSkillRequirement(t,it.id):null;
   const ready=!pending&&!requirement&&remaining>=it.cost;
@@ -273,7 +274,7 @@ function skillPanel(t){
  }).join("");
  return '<p>Catálogo completo da Ficha do Jogador: Perícias com custo definido, requisitos e opções PENDENTES. '+
   'Uma opção PENDENTE fica visível para consulta, mas sua compra não é liberada automaticamente.</p>'+
-  '<details class="cf-skills-panel" open><summary>Perícias dos humanoides · '+SKILLS.length+' entradas (incluindo legadas)</summary>'+
+  '<details class="cf-skills-panel" open><summary>Perícias dos humanoides · '+listed.length+' entradas</summary>'+
   '<div class="cf-skill-toolbar"><label>Pesquisar Perícia <input id="cf-skill-search" type="search" '+
   'placeholder="Nome, efeito ou requisito" value="'+esc(skillFilterState.query)+'" autocomplete="off"></label>'+
   '<label>Exibir <select id="cf-skill-scope">'+
