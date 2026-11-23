@@ -94,6 +94,20 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  assert.equal(confirmed.publicPavor,4); // excedente de crítico vai ao Pavor público
 });
 
+test("Rolador não aceita Foco presumido no Lucker Puro; compra 0 XP valida conjuração",()=>{
+ const npc=blank("humanoide");npc.race="lucker_puro";npc.pureElement="terra";
+ npc.attributes.inteligencia=1;npc.practices.armas_conjuracao=1;npc.practices.artesao=1;
+ const sources={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"inteligencia",mode:"conjuracao"};
+ assert.equal(composeActionPool(npc,sources).ok,false,"Requisitos sem aquisição não habilitam Foco");
+ npc.skills.push("criar-item-foco-magia");
+ assert.equal(composeActionPool(npc,sources).ok,true,"Compra explícita habilita Foco");
+ npc.practices.artesao=0;
+ assert.equal(composeActionPool(npc,sources).ok,false,"Foco registrado sem requisito não pode conjurar");
+ const rune=normalize({...blank("humanoide"),race:"runa_espinhos",runeElements:["terra"]});
+ rune.practices.armas_conjuracao=1;rune.attributes.inteligencia=1;
+ assert.equal(composeActionPool(rune,sources).ok,true,"Runa Espinhos mantém concessão original");
+});
+
 test("Retenção humana inimiga respeita Grau da ameaça sem conceder quarto gratuito",()=>{
  const npc=quickHumanoid();npc.practices.atletismo=2;
  const pool=humanoidPool(npc,"practice","atletismo","forca");
