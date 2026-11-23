@@ -1,10 +1,12 @@
 # Codex RPG — Protótipo de Sistema Foundry VTT v14
 
-> **Playtest 0.2.1.33.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
+> **Playtest 0.2.1.34.** A ficha usa recursos compactos e abas para Jogar, Evolução, Codex Genético e Inventário. Dentro do Inventário, use Mochila e equipamentos, Bolsa · VT ou Mercado e compras. Use **Atacar** ou **Conjurar** para preparar a ação ofensiva. Selecione fontes na ficha para preparar um teste comum. Arraste a barra **Rolagem** no PC ou use as setas com a barra em foco. Em telas pequenas e com toque, a preparação permanece na ficha.
 
 **Estado:** sistema experimental. Use o canal de playtest em uma User Data separada ou em um mundo de testes. A versão instalada aparece em **Game Systems**.
 
 A **Maestria em Apresentação** reúne os 17 efeitos do Bardo no Codex Genético e no Compendium. Perícia em Instrumentos e Voz Encantadora continuam independentes, com XP de aquisição pendente. Registros antigos podem ser conferidos em **Evolução → Histórico do Bardo para revisão**.
+
+Em **Inventário → Bolsa · VT**, o Narrador adiciona VT na forma de um dos cinco recursos. O **Mercado** e o **Criador** mostram o impacto líquido na carga antes da confirmação, já descontando o peso dos recursos do pagamento. O peso tático exibido na ficha vem da armadura equipada. A capacidade física usa Força, Vigor e Atletismo somados. Em **Evolução**, consulte as Perícias adquiridas e regularize, quando necessário, o elemento gratuito do Lucker Puro.
 
 ## Sincronização com o SRD v0.91
 

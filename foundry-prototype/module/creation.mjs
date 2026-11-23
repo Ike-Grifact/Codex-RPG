@@ -2,7 +2,7 @@ import {catalogArmorMigration} from "./equipment-migration.mjs";
 import {ATTRIBUTES, KNOWLEDGES, PRACTICES, SKILLS, lifeMax, maxPP,maxCourage, monsterCap} from "./rules.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {bardEffectItem,internalBardEffect,splitBardSkills} from "./bard.mjs";
-import {RACES, withRacialOrigin, usesRacialRules} from "./races.mjs";
+import {RACES, withRacialOrigin, usesRacialRules, legacyPureElementUpdate} from "./races.mjs";
 
 export const actorKinds = {
   character: "Aprendiz / personagem",
@@ -74,6 +74,8 @@ export function actorData(type, raw = {}, quick = false) {
     const recorded=Array.isArray(raw.racialInitialAttributes)?raw.racialInitialAttributes.filter(key=>RACES[race].favored.includes(key)):[];
     system=withRacialOrigin({...system,race,runeElements:Array.isArray(raw.runeElements)?raw.runeElements.slice(0,2).map(value=>text(value,20)):[],racialInitialAttributes:recorded},{...raw,race});
   }
+  const historicalElement=legacyPureElementUpdate({...system,pureElement:raw.pureElement});
+  if(historicalElement["system.notes"]!==undefined)system.notes=historicalElement["system.notes"];
   system.pp = integer(raw.pp, 0, maxPP(system.level));
   const companion=raw.smallCompanion??raw.companion;
   if(companion)system.companion={name:text(companion.name,70),species:companion.species==="serpente"?"serpente":"outro",present:companion.present===true};

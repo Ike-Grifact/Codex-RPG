@@ -8,11 +8,11 @@ const increasedTraining = [0,3,6,12,24,48,96];
 
 export const RACES = {
   humano: {name:"Humano", description:"Perseverança Humana e Maestria em Armas de Fogo gratuitas. A Maestria não concede a Perícia Armas de Fogo.", favored:[], increased:[]},
-  lucker_sangue: {name:"Lucker de Sangue", description:"Perícia de Sangue gratuita.", favored:["vigor","agilidade"], increased:["attribute:influencia","practice:apresentacao"]},
+  lucker_sangue: {name:"Lucker de Sangue", description:"Elemento Sangue gratuito. Transfusão Sanguinária é exclusiva desta linhagem e exige compra.", favored:["vigor","agilidade"], increased:["attribute:influencia","practice:apresentacao"]},
   lucker_puro: {name:"Lucker Puro", description:"Foco e um elemento inicial gratuitos.", favored:["inteligencia","destreza"], increased:["attribute:forca","practice:atletismo"]},
   runa_espinhos: {name:"Runa Espinhos", description:"Pugilismo, Foco, um elemento inicial e Escudo Rúnico gratuitos. A origem não equipa armaduras físicas.", favored:["vigor","forca"], increased:["attribute:agilidade","attribute:destreza"]},
 };
-export const PURE_ELEMENTS = [["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]];
+export const PURE_ELEMENTS = [["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"]];
 export const RUNE_ELEMENTS = [["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"]];
 const hasElement = (list, id) => list.some(([key]) => key === id);
 
@@ -40,6 +40,21 @@ export function racialChoicesComplete(system) {
   if (system.race !== "runa_espinhos") return true;
   const elements = system.runeElements;
   return hasElement(RUNE_ELEMENTS,elements?.[0]);
+}
+
+export const needsPureElement = system => usesRacialRules(system)&&system.race==="lucker_puro"&&!racialChoicesComplete(system);
+
+export function legacyPureElementUpdate(system){
+  const oldName=({sangue:"Sangue",trevas:"Trevas",veneno:"Veneno"})[system.pureElement];
+  if(!needsPureElement(system)||typeof oldName!=="string")return {};
+  const line="Escolha elemental antiga do Lucker Puro: "+oldName+".";
+  const notes=system.notes??"";
+  return {"system.pureElement":"","system.notes":notes.split("\n").includes(line)?notes:[notes,line].filter(Boolean).join("\n")};
+}
+
+export function regularizePureElement(system,element){
+  if(!needsPureElement(system)||!hasElement(PURE_ELEMENTS,element))throw Error("Escolha elemental racial indisponível.");
+  return {...legacyPureElementUpdate(system),"system.pureElement":element};
 }
 
 export function racialGrants(system) {

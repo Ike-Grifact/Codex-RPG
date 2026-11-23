@@ -27,7 +27,7 @@ export function equipmentView(actor,filters){
   const name=Object.hasOwn(RESOURCE_NAMES,key)?RESOURCE_NAMES[key]:item.name;
   quantities.set(name,quantities.get(name)+item.system.quantity);
  }
- const resources=Array.from(quantities,([name,quantity])=>({name,quantity}));
+ const resources=Object.entries(RESOURCE_NAMES).map(([id,name])=>({id,name,quantity:quantities.get(name)}));
  const shortcutIds=new Set(actor.getFlag?.('codex-rpg-foundry','attackShortcuts')??[]);
  const options=(rows,value)=>rows.map(([id,label])=>({id,label,selected:id===value}));
  const shop=G1_CATALOG.filter(row=>equipmentMatches(row,filters.shopFamily,filters.shopWeight)).map(row=>({

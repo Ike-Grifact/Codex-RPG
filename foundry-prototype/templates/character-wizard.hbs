@@ -77,23 +77,25 @@
           <label>Usar primeiro<select data-wizard-payment>{{#each payment}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
           <button type="button" data-action="wizardBuy">Comprar</button>
         </div>
+        <p data-wizard-purchase-preview aria-live="polite" hidden></p>
       </div>
       {{#if purchases}}<h4>Equipamentos escolhidos</h4>{{/if}}
       <ul class="codex-wizard-purchases">
         {{#each purchases}}
         <li><strong>{{{icon}}} {{name}} · {{quantity}}×</strong>
           <div class="codex-actions">
-            <button type="button" data-action="wizardEquip" data-index="{{index}}" {{#if cannotEquip}}disabled title="Runa Espinhos não equipa armaduras físicas"{{/if}}>{{#if equipped}}Guardar{{else}}Equipar{{/if}}</button>
+            <button type="button" data-action="wizardEquip" data-index="{{index}}" {{#if cannotEquip}}disabled title="A ficha não atende aos requisitos desta armadura"{{/if}}>{{#if equipped}}Guardar{{else}}Equipar{{/if}}</button>
             <button type="button" data-action="wizardRemove" data-index="{{index}}" aria-label="Remover {{name}}">Remover</button>
           </div>
         </li>
         {{/each}}
       </ul>
-      <p>Carga prevista · {{weight}} Alto</p>
+      <p>Carga transportada · {{load}}</p>
       {{/if}}
 
       {{#if reviewStep}}
       <h3>Revisão</h3>
+      <p>Carga final · {{load}}</p>
       <div class="codex-wizard-review-id">
         <img src="{{portrait}}" class="{{#unless hasPortrait}}is-placeholder{{/unless}}" alt="">
         <div><h4>{{identity.name}}</h4><p>{{raceName}}{{#if identity.concept}} · {{identity.concept}}{{/if}}</p></div>

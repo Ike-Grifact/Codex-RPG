@@ -1,5 +1,5 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
-import {naturalDE,xpLedger} from "./rules.mjs";
+import {naturalDE,xpLedger,loadCapacity} from "./rules.mjs";
 import {skillDetails} from './advancement.mjs';
 import {allOwnedSkills,isRuna} from './races.mjs';
 
@@ -39,11 +39,14 @@ export function canSpendXP(system,delta){
  const ledger=xpLedger(system);
  return Number.isFinite(delta)&&delta>=0&&ledger.spent+delta<=ledger.grant;
 }
+export function armorFits(system,item){
+ if(item.type!=="equipment"||item.system.kind!=="armor"||system.transformation?.kind||isRuna(system))return false;
+ const maxGrade=system.level>=20?4:system.level>=10?3:system.level>=5?2:1;
+ return (item.system.grade??1)<=maxGrade&&
+  (item.system.category!=="muito-pesado"||(system.attributes.vigor>=6&&system.practices?.atletismo>=6));
+}
 export function equippedArmor(actor){
- if(actor.system.transformation?.kind||isRuna(actor.system))return;
- const s=actor.system,maxGrade=s.level>=20?4:s.level>=10?3:s.level>=5?2:1;
- return actor.items.find(item=>item.type==='equipment'&&item.system.kind==='armor'&&item.system.equipped&&
-  (item.system.grade??1)<=maxGrade&&(item.system.category!=='muito-pesado'||(s.attributes.vigor>=6&&s.practices?.atletismo>=6)));
+ return actor.items.find(item=>item.system.equipped&&armorFits(actor.system,item));
 }
 export function carriedWeight(actor){
  const items=actor.items?.values?[...actor.items.values()]:[...(actor.items??[])];
@@ -52,6 +55,15 @@ export function carriedWeight(actor){
   (item.system.kind==='shield'?({medio:.5,pesado:1}[item.system.embeddedWeapon]??0):0),0);
 }
 const armorNames={"muito-leve":"Muito Leve",leve:"Leve",medio:"Média",pesado:"Pesada","muito-pesado":"Muito Pesada"};
+export function armorWeightLabel(actor){
+ return armorNames[equippedArmor(actor)?.system.category]??"Sem armadura";
+}
+export function loadStatus(system,used){
+ const capacity=loadCapacity(system);
+ const percent=Math.round(1e9*100*used/capacity)/1e9;
+ const balance=percent>=100?"Muito Pesado":percent>=75?"Pesado":percent>=50?"Médio":percent>=25?"Leve":"Muito Leve";
+ return {used,capacity,percent,balance,overloaded:percent>100+1e-9,warning:percent>=75};
+}
 const armorModifiers={"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2};
 const defenseParts=actor=>{
  const armor=equippedArmor(actor);

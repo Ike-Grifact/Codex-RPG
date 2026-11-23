@@ -389,7 +389,9 @@ export class CodexDNA extends foundry.applications.api.HandlebarsApplicationMixi
   const choices=(list,current)=>'<option value="">Escolha</option>'+list.map(([id,name])=>
    '<option value="'+esc(id)+'"'+(current===id?" selected":"")+'>'+esc(name)+'</option>').join("");
   const meta=Object.hasOwn(RACES,draft.race)?RACES[draft.race]:null;
-  const field=(id,label,list,value)=>'<label>'+label+'<select data-origin-element="'+id+'">'+choices(list,value)+'</select></label>';
+  const pureLocked=stored.race==="lucker_puro"&&!this.actor.getFlag(ns,"creationPending");
+  const field=(id,label,list,value)=>'<label>'+label+'<select data-origin-element="'+id+'"'+
+   (id==="pure"&&pureLocked?" disabled":"")+'>'+choices(list,value)+'</select></label>';
   const elements=draft.race==="lucker_puro"?field("pure","Elemento inicial",PURE_ELEMENTS,draft.pureElement):
    draft.race==="runa_espinhos"?field(0,"Elemento inicial",RUNE_ELEMENTS,draft.runeElements[0]):"";
   const favors=meta?.favored.map(key=>gradeDetails(system,"attribute",key).name)??[];

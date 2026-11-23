@@ -1,10 +1,16 @@
 import {G1_CATALOG} from './catalog.mjs';
 import {compatibleFoci,focusElement} from "./conjuration.mjs";
-import {equippedDie} from './equipment-logic.mjs';
+import {equippedDie,carriedWeight,loadStatus} from './equipment-logic.mjs';
 
 export const RESOURCE_NAMES={ervas:'Ervas',espolios:'Espólios',couro:'Couro',comida:'Comida',minerios:'Minérios'};
 const ns='codex-rpg-foundry';
 export const STARTING_VT=20;
+const resourceData=(key,quantity)=>({name:RESOURCE_NAMES[key],type:'equipment',
+ system:{kind:'resource',quantity,weight:.0125,priceVT:1},flags:{[ns]:{resourceKey:key}}});
+const resourceKey=item=>Object.hasOwn(RESOURCE_NAMES,item.flags?.[ns]?.resourceKey)?item.flags[ns].resourceKey:
+ Object.keys(RESOURCE_NAMES).find(key=>RESOURCE_NAMES[key]===item.name);
+const validOperationId=id=>typeof id==="string"&&/^[a-zA-Z0-9-]{8,80}$/.test(id);
+
 export function startingResources(allocation){
  const resources=Object.entries(RESOURCE_NAMES);
  if(allocation){
@@ -12,16 +18,36 @@ export function startingResources(allocation){
   if(values.some(value=>!Number.isInteger(value)||value<0)||values.reduce((total,value)=>total+value,0)!==STARTING_VT)
    throw Error("Distribua exatamente "+STARTING_VT+" VT entre os cinco recursos.");
  }
- return resources.map(([key,name])=>({name,type:'equipment',system:{kind:'resource',quantity:allocation?.[key]??4,weight:.0125,priceVT:1},flags:{[ns]:{resourceKey:key}}}));
+ return resources.map(([key])=>resourceData(key,allocation?.[key]??4));
 }
 export function isTradeResource(item){
- return item.type==='equipment'&&item.system.kind==='resource'&&Object.entries(RESOURCE_NAMES).some(([key,name])=>
-  item.flags?.[ns]?.resourceKey===key||item.name===name);
+ return item.type==='equipment'&&item.system.kind==='resource'&&Boolean(resourceKey(item));
 }
 export function walletValue(actor){return [...actor.items].filter(isTradeResource).reduce((n,item)=>n+item.system.quantity,0);}
 
+export function grantVTPlan(actor,{id,resource,quantity}){
+ if(!validOperationId(id)||!Object.hasOwn(RESOURCE_NAMES,resource)||!Number.isSafeInteger(quantity)||quantity<1)
+  throw Error("Escolha um recurso e informe uma quantidade inteira positiva de VT.");
+ const items=[...actor.items].map(item=>item.toObject());
+ const existing=items.find(item=>isTradeResource(item)&&resourceKey(item)===resource);
+ const next=(existing?.system.quantity??0)+quantity;
+ if(!Number.isSafeInteger(next))throw Error("Quantidade de recursos fora do limite.");
+ if(existing)existing.system.quantity=next;
+ else items.push(resourceData(resource,next));
+ return items;
+}
+
 export function purchasePlan(actor,request){
- return purchaseItemsPlan([...actor.items].map(item=>item.toObject()),request);
+ return purchaseQuote(actor.system,[...actor.items].map(item=>item.toObject()),request);
+}
+
+export function purchaseQuote(system,inventory,request){
+ const plan=purchaseItemsPlan(inventory,request);
+ const before=carriedWeight({items:inventory});
+ const added=carriedWeight({items:[plan.items.at(-1)]});
+ const after=carriedWeight({items:plan.items});
+ const load={...loadStatus(system,after),before,added,spent:Math.max(0,before+added-after)};
+ return {...plan,load};
 }
 
 export function purchasableEquipment(row){
@@ -29,7 +55,7 @@ export function purchasableEquipment(row){
 }
 
 export function purchaseItemsPlan(inventory,request){
- if(typeof request.id!=='string'||!/^[a-zA-Z0-9-]{8,80}$/.test(request.id))throw Error('Identificador de compra inválido.');
+ if(!validOperationId(request.id))throw Error('Identificador de compra inválido.');
  const quantity=request.quantity;
  if(!Number.isInteger(quantity)||quantity<1||quantity>99)throw Error('Informe quantidade de 1 a 99.');
  const row=G1_CATALOG.find(row=>row.name===request.name);
@@ -41,8 +67,7 @@ export function purchaseItemsPlan(inventory,request){
  const items=structuredClone(inventory);
  const resources=items.filter(isTradeResource);
  if(request.preferredResource&&Object.hasOwn(RESOURCE_NAMES,request.preferredResource)){
-  const preferred=resources.findIndex(item=>item.flags?.[ns]?.resourceKey===request.preferredResource||
-   item.name===RESOURCE_NAMES[request.preferredResource]);
+  const preferred=resources.findIndex(item=>resourceKey(item)===request.preferredResource);
   if(preferred>0)resources.unshift(...resources.splice(preferred,1));
  }
  let due=total;

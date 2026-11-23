@@ -92,7 +92,7 @@ Hooks.on("preUpdateActor",(_actor,changes,options,userId)=>{
  if(game.users.get(userId)?.isGM&&_actor.system.transformation?.size==='pequena'&&typeof life==='number'&&life<_actor.system.life.value)foundry.utils.setProperty(changes,'system.transformation',{});
  if(game.users.get(userId)?.isGM)return;
  const paths=Object.keys(foundry.utils.flattenObject(changes)).map(path=>path.replace(/(^|\.)-=/g,"$1"));
- const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres|companion)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts|bardLegacy|courageSpent|casting))(\.|$)/;
+ const protectedPath=/^(items|system\.(xp|creationBudget|transformation|attributes|knowledges|practices|skills|race|pureElement|runeElements|racialInitialAttributes|perseverancaUsed|runeShieldFreeUsed|spiritualSpheres|companion)|flags\.codex-rpg-foundry\.(rulesMigration|purchases|vtGrants|xpHistory|skillRefundHistory|creationPending|pendingRoll|tokenPendingRoll|lastElevation|impactReceipts|attackShortcuts|bardLegacy|courageSpent|casting))(\.|$)/;
  if(paths.some(path=>protectedPath.test(path)||["system","flags","flags.codex-rpg-foundry"].includes(path))||
    (options.recursive===false&&("system" in changes||"flags" in changes))){
   ui.notifications.warn("Use a evolução autorizada pelo Narrador para alterar graus, Perícias ou XP.");

@@ -113,6 +113,8 @@ function gradeRemovalBlocker(previous,next){
 
 export function originChangePlan(system, request, creationPending=false) {
   const next=withRacialOrigin(system,request);
+  if(!creationPending&&system.race==="lucker_puro"&&next.race===system.race&&next.pureElement!==system.pureElement)
+    throw Error(racialChoicesComplete(system)?"A escolha elemental de uma ficha concluída já está registrada.":"Regularize o elemento inicial na aba Evolução.");
   if(!racialChoicesComplete(next))throw Error("Escolha os elementos iniciais exigidos pela origem.");
   if(racialGrants(next).some(id=>system.skills?.includes(id)&&!racialGrants(system).includes(id))){
     throw Error("Devolva primeiro a Perícia comprada que será concedida pela nova origem.");

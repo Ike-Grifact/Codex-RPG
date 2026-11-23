@@ -2,8 +2,9 @@ import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,sourceDice,xpLedger,maxCourage} f
 import {advancementPlan} from "./advancement.mjs";
 import {RACES,PURE_ELEMENTS,RUNE_ELEMENTS,allOwnedSkills,gradeXPTable,skillNameFor,isRuna} from "./races.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
-import {RESOURCE_NAMES,STARTING_VT,startingResources,purchasableEquipment} from "./equipment-workflow.mjs";
-import {carriedWeight} from "./equipment-logic.mjs";
+import {RESOURCE_NAMES,STARTING_VT,startingResources,purchasableEquipment,purchaseQuote} from "./equipment-workflow.mjs";
+import {carriedWeight,loadStatus,armorFits} from "./equipment-logic.mjs";
+import {loadCaption,renderPurchasePreview,confirmPurchase} from "./trade-ui.mjs";
 import {standardMovement} from "./movement.mjs";
 import {dieSvg} from "./dice-icons.mjs";
 import {iconMarkup,equipmentIconId} from "./iconography.mjs";
@@ -54,7 +55,11 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
   try{
    const saved=JSON.parse(localStorage.getItem(this.storageKey));
    if(saved?.id&&Number.isInteger(saved.step)&&saved.step>=0&&saved.step<steps.length){
-    // Refazer o cálculo aqui detecta um rascunho antigo cuja regra mudou.
+    const choices=elementChoices(saved.identity.race);
+    if(choices.length&&!choices.some(([id])=>id===saved.identity.element)){
+     saved.identity.element="";
+     saved.step=0;
+    }
     characterBuild(saved);
     this.draft=saved;
    }
@@ -74,11 +79,11 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
   const ledger=xpLedger(system);
   const inventory=characterInventory(this.draft,system);
   return {system,ledger,inventory,life:system.life.value,courage:maxCourage(system.level),movement:standardMovement(system),
-   weight:carriedWeight(inventory)};
+   load:loadCaption(loadStatus(system,carriedWeight(inventory)))};
  }
  async _prepareContext(){
   const {identity,starter,step}=this.draft;
-  const {system,ledger,inventory,life,courage,movement,weight}=this.summary();
+  const {system,ledger,inventory,life,courage,movement,load}=this.summary();
   const base=creationIdentity(this.draft).system;
   const ownedSkills=new Set(allOwnedSkills(system));
   const plan=creationStarter(this.draft,base);
@@ -104,18 +109,19 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
    catalog:G1_CATALOG.filter(purchasableEquipment).map(row=>({name:row.name,cost:row.priceVT})),
    purchases:inventory.purchases.map((item,index)=>({index,name:item.name,quantity:item.system.quantity,
     icon:iconMarkup(equipmentIconId({name:item.name,...item.system})),equipped:item.system.equipped,
-    cannotEquip:isRuna(system)&&item.system.kind==="armor"})),
+    cannotEquip:item.system.kind==="armor"&&!armorFits(system,item)})),
    wallet:inventory.items.filter(item=>item.system.kind==="resource").map(item=>({name:item.name,quantity:item.system.quantity})),
    sources:sourceGroups.map(group=>({label:group.label,rows:group.rows.filter(([id])=>system[group.field][id]>=1)
     .map(([id,label])=>({label,grade:system[group.field][id]}))})),
    skills:SKILLS.filter(row=>ownedSkills.has(row.id)).map(row=>skillNameFor(system,row)),
-   ledger,vt:inventory.vt,life,courage,movement,weight
+   ledger,vt:inventory.vt,life,courage,movement,load
   };
  }
  async _onRender(context,options){
   await super._onRender(context,options);
   const root=this.element.querySelector(".codex-wizard");
   root.addEventListener("input",event=>{
+   if(event.target.matches("[data-wizard-quantity],[data-wizard-vt]"))this.previewTrade();
    const field=event.target.dataset.wizardText;
    if(!field||!Object.hasOwn(this.draft.identity,field))return;
    this.draft.identity[field]=event.target.value;
@@ -124,6 +130,7 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
    this.persist();
   });
   root.addEventListener("change",event=>{
+   if(event.target.matches("[data-wizard-equipment],[data-wizard-payment]"))this.previewTrade();
    const field=event.target.dataset.wizardSelect;
    if(field==="race"&&Object.hasOwn(RACES,event.target.value)){
     this.draft.identity.race=event.target.value;
@@ -135,6 +142,7 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
    }
   });
   if(this.draft.step===2)await this.showDNA();
+  if(this.draft.step===3)this.previewTrade();
  }
  async showDNA(){
   this.draftSystem=characterBuild(this.draft).system;
@@ -213,24 +221,40 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
    return this.refresh();
   });
  }
- readTrade(){
+ tradeValues(){
   const fields=[...this.element.querySelectorAll("[data-wizard-vt]")];
-  if(!fields.length)return;
+  if(!fields.length)return {};
   const allocation=Object.fromEntries(fields.map(el=>[el.dataset.wizardVt,el.valueAsNumber]));
   startingResources(allocation);
-  this.draft.allocation=allocation;
-  this.draft.preferredResource=this.element.querySelector("[data-wizard-payment]").value;
+  return {allocation,preferredResource:this.element.querySelector("[data-wizard-payment]").value};
+ }
+ readTrade(){
+  Object.assign(this.draft,this.tradeValues());
   this.persist();
  }
+ quoteTrade(id){
+  const name=this.element.querySelector("[data-wizard-equipment]").value;
+  if(!name)return null;
+  const trade=this.tradeValues();
+  const quantity=this.element.querySelector("[data-wizard-quantity]").valueAsNumber;
+  const order={id,name,quantity,preferredResource:trade.preferredResource};
+  const {system}=characterBuild(this.draft);
+  const {items}=characterInventory({...this.draft,...trade},system);
+  return {trade,order,quote:purchaseQuote(system,items,order)};
+ }
+ previewTrade(){
+  const output=this.element.querySelector("[data-wizard-purchase-preview]");
+  if(!output)return;
+  try{renderPurchasePreview(output,this.quoteTrade("preview-purchase")?.quote.load);}
+  catch(error){renderPurchasePreview(output,null,error.message);}
+ }
  async buy(){
-  return this.run(()=>{
-   const name=this.element.querySelector("[data-wizard-equipment]").value;
-   if(!name)throw Error("Escolha um equipamento do catálogo.");
-   this.readTrade();
-   const quantity=this.element.querySelector("[data-wizard-quantity]").valueAsNumber;
-   const order={id:foundry.utils.randomID(),name,quantity};
-   characterInventory({...this.draft,orders:[...this.draft.orders,order]});
-   this.draft.orders.push(order);
+  return this.run(async()=>{
+   const purchase=this.quoteTrade(foundry.utils.randomID());
+   if(!purchase)throw Error("Escolha um equipamento do catálogo.");
+   if(!await confirmPurchase(purchase.quote))return;
+   Object.assign(this.draft,purchase.trade);
+   this.draft.orders.push(purchase.order);
    return this.refresh();
   });
  }
@@ -238,9 +262,16 @@ export class CodexCharacterWizard extends foundry.applications.api.HandlebarsApp
   return this.run(()=>{
    this.readTrade();
    const {system}=characterBuild(this.draft);
-   const row=characterInventory(this.draft,system).purchases[index];
+   const inventory=characterInventory(this.draft,system);
+   const row=inventory.purchases[index];
    if(!row)return;
    if(isRuna(system)&&row.system.kind==="armor")throw Error("Runa Espinhos não pode equipar armaduras físicas.");
+   if(row.system.kind==="armor"&&!row.system.equipped){
+    if(!armorFits(system,row))throw Error("A ficha não atende aos requisitos para equipar esta armadura.");
+    this.draft.orders.forEach((order,i)=>{
+     if(row!==inventory.purchases[i]&&inventory.purchases[i].system.kind==="armor")order.equipped=false;
+    });
+   }
    this.draft.orders[index].equipped=!row.system.equipped;
    return this.refresh();
   });

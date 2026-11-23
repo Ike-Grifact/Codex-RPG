@@ -1,5 +1,6 @@
 import {xpLedger} from './rules.mjs';
 import {catalogArmorMigration} from './equipment-migration.mjs';
+import {legacyPureElementUpdate} from './races.mjs';
 const ns='codex-rpg-foundry';
 export async function migrateRules(){
  if(!game.user.isActiveGM)return;
@@ -15,7 +16,7 @@ export async function migrateRules(){
    return integrity?[{_id:item.id,"system.integrity":integrity}]:[];
   });
   if(armorUpdates.length)await actor.updateEmbeddedDocuments("Item",armorUpdates);
-  const update={};
+  const update=legacyPureElementUpdate(actor.system);
   if(actor.type!=="character"&&actor.system.courage)update["system.courage"]=0;
   if(actor.system.skills?.includes("arma-certa"))update["system.skills"]=[...new Set(actor.system.skills.map(id=>id==="arma-certa"?"manejo-perfeito":id))];
   if(Object.keys(update).length)await actor.update(update);

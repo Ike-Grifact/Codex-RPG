@@ -1061,3 +1061,11 @@
 @media(pointer:coarse) {
   .codex-sheet :is(.codex-vital,.codex-inventory-tabs button,.codex-sheet-tabs button,.codex-equipment-row > summary) { min-height:44px; }
 }
+
+.codex-owned-skills{margin-block:1rem}
+.codex-owned-skill-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));align-items:start;gap:.5rem}
+.codex-owned-skill-list details{border:1px solid var(--cx-line);border-radius:.6rem;padding:.65rem}
+.codex-owned-skill-list summary{display:flex;align-items:center;gap:.55rem;cursor:pointer}
+.codex-owned-skill-list summary img{width:1.6rem;height:1.6rem;object-fit:contain}
+.codex-owned-skill-list summary small{margin-inline-start:auto}
+.codex-sheet [data-vt-grant],.codex-sheet [data-pure-choice]{margin-block:.8rem}

@@ -61,7 +61,7 @@
       {{#if codex.isHostile}}
       <button type="button" class="codex-vital codex-vital-pavor" data-action="resourceDetails" data-vital="pavor" aria-expanded="false" aria-controls="{{codex.appId}}-vital-pavor" aria-label="Pavor local {{codex.pavorLocal}} de {{codex.pavorCap}}"><span aria-hidden="true">ᚦ</span><strong>{{codex.pavorLocal}} / {{codex.pavorCap}}</strong></button>
       {{/if}}
-      <button type="button" class="codex-vital codex-vital-load {{#if codex.overloaded}}is-overloaded{{/if}}" data-action="resourceDetails" data-vital="load" aria-expanded="false" aria-controls="{{codex.appId}}-vital-load" aria-label="Balanço e carga {{codex.balance}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-balanco.svg" alt=""><strong>{{codex.balance}}</strong></button>
+      <button type="button" class="codex-vital codex-vital-load {{#if codex.overloaded}}is-overloaded{{/if}}" data-action="resourceDetails" data-vital="load" aria-expanded="false" aria-controls="{{codex.appId}}-vital-load" aria-label="Peso da armadura: {{codex.armorWeight}}. Carga {{codex.loadText}}"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-balanco.svg" alt=""><strong>{{codex.armorWeight}}</strong></button>
       <button type="button" class="codex-vital codex-vital-inventory" data-action="sheetPage" data-page="inventory" aria-label="Abrir Inventário"><img src="systems/codex-rpg-foundry/assets/icons/codex/status-inventario.svg" alt=""><span>Inventário</span></button>
     </div>
     <section id="{{codex.appId}}-vital-life" class="codex-vital-detail" data-vital-panel="life" hidden>
@@ -129,8 +129,10 @@
     </section>
     {{/if}}
     <section id="{{codex.appId}}-vital-load" class="codex-vital-detail" data-vital-panel="load" hidden>
-      <h3>Balanço e carga</h3>
-      <p>{{codex.balance}} · {{codex.loadUsed}} / {{codex.capacity}} Alto</p>
+      <h3>Peso da armadura e carga</h3>
+      <p>Peso da armadura · <strong>{{codex.armorWeight}}</strong></p>
+      <p>Carga transportada · {{codex.loadText}}</p>
+      <p>Capacidade · 1 + ⌊(Força + Vigor + Atletismo) ÷ 3⌋</p>
       <p>Espaço restante: {{codex.loadFree}} Alto · {{codex.carryClasses.leve}} Leves · {{codex.carryClasses.medio}} Médios · {{codex.carryClasses.pesado}} Pesados</p>
       {{#if codex.overloaded}}<p class="codex-warning">Sobrecarga anotada.</p>{{/if}}
     </section>
@@ -161,6 +163,33 @@
       {{#if codex.canOpenDNA}}<button type="button" data-action="sheetPage" data-page="genetic">Ver Perícias no Codex Genético</button>{{/if}}
       <button type="button" data-action="sheetPage" data-page="play">Ver fontes na ficha</button>
     </div>
+
+    {{#if codex.pureChoices}}
+    <fieldset class="codex-starter-fields" data-pure-choice>
+      <legend>Elemento inicial do Lucker Puro</legend>
+      <label>Perícia elemental gratuita<select required>
+        <option value="">Escolha um elemento</option>
+        {{#each codex.pureChoices}}<option value="{{id}}">{{name}}</option>{{/each}}
+      </select></label>
+      <button type="button" data-action="regularizePure" class="codex-primary">Confirmar elemento</button>
+    </fieldset>
+    {{/if}}
+    {{#unless codex.attributesOnly}}
+    <section class="codex-owned-skills">
+      <h3>Perícias adquiridas</h3>
+      <div class="codex-owned-skill-list">
+        {{#each codex.ownedSkills}}
+        <details data-sync="owned-{{id}}">
+          <summary><img src="{{icon}}" alt=""><strong>{{name}}</strong>{{#if racial}}<small>Origem</small>{{/if}}</summary>
+          <p>{{detail}}</p>
+          <button type="button" data-action="consultOwnedSkill" data-id="{{id}}">Consultar no Compendium</button>
+        </details>
+        {{else}}
+        <p>Nenhuma Perícia adquirida.</p>
+        {{/each}}
+      </div>
+    </section>
+    {{/unless}}
 
   {{#if codex.editing}}
   <details data-sync="progress" class="codex-creation-panel" {{#if codex.progressOpen}}open{{/if}}>
@@ -512,7 +541,7 @@
         <div><dt>Carga</dt><dd>{{codex.loadUsed}} / {{codex.capacity}} Alto</dd></div>
       </dl>
       <div class="codex-load-track {{#if codex.overloaded}}is-overloaded{{/if}}" role="progressbar" aria-label="Capacidade de carga" aria-valuemin="0" aria-valuemax="{{codex.capacity}}" aria-valuenow="{{codex.loadMeter}}" aria-valuetext="{{codex.loadUsed}} de {{codex.capacity}} Alto{{#if codex.overloaded}} · sobrecarga{{/if}}"><span style="width:{{codex.loadPercent}}%"></span></div>
-      <p class="codex-inventory-caption">Balanço {{codex.balance}} · {{codex.loadFree}} Alto livres{{#if codex.overloaded}} · Sobrecarga{{/if}}</p>
+      <p class="codex-inventory-caption">Carga · {{codex.loadText}} · {{codex.loadFree}} Alto livres{{#if codex.overloaded}} · Sobrecarga{{/if}}</p>
       <div class="codex-inventory-surface">
       <h3>Mochila e equipamentos</h3>
       <details class="codex-repertoire-panel" data-sync="repertoire">
@@ -575,6 +604,14 @@
           <div><dt>{{name}}</dt><dd>{{quantity}}</dd></div>
           {{/each}}
         </dl>
+        {{#if codex.isGM}}{{#unless codex.hasPending}}
+        <fieldset class="codex-starter-fields" data-vt-grant>
+          <legend>Adicionar VT</legend>
+          <label>Recurso<select data-vt-resource>{{#each codex.equipment.resources}}<option value="{{id}}">{{name}}</option>{{/each}}</select></label>
+          <label>Quantidade<input type="number" required min="1" step="1" value="1" data-vt-quantity></label>
+          <button type="button" data-action="grantVT" class="codex-primary">Adicionar VT</button>
+        </fieldset>
+        {{/unless}}{{else}}<p>O Narrador pode adicionar VT à bolsa.</p>{{/if}}
       </div>
     </section>
     <section id="{{codex.appId}}-inventory-shop" data-inventory-panel="shop" aria-label="Mercado e compras" hidden>
@@ -591,6 +628,7 @@
               <p>{{this.description}}</p>
               <p>{{#if this.attack}}Uso condicionado à Perícia de manejo ou foco, Disciplina e Grau permitido.{{/if}}{{#if this.armor}}Proteção · Integridade {{this.integrity.max}} · {{this.defense}} DE{{/if}}</p>
               {{#if this.canBuy}}
+                <p data-shop-preview aria-live="polite" hidden></p>
                 <label>Quantidade<input type="number" min="1" max="99" value="1" data-shop-quantity></label>
                 <button type="button" data-action="buyEquipment" data-name="{{this.name}}" {{#unless this.canAfford}}disabled{{/unless}}>Comprar · {{this.price}} VT por unidade</button>
               {{else}}<p>Compra indisponível. Preço ou fabricação pendente.</p>{{/if}}

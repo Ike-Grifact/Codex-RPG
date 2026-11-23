@@ -4,11 +4,12 @@ import {lookupTarget, readDefense, sealDefense} from "./roll-targets.mjs";
 
 import {xpLedger} from "./rules.mjs";
 import {escapeHTML} from "./roll-engine.mjs";
-import {purchasePlan} from "./equipment-workflow.mjs";
+import {purchasePlan,grantVTPlan} from "./equipment-workflow.mjs";
+import {armorFits} from "./equipment-logic.mjs";
 import {animalTransformationPlan} from './transformations.mjs';
 import {maxCourage,lifeMax,hasSmallCompanion} from './rules.mjs';
 import {advancementPlan, creationMissing, gradeDetails, originChangePlan, skillRefundPlan, xpAdjustmentPlan} from "./advancement.mjs";
-import {racialChoicesComplete,usesRacialRules,hasSkill,isRuna} from "./races.mjs";
+import {racialChoicesComplete,usesRacialRules,hasSkill,isRuna,regularizePureElement} from "./races.mjs";
 import {spherePlan,sphereRound,canUseTechnique} from "./techniques.mjs";
 import {applyAttackImpact,impactSummary} from "./attack-impact.mjs";
 
@@ -62,6 +63,11 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     const ids=(actor.getFlag(NS,"attackShortcuts")??[]).filter(id=>actor.items.has(id)&&id!==item.id);
     if(request.enabled===true)ids.push(item.id);
     await actor.setFlag(NS,"attackShortcuts",ids);
+    return;
+  }
+  if(request.action==="regularizePureElement"){
+    if(pending||actor.getFlag(NS,"creationPending"))throw Error("Conclua a rolagem ou a criação antes de regularizar a origem.");
+    await actor.update(regularizePureElement(actor.system,request.element));
     return;
   }
   if(request.action==="origin"){
@@ -161,11 +167,22 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     if(request.kind==='long'&&actor.system.race==='humano')changes['system.perseverancaUsed']=false;
     await actor.update(changes);return;
   }
+  if(request.action==='grantVT'){
+    if(!user.isGM)throw Error("O Narrador ajusta os recursos de troca.");
+    if(pending)throw Error("Finalize a rolagem antes de adicionar VT.");
+    const receipts=actor.getFlag(NS,"vtGrants")??[];
+    if(receipts.includes(request.id))return;
+    const items=grantVTPlan(actor,request);
+    await actor.update({items,["flags."+NS+".vtGrants"]:[...receipts,request.id].slice(-50)});
+    return;
+  }
   if(request.action==='purchase'){
     const history=actor.getFlag(NS,'purchases')??[];
     if(history.some(entry=>entry.id===request.id))return {purchased:false};
     if(pending)throw Error('Finalize a rolagem antes de comprar.');
-    const {items,entry}=purchasePlan(actor,request);
+    const {items,entry,load}=purchasePlan(actor,request);
+    if(request.expectedLoad!==undefined&&request.expectedLoad!==JSON.stringify(load))
+      throw Error("A carga ou o pagamento mudou. Confira a nova prévia antes de comprar.");
     await actor.update({items,['flags.'+NS+'.purchases']:[...history,{...entry,userId:user.id,at:Date.now()}]});
     return {purchased:true};
   }
@@ -180,7 +197,14 @@ async function mutateRoll(actor, user, request, {game = globalThis.game, chat = 
     let value=request.value;
     if(path==='equipped'){
       value=value===true;
-      if(value&&item.system.kind==="armor"&&isRuna(actor.system))throw Error("Runa Espinhos não pode equipar armaduras físicas.");
+      if(value&&item.system.kind==="armor"){
+        if(isRuna(actor.system))throw Error("Runa Espinhos não pode equipar armaduras físicas.");
+        if(!armorFits(actor.system,item))throw Error("A ficha não atende aos requisitos para equipar esta armadura.");
+        const otherArmors=actor.items.filter(other=>other.id!==item.id&&other.system.kind==="armor"&&other.system.equipped);
+        await actor.updateEmbeddedDocuments("Item",[{_id:item.id,"system.equipped":true},
+          ...otherArmors.map(other=>({_id:other.id,"system.equipped":false}))]);
+        return;
+      }
     }
     else if(path==='properties'){
       if(!Array.isArray(value)||value.length>24||value.some(x=>typeof x!=='string'||x.length>100))throw Error('Propriedades inválidas.');

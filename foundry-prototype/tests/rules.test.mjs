@@ -240,12 +240,15 @@ test("Orçamento monstruoso usa tabela da Formação e humanoide novo usa 15 XP 
  assert.equal(xpLedger(m).grant,20);
  assert.equal(xpLedger(human()).grant,15);
 });
-test("Capacidade de carga inclui Disciplina, Força, Vigor e Atletismo",async()=>{
+test("Capacidade de carga soma Força, Vigor e Atletismo antes de dividir",async()=>{
  const {loadCapacity}=await import("../module/rules.mjs");
  const s=human();assert.equal(loadCapacity(s),1);
- s.attributes.forca=3;s.attributes.vigor=3;
- s.practices.armas_conjuracao=3;s.practices.atletismo=3;
- assert.equal(loadCapacity(s),5);
+ s.attributes.forca=2;s.attributes.vigor=1;s.practices.atletismo=1;
+ assert.equal(loadCapacity(s),2);
+ s.practices.armas_conjuracao=6;
+ assert.equal(loadCapacity(s),2);
+ s.attributes.forca=6;s.attributes.vigor=6;s.practices.atletismo=6;
+ assert.equal(loadCapacity(s),7);
 });
 
 test("Comparativo de mantidos oferece alternativas sem modificar a rolagem",()=>{

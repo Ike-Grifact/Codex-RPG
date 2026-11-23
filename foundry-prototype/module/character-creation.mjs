@@ -1,7 +1,8 @@
 import {actorData} from "./creation.mjs";
 import {advancementPlan,creationMissing} from "./advancement.mjs";
 import {starterPurchasePlan,xpLedger,lifeMax} from "./rules.mjs";
-import {isRuna,racialChoicesComplete} from "./races.mjs";
+import {armorFits} from "./equipment-logic.mjs";
+import {racialChoicesComplete} from "./races.mjs";
 import {purchaseItemsPlan,startingResources,walletValue,RESOURCE_NAMES} from "./equipment-workflow.mjs";
 
 export function newCharacterDraft(){
@@ -55,15 +56,17 @@ export function characterBuild(draft){
 
 export function characterInventory(draft,system=creationIdentity(draft).system){
  let items=startingResources(draft.allocation);
- const purchases=[];
+ const resourceCount=items.length;
  for(const order of draft.orders){
-  const {items:next}=purchaseItemsPlan(items,{...order,preferredResource:draft.preferredResource});
+  const {items:next}=purchaseItemsPlan(items,{...order,preferredResource:order.preferredResource??draft.preferredResource});
   items=next;
   const item=items.at(-1);
-  item.system.equipped=order.equipped===true&&!(isRuna(system)&&item.system.kind==="armor");
-  purchases.push(item);
+  item.system.equipped=order.equipped===true&&(item.system.kind!=="armor"||armorFits(system,item));
+  if(item.system.equipped&&item.system.kind==="armor"){
+   for(const previous of items.slice(resourceCount,-1).filter(row=>row.system.kind==="armor"))previous.system.equipped=false;
+  }
  }
- return {items,purchases,vt:walletValue({items})};
+ return {items,purchases:items.slice(resourceCount),vt:walletValue({items})};
 }
 
 export function completeCharacterDraft(draft){

@@ -1,17 +1,21 @@
 /* Codex RPG — ficha de Actor para Foundry v14. */
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SITUATIONS,
- sourceDice,sourceLabel,faceSymbols,buildPool,canElevateSource,hasSmallCompanion,starterPurchasePlan,lifeMax,healthByLife,balance,maxCourage,
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,
+ sourceDice,sourceLabel,faceSymbols,buildPool,canElevateSource,hasSmallCompanion,starterPurchasePlan,lifeMax,healthByLife,maxCourage,
  loadCapacity,mayComplement,canRepeatDiscipline,sourcePairError,isDiscipline,disciplineNeedsAttribute,attributesOnly,xpLedger,monsterCap,isMaximumFace} from "./rules.mjs";
 import {requestRoll} from "./roll-workflow.mjs";
 import {keepForActor,rollResult,alternativesFor,usesLocal,pendingRollFor,castingFor} from "./roll-resolution.mjs";
 import {dieSvg,faceIcons} from "./dice-icons.mjs";
-import {equippedDie,equippedArmor,defenseDisplay,effectiveWeaponRange,carriedWeight} from "./equipment-logic.mjs";
+import {equippedDie,equippedArmor,defenseDisplay,effectiveWeaponRange,carriedWeight,armorWeightLabel,loadStatus} from "./equipment-logic.mjs";
 import {actorKinds} from "./creation.mjs";
 import {createCodexActor,createCodexItem} from "./creation-ui.mjs";
 import {showCodexDice} from "./dice-so-nice.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
 import {equipmentView} from './equipment-view.mjs';
-import {RACES,hasSkill,racialBand,isRuna} from "./races.mjs";
+import {purchasePlan} from "./equipment-workflow.mjs";
+import {confirmPurchase,formatLoad,loadCaption,renderPurchasePreview} from "./trade-ui.mjs";
+import {openSkillDefinition} from "./compendium-data.mjs";
+import {iconPath,skillIconId} from "./iconography.mjs";
+import {RACES,PURE_ELEMENTS,allOwnedSkills,hasSkill,racialBand,racialGrants,needsPureElement,skillNameFor,isRuna} from "./races.mjs";
 import {spellPlan,compatibleFoci,focusElement,focusCharges,magicTiming,availableElements} from "./conjuration.mjs";
 import {prepareCombatAction,selectionOptions,changeRollSource} from "./combat-action.mjs";
 import {canAsura,canUseTechnique,fulminanteFor,sphereRound,sphereState,weaponMastery} from "./techniques.mjs";
@@ -44,7 +48,16 @@ function cards(list,group,s,d){
  isBase:eq(d.base,{group,key}),isSecond:eq(d.second,{group,key}),isComplement:eq(d.complement,{group,key})&&!isRepeat(d)}));
 }
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
-const carriedItems=carriedWeight;
+function acquiredSkills(system){
+ const owned=new Set(allOwnedSkills(system)),grants=new Set(racialGrants(system));
+ return SKILLS.filter(skill=>owned.has(skill.id)).map(skill=>({
+  id:skill.id,name:skillNameFor(system,skill),racial:grants.has(skill.id),
+  icon:iconPath(skillIconId(skill.id,skill.family)),
+  detail:isRuna(system)&&skill.id==="escudo-arcano"
+   ?"Barreira racial com uma ativação gratuita por dia. As ativações seguintes custam 1 Coragem. A resistência segue o elemento escolhido na ativação."
+   :skill.detail
+ })).sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+}
 const carryClasses=(capacity,used)=>Object.fromEntries([["leve",.125],["medio",.5],["pesado",1]]
  .map(([k,w])=>[k,Math.floor((Math.max(0,capacity-used)+1e-9)/w)]));
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
@@ -74,7 +87,18 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  removeEquipment:CodexCharacterSheet.removeEquipment,addCatalogEquipment:CodexCharacterSheet.addCatalogEquipment,
  editPortrait:CodexCharacterSheet.editPortrait,adjustPavor:CodexCharacterSheet.adjustPavor
  ,rest(_event,target){return this._request({action:'rest',kind:target.dataset.kind});},transform:CodexCharacterSheet.transform
- ,buyEquipment:CodexCharacterSheet.buyEquipment,prepareAction:CodexCharacterSheet.prepareAction,
+ ,buyEquipment:CodexCharacterSheet.buyEquipment,
+ grantVT(_event,target){
+  const group=target.closest("[data-vt-grant]");
+  const quantity=group.querySelector("[data-vt-quantity]");
+  if(!quantity.reportValidity())return;
+  return this._request({action:"grantVT",id:crypto.randomUUID(),resource:group.querySelector("[data-vt-resource]").value,quantity:quantity.valueAsNumber});
+ },
+ regularizePure(_event,target){
+  const select=target.closest("[data-pure-choice]").querySelector("select");
+  if(select.reportValidity())return this._request({action:"regularizePureElement",element:select.value});
+ },
+ consultOwnedSkill(_event,target){return openSkillDefinition(target.dataset.id);},prepareAction:CodexCharacterSheet.prepareAction,
  prepareEquipment:CodexCharacterSheet.prepareEquipment,cravarEquipment:CodexCharacterSheet.cravarEquipment,
  attackShortcut(_event,target){
   return this._request({action:"attackShortcut",itemId:target.dataset.id,enabled:target.dataset.enabled==="true"});
@@ -93,7 +117,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  get title(){return [actorKinds[this.actor?.type],this.actor?.name].filter(Boolean).join(" · ")||super.title;}
  async _prepareContext(options){
   const ctx=await super._prepareContext(options),actor=this.actor,s=actor.system,d=this._draft,monster=!!s.monsterRules,animal=!!s.animalRules,attributesOnly=monster||animal||s.transformation?.kind==='animal',ledger=xpLedger(s),
-   used=carriedItems(actor),carryMax=loadCapacity(s),
+   load=loadStatus(s,carriedWeight(actor)),
    hasFirstAttribute=ATTRIBUTES.some(([key])=>Number(s.attributes?.[key]||0)>=1),
    hasTraining=[...KNOWLEDGES.map(([k])=>s.knowledges?.[k]),...PRACTICES.map(([k])=>s.practices?.[k])].some(n=>Number(n||0)>=1);
   this._pending=pendingRollFor(actor);
@@ -138,9 +162,13 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    courageSpent:spentInRound(actor,game.combat),inCombat:!!game.combat?.started,
    sangramento:s.status?.sangramento,envenenado:s.status?.envenenado,
    courage:s.courage,courageMax:maxCourage(s.level),de:defense.de,deCalculation:defense.calculation,deCondition:defense.condition,armorCard,
-   balance:balance(s),capacity:carryMax,loadUsed:used,loadFree:Math.max(0,carryMax-used),
-    carryClasses:carryClasses(carryMax,used),overloaded:used>carryMax+1e-9,
-    loadPercent:Math.min(100,Math.round(100*used/carryMax)),loadMeter:Math.min(used,carryMax),
+   armorWeight:armorWeightLabel(actor),capacity:load.capacity,loadUsed:formatLoad(load.used),
+   loadFree:formatLoad(Math.max(0,load.capacity-load.used)),loadText:loadCaption(load),
+   carryClasses:carryClasses(load.capacity,load.used),overloaded:load.overloaded,
+   loadPercent:Math.min(100,load.percent),loadMeter:Math.min(load.used,load.capacity),
+   ownedSkills:acquiredSkills(s),
+   pureChoices:actor.isOwner&&!this._pending&&!actor.getFlag(NS,"creationPending")&&needsPureElement(s)?
+    PURE_ELEMENTS.map(([id,name])=>({id,name})):null,
     historicalBard:historicalBardNames(actor),
     xp:s.xp,canAdjustXP:game.user.isGM&&!this._pending,xpLedger:ledger,hasCreationMinimum:s.monsterHumanoidRules||(hasFirstAttribute&&hasTraining),
     starterAttributes:ATTRIBUTES.map(([id,name])=>({id,name})),
@@ -309,6 +337,12 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   await super._onRender(ctx,options);
   const root=this.element.querySelector(".codex-sheet");
   root.addEventListener("change",event=>this._change(event));
+  root.addEventListener("input",event=>{
+   if(event.target.matches("[data-shop-quantity]"))this._previewPurchase(event.target.closest("[data-shop-row]"));
+  });
+  root.addEventListener("toggle",event=>{
+   if(event.target.matches?.("[data-shop-row][open]"))this._previewPurchase(event.target);
+  },true);
   root.addEventListener("keydown",event=>{
    if(event.key==="Escape"&&this._resource&&event.target.closest(".codex-vitals")){
     event.stopPropagation();
@@ -318,6 +352,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    }
   });
   this._showSheetState(root);
+  for(const row of root.querySelectorAll("[data-shop-row][open]"))this._previewPurchase(row);
   if(!this._rollMedia){
    this._rollMedia=window.matchMedia(desktopRollMedia);
    this._rollMediaChanged=()=>this._configureRollSurface();
@@ -709,19 +744,26 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    ok:{label:'Transformar',callback:(_event,button)=>({size:button.form.elements.size.value,attributes:[...button.form.querySelectorAll('[name="attributes"]:checked')].map(input=>input.value)})},rejectClose:false});
   if(chosen)return this._request({action:'transform',...chosen});
  }
+ _previewPurchase(row){
+  const output=row.querySelector("[data-shop-preview]");
+  if(!output)return;
+  try{
+   const button=row.querySelector('[data-action="buyEquipment"]');
+   const quantity=row.querySelector("[data-shop-quantity]").valueAsNumber;
+   const {load}=purchasePlan(this.actor,{id:"preview-purchase",name:button.dataset.name,quantity});
+   renderPurchasePreview(output,load);
+  }catch(error){renderPurchasePreview(output,null,error.message);}
+ }
  static async buyEquipment(_event,target){
   if(this._buying||this._busy||this._pending||!this.actor.isOwner)return;
   this._buying=true;
   try{
-  const quantity=Number(target.closest('[data-shop-row]').querySelector('[data-shop-quantity]').value);
-  const row=G1_CATALOG.find(row=>row.name===target.dataset.name);
-  if(!Number.isInteger(quantity)||quantity<1||quantity>99||!row)return;
-  const accepted=await foundry.applications.api.DialogV2.confirm({window:{title:'Comprar equipamento'},
-   content:'<p>Comprar '+quantity+' × '+foundry.utils.escapeHTML(target.dataset.name)+' por '+row.priceVT*quantity+' VT em recursos?</p>',rejectClose:false,
-   yes:{label:'Confirmar compra'},no:{label:'Cancelar'}});
-  if(!accepted)return;
-  return this._request({action:'purchase',id:crypto.randomUUID(),name:target.dataset.name,quantity});
-  }finally{this._buying=false;}
+   const quantity=target.closest("[data-shop-row]").querySelector("[data-shop-quantity]").valueAsNumber;
+   const request={action:"purchase",id:crypto.randomUUID(),name:target.dataset.name,quantity};
+   const quote=purchasePlan(this.actor,request);
+   if(await confirmPurchase(quote))await this._request({...request,expectedLoad:JSON.stringify(quote.load)});
+  }catch(error){ui.notifications.warn(error.message);}
+  finally{this._buying=false;}
  }
  static lightHands(_event,target){
   if(!this.actor.isOwner||this._editing||this._pending||!canUseTechnique(this.actor.system,"maos-leves"))return;
@@ -767,7 +809,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
   const n=Number(this.element?.querySelector("[data-catalog-choice]")?.value),row=G1_CATALOG[n];
   if(!row)return;
   const {name,...system}=structuredClone(row);
-  const projected=carriedItems(this.actor)+(Number(system.weight)||0)*Math.max(1,Number(system.quantity)||1),
+  const projected=carriedWeight(this.actor)+(Number(system.weight)||0)*Math.max(1,Number(system.quantity)||1),
     capacity=loadCapacity(this.actor.system);
   if(projected>capacity+1e-9)
    ui.notifications.warn("ATENÇÃO: "+name+" excederá a capacidade de carga ("+projected.toFixed(3)+" / "+capacity+
