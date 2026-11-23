@@ -232,7 +232,11 @@ test("Todas as 12 especializações exigem sua própria fonte G3 para terceira f
    extra:{group:"attribute",key:"destreza"},contextOK:true};
   assert.equal(composeActionPool(h,choice).ok,false,id+" G2 não libera terceira fonte");
   h[group==="practice"?"practices":"knowledges"][key]=3;
-  assert.equal(composeActionPool(h,choice).ok,true,id+" G3 libera terceira fonte");
+  if(id==="furtividade-avancada"){
+   assert.equal(composeActionPool(h,choice).ok,false,"Furtividade Avançada conserva requisito Perícia em Furtividade");
+   h.attributes.destreza=2;h.attributes.agilidade=1;h.skills.push("furtividade");
+  }
+  assert.equal(composeActionPool(h,choice).ok,true,id+" G3 e demais requisitos liberam terceira fonte");
  }
 });
 test("Inimigo não humanoide Grau 2 mantém quatro dados por 2P; Grau 1 não mantém quatro",()=>{
