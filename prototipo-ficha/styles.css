@@ -1944,3 +1944,29 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-trade-load-preview>.fp-purchase-load{margin-top:0}
 .fp-shop-compact .fp-purchase-load{flex-basis:100%;margin:0}
 @media(max-width:740px){.fp-shop-compact .fp-shop-expand{padding-left:12px}.fp-shop-compact .fp-purchase-load{width:100%}}
+
+/* O cabeçalho da Ficha utiliza a mesma navegação das páginas do portal. */
+.fp-body .fp-site-header .site-nav a{color:var(--muted)}
+.fp-body .fp-site-header .site-nav a.active,.fp-body .fp-site-header .site-nav a:hover{color:var(--ink)}
+.fp-body .fp-site-header .theme-toggle{font:700 .77rem Inter,"Segoe UI",sans-serif;white-space:nowrap}
+.fp-body .fp-site-header .fp-sound-toggle{font-size:11px;padding:8px 10px;margin-left:5px;white-space:nowrap}
+.fp-body .fp-site-header .site-nav.open{background:var(--surface)}
+.fp-npc-embed-toolbar[hidden]{display:none!important}
+.fp-npc-embed-toolbar{position:sticky;top:0;z-index:32;display:flex;justify-content:space-between;align-items:center;gap:14px;
+ padding:12px 16px;margin:0 0 8px;border:1px solid var(--fp-stroke);border-radius:0 0 13px 13px;background:var(--fp-surface);
+ box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.fp-npc-embed-toolbar>div:first-child{display:grid;gap:4px;min-width:0}
+.fp-npc-embed-toolbar strong{font-size:13px;color:var(--fp-gold)}
+.fp-npc-embed-toolbar small{font-size:11px;color:var(--fp-muted)}
+.fp-npc-embed-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:end}
+.fp-npc-embed-actions button{white-space:nowrap}
+.fp-body.fp-npc-embedded .fp-site-header,.fp-body.fp-npc-embedded .fp-page-label,
+.fp-body.fp-npc-embedded .fp-player-sheets{display:none!important}
+.fp-body.fp-npc-embedded .fp-shell{max-width:none;padding:0 clamp(8px,2vw,22px) 35px}
+.fp-body.fp-npc-embedded .fp-wizard{margin:0}
+@media(max-width:650px){
+ .fp-npc-embed-toolbar{position:sticky;padding:10px;flex-direction:column;align-items:stretch}
+ .fp-npc-embed-actions{width:100%;justify-content:stretch}
+ .fp-npc-embed-actions button{flex:1;min-width:125px}
+ .fp-body.fp-npc-embedded .fp-wizard-intro{padding:10px 12px}
+}
