@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
- weightAffinity,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+ weightAffinity,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -162,6 +162,49 @@ test("Ficha de humanoide exportado preserva Perícias, Disciplina Avançada e ob
  assert.equal(sheet.abilities,"Imune a medo ritual");
  assert.equal(sheet.notes,"Vigiar a ponte");
  assert.deepEqual(raw.skills,["disciplina-avancada","armas-leves"],"Consulta não altera origem");
+});
+
+test("Foco do Lucker Puro vem da compra explícita; cópias não ganham Foco só por raça",()=>{
+ const base={kind:"humanoide",race:"lucker_puro",pureElement:"fogo",
+  name:"Conjurador Puro",attributes:{inteligencia:1,destreza:1},
+  practices:{armas_conjuracao:1,artesao:1},skills:[]};
+ const before=structuredClone(base);
+ const noFocus=normalizeCombatant(base,"jogadores","Ficha de jogador");
+ assert.deepEqual(noFocus.skills,["fogo"],"Só o elemento é concedido pela origem");
+ assert.equal(hasCombatFocus(noFocus),false,"Requisitos sem compra não bastam");
+ assert.match(focusCombatStatus(noFocus),/compre Criar Item de Foco e Magia por 0 XP/);
+ assert.deepEqual(base,before,"Importação não altera a ficha de origem");
+ const purchased=normalizeCombatant({...base,skills:["criar-item-foco-magia"]},"jogadores","Ficha de jogador");
+ assert.equal(hasCombatFocus(purchased),true);
+ assert.equal(combatantSheetData(purchased).focusStatus.includes("adquirido por 0 XP"),true);
+ assert.deepEqual(normalizeCombatant(purchased,"jogadores","Cópia salva").skills,
+  ["criar-item-foco-magia","fogo"],"Recarga não perde habilidade nem duplica elemento");
+ const invalid=normalizeCombatant({...base,practices:{armas_conjuracao:1,artesao:0},
+  skills:["criar-item-foco-magia"]},"inimigos","Ficha antiga");
+ assert.equal(hasCombatFocus(invalid),false,"Foco legado com requisitos faltantes não habilita");
+ assert.match(focusCombatStatus(invalid),/Foco registrado, mas inválido/);
+ const rune=normalizeCombatant({kind:"humanoide",race:"runa_espinhos",runeElements:["terra"],
+  skills:[]});
+ assert.equal(hasCombatFocus(rune),true,"Runa Espinhos mantém Foco concedido pela origem");
+ assert.equal(rune.skills.filter(x=>x==="criar-item-foco-magia").length,1);
+ const blood=normalizeCombatant({kind:"humanoide",race:"lucker_sangue",skills:[]});
+ assert.equal(hasCombatFocus(blood),false);
+});
+
+test("Busca no navegador conserva a Perícia comprada para importar ao comparador",()=>{
+ const key="codex-rpg-jogador-ficha-v1:personagemA";
+ const original={kind:"humanoide",race:"lucker_puro",name:"Pure de Teste",
+  attributes:{inteligencia:1,destreza:1},practices:{armas_conjuracao:1,artesao:1},
+  skills:["criar-item-foco-magia"],pureElement:"terra"};
+ const data=new Map([["codex-rpg-jogadores-index-v1",JSON.stringify({sheets:[{id:"personagemA"}]})],
+  [key,JSON.stringify({schema:"codex-jogador-ficha-v1",character:original})]]);
+ const stored={getItem:id=>data.get(id)||null};
+ const found=listBrowserSheets(stored);
+ assert.equal(found.length,1);
+ const combat=normalizeCombatant(found[0].raw,found[0].side,found[0].source);
+ assert.equal(combat.race,"lucker_puro");
+ assert.equal(hasCombatFocus(combat),true);
+ assert.equal(combat.skills.filter(x=>x==="criar-item-foco-magia").length,1);
 });
 
 test("Ficha explicita quando Disciplina Avançada não existe ou não cumpre Grau",()=>{
