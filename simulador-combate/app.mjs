@@ -1,5 +1,5 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261122-weapon-status-crit-v2";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs?v=20261123-skill-package-v1";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-npc-hub-v1";
@@ -124,7 +124,8 @@ function renderCombatantSheet(c){
   '</section>'+
   sheetGrades("Atributos",s.attributes)+
   (s.human?sheetGrades("Conhecimentos",s.knowledges)+sheetGrades("Práticas",s.practices):'')+
-  '<section class="cc-sheet-block"><h3>Perícias adquiridas ('+s.skills.length+')</h3>'+skills+'</section>'+
+  '<section class="cc-sheet-block"><h3>Perícias adquiridas ('+s.skills.length+')</h3>'+skills+
+   (s.focusStatus?'<p class="cc-help"><strong>Foco (Lucker Puro):</strong> '+esc(s.focusStatus)+'</p>':'')+'</section>'+
   '<section class="cc-sheet-block"><h3>Equipamentos ('+s.items.length+')</h3><div class="cc-sheet-items">'+items+'</div></section>'+
   (s.abilities?'<section class="cc-sheet-block"><h3>Capacidades especiais / imunidades</h3><p class="cc-sheet-notes">'+esc(s.abilities)+'</p></section>':'')+
   (s.notes?'<section class="cc-sheet-block"><h3>Anotações da ficha</h3><p class="cc-sheet-notes">'+esc(s.notes)+'</p></section>':'');
@@ -250,7 +251,7 @@ function renderSources(){
  }
  $("extra-source").innerHTML='<option value="">Sem terceira fonte</option>'+extras.map(x=>
   '<option value="'+x.value+'">'+esc(x.label)+'</option>').join("");
- $("discipline-mode").value=human&&a?.skills.includes("criar-item-foco-magia")?"conjuracao":
+ $("discipline-mode").value=human&&hasCombatFocus(a)?"conjuracao":
   human&&a?.practices?.armas_conjuracao>0?"armas":"normal";
  $("spell-grade").value="1";$("extra-keep").checked=false;$("context-approved").checked=false;
  renderWeapons();
@@ -576,8 +577,9 @@ function roll(){
  }
  let grade=null;
  if(human&&mode==="conjuracao"){
-  if(key!=="armas_conjuracao"||!a.skills.includes("criar-item-foco-magia"))
-   return notice("Conjuração exige Disciplina e Criar Item de Foco e Magia.");
+  if(key!=="armas_conjuracao"||!hasCombatFocus(a))
+   return notice(a.race==="lucker_puro"?focusCombatStatus(a):
+    "Conjuração exige Disciplina e Criar Item de Foco e Magia.");
   grade=Number($("spell-grade").value);
   const bonus=MAGIC_GRADE_DICE[grade]||[];
   if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
