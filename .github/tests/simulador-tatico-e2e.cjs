@@ -148,9 +148,37 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.locator("#roll").click();
   assert((await page.locator("#roll-origins").innerText()).includes("Saúde incapacitado"),
    "Rastreio deve discriminar a penalidade de Saúde do inimigo.");
-  assert((await page.locator("#roll-result").innerText()).includes("1 Coragem"),
-   "Ação do inimigo humanoide Incapacitado custa 1 Coragem.");
+  assert((await page.locator("#roll-result").innerText()).includes("1 Pavor"),
+   "Ação do inimigo humanoide Incapacitado exige 1 Pavor local.");
+  assert(snapshot.combatants.find(x=>x.side==="inimigos").courage===0,
+   "Inimigo humanoide jamais possui Coragem.");
 
+  // Os dois Fulminantes são ativos pagos e alteram os dados ANTES da rolagem.
+  await page.locator("#next-round").click();
+  await page.locator("#actor").selectOption(hero.id);
+  await page.locator("#target").selectOption(humanoid.id);
+  await page.evaluate(()=>{
+   const st=JSON.parse(localStorage.getItem("codex-rpg-comparador-v1"));
+   const pc=st.combatants.find(x=>x.side==="jogadores");
+   pc.skills.push("golpe-fulminante","domar-criatura-pequena");
+   pc.smallCompanion={present:true,name:"Naja",species:"serpente"};
+   pc.courage=9;
+   localStorage.setItem("codex-rpg-comparador-v1",JSON.stringify(st));
+  });
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.locator("#actor").selectOption(hero.id);
+  await page.locator("#target").selectOption(humanoid.id);
+  await page.locator("#active-skill").selectOption("golpe-fulminante");
+  await page.locator('#active-extra-skills [data-extra-skill="domar-criatura-pequena"]').check();
+  await page.locator("#skill-approved").check();
+  await page.locator("#roll").click();
+  assert((await page.locator("#dice").innerText()).includes("Fulminante"),
+   "Golpe Fulminante deve elevar um dado da arma antes do sorteio.");
+  assert(await page.locator("#dice .cc-die").count()>=3,"Elevação não pode remover fontes.");
+  assert((await page.locator("#roll-result").innerText()).includes("2 Coragem"),
+   "Fulminante e Domar Pequena devem gastar exatamente duas Coragens na ativação.");
+  assert((await page.locator("#roll-origins").innerText()).includes("Companheiro Pequeno"),
+   "A ajuda da serpente deve ser identificada como fonte de Antecipar.");
   assert(errs.length===0,"Erros JS no desktop: "+errs.join(" | "));
   console.log("PASS comparador desktop: fichas locais, alvo, DE, Integridade, Pavor, rodada e persistência");
 
