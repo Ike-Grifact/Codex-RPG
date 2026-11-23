@@ -28,11 +28,15 @@ test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e cus
 });
 
 test("Custo pendente permanece visível e não se transforma em compra gratuita",()=>{
- for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica","maestria-adagas"]){
+ for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
   const skill=SKILLS.find(x=>x.id===id);
   assert.ok(skill,"Perícia pendente precisa estar visível: "+id);
   assert.equal(skill.cost,null);
  }
+ const adagas=SKILLS.find(x=>x.id==="maestria-adagas");
+ assert.equal(adagas?.cost,1,"Preço de Maestria em Adagas agora é DEFINIDO");
+ assert.match(humanoidSkillRequirement(blank("humanoide"),"maestria-adagas"),/Agilidade 2/,
+  "Custo aprovado não dispensa os graus de compra");
  const t=blank("humanoide");t.skills=["dueto-improvisado"];
  assert.equal(ledger(t).skills,0,"Ficha legada pendente não cobra XP inventado");
 });
