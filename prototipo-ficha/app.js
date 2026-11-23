@@ -28,12 +28,12 @@ const TRAIN_ELEVATED=[0,3,6,12,24,48,96];
 const RACES={
  humano:["Humano","Perseverança Humana + Maestria em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue gratuita; linhagem exclusiva de Transfusão Sanguinária (que não é gratuita).","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
- lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + Perícia em Veneno gratuitos. Sangue e Trevas não são opções gratuitas de origem.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
+ lucker_puro:["Lucker Puro","Criar Item de Foco e Magia + um elemento gratuito à escolha: Fogo, Água, Ar, Terra ou Sagrado. Veneno, Sangue e Trevas não são opções iniciais.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
  runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
-// v0.93: Sangue e Trevas deixam de ser benefícios de origem do Lucker Puro.
-// Veneno é a única opção restante da lista anterior; novas opções exigem decisão autoral.
-const PURE_ELEMENTS=[["veneno","Veneno"]];
+// v0.94: Lucker Puro escolhe um elemento básico ou Sagrado; especiais não são gratuitos.
+// Vento é o identificador interno da Perícia em Ar.
+const PURE_ELEMENTS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"]];
 const RUNE_ELEMENTS=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"]];
 // Regra racial: conversão dos símbolos que compõem a barreira; não modifica a
 // rolagem original, Pressão nem outros gastos de Pavor.
@@ -2169,13 +2169,13 @@ function load(){
   if(playerPayload){
    const raw=playerPayload.character;
    racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
-   racialElementMigrated=raw.race==="lucker_puro"&&["sangue","trevas"].includes(raw.pureElement);
+   racialElementMigrated=raw.race==="lucker_puro"&&["sangue","trevas","veneno"].includes(raw.pureElement);
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }else if(saved){
    const raw=JSON.parse(saved);
    racialGrantMigrated=raw.race==="lucker_puro"&&Array.isArray(raw.racialInitialAttributes)&&raw.racialInitialAttributes.includes("influencia");
-   racialElementMigrated=raw.race==="lucker_puro"&&["sangue","trevas"].includes(raw.pureElement);
+   racialElementMigrated=raw.race==="lucker_puro"&&["sangue","trevas","veneno"].includes(raw.pureElement);
    retiredSkillMigrated=Array.isArray(raw.skills)&&raw.skills.some(id=>RETIRED_PROTOTYPES.has(id));
    state=normalize(raw);
   }
@@ -2211,7 +2211,7 @@ function load(){
   // Persistir mudanças somente quando a ficha realmente precisou ser corrigida,
   // evitando repetir remoção/aviso sem necessidade. XP é recontado nas compras.
   save();
-  toast(racialElementMigrated?"Lucker Puro: Sangue/Trevas deixaram de ser elementos gratuitos. Revise a opção racial atual; Perícias compradas foram preservadas.":racialGrantMigrated?"Lucker Puro corrigido: Inteligência + Destreza G1 gratuitos; Influência manual preservada.":migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
+  toast(racialElementMigrated?"Lucker Puro: Sangue, Trevas e Veneno não são mais elementos iniciais gratuitos. Escolha Fogo, Água, Ar, Terra ou Sagrado; Perícias compradas foram preservadas.":racialGrantMigrated?"Lucker Puro corrigido: Inteligência + Destreza G1 gratuitos; Influência manual preservada.":migrated?"Ficha do antigo criador migrada. Dados originais preservados; confira as anotações.":
    "Perícia descontinuada removida da ficha. XP investido liberado para redistribuição.");
  }
 }
@@ -2230,9 +2230,9 @@ function normalize(v){
   if(typeof v[id]==="string")s[id]=v[id].slice(0,id==="notes"?5000:100);
  }
  // Preservar escolha antiga da origem sem converter em Perícia paga ou retirar skills compradas.
- if(s.race==="lucker_puro"&&["sangue","trevas"].includes(v.pureElement)&&
+ if(s.race==="lucker_puro"&&["sangue","trevas","veneno"].includes(v.pureElement)&&
     !s.notes.includes("Elemento de origem Lucker Puro (legado):")){
-  const legacyName=v.pureElement==="sangue"?"Sangue":"Trevas";
+  const legacyName=({sangue:"Sangue",trevas:"Trevas",veneno:"Veneno"})[v.pureElement];
   s.notes=(s.notes+"\nElemento de origem Lucker Puro (legado): "+legacyName+
    " deixou de ser gratuito. Escolha de origem desativada, sem aquisição de Perícia nem cobrança de XP. Perícias compradas com XP permanecem na ficha.").trim().slice(0,5000);
  }
@@ -2869,7 +2869,7 @@ function raceBenefitsForm(){
  const sources=free.length?'<p><strong>Grau 1 de origem (0 XP): '+esc(free.join(" + "))+'</strong>. Outros Atributos devem ser comprados.</p>':'<p>Nenhum Atributo concedido automaticamente nesta raça.</p>';
  const extras=racialExtraG1(),repair=extras.length?
   '<div><p>Há '+extras.length+' Atributo(s) extra(s) em G1. Eles não são benefícios automáticos desta raça; podem ser compras ou resíduos de fichas anteriores.</p><button type="button" class="fp-secondary" data-action="wizard-racial-repair">Revisar graus extras</button></div>':"";
- const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento gratuito inicial (Veneno; outras opções pendentes)<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
+ const pure=state.race==="lucker_puro"?'<label class="fp-wiz-field">Elemento inicial gratuito (Fogo, Água, Ar, Terra ou Sagrado)<select data-race-element="pure">'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label>':'';
  const rune=state.race==="runa_espinhos"?'<label class="fp-wiz-field">Elemento inicial (1 gratuito)<select data-race-element="rune-0">'+raceOptions(RUNE_ELEMENTS,state.runeElements[0])+'</select></label>':'';
  return pure+rune+'<div class="fp-wiz-reminder fp-wiz-race-info"><b>'+c[0]+'</b><p>'+c[1]+'</p><p>'+c[2]+'</p>'+sources+'<p>Benefícios raciais em Perícias não concedem outros Graus; graus superiores seguem a tabela.</p>'+repair+'</div>';
 }
@@ -2927,7 +2927,12 @@ function repairRacialG1(){
  toast("Graus 1 adicionais removidos. Apenas os da origem continuam automáticos.");
 }
 function changeRaceElement(key,value){
- if(state.creationLocked||state.pending)return;
+ if(state.pending)return;
+ // Ficha concluída cuja escolha antiga foi revogada pode escolher uma vez,
+ // sem refazer a criação nem permitir trocar benefícios já válidos livremente.
+ const initialRepair=state.creationLocked&&key==="pure"&&state.race==="lucker_puro"&&
+  !state.pureElement&&PURE_ELEMENTS.some(([id])=>id===value);
+ if(state.creationLocked&&!initialRepair)return;
  const oldPure=state.pureElement,oldRune=[...state.runeElements];
  if(key==="pure"&&state.race==="lucker_puro"&&(value===""||PURE_ELEMENTS.some(([id])=>id===value)))state.pureElement=value;
  else if(key==="rune-0"&&state.race==="runa_espinhos"&&(value===""||RUNE_ELEMENTS.some(([id])=>id===value)))state.runeElements[0]=value;
@@ -2946,6 +2951,8 @@ function renderRacePanel(){
  const names=racialGrants(state).map(id=>id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":SKILLS.find(row=>row[0]===id)?.[1]||id);
  panel.innerHTML='<strong>'+c[0]+'</strong><p>'+c[1]+'</p>'+(names.length?'<p>Perícias raciais gratuitas: '+esc(names.join(", "))+'.</p>':'')+
  (raceCaution()?'<p>XP PENDENTE: '+esc(raceCaution())+'</p>':'')+
+ (state.race==="lucker_puro"&&!state.pureElement&&state.creationLocked?
+  '<label class="fp-wiz-field">Atualizar elemento de origem (uma única escolha gratuita)<select data-race-element="pure"'+(state.pending?' disabled':'')+'>'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label><p><small>O elemento anterior foi preservado nas notas; não há cobrança de XP nem alteração das Perícias compradas.</small></p>':'')+
  (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência elemental padrão (0,5 dano por E e 0 dano por P do elemento escolhido) e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas.</p>'+
  '<button type="button" data-action="rune-shield-use"'+(state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Marcar ativação gratuita</button> '+
  '<button type="button" data-action="rune-shield-reset"'+(!state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Restaurar uso diário</button>'+

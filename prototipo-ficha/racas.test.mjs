@@ -96,19 +96,22 @@ test("Lucker de Sangue inicia só com a Perícia de Sangue, sem Foco inventado",
  assert.equal(ownsSkill("criar-item-foco-magia",c),false);
 });
 
-test("Lucker Puro recebe Foco e somente Veneno como opção inicial da lista remanescente",()=>{
- const c=character("lucker_puro",{pureElement:"veneno"});
- assert.deepEqual(racialGrants(c),["criar-item-foco-magia","veneno"]);
- assert.equal(raceChoicesComplete(c),true);
+test("Lucker Puro recebe Foco e exatamente um entre Fogo, Água, Ar, Terra ou Sagrado",()=>{
+ const valid=["fogo","agua","vento","terra","sagrado"];
+ for(const element of valid){
+  const c=character("lucker_puro",{pureElement:element});
+  assert.deepEqual(racialGrants(c),["criar-item-foco-magia",element]);
+  assert.equal(raceChoicesComplete(c),true,element+" deve completar a escolha inicial");
+ }
  assert.equal(raceChoicesComplete(character("lucker_puro")),false);
- for(const invalid of ["sangue","trevas","fogo","agua","vento","terra","sagrado"]){
+ for(const invalid of ["sangue","trevas","veneno","psiquico"]){
   const other=character("lucker_puro",{pureElement:invalid});
-  assert.deepEqual(racialGrants(other),["criar-item-foco-magia"],invalid+" não é uma concessão de origem");
+  assert.deepEqual(racialGrants(other),["criar-item-foco-magia"],invalid+" não é uma concessão gratuita");
   assert.equal(raceChoicesComplete(other),false,invalid+" não completa a origem");
  }
- const bought=character("lucker_puro",{pureElement:"",skills:["sangue","trevas"]});
- assert.equal(ownsSkill("sangue",bought),true,"Compra de Sangue por XP permanece");
- assert.equal(ownsSkill("trevas",bought),true,"Compra de Trevas por XP permanece");
+ const bought=character("lucker_puro",{pureElement:"",skills:["sangue","trevas","veneno"]});
+ for(const element of ["sangue","trevas","veneno"])
+  assert.equal(ownsSkill(element,bought),true,"Compra manual preservada: "+element);
  assert.deepEqual(racialGrants(bought),["criar-item-foco-magia"]);
 });
 
@@ -118,14 +121,38 @@ test("Livro e portal não apresentam opções raciais revogadas como gratuitas",
  assert.ok(!portal.includes("dois elementos diferentes entre Ar, Água, Terra e Fogo"));
  assert.ok(!portal.includes("Criar Item de Foco e Magia + Sangue, Trevas ou Veneno"));
  assert.ok(portal.includes("Escudo Rúnico"),"Escudo Rúnico precisa constar da tabela racial");
- assert.ok(book.includes("Sangue e Trevas **não podem ser selecionados como elementos gratuitos iniciais**"));
+ assert.ok(book.includes("Sangue, Trevas e Veneno não são opções gratuitas de origem"));
 });
 
 test("Migração da concessão Lucker Puro legada não vira XP nem apaga Perícia comprada",()=>{
- assert.ok(source.includes('s.race==="lucker_puro"&&["sangue","trevas"].includes(v.pureElement)'));
+ assert.ok(source.includes('s.race==="lucker_puro"&&["sangue","trevas","veneno"].includes(v.pureElement)'));
  assert.ok(source.includes('s.notes.includes("Elemento de origem Lucker Puro (legado):")'));
  assert.ok(source.includes('racialElementMigrated=raw.race==="lucker_puro"'));
- assert.ok(!source.includes('const PURE_ELEMENTS=[["sangue","Sangue"]'));
+ assert.ok(source.includes('const PURE_ELEMENTS=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"]]'));
+ assert.ok(source.includes('!state.pureElement&&PURE_ELEMENTS.some(([id])=>id===value)'),"Ficha concluída pode reparar apenas concessão ausente");
+ assert.ok(source.includes('Atualizar elemento de origem (uma única escolha gratuita)'),"Ficha concluída deve oferecer regularização da origem");
+});
+
+test("ficha concluída com escolha racial antiga permite apenas uma regularização",()=>{
+ const begin=source.indexOf("function changeRaceElement(");
+ const end=source.indexOf("function renderRacePanel(",begin);
+ assert.ok(begin>0&&end>begin);
+ const fragment=source.slice(begin,end);
+ const valid=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"]];
+ const original=character("lucker_puro",{pureElement:"",creationLocked:true,pending:null});
+ let saves=0,renders=0;
+ const edit=new Function("state","PURE_ELEMENTS","RUNE_ELEMENTS","racialGrants","dependentsValid","toast","render","save",
+  fragment+";return changeRaceElement;")(original,valid,[],racialGrants,()=>null,()=>{},()=>{renders++;},()=>{saves++;});
+ edit("pure","sagrado");
+ assert.equal(original.pureElement,"sagrado");
+ assert.equal(saves,1);assert.equal(renders,1);
+ edit("pure","fogo");
+ assert.equal(original.pureElement,"sagrado","Após regularização não pode trocar de benefício gratuito na ficha concluída");
+ const blocked=character("lucker_puro",{pureElement:"",creationLocked:true,pending:{roll:true}});
+ const blockedEdit=new Function("state","PURE_ELEMENTS","RUNE_ELEMENTS","racialGrants","dependentsValid","toast","render","save",
+  fragment+";return changeRaceElement;")(blocked,valid,[],racialGrants,()=>null,()=>{},()=>{},()=>{});
+ blockedEdit("pure","fogo");
+ assert.equal(blocked.pureElement,"","Pendente de combate impede alteração racial");
 });
 
 test("Runa Espinhos recebe Pugilismo, Foco, Escudo Rúnico e somente um elemento gratuito",()=>{
