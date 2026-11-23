@@ -388,7 +388,7 @@ const SKILLS=[
  [
   "golpe-fulminante",
   "Golpe Fulminante",
-  "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.",
+  "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.",
   1
  ],
  [
@@ -442,7 +442,7 @@ const SKILLS=[
  [
   "disparo-fulminante",
   "Disparo Fulminante",
-  "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.",
+  "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.",
   1
  ],
  [
@@ -1389,7 +1389,7 @@ const CARD_EFFECTS={
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
- "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
+ "domar-criatura-pequena": "Companheiro Pequeno domesticado presente: +1 Vida máxima ao domador. Por 1 Coragem, atua como auxílio no turno (+1A em combate); serpente pode aplicar Envenenado a alvo em Sangramento, sem dano periódico definido. Possui Vida própria inicial 1.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
@@ -1410,10 +1410,10 @@ const CARD_EFFECTS={
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue; conjuração ativa. 3 marcas disponíveis de sangue inimigo recuperam +1 Vida, mantendo custo 1 XP e requisitos Transfusão + Elemento Sangue.",
  "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
- "golpe-fulminante": "Dano de Pavor válido passa a 1 por P no alvo corpo a corpo",
+ "golpe-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
  "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
- "disparo-fulminante": "Pavor válido provoca 1 dano por P no alvo principal",
+ "disparo-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "disparo-multiplo": "Principal recebe dano integral; adicionais no raio de 3 m recebem metade dos Êxitos e 0,5 por P",
  "disparo-violento": "Derruba inimigo atingido e empurra 4 m",
  "disparo-tatico": "Técnica futura, com compatibilidade com Arremesso definida",
@@ -1499,10 +1499,10 @@ const CARD_BRIEFS={
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
- "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
+ "golpe-fulminante": "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.…",
  "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
  "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
- "disparo-fulminante": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.…",
+ "disparo-fulminante": "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.…",
  "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
  "disparo-violento": "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crític…",
  "disparo-tatico": "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.…",
