@@ -170,6 +170,8 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
   /^(luvas|punhos|soco)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(required==="armas-leves"&&Number(c?.practices?.armas_conjuracao||0)<1)
+  return {ok:false,error:"Perícia em Armas Leves exige Disciplina 1 para habilitar efeitos.",required};
  if(thrown&&!skills.includes(weightSkill))
   return {ok:false,error:"Arremesso exige também a Perícia da categoria "+weightSkill+".",required:weightSkill};
  return {ok:true,required};
@@ -341,10 +343,26 @@ export function weightAffinity(weapon,target,attacker=null){
  else if(/^besta|^zarabatana/.test(name))return {status:"manual",delta:0,description:"Modelo à distância sem correspondência exata na tabela de afinidade: aplicar manualmente."};
  if(weapon.kind==="firearm"&&!natural)return {status:"manual",delta:0,description:"Modelo de arma de fogo sem tabela própria validada: aplicar manualmente."};
  const value=(natural||table[atk])?.[def];
- if(value===-1&&attacker?.skills?.includes(expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk]))
+ const relevantSkill=expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk];
+ if(value===-1&&attacker?.skills?.includes(relevantSkill)&&
+   (relevantSkill!=="armas-leves"||Number(attacker?.practices?.armas_conjuracao||0)>=1))
   return {status:"known",delta:0,description:"A especialização do peso/arma ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};
+}
+/** Manejo Perfeito substitui Vantagem de peso por +1E; Golpe Certo totaliza +2E na absoluta. */
+export function manejoPerfeitoBonus(attacker,weapon,affinity,{situation="normal",mode="armas",baseKey="armas_conjuracao",thrown=false}={}){
+ const p=attacker?.practices||{},a=attacker?.attributes||{},skills=attacker?.skills||[];
+ const ready=weapon?.kind==="weapon"&&weapon.equipped&&
+  !weapon.firearm&&!(weapon.properties||[]).includes("À Distância")&&!thrown&&
+  mode==="armas"&&baseKey==="armas_conjuracao"&&
+  skills.includes("manejo-perfeito")&&skills.includes("disciplina-avancada")&&
+  Number(p.armas_conjuracao||0)>=3&&Number(a.destreza||0)>=2&&
+  affinity?.status==="known"&&affinity.delta===1;
+ const golpeCerto=!!ready&&situation==="absoluta";
+ return {active:!!ready,golpeCerto,bonusE:ready?1:0,suppressWeightA:!!ready,
+  description:!ready?"":golpeCerto?"Golpe Certo: +2E no total (Vantagem Absoluta + Manejo Perfeito), sem +1A de peso.":
+   "Manejo Perfeito: Vantagem Absoluta (+1E), substituindo o +1A natural do peso."};
 }
 /** Patamar novo: cinco símbolos válidos (E + P) em acerto contra alvo SEM armadura = 2 Vida.
  *  Abaixo de cinco: regra específica de Vida ainda não definida neste adendo.
