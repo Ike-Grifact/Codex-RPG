@@ -28,12 +28,12 @@ test("Domar Media inclui Domar Pequena sem mudar XP e Domar Grande",()=>{
  assert.match(js,/id==="domar-criatura-media"&&!has\("domar-criatura-pequena"\)/);
  assert.match(js,/s:domar-criatura-pequena/);
 });
-test("Livro do Jogador da web revoga PP e pagamento por memorização de magias",()=>{
+test("Livro do Jogador explica conjuração livre e custos atuais sem erratas de PP",()=>{
  const book=read("livro.html");
  assert.doesNotMatch(book,/1\s*PP\s*(?:ou|\/)\s*2\s*Coragens\b/i);
  assert.doesNotMatch(book,/2 Coragens por criação/i);
- assert.match(book,/não existem mais magias memorizadas/i);
- assert.match(book,/custos exclusivamente em PP agora exigem <strong>1 Coragem por ativação<\/strong>/i);
+ assert.match(book,/Não existe mais memorização de magias/i);
+ assert.match(book,/Em acerto comum, ativar uma característica custa <strong>1 Coragem<\/strong>/i);
 });
 test("Olhos de Águia permanece passiva sem gasto de Coragem",()=>{
  const html=read("pericias/olhos-de-aguia.html");

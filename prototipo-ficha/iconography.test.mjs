@@ -104,3 +104,25 @@ test("Pictogramas de nós coloridos do Codex Genético são brancos",()=>{
   "Nova versão do CSS deve invalidar cache do navegador");
  assert.match(graph,/class="fp-gene-skill-pictogram"/,"Os ícones permanecem SVG no mapa");
 });
+
+
+test("Livro do Jogador inicia pelas regras, não por avisos de versões revogadas",()=>{
+ const book=readFileSync(join(root,"../livro.html"),"utf8");
+ const source=readFileSync(join(root,"../docs/livro-do-jogador.md"),"utf8");
+ const historical=readFileSync(join(root,"../docs/arquivo-editorial-livro-do-jogador.md"),"utf8");
+ assert.match(book,/<div class="book-content">\s*<section id="filosofia">/);
+ const intro=book.slice(book.indexOf('<main id="conteudo">'),book.indexOf('<section id="filosofia">'));
+ assert.doesNotMatch(intro,/SRD v0\.|atualização\s*\d|em revisão\)/i);
+ assert.doesNotMatch(book,/SRD v0\.\d+|18 XP compartilhados|Muito Leve 0, Leve 7/);
+ assert.match(book,/15 XP iniciais compartilhados/);
+ assert.match(book,/Muito Leve 2, Leve 5, Média 8 e Pesada 12/);
+ assert.match(book,/AGI \+ ⌊\(DES \+ VIG\)\/2⌋ \+ ⌊ATL\/3⌋/);
+ assert.match(source,/^# Codex RPG — Livro do Jogador\s+Este guia[\s\S]*?## I\. O que é Codex RPG\?/);
+ assert.doesNotMatch(source.slice(0,700),/Errata|Histórico superado|SRD v0\./);
+ assert.match(historical,/Arquivo histórico de desenvolvimento/);
+ assert.match(historical,/Revisão de playtest|Atualização normativa/);
+ const ids=[...book.matchAll(/<section id="([^"]+)"/g)].map(m=>m[1]);
+ assert.equal(new Set(ids).size,ids.length,"Cada seção precisa ter ID exclusivo");
+ for(const id of ["filosofia","dados","criacao","coragem","combate","conjuracao","armas"])
+  assert.ok(ids.includes(id),"Capítulo de "+id+" precisa continuar acessível");
+});
