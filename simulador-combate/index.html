@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-playtest-v2">
 <script src="../assets/site.js" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261122-playtest-v2"></script>
+<script type="module" src="./app.mjs?v=20261122-fulminantes-v1"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -72,6 +72,8 @@
     <button type="button" data-inspect-selected="target">Ver ficha do alvo</button>
    </div>
    <div id="target-info" class="cc-help">Escolha um alvo para conferir defesa e proteção.</div>
+   <label class="cc-check-throw"><input type="checkbox" id="target-bleeding"> Alvo está em Sangramento (condição registrada manualmente)</label>
+   <p id="target-poison-state" class="cc-help">Envenenamento: sem registro.</p>
    <div class="cc-form cc-duo">
     <label>Fonte base (ou 1º Atributo do monstro) <select id="base-source"></select></label>
     <label>Atributo de apoio <select id="attribute-source"></select></label>
@@ -80,6 +82,7 @@
     <label>Retenção do monstro <select id="monster-keep"><option value="2">2 dados</option></select></label>
     <label>Disciplina <select id="discipline-mode"><option value="normal">Normal</option><option value="armas">Armas</option><option value="conjuracao">Conjuração</option></select></label>
     <label>Arma equipada <select id="weapon-source"><option value="">Sem dado de arma</option></select></label>
+    <label class="cc-check-throw"><input type="checkbox" id="attack-thrown"> Ataque de arremesso com a arma selecionada (exige Perícia de Arremesso)</label>
     <label>Grau da magia (conjuração habilitada) <select id="spell-grade"><option value="1">G1 · +1d6, sem dano ofensivo automático</option><option value="2">G2 · +1d10</option><option value="3">G3 · +1d12</option><option value="4">G4 · +2d12</option></select></label>
     <label>Condição situacional <select id="situation"><option value="neutral">Normal</option><option value="advantage">Vantagem (+1A)</option><option value="disadvantage">Desvantagem (−1A)</option><option value="superior">Vantagem absoluta (+1E)</option><option value="inferior">Desvantagem absoluta (−1E)</option></select></label>
     <label>Dificuldade de Êxito (DE) <input id="difficulty" type="number" min="0" max="30" value="1"></label>
@@ -91,13 +94,15 @@
    <div class="cc-affinity" id="weight-affinity">Peso da arma: selecione uma arma e um alvo.</div>
    <p id="marco-info" class="cc-help">Marcos e custos de retenção aparecerão após selecionar o atacante.</p>
    <p id="health-info" class="cc-help">Estado de Saúde do atacante aparecerá aqui.</p>
+   <p id="round-budget" class="cc-help">Gasto da rodada: 0/5 Coragens (jogadores).</p>
    <section class="cc-activation" aria-label="Ativação de Perícias adquiridas">
-    <h3>Ativar Perícia adquirida</h3>
+    <h3>Ativar Perícias adquiridas (até 5 Coragens por rodada)</h3>
     <div class="cc-form cc-duo">
      <label>Perícia da ficha <select id="active-skill"><option value="">Sem ativação adicional</option></select></label>
-     <label>Coragem a gastar <input id="skill-courage" type="number" min="0" max="5" step="1" value="0"></label>
+     <label>Custo em recurso do atacante <input id="skill-courage" type="number" min="0" max="5" step="1" value="0"></label>
     </div>
-    <label class="cc-activation-confirm"><input id="skill-approved" type="checkbox"> Conferi no verbete da Perícia o custo, gatilho e aplicação com o Narrador</label>
+    <div id="active-extra-skills" class="cc-skill-multi" aria-label="Perícias adicionais na mesma ação"></div>
+    <label class="cc-activation-confirm"><input id="skill-approved" type="checkbox"> Conferi os custos, requisitos e gatilhos de todas as Perícias escolhidas</label>
     <p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. O custo declarado será descontado ao confirmar; o efeito especializado não é inventado nem aplicado automaticamente.</p>
    </section>
    <div class="cc-actions">
