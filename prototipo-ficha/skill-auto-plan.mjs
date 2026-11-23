@@ -44,6 +44,7 @@ export const GENE_AUTO_REQUIREMENTS={
  "atletismo-avancado":[["p:atletismo:3"]],
  "artesao-avancado":[["p:artesao:3"]],
  "maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]],
+ "maestria-punhos":[["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]],
   "maestria-adagas":[["a:agilidade:2","a:destreza:2"]],
   "maestria-machados":[["a:forca:2","a:destreza:1"]],
   "maestria-macas":[["a:forca:3","a:destreza:1","a:vigor:1"]],
