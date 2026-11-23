@@ -2211,6 +2211,7 @@ function load(){
   const id=playerSheetId();playerSheets=[playerSheetMeta(state,id)];activePlayerSheetId=id;
   if(!save())toast("Exporte sua ficha: armazenamento local indisponível.");
  }
+ notifyNpcPreview();
  renderPlayerSheets();
  $("import-old-creator").hidden=!legacyAvailable;
  if(migrated||retiredSkillMigrated||racialGrantMigrated||racialElementMigrated){
@@ -2418,12 +2419,27 @@ function save(){
    renderPlayerSheets();
   }
   $("save-indicator").textContent="Salvo neste navegador";
+  notifyNpcPreview();
   return true;
  }catch(e){
   $("save-indicator").textContent="Não foi possível salvar; exporte a ficha.";
   console.warn("Codex: falha ao persistir ficha",e);
   return false;
  }
+}
+function notifyNpcPreview(){
+ if(!EMBED_NPC||window.parent===window)return;
+ try{
+  const invested=xpCosts(),available=Number(invested.free)||0;
+  const ready=!!state.name.trim()&&hasStarterSources(state)&&available>=0&&!state.pending&&
+   !dependentsValid(state)&&raceChoicesComplete(state);
+  window.parent.postMessage({
+   type:"codex-rpg:npc-resumo-v1",name:state.name.trim().slice(0,70)||"Sem nome",
+   race:RACES[state.race]?.[0]||"Humano",xpRemaining:available,
+   hasStarter:hasStarterSources(state),skills:allOwnedSkills(state).length,
+   items:state.items.length,ready
+  },window.location.origin);
+ }catch(e){console.warn("Codex: prévia NPC não pôde ser enviada",e);}
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
 // SRD v0.47: quatro estados; Vigor e a contribuição histórica de Força
