@@ -466,17 +466,18 @@ function renderDice(){
   $("roll-origins").textContent="Os símbolos aparecerão separados por fonte, dado e modificador após a rolagem.";
   $("action-state").textContent="Aguardando declaração";return;
  }
+ const pre=preview(),critInfo=criticalFaces(pending.rolled,pending.kept);
  const origins=rollProvenance(pending.rolled,pending.kept,{weapon:pending.weapon});
  element.innerHTML=origins.map(d=>{
   const {e,a,p}=d;
-  return '<button type="button" class="cc-die'+(d.kept?" kept":"")+'" data-die="'+esc(d.id)+
+  return '<button type="button" class="cc-die'+(d.kept?" kept":"")+(d.face===d.sides?" is-max":"")+(critInfo.critical&&d.kept?" is-critical":"")+'" data-die="'+esc(d.id)+
    '" aria-pressed="'+d.kept+'" title="Selecionar como mantido"><strong>'+d.face+
-   '</strong><small>d'+d.sides+'</small><small class="cc-die-origin">'+esc(d.source)+
+   '</strong><small>d'+d.sides+'</small>'+(d.face===d.sides?'<small class="cc-face-max">FACE MÁXIMA</small>':'')+'<small class="cc-die-origin">'+esc(d.source)+
    (d.step?" (Elevado)":"")+(d.fulminante?" (Fulminante)":"")+'</small><span>'+
    (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
    (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
  }).join("");
- const pre=preview(),raw=origins.filter(x=>x.kept).map(x=>
+ const raw=origins.filter(x=>x.kept).map(x=>
   '<li><strong>'+esc(x.source)+'</strong> (d'+x.sides+', face '+x.face+'): '+
   '<span class="cc-e">'+x.e+'E</span>, <span class="cc-a">'+x.a+'A</span>, '+
   '<span class="cc-p">'+x.p+'P</span></li>').join("");
@@ -488,7 +489,14 @@ function renderDice(){
   pre.companion?"Companheiro Pequeno presente e ativado: +1A":null,
   pending.fulminanteId?"Dado de arma elevado por "+pending.fulminanteId+": d6→d10, d10→d12 ou d12→2d12":null,
   pending.boosted?"Elevação temporária de fonte "+pending.boosted+": +1 Grau (dados já mostrados)":null,
-  pre.result.critical?"Crítico: "+pre.result.critical+" dados mantidos nas faces máximas":null,
+  pre.result.critical?"CRÍTICO "+pre.result.critical+": "+critInfo.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ")+
+   (actor()?.side==="jogadores"?" · recupera "+pre.result.criticalRefundCourage+" Coragem":" · gera "+pre.result.monsterCriticalPavor+" Pavor (teto aplicado ao confirmar)"):null,
+  pre.noisy?"Barulhenta (passiva): +1P, inclusive no crítico":null,
+  ...pre.weaponPlan.active.map(x=>"Característica da arma: "+x+" (ativada no acerto)"),
+  ...pre.status.notes,
+  pre.weaponPlan.active.length?"Custo das características: "+pre.weaponPlan.cost+(actor()?.side==="inimigos"?"P local":" Coragem")+
+   " · "+pre.weaponPlan.free+" gratuitas":null,
+  pre.perfuranteBlocked?"Perfurante: anulado pela defesa confirmada; dano básico mantido":null,
   Number($("cancel-p").value)?"Anulação: "+$("cancel-p").value+" P com Antecipar":null,
   Number($("convert-a").value)?"Conversão: "+$("convert-a").value+" Êxito(s) por pares de Antecipar":null,
   ...pre.activations.map(x=>"Perícia ativada: "+x.name+" ("+x.cost+(actor()?.side==="inimigos"?" Pavor":" Coragem")+")")
@@ -500,7 +508,10 @@ function renderDice(){
  if(!pre.ok){$("roll-result").textContent=pre.error;return;}
  $("confirm").disabled=false;
  const r=pre.result;
- $("roll-result").innerHTML='<strong>'+esc(r.outcome)+'</strong>'+
+ $("roll-result").innerHTML=(r.critical?
+  '<div class="cc-critical-result"><strong>CRÍTICO · '+r.critical+' DADOS NAS FACES MÁXIMAS</strong><small>'+
+   critInfo.faces.map(x=>'d'+x.sides+' face '+x.face).join(' · ')+'</small></div>':'')+
+  '<strong>'+esc(r.outcome)+'</strong>'+
   '<p><span class="cc-e">'+r.e+' Êxitos</span> + <span class="cc-p">'+r.p+
   ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
   '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
