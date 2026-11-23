@@ -2,7 +2,7 @@
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
 import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,toSystem,stats} from "./rules.mjs?v=20261123-advanced-g3-v096";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261123-advanced-g3-v096";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
@@ -84,7 +84,8 @@ export function composeActionPool(unit,selection={},stepDieId=""){
  if(extra){
   const advanced=human&&ADVANCED_SOURCE_DEFS.some(row=>
     (row.group==="know"?"knowledge":row.group)===selection.baseGroup&&row.key===selection.baseKey&&unit.skills.includes(row.id)&&
-    Number(unit[row.group==="practice"?"practices":"knowledges"]?.[row.key]||0)>=3
+    Number(unit[row.group==="practice"?"practices":"knowledges"]?.[row.key]||0)>=3&&
+    !humanoidSkillRequirement(unit,row.id)
   );
   if(!(advanced||!human&&Number(unit.threatGrade)>=5))errors.push("Terceira fonte exige habilitação apropriada.");
   if(!selection.contextOK)errors.push("Confirme a pertinência da terceira fonte com o Narrador.");
