@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {blank,normalize,ledger,stats,humanoidRacialGrants,humanoidSourceCost} from "./rules.mjs";
+import {blank,normalize,ledger,stats,humanoidRacialGrants,humanoidSkillCost,humanoidHasFocus,humanoidSourceCost} from "./rules.mjs";
 
 test("Humanoide comum mantém a tabela aprovada do jogador; monstros não mudam",()=>{
  const t=blank("humanoide");
@@ -24,10 +24,12 @@ test("Lucker Puro preserva escolha Sagrado, origem gratuita e XP de fontes",()=>
  t.skills=["criar-item-foco-magia","sagrado","montar"];
  const x=normalize(t);
  assert.equal(x.pureElement,"sagrado");
- assert.deepEqual(humanoidRacialGrants(x),["criar-item-foco-magia","sagrado"]);
+ assert.deepEqual(humanoidRacialGrants(x),["sagrado"]);
+ assert.equal(humanoidSkillCost(x,"criar-item-foco-magia"),0,"Foco fica gratuito para Lucker Puro mesmo adquirido");
  assert.equal(ledger(x).attrs,2,"Inteligência e Destreza G1 são gratuitas; Força elevada custa 2");
  assert.equal(ledger(x).training,3,"Atletismo G1 elevado custa 3");
- assert.equal(ledger(x).skills,2,"Sagrado/Foco raciais não consomem XP; Montar consome 2");
+ assert.equal(ledger(x).skills,2,"Sagrado concedido e Foco explicitamente comprado custam zero; Montar consome 2");
+ assert.equal(humanoidHasFocus(x),false,"Foco legado presente sem Disciplina e Artesão não habilita conjuração");
  assert.equal(ledger(x).spent,7);
  assert.equal(ledger(x).remaining,8);
  for(const invalid of ["sangue","trevas","veneno"]){
@@ -37,6 +39,20 @@ test("Lucker Puro preserva escolha Sagrado, origem gratuita e XP de fontes",()=>
  }
 });
 
+test("Lucker Puro não recebe Foco no cadastro nem no rolador antes de compra e requisitos",()=>{
+ const fresh=blank("humanoide");fresh.race="lucker_puro";fresh.pureElement="fogo";
+ fresh.attributes.inteligencia=1;fresh.attributes.destreza=1;
+ const starting=normalize(fresh);
+ assert.deepEqual(starting.skills,["fogo"],"Foco não aparece como aquisição espontânea");
+ assert.equal(humanoidHasFocus(starting),false);
+ starting.practices.armas_conjuracao=1;starting.practices.artesao=1;
+ assert.equal(humanoidHasFocus(starting),false,"Cumprir os requisitos ainda não compra a Perícia");
+ const before=ledger(starting).spent;
+ starting.skills.push("criar-item-foco-magia");
+ assert.equal(humanoidHasFocus(starting),true);
+ assert.equal(ledger(starting).spent,before,"Compra explícita custa 0 XP");
+ assert.equal(humanoidSkillCost(normalize({...fresh,race:"lucker_sangue"}),"criar-item-foco-magia"),1);
+});
 test("Runa Espinhos: exatamente um elemento e Escudo Rúnico sem segunda Perícia",()=>{
  const raw=blank("humanoide");
  raw.race="runa_espinhos";raw.runeElements=["terra","vento"];
