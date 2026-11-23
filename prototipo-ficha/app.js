@@ -4604,10 +4604,11 @@ function score(){
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
- const damageBasic=success?E+(p.opts.fulminante?P:Math.floor(P/2)):0;
+ const damageBasic=success?E+Math.floor(P/2):0;
+ const fulminanteDamageBasic=success&&p.opts.fulminante?E+P:damageBasic;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
+ const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:fulminanteDamageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -5338,7 +5339,8 @@ function onClick(event){
   if(sphereCount()>=5){toast("Teto de 5 Esferas Espirituais armazenadas atingido.");break;}
   if(state.courage<1){toast("Invocar Esfera Espiritual exige 1 Coragem.");break;}
   if(!confirm("Converter 1 Coragem em 1 Esfera Espiritual? Limite de 5 criações por rodada e de 5 esferas armazenadas."))break;
-  state.courage-=1;state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
+  state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   logSkillAction("Invocar Esfera Espiritual","−1 Coragem; +1 esfera; "+state.spiritualSpheres.createdThisRound+"/5 criadas na rodada.");
   render();save();toast("1 esfera criada; "+state.spiritualSpheres.createdThisRound+"/5 nesta rodada.");break;
  }
