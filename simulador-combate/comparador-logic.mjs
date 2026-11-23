@@ -170,8 +170,16 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
   /^(luvas|punhos|soco)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
- if(required==="armas-leves"&&Number(c?.practices?.armas_conjuracao||0)<1)
-  return {ok:false,error:"Perícia em Armas Leves exige Disciplina 1 para habilitar efeitos.",required};
+ const weightRequirements={
+  "armas-leves":{disc:1,strength:0},
+  "armas-medias":{disc:1,strength:1},
+  "armas-pesadas":{disc:2,strength:2}
+ };
+ const req=weightRequirements[required];
+ if(req&&(Number(c?.practices?.armas_conjuracao||0)<req.disc||
+   Number(c?.attributes?.forca||0)<req.strength))
+  return {ok:false,error:"A Perícia de armas "+required+" não cumpre Disciplina "+req.disc+
+   (req.strength?" e Força "+req.strength:"")+" para habilitar efeitos.",required};
  if(thrown&&!skills.includes(weightSkill))
   return {ok:false,error:"Arremesso exige também a Perícia da categoria "+weightSkill+".",required:weightSkill};
  return {ok:true,required};
@@ -344,8 +352,16 @@ export function weightAffinity(weapon,target,attacker=null){
  if(weapon.kind==="firearm"&&!natural)return {status:"manual",delta:0,description:"Modelo de arma de fogo sem tabela própria validada: aplicar manualmente."};
  const value=(natural||table[atk])?.[def];
  const relevantSkill=expertise||({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"})[atk];
- if(value===-1&&attacker?.skills?.includes(relevantSkill)&&
-   (relevantSkill!=="armas-leves"||Number(attacker?.practices?.armas_conjuracao||0)>=1))
+ const validWeightRequirements={
+  "armas-leves":{disc:1,strength:0},
+  "armas-medias":{disc:1,strength:1},
+  "armas-pesadas":{disc:2,strength:2}
+ };
+ const weightReq=validWeightRequirements[relevantSkill];
+ const trained=!weightReq||
+  (Number(attacker?.practices?.armas_conjuracao||0)>=weightReq.disc&&
+   Number(attacker?.attributes?.forca||0)>=weightReq.strength);
+ if(value===-1&&attacker?.skills?.includes(relevantSkill)&&trained)
   return {status:"known",delta:0,description:"A especialização do peso/arma ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};
