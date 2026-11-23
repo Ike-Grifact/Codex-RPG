@@ -412,3 +412,52 @@
  .cf-skill-toolbar>small{grid-column:1}
  .cf-skills-panel .cf-skills{grid-template-columns:minmax(0,1fr);max-height:55vh}
 }
+
+/* Codex Genético do inimigo e detalhes de Perícias: duas vistas da mesma ficha. */
+.cf-skill-view-switch{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.cf-main .cf-skill-view-switch button{min-height:42px;border:1px solid var(--line);border-radius:10px;
+ background:var(--surface);color:var(--ink);font-size:12px;font-weight:700;padding:9px 14px}
+.cf-main .cf-skill-view-switch button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.cf-enemy-skill-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(220px,.78fr);
+ gap:14px;align-items:start;margin:12px 0 2px}
+.cf-enemy-skill-list,.cf-enemy-skill-genetic,.cf-gene-inspector{min-width:0}
+.cf-enemy-skill-list[hidden],.cf-enemy-skill-genetic[hidden]{display:none!important}
+.cf-enemy-skill-genetic{
+ --fp-bg:var(--bg);--fp-surface:var(--surface);--fp-deep:var(--bg2);--fp-raised:var(--surface);
+ --fp-panel:var(--surface);--fp-stroke:var(--line);--fp-text:var(--ink);--fp-muted:var(--muted);
+ --fp-gold:var(--accent);--fp-e:#267A45;--fp-a:#2369BB;--fp-p:#542176;
+}
+.cf-enemy-skill-genetic .fp-gene-canvas{min-height:570px;max-height:none;height:610px;aspect-ratio:auto;
+ border-color:var(--line);overscroll-behavior:contain}
+.cf-enemy-skill-genetic .fp-gene-canvas:focus-visible{outline:2px solid var(--accent)}
+.cf-enemy-skill-genetic>.cf-note{font-size:11px;line-height:1.5;margin:0 0 10px}
+.cf-gene-inspector{position:sticky;top:10px;border:1px solid var(--line);background:var(--surface);
+ border-radius:12px;padding:16px;max-height:650px;overflow-y:auto;overflow-wrap:anywhere}
+.cf-gene-inspector h4{font:normal 22px/1.15 Georgia,serif;color:var(--ink);margin:7px 0 10px}
+.cf-gene-inspector>p{font-size:12px;line-height:1.6;margin:10px 0;color:var(--muted)}
+.cf-gene-inspector .cf-gene-req{background:var(--bg2);padding:10px;border-radius:8px}
+.cf-gene-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.cf-gene-detail-actions button{min-height:40px;padding:9px 11px;flex:1 1 auto;white-space:normal}
+.cf-gene-skill-owned{color:var(--accent)!important;font-weight:700}
+.cf-skill-card.is-inspected{border-color:var(--accent)}
+.cf-skill-card .cf-skill-open{all:unset;display:block;width:100%;cursor:pointer;
+ font-size:12px;font-weight:700;line-height:1.4;color:var(--ink);overflow-wrap:anywhere}
+.cf-skill-card .cf-skill-open:hover{color:var(--accent);text-decoration:underline}
+.cf-skill-card .cf-skill-open:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.cf-stat-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.cf-stat-armor{gap:7px}
+.cf-stat-armor>small{line-height:1.4;overflow-wrap:anywhere}
+.cf-armor-summary-actions{display:flex;gap:6px;justify-content:center}
+.cf-main .cf-armor-summary-actions button{min-width:38px;min-height:36px;padding:6px 10px;font-size:18px}
+.cf-stat-armor>button{font-size:11px;line-height:1.4;align-self:end}
+@media(max-width:1150px){
+ .cf-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .cf-enemy-skill-layout{grid-template-columns:minmax(0,1fr)}
+ .cf-gene-inspector{position:static;max-height:350px}
+}
+@media(max-width:650px){
+ .cf-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cf-enemy-skill-genetic .fp-gene-canvas{height:520px;min-height:470px}
+ .cf-skill-view-switch button{flex:1}
+ .cf-gene-inspector{max-height:none}
+}

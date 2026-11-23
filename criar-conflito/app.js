@@ -240,6 +240,78 @@ function canBuySkill(t,id){
  return !humanoidSkillRequirement(t,id);
 }
 const skillFilterState={query:"",scope:"all"};
+// O mapa e a lista são duas visões da MESMA ficha do encontro.
+const enemyGeneUI={view:"list",selected:"",showFuture:true};
+const SKILL_SOURCE_GROUPS={attr:["attributes",ATTRIBUTES],know:["knowledges",KNOWLEDGES],practice:["practices",PRACTICES]};
+function enemyGeneSource(t,id){
+ const [group,key]=String(id).split(":"),entry=SKILL_SOURCE_GROUPS[group];
+ if(!entry)return null;
+ const row=entry[1].find(([sid])=>sid===key);if(!row)return null;
+ const grade=Number(t[entry[0]][key]||0),costs=humanoidSourceCost(t,group,key);
+ const next=grade<6?costs[grade+1]-costs[grade]:null;
+ const remaining=ledger(t).remaining,minimum=t.kind==="humanoide"&&group==="attr"&&costs[1]===0?1:0;
+ const diceFaces=group==="attr"?dice(t,key):
+  ([[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][grade]);
+ return {id,group,key,type:group,name:row[1],grade,previewGrade:grade,minGrade:minimum,
+  next,canRaise:next!==null&&remaining>=next,
+  dice:diceFaces.map(x=>"d"+x),state:grade>0?"owned":next!==null&&remaining>=next?"available":"locked",
+  label:(minimum?"Grau 1 gratuito da origem. ":"")+(next===null?"Grau máximo.":"Próximo grau: "+next+" XP.")};
+}
+function enemyGeneInspector(t,id){
+ if(!id)return '<p class="cf-note">Selecione uma fonte ou Perícia para consultar dados, requisitos e opções de compra.</p>';
+ const src=enemyGeneSource(t,id);
+ if(src){
+  const canDown=src.grade>src.minGrade;
+  return '<span class="eyebrow">FONTE DO CODEX GENÉTICO</span><h4>'+esc(src.name)+'</h4>'+
+   '<p>'+({attr:"Capacidade fundamental",know:"Estudo e conhecimento",practice:"Treinamento prático"}[src.group])+
+   ' · Grau '+src.grade+' · '+src.dice.join(" + ")+'</p>'+
+   '<p>'+esc(src.label)+' XP livre: '+ledger(t).remaining+'.</p>'+
+   '<div class="cf-gene-detail-actions"><button type="button" data-enemy-gene-grade="'+src.group+'" data-key="'+esc(src.key)+
+   '" data-delta="-1"'+(canDown?'':' disabled')+'>− Grau</button>'+
+   '<button type="button" data-enemy-gene-grade="'+src.group+'" data-key="'+esc(src.key)+
+   '" data-delta="1"'+(src.canRaise?'':' disabled')+'>+ Grau'+(src.next===null?'':' · '+src.next+' XP')+'</button></div>';
+ }
+ const skill=SKILLS.find(x=>x.id===id);if(!skill)return '<p class="cf-note">Selecione uma capacidade do Codex.</p>';
+ const racial=humanoidRacialGrants(t).includes(id),owned=(t.skills||[]).includes(id);
+ const pending=!Number.isInteger(skill.cost);
+ const reason=racial?"Concedida gratuitamente pela origem":humanoidSkillRequirement(t,id);
+ const canBuy=!owned&&!racial&&canBuySkill(t,id)&&ledger(t).remaining>=skill.cost;
+ const cost=racial?"0 XP (origem)":pending?"XP PENDENTE":skill.cost+" XP";
+ const button=racial?'<p class="cf-gene-skill-owned">Perícia racial gratuita, não removível.</p>':
+  owned?'<button type="button" data-enemy-skill-refund="'+esc(id)+'">Devolver Perícia · revisar XP</button>':
+  '<button type="button" class="cf-primary" data-enemy-skill-buy="'+esc(id)+'"'+(canBuy?'':' disabled')+
+  '>Comprar Perícia · '+esc(cost)+'</button>';
+ return '<span class="eyebrow">PERÍCIA · '+esc(cost)+'</span><h4>'+esc(skill.name)+'</h4>'+
+  '<p>'+esc(skill.detail||"Ver regras no SRD.")+'</p>'+
+  '<p class="cf-gene-req"><strong>Requisitos:</strong> '+esc(reason||"Atendidos")+'</p>'+
+  '<p class="cf-note">XP restante: '+ledger(t).remaining+'. '+
+  (pending?"Aquisição PENDENTE: sem custo autorizado.":owned?"Já adquirida na ficha.":canBuy?"Compra disponível.":"Compre os requisitos e confira o orçamento.")+'</p>'+
+  '<div class="cf-gene-detail-actions">'+button+'</div>';
+}
+function refreshEnemyGeneInspector(t){
+ const inspector=el("cf-gene-inspector");
+ if(inspector&&t)inspector.innerHTML=enemyGeneInspector(t,enemyGeneUI.selected);
+}
+function renderEnemyGeneMap(t){
+ if(enemyGeneUI.view!=="genetic"||!t)return;
+ const root=el("cf-enemy-gene-map");if(!root)return;
+ if(!window.CodexGeneGraph?.render){root.textContent="Mapa indisponível: use a lista de Perícias.";return;}
+ const sources=Object.entries(SKILL_SOURCE_GROUPS).flatMap(([group,[field,entries]])=>
+  entries.map(([key])=>enemyGeneSource(t,group+":"+key)));
+ const remaining=ledger(t).remaining;
+ const nodes=sources.concat(SKILLS.filter(row=>isPlayerCatalogSkill(row.id)).map(it=>{
+  const owned=(t.skills||[]).includes(it.id)||humanoidRacialGrants(t).includes(it.id);
+  const ready=canBuySkill(t,it.id)&&remaining>=it.cost;
+  return {type:"skill",id:it.id,name:it.name,state:owned?"owned":ready?"available":"locked",
+   label:owned?"Adquirida":ready?"Comprável agora":humanoidSkillRequirement(t,it.id)||"XP ou custo pendente"};
+ }));
+ window.CodexGeneGraph.render(root,{skills:nodes,branches:[],affinity:{},
+  selected:enemyGeneUI.selected||"attr:forca",showFuture:enemyGeneUI.showFuture,filter:"all",edit:true,
+  onSelect:id=>{enemyGeneUI.selected=id;refreshEnemyGeneInspector(selected());renderEnemyGeneMap(selected());},
+  onAdjust:(id,delta)=>{const [group,key]=id.split(":");gradeChange(group,key,delta);}
+ });
+}
+
 const foldSkillText=text=>String(text||"").toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 function refreshSkillFilters(){
  const q=foldSkillText(skillFilterState.query);let visible=0;
@@ -257,31 +329,40 @@ function skillPanel(t){
  const remaining=ledger(t).remaining,owned=new Set(t.skills||[]),free=new Set(humanoidRacialGrants(t));
  const listed=SKILLS.filter(it=>isPlayerCatalogSkill(it.id)||owned.has(it.id));
  const cards=listed.map(it=>{
-  const racial=free.has(it.id),selected=owned.has(it.id),pending=!Number.isInteger(it.cost);
+  const racial=free.has(it.id),has=owned.has(it.id),pending=!Number.isInteger(it.cost);
   const requirement=!racial?humanoidSkillRequirement(t,it.id):null;
   const ready=!pending&&!requirement&&remaining>=it.cost;
-  const status=selected?"owned":pending?"pending":ready?"ready":"locked";
-  const disabled=racial||pending||!selected&&!ready;
+  const status=has?"owned":pending?"pending":ready?"ready":"locked";
+  const disabled=racial||pending||!has&&!ready;
   const explanation=racial?"Origem · 0 XP":pending?"Aquisição / custo de XP PENDENTE":
-   selected?"Adquirida · "+it.cost+" XP":
+   has?"Adquirida · "+it.cost+" XP":
    requirement?requirement:remaining<it.cost?"XP insuficiente":"Disponível · "+it.cost+" XP";
-  return '<article class="cf-skill-card" data-skill-status="'+status+'">'+
+  return '<article class="cf-skill-card'+(enemyGeneUI.selected===it.id?' is-inspected':'')+'" data-skill-status="'+status+'">'+
    '<label class="cf-skill" title="'+esc(explanation)+'">'+
-   '<input type="checkbox" data-skill="'+esc(it.id)+'"'+(selected?' checked':'')+(disabled?' disabled':'')+'>'+
-   '<span><strong>'+esc(it.name)+'</strong><small>'+esc(explanation)+'</small></span></label>'+
-   '<details class="cf-skill-info"><summary>Descrição e requisitos</summary><p>'+esc(it.detail||"Consultar o Livro do Jogador.")+'</p></details>'+
+   '<input type="checkbox" data-skill="'+esc(it.id)+'"'+(has?' checked':'')+(disabled?' disabled':'')+' aria-label="Adquirir '+esc(it.name)+'">'+
+   '<span><button type="button" class="cf-skill-open" data-enemy-skill-open="'+esc(it.id)+'" aria-label="Abrir detalhes de '+esc(it.name)+'">'+
+   esc(it.name)+'</button><small>'+esc(explanation)+'</small></span></label>'+
    '</article>';
  }).join("");
- return '<p>Catálogo completo da Ficha do Jogador: Perícias com custo definido, requisitos e opções PENDENTES. '+
-  'Uma opção PENDENTE fica visível para consulta, mas sua compra não é liberada automaticamente.</p>'+
-  '<details class="cf-skills-panel" open><summary>Perícias dos humanoides · '+listed.length+' entradas</summary>'+
-  '<div class="cf-skill-toolbar"><label>Pesquisar Perícia <input id="cf-skill-search" type="search" '+
+ const list= '<div class="cf-skill-toolbar"><label>Pesquisar Perícia <input id="cf-skill-search" type="search" '+
   'placeholder="Nome, efeito ou requisito" value="'+esc(skillFilterState.query)+'" autocomplete="off"></label>'+
   '<label>Exibir <select id="cf-skill-scope">'+
   [['all','Todas'],['ready','Compráveis agora'],['owned','Adquiridas'],['pending','XP pendente'],['locked','Requisitos/XP insuficientes']].map(([id,label])=>
    '<option value="'+id+'"'+(skillFilterState.scope===id?' selected':'')+'>'+label+'</option>').join('')+
   '</select></label><small id="cf-skill-filter-count" aria-live="polite"></small></div>'+
-  '<div class="cf-skills" id="cf-skills">'+cards+'</div></details>';
+  '<div class="cf-skills" id="cf-skills">'+cards+'</div>';
+ return '<p>Mesma ficha, XP e requisitos do criador. Clique no nome da Perícia para consultar seus efeitos e comprar; '+
+  'o Codex Genético oferece o mesmo fluxo por afinidades temáticas, sem alterar os requisitos.</p>'+
+  '<div class="cf-skill-view-switch" role="group" aria-label="Visualização do Codex">'+
+  '<button type="button" data-enemy-skill-view="list" aria-pressed="'+(enemyGeneUI.view==="list")+'">Lista de Perícias</button>'+
+  '<button type="button" data-enemy-skill-view="genetic" aria-pressed="'+(enemyGeneUI.view==="genetic")+'">Codex Genético</button></div>'+
+  '<div class="cf-enemy-skill-layout">'+
+  '<section class="cf-enemy-skill-list"'+(enemyGeneUI.view!=="list"?' hidden':'')+' aria-label="Lista de Perícias">'+list+'</section>'+
+  '<section class="cf-enemy-skill-genetic"'+(enemyGeneUI.view!=="genetic"?' hidden':'')+' aria-label="Mapa genético do inimigo">'+
+  '<p class="cf-note">As conexões são afinidades temáticas, não pré-requisitos. Toque em um nó para consultar; + e − usam as mesmas compras da ficha.</p>'+
+  '<div id="cf-enemy-gene-map" class="fp-gene-canvas" aria-label="Codex Genético do inimigo"></div></section>'+
+  '<aside id="cf-gene-inspector" class="cf-gene-inspector" aria-label="Detalhes da capacidade selecionada">'+
+  enemyGeneInspector(t,enemyGeneUI.selected)+'</aside></div>';
 }
 function itemOptions(){
  const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
@@ -633,7 +714,7 @@ function confirmCreatureRoll(){
  notice("Rolagem confirmada e registrada no histórico para playtest.");
 }
 function editorHTML(t){
- const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal;
+ const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal,armor=equippedArmor(t);
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
  const guide=human?'<nav class="cf-human-navigation" aria-label="Ir à etapa da ficha de humanoide">'+
   [['cf-identity','1 · Identidade'],['cf-training','2 · Graus / XP'],['cf-specialties','3 · Perícias'],
@@ -665,7 +746,16 @@ function editorHTML(t){
   '<small>Máximo calculado pelos Atributos; aumentos não curam automaticamente.</small></div>'+
   [['DE',x.de],['XP GASTO',x.xp.spent+' / '+x.xp.grant],['XP LIVRE',x.xp.remaining],['DADOS MANTIDOS',(human?x.keepMax:t.keep)+' / '+x.keepMax]]
    .map(([label,val],i)=>'<div class="cf-stat'+(i===2&&x.xp.remaining<0?' is-warning':i===3?' is-purple':'')+'"><small>'+label+'</small><strong>'+val+'</strong></div>').join("")+
-  '</div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
+  '<div class="cf-stat cf-stat-armor"><small>INTEGRIDADE DA ARMADURA</small>'+
+  (armor?'<strong>'+armor.integrity+' / '+armor.integrityMax+'</strong>'+
+   '<small title="'+esc(armor.name)+'">'+esc(armor.name)+'</small>'+
+   '<div class="cf-armor-summary-actions">'+
+   '<button type="button" data-integrity="'+esc(armor.id)+'" data-delta="-1"'+(armor.integrity<=0?' disabled':'')+' aria-label="Reduzir Integridade da armadura">−</button>'+
+   '<button type="button" data-integrity="'+esc(armor.id)+'" data-delta="1"'+(armor.integrity>=armor.integrityMax?' disabled':'')+' aria-label="Restaurar Integridade da armadura">+</button></div>'+
+   '<small>Desgaste manual · Vida independente</small>':
+   '<strong>—</strong><small>Sem armadura equipada</small>'+
+   (human?'<button type="button" data-editor-jump="cf-equipment">Ver equipamentos</button>':''))+
+  '</div></div>'+(x.xp.remaining<0?'<p class="cf-warning">XP gasto excede o orçamento em '+(-x.xp.remaining)+' XP. Aumente o orçamento ou reduza graus.</p>':"")+
   '<section class="cf-panel"><h3>Pavor local e retenção</h3>'+
   '<div class="cf-local-row"><strong>Pavor '+t.pavorLocal+' / '+pLocal+'</strong>'+
   '<button type="button" data-local="-1"'+(t.pavorLocal===0?' disabled':'')+'>− P local</button>'+
@@ -705,6 +795,7 @@ function render(){
  el("editor").innerHTML=t?tabs+(conflictMode==="roll"?rollWorkspace(t):editorHTML(t)):
   '<div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div>';
  refreshSkillFilters();
+ renderEnemyGeneMap(t);
 }
 function update(field,value){
  const t=selected();if(!t)return;
@@ -739,6 +830,10 @@ function gradeChange(group,key,delta){
   return notice("Grau 1 é gratuito pela origem e não pode ser removido.");if(prev===next)return;
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
+ if(delta<0){
+  const affected=t.skills.find(id=>isPlayerCatalogSkill(id)&&!humanoidRacialGrants(t).includes(id)&&humanoidSkillRequirement(t,id));
+  if(affected){t[prop][key]=prev;return notice("O grau é necessário para "+(SKILLS.find(s=>s.id===affected)?.name||affected)+".");}
+ }
  t.life=Math.min(t.life,stats(t).life);
  t.courage=0;
  save();render();
@@ -786,10 +881,13 @@ function toggleSkill(id,checked){
   return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
  if(!checked&&id==="domar-criatura-media"&&t.skills.includes("domar-criatura-grande"))
   return notice("Domar Criatura Média é requisito de Domar Criatura Grande. Remova Grande primeiro.");
+ const before=[...t.skills];
  if(checked&&!t.skills.includes(id))t.skills.push(id);
  else if(!checked)t.skills=t.skills.filter(x=>x!==id);
- if(ledger(t).remaining<0){t.skills=t.skills.filter(x=>x!==id);return notice("XP insuficiente para esta Perícia.");}
- save();render();
+ const invalid=t.skills.find(sid=>isPlayerCatalogSkill(sid)&&!humanoidRacialGrants(t).includes(sid)&&humanoidSkillRequirement(t,sid));
+ if(invalid){t.skills=before;return notice("Esta alteração invalidaria os requisitos de "+(SKILLS.find(x=>x.id===invalid)?.name||invalid)+".");}
+ if(ledger(t).remaining<0){t.skills=before;return notice("XP insuficiente para esta Perícia.");}
+ enemyGeneUI.selected=id;save();render();
 }
 function adjustIntegrity(id,delta,absolute=false){
  const t=selected(),item=t?.items.find(x=>x.id===id);
@@ -843,6 +941,23 @@ document.addEventListener("click",event=>{
  if(b.id==="add-human-quick"){toggleNpcWorkspace(true);return;}
  if(b.id==="cf-close-npc"){toggleNpcWorkspace(false,false);return;}
  if(b.dataset.editorJump){document.getElementById(b.dataset.editorJump)?.scrollIntoView({behavior:"smooth",block:"start"});return;}
+ if(b.dataset.enemySkillView){
+  enemyGeneUI.view=b.dataset.enemySkillView==="genetic"?"genetic":"list";render();
+  el("cf-specialties")?.scrollIntoView({block:"start",behavior:"smooth"});return;
+ }
+ if(b.dataset.enemySkillOpen){enemyGeneUI.selected=b.dataset.enemySkillOpen;
+  refreshEnemyGeneInspector(selected());
+  el("cf-gene-inspector")?.scrollIntoView({block:"nearest",behavior:"smooth"});return;}
+ if(b.dataset.enemySkillBuy)return toggleSkill(b.dataset.enemySkillBuy,true);
+ if(b.dataset.enemySkillRefund){
+  if(!confirm("Devolver esta Perícia e o XP correspondente? Requisitos de outras Perícias adquiridas serão conferidos."))return;
+  return toggleSkill(b.dataset.enemySkillRefund,false);
+ }
+ if(b.dataset.enemyGeneGrade)return gradeChange(b.dataset.enemyGeneGrade,b.dataset.key,Number(b.dataset.delta));
+ if(b.dataset.action==="gene-future"){
+  enemyGeneUI.showFuture=!enemyGeneUI.showFuture;
+  renderEnemyGeneMap(selected());return;
+ }
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
