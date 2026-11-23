@@ -172,7 +172,7 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
  const ranged=(weapon.properties||[]).includes("À Distância")||/^(arco|besta|zarabatana)/.test(name);
  const required=weapon.kind==="firearm"?"armas-fogo":
   thrown?"maestria-arremesso-armas":
-  /^(luvas|punhos|soco)/.test(name)?"pugilismo":
+  /^(luva|punho|soco|soqueira|manopla)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
  const weightRequirements={
@@ -203,11 +203,11 @@ export function weaponMasteryFor(weapon,{thrown=false}={}){
  if(/^martelo|^marreta/.test(name))return "maestria-martelos";
  if(/^arco/.test(name))return "maestria-arcos";
  if(/^besta/.test(name))return "maestria-bestas";
- if(/^(luvas|punhos)/.test(name))return "maestria-punhos";
+ if(/^(luva|punho|soco|soqueira|manopla)/.test(name))return "maestria-punhos";
  if((weapon.properties||[]).includes("À Distância"))return "maestria-longo-alcance";
  return "";
 }
-/** Valida requisitos atuais de compra para o efeito gratuito da Maestria, sem
+/** Valida requisitos atuais de compra para o efeito gratuito da Especialização, sem
  * confundi-los com a habilitação por peso verificada separadamente. */
 export function canUseWeaponMastery(c,id){
  if(!id||!(c?.skills||[]).includes(id))return false;
@@ -219,7 +219,8 @@ export function canUseWeaponMastery(c,id){
   "maestria-machados":{forca:2,destreza:1},
   "maestria-macas":{forca:3,destreza:1,vigor:1},
   "maestria-hastes":{forca:2,agilidade:1,destreza:1},
-  "maestria-cajados":{destreza:2}
+  "maestria-cajados":{destreza:2},
+  "maestria-punhos":{forca:1,agilidade:1,destreza:1,vigor:1}
  };
  const req=requirements[id];
  // Custo 1 XP não equivale a requisitos de compra aprovados.
