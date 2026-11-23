@@ -18,7 +18,7 @@ const assert=(ok,message)=>{if(!ok)throw Error(message);};
   await page.locator("#cf-roll-step").check();
   assert(await page.locator("#cf-roll-step-die option").count()>1,"Faltam opções individuais para elevar dado");
   await page.locator("#cf-roll-step-die").selectOption({index:1});
-  await page.evaluate(()=>{Math.random=()=>0.999999;});
+  await page.evaluate(()=>{Math.random=()=>0.5;});
   await page.locator("[data-roll-start]").click();
   assert(await page.locator(".cf-roll-die").count()===3,"Força G2 + Disciplina G1 não geraram 3 dados");
   assert(await page.locator(".cf-roll-die.is-kept").count()===3,"Coragem não liberou o terceiro dado mantido");
