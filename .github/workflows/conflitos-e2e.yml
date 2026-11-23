@@ -13,6 +13,7 @@ on:
       - '.github/tests/conflito-playtest-historico-e2e.cjs'
       - '.github/tests/conflito-dna-respec-e2e.cjs'
       - '.github/tests/conflito-gene-armor-e2e.cjs'
+      - '.github/tests/conflito-pacotes-pericias-e2e.cjs'
       - '.github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs'
       - 'prototipo-ficha/**'
       - 'foundry-prototype/**'
@@ -41,7 +42,7 @@ jobs:
           node --check criar-conflito/roll-engine.mjs
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
-        run: node --test criar-conflito/rules.test.mjs criar-conflito/catalogo-pericias.test.mjs criar-conflito/humanoide-dna-sync.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/catalogo-pericias.test.mjs criar-conflito/pacotes-pericias.test.mjs criar-conflito/humanoide-dna-sync.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
       - name: Testar ativação de Perícias, Domar Média e Foundry
         run: |
           node --check foundry-prototype/module/sheet.mjs
@@ -72,6 +73,8 @@ jobs:
         run: node .github/tests/conflito-dna-respec-e2e.cjs
       - name: Codex genetico do inimigo, detalhe de Pericias e Integridade
         run: node .github/tests/conflito-gene-armor-e2e.cjs
+      - name: Comprar Pericias com requisitos e retirar efeitos internos do mapa
+        run: node .github/tests/conflito-pacotes-pericias-e2e.cjs
       - name: Três tipos de ameaça, XP e leitura de verbetes no Codex Genético
         run: node .github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs
       - name: Simulador tático com mapa, dados e escudo no desktop e celular

@@ -689,3 +689,12 @@ function skillReq(id,s){
 
 export const PLAYER_SKILLS=Object.freeze(SKILLS.map(([id,name,detail,cost])=>Object.freeze({id,name,detail,cost})));
 export function playerSkillRequirement(id,character){return skillReq(id,character);}
+
+// Não ofertar efeitos internos de Bardo e IDs históricos como Perícias individuais.
+ // Espelho literal das exclusões do criador (app.js); a CI verifica sincronização.
+const BARD_INTERNAL_EFFECTS=Object.freeze(["dueto-improvisado","contratempo","solo-provocador","cancoes-sustentadas","ritmo-de-batalha","inspiracao","ressonancia-arcana","acorde-de-protecao","acorde-triunfal","compasso-adiantado","ritmo-acelerado","harmonia-musical","piada-infame","elevacao-harmonica","acao-em-conjunto-musical","presenca-de-palco","melodia-psiquica"]);
+const HIDDEN_CATALOG_SKILLS=new Set(["combate","armas",...BARD_INTERNAL_EFFECTS]);
+const RETIRED_PROTOTYPES=new Set(["marciais","combinacao","peritoconj"]);
+export const HIDDEN_PLAYER_SKILL_IDS=Object.freeze([...HIDDEN_CATALOG_SKILLS]);
+const hiddenPlayerSet=new Set(HIDDEN_PLAYER_SKILL_IDS);
+export const isVisiblePlayerSkill=id=>PLAYER_SKILLS.some(row=>row.id===id)&&!hiddenPlayerSet.has(id);

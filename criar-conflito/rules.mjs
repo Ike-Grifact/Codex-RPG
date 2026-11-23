@@ -2,7 +2,8 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs?v=20261122-fulminantes-v1";
-import {PLAYER_SKILLS,playerSkillRequirement} from "../prototipo-ficha/skills-catalog.mjs";
+import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill} from "../prototipo-ficha/skills-catalog.mjs?v=20261123-hidden-skill-v1";
+export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
