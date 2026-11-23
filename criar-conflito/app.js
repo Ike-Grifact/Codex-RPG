@@ -1,9 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
  from "./rules.mjs?v=20261123-skills-dashboard-v1";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261123-skills-dashboard-v1";
+import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -236,13 +237,59 @@ function canBuySkill(t,id){
  const skill=SKILLS.find(x=>x.id===id);
  if(!skill)return false;
  if(humanoidRacialGrants(t).includes(id))return true;
- if(!isPlayerCatalogSkill(id)||!Number.isInteger(skill.cost))return false;
+ if(!isVisiblePlayerSkill(id)||!Number.isInteger(skill.cost))return false;
  return !humanoidSkillRequirement(t,id);
 }
 const skillFilterState={query:"",scope:"all"};
 // O mapa e a lista são duas visões da MESMA ficha do encontro.
 const enemyGeneUI={view:"list",selected:"",showFuture:true};
 const SKILL_SOURCE_GROUPS={attr:["attributes",ATTRIBUTES],know:["knowledges",KNOWLEDGES],practice:["practices",PRACTICES]};
+// O planejamento faz apenas compras aprovadas. Alternativas de requisitos são
+// as mesmas de geneAutoPlan do criador; o cálculo de XP usa ledger da ameaça.
+const enemyPackageCache={signature:"",values:new Map()};
+function enemySkillPackage(t,id){
+ if(!t||!isHumanoidKind(t.kind)||!isVisiblePlayerSkill(id)||t.skills.includes(id)||
+    humanoidRacialGrants(t).includes(id))return null;
+ const signature=JSON.stringify([t.id,t.kind,t.race,t.pureElement,t.runeElements,
+   t.xp,t.attributes,t.knowledges,t.practices,t.skills]);
+ if(enemyPackageCache.signature!==signature){
+  enemyPackageCache.signature=signature;enemyPackageCache.values.clear();
+ }
+ if(!enemyPackageCache.values.has(id)){
+  const plan=planSkillPurchase(id,t,{catalog:SKILLS,ledger,
+   requirements:(candidate,skillId)=>humanoidSkillRequirement(candidate,skillId),
+   grants:humanoidRacialGrants,groups:SKILL_SOURCE_GROUPS,eligible:isVisiblePlayerSkill});
+  enemyPackageCache.values.set(id,plan);
+ }
+ return enemyPackageCache.values.get(id);
+}
+function buyEnemySkillPackage(id){
+ const t=selected();if(!t||!isHumanoidKind(t.kind)||!isVisiblePlayerSkill(id))return;
+ const plan=enemySkillPackage(t,id);
+ if(!plan)return notice("Requisitos ou XP insuficientes para a compra conjunta desta Perícia.");
+ const chosen=SKILLS.find(x=>x.id===id);
+ const gradeSummary=plan.grades.map(g=>g.name+" "+g.from+" → "+g.to);
+ const skillSummary=plan.skills.map(sk=>sk.name+" ("+sk.cost+" XP)");
+ const prompt="Comprar "+(chosen?.name||id)+" e todos os requisitos por "+plan.cost+" XP?\n\n"+
+  (gradeSummary.length?"Graus:\n• "+gradeSummary.join("\n• ")+"\n\n":"")+
+  (skillSummary.length?"Perícias:\n• "+skillSummary.join("\n• ")+"\n\n":"")+
+  "Saldo: "+plan.before+" XP → "+plan.after+" XP.";
+ if(!confirm(prompt))return;
+ // Alterar a ficha de uma só vez. Nunca gravar fonte ou Perícia intermediária isoladamente.
+ const before={attributes:t.attributes,knowledges:t.knowledges,practices:t.practices,
+  skills:t.skills,life:t.life,courage:t.courage};
+ t.attributes={...plan.state.attributes};t.knowledges={...plan.state.knowledges};
+ t.practices={...plan.state.practices};t.skills=[...plan.state.skills];
+ const invalid=plan.skills.find(sk=>humanoidSkillRequirement(t,sk.id));
+ if(ledger(t).remaining<0||invalid){
+  Object.assign(t,before);
+  return notice("Compra desfeita: requisitos ou XP não atendidos no estado final.");
+ }
+ t.life=Math.min(before.life,stats(t).life);
+ t.courage=0;creatureRoll=null;rollDraft=null;
+ enemyGeneUI.selected=id;save();render();
+ notice("Compra conjunta concluída: "+plan.cost+" XP. Saldo restante: "+ledger(t).remaining+" XP.");
+}
 function enemyGeneSource(t,id){
  const [group,key]=String(id).split(":"),entry=SKILL_SOURCE_GROUPS[group];
  if(!entry)return null;
@@ -271,21 +318,27 @@ function enemyGeneInspector(t,id){
    '<button type="button" data-enemy-gene-grade="'+src.group+'" data-key="'+esc(src.key)+
    '" data-delta="1"'+(src.canRaise?'':' disabled')+'>+ Grau'+(src.next===null?'':' · '+src.next+' XP')+'</button></div>';
  }
- const skill=SKILLS.find(x=>x.id===id);if(!skill)return '<p class="cf-note">Selecione uma capacidade do Codex.</p>';
+ const skill=SKILLS.find(x=>x.id===id&&isVisiblePlayerSkill(x.id));
+ if(!skill)return '<p class="cf-note">Selecione uma capacidade disponível no catálogo do Codex.</p>';
  const racial=humanoidRacialGrants(t).includes(id),owned=(t.skills||[]).includes(id);
  const pending=!Number.isInteger(skill.cost);
  const reason=racial?"Concedida gratuitamente pela origem":humanoidSkillRequirement(t,id);
  const canBuy=!owned&&!racial&&canBuySkill(t,id)&&ledger(t).remaining>=skill.cost;
+ const packagePlan=!owned&&!racial&&!pending&&!canBuy?enemySkillPackage(t,id):null;
  const cost=racial?"0 XP (origem)":pending?"XP PENDENTE":skill.cost+" XP";
  const button=racial?'<p class="cf-gene-skill-owned">Perícia racial gratuita, não removível.</p>':
   owned?'<button type="button" data-enemy-skill-refund="'+esc(id)+'">Devolver Perícia · revisar XP</button>':
+  packagePlan?'<button type="button" class="cf-primary" data-enemy-skill-package="'+esc(id)+'">'+
+   'Comprar Perícia + requisitos · '+packagePlan.cost+' XP</button>':
   '<button type="button" class="cf-primary" data-enemy-skill-buy="'+esc(id)+'"'+(canBuy?'':' disabled')+
   '>Comprar Perícia · '+esc(cost)+'</button>';
  return '<span class="eyebrow">PERÍCIA · '+esc(cost)+'</span><h4>'+esc(skill.name)+'</h4>'+
   '<p>'+esc(skill.detail||"Ver regras no SRD.")+'</p>'+
   '<p class="cf-gene-req"><strong>Requisitos:</strong> '+esc(reason||"Atendidos")+'</p>'+
   '<p class="cf-note">XP restante: '+ledger(t).remaining+'. '+
-  (pending?"Aquisição PENDENTE: sem custo autorizado.":owned?"Já adquirida na ficha.":canBuy?"Compra disponível.":"Compre os requisitos e confira o orçamento.")+'</p>'+
+  (pending?"Aquisição PENDENTE: sem custo autorizado.":owned?"Já adquirida na ficha.":canBuy?"Compra disponível.":packagePlan?"Pacote completo de requisitos disponível por "+packagePlan.cost+" XP.":"Requisitos ou XP insuficientes para comprar o pacote completo.")+'</p>'+
+  (packagePlan?'<p class="cf-note"><strong>Pacote:</strong> '+esc(packagePlan.grades.map(g=>g.name+" "+g.from+"→"+g.to)
+    .concat(packagePlan.skills.map(sk=>sk.name)).join(" · "))+'</p>':"")+
   '<div class="cf-gene-detail-actions">'+button+'</div>';
 }
 function enemyGeneInspectorMarkup(t){
@@ -306,11 +359,13 @@ function renderEnemyGeneMap(t){
  const sources=Object.entries(SKILL_SOURCE_GROUPS).flatMap(([group,[field,entries]])=>
   entries.map(([key])=>enemyGeneSource(t,group+":"+key)));
  const remaining=ledger(t).remaining;
- const nodes=sources.concat(SKILLS.filter(row=>isPlayerCatalogSkill(row.id)).map(it=>{
+ const nodes=sources.concat(SKILLS.filter(row=>isVisiblePlayerSkill(row.id)).map(it=>{
   const owned=(t.skills||[]).includes(it.id)||humanoidRacialGrants(t).includes(it.id);
   const ready=canBuySkill(t,it.id)&&remaining>=it.cost;
-  return {type:"skill",id:it.id,name:it.name,state:owned?"owned":ready?"available":"locked",
-   label:owned?"Adquirida":ready?"Comprável agora":humanoidSkillRequirement(t,it.id)||"XP ou custo pendente"};
+  const potential=!owned&&!ready&&Number.isInteger(it.cost)&&!!enemySkillPackage(t,it.id);
+  return {type:"skill",id:it.id,name:it.name,state:owned?"owned":ready?"available":potential?"potential":"locked",
+   label:owned?"Adquirida":ready?"Comprável agora":potential?"Pacote de requisitos cabe no XP":
+    humanoidSkillRequirement(t,it.id)||"XP ou custo pendente"};
  }));
  window.CodexGeneGraph.render(root,{skills:nodes,branches:[],affinity:{},
   selected:enemyGeneUI.selected,showFuture:enemyGeneUI.showFuture,filter:"all",edit:true,
@@ -340,15 +395,17 @@ function refreshSkillFilters(){
 function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
  const remaining=ledger(t).remaining,owned=new Set(t.skills||[]),free=new Set(humanoidRacialGrants(t));
- const listed=SKILLS.filter(it=>isPlayerCatalogSkill(it.id)||owned.has(it.id));
+ const listed=SKILLS.filter(it=>isVisiblePlayerSkill(it.id));
  const cards=listed.map(it=>{
   const racial=free.has(it.id),has=owned.has(it.id),pending=!Number.isInteger(it.cost);
   const requirement=!racial?humanoidSkillRequirement(t,it.id):null;
   const ready=!pending&&!requirement&&remaining>=it.cost;
-  const status=has?"owned":pending?"pending":ready?"ready":"locked";
+  const potential=!has&&!ready&&!pending?enemySkillPackage(t,it.id):null;
+  const status=has?"owned":pending?"pending":ready?"ready":potential?"potential":"locked";
   const disabled=racial||pending||!has&&!ready;
   const explanation=racial?"Origem · 0 XP":pending?"Aquisição / custo de XP PENDENTE":
    has?"Adquirida · "+it.cost+" XP":
+   potential?"Comprar Perícia + requisitos · "+potential.cost+" XP":
    requirement?requirement:remaining<it.cost?"XP insuficiente":"Disponível · "+it.cost+" XP";
   return '<article class="cf-skill-card'+(enemyGeneUI.selected===it.id?' is-inspected':'')+'" data-skill-status="'+status+'">'+
    '<label class="cf-skill" title="'+esc(explanation)+'">'+
@@ -360,7 +417,7 @@ function skillPanel(t){
  const list= '<div class="cf-skill-toolbar"><label>Pesquisar Perícia <input id="cf-skill-search" type="search" '+
   'placeholder="Nome, efeito ou requisito" value="'+esc(skillFilterState.query)+'" autocomplete="off"></label>'+
   '<label>Exibir <select id="cf-skill-scope">'+
-  [['all','Todas'],['ready','Compráveis agora'],['owned','Adquiridas'],['pending','XP pendente'],['locked','Requisitos/XP insuficientes']].map(([id,label])=>
+  [['all','Todas'],['ready','Compra direta'],['potential','Com requisitos e XP'],['owned','Adquiridas'],['pending','XP pendente'],['locked','Indisponíveis']].map(([id,label])=>
    '<option value="'+id+'"'+(skillFilterState.scope===id?' selected':'')+'>'+label+'</option>').join('')+
   '</select></label><small id="cf-skill-filter-count" aria-live="polite"></small></div>'+
   '<div class="cf-skills" id="cf-skills">'+cards+'</div>';
@@ -967,6 +1024,7 @@ document.addEventListener("click",event=>{
   if(enemyGeneUI.view==="genetic")renderEnemyGeneMap(selected());
   return;
  }
+ if(b.dataset.enemySkillPackage)return buyEnemySkillPackage(b.dataset.enemySkillPackage);
  if(b.dataset.enemySkillBuy)return toggleSkill(b.dataset.enemySkillBuy,true);
  if(b.dataset.enemySkillRefund){
   if(!confirm("Devolver esta Perícia e o XP correspondente? Requisitos de outras Perícias adquiridas serão conferidos."))return;
