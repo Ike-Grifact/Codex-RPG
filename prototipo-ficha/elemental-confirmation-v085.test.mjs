@@ -9,6 +9,7 @@ const read=path=>readFileSync(join(root,path),"utf8");
 const srd=read("../docs/srd-continuidade-v0.85.md");
 const previous=read("../docs/srd-continuidade-v0.84.md");
 const book=read("../docs/livro-do-jogador.md");
+const editorialHistory=read("../docs/arquivo-editorial-livro-do-jogador.md");
 const app=read("app.js");
 const entry=slug=>read("../pericias/"+slug+".html");
 
@@ -55,10 +56,11 @@ test("v0.85: curvas de Ar consomem a distância somada dos trechos do Grau",()=>
  assert.equal(allowed([3,6],8),false);
 });
 
-test("v0.85: livro e verbetes mantêm contexto, versões e pendências gerais",()=>{
+test("Livro ensina resistência e preserva referências de versões no arquivo editorial",()=>{
  assert.match(srd,/SUBSTITUÍDO/);
  assert.match(srd,/PENDENTE SOMENTE COMO REGRA GERAL/);
- assert.match(book,/Continuidade v0\.85/);
+ assert.match(book,/Escudo Rúnico \(Escudo Arcano racial\) \+ um elemento/);
+ assert.match(editorialHistory,/Continuidade v0\.85/,"As decisões datadas ficam somente no arquivo editorial");
  assert.match(book,/Escudo Rúnico \(Escudo Arcano racial\) \+ um elemento/);
  assert.match(app,/registro manual/i);
  assert.match(entry("pericia-em-elemento-ar"),/recuperar Fôlego/);
