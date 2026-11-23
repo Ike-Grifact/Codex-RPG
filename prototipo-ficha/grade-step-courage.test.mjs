@@ -971,7 +971,7 @@ test("Doze novas perícias: páginas, catálogo, requisitos genéticos e SRD",()
   assert.ok(gene.includes('"'+id+'"'),"Constelação ou ícone "+id);
   assert.ok(req.includes('"'+id+'"'),"Nó de requisitos "+id);
  }
- assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Doze Perícias"));
+ assert.ok(srd.includes("Doze Perícias: Furtividade")&&book.includes("Mãos Leves")&&book.includes("Bioética")&&book.includes("Invocar Esfera Espiritual"),"O livro ensina as Perícias no capítulo, sem título de pacote de atualização");
  assert.ok(srd.includes("3+1+1 = DE 5")&&srd.includes("3+1+2 = DE 6"));
  assert.ok(srd.includes("Punho Supremo de Asura")&&srd.includes("Disciplina em um golpe corpo a corpo")&&srd.includes("um dado já existente da pilha"));
  assert.ok(srd.includes("**DEFINIDO — Bioética (1 XP):** exige **Alquimia 3 + Inteligência 3 + Destreza 3"),"Destreza 3 confirmada pelo autor");
