@@ -1841,10 +1841,11 @@ function weaponMasteryRequiredSkill(item){
 }
 function weaponMasteryCanActivate(item,s=state){
  const id=weaponMasteryId(item),required=weaponMasteryRequiredSkill(item);
- if(!id||!required||!ownsSkill(id,s)||!ownsSkill(required,s))return false;
+ if(!id||!required||!ownsSkill(id,s)||!ownsSkill(required,s)||
+   skillReq(id,s)||skillReq(required,s))return false;
  if(id==="maestria-arremessos"){
   const weightSkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)];
-  if(!weightSkill||!ownsSkill(weightSkill,s))return false;
+  if(!weightSkill||!ownsSkill(weightSkill,s)||skillReq(weightSkill,s))return false;
  }
  return id!=="maestria-armas-fogo"||s.race==="humano";
 }
