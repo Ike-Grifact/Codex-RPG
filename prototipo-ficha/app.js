@@ -2028,7 +2028,7 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,stepSourceId:"",fulminante:"",domarActivate:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  extraKeep:false,step:false,stepSourceId:"",fulminante:"",attackThrown:false,domarActivate:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
   shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
   magicElement:"",magicSecondElement:"",magicGrade:1,magicFocusId:"",magicSecondFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
@@ -4221,8 +4221,8 @@ function buildPool(){
    /^(arco|besta|zarabatana)/i.test(weapon?.name||"");
   const valid=weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
    !!combatItem(weapon,"armas").length&&draft.mode==="armas"&&usingDiscipline()&&
-   (draft.fulminante==="golpe-fulminante"?!ranged:
-    draft.fulminante==="disparo-fulminante"&&ranged);
+   (draft.fulminante==="golpe-fulminante"?!ranged&&!draft.attackThrown:
+    draft.fulminante==="disparo-fulminante"&&(ranged||(draft.attackThrown&&ownsSkill("maestria-arremesso-armas"))));
   if(!ownsSkill(draft.fulminante)||!valid||skillReq(draft.fulminante))
    errors.push("Fulminante exige Perícia adquirida, Disciplina e arma equipada compatível; arremesso exige confirmação própria.");
   else{
@@ -4337,7 +4337,20 @@ function renderComposer(){
   (draft.asura?'<label class="fp-form-field full">Dado da pilha que se transforma em d20 '+
    select("asuraDieId",[["","Selecione um dado"],...pool.filter(d=>d.sides!==20||d.asuraSpecial).map(d=>[d.id,
      (d.asuraSpecial?"d"+d.baseSides:"d"+d.sides)+" · "+label(d.group,d.key)])],draft.asuraDieId)+'</label>':""):"";
- const checks=asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const fulminanteSkills=[
+  ["golpe-fulminante","Golpe Fulminante"],["disparo-fulminante","Disparo Fulminante"]
+ ].filter(([id])=>ownsSkill(id));
+ const fulminanteControls=fulminanteSkills.length&&isShared&&draft.mode==="armas"?
+  '<label class="fp-form-field full">Técnica Fulminante (1 Coragem, eleva 1 dado da arma) '+
+  select("fulminante",[["","Não ativar"],...fulminanteSkills],draft.fulminante)+'</label>'+
+  (ownsSkill("maestria-arremesso-armas")?
+   '<label class="fp-checkline full"><input type="checkbox" data-option="attackThrown"'+
+   (draft.attackThrown?' checked':'')+'> Ataque de arremesso (Disparo Fulminante)</label>':""):"";
+ const companionControl=ownsSkill("domar-criatura-pequena")&&state.smallCompanion?.present?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="domarActivate"'+
+  (draft.domarActivate?' checked':'')+'> Auxílio de '+esc(state.smallCompanion.name||"criatura Pequena")+
+  ': 1 Coragem neste turno, +1A; serpente envenena alvo em Sangramento (estado manual)</label>':"";
+ const checks=fulminanteControls+companionControl+asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
@@ -4481,7 +4494,7 @@ function score(){
   (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
- const aPool=Math.max(0,raw[1]+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+(critTier>=3?1:0)+
+ const aPool=Math.max(0,raw[1]+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+Number(!!p.opts.domarActivate)+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
@@ -4501,7 +4514,7 @@ function score(){
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
   Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+Number(!!p.opts.fulminante)+Number(!!p.opts.domarActivate)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
  if(p.mode==="conjuracao"&&p.opts.magicElement){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
@@ -4587,7 +4600,7 @@ function score(){
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
- const damageBasic=success?E+Math.floor(P/2):0;
+ const damageBasic=success?E+(p.opts.fulminante?P:Math.floor(P/2)):0;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
  const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
