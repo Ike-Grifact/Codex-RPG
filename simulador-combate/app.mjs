@@ -1,5 +1,5 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261122-playtest-v2";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261122-playtest-v2";
@@ -28,6 +28,7 @@ function load(){
  }catch{return empty();}
 }
 let state=load(),available=[],pending=null,last=state.lastResult||null,lastActor="",toastTimer,inspectingId="";
+let activeExtraSelections=new Map();
 const byId=id=>state.combatants.find(x=>x.id===id)||null;
 const actor=()=>byId(state.actor),target=()=>byId(state.target);
 function notice(msg){const el=$("notice");el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,4500);}
@@ -74,7 +75,7 @@ function rosterSide(side){
   return '<article class="cc-card'+(c.id===state.actor?" cc-attacker":"")+(c.id===state.target?" cc-target":"")+'">'+
    '<div class="cc-card-title"><strong>'+esc(c.name)+'</strong><small>'+esc(c.source||"Local")+'</small></div>'+
    '<div class="cc-card-stats"><span>DE '+defense(c)+'</span><span>Vida '+c.life+' · '+esc(combatHealth(c).id)+'</span>'+
-   '<span>Coragem '+c.courage+'</span><span>Pavor '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+' · G'+c.threatGrade+'</span><span>Integridade '+
+   (c.side==="inimigos"?'<span>Coragem — (somente PCs)</span>':'<span>Coragem '+c.courage+'</span>')+'<span>Pavor '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+' · G'+c.threatGrade+'</span><span>Integridade '+
    (armor?armor.integrity+"/"+armor.integrityMax:"—")+'</span></div>'+
    (c.acted?'<small class="cc-used">Já agiu nesta rodada</small>':'')+
    '<div class="cc-card-actions"><button type="button" data-inspect="'+esc(c.id)+'">Ver ficha</button>'+
@@ -115,7 +116,7 @@ function renderCombatantSheet(c){
   (s.concept?'<p class="cc-sheet-notes"><strong>Conceito / origem:</strong> '+esc(s.concept)+'</p>':'')+
   '<div class="cc-sheet-stats"><span>Vida: <strong>'+c.life+'</strong></span>'+
   '<span>DE: <strong>'+defense(c)+'</strong></span>'+
-  '<span>Coragem: <strong>'+c.courage+'</strong></span>'+
+  (c.side==="inimigos"?'<span>Sem Coragem (usa Pavor)</span>':'<span>Coragem: <strong>'+c.courage+'</strong></span>')+
   '<span>Pavor: <strong>'+c.pavorLocal+'</strong></span></div>'+
   '<section class="cc-sheet-block"><h3>Habilitação da terceira fonte</h3>'+
   '<p><strong>Disciplina Avançada:</strong> '+esc(advance)+'.</p>'+
@@ -162,6 +163,9 @@ function renderTarget(){
   "DE "+defense(t)+" · armadura "+(armorOf(t)?.name||"nenhuma")+
   " · Vida "+t.life+". Alcance e linha de visão são decisões da mesa, sem mapa.":
   "Escolha um alvo.";
+ $("target-bleeding").disabled=!t;
+ $("target-bleeding").checked=!!t?.statuses?.sangramento;
+ $("target-poison-state").textContent=t?(t.statuses?.envenenado?"Condição ativa: Envenenado (sem dano automático).":"Envenenamento: não registrado."):"Envenenamento: sem alvo.";
  renderAffinity();
 }
 function renderResources(){
@@ -169,13 +173,14 @@ function renderResources(){
  if(!c){$("resource-summary").textContent="Escolha uma ficha.";return;}
  $("resource-summary").innerHTML='<strong>'+esc(c.name)+'</strong><div class="cc-card-stats">'+
   '<span>Vida '+c.life+'</span><span>DE '+defense(c)+'</span>'+
-  '<span>Coragem '+c.courage+'/'+maxCourage(c.level)+'</span>'+
+  (c.side==='inimigos'?'<span>Coragem: não se aplica</span>':'<span>Coragem '+c.courage+'/'+maxCourage(c.level)+'</span>')+
   '<span>P local '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+'</span></div><p>Armadura: '+armorText(c)+'</p>';
  const elig=c.items.filter(x=>["armor","shield"].includes(x.kind)),previous=$("resource-item").value;
  $("resource-item").innerHTML=elig.length?elig.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+
   ' · '+x.integrity+'/'+x.integrityMax+'</option>').join(""):'<option value="">Nenhum equipamento</option>';
  if(elig.some(x=>x.id===previous))$("resource-item").value=previous;
  $("resource-item").disabled=$("resource-kind").value!=="integridade";
+ if(c.side==="inimigos"&&$("resource-kind").value==="coragem")$("resource-kind").value="pavor";
 }
 function renderHistory(){
  $("history").innerHTML=state.history.length?state.history.slice(0,100).map(x=>
@@ -212,6 +217,7 @@ function renderSources(){
  const a=actor();
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
+ activeExtraSelections.clear();$("attack-thrown").checked=false;
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
  // Elevação temporária da fonte também não atravessa combatentes ou rodadas.
