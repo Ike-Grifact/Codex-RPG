@@ -378,7 +378,8 @@ function evaluate(a,rolled,kept,opts){
  const weapon=pending?.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
  const affinity=weightAffinity(weapon,t,a),weight=affinity.status==="known"?affinity.delta:0;
  const stealth=!!(a.skills?.includes("furtividade")&&pending?.baseGroup==="practice"&&pending?.baseKey==="furtividade");
- const conf={...opts,weight,bonusA:health.a+Number(stealth),bonusP:health.p,
+ const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
+ const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion),bonusP:health.p,
   skillBonusE:health.e,stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
@@ -391,7 +392,7 @@ function evaluate(a,rolled,kept,opts){
   const free=keepLimit(a.level,false,false);
   pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
  }
- return {...pre,health,affinity,stealth};
+ return {...pre,health,affinity,stealth,companion};
 }
 function preview(){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
@@ -400,21 +401,30 @@ function preview(){
  const pre=evaluate(a,pending.rolled,pending.kept,options());
  if(!pre.ok)return pre;
  if(pre.health.id==="morto")return {ok:false,error:"Combatente morto não pode agir."};
- const skillId=$("active-skill").value,activation=selectedActiveSkill(a,skillId);
- if(skillId&&!activation)return {ok:false,error:"Perícia não adquirida por este combatente."};
- const skillAmount=Number($("skill-courage").value);
- if(skillId&&(!$("skill-approved").checked||!Number.isInteger(skillAmount)||skillAmount<0||skillAmount>5))
-  return {ok:false,error:"Confira custo e gatilho da Perícia na ficha; confirme a ativação antes de concluir."};
- const human=isHumanoidKind(a.kind),healthCost=pre.health.coragem||0;
- const stepCost=human&&a.side==="jogadores"&&pending.boosted?1:0;
- const courageCost=(pre.courageCost||0)+(human?healthCost:0)+stepCost+(activation?skillAmount:0);
- if(human&&courageCost>5)return {ok:false,error:"O gasto conjunto ultrapassa 5 Coragens na rolagem."};
- if(courageCost>a.courage)return {ok:false,error:"Coragem insuficiente: requer "+courageCost+", possui "+a.courage+"."};
- if((pre.cost||0)>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente para a retenção/elevação."};
+ const activations=pending.activations||[];
+ if(activations.some(x=>!selectedActiveSkill(a,x.id)))return {ok:false,error:"Ativação de Perícia não adquirida."};
+ const totalSkillCost=activations.reduce((sum,x)=>sum+x.cost,0);
+ const hostile=a.side==="inimigos",human=isHumanoidKind(a.kind);
+ const healthCost=pre.health.coragem||0;
+ // previewHumanoidRoll já debita Pavor por retenção e por elevação. Não cobrar de novo.
+ const stepCost=!hostile&&!!pending.boosted?1:0;
+ const courageCost=hostile?0:(pre.courageCost||0)+healthCost+stepCost+totalSkillCost;
+ const pavorCost=(pre.cost||0)+(hostile?(human?healthCost:0)+totalSkillCost:0);
+ if(!hostile&&courageCost>5)return {ok:false,error:"Máximo de 5 Coragens por rolagem."};
+ if(!hostile&&courageCost+Number(a.courageRoundSpent||0)>5)
+  return {ok:false,error:"Rodada: limite de 5 Coragens já seria excedido."};
+ if(!hostile&&courageCost>a.courage)
+  return {ok:false,error:"Coragem insuficiente: requer "+courageCost+", possui "+a.courage+"."};
+ if(pavorCost>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente: requer "+pavorCost+"P, possui "+a.pavorLocal+"P."};
  const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
  const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t);
- return {...pre,courageCost,activation,skillAmount:activation?skillAmount:0,
-  integrityDamage:g1?0:pre.result.damage,life};
+ // Pavor Fulminante passa a valer 1 de dano ao invés da metade arredondada.
+ const fulminanteActive=!!pending.fulminanteId;
+ const criticalMultiplier=pre.result.critical===4?2:1;
+ const extraP=fulminanteActive&&pre.result.success?
+  (pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
+ return {...pre,courageCost,pavorCost,activations,totalSkillCost,
+  integrityDamage:g1?0:pre.result.damage+extraP,extraP,life};
 }
 function renderDice(){
  const element=$("dice");
