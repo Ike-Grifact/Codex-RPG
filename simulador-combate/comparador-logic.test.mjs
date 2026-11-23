@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
- weightAffinity,lifeAtFive,transferPavor,updateResource} from "./comparador-logic.mjs";
+ weightAffinity,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition} from "./comparador-logic.mjs";
 
 const bare=()=>normalizeCombatant({
  id:"p",name:"Aprendiz",kind:"humanoide",level:1,
@@ -249,4 +249,60 @@ test("Perícia ativa só pode ser registrada se adquirida na ficha",()=>{
  const owned=selectedActiveSkill(a,"armas-leves");
  assert.equal(owned.id,"armas-leves");
  assert.match(owned.name,/Armas Leves/);
+});
+
+
+test("Buff Fulminante: UM dado de arma d6→d10, d10→d12, d12→2d12; sem d20",()=>{
+ assert.deepEqual(fulminanteWeaponDice(6),[10]);
+ assert.deepEqual(fulminanteWeaponDice(10),[12]);
+ assert.deepEqual(fulminanteWeaponDice(12),[12,12]);
+ assert.equal(fulminanteWeaponDice(20),null);
+ for(const [before,after] of [[6,[10]],[10,[12]],[12,[12,12]]]){
+  const weapon={id:"adaga",name:"Adaga",kind:"weapon",die:before,category:"leve"};
+  const pool=[{id:"p",group:"practice",key:"armas_conjuracao",sides:10},
+   {id:"a",group:"attribute",key:"forca",sides:6},
+   {id:"w",group:"equipment",key:"adaga",sides:before}];
+  const result=applyFulminanteToPool(pool,weapon,"golpe-fulminante");
+  assert.equal(result.ok,true);
+  assert.deepEqual(result.pool.filter(d=>d.group==="equipment").map(d=>d.sides),after);
+  assert.equal(pool[2].sides,before,"Nunca alterar a pilha original");
+ }
+ const busy=Array.from({length:9},(_,i)=>({id:String(i),group:i===0?"equipment":"attribute",
+   key:i===0?"adaga":"forca",sides:12}));
+ assert.equal(applyFulminanteToPool(busy,{id:"adaga",name:"Adaga",kind:"weapon"},"golpe-fulminante").ok,false);
+});
+test("Disparo Fulminante só para arco/besta/arremesso habilitado, não arma de fogo",()=>{
+ const bow={id:"b",name:"Arco Curto",kind:"weapon",category:"leve",die:6};
+ const sword={id:"a",name:"Espada Longa",kind:"weapon",category:"medio",die:10};
+ const pistol={id:"p",name:"Pistola",kind:"firearm",category:"leve",die:10};
+ assert.equal(validFulminanteForWeapon(bow,"disparo-fulminante"),true);
+ assert.equal(validFulminanteForWeapon(bow,"golpe-fulminante"),false);
+ assert.equal(validFulminanteForWeapon(sword,"golpe-fulminante"),true);
+ assert.equal(validFulminanteForWeapon(sword,"disparo-fulminante",true),true);
+ assert.equal(validFulminanteForWeapon(pistol,"disparo-fulminante"),false);
+});
+test("Humanoide hostil não guarda Coragem, mas usa Pavor local",()=>{
+ const enemy=normalizeCombatant({kind:"humanoide",courage:10,pavorLocal:3},"inimigos");
+ assert.equal(enemy.courage,0);
+ assert.equal(enemy.pavorLocal,3);
+ const denied=updateResource(enemy,null,"coragem",1);
+ assert.equal(denied.ok,false);
+ assert.match(denied.error,/não possuem Coragem/);
+ assert.equal(updateResource(enemy,null,"pavor",-1).actor.pavorLocal,2);
+ assert.equal(normalizeCombatant({kind:"humanoide",courage:8},"jogadores").courage,8);
+});
+test("Domar Pequena requer animal domesticado presente para +1 Vida e serpente aplica condição sem dano fictício",()=>{
+ const barePc=normalizeCombatant({kind:"humanoide",skills:["domar-criatura-pequena"],
+  attributes:{vigor:1}},"jogadores");
+ assert.equal(hasSmallCompanion(barePc),false);
+ const pet=normalizeCombatant({kind:"humanoide",skills:["domar-criatura-pequena"],
+  attributes:{vigor:1},smallCompanion:{present:true,name:"Naja",species:"serpente"}},"jogadores");
+ assert.equal(hasSmallCompanion(pet),true);
+ assert.equal(pet.life,barePc.life+1);
+ const bleed=markCondition(pet,"sangramento",true);
+ assert.equal(bleed.actor.statuses.sangramento,true);
+ const poison=markCondition(bleed.actor,"envenenado",true);
+ assert.equal(poison.actor.statuses.envenenado,true);
+ assert.equal(poison.actor.life,pet.life,"Envenenamento não causa Vida direta inventada");
+ assert.equal(markCondition(pet,"purificar",true).ok,false);
 });
