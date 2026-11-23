@@ -152,7 +152,11 @@ const WEAPON_MASTERY_TYPES=Object.freeze([
 ]);
 const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-hastes":"Força 2 + Agilidade 1 + Destreza 1",
- "maestria-espadas":"Força 2 + Destreza 2"
+ "maestria-espadas":"Força 2 + Destreza 2",
+ "maestria-adagas":"Agilidade 2 + Destreza 2",
+ "maestria-machados":"Força 2 + Destreza 1",
+ "maestria-cajados":"Destreza 2",
+ "maestria-macas":"Força 3 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
@@ -213,8 +217,8 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Exclusiva de Humanos: gratuita desde a criação. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de aquisição: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"Custo de XP e atributos de compra PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
-  APPROVED_WEAPON_MASTERY_PURCHASE[id]?1:null
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Maestria por tipo de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  1
  ]),
  [
   "combate",
@@ -411,7 +415,7 @@ const SKILLS=[
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Pugilismo + Destreza 2. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo; 1 XP. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
   1
  ],
  [
@@ -2510,7 +2514,7 @@ function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().
 function skillReq(id,s=state){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Maestria em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
- if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Custo de XP e requisitos de aquisição desta Maestria ainda PENDENTES; consultar os efeitos e aguardar aprovação.";
+ if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";
  if(racialGrants(s).includes(id))return null;
  const has=x=>ownsSkill(x,s);
  if(id==="invocacao-elemental"&&(!has("criar-item-foco-magia")||!has("domar-criatura-pequena")))
@@ -2592,7 +2596,7 @@ function skillReq(id,s=state){
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.";
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
- if(id==="artista-marcial"&&(disc<2||dex<2||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2 e Pugilismo.";
+ if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
  if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
   if(id==="mudanca-elemental"&&(!has("transformacao-elemental")||intelligence<4||dex<4))return"Requer Transformação Elemental, Inteligência 4 e Destreza 4.";
   if(id==="desencantar"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
