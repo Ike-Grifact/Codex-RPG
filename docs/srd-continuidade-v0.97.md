@@ -56,7 +56,7 @@ Criar categoria navegável **Mecânicas** separada de **Perícias**, com:
 - **Golpe Certo** — +2E e interação com Manejo Perfeito, sem ser uma Perícia independente.
 - **Antecipação** — preservar e incorporar a página que já existia.
 
-Relacionar os verbetes Perícia em Armas Leves e Manejo Perfeito, o catálogo de Perícias, o Livro do Jogador e a navegação principal à nova categoria.
+Relacionar os verbetes das três Perícias de Armas por peso (Leves, Médias e Pesadas), Manejo Perfeito, o catálogo de Perícias, o Livro do Jogador e a navegação principal à nova categoria.
 
 ## 4. Compatibilidade, implementação e pendências
 
