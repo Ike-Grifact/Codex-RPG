@@ -16,7 +16,7 @@ function loadUI(s){
  const normalizedCatalogItem=entry=>item(({leve:"leve",medio:"medio",pesado:"alto","muito-leve":"muito_leve"})[entry.category]||"leve");
  const pad=n=>String(Number(n.toFixed(4)));
  return new Function("state","NPC_MODE","WEIGHTS","resourceWeight","walletValue","normalizedCatalogItem","pad",
-  fragment+"\\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,balanceForPercent,purchaseLoadPreview,purchaseLoadMarkup};")(
+  fragment+"\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,balanceForPercent,purchaseLoadPreview,purchaseLoadMarkup};")(
   s,false,WEIGHTS,resourceWeight,walletValue,normalizedCatalogItem,pad);
 }
 const character=(forca,vigor,atletismo,disciplina=0,resources=20,items=[])=>({
