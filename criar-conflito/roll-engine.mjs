@@ -2,7 +2,7 @@
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
 import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261123-advanced-g3-v096";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261123-maestrias-v098";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
