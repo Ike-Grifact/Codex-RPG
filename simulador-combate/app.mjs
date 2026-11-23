@@ -1,5 +1,5 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261123-leves-golpe-v097";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs?v=20261123-advanced-g3-v096";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
@@ -375,7 +375,7 @@ function renderWeaponEffects(){
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
-  ((attacker?.skills||[]).includes(mastery)&&mastery?" Maestria "+mastery+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 recurso.":
+  (canUseWeaponMastery(attacker,mastery)?" Maestria "+mastery+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 recurso.":
    " Sem Maestria: um efeito custa 1 recurso no acerto comum; no crítico um é grátis e o segundo custa 1.")+
   (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
   " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
