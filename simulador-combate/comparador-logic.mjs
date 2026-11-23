@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
 import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
-import {blank,isHumanoidKind,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261122-pavor-hostil-v1";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261122-pavor-hostil-v1";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -32,7 +32,10 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
   level:int(raw.level||1,1,20),threatGrade:int(raw.threatGrade||1,1,6),
   leader:!!raw.leader,race:String(raw.race||"").slice(0,70),
   attributes:{...base.attributes},knowledges:{...base.knowledges},practices:{...base.practices},
-  skills:Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,130):[],
+  // As Perícias compradas ficam no campo skills; concessões de origem são somadas
+   // sem transformar a isenção de Foco do Lucker Puro em aquisição automática.
+   skills:[...new Set([...(Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,130):[]),
+    ...humanoidRacialGrants({...raw,kind})])],
   items:Array.isArray(raw.items)?raw.items.slice(0,70).map(normalizeEquipment):[],
   smallCompanion:{present:!!raw.smallCompanion?.present,name:String(raw.smallCompanion?.name||"").slice(0,70),
    species:String(raw.smallCompanion?.species||"").slice(0,50)},
@@ -50,6 +53,16 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  out.acted=!!raw.acted;
  return out;
 }
+/** Os efeitos Psíquicos precisam de Foco no registro e, para Lucker Puro, requisitos cumpridos. */
+export function hasCombatFocus(c){return humanoidHasFocus(c);}
+export function focusCombatStatus(c){
+ if(c?.race!=="lucker_puro"||!isHumanoidKind(c?.kind))return "";
+ if(!c.skills?.includes("criar-item-foco-magia"))
+  return "Não adquirido: compre Criar Item de Foco e Magia por 0 XP na ficha, após Disciplina 1, Inteligência 1 e Artesão 1, e importe uma nova cópia.";
+ if(!hasCombatFocus(c))
+  return "Foco registrado, mas inválido: faltam Disciplina 1, Inteligência 1 ou Artesão 1; confirme os requisitos na ficha de origem.";
+ return "Criar Item de Foco e Magia adquirido por 0 XP e habilitado para o rolador.";
+}
 /** Consulta somente a cópia do combatente: não abre nem modifica a ficha de origem. */
 export function combatantSheetData(c={}){
  const human=isHumanoidKind(c.kind),owned=Array.isArray(c.skills)?c.skills:[];
@@ -57,7 +70,7 @@ export function combatantSheetData(c={}){
  const disciplineGrade=int(c.practices?.armas_conjuracao,0,6);
  return {
   kindName:KINDS[c.kind]||(c.kind==="monstro"?"Criatura/Monstro":"Tipo não identificado"),
-  human,disciplineGrade,
+  human,disciplineGrade,focusStatus:focusCombatStatus(c),
   advancedDiscipline:human&&owned.includes("disciplina-avancada"),
   advancedReady:human&&owned.includes("disciplina-avancada")&&disciplineGrade>=2,
   attributes:levels(ATTRIBUTES,"attributes"),
