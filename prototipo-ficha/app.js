@@ -2028,7 +2028,7 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  extraKeep:false,step:false,stepSourceId:"",fulminante:"",domarActivate:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
   shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
   magicElement:"",magicSecondElement:"",magicGrade:1,magicFocusId:"",magicSecondFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
@@ -4215,6 +4215,29 @@ function buildPool(){
    errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
   else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
  }
+ if(draft.fulminante){
+  const weapon=state.items.find(it=>it.id===draft.equipmentId);
+  const ranged=!!weapon&&(weapon.properties||[]).includes("À Distância")||
+   /^(arco|besta|zarabatana)/i.test(weapon?.name||"");
+  const valid=weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
+   !!combatItem(weapon,"armas").length&&draft.mode==="armas"&&usingDiscipline()&&
+   (draft.fulminante==="golpe-fulminante"?!ranged:
+    draft.fulminante==="disparo-fulminante"&&ranged);
+  if(!ownsSkill(draft.fulminante)||!valid||skillReq(draft.fulminante))
+   errors.push("Fulminante exige Perícia adquirida, Disciplina e arma equipada compatível; arremesso exige confirmação própria.");
+  else{
+   const target=pool.find(d=>d.group==="equipment"&&d.id.startsWith("equipment:"+weapon.id+":"));
+   if(!target||![6,10,12].includes(target.sides))errors.push("Fulminante exige um dado da arma d6/d10/d12.");
+   else{
+    const original=target.sides;
+    target.sides=original===6?10:12;target.fulminante=true;target.baseSides=original;
+    if(original===12)pool.push({id:"fulminante:"+weapon.id,group:"equipment",
+     key:weapon.name+" · Fulminante",sides:12,baseSides:12,fulminante:true});
+   }
+  }
+ }
+ if(draft.domarActivate&&(!state.smallCompanion?.present||!ownsSkill("domar-criatura-pequena")))
+  errors.push("Auxílio do companheiro requer criatura Pequena domesticada presente.");
  if(draft.asura){
   const chosen=pool.find(d=>d.id===draft.asuraDieId);
   const weapon=state.items.find(item=>item.id===draft.equipmentId);
@@ -4229,7 +4252,7 @@ function buildPool(){
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
- const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
+ const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+spellCost+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
  if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
@@ -4271,7 +4294,7 @@ function renderComposer(){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
- const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
+ const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
@@ -4346,7 +4369,7 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.shieldThrowId)+
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
  if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
@@ -4358,7 +4381,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,asura:!!draft.asura,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,fulminante:draft.fulminante,domarActivate:!!draft.domarActivate,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,asura:!!draft.asura,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
