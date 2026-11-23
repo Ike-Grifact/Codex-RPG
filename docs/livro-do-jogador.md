@@ -506,6 +506,7 @@ DE final = min(12, max(0, DE base + modificador da única armadura equipada + ef
 
 | Condição | Efeito |
 |---|---|
+| **Golpe Certo** (somente quando habilitado) | **+2E totais**, substituindo o +1E da Vantagem Absoluta |
 | Vantagem absoluta | +1E |
 | Vantagem | +1A |
 | Normal | Nenhum |
