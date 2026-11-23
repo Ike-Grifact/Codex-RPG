@@ -281,14 +281,14 @@ function renderCombatControls(){
   Math.min(4,natural+1);
  $("marco-info").textContent="Retenção: "+natural+" dados sem gasto; máximo "+maximum+
   " com recursos disponíveis. "+(a.kind==="monstro"?"Monstro usa Pavor local: +1P por dado acima de 2. ":
-  "Humanoides usam Coragem na retenção adicional. ")+
+  (a.side==="inimigos"?"Humanoides hostis gastam Pavor local na retenção adicional. ":"Jogadores usam Coragem na retenção adicional. "))+
   "Reserva local G"+a.threatGrade+": "+a.pavorLocal+"/"+capP+" P (G1 4P, +1 por Grau até 8P).";
  const health=combatHealth(a);
  $("health-info").textContent="Saúde: "+health.id+" · Vida "+a.life+
   " · modificadores "+(health.e||0)+"E, "+(health.a||0)+"A, "+(health.p||0)+
-  "P · custo para agir "+(health.coragem===null?"indisponível":health.coragem+" Coragem")+
+  "P · custo para agir "+(health.coragem===null?"indisponível":health.coragem+(a.side==="inimigos"?" Pavor":" Coragem"))+
   (a.kind==="monstro"&&health.coragem>0?
-   ". Em monstros sem reserva de Coragem, o custo para agir exige decisão manual; penalidades de símbolos são aplicadas.":"");
+   ". Monstro incapacitado/inconsciente: conversão de custo de ação PENDENTE; penalidades de símbolos aplicadas.":"");
  const previous=$("active-skill").value;
  const purchased=a.skills||[];
  const rows=purchased.map(id=>selectedActiveSkill(a,id)).filter(Boolean);
@@ -296,17 +296,59 @@ function renderCombatControls(){
   rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name)+'</option>').join("");
  if(rows.some(r=>r.id===previous))$("active-skill").value=previous;
  if(!rows.some(r=>r.id===previous)){$("skill-courage").value="0";$("skill-approved").checked=false;}
+ $("round-budget").textContent=a.side==="inimigos"?
+  "Sem Coragem: gastos deste inimigo usam Pavor local, até "+capP+"P.":
+  "Rodada "+state.round+" · Coragem gasta "+Number(a.courageRoundSpent||0)+"/5 · restante "+Math.max(0,5-Number(a.courageRoundSpent||0));
+ renderAdditionalSkills(rows);
  updateSkillInfo();
 }
 function updateSkillInfo(){
  const skill=selectedActiveSkill(actor(),$("active-skill").value);
  const cost=$("skill-courage").value;
  $("skill-info").textContent=skill?
-  skill.name+": "+skill.detail+" | Coragem declarada: "+cost+
-  ". Confira a ativação; o efeito narrativo deve ser aplicado pelo Narrador.":
+  skill.name+": "+skill.detail+" | Custo em "+(actor()?.side==="inimigos"?"Pavor":"Coragem")+": "+(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes(skill.id)?1:cost)+
+  ". É possível combinar várias Perícias diferentes, até o limite de 5 por rodada.":
   "Selecione uma Perícia adquirida. O custo só é descontado ao confirmar a rolagem e seus efeitos não são automatizados.";
 }
 
+function renderAdditionalSkills(rows){
+ const selected=$("active-skill").value;
+ $("active-extra-skills").innerHTML="<strong>Perícias adicionais nesta ação</strong>"+
+  rows.filter(skill=>skill.id!==selected).map(skill=>{
+   const count=activeExtraSelections.get(skill.id);
+   const fixed=["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes(skill.id);
+   return '<div class="cc-extra-skill"><label><input type="checkbox" data-extra-skill="'+esc(skill.id)+
+    '"'+(count!==undefined?' checked':'')+'> '+esc(skill.name)+'</label>'+
+    '<label>Custo <input type="number" data-extra-skill-cost="'+esc(skill.id)+
+    '" min="0" max="5" step="1" value="'+(fixed?1:(count??1))+
+    '"'+(fixed?' readonly':'')+'></label></div>';
+  }).join("");
+}
+function selectedActivations(a){
+ const list=[];
+ const primaryId=$("active-skill").value;
+ if(primaryId){
+  const row=selectedActiveSkill(a,primaryId);
+  if(!row)return {ok:false,error:"Perícia selecionada não adquirida."};
+  let cost=Number($("skill-courage").value);
+  if(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes(primaryId))cost=1;
+  list.push({...row,cost});
+ }
+ for(const [id,rawCost] of activeExtraSelections){
+  if(id===primaryId)continue;
+  const row=selectedActiveSkill(a,id);
+  if(!row)return {ok:false,error:"Perícia adicional não adquirida."};
+  const cost=["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes(id)?1:Number(rawCost);
+  list.push({...row,cost});
+ }
+ if(list.some(x=>!Number.isInteger(x.cost)||x.cost<0||x.cost>5))
+  return {ok:false,error:"Custo de Perícia deve ser inteiro de 0 a 5."};
+ if(list.length&&!$("skill-approved").checked)
+  return {ok:false,error:"Confirme o custo e o gatilho das Perícias antes de rolar."};
+ if(list.some(x=>x.id==="domar-criatura-pequena")&&!hasSmallCompanion(a))
+  return {ok:false,error:"Domar Pequena só auxilia com criatura domesticada presente."};
+ return {ok:true,skills:list};
+}
 function renderWeapons(){
  const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
  $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
