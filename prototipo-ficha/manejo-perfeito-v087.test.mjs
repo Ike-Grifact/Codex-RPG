@@ -34,12 +34,12 @@ const roller=part(" const situation=SITUATIONS[p.opts.situation]||SITUATIONS.nor
 const evaluate=new Function("hasSkill","itemKind","equipped","attackWeight","targetWeight","condition","mode","weightEnabled",
  'const p={mode,base:{group:"practice",key:"armas_conjuracao"},third:null,opts:{'+
  'situation:condition,attackWeight,targetWeight,weightEnabled,maosLeves:false,shieldThrowId:""}};'+
- 'const item=itemKind?{type:itemKind,equipped}:null;'+
+ 'const item=itemKind?{type:itemKind,equipped,category:attackWeight}:null;'+
  'const SITUATIONS={normal:["Normal",0,0],absoluta:["Vantagem absoluta",1,0]};'+
- 'const ownsSkill=id=>["manejo-perfeito","armas-leves"].includes(id)&&hasSkill;'+
- 'const skillReq=()=>null,equipmentWeight=()=> "leve";'+
+ 'const ownsSkill=id=>["manejo-perfeito","armas-leves","armas-medias","armas-pesadas"].includes(id)&&hasSkill;'+
+ 'const skillReq=()=>null,equipmentWeight=item=>item.category;'+
  'const raw=[2,1,0],critTier=0,criticalConverted=0,properties=[],health={a:0};'+
- aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto,lightWeightIgnored};');
+ aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored};');
 function scenario({hasSkill=true,itemKind="arma",equipped=true,attackWeight="leve",targetWeight="medio",condition="normal",mode="armas",weightEnabled=true}={}){
  return evaluate(hasSkill,itemKind,equipped,attackWeight,targetWeight,condition,mode,weightEnabled);
 }
@@ -92,6 +92,26 @@ test("Armas Leves remove só a Desvantagem natural contra Pesadas",()=>{
  assert.equal(scenario({targetWeight:"medio"}).lightWeightIgnored,false);
  assert.equal(scenario({targetWeight:"pesado",weightEnabled:false}).lightWeightIgnored,false);
  assert.equal(scenario({targetWeight:"pesado",itemKind:"foco"}).lightWeightIgnored,false);
+});
+test("Armas Médias ignoram −1A apenas ao atacar Média com Perícia de mesma categoria",()=>{
+ const unqualified=scenario({hasSkill:false,attackWeight:"medio",targetWeight:"medio"});
+ const qualified=scenario({attackWeight:"medio",targetWeight:"medio"});
+ assert.equal(unqualified.mediumWeightIgnored,false);
+ assert.equal(unqualified.aPool,0);
+ assert.equal(qualified.mediumWeightIgnored,true);
+ assert.equal(qualified.aPool,1);
+ assert.equal(scenario({attackWeight:"medio",targetWeight:"leve"}).mediumWeightIgnored,false);
+ assert.equal(scenario({attackWeight:"medio",targetWeight:"medio",weightEnabled:false}).mediumWeightIgnored,false);
+});
+test("Armas Pesadas ignoram −1A apenas contra Leve/Muito Leve",()=>{
+ const unqualified=scenario({hasSkill:false,attackWeight:"pesado",targetWeight:"leve"});
+ const qualified=scenario({attackWeight:"pesado",targetWeight:"leve"});
+ assert.equal(unqualified.heavyWeightIgnored,false);
+ assert.equal(unqualified.aPool,0);
+ assert.equal(qualified.heavyWeightIgnored,true);
+ assert.equal(qualified.aPool,1);
+ assert.equal(scenario({attackWeight:"pesado",targetWeight:"pesado"}).heavyWeightIgnored,false);
+ assert.equal(scenario({attackWeight:"pesado",targetWeight:"leve",itemKind:"foco"}).heavyWeightIgnored,false);
 });
 test("Arma Certa não é comprável, não aparece no mapa nem no catálogo, mas seu link histórico funciona",()=>{
  const skillList=part("const SKILLS=[","const CARD_REQUIREMENTS=");
