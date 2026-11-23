@@ -12,6 +12,7 @@ on:
       - '.github/tests/conflito-humanoides-e2e.cjs'
       - '.github/tests/conflito-playtest-historico-e2e.cjs'
       - '.github/tests/conflito-dna-respec-e2e.cjs'
+      - '.github/tests/conflito-gene-armor-e2e.cjs'
       - '.github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs'
       - 'prototipo-ficha/**'
       - 'foundry-prototype/**'
@@ -69,6 +70,8 @@ jobs:
         run: node .github/tests/conflito-playtest-historico-e2e.cjs
       - name: NPC pelo DNA, perícias no rolador e restituição de XP
         run: node .github/tests/conflito-dna-respec-e2e.cjs
+      - name: Codex genetico do inimigo, detalhe de Pericias e Integridade
+        run: node .github/tests/conflito-gene-armor-e2e.cjs
       - name: Três tipos de ameaça, XP e leitura de verbetes no Codex Genético
         run: node .github/tests/ameaças-tipos-pericias-verbetes-e2e.cjs
       - name: Simulador tático com mapa, dados e escudo no desktop e celular
