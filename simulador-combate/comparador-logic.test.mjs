@@ -57,7 +57,7 @@ test("Peso tático usa armadura equipada, não peso total do inventário",()=>{
  assert.equal(weightAffinity(medium,e).delta,1);
  const heavy={kind:"weapon",category:"pesado"};
  assert.equal(weightAffinity(heavy,e).delta,-1);
- assert.equal(weightAffinity(heavy,e,{skills:["armas-pesadas"]}).delta,0,
+ assert.equal(weightAffinity(heavy,e,{skills:["armas-pesadas"],practices:{armas_conjuracao:2},attributes:{forca:2}}).delta,0,
   "Especialista ignora Desvantagem por peso correspondente");
  const againstMedium={...e,items:[{...e.items[0],category:"medio"}]};
  assert.equal(weightAffinity(light,againstMedium).delta,1);
@@ -388,6 +388,41 @@ test("Perícia em Armas Leves ignora somente peso pesado e exige Disciplina 1",(
  assert.equal(planWeaponEffects(special,weapon,["Inexistente"],{success:true,critical:2}).ok,false);
  assert.equal(planWeaponEffects(untrained,weapon,["Cortante"],{success:true,critical:2}).ok,false);
 });
+test("Armas Médias e Pesadas exigem seus graus, 1 Coragem no acerto e crítico gratuito",()=>{
+ const cases=[
+  {id:"armas-medias",category:"medio",armor:"medio",disc:1,strength:1,otherArmor:"leve"},
+  {id:"armas-pesadas",category:"pesado",armor:"leve",disc:2,strength:2,otherArmor:"pesado"}
+ ];
+ for(const spec of cases){
+  const weapon={id:"t",name:spec.id,kind:"weapon",equipped:true,category:spec.category,
+   properties:["Cortante","Perfurante"]};
+  const target=normalizeCombatant({kind:"humanoide",items:[
+   {id:"armor",kind:"armor",name:"Armadura",category:spec.armor,equipped:true}]},"inimigos");
+  const proper=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc},attributes:{forca:spec.strength}});
+  const missingDisc=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc-1},attributes:{forca:spec.strength}});
+  const missingForce=normalizeCombatant({kind:"humanoide",skills:[spec.id],
+   practices:{armas_conjuracao:spec.disc},attributes:{forca:spec.strength-1}});
+  for(const unqualified of [missingDisc,missingForce]){
+   assert.equal(weaponActivationSkill(unqualified,weapon).ok,false,spec.id+" sem requisito");
+   assert.equal(weightAffinity(weapon,target,unqualified).delta,-1,spec.id+" mantém −1A sem requisito");
+   assert.equal(planWeaponEffects(unqualified,weapon,["Cortante"],{success:true,critical:2}).ok,false,
+    "Crítico sem requisitos não habilita efeito");
+  }
+  assert.equal(weightAffinity(weapon,target).delta,-1);
+  assert.equal(weightAffinity(weapon,target,proper).delta,0,spec.id+" cancela somente −1A natural");
+  assert.equal(weaponActivationSkill(proper,weapon).ok,true);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:true}).cost,1);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:true,critical:2}).cost,0);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante"],{success:false}).cost,0);
+  assert.equal(planWeaponEffects(proper,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,1);
+  assert.equal(planWeaponEffects(proper,weapon,["Desconhecida"],{success:true}).ok,false);
+  const other={...target,items:target.items.map(x=>({...x,category:spec.otherArmor}))};
+  assert.notEqual(weightAffinity(weapon,other,proper).delta,-1,"Não cria nova desvantagem fora da faixa");
+  assert.equal(weightAffinity(weapon,target,{...proper,skills:[]}).delta,-1,"Sem Perícia, penalidade permanece");
+ }
+});
 test("Manejo Perfeito substitui +1A e Golpe Certo totaliza +2E sem duplicação",()=>{
  const weapon={id:"f",kind:"weapon",name:"Faca",category:"leve",equipped:true,properties:["Cortante"]};
  const medium=normalizeCombatant({kind:"humanoide",items:[
@@ -416,7 +451,7 @@ test("Manejo Perfeito substitui +1A e Golpe Certo totaliza +2E sem duplicação"
 test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; normal apenas um",()=>{
  const weapon={id:"e",name:"Espada Longa",category:"medio",kind:"weapon",
   properties:["Cortante","Perfurante","Cravar"]};
- const pc={skills:["armas-medias","maestria-espadas"]};
+ const pc={skills:["armas-medias","maestria-espadas"],practices:{armas_conjuracao:1},attributes:{forca:1}};
  assert.equal(weaponMasteryFor(weapon),"maestria-espadas");
  assert.equal(planWeaponEffects(pc,weapon,["Cortante"],{success:true}).cost,0);
  assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true,critical:3}).cost,0);
