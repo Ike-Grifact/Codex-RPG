@@ -7,10 +7,10 @@
 <title>Comparador de Combate — Codex RPG</title>
 <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
 <link rel="stylesheet" href="../assets/theme.css">
-<link rel="stylesheet" href="./styles.css?v=20261122-fulminantes-v1">
+<link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261122-fulminantes-v1"></script>
+<script type="module" src="./app.mjs?v=20261122-weapon-status-crit-v2"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -92,6 +92,12 @@
     <label><input id="extra-keep" type="checkbox"> Manter dado adicional (custo conforme ficha)</label>
    </div>
    <div class="cc-affinity" id="weight-affinity">Peso da arma: selecione uma arma e um alvo.</div>
+   <section class="cc-activation" aria-label="Características especiais da arma">
+    <h3>Características da arma e efeitos de status</h3>
+    <p class="cc-help">Marque as características reais que deseja ativar no acerto. A Perícia da categoria é obrigatória: acerto comum custa 1 recurso; crítico pode liberar efeitos gratuitos, e Maestria amplia o limite. As propriedades passivas permanecem automáticas.</p>
+    <div id="weapon-effects" class="cc-skill-multi" aria-label="Características selecionadas da arma"></div>
+    <p id="weapon-effect-info" class="cc-help">Selecione uma arma equipada para ver suas características.</p>
+   </section>
    <p id="marco-info" class="cc-help">Marcos e custos de retenção aparecerão após selecionar o atacante.</p>
    <p id="health-info" class="cc-help">Estado de Saúde do atacante aparecerá aqui.</p>
    <p id="round-budget" class="cc-help">Gasto da rodada: 0/5 Coragens (jogadores).</p>
@@ -108,12 +114,14 @@
    <div class="cc-actions">
     <button id="roll" type="button" class="cc-primary">Rolar</button>
     <button id="suggest" type="button" disabled>Sugerir dados mantidos</button>
+    <label class="cc-auto-goal">Objetivo <select id="auto-goal"><option value="balanced">Equilibrado</option><option value="safety">Acerto limpo e segurança</option><option value="damage">Dano e crítico</option></select></label>
    </div>
+   <p id="suggest-info" class="cc-help">A seleção automática verifica todas as combinações permitidas, conversões de Antecipar e custos reais.</p>
    <div class="cc-dice" id="dice" aria-live="polite"><p>Declare o atacante e o alvo antes de rolar.</p></div>
    <div id="roll-origins" class="cc-origins" aria-live="polite">Os símbolos mantidos serão identificados por fonte, equipamento e modificadores.</div>
    <div class="cc-form cc-duo">
     <label>Anular P com A <input id="cancel-p" type="number" min="0" max="9" value="0"></label>
-    <label>Converter 2A → 1E (pares) <input id="convert-a" type="number" min="0" max="4" value="0"></label>
+    <label>Converter 2A → 1E (pares) <input id="convert-a" type="number" min="0" max="9" value="0"></label>
    </div>
    <div id="roll-result" class="cc-result" aria-live="polite">Nenhuma rolagem pendente.</div>
    <button id="confirm" type="button" class="cc-primary cc-full" disabled>Confirmar rolagem e transferir Pavor</button>
@@ -140,7 +148,7 @@
     <button id="apply-integrity" type="button" disabled>Aplicar dano à Integridade</button>
     <button id="apply-life" type="button" disabled>Aplicar 2 de dano à Vida (sem armadura)</button>
    </div>
-   <p class="cc-help">Os botões aplicam o resultado somente após a confirmação. Ajustes manuais são registrados no histórico. Efeitos especiais de armas, dano excedente, interrupções, ação conjunta e críticos extraordinários exigem adjudicação ou procedimento específico.</p>
+   <p class="cc-help">Os botões aplicam o resultado somente após a confirmação. Ajustes manuais são registrados no histórico. Efeitos de armas com regra definida são registrados quando selecionados e habilitados; Cravar e manobras ainda exigem adjudicação do Narrador. Dano excedente, interrupções e ação conjunta não são inventados.</p>
   </section>
  </div>
  <section class="cc-panel" aria-label="Histórico de rolagens">
