@@ -441,7 +441,7 @@ function renderDice(){
   return '<button type="button" class="cc-die'+(d.kept?" kept":"")+'" data-die="'+esc(d.id)+
    '" aria-pressed="'+d.kept+'" title="Selecionar como mantido"><strong>'+d.face+
    '</strong><small>d'+d.sides+'</small><small class="cc-die-origin">'+esc(d.source)+
-   (d.step?" (Elevado)":"")+'</small><span>'+
+   (d.step?" (Elevado)":"")+(d.fulminante?" (Fulminante)":"")+'</small><span>'+
    (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
    (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
  }).join("");
@@ -454,11 +454,13 @@ function renderDice(){
   "Situação: "+$("situation").selectedOptions[0]?.textContent,
   "Saúde "+pre.health.id+": "+pre.health.e+"E, "+pre.health.a+"A, +"+pre.health.p+"P",
   pre.stealth?"Perícia em Furtividade: +1A":null,
+  pre.companion?"Companheiro Pequeno presente e ativado: +1A":null,
+  pending.fulminanteId?"Dado de arma elevado por "+pending.fulminanteId+": d6→d10, d10→d12 ou d12→2d12":null,
   pending.boosted?"Elevação temporária de fonte "+pending.boosted+": +1 Grau (dados já mostrados)":null,
   pre.result.critical?"Crítico: "+pre.result.critical+" dados mantidos nas faces máximas":null,
   Number($("cancel-p").value)?"Anulação: "+$("cancel-p").value+" P com Antecipar":null,
   Number($("convert-a").value)?"Conversão: "+$("convert-a").value+" Êxito(s) por pares de Antecipar":null,
-  pre.activation?"Ativação declarada: "+pre.activation.name+" ("+pre.skillAmount+" Coragem)":null
+  ...pre.activations.map(x=>"Perícia ativada: "+x.name+" ("+x.cost+(actor()?.side==="inimigos"?" Pavor":" Coragem")+")")
  ].filter(Boolean).map(x=>'<li>'+esc(x)+'</li>').join(""):"";
  $("roll-origins").innerHTML='<strong>Origem das runas mantidas</strong>'+
   (raw?'<ul>'+raw+'</ul>':'<p>Escolha dados para manter.</p>')+
@@ -472,8 +474,8 @@ function renderDice(){
   ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
   '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
   pre.integrityDamage+' · Vida no patamar 5: '+(pre.life.damage===null?"PENDENTE":pre.life.damage)+
-  '</p><small>'+esc(pre.life.reason)+' Custo confirmado na rolagem: '+pre.courageCost+
-  ' Coragem / '+(pre.cost||0)+' Pavor local. '+(pre.health.id!=="saudavel"?"Estado: "+pre.health.id+". ":"")+
+  '</p><small>'+esc(pre.life.reason)+' Gasto na ação: '+pre.courageCost+
+  ' Coragem / '+pre.pavorCost+' Pavor local. '+(pre.health.id!=="saudavel"?"Estado: "+pre.health.id+". ":"")+
   (actor()?.kind==="monstro"&&pre.health.coragem>0?
    "Gasto para agir da criatura incapacitada/inconsciente: PENDENTE de procedimento.":"")+'</small>';
  $("action-state").textContent="Rolado, aguardando confirmação";
