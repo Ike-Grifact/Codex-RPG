@@ -460,6 +460,20 @@ test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; nor
  assert.equal(planWeaponEffects({skills:["maestria-espadas"]},weapon,["Cortante"],{success:true}).ok,false,
   "Maestria sozinha não substitui a Perícia do peso");
 });
+test("Cravar mantém exceção histórica: crítico com arma Média/Pesada não exige Perícia",()=>{
+ for(const category of ["medio","pesado"]){
+  const weapon={id:"cravar",kind:"weapon",name:"Lança",equipped:true,category,
+   properties:["Cravar","Perfurante"]};
+  const noSkill={skills:[],practices:{armas_conjuracao:0},attributes:{forca:0}};
+  const crit=planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:2});
+  assert.equal(crit.ok,true,"Cravar excepcional no crítico "+category);
+  assert.equal(crit.cost,0);
+  assert.deepEqual(crit.active,["Cravar"]);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:0}).ok,false);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Perfurante"],{success:true,critical:2}).ok,false);
+  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar","Perfurante"],{success:true,critical:2}).ok,false);
+ }
+});
 test("Cravar valida escudo físico e categoria; demais efeitos não inventam condição",()=>{
  const medium={name:"Lança de Arremesso",kind:"weapon",category:"medio",properties:["Cravar"]};
  const shieldTarget=normalizeCombatant({kind:"humanoide",items:[
