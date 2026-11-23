@@ -198,11 +198,15 @@ function renderLast(){
  $("apply-integrity").disabled=!(a&&last.integrityDamage>0&&!last.integrityApplied);
  $("apply-life").disabled=!!(a||last.lifeDamage!==2||last.lifeApplied);
  $("last-action").innerHTML='<strong>'+esc(last.name)+' contra '+esc(t?.name||last.targetName)+'</strong>'+
+  (last.critical?'<div class="cc-critical-result"><strong>CRÍTICO · '+last.critical+' FACES MÁXIMAS</strong><small>'+esc(last.keptFaces||"")+
+   ' · '+(last.criticalRefund?'+'+last.criticalRefund+' Coragem':last.criticalPavor?'+'+last.criticalPavor+' Pavor (teto local/público)':'benefício já contabilizado')+'</small></div>':
+   (last.keptFaces?'<small>Faces mantidas: '+esc(last.keptFaces)+'</small>':''))+
   '<p>'+last.e+'E + '+last.p+'P · DE '+last.de+' · '+esc(last.outcome)+'</p>'+
   '<p>Dano à Integridade: '+(a?last.integrityDamage:"sem armadura")+
   ' · Dano à Vida por 5 pontos: '+(!a&&last.lifeDamage===2?"2":"não automático")+'</p>'+
   '<small>'+(last.integrityApplied?"Integridade aplicada. ":"")+(last.lifeApplied?"Vida aplicada. ":"")+
-  'Nenhum dano excedente ou efeito especial é aplicado automaticamente.</small>';
+  'Dano excedente ainda requer resolução do Narrador.</small>'+
+  ((last.activeWeaponEffects||[]).length?'<p>Características ativadas: '+esc(last.activeWeaponEffects.join(', '))+'</p>':'');
 }
 function render(refresh=true){
  renderRoster();renderChoices();
