@@ -118,6 +118,15 @@ function toggleNpcWorkspace(show,scroll=true){
 window.addEventListener("message",event=>{
  const frame=el("cf-npc-frame");
  if(!frame||event.origin!==window.location.origin||event.source!==frame.contentWindow)return;
+ if(event.data?.type==="codex-rpg:npc-resumo-v1"){
+  const p=event.data,summary=el("cf-npc-preview");if(!summary)return;
+  const remaining=Number.isFinite(p.xpRemaining)?Math.floor(p.xpRemaining):0;
+  summary.textContent="Rascunho: "+String(p.name||"Sem nome").slice(0,70)+" · "+String(p.race||"Humano").slice(0,50)+
+   " · XP livre "+remaining+" · Perícias "+(Number(p.skills)||0)+" · Itens "+(Number(p.items)||0)+
+   (p.ready?" · Pronto para adicionar ao encontro":p.hasStarter?" · Revise os requisitos antes de enviar":" · Compre o mínimo de Atributo e Formação");
+  summary.classList.toggle("is-ready",!!p.ready);
+  return;
+ }
  if(event.data?.type!=="codex-rpg:npc-enviado-v1")return;
  const raw=localStorage.getItem(HUMANOID_INBOX_KEY);
  if(!raw)return;
