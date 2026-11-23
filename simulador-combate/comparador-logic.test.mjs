@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
- weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+ weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -451,7 +451,7 @@ test("Manejo Perfeito substitui +1A e Golpe Certo totaliza +2E sem duplicação"
 test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; normal apenas um",()=>{
  const weapon={id:"e",name:"Espada Longa",category:"medio",kind:"weapon",
   properties:["Cortante","Perfurante","Cravar"]};
- const pc={skills:["armas-medias","maestria-espadas"],practices:{armas_conjuracao:1},attributes:{forca:1}};
+ const pc={skills:["armas-medias","maestria-espadas"],practices:{armas_conjuracao:1},attributes:{forca:2,destreza:2}};
  assert.equal(weaponMasteryFor(weapon),"maestria-espadas");
  assert.equal(planWeaponEffects(pc,weapon,["Cortante"],{success:true}).cost,0);
  assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true,critical:3}).cost,0);
@@ -459,6 +459,36 @@ test("Maestria de espada: dois efeitos gratuitos no crítico, terceiro pago; nor
  assert.equal(planWeaponEffects(pc,weapon,["Cortante","Perfurante"],{success:true}).ok,false);
  assert.equal(planWeaponEffects({skills:["maestria-espadas"]},weapon,["Cortante"],{success:true}).ok,false,
   "Maestria sozinha não substitui a Perícia do peso");
+});
+test("Maestrias requerem atributos próprios e habilitação da arma para usar gratuidade",()=>{
+ const cases=[
+  ["maestria-adagas","Faca",{agilidade:2,destreza:2}],
+  ["maestria-espadas","Espada Longa",{forca:2,destreza:2}],
+  ["maestria-machados","Machado",{forca:2,destreza:1}],
+  ["maestria-macas","Maça",{forca:3,destreza:1,vigor:1}],
+  ["maestria-martelos","Martelo",{forca:3,destreza:1,vigor:1}],
+  ["maestria-hastes","Lança",{forca:2,agilidade:1,destreza:1}],
+  ["maestria-cajados","Cajado",{destreza:2}]
+ ];
+ for(const [id,name,req] of cases){
+  const weapon={id:"x",kind:"weapon",name,category:"leve",equipped:true,properties:["Cortante","Perfurante","Contundente"]};
+  const actor={skills:[id,"armas-leves"],practices:{armas_conjuracao:1},attributes:req};
+  assert.equal(canUseWeaponMastery(actor,id),true,id+" habilitada pelos Atributos");
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante"],{success:true}).cost,0,id+" acerto gratuito");
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante","Perfurante"],{success:true,critical:2}).cost,0);
+  assert.equal(planWeaponEffects(actor,weapon,["Cortante","Perfurante","Contundente"],{success:true,critical:2}).cost,1);
+  for(const [attr,grade] of Object.entries(req)){
+   const missing={...actor,attributes:{...req,[attr]:grade-1}};
+   assert.equal(canUseWeaponMastery(missing,id),false,id+" exige "+attr);
+   assert.equal(planWeaponEffects(missing,weapon,["Cortante"],{success:true}).cost,1,id+" sem requisito não tem gratuidade");
+  }
+  assert.equal(planWeaponEffects({...actor,skills:[id]},weapon,["Cortante"],{success:true}).ok,false,
+   "Sem Perícia de peso, Maestria não substitui habilitação da arma");
+ }
+ for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-punhos","maestria-longo-alcance"])
+  assert.equal(canUseWeaponMastery({skills:[id]},id),false,id+" depende de requisitos pendentes");
+ assert.equal(canUseWeaponMastery({race:"humano",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),true);
+ assert.equal(canUseWeaponMastery({race:"runa_espinhos",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),false);
 });
 test("Cravar mantém exceção histórica: crítico com arma Média/Pesada não exige Perícia",()=>{
  for(const category of ["medio","pesado"]){
