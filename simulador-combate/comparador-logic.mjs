@@ -36,7 +36,10 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
   items:Array.isArray(raw.items)?raw.items.slice(0,70).map(normalizeEquipment):[],
   smallCompanion:{present:!!raw.smallCompanion?.present,name:String(raw.smallCompanion?.name||"").slice(0,70),
    species:String(raw.smallCompanion?.species||"").slice(0,50)},
-  statuses:{sangramento:!!raw.statuses?.sangramento,envenenado:!!raw.statuses?.envenenado},
+  statuses:{sangramento:!!raw.statuses?.sangramento,envenenado:!!raw.statuses?.envenenado,
+   cravadas:(Array.isArray(raw.statuses?.cravadas)?raw.statuses.cravadas:[]).slice(0,30)
+    .filter(x=>x&&typeof x.name==="string").map(x=>({name:x.name.slice(0,90),weaponId:String(x.weaponId||"").slice(0,100),
+     attackerId:String(x.attackerId||"").slice(0,100),shieldId:String(x.shieldId||"").slice(0,100),category:String(x.category||"").slice(0,24)}))},
   courageRoundSpent:int(raw.courageRoundSpent||0,0,5)};
  for(const [field,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)out[field][key]=int(raw[field]?.[key],0,6);
@@ -192,7 +195,7 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  const max=mastery?(critical?3:1):(critical?2:1);
  if(selected.length>max)
   return {ok:false,error:"Este resultado permite no máximo "+max+" característica(s) da arma (sem repetir)."};
- return {ok:true,active:[...selected],cost:Math.max(0,selected.length-free),mastery,free:Math.min(free,selected.length)};
+ return {ok:true,active:[...selected],cost:Math.max(0,selected.length-free),mastery,free:Math.min(free,selected.length),activationSkill:access.required,masteryId};
 }
 export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];
