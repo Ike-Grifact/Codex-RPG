@@ -238,7 +238,7 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Crítico ativa UMA característica; acerto sem crítico exige 1 Coragem. Ignora Desvantagem de peso contra pesados. Efeito não automatizado.",
+  "Disciplina 1; 2 XP. Em acerto com arma Leve: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem. Efeito automatizado nos roladores.",
   2
  ],
  [
@@ -268,7 +268,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada + Destreza 2. Ao usar a arma correta contra oponente que possui Desvantagem contra ela, concede Vantagem Absoluta (+1E substituindo o +1A natural); se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo. Procedimento de Golpe Certo PENDENTE, sem bônus numérico adicional.",
+  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Ao usar arma correta contra oponente que possui Desvantagem natural perante ela, substitui a Vantagem de peso (+1A) por Vantagem Absoluta (+1E). Se a condição da ação já era Vantagem Absoluta, aplica Golpe Certo (+2E no total da condição + Manejo, nunca +3E).",
   1
  ],
  [
