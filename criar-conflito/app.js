@@ -1,7 +1,7 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261123-skills-dashboard-v1";
+ from "./rules.mjs?v=20261123-skill-package-v1";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
  from "./roll-engine.mjs?v=20261123-skills-dashboard-v1";
 import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs";
