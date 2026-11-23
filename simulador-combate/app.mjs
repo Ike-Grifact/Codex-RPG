@@ -1,5 +1,5 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261122-fulminantes-v1";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats} from "../criar-conflito/rules.mjs";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261122-playtest-v2";
@@ -349,6 +349,27 @@ function selectedActivations(a){
   return {ok:false,error:"Domar Pequena só auxilia com criatura domesticada presente."};
  return {ok:true,skills:list};
 }
+function selectedWeaponEffects(){
+ return [...$("weapon-effects").querySelectorAll("[data-weapon-property]:checked")].map(el=>el.dataset.weaponProperty);
+}
+function renderWeaponEffects(){
+ const weapon=chosenWeapon(),attacker=actor(),chosen=new Set(selectedWeaponEffects());
+ const props=activeWeaponProperties(weapon);
+ const access=weaponActivationSkill(attacker,weapon,{thrown:$("attack-thrown").checked});
+ const mastery=weaponMasteryFor(weapon,{thrown:$("attack-thrown").checked});
+ $("weapon-effects").innerHTML=props.length?
+  props.map(prop=>'<label class="cc-weapon-effect"><input type="checkbox" data-weapon-property="'+esc(prop)+
+   '"'+(chosen.has(prop)?' checked':'')+(!access.ok?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
+  '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
+ const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
+ $("weapon-effect-info").textContent=weapon?
+  (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
+  ((attacker?.skills||[]).includes(mastery)&&mastery?" Maestria "+mastery+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 recurso.":
+   " Sem Maestria: um efeito custa 1 recurso no acerto comum; no crítico um é grátis e o segundo custa 1.")+
+  " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
+  "Escolha uma arma equipada para visualizar as características.";
+}
+
 function renderWeapons(){
  const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
  $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
@@ -357,7 +378,7 @@ function renderWeapons(){
   (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
  if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
  else $("weapon-source").value=weapons.find(w=>w.eligible)?.id||"";
- renderAffinity();
+ renderAffinity();renderWeaponEffects();
 }
 function chosenWeapon(){
  return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
@@ -379,7 +400,8 @@ function evaluate(a,rolled,kept,opts){
  const affinity=weightAffinity(weapon,t,a),weight=affinity.status==="known"?affinity.delta:0;
  const stealth=!!(a.skills?.includes("furtividade")&&pending?.baseGroup==="practice"&&pending?.baseKey==="furtividade");
  const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
- const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion),bonusP:health.p,
+ const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
+ const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion),bonusP:health.p+Number(noisy),
   skillBonusE:health.e,stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
@@ -392,7 +414,7 @@ function evaluate(a,rolled,kept,opts){
   const free=keepLimit(a.level,false,false);
   pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
  }
- return {...pre,health,affinity,stealth,companion};
+ return {...pre,health,affinity,stealth,companion,noisy};
 }
 function preview(){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
