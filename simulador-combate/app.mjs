@@ -484,6 +484,8 @@ function roll(){
  const a=actor(),t=target();
  if(!a||!t||a.id===t.id)return notice("Escolha um atacante e um alvo distintos.");
  if(a.acted)return notice(a.name+" já agiu nesta rodada. Avance a rodada.");
+ const declared=selectedActivations(a);
+ if(!declared.ok)return notice(declared.error);
  const human=isHumanoidKind(a.kind),[group,key]=String($("base-source").value||"").split(":");
  const attribute=$("attribute-source").value,[eg,ek]=String($("extra-source").value||"").split(":");
  const mode=$("discipline-mode").value;
@@ -507,6 +509,18 @@ function roll(){
   if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
   pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});
  }
+ const fulminants=declared.skills.filter(x=>["golpe-fulminante","disparo-fulminante"].includes(x.id));
+ if(fulminants.length>1)return notice("Escolha apenas uma técnica Fulminante por dado de arma.");
+ const thrown=$("attack-thrown").checked;
+ if(thrown&&(!w||!a.skills.includes("maestria-arremesso-armas")))
+  return notice("Arremesso exige arma equipada e Perícia em Arremesso de Armas.");
+ let fulminanteId="";
+ if(fulminants.length){
+  if(!w)return notice("Fulminante exige dado de arma habilitada e equipada.");
+  const changed=applyFulminanteToPool(pool.pool,w,fulminants[0].id,thrown);
+  if(!changed.ok)return notice(changed.error);
+  pool.pool=changed.pool;fulminanteId=fulminants[0].id;
+ }
  let grade=null;
  if(human&&mode==="conjuracao"){
   if(key!=="armas_conjuracao"||!a.skills.includes("criar-item-foco-magia"))
@@ -520,7 +534,7 @@ function roll(){
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
   mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
-  weaponId:w?.id||"",boosted:selected};
+  weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
 }
