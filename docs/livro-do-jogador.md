@@ -870,6 +870,12 @@ Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fr
 **Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** quando o custo era exclusivamente em PP, passa a ser 1 Coragem por ativação, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
 
 
+### Escudo Rúnico e resistência elemental
+
+O **Escudo Rúnico (Escudo Arcano racial) + um elemento** protege a barreira contra **um elemento habilitado escolhido para aquele uso**. Nessa resistência, cada Êxito do ataque provoca **0,5 dano por E, 0 dano por P**; a parcela de Pavor não causa dano elemental, mas seus símbolos continuam gerando Pressão, risco e demais consequências. Resistência não é imunidade e não se estende a outros elementos.
+
+Na formação da barreira, a habilidade racial pode converter **2P em 1E**, sem apagar os riscos da rolagem; essa conversão não cria uma segunda redução de dano. A primeira ativação diária é gratuita em Coragem e as demais custam **1 Coragem**, preservando ampliações próprias. Frações de dano são mantidas até existir um critério geral de arredondamento.
+
 ### Transformação Elemental e Perícias de antimagia
 
 **Aura Sagrada** não é uma Perícia adicional a comprar. Ao realizar uma **Transformação Elemental em Sagrado**, as pessoas a até **3 metros** recebem **1 Coragem**, respeitando seus tetos. O benefício ocorre pela transformação, não a cada turno de permanência na aura.
