@@ -105,6 +105,32 @@ function consumeQuickHumanoid(){
  }catch(e){return "Não foi possível importar a ficha rápida. A construção permanece no criador de humanoides.";}
 }
 
+// Criador NPC reutiliza a Ficha real por iframe de mesma origem, sem navegação externa.
+// A transferência mantém o protocolo de inbox para compatibilidade com fichas antigas.
+function toggleNpcWorkspace(show,scroll=true){
+ const workspace=el("cf-npc-workspace"),trigger=el("add-human-quick");
+ if(!workspace||!trigger)return;
+ workspace.hidden=!show;
+ trigger.setAttribute("aria-expanded",String(show));
+ trigger.textContent=show?"Criador aberto abaixo":"Criar humanoide pelo DNA aqui";
+ if(show&&scroll)workspace.scrollIntoView({behavior:"smooth",block:"start"});
+}
+window.addEventListener("message",event=>{
+ const frame=el("cf-npc-frame");
+ if(!frame||event.origin!==window.location.origin||event.source!==frame.contentWindow)return;
+ if(event.data?.type!=="codex-rpg:npc-enviado-v1")return;
+ const raw=localStorage.getItem(HUMANOID_INBOX_KEY);
+ if(!raw)return;
+ const result=consumeQuickHumanoid();
+ if(!result)return;
+ if(result.startsWith("Humano comum adicionado")){
+  conflictMode="edit";creatureRoll=null;rollDraft=null;
+  toggleNpcWorkspace(false,false);render();
+  el("editor-shell")?.scrollIntoView({behavior:"smooth",block:"start"});
+ }
+ notice(result);
+});
+
 const selected=()=>model.roster.find(x=>x.id===model.active)||null;
 function save(){
  try{localStorage.setItem(KEY,JSON.stringify(model));}
@@ -570,12 +596,17 @@ function confirmCreatureRoll(){
 function editorHTML(t){
  const x=stats(t),human=isHumanoidKind(t.kind),extra=x.keepCostP,pLocal=x.limitLocal;
  const keepAvail=human?x.keepBase:x.keepBase+Math.min(t.pavorLocal,2);
- return '<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
+ const guide=human?'<nav class="cf-human-navigation" aria-label="Ir à etapa da ficha de humanoide">'+
+  [['cf-identity','1 · Identidade'],['cf-training','2 · Graus / XP'],['cf-specialties','3 · Perícias'],
+   ['cf-equipment','4 · Equipamento'],['cf-notes','5 · Narrativa']].map(([id,label])=>
+   '<button type="button" data-editor-jump="'+id+'">'+label+'</button>').join('')+'</nav>'+
+  '<p class="cf-human-guide-note">Fluxo sugerido: identidade → graus e XP → Perícias → itens → combate. As mudanças são salvas aqui mesmo; XP livre: <strong>'+x.xp.remaining+'</strong>.</p>':'';
+ return guide+'<div class="cf-edit-hero"><div><span class="eyebrow">FICHA DE AMEAÇA · '+esc(KINDS[t.kind]||LEGACY_KINDS[t.kind]||t.kind)+'</span>'+
   '<h2>'+esc(t.name||"Ameaça sem nome")+'</h2>'+
   '<p>Grau e orçamento de XP são independentes. Compre os graus usando os valores oficiais e confira requisitos especiais antes da sessão.</p></div>'+
   '<div class="cf-actions"><button type="button" data-open-roll class="cf-primary">Modo Rolagem</button><button type="button" data-copy="'+esc(t.id)+'">Duplicar ficha</button>'+
    '<button type="button" data-delete="'+esc(t.id)+'">Excluir</button></div></div>'+
-  '<div class="cf-fields">'+field("Nome","name",{wide:true})+
+  '<div class="cf-fields"'+(human?' id="cf-identity"':'')+'>'+field("Nome","name",{wide:true})+
   field("Tipo de criatura","kind",{type:"select",choices:Object.entries({...KINDS,...(t.kind==="criatura"?LEGACY_KINDS:{})})})+
   field("Grau da ameaça","threatGrade",{type:"number",min:1,max:6})+
   field("Conceito / origem","concept",{wide:true})+
@@ -606,7 +637,7 @@ function editorHTML(t){
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
   (keepAvail<t.keep&&!human?'<p class="cf-note">Acumule Pavor antes de executar a retenção pretendida.</p>':"")+'</section>'+
 
-  '<section class="cf-panel"><h3>Atributos · dados e graus</h3>'+
+  '<section class="cf-panel"'+(human?' id="cf-training"':'')+'><h3>Atributos · dados e graus</h3>'+
   '<p>'+(t.kind==="monstro"?'Criatura/Monstro: Atributos usam a tabela de Conhecimentos/Práticas, com a escala de dados de criaturas extraordinárias.':
   t.kind==="humanoide-monstro"?'Humanoide Monstro: Atributos, Conhecimentos e Práticas usam a tabela de treinamento; Perícias mantêm os próprios custos. Sua rolagem permanece no modelo humanoide até definição específica.':
   'Humanoide: Atributo grau 1 custa 1 XP; Conhecimentos e Práticas seguem a tabela de treinamento.')+
@@ -614,10 +645,10 @@ function editorHTML(t){
   gradeCards(t,"attr",ATTRIBUTES)+'</section>'+
   (human?'<section class="cf-panel"><h3>Conhecimentos</h3>'+gradeCards(t,"know",KNOWLEDGES)+'</section>'+
    '<section class="cf-panel"><h3>Práticas · Disciplina é uma única Prática</h3>'+gradeCards(t,"practice",PRACTICES)+'</section>':"")+
-  '<section class="cf-panel"><h3>Perícias e capacidades</h3>'+skillPanel(t)+
+  '<section class="cf-panel"'+(human?' id="cf-specialties"':'')+'><h3>Perícias e capacidades</h3>'+skillPanel(t)+
   '<label class="cf-form-row" style="display:flex;flex-direction:column;align-items:stretch;margin-top:12px">Capacidades naturais, imunidades e observações de uso<textarea class="cf-note-input" data-field="abilities" rows="4" maxlength="4000">'+esc(t.abilities)+'</textarea></label></section>'+
-  armorPanel(t)+inventory(t,x)+
-  '<section class="cf-panel"><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
+  (human?'<div id="cf-equipment">':'')+armorPanel(t)+inventory(t,x)+(human?'</div>':'')+
+  '<section class="cf-panel"'+(human?' id="cf-notes"':'')+'><h3>Condução narrativa</h3><label>Objetivos, comportamento, condições e anotações do encontro'+
   '<textarea class="cf-note-input" data-field="notes" rows="4" maxlength="4000">'+esc(t.notes)+'</textarea></label>'+
   '<p class="cf-note">Ação conjunta, passagem de protagonismo e distribuição de Pavor exigem decisões do Narrador. Nenhum Pavor público é descontado automaticamente.</p></section>';
 }
@@ -762,7 +793,9 @@ async function importJson(file){
 document.addEventListener("click",event=>{
  const b=event.target.closest("button");if(!b)return;
  if(b.id==="add-threat"||b.id==="add-quick")return addKind(el("new-kind").value);
- if(b.id==="add-human-quick"){window.location.assign("../prototipo-ficha/?npc=1");return;}
+ if(b.id==="add-human-quick"){toggleNpcWorkspace(true);return;}
+ if(b.id==="cf-close-npc"){toggleNpcWorkspace(false,false);return;}
+ if(b.dataset.editorJump){document.getElementById(b.dataset.editorJump)?.scrollIntoView({behavior:"smooth",block:"start"});return;}
   if(b.id==="add-human-basic")return addQuickHumanoid();
  if(b.hasAttribute("data-life-full"))return adjustLife(0,true);
  if(b.dataset.life)return adjustLife(Number(b.dataset.life));
