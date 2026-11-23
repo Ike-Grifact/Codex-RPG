@@ -83,7 +83,7 @@ export function composeActionPool(unit,selection={},stepDieId=""){
   errors.push("Conjuração exige Criar Item de Foco e Magia.");
  if(extra){
   const advanced=human&&ADVANCED_SOURCE_DEFS.some(row=>
-    row.group===selection.baseGroup&&row.key===selection.baseKey&&unit.skills.includes(row.id)&&
+    (row.group==="know"?"knowledge":row.group)===selection.baseGroup&&row.key===selection.baseKey&&unit.skills.includes(row.id)&&
     Number(unit[row.group==="practice"?"practices":"knowledges"]?.[row.key]||0)>=3
   );
   if(!(advanced||!human&&Number(unit.threatGrade)>=5))errors.push("Terceira fonte exige habilitação apropriada.");
