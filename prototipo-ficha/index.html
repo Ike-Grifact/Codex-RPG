@@ -160,12 +160,6 @@
     </nav>
     <div class="fp-workspace">
       <div class="fp-primary-column">
-      <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
-            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Escolha uma magia ou arma; o restante é preparado no rolador</small></div></div>
-            <div class="fp-play-talent-grid">
-              <div class="fp-magic-action"><h4>Magias</h4><div id="magic-actions" class="fp-magic-actions"></div><div id="owned-elements" class="fp-owned-elements" aria-label="Elementos habilitados para conjuração"></div></div>
-              <div class="fp-weapons-action"><h4>Armas equipadas</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
-            </div>
             <div class="fp-wiz-reminder fp-round-budget">
               <strong id="round-spent-label">Coragem gasta nesta rodada: 0/5</strong>
               <button type="button" class="fp-secondary" data-action="advance-round">Confirmar nova rodada</button>
@@ -178,6 +172,12 @@
               <label>Espécie <select id="small-companion-species"><option value="outro">Outra criatura</option><option value="serpente">Serpente</option></select></label>
               <p id="small-companion-info">A compra da Perícia não concede animal automaticamente. A ajuda em turno custa 1 Coragem; serpente pode aplicar Envenenado se o alvo estiver Sangrando. O efeito não causa dano periódico automático.</p>
             </section>
+      <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
+            <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Escolha uma magia ou arma; o restante é preparado no rolador</small></div></div>
+            <div class="fp-play-talent-grid">
+              <div class="fp-magic-action"><h4>Magias</h4><div id="magic-actions" class="fp-magic-actions"></div><div id="owned-elements" class="fp-owned-elements" aria-label="Elementos habilitados para conjuração"></div></div>
+              <div class="fp-weapons-action"><h4>Armas equipadas</h4><div id="equipped-shortcuts" class="fp-owned-list"></div></div>
+            </div>
             <details class="fp-actions-hemo" id="hemo-details" hidden><summary>Hemomancia · marcas e amplificação</summary>
             <section class="fp-hemo-panel" id="hemomancy-panel" aria-label="Recursos de Hemomancia — protótipo" hidden>
               <div class="fp-hemo-heading">
