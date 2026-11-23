@@ -1,10 +1,9 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261123-npc-hub-v1";
-import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
+ from "./rules.mjs?v=20261123-skills-dashboard-v1";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261123-npc-hub-v1";
+ from "./roll-engine.mjs?v=20261123-skills-dashboard-v1";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -234,29 +233,55 @@ function gradeCards(t,group,entries){
  }).join("")+'</div>';
 }
 function canBuySkill(t,id){
- if(id==="maestria-armas-fogo")return humanoidRacialGrants(t).includes(id);
+ const skill=SKILLS.find(x=>x.id===id);
+ if(!skill)return false;
  if(humanoidRacialGrants(t).includes(id))return true;
- if(id==="concentracao-refinada")return Number(t?.practices?.armas_conjuracao||0)>=2;
- if(id==="olhos-de-aguia")return Number(t?.attributes?.destreza||0)>=3&&Number(t?.practices?.armas_conjuracao||0)>=3&&(t?.skills||[]).some(s=>s==="armas-longo-alcance"||s==="armas-fogo");
- if(id==="invocacao-elemental"){
-  const skills=new Set(t?.skills||[]);
-  // Criar Item de Foco e Magia também é a Perícia de Psique.
-  return skills.has("criar-item-foco-magia")&&skills.has("domar-criatura-pequena");
- }
- if(id==="domar-criatura-media")return canBuyDomarMedium(t);
- if(id==="domar-criatura-grande")return canBuyDomarGrande(t);
- if(id==="domar-criatura-pequena")
-  return Number(t?.attributes?.influencia||0)>=2&&Number(t?.attributes?.inteligencia||0)>=1;
- return skillPrerequisite({...t,monsterRules:false},id);
+ if(!isPlayerCatalogSkill(id)||!Number.isInteger(skill.cost))return false;
+ return !humanoidSkillRequirement(t,id);
+}
+const skillFilterState={query:"",scope:"all"};
+const foldSkillText=text=>String(text||"").toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function refreshSkillFilters(){
+ const q=foldSkillText(skillFilterState.query);let visible=0;
+ document.querySelectorAll("#cf-skills .cf-skill-card").forEach(card=>{
+  const match=!q||foldSkillText(card.textContent).includes(q);
+  const matchesStatus=skillFilterState.scope==="all"||card.dataset.skillStatus===skillFilterState.scope;
+  card.hidden=!(match&&matchesStatus);
+  if(!card.hidden)visible++;
+ });
+ const result=el("cf-skill-filter-count");
+ if(result)result.textContent=visible+" de "+document.querySelectorAll("#cf-skills .cf-skill-card").length+" Perícias listadas";
 }
 function skillPanel(t){
  if(!isHumanoidKind(t.kind))return '<p>Capacidades naturais de criaturas são registradas como texto, sem conceder poderes humanos automaticamente.</p>';
- return '<p>Humanoides usam Perícias de personagens. A ferramenta contabiliza o XP, mas requisitos ainda não verificados pelo protótipo exigem consulta ao SRD.</p>'+
-  '<details open><summary>Selecionar Perícias e ver custo</summary><p class="cf-note">Marque uma Perícia quando os requisitos e o XP permitirem. As demais ficam desabilitadas até desenvolver as fontes necessárias.</p><div class="cf-skills">'+SKILLS.filter(it=>Number.isInteger(it.cost)&&(!["combate","armas"].includes(it.id)||t.skills.includes(it.id))).map(it=>{
-   const racial=humanoidRacialGrants(t).includes(it.id),valid=canBuySkill(t,it.id);
-   return '<label class="cf-skill"><input type="checkbox" data-skill="'+esc(it.id)+'"'+(t.skills.includes(it.id)?' checked':'')+
-    (racial||!valid?' disabled':'')+'><span>'+esc(it.name)+(racial?' · Origem (0 XP)':' · '+it.cost+' XP'+(valid?'':' (requisito pendente)'))+'</span></label>';
-  }).join("")+'</div></details>';
+ const remaining=ledger(t).remaining,owned=new Set(t.skills||[]),free=new Set(humanoidRacialGrants(t));
+ const listed=SKILLS.filter(it=>isPlayerCatalogSkill(it.id)||owned.has(it.id));
+ const cards=listed.map(it=>{
+  const racial=free.has(it.id),selected=owned.has(it.id),pending=!Number.isInteger(it.cost);
+  const requirement=!racial?humanoidSkillRequirement(t,it.id):null;
+  const ready=!pending&&!requirement&&remaining>=it.cost;
+  const status=selected?"owned":pending?"pending":ready?"ready":"locked";
+  const disabled=racial||pending||!selected&&!ready;
+  const explanation=racial?"Origem · 0 XP":pending?"Aquisição / custo de XP PENDENTE":
+   selected?"Adquirida · "+it.cost+" XP":
+   requirement?requirement:remaining<it.cost?"XP insuficiente":"Disponível · "+it.cost+" XP";
+  return '<article class="cf-skill-card" data-skill-status="'+status+'">'+
+   '<label class="cf-skill" title="'+esc(explanation)+'">'+
+   '<input type="checkbox" data-skill="'+esc(it.id)+'"'+(selected?' checked':'')+(disabled?' disabled':'')+'>'+
+   '<span><strong>'+esc(it.name)+'</strong><small>'+esc(explanation)+'</small></span></label>'+
+   '<details class="cf-skill-info"><summary>Descrição e requisitos</summary><p>'+esc(it.detail||"Consultar o Livro do Jogador.")+'</p></details>'+
+   '</article>';
+ }).join("");
+ return '<p>Catálogo completo da Ficha do Jogador: Perícias com custo definido, requisitos e opções PENDENTES. '+
+  'Uma opção PENDENTE fica visível para consulta, mas sua compra não é liberada automaticamente.</p>'+
+  '<details class="cf-skills-panel" open><summary>Perícias dos humanoides · '+listed.length+' entradas</summary>'+
+  '<div class="cf-skill-toolbar"><label>Pesquisar Perícia <input id="cf-skill-search" type="search" '+
+  'placeholder="Nome, efeito ou requisito" value="'+esc(skillFilterState.query)+'" autocomplete="off"></label>'+
+  '<label>Exibir <select id="cf-skill-scope">'+
+  [['all','Todas'],['ready','Compráveis agora'],['owned','Adquiridas'],['pending','XP pendente'],['locked','Requisitos/XP insuficientes']].map(([id,label])=>
+   '<option value="'+id+'"'+(skillFilterState.scope===id?' selected':'')+'>'+label+'</option>').join('')+
+  '</select></label><small id="cf-skill-filter-count" aria-live="polite"></small></div>'+
+  '<div class="cf-skills" id="cf-skills">'+cards+'</div></details>';
 }
 function itemOptions(){
  const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
@@ -679,6 +704,7 @@ function render(){
    '" class="'+(conflictMode==="roll"?"is-active":"")+'">Rolagem</button></div>':"";
  el("editor").innerHTML=t?tabs+(conflictMode==="roll"?rollWorkspace(t):editorHTML(t)):
   '<div class="cf-empty">Adicione a primeira criatura para montar o encontro.</div>';
+ refreshSkillFilters();
 }
 function update(field,value){
  const t=selected();if(!t)return;
@@ -754,7 +780,8 @@ function remove(id){
 function toggleSkill(id,checked){
  const t=selected(),item=SKILLS.find(x=>x.id===id);if(!t||!isHumanoidKind(t.kind)||!item)return;
  if(humanoidRacialGrants(t).includes(id))return notice("Perícia de origem é gratuita e não pode ser removida.");
- if(checked&&!canBuySkill(t,id))return notice("Requisitos não atendidos.");
+ if(checked&&!Number.isInteger(item.cost))return notice("O custo de XP desta Perícia está PENDENTE; compra indisponível.");
+ if(checked&&!canBuySkill(t,id))return notice(humanoidSkillRequirement(t,id)||"Requisitos não atendidos.");
  if(!checked&&id==="domar-criatura-pequena"&&t.skills.some(s=>s==="domar-criatura-media"||s==="domar-criatura-grande"))
   return notice("Domar Criatura Pequena é requisito das Perícias Média e Grande. Remova primeiro as Perícias dependentes.");
  if(!checked&&id==="domar-criatura-media"&&t.skills.includes("domar-criatura-grande"))
@@ -866,8 +893,15 @@ document.addEventListener("click",event=>{
  if(b.hasAttribute("data-add-catalog"))return addCatalogItem();
  if(b.dataset.removeItem){const t=selected();if(!t)return;t.items=t.items.filter(i=>i.id!==b.dataset.removeItem);save();render();}
 });
+document.addEventListener("input",event=>{
+ if(event.target.id==="cf-skill-search"){
+  skillFilterState.query=event.target.value;
+  refreshSkillFilters();
+ }
+});
 document.addEventListener("change",event=>{
  const target=event.target;
+ if(target.id==="cf-skill-scope"){skillFilterState.scope=target.value;refreshSkillFilters();return;}
  if(target.dataset.rollKeep&&creatureRoll){
    const t=selected(),r=creatureRoll,id=target.dataset.rollKeep,max=isHumanoidKind(t.kind)?stats(t).keepBase+Number(!!r.extraKeep):t.kind==="monstro"?t.keep:2;
    if(target.checked){if(r.selected.length>=max){notice("Desmarque antes um dado.");return refreshRoll();}r.selected.push(id);}

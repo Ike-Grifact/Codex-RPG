@@ -2,6 +2,7 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs?v=20261122-fulminantes-v1";
+import {PLAYER_SKILLS,playerSkillRequirement} from "../prototipo-ficha/skills-catalog.mjs";
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
 const PLAYER_DNA_EXTRA_SKILLS=[
@@ -29,7 +30,20 @@ export function canBuyDomarGrande(t){
   &&t.skills.includes("domar-criatura-pequena")
   &&t.skills.includes("domar-criatura-media");
 }
-export const SKILLS=[...BASE_SKILLS,...PLAYER_DNA_EXTRA_SKILLS];
+// Catálogo completo da ficha do jogador; apenas dois IDs históricos exclusivos
+// do editor de conflitos permanecem adicionais para leitura de fichas legadas.
+const PLAYER_SKILL_IDS=new Set(PLAYER_SKILLS.map(x=>x.id));
+export const SKILLS=[
+ ...PLAYER_SKILLS,
+ ...BASE_SKILLS.filter(x=>!PLAYER_SKILL_IDS.has(x.id)),
+ ...PLAYER_DNA_EXTRA_SKILLS.filter(x=>!PLAYER_SKILL_IDS.has(x.id))
+];
+export const isPlayerCatalogSkill=id=>PLAYER_SKILL_IDS.has(id);
+export function humanoidSkillRequirement(t,id){
+ if(!PLAYER_SKILL_IDS.has(id))return "Habilidade histórica: confirmar aquisição nas regras vigentes.";
+ const skills=[...new Set([...(t.skills||[]),...humanoidRacialGrants(t)])];
+ return playerSkillRequirement(id,{...t,skills});
+}
 export {ATTRIBUTES,KNOWLEDGES,PRACTICES,sourceDice,narratorCap,maxCourage};
 // Os três tipos oferecidos ao criar novas ameaças. "criatura" é apenas legado de fichas antigas.
 export const KINDS={humanoide:"Humanoide",monstro:"Criatura/Monstro","humanoide-monstro":"Humanoide Monstro"};

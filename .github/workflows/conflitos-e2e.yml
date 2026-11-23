@@ -40,7 +40,7 @@ jobs:
           node --check criar-conflito/roll-engine.mjs
           node --check prototipo-ficha/app.js
       - name: Testes matematicos
-        run: node --test criar-conflito/rules.test.mjs criar-conflito/humanoide-dna-sync.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
+        run: node --test criar-conflito/rules.test.mjs criar-conflito/catalogo-pericias.test.mjs criar-conflito/humanoide-dna-sync.test.mjs criar-conflito/roll-engine.test.mjs simulador-combate/logic.test.mjs
       - name: Testar ativação de Perícias, Domar Média e Foundry
         run: |
           node --check foundry-prototype/module/sheet.mjs

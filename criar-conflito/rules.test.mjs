@@ -206,7 +206,7 @@ test("Concentração Refinada custa 1 XP no catálogo de humanoides, sem nova co
  assert.equal(item.length,1);
  assert.equal(item[0].cost,1);
  assert.ok(item[0].detail.includes("Disciplina 2"));
- assert.ok(item[0].detail.includes("8 metros"));
+ assert.match(item[0].detail,/8 m/);
  assert.equal(SKILLS.some(x=>x.id==="antecipacao"),false);
  const npc=blank("humanoide");npc.practices.armas_conjuracao=2;
  npc.skills=["concentracao-refinada"];
@@ -223,7 +223,7 @@ test("Olhos de Águia: custo 1 XP e descrição exige Destreza 3, Disciplina 3 e
  assert.equal(perks[0].cost,1);
  assert.match(perks[0].detail,/Destreza 3/);
  assert.match(perks[0].detail,/Disciplina 3/);
- assert.match(perks[0].detail,/OU Armas de Fogo/);
+ assert.match(perks[0].detail,/OU (?:Perícia em )?Armas de Fogo/);
  assert.match(perks[0].detail,/8 m/);
  const npc=blank("humanoide");
  npc.attributes.destreza=3;

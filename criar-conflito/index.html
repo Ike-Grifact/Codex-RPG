@@ -7,10 +7,10 @@
  <title>Criar Conflito — Codex RPG</title>
  <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
  <link rel="stylesheet" href="../assets/theme.css?v=20261123-npc-hub-v1">
- <link rel="stylesheet" href="./styles.css?v=20261123-npc-hub-v1">
+ <link rel="stylesheet" href="./styles.css?v=20261123-companion-layout-v1">
  <script src="../assets/site.js?v=20261123-npc-hub-v1" defer></script>
  <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
- <script type="module" src="./app.js?v=20261123-npc-hub-v1"></script>
+ <script type="module" src="./app.js?v=20261123-skills-dashboard-v1"></script>
 </head>
 <body>
  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -95,17 +95,30 @@
     <small id="xp-compare">XP total não determina sozinho a dificuldade.</small>
    </div>
   </section>
-  <section class="cf-top-dashboard" aria-label="Orçamento de criaturas domesticadas"><div class="cf-dash cf-companion-budget">
- <span>COMPANHEIROS DOMESTICADOS</span><small>Uma Pequena, Média e Grande por personagem como vínculos, mas até duas fichas domesticadas sob controle direto por domador. Invocação: uma ficha ativa por conjurador, mesmo que vários zumbis compartilhem uma ficha Grande. Se os tokens forem separados, XP/Vida da ficha são repartidos e a DE original é preservada; dano de área é normal, mas o conjurador só pode Antecipar um turno da invocação (agir sozinho ou ajudar em ação conjunta). Informe o <strong>XP total por categoria</strong>, não o custo da Perícia. Sem valor de ficha, deixe o XP vazio: comparação pendente.</small>
+  <section class="cf-top-dashboard cf-companion-dashboard" aria-label="Orçamento de criaturas domesticadas">
+   <div class="cf-dash cf-companion-budget">
+ <div class="cf-companion-intro">
+     <span>COMPANHEIROS DOMESTICADOS</span>
+     <p>Informe a quantidade e o <strong>XP total por categoria</strong>. Se o XP não estiver definido, deixe o campo vazio.</p>
+     <details class="cf-companion-help">
+      <summary>Ver regras de vínculos e invocações</summary>
+      <p>Uma Pequena, Média e Grande por personagem como vínculos, mas até duas fichas domesticadas sob controle direto por domador. Invocação: uma ficha ativa por conjurador, mesmo que vários zumbis compartilhem uma ficha Grande. Se os tokens forem separados, XP/Vida da ficha são repartidos e a DE original é preservada; dano de área é normal, mas o conjurador só pode Antecipar um turno da invocação (agir sozinho ou ajudar em ação conjunta). Informe o <strong>XP total por categoria</strong>, não o custo da Perícia. Sem valor de ficha, deixe o XP vazio: comparação pendente.</p>
+     </details>
+    </div>
  <div class="cf-companions">
- <label>Pequenas · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-pequena" data-companion="pequena" data-companion-field="count"></label>
+ <div class="cf-companion-pair"><label>Pequenas · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-pequena" data-companion="pequena" data-companion-field="count"></label>
  <label>XP total das Pequenas<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-pequena" data-companion="pequena" data-companion-field="xpTotal"></label>
- <label>Médias · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-media" data-companion="media" data-companion-field="count"></label>
+ </div><div class="cf-companion-pair"><label>Médias · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-media" data-companion="media" data-companion-field="count"></label>
  <label>XP total das Médias<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-media" data-companion="media" data-companion-field="xpTotal"></label>
- <label>Grandes · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-grande" data-companion="grande" data-companion-field="count"></label>
- <label>XP total das Grandes<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-grande" data-companion="grande" data-companion-field="xpTotal"></label>
- </div><strong id="companion-xp-total">0 XP dos companheiros</strong><small id="party-effective-xp">Grupo + companheiros: 80 XP</small>
- </div></section>
+ </div><div class="cf-companion-pair"><label>Grandes · quantidade<input type="number" min="0" max="30" value="0" id="companion-count-grande" data-companion="grande" data-companion-field="count"></label>
+ <label>XP total das Grandes<input type="number" min="1" max="999999" placeholder="Pendente" id="companion-xp-grande" data-companion="grande" data-companion-field="xpTotal"></label></div>
+ </div>
+    <div class="cf-companion-result" aria-live="polite">
+     <strong id="companion-xp-total">0 XP dos companheiros</strong>
+     <small id="party-effective-xp">Grupo + companheiros: 80 XP</small>
+    </div>
+   </div>
+  </section>
 <section class="cf-layout">
    <aside class="cf-roster-panel" aria-label="Ameaças do conflito">
     <div class="cf-section-title"><div><span class="eyebrow">ROTEIRO TÁTICO</span><h2>Inimigos do encontro</h2></div><button type="button" id="add-quick" aria-label="Adicionar ficha">+</button></div>
