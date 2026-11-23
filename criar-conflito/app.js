@@ -4,7 +4,7 @@ import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,
  from "./rules.mjs?v=20261122-integridade-2-5-8-12";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261115-kinds1";
+ from "./roll-engine.mjs?v=20261122-pavor-hostil-v1";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
