@@ -53,7 +53,7 @@ function racialGrants(s=state){
  return [];
 }
 // Lucker Puro isenta somente o preço de Foco: requisitos e compra permanecem.
-function skillXpCost(id,baseCost,s=state){return s.race==="lucker_puro"&&id==="criar-item-foco-magia"?0:baseCost;}
+function skillXpCost(id,baseCost,s=state){return (s.race==="lucker_puro"&&id==="criar-item-foco-magia")||(s.race==="humano"&&id==="maestria-armas-fogo")?0:baseCost;}
 function ownsSkill(id,s=state){
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return false;
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return false;
