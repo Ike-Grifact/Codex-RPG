@@ -422,38 +422,6 @@ O uso de Coragem e técnicas continua sujeito a seus custos específicos; o fato
 
 **Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
 
-### REWORK PROPOSTO/EM CONSOLIDAÇÃO — Coragem e identidades de Maestria (17/11/2026)
-
-> **Documento de transição.** O autor aprovou a **retirada de PP como recurso separado**, substituindo essa economia por **Coragem com mecanismos de recuperação ligados às Maestrias**. Os parágrafos históricos anteriores e posteriores ainda descrevem PP, Perícia em Coragem, recuperação de PP em críticos (**agora revogada**) e custos de técnicas **1 Coragem**. **Eles exigem migração antes de se considerar esta revisão implementada** no criador/Foundry; não são exemplos prontos de custos convertidos.
-
-**DEFINIDO — objetivo da nova economia:** Maestrias representam identidades de build sem impor classe obrigatória. **A progressão neutra de Coragem é automática e concede +1 ao teto nos níveis 5, 10 e 20**, independentemente de Maestria especializada. Cada Maestria especializada é obtida gratuitamente ao cumprir **seus próprios requisitos**, a definir, e **não precisa ter o mesmo nível mínimo das demais**. O nível 20 completa a progressão neutra/identidade neutra, e continua possível escolher **uma Maestria especializada opcional**, no máximo duas identidades no total quando se conta a neutra. **Todas as recuperações de Coragem** — pelos mecanismos convencionais relacionados ao Pavor e pelos gatilhos específicos de Maestrias — alimentam **a mesma reserva geral**, até o teto alcançado.
-
-**DEFINIDO — bônus neutros por nível, Maestria e teto máximo (opção A, 17/11/2026):** o personagem começa com teto **10 Coragens**; recebe **+1 neutro no nível 5 (teto 11), +1 no nível 10 (teto 12) e +1 no nível 20 (teto 13)**, independentemente de Maestria especializada. Maestrias especializadas são obtidas gratuitamente ao cumprir os **requisitos próprios**, cujos níveis ainda serão definidos; o bônus descrito é **+3 se obtida antes do nível 20** ou **+2 se obtida após o nível 20**. No exemplo autoral de personagem nível 5 com especialização, o teto é **10 + 1 neutro + 3 de Maestria = 14**; no nível 10, mais +1 neutro resulta em **15**. **DEFINIDO — opção A:** no nível 20, o bônus neutro final de +1 permanece na progressão, mas **não ultrapassa o teto absoluto de 15**. A soma nominal 16 é limitada a **15**; o ponto excedente **não é guardado, convertido em recarga, redistribuído nem transportado para outra reserva**. Toda recuperação abastece uma única reserva de Coragem até o teto do personagem.
-
-| Nível | Bônus neutro acumulado | Teto sem Maestria especializada |
-|---|---:|---:|
-| 1–4 | 0 | **10** |
-| 5–9 | +1 | **11** |
-| 10–19 | +2 | **12** |
-| 20 | +3 | **13** |
-
-**Exemplo de especialização obtida no nível 5 — teto absoluto definido:** **10 básicos +1 neutro (nível 5) +3 da Maestria = 14**. No nível 10, +1 neutro aumenta para **15**. No nível 20, o marco neutro de +1 é alcançado, mas **o teto permanece 15**, pois o excedente nominal não é concedido acima do máximo. A progressão nos níveis 5/10/20 é neutra e **não determina o nível de aquisição** das especializações.
-
-| Identidade / Maestria | Gatilho/benefício descrito pelo autor | Ainda precisa definir |
-|---|---|---|
-| **Conjuração** | Especialização com recuperação temática de combate | Requisitos e gatilho |
-| **Elemental** | Identidade de maestria; escolha sujeita ao limite de duas | Gatilho e migração da **Perícia Maestria Elemental** atual |
-| **Trevas** | Roubar medo | Alvo, tipo/quantidade de medo e recuperação |
-| **Sagrada** | Coragem adicional para conjurar; críticos sagrados recuperam; conjuração sagrada pode anular **Pavor próprio** convertendo-o em **Êxito** | Quantidades, momento, limites e relação com crítico/DE |
-| **Sangue** | Acumular sangue em combate, concentrando aqui a mecânica de Hemomancia associada | Que regras históricas são transferidas, custos, acúmulos e duração |
-| **Precisão** | **3 ativações de efeitos de armas → recupera 1 Coragem**; **crítico com 2 dados** também permite recuperação | Se soma à recuperação normal do crítico e como registrar contagens |
-| **Mestre de Armas** | **3 armas diferentes trocadas/utilizadas em combate → recupera 1 Coragem** | Condições válidas de troca e repetição |
-| **Combo (Pugilista)** | **3 aplicações de status → recupera 1 Coragem** | Quais condições contam e quando zerar a contagem |
-
-**DEFINIDO — recuperação unificada:** quando o gatilho de uma Maestria recupera Coragem, **restaura a reserva geral**, até o teto total já desbloqueado. O mesmo vale para a recuperação convencional relacionada ao **Pavor**, sem carteiras separadas para Maestria neutra, especializada e Coragem básica. **PENDENTE:** cumulação de gatilhos na mesma ação, interação com a recuperação já existente por **crítico comum**, retenção de contadores entre combates e prevenção de recuperações repetidas indevidas. **DEFINIDO:** o crítico comum recupera Coragem conforme a tabela e **não recupera PP**. **PENDENTE/ADIADO:** se a Maestria Precisão acrescenta recuperação ou substitui a recuperação comum; não conceder duplicação automática e não escolher A ou B antes da revisão específica das Maestrias.
-
-**PENDENTE — Maestrias e regras especiais ainda não revisadas:** **Maestria Elemental** já é uma Perícia comprável, com custo de XP, requisitos e efeitos especiais. Não criar uma segunda compra nem apagar o item antigo: distinguir a **Perícia que habilita combinação de efeitos** da **Maestria de recarga de combate** e decidir a transição de XP, requisitos e fichas salvas. As alternativas de pagamento em PP foram retiradas dos textos e do motor das fichas desta branch: quando havia alternativa de Coragem, ela foi preservada; custos exclusivamente em PP passaram a 1 Coragem por decisão autoral. As Maestrias e exceções de funcionamento ainda não especificadas permanecem para etapa própria. A implantação numa instalação externa de Foundry não foi realizada. A progressão aberta de Aprendiz permanece. Este texto é **rework aprovado em direção, não migração executada**.
-
 ### Como jogar narrativamente
 
 Declare **o que deseja alcançar** e **como seu personagem tenta fazê-lo**. Escolha as fontes pertinentes à abordagem, role a pilha e interprete os símbolos. Um Êxito pode representar a realização do objetivo; Antecipar permite reagir ou cooperar; Pavor introduz tensão e oportunidade para a situação mudar. A **falha limpa** não precisa causar dano ou humilhação narrativa. Não é obrigatório usar todas as opções de posicionamento, peso ou equipamentos em toda cena. Em desafios conjuntos, as ações dos aliados podem ser coordenadas conforme as regras específicas.
@@ -572,29 +540,6 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
 
-### Histórico superado — antigas três caixas de Vida, penalidades e Coragem [SUBSTITUÍDO EM 16/11/2026]
-
-A Vida máxima é dividida em **Saudável / Machucado / Incapacitado**. Divida a Vida máxima por 3, atribua a quantidade inteira a cada caixa e coloque **todos os pontos restantes na caixa Saudável**. Exemplo: **7 Vida → 3 / 2 / 2**; **11 Vida → 5 / 3 / 3**.
-
-| Estado da Saúde | Penalidade | Coragem para agir |
-|---|---|---|
-| **Saudável (3/3)** | Nenhuma | Sem custo adicional de Saúde |
-| **Machucado (2/3)** | **−1A** | Pode pagar **1 Coragem** para ignorar a penalidade nessa ação |
-| **Incapacitado (1/3)** | **−2E e −1A** | **1 Coragem para agir** com penalidade; **2 Coragens no total** para agir e ignorar as penalidades dessa ação |
-| **Morto (0 Vida)** | Não pode agir | Não se aplica |
-
-As penalidades de cada caixa **substituem** as da caixa anterior, sem somar penalidades de duas caixas. Gastar Coragem para ignorar a penalidade não cura Vida, não anula Pavor e não isenta de outros custos de Perícias.
-
-### Histórico de recuperação em três caixas [PENDENTE DE ADAPTAÇÃO]
-
-| Caixa em recuperação | Tempo por ponto de Vida |
-|---|---|
-| **Saudável (3/3)** | **1 dia** |
-| **Machucado (2/3)** | **1 semana** |
-| **Incapacitado (1/3)** | **Tratamento médico obrigatório** e depois **1 semana** |
-
-O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condições de repouso, interrupção e duração do tratamento seguem **PENDENTES**.
-
 ### Perícia Recuperação Vigorosa [DEFINIDO]
 
 **Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
@@ -609,10 +554,10 @@ O prazo vale para **cada ponto recuperado**, não para a caixa inteira. As condi
 
 | Tipo | Integridade | DE | Progressão elemental |
 |---|---|---|---|
-| **Muito Leve** | **Nenhuma** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Leve** | Baixa; valor **PENDENTE** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Média** | Média; valor **PENDENTE** | **0** | **Grau 2+:** pode receber resistências específicas |
-| **Pesada** | Maior Integridade das armaduras convencionais; valor **PENDENTE** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
+| **Muito Leve** | **G1: 2 de Integridade (playtest)** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
+| **Leve** | **G1: 5 de Integridade (playtest)** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
+| **Média** | **G1: 8 de Integridade (playtest)** | **0** | **Grau 2+:** pode receber resistências específicas |
+| **Pesada** | **G1: 12 de Integridade (playtest)** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
 | **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
 
 **Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
@@ -992,12 +937,12 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Mesmo gatilho para efeitos; ignora Desvantagem contra oponente leve |
 | **Disciplina Avançada** | **1** | **Disciplina 2** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
 | **Manejo Perfeito — Armas Corpo a Corpo** | **1** | **Disciplina Avançada + Destreza 2** | Arma correta contra oponente em Desvantagem: **Vantagem Absoluta** (substitui +1A natural do confronto); se a condição já é Vantagem Absoluta, aplica **Golpe Certo** (procedimento pendente) |
-| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | Em acerto, 1 Coragem altera Pavor de ½ para **1 dano por Pavor mantido e não anulado** |
+| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + especialização corpo a corpo** | **1 Coragem antes de rolar:** eleva um dado da arma (d6→d10; d10→d12; d12→2d12). No acerto, cada Pavor não anulado causa 1 dano em vez de metade, respeitando 9 dados |
 | **Espalhar Golpe** | **1** | **Disciplina 2 + Destreza 1 + Golpe Fulminante + especialização corpo a corpo** | **1 Coragem por alvo adicional** no **raio de 2 m ao redor do atacante**; cada adicional recebe **metade do dano de Êxitos arredondada para baixo**; **sem +1E** |
 | **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Desarmado: 1 Coragem permite mudar o peso do soco; limites pendentes |
 | **Artista Marcial** | **1** | **Disciplina 2 + Pugilismo + Destreza 2** | Crítico que ativa Pugilismo ou 1 Coragem por manobra; **uma por vez**: Empurrar, Agarrar, Derrubar ou Desarmar |
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
-| **Disparo Fulminante** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado para disparos/arremessos; detalhes de ativação e custo aguardam decisão |
+| **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Pavor não anulado vale 1 dano. Não se aplica a armas de fogo |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
 | **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
 | **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
@@ -1133,7 +1078,7 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 ### Ramo corpo a corpo [DEFINIDO / área PENDENTE]
 
-- **Golpe Fulminante:** Disciplina 2 + Força 2 + especialização corpo a corpo (Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Ao acertar, por 1 Coragem, Pavor não anulado passa a causar 1 dano por P; crítico não dispensa ativação. Maestria/Perícia em Arremesso não satisfaz esse requisito.
+- **Golpe Fulminante:** Disciplina 2 + Força 2 + especialização corpo a corpo (Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Por 1 Coragem antes da rolagem, eleva um dado da arma d6→d10, d10→d12 ou d12→2d12 (máximo 9 rolados). No acerto, cada Pavor não anulado causa 1 dano por P; crítico não dispensa ativação. Maestria/Perícia em Arremesso não satisfaz esse requisito.
 - **Golpe Colossal:** substitui Espalhar Golpe (nome novo, mesmo ID de ficha). Compra 1 XP; Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo. Cada 1 Coragem permite atingir até 2 alvos adicionais dentro de 3 m, com a mesma rolagem contra DE individual e metade do dano dos Êxitos arredondada para baixo; custo consumido ainda que erre alvo adicional. Alvo principal recebe dano integral. Não fornece +1E. Não transmite dano de Pavor de Golpe Fulminante aos adicionais. **PENDENTE:** centro exato da área.
 - **Perícia em Manejo Duplo:** compra 1 XP, Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 e pelo menos uma das Perícias Leves, Médias, Pesadas, Arremesso, Armas de Fogo ou Armas de Longo Alcance. Permite equipar duas armas, rolar Armas + Armas + Atributo em um único golpe; dano básico não é duplicado. Crítico habilita UMA característica escolhida entre as armas da ação combinada gratuitamente; mediante mais 1 Coragem pode habilitar outra. Acerto normal por 1 Coragem habilita UMA característica escolhida.
 
@@ -1141,7 +1086,7 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 - **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2; crítico ativa efeitos da arma gratuitamente, acerto normal custa 1 Coragem. Ignora Desvantagens naturais por peso, mantendo Vantagens. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta pequena neutra em todos; besta de duas mãos −1A/neutro/+1A.
 - **Arremesso é ação geral:** qualquer personagem pode arremessar armas, passar armas a aliados e lançar armas inimigas para longe. **Perícia em Arremesso de Armas** (antiga Maestria; ID salvo preservado) custa 1 XP, exige Força 2 + Destreza 2 + Agilidade 1 e Perícia em Armas Leves OU Médias OU Pesadas. Por 1 Coragem no acerto, ativa os efeitos especiais da arma arremessada além do dano básico. Alcance efetivo leve 12 m, médio 8 m, pesado 4 m; exceder 1 m dá Desvantagem (−1A), 2 m Desvantagem Absoluta (−1E), 3 m Acerto de Sorte (−2E); além do terceiro metro, escalonamento PENDENTE. Não sofre Desvantagem por proximidade, mas aliados próximos do alvo geram Desvantagem. Arma se aloja no alvo com penalidade pertinente. Acerto limpo pode permitir nova jogada, avanço, retirada e ataque corpo a corpo; acerto com Pavor pode permitir ao inimigo utilizar a arma. Falha limpa: cai no caminho, pode gastar 1A para correr e recuperar; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Distância da queda em falha (metros) = E mantidos + P mantidos NÃO anulados + 1E por 2A convertidos; A restante não soma. Retirar arma alojada testa Armas + Força + Atletismo contra resistência Força + Vigor + Atletismo do alvo; conversão da dificuldade ainda PENDENTE.
-- **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Ao acertar, pagando 1 Coragem, Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
+- **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Por 1 Coragem antes da rolagem, eleva um dado da arma d6→d10, d10→d12 ou d12→2d12 (máximo 9 rolados). No acerto, cada Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
 - **Disparo Múltiplo:** compra 1 XP; Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Longo Alcance OU Arremesso). Cada 1 Coragem cobre até dois alvos adicionais num raio de 3 m ao redor do ALVO PRINCIPAL; rolagem única vs DE individual, custo pago mesmo se errar. Alvo principal dano integral; adicionais metade dos Êxitos arredondada para baixo e 0,5 por Pavor válido, mesmo se Fulminante estiver ativado no principal.
 - **Disparo Violento:** compra 1 XP, Destreza 2 + Disciplina 2 + (Força 2 OU Força 1 + Atletismo 1) + (Longo Alcance OU Arremesso). 1 Coragem no acerto derruba e empurra o inimigo 4 m. Arco longo ou besta de duas mãos; com Arremesso precisa arma MÉDIA ou PESADA. Crítico não dispensa.
 - **Disparo Tático:** compatível com Arremesso, demais regras de compra/ativação PENDENTES.
