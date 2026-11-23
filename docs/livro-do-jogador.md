@@ -86,6 +86,18 @@ As três faixas **desconto / normal / elevado** estão tabeladas no [SRD v0.56](
 **PENDENTE:** relação entre a Integridade simbólica rolada e a Integridade/Durabilidade material do escudo, ângulo frontal exato, ataques não frontais e múltiplos, coexistência de barreiras, interação detalhada de Perfurar de Água com a DE/Integridade dos escudos e efeitos específicos de Fogo. Os valores materiais G1 6/9/12 permanecem PROPOSTOS.
 
 
+
+## Revisão de playtest — 22/11/2026 [DEFINIDO / PENDENTE]
+
+**Prioridade normativa: [SRD de Continuidade v0.91](srd-continuidade-v0.91.md).** As disposições abaixo substituem descrições históricas incompatíveis.
+
+**Golpe Fulminante e Disparo Fulminante:** por **1 Coragem**, antes da rolagem elevar **um dado da arma** de d6→d10, d10→d12 ou d12→2d12, até o limite de 9 dados rolados. Preservam a regra de dano adicional do Pavor não anulado no acerto (cada P vale 1 dano em vez de ⌊P/2⌋). Criticar não isenta a ativação; Disparo Fulminante continua incompatível com armas de fogo.
+
+**Coragem exclusiva dos PCs:** inimigos humanoides ou monstros possuem **somente Pavor local** para pagar retenção, elevação e ativações. Não usar Coragem de NPC. Os jogadores podem ativar **várias Perícias** compatíveis na mesma ação, pagando cada custo, com **teto conjunto de 5 Coragens por rodada** (e nunca mais de 5 em uma rolagem). Recuperar por crítico não restaura a franquia gasta na rodada.
+
+**Domar Criatura Pequena:** a compra não concede automaticamente o animal. **Companheiro Pequeno domesticado presente acrescenta +1 Vida máxima à ficha do domador**, preservando o dano já sofrido. **Auxílio custa 1 Coragem por ativação**, concedendo o +1A de combate pela participação da criatura no turno; uma serpente pode aplicar o estado **Envenenado** ao alvo já em **Sangramento** quando a ação é bem-sucedida. Duração, pilhas, dano/efeitos numéricos do veneno e a posição normativa da Vida adicional nas quatro faixas permanecem **PENDENTES**. A ficha de playtest mostra o +1 na faixa Saudável por convenção visual temporária.
+
+
 ## Domar Média e ativações de Perícias — decisão de 16/11/2026 [DEFINIDO, SRD v0.52]
 
 **DEFINIDO — custos das Perícias após o rework (17/11/2026):** quando uma Perícia possui custo de ativação comum já aprovado como alternativa, permanece **1 Coragem**; a opção de pagamento pela antiga reserva foi revogada. **Elementos G1/G2 habilitados pela Perícia correspondente têm ativação-base gratuita**. Aquisição em XP, requisitos e custos especiais não alterados; custos exclusivos da reserva removida permanecem **PENDENTES** de reconciliação.

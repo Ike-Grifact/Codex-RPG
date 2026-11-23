@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261122-integridade-2-5-8-12";
+ from "./rules.mjs?v=20261122-pavor-hostil-v1";
 import {skillPrerequisite} from "../foundry-prototype/module/equipment-logic.mjs";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261115-kinds1";
+ from "./roll-engine.mjs?v=20261122-pavor-hostil-v1";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -424,9 +424,7 @@ function rollWorkspace(t){
   '<h2>'+esc(t.name||"Ameaça")+'</h2><p>Selecione fontes, prepare a pilha e registre cada teste.'+
   (stats(t).playerEquivalentLevel?' Grau 2 corresponde à ameaça de um jogador nível 5, mas a retenção usa o Grau.':'')+'</p></div>'+
   '<div class="cf-roll-resources"><span>Pavor local <b>'+t.pavorLocal+' / '+stats(t).limitLocal+'</b></span>'+
-  (isHumanoidKind(t.kind)?'<span>Coragem <b>'+t.courage+' / '+maxCourage(t.level)+'</b>'+
-   ' <button type="button" data-courage="-1" aria-label="Gastar Coragem manualmente">−</button>'+
-   ' <button type="button" data-courage="1" aria-label="Recuperar Coragem manualmente">+</button></span>':'')+
+  '<span>Sem Coragem: inimigos usam exclusivamente Pavor local.</span>'+
   '</div></div>'+armorPanel(t)+'<div class="cf-roll-layout"><div class="cf-roll-sources">'+rollSourceCards(t)+'</div>'+
   '<div class="cf-roll-primary">'+threatActions(t)+rollPane(t)+'</div></div>'+historyPanel(t)+'</div>';
 }
@@ -477,22 +475,22 @@ function rollPane(t){
  const outcome=r?'<div class="cf-roll-outcome">'+(result.ok?
   '<strong>'+esc(result.result.outcome)+' · '+result.result.reached+' / DE '+r.de+'</strong>'+
   '<p>ᛋ '+result.result.e+'E · ᚨ '+result.remainingA+'A livre · ᚦ '+result.result.p+'P residual · Dano básico '+result.result.damage+'</p>'+
-  '<p>Gasto de retenção: '+result.cost+'P local · '+(result.courageCost||0)+' Coragem'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
+  '<p>Gasto de retenção/elevação: '+result.cost+'P local'+(result.criticalPavor?' · Crítico gera '+result.criticalPavor+'P nas reservas':'')+'</p>':
   '<p class="cf-warning">'+esc(result.error)+'</p>')+
   '<button type="button" data-roll-confirm class="cf-primary"'+(result.ok?'':' disabled')+'>Confirmar resultado e recursos</button></div>':"";
  const last=model.lastRoll?.id===t.id?'<p class="cf-note">Última rolagem confirmada: '+esc(model.lastRoll.outcome)+
   ' · '+model.lastRoll.e+'E / '+model.lastRoll.p+'P · custo local '+model.lastRoll.spent+'P.</p>':"";
  const help=human?
-  'Escolha uma Prática ou Conhecimento e um Atributo pertinente. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. A retenção adicional por Coragem é registrada e descontada ao confirmar a rolagem.':
+  'Escolha uma Prática ou Conhecimento e um Atributo pertinente. Disciplina marcial básica é permitida; Conjuração requer a habilitação pertinente. Sem Perícia ou equipamento automático: efeitos especiais e bônus devem ser resolvidos à parte. Retenção e elevação gastam Pavor local, sem Coragem para inimigos.':
   'Escolha dois Atributos pertinentes. Dados descartados não produzem símbolos. Fontes adicionais, equipamentos, alvos e efeitos especiais ainda exigem resolução específica.';
  const allowed=human?stats(t).keepBase+Number(!!(r?.extraKeep??d.extraKeep)):t.keep;
  const originalPool=composeActionPool(t,selectionFor(t,d),"");
  const stepOptions=originalPool.ok?originalPool.pool.filter(x=>[4,6,10].includes(x.baseSides)):[];
  const prepare=!r&&(human||t.kind==="monstro")?'<div class="cf-roll-config cf-roll-preparation">'+
   (human?'<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-extra"'+(d.extraKeep?' checked':'')+
-   '> Manter dado adicional (1 Coragem)</label>':'')+
+   '> Manter dado adicional (1 Pavor local)</label>':'')+
   '<label class="cf-roll-switch"><input type="checkbox" id="cf-roll-step"'+(d.step?' checked':'')+
-  '> Elevar dado antes de rolar ('+(human?'1 Coragem':'1 Pavor local')+')</label>'+
+  '> Elevar dado antes de rolar ('+'1 Pavor local'+')</label>'+
   (d.step?'<label>Escolher dado elegível<select id="cf-roll-step-die"><option value="">Selecione o dado</option>'+
    stepOptions.map(x=>'<option value="'+esc(x.id)+'"'+(d.stepDieId===x.id?' selected':'')+'>'+
    esc(x.group+" · "+x.key+" · d"+x.baseSides+" → d"+({4:6,6:10,10:12}[x.baseSides]))+
@@ -508,8 +506,7 @@ function rollPane(t){
    '<option value="'+key+'"'+((r?.situation||d.situation)===key?' selected':'')+'>'+esc(v.label)+'</option>').join("")+'</select></label></div>'+
   prepare+extraHint+'<div class="cf-roll-toolbar"><button class="cf-primary" type="button" data-roll-start>'+(r?'Rolar novamente':'Rolar dados')+'</button>'+
   (r?'<button type="button" data-roll-clear>Alterar fontes</button>':"")+
-  '<span>Até '+allowed+' dados mantidos'+(human?' · Coragem '+t.courage+'/'+maxCourage(t.level):
-   ' · '+Math.max(0,t.keep-2)+'P local se mantiver todos os planejados')+'</span></div>'+
+  '<span>Até '+allowed+' dados mantidos · Pavor local '+t.pavorLocal+'/'+stats(t).limitLocal+'</span></div>'+
   dice+(r?'<div class="cf-roll-config">'+
    '<label>Anular P (1A por P)<input type="number" data-roll-param="cancelP" min="0" max="9" value="'+r.cancelP+'"></label>'+
    '<label>2A → 1E<input type="number" data-roll-param="convertPairs" min="0" max="9" value="'+r.convertPairs+'"></label>'+
@@ -536,10 +533,8 @@ function beginCreatureRoll(){
  if(creatureRoll?.id===t.id&&!confirm("Descartar a rolagem não confirmada e gerar novos dados?"))return;
  const composed=composeActionPool(t,selectionFor(t,d),d.step?d.stepDieId:"");
  if(!composed.ok)return notice(composed.error);
- const courageCost=human?Number(!!d.extraKeep)+Number(!!d.step):0;
- const pavorCost=t.kind==="monstro"?Number(!!d.step):0;
- if(human&&courageCost>t.courage)return notice("Coragem insuficiente para preparar a rolagem.");
- if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para elevar o dado.");
+ const pavorCost=Number(!!d.step)+Number(human&&!!d.extraKeep);
+ if(pavorCost>t.pavorLocal)return notice("Pavor local insuficiente para preparar a rolagem.");
  const generated=rollCreatureFaces(composed.pool);
  const planned=human?stats(t).keepBase+Number(!!d.extraKeep):t.kind==="monstro"?t.keep:2;
  const count=Math.min(planned,generated.length);
@@ -561,7 +556,7 @@ function confirmCreatureRoll(){
  const settlement=settleCreatureRoll(t,model.publicPavor,model.players,preview);
  if(!settlement.ok)return notice(settlement.error);
  if(!confirm("Confirmar esta rolagem e registrar no playtest? "+
-  "Custo: "+(settlement.spent||0)+" Pavor local e "+(settlement.courageSpent||0)+" Coragem. "+
+  "Custo: "+(settlement.spent||0)+" Pavor local. "+
   "Dano básico "+preview.result.damage+" e Pavor residual "+settlement.residualPavor+
   " exigem interpretação/aplicação pelo Narrador."))return;
  const index=model.roster.findIndex(x=>x.id===t.id);if(index<0)return;
@@ -605,7 +600,7 @@ function editorHTML(t){
   '<div class="cf-local-row"><span>'+(human?'Limite de retenção pelo Grau':'Dados mantidos planejados')+': <b>'+(human?x.keepMax:t.keep)+'</b></span>'+
   (human?'':'<button type="button" data-keep="-1"'+(t.keep<=2?' disabled':'')+'>−</button>')+
   (human?'':'<button type="button" data-keep="1"'+(t.keep>=x.keepMax?' disabled':'')+'>+</button>')+'</div>'+
-  '<p class="cf-note">'+(human?'Retenção de inimigo pelo Grau da ameaça (independente do nível): Grau 1 permite 2 naturais + 1 por Coragem; Grau 2+ permite 3 naturais + 1 por Coragem, total 4. A Coragem efetivamente gasta é descontada ao confirmar a rolagem.':
+  '<p class="cf-note">'+(human?'Retenção pelo Grau: G1 mantém 2 naturalmente; G2+ mantém 3 naturalmente; +1 dado custa 1 Pavor local, máximo 4. Inimigos não têm Coragem.':
    'Ação básica: 2 dados. Cada dado adicional mantido custa 1P local, e somente com dados/capacidades disponíveis.')+
   (human?'':' Retenção planejada: '+extra+'P por oportunidade.')+'</p>'+
   (!human&&extra>t.pavorLocal?'<p class="cf-warning">São necessários '+extra+'P para manter '+t.keep+' dados nesta oportunidade, mas a ficha possui '+t.pavorLocal+'P. O teto da ficha não concede esse Pavor gratuitamente.</p>':"")+
@@ -644,7 +639,7 @@ function update(field,value){
   if(!confirm("Mudar o tipo aplica outra tabela de XP e dados. Manter os graus, mas recalcular seus custos?"))return render();
   const previousKind=t.kind;t.kind=value;creatureRoll=null;
   if(!isHumanoidKind(value)){t.knowledges=blank().knowledges;t.practices=blank().practices;t.skills=[];}
-  else if(!isHumanoidKind(previousKind))t.courage=10;
+  else if(!isHumanoidKind(previousKind))t.courage=0;
  }else if(field==="leader")t.leader=!!value;
  else if(["name","concept","notes","abilities"].includes(field))t[field]=String(value).slice(0,field==="notes"||field==="abilities"?4000:160);
  else if(["threatGrade","level","xp","life","pavorLocal","keep"].includes(field)){
@@ -658,7 +653,7 @@ function update(field,value){
  t.pavorLocal=Math.min(t.pavorLocal,stats(t).limitLocal);
  t.keep=Math.min(t.keep,stats(t).keepMax);
  t.life=Math.min(t.life,stats(t).life);
- t.courage=Math.min(t.courage,maxCourage(t.level));
+ t.courage=0;
  save();render();
 }
 function gradeChange(group,key,delta){
@@ -669,7 +664,7 @@ function gradeChange(group,key,delta){
  t[prop][key]=next;creatureRoll=null;
  if(delta>0&&ledger(t).remaining<0){t[prop][key]=prev;return notice("XP insuficiente. Ajuste o orçamento de XP antes de comprar o próximo grau.");}
  t.life=Math.min(t.life,stats(t).life);
- t.courage=Math.min(t.courage,maxCourage(t.level));
+ t.courage=0;
  save();render();
 }
 function addKind(kind){
@@ -774,8 +769,6 @@ document.addEventListener("click",event=>{
  if(b.id==="export-encounter")return exportJson();
  if(b.hasAttribute("data-open-roll")){conflictMode="roll";render();scrollToRoll();return;}
  if(b.dataset.conflictMode){conflictMode=b.dataset.conflictMode==="roll"?"roll":"edit";render();return;}
- if(b.dataset.courage){const t=selected();if(!t||!isHumanoidKind(t.kind))return;
-  t.courage=Math.floor(clamp(t.courage+Number(b.dataset.courage),0,maxCourage(t.level)));save();render();return;}
  if(b.dataset.integrity){adjustIntegrity(b.dataset.integrity,Number(b.dataset.delta)||0);return;}
  if(b.dataset.equipItem){toggleEquipment(b.dataset.equipItem);return;}
  if(b.hasAttribute("data-export-rolls")){exportRollHistory();return;}

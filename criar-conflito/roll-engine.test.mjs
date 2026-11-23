@@ -134,23 +134,25 @@ test("Composição por clique: Disciplina + Força, elevação escolhida e XP in
  assert.equal(composeActionPool(npc,{...selection,extra:{group:"attribute",key:"destreza"},contextOK:true}).ok,false,
   "Terceira fonte não pode ser grátis");
 });
-test("Coragem é debitada somente ao confirmar: retenção mais elevação custa 2",()=>{
+test("Humanoide hostil gasta exclusivamente Pavor por retenção + elevação",()=>{
  const npc=quickHumanoid();npc.attributes.forca=2;
+ assert.equal(npc.courage,0);
  const selection={baseGroup:"practice",baseKey:"armas_conjuracao",attribute:"forca",mode:"armas"};
  const pool=composeActionPool(npc,selection,"attribute.forca.0");
  assert.equal(pool.ok,true);
  assert.deepEqual(pool.pool.map(x=>x.sides),[10,10,6]);
- const rolled=rollCreatureFaces(pool.pool,()=>0.999);
+ const rolled=rollCreatureFaces(pool.pool,()=>0.5);
  const kept=rolled.map(x=>x.id);
  const preview=previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"});
  assert.equal(preview.ok,true);
- assert.equal(preview.courageCost,2);
- assert.equal(npc.courage,10);
+ assert.equal(preview.cost,2);assert.equal(preview.courageCost,0);
+ assert.equal(npc.pavorLocal,4);
  const result=settleCreatureRoll(npc,2,4,preview);
  assert.equal(result.ok,true);
- assert.equal(result.unit.courage,8);
- assert.equal(npc.courage,10);
- npc.courage=1;
+ assert.equal(result.unit.pavorLocal,2);
+ assert.equal(result.unit.courage,0);
+ assert.equal(npc.pavorLocal,4);
+ npc.pavorLocal=1;
  assert.equal(previewHumanoidRoll(npc,rolled,kept,{de:1,extraKeep:true,stepDieId:"attribute.forca.0"}).ok,false);
 });
 test("Integridade G1 normalizada conserva o dano sem inventar Grau superior",()=>{
@@ -209,7 +211,7 @@ test("Inimigo não humanoide Grau 2 mantém quatro dados por 2P; Grau 1 não man
  enemy.pavorLocal=1;
  assert.equal(previewCreatureRoll(enemy,rolled,ids,{de:0}).ok,false);
 });
-test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível sozinho não libera",()=>{
+test("Humanoides inimigos Grau 2 podem reter quatro, pagando Pavor; nível sozinho não libera",()=>{
  for(const kind of ["humanoide","humanoide-monstro"]){
   const enemy=blank(kind);
   enemy.level=20;enemy.threatGrade=1;
@@ -223,12 +225,12 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Coragem; nível soz
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:false}).ok,false);
   const p=previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true});
   assert.equal(p.ok,true);
-  assert.equal(p.courageCost,1);
+  assert.equal(p.cost,1);assert.equal(p.courageCost,0);
   const post=settleCreatureRoll(enemy,0,4,p);
   assert.equal(post.ok,true);
-  assert.equal(post.courageSpent,1);
-  assert.equal(post.unit.courage,enemy.courage-1);
-  enemy.courage=0;
+  assert.equal(post.spent,1);assert.equal(post.courageSpent,0);
+  assert.equal(post.unit.courage,0);
+  enemy.pavorLocal=0;
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
  }
 });

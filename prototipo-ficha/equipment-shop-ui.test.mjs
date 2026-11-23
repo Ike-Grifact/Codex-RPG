@@ -121,7 +121,7 @@ test("Preparação exige decisão de gastar recursos no compositor e não confir
  assert.ok(app.includes('data-option="extraKeep"'));
  assert.ok(app.includes('if(k==="stepSourceId")draft.step=!!draft.stepSourceId'));
  assert.ok(app.includes('if(courageCost>5)errs.push('));
- assert.ok(app.includes('if(precoPrevisto>5)'));
+ assert.ok(app.includes('if(precoPrevisto>5||precoPrevisto+Number(state.courageRoundSpent||0)>5)'));
  assert.ok(app.includes('toast("Ação preparada com "+item.name'));
 });
 

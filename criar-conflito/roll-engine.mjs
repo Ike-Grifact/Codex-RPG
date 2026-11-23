@@ -38,27 +38,26 @@ export function previewHumanoidRoll(unit,rolled,keptIds,options={}){
  // mas o teto inimigo de quatro dados é uma regra própria do Grau, não do Marco.
  const naturalKeep=Number(unit.threatGrade)>=2?3:2;
  const limit=Math.min(4,naturalKeep+Number(extraKeep));
- // Pagar só pelo quarto dado efetivamente mantido: ativar o controle sem usá-lo
- // não consome Coragem. A autorização ainda é necessária para passar do limite natural.
+ // Ameaças humanoides usam somente Pavor local; não possuem Coragem.
  const paidExtraKeep=extraKeep&&kept.length>naturalKeep;
- const courageCost=Number(paidExtraKeep)+Number(!!options.stepDieId);
+ const cost=Number(paidExtraKeep)+Number(!!options.stepDieId);
  if(!Array.isArray(rolled)||rolled.length<2||rolled.length>9||new Set(rolled.map(d=>d.id)).size!==rolled.length)
   return {ok:false,error:"Pilha de dados inválida."};
  if(!Number.isInteger(de)||de<0||de>30)return {ok:false,error:"Informe DE entre 0 e 30."};
  if(!Object.hasOwn(SITUATIONS,situation))return {ok:false,error:"Modificador de situação desconhecido."};
  if(kept.length<1||kept.length>limit)return {ok:false,error:"Escolha de 1 até "+limit+" dados mantidos neste Marco."};
- if(courageCost>Number(unit.courage??10))return {ok:false,error:"Coragem insuficiente para retenção e elevação."};
+ if(cost>Number(unit.pavorLocal||0))return {ok:false,error:"Pavor local insuficiente para retenção e elevação ("+cost+"P)."};
  if(kept.some(id=>!rolled.some(d=>d.id===id)))return {ok:false,error:"Dado não pertence à pilha."};
  const cancelP=Number(options.cancelP||0),convertPairs=Number(options.convertPairs||0),passA=!!options.passA;
  if(!Number.isInteger(cancelP)||!Number.isInteger(convertPairs))
   return {ok:false,error:"Gastos de Antecipar precisam ser inteiros."};
  const result=resolveRoll(rolled,kept,{de,situation,level:Number(unit.level||1),
   monster:false,hostile:true,enemyKeepLimit:limit,extraKeep:paidExtraKeep,
-  courage:Number(unit.courage??10),cancelP,convertPairs,
+  courage:10,cancelP,convertPairs,
   weight:Number(options.weight||0),bonusA:Number(options.bonusA||0),bonusP:Number(options.bonusP||0),skillBonusE:Number(options.skillBonusE||0)});
  if(!result.ok)return {ok:false,error:result.errors.join("; ")};
  if(passA&&result.aRemaining<1)return {ok:false,error:"Falta Antecipar para passar a oportunidade."};
- return {ok:true,cost:0,courageCost,result,passA,remainingA:result.aRemaining-Number(passA),
+ return {ok:true,cost,courageCost:0,result,passA,remainingA:result.aRemaining-Number(passA),
   criticalPavor:result.monsterCriticalPavor||0};
 }
 

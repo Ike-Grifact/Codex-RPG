@@ -8,10 +8,10 @@
   <link rel="icon" href="../assets/codex-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="./styles.css?v=20261120-gene-white-v1">
+  <link rel="stylesheet" href="./styles.css?v=20261122-companheiro-v1">
   <script src="./catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
   <script src="./gene-graph.js?v=20261119-druid-icons-v2" defer></script>
-  <script src="./app.js?v=20261122-integridade-2-5-8-12" defer></script>
+  <script src="./app.js?v=20261122-fulminantes-companheiro-v1" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -160,6 +160,18 @@
     </nav>
     <div class="fp-workspace">
       <div class="fp-primary-column">
+            <div class="fp-wiz-reminder fp-round-budget">
+              <strong id="round-spent-label">Coragem gasta nesta rodada: 0/5</strong>
+              <button type="button" class="fp-secondary" data-action="advance-round">Confirmar nova rodada</button>
+              <small>Gastos feitos por ações confirmadas são cumulativos na rodada. A recuperação por crítico não restitui o limite.</small>
+            </div>
+            <section id="small-companion-panel" class="fp-companion-panel fp-wiz-reminder" aria-label="Companheiro domado Pequeno">
+              <strong>Companheiro Pequeno · Domar Criatura Pequena</strong>
+              <label><input id="small-companion-present" type="checkbox"> Possuo uma criatura Pequena domesticada presente (+1 Vida à ficha)</label>
+              <label>Nome <input id="small-companion-name" maxlength="70" placeholder="Ex.: Naja"></label>
+              <label>Espécie <select id="small-companion-species"><option value="outro">Outra criatura</option><option value="serpente">Serpente</option></select></label>
+              <p id="small-companion-info">A compra da Perícia não concede animal automaticamente. A ajuda em turno custa 1 Coragem; serpente pode aplicar Envenenado se o alvo estiver Sangrando. O efeito não causa dano periódico automático.</p>
+            </section>
       <section class="fp-panel fp-active-panel" id="play-talents" aria-label="Habilidades adquiridas">
             <div class="fp-panel-heading"><span class="fp-panel-icon">ᛋ</span><div><h3>Ações</h3><small>Escolha uma magia ou arma; o restante é preparado no rolador</small></div></div>
             <div class="fp-play-talent-grid">

@@ -388,7 +388,7 @@ const SKILLS=[
  [
   "golpe-fulminante",
   "Golpe Fulminante",
-  "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.",
+  "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.",
   1
  ],
  [
@@ -442,7 +442,7 @@ const SKILLS=[
  [
   "disparo-fulminante",
   "Disparo Fulminante",
-  "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.",
+  "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.",
   1
  ],
  [
@@ -1389,7 +1389,7 @@ const CARD_EFFECTS={
  "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
- "domar-criatura-pequena": "Companheiro Pequeno: +1A em combate, +1 Vida ao domador; 1 Vida própria inicial, ficha opcional permite +Vida por Vigor/Força (XP 2x desde G1), sacrifício protetor.",
+ "domar-criatura-pequena": "Companheiro Pequeno domesticado presente: +1 Vida máxima ao domador. Por 1 Coragem, atua como auxílio no turno (+1A em combate); serpente pode aplicar Envenenado a alvo em Sangramento, sem dano periódico definido. Possui Vida própria inicial 1.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
@@ -1410,10 +1410,10 @@ const CARD_EFFECTS={
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue; conjuração ativa. 3 marcas disponíveis de sangue inimigo recuperam +1 Vida, mantendo custo 1 XP e requisitos Transfusão + Elemento Sangue.",
  "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
- "golpe-fulminante": "Dano de Pavor válido passa a 1 por P no alvo corpo a corpo",
+ "golpe-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
  "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
- "disparo-fulminante": "Pavor válido provoca 1 dano por P no alvo principal",
+ "disparo-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "disparo-multiplo": "Principal recebe dano integral; adicionais no raio de 3 m recebem metade dos Êxitos e 0,5 por P",
  "disparo-violento": "Derruba inimigo atingido e empurra 4 m",
  "disparo-tatico": "Técnica futura, com compatibilidade com Arremesso definida",
@@ -1499,10 +1499,10 @@ const CARD_BRIEFS={
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
- "golpe-fulminante": "Após acerto, pagar a ativação transforma cada Pavor mantido não anulado em 1 dano. Pavor continua gerando risco e Pressão. Especializações: Armas Leves, Médias, Pesadas, Manejo Duplo ou Pugilismo. Arremesso não satisfaz esse requisito. Crítico NÃO isenta o custo da técnica.…",
+ "golpe-fulminante": "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.…",
  "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
  "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
- "disparo-fulminante": "Técnica somática de arco, besta ou arremesso. No acerto, cada Pavor mantido não anulado provoca 1 dano, sem retirar suas consequências. A ativação não é gratuita no crítico. NÃO se aplica a armas de fogo. Pode combinar com outras técnicas somáticas pagando custos separados.…",
+ "disparo-fulminante": "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.…",
  "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
  "disparo-violento": "Técnica somática independente de Disparo Fulminante e Múltiplo. Ao acertar, derruba e empurra o inimigo 4 m. Aceita arco longo, besta de duas mãos ou arma arremessada MÉDIA ou PESADA com a Perícia em Arremesso de Armas. Não aceita arremesso leve. Ativação própria é paga inclusive em crític…",
  "disparo-tatico": "O autor confirmou compatibilidade com Perícia em Arremesso de Armas. Requisitos completos, custo, efeitos e ativação ainda PENDENTES. Não habilitar compra nem automatizar efeitos.…",
@@ -1977,7 +1977,8 @@ const getId=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID
 function defaultState(){return{
  schema:"codex-html-playtest-v1",name:"",concept:"",origin:"",race:"humano",pureElement:"",runeElements:["",""],racialInitialAttributes:[],perseverancaUsed:false,runeShieldFreeUsed:false,virtue:"",personality:"",portrait:"",
  level:1,attributes:{},knowledges:{},practices:{},skills:[],weaponFocus:"leve",creationLocked:false,creationBudgetSnapshot:null,
- xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,xp:0,
+ xpEarned:0,legacyXPRefund:0,xpHistory:[],life:4,courage:10,courageRoundSpent:0,xp:0,
+ smallCompanion:{present:false,name:"",species:"outro"},
  items:[],trade:tradeDefault(),elementalCrystal:{element:"",quantity:0},spiritualSpheres:{count:0,createdThisRound:0},notes:"",pending:null,history:[],
  hemomancy:{spilled:0,extracted:0,selfBleeding:false,usedThisTurn:false,boostKind:"",boostPayment:"",directLifeResolved:false}
 };}
@@ -2027,7 +2028,7 @@ const WIZARD_TRAINING_GUIDE={
  "practice:coleta":["Treinamento de obtenção","Localizar, recolher e extrair recursos de um ambiente.","Obtenção técnica de materiais e recursos."]
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
-  extraKeep:false,step:false,stepSourceId:"",combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
+  extraKeep:false,step:false,stepSourceId:"",fulminante:"",attackThrown:false,domarActivate:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
   shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
   shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
   magicElement:"",magicSecondElement:"",magicGrade:1,magicFocusId:"",magicSecondFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
@@ -2264,6 +2265,11 @@ function normalize(v){
  if(Array.isArray(v.skills)&&v.skills.includes("raio")&&!s.notes.includes("Legado Raio:")){
   s.notes=(s.notes+"\nLegado Raio: habilitação antiga removida; Raio agora é condição, não elemento. O XP da compra antiga foi liberado para redistribuição.").trim().slice(0,5000);
  }
+ s.smallCompanion={
+  present:!!v.smallCompanion?.present&&s.skills.includes("domar-criatura-pequena"),
+  name:String(v.smallCompanion?.name||"").slice(0,70),
+  species:v.smallCompanion?.species==="serpente"?"serpente":"outro"
+ };
  s.weaponFocus=["leve","medio","pesado","distancia","Punhos"].includes(v.weaponFocus)?v.weaponFocus:"leve";
  s.xpEarned=clamp(Math.floor(v.xpEarned??v.xp??0),0,1000000);
  s.legacyXPRefund=clamp(Math.floor(v.legacyXPRefund||0),0,1000000);
@@ -2289,6 +2295,7 @@ function normalize(v){
  })):[];
  s.life=clamp(Math.floor(v.life),0,maxLife(s));
   s.courage=clamp(Math.floor(v.courage??10),0,maxCourage(s));
+  s.courageRoundSpent=clamp(Math.floor(v.courageRoundSpent??0),0,5);
  s.spiritualSpheres={
   count:clamp(Math.floor(v.spiritualSpheres?.count||0),0,5),
   // Migra fichas antigas: true equivalia a uma criação na rodada.
@@ -2411,11 +2418,14 @@ const LIFE_STATES={
  inconsciente:{id:"inconsciente",label:"Inconsciente",e:-2,a:0,p:2,coragem:2},
  morto:{id:"morto",label:"Morto",e:0,a:0,p:0,coragem:Infinity}
 };
+function companionLifeBonus(s=state){return Number(!!(s.smallCompanion?.present&&s.skills?.includes("domar-criatura-pequena")));}
 function lifeBands(s=state){
  const vigor=Math.max(0,Math.floor(s.attributes.vigor||0));
  const forca=Math.max(0,Math.floor(s.attributes.forca||0));
  const extras=vigor+Math.floor(forca/2);
- return [1+Math.ceil(extras/2),1+Math.floor(extras/2),1,1];
+ // Exibir o bônus no segmento superior apenas como convenção técnica de interface.
+ // Alocação normativa do +1 nas quatro faixas continua PENDENTE.
+ return [1+Math.ceil(extras/2)+companionLifeBonus(s),1+Math.floor(extras/2),1,1];
 }
 function maxLife(s=state){return lifeBands(s).reduce((n,k)=>n+k,0);}
 function lifeStage(s=state){
@@ -3560,7 +3570,7 @@ function prepareElementSkill(id){
  prepareMagic(id);
 }
 
-function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
+function render(){renderPlayerSheets();renderRacePanel();renderVitals();renderSmallCompanion();renderXP();renderRespecSkills();renderDiceLegend();renderSources();renderComposer();renderSkills();renderInventory();renderTrade();renderOwnedPanel();renderHemomancy();renderGenetic();renderWizard();applySheetPage();soundUI();}
 
 /* Etapas guiadas: Codex Genético padrão e listas opcionais compartilham o mesmo XP e ficha. */
 function wizardPersist(){
@@ -3917,7 +3927,22 @@ function renderWizard(){
   (stage===4?'Concluir e abrir a ficha →':stage===1?(wizardStarterPhase==='confirm'?'Confirmar escolhas e abrir etapa 3 →':wizardStarterPhase==='training'?'Selecione um Conhecimento ou Prática':'Selecione um Atributo'):'Continuar →')+'</button></div>';
 }
 
+function renderSmallCompanion(){
+ const panel=$("small-companion-panel");if(!panel)return;
+ const owned=state.skills.includes("domar-criatura-pequena");
+ panel.hidden=!owned;
+ const present=owned&&!!state.smallCompanion?.present;
+ $("small-companion-present").checked=present;
+ $("small-companion-name").value=state.smallCompanion?.name||"";
+ $("small-companion-name").disabled=!present;
+ $("small-companion-species").value=state.smallCompanion?.species==="serpente"?"serpente":"outro";
+ $("small-companion-species").disabled=!present;
+ $("small-companion-info").textContent=present?
+  "+1 Vida máxima registrado. Auxílio ativo: 1 Coragem por turno; a serpente aplica Envenenado se o alvo estiver em Sangramento, sem dano automático não definido.":
+  "Comprar Domar Criatura Pequena não cria automaticamente um companheiro nem concede +1 Vida. Registre-o após a domesticação.";
+}
 function renderVitals(){
+ const roundLabel=$("round-spent-label");if(roundLabel)roundLabel.textContent="Coragem gasta nesta rodada: "+(state.courageRoundSpent||0)+"/5";
  const lifeMaxValue=maxLife();state.life=clamp(state.life,0,lifeMaxValue);state.courage=clamp(state.courage,0,maxCourage());
  $("life-text").textContent=state.life+" / "+lifeMaxValue;
  $("courage-text").textContent=state.courage+" / "+maxCourage();
@@ -4192,6 +4217,29 @@ function buildPool(){
    errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
   else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
  }
+ if(draft.fulminante){
+  const weapon=state.items.find(it=>it.id===draft.equipmentId);
+  const ranged=!!weapon&&(weapon.properties||[]).includes("À Distância")||
+   /^(arco|besta|zarabatana)/i.test(weapon?.name||"");
+  const valid=weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
+   !!combatItem(weapon,"armas").length&&draft.mode==="armas"&&usingDiscipline()&&
+   (draft.fulminante==="golpe-fulminante"?!ranged&&!draft.attackThrown:
+    draft.fulminante==="disparo-fulminante"&&(ranged||(draft.attackThrown&&ownsSkill("maestria-arremesso-armas"))));
+  if(!ownsSkill(draft.fulminante)||!valid||skillReq(draft.fulminante))
+   errors.push("Fulminante exige Perícia adquirida, Disciplina e arma equipada compatível; arremesso exige confirmação própria.");
+  else{
+   const target=pool.find(d=>d.group==="equipment"&&d.id.startsWith("equipment:"+weapon.id+":"));
+   if(!target||![6,10,12].includes(target.sides))errors.push("Fulminante exige um dado da arma d6/d10/d12.");
+   else{
+    const original=target.sides;
+    target.sides=original===6?10:12;target.fulminante=true;target.baseSides=original;
+    if(original===12)pool.push({id:"fulminante:"+weapon.id,group:"equipment",
+     key:weapon.name+" · Fulminante",sides:12,baseSides:12,fulminante:true});
+   }
+  }
+ }
+ if(draft.domarActivate&&(!state.smallCompanion?.present||!ownsSkill("domar-criatura-pequena")))
+  errors.push("Auxílio do companheiro requer criatura Pequena domesticada presente.");
  if(draft.asura){
   const chosen=pool.find(d=>d.id===draft.asuraDieId);
   const weapon=state.items.find(item=>item.id===draft.equipmentId);
@@ -4206,9 +4254,10 @@ function buildPool(){
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
- const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+spellCost+Number(!!draft.shieldThrowId)+
+ const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+spellCost+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
+ if(totalPreparationCost+Number(state.courageRoundSpent||0)>5)errors.push("Máximo de 5 Coragens por rodada. Confirme a próxima rodada antes de agir novamente.");
  if(totalPreparationCost>state.courage)errors.push("Coragem insuficiente para a magia e os custos de preparação.");
  if(draft.de<0||draft.de>30)errors.push("DE deve ficar entre 0 e 30.");
  if(draft.cravarRemovalShieldId){
@@ -4248,7 +4297,7 @@ function renderComposer(){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
- const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
+ const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
@@ -4291,7 +4340,20 @@ function renderComposer(){
   (draft.asura?'<label class="fp-form-field full">Dado da pilha que se transforma em d20 '+
    select("asuraDieId",[["","Selecione um dado"],...pool.filter(d=>d.sides!==20||d.asuraSpecial).map(d=>[d.id,
      (d.asuraSpecial?"d"+d.baseSides:"d"+d.sides)+" · "+label(d.group,d.key)])],draft.asuraDieId)+'</label>':""):"";
- const checks=asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
+ const fulminanteSkills=[
+  ["golpe-fulminante","Golpe Fulminante"],["disparo-fulminante","Disparo Fulminante"]
+ ].filter(([id])=>ownsSkill(id));
+ const fulminanteControls=fulminanteSkills.length&&isShared&&draft.mode==="armas"?
+  '<label class="fp-form-field full">Técnica Fulminante (1 Coragem, eleva 1 dado da arma) '+
+  select("fulminante",[["","Não ativar"],...fulminanteSkills],draft.fulminante)+'</label>'+
+  (ownsSkill("maestria-arremesso-armas")?
+   '<label class="fp-checkline full"><input type="checkbox" data-option="attackThrown"'+
+   (draft.attackThrown?' checked':'')+'> Ataque de arremesso (Disparo Fulminante)</label>':""):"";
+ const companionControl=ownsSkill("domar-criatura-pequena")&&state.smallCompanion?.present?
+  '<label class="fp-checkline full"><input type="checkbox" data-option="domarActivate"'+
+  (draft.domarActivate?' checked':'')+'> Auxílio de '+esc(state.smallCompanion.name||"criatura Pequena")+
+  ': 1 Coragem neste turno, +1A; serpente envenena alvo em Sangramento (estado manual)</label>':"";
+ const checks=fulminanteControls+companionControl+asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
  (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
@@ -4323,9 +4385,9 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.shieldThrowId)+
+ const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
- if(precoPrevisto>5){toast("Máximo de 5 Coragens gastas por rolagem, incluindo preparação e condição.");return;}
+ if(precoPrevisto>5||precoPrevisto+Number(state.courageRoundSpent||0)>5){toast("Limite de 5 Coragens por rodada (e por rolagem) excedido.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
  if(editMode){toast("Conclua a edição antes de rolar.");return;}
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
@@ -4335,7 +4397,7 @@ function roll(){
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
-  opts:{de:draft.de,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,asura:!!draft.asura,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
+  opts:{de:draft.de,fulminante:draft.fulminante,domarActivate:!!draft.domarActivate,maosLeves:!!draft.maosLeves,stealthAttack:!!draft.stealthAttack,potionResearch:!!draft.potionResearch,asura:!!draft.asura,situation:draft.situation,extraKeep:draft.extraKeep,step:draft.step,stepSourceId:draft.step?draft.stepSourceId:"",healthId:health.id,combatBonus:false,equipmentId:draft.equipmentId,
     weightEnabled:draft.weightEnabled,attackWeight:draft.attackWeight,targetWeight:draft.targetWeight,
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
@@ -4435,7 +4497,7 @@ function score(){
   (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
- const aPool=Math.max(0,raw[1]+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+(critTier>=3?1:0)+
+ const aPool=Math.max(0,raw[1]+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+Number(!!p.opts.domarActivate)+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
@@ -4455,7 +4517,7 @@ function score(){
  :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
  const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
   Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
- let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
+ let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+Number(!!p.opts.fulminante)+Number(!!p.opts.domarActivate)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
  if(p.mode==="conjuracao"&&p.opts.magicElement){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
   if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
@@ -4538,13 +4600,15 @@ function score(){
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
  if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
+ if(courageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
  if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
  const damageBasic=success?E+Math.floor(P/2):0;
+ const fulminanteDamageBasic=success&&p.opts.fulminante?E+P:damageBasic;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
- const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:damageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
+ const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:fulminanteDamageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
  // v0.76: Queimar usa E+P na Integridade, inclusive o crítico de 4 mantidos;
  // Derreter acrescenta só +1 Vida FIXA, não multiplicada no crítico.
  const fireArmorDamage=fireValid?(success?(E+P)*(critTier===4?2:1):0):null;
@@ -4680,6 +4744,7 @@ function finalize(){
   state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
  }
  state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
+ state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.courageCost,0,5);
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
  const gainedCourage=state.courage-oldCourage;
@@ -4745,6 +4810,10 @@ function updateGrade(group,id,delta){
 }
 function adjustResource(resource,delta){
  if(!["life","courage"].includes(resource)||![-1,1].includes(Number(delta)))return;
+ if(resource==="courage"&&delta<0&&state.courage>0){
+  if((state.courageRoundSpent||0)>=5){toast("Já gastou 5 Coragens nesta rodada.");return;}
+  state.courageRoundSpent=(state.courageRoundSpent||0)+1;
+ }
  const max=resource==="life"?maxLife():maxCourage();
  state[resource]=clamp(state[resource]+delta,0,max);renderVitals();save();
 }
@@ -5258,22 +5327,28 @@ function onClick(event){
  case "maos-leves-prepare":prepareMaosLeves();break;
  case "armadilha-prepare":prepareArmadilha();break;
  case "corpo-fechado-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("corpo-fechado")||skillReq("corpo-fechado")||state.pending||editMode||state.courage<1){toast("Corpo Fechado indisponível: confira a compra, Coragem e rolagem.");break;}
   if(!confirm("Gastar 1 Coragem para proteger a Vitalidade contra dano e efeitos de golpes com armas FÍSICAS por 1 rodada? O Narrador encerra o efeito ao término da rodada."))break;
-  state.courage-=1;logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
+  state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);logSkillAction("Corpo Fechado","Ativado por 1 rodada; efeitos físicos na Vitalidade resolvidos manualmente.");render();save();toast("Corpo Fechado: −1 Coragem; proteção por 1 rodada.");break;
  }
  case "impacto-psiquico-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("impacto-psiquico")||skillReq("impacto-psiquico")||state.pending||editMode||state.courage<1){toast("Impacto Psíquico indisponível.");break;}
   if(!confirm("Gastar 1 Coragem para declarar Impacto Psíquico? O golpe e os efeitos de arma são resolvidos pelo Narrador."))break;
-  state.courage-=1;logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
+  state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);logSkillAction("Impacto Psíquico","Golpe psíquico declarado; efeitos de armas pendentes de resolução.");render();save();toast("Impacto Psíquico: −1 Coragem; registre e resolva o golpe.");break;
  }
  case "sphere-create":{
+  if((state.courageRoundSpent||0)>=5){toast("Limite de 5 Coragens na rodada. Confirme nova rodada.");break;}
   if(!ownsSkill("invocar-esfera-espiritual")||skillReq("invocar-esfera-espiritual")||state.pending||editMode){toast("Invocar Esfera Espiritual indisponível.");break;}
   if(state.spiritualSpheres.createdThisRound>=5){toast("Limite de 5 esferas criadas nesta rodada; confirme a próxima rodada antes de repetir.");break;}
   if(sphereCount()>=5){toast("Teto de 5 Esferas Espirituais armazenadas atingido.");break;}
   if(state.courage<1){toast("Invocar Esfera Espiritual exige 1 Coragem.");break;}
   if(!confirm("Converter 1 Coragem em 1 Esfera Espiritual? Limite de 5 criações por rodada e de 5 esferas armazenadas."))break;
   state.courage-=1;state.spiritualSpheres.count=sphereCount()+1;state.spiritualSpheres.createdThisRound=Number(state.spiritualSpheres.createdThisRound||0)+1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   logSkillAction("Invocar Esfera Espiritual","−1 Coragem; +1 esfera; "+state.spiritualSpheres.createdThisRound+"/5 criadas na rodada.");
   render();save();toast("1 esfera criada; "+state.spiritualSpheres.createdThisRound+"/5 nesta rodada.");break;
  }
@@ -5288,10 +5363,16 @@ function onClick(event){
   logSkillAction("Absorver Esferas","−"+amount+" esferas; +"+received+" Coragem (teto respeitado).");
   render();save();toast("Absorver Esferas: −"+amount+" esferas, +"+received+" Coragem.");break;
  }
+ case "advance-round":{
+  if(state.pending||editMode){toast("Finalize a ação ou edição antes de avançar a rodada.");break;}
+  if(!confirm("O Narrador confirmou uma nova rodada? O orçamento de 5 Coragens será reiniciado."))break;
+  state.courageRoundSpent=0;state.spiritualSpheres.createdThisRound=0;
+  render();save();toast("Nova rodada registrada.");break;
+ }
  case "sphere-next-round":{
   if(!ownsSkill("invocar-esfera-espiritual")||!state.spiritualSpheres.createdThisRound||state.pending||editMode)break;
   if(!confirm("O Narrador confirmou o início de uma NOVA rodada? Isto zera o contador de até 5 criações permitidas por rodada."))break;
-  state.spiritualSpheres.createdThisRound=0;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
+  state.spiritualSpheres.createdThisRound=0;state.courageRoundSpent=0;render();save();toast("Nova rodada confirmada para criação de Esferas Espirituais.");break;
  }
  case "sphere-spend":{
   const skillId=id;
@@ -5302,6 +5383,7 @@ function onClick(event){
   render();save();toast(label+": −1 esfera.");break;
  }
  case "cancelar-magia-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
   if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}
   if(state.courage<1){toast("Coragem insuficiente para tentar Cancelar Magia.");break;}
@@ -5322,6 +5404,7 @@ function onClick(event){
   if(!confirm("Confirmar: você percebe a conjuração de "+elementName+" a até 8 m, e o conjurador adversário MANTEVE ao menos um símbolo de Pavor? Sem isso, não é possível cancelar."))break;
   if(!confirm("Gastar 1 Coragem para TENTAR cancelar "+elementName+"? É preciso igualar ou superar a DE "+enemyDe+" (resultado ≥ "+enemyDe+"); empate cancela, sem sucesso automático."))break;
   state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   state.history.unshift({date:new Date().toISOString(),name:"Cancelar Magia · "+elementName,
    outcome:"Tentativa declarada · DE adversária "+enemyDe+" · exige resultado ≥ "+enemyDe+"; empate cancela; Narrador resolve",
    de:enemyDe,reached:0,E:0,A:0,P:0,faces:[],damage:0});
@@ -5330,6 +5413,7 @@ function onClick(event){
   toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e alcance DE ≥ "+enemyDe+" (empate cancela); o Narrador confirma o resultado.");break;
  }
  case "sentido-elemental-use":{
+  if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
   if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
   if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
   if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.");break;}
@@ -5339,6 +5423,7 @@ function onClick(event){
   if(!target){toast("Informe o alvo da análise.");break;}
   if(!confirm("Gastar 1 Coragem para analisar "+target+"? O Narrador informa a afinidade elemental."))break;
   state.courage-=1;
+  state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
   state.history.unshift({date:new Date().toISOString(),name:"Sentido Elemental · "+target,outcome:"Alvo analisado — afinidade informada pelo Narrador",de:0,reached:0,E:0,A:0,P:0,faces:[],damage:0});
   state.history=state.history.slice(0,20);
   render();save();toast("Sentido Elemental: −1 Coragem. Solicite ao Narrador a afinidade elemental de "+target+".");break;
@@ -5562,6 +5647,16 @@ function onClick(event){
 }
 function onChange(event){
  const el=event.target;
+ if(["small-companion-present","small-companion-name","small-companion-species"].includes(el.id)){
+  if(!state.skills.includes("domar-criatura-pequena")){toast("Adquira Domar Criatura Pequena e realize a domesticação antes de registrar o animal.");renderSmallCompanion();return;}
+  const oldMax=maxLife();
+  if(el.id==="small-companion-present")state.smallCompanion.present=!!el.checked;
+  else if(el.id==="small-companion-name")state.smallCompanion.name=String(el.value).slice(0,70);
+  else if(el.id==="small-companion-species")state.smallCompanion.species=el.value==="serpente"?"serpente":"outro";
+  const difference=maxLife()-oldMax;
+  if(difference)state.life=clamp(state.life+difference,0,maxLife()); // Preserva o dano sofrido.
+  renderVitals();renderSmallCompanion();save();return;
+ }
  if(el.dataset.magicField!==undefined){
   if(state.pending){toast("Finalize a rolagem antes de alterar a magia.");renderOwnedPanel();return;}
   const field=el.dataset.magicField;
@@ -5639,7 +5734,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
-  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
+  if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.fulminante="";draft.attackThrown=false;draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
   if(k==="asura"&&!draft.asura)draft.asuraDieId="";
   if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
   if(k==="de"&&draft.cravarRemovalShieldId)draft.cravarRemovalDEConfirmed=false;
