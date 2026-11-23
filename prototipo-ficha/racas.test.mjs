@@ -133,6 +133,28 @@ test("Migração da concessão Lucker Puro legada não vira XP nem apaga Períci
  assert.ok(source.includes('Atualizar elemento de origem (uma única escolha gratuita)'),"Ficha concluída deve oferecer regularização da origem");
 });
 
+test("ficha concluída com escolha racial antiga permite apenas uma regularização",()=>{
+ const begin=source.indexOf("function changeRaceElement(");
+ const end=source.indexOf("function renderRacePanel(",begin);
+ assert.ok(begin>0&&end>begin);
+ const fragment=source.slice(begin,end);
+ const valid=[["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"]];
+ const original=character("lucker_puro",{pureElement:"",creationLocked:true,pending:null});
+ let saves=0,renders=0;
+ const edit=new Function("state","PURE_ELEMENTS","RUNE_ELEMENTS","racialGrants","dependentsValid","toast","render","save",
+  fragment+";return changeRaceElement;")(original,valid,[],racialGrants,()=>null,()=>{},()=>{renders++;},()=>{saves++;});
+ edit("pure","sagrado");
+ assert.equal(original.pureElement,"sagrado");
+ assert.equal(saves,1);assert.equal(renders,1);
+ edit("pure","fogo");
+ assert.equal(original.pureElement,"sagrado","Após regularização não pode trocar de benefício gratuito na ficha concluída");
+ const blocked=character("lucker_puro",{pureElement:"",creationLocked:true,pending:{roll:true}});
+ const blockedEdit=new Function("state","PURE_ELEMENTS","RUNE_ELEMENTS","racialGrants","dependentsValid","toast","render","save",
+  fragment+";return changeRaceElement;")(blocked,valid,[],racialGrants,()=>null,()=>{},()=>{},()=>{});
+ blockedEdit("pure","fogo");
+ assert.equal(blocked.pureElement,"","Pendente de combate impede alteração racial");
+});
+
 test("Runa Espinhos recebe Pugilismo, Foco, Escudo Rúnico e somente um elemento gratuito",()=>{
  const c=character("runa_espinhos",{runeElements:["vento","terra"]});
  assert.deepEqual(racialGrants(c),["pugilismo","criar-item-foco-magia","escudo-arcano","vento"]);
