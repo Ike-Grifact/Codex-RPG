@@ -118,7 +118,7 @@ test("Custo PENDENTE, elementos internos e requisitos inviáveis nunca recebem X
  assert.equal(plan(t,"maos-leves"),null,"Custo completo de Mãos Leves não cabe em 15 XP");
 });
 
-test("Maestrias compráveis custam 1 XP, pedem atributos e não exigem Perícia de peso para aquisição",()=>{
+test("Especializações em Armas compráveis custam 1 XP, pedem atributos e não exigem Perícia de peso para aquisição",()=>{
  const known=[
   ["maestria-adagas",{agilidade:2,destreza:2}],
   ["maestria-espadas",{forca:2,destreza:2}],
@@ -126,7 +126,8 @@ test("Maestrias compráveis custam 1 XP, pedem atributos e não exigem Perícia 
   ["maestria-macas",{forca:3,destreza:1,vigor:1}],
   ["maestria-martelos",{forca:3,destreza:1,vigor:1}],
   ["maestria-hastes",{forca:2,agilidade:1,destreza:1}],
-  ["maestria-cajados",{destreza:2}]
+  ["maestria-cajados",{destreza:2}],
+  ["maestria-punhos",{forca:1,agilidade:1,destreza:1,vigor:1}]
  ];
  for(const [id,req] of known){
   const row=SKILLS.find(x=>x.id===id);
@@ -144,7 +145,7 @@ test("Maestrias compráveis custam 1 XP, pedem atributos e não exigem Perícia 
   for(const [attr,grade] of Object.entries(req))
    assert.equal(planRow.state.attributes[attr],grade,id+" compra atributo "+attr);
  }
- for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-punhos","maestria-longo-alcance"]){
+ for(const id of ["maestria-arcos","maestria-bestas","maestria-arremessos","maestria-longo-alcance"]){
   assert.equal(SKILLS.find(x=>x.id===id)?.cost,1,id+" tem custo conhecido");
   assert.match(humanoidSkillRequirement(blank("humanoide"),id),/PENDENTES/,id+" precisa dos requisitos ainda não definidos");
   assert.equal(plan(blank("humanoide"),id),null,"Bloqueia compra sem inventar requisitos: "+id);
