@@ -372,7 +372,7 @@ Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — 
 | d6 | **6** | **1 Êxito (1E)** — ᛋ |
 | d10 | **7** | **2 Êxitos (2E)** — ᛋᛋ |
 | d12 | **12** | **3 Êxitos (3E)** — ᛋᛋᛋ |
-| d20 | **20** | **8 Êxitos (8E)** — ᛋᛋᛋᛋᛋᛋᛋᛋ |
+| d20 | **20** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
 
 **Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
 
@@ -429,7 +429,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 17 | — | — | — | — | 3ᛋ+ᚨ+ᚦ |
 | 18 | — | — | — | — | 4ᛋ+ᚨ+2ᚦ |
 | 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
-| 20 | — | — | — | — | 8ᛋ |
+| 20 | — | — | — | — | 6ᛋ+2ᚨ |
 
 As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3P. O d4 mantém sua tabela própria. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3P+2A. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
 
