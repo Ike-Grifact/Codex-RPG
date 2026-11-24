@@ -623,10 +623,25 @@ const metadata={
  }
 };
 const byId=Object.fromEntries(Object.values(metadata).map(m=>[m.id,m]));
-const files={E:"exito",A:"codex/status-antecipar",P:"pavor",C:"codex/status-coragem"},names={E:"Êxito",A:"Antecipar",P:"Pavor",C:"Coragem"};
-const pattern=/(^|[^\p{L}\p{N}])([+−-]?\d+\s*(Êxitos?|Antecipar|Pavor(?:es)?|[Cc]oragem|E|A|P))(?=$|[^\p{L}\p{N}])/gu;
+const files={E:"codex/status-exito",A:"codex/status-antecipar",P:"codex/status-pavor",C:"codex/status-coragem"},names={E:"Êxito",A:"Antecipar",P:"Pavor",C:"Coragem"};
+const pattern=/(^|[^\p{L}\p{N}])((?:[+−-]?\d+\s*(Êxitos?|Antecipar|Pavor(?:es)?|[Cc]oragem|E|A|P))|(?:(?:\d+)?d(4|6|10|12|20)))(?=$|[^\p{L}\p{N}])/gu;
 const key=t=>/^Êxito/.test(t)?"E":t==="Antecipar"?"A":/^Pavor/.test(t)?"P":/^coragem$/i.test(t)?"C":t;
-function decorateEscaped(text){return String(text).replace(pattern,(_,prefix,value,token)=>prefix+'<span class="codex-inline-rune">'+value+'<img src="../assets/icons/'+files[key(token)]+'.svg" alt="" aria-hidden="true" title="'+names[key(token)]+'"></span>');}
+function dieIcon(n){
+ const shapes={
+ 4:'<polygon points="21,4 39,36 3,36"/><path d="M21 4 L21 27 L3 36 M21 27 L39 36"/>',
+ 6:'<polygon points="21,3 37,12 37,30 21,39 5,30 5,12"/><path d="M5 12 L21 21 L37 12 M21 21 L21 39"/>',
+ 10:'<polygon points="21,2 35,14 32,32 21,40 10,32 7,14"/><path d="M7 14 L21 9 L35 14 M21 9 L21 40 M7 14 L21 25 L35 14 M21 25 L10 32 M21 25 L32 32"/>',
+ 12:'<polygon points="21,2 35,8 40,21 34,34 21,40 8,34 2,21 7,8"/><path d="M21 9 L31 16 L28 29 L14 29 L11 16 Z M21 2 L21 9 M35 8 L31 16 M40 21 L31 16 M34 34 L28 29 M21 40 L28 29 M8 34 L14 29 M2 21 L11 16 M7 8 L11 16"/>',
+ 20:'<polygon points="21,2 34,8 40,21 34,35 21,40 8,35 2,21 8,8"/><path d="M21 2 L21 40 M8 8 L34 35 M34 8 L8 35 M2 21 L40 21 M8 8 L21 21 L34 8 M8 35 L21 21 L34 35"/>'
+ };
+ return '<svg viewBox="0 0 42 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(shapes[n]||shapes[4])+'</svg>';
+}
+function tokenMarkup(value,token,sides){
+ if(sides)return '<span class="codex-inline-die">'+dieIcon(Number(sides))+'<span>'+value+'</span></span>';
+ const k=key(token),label=/^[EAP]$/.test(token)?value.slice(0,-1).trimEnd():value;
+ return '<span class="codex-inline-rune">'+label+'<img src="../assets/icons/'+files[k]+'.svg" alt="'+(/^[EAP]$/.test(token)?names[k]:"")+'" title="'+names[k]+'"></span>';
+}
+function decorateEscaped(text){return String(text).replace(pattern,(_,prefix,value,token,sides)=>prefix+tokenMarkup(value,token,sides));}
 window.CODEX_SKILL_PRESENTATION=Object.freeze({metadata,byId,decorateEscaped});
 if(typeof document==="undefined")return;
 const page=location.pathname;if(!/\/(pericias|mecanicas)(\/|$)/.test(page))return;
@@ -658,9 +673,38 @@ function cleanup(){
  }
  for(const nav of document.querySelectorAll(".skill-navlinks")){for(const a of [...nav.querySelectorAll("a[href]")]){const t=target(a);if(t?.section==="pericias"&&t.slug!=="index"&&!metadata[t.slug]){const p=a.parentElement;a.remove();if(p.tagName==="SPAN"&&!p.textContent.trim())p.remove();}}if(!nav.querySelector("a"))nav.remove();}
 }
-function decorateText(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);for(const n of nodes){if(n.parentElement.closest(".codex-inline-rune,script,style"))continue;const raw=n.nodeValue,matches=[...raw.matchAll(pattern)];if(!matches.length)continue;const frag=document.createDocumentFragment();let pos=0;for(const m of matches){let start=m.index+m[1].length;frag.append(document.createTextNode(raw.slice(pos,start)));const s=element("span","codex-inline-rune",m[2]),i=element("img");i.src="../assets/icons/"+files[key(m[3])]+".svg";i.alt="";i.title=names[key(m[3])];i.setAttribute("aria-hidden","true");s.append(i);frag.append(s);pos=start+m[2].length;}frag.append(document.createTextNode(raw.slice(pos)));n.replaceWith(frag);}}
-function enhance(){if(document.documentElement.dataset.codexSkillPresentation)return;document.documentElement.dataset.codexSkillPresentation="1";const css=element("link");css.rel="stylesheet";css.href="../assets/skill-presentation.css?v=20261123-v0104";document.head.append(css);
- if(page.includes("/pericias/")){cleanup();const m=metadata[page.split("/").pop().replace(/\.html$/,"")];if(m){const h=document.querySelector(".skill-hero h1");if(h){h.classList.add("codex-skill-title");h.prepend(icon(m.icon,"codex-skill-title-icon"));}
+function decorateText(root){
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+ for(const n of nodes){if(n.parentElement.closest(".codex-inline-rune,.codex-inline-die,script,style"))continue;
+  const raw=n.nodeValue,matches=[...raw.matchAll(pattern)];if(!matches.length)continue;
+  const frag=document.createDocumentFragment();let pos=0;
+  for(const m of matches){const start=m.index+m[1].length;frag.append(document.createTextNode(raw.slice(pos,start)));
+   const template=document.createElement("template");template.innerHTML=tokenMarkup(m[2],m[3],m[4]);frag.append(template.content);pos=start+m[2].length;}
+  frag.append(document.createTextNode(raw.slice(pos)));n.replaceWith(frag);
+ }
+}
+function addRelatedMechanics(slug){
+ const article=document.querySelector(".skill-article");if(!article||!metadata[slug])return;
+ const text=article.textContent,links=new Map();
+ const add=(url,label)=>links.set(url,label);
+ const base="../mecanicas/";
+ if(/^(pericia-em-armas-|maestria-em-(adagas|espadas|machados|martelos|hastes|cajados|arcos|bestas|arremessos|punhos|longo-alcance|armas-fogo)|pericia-em-arremesso-de-armas|golpe-fulminante|golpe-colossal|disparo-(fulminante|multiplo|violento)|escudo-bumerangue)/.test(slug))add(base+"caracteristicas-de-combate.html#armas","Características de Armas, Golpes e Magias");
+ if(/^(artista-marcial|pugilismo|golpe-baixo)$/.test(slug))add(base+"caracteristicas-de-combate.html#golpes","Características de Armas, Golpes e Magias");
+ if(/^(pericia-em-elemento-|maestria-elemental|conjuracao-refinada|improviso-elemental|encantar-com-elemento|escudo-arcano)/.test(slug))add(base+"caracteristicas-de-combate.html#magias","Características de Armas, Golpes e Magias");
+ if(/Vantagem|Desvantagem/i.test(text))add(base+"vantagens-e-desvantagens.html","Vantagens e Desvantagens");
+ if(/Golpe Certo/i.test(text))add(base+"golpe-certo.html","Golpe Certo");
+ if(/Antecipação/i.test(text))add(base+"antecipacao.html","Antecipação");
+ if(/antes d[ea] rola|antes de rolar|declaração de ataque/i.test(text))add(base+"declaracao-de-ataque.html","Declaração de ataque e Coragem");
+ if(/Saque Rápido|acesso rápido|arma empunhada/i.test(text))add(base+"inventario-e-acesso-rapido.html","Inventário e armas de acesso rápido");
+ if(!links.size)return;
+ let aside=document.querySelector(".skill-related");if(!aside){aside=element("aside","skill-related");article.after(aside);}
+ let head=[...aside.querySelectorAll("h2")].find(h=>h.textContent.trim()==="Mecânicas relacionadas"),group=head?.nextElementSibling;
+ if(!group?.classList.contains("skill-related-links")){head=element("h2","","Mecânicas relacionadas");group=element("div","skill-related-links");aside.append(head,group);}
+ for(const [url,label] of links){if([...group.querySelectorAll("a")].some(a=>a.getAttribute("href")?.split("#")[0]===url.split("#")[0]))continue;const a=element("a","",label);a.href=url;group.append(a);}
+}
+
+function enhance(){if(document.documentElement.dataset.codexSkillPresentation)return;document.documentElement.dataset.codexSkillPresentation="1";const css=element("link");css.rel="stylesheet";css.href="../assets/skill-presentation.css?v=20261124-v0115";document.head.append(css);
+ if(page.includes("/pericias/")){cleanup();const slug=page.split("/").pop().replace(/\.html$/,"");addRelatedMechanics(slug);const m=metadata[slug];if(m){const h=document.querySelector(".skill-hero h1");if(h){h.classList.add("codex-skill-title");h.prepend(icon(m.icon,"codex-skill-title-icon"));}
  const dl=document.querySelector(".skill-stats");if(dl){const type=findStat(dl,/^Tipo$/i);if(!type)stat(dl,"Tipo",m.type);else if(m.type!=="Pendente"){const dd=type.querySelector("dd");if(dd)dd.textContent=m.type;}const cost=findStat(dl,/^(Custo de ativação|Ativação)$/i);if(!cost)stat(dl,"Custo de ativação",m.cost);else if(m.type==="Passiva"||m.type==="Ativa + benefício passivo"||/^(Não especificado|Sem custo adicional especificado|PENDENTE)$/i.test(cost.querySelector("dd")?.textContent.trim()||"")){const dd=cost.querySelector("dd");if(dd&&m.cost!=="Pendente")dd.textContent=m.cost;}}}
  for(const card of document.querySelectorAll(".skill-catalog-card")){const a=card.querySelector("h3 a[href]"),t=a&&target(a),m=t&&metadata[t.slug];if(!m)continue;a.classList.add("codex-skill-card-title");a.prepend(icon(m.icon,"codex-skill-card-icon"));const d=element("div","codex-skill-card-meta");d.append(element("span","codex-skill-kind",m.type==="Pendente"?"Tipo pendente":m.type),element("span","codex-skill-cost","Ativação: "+m.cost));card.insertBefore(d,card.querySelector("p")||null);}}
  for(const el of document.querySelectorAll(".skill-article,.skill-stat dd,.skill-description,.skill-catalog-card p,.codex-skill-cost"))decorateText(el);

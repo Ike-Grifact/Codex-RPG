@@ -7,3 +7,5 @@
 .codex-skill-card-meta{display:flex;flex-wrap:wrap;gap:5px 10px;align-items:baseline;margin:0 0 9px;font-size:11px;line-height:1.4}
 .codex-skill-kind{font-weight:700}.codex-skill-cost{opacity:.85}
 @media(max-width:560px){.codex-skill-title,.codex-skill-card-title{gap:8px}}
+
+.codex-inline-die{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;vertical-align:baseline}.codex-inline-die svg{width:1.35em;height:1.35em;flex:none;fill:none;stroke:currentColor}.codex-inline-rune img{background:none;border:0;border-radius:0}
