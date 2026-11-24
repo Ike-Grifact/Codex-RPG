@@ -1,13 +1,121 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Mecânicas oficiais do Codex RPG: vantagens, desvantagens, Golpe Certo e Antecipação.">
-<title>Mecânicas — Codex RPG</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="../assets/theme.css"><link rel="stylesheet" href="../pericias/pericias.css"><script src="../assets/site.js" defer></script></head>
+<meta name="description" content="Guia de mecânicas do Codex RPG: declaração de ataque, condições, características, antecipação, alcance efetivo, carga e inventário.">
+<title>Mecânicas — Codex RPG</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="../assets/theme.css"><script src="../assets/site.js" defer></script></head>
 <body><a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-<header class="site-header"><a class="brand" href="../index.html"><img class="brand-logo" src="../assets/codex-logo.svg" width="64" height="58" alt=""><span class="brand-text">CODEX <strong>RPG</strong></span></a><nav class="site-nav" aria-label="Menu principal"><a href="../index.html">Início</a><a href="../livro.html">Livro do Jogador</a><a href="../pericias/">Perícias</a><a href="./" class="active">Mecânicas</a></nav><button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu">☰</button></header>
-<main id="conteudo" class="skill-shell"><nav class="skill-breadcrumbs"><a href="../index.html">Início</a><span>›</span><span>Mecânicas</span></nav>
-<section class="skill-hero"><p class="skill-eyebrow">Referências de regras · Não são Perícias compráveis</p><span class="skill-badge">DEFINIDO / REGRAS ASSOCIADAS</span><h1>Mecânicas</h1><p class="skill-description">Condições e procedimentos usados por Perícias, armas, golpes e magias, com seus gatilhos, valores e restrições. Não consomem XP de aquisição por si só.</p></section>
-<section class="skill-article"><h2>Consultar mecânicas</h2><div class="skill-related-links"><a href="./vantagens-e-desvantagens.html">Vantagens e Desvantagens</a><a href="./golpe-certo.html">Golpe Certo · +2 Êxitos</a><a href="./antecipacao.html">Antecipação</a><a href="./caracteristicas-de-combate.html">Características de Armas, Golpes e Magias</a><a href="./capacidade-de-carga.html">Capacidade de Carga</a><a href="./inventario-e-acesso-rapido.html">Inventário e armas de acesso rápido</a><a href="./declaracao-de-ataque.html">Declaração de ataque e Coragem</a></div>
-<h2>Regras e especializações não são a mesma coisa</h2><p>Uma mecânica define como resolver uma condição. A Perícia explica quando você pode ativá-la. Por exemplo, <a href="../pericias/manejo-perfeito-armas-corpo-a-corpo.html">Manejo Perfeito</a> pode habilitar <a href="./golpe-certo.html">Golpe Certo</a>; a mecânica não é comprada separadamente.</p>
-<p>As condições de peso, Coragem, dados simbólicos, Êxito ᛋ, Antecipar ᚨ e Pavor ᚦ continuam sujeitas às regras gerais e às decisões mais recentes do SRD.</p></section>
-<nav class="skill-navlinks"><a href="../pericias/">Perícias relacionadas</a> · <a href="../livro.html">Livro do Jogador</a></nav></main>
+<header class="site-header"><a class="brand" href="../index.html"><img class="brand-logo" src="../assets/codex-logo.svg" width="64" height="58" alt=""><span class="brand-text">CODEX <strong>RPG</strong></span></a><nav class="site-nav" aria-label="Menu principal"><a href="../index.html">Início</a><a href="../livro.html">Livro do Jogador</a><a href="../pericias/">Perícias</a><a href="./" class="active" aria-current="page">Mecânicas</a></nav><button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu" aria-expanded="false">☰</button></header>
+<main id="conteudo">
+  <div class="page-header shell">
+    <p class="eyebrow">Guia do Aprendiz · Referência de regras</p>
+    <h1>Mecânicas</h1>
+    <p class="lead">Entenda como suas escolhas, o equipamento e as condições da cena influenciam a resolução das ações no Codex RPG.</p>
+    <p class="small muted">As mecânicas descrevem como resolver uma condição ou efeito. As Perícias indicam quais personagens podem utilizar determinados benefícios e em quais situações. Uma mecânica não é comprada separadamente com XP. Leia este guia em sequência ou consulte uma regra específica durante a partida. <a class="text-link" href="../livro.html">Voltar ao Livro do Jogador</a>.</p>
+  </div>
+  <div class="book-shell shell">
+    <aside class="toc" aria-label="Índice de Mecânicas">
+      <p>Índice de Mecânicas</p>
+      <a href="#declaracao-de-ataque">01 · Declaração de ataque e Coragem</a>
+      <a href="#vantagens-e-desvantagens">02 · Vantagens e Desvantagens</a>
+      <a href="#golpe-certo">03 · Golpe Certo</a>
+      <a href="#antecipacao">04 · Antecipação</a>
+      <a href="#caracteristicas-de-combate">05 · Características de Armas, Golpes e Magias</a>
+      <a href="#alcance-efetivo">06 · Alcance efetivo das armas de longo alcance</a>
+      <a href="#capacidade-de-carga">07 · Capacidade de Carga</a>
+      <a href="#inventario-e-acesso-rapido">08 · Inventário e armas de acesso rápido</a>
+      <a href="../pericias/">Perícias · outra página</a>
+      <a href="../livro.html">Livro do Jogador · outra página</a>
+    </aside>
+    <div class="book-content">
+      <section id="declaracao-de-ataque">
+        <span class="eyebrow">01 · Antes de rolar</span>
+        <h2>Declaração de ataque e Coragem</h2>
+        <p>As decisões de um ataque começam antes dos dados. Declare a ação, o alvo, as Perícias e características que pretende ativar, a retenção adicional e os recursos envolvidos. Some os custos de Coragem e pague-os antes de rolar, respeitando o saldo disponível e o limite de 5 Coragens gastas no turno.</p>
+        <p>Depois de selecionar os dados mantidos e resolver Antecipar, compare o resultado com a Dificuldade de Êxito (DE). Efeitos que exigem acerto ou crítico só ocorrem quando sua condição é satisfeita. Uma falha não devolve a Coragem gasta.</p>
+        <div class="notice"><strong>Exemplo:</strong> Se você declarar quatro ativações de 1 Coragem cada, o custo total será de 4 Coragens antes da rolagem. A recuperação normal de um crítico não reinicia o limite de gastos do turno.</div>
+        <p><a class="text-link" href="./declaracao-de-ataque.html">Consultar a regra completa: Declaração de ataque e Coragem</a></p>
+      </section>
+      <section id="vantagens-e-desvantagens">
+        <span class="eyebrow">02 · Condições da ação</span>
+        <h2>Vantagens e Desvantagens</h2>
+        <p>Nem todas as ações acontecem nas mesmas condições. Vantagens e Desvantagens representam circunstâncias que favorecem ou prejudicam a execução. Uma Vantagem comum concede +1A, enquanto uma Vantagem Absoluta concede +1E. Uma Desvantagem comum retira 1A, e uma Desvantagem Absoluta retira 1E.</p>
+        <p>A afinidade natural de uma arma contra um humanoide considera a armadura equipada pelo alvo, não o peso de seu inventário. Armas de longo alcance podem ter afinidades próprias. Perícias podem modificar essas condições conforme seus gatilhos; isso não autoriza somar situações equivalentes repetidamente.</p>
+        <div class="notice"><strong>Exemplo:</strong> Uma arma Leve tem afinidade favorável contra armadura Média (+1A). Contra armadura Pesada ou Muito Pesada, a afinidade natural é desfavorável (−1A).</div>
+        <p><a class="text-link" href="./vantagens-e-desvantagens.html">Consultar a regra completa: Vantagens e Desvantagens</a></p>
+      </section>
+      <section id="golpe-certo">
+        <span class="eyebrow">03 · Precisão e especialização</span>
+        <h2>Golpe Certo</h2>
+        <p>Uma afinidade favorável pode se tornar mais eficaz quando o personagem domina o equipamento. A Perícia <a class="text-link" href="../pericias/manejo-perfeito-armas-corpo-a-corpo.html">Manejo Perfeito</a> substitui o +1A natural de peso por Vantagem Absoluta (+1E), desde que seus requisitos e condições sejam atendidos.</p>
+        <p>Quando a ação já se encontra em Vantagem Absoluta, o gatilho de Golpe Certo eleva o bônus total dessa condição a +2E. Isso não concede um crítico automático, dados extras ou uma nova Perícia.</p>
+        <div class="notice"><strong>Exemplo:</strong> Com Manejo Perfeito, uma afinidade favorável e uma Vantagem Absoluta já existente, o bônus total é +2E, não +3E. O +1A de peso substituído não é somado novamente.</div>
+        <p><a class="text-link" href="./golpe-certo.html">Consultar a regra completa: Golpe Certo</a></p>
+      </section>
+      <section id="antecipacao">
+        <span class="eyebrow">04 · Preparação e concentração</span>
+        <h2>Antecipação</h2>
+        <p>Antecipar (ᚨ) é o símbolo que permite adaptar o resultado de uma ação. Antecipação é uma mecânica específica: ao realizar uma rolagem usando Disciplina e manter um dado que contenha Antecipar, você pode reservar 1A para a próxima rolagem em vez de gastá-lo agora.</p>
+        <p>O símbolo reservado expira quando é usado, quando a próxima ação termina ou quando se conclui um descanso longo, o que acontecer primeiro. Guardá-lo não concede Êxito nem Vantagem por si só. A Perícia Concentração Refinada trata de benefícios adicionais.</p>
+        <div class="notice"><strong>Exemplo:</strong> Se você mantiver 1A em um teste de Disciplina e decidir guardá-lo, não poderá usá-lo também para cancelar Pavor nessa mesma rolagem.</div>
+        <p><a class="text-link" href="./antecipacao.html">Consultar a regra completa: Antecipação</a></p>
+      </section>
+      <section id="caracteristicas-de-combate">
+        <span class="eyebrow">05 · Efeitos além do dano</span>
+        <h2>Características de Armas, Golpes e Magias</h2>
+        <p>Uma arma, manobra ou magia pode produzir efeitos próprios, além de resolver seu objetivo principal. A fonte precisa possuir a característica e o personagem deve cumprir sua habilitação. Características ativas de armas exigem a Perícia correspondente, declaração e pagamento antes de rolar, conforme a regra específica. Características passivas obedecem aos seus próprios gatilhos.</p>
+        <p>Cortante, Perfurante e Cravar são exemplos de características de armas. Empurrar, Agarrar, Derrubar e Desarmar são exemplos de manobras. Magias possuem efeitos definidos pela Perícia elemental, pelo Grau e pela fonte de conjuração; não herdam automaticamente as características das armas físicas.</p>
+        <div class="notice"><strong>Exemplo:</strong> Barulhenta é uma característica passiva que acrescenta +1P quando pertinente. Já Cortante, quando ativada validamente, aplica Sangramento no acerto, inclusive através da armadura.</div>
+        <p><a class="text-link" href="./caracteristicas-de-combate.html">Consultar a regra completa: Características de Armas, Golpes e Magias</a></p>
+      </section>
+      <section id="alcance-efetivo">
+        <span class="eyebrow">06 · Distância e pontaria</span>
+        <h2>Alcance efetivo das armas de longo alcance</h2>
+        <p>O alcance efetivo é a distância até a qual uma arma pode atingir o alvo sem sofrer penalidade por exceder seu alcance. Disparar além dessa distância torna a ação mais difícil: quanto maior o excedente, mais severa a condição aplicada. Consulte sempre o alcance cadastrado da arma utilizada.</p>
+        <h3>Alcance base das armas de longo alcance</h3>
+        <div class="table-scroll"><table><thead><tr><th scope="col">Arma</th><th scope="col">Alcance efetivo</th><th scope="col">Com Olhos de Águia</th></tr></thead><tbody>
+          <tr><th scope="row">Arco Curto</th><td>24 m</td><td>32 m</td></tr>
+          <tr><th scope="row">Arco Longo</th><td>32 m</td><td>40 m</td></tr>
+          <tr><th scope="row">Besta de uma mão</th><td>16 m</td><td>24 m</td></tr>
+          <tr><th scope="row">Besta de duas mãos</th><td>24 m</td><td>32 m</td></tr>
+          <tr><th scope="row">Besta Pesada</th><td>32 m</td><td>40 m</td></tr>
+          <tr><th scope="row">Zarabatana</th><td>12 m</td><td>20 m</td></tr>
+        </tbody></table></div>
+        <h3>Disparar além do alcance efetivo</h3>
+        <p>Considere <strong>R</strong> o alcance efetivo da arma, incluindo os aumentos habilitados. Aplique apenas a faixa correspondente à distância do alvo:</p>
+        <div class="table-scroll"><table><thead><tr><th scope="col">Distância do alvo</th><th scope="col">Condição</th><th scope="col">Modificador</th></tr></thead><tbody>
+          <tr><td>Até R</td><td>Normal por alcance</td><td>Nenhum</td></tr>
+          <tr><td>Acima de R e abaixo de R + 8 m</td><td>Desvantagem</td><td>−1A</td></tr>
+          <tr><td>De R + 8 m a menos de R + 16 m</td><td>Desvantagem Absoluta</td><td>−1E</td></tr>
+          <tr><td>A partir de R + 16 m</td><td>Acerto de Sorte / Ação de Sorte</td><td>−2E</td></tr>
+        </tbody></table></div>
+        <p>Os modificadores da mesma distância <strong>não são cumulativos</strong>. A possibilidade e os limites de disparos muito além da última faixa permanecem pendentes. Aliados a até 1 m do alvo podem gerar Desvantagem; com dois aliados, Desvantagem Absoluta, conforme as condições pertinentes. A afinidade natural de peso é uma condição distinta do alcance.</p>
+        <div class="notice"><strong>Exemplo:</strong> com um Arco Curto (24 m), um disparo a 24 m não sofre penalidade de alcance; a 28 m sofre −1A; a 32 m sofre −1E; a 40 m entra em Acerto de Sorte (−2E). Com Olhos de Águia, o alcance efetivo passa a 32 m e as faixas são deslocadas em 8 m.</div>
+        <h3>Ampliar o alcance</h3>
+        <p>A Perícia passiva <a class="text-link" href="../pericias/olhos-de-aguia.html">Olhos de Águia</a> acrescenta 8 m ao alcance efetivo das armas à distância e de fogo habilitadas, sem custo adicional de ativação. Ela não concede dados, dano ou Êxitos extras. A <a class="text-link" href="../pericias/pericia-em-armas-de-longo-alcance.html">Perícia em Armas de Longo Alcance</a> remove a Desvantagem natural de peso, não as penalidades de distância. Arremessos seguem suas próprias faixas de excedente, não os intervalos de 8 m desta regra.</p>
+        <p><a class="text-link" href="../livro.html#alcance">Consultar alcance efetivo e proximidade no Livro do Jogador</a> · <a class="text-link" href="../pericias/olhos-de-aguia.html">Olhos de Águia</a></p>
+      </section>
+      <section id="capacidade-de-carga">
+        <span class="eyebrow">07 · Peso, balanço e deslocamento</span>
+        <h2>Capacidade de Carga</h2>
+        <p>Alto é a unidade de carga do Codex RPG. A capacidade corporal é 1 + piso((Força + Vigor + Atletismo)/3) Alto, e a mochila acrescenta 0,5 Alto. Todos os itens transportados contam para a carga, estejam equipados ou guardados. Espaços de saque rápido e mãos não fornecem capacidade adicional.</p>
+        <p>O Balanço indica quanto da capacidade total está ocupado. Ao atingir 100% ou mais, o personagem fica Muito Pesado: sofre −2E nos testes afetados e tem o deslocamento padrão reduzido à metade. Ambas as penalidades cessam abaixo de 100%. A abrangência dos testes, as interações, a automação de −2E e o arredondamento em tabuleiro permanecem pendentes.</p>
+        <div class="notice"><strong>Exemplo:</strong> Um personagem com capacidade total de 1,5 Alto que transporta 1,5 Alto está Muito Pesado. Se seu deslocamento padrão for de 11 metros, passa a 5,5 metros.</div>
+        <p><a class="text-link" href="./capacidade-de-carga.html">Consultar a regra completa: Capacidade de Carga</a></p>
+      </section>
+      <section id="inventario-e-acesso-rapido">
+        <span class="eyebrow">08 · Organização do equipamento</span>
+        <h2>Inventário e armas de acesso rápido</h2>
+        <p>A posição de um item importa durante o combate. Armas empunhadas estão nas mãos; armas de acesso rápido ficam presas ao corpo; armas guardadas permanecem no inventário. O corpo dispõe de três espaços de saque rápido e duas mãos, todos sujeitos à capacidade corporal.</p>
+        <p>Sacar uma arma de acesso rápido sem a Perícia Saque Rápido impõe Desvantagem Absoluta (−1E). Com a Perícia, pode-se gastar 1A para evitar essa penalidade. Sacar do inventário tem condições próprias. Aljavas e estojos ocupam um espaço de saque rápido, armazenam até 20 projéteis e não aumentam a capacidade de carga.</p>
+        <div class="notice"><strong>Exemplo:</strong> Ao disparar uma arma de projétil, retire 1 munição compatível do recipiente antes de rolar, independentemente do resultado. Sem munição disponível, não há disparo.</div>
+        <p><a class="text-link" href="./inventario-e-acesso-rapido.html">Consultar a regra completa: Inventário e armas de acesso rápido</a></p>
+      </section>
+      <section id="outras-referencias">
+        <span class="eyebrow">Continue a leitura</span>
+        <h2>Regras e especializações</h2>
+        <p>As mecânicas deste guia complementam as regras gerais do Livro do Jogador. Para aprender a montar a pilha de dados, usar Êxito, Antecipar e Pavor, compreender o protagonismo ou resolver o dano, consulte o Livro. Para descobrir requisitos, custos de aquisição e benefícios de cada especialização, consulte o catálogo de Perícias.</p>
+        <p><a class="text-link" href="../livro.html">Livro do Jogador</a> · <a class="text-link" href="../pericias/">Catálogo de Perícias</a></p>
+      </section>
+    </div>
+  </div>
+</main>
 <footer class="footer"><div class="shell footer-inner"><strong>CODEX RPG</strong><a href="../index.html">Início</a></div></footer></body></html>
