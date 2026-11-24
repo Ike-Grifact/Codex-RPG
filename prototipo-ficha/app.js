@@ -397,7 +397,7 @@ const SKILLS=[
  [
   "golpe-fulminante",
   "Golpe Fulminante",
-  "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.",
+  "Ativa: 1 Coragem paga antes de rolar. Eleva um dado da arma corpo a corpo (d6→d10; d10→d12; d12→2d12), máximo 9 dados. No acerto, cada Pavor mantido não anulado causa 1 dano e continua sendo transferido aos inimigos. Arremesso usa Disparo Fulminante. Combina com outras ativações declaradas até 5 Coragens por turno.",
   1
  ],
  [
@@ -1332,7 +1332,7 @@ const CARD_REQUIREMENTS={
  "transfusao-sanguinaria": "Lucker de Sangue (exclusiva) + Transfusão + Perícia em Elemento Sangue",
  "armas-longo-alcance": "Disciplina 1 + Destreza 2",
  "olhos-de-aguia": "Destreza 3 + Disciplina 3 + Armas de Longo Alcance OU Armas de Fogo",
- "golpe-fulminante": "Disciplina 2 + Força 2 + uma especialização corpo a corpo",
+ "golpe-fulminante": "Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo",
  "espalhar-golpe": "Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo",
  "maestria-arremesso-armas": "Força 2 + Destreza 2 + Agilidade 1 + Armas Leves OU Médias OU Pesadas",
  "disparo-fulminante": "Destreza 2 + Força 1 + Disciplina 2 + (Armas de Longo Alcance OU Perícia em Arremesso de Armas)",
@@ -1600,7 +1600,7 @@ const CARD_ACTIVATIONS={
  "transfusao": "Custo de Vida; custo de ativação PENDENTE",
  "transfusao-sanguinaria": "Conjuração ativa · custo e procedimento pendentes",
  "armas-longo-alcance": "1 Coragem no acerto comum; crítico gratuito",
- "golpe-fulminante": "1 Coragem; crítico não dispensa",
+ "golpe-fulminante": "1 Coragem antes de rolar",
  "espalhar-golpe": "1 Coragem por até 2 alvos adicionais",
  "maestria-arremesso-armas": "1 Coragem ao acertar para ativar efeitos",
  "disparo-fulminante": "1 Coragem; crítico não dispensa",
@@ -1643,6 +1643,7 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "golpe-fulminante":{type:"Ativa",intro:"Você concentra sua força em um golpe corpo a corpo, elevando o potencial da arma e convertendo o risco em dano.",benefits:["Elevação da arma. Antes de rolar, gaste 1 Coragem para elevar um dado da arma habilitada: d6 → d10, d10 → d12 ou d12 → 2d12. Respeite o limite de 9 dados rolados.","Dano de Pavor. No acerto, cada Pavor mantido e não anulado causa 1 dano em vez da contribuição normal de metade. Esse Pavor continua sendo transferido aos inimigos conforme a regra de transferência.","Combinação de técnicas. Declare e pague esta Perícia junto às demais ativações e recursos antes de rolar. O custo da tentativa permanece na falha; o crítico não dispensa a ativação, mas mantém a recuperação normal de Coragem. Respeite o teto de 5 Coragens por turno."],note:"Para usar: ataque corpo a corpo com dado de arma habilitado. Para arremesso de armas, utilize Disparo Fulminante. Pugilismo satisfaz o requisito de compra, mas não cria um dado de arma para socos sem equipamento.",mechanics:[["declaracao-de-ataque","Declaração de ataque e Coragem"]]},
  "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar para uma arma de acesso rápido durante um ataque, gaste 1 Antecipar obtido na própria rolagem para atacar sem a penalidade do saque. Sem esse símbolo, aplica-se a Desvantagem Absoluta normal do saque (−1 Êxito).","Arma guardada. Sacar uma arma de dentro do inventário para atacar causa Desvantagem Absoluta (−1 Êxito), mesmo com esta Perícia. Sem Saque Rápido, esse ataque é um Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
  "artista-marcial":{
   type:"Ativa + benefício passivo",
@@ -2702,7 +2703,7 @@ function skillReq(id,s=state){
  if(id==="sagrado"&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||vig<1||!has("criar-item-foco-magia")))return"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
- if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.";
+ if(id==="golpe-fulminante"&&(disc<2||strength<2||!["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(has)))return"Requer Disciplina 2, Força 2 e uma Perícia em Armas Leves, Médias, Pesadas ou Pugilismo. Perícia em Arremesso não habilita este golpe.";
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
@@ -3483,7 +3484,7 @@ const GENE_AUTO_REQUIREMENTS={
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-pesadas"]],
  "golpe-fulminante":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+  ...["armas-leves","armas-medias","armas-pesadas","pugilismo"].map(id=>
    ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
  "espalhar-golpe":[
   ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>

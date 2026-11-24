@@ -42,7 +42,7 @@ const metadata={
  "golpe-fulminante": {
   "id": "golpe-fulminante",
   "type": "Ativa",
-  "cost": "1 Coragem",
+  "cost": "1 Coragem antes de rolar",
   "icon": "categoria-corporal"
  },
  "golpe-colossal": {

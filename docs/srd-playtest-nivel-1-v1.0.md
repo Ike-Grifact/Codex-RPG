@@ -439,3 +439,8 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 
 
 **Correção autoral — SRD v0.111 (24/11/2026):** Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Substitui a regra anterior de Golpe de Sorte por ausência de Antecipar no saque. [SRD v0.111](srd-continuidade-v0.111.md).
+
+
+**Golpe Fulminante [DEFINIDO — 24/11/2026]:** 1 XP, Ativa. Requisitos: Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo. Gasta 1 Coragem antes da rolagem, elevando um dado da arma corpo a corpo habilitada (d6→d10; d10→d12; d12→2d12), até 9 dados rolados. No acerto cada Pavor mantido não anulado causa 1 dano, sem cancelar transferência aos inimigos. Arremesso utiliza Disparo Fulminante. Pugilismo não cria dado de arma para socos sem equipamento. **Declaração de ataque:** somar e pagar antecipadamente as ativações de Perícias, características e recursos declarados (incluindo retenção adicional), respeitando saldo e teto de 5 Coragens gastas por turno do jogador. Ex.: Fulminante 1 + característica de Armas Médias 1 + Colossal 1 + retenção 1 = 4 Coragens. Falha não devolve; recuperação geral de crítico é creditada uma única vez e não restaura o teto de gasto. Manter gatilhos e custos de cada técnica, sem automatizar geometria pendente de Colossal.
+
+[SRD v0.112](srd-continuidade-v0.112.md).

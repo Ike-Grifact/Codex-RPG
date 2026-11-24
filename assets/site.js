@@ -46,7 +46,7 @@ function standardNavigation(header){
 }
 applyTheme(initialTheme());
 if(/\/(pericias|mecanicas)(\/|$)/.test(location.pathname)){
- var skillUI=document.createElement("script");skillUI.src="../assets/skill-presentation.js?v=20261124-v0111";skillUI.defer=true;document.head.appendChild(skillUI);
+ var skillUI=document.createElement("script");skillUI.src="../assets/skill-presentation.js?v=20261124-v0112";skillUI.defer=true;document.head.appendChild(skillUI);
 }
 document.addEventListener("DOMContentLoaded",function(){
  var header=document.querySelector(".site-header");
