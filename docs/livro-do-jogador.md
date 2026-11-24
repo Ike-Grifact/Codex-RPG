@@ -455,7 +455,7 @@ Atributos não são apenas dados: alguns também alteram **Vida, capacidade de c
 
 Permite erguer, empurrar, sustentar pesos, agarrar e vencer obstáculos físicos. Não se limita a causar dano: segurar uma passagem para o grupo também é uma ação de Força.
 
-**Na ficha:** A Vida máxima recebe +1 a cada dois graus completos de Força. A carga corporal é 1 + ⌊(Força + Vigor + Atletismo)/3⌋ Alto; portanto, Força pode aumentar quanto você carrega quando a soma ultrapassa o próximo múltiplo de três.
+**Na ficha:** A Vida máxima recebe +1 a cada dois graus completos de Força. Para saber quanto pode carregar, some os Graus de Força, Vigor e Atletismo. A cada **3 Graus somados**, você ganha **1 Alto** de capacidade corporal, além do **1 Alto inicial**. A mochila acrescenta **0,5 Alto**.
 
 **Exemplo:** Força + Atletismo para levantar uma viga e libertar um aliado.
 
@@ -471,7 +471,7 @@ Ajuda a reagir, mudar de posição, atravessar perigos e alcançar lugares rapid
 
 Destreza representa **percepção, mira e precisão**. Ajuda a notar detalhes, perceber movimentos e sinais de perigo, apontar um disparo, coordenar mãos e ferramentas, manipular mecanismos e executar procedimentos delicados. Perceber algo não significa automaticamente compreender seu significado; outras Aptidões podem ser necessárias conforme a abordagem.
 
-**Na ficha:** A DE defensiva natural considera ⌊(Destreza + Vigor)/2⌋; um novo grau de Destreza aumenta essa parcela quando a soma alcança o próximo número par.
+**Na ficha:** Destreza e Vigor ajudam na defesa: a cada **2 Graus somados** entre eles, sua DE defensiva natural aumenta em **1**, respeitando os limites.
 
 **Exemplo:** Destreza + Medicina para cuidar de um ferimento difícil; Destreza + Disciplina para mirar com uma arma habilitada, conforme as regras de ataque.
 
@@ -495,27 +495,27 @@ Abre caminhos sociais: negociar, persuadir, inspirar, provocar, convencer ou bus
 
 Ajuda a suportar esforço, cansaço, desgaste e condições fisicamente exigentes.
 
-**Na ficha:** Cada grau acrescenta 1 à Vida máxima. Também participa da capacidade de carga e da parcela ⌊(Destreza + Vigor)/2⌋ da DE defensiva natural.
+**Na ficha:** Cada grau acrescenta 1 à Vida máxima. Também ajuda na capacidade de carga junto com Força e Atletismo (mais **1 Alto** a cada **3 Graus somados**) e na defesa junto com Destreza (**+1 DE** a cada **2 Graus somados**).
 
 **Exemplo:** Vigor + Atletismo para completar uma travessia exaustiva.
 
-**Regra de defesa:** DE natural = mínimo entre 9 e Agilidade + ⌊(Destreza + Vigor)/2⌋ + ⌊Atletismo/3⌋, antes dos modificadores aplicáveis. **Vida máxima = 4 + Vigor + ⌊Força/2⌋.**
+**Como calcular sua defesa, sem decorar fórmulas:** comece com seus Graus de **Agilidade**; acrescente **+1 para cada 2 Graus somados de Destreza e Vigor**; acrescente **+1 para cada 3 Graus de Atletismo**. A DE natural não passa de **9** antes dos modificadores aplicáveis. **Sua Vida:** começa com **4 pontos**, ganha **+1 por Grau de Vigor** e **+1 a cada 2 Graus de Força**.
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
 #### Progressão de Atributos — dados e XP
 
-XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
+Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
 
-| Grau | Dados | XP acumulado |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior |
 |---:|---|---:|
-| 0 | 1d4 | 0 |
-| 1 | 1d6 | 1 |
-| 2 | 2d6 | 3 |
-| 3 | 3d6 | 6 |
-| 4 | 2d6 + 1d10 | 9 |
-| 5 | 1d6 + 2d10 | 18 |
-| 6 | 3d10 | 32 |
+| 0 | 🎲 1d4 | Inicial |
+| 1 | 🎲 1d6 | 1 XP |
+| 2 | 🎲 2d6 | 2 XP |
+| 3 | 🎲 3d6 | 3 XP |
+| 4 | 🎲 2d6 + 1d10 | 3 XP |
+| 5 | 🎲 1d6 + 2d10 | 9 XP |
+| 6 | 🎲 3d10 | 14 XP |
 
 ### ⚔ Práticas — treinamento para agir
 
@@ -559,17 +559,17 @@ Treino de procura, identificação e obtenção de recursos.
 
 #### Progressão de Práticas — dados e XP
 
-XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
+Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
 
-| Grau | Dados | XP acumulado |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior |
 |---:|---|---:|
-| 0 | 1d6 | 0 |
-| 1 | 1d10 | 2 |
-| 2 | 2d10 | 4 |
-| 3 | 3d10 | 8 |
-| 4 | 2d10 + 1d12 | 16 |
-| 5 | 1d10 + 2d12 | 32 |
-| 6 | 3d12 | 64 |
+| 0 | 🎲 1d6 | Inicial |
+| 1 | 🎲 1d10 | 2 XP |
+| 2 | 🎲 2d10 | 2 XP |
+| 3 | 🎲 3d10 | 4 XP |
+| 4 | 🎲 2d10 + 1d12 | 8 XP |
+| 5 | 🎲 1d10 + 2d12 | 16 XP |
+| 6 | 🎲 3d12 | 32 XP |
 
 ### ✦ Conhecimentos — estudo que abre caminhos
 
@@ -613,21 +613,21 @@ Estudo de registros, história, cultura e saberes especializados.
 
 #### Progressão de Conhecimentos — dados e XP
 
-XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
+Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
 
-| Grau | Dados | XP acumulado |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior |
 |---:|---|---:|
-| 0 | 1d6 | 0 |
-| 1 | 1d10 | 2 |
-| 2 | 2d10 | 4 |
-| 3 | 3d10 | 8 |
-| 4 | 2d10 + 1d12 | 16 |
-| 5 | 1d10 + 2d12 | 32 |
-| 6 | 3d12 | 64 |
+| 0 | 🎲 1d6 | Inicial |
+| 1 | 🎲 1d10 | 2 XP |
+| 2 | 🎲 2d10 | 2 XP |
+| 3 | 🎲 3d10 | 4 XP |
+| 4 | 🎲 2d10 + 1d12 | 8 XP |
+| 5 | 🎲 1d10 + 2d12 | 16 XP |
+| 6 | 🎲 3d12 | 32 XP |
 
 **Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.
 
-**Exemplo de compra:** Força no Grau 1 custa **1 XP**. Para passar de Força 1 (1 XP acumulado) para Força 2 (3 XP acumulados), você paga **mais 2 XP**. O mesmo raciocínio vale para Conhecimentos e Práticas: Disciplina 1 custa **2 XP**; avançar para Disciplina 2 custa **mais 2 XP**.
+**Exemplo de compra:** Força 1 custa **1 XP**; para passar de Força 1 para Força 2, pague **2 XP**. Disciplina 1 custa **2 XP**; para passar de Disciplina 1 para Disciplina 2, pague **mais 2 XP**. As tabelas mostram o preço de cada avanço, não o total investido.
 
 ### Como começar a montar sua ficha
 
