@@ -771,22 +771,47 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
-### DE defensiva — Agilidade, Vigor, Destreza e Atletismo [DEFINIDO, SRD v0.89]
+### Dificuldade de Êxito: o que é preciso conseguir?
 
-**A fórmula apresentada na continuidade v0.88 foi corrigida por decisão autoral de 22/11/2026.** Não usar `1 + Vigor + ⌊Destreza/2⌋`, nem somar Vigor inteiro ou o bônus de +1 fixo.
+A Dificuldade de Êxito (DE) indica quantos símbolos você precisa reunir para alcançar o objetivo de uma ação. Depois de escolher os dados que vai manter e decidir como gastar Antecipar, conte os Êxitos e o Pavor que não foi anulado. Se a soma alcançar ou superar a DE, o teste é bem-sucedido. O Pavor ajuda a alcançar a dificuldade, mas continua trazendo riscos.
 
-**DE base = mínimo(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋).**
+**Exemplo:** Imagine um teste de DE 3. Se você mantiver 2 Êxitos e 1 Pavor não anulado, alcança a dificuldade, mas o acerto não é limpo. Se anular esse Pavor sem conseguir outro Êxito, terá apenas 2 símbolos válidos e falhará. Por isso, anular todo o Pavor nem sempre é a melhor escolha.
 
-```text
-DE base = min(9, AGI + piso((VIG + DES)/2) + piso(ATL/3))
-DE final = min(12, max(0, DE base + modificador da única armadura equipada + efeitos defensivos autorizados))
-```
+Quando a ação é contra um alvo com defesa calculada, use sua DE defensiva vigente, considerando os modificadores aplicáveis. Em outras ações, o Narrador estabelece a dificuldade adequada ao desafio. Não substitua a defesa da ficha por uma dificuldade arbitrária.
 
-**Somar Vigor com Destreza antes de dividir por 2**, arredondando para baixo uma única vez. Agilidade conta integralmente; Atletismo vale +1 a cada três Graus completos. Sem armadura, um personagem com AGI 1, VIG 1 e DES 1 tem DE base 2. Um personagem com AGI 1, VIG 2, DES 2 e ATL 3 tem DE base 4. Não existe DE mínima 1 por construção.
+#### Como calcular sua DE defensiva natural
 
-**Modificadores de armadura em todas as defesas, inclusive esquiva:** Muito Leve, incluindo **Roupas Simples: +2**; Leve +1; Média 0; Pesada −1; Muito Pesada −2 quando permitida. Aplicar depois do teto 9 da DE base. **Não duplicar +2 na esquiva.** Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez, limitada ao teto final 12. Integridade e Vida são contabilizadas separadamente.
+A DE defensiva natural representa a capacidade de um personagem humanoide de evitar ou resistir a um ataque antes dos modificadores de equipamento e outros efeitos.
 
-**Monstros extraordinários não humanoides** preservam sua fórmula própria. Referência prioritária: [SRD v0.89](srd-continuidade-v0.89.md).
+| Aptidão | Contribuição para sua defesa | Exemplo |
+|---|---|---|
+| ◇ Agilidade | +1 DE por Grau | 2 Graus = +2 DE |
+| ◇ Destreza e ◇ Vigor | +1 DE a cada 2 Graus somados | 3 + 2 Graus = +2 DE |
+| ⚔ Atletismo | +1 DE a cada 3 Graus completos | 6 Graus = +2 DE |
+
+Some as três contribuições. Conte somente grupos completos de dois Graus de Destreza e Vigor e de três Graus de Atletismo.
+
+**DE natural de 0 a 9 [DEFINIDO].** A defesa natural pode ser 0. Não há bônus fixo de +1 nem mínimo obrigatório de 1. Se a soma superar 9, use 9 como DE natural.
+
+#### Como a armadura modifica sua defesa
+
+Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. A DE defensiva individual final fica entre 0 e 12.
+
+| Tipo de armadura equipada | Alteração na DE |
+|---|---:|
+| Muito Leve (incluindo Roupas Simples) | +2 |
+| Leve | +1 |
+| Média | 0 |
+| Pesada | −1 |
+| Muito Pesada (quando permitida) | −2 |
+
+**Exemplo:** Com Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6, você recebe 2 DE pela Agilidade, 3 pela soma de Destreza e Vigor e 2 pelo Atletismo: DE natural 7. Com armadura Pesada, fica 6; com Muito Pesada, fica 5.
+
+Integridade da armadura e Vida são contabilizadas separadamente.
+
+#### Defesas especiais e em conjunto
+
+Monstros extraordinários não humanoides seguem suas regras próprias de defesa. A DE conjunta também possui regras próprias e teto 30. Consulte o Guia do Narrador para a referência de desafios e defesas coletivas.
 
 ### Condições da ação
 
