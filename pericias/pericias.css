@@ -17,6 +17,11 @@
 .skill-article h2{font:normal 27px Georgia,serif;margin:30px 0 12px}
 .skill-article h3{font:normal 20px Georgia,serif;margin:23px 0 11px}
 .skill-article p{margin:0 0 14px}
+.skill-benefits{padding-left:1.4rem;margin:0 0 22px;display:grid;gap:13px}
+.skill-benefits li{padding-left:4px;line-height:1.7}
+.skill-benefits li::marker{color:var(--codex-accent,#267a45)}
+.skill-note{padding:14px 17px;border-left:3px solid var(--codex-edge);background:color-mix(in srgb,currentColor 3%,transparent);border-radius:0 9px 9px 0}
+
 .skill-article .table-scroll{overflow:auto;margin:15px 0 20px}
 .skill-article table{width:100%;border-collapse:collapse;font-size:13px}
 .skill-article th,.skill-article td{padding:12px;border-bottom:1px solid var(--codex-edge);text-align:left;vertical-align:top}
