@@ -16,7 +16,7 @@ Há cerca de 1.400 anos, os humanos retornaram a este mundo e descobriram que j�
 
 Acima da paisagem flutuam imensos pilares de cristal vermelho, conhecidos como as **Espinhas do Mundo**. Aos seus pés, cavernas guardam riquezas cobiçadas e perigos que poucos ousam enfrentar. Nas antigas Arcas, os humanos ergueram cidades de pedra, metal e destroços. Arcrois voltou-se à engenharia; Triarca buscou na natureza e nas tradições uma nova forma de viver. Outras Arcas conheceram destinos menos afortunados.
 
-Em **Arcanum**, humanos, Runa Espinhos e Luckers Puros encontraram um lugar de convivência. Restam hoje apenas cerca de 300 Luckers Puros. Ao lado deles vivem Runa Espinhos que, apesar de sua natureza tão distinta da humana, demonstram profunda empatia pelos outros povos. Foi com esses aliados que a humanidade aprendeu a utilizar a magia. A convivência também deu origem a descendentes de humanos e Luckers, e alguns Luckers de Sangue encontraram acolhimento e proteção na cidade.
+Em **Arcanum**, humanos, Runa Espinhos e Luckers Puros encontraram um lugar de convivência. Restam hoje apenas cerca de 300 Luckers Puros. Ao lado deles vivem Runa Espinhos que, apesar de sua natureza tão distinta da humana, demonstram profunda empatia pelos outros povos. Os Runa Espinhos ensinaram a magia aos Luckers Puros, que mais tarde transmitiram esse conhecimento à humanidade. A convivência também deu origem a descendentes de humanos e Luckers, e alguns Luckers de Sangue encontraram acolhimento e proteção na cidade.
 
 Marcados pelo Infortúnio, os Luckers de Sangue carregam uma existência que não podem encerrar, mas também não conseguem sentir. Aqueles que se aventuram ao lado de outros povos são párias de sua própria sociedade. Enquanto alguns buscam uma maneira de existir entre os demais, facções extremistas dos Luckers, dos humanos e dos Runa Espinhos perseguem seus próprios ideais e ambições de conquista. Nenhum povo é inteiramente bom ou mau.
 
@@ -1761,6 +1761,66 @@ A ficha do Hemomante possui **uma reserva manual de sangue derramado de inimigos
 ### Atualização de nomenclatura — SRD v0.99 [DEFINIDO — 23/11/2026]
 
 As **Maestrias por família de armas** foram renomeadas para **Especializações em Armas**, mantendo os identificadores `maestria-*` para compatibilidade com fichas existentes e o custo de **1 XP por aquisição**. A **Especialização em Armas de Punho** agora pode ser comprada com **Força 1 + Agilidade 1 + Destreza 1 + Vigor 1**; **Pugilismo** não é requisito de compra, apenas de ativação das características da arma. **Arcos, Bestas, Armas Arremessadas e Longo Alcance Diversas** continuam com requisitos de compra pendentes. Consultar o [SRD de Continuidade v0.99](srd-continuidade-v0.99.md). Outras Maestrias fora das famílias de armas não foram renomeadas.
+
+## Parte V — Crônicas e histórias do mundo
+
+### Um continente de muitas eras
+
+O mundo conhecido se estende por um único megacontinente. Florestas antigas, montanhas, desertos, geleiras e regiões de intensa atividade vulcânica abrigam povos cujas histórias não começam na mesma época. Para os humanos, as ruínas são testemunhos de um passado perdido; para outros habitantes, algumas delas pertencem a uma história ainda mais antiga.
+
+Os relatos reunidos nestas páginas são uma primeira visão do cenário. Viajantes, escribas e habitantes das Arcas não concordam sobre tudo o que aconteceu antes do retorno humano. O que se sabe é que o mundo mudou, e as civilizações que hoje o habitam aprenderam a sobreviver de maneiras muito diferentes.
+
+### As Espinhas do Mundo
+
+Pilares de cristal vermelho permanecem suspensos sobre algumas regiões do continente. Conhecidos como **Espinhas do Mundo**, estão entre as formações mais cobiçadas por exploradores. As cavernas abaixo deles podem esconder cristais valiosos, ruínas e criaturas perigosas. A circulação de pedras e cristais também sustenta o comércio em muitas comunidades.
+
+Os relatos associam essas formações à alteração do funcionamento da eletricidade. A tecnologia antiga não pode simplesmente ser recuperada e colocada em funcionamento: a corrente alternada deixou de ser utilizável. Nas Arcas, conhecimento técnico, mecanismos e magia passaram a coexistir. Em alguns lugares, até máquinas que parecem pensar podem guardar algo além de engrenagens.
+
+### Os Pastores e os Runalmas
+
+Os **Runa Espinhos**, gigantes de pedra e espinhos, são conhecidos também como **Pastores**. Ligados ao xamanismo, cuidam da natureza e da continuidade da vida neste novo mundo. Costumam habitar florestas, encostas e montanhas. Sua relação com outros povos pode surpreender quem julga sua aparência intimidadora: muitos demonstram grande empatia e disposição para preservar a vida alheia.
+
+Os Pastores ensinaram a magia aos Luckers Puros, que mais tarde transmitiram esse conhecimento à humanidade. A convivência entre os três povos em Arcanum é um dos testemunhos dessa longa cadeia de aprendizado.
+
+Nem todos os gigantes de pedra compartilham essa visão. Os **Runalmas**, extremistas entre os Runa Espinhos, consideram humanos e Luckers pragas a serem eliminadas do planeta. Guardam as Espinhas do Mundo e habitam regiões de condições extremas: vulcões, fissuras magmáticas, desertos e terras geladas. Aproximar-se de uma formação protegida por eles pode ser muito mais perigoso do que atravessar a própria paisagem.
+
+### Os Luckers e a cidade de Ruína
+
+Os Luckers são um povo de extraordinária antiguidade. Restam cerca de 300 Puros, preservadores de tradições mágicas que chegaram aos humanos por meio de alianças. Em Arcanum, convivem com humanos, Pastores e descendentes de humanos e Luckers.
+
+Os Luckers de Sangue foram marcados pelo Infortúnio. Sua existência não alcança uma morte definitiva, mas eles perderam a experiência das sensações e emoções. Compreendem conceitos, aprendem e tomam decisões, ainda que não possam sentir como os demais. Muitos recorrem a diários, compromissos e formas próprias de linguagem para orientar sua existência.
+
+Relatos provenientes de **Ruína**, cidade dos Luckers de Sangue, descrevem um poder que se estende por territórios outrora habitados pelos Runa Espinhos e por uma das Arcas humanas. Humanos e Runa Espinhos encontram-se escravizados nesses domínios. Os fanáticos que continuam a buscar a imortalidade verdadeira não representam todos os de Sangue: os personagens jogáveis são párias dessa sociedade, e alguns encontraram proteção em Arcanum.
+
+### Crônicas das sete Arcas
+
+As cidades humanas nasceram dos destroços das antigas Arcas. A humanidade retornou a um mundo que não dominava mais; as diferentes respostas à sobrevivência moldaram comunidades com tradições e interesses próprios.
+
+**Arcanum.** A cidade mágica, construída com os restos de uma nave humana, tornou-se um ponto de convivência entre humanos, Luckers Puros e Pastores. Ali, a magia e o conhecimento técnico encontraram novas aplicações.
+
+**Arcrois.** Cidade de engenheiros, médicos e recuperadores de sucata. Sua população recorre ao conhecimento técnico e a aplicações da magia que não dependem necessariamente da conjuração convencional. Mantém relações com Arcanum, mas é mais reservada diante dos demais povos.
+
+**Triarca.** Comunidade de orientação natural e tradicional, onde práticas druídicas e xamânicas convivem com a presença de humanos, Luckers Puros e Runa Espinhos. Sua identidade está mais próxima da terra e dos costumes ancestrais do que da tecnomagia urbana.
+
+**Arkrour.** A Arca dos extremistas humanos, estabelecida em regiões frias e montanhosas. Sua sociedade armamentista busca reconquistar o planeta, mantém-se à margem das relações formais com as outras Arcas e trava conflitos frequentes com os Runalmas. É conhecida por escravizar Luckers de Sangue, explorando sua imortalidade e a fragilidade mental de alguns deles.
+
+**Quintarca.** Uma comunidade que perdeu grande parte dos antigos orientadores e do conhecimento técnico herdado. Seus habitantes sobreviveram com recursos rudimentares e desconfiam do mundo exterior.
+
+**As duas Arcas perdidas.** Uma caiu sob domínio dos Luckers de Sangue, e ainda abriga humanos submetidos à escravidão. A outra foi destruída pelos Runalmas. Seus nomes e histórias permanecem pouco esclarecidos nestas crônicas.
+
+### Nomes e tradições
+
+Os nomes dos Luckers carregam marcas de suas histórias. A terminação ou partícula **el** aparece entre Puros rebatizados; **et** era recorrente antes do Infortúnio; **ion** está associada a antigas lideranças e indivíduos de forte disposição; **reaver** aparece sobretudo entre os que procuram recordar algo. São tradições culturais, não critérios infalíveis de linhagem. Títulos e combinações de nomes podem ocupar o lugar de sobrenomes.
+
+Exemplos de nomes Lucker: Etel, Etelion, Treaver, Breaver, Or'et, Orion, Eterion, Del' Etreaver, Lucarion, Luel'et, Luet'el, Lueaver, Leterion, Astel, Astet, Ketreaver, Ikel'et, Ikelet, Ikarion, Ikelion, Iketerion e Ikreaver. Co'el Etreaver, Elcoet, Eaveret e Reaveretion ilustram combinações e variações.
+
+Os Runa Espinhos e Runalmas compartilham uma tradição de nomes construída a partir de fragmentos sonoros associados às runas: Ru, Na, Ha, An, So, Wi, Lo, Thu, Ri, Saz, Fe e Hu. Exemplos: Ruhaan, Lothuso, Ruthufe, Sazfe, Sofe, Risaz, Nauha, Berhu e Karilo. Um nome não determina se seu portador segue os Pastores ou os Runalmas.
+
+### O que espera um Aprendiz
+
+Um grupo pode acompanhar uma expedição às cavernas das Espinhas do Mundo, procurar desaparecidos nas montanhas, resgatar prisioneiros, recuperar conhecimento perdido ou investigar máquinas cuja natureza ninguém consegue explicar. As alianças do grupo influenciam os lugares em que será acolhido e os perigos que encontrará.
+
+Estas crônicas não encerram a história do Codex. Há seres angelicais, elementais, golens, monstros e vestígios de épocas esquecidas além do que estas páginas descrevem. O mundo está aberto à descoberta; as respostas que ainda faltam pertencem às aventuras.
 
 ## Referência de continuidade
 
