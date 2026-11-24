@@ -14,7 +14,13 @@ test("15 verbetes ativos e catalogo usam Coragem, sem PP legado",()=>{
  for(const name of paidPerks){
   const page=read("pericias/"+name+".html");
   assert.equal(oldCost.test(page),false,name+" apresenta custo antigo");
-  assert.match(page,/<dt>Custo de ativação<\/dt><dd>1 Coragem/i,name+" deve indicar custo revisado");
+  if(name==="pericia-em-armas-leves"){
+   // Verbete de leitura do jogador: custo está junto do benefício, não em quadro duplicado.
+   assert.match(page,/Quando você acerta[^<]*1 Coragem/i,name+" deve indicar o custo da característica no acerto");
+   assert.match(page,/Acerto crítico[\s\S]*?gratuitamente/i,name+" deve indicar a ativação gratuita no crítico");
+  }else{
+   assert.match(page,/<dt>Custo de ativação<\/dt><dd>1 Coragem/i,name+" deve indicar custo revisado");
+  }
   assert.doesNotMatch(page,/1\s*PP\b/i,name+" não deve manter PP revogado");
  }
  assert.equal(oldCost.test(read("pericias/index.html")),false);
