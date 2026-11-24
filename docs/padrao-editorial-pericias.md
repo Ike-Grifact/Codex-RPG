@@ -1,7 +1,7 @@
 # Padrão editorial das Perícias — Codex RPG
 
 **Situação:** PROPOSTO como padrão de redação e interface, sem alterar mecânicas.  
-**Primeira aplicação:** Perícia em Armas Leves, no verbete e no Codex Genético.  
+**Primeira aplicação:** Perícias em Armas Leves, Médias e Pesadas, nos verbetes e no Codex Genético.  
 **Fontes de regras:** SRD de Continuidade mais recente e decisões explícitas do autor.
 
 ## Para quem estamos escrevendo
@@ -36,4 +36,4 @@ O painel mostra **descrição breve + benefícios + requisitos e XP + botão de 
 
 A cada novo verbete, comparar com o SRD atual para conferir requisitos, gatilhos, custos, bônus, limitações e exceções. Primeiro revisar o texto do jogador; depois propagar ao site e ao Codex Genético. Esta diretriz é apenas editorial: **não autoriza criar ou modificar regras**.
 
-**PENDENTE:** revisão autoral e migração gradual das demais Perícias. O exemplo de Armas Leves não implica que os demais verbetes já tenham sido reescritos.
+**PENDENTE:** revisão autoral e migração gradual das demais Perícias. Somente Armas Leves, Médias e Pesadas receberam este modelo editorial; não implica revisão das demais especializações ou de outros verbetes.
