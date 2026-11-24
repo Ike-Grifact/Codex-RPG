@@ -152,6 +152,9 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
    "Ação do inimigo humanoide Incapacitado exige 1 Pavor local.");
   assert(snapshot.combatants.find(x=>x.side==="inimigos").courage===0,
    "Inimigo humanoide jamais possui Coragem.");
+  assert(await page.locator("#next-round").isDisabled(),
+   "A declaração fica bloqueada até resolver a rolagem pendente.");
+  await page.locator("#confirm").click();
 
   // Os dois Fulminantes são ativos pagos e alteram os dados ANTES da rolagem.
   await page.locator("#next-round").click();
@@ -160,6 +163,8 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.evaluate(()=>{
    const st=JSON.parse(localStorage.getItem("codex-rpg-comparador-v1"));
    const pc=st.combatants.find(x=>x.side==="jogadores");
+   pc.attributes.forca=2;
+   pc.practices.armas_conjuracao=2;
    pc.skills.push("golpe-fulminante","domar-criatura-pequena");
    pc.smallCompanion={present:true,name:"Naja",species:"serpente"};
    pc.courage=9;
