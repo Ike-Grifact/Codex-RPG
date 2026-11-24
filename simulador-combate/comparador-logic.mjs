@@ -246,8 +246,9 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(!access.ok&&!cravarOnCritical)return access;
  const masteryId=weaponMasteryFor(weapon,{thrown});
  const mastery=canUseWeaponMastery(c,masteryId);
- // Fracasso não consome a ativação condicionada ao acerto.
- if(!success)return {ok:true,active:[],cost:0,mastery,free:0};
+ // SRD v0.100: tentativa paga é declarada antes do teste; falhar não restitui Coragem.
+ // O benefício gratuito da Especialização no acerto não tem custo próprio.
+ if(!success)return {ok:true,active:[],cost:Math.max(0,selected.length-(mastery?1:0)),mastery,free:0};
  const free=mastery?(critical?2:1):(critical?1:0);
  const max=mastery?(critical?3:1):(critical?2:1);
  if(selected.length>max)

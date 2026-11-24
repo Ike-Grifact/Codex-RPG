@@ -243,19 +243,19 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Em acerto com arma Leve: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem. Efeito automatizado nos roladores.",
+  "Disciplina 1; 2 XP. Antes de rolar um ataque com arma Leve, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Em acerto com arma Média: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem. Efeito automatizado nos roladores.",
+  "Disciplina 1 + Força 1; 2 XP. Antes de rolar um ataque com arma Média, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Em acerto com arma Pesada: 1 Coragem ativa UMA característica própria; crítico ativa UMA gratuitamente (uma segunda, se permitida, custa 1 Coragem). Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem. Efeito automatizado nos roladores.",
+  "Disciplina 2 + Força 2; 2 XP. Antes de rolar um ataque com arma Pesada, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem.",
   2
  ],
  [
