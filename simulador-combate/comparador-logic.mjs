@@ -34,7 +34,7 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
   attributes:{...base.attributes},knowledges:{...base.knowledges},practices:{...base.practices},
   // As Perícias compradas ficam no campo skills; concessões de origem são somadas
    // sem transformar a isenção de Foco do Lucker Puro em aquisição automática.
-   skills:[...new Set([...(Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").slice(0,130):[]),
+   skills:[...new Set([...(Array.isArray(raw.skills)?raw.skills.filter(x=>typeof x==="string").map(x=>x==="maestria-macas"?"maestria-martelos":x).slice(0,130):[]),
     ...humanoidRacialGrants({...raw,kind})])],
   items:Array.isArray(raw.items)?raw.items.slice(0,70).map(normalizeEquipment):[],
   smallCompanion:{present:!!raw.smallCompanion?.present,name:String(raw.smallCompanion?.name||"").slice(0,70),
@@ -201,7 +201,7 @@ export function weaponMasteryFor(weapon,{thrown=false}={}){
  if(/^(faca|punhal|adaga|kunai|shuriken)/.test(name))return "maestria-adagas";
  if(/^(espada|montante|katana)/.test(name))return "maestria-espadas";
  if(/^machado/.test(name))return "maestria-machados";
- if(/^(maça|clava)/.test(name))return "maestria-macas";
+ if(/^(maça|maca|clava)/.test(name))return "maestria-martelos";
  if(/^(lança|naginata)/.test(name))return "maestria-hastes";
  if(/^(cajado|bastão)/.test(name))return "maestria-cajados";
  if(/^martelo|^marreta/.test(name))return "maestria-martelos";
@@ -214,14 +214,14 @@ export function weaponMasteryFor(weapon,{thrown=false}={}){
 /** Valida requisitos atuais de compra para o efeito gratuito da Especialização, sem
  * confundi-los com a habilitação por peso verificada separadamente. */
 export function canUseWeaponMastery(c,id){
- if(!id||!(c?.skills||[]).includes(id))return false;
+ if(id==="maestria-macas")id="maestria-martelos";
+ if(!id||(!(c?.skills||[]).includes(id)&&!(id==="maestria-martelos"&&(c?.skills||[]).includes("maestria-macas"))))return false;
  if(id==="maestria-armas-fogo")return c?.race==="humano";
  const requirements={
   "maestria-martelos":{forca:3,destreza:1,vigor:1},
   "maestria-adagas":{agilidade:2,destreza:2},
   "maestria-espadas":{forca:2,destreza:2},
   "maestria-machados":{forca:2,destreza:1},
-  "maestria-macas":{forca:3,destreza:1,vigor:1},
   "maestria-hastes":{forca:2,agilidade:1,destreza:1},
   "maestria-cajados":{destreza:2},
   "maestria-punhos":{forca:1,agilidade:1,destreza:1,vigor:1}
