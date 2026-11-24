@@ -637,3 +637,12 @@ test("Pugilismo e Artista Marcial: peso, custo único, efeito somente no acerto"
  assert.equal(planMartialAttack({...c,skills:["pugilismo"]},{unarmed:true,manoeuvre:"Empurrar"}).ok,false);
  assert.equal(planMartialAttack(c,{unarmed:true,manoeuvre:"Cortante"}).ok,false);
 });
+
+
+test("Peso do soco usa a matriz natural, sem dado de equipamento nem Perícia de armas",()=>{
+ const c=normalizeCombatant({kind:"humanoide",skills:["pugilismo","armas-medias"],attributes:{forca:2,destreza:1},practices:{armas_conjuracao:1}});
+ const t=armor();t.items[0].category="medio";
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true}).weapon,t,c).delta,-1);
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"leve"}).weapon,t,c).delta,1);
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"pesado"}).weapon,t,c).delta,0);
+});

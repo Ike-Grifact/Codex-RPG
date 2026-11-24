@@ -565,8 +565,8 @@ function renderDice(){
   ' Pavor</span> · <span class="cc-a">'+r.aRemaining+' Antecipar livre</span></p>'+
   '<p>DE '+r.de+' · total válido '+r.reached+' · dano à Integridade (potencial) '+
   pre.integrityDamage+' · Vida no patamar 5: '+(pre.life.damage===null?"PENDENTE":pre.life.damage)+
-  '</p><small>'+esc(pre.life.reason)+' Gasto na ação: '+pre.courageCost+
-  ' Coragem / '+pre.pavorCost+' Pavor local. '+(pre.health.id!=="saudavel"?"Estado: "+pre.health.id+". ":"")+
+  '</p><small>'+esc(pre.life.reason)+' Gasto na ação: '+(pre.courageCost+(actor()?.side==="jogadores"?(pending.martial?.cost||0):0))+
+  ' Coragem / '+(pre.pavorCost+(actor()?.side==="inimigos"?(pending.martial?.cost||0):0))+' Pavor local. '+(pre.health.id!=="saudavel"?"Estado: "+pre.health.id+". ":"")+
   (actor()?.kind==="monstro"&&pre.health.coragem>0?
    "Gasto para agir da criatura incapacitada/inconsciente: PENDENTE de procedimento.":"")+'</small>';
  $("action-state").textContent="Rolado, aguardando confirmação";
@@ -635,7 +635,8 @@ function roll(){
   if(hostile)a.pavorLocal-=martialCost;
   else {a.courage-=martialCost;a.courageRoundSpent=Number(a.courageRoundSpent||0)+martialCost;}
   log("Perícia",a.name+": "+($("pugilism-on").checked?"Pugilismo":"Artista Marcial")+" — "+martialCost+(hostile?" Pavor local":" Coragem")+" pago antes de rolar; não devolvido por falha.",{actor:a.id,martialCost,category:martial.category,manoeuvre:martial.manoeuvre});
-  persist();
+  persist();renderResources();
+  $("round-budget").textContent=hostile?"Pavor local restante: "+a.pavorLocal:"Rodada "+state.round+" · Coragem gasta "+a.courageRoundSpent+"/5 · restante "+Math.max(0,5-a.courageRoundSpent);
  }
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
@@ -662,7 +663,7 @@ function suggest(){
   ": "+best.ids.length+" mantidos, "+best.cancelP+"P anulados e "+best.convertPairs+
   " conversão(ões). "+r.outcome+(r.critical?" · CRÍTICO "+r.critical:"")+
   ". E "+r.e+" / A livre "+r.aRemaining+" / P "+r.p+
-  ". Custos: "+best.preview.courageCost+" Coragem, "+best.preview.pavorCost+"P local. Todas as opções válidas foram comparadas.";
+  ". Custos: "+(best.preview.courageCost+(a.side==="jogadores"?(pending.martial?.cost||0):0))+" Coragem, "+(best.preview.pavorCost+(a.side==="inimigos"?(pending.martial?.cost||0):0))+"P local. Todas as opções válidas foram comparadas.";
  renderDice();
 }
 
