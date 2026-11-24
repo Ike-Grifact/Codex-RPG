@@ -207,8 +207,10 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
   await page.locator("#suggest").click();
   assert((await page.locator("#roll-result").innerText()).includes("CRÍTICO"),
    "Seleção automática deve preservar crítico real favorável.");
-  assert((await page.locator("#roll-result").innerText()).includes("0 Coragem"),
-   "Cortante no crítico é gratuito com Perícia adequada.");
+  assert((await page.locator("#roll-result").innerText()).includes("Gasto na ação: 1 Coragem"),
+   "Coragem é debitada na tentativa mesmo quando o resultado é crítico.");
+  assert(/recupera [12] Coragem/.test(await page.locator("#roll-origins").innerText()),
+   "O crítico deve recuperar a Coragem pelo benefício normal, uma única vez.");
   await page.locator("#confirm").click();
   const effects=await page.evaluate(()=>JSON.parse(localStorage.getItem("codex-rpg-comparador-v1")));
   assert(effects.combatants.find(x=>x.side==="inimigos").statuses.sangramento===true,

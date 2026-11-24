@@ -21,6 +21,8 @@ for(const skill of latest){
   assert.match(text,/Coragem é consumida mesmo que o ataque falhe/);
   assert.match(text,/falha não devolve a Coragem/);
   assert.match(text,/Acerto crítico/);
+  assert.match(text,/recupera 1 Coragem do custo já pago/);
+  assert.match(text,/gratuita no saldo final/);
   assert.match(text,skill.aff);
   assert.match(text,/−1 Antecipar/);
   assert.doesNotMatch(text,/DEFINIDO — SRD|Automatizad[oa] nos roladores|Regra atualizada|Aplicação prática/);
@@ -31,13 +33,39 @@ for(const skill of latest){
   assert.match(player,new RegExp('"'+skill.id+'":\\{'));
   assert.match(player,skill.guard);
   assert.match(player,/O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha/);
+  assert.match(player,/você recupera 1 Coragem que já pagou/);
  });
 }
 
 test("Benefícios são exibidos sem duplicar linha de ativação nas três Perícias",()=>{
  assert.match(player,/const PLAYER_SKILL_COPY=\{/);
- assert.match(player,/const playerGuide=PLAYER_SKILL_COPY\[sid\]/);
+ assert.match(player,/const playerGuide=playerSkillGuide\(sid\)/);
  assert.match(player,/fp-gene-player-benefits/);
  assert.match(player,/playerGuide\?"":'<dt>Ativação/);
  assert.match(player,/guide\?'<div class="fp-skill-quick-benefit"/);
+});
+
+const masteryFamilies=["adagas","espadas","machados","macas","martelos","hastes","cajados","arcos","bestas","arremessos","punhos","longo-alcance","armas-fogo"];
+test("Todas as Especializações em Armas oferecem os benefícios em linguagem de jogador",()=>{
+ assert.match(player,/function playerSkillGuide\(id\)/);
+ assert.match(player,/const mastery=WEAPON_MASTERY_TYPES\.find/);
+ assert.match(player,/const guide=playerSkillGuide\(id\)/);
+ assert.match(player,/const playerGuide=playerSkillGuide\(sid\)/);
+ for(const family of masteryFamilies){
+  const html=readFileSync(new URL("../pericias/maestria-em-"+family+".html",import.meta.url),"utf8");
+  assert.match(html,/<h2>Benefícios<\/h2>/,family);
+  assert.match(html,/uma de suas características sem gastar Coragem/,family);
+  assert.match(html,/declare e pague 1 Coragem antes da rolagem/,family);
+  assert.match(html,/recuperação normal do crítico devolve essa Coragem/,family);
+  assert.match(html,/A recuperação não é concedida uma segunda vez/,family);
+  assert.match(html,/Terceira característica/,family);
+  assert.doesNotMatch(html,/DEFINIDO — SRD|<span class="skill-badge">/,family);
+ }
+ for(const family of ["arcos","bestas","arremessos","longo-alcance"]){
+  const html=readFileSync(new URL("../pericias/maestria-em-"+family+".html",import.meta.url),"utf8");
+  assert.match(html,/compra permanece bloqueada/,family+" ainda depende dos requisitos autorais");
+ }
+ const fogo=readFileSync(new URL("../pericias/maestria-em-armas-fogo.html",import.meta.url),"utf8");
+ assert.match(fogo,/0 XP para Humanos pela origem/);
+ assert.match(fogo,/não concede a Perícia em Armas de Fogo/);
 });

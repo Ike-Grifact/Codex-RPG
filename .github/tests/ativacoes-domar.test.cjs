@@ -18,7 +18,8 @@ test("15 verbetes ativos e catalogo usam Coragem, sem PP legado",()=>{
    // Verbetes revisados: custo fica junto ao benefício, não em quadro duplicado.
    assert.match(page,/Antes de rolar[^<]*1 Coragem/i,name+" deve indicar custo antes da rolagem");
    assert.match(page,/Coragem é consumida mesmo que o ataque falhe/i,name+" deve manter o custo na falha");
-   assert.match(page,/Acerto crítico[\s\S]*?gratuitamente/i,name+" deve indicar a ativação gratuita no crítico");
+   assert.match(page,/Acerto crítico[\s\S]*?recupera 1 Coragem/i,name+" deve indicar a recuperação no crítico");
+   assert.match(page,/gratuita no saldo final/i,name+" deve indicar custo líquido zero");
   }else{
    assert.match(page,/<dt>Custo de ativação<\/dt><dd>1 Coragem/i,name+" deve indicar custo revisado");
   }

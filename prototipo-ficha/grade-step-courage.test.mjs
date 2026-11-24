@@ -320,7 +320,7 @@ test("Especialização em Armas — Martelos: comprar com Atributos, ativar some
  assert.ok(graph.includes('"armas-pesadas","maestria-martelos"'),"Mapa no ramo de Armas");
  const page=readFileSync(join(root,"../pericias/maestria-em-martelos.html"),"utf8");
  assert.ok(page.includes("Força 3")&&page.includes("Destreza 1")&&page.includes("Vigor 1"));
- assert.ok(page.includes("Perícia em Armas")&&page.includes("1 Coragem")&&page.includes("duas características diferentes do martelo gratuitamente"),"Verbete registra crítico com dois gratuitos");
+ assert.ok(page.includes("Perícia em Armas")&&page.includes("1 Coragem")&&page.includes("as duas características ficam gratuitas no saldo final"),"Verbete registra crítico com dois gratuitos");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
  assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Especialização em Armas — Martelos</a>'));
 });
@@ -362,7 +362,7 @@ test("Exclusividades: Especialização em Armas de Fogo inicial só para Humano;
  const verbete=readFileSync(join(root,"../pericias/transfusao-sanguinaria.html"),"utf8");
  assert.match(verbete,/somente Luckers de Sangue podem comprar e utilizar/);
  const fogo=readFileSync(join(root,"../pericias/maestria-em-armas-fogo.html"),"utf8");
- assert.match(fogo,/Todo Humano começa com Especialização em Armas de Fogo/);
+ assert.match(fogo,/Especialização em Armas de Fogo é concedida gratuitamente ao Humano/);
 });
 
 test("Especializações por família: regra compartilhada, compra não inventada e habilitação apropriada",()=>{

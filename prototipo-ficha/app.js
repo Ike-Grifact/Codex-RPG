@@ -218,7 +218,7 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
   1
  ]),
  [
@@ -362,19 +362,19 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Antes de rolar um ataque com arma Leve, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem.",
+  "Disciplina 1; 2 XP. Antes de rolar um ataque com arma Leve, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Antes de rolar um ataque com arma Média, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem.",
+  "Disciplina 1 + Força 1; 2 XP. Antes de rolar um ataque com arma Média, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Antes de rolar um ataque com arma Pesada, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem.",
+  "Disciplina 2 + Força 2; 2 XP. Antes de rolar um ataque com arma Pesada, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem.",
   2
  ],
  [
@@ -1646,7 +1646,7 @@ const PLAYER_SKILL_COPY={
   intro:"Você aprendeu a manejar armas leves e a aproveitar suas características em combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma leve, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate contra armaduras pesadas. Ao atacar um alvo com armadura Pesada ou Muito Pesada, você ignora a Desvantagem natural de peso da arma leve (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma leve equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido."
@@ -1655,7 +1655,7 @@ const PLAYER_SKILL_COPY={
   intro:"Você domina o manejo de armas médias e sabe explorar suas características durante o combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma média, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Média, você ignora a Desvantagem natural de peso da arma média (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma média possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico Leve ou Médio; isso não habilita outras características."
@@ -1664,19 +1664,36 @@ const PLAYER_SKILL_COPY={
   intro:"Você domina o manejo de armas pesadas e sabe explorar suas características durante o combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma pesada, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Leve ou Muito Leve, você ignora a Desvantagem natural de peso da arma pesada (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma pesada possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico, inclusive Pesado; isso não habilita outras características."
  }
 };
 
+// As Especializações por família usam o mesmo painel legível das Perícias de peso.
+// Os requisitos específicos continuam vindo do catálogo; não inventar compras pendentes.
+function playerSkillGuide(id){
+ if(PLAYER_SKILL_COPY[id])return PLAYER_SKILL_COPY[id];
+ const mastery=WEAPON_MASTERY_TYPES.find(row=>row.id===id);
+ if(!mastery)return null;
+ return {
+  intro:"Você se especializou nesta família de armas e sabe aproveitar as características que seu equipamento possui.",
+  benefits:[
+   "Acerto comum. Quando você acerta com uma arma da família e possui sua habilitação de uso, pode ativar uma característica existente sem gastar Coragem.",
+   "Acerto crítico. Para tentar uma segunda característica diferente, declare e pague 1 Coragem antes de rolar. No crítico com acerto, a recuperação normal do crítico devolve a Coragem paga, deixando até duas características diferentes gratuitas no saldo final. Não há segunda devolução.",
+   "Terceira característica. Se a arma possuir uma terceira característica diferente, você pode declarar mais 1 Coragem antes da rolagem para tentar ativá-la em um crítico com acerto. Sem o crítico, essa característica extra não produz efeito; o gasto não é devolvido por falha."
+  ],
+  note:"Para usar: equipe uma arma da família, tenha a Especialização e cumpra a habilitação: "+mastery.activationReq+". A primeira característica é gratuita no acerto; pagamentos adicionais sempre antecedem a rolagem. Características distintas e realmente existentes na arma são obrigatórias."
+ };
+}
+
 function skillCompactCard([id,baseName,detail,cost],wizard){
  const name=id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),price=skillXpCost(id,cost),affordable=Number.isInteger(price)&&canAfford("skills",price);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
- const guide=PLAYER_SKILL_COPY[id];
+ const guide=playerSkillGuide(id);
  const practical=guide?guide.benefits[0]:(CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105));
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(price)?price:"?")+" XP · playtest"):price===null?"Pendente":"Comprar · "+price+" XP";
@@ -3606,7 +3623,7 @@ function geneDetailHTML(id,s=state){
  "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Resistência elemental padrão contra o elemento escolhido: cada E do ataque vale 0,5 de dano e P vale 0 dano elemental, preservadas as consequências de Pavor. Arredondamento geral ainda pendente.":baseDetail;
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const playerGuide=PLAYER_SKILL_COPY[sid];
+ const playerGuide=playerSkillGuide(sid);
  const playerGuideHTML=playerGuide?
   '<p class="fp-gene-player-intro">'+esc(playerGuide.intro)+'</p>'+
   '<h5 class="fp-gene-player-subtitle">Benefícios</h5>'+
@@ -4684,6 +4701,18 @@ function score(){
   if(p.opts.magicAmplify&&!focus)errs.push("Amplificação exige foco correspondente.");
   courageCost+=(grade===4?2:grade===3?1:0)+(p.opts.magicAmplify?1:0);
  }
+ // A Coragem da tentativa é declarada ANTES da rolagem (SRD v0.101).
+ // O valor bruto não desaparece no crítico: a recuperação geral do crítico
+ // já ocorre uma única vez ao confirmar. Especialização fornece somente a
+ // PRIMEIRA característica gratuita na declaração.
+ const declaredProperties=[p.characteristic,p.secondCharacteristic].filter(Boolean);
+ const paidProperties=declaredProperties.filter(prop=>
+  !(freeElementEffect&&prop==="Elemental")&&!(passivePiercing&&prop==="Perfurante"));
+ const masteryFree=p.mode==="armas"&&item?.type==="arma"&&item.equipped&&
+  weaponMasteryCanActivate(item,state)?1:0;
+ const cravarFree=!!critTier&&declaredProperties.length===1&&declaredProperties[0]==="Cravar"&&
+  ["medio","pesado"].includes(weaponWeight)&&p.mode==="armas";
+ courageCost+=Math.max(0,paidProperties.length-masteryFree-(cravarFree?1:0));
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
@@ -4703,13 +4732,6 @@ function score(){
    if(!critTier||!properties.includes(p.secondCharacteristic)||!ACTIVE_PROPERTIES.has(p.secondCharacteristic)||
       p.secondCharacteristic===p.characteristic)errs.push("Segunda característica requer crítico e efeito diferente.");
    else active.push(p.secondCharacteristic);
-  }
-  if(critTier?p.secondCharacteristic:true){
-   // Com foco e Perícia do elemento, a propriedade Elemental já habilitada é gratuita.
-   const paidFeature=critTier?p.secondCharacteristic:p.characteristic;
-   if(!(freeElementEffect&&paidFeature==="Elemental")&&!(passivePiercing&&paidFeature==="Perfurante")){
-    courageCost+=1;
-   }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
  // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
@@ -4819,11 +4841,15 @@ function renderPending(){
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
   '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
+ const masteryReady=p.mode==="armas"&&item?.type==="arma"&&weaponMasteryCanActivate(item,state);
+ const effectRule=masteryReady?
+  "Especialização: primeira característica gratuita no acerto. Para tentar uma segunda, declare 1 Coragem antes de rolar; a recuperação normal do crítico devolve esse gasto em um crítico válido. A terceira característica da Especialização segue registro manual.":
+  "Perícia de Armas: declare e pague 1 Coragem antes de rolar para tentar ativar a característica; a falha não devolve o gasto. Um crítico válido recupera Coragem pelo benefício normal, uma única vez.";
  const effects=specials.length?'<div class="fp-form-grid">'+
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
-  '<p class="fp-caption">Ativação paga, quando necessária: 1 Coragem. Crítico: uma característica grátis e outra paga.</p></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem. Efeitos G1/G2 habilitados têm ativação-base gratuita. Narrador aplica danos e condições.</p>'+cravarSelector:"";
+  '<p class="fp-caption">'+esc(effectRule)+'</p></div>'+
+  '<p class="fp-caption">Só características existentes na arma. Efeitos G1/G2 habilitados têm ativação-base gratuita; o Narrador aplica danos e condições.</p>'+cravarSelector:"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
   '<p class="fp-caption">Trevas: efeito habilitado gratuito.</p>':
   '<p class="fp-caption">Trevas: ativação paga no acerto custa 1 Coragem.</p>'):'';
