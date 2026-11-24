@@ -1711,9 +1711,9 @@ function skillCompactCard([id,baseName,detail,cost],wizard){
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":price===null?"Pendente":price+" XP")+'</dd></div>'+
-  (presentation?'<div><dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd></div><div><dt>Custo de ativação</dt><dd>'+esc(presentation.cost)+'</dd></div>':guide?.type?'<div><dt>Tipo</dt><dd>'+esc(guide.type)+'</dd></div>':"")+
+  (presentation?'<div><dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd></div><div><dt>Custo de ativação</dt><dd>'+skillRuneHTML(presentation.cost)+'</dd></div>':guide?.type?'<div><dt>Tipo</dt><dd>'+esc(guide.type)+'</dd></div>':"")+
   (guide?'<div class="fp-skill-quick-benefit"><dt>Benefício</dt><dd>'+skillRuneHTML(practical)+'</dd></div>':
- ((!presentation||presentation.type==="Pendente")?'<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>':"")+
+ ((!presentation||presentation.type==="Pendente")?'<div><dt>Ativação</dt><dd>'+skillRuneHTML(act)+'</dd></div>':"")+
  '<div><dt>Efeito prático</dt><dd>'+skillRuneHTML(practical)+'</dd></div>')+'</dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
  '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(guide?guide.intro:(CARD_BRIEFS[id]||detail.slice(0,240)))+'</p><small>Clique para abrir explicação completa.</small></div>'+
  '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
@@ -3659,7 +3659,7 @@ function geneDetailHTML(id,s=state){
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
-  (presentation?'<dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd><dt>Custo de ativação</dt><dd>'+esc(presentation.cost)+'</dd>':playerGuide?.type?'<dt>Tipo</dt><dd>'+esc(playerGuide.type)+'</dd>':"")+
+  (presentation?'<dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd><dt>Custo de ativação</dt><dd>'+skillRuneHTML(presentation.cost)+'</dd>':playerGuide?.type?'<dt>Tipo</dt><dd>'+esc(playerGuide.type)+'</dd>':"")+
   (playerGuide?"":!presentation||presentation.type==="Pendente"?'<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd>':"")+'</dl>'+skillButton+verbete;
 }
 function renderGenetic(){

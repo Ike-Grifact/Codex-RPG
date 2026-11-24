@@ -622,9 +622,9 @@ const metadata={
  }
 };
 const byId=Object.fromEntries(Object.values(metadata).map(m=>[m.id,m]));
-const files={E:"exito",A:"antecipar",P:"pavor"},names={E:"Êxito",A:"Antecipar",P:"Pavor"};
-const pattern=/(^|[^\p{L}\p{N}])([+−-]?\d+\s*(Êxitos?|Antecipar|Pavor(?:es)?|E|A|P))(?=$|[^\p{L}\p{N}])/gu;
-const key=t=>/^Êxito/.test(t)?"E":t==="Antecipar"?"A":/^Pavor/.test(t)?"P":t;
+const files={E:"exito",A:"codex/status-antecipar",P:"pavor",C:"codex/status-coragem"},names={E:"Êxito",A:"Antecipar",P:"Pavor",C:"Coragem"};
+const pattern=/(^|[^\p{L}\p{N}])([+−-]?\d+\s*(Êxitos?|Antecipar|Pavor(?:es)?|[Cc]oragem|E|A|P))(?=$|[^\p{L}\p{N}])/gu;
+const key=t=>/^Êxito/.test(t)?"E":t==="Antecipar"?"A":/^Pavor/.test(t)?"P":/^coragem$/i.test(t)?"C":t;
 function decorateEscaped(text){return String(text).replace(pattern,(_,prefix,value,token)=>prefix+'<span class="codex-inline-rune">'+value+'<img src="../assets/icons/'+files[key(token)]+'.svg" alt="" aria-hidden="true" title="'+names[key(token)]+'"></span>');}
 window.CODEX_SKILL_PRESENTATION=Object.freeze({metadata,byId,decorateEscaped});
 if(typeof document==="undefined")return;
@@ -662,7 +662,7 @@ function enhance(){if(document.documentElement.dataset.codexSkillPresentation)re
  if(page.includes("/pericias/")){cleanup();const m=metadata[page.split("/").pop().replace(/\.html$/,"")];if(m){const h=document.querySelector(".skill-hero h1");if(h){h.classList.add("codex-skill-title");h.prepend(icon(m.icon,"codex-skill-title-icon"));}
  const dl=document.querySelector(".skill-stats");if(dl){const type=findStat(dl,/^Tipo$/i);if(!type)stat(dl,"Tipo",m.type);else if(m.type!=="Pendente"){const dd=type.querySelector("dd");if(dd)dd.textContent=m.type;}const cost=findStat(dl,/^(Custo de ativação|Ativação)$/i);if(!cost)stat(dl,"Custo de ativação",m.cost);else if(m.type==="Passiva"||m.type==="Ativa + benefício passivo"||/^(Não especificado|Sem custo adicional especificado|PENDENTE)$/i.test(cost.querySelector("dd")?.textContent.trim()||"")){const dd=cost.querySelector("dd");if(dd&&m.cost!=="Pendente")dd.textContent=m.cost;}}}
  for(const card of document.querySelectorAll(".skill-catalog-card")){const a=card.querySelector("h3 a[href]"),t=a&&target(a),m=t&&metadata[t.slug];if(!m)continue;a.classList.add("codex-skill-card-title");a.prepend(icon(m.icon,"codex-skill-card-icon"));const d=element("div","codex-skill-card-meta");d.append(element("span","codex-skill-kind",m.type==="Pendente"?"Tipo pendente":m.type),element("span","codex-skill-cost","Ativação: "+m.cost));card.insertBefore(d,card.querySelector("p")||null);}}
- for(const el of document.querySelectorAll(".skill-article,.skill-stat dd,.skill-description,.skill-catalog-card p"))decorateText(el);
+ for(const el of document.querySelectorAll(".skill-article,.skill-stat dd,.skill-description,.skill-catalog-card p,.codex-skill-cost"))decorateText(el);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",enhance,{once:true});else enhance();
 })();
