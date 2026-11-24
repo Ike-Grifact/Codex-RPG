@@ -2,6 +2,7 @@
 (function(){
 "use strict";
 const metadata={
+ "saque-rapido": {"id":"saque-rapido","type":"Passiva","cost":"Sem custo próprio; saque/troca: 1 Antecipar","icon":"arma-espada"},
  "pericia-em-armas-leves": {
   "id": "armas-leves",
   "type": "Ativa + benefício passivo",

@@ -13,9 +13,9 @@ function canonicalSource(){
  assert.ok(first>=0&&sk>first&&end>sk,"Não encontrou definições do catálogo da ficha de jogador");
  return new Function(source.slice(first,sk)+"\n"+source.slice(sk,end)+"\nreturn SKILLS;")();
 }
-test("Catálogo do inimigo espelha integralmente os 122 IDs, nomes, textos e custos da ficha",()=>{
+test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e custos da ficha",()=>{
  const original=canonicalSource();
- assert.equal(original.length,122);
+ assert.equal(original.length,123);
  assert.deepEqual(PLAYER_SKILLS.map(x=>[x.id,x.name,x.detail,x.cost]),original);
  for(const entry of original){
   const match=SKILLS.find(x=>x.id===entry[0]);
@@ -29,7 +29,7 @@ test("Catálogo do inimigo espelha integralmente os 122 IDs, nomes, textos e cus
 });
 
 test("Custo pendente permanece visível e não se transforma em compra gratuita",()=>{
- for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
+ for(const id of ["saque-rapido","dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
   const skill=SKILLS.find(x=>x.id===id);
   assert.ok(skill,"Perícia pendente precisa estar visível: "+id);
   assert.equal(skill.cost,null);

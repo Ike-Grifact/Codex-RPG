@@ -39,6 +39,7 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
 });
 
 const SKILLS=[
+ ["saque-rapido","Saque Rápido","Passiva: sacar ou trocar arma em combate custa 1 Antecipar da ação; se não obtiver esse símbolo, Golpe de Sorte (−2 Êxitos). Acesso rápido no corpo respeita a carga física.",null],
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
  ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
@@ -575,6 +576,7 @@ const SKILLS=[
 ];
 
 function skillReq(id,s){
+ if(id==="saque-rapido"){if((s.attributes.agilidade||0)<2||(s.attributes.destreza||0)<1||(s.practices.armas_conjuracao||0)<2)return "Requer Agilidade 2, Destreza 1 e Disciplina 2.";return "Custo de aquisição em XP a definir; compra bloqueada.";}
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Especialização em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
  if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";

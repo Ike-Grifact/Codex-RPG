@@ -288,7 +288,7 @@ export function combatManoeuvreOutcome(effects=[],attacker={},target={},success=
  if(selected.has("Empurrar")){applied.pushMeters=4;notes.push("Empurrar: deslocar o alvo 4 metros (posição resolvida na mesa).");}
  if(selected.has("Agarrar")){applied.agarradoPor=String(attacker.id||"");notes.push("Agarrar: Desvantagem de movimento; para escapar, superar a DE de quem agarra ("+defense(attacker)+").");}
  if(selected.has("Derrubar")){applied.caido=true;notes.push("Derrubar: alvo caído; levantar custa 4 movimentos; golpe enquanto caído tem Desvantagem (−1A).");}
- if(selected.has("Desarmar"))notes.push("Desarmar: procedimento específico ainda não definido.");
+ if(selected.has("Desarmar"))notes.push("Desarmar: retirar arma empunhada do alvo; quem desarma pode guardar com Saque Rápido respeitando carga, segurar em mão livre compatível ou deixar cair. Registrar destino na mesa.");
  return {applied,notes};
 }
 export function applyCombatManoeuvres(target,outcome){

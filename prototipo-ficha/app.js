@@ -158,6 +158,7 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
+ ["saque-rapido","Saque Rápido","Passiva: sacar ou trocar arma em combate custa 1 Antecipar da ação; se não obtiver esse símbolo, Golpe de Sorte (−2 Êxitos). Acesso rápido no corpo respeita a carga física.",null],
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
  ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
@@ -703,6 +704,7 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "saque-rapido":["attr:agilidade","attr:destreza","practice:armas_conjuracao"],
  "dueto-improvisado":["practice:apresentacao","attr:influencia"],
  "contratempo":["practice:apresentacao","attr:influencia"],
  "solo-provocador":["practice:apresentacao","attr:influencia"],
@@ -1134,6 +1136,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "saque-rapido":"saque-rapido",
  "concentracao-refinada":"concentracao-refinada",
  "dueto-improvisado":"dueto-improvisado",
  "contratempo":"contratempo",
@@ -1258,6 +1261,7 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "saque-rapido":"Agilidade 2, Destreza 1 e Disciplina 2",
  "artista-marcial":"Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo",
  "pugilismo":"Disciplina 1, Força 2 e Destreza 1",
  "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
@@ -1639,6 +1643,7 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar uma arma durante uma ação de combate, gaste 1 Antecipar obtido na própria rolagem para realizar o ataque normalmente.","Golpe de Sorte. Se tentar atacar com a arma sacada sem obter o Antecipar necessário, o ataque é considerado Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
  "artista-marcial":{
   type:"Ativa + benefício passivo",
   intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha.",
@@ -2591,6 +2596,7 @@ function xpStepCost(group,k,delta){
 }
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
+ if(id==="saque-rapido"){if((s.attributes.agilidade||0)<2||(s.attributes.destreza||0)<1||(s.practices.armas_conjuracao||0)<2)return "Requer Agilidade 2, Destreza 1 e Disciplina 2.";return "Custo de aquisição em XP a definir; compra bloqueada.";}
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Especialização em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
  if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";
@@ -3373,6 +3379,7 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "saque-rapido":[["a:agilidade:2","a:destreza:1","p:armas_conjuracao:2"]],
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
  "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],

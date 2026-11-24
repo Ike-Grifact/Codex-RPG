@@ -1193,6 +1193,13 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 
 ### Mecânicas de Combate — Características de Armas, Golpes e Magias [DEFINIDO / PENDENTE]
 
-**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** procedimento específico ainda pendente. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
+**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
 
 [Consultar características de combate](../mecanicas/caracteristicas-de-combate.html).
+
+
+## Inventário e armas de acesso rápido (23/11/2026)
+
+**DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Saque/troca para atacar em combate custa 1 Antecipar da ação, consumido uma única vez; se não obtiver esse símbolo, Golpe de Sorte (−2E). Sem a Perícia, sacar do corpo para atacar implica Desvantagem Absoluta (−1E). Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **PENDENTE:** XP de aquisição de Saque Rápido e procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
+
+[Referência de mecânica](../mecanicas/inventario-e-acesso-rapido.html) · [SRD v0.109](srd-continuidade-v0.109.md).
