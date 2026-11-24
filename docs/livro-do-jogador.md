@@ -422,13 +422,13 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
 | 11 | — | — | — | 3ᚦ | 3ᚦ |
 | 12 | — | — | — | 3ᛋ | 3ᛋ |
-| 13 | — | — | — | — | 2ᛋ+2ᚨ |
-| 14 | — | — | — | — | 3ᛋ+2ᚨ |
+| 13 | — | — | — | — | 2ᛋ+ᚨ+ᚦ |
+| 14 | — | — | — | — | 2ᛋ+2ᚦ |
 | 15 | — | — | — | — | 3ᚦ+2ᚨ |
 | 16 | — | — | — | — | 4ᚦ |
-| 17 | — | — | — | — | 4ᛋ+2ᚨ |
-| 18 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
-| 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
+| 17 | — | — | — | — | 3ᛋ+ᚨ+ᚦ |
+| 18 | — | — | — | — | 4ᛋ+ᚨ+2ᚦ |
+| 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
 As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3P. O d4 mantém sua tabela própria. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3P+2A. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
