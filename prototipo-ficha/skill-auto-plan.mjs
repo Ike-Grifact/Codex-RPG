@@ -2,7 +2,7 @@
  * O mapa de alternativas abaixo é copiado de prototipo-ficha/app.js.
  * A CI compara as alternativas com o criador e impede divergências silenciosas.
  */
-import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261124-coragem-v0112";
+import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261124-colossal-v0113";
 export const GENE_AUTO_REQUIREMENTS={
  "saque-rapido":[["a:agilidade:2","a:destreza:1","p:armas_conjuracao:2"]],
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],
@@ -90,9 +90,7 @@ export const GENE_AUTO_REQUIREMENTS={
  "golpe-fulminante":[
   ...["armas-leves","armas-medias","armas-pesadas","pugilismo"].map(id=>
    ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
- "espalhar-golpe":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
-   ["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante","s:"+id])],
+ "espalhar-golpe":[["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante"]],
  "disparo-fulminante":[
   ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
    ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","s:"+id])],

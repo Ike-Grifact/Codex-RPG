@@ -284,7 +284,7 @@ const SKILLS=[
  [
   "espalhar-golpe",
   "Golpe Colossal",
-  "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SEM bônus de +1E. Não espalha automaticamente o dano de Pavor de Golpe Fulminante. Arremesso não é especialização aceita. Centro da área PENDENTE.",
+  "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido acrescenta 1 dano por P somente com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
   1
  ],
  [
@@ -663,7 +663,7 @@ function skillReq(id,s){
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||vig<1||!has("criar-item-foco-magia")))return"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
  if(id==="golpe-fulminante"&&(disc<2||strength<2||!["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(has)))return"Requer Disciplina 2, Força 2 e uma Perícia em Armas Leves, Médias, Pesadas ou Pugilismo. Perícia em Arremesso não habilita este golpe.";
- if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
+ if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")))return"Requer Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
  if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
