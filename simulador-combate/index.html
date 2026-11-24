@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261123-caracteristicas-v0108"></script>
+<script type="module" src="./app.mjs?v=20261124-saque-v0110"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -85,7 +85,8 @@
     <label>Elevar uma fonte (G+1 temporário) <select id="step-source"><option value="">Não elevar</option></select></label>
     <label>Retenção do monstro <select id="monster-keep"><option value="2">2 dados</option></select></label>
     <label>Disciplina <select id="discipline-mode"><option value="normal">Normal</option><option value="armas">Armas</option><option value="conjuracao">Conjuração</option></select></label>
-    <label>Arma equipada <select id="weapon-source"><option value="">Sem dado de arma</option></select></label>
+    <label>Arma para atacar <select id="weapon-source"><option value="">Sem dado de arma</option></select></label>
+    <div id="draw-controls" hidden><label>Guardar para liberar mãos (se necessário; seleção múltipla) <select id="draw-stow" multiple size="3"></select></label><p id="draw-info" class="cc-help"></p></div>
     <label class="cc-check-throw"><input type="checkbox" id="attack-thrown"> Ataque de arremesso com a arma selecionada (exige Perícia de Arremesso)</label>
     <label>Grau da magia (conjuração habilitada) <select id="spell-grade"><option value="1">G1 · +1d6, sem dano ofensivo automático</option><option value="2">G2 · +1d10</option><option value="3">G3 · +1d12</option><option value="4">G4 · +2d12</option></select></label>
     <label>Condição situacional <select id="situation"><option value="neutral">Normal</option><option value="advantage">Vantagem (+1A)</option><option value="disadvantage">Desvantagem (−1A)</option><option value="superior">Vantagem absoluta (+1E)</option><option value="inferior">Desvantagem absoluta (−1E)</option></select></label>
@@ -136,6 +137,7 @@
     <label>Converter 2A → 1E (pares) <input id="convert-a" type="number" min="0" max="9" value="0"></label>
    </div>
    <div id="roll-result" class="cc-result" aria-live="polite">Nenhuma rolagem pendente.</div>
+   <section id="disarm-controls" class="cc-activation" hidden><h3>Desarmar — destino da arma</h3><label>Arma do alvo <select id="disarm-weapon"></select></label><label>Destino <select id="disarm-destination"><option value="ground">Chão</option><option value="hands">Minhas mãos</option><option value="bag">Meu inventário (Saque Rápido)</option></select></label></section>
    <button id="confirm" type="button" class="cc-primary cc-full" disabled>Confirmar rolagem e transferir Pavor</button>
   </section>
   <section class="cc-panel" aria-label="Gerenciar Integridade e recursos">
@@ -143,7 +145,7 @@
    <div class="cc-form">
     <label>Combatente <select id="resource-actor"></select></label>
    </div>
-   <div id="resource-summary" class="cc-resource-summary"><p>Selecione uma ficha.</p></div>
+   <div id="resource-summary" class="cc-resource-summary"><p>Selecione uma ficha.</p></div><p><strong>Armas no chão:</strong> <span id="ground-weapons">Nenhuma arma no chão.</span></p>
    <section id="manoeuvre-controls" class="cc-activation" hidden><h3>Condições de combate</h3><button type="button" id="stand-up" hidden>Levantar (4 movimentos)</button><div id="escape-wrap" hidden><p class="cc-help" id="grapple-info"></p><label>Total válido do teste de libertação <input type="number" min="0" step="1" id="escape-total"></label><button type="button" id="escape-grapple">Registrar teste de libertação</button></div><p class="cc-help">Deslocamento é resolvido na mesa. <a href="../mecanicas/caracteristicas-de-combate.html">Consultar características de combate</a>.</p></section>
    <div class="cc-form cc-duo">
     <label>Recurso <select id="resource-kind"><option value="integridade">Integridade da armadura/escudo</option><option value="vida">Vida</option><option value="coragem">Coragem</option><option value="pavor">Pavor local</option></select></label>

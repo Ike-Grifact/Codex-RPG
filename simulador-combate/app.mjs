@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261123-caracteristicas-v0108";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-marcial-v0107";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261124-saque-v0110";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-saque-v0110";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-saque-v0110";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0110";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -11,7 +11,7 @@ const unique=()=>globalThis.crypto?.randomUUID?.()||"c-"+Date.now()+"-"+Math.ran
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,Number.isFinite(Number(v))?Number(v):min));
 const catalog=()=>Array.isArray(window.CODEX_G1_CATALOG)?window.CODEX_G1_CATALOG:[];
 const sources={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
-function empty(){return {version:1,round:1,combatants:[],actor:"",target:"",resourceActor:"",publicPavor:0,history:[]};}
+function empty(){return {version:1,round:1,combatants:[],actor:"",target:"",resourceActor:"",publicPavor:0,groundItems:[],history:[]};}
 function load(){
  try{
   const data=JSON.parse(localStorage.getItem(SAVE)||"null");
@@ -23,7 +23,7 @@ function load(){
    actor:String(data.actor||""),target:String(data.target||""),
    resourceActor:String(data.resourceActor||""),
    publicPavor:Math.floor(clamp(data.publicPavor,0,100)),
-   history:(Array.isArray(data.history)?data.history:[]).slice(0,350),
+   history:(Array.isArray(data.history)?data.history:[]).slice(0,350),groundItems:(Array.isArray(data.groundItems)?data.groundItems:[]).slice(0,200).map(normalizeEquipment),
    lastResult:data.lastResult&&typeof data.lastResult==="object"?data.lastResult:null};
  }catch{return empty();}
 }
@@ -176,6 +176,7 @@ function renderTarget(){
 }
 function renderResources(){
  const c=byId(state.resourceActor);
+ $("ground-weapons").textContent=state.groundItems.length?state.groundItems.map(x=>x.name).join(" · "):"Nenhuma arma no chão.";
  if(!c){$("resource-summary").textContent="Escolha uma ficha.";$("manoeuvre-controls").hidden=true;return;}
  const grabber=byId(c.statuses?.agarradoPor);
  $("manoeuvre-controls").hidden=!c.statuses?.caido&&!c.statuses?.agarradoPor;
@@ -187,6 +188,7 @@ function renderResources(){
   '<span>Vida '+c.life+'</span><span>DE '+defense(c)+'</span>'+
   (c.side==='inimigos'?'<span>Coragem: não se aplica</span>':'<span>Coragem '+c.courage+'/'+maxCourage(c.level)+'</span>')+
   '<span>P local '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+'</span></div><p>Armadura: '+armorText(c)+'</p>';
+ $("resource-summary").innerHTML+='<p>Mãos ocupadas: '+(heldHands(c.items)??"empunhadura pendente")+'.</p>'+["hands","quick","bag"].map(pos=>'<p><strong>'+({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[pos])+'</strong>: '+esc(c.items.filter(x=>isHandEquipment(x)&&equipmentPosition(x)===pos).map(x=>x.name+(weaponHands(x)?" ("+weaponHands(x)+" mão(s))":" (empunhadura a definir)")).join(", ")||"—")+'</p>').join("");
  const elig=c.items.filter(x=>["armor","shield"].includes(x.kind)),previous=$("resource-item").value;
  $("resource-item").innerHTML=elig.length?elig.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+
   ' · '+x.integrity+'/'+x.integrityMax+'</option>').join(""):'<option value="">Nenhum equipamento</option>';
@@ -235,7 +237,7 @@ function renderSources(){
  const a=actor();
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
- activeExtraSelections.clear();$("attack-thrown").checked=false;resetMartial();
+ $("draw-stow").innerHTML="";activeExtraSelections.clear();$("attack-thrown").checked=false;resetMartial();
  $("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
@@ -310,7 +312,7 @@ function renderCombatControls(){
    ". Monstro incapacitado/inconsciente: conversão de custo de ação PENDENTE; penalidades de símbolos aplicadas.":"");
  const previous=$("active-skill").value;
  const purchased=a.skills||[];
- const rows=purchased.filter(id=>!["pugilismo","artista-marcial"].includes(id)).map(id=>selectedActiveSkill(a,id)).filter(Boolean);
+ const rows=purchased.filter(id=>!["pugilismo","artista-marcial","saque-rapido"].includes(id)).map(id=>selectedActiveSkill(a,id)).filter(Boolean);
  $("active-skill").innerHTML='<option value="">Sem ativação adicional</option>'+
   rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name)+'</option>').join("");
  if(rows.some(r=>r.id===previous))$("active-skill").value=previous;
@@ -393,18 +395,26 @@ function renderWeaponEffects(){
 }
 
 function renderWeapons(){
- const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
+ const a=actor(),weapons=a?equippedWeapons(a,catalog(),true):[],old=$("weapon-source").value;
  $("weapon-source").innerHTML='<option value="">Sem arma / ataque desarmado</option>'+weapons.map(w=>
   '<option value="'+esc(w.id)+'"'+(w.eligible?"":" disabled")+'>'+esc(w.name)+
-  ' · '+(w.die?"d"+w.die:"dado não cadastrado")+
+  ' · '+(w.die?"d"+w.die:"dado não cadastrado")+' · '+({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[equipmentPosition(w)])+' · '+(weaponHands(w)?weaponHands(w)+" mão(s)":"empunhadura a definir")+
   (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
  if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
- else $("weapon-source").value=weapons.find(w=>w.eligible)?.id||"";
- renderAffinity();renderWeaponEffects();
+ else $("weapon-source").value=weapons.find(w=>w.eligible&&w.equipped)?.id||"";
+ renderDrawControls();renderAffinity();renderWeaponEffects();
 }
 function chosenWeapon(){
- return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
+ const w=equippedWeapons(actor(),catalog(),true).find(w=>w.id===$("weapon-source").value);
+ return w?{...w,wasHeld:!!w.equipped,equipped:true}:null;
 }
+function renderDrawControls(){
+ const w=chosenWeapon(),a=actor(),old=new Set([...$("draw-stow").selectedOptions].map(o=>o.value));
+ $("draw-controls").hidden=!w||w.wasHeld;
+ $("draw-stow").innerHTML=(a?.items||[]).filter(x=>x.equipped&&isHandEquipment(x)).map(x=>'<option value="'+esc(x.id)+'"'+(old.has(x.id)?' selected':'')+'>'+esc(x.name)+'</option>').join("");
+ $("draw-info").textContent=hasQuickDraw(a)?"Saque Rápido: reserva 1A; sem A, −2E.":"Saque do corpo: −1E.";
+}
+
 function isUnarmedAttack(){
  return isHumanoidKind(actor()?.kind)&&$("base-source").value==="practice:armas_conjuracao"&&$("discipline-mode").value==="armas"&&!chosenWeapon()&&!$("attack-thrown").checked;
 }
@@ -441,7 +451,7 @@ function options(){
 }
 function evaluate(a,rolled,kept,opts){
  const health=combatHealth(a),t=byId(pending?.target);
- const weapon=pending?.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
+ const weapon=pending?.weaponId?pending.weaponSnapshot:null;
  const affinity=weightAffinity(weapon||pending?.martial?.weapon,t,a);
  const manejo=manejoPerfeitoBonus(a,weapon,affinity,{
   situation:opts.situation,mode:pending?.mode,baseKey:pending?.baseKey,thrown:!!pending?.thrown
@@ -451,7 +461,7 @@ function evaluate(a,rolled,kept,opts){
  const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
  const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
  const pronePenalty=proneAttackPenalty(a,opts.situation);
- const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty,bonusP:health.p+Number(noisy),
+ const conf={...opts,drawMode:pending?.draw?.mode||"none",weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty,bonusP:health.p+Number(noisy),
   skillBonusE:health.e+manejo.bonusE,stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
@@ -459,7 +469,7 @@ function evaluate(a,rolled,kept,opts){
  else {
   const r=resolveRoll(rolled,kept,{de:conf.de,situation:conf.situation,level:a.level,
    extraKeep:conf.extraKeep,courage:a.courage,cancelP:conf.cancelP,convertPairs:conf.convertPairs,
-   weight:conf.weight,bonusA:conf.bonusA,bonusP:conf.bonusP,skillBonusE:conf.skillBonusE});
+   drawMode:conf.drawMode,weight:conf.weight,bonusA:conf.bonusA,bonusP:conf.bonusP,skillBonusE:conf.skillBonusE});
   if(!r.ok)return {ok:false,error:r.errors.join("; ")};
   const free=keepLimit(a.level,false,false);
   pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
@@ -475,7 +485,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  if(pre.health.id==="morto")return {ok:false,error:"Combatente morto não pode agir."};
  const activations=pending.activations||[];
  if(activations.some(x=>!selectedActiveSkill(a,x.id)))return {ok:false,error:"Ativação de Perícia não adquirida."};
- const weapon=pending.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
+ const weapon=pending.weaponId?pending.weaponSnapshot:null;
  const weaponPlan=planWeaponEffects(a,weapon,pending.weaponEffects||[],{
   success:pre.result.success,critical:pre.result.critical,thrown:!!pending.thrown});
  if(!weaponPlan.ok)return weaponPlan;
@@ -517,7 +527,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
 }
 function renderDice(){
  const element=$("dice");
- $("confirm").disabled=true;$("suggest").disabled=!pending;
+ $("confirm").disabled=true;$("suggest").disabled=!pending;$("disarm-controls").hidden=true;
  if(!pending){
   element.innerHTML='<p>Selecione atacante e alvo antes de rolar.</p>';
   $("roll-result").textContent="Nenhuma rolagem pendente.";
@@ -541,6 +551,7 @@ function renderDice(){
   '<span class="cc-p">'+x.p+'P</span></li>').join("");
  const bonuses=pre.ok?[
   "Peso: "+pre.affinity.description,
+   pre.result.drawSpent?"Saque Rápido: 1A reservado":pre.result.drawPenalty?"Saque: "+pre.result.drawPenalty+"E":null,
    byId(pending?.actor)?.statuses?.caido?"Caído: golpe em Desvantagem (−1A, sem duplicar a condição situacional).":null,
    pre.manejo?.active?pre.manejo.description:null,
   "Situação: "+$("situation").selectedOptions[0]?.textContent,
@@ -568,6 +579,7 @@ function renderDice(){
   '<small>Dados descartados não geram E, A ou P. Cada símbolo de Antecipar é gasto uma única vez.</small>';
  if(!pre.ok){$("roll-result").textContent=pre.error;return;}
  $("confirm").disabled=false;
+ if(pre.manoeuvres.applied.disarm){const weapons=(byId(pending.target)?.items||[]).filter(x=>x.equipped&&["weapon","firearm"].includes(x.kind));const old=$("disarm-weapon").value;$("disarm-controls").hidden=!weapons.length;$("disarm-weapon").innerHTML=weapons.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+'</option>').join("");if(weapons.some(x=>x.id===old))$("disarm-weapon").value=old; $("disarm-destination").querySelector('option[value="bag"]').disabled=!hasQuickDraw(byId(pending.actor));if($("disarm-destination").selectedOptions[0]?.disabled)$("disarm-destination").value="ground";}else $("disarm-weapon").innerHTML="";
  const r=pre.result;
  $("roll-result").innerHTML=(r.critical?
   '<div class="cc-critical-result"><strong>CRÍTICO · '+r.critical+' DADOS NAS FACES MÁXIMAS</strong><small>'+
@@ -607,6 +619,8 @@ function roll(){
  if(!pool.ok)return notice(pool.error||"Combinação de dados inválida.");
  if(boosted)for(const die of pool.pool)if(die.group===sg&&die.key===sk)die.boosted=true;
  const w=chosenWeapon();
+ const draw=w?planDraw(a,w.id,[...$("draw-stow").selectedOptions].map(o=>o.value)):{ok:true,mode:"none",items:a.items};
+ if(!draw.ok)return notice(draw.error);
  if(w){
   if(!w.eligible||!human||mode!=="armas"||key!=="armas_conjuracao")
    return notice("Dado de arma exige Disciplina em modo Armas e especialização do peso.");
@@ -654,7 +668,7 @@ function roll(){
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
   mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
   weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown,
-  weaponEffects:selectedWeaponEffects(),martial};
+  weaponEffects:selectedWeaponEffects(),martial,draw,weaponSnapshot:w};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
 }
@@ -685,8 +699,12 @@ function confirmRoll(){
  if(!a||!t||!pre.ok)return notice(pre.error||"Rolagem inválida.");
  if(a.acted)return notice("Este combatente já agiu na rodada.");
  const r=pre.result;
+ const disarm=pre.manoeuvres.applied.disarm&&$("disarm-weapon").value?disarmTransfer({...a,items:pending.draw?.mode!=="none"?pending.draw.items:a.items},t,$("disarm-weapon").value,$("disarm-destination").value,unique()):null;
+ if(disarm&&!disarm.ok)return notice(disarm.error);
+ if(pre.manoeuvres.applied.disarm&&!disarm&&t.items.some(x=>x.equipped&&["weapon","firearm"].includes(x.kind)))return notice("Escolha a arma a desarmar.");
  if(pre.courageCost>a.courage||pre.pavorCost>a.pavorLocal)
   return notice("Coragem ou Pavor local insuficiente.");
+ if(pending.draw?.mode&&pending.draw.mode!=="none"){a.items=pending.draw.items;log("saque",a.name+" sacou "+pending.weapon+" — "+(r.drawSpent?"1A gasto":r.drawPenalty+"E")+".");}
  a.courage=Math.max(0,a.courage-pre.courageCost);
  a.pavorLocal=Math.max(0,a.pavorLocal-pre.pavorCost);
  if(a.side==="jogadores")a.courageRoundSpent=Math.min(5,(a.courageRoundSpent||0)+pre.courageCost);
@@ -706,6 +724,8 @@ function confirmRoll(){
  const moved=transferPavor(a,t,r.p,state.publicPavor);
  Object.assign(t,moved.target);
  Object.assign(t,applyCombatManoeuvres(t,pre.manoeuvres));
+ if(disarm?.ok){a.items=disarm.attacker.items;t.items=disarm.target.items;if(disarm.ground)state.groundItems.push(disarm.ground);log("Desarmar",a.name+" retirou "+disarm.weapon+" de "+t.name+" → "+$("disarm-destination").selectedOptions[0].textContent);}
+
  if(pre.status.applied?.sangramento){
   const changed=markCondition(t,"sangramento",true);
   if(changed.ok){Object.assign(t,changed.actor);log("status",t.name+" recebeu Sangramento por Cortante de "+a.name+
@@ -818,7 +838,7 @@ function importJson(file){
    if(state.combatants.length&&!confirm("Substituir o confronto por este arquivo?"))return;
    state=empty();for(const c of raw.combatants.slice(0,MAX))
     add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Comparador importado");
-   state.round=Math.floor(clamp(raw.round,1,9999));
+   state.round=Math.floor(clamp(raw.round,1,9999));state.groundItems=(Array.isArray(raw.groundItems)?raw.groundItems:[]).slice(0,200).map(normalizeEquipment);
   }else if(Array.isArray(raw?.roster)||Array.isArray(raw?.tokens)){
    for(const c of raw.roster||raw.tokens)
     if(!add(c,["jogadores","inimigos"].includes(c.side)?c.side:"inimigos","Arquivo de conflito"))break;
@@ -883,7 +903,7 @@ function bind(){
  });
  $("weapon-source").addEventListener("change",()=>{
   pending=null;$("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
-  renderMartial();renderWeaponEffects();renderDice();
+  renderDrawControls();renderMartial();renderWeaponEffects();renderDice();
  });
  $("weapon-effects").addEventListener("change",event=>{
   if(!event.target.matches("[data-weapon-property]"))return;
@@ -908,7 +928,7 @@ function bind(){
    const single=$("weapon-effects").querySelector("[data-weapon-property]");
    if(single&&!single.disabled)single.checked=true;
   }
-  renderAdditionalSkills((actor()?.skills||[]).filter(id=>!["pugilismo","artista-marcial"].includes(id)).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
+  renderAdditionalSkills((actor()?.skills||[]).filter(id=>!["pugilismo","artista-marcial","saque-rapido"].includes(id)).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
   updateSkillInfo();renderDice();
  });
  for(const id of ["skill-courage","skill-approved"]){
