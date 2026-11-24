@@ -14,9 +14,13 @@ Há cidades onde a tecnologia lembra a nossa, embora as leis que governam seu fu
 
 Há cerca de 1.400 anos, os humanos retornaram a este mundo e descobriram que já não eram seus senhores. Os Luckers habitam estas terras há cerca de 20 mil anos, divididos entre Puros e de Sangue. Já a história dos Runa Espinhos remonta a milhões de anos; entre eles estão os temidos Runalmas. Para esses povos, a presença humana é apenas um breve capítulo de uma história muito mais antiga.
 
-Acima da paisagem flutuam imensos pilares de cristal vermelho, conhecidos como as **Espinhas do Mundo**. Aos seus pés, cavernas guardam riquezas cobiçadas e perigos que poucos ousam enfrentar. Nas antigas Arcas, os humanos ergueram cidades de pedra, metal e destroços: Arcanum encontrou na magia um caminho para sobreviver; Arcrois voltou-se à engenharia; Triarca buscou na natureza e nas tradições uma nova forma de viver. Outras Arcas conheceram destinos menos afortunados.
+Acima da paisagem flutuam imensos pilares de cristal vermelho, conhecidos como as **Espinhas do Mundo**. Aos seus pés, cavernas guardam riquezas cobiçadas e perigos que poucos ousam enfrentar. Nas antigas Arcas, os humanos ergueram cidades de pedra, metal e destroços. Arcrois voltou-se à engenharia; Triarca buscou na natureza e nas tradições uma nova forma de viver. Outras Arcas conheceram destinos menos afortunados.
 
-Alianças improváveis dividem espaço com antigas rivalidades e ambições de conquista. Há extremistas entre os humanos, os Luckers de Sangue e os Runa Espinhos. Em contraste, os Luckers de Sangue que você pode interpretar são os párias de sua própria sociedade, indivíduos que procuram um caminho diferente após o Infortúnio. Entre cidades e ruínas, você poderá encontrar seres de aparência angelical, elementais, golens e monstros terríveis. Há expedições em busca de cristais, caçadas, resgates e lugares que permanecem desconhecidos. Nenhum povo é inteiramente bom ou mau. Neste mundo, a origem de um personagem não determina o lado que ele escolherá, e cada descoberta pode mudar aquilo que acreditava saber.
+Em **Arcanum**, humanos, Runa Espinhos e Luckers Puros encontraram um lugar de convivência. Restam hoje apenas cerca de 300 Luckers Puros. Ao lado deles vivem Runa Espinhos que, apesar de sua natureza tão distinta da humana, demonstram profunda empatia pelos outros povos. Foi com esses aliados que a humanidade aprendeu a utilizar a magia. A convivência também deu origem a descendentes de humanos e Luckers, e alguns Luckers de Sangue encontraram acolhimento e proteção na cidade.
+
+Marcados pelo Infortúnio, os Luckers de Sangue carregam uma existência que não podem encerrar, mas também não conseguem sentir. Aqueles que se aventuram ao lado de outros povos são párias de sua própria sociedade. Enquanto alguns buscam uma maneira de existir entre os demais, facções extremistas dos Luckers, dos humanos e dos Runa Espinhos perseguem seus próprios ideais e ambições de conquista. Nenhum povo é inteiramente bom ou mau.
+
+Entre cidades e ruínas, você poderá encontrar seres de aparência angelical, elementais, golens e monstros terríveis. Há expedições em busca de cristais, caçadas, resgates e lugares que permanecem desconhecidos. Neste mundo, a origem de um personagem não determina o lado que ele escolherá, e cada descoberta pode mudar aquilo que acreditava saber.
 
 ### Uma profissão é uma descoberta
 
@@ -408,12 +412,6 @@ Perguntas para construir sua interpretação:
 >
 > **Lucker Puro:** “Eu vi duas cidades erguidas neste vale. Esta ainda pode ser a que aprende com as anteriores.”
 
-#### Os párias do Infortúnio
-
-Os Luckers de Sangue disponíveis aos jogadores são **párias de sua própria sociedade**. Após o Infortúnio, muitos Luckers perderam a razão, foram submetidos a outras vontades ou passaram a perseguir objetivos que os afastaram dos demais povos. Entre eles existem grupos fanáticos que continuam buscando a imortalidade verdadeira. Esses grupos extremistas não são uma opção de personagem jogador.
-
-Seu personagem pertence aos que existem à margem dessa sociedade. Ele pode buscar um lugar entre outros povos, uma resposta para sua condição ou simplesmente uma razão para continuar agindo. Ser um pária não significa ser necessariamente bondoso, nem exige que conheça a história do Infortúnio.
-
 #### Interpretar um Lucker de Sangue
 
 **A regra central da interpretação é separar compreender de sentir.** Um Lucker de Sangue pode reconhecer uma ameaça, identificar sinais de tristeza, estudar o amor e entender o valor de um compromisso. Ele não precisa experimentar dor, medo, alegria ou afeto para **tomar decisões**.
@@ -431,14 +429,6 @@ Seu personagem pertence aos que existem à margem dessa sociedade. Ele pode busc
 > **Lucker de Sangue:** “Não experimento medo. Mas reconheço a possibilidade de ficarmos presos e prefiro preservar nossa passagem.”
 
 Outro Lucker poderia responder apenas “É perigoso. Vamos por outro caminho”. Ambos são interpretações válidas.
-
-#### Como existir sem sentir
-
-Imagine compreender a descrição de uma sensação sem jamais conseguir experimentá-la. Um Lucker de Sangue consegue aprender o que as pessoas chamam de calor, dor, fome, prazer ou saudade e reconhecer suas consequências. Mas compreender o conceito não é ter acesso à experiência. É como tentar conhecer uma dimensão da realidade por meio de relatos e referências, sem poder percebê-la da maneira como os outros a percebem.
-
-Para um Lucker de Sangue, a imortalidade é uma existência paradoxal: **não consegue morrer definitivamente, mas tampouco experimenta aquilo que os outros chamam de viver**. Seu corpo pode sofrer ferimentos sem que a dor o avise. Ele pode precisar descobrir que se machucou pelas consequências observáveis ou porque alguém o alertou. A repetição de destruições, privações e longos períodos de isolamento levou muitos a perder a razão. A cognição, entretanto, não desaparece necessariamente com a capacidade de sentir.
-
-Na mesa, não confunda a ausência de sensações com incapacidade de perceber qualquer informação. O personagem pode compreender e interagir com o mundo de maneira própria. A natureza exata dessa percepção não é uma nova regra de sentidos, nem concede visão especial ou imunidade. Use as regras da ficha para resolver danos, incapacitação e demais consequências.
 
 #### Diários, memória e linguagem própria
 
@@ -469,16 +459,6 @@ Um Lucker de Sangue pode preservar relações, cuidar de alguém, viver em famí
 > **Lucker de Sangue:** “Prometi estar aqui. Continuo considerando essa promessa importante.”
 
 O jogador não precisa repetir a maldição em toda conversa. Mostre a diferença quando ela realmente importar para uma decisão, um conflito ou um diálogo.
-
-#### Aprendendo a interpretar: da observação à decisão
-
-Em vez de perguntar o que seu personagem sentiria, pergunte **o que ele consegue compreender, qual referência possui e o que decidiu fazer**. Em uma cena, observe as informações disponíveis, recorra às lembranças, registros ou palavras aprendidas e escolha uma ação coerente com seu propósito. Não precisa anunciar esse processo em voz alta toda vez.
-
-**Em uma fogueira:** um companheiro diz que está com frio. O Lucker não experimenta o frio, mas sabe que o corpo do aliado pode sofrer. Aproxima lenha e oferece uma manta. **Diante de um ferimento:** outro personagem aponta sangue na roupa do Lucker. Ele examina o dano e procura tratamento, não porque dói, mas porque compreende as consequências. **Diante de uma perda:** ele pode guardar os pertences do companheiro e cumprir um compromisso antigo, mesmo sem experimentar o luto.
-
-Os diários não precisam conter apenas datas. Podem registrar o significado atribuído a um gesto, as reações de outras pessoas, compromissos assumidos e palavras inventadas para coisas que o personagem não consegue sentir. Um termo particular pode substituir uma emoção por uma descrição de comportamento: por exemplo, 'retorno' pode significar a decisão reiterada de procurar determinada pessoa. É um exemplo de vocabulário pessoal, não um idioma oficial.
-
-**Exercício:** escreva uma promessa, uma palavra própria e uma lembrança que seu personagem consulta para tomar decisões. Escolha também um hábito que o ajude a reconhecer as necessidades dos outros. Em seguida, imagine como reagiria se um aliado lhe pedisse ajuda sem explicar o que está sentindo. O objetivo é construir uma pessoa com uma maneira singular de compreender o mundo, não interpretar uma máquina sem vontade.
 
 #### Oficina de interpretação: sete maneiras de ser um Lucker
 
