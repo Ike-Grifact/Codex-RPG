@@ -4829,8 +4829,9 @@ function score(){
  if(remainingCourageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
- const damageBasic=success?E+Math.floor(P/2):0;
- const fulminanteDamageBasic=success&&p.opts.fulminante?E+P:damageBasic;
+ const poisonOnly=p.mode==="armas"&&item?.type==="arma"&&/^zarabatana(?:\b|$)/i.test(item.name||"");
+ const damageBasic=success&&!poisonOnly?E+Math.floor(P/2):0;
+ const fulminanteDamageBasic=success&&p.opts.fulminante&&!poisonOnly?E+P:damageBasic;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
  const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:fulminanteDamageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
@@ -4853,8 +4854,8 @@ function score(){
  const directLifeDamage=hemomancyLinked&&!bloodArcaneShieldNeutralized?damage:null;
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
- const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ const armorDamage=poisonOnly||hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,poisonOnly,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,remainingCourageCost,prepaidCourage,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
    manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored,weightSpecialtyIgnored};
 }
@@ -4944,6 +4945,7 @@ function renderPending(){
   '. '+(s.success?'Ao finalizar, a arma será retirada do escudo e sua carga/penalidade serão removidas.':'A arma permanecerá cravada no escudo.')+
   ' Não é ataque e não causa dano; Pavor continua produzindo risco.</p>':
   (p.shieldThrowId?'<p class="fp-caption"><strong>ESCUDO BUMERANGUE:</strong> Ataque de Disciplina + Atributo(s), até 8 m. <strong>'+(s.shieldThrowOutcome?.returned?'ACERTO — escudo retorna no mesmo turno, mesmo com Pavor.':'FALHA — escudo cai no chão; '+(s.shieldThrowOutcome?.where==='caminho'?'queda no caminho, 1A pode permitir correr e recuperar.':'queda próxima ao alvo; pode atingir aliado próximo se alcançar a DE dele.')+' Distância de queda: '+s.shieldThrowOutcome?.distance+' m (E mantidos + P não anulado + E convertido por 2A).')+'</strong> Dano físico básico no acerto: <strong>'+s.damage+'</strong> (Êxitos válidos + piso(Pavor/2), crítico normal). Características da peça só se existirem e forem habilitadas; Pavor conserva seus riscos. A situação será registrada ao finalizar.</p>':'<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'))+
+ (s.poisonOnly?'<p class="fp-caption"><strong>ZARABATANA:</strong> sem dano à Integridade ou à Vida. Resolver aplicação de veneno manualmente; acerto não concede acúmulo automático.</p>':"")+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+

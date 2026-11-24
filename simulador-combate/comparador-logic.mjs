@@ -206,7 +206,9 @@ export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
 }
 /** Características reais da arma, com efeitos condicionados ao acerto e à Perícia. */
 export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa","Empurrar","Agarrar","Derrubar","Desarmar"]);
+export function isPoisonOnlyWeapon(weapon){return /^zarabatana(?:\b|$)/i.test(weapon?.name||"");}
 export function activeWeaponProperties(weapon){
+ if(isPoisonOnlyWeapon(weapon))return [];
  return [...new Set((weapon?.properties||[]).filter(x=>ACTIVE_WEAPON_PROPERTIES.includes(x)))];
 }
 export function weaponActivationSkill(c,weapon,{thrown=false}={}){
@@ -549,7 +551,8 @@ export function manejoPerfeitoBonus(attacker,weapon,affinity,{situation="normal"
  *  Abaixo de cinco: regra específica de Vida ainda não definida neste adendo.
  *  Com armadura: o patamar NÃO gera dano direto à Vida.
  */
-export function lifeAtFive(result,target){
+export function lifeAtFive(result,target,weapon=null){
+ if(isPoisonOnlyWeapon(weapon))return {eligible:false,damage:0,reason:"Zarabatana: somente envenenamento; sem dano à Integridade ou à Vida. Aplicação de veneno manual."};
  if(!result?.success)return {eligible:false,damage:0,reason:"Não atingiu a DE."};
  const armor=armorOf(target);
  if(armor)return {eligible:false,damage:0,reason:"Existe armadura equipada: resolver Integridade primeiro, sem 2 Vida diretos pelo patamar."};

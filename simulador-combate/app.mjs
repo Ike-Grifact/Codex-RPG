@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-cravar-v0115";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261124-zarabatana-v0116";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-cravar-v0115";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
@@ -508,7 +508,9 @@ function preview(opts=options(),selectedIds=pending?.kept){
  if(!hostile&&pending.prepaidCourage===undefined&&(courageCost+Number(a.courageRoundSpent||0)>5||courageCost>a.courage))return {ok:false,error:"Coragem insuficiente ou teto de 5 excedido."};
  if(pavorCost>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente: requer "+pavorCost+"P, possui "+a.pavorLocal+"P."};
  const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
- const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t);
+ const poisonOnly=isPoisonOnlyWeapon(weapon);
+ const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t,weapon);
+ if(poisonOnly)status.notes.push("Zarabatana: somente envenenamento; aplicação de veneno manual, sem dano direto.");
  const fulminanteActive=!!pending.fulminanteId;
  const criticalMultiplier=pre.result.critical===4?2:1;
  const extraP=fulminanteActive&&pre.result.success?
@@ -519,7 +521,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
  const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[]);
  return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,manoeuvres,colossal,
-  integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
+  integrityDamage:g1||poisonOnly?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderColossalControls(){
  const a=actor(),t=target(),el=$("colossal-targets");

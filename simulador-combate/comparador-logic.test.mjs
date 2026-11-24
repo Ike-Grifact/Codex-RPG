@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planDraw,disarmTransfer,heldHands,planMartialAttack,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,armorOf,defense,equippedWeapons,
- weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+ weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,isPoisonOnlyWeapon,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -693,3 +693,13 @@ test("Golpe Fulminante exige Armas Leves, Médias, Pesadas ou Pugilismo além do
 test("Golpe Colossal: bônus único, dois alvos por recurso e DE individual",()=>{const a=normalizeCombatant({id:"a",kind:"humanoide",side:"jogadores",attributes:{agilidade:1,destreza:1},practices:{armas_conjuracao:2},skills:["espalhar-golpe","golpe-fulminante"]},"jogadores");const targets=Array.from({length:5},(_,i)=>normalizeCombatant({id:"t"+i,name:"Alvo "+i,kind:"humanoide",attributes:{agilidade:1,destreza:1}},"inimigos"));const roster=[a,...targets];const ids=targets.slice(1).map(x=>x.id);assert.equal(planColossalTargets(a,targets[0],roster,ids,1).ok,false);const plan=planColossalTargets(a,targets[0],roster,ids,2);assert.equal(plan.ok,true);assert.equal(plan.bonusE,1);assert.equal(plan.targets.length,4);assert.equal(planColossalTargets(a,targets[0],roster,[targets[0].id],1).ok,false);assert.equal(planColossalTargets(a,targets[0],roster,[ids[0],ids[0]],1).ok,false);const defs=[{id:"low",de:4},{id:"eq",de:7},{id:"high",de:8}];const result={e:5,p:2,critical:0,success:false};assert.deepEqual(colossalOutcomes(result,defs,false).map(x=>[x.success,x.integrityDamage]),[[true,2],[true,2],[false,0]]);assert.deepEqual(colossalOutcomes(result,defs,true).map(x=>[x.success,x.integrityDamage]),[[true,2],[true,2],[false,0]]);assert.equal(colossalOutcomes({...result,critical:4},defs,true)[0].integrityDamage,5);});
 
 test("Golpe Colossal: Pavor supera DE mas não causa dano, inclusive com Fulminante",()=>{const targets=[{id:"b",de:3},{id:"c",de:4}];for(const critical of [0,4])for(const fulminante of [false,true]){const outcomes=colossalOutcomes({e:0,p:3,critical,success:false},targets,fulminante);assert.equal(outcomes[0].success,true);assert.equal(outcomes[0].p,3);assert.equal(outcomes[0].damageP,0);assert.equal(outcomes[0].integrityDamage,0);assert.equal(outcomes[1].success,false);assert.equal(outcomes[1].integrityDamage,0);}assert.equal(colossalOutcomes({e:5,p:2,critical:0},[{de:7}],true)[0].integrityDamage,2);});
+
+
+test("Zarabatana: nenhum Cortante ou Perfurante, nem dano à Vida pelo patamar cinco",()=>{
+ const w={name:"Zarabatana",properties:["À Distância","Cortante","Perfurante"]};
+ assert.equal(isPoisonOnlyWeapon(w),true);
+ assert.deepEqual(activeWeaponProperties(w),[]);
+ for(const target of [bare(),armor()])assert.equal(lifeAtFive({success:true,e:5,p:3},target,w).damage,0);
+ assert.equal(isPoisonOnlyWeapon({name:"Arco Curto"}),false);
+ assert.equal(lifeAtFive({success:true,e:5,p:0},bare(),{name:"Arco Curto"}).damage,2);
+});

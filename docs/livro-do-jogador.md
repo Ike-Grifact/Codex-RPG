@@ -1230,3 +1230,6 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 
 
 **Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 0,5 Alto e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
+
+
+**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida; sua finalidade é exclusivamente envenenar. Não atribuir envenenamento a dardos sem veneno. Procedimento de aplicação, incluindo a relação com o requisito geral de Sangramento, permanece PENDENTE; não automatizar acúmulos, custos ou doses novos.
