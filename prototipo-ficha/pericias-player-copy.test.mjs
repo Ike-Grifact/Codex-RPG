@@ -17,6 +17,9 @@ for(const skill of latest){
   assert.match(text,skill.req);
   assert.match(text,/2 XP/);
   assert.match(text,/1 Coragem/);
+  assert.match(text,/Antes de rolar um ataque/);
+  assert.match(text,/Coragem é consumida mesmo que o ataque falhe/);
+  assert.match(text,/falha não devolve a Coragem/);
   assert.match(text,/Acerto crítico/);
   assert.match(text,skill.aff);
   assert.match(text,/−1 Antecipar/);
@@ -27,6 +30,7 @@ for(const skill of latest){
  test("Codex Genético apresenta texto do jogador sem alterar requisitos: "+skill.label,()=>{
   assert.match(player,new RegExp('"'+skill.id+'":\\{'));
   assert.match(player,skill.guard);
+  assert.match(player,/O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha/);
  });
 }
 
