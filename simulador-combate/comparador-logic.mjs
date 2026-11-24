@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-v0124";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-v0124";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-v0124b";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-v0124b";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});

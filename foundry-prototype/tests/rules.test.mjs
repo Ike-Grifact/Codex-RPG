@@ -21,8 +21,9 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
- assert.deepEqual(faceSymbols(12,11),[2,1,2]);
- assert.deepEqual(faceSymbols(20,11),[2,1,2]);
+ assert.deepEqual(faceSymbols(12,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,15),[0,0,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
  for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
@@ -66,9 +67,9 @@ test("crítico com dois d12 máximos gera seis Êxitos",()=>{
 });
 test("Conversão de Antecipar não reutiliza símbolos",()=>{
  const d=[{id:"a",group:"attribute",sides:10,face:8},{id:"b",group:"practice",sides:12,face:11}];
- const one=resolveRoll(d,["a","b"],{de:3,bonusA:1,convertPairs:1,cancelP:1});
+ const one=resolveRoll(d,["a","b"],{de:3,bonusA:2,convertPairs:1,cancelP:1});
  assert.equal(one.ok,true);
- const illegal=resolveRoll(d,["a","b"],{de:3,bonusA:1,convertPairs:2,cancelP:1});
+ const illegal=resolveRoll(d,["a","b"],{de:3,bonusA:2,convertPairs:2,cancelP:1});
  assert.equal(illegal.ok,false);
 });
 test("Retenção de jogadores e monstros e os tetos de Pavor",()=>{

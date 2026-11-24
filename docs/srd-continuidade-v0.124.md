@@ -31,21 +31,21 @@ No crítico de quatro dados, dobre o dano calculado a partir da rolagem antes de
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
-| 11 | — | — | — | 2ᛋ+ᚨ+2ᚦ | 2ᛋ+ᚨ+2ᚦ |
+| 11 | — | — | — | 2ᚦ | 2ᚦ |
 | 12 | — | — | — | 3ᛋ | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
 | 14 | — | — | — | — | 3ᛋ+2ᚨ |
-| 15 | — | — | — | — | 4ᛋ+2ᚨ |
+| 15 | — | — | — | — | 3ᚦ |
 | 16 | — | — | — | — | 4ᚦ |
 | 17 | — | — | — | — | 4ᛋ+2ᚨ |
 | 18 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-**DEFINIDO:** face 11 = 2E + 1A + 2P, confirmada pelo autor em 24/11/2026. As faces 13–20 do d20 permanecem intactas. A tabela especial do d4 permanece preservada.
+**DEFINIDO — correção autoral final de 24/11/2026:** face 11 = 2P (d12 e d20); face 15 = 3P (d20), exclusivamente Pavor. Substitui a composição anteriormente aprovada da face 11 e a face 15 anterior. As demais faces 13–20 do d20 permanecem intactas. A tabela especial do d4 permanece preservada.
 
 ## Recursos e redação
 
 A reserva de Pontos de Perícia já foi revogada. Retirar referências do Livro do Jogador sem alterar custos vigentes em Coragem. Remover o quadro introdutório do d20 extraordinário, sem revogar seus requisitos de aquisição nem o teto de DE. Colocar o crítico antes da seção de faces. Preservar as regras de Vida e exceções de dano fixo.
 
-**Implementação:** Livro do Jogador (Markdown e portal), motores web e protótipo Foundry, atualização de cache e testes de referência. Histórico preservado. Face 11 confirmada e sincronizada. Validar a suíte completa antes da integração à main.
+**Implementação:** Livro do Jogador (Markdown e portal), motores web e protótipo Foundry, atualização de cache e testes de referência. Histórico preservado. Faces 11 e 15 corrigidas e sincronizadas. Testes de referência e verificação isolada dos motores; validação integral no navegador ainda necessária.
