@@ -1650,6 +1650,24 @@ const PLAYER_SKILL_COPY={
    "Combate contra armaduras pesadas. Ao atacar um alvo com armadura Pesada ou Muito Pesada, você ignora a Desvantagem natural de peso da arma leve (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma leve equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou."
+ },
+ "armas-medias":{
+  intro:"Você domina o manejo de armas médias e sabe explorar suas características durante o combate.",
+  benefits:[
+   "Características da arma. Quando você acerta um ataque com uma arma média, pode gastar 1 Coragem para ativar uma das características que ela possui.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, custa 1 Coragem.",
+   "Combate e peso da armadura. Ao atacar um alvo com armadura Média, você ignora a Desvantagem natural de peso da arma média (−1 Antecipar). Outras Desvantagens continuam valendo."
+  ],
+  note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Cravar segue suas condições próprias: uma arma média não pode Cravar escudo Pesado."
+ },
+ "armas-pesadas":{
+  intro:"Você domina o manejo de armas pesadas e sabe explorar suas características durante o combate.",
+  benefits:[
+   "Características da arma. Quando você acerta um ataque com uma arma pesada, pode gastar 1 Coragem para ativar uma das características que ela possui.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, custa 1 Coragem.",
+   "Combate e peso da armadura. Ao atacar um alvo com armadura Leve ou Muito Leve, você ignora a Desvantagem natural de peso da arma pesada (−1 Antecipar). Outras Desvantagens continuam valendo."
+  ],
+  note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Cravar segue suas condições próprias, inclusive contra escudos Pesados."
  }
 };
 
