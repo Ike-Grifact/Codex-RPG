@@ -1240,3 +1240,50 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 **DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
 
 **Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
+
+
+## Carga por compartimento e disparos — 24/11/2026
+
+**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + piso((Força + Vigor + Atletismo)/3). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
+
+**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
+
+**Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
+
+### Alcance cadastrado das armas G1
+
+| Arma | Alcance base |
+|---|---:|
+| Faca | 1 m |
+| Punhal | 1 m |
+| Espada Curta | 1 m |
+| Maça Curta | 1 m |
+| Chicote | 1 m |
+| Kunai | 12 m |
+| Shuriken | 12 m |
+| Adaga Ritualística | 1 m |
+| Espada Longa | 1 m |
+| Espada Larga | 1 m |
+| Lança | 2 m |
+| Machado Barbado | 1 m |
+| Lança de Arremesso | 8 m |
+| Martelo de Guerra | 1 m |
+| Machado de Guerra | 1 m |
+| Montante | 2 m |
+| Marreta | 1 m |
+| Arco Curto | 24 m |
+| Arco Longo | 32 m |
+| Besta de uma mão | 16 m |
+| Besta de duas mãos | 24 m |
+| Besta Pesada | 32 m |
+| Zarabatana | 12 m |
+| Cajado Leve | 1 m |
+| Cajado Médio | 1 m |
+| Cajado Pesado | 1 m |
+| Bastão Leve | 1 m |
+| Bastão Médio | 1 m |
+| Bastão Pesado | 1 m |
+| Luvas | 1 m |
+| Revólver | 16 m |
+| Katana | PENDENTE |
+| Naginata | 2 m |

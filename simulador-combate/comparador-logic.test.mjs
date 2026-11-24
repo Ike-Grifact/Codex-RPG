@@ -728,3 +728,12 @@ test("Importa kit com acesso rápido, mistura, carga e sem ocupar mãos",()=>{
  const spare=normalizeEquipment({name:"Flechas para Arco Curto",type:"outro",weight:"muito_leve",category:"muito-leve",ammoRole:"supply",ammoFamily:"arco-curto",ammoLotWeight:.0125,ammoMix:{Cortante:10,Perfurante:0}});
  assert.equal(spare.weight,.00625);assert.equal(spare.kind,"ammunition");
 });
+
+
+test("Munição: disparo consome uma unidade antes do resultado; sem munição não altera a ficha",async()=>{
+ const {planShot,shotChoices,carryingCapacity,quickUsage,bodyUsage}=await import("./comparador-logic.mjs");
+ const w={name:"Arco Curto"},q={id:"q",name:"Aljava",ammoRole:"container",ammoFamily:"arco-curto",ammoLotWeight:.0125,ammoMix:{Cortante:1,Perfurante:2},position:"quick",weight:.126875,qty:1};
+ const items=[q];assert.equal(shotChoices(items,w).length,2);
+ const r=planShot(items,w,"q","Cortante");assert.equal(r.ok,true);assert.equal(r.items[0].ammoMix.Cortante,0);assert.equal(q.ammoMix.Cortante,1);assert.equal(planShot(r.items,w,"q","Cortante").ok,false);assert.equal(planShot(items,{name:"Arco Longo"},"q","Cortante").ok,false);assert.equal(planShot([{...q,position:"bag"}],w,"q","Cortante").ok,false);
+ assert.equal(carryingCapacity({}),1.5);assert.equal(quickUsage([q]),1);assert.equal(bodyUsage([q]),q.weight);
+});

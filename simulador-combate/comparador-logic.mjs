@@ -18,10 +18,29 @@ export function weaponHands(it){
  if(/(?:uma|1) mão/i.test(it?.name||""))return 1;
  return 0;
 }
+export function projectileFamily(weapon){
+ if(!weapon)return "";
+ const n=String(weapon.name||"").toLowerCase();
+ return /^arco curto/.test(n)?"arco-curto":/^arco longo/.test(n)?"arco-longo":/^besta de uma mão/.test(n)?"besta-1m":/^besta de duas mãos|^besta pesada/.test(n)?"besta-2m":/^zarabatana/.test(n)?"zarabatana":"";
+}
+export function shotChoices(items,weapon){
+ const family=projectileFamily(weapon);
+ if(!family)return [];
+ return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+type+" ("+n+")"})));
+}
+export function planShot(items,weapon,id,type){
+ if(!projectileFamily(weapon))return {ok:true,items,shot:null};
+ const choice=shotChoices(items,weapon).find(x=>x.id===id&&x.type===type);
+ if(!choice)return {ok:false,error:"Sem projétil compatível selecionado em recipiente de acesso rápido."};
+ const next=items.map(x=>x.id===id?{...x,weight:Math.max(0,Number(x.weight||0)-Number(x.ammoLotWeight||0)/20),ammoMix:{...x.ammoMix,[type]:Number(x.ammoMix[type])-1}}:x);
+ return {ok:true,items:next,shot:{id,type,remaining:choice.n-1}};
+}
 export function isHandEquipment(it){return ["weapon","firearm","shield"].includes(it?.kind);}
 export function equipmentPosition(it){return it?.equipped&&isHandEquipment(it)?"hands":it?.position==="quick"?"quick":"bag";}
 export function hasQuickDraw(c){return !!c?.skills?.includes("saque-rapido")&&Number(c.attributes?.agilidade||0)>=2&&Number(c.attributes?.destreza||0)>=1&&Number(c.practices?.armas_conjuracao||0)>=2;}
-export function carryingCapacity(c){return 1+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3);}
+export function carryingCapacity(c){return 1.5+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3);}
+export function bodyUsage(items=[]){return items.filter(it=>equipmentPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+Number(it.weight||0)*Number(it.qty||1),0);}
+export function quickUsage(items=[]){return items.filter(it=>equipmentPosition(it)==="quick").reduce((n,it)=>n+Number(it.qty||1),0);}
 export function heldHands(items=[]){const held=items.filter(it=>isHandEquipment(it)&&it.equipped);return held.some(it=>!weaponHands(it)||it.qty!==1)?null:held.reduce((n,it)=>n+weaponHands(it),0);}
 export function drawModeFor(c,it){
  const position=equipmentPosition(it),trained=hasQuickDraw(c);
@@ -40,6 +59,7 @@ export function planDraw(c,id,stow=[]){
  const items=c.items.map(x=>x.id===id?{...x,equipped:true,position:"hands"}:selected.has(x.id)?{...x,equipped:false,position:x.kind==="shield"?"bag":"quick"}:x);
  const used=heldHands(items);
  if(used===null||used>2)return {ok:false,error:"Libere mãos suficientes ou confirme a empunhadura dos itens já em mãos."};
+ if(quickUsage(items)>3||bodyUsage(items)>carryingCapacity(c)-.5+1e-9)return {ok:false,error:"Saque excede os 3 espaços ou a capacidade corporal."};
  return {ok:true,mode,items};
 }
 export function disarmTransfer(attacker,target,weaponId,destination,newId){
@@ -50,6 +70,8 @@ export function disarmTransfer(attacker,target,weaponId,destination,newId){
  const captured={...it,id:newId||it.id,qty:1,equipped:destination==="hands",position:destination==="hands"?"hands":"bag"};
  if(destination!=="ground"&&weightUsed(attacker)+Number(it.weight||0)>carryingCapacity(attacker))return {ok:false,error:"Capacidade de carga insuficiente."};
  const items=destination==="ground"?attacker.items:[...attacker.items,captured];
+ if(destination==="bag"&&weightUsed({...attacker,items})-bodyUsage(items)>.5+1e-9)return {ok:false,error:"Mochila sem capacidade livre."};
+ if(destination==="hands"&&bodyUsage(items)>carryingCapacity(attacker)-.5+1e-9)return {ok:false,error:"Capacidade corporal insuficiente."};
  if(destination==="hands"&&(heldHands(items)===null||heldHands(items)>2))return {ok:false,error:"Não há mãos livres compatíveis."};
  return {ok:true,attacker:{...attacker,items},target:{...target,items:target.items.flatMap(x=>x.id!==weaponId?[x]:x.qty>1?[{...x,qty:x.qty-1,equipped:false,position:"bag"}]:[])},ground:destination==="ground"?captured:null,weapon:it.name};
 }
@@ -67,7 +89,7 @@ export function normalizeEquipment(original={}){
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
   kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,
   qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
-  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
+  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,ammoLotWeight:Number(raw.ammoLotWeight)||0,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  const kind=raw.kind==="criatura"?"monstro":(["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide");
@@ -500,7 +522,7 @@ export function equippedWeapons(c,catalog=[],includeCarried=false){
   const properties=[...new Set([...(Array.isArray(it.properties)?it.properties:[]),...(Array.isArray(cat.properties)?cat.properties:[])])];
   const long=properties.includes("À Distância");
   const skill=kind==="firearm"?"armas-fogo":category==="medio"?"armas-medias":category==="pesado"?"armas-pesadas":"armas-leves";
-  const eligible=(c.skills||[]).includes(skill)||(long&&(c.skills||[]).includes("armas-longo-alcance"));
+  const eligible=projectileFamily(it)?(c.skills||[]).includes("armas-longo-alcance")&&Number(c.practices?.armas_conjuracao||0)>=1&&Number(c.attributes?.destreza||0)>=2:(c.skills||[]).includes(skill)||(long&&(c.skills||[]).includes("armas-longo-alcance"));
   const die=Number(it.die||cat.die||0),range=Number(it.range||cat.range||0);
   return {...it,kind,category,die,range,properties,skill,eligible:eligible&&[6,10,12].includes(die)};
  });
@@ -535,7 +557,7 @@ export function weightAffinity(weapon,target,attacker=null){
   "armas-pesadas":{disc:2,strength:2}
  };
  const weightReq=validWeightRequirements[relevantSkill];
- const trained=!weightReq||
+ const trained=relevantSkill==="armas-longo-alcance"?Number(attacker?.practices?.armas_conjuracao||0)>=1&&Number(attacker?.attributes?.destreza||0)>=2:!weightReq||
   (Number(attacker?.practices?.armas_conjuracao||0)>=weightReq.disc&&
    Number(attacker?.attributes?.forca||0)>=weightReq.strength);
  if(weapon.kind!=="unarmed"&&value===-1&&attacker?.skills?.includes(relevantSkill)&&trained)

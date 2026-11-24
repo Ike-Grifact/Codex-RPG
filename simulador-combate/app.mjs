@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-kits-v0116b";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261124-v0118";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-cravar-v0115";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
@@ -397,10 +397,10 @@ function renderWeaponEffects(){
 function renderWeapons(){
  const a=actor(),weapons=a?equippedWeapons(a,catalog(),true):[],old=$("weapon-source").value;
  $("weapon-source").innerHTML='<option value="">Sem arma / ataque desarmado</option>'+weapons.map(w=>
-  '<option value="'+esc(w.id)+'"'+(w.eligible?"":" disabled")+'>'+esc(w.name)+
-  ' · '+(w.die?"d"+w.die:"dado não cadastrado")+' · '+({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[equipmentPosition(w)])+' · '+(weaponHands(w)?weaponHands(w)+" mão(s)":"empunhadura a definir")+
+  '<option value="'+esc(w.id)+'"'+(w.eligible||projectileFamily(w)?"":" disabled")+'>'+esc(w.name)+
+  ' · '+(w.eligible&&w.die?"d"+w.die:"sem dado adicional")+(w.range?" · "+w.range+" m":"")+' · '+({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[equipmentPosition(w)])+' · '+(weaponHands(w)?weaponHands(w)+" mão(s)":"empunhadura a definir")+
   (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
- if(weapons.some(w=>w.id===old&&w.eligible))$("weapon-source").value=old;
+ if(weapons.some(w=>w.id===old&&(w.eligible||projectileFamily(w))))$("weapon-source").value=old;
  else $("weapon-source").value=weapons.find(w=>w.eligible&&w.equipped)?.id||"";
  renderDrawControls();renderAffinity();renderWeaponEffects();
 }
@@ -441,7 +441,7 @@ function renderMartial(){
 function renderAffinity(){
  const hint=weightAffinity(chosenWeapon()||martialDeclaration().weapon,target(),actor());
  $("weight-affinity").textContent="Comparação por peso: "+hint.description+" A afinidade será aplicada na rolagem quando definida. Carga física do atacante: "+
-  (actor()?weightUsed(actor()).toFixed(3):"—")+
+  (actor()?weightUsed(actor()).toFixed(3)+" / "+carryingCapacity(actor())+" Alto · Corpo "+bodyUsage(actor().items).toFixed(3)+"/"+(carryingCapacity(actor())-.5)+" · Saque "+quickUsage(actor().items)+"/3 · Mochila "+(weightUsed(actor())-bodyUsage(actor().items)).toFixed(3)+"/0,5":"—")+
   ". A categoria da armadura equipada determina a afinidade defensiva.";
  return hint;
 }
@@ -662,10 +662,10 @@ function roll(){
  const draw=w?planDraw(a,w.id,[...$("draw-stow").selectedOptions].map(o=>o.value)):{ok:true,mode:"none",items:a.items};
  if(!draw.ok)return notice(draw.error);
  if(w){
-  if(!w.eligible||!human||mode!=="armas"||key!=="armas_conjuracao")
+  if((!w.eligible&&!projectileFamily(w))||!human||mode!=="armas"||key!=="armas_conjuracao")
    return notice("Dado de arma exige Disciplina em modo Armas e especialização do peso.");
-  if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
-  pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});
+  if(w.eligible){if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
+  pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});}
  }
  const fulminants=declared.skills.filter(x=>["golpe-fulminante","disparo-fulminante"].includes(x.id));
  if(fulminants.length>1)return notice("Escolha apenas uma técnica Fulminante por dado de arma.");
@@ -702,9 +702,19 @@ function roll(){
  }
  const martialCost=martial.cost,hostile=a.side==="inimigos",health=combatHealth(a);
  if(health.id==="morto")return notice("Combatente morto não pode agir.");
+ let shot={ok:true,items:draw.items,shot:null},shotEffect="",shotCost=0;
+ if(projectileFamily(w)){
+  const choices=shotChoices(draw.items,w);if(!choices.length)return notice("Sem munição compatível no acesso rápido.");
+  const answer=prompt("Declare o projétil antes de rolar:\n"+choices.map((x,i)=>(i+1)+". "+x.label).join("\n"),"1");
+  if(answer===null)return;const choice=choices[Number(answer)-1];if(!choice)return notice("Projétil inválido.");
+  shot=planShot(draw.items,w,choice.id,choice.type);if(!shot.ok)return notice(shot.error);
+  if(!isPoisonOnlyWeapon(w)&&a.skills.includes("armas-longo-alcance")&&Number(a.practices?.armas_conjuracao||0)>=1&&Number(a.attributes?.destreza||0)>=2&&confirm("Ativar "+choice.type+" por 1 Coragem? Efeito específico ainda sujeito ao Narrador.")){shotEffect=choice.type;shotCost=1;}
+ }
  const weaponEffects=selectedWeaponEffects(),weaponDeclaration=declareWeaponEffects(a,w,weaponEffects,thrown);
  if(!weaponDeclaration.ok)return notice(weaponDeclaration.error);
- const propertySkills=weaponEffects.length?[weaponActivationSkill(a,w,{thrown}).required,weaponMasteryFor(w,{thrown})]:[];
+ if(shotCost){weaponDeclaration.cost+=shotCost;}
+ if(shot.shot&&isPoisonOnlyWeapon(w)&&weaponEffects.includes("Envenenar"))shotEffect="Envenenar";
+ const propertySkills=weaponEffects.length||shotCost?[weaponActivationSkill(a,w,{thrown}).required,weaponMasteryFor(w,{thrown})]:[];
  const paidActivations=declared.skills.filter(x=>!propertySkills.includes(x.id));
  if(weaponEffects.includes("Cravar")){const outcome=weaponEffectOutcome(["Cravar"],t,w);if(!outcome.ok)return notice(outcome.error);}
  const declarationOptions={de:Number($("difficulty").value),situation:$("situation").value,extraKeep:$("extra-keep").checked};
@@ -720,13 +730,14 @@ function roll(){
   if(a.pavorLocal<martialCost+paidActivations.reduce((sum,x)=>sum+x.cost,0)+weaponDeclaration.cost)return notice("Pavor local insuficiente.");
   a.pavorLocal-=martialCost;log("Perícia",a.name+" pagou "+martialCost+" Pavor local marcial antes de rolar.");
  }
+ if(shot.shot){a.items=shot.items;draw.items=shot.items;log("munição",a.name+" disparou "+shot.shot.type+"; restante no recipiente: "+shot.shot.remaining+".",{actor:a.id,shot:shot.shot,shotEffect});}
  persist();renderResources();renderRoster();
  $("round-budget").textContent=hostile?"Pavor local restante: "+a.pavorLocal:"Turno · Coragem gasta "+a.courageRoundSpent+"/5 · restante "+Math.max(0,5-a.courageRoundSpent);
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
   mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
   weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown,
-  weaponEffects,weaponDeclaration,martial,draw,weaponSnapshot:w,prepaidCourage,declarationOptions,colossal};
+  weaponEffects,weaponDeclaration,martial,draw,weaponSnapshot:w,prepaidCourage,declarationOptions,colossal,shot:shot.shot,shotEffect};
  persist();
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
@@ -806,6 +817,7 @@ function confirmRoll(){
   }
  }
  for(const note of pre.status.notes)log("arma",a.name+": "+note);
+ if(pending.shotEffect&&pending.shotEffect!=="Envenenar"&&r.success)log("munição",a.name+": "+pending.shotEffect+" declarado; efeito específico ainda pendente, resolver manualmente.");
  if(pre.companion&&r.success&&a.smallCompanion?.species==="serpente"&&alreadyBleeding){
   const changed=markCondition(t,"envenenado",true);
   if(changed.ok){Object.assign(t,changed.actor);log("companheiro",a.name+
