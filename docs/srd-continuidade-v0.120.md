@@ -1,7 +1,7 @@
 # Codex RPG — SRD de Continuidade v0.120
 
 **Data:** 24/11/2026  
-**DEFINIDO:** distinção de turno, rodada e protagonismo; ação conjunta simultânea e custo progressivo de Antecipar por participante dos jogadores. Revisão autoral antes da publicação da v0.120. Substitui a formulação sem contagem explícita de rodada, o encaminhamento automático de falha limpa ofensiva ao próximo jogador e a exigência de trocar de lado apenas porque todos os PJs já agiram. Revoga para os jogadores o custo fixo de 1A e a limitação histórica de antecipar um combatente apenas uma vez por rodada; a convocação repetida depende de custo progressivo. Demais regras da v0.119 preservadas.
+**DEFINIDO:** distinção de turno, rodada e protagonismo; ação conjunta simultânea e custo progressivo de Antecipar por participante de ambos os lados e Pavor público de convocação inimiga. Revisão autoral antes da publicação da v0.120. Substitui a formulação sem contagem explícita de rodada, o encaminhamento automático de falha limpa ofensiva ao próximo jogador e a exigência de trocar de lado apenas porque todos os PJs já agiram. Revoga para ambos os lados o custo fixo de 1A e a limitação histórica de antecipar um combatente apenas uma vez por rodada; a convocação repetida depende de custo progressivo. Demais regras da v0.119 preservadas.
 
 Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
@@ -13,19 +13,19 @@ Pavor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um con
 
 Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
 
-**A primeira ação conjunta da sequência de protagonismo dos jogadores não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
+**A primeira ação conjunta da sequência de protagonismo de cada lado não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
 
 **Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Pavor, converter em Êxito ou financiar outra convocação. Não apagar Pavor ao passar protagonismo.
 
-**A quebra de protagonismo reinicia os custos dos jogadores quando o inimigo age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação inimiga não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+**A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
 
-| Participações anteriores na sequência | Custo por aliado convocado |
-|---|---|
-| 0 | 1A |
-| 1 | 2A |
-| 2 | 4A |
-| 3 | 8A |
-| 4 | 16A |
+| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público adicional por inimigo convocado |
+|---|---|---|
+| 0 | 1A | 1P |
+| 1 | 2A | 1P |
+| 2 | 4A | 1P |
+| 3 | 8A | 1P |
+| 4 | 16A | 1P |
 
 #### Exemplo: cinco jogadores A, B, C, D e E
 
@@ -40,11 +40,19 @@ Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participo
 
 **Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
 
-Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica; aplicação da progressão aos inimigos e interação com seus custos de liderança. Até nova decisão, as regras específicas de Antecipar dos inimigos permanecem vigentes. Não presumir que a gratuidade inicial dos jogadores dispense custos do Líder.
+#### Inimigos, Liderança e Pavor público
+
+**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo, mesmo quando o custo em Antecipar dobra. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
+
+**Somente o Narrador paga esse Pavor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Pavor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
+
+**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um corpo pode agir em conjunto com seus outros dois componentes. Considerando a regra de 1P por inimigo adicional ativado, a formação inicial de três custa 2P públicos (1P por componente adicional), sem Antecipar. Conta três turnos. Se o Narrador não tiver saldo público suficiente, não pode pagar as convocações usando reservas locais. O custo de uma eventual exceção de 1P total para os dois componentes não está consolidado; confirmar se o chefe composto deve possuir essa exceção.
+
+Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
 
 ## Continuidade e limites
 
 - Custo por aliado = 2 elevado ao número de participações anteriores na mesma sequência de protagonismo, em símbolos Antecipar. A primeira ação conjunta é isenta desse custo de formação. Os custos de todos os aliados convocados são somados; pagamento em etapas conforme o exemplo, sem autoantecipação.
-- **Interpretação editorial:** D e E custam 2A cada quando já agiram uma vez; chamar ambos custaria 4A e não cabe no mesmo ataque de BC por limite de três. A expressão “2 Antecipar” para DE foi entendida por aliado. O reinício de custos ocorre na ação inimiga, não na virada da rodada. A possibilidade de uma ação individual repetida após acerto puro sem convocação, antes de todos agirem, continua subordinada ao fluxo geral e exige revisão específica caso interfira na progressão.
-- Não duplicar símbolos, mudar custos de Coragem/Pavor, dados, DE, dano, limites de participação ou durações. A extensão da progressão aos inimigos e a liderança permanece PENDENTE; custos específicos anteriores não são revogados implicitamente.
+- **Interpretação editorial:** D e E custam 2A cada quando já agiram uma vez; chamar ambos custaria 4A e não cabe no mesmo ataque de BC por limite de três. A expressão “2 Antecipar” para DE foi entendida por aliado. O reinício de custos de cada lado ocorre quando o lado adversário age, não na virada da rodada. A possibilidade de uma ação individual repetida após acerto puro sem convocação, antes de todos agirem, continua subordinada ao fluxo geral e exige revisão específica caso interfira na progressão.
+- Não duplicar símbolos ou alterar Coragem, dados, DE, dano, limites de participação e durações. A regra de 1P público por inimigo adicional convocado aplica-se também a turnos individuais antecipados, não só a golpes conjuntos. Revoga a antiga interpretação de Antecipar inimigo sem Pavor público. O custo geral da primeira ação natural da oposição e custos locais de técnicas não são alterados. A eventual exceção de 1P total para incorporar dois componentes do mesmo chefe permanece PENDENTE de confirmação; a referência geral é 1P por convocação.
 - **Implementação:** Livros do Jogador e do Mestre (Markdown e portal), Mecânicas e referência em Antecipação. Contadores, automações de duração, convocação e protagonismo no simulador/Foundry ainda não implementados.
