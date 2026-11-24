@@ -4701,6 +4701,18 @@ function score(){
   if(p.opts.magicAmplify&&!focus)errs.push("Amplificação exige foco correspondente.");
   courageCost+=(grade===4?2:grade===3?1:0)+(p.opts.magicAmplify?1:0);
  }
+ // A Coragem da tentativa é declarada ANTES da rolagem (SRD v0.101).
+ // O valor bruto não desaparece no crítico: a recuperação geral do crítico
+ // já ocorre uma única vez ao confirmar. Especialização fornece somente a
+ // PRIMEIRA característica gratuita na declaração.
+ const declaredProperties=[p.characteristic,p.secondCharacteristic].filter(Boolean);
+ const paidProperties=declaredProperties.filter(prop=>
+  !(freeElementEffect&&prop==="Elemental")&&!(passivePiercing&&prop==="Perfurante"));
+ const masteryFree=p.mode==="armas"&&item?.type==="arma"&&item.equipped&&
+  weaponMasteryCanActivate(item,state)?1:0;
+ const cravarFree=!!critTier&&declaredProperties.length===1&&declaredProperties[0]==="Cravar"&&
+  ["medio","pesado"].includes(weaponWeight)&&p.mode==="armas";
+ courageCost+=Math.max(0,paidProperties.length-masteryFree-(cravarFree?1:0));
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
@@ -4720,13 +4732,6 @@ function score(){
    if(!critTier||!properties.includes(p.secondCharacteristic)||!ACTIVE_PROPERTIES.has(p.secondCharacteristic)||
       p.secondCharacteristic===p.characteristic)errs.push("Segunda característica requer crítico e efeito diferente.");
    else active.push(p.secondCharacteristic);
-  }
-  if(critTier?p.secondCharacteristic:true){
-   // Com foco e Perícia do elemento, a propriedade Elemental já habilitada é gratuita.
-   const paidFeature=critTier?p.secondCharacteristic:p.characteristic;
-   if(!(freeElementEffect&&paidFeature==="Elemental")&&!(passivePiercing&&paidFeature==="Perfurante")){
-    courageCost+=1;
-   }
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
  // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
