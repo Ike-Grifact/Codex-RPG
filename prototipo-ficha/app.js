@@ -362,19 +362,19 @@ const SKILLS=[
  [
   "armas-leves",
   "Perícia em Armas Leves",
-  "Disciplina 1; 2 XP. Antes de rolar um ataque com arma Leve, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem.",
+  "Disciplina 1; 2 XP. Antes de rolar um ataque com arma Leve, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Pesada/Muito Pesada; demais penalidades permanecem.",
   2
  ],
  [
   "armas-medias",
   "Perícia em Armas Médias",
-  "Disciplina 1 + Força 1; 2 XP. Antes de rolar um ataque com arma Média, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem.",
+  "Disciplina 1 + Força 1; 2 XP. Antes de rolar um ataque com arma Média, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Média; demais penalidades permanecem.",
   2
  ],
  [
   "armas-pesadas",
   "Perícia em Armas Pesadas",
-  "Disciplina 2 + Força 2; 2 XP. Antes de rolar um ataque com arma Pesada, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, UMA característica é gratuita; outra diferente, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem.",
+  "Disciplina 2 + Força 2; 2 XP. Antes de rolar um ataque com arma Pesada, gaste 1 Coragem para tentar ativar UMA característica própria; o gasto é mantido mesmo na falha e o efeito só ocorre no acerto. Em crítico com acerto, o personagem recupera 1 Coragem já paga, usando a recuperação normal do crítico (sem bônus duplicado); assim, essa característica fica gratuita no saldo final. Outra característica distinta, quando permitida, exige Coragem declarada antes da rolagem. Ignora somente −1A da Desvantagem natural de peso contra armadura Leve/Muito Leve; demais penalidades permanecem.",
   2
  ],
  [
@@ -1646,7 +1646,7 @@ const PLAYER_SKILL_COPY={
   intro:"Você aprendeu a manejar armas leves e a aproveitar suas características em combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma leve, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate contra armaduras pesadas. Ao atacar um alvo com armadura Pesada ou Muito Pesada, você ignora a Desvantagem natural de peso da arma leve (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma leve equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido."
@@ -1655,7 +1655,7 @@ const PLAYER_SKILL_COPY={
   intro:"Você domina o manejo de armas médias e sabe explorar suas características durante o combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma média, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Média, você ignora a Desvantagem natural de peso da arma média (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma média possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico Leve ou Médio; isso não habilita outras características."
@@ -1664,7 +1664,7 @@ const PLAYER_SKILL_COPY={
   intro:"Você domina o manejo de armas pesadas e sabe explorar suas características durante o combate.",
   benefits:[
    "Características da arma. Antes de rolar um ataque com uma arma pesada, você pode gastar 1 Coragem para tentar ativar uma característica que ela possui. O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha.",
-   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Leve ou Muito Leve, você ignora a Desvantagem natural de peso da arma pesada (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
   note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma pesada possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico, inclusive Pesado; isso não habilita outras características."
