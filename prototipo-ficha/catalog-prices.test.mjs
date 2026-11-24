@@ -41,7 +41,7 @@ test("v0.65: armas de disparo, itens defensivos e preços pendentes não são al
  for(const [name,price] of [["Arco Curto",4],["Arco Longo",6],["Besta de uma mão",5],["Besta de duas mãos",6],["Besta Pesada",9],["Zarabatana",3],["Escudo Médio",5],["Armadura Média",8]]){
   assert.equal(byName(name).priceVT,price,name);
  }
- for(const name of ["Cetro Médio G1","Katana","Naginata"]){
+ for(const name of ["Cetro Médio G1"]){
   assert.equal(byName(name).priceVT,null,name+" continua pendente");
  }
  assert.deepEqual(byName("Espada Longa").properties,["Perfurante","Cortante"]);
@@ -88,14 +88,19 @@ test("Focos com preço em função de B, sem conversão numérica arbitrária",(
   assert.deepEqual(x.properties,["Contundente","Elemental"]);
  }
 });
-test("Itens com categoria ou preço pendente não são armas ativadas automaticamente",()=>{
- for(const name of ["Katana","Naginata"]){
+test("Katana e Naginata: preço e categoria definidos, dado e mãos pendentes",()=>{
+ for(const [name,reference] of [["Katana","Espada Longa"],["Naginata","Lança"]]){
   const x=byName(name);
-  assert.equal(x.priceVT,null);assert.equal(x.category,"pendente");
+  assert.equal(x.priceVT,byName(reference).priceVT);assert.equal(x.category,"medio");assert.equal(x.weight,0.5);
+  assert.equal(x.status,"PENDENTE");assert.equal(x.die,0);assert.equal(x.hands,undefined);
  }
  assert.deepEqual(byName("Katana").properties,["Cortante","Perfurante"]);
  assert.deepEqual(byName("Naginata").properties,["Longa","Cortante"]);
  assert.equal(byName("Naginata").range,2);
+ const app=readFileSync(new URL("./app.js",import.meta.url),"utf8");
+ assert.ok(app.includes('item.status==="PENDENTE"'));
+ const foundry=readFileSync(new URL("../foundry-prototype/module/sheet.mjs",import.meta.url),"utf8");
+ assert.ok(foundry.includes('row.status==="PENDENTE"'));
 });
 
 test("Novos preços leves e instrumentos por porte aprovados",()=>{

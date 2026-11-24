@@ -4000,11 +4000,11 @@ function wizardEquipment(){
   const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=group===previousGroup?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
-  const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.priceVT!=null&&Number(it.priceVT)>0;
+  const purchasable=it.kind!=="focus"&&it.category!=="pendente"&&it.status!=="PENDENTE"&&it.priceVT!=null&&Number(it.priceVT)>0;
   const price=Number(it.priceVT);
   const preview=purchasable?purchaseLoadPreview(it,price):null;
   const priceText=purchasable?price+" VT":it.kind==="focus"?(it.priceFormula?it.priceFormula+" VT · foco":"Fabricação por Artesão"):
-   it.priceVT!=null?it.priceVT+" VT · categoria pendente":"Preço pendente";
+   it.priceVT!=null?it.priceVT+" VT · ficha pendente":"Preço pendente";
   return groupTitle+'<details class="fp-wiz-shop-item fp-shop-compact"><summary class="fp-shop-summary">'+
    codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong><small>'+esc(equipmentDetails(it))+(preview?' <span class="fp-shop-weight-risk'+(preview.status==="normal"?"":' is-'+preview.status)+'">· Após compra '+pad(preview.percent)+'% ('+preview.balance+')</span>':'')+'</small>'+
    '<b>'+esc(priceText)+'</b></summary><div class="fp-shop-expand">'+
@@ -5269,7 +5269,7 @@ function renderTrade(){
  const listOptions=(options,value)=>options.map(([id,label])=>'<option value="'+id+'"'+(id===value?' selected':'')+'>'+esc(label)+'</option>').join("");
  $("trade-shop-type").innerHTML=listOptions(EQUIPMENT_FAMILIES,tradeShopType);
  $("trade-shop-weight").innerHTML=listOptions(EQUIPMENT_WEIGHT_OPTIONS,tradeShopWeight);
- const catalog=CATALOG.filter(x=>x.kind!=="focus"&&x.category!=="pendente"&&Number(x.priceVT)>0)
+ const catalog=CATALOG.filter(x=>x.kind!=="focus"&&x.category!=="pendente"&&x.status!=="PENDENTE"&&Number(x.priceVT)>0)
   .filter(x=>equipmentMatches(x,tradeShopType,tradeShopWeight))
   .sort((a,b)=>EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
     EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||a.name.localeCompare(b.name,"pt-BR"));
@@ -5328,7 +5328,7 @@ function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-p
 function renderPurchaseLoadPreview(){
  const preview=$("trade-purchase-load");if(!preview)return;
  const item=CATALOG.find(x=>x.name===$("shop-items")?.value);
- if(!item||item.kind==="focus"||item.category==="pendente"||!(Number(item.priceVT)>0)){
+ if(!item||item.kind==="focus"||item.category==="pendente"||item.status==="PENDENTE"||!(Number(item.priceVT)>0)){
   preview.innerHTML='<small>Escolha um equipamento para visualizar a carga e o balanço após a compra.</small>';return;
  }
  preview.innerHTML=purchaseLoadMarkup(purchaseLoadPreview(item,Number(item.priceVT)));
@@ -5336,7 +5336,7 @@ function renderPurchaseLoadPreview(){
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus")return;
- if(item.category==="pendente"){toast("Categoria/carga ainda não definidas; compra indisponível.");return;}
+ if(item.category==="pendente"||item.status==="PENDENTE"){toast("Equipamento com campos de combate pendentes; compra indisponível.");return;}
  if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const price=Number(item.priceVT);
  if(price> walletValue()){toast("Recursos insuficientes: este item custa "+price+" VT.");return;}

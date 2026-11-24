@@ -1227,3 +1227,6 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 
 
 **Características de Armas, Golpes e Magias [DEFINIDO — SRD v0.115]:** Cravar segue as características ativas de armas físicas; nunca se ativa sem a Perícia de peso correspondente. A exceção histórica da v0.77 fica revogada. Características de armas, manobras de golpes e efeitos de magias possuem habilitações próprias; não transferir automaticamente gatilhos entre categorias. Consultar [mecânicas relacionadas](../mecanicas/caracteristicas-de-combate.html) e [SRD v0.115](srd-continuidade-v0.115.md).
+
+
+**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 0,5 Alto e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).

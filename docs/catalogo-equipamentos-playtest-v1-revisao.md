@@ -18,14 +18,14 @@
 
 **DEFINIDO:** não revisar agora armas de fogo e equipamentos G2 ou superior.
 
-### Novos modelos [características DEFINIDAS, outros campos PENDENTES]
+### Novos modelos [atualização autoral v0.116 — categoria e preço DEFINIDOS]
 
 | Arma | Características | Peso, dado e preço |
 |---|---|---|
-| **Katana** | Cortante, Perfurante | **PENDENTES**: categoria/peso, dado, alcance, carga e VT |
-| **Naginata** | Longa, Cortante | **PENDENTES**: categoria/peso, dado, carga e VT. A regra geral de Longa implica alcance físico de **2 m** |
+| **Katana** | Cortante, Perfurante | **Média, 0,5 Alto, 5 VT** (Espada Longa). Dado e empunhadura pendentes; 1 m proposto |
+| **Naginata** | Longa, Cortante | **Média, 0,5 Alto, 5 VT** (Lança, duas características). Dado e empunhadura pendentes; alcance físico de **2 m** |
 
-Ambas estão listadas para revisão, **não habilitadas como armas compráveis ou rolagens funcionais** antes de preencher os campos pendentes.
+Ambas estão listadas para revisão, **não habilitadas como armas compráveis ou rolagens funcionais** antes de preencher os campos pendentes. **PROPOSTO:** d10 e 2M para ambas, seguindo os modelos de referência; peso não determina dado ou número de mãos.
 
 ## 2. Escudos e Integridade [DEFINIDO]
 
@@ -117,7 +117,7 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 
 - Catálogo do **site e Foundry sincronizados em 90 itens** pela branch de revisão; 43 itens anteriores + 44 novos.
 - Correções do criador: categoria de loja para Munições, Aljavas/Estojos, Instrumentos, Kits e Aventureiro; armazenamento manual da quantidade de munição; confirmação explícita de dano de Cravar no escudo.
-- Ferramentas e kits já têm categoria física Leve e preços proporcionais de playtest; instrumentos têm 5/10/15 VT conforme tamanho. Katana/Naginata e focos sem preço numérico continuam sem compra automática.
+- Ferramentas e kits já têm categoria física Leve e preços proporcionais de playtest; instrumentos têm 5/10/15 VT conforme tamanho. Katana/Naginata têm preço definido na v0.116, mas ainda aguardam dado e empunhadura; focos sem preço numérico continuam sem compra automática.
 - **PENDENTE DE VALIDAR:** compatibilidade visual e schema do Foundry para novos `kind` não combatentes; consumo automático de munição, capacidade efetiva das bolsas, múltiplas armas presas e resolução ao zerar Integridade do escudo.
 - **Não alterar XP, preços de pedras raras (3B), Maestrias ou níveis G2+** nesta revisão.
 
@@ -125,9 +125,14 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 
 | Tema | Informação faltante |
 |---|---|
-| Katana e Naginata | Categoria física Leve/Média/Pesada, dado e VT |
+| Katana e Naginata | Categoria Média e 5 VT definidos na v0.116; confirmar dado e empunhadura, alcance da Katana |
 | Luvas e Bastão/Cajado Leves | **Resolvido: 2, 2 e 4 VT**, respectivamente |
 | Cetros | Referência exata de arma contundente em cada porte (Bastão ou Cajado) |
 | Instrumentos musicais | **Resolvido: leve/médio/grande; 5/10/15 VT** |
 | Kits e exploração | **PROPOSTO:** conferir 5/7 VT básicos, 9 VT Explorador e avulsos proporcionais após playtest |
 | Cravar no escudo | Efeito operacional quando Integridade atinge 0 |
+
+
+### Tipos de projéteis — v0.116
+
+**DEFINIDO:** Cortante e Perfurante são os dois tipos de projéteis nomeados pelo autor nesta etapa. **PENDENTE:** distribuição por família (flechas, virotes, dardos), características mecânicas, custos de ativação e VT específicos, consumo e recuperação. Os lotes básicos e valores existentes não mudam. Não presumir que as características homônimas de armas físicas se aplicam automaticamente ao projétil.

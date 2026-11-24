@@ -57,7 +57,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
-   catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name})),
+   catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name,status:row.status})).filter(row=>row.status!=="PENDENTE"),
    attributes:cards(ATTRIBUTES,"attribute",s,d),
    knowledges:monster?[]:cards(KNOWLEDGES,"knowledge",s,d),
    practices:monster?[]:cards(PRACTICES,"practice",s,d),
@@ -349,7 +349,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
  static async addCatalogEquipment(){
   if(!this.actor.isOwner)return;
   const n=Number(this.element?.querySelector("[data-catalog-choice]")?.value),row=G1_CATALOG[n];
-  if(!row)return;
+  if(!row||row.status==="PENDENTE")return;
   const {name,...system}=structuredClone(row);
   await this.actor.createEmbeddedDocuments("Item",[{name,type:"equipment",system}]);
  }
