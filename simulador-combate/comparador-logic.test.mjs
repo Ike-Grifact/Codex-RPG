@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planDraw,disarmTransfer,heldHands,planMartialAttack,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,armorOf,defense,equippedWeapons,
- weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
+ weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
 const bare=()=>normalizeCombatant({
@@ -678,3 +678,6 @@ test("Matriz de saque por posição e Saque Rápido: todos os casos",()=>{
   }
  }
 });
+
+test("Declaração de quatro Coragens: débito bruto antes dos dados, teto e saldo",()=>{const c={courage:8,courageRoundSpent:0};const p=planCourageDeclaration(c,{activations:[{cost:1},{cost:1}],weaponCost:1,extraKeep:true});assert.equal(p.ok,true);assert.equal(p.total,4);assert.equal(p.actor.courage,4);assert.equal(p.actor.courageRoundSpent,4);assert.equal(c.courage,8);assert.equal(planCourageDeclaration({...p.actor,courage:6},{weaponCost:2}).ok,false);assert.equal(planCourageDeclaration({...c,courage:3},{activations:[{cost:4}]}).ok,false);});
+test("Característica adicional paga não é ativada em acerto comum nem reembolsada",()=>{const c=normalizeCombatant({skills:["armas-medias"],attributes:{forca:2},practices:{armas_conjuracao:2}});const w={kind:"weapon",name:"Espada Longa",category:"medio",equipped:true,properties:["Cortante","Perfurante"]};const choices=["Cortante","Perfurante"],d=declareWeaponEffects(c,w,choices);assert.equal(d.ok,true);assert.equal(d.cost,2);const normal=resolveDeclaredWeaponEffects(c,w,choices,d,{success:true});assert.deepEqual(normal.active,["Cortante"]);assert.equal(normal.cost,2);assert.deepEqual(resolveDeclaredWeaponEffects(c,w,choices,d,{success:false}).active,[]);assert.equal(resolveDeclaredWeaponEffects(c,w,choices,d,{success:true,critical:2}).active.length,2);});

@@ -302,6 +302,28 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
   return {ok:false,error:"Este resultado permite no máximo "+max+" característica(s) da arma (sem repetir)."};
  return {ok:true,active:[...selected],cost,mastery,free:Math.min(free,selected.length),activationSkill:access.required,masteryId};
 }
+/** Valida as características antes de conhecer as faces. */
+export function declareWeaponEffects(c,weapon,chosen=[],thrown=false){
+ return planWeaponEffects(c,weapon,chosen,{success:true,critical:2,thrown});
+}
+export function resolveDeclaredWeaponEffects(c,weapon,chosen,declared,{success=false,critical=0,thrown=false}={}){
+ if(!declared?.ok)return {ok:false,error:"Características não foram declaradas."};
+ if(!success)return {...declared,active:[],free:0};
+ const access=weaponActivationSkill(c,weapon,{thrown});
+ if(!access.ok&&!critical)return {...declared,active:[],free:0};
+ const max=declared.mastery?(critical?3:1):(critical?2:1);
+ const resolved=planWeaponEffects(c,weapon,chosen.slice(0,max),{success,critical,thrown});
+ return resolved.ok?{...resolved,cost:declared.cost}:resolved;
+}
+/** Despesa bruta da declaração, não custo líquido pós-crítico. */
+export function planCourageDeclaration(c,{activations=[],weaponCost=0,martialCost=0,extraKeep=false,step=false,healthCost=0}={}){
+ const costs=[...activations.map(x=>x.cost),weaponCost,martialCost,Number(extraKeep),Number(step),healthCost];
+ if(costs.some(x=>!Number.isInteger(x)||x<0))return {ok:false,error:"Custos declarados inválidos."};
+ const total=costs.reduce((a,b)=>a+b,0),spent=Number(c.courageRoundSpent||0);
+ if(total+spent>5)return {ok:false,error:"Teto de 5 Coragens no turno: "+spent+" já gastas, "+total+" declaradas."};
+ if(total>Number(c.courage||0))return {ok:false,error:"Coragem insuficiente: "+total+" declaradas."};
+ return {ok:true,total,actor:{...c,courage:Number(c.courage||0)-total,courageRoundSpent:spent+total}};
+}
 export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];
  const notes=[];
