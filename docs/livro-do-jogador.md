@@ -462,7 +462,7 @@ Uma **ação em conjunto** é uma única resolução simultânea que soma os tur
 
 **A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
 
-| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público adicional por inimigo convocado |
+| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público por inimigo independente convocado |
 |---|---|---|
 | 0 | 1A | 1P |
 | 1 | 2A | 1P |
@@ -485,11 +485,11 @@ Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participo
 
 #### Inimigos, Liderança e Pavor público
 
-**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo, mesmo quando o custo em Antecipar dobra. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
+**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
 
 **Somente o Narrador paga esse Pavor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Pavor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
 
-**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um corpo pode agir em conjunto com seus outros dois componentes. Considerando a regra de 1P por inimigo adicional ativado, a formação inicial de três custa 2P públicos (1P por componente adicional), sem Antecipar. Conta três turnos. Se o Narrador não tiver saldo público suficiente, não pode pagar as convocações usando reservas locais. O custo de uma eventual exceção de 1P total para os dois componentes não está consolidado; confirmar se o chefe composto deve possuir essa exceção.
+**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1P público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2P. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Pavor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1P público disponível, o chefe não pode usar seu Pavor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
 
 Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
 

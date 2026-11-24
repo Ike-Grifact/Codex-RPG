@@ -156,7 +156,7 @@ Uma **ação em conjunto** é uma única resolução simultânea que soma os tur
 
 **A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
 
-| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público adicional por inimigo convocado |
+| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público por inimigo independente convocado |
 |---|---|---|
 | 0 | 1A | 1P |
 | 1 | 2A | 1P |
@@ -179,20 +179,20 @@ Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participo
 
 #### Inimigos, Liderança e Pavor público
 
-**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo, mesmo quando o custo em Antecipar dobra. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
+**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
 
 **Somente o Narrador paga esse Pavor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Pavor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
 
-**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um corpo pode agir em conjunto com seus outros dois componentes. Considerando a regra de 1P por inimigo adicional ativado, a formação inicial de três custa 2P públicos (1P por componente adicional), sem Antecipar. Conta três turnos. Se o Narrador não tiver saldo público suficiente, não pode pagar as convocações usando reservas locais. O custo de uma eventual exceção de 1P total para os dois componentes não está consolidado; confirmar se o chefe composto deve possuir essa exceção.
+**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1P público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2P. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Pavor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1P público disponível, o chefe não pode usar seu Pavor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
 
 Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
 
 ### Líder, ação conjunta e Antecipar dos inimigos [DEFINIDO / PENDENTE]
 
 - **Todo conflito começa com pelo menos um Líder** da oposição; uma criatura sozinha lidera a si mesma. Grupos podem ter **múltiplos Líderes**. Liderança permite estratégia e observação de fragilidades, não dá ataque gratuito.
-- **Antecipar de inimigos:** usar o custo progressivo individual de 1/2/4/8/16A conforme participações na sequência, mais 1P exclusivamente da reserva pública do Narrador por inimigo adicional ativado. Pode antecipar novamente pagando o custo crescente; revogado o limite anterior de uma antecipação por rodada. Uma passagem para turno individual não combina dano/dados automaticamente. Inimigos provocados mantêm o foco ao receber a ação.
+- **Antecipar de inimigos:** usar o custo progressivo individual de 1/2/4/8/16A conforme participações na sequência, mais 1P exclusivamente da reserva pública do Narrador por inimigo adicional ativado, observada a exceção de ação conjunta do chefe composto. Pode antecipar novamente pagando o custo crescente; revogado o limite anterior de uma antecipação por rodada. Uma passagem para turno individual não combina dano/dados automaticamente. Inimigos provocados mantêm o foco ao receber a ação.
 - **Iniciativa da oposição:** quando a oposição recebe o protagonismo conforme a v0.120, o Narrador pode gastar **Pavor de sua reserva pública**, limitada a **2 + jogadores**, para fazer uma ameaça sob liderança **agir visando seus objetivos** (não necessariamente atacar). **PENDENTE:** custo dessa iniciativa comum e sua integração com ativações locais; não presumir 1P fixo.
-- **Golpe conjunto focado com Líder:** o Narrador paga 1P público por aliado adicional incorporado e os inimigos pagam Antecipar conforme a progressão (primeira ação conjunta gratuita em A). Líder + 1 aliado = 1P público; Líder + 2 = 2P públicos pela regra geral. Uma criatura sozinha é sua própria Líder. O custo público não pode ser pago da reserva local. Mantêm-se até três participantes e demais requisitos/custos próprios.
+- **Golpe conjunto focado com Líder:** o Narrador paga 1P público por aliado adicional incorporado e os inimigos pagam Antecipar conforme a progressão (primeira ação conjunta gratuita em A). Líder + 1 aliado = 1P público; Líder + 2 aliados independentes = 2P públicos. Exceção: chefe composto de três em um corpo paga 1P público total pelos dois componentes adicionais na mesma ação conjunta. Uma criatura sozinha é sua própria Líder. O custo público não pode ser pago da reserva local. Mantêm-se até três participantes e demais requisitos/custos próprios.
 - O aliado incorporado **não precisa ter sido provocado**. Se o Líder está provocado e ataca, o golpe conjunto comandado contra aquele alvo **mantém o foco no provocador**; comando, por si só, não anula a provocação.
 - **PENDENTE:** cálculo e custos locais exatos dos participantes, resolução de múltiplos Líderes e exceções formais a foco; não inventar cobranças adicionais.
 
@@ -208,7 +208,7 @@ Perícias, magias e condições que indicam duração em **turnos** contam açõ
 ### Controle de conflitos entre versões
 
 - **Revoga na v0.33:** nome «Provocação Sofisticada»; indicação de benefício próprio ainda pendente; foco apenas sugestivo; duração indefinida. **Mantém da v0.33:** Provocar é básico, **Influência Grau 2 e 1 XP** para a Perícia, e os modificadores gerais +1A/−1A quando cabíveis.
-- **Revoga custo histórico:** 3P públicos fixos para habilitar ação conjunta inimiga, substituídos por **1P público por aliado adicional ativado**, também em antecipações individuais, mais o custo progressivo em A quando aplicável.
+- **Revoga custo histórico:** 3P públicos fixos para habilitar ação conjunta inimiga, substituídos por **1P público por aliado adicional ativado**, também em antecipações individuais, mais o custo progressivo em A quando aplicável, com exceção de 1P público total para o chefe de três em um corpo.
 - **Não importar regra v0.9:** Pavor de dados descartados não é contado no SRD recente do Codex-RPG; não há moeda separada «Pressão».
 - **Divisão editorial:** procedimentos de controle e comando são matéria do **Livro do Mestre**, não uma reformulação automática do Livro do Jogador.
 
@@ -247,7 +247,7 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 - Registre quem estava provocado, quem substituiu o foco, quando a rodada terminou e se houve exceção plausível de alvo.
 - Separe **Pavor da rolagem**, **saldo local do inimigo** e **saldo público**; não duplique pontos entre alvos de área.
-- Diferencie **turnos individuais antecipados** de **ações conjuntas simultâneas**. Ambos usam o custo progressivo em A quando aplicável e 1P público por inimigo adicional ativado.
+- Diferencie **turnos individuais antecipados** de **ações conjuntas simultâneas**. Ambos usam o custo progressivo em A quando aplicável e 1P público por inimigo adicional ativado, ressalvada a exceção de 1P total para os dois componentes adicionais do chefe composto.
 - Observe quantas vezes a queda do último Líder realmente abriu negociação, fuga, rendição ou reorganização por Influência.
 - Não invente custo de iniciativa pública de inimigo, divisão de Pavor de área ou novos graus de Vantagem enquanto os procedimentos estão PENDENTES.
 
