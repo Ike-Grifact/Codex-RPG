@@ -120,7 +120,7 @@ A fonte compartilhada passou a se chamar **Disciplina**. Fichas existentes com o
 
 Nos dados rolados, o destaque principal mostra **as runas reais da face repetidas uma vez por símbolo** (por exemplo, **ᛋ ᛋ ᚦ**, em vez de uma face numérica grande). As contagens menores continuam sob o dado e os valores numéricos das faces permanecem preservados para cálculo, acessibilidade e críticos.
 
-**Retenção corrigida:** ao menos um dado de Atributo deve ser **rolado**, mas o jogador é livre para descartá-lo e manter apenas outros dados válidos. O crítico de duas ou mais faces máximas também não exige Atributo mantido.
+**Retenção corrigida:** ao menos um dado de Atributo deve ser **rolado**, mas o jogador é livre para descartá-lo e manter apenas outros dados válidos. O crítico de duas ou mais faces críticas também não exige Atributo mantido.
 
 
 ## Armaduras por tipo e Grau (SRD v0.38)
@@ -140,7 +140,7 @@ A ficha **não executa automaticamente** efeitos de Golpe Fulminante/Espalhar Go
 
 ## Críticos cumulativos (SRD v0.29)
 
-O rolador de dados da ficha HTML reconhece **crítico quando todos os dados escolhidos para manter estão em suas faces máximas**, exigindo pelo menos dois mantidos e um dado de Atributo. Apenas a **runa nos símbolos das faces máximas** ganha dourado: o número, o corpo e o contorno do dado não recebem nova cor por ser uma face candidata a crítico.
+O rolador de dados da ficha HTML reconhece **crítico quando todos os dados escolhidos para manter estão em suas faces críticas**, exigindo pelo menos dois mantidos e um dado de Atributo na pilha rolada, não necessariamente mantido. Faces críticas: d4/4, d6/6, d10/7, d12/12 e d20/20. Apenas a **runa nos símbolos das faces críticas** ganha dourado: o número, o corpo e o contorno do dado não recebem nova cor por ser uma face candidata a crítico.
 
 - **2 mantidos:** converte até 1 Pavor próprio em 1 Êxito e recupera até 1 Coragem.
 - **3 mantidos:** benefícios anteriores, mais +1 Êxito, +1 Antecipar, total de até 2 Coragens recuperadas.

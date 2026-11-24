@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-v0125";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-v0125";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-v0125";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-v0125";
+ from "./comparador-logic.mjs?v=20261124-v0125c";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-v0125c";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-v0125c";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261124-v0125c";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -212,7 +212,7 @@ function renderLast(){
  $("apply-integrity").disabled=!(a&&last.integrityDamage>0&&!last.integrityApplied);
  $("apply-life").disabled=!!(a||last.lifeDamage!==2||last.lifeApplied);
  $("last-action").innerHTML='<strong>'+esc(last.name)+' contra '+esc(t?.name||last.targetName)+'</strong>'+
-  (last.critical?'<div class="cc-critical-result"><strong>CRÍTICO · '+last.critical+' FACES MÁXIMAS</strong><small>'+esc(last.keptFaces||"")+
+  (last.critical?'<div class="cc-critical-result"><strong>CRÍTICO · '+last.critical+' FACES CRÍTICAS</strong><small>'+esc(last.keptFaces||"")+
    ' · '+(last.criticalRefund?'+'+last.criticalRefund+' Coragem':last.criticalPavor?'+'+last.criticalPavor+' Pavor (teto local/público)':'benefício já contabilizado')+'</small></div>':
    (last.keptFaces?'<small>Faces mantidas: '+esc(last.keptFaces)+'</small>':''))+
   '<p>'+last.e+'E + '+last.p+'P · DE '+last.de+' · '+esc(last.outcome)+'</p>'+
@@ -577,9 +577,9 @@ function renderDice(){
  const origins=rollProvenance(pending.rolled,pending.kept,{weapon:pending.weapon});
  element.innerHTML=origins.map(d=>{
   const {e,a,p}=d;
-  return '<button type="button" class="cc-die'+(d.kept?" kept":"")+(d.face===d.sides?" is-max":"")+(critInfo.critical&&d.kept?" is-critical":"")+'" data-die="'+esc(d.id)+
+  return '<button type="button" class="cc-die'+(d.kept?" kept":"")+(isCriticalFace(d.sides,d.face)?" is-max":"")+(critInfo.critical&&d.kept?" is-critical":"")+'" data-die="'+esc(d.id)+
    '" aria-pressed="'+d.kept+'" title="Selecionar como mantido"><strong>'+d.face+
-   '</strong><small>d'+d.sides+'</small>'+(d.face===d.sides?'<small class="cc-face-max">FACE MÁXIMA</small>':'')+'<small class="cc-die-origin">'+esc(d.source)+
+   '</strong><small>d'+d.sides+'</small>'+(isCriticalFace(d.sides,d.face)?'<small class="cc-face-max">FACE CRÍTICA</small>':'')+'<small class="cc-die-origin">'+esc(d.source)+
    (d.step?" (Elevado)":"")+(d.fulminante?" (Fulminante)":"")+'</small><span>'+
    (e?'<b class="cc-e">ᛋ'+e+'</b>':"")+(a?'<b class="cc-a">ᚨ'+a+'</b>':"")+
    (p?'<b class="cc-p">ᚦ'+p+'</b>':"")+(!e&&!a&&!p?"—":"")+'</span></button>';
@@ -622,7 +622,7 @@ function renderDice(){
  if(pre.manoeuvres.applied.disarm){const weapons=(byId(pending.target)?.items||[]).filter(x=>x.equipped&&["weapon","firearm"].includes(x.kind));const old=$("disarm-weapon").value;$("disarm-controls").hidden=!weapons.length;$("disarm-weapon").innerHTML=weapons.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+'</option>').join("");if(weapons.some(x=>x.id===old))$("disarm-weapon").value=old; $("disarm-destination").querySelector('option[value="bag"]').disabled=!hasQuickDraw(byId(pending.actor));if($("disarm-destination").selectedOptions[0]?.disabled)$("disarm-destination").value="ground";}else $("disarm-weapon").innerHTML="";
  const r=pre.result;
  $("roll-result").innerHTML=(r.critical?
-  '<div class="cc-critical-result"><strong>CRÍTICO · '+r.critical+' DADOS NAS FACES MÁXIMAS</strong><small>'+
+  '<div class="cc-critical-result"><strong>CRÍTICO · '+r.critical+' DADOS NAS FACES CRÍTICAS</strong><small>'+
    critInfo.faces.map(x=>'d'+x.sides+' face '+x.face).join(' · ')+'</small></div>':'')+
   '<strong>'+esc(r.outcome)+'</strong>'+
   '<p><span class="cc-e">'+r.e+' Êxitos</span> + <span class="cc-p">'+r.p+

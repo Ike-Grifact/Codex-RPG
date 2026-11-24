@@ -27,6 +27,8 @@ export const XP_TRAINING=[0,2,8,20,38,66,102];
 export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // Compatibilidade com G1-G3.
 export const MAGIC_GRADE_DICE={1:[6],2:[10],3:[12],4:[12,12]}; // SRD v0.89: G4 com dois d12.
 export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD v0.89: 15 XP compartilhados, sem reservas por categoria.
+export const CRITICAL_FACES=Object.freeze({4:4,6:6,10:7,12:12,20:20});
+export function isCriticalFace(sides,face){return CRITICAL_FACES[sides]===face&&Number.isInteger(face);}
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");
  return [...FACES[sides][face-1]];
@@ -144,7 +146,7 @@ export function resolveRoll(rolled,selectedIds,options={}){
  if(!rolled.some(d=>d.group==="attribute"))errors.push("A pilha deve conter um Atributo rolado.");
  if(Number(extraKeep)+Number(step)>(monster?99:courage))errors.push("Coragem insuficiente.");
  const raw=[0,0,0];for(const d of kept)faceSymbols(d.sides,d.face).forEach((v,i)=>raw[i]+=v);
- const crit=kept.length>=2&&kept.every(d=>d.face===d.sides);
+ const crit=kept.length>=2&&kept.every(d=>isCriticalFace(d.sides,d.face));
  let convertedCrit=0,extraCritE=0,extraCritA=0;
  if(crit){convertedCrit=raw[2]>0?1:0;extraCritE=kept.length>=3?1:0;extraCritA=kept.length>=3?1:0;}
  const st=SITUATIONS[situation]||SITUATIONS.neutral;

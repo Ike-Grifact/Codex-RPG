@@ -2,7 +2,7 @@
 
 **Data:** 24/11/2026
 
-**DEFINIDO — correção autoral:** a face 11 do d12 e do d20 passa de 2P a 3P; a face 15 do d20 passa de 3P a 3P+2A. Complementa [v0.124](srd-continuidade-v0.124.md) e substitui exclusivamente esses valores. A distribuição comum das faces 1–12 do d12 e d20 permanece idêntica. Demais faces, retenção, críticos, custos, dano, proteções e usos de Antecipar permanecem vigentes.
+**DEFINIDO — correção autoral:** a face 11 do d12 e do d20 passa de 2P a 3P; a face 15 do d20 passa de 3P a 3P+2A. Complementa [v0.124](srd-continuidade-v0.124.md) e substitui exclusivamente esses valores. A distribuição comum das faces 1–12 do d12 e d20 permanece idêntica. Demais faces, retenção, benefícios dos críticos, custos, dano, proteções e usos de Antecipar permanecem vigentes.
 
 ## Faces
 
@@ -30,6 +30,18 @@
 | 20 | — | — | — | — | 8ᛋ |
 
 Os dois A da face 15 podem ser gastos segundo as regras existentes, uma única vez por símbolo, quando o dado for mantido. Não anulam Pavor automaticamente.
+
+## Faces críticas [DEFINIDO — 24/11/2026]
+
+| Dado | Face crítica |
+|---|---:|
+| d4 | 4 |
+| d6 | 6 |
+| d10 | 7 |
+| d12 | 12 |
+| d20 | 20 |
+
+A face 7 do d10 (2E) substitui a face 10 como candidata a crítico. A face 10 continua 2E+1P, sem ser crítica. A face 7 do d12 ou d20 não é crítica. Todos os dados mantidos precisam apresentar a face crítica específica de seu tipo, com pelo menos dois mantidos. Atributo obrigatório na pilha, não na retenção. Benefícios cumulativos, conversão de 1P próprio em 1E, recuperação de Coragem e dano dobrado de quatro dados permanecem inalterados. O destaque dourado segue a face crítica, não o maior número.
 
 ## Implementação e validação
 

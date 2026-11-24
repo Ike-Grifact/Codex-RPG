@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-v0125";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-v0125";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261124-v0125c";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-v0125c";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -445,9 +445,9 @@ export function planMartialAttack(c,{unarmed=false,pugilism=false,weight="medio"
 export function criticalFaces(rolled=[],ids=[]){
  const kept=new Set(ids);
  const selected=rolled.filter(x=>kept.has(x.id));
- const critical=selected.length>=2&&selected.every(x=>x.face===x.sides);
+ const critical=selected.length>=2&&selected.every(x=>isCriticalFace(x.sides,x.face));
  return {critical:critical?selected.length:0,
-  faces:selected.map(x=>({id:x.id,sides:x.sides,face:x.face,max:x.face===x.sides}))};
+  faces:selected.map(x=>({id:x.id,sides:x.sides,face:x.face,max:isCriticalFace(x.sides,x.face)}))};
 }
 export function candidateScore(pre,mode="balanced"){
  const r=pre?.result;if(!pre?.ok||!r)return -Infinity;

@@ -556,18 +556,19 @@ test("Cravar valida escudo físico e categoria; demais efeitos não inventam con
  assert.deepEqual(pending.applied,{});
  assert.equal(pending.notes.length,3);
 });
-test("Face máxima dourada: d4 face 4 vazia conta, d10 face 10 e d6 face 6 formam crítico",()=>{
- const dice=[{id:"d4",sides:4,face:4},{id:"d10",sides:10,face:10},
+test("Face crítica dourada: d4 face 4 vazia conta, d10 face 7 e d6 face 6 formam crítico",()=>{
+ const dice=[{id:"d4",sides:4,face:4},{id:"d10",sides:10,face:7},
   {id:"d6",sides:6,face:6},{id:"d12",sides:12,face:11}];
  const crit=criticalFaces(dice,["d4","d10","d6"]);
  assert.equal(crit.critical,3);
- assert.deepEqual(crit.faces.map(x=>x.face),[4,10,6]);
+ assert.deepEqual(crit.faces.map(x=>x.face),[4,7,6]);
  assert.equal(crit.faces[0].max,true);
  assert.equal(criticalFaces(dice,["d10","d12"]).critical,0);
  assert.equal(criticalFaces(dice,["d10"]).critical,0);
+ dice[1].face=10;assert.equal(criticalFaces(dice,["d10","d6"]).critical,0);assert.equal(criticalFaces(dice,["d10","d6"]).faces[0].max,false);
 });
 test("Sugestão exaustiva prefere crítico limpo e valida custos e conversões",()=>{
- const pool=[{id:"a",group:"attribute",key:"forca",sides:10,face:10},
+ const pool=[{id:"a",group:"attribute",key:"forca",sides:10,face:7},
   {id:"b",group:"practice",key:"armas_conjuracao",sides:6,face:6},
   {id:"c",group:"equipment",key:"faca",sides:4,face:3}];
  function evaluate(ids,opts){

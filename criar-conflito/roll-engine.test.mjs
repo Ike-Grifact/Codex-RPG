@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {blank,stats,quickHumanoid,normalize} from "./rules.mjs";
 import {creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,
- publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
+ publicJointCost,canDeclareJoint,faceSymbols,isCriticalFace,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
 
 test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
  const t=blank("monstro");t.attributes.forca=1;
@@ -284,5 +284,12 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Pavor; nível sozin
   assert.equal(post.unit.courage,0);
   enemy.pavorLocal=0;
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+ }
+});
+
+
+test("Motor de conflitos reconhece a face crítica específica de cada dado",()=>{
+ for(const [sides,critical] of [[4,4],[6,6],[10,7],[12,12],[20,20]]){
+  for(let face=1;face<=sides;face++)assert.equal(isCriticalFace(sides,face),face===critical);
  }
 });

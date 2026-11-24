@@ -53,7 +53,7 @@ A **DE conjunta** mantém **teto 30**, com coordenação e demais regras especí
 
 ## 5. Críticos de monstros [DEFINIDO]
 
-Os monstros usam as mesmas condições de crítico dos jogadores: todos os **dados mantidos** (pelo menos dois) devem ser **suas respectivas faces máximas**; Atributo obrigatório **na rolagem**, não entre os dados mantidos.
+Os monstros usam as mesmas condições de crítico dos jogadores: todos os **dados mantidos** (pelo menos dois) devem ser **suas respectivas faces críticas (d4: 4; d6: 6; d10: 7; d12: 12; d20: 20)**; Atributo obrigatório **na rolagem**, não entre os dados mantidos.
 
 - **2 máximos:** converter 1P próprio em 1E, se houver, e gerar **2P** em vez das recuperações de PP/Coragem.
 - **3 máximos:** benefícios anteriores, **+1E, +1A** e **4P gerados no total**.
