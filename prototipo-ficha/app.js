@@ -1641,7 +1641,8 @@ const CARD_ACTIVATIONS={
 const PLAYER_SKILL_COPY={
  "artista-marcial":{
   type:"Ativa + benefício passivo",
-  intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha."
+  intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha.",
+  mechanics:[["caracteristicas-de-combate","Características de Armas, Golpes e Magias"]]
  },
  "pugilismo":{
   type:"Ativa",

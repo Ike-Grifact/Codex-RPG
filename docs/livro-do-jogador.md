@@ -1189,3 +1189,10 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 ### Atualização de nomenclatura — SRD v0.99 [DEFINIDO — 23/11/2026]
 
 As **Maestrias por família de armas** foram renomeadas para **Especializações em Armas**, mantendo os identificadores `maestria-*` para compatibilidade com fichas existentes e o custo de **1 XP por aquisição**. A **Especialização em Armas de Punho** agora pode ser comprada com **Força 1 + Agilidade 1 + Destreza 1 + Vigor 1**; **Pugilismo** não é requisito de compra, apenas de ativação das características da arma. **Arcos, Bestas, Armas Arremessadas e Longo Alcance Diversas** continuam com requisitos de compra pendentes. Consultar o [SRD de Continuidade v0.99](srd-continuidade-v0.99.md). Outras Maestrias fora das famílias de armas não foram renomeadas.
+
+
+### Mecânicas de Combate — Características de Armas, Golpes e Magias [DEFINIDO / PENDENTE]
+
+**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** procedimento específico ainda pendente. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
+
+[Consultar características de combate](../mecanicas/caracteristicas-de-combate.html).

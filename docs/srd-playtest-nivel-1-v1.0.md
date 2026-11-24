@@ -419,3 +419,10 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 ## Adendo normativo — Pugilismo e Artista Marcial (23/11/2026)
 
 **DEFINIDO:** socos são Médios por padrão; ativar Pugilismo por 1 Coragem permite alterar para Leve ou Pesado. Artista Marcial (1 XP; Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo) é ativa com benefício passivo: uma manobra no acerto desarmado (Empurrar, Agarrar, Derrubar ou Desarmar), por 1 Coragem declarada antes de rolar, ou sem custo adicional se Pugilismo for ativado. Não exige crítico nesse caso; somente uma manobra por ataque. Ver [v0.107](srd-continuidade-v0.107.md).
+
+
+## Adendo normativo — Características de combate (23/11/2026)
+
+**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** procedimento específico ainda pendente. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
+
+[Continuidade v0.108](srd-continuidade-v0.108.md).
