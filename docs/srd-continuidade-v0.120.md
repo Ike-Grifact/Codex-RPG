@@ -1,7 +1,7 @@
 # Codex RPG — SRD de Continuidade v0.120
 
 **Data:** 24/11/2026  
-**DEFINIDO:** distinção de turno, rodada e protagonismo; ação conjunta simultânea e custo progressivo de Antecipar por participante de ambos os lados e Pavor público de convocação inimiga, com exceção de 1P total para chefe composto de três em um corpo. Revisão autoral antes da publicação da v0.120. Substitui a formulação sem contagem explícita de rodada, o encaminhamento automático de falha limpa ofensiva ao próximo jogador e a exigência de trocar de lado apenas porque todos os PJs já agiram. Revoga para ambos os lados o custo fixo de 1A e a limitação histórica de antecipar um combatente apenas uma vez por rodada; a convocação repetida depende de custo progressivo. Demais regras da v0.119 preservadas.
+**DEFINIDO:** distinção de turno, rodada e protagonismo; ação conjunta simultânea e custo progressivo de Antecipar por participante de ambos os lados e Pavor público de convocação inimiga, com exceção de 1P total para chefe composto de três em um corpo. Inclui Combate Coordenado: declaração de formação, soma de DE até 30, rolagens individuais e representação inimiga de ficha única. Revisão autoral antes da publicação da v0.120. Substitui a formulação sem contagem explícita de rodada, o encaminhamento automático de falha limpa ofensiva ao próximo jogador e a exigência de trocar de lado apenas porque todos os PJs já agiram. Revoga para ambos os lados o custo fixo de 1A e a limitação histórica de antecipar um combatente apenas uma vez por rodada; a convocação repetida depende de custo progressivo. Demais regras da v0.119 preservadas.
 
 Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
@@ -49,6 +49,29 @@ Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participo
 **Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1P público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2P. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Pavor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1P público disponível, o chefe não pode usar seu Pavor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
 
 Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
+
+## Combate Coordenado [DEFINIDO / PENDENTE]
+
+**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta.
+
+**DE coordenada = mínimo(30; soma das DE defensivas dos participantes).** Use a DE defensiva individual vigente de cada integrante, com os modificadores aplicáveis, sem repetir bônus já incluídos. A soma é a defesa da formação; o teto absoluto é 30. A DE de cada ficha permanece distinta quando o combatente não está em formação. Se um integrante for eliminado ou deixar de integrar a formação, sua DE deixa de contribuir.
+
+**Combatentes independentes em formação:** cada integrante mantém sua ficha e realiza sua própria rolagem. A defesa coordenada não funde fichas nem transforma automaticamente todas as ações em um único ataque. Quando a dupla ou o trio declara uma ação conjunta, cada participante rola individualmente e os resultados pertinentes são somados em uma única resolução, respeitando os limites de dados, os custos, Antecipar e Pavor. A ação conta um turno por participante. O limite vigente de até três participantes em ataques conjuntos não é ampliado por esta regra.
+
+**Grupo de inimigos com ficha única:** o Narrador pode representar uma formação de inimigos por uma única ficha, com orçamento igual à soma do XP de todos os seus integrantes. O XP reunido permite desenvolver essa ficha e elevar sua DE dentro do teto de 30. A ficha do grupo faz apenas uma rolagem por ação, em vez de uma rolagem para cada integrante. Não duplicar XP nem acumular uma segunda soma de DE sobre a defesa conjunta já registrada. Essa representação é diferente de inimigos com fichas independentes que declaram Combate Coordenado. Não fundir fichas de jogadores: eles mantêm suas próprias rolagens.
+
+| Formação | Fichas | DE defensiva | Rolagens |
+|---|---|---|---|
+| Três inimigos separados | 3 fichas | 4, 5 e 6 | Individuais |
+| Três inimigos em formação | 3 fichas | 15 (4 + 5 + 6) | Individuais; somadas se declararem ação conjunta |
+| Grupo de inimigos (ficha única) | 1 ficha; XP total reunido | DE do grupo, até 30 | Uma rolagem por ação |
+| Dupla de jogadores | 2 fichas | Ex.: 7 + 8 = 15 | Uma rolagem por PJ, somadas na ação conjunta |
+
+**Exemplo:** três combatentes com DE 11, 10 e 12 declaram um trio. A soma é 33, mas a DE coordenada fica em 30. Dois jogadores com DE 7 e 8 declaram uma dupla: a DE da formação fica em 15. Ao atacar em conjunto, ambos rolam e somam os resultados pertinentes; a resolução simultânea conta dois turnos.
+
+**Dano e alvos:** preserva-se a regra de que um ataque de alvo único escolhe uma ficha alvo; área que alcance a DE coordenada e cubra combatentes separados pode afetar cada ficha atingida, enquanto o chefe composto de uma única ficha recebe um único dano pela área. Combate Coordenado não concede dano, dados, Coragem, Pavor ou ativações extras automaticamente. A declaração de formação não substitui as condições de convocação da ação conjunta.
+
+**PENDENTE:** momento e eventual custo da declaração ou dissolução da formação, distância máxima entre integrantes, efeitos de movimento e separação, procedimento de distribuição do XP e registro da DE de uma ficha coletiva, contagem de turnos e desgaste de integrantes na ficha de grupo. Não presumir que qualquer ficha coletiva tenha as características especiais do chefe de três em um corpo. Não automatizar esses casos antes de decisão.
 
 ## Continuidade e limites
 
