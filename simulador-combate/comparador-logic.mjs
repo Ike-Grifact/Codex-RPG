@@ -55,14 +55,19 @@ export function disarmTransfer(attacker,target,weaponId,destination,newId){
 }
 export function normalizeEquipment(original={}){
  const raw=migrateArmorIntegrity(original);
- const kind=["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
+ const kind=raw.ammoRole==="container"?"container":raw.ammoRole==="supply"?"ammunition":["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
  const category=categoryOf(raw),sourceIntegrity=raw.integrity;
  const max=int(raw.integrityMax??raw.max??(typeof sourceIntegrity==="object"?sourceIntegrity.max:undefined)??0);
  const hp=int((typeof sourceIntegrity==="object"?sourceIntegrity.value:sourceIntegrity)??raw.hp??max,0,max);
+ const ammoRole=["container","supply"].includes(raw.ammoRole)?raw.ammoRole:"";
+ const ammoMix=ammoRole?{}:null;let room=20;
+ if(ammoMix)for(const type of raw.ammoFamily==="zarabatana"?["Dardo"]:["Cortante","Perfurante"]){ammoMix[type]=int(raw.ammoMix?.[type],0,room);room-=ammoMix[type];}
+ const ammoLoad=(20-room)/20*([.0125,.125].includes(Number(raw.ammoLotWeight))?Number(raw.ammoLotWeight):0);
+ const itemWeight=typeof raw.weight==="number"?Math.max(0,raw.weight):ammoRole?ammoLoad+(ammoRole==="container"?(weightNumbers[category]||.125):0):(weightNumbers[category]||0);
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
-  kind,category,grade:int(raw.grade||1,1,4),weight:typeof raw.weight==="number"?Math.max(0,raw.weight):(weightNumbers[category]||0),
-  qty:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
-  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole:raw.ammoRole||"",ammoFamily:raw.ammoFamily||"",ammoMix:raw.ammoMix||null,storageCapacity:Number(raw.storageCapacity)||0};
+  kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,
+  qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
+  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  const kind=raw.kind==="criatura"?"monstro":(["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide");

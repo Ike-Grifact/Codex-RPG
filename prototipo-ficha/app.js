@@ -4877,8 +4877,8 @@ function score(){
  if(remainingCourageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
- const damageBasic=success&&!poisonOnly?E+Math.floor(P/2):0;
- const fulminanteDamageBasic=success&&p.opts.fulminante&&!poisonOnly?E+P:damageBasic;
+ const damageBasic=success?E+Math.floor(P/2):0;
+ const fulminanteDamageBasic=poisonOnly?0:success&&p.opts.fulminante?E+P:damageBasic;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
  // Se o alvo não tiver armadura, ou Perfurante for bloqueado por escudo, vale o dano básico.
  const damage=p.opts.maosLeves||p.cravarRemovalShieldId?0:fulminanteDamageBasic*(critTier===4?2:1); // Escudo Bumerangue: dano físico básico normal, incluindo crítico.
@@ -4902,7 +4902,7 @@ function score(){
  // Quando o Escudo de Sangue neutraliza a propriedade, resolver dano convencional
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=poisonOnly||hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
- return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,poisonOnly,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
+ return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic:poisonOnly?0:damageBasic,poisonOnly,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
   aPool,courageCost,remainingCourageCost,prepaidCourage,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
    manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored,weightSpecialtyIgnored};
 }
@@ -5261,7 +5261,7 @@ function renderInventory(){
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
   '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
-  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':handItem(it)?({hands:"Nas mãos",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':(handItem(it)||it.ammoRole==="container")?({hands:"Nas mãos",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
@@ -5270,7 +5270,7 @@ function renderInventory(){
   (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
-  '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
+  '<button type="button" class="'+((it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick")?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick"?"✓":"○")+'</button>'+
   '<button type="button" data-action="delete-item" data-id="'+esc(it.id)+'" title="Excluir item">×</button></div>'+
   '<div class="fp-item-hint"><label>Grau <input type="number" data-item-field="grade" data-id="'+esc(it.id)+'" min="1" max="4" value="'+it.grade+'" style="width:40px"></label> · '+
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
