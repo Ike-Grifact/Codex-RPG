@@ -737,3 +737,5 @@ test("Munição: disparo consome uma unidade antes do resultado; sem munição n
  const r=planShot(items,w,"q","Cortante");assert.equal(r.ok,true);assert.equal(r.items[0].ammoMix.Cortante,0);assert.equal(q.ammoMix.Cortante,1);assert.equal(planShot(r.items,w,"q","Cortante").ok,false);assert.equal(planShot(items,{name:"Arco Longo"},"q","Cortante").ok,false);assert.equal(planShot([{...q,position:"bag"}],w,"q","Cortante").ok,false);
  assert.equal(carryingCapacity({}),1.5);assert.equal(quickUsage([q]),1);assert.equal(bodyUsage([q]),q.weight);
 });
+
+test("Golpe Colossal: DE coordenada compartilhada é contada uma vez",()=>{const targets=[{id:"b",de:4},{id:"c",de:5}];assert.deepEqual(colossalOutcomes({e:12,p:0,critical:0,success:true},targets,12,12).map(x=>[x.success,x.totalDE,x.integrityDamage]),[[true,12,6],[true,12,6]]);assert.equal(colossalOutcomes({e:12,p:0,critical:0,success:true},targets,12)[0].success,false);assert.equal(colossalOutcomes({e:11,p:0,critical:0,success:false},targets,12,12)[0].success,false);});

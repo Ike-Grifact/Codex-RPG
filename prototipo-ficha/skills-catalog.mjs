@@ -284,7 +284,7 @@ const SKILLS=[
  [
   "espalhar-golpe",
   "Golpe Colossal",
-  "Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+P válidos devem alcançar a soma das DE do principal e dos adicionais; se não alcançar a soma, apenas o principal pode ser atingido se superar sua DE. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Pavor. Raio fixo; teto de 5 Coragens por turno.",
+  "Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+P válidos devem alcançar a soma das DE do principal e dos adicionais (cada formação coordenada conta uma vez); se não alcançar a soma, apenas o principal pode ser atingido se alcançar a DE que o protege. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Pavor. Raio fixo; teto de 5 Coragens por turno.",
   1
  ],
  [

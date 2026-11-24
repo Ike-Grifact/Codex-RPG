@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261124-kits-v0116b" defer></script>
-<script type="module" src="./app.mjs?v=20261124-v0121"></script>
+<script type="module" src="./app.mjs?v=20261124-v0121-coord"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -122,7 +122,7 @@
     </div>
     <div id="active-extra-skills" class="cc-skill-multi" aria-label="Perícias adicionais na mesma ação"></div>
     <label class="cc-activation-confirm"><input id="skill-approved" type="checkbox"> Conferi os custos, requisitos e gatilhos de todas as Perícias escolhidas</label>
-    <div id="colossal-controls" hidden><label>Golpe Colossal — alvos adicionais dentro de 3 m (seleção múltipla) <select id="colossal-targets" multiple size="5"></select></label><p id="colossal-info" class="cc-help"></p></div><p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. A Coragem declarada é debitada antes de gerar os dados e permanece gasta na falha. O efeito especializado não é inventado.</p>
+    <div id="colossal-controls" hidden><label>Golpe Colossal — alvos adicionais dentro de 3 m (seleção múltipla) <select id="colossal-targets" multiple size="5"></select></label><label>DE total da área (opcional, para formações coordenadas) <input id="colossal-area-de" type="number" min="0" step="1" placeholder="Soma automática"></label><p class="cc-help">Na DE principal, informe a defesa que protege o alvo principal. Se houver formações, informe aqui a soma das defesas contando cada formação uma vez.</p><p id="colossal-info" class="cc-help"></p></div><p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. A Coragem declarada é debitada antes de gerar os dados e permanece gasta na falha. O efeito especializado não é inventado.</p>
    </section>
    <div class="cc-actions">
     <button id="roll" type="button" class="cc-primary">Pagar e rolar</button><button id="end-pending" type="button" hidden>Encerrar sem resolver (sem reembolso)</button>

@@ -359,9 +359,10 @@ export function planColossalTargets(attacker,primary,roster,ids,cost){
  if(targets.some(t=>!t||t.id===attacker.id||t.id===primary.id||t.side===attacker.side||t.life===0))return {ok:false,error:"Selecione somente adversários válidos, distintos do alvo principal."};
  return {ok:true,cost,bonusE:cost,targets:targets.map(t=>({id:t.id,name:t.name,de:defense(t)}))};
 }
-export function colossalOutcomes(result,targets=[],primaryDE=0){
+export function colossalOutcomes(result,targets=[],primaryDE=0,areaDE=null){
  const e=Math.max(0,Number(result.e)||0),p=Math.max(0,Number(result.p)||0),reached=e+p;
- const totalDE=Math.max(0,Number(primaryDE)||0)+targets.reduce((sum,t)=>sum+Math.max(0,Number(t.de)||0),0);
+ const baseDE=Math.max(0,Number(primaryDE)||0);
+ const totalDE=areaDE===null||areaDE===undefined?baseDE+targets.reduce((sum,t)=>sum+Math.max(0,Number(t.de)||0),0):Math.max(baseDE,Number(areaDE)||0);
  const mult=result.critical===4?2:1;
  const damageE=Math.floor(e*mult/2);
  const success=result.success===true&&reached>=totalDE;
