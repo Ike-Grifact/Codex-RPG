@@ -92,3 +92,18 @@ test("Disciplina Avançada é passiva, mantém aquisição 1 XP e possui texto d
  assert.match(player,/playerGuide\?\.type/);
  assert.match(player,/guide\?\.type/);
 });
+
+
+test("Manejo Perfeito é passivo, conciso e referencia mecânicas sem tratá-las como Perícias",()=>{
+ const html=readFileSync(new URL("../pericias/manejo-perfeito-armas-corpo-a-corpo.html",import.meta.url),"utf8");
+ assert.match(html,/Passiva — sem custo de ativação/);
+ assert.match(html,/Disciplina Avançada \+ Destreza 2/);
+ assert.match(html,/1 XP/);
+ assert.match(html,/Vantagem Absoluta \(\+1E\)/);
+ assert.match(html,/Golpe Certo \(\+2E no total\)/);
+ assert.match(html,/Mecânicas relacionadas/);
+ assert.match(html,/href="\.\.\/mecanicas\/golpe-certo\.html"/);
+ assert.match(html,/href="\.\.\/mecanicas\/vantagens-e-desvantagens\.html"/);
+ assert.doesNotMatch(html,/Descrição completa|Aplicação prática|Sem custo adicional especificado|SRD v0\.87|Arma Certa foi removida/);
+ assert.match(player,/"manejo-perfeito":\{\s*type:"Passiva — sem custo de ativação"/);
+});

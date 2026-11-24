@@ -271,7 +271,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Ao usar arma correta contra oponente que possui Desvantagem natural perante ela, substitui a Vantagem de peso (+1A) por Vantagem Absoluta (+1E). Se a condição da ação já era Vantagem Absoluta, aplica Golpe Certo (+2E no total da condição + Manejo, nunca +3E).",
+  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Perícia passiva — sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E). Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total). Consulte as mecânicas Vantagens e Desvantagens e Golpe Certo.",
   1
  ],
  [

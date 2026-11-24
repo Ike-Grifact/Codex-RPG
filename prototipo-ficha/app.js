@@ -390,7 +390,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Ao usar arma correta contra oponente que possui Desvantagem natural perante ela, substitui a Vantagem de peso (+1A) por Vantagem Absoluta (+1E). Se a condição da ação já era Vantagem Absoluta, aplica Golpe Certo (+2E no total da condição + Manejo, nunca +3E).",
+  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Perícia passiva — sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E). Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total). Consulte as mecânicas Vantagens e Desvantagens e Golpe Certo.",
   1
  ],
  [
@@ -1544,6 +1544,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "manejo-perfeito":"Passiva — sem custo de ativação",
  "disciplina-avancada":"Passiva — sem custo de ativação",
  "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
  "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
@@ -1635,6 +1636,13 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "manejo-perfeito":{
+  type:"Passiva — sem custo de ativação",
+  intro:"Você domina o uso da arma adequada contra as defesas do oponente.",
+  benefits:["Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E).","Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total)."],
+  note:"",
+  mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"],["golpe-certo","Golpe Certo"]]
+ },
  "disciplina-avancada":{
   type:"Passiva — sem custo de ativação",
   intro:"Você aprendeu a combinar suas aptidões em ações marciais e mágicas.",
@@ -3627,7 +3635,8 @@ function geneDetailHTML(id,s=state){
   '<p class="fp-gene-player-intro">'+esc(playerGuide.intro)+'</p>'+
   '<h5 class="fp-gene-player-subtitle">Benefícios</h5>'+
   '<ul class="fp-gene-player-benefits">'+playerGuide.benefits.map(benefit=>'<li>'+esc(benefit)+'</li>').join("")+'</ul>'+
-  '<p class="fp-gene-player-note">'+esc(playerGuide.note)+'</p>':
+  (playerGuide.note?'<p class="fp-gene-player-note">'+esc(playerGuide.note)+'</p>':"")+
+  (playerGuide.mechanics?.length?'<p class="fp-gene-player-note"><strong>Mecânicas relacionadas:</strong> '+playerGuide.mechanics.map(([slug,label])=>'<a href="../mecanicas/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer">'+esc(label)+'</a>').join(" · ")+'</p>':""):
   '<p>'+esc(sid==="pericia-druidica"?CARD_BRIEFS[sid]:detail)+'</p>';
  const slug=SKILL_PERMALINKS[sid];
  const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
