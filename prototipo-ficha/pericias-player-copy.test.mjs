@@ -147,3 +147,8 @@ test("Runas sem fundo e dados com contorno em Fulminante e Colossal",()=>{
  assert.match(mechanics,/Perícia em Armas do peso correspondente \(inclusive no crítico\)/);
  assert.doesNotMatch(player,/cravarFree|freeCravarCritical|crítico OU Perícia pertinente/);
 });
+
+test("Cravar aplica −1E por arma registrada apenas em Levantar Escudo",()=>{
+ assert.match(player,/const shieldCravarPenalty=p\.opts\.shieldRaise&&raisedShield\?\.embeddedWeapon\?1:0;/);
+ assert.doesNotMatch(player,/arma cravada: −2E|−2E ao Levantar Escudo/);
+});

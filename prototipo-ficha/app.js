@@ -4498,7 +4498,7 @@ function renderComposer(){
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
-  '<div class="fp-alert"><strong>RETIRAR CRAVAR — '+esc(removalShield?.name||"Escudo")+'</strong><p>Combine Força, Atletismo ou Vigor com outra aptidão pertinente. A DE depende do PESO DA ARMA cravada, máximo 4 — o Narrador informa a dificuldade; não há tabela numérica fixa aprovada.</p>'+
+  '<div class="fp-alert"><strong>RETIRAR CRAVAR — '+esc(removalShield?.name||"Escudo")+'</strong><p>Combine Disciplina ou Atletismo com Força, Vigor ou Destreza. A DE depende do PESO DA ARMA cravada, máximo 4 — o Narrador informa a dificuldade; não há tabela numérica fixa aprovada.</p>'+
   '<label class="fp-checkline"><input type="checkbox" data-option="cravarRemovalDEConfirmed"'+
   (draft.cravarRemovalDEConfirmed?' checked':'')+'> Confirmo que o Narrador definiu a DE da arma (1 a 4)</label>'+
   '<p>Uma rolagem de retirada não é ataque, não causa dano e só remove a condição ao vencer a DE.</p></div>':"";
@@ -4526,7 +4526,7 @@ function renderComposer(){
  const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield&&!draft.maosLeves?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
-  (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
+  (carriedShield.embeddedWeapon?' (arma cravada: −1E nesta ação)':'')+'</label>':"";
  const stealthCheckbox=ownsSkill("golpe-furtivo")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
   '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
  const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
@@ -4720,13 +4720,13 @@ function score(){
  const magicMixA=p.opts.magicElement&&Number(p.opts.magicGrade)===4?1:0;
  if(cancel+2*pairs+pass+magicMixA>aPool)errs.push("Antecipar insuficiente: G4 plena exige 1A de mistura além dos demais gastos.");
  // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
- // v0.77: −2E somente quando a ação declarada é Levantar Escudo e o escudo carrega uma arma cravada.
+ // v0.79: −1E por arma cravada somente em Levantar Escudo. A ficha isolada registra uma arma por escudo.
  const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
  if(p.opts.shieldRaise&&(!raisedShield||p.base?.group!=="practice"||p.base.key!=="armas_conjuracao"||p.mode!=="armas"))
   errs.push("Levantar Escudo exige Disciplina (Armas) e escudo físico equipado.");
  if(p.opts.shieldRaise&&(p.characteristic||p.secondCharacteristic||p.fireMode||p.hemomancyDirectLife))
   errs.push("Levantar Escudo consome uma ação: não é possível ativar simultaneamente Cravar, arma ou magia.");
- const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?2:0;
+ const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?1:0;
  const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass-magicMixA);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
@@ -4952,9 +4952,9 @@ function renderPending(){
   ' O Narrador resolve imunidades, outras barreiras e eventual excedente convencional; sem alteração automática de ficha adversária.</p>':"")+
  (s.cravarApplied?'<p class="fp-caption"><strong>CRAVAR — ESCUDO FÍSICO:</strong> arma '+(p.opts.equipmentId?esc(item?.name||"Média/Pesada"):'Média/Pesada')+
   ' fica presa ao escudo '+(s.cravarTargetShield==="pesado"?'Pesado':s.cravarTargetShield==="medio"?'Médio':'Leve')+
-  ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−2E ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
+  ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−1E por arma cravada ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
  (p.opts.shieldRaise?'<p class="fp-caption"><strong>LEVANTAR ESCUDO:</strong> Integridade simbólica E + P válidos = '+(s.E+s.P)+
-  ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−2E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
+  ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−1E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';

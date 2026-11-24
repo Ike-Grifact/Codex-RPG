@@ -8,3 +8,5 @@
 **Editorial:** separar características de armas, manobras de golpes e efeitos de magias; referenciar as mecânicas nos verbetes pertinentes. Dados com contorno e runas sem fundo, preservando cores e nomes oficiais.
 
 **Implementação:** documentação, verbetes, Codex Genético, comparador e ficha isolada; fluxo integral de características na ficha isolada permanece pendente de migração para declaração antecipada (v0.112). Sem alterações nas fórmulas de Fulminante/Colossal da v0.114.
+
+**Correções de consistência:** a ficha isolada volta a aplicar −1E (não −2E) para sua arma cravada registrada, exclusivamente em Levantar Escudo, conforme v0.79. Registro de múltiplas armas nesse editor permanece pendente. A página de mecânicas também apresenta a perda de Integridade do escudo por Êxito mantido já estabelecida no catálogo de equipamentos, sem inventar efeito para Integridade zero.
