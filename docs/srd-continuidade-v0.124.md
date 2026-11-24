@@ -31,7 +31,7 @@ No crítico de quatro dados, dobre o dano calculado a partir da rolagem antes de
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
-| 11 | — | — | — | ᛋ+2ᚨ+ᚦ | ᛋ+2ᚨ+ᚦ |
+| 11 | — | — | — | 2ᛋ+ᚨ+2ᚦ | 2ᛋ+ᚨ+2ᚦ |
 | 12 | — | — | — | 3ᛋ | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
 | 14 | — | — | — | — | 3ᛋ+2ᚨ |
@@ -42,10 +42,10 @@ No crítico de quatro dados, dobre o dano calculado a partir da rolagem antes de
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-**PENDENTE:** o autor indicou 2E + 1F + 2P na face 11. F não é um símbolo definido (E/A/P); até confirmação, a tabela de revisão conserva a composição anterior do d12 também no d20. As faces 13–20 do d20 permanecem intactas. A tabela especial do d4 foi preservada por interpretação do escopo (d10/d12/d20). Não publicar a face 11 como definitiva antes da confirmação.
+**DEFINIDO:** face 11 = 2E + 1A + 2P, confirmada pelo autor em 24/11/2026. As faces 13–20 do d20 permanecem intactas. A tabela especial do d4 permanece preservada.
 
 ## Recursos e redação
 
 A reserva de Pontos de Perícia já foi revogada. Retirar referências do Livro do Jogador sem alterar custos vigentes em Coragem. Remover o quadro introdutório do d20 extraordinário, sem revogar seus requisitos de aquisição nem o teto de DE. Colocar o crítico antes da seção de faces. Preservar as regras de Vida e exceções de dano fixo.
 
-**Implementação:** Livro do Jogador (Markdown e portal), motores web e protótipo Foundry, atualização de cache e testes de referência. Histórico preservado. A face 11 aguarda confirmação; não integrar esta revisão à main até essa confirmação e validação da suíte completa.
+**Implementação:** Livro do Jogador (Markdown e portal), motores web e protótipo Foundry, atualização de cache e testes de referência. Histórico preservado. Face 11 confirmada e sincronizada. Validar a suíte completa antes da integração à main.

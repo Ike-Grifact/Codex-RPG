@@ -404,7 +404,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
-| 11 | — | — | — | ᛋ+2ᚨ+ᚦ | ᛋ+2ᚨ+ᚦ |
+| 11 | — | — | — | 2ᛋ+ᚨ+2ᚦ | 2ᛋ+ᚨ+2ᚦ |
 | 12 | — | — | — | 3ᛋ | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
 | 14 | — | — | — | — | 3ᛋ+2ᚨ |
@@ -415,7 +415,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. O d4 mantém sua tabela própria. A face 11 está provisoriamente com a composição anterior do d12 (1E + 2A + 1P), replicada no d20, até confirmação do símbolo indicado como F na revisão autoral. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
+As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. O d4 mantém sua tabela própria. A face 11 do d12 e do d20 possui 2E + 1A + 2P; a face 12 possui 3E. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
 
 
 ## IV. Resolver ações
