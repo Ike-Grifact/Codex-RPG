@@ -20,8 +20,12 @@ test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurado
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
- assert.deepEqual(faceSymbols(10,10),[2,1,0]); // face máxima d10: 2E + 1A, sem Pavor
- assert.deepEqual(faceSymbols(12,12),[0,0,2]);
+ assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
+ assert.deepEqual(faceSymbols(12,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,15),[0,0,3]);
+ assert.deepEqual(faceSymbols(12,12),[3,0,0]);
+ for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
@@ -52,25 +56,26 @@ test("dado descartado não gera Êxito, Antecipar nem Pavor",()=>{
  assert.deepEqual(r.raw,{e:2,a:1,p:1});
  assert.equal(r.p,1);
 });
-test("crítico com dois d12 máxima pode acertar com Pavor predominante",()=>{
+test("crítico com dois d12 máximos gera seis Êxitos",()=>{
  const d=[
  {id:"a",group:"attribute",sides:12,face:12},
  {id:"b",group:"practice",sides:12,face:12}
  ];
  const r=resolveRoll(d,["a","b"],{de:4});
- assert.equal(r.critical,2);assert.equal(r.e,1);assert.equal(r.p,3);
- assert.equal(r.outcome,"Acerto com Pavor");
+ assert.equal(r.critical,2);assert.equal(r.e,6);assert.equal(r.p,0);
+ assert.equal(r.outcome,"Acerto sem Pavor");
 });
 test("Conversão de Antecipar não reutiliza símbolos",()=>{
  const d=[{id:"a",group:"attribute",sides:10,face:8},{id:"b",group:"practice",sides:12,face:11}];
- const one=resolveRoll(d,["a","b"],{de:3,convertPairs:1,cancelP:1});
+ const one=resolveRoll(d,["a","b"],{de:3,bonusA:2,convertPairs:1,cancelP:1});
  assert.equal(one.ok,true);
- const illegal=resolveRoll(d,["a","b"],{de:3,convertPairs:2,cancelP:1});
+ const illegal=resolveRoll(d,["a","b"],{de:3,bonusA:2,convertPairs:2,cancelP:1});
  assert.equal(illegal.ok,false);
 });
 test("Retenção de jogadores e monstros e os tetos de Pavor",()=>{
  assert.equal(keepLimit(1),2);assert.equal(keepLimit(1,true),3);
- assert.equal(keepLimit(6),3);assert.equal(keepLimit(6,true),4);
+ assert.equal(keepLimit(9),2);assert.equal(keepLimit(9,true),3);
+ assert.equal(keepLimit(10),3);assert.equal(keepLimit(10,true),4);
  assert.equal(keepLimit(1,0,true),2);assert.equal(keepLimit(1,1,true),3);
  assert.equal(keepLimit(5,0,true),2);assert.equal(keepLimit(5,2,true),4);
  assert.equal(monsterCap(1),1);assert.equal(monsterCap(6),6);assert.equal(narratorCap(4),6);

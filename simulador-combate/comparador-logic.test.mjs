@@ -283,7 +283,7 @@ test("Rastreio de símbolos identifica origem das faces, equipamento e descartes
   {id:"w",group:"equipment",key:"adaga",sides:6,face:3}];
  const rows=rollProvenance(rolls,["p.0","a.0"],{weapon:"Adaga"});
  assert.deepEqual(rows.map(x=>[x.source,x.e,x.a,x.p,x.kept]),[
-  ["Disciplina",2,1,0,true],["Força",0,1,1,true],["Adaga",0,0,1,false]]);
+  ["Disciplina",2,0,1,true],["Força",0,1,1,true],["Adaga",0,0,1,false]]);
  assert.equal(rows[1].step,true);
 });
 

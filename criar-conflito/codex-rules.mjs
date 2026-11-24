@@ -11,11 +11,11 @@ export const ATTRIBUTE_DICE=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]
 export const TRAINING_DICE=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 export const MONSTER_DICE=[[4],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 export const FACES={
-4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
-6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
-10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,1,0]],
-12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[1,2,1],[0,0,2]],
-20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,1,0],[2,1,0],[2,1,1],[2,2,1],[2,2,1],[0,0,2],[2,2,0],[3,2,0],[4,2,0],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
+ 4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
+ 6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
+ 10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
+ 12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,2],[3,0,0]],
+ 20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,2],[3,0,0],[2,2,0],[3,2,0],[0,0,3],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
 export const GROUPS={attribute:ATTRIBUTES,knowledge:KNOWLEDGES,practice:PRACTICES};
 export const SITUATIONS={
@@ -65,7 +65,7 @@ export const healthByLife=(s,currentLife)=>{
 export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
-export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=6?3:2)+(extra?1:0));
+export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=10?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
 // SRD v0.41 [DEFINIDO]: G1=4P; progressão +1/Grau até atingir 8P (G5=8P, G6=8P).
 // A reserva inicial é cheia; oportunidades, custos e retenção não são alterados.

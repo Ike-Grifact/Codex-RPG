@@ -308,7 +308,7 @@ O XP adquirido após a criação é livre: pode ser investido em qualquer fonte 
 
 **DE defensiva — SRD v0.89 [DEFINIDO]:** **min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, **sem +1 fixo**. Depois aplicar a armadura (Muito Leve/Roupas Simples **+2 em todas as defesas**, sem duplicação na esquiva) e os efeitos autorizados; teto final 12. A fórmula v0.88 está substituída. [v0.89](srd-continuidade-v0.89.md).
 
-**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias. A antiga reserva de Pontos de Perícia foi revogada e removida do protótipo de ficha na branch revisável.
+**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias.
 
 **Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
 
@@ -353,14 +353,38 @@ As **Perícias** detalham técnicas específicas e só produzem os efeitos de se
 
 ## III. Rolar dados e mantê-los
 
-O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado mantido deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Pavor.
+O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado rolado deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Pavor.
 
 | Níveis | Dados mantidos naturalmente | Com gasto de 1 Coragem |
 |---|---:|---:|
-| 1–5 | 2 | 3 |
-| 6–20 | 3 | 4 |
+| 1–9 | 2 | 3 |
+| 10–20 | 3 | 4 |
 
 Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
+
+### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
+
+**DEFINIDO — atualização de 17/11/2026:** o crítico **recupera Coragem normalmente**, conforme a quantidade de dados máximos mantidos na tabela abaixo (com **2 dados, recupera 1 Coragem**), respeitando o teto atual e o máximo absoluto de 15. **PENDENTE/ADIADO:** a interação do crítico de dois dados com a Maestria Precisão (somar ou substituir recuperação) será analisada apenas na futura revisão de Maestrias; não assumir nenhuma das duas opções.
+
+Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contribuem com Êxitos, Antecipar ou Pavor. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
+
+| Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
+|---|:---:|:---:|:---:|
+| Converter **1P próprio em 1E** | Sim | Sim | Sim |
+| Êxito adicional | — | **+1E** | **+1E** |
+| Antecipar adicional | — | **+1A** | **+1A** |
+| Recuperação de Coragem | **1** | **2** | **2** |
+| Dobrar dano | Não | Não | **Sim** |
+
+**Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
+
+**Exemplo:** d6 na face 6 (1E) e d10 na face 10 (2E + 1P), ambos mantidos, formam crítico de dois dados. O benefício converte 1P próprio em 1E: resultado 4E e nenhum Pavor, com recuperação de até 1 Coragem. Ainda é necessário alcançar a DE.
+
+**Coragem:** teto inicial 10, aumentado pela progressão e Maestrias até o máximo absoluto 15. Recuperação acima do teto não se acumula.
+
+**Dano dobrado — DEFINIDO:** No crítico de quatro dados, dobre o dano calculado a partir da rolagem antes de aplicar proteções, resistências, vulnerabilidades e limites de Vida. Resolva os efeitos fixos e exceções conforme suas regras próprias; não dobre automaticamente um valor fixo de dano direto à Vida nem altere os limites de Vida. Exemplo: dano rolado 6 passa a 12 antes das proteções; se uma proteção absorver 5, restam 7 para a etapa seguinte, não 2.
+
+**Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face numérica máxima** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
@@ -376,22 +400,22 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
 | 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
 | 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
-| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ+ᚨ |
-| 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | 2ᛋ+ᚨ |
-| 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | 2ᛋ+ᚨ+ᚦ |
-| 10 | — | — | 2ᛋ+ᚨ | 2ᛋ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
-| 11 | — | — | — | ᛋ+2ᚨ+ᚦ | 2ᛋ+2ᚨ+ᚦ |
-| 12 | — | — | — | 2ᚦ | 2ᚦ |
+| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ |
+| 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
+| 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
+| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
+| 11 | — | — | — | 2ᚦ | 2ᚦ |
+| 12 | — | — | — | 3ᛋ | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
 | 14 | — | — | — | — | 3ᛋ+2ᚨ |
-| 15 | — | — | — | — | 4ᛋ+2ᚨ |
+| 15 | — | — | — | — | 3ᚦ |
 | 16 | — | — | — | — | 4ᚦ |
 | 17 | — | — | — | — | 4ᛋ+2ᚨ |
 | 18 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
 | 19 | — | — | — | — | 6ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 8ᛋ |
 
-A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autoral **DEFINIDA em 14/11/2026**; ela é a face numérica máxima do d10. As faces 10 do d12 e d20 mantêm seus valores próprios, não alterados por esta decisão. A face 16 do d20 contém **4ᚦ** (quatro símbolos de Pavor). As faces 1 e 2 dos dados **d6, d10, d12 e d20** são vazias. No **d4 revisado**, a face 1 é ᛋ (Êxito), a face 2 é ᚨ (Antecipar), a face 3 é ᚦ (Pavor) e a face 4 é vazia; **a face 4 continua sendo a máxima numérica para crítico, embora não contenha símbolos**. O **d20 é extraordinário** e exige fonte Grau 7, XP e habilitações; acesso a partir do nível 10 nas condições definidas e possível segundo dado em nível 20 por Maestria. O máximo normal por ação é de dois d20 na pilha, mesmo com outras fontes. **DE 30** permanece o teto absoluto definido.
+As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. O d4 mantém sua tabela própria. A face 11 do d12 e do d20 possui 2P; a face 12 possui 3E. A face 15 do d20 possui 3P. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
 
 
 ## IV. Resolver ações
@@ -409,30 +433,8 @@ A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autor
 
 Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular P.
 
-**DEFINIDO — atualização de custos e fichas em 17/11/2026:** toda técnica ou Perícia que dependia **exclusivamente** do antigo custo em PP passa a exigir **1 Coragem por ativação**. Se já existia uma alternativa explícita em Coragem (inclusive 2 ou 4 Coragens), ela continua com o valor publicado. O custo em XP de aquisição, requisitos e gatilhos não se alteram. Ativações-base elementais G1/G2 com a Perícia e o Grau habilitados continuam **gratuitas**. Críticos não recuperam PP. Fichas de jogadores, NPCs humanoides e protótipo Foundry retiram o medidor e a conversão de PP. A especificação e efeitos novos de Maestrias não estão em análise nesta rodada.
+**Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
 
-### Crítico — faces máximas e benefícios cumulativos [DEFINIDO]
-
-**DEFINIDO — atualização de 17/11/2026:** o crítico **recupera Coragem normalmente**, conforme a quantidade de dados máximos mantidos na tabela abaixo (com **2 dados, recupera 1 Coragem**), respeitando o teto atual e o máximo absoluto de 15. **Críticos não recuperam PP**: o benefício histórico de PP foi **revogado**, sem conversão automática em Coragem extra. **PENDENTE/ADIADO:** a interação do crítico de dois dados com a Maestria Precisão (somar ou substituir recuperação) será analisada apenas na futura revisão de Maestrias; não assumir nenhuma das duas opções.
-
-Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face numérica máxima**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contribuem com Êxitos ou Antecipar para o crítico; o Pavor descartado ainda obedece às regras da pilha. As faces críticas são: **4 no d4, 6 no d6, 10 no d10, 12 no d12 e 20 no d20**.
-
-| Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
-|---|:---:|:---:|:---:|
-| Converter **1P próprio em 1E** | Sim | Sim | Sim |
-| Êxito adicional | — | **+1E** | **+1E** |
-| Antecipar adicional | — | **+1A** | **+1A** |
-| Recuperação de PP (**revogada**) | **—** | **—** | **—** |
-| Recuperação de Coragem | **1** | **2** | **2** |
-| Dobrar dano | Não | Não | **Sim** |
-
-**Os benefícios são cumulativos:** três máximos também incluem o benefício de dois; quatro máximos incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
-
-**Exemplo:** um d6 na face **6** (1E) e um d10 na face **10** (2E + 1A), ambos mantidos, formam o crítico de dois com **3E + 1A e nenhum Pavor**. Como não há Pavor próprio, o benefício crítico de converter 1P em 1E não é aplicado. A rolagem recupera até **1 Coragem**, respeitando o teto individual; **não recupera PP**. A ação deve **alcançar a DE** para aplicar danos/efeitos que exijam acerto; crítico não garante sucesso automático.
-
-**Reservas:** a Coragem parte de um teto **10**, aumentado pela progressão e pelas Maestrias até o **máximo absoluto 15**. Os máximos históricos de PP (**0 nos níveis 1–4**, **1 nos níveis 5–9**, **2 nos níveis 10–19** e **3 no nível 20**) são **legado em migração**, não autorização para recuperar PP em críticos. Recuperação de Coragem que ultrapasse o teto não se acumula. **PENDENTE:** a ordem exata do dano dobrado contra integridade, resistências, vulnerabilidades e limites de Vida, e detalhes de aplicação de bônus durante a resolução da rolagem.
-
-**Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face numérica máxima** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
 
 ### Resultados e protagonismo
 
@@ -583,7 +585,7 @@ DE final = min(12, max(0, DE base + modificador da única armadura equipada + ef
 
 ### Combate Coordenado [DEFINIDO — SRD v0.120]
 
-**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta. A formação começa quando dois ou mais combatentes declaram que vão agir coordenadamente em combate. **Raio máximo da formação: 5 m.** O centro do raio é o combatente da formação que estiver mais ao meio dos demais, não um ponto fixo no terreno nem necessariamente o Líder. Se dois combatentes estiverem igualmente ao centro, escolha aquele que estiver mais próximo do integrante mais distante da formação. Sempre que o posicionamento dos integrantes mudar, considere novamente qual combatente está mais ao meio e meça o raio de 5 m a partir dele. A formação se dissolve quando qualquer integrante sai do raio de 5 m ou quando seus integrantes atacam alvos principais diferentes em ações que não sejam de área. Declarar, redeclarar ou dissolver a formação é gratuito: não consome Coragem, Antecipar, Pavor, PP, ação ou turno adicional. Os custos próprios de ações conjuntas, técnicas e convocações permanecem inalterados. A partir da dissolução, todos voltam às suas DE individuais; para voltar a compartilhar a defesa, os interessados declaram novamente a coordenação. A mudança do centro, por si só, não dissolve a formação se todos permanecem dentro do raio.
+**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta. A formação começa quando dois ou mais combatentes declaram que vão agir coordenadamente em combate. **Raio máximo da formação: 5 m.** O centro do raio é o combatente da formação que estiver mais ao meio dos demais, não um ponto fixo no terreno nem necessariamente o Líder. Se dois combatentes estiverem igualmente ao centro, escolha aquele que estiver mais próximo do integrante mais distante da formação. Sempre que o posicionamento dos integrantes mudar, considere novamente qual combatente está mais ao meio e meça o raio de 5 m a partir dele. A formação se dissolve quando qualquer integrante sai do raio de 5 m ou quando seus integrantes atacam alvos principais diferentes em ações que não sejam de área. Declarar, redeclarar ou dissolver a formação é gratuito: não consome Coragem, Antecipar, Pavor, ação ou turno adicional. Os custos próprios de ações conjuntas, técnicas e convocações permanecem inalterados. A partir da dissolução, todos voltam às suas DE individuais; para voltar a compartilhar a defesa, os interessados declaram novamente a coordenação. A mudança do centro, por si só, não dissolve a formação se todos permanecem dentro do raio.
 
 #### Por que lutar em formação?
 
@@ -910,7 +912,7 @@ Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo se
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
-Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Pontos de Perícia, distância, área e efeitos avançados ainda dependem dos requisitos.
+Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Coragem, distância, área e efeitos avançados ainda dependem dos requisitos.
 
 | Elemento | Leve / Grau 1 | Médio / Grau 2 | Pesado / Grau 3 |
 |---|---|---|---|
@@ -977,7 +979,7 @@ São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades au
 
 Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
 
-**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** quando o custo era exclusivamente em PP, passa a ser 1 Coragem por ativação, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
+**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** 1 Coragem por ativação das técnicas pertinentes, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
 
 
 ### Escudo Rúnico e resistência elemental
@@ -1126,7 +1128,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **Disciplina Avançada [DEFINIDO]:** passa a exigir **Disciplina 3**, com custo de **1 XP** e Disciplina como fonte principal. **Furtividade Avançada [DEFINIDO]:** passa a exigir **Furtividade 3 + Perícia em Furtividade**, com custo de **1 XP** e Furtividade predominante. **Demais especializações, todas por 1 XP e Grau 3 da própria fonte:** Proteção Avançada, Astronomia Avançada, Alquimia Avançada, Engenharia Avançada, Erudição Avançada, Atletismo Avançado, Artesão Avançado, Apresentação Avançada e Coleta Avançada. Esses nomes identificam apenas a capacidade de combinação com até três fontes; **não conferem novos efeitos temáticos automáticos**. Medicina Avançada, Disciplina Avançada e Furtividade Avançada completam as **12 especializações**, preservados os requisitos extras de Furtividade Avançada. Esta regra prevalece sobre os antigos requisitos de Grau 2 registrados na revisão v0.79. As fichas antigas mantêm o registro de compra, mas não habilitam a terceira fonte enquanto o Grau 3 não for cumprido.
 
-**Interrupção da Hemomancia em canalização com três alvos Sangrando [DEFINIDO — SRD v0.79]:** um ataque recebido só cancela a preparação se **acertar a DE defensiva do Hemomante** **e** se a sua força for **igual ou superior à força da magia** já rolada e mantida na declaração. Nas duas forças, calcular **E + piso(P/2)** com símbolos válidos; não usar E+P bruto. Um empate de força interrompe apenas se também houver acerto na DE defensiva. Se uma das exigências falhar, o ataque não interrompe a preparação. **DEFINIDO — opção A:** ocorrendo uma interrupção válida, **a conjuração é perdida**. O Hemomante precisa **declarar uma nova conjuração, rolar novamente e iniciar mais três turnos completos de preparação**; não pode retomar a rolagem ou a contagem anteriores. **DEFINIDO — opção A:** **PP, Coragem ou cargas de foco já gastos na preparação interrompida são definitivamente consumidos**, sem restituição. A interrupção não cobra recursos adicionais ainda não pagos. A condição Sangrando dos três alvos usados como fonte não é consumida apenas por sustentar uma canalização.
+**Interrupção da Hemomancia em canalização com três alvos Sangrando [DEFINIDO — SRD v0.79]:** um ataque recebido só cancela a preparação se **acertar a DE defensiva do Hemomante** **e** se a sua força for **igual ou superior à força da magia** já rolada e mantida na declaração. Nas duas forças, calcular **E + piso(P/2)** com símbolos válidos; não usar E+P bruto. Um empate de força interrompe apenas se também houver acerto na DE defensiva. Se uma das exigências falhar, o ataque não interrompe a preparação. **DEFINIDO — opção A:** ocorrendo uma interrupção válida, **a conjuração é perdida**. O Hemomante precisa **declarar uma nova conjuração, rolar novamente e iniciar mais três turnos completos de preparação**; não pode retomar a rolagem ou a contagem anteriores. **DEFINIDO — opção A:** **Coragem ou cargas de foco já gastos na preparação interrompida são definitivamente consumidos**, sem restituição. A interrupção não cobra recursos adicionais ainda não pagos. A condição Sangrando dos três alvos usados como fonte não é consumida apenas por sustentar uma canalização.
 
 **Referência de precedência:** [SRD de Continuidade v0.79](srd-continuidade-v0.79.md). Este texto prevalece nas matérias expressamente corrigidas em relação a descrições históricas deste Livro.
 
@@ -1200,7 +1202,7 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 ## X. Níveis, Marcos e XP
 
-**DEFINIDO — rework de recursos:** a reserva separada de Pontos de Perícia foi revogada. A Coragem inicia com teto 10, recebe +1 nos níveis 5, 10 e 20, e bônus de Maestria não podem ultrapassar o teto absoluto 15. A antiga Perícia em Coragem de conversão não permanece ativa. O criador e o protótipo Foundry nesta branch não oferecem PP; instalação externa e Maestrias especializadas ainda dependem de implementação própria.
+**Coragem:** inicia com teto 10, recebe +1 nos níveis 5, 10 e 20; bônus de Maestria respeitam o máximo absoluto 15. Maestrias especializadas ainda dependem de implementação própria.
 
 Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
 

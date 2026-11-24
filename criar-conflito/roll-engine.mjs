@@ -1,8 +1,8 @@
 /* Rolagem básica de criaturas do Criar Conflito.
    Reutiliza as faces e a resolução oficiais do Foundry. Sem automação de alvos,
    dano corporal, transferência de Pavor residual ou iniciação de turnos. */
-import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs?v=20261124-colossal-v0114";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261124-colossal-v0114";
+import {sourceDice,faceSymbols,resolveRoll,buildPool,keepLimit,SITUATIONS,narratorCap} from "./codex-rules.mjs?v=20261124-v0124b";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,ADVANCED_SOURCE_DEFS,isHumanoidKind,humanoidHasFocus,humanoidSkillRequirement,toSystem,stats} from "./rules.mjs?v=20261124-v0124b";
 
 const keys=new Set(ATTRIBUTES.map(([key])=>key));
 export {faceSymbols,SITUATIONS};
