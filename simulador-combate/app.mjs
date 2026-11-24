@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-v0118";
+ from "./comparador-logic.mjs?v=20261124-v0121-coord";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-cravar-v0115";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
@@ -238,7 +238,7 @@ function renderSources(){
  const a=actor();
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
- $("draw-stow").innerHTML="";$("colossal-targets").innerHTML="";activeExtraSelections.clear();$("attack-thrown").checked=false;resetMartial();
+ $("draw-stow").innerHTML="";$("colossal-targets").innerHTML="";$("colossal-area-de").value="";activeExtraSelections.clear();$("attack-thrown").checked=false;resetMartial();
  $("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
@@ -462,7 +462,7 @@ function evaluate(a,rolled,kept,opts){
  const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
  const pronePenalty=proneAttackPenalty(a,opts.situation);
  const conf={...opts,drawMode:pending?.draw?.mode||"none",weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty,bonusP:health.p+Number(noisy),
-  skillBonusE:health.e+manejo.bonusE+Number(!!pending?.colossal),stepDieId:pending?.boosted||""};
+  skillBonusE:health.e+manejo.bonusE+Number(pending?.colossal?.cost||0),stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
  else if(a.side==="inimigos"&&isHumanoidKind(a.kind))pre=previewHumanoidRoll(a,rolled,kept,conf);
@@ -519,7 +519,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
  const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[]);
+ const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[],pending.declarationOptions.de,pending.colossal?.areaDE);
  return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,manoeuvres,colossal,
   integrityDamage:g1||poisonOnly?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
@@ -527,17 +527,18 @@ function renderColossalControls(){
  const a=actor(),t=target(),el=$("colossal-targets");
  const active=pending?.colossal||(!pending&&a?selectedActivations(a,false).skills?.find(x=>x.id==="espalhar-golpe"):null);
  $("colossal-controls").hidden=!active;
- if(!active){el.innerHTML="";return;}
+ if(!active){el.innerHTML="";$("colossal-area-de").value="";return;}
+ if(pending)$("colossal-area-de").value=pending.colossal.areaDE??"";
  const selected=new Set(pending?pending.colossal.targets.map(x=>x.id):[...el.selectedOptions].map(x=>x.value));
  const candidates=pending?pending.colossal.targets:state.combatants.filter(x=>x.id!==a?.id&&x.id!==t?.id&&x.side!==a?.side&&x.life!==0).map(x=>({id:x.id,name:x.name,de:defense(x)}));
  el.innerHTML=candidates.map(x=>'<option value="'+esc(x.id)+'"'+(selected.has(x.id)?' selected':'')+'>'+esc(x.name)+' · DE '+x.de+'</option>').join("");
- $("colossal-info").textContent="+1E uma vez · até "+2*active.cost+" alvos adicionais · raio de 3 m centrado no atacante. Selecione somente quem está dentro da área, conforme a mesa.";
+ $("colossal-info").textContent="+"+active.cost+"E · até "+2*active.cost+" alvos adicionais · raio de 3 m centrado no atacante. Some as DE do principal e dos adicionais; se não alcançar a soma, só o principal pode ser atingido. Selecione somente quem está dentro da área, conforme a mesa. Em formações coordenadas, informe a DE total sem duplicar a defesa compartilhada.";
 }
 function colossalRows(rows,confirmed=false){
  if(!rows?.length)return "";
  return '<div class="cc-origins"><strong>Golpe Colossal · alvos adicionais</strong><ul>'+rows.map(x=>{
   const t=byId(x.id),armor=armorOf(t),apply=confirmed&&t&&armor&&x.integrityDamage>0&&!x.integrityApplied;
-  return '<li>'+esc(x.name)+' · DE '+x.de+' · '+(x.success?"Acerto":"Falha")+' · '+(x.e??last?.e??0)+'E + '+(x.p??last?.p??0)+'P contra DE · dano '+x.integrityDamage+' (somente Êxitos; Pavor não causa dano)'+
+  return '<li>'+esc(x.name)+' · DE '+x.de+' · '+(x.success?"Acerto":"Falha")+' · '+(x.e??last?.e??0)+'E + '+(x.p??last?.p??0)+'P contra DE total '+(x.totalDE??x.de)+' · dano '+x.integrityDamage+' (somente Êxitos; Pavor não causa dano)'+
    (confirmed?(x.integrityApplied?" · Integridade aplicada":apply?' <button type="button" data-colossal-integrity="'+esc(x.id)+'">Aplicar à Integridade</button>':x.success&&!armor?" · Vida: resolver na mesa":""):"")+'</li>';
  }).join("")+'</ul></div>';
 }
@@ -557,7 +558,7 @@ function renderDeclarationBudget(){
  el.textContent=(entries.length?entries.map(x=>x[0]+": "+x[1]).join(" · ")+" — ":"")+"Total a pagar: "+total+" · turno "+(spent+total)+"/5 · saldo "+a.courage+(plan.ok?"":" · "+plan.error);
 }
 function lockDeclaration(){
- const ids=["actor","target","base-source","attribute-source","extra-source","step-source","monster-keep","discipline-mode","weapon-source","draw-stow","attack-thrown","spell-grade","situation","difficulty","context-approved","extra-keep","colossal-targets","pugilism-on","punch-weight","martial-manoeuvre","active-skill","skill-courage","skill-approved","target-bleeding","roll","add-ally","add-enemy","next-round","demo","json-import"];
+ const ids=["actor","target","base-source","attribute-source","extra-source","step-source","monster-keep","discipline-mode","weapon-source","draw-stow","attack-thrown","spell-grade","situation","difficulty","context-approved","extra-keep","colossal-targets","colossal-area-de","pugilism-on","punch-weight","martial-manoeuvre","active-skill","skill-courage","skill-approved","target-bleeding","roll","add-ally","add-enemy","next-round","demo","json-import"];
  const els=[...ids.map(id=>$(id)).filter(Boolean),...document.querySelectorAll("#weapon-effects input,#active-extra-skills input")];
  for(const el of els){if(pending&&!el.disabled){el.dataset.declarationLocked="1";el.disabled=true;}else if(!pending&&el.dataset.declarationLocked){delete el.dataset.declarationLocked;el.disabled=false;}}
  $("end-pending").hidden=!pending;
@@ -596,7 +597,7 @@ function renderDice(){
   "Saúde "+pre.health.id+": "+pre.health.e+"E, "+pre.health.a+"A, +"+pre.health.p+"P",
   pre.stealth?"Perícia em Furtividade: +1A":null,
   pre.companion?"Companheiro Pequeno presente e ativado: +1A":null,
-  pending.colossal?"Golpe Colossal: +1E na mesma rolagem para todos os alvos.":null,
+  pending.colossal?"Golpe Colossal: +"+pending.colossal.cost+"E · DE total da área "+(pending.colossal.areaDE??(pending.declarationOptions.de+pending.colossal.targets.reduce((sum,t)=>sum+t.de,0)))+"; se não alcançar, apenas o principal pode ser atingido.":null,
   pending.fulminanteId?"Dado de arma elevado por "+pending.fulminanteId+": d6→d10, d10→d12 ou d12→2d12":null,
   pending.boosted?"Elevação temporária de fonte "+pending.boosted+": +1 Grau (dados já mostrados)":null,
   pre.result.critical?"CRÍTICO "+pre.result.critical+": "+critInfo.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ")+
@@ -699,6 +700,8 @@ function roll(){
   if(!human||group!=="practice"||key!=="armas_conjuracao"||mode!=="armas"||thrown||(w&&!validFulminanteForWeapon(w,"golpe-fulminante",false)))return notice("Golpe Colossal exige ataque corpo a corpo com Disciplina.");
   colossal=planColossalTargets(a,t,state.combatants,[...$("colossal-targets").selectedOptions].map(x=>x.value),colossalActivation.cost);
   if(!colossal.ok)return notice(colossal.error);
+  const areaRaw=$("colossal-area-de").value.trim(),primaryDE=Number($("difficulty").value);
+  if(areaRaw!==""){const areaDE=Number(areaRaw);if(!Number.isInteger(areaDE)||areaDE<primaryDE)return notice("DE total da área deve ser inteira e não inferior à DE do principal.");colossal.areaDE=areaDE;}
  }
  const martialCost=martial.cost,hostile=a.side==="inimigos",health=combatHealth(a);
  if(health.id==="morto")return notice("Combatente morto não pode agir.");
