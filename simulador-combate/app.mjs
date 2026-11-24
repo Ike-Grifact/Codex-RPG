@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-colossal-v0114";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0114";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-colossal-v0114";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0114";
+ from "./comparador-logic.mjs?v=20261124-cravar-v0115";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-cravar-v0115";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -379,19 +379,18 @@ function renderWeaponEffects(){
  const props=activeWeaponProperties(weapon);
  const access=weaponActivationSkill(attacker,weapon,{thrown:$("attack-thrown").checked});
  const mastery=weaponMasteryFor(weapon,{thrown:$("attack-thrown").checked});
- const cravarCriticalPossible=weapon?.kind==="weapon"&&weapon.equipped!==false&&
-  ["medio","pesado"].includes(weapon.category)&&!$("attack-thrown").checked;
+ const cravarAccess=weapon?.kind==="weapon"&&["medio","pesado"].includes(weapon.category)&&
+  weaponActivationSkill(attacker,{...weapon,name:"",properties:[]}).ok;
  $("weapon-effects").innerHTML=props.length?
   props.map(prop=>'<label class="cc-weapon-effect"><input type="checkbox" data-weapon-property="'+esc(prop)+
-   '"'+(chosen.has(prop)?' checked':'')+(!access.ok&&!(prop==="Cravar"&&cravarCriticalPossible)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
+   '"'+(chosen.has(prop)?' checked':'')+(!access.ok||(prop==="Cravar"&&!cravarAccess)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
   '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
    " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, a recuperação normal devolve 1 Coragem gasta, zerando o custo líquido da primeira característica; o segundo efeito pago exige declaração antecipada.")+
-  (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
-  " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
+  " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige Perícia em Armas Médias ou Pesadas correspondente, arma com Cravar e escudo físico; crítico não substitui a Perícia. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
 }
 

@@ -454,3 +454,7 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 **Golpe Colossal [DEFINIDO — 24/11/2026, correção v0.114]:** os mesmos Êxitos e Pavores válidos da rolagem são comparados à DE individual de cada alvo, também quando combinado com Golpe Fulminante. Cada adicional atingido sofre exclusivamente metade do dano dos Êxitos, arredondada para baixo. Pavor não causa dano pelo Golpe Colossal, inclusive com Fulminante. O dano de Pavor de Golpe Fulminante continua no alvo principal; seus símbolos não são removidos da rolagem nem têm suas consequências canceladas. O procedimento de transferência de Pavor entre múltiplos alvos permanece pendente, sem duplicação automática.
 
 [SRD v0.114](srd-continuidade-v0.114.md).
+
+
+### Cravar — atualização autoral de 24/11/2026 (SRD v0.115)
+**DEFINIDO:** característica ativa de armas físicas Médias/Pesadas que a possuam; exige a Perícia de Armas do peso correspondente mesmo no crítico. A exceção de ativar sem Perícia fica revogada. Declarar a tentativa, pagar conforme a Perícia e Especialização antes dos dados e alcançar a DE. A recuperação crítica não habilita efeitos sem Perícia. Mantêm-se as regras de escudos, arma presa e retirada.
