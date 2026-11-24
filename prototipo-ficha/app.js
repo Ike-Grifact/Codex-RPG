@@ -218,7 +218,7 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: acerto comum ativa um efeito próprio da arma grátis; crítico ativa dois diferentes grátis e um terceiro diferente por 1 Coragem. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
   1
  ]),
  [
@@ -1671,12 +1671,29 @@ const PLAYER_SKILL_COPY={
  }
 };
 
+// As Especializações por família usam o mesmo painel legível das Perícias de peso.
+// Os requisitos específicos continuam vindo do catálogo; não inventar compras pendentes.
+function playerSkillGuide(id){
+ if(PLAYER_SKILL_COPY[id])return PLAYER_SKILL_COPY[id];
+ const mastery=WEAPON_MASTERY_TYPES.find(row=>row.id===id);
+ if(!mastery)return null;
+ return {
+  intro:"Você se especializou nesta família de armas e sabe aproveitar as características que seu equipamento possui.",
+  benefits:[
+   "Acerto comum. Quando você acerta com uma arma da família e possui sua habilitação de uso, pode ativar uma característica existente sem gastar Coragem.",
+   "Acerto crítico. Para tentar uma segunda característica diferente, declare e pague 1 Coragem antes de rolar. No crítico com acerto, a recuperação normal do crítico devolve a Coragem paga, deixando até duas características diferentes gratuitas no saldo final. Não há segunda devolução.",
+   "Terceira característica. Se a arma possuir uma terceira característica diferente, você pode declarar mais 1 Coragem antes da rolagem para tentar ativá-la em um crítico com acerto. Sem o crítico, essa característica extra não produz efeito; o gasto não é devolvido por falha."
+  ],
+  note:"Para usar: equipe uma arma da família, tenha a Especialização e cumpra a habilitação: "+mastery.activationReq+". A primeira característica é gratuita no acerto; pagamentos adicionais sempre antecedem a rolagem. Características distintas e realmente existentes na arma são obrigatórias."
+ };
+}
+
 function skillCompactCard([id,baseName,detail,cost],wizard){
  const name=id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),price=skillXpCost(id,cost),affordable=Number.isInteger(price)&&canAfford("skills",price);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
- const guide=PLAYER_SKILL_COPY[id];
+ const guide=playerSkillGuide(id);
  const practical=guide?guide.benefits[0]:(CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105));
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(price)?price:"?")+" XP · playtest"):price===null?"Pendente":"Comprar · "+price+" XP";
@@ -3606,7 +3623,7 @@ function geneDetailHTML(id,s=state){
  "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Resistência elemental padrão contra o elemento escolhido: cada E do ataque vale 0,5 de dano e P vale 0 dano elemental, preservadas as consequências de Pavor. Arredondamento geral ainda pendente.":baseDetail;
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
- const playerGuide=PLAYER_SKILL_COPY[sid];
+ const playerGuide=playerSkillGuide(sid);
  const playerGuideHTML=playerGuide?
   '<p class="fp-gene-player-intro">'+esc(playerGuide.intro)+'</p>'+
   '<h5 class="fp-gene-player-subtitle">Benefícios</h5>'+
