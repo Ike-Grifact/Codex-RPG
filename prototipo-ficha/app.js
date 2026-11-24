@@ -4822,8 +4822,7 @@ function score(){
  const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?1:0;
  const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass-magicMixA);
  const reached=E+P,success=reached>=p.opts.de;
- const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
- :(P===0?"Falha limpa":P>E?"Falha com Pavor predominante":"Falha com Pavor");
+ const outcome=success?(P===0?"Acerto Limpo":P>E?"Acerto Pavoroso":"Acerto Misto"):(P===0?"Falha Limpa":P>E?"Falha Pavorosa":"Falha Mista");
  const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
   Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+Number(!!p.opts.fulminante)+Number(!!p.opts.domarActivate)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
