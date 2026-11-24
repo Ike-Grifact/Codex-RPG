@@ -44,3 +44,7 @@ A cada novo verbete, comparar com o SRD atual para conferir requisitos, gatilhos
 ## Identidade visual e referências (23/11/2026)
 
 Separar tipo e custo de ativação do XP. Perícia passiva não exige custo próprio; ativa pode ter custo, inclusive zero. Benefícios passivos podem coexistir com ativações pagas. Classificações e custos não confirmados permanecem PENDENTES. Reutilizar os SVGs de Êxito, Antecipar, Pavor e pictogramas existentes no Codex Genético, com ícone da constelação quando não houver específico. Manter valores e nomes em texto. Perícias relacionadas apontam para entradas ativas; mecânicas têm grupo próprio. Arquivos antigos são preservados por compatibilidade, sem exposição como Perícias atuais.
+
+## Símbolos em linha (23/11/2026)
+
+**DEFINIDO — apresentação visual:** quantidades de Coragem usam o SVG oficial `assets/icons/codex/status-coragem.svg` (escudo com chama). Antecipar usa `assets/icons/codex/status-antecipar.svg`: apenas a runa Ansuz, sem contorno ou fundo, no azul `#2369BB`. Preservar a quantidade e o nome textual, inclusive sinais negativos. Aplicar nos benefícios e custos de ativação dos verbetes, catálogo e Codex Genético. Não alterar os ícones de dados, nem custos ou efeitos de regras.
