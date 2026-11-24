@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261124-saque-v0111"></script>
+<script type="module" src="./app.mjs?v=20261124-colossal-v0114"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -94,7 +94,7 @@
    </div>
    <div class="cc-checkboxes">
     <label><input id="context-approved" type="checkbox"> Terceira fonte pertinente, aprovada pelo Narrador</label>
-    <label><input id="extra-keep" type="checkbox"> Manter dado adicional (custo conforme ficha)</label>
+    <label><input id="extra-keep" type="checkbox"> Declarar dado adicional antes de rolar (1 Coragem para jogador)</label>
    </div>
    <div class="cc-affinity" id="weight-affinity">Peso da arma: selecione uma arma e um alvo.</div>
    <section class="cc-activation" id="martial-panel" hidden aria-label="Combate desarmado">
@@ -106,26 +106,26 @@
    </section>
    <section class="cc-activation" aria-label="Características especiais da arma">
     <h3>Características da arma e efeitos de status</h3>
-    <p class="cc-help">Marque as características reais que deseja ativar no acerto. A Perícia da categoria é obrigatória: acerto comum custa 1 recurso; crítico pode liberar efeitos gratuitos, e Maestria amplia o limite. As propriedades passivas permanecem automáticas.</p>
+    <p class="cc-help">Declare as características antes de rolar. O custo da tentativa é pago antes dos dados; o efeito depende do acerto e, quando exigido, do crítico. Especializações conservam a primeira característica gratuita. As propriedades passivas permanecem automáticas.</p>
     <div id="weapon-effects" class="cc-skill-multi" aria-label="Características selecionadas da arma"></div>
     <p id="weapon-effect-info" class="cc-help">Selecione uma arma equipada para ver suas características.</p>
     <label class="cc-check-throw"><input id="perfurante-blocked" type="checkbox"> Perfurante anulado por escudo físico levantado ou Escudo Arcano Psíquico (confirmado pelo Narrador)</label>
    </section>
    <p id="marco-info" class="cc-help">Marcos e custos de retenção aparecerão após selecionar o atacante.</p>
    <p id="health-info" class="cc-help">Estado de Saúde do atacante aparecerá aqui.</p>
-   <p id="round-budget" class="cc-help">Gasto da rodada: 0/5 Coragens (jogadores).</p>
+   <p id="round-budget" class="cc-help">Gasto do turno: 0/5 Coragens (jogadores).</p><p id="declaration-budget" class="cc-affinity" aria-live="polite">Declare a ação para conferir o custo.</p>
    <section class="cc-activation" aria-label="Ativação de Perícias adquiridas">
-    <h3>Ativar Perícias adquiridas (até 5 Coragens por rodada)</h3>
+    <h3>Ativar Perícias adquiridas (até 5 Coragens por turno)</h3>
     <div class="cc-form cc-duo">
      <label>Perícia da ficha <select id="active-skill"><option value="">Sem ativação adicional</option></select></label>
      <label>Custo em recurso do atacante <input id="skill-courage" type="number" min="0" max="5" step="1" value="0"></label>
     </div>
     <div id="active-extra-skills" class="cc-skill-multi" aria-label="Perícias adicionais na mesma ação"></div>
     <label class="cc-activation-confirm"><input id="skill-approved" type="checkbox"> Conferi os custos, requisitos e gatilhos de todas as Perícias escolhidas</label>
-    <p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. Declare e pague Coragem antes de rolar; o registro da despesa ocorre ao confirmar, mesmo na falha. O efeito especializado não é inventado.</p>
+    <div id="colossal-controls" hidden><label>Golpe Colossal — alvos adicionais dentro de 3 m (seleção múltipla) <select id="colossal-targets" multiple size="5"></select></label><p id="colossal-info" class="cc-help"></p></div><p id="skill-info" class="cc-help">Escolha uma Perícia adquirida. A Coragem declarada é debitada antes de gerar os dados e permanece gasta na falha. O efeito especializado não é inventado.</p>
    </section>
    <div class="cc-actions">
-    <button id="roll" type="button" class="cc-primary">Rolar</button>
+    <button id="roll" type="button" class="cc-primary">Pagar e rolar</button><button id="end-pending" type="button" hidden>Encerrar sem resolver (sem reembolso)</button>
     <button id="suggest" type="button" disabled>Sugerir dados mantidos</button>
     <label class="cc-auto-goal">Objetivo <select id="auto-goal"><option value="balanced">Equilibrado</option><option value="safety">Acerto limpo e segurança</option><option value="damage">Dano e crítico</option></select></label>
    </div>

@@ -397,13 +397,13 @@ const SKILLS=[
  [
   "golpe-fulminante",
   "Golpe Fulminante",
-  "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.",
+  "Ativa: 1 Coragem paga antes de rolar. Eleva um dado da arma corpo a corpo (d6→d10; d10→d12; d12→2d12), máximo 9 dados. No acerto, cada Pavor mantido não anulado causa 1 dano e continua sendo transferido aos inimigos. Arremesso usa Disparo Fulminante. Combina com outras ativações declaradas até 5 Coragens por turno.",
   1
  ],
  [
   "espalhar-golpe",
   "Golpe Colossal",
-  "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SEM bônus de +1E. Não espalha automaticamente o dano de Pavor de Golpe Fulminante. Arremesso não é especialização aceita. Centro da área PENDENTE.",
+  "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
   1
  ],
  [
@@ -1332,8 +1332,8 @@ const CARD_REQUIREMENTS={
  "transfusao-sanguinaria": "Lucker de Sangue (exclusiva) + Transfusão + Perícia em Elemento Sangue",
  "armas-longo-alcance": "Disciplina 1 + Destreza 2",
  "olhos-de-aguia": "Destreza 3 + Disciplina 3 + Armas de Longo Alcance OU Armas de Fogo",
- "golpe-fulminante": "Disciplina 2 + Força 2 + uma especialização corpo a corpo",
- "espalhar-golpe": "Destreza 1 + Agilidade 1 + Disciplina 2 + Golpe Fulminante + especialização corpo a corpo",
+ "golpe-fulminante": "Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo",
+ "espalhar-golpe": "Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1",
  "maestria-arremesso-armas": "Força 2 + Destreza 2 + Agilidade 1 + Armas Leves OU Médias OU Pesadas",
  "disparo-fulminante": "Destreza 2 + Força 1 + Disciplina 2 + (Armas de Longo Alcance OU Perícia em Arremesso de Armas)",
  "disparo-multiplo": "Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Armas de Longo Alcance OU Arremesso)",
@@ -1423,7 +1423,7 @@ const CARD_EFFECTS={
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue; conjuração ativa. 3 marcas disponíveis de sangue inimigo recuperam +1 Vida, mantendo custo 1 XP e requisitos Transfusão + Elemento Sangue.",
  "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
  "golpe-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
- "espalhar-golpe": "Raio 3 m, até 2 alvos adicionais por ativação, metade do dano dos Êxitos, SEM +1E",
+ "espalhar-golpe": "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
  "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
  "disparo-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "disparo-multiplo": "Principal recebe dano integral; adicionais no raio de 3 m recebem metade dos Êxitos e 0,5 por P",
@@ -1510,8 +1510,8 @@ const CARD_BRIEFS={
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
- "golpe-fulminante": "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.…",
- "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
+ "golpe-fulminante": "1 Coragem antes de rolar; eleva um dado de arma corpo a corpo e cada Pavor válido causa 1 dano no acerto, sem impedir sua transferência aos inimigos.",
+ "espalhar-golpe": "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
  "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
  "disparo-fulminante": "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.…",
  "disparo-multiplo": "A mesma rolagem é comparada à DE de cada alvo. O raio de 3 m é centrado no ALVO PRINCIPAL; cada 1 Coragem permite até dois alvos adicionais, e o custo é consumido mesmo que não se alcance a DE de um deles. O adicional recebe metade do dano de Êxitos, arredondada para baixo, e some…",
@@ -1600,8 +1600,8 @@ const CARD_ACTIVATIONS={
  "transfusao": "Custo de Vida; custo de ativação PENDENTE",
  "transfusao-sanguinaria": "Conjuração ativa · custo e procedimento pendentes",
  "armas-longo-alcance": "1 Coragem no acerto comum; crítico gratuito",
- "golpe-fulminante": "1 Coragem; crítico não dispensa",
- "espalhar-golpe": "1 Coragem por até 2 alvos adicionais",
+ "golpe-fulminante": "1 Coragem antes de rolar",
+ "espalhar-golpe": "1 Coragem antes de rolar; +1 por até 2 outros alvos",
  "maestria-arremesso-armas": "1 Coragem ao acertar para ativar efeitos",
  "disparo-fulminante": "1 Coragem; crítico não dispensa",
  "disparo-multiplo": "1 Coragem a cada até 2 alvos adicionais",
@@ -1643,6 +1643,8 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "espalhar-golpe":{type:"Ativa",intro:"Você executa um golpe de grande amplitude, capaz de atingir diversos adversários ao seu redor.",benefits:["Potência colossal. Ao ativar esta Perícia, receba +1E na rolagem de ataque.","Espalhar golpe. Além do alvo principal, escolha até dois alvos adicionais em um raio de 3 metros centrado em você. Compare o mesmo resultado da rolagem com a DE individual de cada alvo.","Dano em área. O alvo principal recebe o dano integral. Os alvos adicionais atingidos recebem metade do dano dos Êxitos, arredondada para baixo. O Pavor válido continua contribuindo para superar a DE individual, mas não causa dano aos alvos adicionais, mesmo com Golpe Fulminante ativo. O dano de Pavor de Golpe Fulminante permanece restrito ao alvo principal.","Ampliação. Antes de rolar, você pode gastar mais 1 Coragem para incluir até dois outros alvos dentro da mesma área, respeitando o teto de 5 Coragens por turno. O raio e o bônus de +1E não aumentam."],mechanics:[["declaracao-de-ataque","Declaração de ataque e Coragem"]]},
+ "golpe-fulminante":{type:"Ativa",intro:"Você concentra sua força em um golpe corpo a corpo, elevando o potencial da arma e convertendo o risco em dano.",benefits:["Elevação da arma. Antes de rolar, gaste 1 Coragem para elevar um dado da arma habilitada: d6 → d10, d10 → d12 ou d12 → 2d12. Respeite o limite de 9 dados rolados.","Dano de Pavor. No acerto, cada Pavor mantido e não anulado causa 1 dano em vez da contribuição normal de metade. Esse Pavor continua sendo transferido aos inimigos conforme a regra de transferência.","Combinação de técnicas. Declare e pague esta Perícia junto às demais ativações e recursos antes de rolar. O custo da tentativa permanece na falha; o crítico não dispensa a ativação, mas mantém a recuperação normal de Coragem. Respeite o teto de 5 Coragens por turno."],note:"Para usar: ataque corpo a corpo com dado de arma habilitado. Para arremesso de armas, utilize Disparo Fulminante. Pugilismo satisfaz o requisito de compra, mas não cria um dado de arma para socos sem equipamento.",mechanics:[["declaracao-de-ataque","Declaração de ataque e Coragem"]]},
  "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar para uma arma de acesso rápido durante um ataque, gaste 1 Antecipar obtido na própria rolagem para atacar sem a penalidade do saque. Sem esse símbolo, aplica-se a Desvantagem Absoluta normal do saque (−1 Êxito).","Arma guardada. Sacar uma arma de dentro do inventário para atacar causa Desvantagem Absoluta (−1 Êxito), mesmo com esta Perícia. Sem Saque Rápido, esse ataque é um Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
  "artista-marcial":{
   type:"Ativa + benefício passivo",
@@ -2702,8 +2704,8 @@ function skillReq(id,s=state){
  if(id==="sagrado"&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="escudo-arcano"&&((s.attributes.inteligencia||0)<2||vig<1||!has("criar-item-foco-magia")))return"Requer Inteligência 2, Vigor 1 e Criar Item de Foco e Magia.";
  if(id==="conjuracao-equilibrada"&&(disc<2||(s.attributes.inteligencia||0)<2||dex<2||!has("criar-item-foco-magia")))return"Requer Disciplina 2, Criar Item de Foco e Magia, Inteligência 2 e Destreza 2.";
- if(id==="golpe-fulminante"&&(disc<2||strength<2||!meleeSpecialty))return"Requer Disciplina 2, Força 2 e especialização corpo a corpo (Armas Leves/Médias/Pesadas, Manejo Duplo ou Pugilismo). Perícia em Arremesso não habilita este golpe.";
- if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")||!meleeSpecialty))return"Requer Disciplina 2, Destreza 1, Agilidade 1, Golpe Fulminante e especialização corpo a corpo.";
+ if(id==="golpe-fulminante"&&(disc<2||strength<2||!["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(has)))return"Requer Disciplina 2, Força 2 e uma Perícia em Armas Leves, Médias, Pesadas ou Pugilismo. Perícia em Arremesso não habilita este golpe.";
+ if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")))return"Requer Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
  if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
@@ -3483,11 +3485,9 @@ const GENE_AUTO_REQUIREMENTS={
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-medias"],
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-pesadas"]],
  "golpe-fulminante":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
+  ...["armas-leves","armas-medias","armas-pesadas","pugilismo"].map(id=>
    ["p:armas_conjuracao:2","a:forca:2","s:"+id])],
- "espalhar-golpe":[
-  ...["armas-leves","armas-medias","armas-pesadas","maestria-manejo-duplo","pugilismo"].map(id=>
-   ["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante","s:"+id])],
+ "espalhar-golpe":[["p:armas_conjuracao:2","a:destreza:1","a:agilidade:1","s:golpe-fulminante"]],
  "disparo-fulminante":[
   ...["armas-longo-alcance","maestria-arremesso-armas"].map(id=>
    ["p:armas_conjuracao:2","a:destreza:2","a:forca:1","s:"+id])],
@@ -4590,7 +4590,10 @@ function roll(){
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
- state.pending={created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+ // Técnicas Fulminantes e retenção adicional física são pagas antes de gerar as faces.
+ const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step):0;
+ state.courage-=prepaidCourage;state.courageRoundSpent=Number(state.courageRoundSpent||0)+prepaidCourage;
+ state.pending={prepaidCourage,created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
@@ -4828,8 +4831,9 @@ function score(){
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
  if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
- if(courageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
- if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
+ const prepaidCourage=Math.min(courageCost,Math.max(0,Number(p.prepaidCourage)||0)),remainingCourageCost=courageCost-prepaidCourage;
+ if(remainingCourageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
+ if(remainingCourageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
  const damageBasic=success?E+Math.floor(P/2):0;
@@ -4858,7 +4862,7 @@ function score(){
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
  return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
+  aPool,courageCost,remainingCourageCost,prepaidCourage,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
    manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored,weightSpecialtyIgnored};
 }
 function renderPending(){
@@ -4962,7 +4966,7 @@ function renderPending(){
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+weightSpecialtySummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
-  '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
+  '). Custo total: '+cost+' Coragem ('+s.prepaidCourage+' já pagas; '+s.remainingCourageCost+' restantes na ficha isolada).</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -4976,8 +4980,8 @@ function finalize(){
   if(sphereCount()<5||state.spiritualSpheres.createdThisRound>0){toast("Asura exige 5 esferas preparadas e execução em uma rodada posterior.");return;}
   state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
  }
- state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
- state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.courageCost,0,5);
+ state.courage=clamp(state.courage-s.remainingCourageCost,0,maxCourage());
+ state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.remainingCourageCost,0,5);
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
  const gainedCourage=state.courage-oldCourage;
@@ -5831,7 +5835,7 @@ function onClick(event){
   case "finalize":finalize();break;
  case "discard":
   if(!state.pending)return;
-  if(confirm("Descartar a rolagem já revelada? Isso deve ocorrer apenas por decisão do Narrador; os dados não serão reaproveitados.")){
+  if(confirm("Descartar a rolagem já revelada? Apenas por decisão do Narrador; os dados não serão reaproveitados e a Coragem já paga não será devolvida.")){
    state.pending=null;save();render();toast("Rolagem descartada por confirmação.");
   }break;
  case "respec-skill":refundSkillForPlaytest(id);break;

@@ -42,13 +42,13 @@ const metadata={
  "golpe-fulminante": {
   "id": "golpe-fulminante",
   "type": "Ativa",
-  "cost": "1 Coragem",
+  "cost": "1 Coragem antes de rolar",
   "icon": "categoria-corporal"
  },
  "golpe-colossal": {
   "id": "espalhar-golpe",
   "type": "Ativa",
-  "cost": "1 Coragem por até 2 alvos adicionais",
+  "cost": "1 Coragem antes de rolar; +1 por até 2 outros alvos",
   "icon": "categoria-corporal"
  },
  "pugilismo": {

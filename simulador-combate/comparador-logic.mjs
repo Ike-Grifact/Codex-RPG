@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0111";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-saque-v0111";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0114";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0114";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -165,6 +165,8 @@ export function rollProvenance(rolled,ids,options={}){
 export function selectedActiveSkill(c,id){
  if(!id)return null;
  if(!isHumanoidKind(c?.kind)||!c?.skills?.includes(id))return null;
+ if(id==="espalhar-golpe"&&(Number(c.practices?.armas_conjuracao||0)<2||Number(c.attributes?.agilidade||0)<1||Number(c.attributes?.destreza||0)<1||!c.skills.includes("golpe-fulminante")))return null;
+ if(id==="golpe-fulminante"&&(Number(c.practices?.armas_conjuracao||0)<2||Number(c.attributes?.forca||0)<2||!["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(k=>c.skills.includes(k))))return null;
  // Uma compra antiga permanece na ficha, mas Artista Marcial não ativa sem Atletismo 1.
  if(id==="artista-marcial"&&
    (Number(c?.practices?.atletismo||0)<1||
@@ -301,6 +303,43 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(selected.length>max)
   return {ok:false,error:"Este resultado permite no máximo "+max+" característica(s) da arma (sem repetir)."};
  return {ok:true,active:[...selected],cost,mastery,free:Math.min(free,selected.length),activationSkill:access.required,masteryId};
+}
+/** Valida as características antes de conhecer as faces. */
+export function declareWeaponEffects(c,weapon,chosen=[],thrown=false){
+ return planWeaponEffects(c,weapon,chosen,{success:true,critical:2,thrown});
+}
+export function resolveDeclaredWeaponEffects(c,weapon,chosen,declared,{success=false,critical=0,thrown=false}={}){
+ if(!declared?.ok)return {ok:false,error:"Características não foram declaradas."};
+ if(!success)return {...declared,active:[],free:0};
+ const access=weaponActivationSkill(c,weapon,{thrown});
+ if(!access.ok&&!critical)return {...declared,active:[],free:0};
+ const max=declared.mastery?(critical?3:1):(critical?2:1);
+ const resolved=planWeaponEffects(c,weapon,chosen.slice(0,max),{success,critical,thrown});
+ return resolved.ok?{...resolved,cost:declared.cost}:resolved;
+}
+/** Despesa bruta da declaração, não custo líquido pós-crítico. */
+/** Golpe Colossal: seleção declarada dentro de 3 m, validada narrativamente. */
+export function planColossalTargets(attacker,primary,roster,ids,cost){
+ if(!Number.isInteger(cost)||cost<1||cost>5)return {ok:false,error:"Golpe Colossal exige de 1 a 5 recursos declarados."};
+ if(!selectedActiveSkill(attacker,"espalhar-golpe"))return {ok:false,error:"Golpe Colossal não habilitado."};
+ if(!Array.isArray(ids)||new Set(ids).size!==ids.length||ids.length>2*cost)return {ok:false,error:"Selecione até "+(2*cost)+" alvos adicionais distintos."};
+ const targets=ids.map(id=>roster.find(x=>x.id===id));
+ if(targets.some(t=>!t||t.id===attacker.id||t.id===primary.id||t.side===attacker.side||t.life===0))return {ok:false,error:"Selecione somente adversários válidos, distintos do alvo principal."};
+ return {ok:true,cost,bonusE:1,targets:targets.map(t=>({id:t.id,name:t.name,de:defense(t)}))};
+}
+export function colossalOutcomes(result,targets=[]){
+ const e=Math.max(0,Number(result.e)||0),p=Math.max(0,Number(result.p)||0),reached=e+p;
+ const mult=result.critical===4?2:1;
+ const damageE=Math.floor(e*mult/2);
+ return targets.map(t=>{const success=reached>=t.de;return {...t,e,p,reached,success,damageE:success?damageE:0,damageP:0,integrityDamage:success?damageE:0,integrityApplied:false};});
+}
+export function planCourageDeclaration(c,{activations=[],weaponCost=0,martialCost=0,extraKeep=false,step=false,healthCost=0}={}){
+ const costs=[...activations.map(x=>x.cost),weaponCost,martialCost,Number(extraKeep),Number(step),healthCost];
+ if(costs.some(x=>!Number.isInteger(x)||x<0))return {ok:false,error:"Custos declarados inválidos."};
+ const total=costs.reduce((a,b)=>a+b,0),spent=Number(c.courageRoundSpent||0);
+ if(total+spent>5)return {ok:false,error:"Teto de 5 Coragens no turno: "+spent+" já gastas, "+total+" declaradas."};
+ if(total>Number(c.courage||0))return {ok:false,error:"Coragem insuficiente: "+total+" declaradas."};
+ return {ok:true,total,actor:{...c,courage:Number(c.courage||0)-total,courageRoundSpent:spent+total}};
 }
 export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];

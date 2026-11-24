@@ -439,3 +439,18 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 
 
 **Correção autoral — SRD v0.111 (24/11/2026):** Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Substitui a regra anterior de Golpe de Sorte por ausência de Antecipar no saque. [SRD v0.111](srd-continuidade-v0.111.md).
+
+
+**Golpe Fulminante [DEFINIDO — 24/11/2026]:** 1 XP, Ativa. Requisitos: Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo. Gasta 1 Coragem antes da rolagem, elevando um dado da arma corpo a corpo habilitada (d6→d10; d10→d12; d12→2d12), até 9 dados rolados. No acerto cada Pavor mantido não anulado causa 1 dano, sem cancelar transferência aos inimigos. Arremesso utiliza Disparo Fulminante. Pugilismo não cria dado de arma para socos sem equipamento. **Declaração de ataque:** somar e pagar antecipadamente as ativações de Perícias, características e recursos declarados (incluindo retenção adicional), respeitando saldo e teto de 5 Coragens gastas por turno do jogador. Ex.: Fulminante 1 + característica de Armas Médias 1 + Colossal 1 + retenção 1 = 4 Coragens. Falha não devolve; recuperação geral de crítico é creditada uma única vez e não restaura o teto de gasto. Manter gatilhos e custos de cada técnica, sem automatizar geometria pendente de Colossal.
+
+[SRD v0.112](srd-continuidade-v0.112.md).
+
+
+**Golpe Colossal [DEFINIDO — 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Custa 1 Coragem antes de rolar, concede +1E à rolagem de ataque corpo a corpo e permite escolher até dois alvos adicionais num raio de 3 m centrado no atacante. Cada Coragem extra declarada permite até outros dois alvos, sem alterar o raio ou acumular +1E. Compare o mesmo total válido E+P à DE individual de cada alvo, inclusive se o principal falhar. Alvo principal conserva o dano integral. Adicionais atingidos recebem exclusivamente metade do dano dos Êxitos arredondada para baixo. Os mesmos Êxitos e Pavores válidos são comparados à DE individual de cada alvo, inclusive quando Golpe Fulminante está ativo; Pavor não causa dano aos adicionais. O dano de Pavor de Golpe Fulminante permanece no alvo principal. Mantêm-se efeitos gerais de crítico sobre dano, sem multiplicar o bônus de +1E por ativação. O custo permanece gasto mesmo em falha. Não duplicar a transferência de Pavor, recuperação crítica ou características da arma nos adicionais sem regra específica; distribuição de Pavor entre vários alvos e dano à Vida reduzido ainda requerem procedimento próprio.
+
+[SRD v0.113](srd-continuidade-v0.113.md).
+
+
+**Golpe Colossal [DEFINIDO — 24/11/2026, correção v0.114]:** os mesmos Êxitos e Pavores válidos da rolagem são comparados à DE individual de cada alvo, também quando combinado com Golpe Fulminante. Cada adicional atingido sofre exclusivamente metade do dano dos Êxitos, arredondada para baixo. Pavor não causa dano pelo Golpe Colossal, inclusive com Fulminante. O dano de Pavor de Golpe Fulminante continua no alvo principal; seus símbolos não são removidos da rolagem nem têm suas consequências canceladas. O procedimento de transferência de Pavor entre múltiplos alvos permanece pendente, sem duplicação automática.
+
+[SRD v0.114](srd-continuidade-v0.114.md).

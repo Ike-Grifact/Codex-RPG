@@ -1053,7 +1053,7 @@ test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco 
  const start=app.indexOf("function finalize(){");const source=app.slice(start,app.indexOf("\nfunction ",start+1));
  assert.ok(source.includes("state.spiritualSpheres.count=sphereCount()-5"),"Finalização consome 5 esferas");
  assert.ok(app.includes("health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura)"),"Asura adiciona 1 Coragem ao custo de resolução");
- assert.ok(source.includes("state.courage=clamp(state.courage-s.courageCost"),"Finalização desconta Coragem após validar custo");
+ assert.ok(source.includes("state.courage=clamp(state.courage-s.remainingCourageCost"),"Finalização desconta somente a Coragem ainda não paga na declaração");
  assert.ok(source.includes("asuraCourageSpent:p.opts.asura?1:0"),"Histórico registra 1 Coragem de Asura");
  assert.ok(source.includes("asuraD20Face:p.opts.asura?"),"Histórico registra a face do d20");
  assert.ok(!source.includes("asuraDamageProportional:"),"Não registra pacote de dano adicional de Asura");
