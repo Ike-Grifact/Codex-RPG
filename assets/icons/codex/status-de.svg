@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.02 39.15" role="img" aria-labelledby="icon-title" fill="#2369BB">
-  <title id="icon-title">Dificuldade de Êxito — Sowilo, Ansuz e Thurisaz fundidas</title>
-  <defs>
-    <style>
-      .cls-1 {
-        font-family: Zillaroonies, Zillaroonies;
-        font-size: 25.47px;
-      }
-    </style>
-  </defs>
-  <g stroke="#2369BB" stroke-width="0">
-    <text class="cls-1" transform="translate(9.8 22.82)"><tspan x="0" y="0">A</tspan></text>
-    <text class="cls-1" transform="translate(9.68 38.69)"><tspan x="0" y="0">t</tspan></text>
-    <text class="cls-1" transform="translate(0 21.74)"><tspan x="0" y="0">S</tspan></text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.02 39.15" role="img" aria-labelledby="icon-title" fill="#2369BB">
+<title id="icon-title">Dificuldade de Êxito</title>
+<path d="M20.11,27.79l-.15-.44-6.76-6.77v-.33s0-10.54,0-10.54l4.99,5.01q.3.59,1.34.44l.44-.59-.3-.73-6.47-6.54V2.82l4.99,4.99q.3.58,1.34.43l.44-.73-.3-.6L13.2.45,12.16,0l-.04.04c-.08-.02-.17-.04-.27-.04l-.47.15L1.59,9.94q-.62.31-.62,1.24l.51.41,8.82.05-.26.05L1.44,20.35l-.31.77q.31.93,1.25.82l9.2-9.12v9.42h0v15.87q0,.88,1.17.58.6,0,.45-3.53l6.76-6.78L20.11,27.79ZM3.97,10l7.61-7.56v7.64L3.97,10ZM13.2,32.79v-9.86l.25.14,4.67,4.68L13.2,32.79Z"/>
 </svg>
