@@ -246,14 +246,18 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(!access.ok&&!cravarOnCritical)return access;
  const masteryId=weaponMasteryFor(weapon,{thrown});
  const mastery=canUseWeaponMastery(c,masteryId);
- // SRD v0.100: tentativa paga é declarada antes do teste; falhar não restitui Coragem.
- // O benefício gratuito da Especialização no acerto não tem custo próprio.
- if(!success)return {ok:true,active:[],cost:Math.max(0,selected.length-(mastery?1:0)),mastery,free:0};
+ // SRD v0.101: o custo é pago ao DECLARAR a tentativa, antes do teste.
+ // Mesmo no crítico, não zerar o débito: a Coragem volta pelo reembolso
+ // crítico de resolveRoll, já contabilizado UMA vez no fechamento da ação.
+ // A primeira propriedade da Especialização é gratuita desde a declaração;
+ // a exceção de Cravar sem habilitação no crítico também não cobra Coragem.
+ const cost=cravarOnCritical&&!access.ok?0:Math.max(0,selected.length-(mastery?1:0));
+ if(!success)return {ok:true,active:[],cost,mastery,free:0};
  const free=mastery?(critical?2:1):(critical?1:0);
  const max=mastery?(critical?3:1):(critical?2:1);
  if(selected.length>max)
   return {ok:false,error:"Este resultado permite no máximo "+max+" característica(s) da arma (sem repetir)."};
- return {ok:true,active:[...selected],cost:Math.max(0,selected.length-free),mastery,free:Math.min(free,selected.length),activationSkill:access.required,masteryId};
+ return {ok:true,active:[...selected],cost,mastery,free:Math.min(free,selected.length),activationSkill:access.required,masteryId};
 }
 export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];
