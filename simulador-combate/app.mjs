@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261123-coragem-antes-do-teste-v0100";
+ from "./comparador-logic.mjs?v=20261123-coragem-critico-v0101";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-especializacao-punhos-v099";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
@@ -376,7 +376,7 @@ function renderWeaponEffects(){
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
-   " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, um efeito é gratuito; um segundo pago exige declaração antecipada.")+
+   " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, a recuperação normal devolve 1 Coragem gasta, zerando o custo líquido da primeira característica; o segundo efeito pago exige declaração antecipada.")+
   (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
   " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
@@ -516,7 +516,7 @@ function renderDice(){
   pre.noisy?"Barulhenta (passiva): +1P, inclusive no crítico":null,
   ...pre.weaponPlan.active.map(x=>"Característica da arma: "+x+" (ativada no acerto)"),
   ...pre.status.notes,
-  pre.weaponPlan.active.length?"Custo das características: "+pre.weaponPlan.cost+(actor()?.side==="inimigos"?"P local":" Coragem")+
+  pre.weaponPlan.active.length?"Coragem declarada para características: "+pre.weaponPlan.cost+(actor()?.side==="inimigos"?"P local":" Coragem")+
    " · "+pre.weaponPlan.free+" gratuitas":null,
   pre.perfuranteBlocked?"Perfurante: anulado pela defesa confirmada; dano básico mantido":null,
   Number($("cancel-p").value)?"Anulação: "+$("cancel-p").value+" P com Antecipar":null,
