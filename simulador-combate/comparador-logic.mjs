@@ -165,6 +165,7 @@ export function rollProvenance(rolled,ids,options={}){
 export function selectedActiveSkill(c,id){
  if(!id)return null;
  if(!isHumanoidKind(c?.kind)||!c?.skills?.includes(id))return null;
+ if(id==="golpe-fulminante"&&(Number(c.practices?.armas_conjuracao||0)<2||Number(c.attributes?.forca||0)<2||!["armas-leves","armas-medias","armas-pesadas","pugilismo"].some(k=>c.skills.includes(k))))return null;
  // Uma compra antiga permanece na ficha, mas Artista Marcial não ativa sem Atletismo 1.
  if(id==="artista-marcial"&&
    (Number(c?.practices?.atletismo||0)<1||

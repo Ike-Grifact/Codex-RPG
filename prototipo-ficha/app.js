@@ -1510,7 +1510,7 @@ const CARD_BRIEFS={
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
  "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
- "golpe-fulminante": "Ativação custa 1 Coragem, inclusive no crítico: eleva temporariamente UM dado da arma antes de rolar (d6→d10; d10→d12; d12→2d12). Se acertar, cada Pavor mantido não anulado vale 1 dano, conservando risco e Pressão. Requer especialização corpo a corpo; Arremesso não satisfaz Golpe Fulminante. Máximo 9 dados.…",
+ "golpe-fulminante": "1 Coragem antes de rolar; eleva um dado de arma corpo a corpo e cada Pavor válido causa 1 dano no acerto, sem impedir sua transferência aos inimigos.",
  "espalhar-golpe": "Substitui Espalhar Golpe. Alvo principal recebe dano integral. Cada gasto permite atacar até 2 inimigos adicionais a 3 m, usando a mesma rolagem contra DE individual, e aplica metade do dano de Êxitos arredondada para baixo. O custo é consumido mesmo se a DE adicional não for alcançada. SE…",
  "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
  "disparo-fulminante": "Técnica somática de arco, besta ou arremesso, exceto armas de fogo. Ativação 1 Coragem (inclusive no crítico): eleva UM dado da arma antes da rolagem (d6→d10, d10→d12 ou d12→2d12); no acerto, cada Pavor não anulado causa 1 dano, preservando risco. Combina com outras técnicas pagas, respeitando 9 dados e 5 Coragens por rodada.…",
@@ -4591,7 +4591,10 @@ function roll(){
  if(state.pending){toast("Uma rolagem anterior aguarda finalização.");return;}
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
- state.pending={created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+ // Técnicas Fulminantes e retenção adicional física são pagas antes de gerar as faces.
+ const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step):0;
+ state.courage-=prepaidCourage;state.courageRoundSpent=Number(state.courageRoundSpent||0)+prepaidCourage;
+ state.pending={prepaidCourage,created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
@@ -4829,8 +4832,9 @@ function score(){
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
  if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
- if(courageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
- if(courageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
+ const prepaidCourage=Math.min(courageCost,Math.max(0,Number(p.prepaidCourage)||0)),remainingCourageCost=courageCost-prepaidCourage;
+ if(remainingCourageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
+ if(remainingCourageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
  const damageBasic=success?E+Math.floor(P/2):0;
@@ -4859,7 +4863,7 @@ function score(){
  // contra a barreira e proteções pelo Narrador (sem dano integral direto automático).
  const armorDamage=hemomancyLinked||fireValid?null:success&&active.includes("Perfurante")?(E+P)*(critTier===4?2:1):null;
  return{dice,raw,E,P,remainingA,reached,success,outcome,shieldThrowOutcome,health,shieldCravarPenalty,cravarApplied:cravarApplied&&errs.length===0,cravarTargetShield:cravarApplied&&errs.length===0?p.cravarTargetShield:null,damage,damageBasic,damageNature:p.opts.asura?"neutro":(elementSkill||""),armorDamage,fireMode:fireValid?fireMode:"",fireArmorDamage,fireDirectLifeDamage,directLifeDamage,mayHemomancyDirectLife,hemomancyLinked,bloodArcaneShieldNeutralized,passivePiercing,errors:errs,
-  aPool,courageCost,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
+  aPool,courageCost,remainingCourageCost,prepaidCourage,active,range:p.shieldThrowId?8:item?.range?effectiveWeaponRange(item)+(success&&active.includes("Muito Leve")?4:0):0,pAvailable,critTier,critRecovery,criticalConverted,freeElementEffect,elementSkill,
    manejoPerfeitoActive:!!manejoPerfeitoActive,manejoPerfeitoGolpeCerto:!!manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored,weightSpecialtyIgnored};
 }
 function renderPending(){
@@ -4963,7 +4967,7 @@ function renderPending(){
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+weightSpecialtySummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
-  '). Custo previsto: '+cost+' Coragem (inclui ativações escolhidas).</p>'+dice+controls+
+  '). Custo total: '+cost+' Coragem ('+s.prepaidCourage+' já pagas; '+s.remainingCourageCost+' restantes na ficha isolada).</p>'+dice+controls+
  (s.dice.length?stats:"<p class=\"fp-caption\" style=\"margin-top:10px\">Clique nos dados que deseja manter. Só eles geram símbolos.</p>")+
  s.errors.filter(x=>x!=="Selecione os dados que deseja manter.").map(x=>'<div class="fp-alert invalid">'+esc(x)+'</div>').join("")+
  (s.dice.length&&!s.errors.length?"":'<div class="fp-alert">A finalização só fica disponível após uma retenção válida.</div>')+
@@ -4977,8 +4981,8 @@ function finalize(){
   if(sphereCount()<5||state.spiritualSpheres.createdThisRound>0){toast("Asura exige 5 esferas preparadas e execução em uma rodada posterior.");return;}
   state.spiritualSpheres.count=sphereCount()-5; // Gasta cinco na conclusão da rolagem especial.
  }
- state.courage=clamp(state.courage-s.courageCost,0,maxCourage());
- state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.courageCost,0,5);
+ state.courage=clamp(state.courage-s.remainingCourageCost,0,maxCourage());
+ state.courageRoundSpent=clamp((state.courageRoundSpent||0)+s.remainingCourageCost,0,5);
  const oldCourage=state.courage;
  if(s.critRecovery)state.courage=clamp(state.courage+s.critRecovery,0,maxCourage());
  const gainedCourage=state.courage-oldCourage;
@@ -5832,7 +5836,7 @@ function onClick(event){
   case "finalize":finalize();break;
  case "discard":
   if(!state.pending)return;
-  if(confirm("Descartar a rolagem já revelada? Isso deve ocorrer apenas por decisão do Narrador; os dados não serão reaproveitados.")){
+  if(confirm("Descartar a rolagem já revelada? Apenas por decisão do Narrador; os dados não serão reaproveitados e a Coragem já paga não será devolvida.")){
    state.pending=null;save();render();toast("Rolagem descartada por confirmação.");
   }break;
  case "respec-skill":refundSkillForPlaytest(id);break;
