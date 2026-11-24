@@ -408,7 +408,7 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 Coragem para mudar peso do soco. Pesos disponíveis PENDENTES.",
+  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, escolha o peso Leve, Médio ou Pesado antes da rolagem.",
   1
  ],
  [
@@ -1258,6 +1258,7 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "pugilismo":"Disciplina 1, Força 2 e Destreza 1",
  "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
  "contratempo":"Requisitos e custos pendentes; PROPOSTO",
  "solo-provocador":"Requisitos e custos pendentes; PROPOSTO",
@@ -1637,6 +1638,13 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "pugilismo":{
+  type:"Ativa",
+  intro:"Você domina o combate desarmado e sabe adaptar o peso de seus socos.",
+  benefits:["Peso padrão. Seus socos são considerados de peso Médio.","Mudança de peso. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para escolher o peso do soco: Leve, Médio ou Pesado."],
+  note:"Para usar: tenha a Perícia adquirida, realize um ataque desarmado e declare o peso escolhido antes de rolar. Sem ativar Pugilismo, o peso padrão é Médio.",
+  mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"]]
+ },
  "manejo-perfeito":{
   type:"Passiva — sem custo de ativação",
   intro:"Você domina o uso da arma adequada contra as defesas do oponente.",
