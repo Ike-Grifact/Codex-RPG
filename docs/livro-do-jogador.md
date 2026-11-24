@@ -402,7 +402,7 @@ A **face 10 do d10** é **2ᛋ+ᚨ (2E+1A), sem Pavor**, conforme decisão autor
 4. Conte Êxitos (E), Antecipar (A) e Pavor (P) **somente dos dados mantidos**.
 5. Gaste Antecipar:
    - **1A anula 1P próprio**;
-   - **1A passa a oportunidade a aliado**, preservando Pavor não anulado;
+   - **Antecipar passa a oportunidade a aliado** (1A inicial, custo progressivo conforme participações na sequência), preservando Pavor não anulado;
    - **2A convertem-se em 1E**;
    - outras aplicações específicas requerem Perícias.
 6. Compare **E + P mantido não anulado** à DE. Decida o resultado e calcule dano e consequências quando aplicável.
@@ -446,19 +446,44 @@ O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo da v0
 
 ### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
 
-Um **turno** corresponde a uma ação realizada por um personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena: personagens jogadores + inimigos. Em um conflito com 3 PJs e 3 inimigos, a rodada termina após 6 turnos realizados, independentemente da ordem ou de quem realizou cada um. A rodada mede o tempo do conflito; não é uma fila de iniciativa e não exige que cada combatente aja exatamente uma vez.
+Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
-O **protagonismo** indica qual lado tem a oportunidade de agir. Um acerto puro (acerto sem Pavor residual) permite ao jogador continuar ou ceder voluntariamente a ação. Gastar Antecipar permite passar a oportunidade a um aliado elegível, antecipando seu turno individual sem anular Pavor. Se um ataque não resultar em acerto puro nem houver passagem válida por Antecipar, o protagonismo passa à oposição, inclusive na falha limpa ofensiva. A falha limpa continua sem punição negativa automática. Fora dessa regra de ataque em conflito, a falha limpa mantém o fluxo geral entre aliados.
+O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto puro permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto puro nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
 
-Quando todos os jogadores já tiverem agido na sequência de protagonismo do grupo, inclusive por antecipações sucessivas, a oportunidade passa aos inimigos. Os inimigos podem encadear ações de aliados enquanto tiverem Antecipar válido para passar a oportunidade; quando não conseguirem fazê-lo, o protagonismo retorna aos jogadores. O acerto puro do inimigo, por si só, não prolonga essa sequência sem Antecipar. A troca de lado não encerra nem reinicia automaticamente a rodada.
+Pavor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Pavor disponível não concede ação gratuita.
 
-Pavor pode abrir oportunidade de intervenção ou contra-ataque, mudando o protagonismo antes de completar uma rodada. Um contra-ataque que constitua uma ação conta como turno; a mera transferência de símbolos, a passagem de protagonismo e uma intervenção narrativa sem ação de combatente não contam como novos turnos. Permanecem os requisitos e custos de ativação válidos da oposição e as restrições de Antecipar; o Pavor disponível não concede automaticamente uma ação gratuita.
+#### Ação em conjunto e custo progressivo de Antecipar
 
-Uma **ação em conjunto** utiliza simultaneamente **um turno de cada participante**. Dois participantes contam dois turnos; três contam três. Não é um turno gratuito para quem ajuda, nem uma sequência de ataques individuais. Mantêm-se as regras próprias de resolução, os limites vigentes de até três participantes em ataques conjuntos, os custos e os requisitos aplicáveis. Passar protagonismo com Antecipar, por si só, não é uma ação em conjunto.
+Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
 
-Perícias, magias e condições que indicam duração em **turnos** contam ações; aquelas que indicam **rodadas** contam ciclos completos de turnos equivalentes ao total de combatentes. Não tratar os dois termos como sinônimos nem alterar durações já publicadas. O tratamento de entradas e saídas de combatentes durante uma rodada, de ações conjuntas que cruzam o limite de uma rodada e o momento exato de expiração de efeitos específicos ainda precisam de definição.
+**A primeira ação conjunta da sequência de protagonismo dos jogadores não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
 
-**Exemplo:** três PJs (A, B e C) enfrentam três inimigos (X, Y e Z). A age e antecipa B; B age e antecipa C; C age. Já são três turnos, e a oportunidade passa à oposição. X age e antecipa Y; Y age sem Antecipar disponível para passar a ação. Após cinco turnos o protagonismo volta aos jogadores. A age: sexto turno, fim da primeira rodada. Z não precisou agir e A agiu duas vezes. Se A e B realizassem uma ação conjunta, ela contaria dois turnos simultâneos, não um.
+**Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Pavor, converter em Êxito ou financiar outra convocação. Não apagar Pavor ao passar protagonismo.
+
+**A quebra de protagonismo reinicia os custos dos jogadores quando o inimigo age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação inimiga não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+
+| Participações anteriores na sequência | Custo por aliado convocado |
+|---|---|
+| 0 | 1A |
+| 1 | 2A |
+| 2 | 4A |
+| 3 | 8A |
+| 4 | 16A |
+
+#### Exemplo: cinco jogadores A, B, C, D e E
+
+| Formação | Convocação e resolução | Turnos acumulados |
+|---|---|---|
+| ABC | Primeira ação conjunta: gratuita em Antecipar; obtém 2A e convoca D e E (1A cada). | 3 |
+| DE → ADE | D e E rolam, gastam 2A para convocar A, que já participou uma vez. A rola; resolve-se ADE em conjunto. | 6 |
+| ADE → BC | Os participantes de ADE obtêm e gastam 4A para convocar B e C (2A cada). B e C rolam. | 6 (a nova ação ainda não foi resolvida) |
+| BC → ABC | B e C gastam mais 4A dos próprios resultados para incorporar A, que já participou duas vezes. A rola; resolve-se ABC em conjunto. | 9 |
+
+Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participou uma vez e custa 2A. Convocar ambos somaria 4A, mas não caberia no mesmo ataque conjunto de B e C pelo limite de três participantes. O custo de 8A para voltar a formar ABC no exemplo é pago em etapas: 4A por ADE e 4A por BC; não é um pagamento único por um personagem nem uma convocação de si mesmo.
+
+**Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
+
+Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica; aplicação da progressão aos inimigos e interação com seus custos de liderança. Até nova decisão, as regras específicas de Antecipar dos inimigos permanecem vigentes. Não presumir que a gratuidade inicial dos jogadores dispense custos do Líder.
 
 O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
 
@@ -648,7 +673,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **DEFINIDO — adendo autoral de 22/11/2026:** a magia adiciona os dados do Grau: **G1 +1d6; G2 +1d10; G3 +1d12; G4 +2d12 (dois dados distintos)**. Não acumular os dados dos Graus anteriores. **Os dados da magia não vêm do item de foco**. G4 continua exigindo dois elementos diferentes, cada qual com sua magia G3 habilitada; não ganha dois d12 por uma conjuração de elemento único. Este dado integra a pilha normal (máximo 9 rolados, retenção por Marco) e não é uma fonte Atributo, Conhecimento ou Prática extra a ser comprada. A substituição da regra anterior de dado de foco vale para novas rolagens; não reescrever resultados históricos.
 
-**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Pavor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Pavor não é falha automática nem ataque bem-sucedido automático. **1A pode passar o protagonismo a um aliado**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Pavor.
+**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Pavor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Pavor não é falha automática nem ataque bem-sucedido automático. **Antecipar pode passar o protagonismo a um aliado pelo custo progressivo vigente**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Pavor.
 
 **Tempo da magia:** G1 imediato (1 turno); **G2 2 turnos sem gastar carga e 1 turno ao gastar exatamente 1 carga do foco compatível**, conservando G2 e +1d10. Foco vazio não acelera. G3 3 turnos, reduzíveis para 2 por 1 carga ou 1 por 2 cargas do foco correspondente. **G4 plena +2d12**, 6 turnos e mínimo 3; a aceleração exige 1 carga **de cada um de dois focos dos elementos distintos** por turno reduzido, conforme regra própria. **O foco não soma dado** à rolagem e sua aceleração não muda o Grau nem concede Êxitos automáticos. **O custo exato de cargas de foco para G2 está PENDENTE:** o uso de foco compatível para acelerar está DEFINIDO, mas não impor 1 carga não aprovada. A rolagem inicia na declaração; **somente concluir/aplicar efeito após o tempo devido**. Critérios genéricos para interromper pela ação inimiga permanecem PENDENTES; aplicar as exceções aprovadas para técnicas específicas.
 
