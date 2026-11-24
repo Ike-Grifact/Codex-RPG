@@ -292,7 +292,7 @@ test("Especialização em Armas — Martelos: comprar com Atributos, ativar some
  assert.ok(fn("maestria-martelos",make({destreza:0})),"Destreza 1 requerida");
  assert.ok(fn("maestria-martelos",make({vigor:0})),"Vigor 1 requerido");
  assert.equal(fn("maestria-martelos",make()),null,"Não exige Perícia de Armas para comprar");
- assert.match(app,/"maestria-martelos",\s*"Especialização em Armas — Martelos",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
+ assert.match(app,/"maestria-martelos",\s*"Especialização em Armas — Martelos, Maças e Clavas",[\s\S]*?\n  1\n \]/,"Custo 1 XP");
  assert.ok(app.includes('"maestria-martelos":[["a:forca:3","a:destreza:1","a:vigor:1"]]'),"Compra assistida não obriga especializações");
  const start=app.indexOf("function hammerMasteryRequiredSkill(item){");
  const end=app.indexOf("function equipmentGroupName(id)",start);
@@ -322,7 +322,7 @@ test("Especialização em Armas — Martelos: comprar com Atributos, ativar some
  assert.ok(page.includes("Força 3")&&page.includes("Destreza 1")&&page.includes("Vigor 1"));
  assert.ok(page.includes("Perícia em Armas")&&page.includes("1 Coragem")&&page.includes("as duas características ficam gratuitas no saldo final"),"Verbete registra crítico com dois gratuitos");
  const catalog=readFileSync(join(root,"../pericias/index.html"),"utf8");
- assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Especialização em Armas — Martelos</a>'));
+ assert.ok(catalog.includes('<a href="maestria-em-martelos.html">Especialização em Armas — Martelos, Maças e Clavas</a>'));
 });
 
 
@@ -368,11 +368,11 @@ test("Exclusividades: Especialização em Armas de Fogo inicial só para Humano;
 test("Especializações por família: regra compartilhada, compra não inventada e habilitação apropriada",()=>{
  const defs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
  const specs=new Function(defs+"\nreturn WEAPON_MASTERY_TYPES;")();
- assert.equal(specs.length,12,"Doze especializações novas, além de Martelos");
+ assert.equal(specs.length,11,"Onze especializações adicionais, além da família Martelos, Maças e Clavas");
  assert.ok(specs.some(x=>x.id==="maestria-armas-fogo"),"Inclui Armas de Fogo");
  const snippet=extract("function hammerMasteryRequiredSkill(item){","function equipmentGroupName(id)");
  const own=(id,s)=>id==="maestria-armas-fogo"?(s.race==="humano"):(s.skills||[]).includes(id);
- const allowedMasteries=new Set(["maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","maestria-punhos","maestria-armas-fogo"]);
+ const allowedMasteries=new Set(["maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-hastes","maestria-cajados","maestria-punhos","maestria-armas-fogo"]);
  const reqStub=id=>id.startsWith("maestria-")&&!allowedMasteries.has(id)?"PENDENTE":null;
  const mastery=new Function("state","ownsSkill","equipmentWeight","skillReq",snippet+
   "\nreturn {id:weaponMasteryId,required:weaponMasteryRequiredSkill,can:weaponMasteryCanActivate,onHit:weaponMasteryOnHit};")(
@@ -382,7 +382,8 @@ test("Especializações por família: regra compartilhada, compra não inventada
   ["Adaga","leve","maestria-adagas","armas-leves"],
   ["Espada Longa","medio","maestria-espadas","armas-medias"],
   ["Machado de Guerra","alto","maestria-machados","armas-pesadas"],
-  ["Maça","leve","maestria-macas","armas-leves"],
+  ["Maça","leve","maestria-martelos","armas-leves"],
+  ["Clava","medio","maestria-martelos","armas-medias"],
   ["Lança","medio","maestria-hastes","armas-medias"],
   ["Cajado","leve","maestria-cajados","armas-leves"],
   ["Arco Longo","leve","maestria-arcos","armas-longo-alcance"],
