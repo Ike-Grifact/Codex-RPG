@@ -595,20 +595,20 @@ Coordenar-se é importante porque nem toda ameaça pode ser enfrentada com a efi
 
 **Combatentes independentes em formação:** cada integrante mantém sua ficha e realiza sua própria rolagem. A defesa coordenada não funde fichas nem transforma automaticamente todas as ações em um único ataque. Quando a dupla ou o trio declara uma ação conjunta, cada participante rola individualmente e os resultados pertinentes são somados em uma única resolução, respeitando os limites de dados, os custos, Antecipar e Pavor. Antes de rolar uma ação conjunta, os participantes escolhem um único alvo principal em comum. Todos direcionam a ação a esse mesmo alvo, inclusive quando uma magia ou técnica possui efeito em área. Os efeitos em área partem do alvo principal declarado e seguem suas próprias regras de alcance, geometria e resolução; isso não altera o raio de 3 m centrado no atacante de Golpe Colossal. A ação conta um turno por participante. O limite vigente de até três participantes em ataques conjuntos não é ampliado por esta regra.
 
-**Grupo de inimigos com ficha única:** o Narrador pode representar uma formação de inimigos por uma única ficha, com orçamento igual à soma do XP de todos os seus integrantes. O XP reunido permite desenvolver essa ficha e elevar sua DE dentro do teto de 30. A ficha do grupo faz apenas uma rolagem por ação, em vez de uma rolagem para cada integrante. Não duplicar XP nem acumular uma segunda soma de DE sobre a defesa conjunta já registrada. Essa representação é diferente de inimigos com fichas independentes que declaram Combate Coordenado. Não fundir fichas de jogadores: eles mantêm suas próprias rolagens.
+**Ficha coletiva:** Uma ficha coletiva de inimigos representa um único combatente: uma rolagem, um turno e uma única Vida. Não confunda essa unidade com inimigos independentes em formação ou com um chefe excepcional que realiza ações conjuntas. A criação dessas fichas e a interpretação das baixas cabem ao Narrador. Consulte [Criação de inimigos, monstros e criaturas](livro-do-mestre.md#criação-de-inimigos-monstros-e-criaturas).
 
 | Formação | Fichas | DE defensiva | Rolagens |
 |---|---|---|---|
 | Três inimigos separados | 3 fichas | 4, 5 e 6 | Individuais |
 | Três inimigos em formação | 3 fichas | 15 (4 + 5 + 6) | Individuais; somadas se declararem ação conjunta |
-| Grupo de inimigos (ficha única) | 1 ficha; XP total reunido | DE do grupo, até 30 | Uma rolagem por ação |
+| Grupo de inimigos (ficha única) | 1 ficha | DE do grupo, até 30 | Uma rolagem e um turno por ação |
 | Dupla de jogadores | 2 fichas | Ex.: 7 + 8 = 15 | Uma rolagem por PJ, somadas na ação conjunta |
 
 **Exemplo:** três combatentes com DE 11, 10 e 12 declaram um trio. A soma é 33, mas a DE coordenada fica em 30. Dois jogadores com DE 7 e 8 declaram uma dupla: a DE da formação fica em 15. Ao atacar em conjunto, ambos rolam e somam os resultados pertinentes; a resolução simultânea conta dois turnos.
 
-**Dano e alvos:** preserva-se a regra de que um ataque de alvo único escolhe uma ficha alvo; área que alcance a DE coordenada e cubra combatentes separados pode afetar cada ficha atingida, enquanto o chefe composto de uma única ficha recebe um único dano pela área. Combate Coordenado não concede dano, dados, Coragem, Pavor ou ativações extras automaticamente. A declaração de formação não substitui as condições de convocação da ação conjunta.
+**Dano e alvos:** preserva-se a regra de que um ataque de alvo único escolhe uma ficha alvo; área que alcance a DE coordenada e cubra combatentes separados pode afetar cada ficha atingida, enquanto uma ficha coletiva ou um chefe composto de uma única ficha recebe uma única aplicação de dano pela área. Combate Coordenado não concede dano, dados, Coragem, Pavor ou ativações extras automaticamente. A declaração de formação não substitui as condições de convocação da ação conjunta.
 
-**PENDENTE:** eventual custo próprio de declaração ou dissolução da formação (nenhum novo custo estabelecido), procedimento de distribuição do XP e registro da DE de uma ficha coletiva, contagem de turnos e desgaste de integrantes na ficha de grupo. Não presumir que qualquer ficha coletiva tenha as características especiais do chefe de três em um corpo. Não automatizar esses casos antes de decisão.
+**PENDENTE:** eventual custo próprio de declaração ou dissolução da formação (nenhum novo custo estabelecido), os procedimentos específicos de criação de fichas coletivas são tratados no Livro do Mestre.
 
 Referências experimentais para preparar DE sem ficha pertencem ao [Guia do Narrador](../narrador.html#dificuldades).
 
