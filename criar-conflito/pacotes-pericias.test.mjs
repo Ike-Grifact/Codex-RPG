@@ -20,13 +20,13 @@ test("IDs internos ocultos são exatamente os do criador de personagens",()=>{
  const hidden=new Function(source.slice(start,end)+"\nreturn [...HIDDEN_CATALOG_SKILLS];")();
  assert.deepEqual(HIDDEN_PLAYER_SKILL_IDS,hidden);
  assert.equal(hidden.length,19);
- assert.equal(PLAYER_SKILLS.length,122,"Catálogo bruto ainda preserva fichas antigas");
- assert.equal(PLAYER_SKILLS.filter(s=>isVisiblePlayerSkill(s.id)).length,103);
+ assert.equal(PLAYER_SKILLS.length,123,"Catálogo bruto ainda preserva fichas antigas");
+ assert.equal(PLAYER_SKILLS.filter(s=>isVisiblePlayerSkill(s.id)).length,104);
  for(const id of hidden){
   assert.equal(isVisiblePlayerSkill(id),false,"Não expor efeito/placeholder como Perícia: "+id);
   assert.equal(plan(blank("humanoide"),id),null,"Não permitir comprar efeito oculto: "+id);
  }
- for(const id of ["fogo","pericia-druidica","criar-item-foco-magia","golpe-furtivo","maestria-em-apresentacao"])
+ for(const id of ["fogo","pericia-druidica","criar-item-foco-magia","golpe-furtivo","maestria-em-apresentacao","saque-rapido"])
   assert.equal(isVisiblePlayerSkill(id),true,id+" é uma Perícia real ou de aquisição pendente");
 });
 
