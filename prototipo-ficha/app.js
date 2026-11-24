@@ -158,7 +158,7 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
- ["saque-rapido","Saque Rápido","Passiva: sacar ou trocar arma em combate custa 1 Antecipar da ação; se não obtiver esse símbolo, Golpe de Sorte (−2 Êxitos). Acesso rápido no corpo respeita a carga física.",1],
+ ["saque-rapido","Saque Rápido","Passiva: sacar do acesso rápido custa 1 Antecipar para evitar −1E; sem Antecipar, −1E. Sacar do inventário impõe −1E com a Perícia, em vez de Golpe de Sorte (−2E). A carga física permanece.",1],
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
  ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
@@ -1643,7 +1643,7 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
- "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar uma arma durante uma ação de combate, gaste 1 Antecipar obtido na própria rolagem para realizar o ataque normalmente.","Golpe de Sorte. Se tentar atacar com a arma sacada sem obter o Antecipar necessário, o ataque é considerado Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
+ "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar para uma arma de acesso rápido durante um ataque, gaste 1 Antecipar obtido na própria rolagem para atacar sem a penalidade do saque. Sem esse símbolo, aplica-se a Desvantagem Absoluta normal do saque (−1 Êxito).","Arma guardada. Sacar uma arma de dentro do inventário para atacar causa Desvantagem Absoluta (−1 Êxito), mesmo com esta Perícia. Sem Saque Rápido, esse ataque é um Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
  "artista-marcial":{
   type:"Ativa + benefício passivo",
   intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha.",
