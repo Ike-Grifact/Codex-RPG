@@ -497,7 +497,8 @@ test("Maestrias requerem atributos próprios e habilitação da arma para usar g
   ["maestria-adagas","Faca",{agilidade:2,destreza:2}],
   ["maestria-espadas","Espada Longa",{forca:2,destreza:2}],
   ["maestria-machados","Machado",{forca:2,destreza:1}],
-  ["maestria-macas","Maça",{forca:3,destreza:1,vigor:1}],
+  ["maestria-martelos","Maça",{forca:3,destreza:1,vigor:1}],
+  ["maestria-martelos","Clava",{forca:3,destreza:1,vigor:1}],
   ["maestria-martelos","Martelo",{forca:3,destreza:1,vigor:1}],
   ["maestria-hastes","Lança",{forca:2,agilidade:1,destreza:1}],
   ["maestria-cajados","Cajado",{destreza:2}]
@@ -609,4 +610,17 @@ test("Especialização em Armas de Punho: compra separada da ativação, acerto 
   if(a==="forca"||a==="destreza")assert.equal(effects.ok,false,"Pugilismo também exige "+a);
   else assert.equal(effects.cost,1,"Pugilismo ativo, porém requisito da Especialização ausente: "+a);
  }
+});
+
+test("Especialização unificada e migração dos IDs legados de Martelos/Maças e Clavas",()=>{
+ const legacy={skills:["maestria-macas","maestria-martelos","armas-leves"],attributes:{forca:3,destreza:1,vigor:1},practices:{armas_conjuracao:1}};
+ const normalized=normalizeCombatant(legacy);
+ assert.deepEqual(normalized.skills,["maestria-martelos","armas-leves"]);
+ for(const name of ["Martelo","Marreta","Maça","Clava"]){
+  const weapon={name,kind:"weapon",category:"leve",properties:["Cortante"]};
+  assert.equal(weaponMasteryFor(weapon),"maestria-martelos");
+  assert.equal(planWeaponEffects(normalized,weapon,["Cortante"],{success:true}).cost,0);
+ }
+ assert.equal(canUseWeaponMastery({...legacy,skills:["maestria-macas"]},"maestria-martelos"),true);
+ assert.deepEqual(normalizeCombatant({...legacy,skills:["maestria-macas"]}).skills,["maestria-martelos"]);
 });
