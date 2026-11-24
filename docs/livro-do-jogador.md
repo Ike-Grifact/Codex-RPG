@@ -362,29 +362,45 @@ O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, ro
 
 Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
-### Crítico — faces críticas e benefícios cumulativos [DEFINIDO]
+### Crítico — quando os dados mostram seu melhor resultado
 
-**DEFINIDO — atualização de 17/11/2026:** o crítico **recupera Coragem normalmente**, conforme a quantidade de dados nas faces críticas mantidos na tabela abaixo (com **2 dados, recupera 1 Coragem**), respeitando o teto atual e o máximo absoluto de 15. **PENDENTE/ADIADO:** a interação do crítico de dois dados com a Maestria Precisão (somar ou substituir recuperação) será analisada apenas na futura revisão de Maestrias; não assumir nenhuma das duas opções.
+Às vezes, seus dados caem em faces especiais chamadas **faces críticas**. Elas são fáceis de reconhecer pelos símbolos destacados em dourado. Cada tipo de dado tem sua própria face crítica:
 
-Um **crítico** exige que **todos os dados escolhidos para manter** estejam em sua **respectiva face crítica**, com **pelo menos dois dados mantidos**. O Atributo precisa integrar a **rolagem**, mas **pode ser descartado**. É permitido descartar outros dados da pilha e manter menos que o máximo autorizado. Dados descartados não contribuem com Êxitos, Antecipar ou Pavor. As faces críticas são: **4 no d4, 6 no d6, 7 no d10, 12 no d12 e 20 no d20**.
+| Dado | Face crítica | Símbolos da face |
+|---|---:|---|
+| d4 | **4** | ○ (vazia) |
+| d6 | **6** | **1 Êxito (1E)** — ᛋ |
+| d10 | **7** | **2 Êxitos (2E)** — ᛋᛋ |
+| d12 | **12** | **3 Êxitos (3E)** — ᛋᛋᛋ |
+| d20 | **20** | **8 Êxitos (8E)** — ᛋᛋᛋᛋᛋᛋᛋᛋ |
 
-| Recompensa acumulada | 2 mantidos | 3 mantidos | 4 mantidos |
+**Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
+
+Você consegue um **crítico** quando mantém **pelo menos dois dados** e **todos os dados mantidos estão em suas respectivas faces críticas**. Se você rolou outros dados que não são críticos, pode descartá-los. Também pode escolher manter menos dados do que seu limite. O importante é que **nenhum dado mantido fique fora de sua face crítica**.
+
+Você ainda precisa incluir um dado de **Atributo na pilha que rolou**, mas não precisa mantê-lo. E lembre-se: dados descartados não fornecem Êxito, Antecipar nem Pavor.
+
+### O que você ganha com um crítico?
+
+Quanto mais dados críticos você mantiver, maior será a recompensa:
+
+| Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
 |---|:---:|:---:|:---:|
-| Converter **1P próprio em 1E** | Sim | Sim | Sim |
-| Êxito adicional | — | **+1E** | **+1E** |
-| Antecipar adicional | — | **+1A** | **+1A** |
-| Recuperação de Coragem | **1** | **2** | **2** |
-| Dobrar dano | Não | Não | **Sim** |
+| Trocar até **1 Pavor seu por 1 Êxito** | Sim | Sim | Sim |
+| Ganhar **+1 Êxito** | — | Sim | Sim |
+| Ganhar **+1 Antecipar** | — | Sim | Sim |
+| Recuperar **Coragem** | **1** | **2** | **2** |
+| **Dobrar o dano** | — | — | Sim |
 
-**Os benefícios são cumulativos:** três dados em faces críticas também incluem o benefício de dois; quatro dados em faces críticas incluem os benefícios anteriores e acrescentam dano dobrado. **Converter 1P em 1E substitui a antiga regra que convertia todos os símbolos da face em Êxitos**. Caso não exista Pavor próprio, essa conversão não produz Êxito grátis, mas os demais benefícios continuam.
+Os benefícios **se somam**: com três dados críticos, você também pode trocar 1 Pavor por 1 Êxito; com quatro, recebe tudo o que aparece na última coluna. Se não tiver Pavor para trocar, simplesmente não ganha o Êxito dessa troca. Você continua recebendo os outros benefícios.
 
-**Exemplo:** d6 na face 6 (1E) e d10 na face 7 (2E), ambos mantidos, formam crítico de dois dados: 3E, nenhum Pavor e recuperação de até 1 Coragem. Não há Pavor próprio para converter. Ainda é necessário alcançar a DE. A face 10 do d10 continua 2E+1P, mas não é crítica.
+**Exemplo:** você mantém um **d6 na face 6 (ᛋ, 1E)** e um **d10 na face 7 (ᛋᛋ, 2E)**. Como os dois estão em suas faces críticas, você fez um crítico com **3 Êxitos** e recupera **1 Coragem**, até seu limite. Como não há Pavor nesse resultado, não há nada para converter em Êxito. Você ainda precisa alcançar a **Dificuldade de Êxito (DE)** para realizar a ação.
 
-**Coragem:** teto inicial 10, aumentado pela progressão e Maestrias até o máximo absoluto 15. Recuperação acima do teto não se acumula.
+**E o dano dobrado?** Se conseguir manter **quatro dados críticos** em um ataque, o dano calculado com sua rolagem é dobrado **antes de passar pelas proteções do alvo**. Imagine que seu ataque causaria **6 de dano**: com esse crítico, ele passa a causar **12**. Se uma proteção absorver **5**, sobram **7** para resolver contra as demais defesas ou a Vida, conforme as regras de dano. Esse bônus não dobra automaticamente efeitos que causam uma quantidade fixa de dano direto à Vida; por exemplo, um efeito de **+1 Vida direta** continua causando **+1**. O crítico também não aumenta os limites de dano à Vida.
 
-**Dano dobrado — DEFINIDO:** No crítico de quatro dados, dobre o dano calculado a partir da rolagem antes de aplicar proteções, resistências, vulnerabilidades e limites de Vida. Resolva os efeitos fixos e exceções conforme suas regras próprias; não dobre automaticamente um valor fixo de dano direto à Vida nem altere os limites de Vida. Exemplo: dano rolado 6 passa a 12 antes das proteções; se uma proteção absorver 5, restam 7 para a etapa seguinte, não 2.
+**Fique de olho nos símbolos dourados:** eles mostram que um dado caiu em sua face crítica, mas o crítico da ação só acontece depois que você escolhe os dados mantidos.
 
-**Sinalização visual [DEFINIDO]:** apenas os **ícones dos símbolos da face crítica** são destacados em **dourado**. O fundo, o número e o contorno do dado não mudam de cor por ser uma face crítica. O destaque indica potencial de crítico, que só se confirma depois da escolha dos mantidos.
+**Coragem recuperada:** você não pode ultrapassar seu limite de Coragem. O limite começa em **10** e pode aumentar com a progressão e as Maestrias, até o máximo absoluto de **15**.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
