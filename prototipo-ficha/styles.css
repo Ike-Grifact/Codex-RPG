@@ -736,6 +736,14 @@ html[data-theme="light"] .fp-brand img{background:#ffffff}
 .fp-gene-detail h4{font-size:19px;color:var(--fp-text);margin:10px 0}
 .fp-gene-detail p{line-height:1.6;color:var(--fp-muted);font-size:12px;max-height:160px;overflow:auto}
 .fp-gene-detail dl{display:grid;gap:5px;margin:15px 0;font-size:11px}
+.fp-gene-detail .fp-gene-player-intro{font-size:13px;line-height:1.55;color:var(--fp-text);max-height:none;overflow:visible}
+.fp-gene-player-subtitle{font-size:12px;color:var(--fp-gold);font-weight:750;margin:18px 0 8px}
+.fp-gene-player-benefits{padding-left:19px;margin:0 0 13px;display:grid;gap:10px;color:var(--fp-text);font-size:12px;line-height:1.65}
+.fp-gene-player-benefits li{padding-left:2px}
+.fp-gene-detail .fp-gene-player-note{font-size:11px;line-height:1.6;padding:10px 12px;border-left:2px solid var(--fp-stroke);max-height:none;overflow:visible}
+.fp-skill-quick .fp-skill-quick-benefit{grid-column:1/-1}
+.fp-skill-quick .fp-skill-quick-benefit dd{display:block;-webkit-line-clamp:unset;overflow:visible}
+
 .fp-gene-detail dt{color:var(--fp-gold);font-weight:700;margin-top:9px}
 .fp-gene-detail dd{color:var(--fp-text);margin:0;line-height:1.5}
 .fp-gene-detail-status{display:inline-flex;padding:6px 9px;border-radius:40px;border:1px solid var(--fp-stroke);
