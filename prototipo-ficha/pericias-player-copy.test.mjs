@@ -107,3 +107,15 @@ test("Manejo Perfeito é passivo, conciso e referencia mecânicas sem tratá-las
  assert.doesNotMatch(html,/Descrição completa|Aplicação prática|Sem custo adicional especificado|SRD v0\.87|Arma Certa foi removida/);
  assert.match(player,/"manejo-perfeito":\{\s*type:"Passiva — sem custo de ativação"/);
 });
+
+
+test("Identidade visual e classificação das Perícias",()=>{
+ const source=readFileSync(new URL("../assets/skill-presentation.js",import.meta.url),"utf8");const win={};new Function("window",source)(win);
+ const {metadata,byId,decorateEscaped}=win.CODEX_SKILL_PRESENTATION;
+ const catalog=readFileSync(new URL("../pericias/index.html",import.meta.url),"utf8");const slugs=[...catalog.matchAll(/<h3><a href="([^"/]+)\.html"/g)].map(x=>x[1]);assert.equal(Object.keys(metadata).length,new Set(slugs).size);
+ for(const slug of slugs){const m=metadata[slug];assert.ok(m?.type&&m?.cost&&m?.icon,slug);readFileSync(new URL("../assets/icons/codex/"+m.icon+".svg",import.meta.url));}
+ assert.equal(byId["manejo-perfeito"].type,"Passiva");assert.equal(byId["disciplina-avancada"].cost,"Sem custo de ativação");assert.equal(byId["armas-leves"].type,"Ativa + benefício passivo");
+ for(const slug of ["combate","armas-1","artes-marciais","combinacao-de-fontes","golpe-certo","vantagens-e-desvantagens"])assert.equal(metadata[slug],undefined);
+ assert.match(decorateEscaped("+1E e −1A"),/exito\.svg[\s\S]*antecipar\.svg/);assert.equal(decorateEscaped("1 XP e 1 Coragem"),"1 XP e 1 Coragem");
+ assert.match(player,/skillRuneHTML\(benefit\)/);assert.match(player,/presentation\.cost/);
+});

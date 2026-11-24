@@ -45,6 +45,9 @@ function standardNavigation(header){
  });
 }
 applyTheme(initialTheme());
+if(/\/(pericias|mecanicas)(\/|$)/.test(location.pathname)){
+ var skillUI=document.createElement("script");skillUI.src="../assets/skill-presentation.js?v=20261123-v0104";skillUI.defer=true;document.head.appendChild(skillUI);
+}
 document.addEventListener("DOMContentLoaded",function(){
  var header=document.querySelector(".site-header");
  if(!header)return;

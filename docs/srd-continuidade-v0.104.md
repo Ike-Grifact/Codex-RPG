@@ -19,3 +19,8 @@ Golpe Certo e Vantagens e Desvantagens são **mecânicas**, não Perícias adqui
 Remover dos blocos de Perícias relacionadas dos verbetes ativos as referências a Perícias obsoletas, como Combate, Armas 1, Artes Marciais e Combinação de Fontes. Links de mecânicas ficam em seção própria. Preservar os arquivos legados como histórico/compatibilidade e não reescrever os efeitos das demais Perícias.
 
 A pendência de efetivação do pagamento de Coragem antes da rolagem (v0.101) não foi alterada.
+
+
+## Identidade visual e referências (23/11/2026)
+
+Separar tipo e custo de ativação do XP. Perícia passiva não exige custo próprio; ativa pode ter custo, inclusive zero. Benefícios passivos podem coexistir com ativações pagas. Classificações e custos não confirmados permanecem PENDENTES. Reutilizar os SVGs de Êxito, Antecipar, Pavor e pictogramas existentes no Codex Genético, com ícone da constelação quando não houver específico. Manter valores e nomes em texto. Perícias relacionadas apontam para entradas ativas; mecânicas têm grupo próprio. Arquivos antigos são preservados por compatibilidade, sem exposição como Perícias atuais.
