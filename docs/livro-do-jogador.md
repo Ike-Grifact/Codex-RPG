@@ -453,51 +453,51 @@ Atributos não são apenas dados: alguns também alteram **Vida, capacidade de c
 
 #### ◇ Força
 
-Permite erguer, empurrar, sustentar pesos, agarrar e vencer obstáculos físicos. Não se limita a causar dano: segurar uma passagem para o grupo também é uma ação de Força.
+Potência física para vencer resistência, deslocar massas e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços, transportar um companheiro ferido ou disputar espaço com um oponente. Sua utilidade vai além de atacar: em uma exploração, abrir caminho ou proteger a retirada do grupo pode ser a melhor contribuição.
 
 **Na ficha:** A Vida máxima recebe +1 a cada dois graus completos de Força. Para saber quanto pode carregar, some os Graus de Força, Vigor e Atletismo. A cada **3 Graus somados**, você ganha **1 Alto** de capacidade corporal, além do **1 Alto inicial**. A mochila acrescenta **0,5 Alto**.
 
-**Exemplo:** Força + Atletismo para levantar uma viga e libertar um aliado.
+**Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
 
 #### ◇ Agilidade
 
-Ajuda a reagir, mudar de posição, atravessar perigos e alcançar lugares rapidamente.
+Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
 
 **Na ficha:** Cada grau soma 1 metro ao deslocamento padrão e 1 à parcela de Agilidade na DE defensiva natural, respeitando tetos e modificadores.
 
-**Exemplo:** Agilidade + Furtividade para trocar de cobertura sem ser visto.
+**Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
 
 #### ◇ Destreza
 
-Destreza representa **percepção, mira e precisão**. Ajuda a notar detalhes, perceber movimentos e sinais de perigo, apontar um disparo, coordenar mãos e ferramentas, manipular mecanismos e executar procedimentos delicados. Perceber algo não significa automaticamente compreender seu significado; outras Aptidões podem ser necessárias conforme a abordagem.
+Reúne percepção, mira e precisão: notar detalhes do ambiente, acompanhar movimentos, identificar sinais de perigo e coordenar mãos e ferramentas. É a diferença entre executar uma tarefa com cuidado e realizá-la de modo grosseiro. Perceber uma marca não significa entender sua origem; para interpretar aquilo que viu, pode ser necessário outro Conhecimento.
 
 **Na ficha:** Destreza e Vigor ajudam na defesa: a cada **2 Graus somados** entre eles, sua DE defensiva natural aumenta em **1**, respeitando os limites.
 
-**Exemplo:** Destreza + Medicina para cuidar de um ferimento difícil; Destreza + Disciplina para mirar com uma arma habilitada, conforme as regras de ataque.
+**Possibilidades em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para localizar e retirar um material frágil.
 
 #### ◇ Inteligência
 
-Ajuda a analisar pistas, estudar máquinas, reconhecer padrões e planejar soluções antes de agir.
+Capacidade de raciocinar, relacionar informações, aprender e elaborar soluções. Permite investigar causas, prever consequências e escolher um método em vez de depender apenas da tentativa e erro. É especialmente valiosa quando o grupo enfrenta algo desconhecido, como uma máquina antiga, uma substância estranha ou um fenômeno cuja lógica precisa ser descoberta.
 
 **Na ficha:** Não aumenta automaticamente Vida, carga ou DE defensiva natural; seus graus oferecem dados em testes pertinentes e podem cumprir requisitos de Perícias.
 
-**Exemplo:** Inteligência + Engenharia para entender por que uma máquina parou.
+**Possibilidades em jogo:** Inteligência + Engenharia para identificar uma falha mecânica; Inteligência + Alquimia para investigar uma mistura; Inteligência + Erudição para relacionar pistas históricas. Não substitui o treinamento ou os materiais necessários para executar a solução.
 
 #### ◇ Influência
 
-Abre caminhos sociais: negociar, persuadir, inspirar, provocar, convencer ou buscar uma trégua. Um conflito pode terminar sem combate se o inimigo tiver razões para ouvir.
+Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Pode servir para negociar, persuadir, intimidar, inspirar, provocar ou mediar uma disputa. Uma ameaça pode ser resolvida oferecendo uma saída aceitável ao adversário, descobrindo seus interesses ou convencendo-o de que lutar não vale a pena. É uma via de protagonismo tão relevante quanto a força física.
 
 **Na ficha:** Não obriga criaturas a obedecer nem garante uma resolução pacífica. O Narrador considera a compreensão, os interesses e a disposição do interlocutor para determinar se há teste e qual é a DE.
 
-**Exemplo:** Influência + Apresentação para discursar; Influência + Erudição para negociar com base em costumes.
+**Possibilidades em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais. O diálogo precisa fazer sentido para o interlocutor: criaturas incapazes de compreender a proposta não se tornam obedientes por causa de um teste.
 
 #### ◇ Vigor
 
-Ajuda a suportar esforço, cansaço, desgaste e condições fisicamente exigentes.
+Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajuda a enfrentar jornadas cansativas, esforços prolongados e ambientes hostis quando resistir é o objetivo da ação. Distingue-se de Força: erguer algo muito pesado exige potência; sustentar o esforço por muito tempo pode exigir Vigor.
 
 **Na ficha:** Cada grau acrescenta 1 à Vida máxima. Também ajuda na capacidade de carga junto com Força e Atletismo (mais **1 Alto** a cada **3 Graus somados**) e na defesa junto com Destreza (**+1 DE** a cada **2 Graus somados**).
 
-**Exemplo:** Vigor + Atletismo para completar uma travessia exaustiva.
+**Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
 
 **Como calcular sua defesa, sem decorar fórmulas:** comece com seus Graus de **Agilidade**; acrescente **+1 para cada 2 Graus somados de Destreza e Vigor**; acrescente **+1 para cada 3 Graus de Atletismo**. A DE natural não passa de **9** antes dos modificadores aplicáveis. **Sua Vida:** começa com **4 pontos**, ganha **+1 por Grau de Vigor** e **+1 a cada 2 Graus de Força**.
 
@@ -523,39 +523,41 @@ Práticas representam atividades treinadas e ajudam a transformar intenções em
 
 #### ⚔ Disciplina
 
-Treino de técnicas marciais e mágicas, conforme as Perícias habilitadoras.
+Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange a aplicação de uma arma, o domínio de movimentos de combate e a execução de uma conjuração habilitada. Não representa duas Práticas diferentes: o equipamento e as Perícias adquiridas determinam quais técnicas o personagem pode realizar. Um especialista pode construir sua profissão em torno das armas, da magia ou de uma combinação das duas.
 
-**Em jogo:** Aplicar uma técnica de arma ou conjuração habilitada; não são duas Práticas separadas.
+**Possibilidades em jogo:** Disciplina + Força para aplicar potência a um golpe com arma habilitada; Disciplina + Destreza para mirar; Disciplina + Inteligência para executar uma conjuração permitida. A Especialização em Disciplina permite acrescentar uma terceira Aptidão quando Disciplina é a principal, sem dispensar as habilitações específicas.
 
 #### ⚔ Atletismo
 
-Treino de corrida, salto, escalada e esforço corporal.
+Treinamento do corpo para deslocar-se e superar obstáculos de maneira eficiente. Inclui corrida, salto, escalada, equilíbrio e esforço coordenado. Diferentemente de Força, que mede potência, Atletismo representa a técnica para utilizar o corpo. Um personagem atlético pode abrir rotas para o grupo, alcançar posições vantajosas ou atravessar terrenos difíceis.
 
-**Em jogo:** Escalar uma parede. Cada três graus completos somam +1 m de deslocamento e +1 à DE defensiva natural.
+**Na ficha:** A cada 3 Graus de Atletismo, você recebe +1 metro de deslocamento e +1 à DE defensiva natural, respeitando os limites. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
+
+**Possibilidades em jogo:** Atletismo + Agilidade para cruzar plataformas; Atletismo + Força para escalar carregando equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
 
 #### ⚔ Furtividade
 
-Treino de ações discretas e movimentos sem ser notado.
+Treinamento para controlar ruídos, movimentos e exposição, aproveitando cobertura, sombras e distrações. Serve para observar sem anunciar presença, aproximar-se discretamente e evitar confrontos desnecessários. Não é invisibilidade: o ambiente, a atenção de quem observa e as regras de localização em combate continuam relevantes.
 
-**Em jogo:** Atravessar uma área vigiada.
+**Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para passar por objetos que poderiam denunciar a presença. Perícias de Furtividade habilitam efeitos específicos; a Prática sozinha não os concede automaticamente.
 
 #### ⚔ Artesão
 
-Treino de fabricação, trabalho manual e reparos.
+Treinamento manual para transformar materiais em objetos úteis, montar componentes, reparar danos e trabalhar com ferramentas. Um artesão sabe aplicar procedimentos concretos: cortar, ajustar, encaixar e dar acabamento. Distingue-se de Engenharia, que estuda por que uma estrutura ou mecanismo funciona. É uma base para personagens inventores, fabricantes de equipamento e criadores de itens de foco.
 
-**Em jogo:** Consertar um equipamento com ferramentas adequadas.
+**Possibilidades em jogo:** Artesão + Destreza para ajustar uma peça delicada; Artesão + Força para trabalhar um componente pesado; Artesão + Inteligência para executar um projeto. Criar Item de Foco e Magia exige Artesão 1, Disciplina 1 e Inteligência 1, além da aquisição da Perícia.
 
 #### ⚔ Apresentação
 
-Treino de atuação, discurso e performance.
+Treinamento de voz, expressão corporal, interpretação e comunicação diante de outras pessoas. Permite organizar um discurso, representar um papel, contar uma história ou conduzir uma performance. Influência mede a capacidade de afetar o interlocutor; Apresentação fornece a técnica para transmitir a mensagem de forma convincente. Pode servir tanto a artistas quanto a negociadores e líderes.
 
-**Em jogo:** Prender a atenção de uma plateia.
+**Possibilidades em jogo:** Apresentação + Influência para defender uma proposta em público; Apresentação + Destreza para uma performance que exige coordenação. Uma atuação pode distrair observadores quando a situação permitir, mas não garante que deixem de perceber outros personagens.
 
 #### ⚔ Coleta
 
-Treino de procura, identificação e obtenção de recursos.
+Treinamento para procurar, reconhecer, extrair e preservar recursos encontrados no ambiente. Inclui escolher onde buscar, separar materiais aproveitáveis e evitar desperdício durante a retirada. Pode sustentar expedições, fornecer matéria-prima para trabalhos e ajudar o grupo a aproveitar regiões desconhecidas. O recurso precisa existir e ser acessível; uma rolagem não cria materiais do nada.
 
-**Em jogo:** Localizar materiais úteis numa região.
+**Possibilidades em jogo:** Coleta + Destreza para retirar um material delicado; Coleta + Força para desprender um recurso resistente; Coleta + Inteligência para organizar uma busca a partir de indícios.
 
 #### Progressão de Práticas — dados e XP
 
@@ -577,39 +579,39 @@ Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam p
 
 #### ✦ Proteção
 
-Estudo de defesas, riscos e maneiras de proteger pessoas e locais.
+Conhecimento sobre segurança, vulnerabilidades, barreiras e métodos defensivos. Ajuda a entender por onde uma ameaça pode passar, quais posições estão expostas e como proteger pessoas ou objetos. Pode orientar tanto a preparação de uma expedição quanto a análise de defesas durante um conflito. Não equivale à DE defensiva nem aumenta automaticamente a Integridade de equipamentos.
 
-**Em jogo:** Analisar a segurança de uma passagem.
+**Possibilidades em jogo:** Proteção + Inteligência para analisar pontos frágeis de uma fortificação; Proteção + Destreza para examinar um mecanismo defensivo. A Perícia em Armadilha utiliza Proteção como Conhecimento pertinente e concede seu benefício conforme o verbete.
 
 #### ✦ Astronomia
 
-Estudo dos astros, ciclos e fenômenos celestes.
+Estudo dos astros, ciclos celestes e fenômenos observáveis no céu. Permite relacionar posições e movimentos aparentes a orientação, passagem do tempo e planejamento de viagens. Pode ajudar a interpretar registros de observações antigas e distinguir um fenômeno esperado de algo incomum. Seu valor está em extrair informação do céu, não em conceder previsão infalível ou magia automática.
 
-**Em jogo:** Orientar uma viagem usando o céu.
+**Possibilidades em jogo:** Astronomia + Inteligência para interpretar um calendário celeste ou reconstruir uma observação; Astronomia + Destreza para localizar uma referência no céu. Nuvens, ausência de referências e instrumentos disponíveis podem afetar a viabilidade do teste.
 
 #### ✦ Medicina
 
-Conhecimento sobre ferimentos, doenças e cuidados.
+Conhecimento sobre o funcionamento do corpo, ferimentos, enfermidades e procedimentos de atendimento. Ajuda a reconhecer sinais de perigo, distinguir problemas semelhantes e escolher cuidados adequados. Em uma aventura, o médico pode avaliar quem precisa de ajuda primeiro e planejar um tratamento; durante um conflito, seus conhecimentos podem ser essenciais para manter aliados capazes de agir.
 
-**Em jogo:** Avaliar uma lesão e escolher como tratá-la.
+**Possibilidades em jogo:** Medicina + Inteligência para avaliar a causa de sintomas; Medicina + Destreza para executar um cuidado delicado. A Medicina Avançada habilita a tentativa de remover Sangrando conforme suas regras; possuir Medicina não concede cura automática.
 
 #### ✦ Alquimia
 
-Estudo de substâncias, misturas e transformações.
+Estudo das propriedades das substâncias, misturas e transformações. Permite investigar materiais desconhecidos, avaliar possíveis reações e compreender como diferentes componentes podem produzir novos resultados. É uma base para personagens dedicados a preparações, pesquisa e criação alquímica, inclusive especializações associadas à magia. Saber como uma substância funciona não significa possuir os reagentes ou ter concluído sua fabricação.
 
-**Em jogo:** Investigar um líquido desconhecido.
+**Possibilidades em jogo:** Alquimia + Inteligência para investigar um líquido estranho; Alquimia + Destreza para manipular uma preparação delicada. A Perícia em Veneno exige Alquimia 2 e Medicina 2, além de Disciplina 2 e Inteligência 2; os efeitos específicos dependem da Perícia.
 
 #### ✦ Engenharia
 
-Compreensão de estruturas, máquinas e mecanismos.
+Conhecimento de estruturas, mecanismos, máquinas e soluções técnicas. Ajuda a identificar como componentes trabalham juntos, por que algo falhou e o que precisa mudar para que um projeto funcione. Em exploração, pode revelar formas de contornar obstáculos; em conflitos, pode orientar o uso do ambiente. A execução material de um projeto pode depender de Artesão, ferramentas e recursos.
 
-**Em jogo:** Identificar a falha de uma ponte.
+**Possibilidades em jogo:** Engenharia + Inteligência para diagnosticar uma máquina ou avaliar uma ponte; Engenharia + Destreza para examinar o alinhamento de um mecanismo. Compreender um projeto não produz automaticamente uma construção pronta.
 
 #### ✦ Erudição
 
-Estudo de registros, história, cultura e saberes especializados.
+Conhecimento de história, culturas, tradições, registros escritos e saberes especializados. Permite conectar informações que parecem isoladas, compreender referências antigas e avaliar relatos à luz de outros conhecimentos. Ajuda a explorar ruínas, interpretar documentos e negociar com povos cujos costumes seriam desconhecidos para o grupo. Diferentemente de Inteligência, que representa a capacidade de raciocinar, Erudição oferece o repertório sobre o qual esse raciocínio opera.
 
-**Em jogo:** Interpretar uma inscrição ou tradição.
+**Possibilidades em jogo:** Erudição + Inteligência para comparar crônicas e interpretar inscrições; Erudição + Influência para construir um argumento baseado em costumes ou precedentes. O personagem não conhece automaticamente todos os segredos do cenário.
 
 #### Progressão de Conhecimentos — dados e XP
 
