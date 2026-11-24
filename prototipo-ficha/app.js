@@ -1658,7 +1658,7 @@ const PLAYER_SKILL_COPY={
    "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, custa 1 Coragem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Média, você ignora a Desvantagem natural de peso da arma média (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
-  note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Cravar segue suas condições próprias: uma arma média não pode Cravar escudo Pesado."
+  note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Exceção: se sua arma média possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico Leve ou Médio; isso não habilita outras características."
  },
  "armas-pesadas":{
   intro:"Você domina o manejo de armas pesadas e sabe explorar suas características durante o combate.",
@@ -1667,7 +1667,7 @@ const PLAYER_SKILL_COPY={
    "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, custa 1 Coragem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Leve ou Muito Leve, você ignora a Desvantagem natural de peso da arma pesada (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
-  note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Cravar segue suas condições próprias, inclusive contra escudos Pesados."
+  note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou. Exceção: se sua arma pesada possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico, inclusive Pesado; isso não habilita outras características."
  }
 };
 
