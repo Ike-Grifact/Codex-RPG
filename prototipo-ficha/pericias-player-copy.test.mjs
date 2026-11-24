@@ -133,3 +133,22 @@ test("Artista Marcial: uma manobra no acerto e sinergia com Pugilismo",()=>{cons
 test("Saque Rápido distingue acesso rápido de inventário",()=>{const html=readFileSync(new URL("../pericias/saque-rapido.html",import.meta.url),"utf8");assert.match(html,/arma de acesso rápido/);assert.match(html,/Sem esse símbolo, aplica-se a Desvantagem Absoluta/);assert.match(html,/dentro do inventário[^<]*Desvantagem Absoluta[^<]*Sem Saque Rápido[^<]*Golpe de Sorte/);assert.match(html,/<dd>1 XP<\/dd>/);assert.match(player,/Arma guardada\. Sacar uma arma de dentro do inventário/);});
 
 test("Golpe Fulminante segue padrão editorial e pagamento antecipado",()=>{const html=readFileSync(new URL("../pericias/golpe-fulminante.html",import.meta.url),"utf8");assert.match(html,/<h2>Benefícios<\/h2>/);assert.match(html,/Disciplina 2, Força 2/);assert.match(html,/Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo/);assert.match(html,/<dd>1 XP<\/dd>/);assert.match(html,/<dd>Ativa<\/dd>/);assert.match(html,/1 Coragem antes de rolar/);assert.match(html,/transferido aos inimigos/);assert.match(html,/5 Coragens por turno/);});
+
+
+test("Runas sem fundo e dados com contorno em Fulminante e Colossal",()=>{
+ const win={};new Function("window",readFileSync(new URL("../assets/skill-presentation.js",import.meta.url),"utf8"))(win);
+ const decorate=win.CODEX_SKILL_PRESENTATION.decorateEscaped;
+ assert.match(decorate("+1E e 2P"),/status-exito\.svg[\s\S]*status-pavor\.svg/);
+ assert.match(decorate("d6 → d10; d12 → 2d12"),/codex-inline-die[\s\S]*<svg[\s\S]*fill="none"[\s\S]*2d12/);
+ for(const id of ["exito","antecipar","pavor"]){const svg=readFileSync(new URL("../assets/icons/codex/status-"+id+".svg",import.meta.url),"utf8");assert.doesNotMatch(svg,/<rect|<circle|fill="#/);assert.match(svg,/fill="none"/);}
+ for(const slug of ["golpe-fulminante","golpe-colossal","pericia-em-armas-leves","pericia-em-armas-medias","pericia-em-armas-pesadas"]){const html=readFileSync(new URL("../pericias/"+slug+".html",import.meta.url),"utf8");assert.match(html,/Mecânicas relacionadas/);assert.match(html,/caracteristicas-de-combate\.html#armas/);assert.doesNotMatch(html,/Exceção — Cravar/);}
+ const mechanics=readFileSync(new URL("../mecanicas/caracteristicas-de-combate.html",import.meta.url),"utf8");
+ for(const id of ["armas","cravar","golpes","magias","perfurar"])assert.match(mechanics,new RegExp('id="'+id+'"'));
+ assert.match(mechanics,/Perícia em Armas do peso correspondente \(inclusive no crítico\)/);
+ assert.doesNotMatch(player,/cravarFree|freeCravarCritical|crítico OU Perícia pertinente/);
+});
+
+test("Cravar aplica −1E por arma registrada apenas em Levantar Escudo",()=>{
+ assert.match(player,/const shieldCravarPenalty=p\.opts\.shieldRaise&&raisedShield\?\.embeddedWeapon\?1:0;/);
+ assert.doesNotMatch(player,/arma cravada: −2E|−2E ao Levantar Escudo/);
+});

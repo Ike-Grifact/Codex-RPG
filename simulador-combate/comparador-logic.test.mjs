@@ -523,18 +523,24 @@ test("Maestrias requerem atributos próprios e habilitação da arma para usar g
  assert.equal(canUseWeaponMastery({race:"humano",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),true);
  assert.equal(canUseWeaponMastery({race:"runa_espinhos",skills:["maestria-armas-fogo"]},"maestria-armas-fogo"),false);
 });
-test("Cravar mantém exceção histórica: crítico com arma Média/Pesada não exige Perícia",()=>{
+test("Cravar exige Perícia de peso em acerto comum e crítico",()=>{
  for(const category of ["medio","pesado"]){
-  const weapon={id:"cravar",kind:"weapon",name:"Lança",equipped:true,category,
-   properties:["Cravar","Perfurante"]};
-  const noSkill={skills:[],practices:{armas_conjuracao:0},attributes:{forca:0}};
-  const crit=planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:2});
-  assert.equal(crit.ok,true,"Cravar excepcional no crítico "+category);
-  assert.equal(crit.cost,0);
-  assert.deepEqual(crit.active,["Cravar"]);
-  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical:0}).ok,false);
-  assert.equal(planWeaponEffects(noSkill,weapon,["Perfurante"],{success:true,critical:2}).ok,false);
-  assert.equal(planWeaponEffects(noSkill,weapon,["Cravar","Perfurante"],{success:true,critical:2}).ok,false);
+  const weapon={id:"cravar",kind:"weapon",name:"Lança",equipped:true,category,properties:["Cravar","Perfurante"]};
+  const skill=category==="medio"?"armas-medias":"armas-pesadas";
+  const noSkill={skills:[],practices:{armas_conjuracao:2},attributes:{forca:2}};
+  for(const critical of [0,2,4]){
+   assert.equal(planWeaponEffects(noSkill,weapon,["Cravar"],{success:true,critical}).ok,false);
+   assert.equal(planWeaponEffects({...noSkill,skills:["maestria-hastes"]},weapon,["Cravar"],{success:true,critical}).ok,false);
+   const qualified={...noSkill,skills:[skill]};
+   const result=planWeaponEffects(qualified,weapon,["Cravar"],{success:true,critical});
+   assert.equal(result.ok,true);assert.equal(result.cost,1);assert.deepEqual(result.active,["Cravar"]);
+   assert.equal(planWeaponEffects({...qualified,practices:{armas_conjuracao:0}},weapon,["Cravar"],{success:true,critical}).ok,false);
+  }
+  assert.equal(declareWeaponEffects(noSkill,weapon,["Cravar"]).ok,false);
+  const qualified={...noSkill,skills:[skill]},declared=declareWeaponEffects(qualified,weapon,["Cravar"]);
+  assert.equal(declared.cost,1);
+  assert.deepEqual(resolveDeclaredWeaponEffects(qualified,weapon,["Cravar"],declared,{success:false}).active,[]);
+  assert.equal(resolveDeclaredWeaponEffects(noSkill,weapon,["Cravar"],declared,{success:true,critical:2}).ok,false);
  }
 });
 test("Cravar valida escudo físico e categoria; demais efeitos não inventam condição",()=>{

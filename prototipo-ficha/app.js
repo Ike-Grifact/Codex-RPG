@@ -1687,7 +1687,7 @@ const PLAYER_SKILL_COPY={
    "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Média, você ignora a Desvantagem natural de peso da arma média (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
-  note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma média possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico Leve ou Médio; isso não habilita outras características."
+  note:"Para usar: tenha a Perícia adquirida e uma arma média equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Cravar exige esta Perícia, mesmo em acerto crítico, e escudo físico Leve ou Médio."
  },
  "armas-pesadas":{
   intro:"Você domina o manejo de armas pesadas e sabe explorar suas características durante o combate.",
@@ -1696,7 +1696,7 @@ const PLAYER_SKILL_COPY={
    "Acerto crítico. Se o ataque acertar e for crítico, você recupera 1 Coragem que já pagou para ativar a característica. Assim, ela fica gratuita no saldo final, usando a recuperação normal do crítico. Uma segunda característica diferente, quando permitida, exige Coragem declarada antes da rolagem.",
    "Combate e peso da armadura. Ao atacar um alvo com armadura Leve ou Muito Leve, você ignora a Desvantagem natural de peso da arma pesada (−1 Antecipar). Outras Desvantagens continuam valendo."
   ],
-  note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Exceção: se sua arma pesada possui Cravar, um acerto crítico pode ativá-la sem esta Perícia contra escudo físico, inclusive Pesado; isso não habilita outras características."
+  note:"Para usar: tenha a Perícia adquirida e uma arma pesada equipada. Você só pode ativar características que a arma possui. Declare a característica e gaste a Coragem antes de rolar; se errar, o gasto não é devolvido. Cravar exige esta Perícia, mesmo em acerto crítico, e escudo físico apropriado, inclusive Pesado."
  }
 };
 
@@ -4498,7 +4498,7 @@ function renderComposer(){
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
-  '<div class="fp-alert"><strong>RETIRAR CRAVAR — '+esc(removalShield?.name||"Escudo")+'</strong><p>Combine Força, Atletismo ou Vigor com outra aptidão pertinente. A DE depende do PESO DA ARMA cravada, máximo 4 — o Narrador informa a dificuldade; não há tabela numérica fixa aprovada.</p>'+
+  '<div class="fp-alert"><strong>RETIRAR CRAVAR — '+esc(removalShield?.name||"Escudo")+'</strong><p>Combine Disciplina ou Atletismo com Força, Vigor ou Destreza. A DE depende do PESO DA ARMA cravada, máximo 4 — o Narrador informa a dificuldade; não há tabela numérica fixa aprovada.</p>'+
   '<label class="fp-checkline"><input type="checkbox" data-option="cravarRemovalDEConfirmed"'+
   (draft.cravarRemovalDEConfirmed?' checked':'')+'> Confirmo que o Narrador definiu a DE da arma (1 a 4)</label>'+
   '<p>Uma rolagem de retirada não é ataque, não causa dano e só remove a condição ao vencer a DE.</p></div>':"";
@@ -4526,7 +4526,7 @@ function renderComposer(){
  const shieldRaiseChoice=isShared&&draft.mode==="armas"&&carriedShield&&!throwingShield&&!draft.maosLeves?
   '<label class="fp-checkline full"><input type="checkbox" data-option="shieldRaise"'+
   (draft.shieldRaise?" checked":"")+'> Levantar Escudo físico'+
-  (carriedShield.embeddedWeapon?' (arma cravada: −2E nesta ação)':'')+'</label>':"";
+  (carriedShield.embeddedWeapon?' (arma cravada: −1E nesta ação)':'')+'</label>':"";
  const stealthCheckbox=ownsSkill("golpe-furtivo")&&isShared&&draft.mode==="armas"&&!draft.maosLeves&&!throwingShield?
   '<label class="fp-checkline full"><input type="checkbox" data-option="stealthAttack"'+(draft.stealthAttack?' checked':'')+'> Golpe Furtivo: ataque furtivo confirmado pelo Narrador (+1 dado da arma equipada)</label>':"";
  const potionCheckbox=ownsSkill("pesquisa-avancada-pocoes")&&!draft.maosLeves&&draft.mode!=="conjuracao"?
@@ -4720,13 +4720,13 @@ function score(){
  const magicMixA=p.opts.magicElement&&Number(p.opts.magicGrade)===4?1:0;
  if(cancel+2*pairs+pass+magicMixA>aPool)errs.push("Antecipar insuficiente: G4 plena exige 1A de mistura além dos demais gastos.");
  // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
- // v0.77: −2E somente quando a ação declarada é Levantar Escudo e o escudo carrega uma arma cravada.
+ // v0.79: −1E por arma cravada somente em Levantar Escudo. A ficha isolada registra uma arma por escudo.
  const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
  if(p.opts.shieldRaise&&(!raisedShield||p.base?.group!=="practice"||p.base.key!=="armas_conjuracao"||p.mode!=="armas"))
   errs.push("Levantar Escudo exige Disciplina (Armas) e escudo físico equipado.");
  if(p.opts.shieldRaise&&(p.characteristic||p.secondCharacteristic||p.fireMode||p.hemomancyDirectLife))
   errs.push("Levantar Escudo consome uma ação: não é possível ativar simultaneamente Cravar, arma ou magia.");
- const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?2:0;
+ const shieldCravarPenalty=p.opts.shieldRaise&&raisedShield?.embeddedWeapon?1:0;
  const E=Math.max(0,eBase+pairs+health.e-shieldCravarPenalty),P=Math.max(0,pAvailable-cancel),remainingA=Math.max(0,aPool-cancel-2*pairs-pass-magicMixA);
  const reached=E+P,success=reached>=p.opts.de;
  const outcome=success?(P===0?"Acerto puro":P>E?"Acerto com Pavor predominante":"Acerto normal com Pavor")
@@ -4767,19 +4767,13 @@ function score(){
   !(freeElementEffect&&prop==="Elemental")&&!(passivePiercing&&prop==="Perfurante"));
  const masteryFree=p.mode==="armas"&&item?.type==="arma"&&item.equipped&&
   weaponMasteryCanActivate(item,state)?1:0;
- const cravarFree=!!critTier&&declaredProperties.length===1&&declaredProperties[0]==="Cravar"&&
-  ["medio","pesado"].includes(weaponWeight)&&p.mode==="armas";
- courageCost+=Math.max(0,paidProperties.length-masteryFree-(cravarFree?1:0));
+ courageCost+=Math.max(0,paidProperties.length-masteryFree);
  const active=success&&passivePiercing?["Perfurante"]:[];
  if(success&&p.characteristic){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
   const weaponSkillId=weaponWeight==="leve"?"armas-leves":weaponWeight==="medio"?"armas-medias":
    weaponWeight==="pesado"?"armas-pesadas":null;
-  // Cravar conserva a exceção da v0.77: crítico permite essa única característica
-  // com arma Média/Pesada, sem exigir compra da Perícia de peso.
-  const freeCravarCritical=!!critTier&&p.characteristic==="Cravar"&&!p.secondCharacteristic&&
-   ["medio","pesado"].includes(weaponWeight)&&p.mode==="armas";
-  if(weaponSkillId&&!freeCravarCritical&&
+  if(weaponSkillId&&
     (p.mode!=="armas"||!ownsSkill(weaponSkillId)||skillReq(weaponSkillId)))
    errs.push("Ativar características desta arma exige a Perícia de Armas do peso correspondente e seus requisitos atuais.");
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -4791,24 +4785,23 @@ function score(){
    else active.push(p.secondCharacteristic);
   }
  }else if(p.secondCharacteristic){errs.push("Escolha primeiro a característica principal.");}
- // v0.77: Cravar nunca é passivo. Requer DE, arma com característica, Médio/Pesado e
- // crítico OU a Perícia pertinente para acerto não crítico.
+ // v0.115: Cravar é característica ativa, exige Perícia pertinente mesmo no crítico.
  const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
  const weaponCategory=["medio","pesado"].includes(item?.category)?item.category:
   item?.weight==="medio"?"medio":["alto","extremo"].includes(item?.weight)?"pesado":"leve";
  const validCravarWeapon=item?.equipped&&item.type==="arma"&&!item.firearm&&
   p.mode==="armas"&&["medio","pesado"].includes(weaponCategory)&&properties.includes("Cravar");
  const cravarSpecialty=weaponCategory==="medio"?"armas-medias":"armas-pesadas";
- if(cravarChosen&&success){
+ if(cravarChosen){
   if(!validCravarWeapon)errs.push("Cravar requer arma física Média ou Pesada equipada, com a característica Cravar.");
-  if(!critTier&&!ownsSkill(cravarSpecialty))errs.push("Sem crítico, Cravar exige Perícia em Armas Médias ou Pesadas correspondente.");
-  if(!["leve","medio","pesado"].includes(p.cravarTargetShield))
+  if(!ownsSkill(cravarSpecialty)||skillReq(cravarSpecialty))errs.push("Cravar exige Perícia em Armas Médias ou Pesadas correspondente, mesmo no crítico.");
+  if(success&&!["leve","medio","pesado"].includes(p.cravarTargetShield))
    errs.push("Para Cravar, confirme a categoria do escudo físico levantado pelo alvo.");
   if(p.cravarTargetShield==="pesado"&&weaponCategory!=="pesado")
    errs.push("Escudo Pesado ou Muito Pesado só pode ser cravado por arma Pesada.");
  }
  const cravarApplied=!!(cravarChosen&&success&&active.includes("Cravar")&&validCravarWeapon&&
-  (critTier||ownsSkill(cravarSpecialty))&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
+  ownsSkill(cravarSpecialty)&&!skillReq(cravarSpecialty)&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
   (p.cravarTargetShield!=="pesado"||weaponCategory==="pesado"));
  // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
  if(p.opts.trevas&&success&&!freeElementEffect){courageCost+=1;}
@@ -4891,14 +4884,16 @@ function renderPending(){
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
- const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar"));
+ const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar")&&
+  (x!=="Cravar"||((item?.category==="medio"||item?.weight==="medio")&&ownsSkill("armas-medias")&&!skillReq("armas-medias"))||
+   ((item?.category==="pesado"||["alto","extremo"].includes(item?.weight))&&ownsSkill("armas-pesadas")&&!skillReq("armas-pesadas"))));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
   [['','Nenhuma'],...specials.map(x=>[x,x])].map(([id,label])=>'<option value="'+esc(id)+'"'+(id===selected?" selected":"")+'>'+esc(label)+'</option>').join("")+'</select></label>';
  const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
  const cravarSelector=cravarChosen?
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
-  '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
+  '<p class="fp-caption">Cravar requer arma Média/Pesada, Perícia pertinente e DE atingida, inclusive no crítico. Declare a tentativa e pague a Coragem conforme a Perícia ou Especialização. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
  const masteryReady=p.mode==="armas"&&item?.type==="arma"&&weaponMasteryCanActivate(item,state);
  const effectRule=masteryReady?
   "Especialização: primeira característica gratuita no acerto. Para tentar uma segunda, declare 1 Coragem antes de rolar; a recuperação normal do crítico devolve esse gasto em um crítico válido. A terceira característica da Especialização segue registro manual.":
@@ -4957,9 +4952,9 @@ function renderPending(){
   ' O Narrador resolve imunidades, outras barreiras e eventual excedente convencional; sem alteração automática de ficha adversária.</p>':"")+
  (s.cravarApplied?'<p class="fp-caption"><strong>CRAVAR — ESCUDO FÍSICO:</strong> arma '+(p.opts.equipmentId?esc(item?.name||"Média/Pesada"):'Média/Pesada')+
   ' fica presa ao escudo '+(s.cravarTargetShield==="pesado"?'Pesado':s.cravarTargetShield==="medio"?'Médio':'Leve')+
-  ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−2E ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
+  ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−1E por arma cravada ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
  (p.opts.shieldRaise?'<p class="fp-caption"><strong>LEVANTAR ESCUDO:</strong> Integridade simbólica E + P válidos = '+(s.E+s.P)+
-  ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−2E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
+  ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−1E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
  (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
  (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';

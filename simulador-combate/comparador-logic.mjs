@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0114";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0114";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -283,20 +283,21 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
  if(new Set(selected).size!==selected.length||selected.some(x=>!eligible.includes(x)))
   return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
  const access=weaponActivationSkill(c,weapon,{thrown});
- // Exceção preservada da v0.77: Cravar Médio/Pesado pode ativar UM efeito
- // gratuitamente por crítico, mesmo sem a Perícia de peso correspondente.
- const cravarOnCritical=!!critical&&selected.length===1&&selected[0]==="Cravar"&&
-  weapon?.kind==="weapon"&&weapon.equipped!==false&&
-  ["medio","pesado"].includes(weapon.category)&&!thrown;
- if(!access.ok&&!cravarOnCritical)return access;
+ if(!access.ok)return access;
+ // Cravar exige a Perícia de peso mesmo no crítico e com Especialização.
+ if(selected.includes("Cravar")){
+  if(weapon?.kind!=="weapon"||weapon.equipped===false||!["medio","pesado"].includes(weapon.category))
+   return {ok:false,error:"Cravar exige arma física Média/Pesada equipada."};
+  const cravarAccess=weaponActivationSkill(c,{...weapon,name:"",properties:[]});
+  if(!cravarAccess.ok)return cravarAccess;
+ }
  const masteryId=weaponMasteryFor(weapon,{thrown});
  const mastery=canUseWeaponMastery(c,masteryId);
  // SRD v0.101: o custo é pago ao DECLARAR a tentativa, antes do teste.
  // Mesmo no crítico, não zerar o débito: a Coragem volta pelo reembolso
  // crítico de resolveRoll, já contabilizado UMA vez no fechamento da ação.
- // A primeira propriedade da Especialização é gratuita desde a declaração;
- // a exceção de Cravar sem habilitação no crítico também não cobra Coragem.
- const cost=cravarOnCritical&&!access.ok?0:Math.max(0,selected.length-(mastery?1:0));
+ // A primeira propriedade da Especialização é gratuita desde a declaração.
+ const cost=Math.max(0,selected.length-(mastery?1:0));
  if(!success)return {ok:true,active:[],cost,mastery,free:0};
  const free=mastery?(critical?2:1):(critical?1:0);
  const max=mastery?(critical?3:1):(critical?2:1);
@@ -312,7 +313,7 @@ export function resolveDeclaredWeaponEffects(c,weapon,chosen,declared,{success=f
  if(!declared?.ok)return {ok:false,error:"Características não foram declaradas."};
  if(!success)return {...declared,active:[],free:0};
  const access=weaponActivationSkill(c,weapon,{thrown});
- if(!access.ok&&!critical)return {...declared,active:[],free:0};
+ if(chosen.length&&!access.ok)return access;
  const max=declared.mastery?(critical?3:1):(critical?2:1);
  const resolved=planWeaponEffects(c,weapon,chosen.slice(0,max),{success,critical,thrown});
  return resolved.ok?{...resolved,cost:declared.cost}:resolved;
