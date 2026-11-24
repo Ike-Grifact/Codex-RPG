@@ -1639,21 +1639,37 @@ const CARD_ACTIVATIONS={
  "coleta-avancada": "Passiva"
 };
 
+// Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
+// Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
+const PLAYER_SKILL_COPY={
+ "armas-leves":{
+  intro:"Você aprendeu a manejar armas leves e a aproveitar suas características em combate.",
+  benefits:[
+   "Características da arma. Quando você acerta um ataque com uma arma leve, pode gastar 1 Coragem para ativar uma das características que ela possui.",
+   "Acerto crítico. Se o ataque acertar e for crítico, você pode ativar uma característica da arma gratuitamente. Uma segunda característica diferente, quando permitida, custa 1 Coragem.",
+   "Combate contra armaduras pesadas. Ao atacar um alvo com armadura Pesada ou Muito Pesada, você ignora a Desvantagem natural de peso da arma leve (−1 Antecipar). Outras Desvantagens continuam valendo."
+  ],
+  note:"Para usar: tenha a Perícia adquirida e uma arma leve equipada. Você só pode ativar características que a arma possui e não gasta Coragem por uma característica condicionada a um ataque que não acertou."
+ }
+};
+
 function skillCompactCard([id,baseName,detail,cost],wizard){
  const name=id==="escudo-arcano"&&state.race==="runa_espinhos"?"Escudo Rúnico":baseName;
  const racial=racialGrants(state).includes(id),owned=ownsSkill(id),req=skillReq(id),price=skillXpCost(id,cost),affordable=Number.isInteger(price)&&canAfford("skills",price);
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
- const practical=CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105);
+ const guide=PLAYER_SKILL_COPY[id];
+ const practical=guide?guide.benefits[0]:(CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105));
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(price)?price:"?")+" XP · playtest"):price===null?"Pendente":"Comprar · "+price+" XP";
  return '<article tabindex="0" class="fp-skill fp-skill-compact'+(wizard?' fp-wiz-skill':'')+(owned?' owned selected':'')+'" data-skill-open="'+esc(id)+'" aria-label="Abrir detalhes de '+esc(name)+'">'+
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":price===null?"Pendente":price+" XP")+'</dd></div>'+
+  (guide?'<div class="fp-skill-quick-benefit"><dt>Benefício</dt><dd>'+esc(practical)+'</dd></div>':
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
- '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div></dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
- '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(CARD_BRIEFS[id]||detail.slice(0,240))+'</p><small>Clique para abrir explicação completa.</small></div>'+
+ '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div>')+'</dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
+ '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(guide?guide.intro:(CARD_BRIEFS[id]||detail.slice(0,240)))+'</p><small>Clique para abrir explicação completa.</small></div>'+
  '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
  (warning?'<small class="fp-skill-req">'+esc(warning)+'</small>':'')+'</div></article>';
 }
@@ -3572,6 +3588,13 @@ function geneDetailHTML(id,s=state){
  "Escudo Rúnico racial: uma ativação gratuita por dia, resistência a um elemento, 2P mantidos para formar 1E de barreira; DE e Integridade E+P convertidos, duração 1 rodada; sem armadura física. Resistência elemental padrão contra o elemento escolhido: cada E do ataque vale 0,5 de dano e P vale 0 dano elemental, preservadas as consequências de Pavor. Arredondamento geral ainda pendente.":baseDetail;
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
+ const playerGuide=PLAYER_SKILL_COPY[sid];
+ const playerGuideHTML=playerGuide?
+  '<p class="fp-gene-player-intro">'+esc(playerGuide.intro)+'</p>'+
+  '<h5 class="fp-gene-player-subtitle">Benefícios</h5>'+
+  '<ul class="fp-gene-player-benefits">'+playerGuide.benefits.map(benefit=>'<li>'+esc(benefit)+'</li>').join("")+'</ul>'+
+  '<p class="fp-gene-player-note">'+esc(playerGuide.note)+'</p>':
+  '<p>'+esc(sid==="pericia-druidica"?CARD_BRIEFS[sid]:detail)+'</p>';
  const slug=SKILL_PERMALINKS[sid];
  const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
  const skillButton=owned&&racial?'<button type="button" disabled>Concedida pela origem · 0 XP</button>':owned?
@@ -3585,11 +3608,11 @@ function geneDetailHTML(id,s=state){
    '<button type="button" class="fp-primary-btn" data-action="skill" data-id="'+esc(sid)+'"'+(owned||status!=="available"?' disabled':'')+'>'+
    (owned?"Adquirida ✓":status==="available"?"Comprar · "+cost+" XP":"Indisponível")+'</button>';
  return '<span class="fp-gene-detail-status is-'+status+'">'+(owned?"Adquirida":staged?"A confirmar":status==="available"?"Disponível":status==="potential"?"Pacote completo de XP disponível · requisitos pendentes":"Bloqueada")+'</span>'+
-  '<h4 class="fp-gene-detail-heading">'+codexSkillIcon(sid)+'<span>'+esc(name)+'</span></h4><p>'+esc(sid==="pericia-druidica"?CARD_BRIEFS[sid]:detail)+'</p>'+
+  '<h4 class="fp-gene-detail-heading">'+codexSkillIcon(sid)+'<span>'+esc(name)+'</span></h4>'+playerGuideHTML+
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
-  '<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd></dl>'+skillButton+verbete;
+  (playerGuide?"":'<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd>')+'</dl>'+skillButton+verbete;
 }
 function renderGenetic(){
  const preview=genePreviewState();
