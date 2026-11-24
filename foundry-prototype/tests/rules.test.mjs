@@ -21,11 +21,11 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
- assert.deepEqual(faceSymbols(12,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(12,11),[0,0,3]);
  assert.deepEqual(faceSymbols(20,11),[0,0,2]);
- assert.deepEqual(faceSymbols(20,15),[0,0,3]);
+ assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
- for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
+ for(let i=1;i<=12;i++){if(i!==11)assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
@@ -174,4 +174,16 @@ test("Conjuração sem Perícia elemental e sem Psique permanece bloqueada",()=>
  assert.match(buildPool(s,sel,{mode:"conjuracao"}).errors.join(" "),/Perícia elemental ou Criar Item/);
  s.skills=["criar-item-foco-magia"];
  assert.deepEqual(buildPool(s,sel,{mode:"conjuracao"}).errors,[]);
+});
+
+
+test("Face 15 do d20 permite gastar os dois A uma única vez",()=>{
+ const rolled=[{id:"a",group:"attribute",sides:20,face:15}];
+ const cancelled=resolveRoll(rolled,["a"],{de:1,cancelP:2});
+ assert.equal(cancelled.ok,true);assert.deepEqual(cancelled.raw,{e:0,a:2,p:3});
+ assert.equal(cancelled.p,1);assert.equal(cancelled.aRemaining,0);
+ const converted=resolveRoll(rolled,["a"],{de:4,convertPairs:1});
+ assert.equal(converted.ok,true);assert.equal(converted.e,1);assert.equal(converted.p,3);
+ assert.equal(converted.aRemaining,0);assert.equal(converted.success,true);
+ assert.equal(resolveRoll(rolled,["a"],{de:1,cancelP:1,convertPairs:1}).ok,false);
 });
