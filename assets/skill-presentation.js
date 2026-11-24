@@ -58,8 +58,8 @@ const metadata={
  },
  "artista-marcial": {
   "id": "artista-marcial",
-  "type": "Pendente",
-  "cost": "Pendente",
+  "type": "Ativa + benefício passivo",
+  "cost": "1 Coragem por tentativa; sem custo adicional com Pugilismo",
   "icon": "categoria-corporal"
  },
  "pericia-em-arremesso-de-armas": {

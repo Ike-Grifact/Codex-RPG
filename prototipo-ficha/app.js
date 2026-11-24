@@ -408,13 +408,13 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, escolha o peso Leve, Médio ou Pesado antes da rolagem.",
+  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, altere o peso para Leve ou Pesado antes da rolagem.",
   1
  ],
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo; 1 XP. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Combate desarmado: 1 Coragem por tentativa de manobra, ou sem custo adicional ao ativar Pugilismo. No acerto, aplica uma manobra: Empurrar, Agarrar, Derrubar ou Desarmar.",
   1
  ],
  [
@@ -1258,6 +1258,7 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "artista-marcial":"Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo",
  "pugilismo":"Disciplina 1, Força 2 e Destreza 1",
  "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
  "contratempo":"Requisitos e custos pendentes; PROPOSTO",
@@ -1638,11 +1639,15 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "artista-marcial":{
+  type:"Ativa + benefício passivo",
+  intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha."
+ },
  "pugilismo":{
   type:"Ativa",
   intro:"Você domina o combate desarmado e sabe adaptar o peso de seus socos.",
-  benefits:["Peso padrão. Seus socos são considerados de peso Médio.","Mudança de peso. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para escolher o peso do soco: Leve, Médio ou Pesado."],
-  note:"Para usar: tenha a Perícia adquirida, realize um ataque desarmado e declare o peso escolhido antes de rolar. Sem ativar Pugilismo, o peso padrão é Médio.",
+  benefits:["Peso padrão. Seus socos são considerados de peso Médio.","Mudança de peso. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para alterar o peso do soco para Leve ou Pesado."],
+  note:"Para usar: tenha a Perícia adquirida, realize um ataque desarmado e declare o peso escolhido antes de rolar. Sem ativar Pugilismo, o peso padrão é Médio. Se você possui Artista Marcial, pode escolher uma manobra sem custo adicional.",
   mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"]]
  },
  "manejo-perfeito":{

@@ -289,13 +289,13 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, escolha o peso Leve, Médio ou Pesado antes da rolagem.",
+  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, altere o peso para Leve ou Pesado antes da rolagem.",
   1
  ],
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo; 1 XP. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Combate desarmado: 1 Coragem por tentativa de manobra, ou sem custo adicional ao ativar Pugilismo. No acerto, aplica uma manobra: Empurrar, Agarrar, Derrubar ou Desarmar.",
   1
  ],
  [

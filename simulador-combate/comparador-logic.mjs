@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
 import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-especializacao-punhos-v099";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261123-marcial-v0107";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -279,6 +279,17 @@ export function weaponEffectOutcome(properties=[],target={},weapon=null){
  if(effects.includes("Cortante"))notes.push("Cortante: estado Sangramento aplicado mesmo com armadura, sem dano direto de condição.");
  return {ok:true,applied,notes};
 }
+export const MARTIAL_MANOEUVRES=Object.freeze(["Empurrar","Agarrar","Derrubar","Desarmar"]);
+export function canChangePunchWeight(c){
+ return !!selectedActiveSkill(c,"pugilismo")&&Number(c?.practices?.armas_conjuracao||0)>=1&&Number(c?.attributes?.forca||0)>=2&&Number(c?.attributes?.destreza||0)>=1;
+}
+export function planMartialAttack(c,{unarmed=false,pugilism=false,weight="medio",manoeuvre="",success=false}={}){
+ if(!unarmed&&(pugilism||manoeuvre))return {ok:false,error:"Pugilismo e manobras marciais exigem ataque desarmado."};
+ if(pugilism&&(!canChangePunchWeight(c)||!["leve","pesado"].includes(weight)))return {ok:false,error:"Pugilismo exige habilitação e escolha de peso Leve ou Pesado."};
+ if(manoeuvre&&(!selectedActiveSkill(c,"artista-marcial")||!MARTIAL_MANOEUVRES.includes(manoeuvre)))return {ok:false,error:"Escolha uma manobra válida de Artista Marcial adquirido."};
+ const category=pugilism?weight:"medio";
+ return {ok:true,category,cost:Number(pugilism||!!manoeuvre),manoeuvre,active:success&&manoeuvre?[manoeuvre]:[],weapon:unarmed?{kind:"unarmed",name:"Soco",category,properties:[]}:null};
+}
 export function criticalFaces(rolled=[],ids=[]){
  const kept=new Set(ids);
  const selected=rolled.filter(x=>kept.has(x.id));
@@ -400,7 +411,7 @@ export function weightAffinity(weapon,target,attacker=null){
  const trained=!weightReq||
   (Number(attacker?.practices?.armas_conjuracao||0)>=weightReq.disc&&
    Number(attacker?.attributes?.forca||0)>=weightReq.strength);
- if(value===-1&&attacker?.skills?.includes(relevantSkill)&&trained)
+ if(weapon.kind!=="unarmed"&&value===-1&&attacker?.skills?.includes(relevantSkill)&&trained)
   return {status:"known",delta:0,description:"A especialização do peso/arma ignora esta Desvantagem natural (−1A)."};
  if(value===undefined)return {status:"manual",delta:0,description:"Categoria não prevista: decisão do Narrador."};
  return {status:"known",delta:value,description:value===1?"Vantagem por peso (+1A)":value===-1?"Desvantagem por peso (−1A)":"Peso neutro."};

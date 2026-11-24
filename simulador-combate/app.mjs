@@ -1,7 +1,7 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261123-familia-contundente-v0102";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-manejo-passivo-v0104";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261123-marcial-v0107";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-marcial-v0107";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
 
@@ -209,6 +209,7 @@ function renderLast(){
   ' · Dano à Vida por 5 pontos: '+(!a&&last.lifeDamage===2?"2":"não automático")+'</p>'+
   '<small>'+(last.integrityApplied?"Integridade aplicada. ":"")+(last.lifeApplied?"Vida aplicada. ":"")+
   'Dano excedente ainda requer resolução do Narrador.</small>'+
+  ((last.activeMartialEffects||[]).length?'<p>Manobra marcial: '+esc(last.activeMartialEffects.join(", "))+'</p>':"")+
   ((last.activeWeaponEffects||[]).length?'<p>Características ativadas: '+esc(last.activeWeaponEffects.join(', '))+'</p>':'');
 }
 function render(refresh=true){
@@ -225,7 +226,7 @@ function renderSources(){
  const a=actor();
  if(lastActor===a?.id)return;
  lastActor=a?.id||"";
- activeExtraSelections.clear();$("attack-thrown").checked=false;
+ activeExtraSelections.clear();$("attack-thrown").checked=false;resetMartial();
  $("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
  // A ativação pertence ao atacante: nunca herdar o gasto de outra ficha.
  $("active-skill").value="";$("skill-courage").value="0";$("skill-approved").checked=false;
@@ -300,7 +301,7 @@ function renderCombatControls(){
    ". Monstro incapacitado/inconsciente: conversão de custo de ação PENDENTE; penalidades de símbolos aplicadas.":"");
  const previous=$("active-skill").value;
  const purchased=a.skills||[];
- const rows=purchased.map(id=>selectedActiveSkill(a,id)).filter(Boolean);
+ const rows=purchased.filter(id=>!["pugilismo","artista-marcial"].includes(id)).map(id=>selectedActiveSkill(a,id)).filter(Boolean);
  $("active-skill").innerHTML='<option value="">Sem ativação adicional</option>'+
   rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name)+'</option>').join("");
  if(rows.some(r=>r.id===previous))$("active-skill").value=previous;
@@ -309,7 +310,7 @@ function renderCombatControls(){
   "Sem Coragem: gastos deste inimigo usam Pavor local, até "+capP+"P.":
   "Rodada "+state.round+" · Coragem gasta "+Number(a.courageRoundSpent||0)+"/5 · restante "+Math.max(0,5-Number(a.courageRoundSpent||0));
  renderAdditionalSkills(rows);
- updateSkillInfo();
+ updateSkillInfo();renderMartial();
 }
 function updateSkillInfo(){
  const skill=selectedActiveSkill(actor(),$("active-skill").value);
@@ -384,7 +385,7 @@ function renderWeaponEffects(){
 
 function renderWeapons(){
  const a=actor(),weapons=a?equippedWeapons(a,catalog()):[],old=$("weapon-source").value;
- $("weapon-source").innerHTML='<option value="">Sem dado de arma</option>'+weapons.map(w=>
+ $("weapon-source").innerHTML='<option value="">Sem arma / ataque desarmado</option>'+weapons.map(w=>
   '<option value="'+esc(w.id)+'"'+(w.eligible?"":" disabled")+'>'+esc(w.name)+
   ' · '+(w.die?"d"+w.die:"dado não cadastrado")+
   (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
@@ -395,8 +396,31 @@ function renderWeapons(){
 function chosenWeapon(){
  return equippedWeapons(actor(),catalog()).find(w=>w.id===$("weapon-source").value)||null;
 }
+function isUnarmedAttack(){
+ return isHumanoidKind(actor()?.kind)&&$("base-source").value==="practice:armas_conjuracao"&&$("discipline-mode").value==="armas"&&!chosenWeapon()&&!$("attack-thrown").checked;
+}
+function resetMartial(){
+ $("pugilism-on").checked=false;$("punch-weight").value="leve";$("martial-manoeuvre").value="";
+}
+function martialDeclaration(){
+ return planMartialAttack(actor(),{unarmed:isUnarmedAttack(),pugilism:$("pugilism-on").checked,weight:$("punch-weight").value,manoeuvre:$("martial-manoeuvre").value});
+}
+function renderMartial(){
+ const a=actor(),unarmed=isUnarmedAttack(),pug=unarmed&&canChangePunchWeight(a),art=unarmed&&!!selectedActiveSkill(a,"artista-marcial");
+ $("martial-panel").hidden=!unarmed;
+ if(!pug)$("pugilism-on").checked=false;
+ $("pugilism-toggle").hidden=!pug;
+ $("punch-weight-wrap").hidden=!pug||!$("pugilism-on").checked;
+ $("martial-manoeuvre-wrap").hidden=!art;
+ if(!art)$("martial-manoeuvre").value="";
+ const plan=martialDeclaration();
+ $("martial-info").textContent=plan.ok?"Peso: "+({leve:"Leve",medio:"Médio",pesado:"Pesado"}[plan.category])+
+  ". "+(plan.cost?"Custo antes da rolagem: 1 "+(a?.side==="inimigos"?"Pavor local":"Coragem")+". ":"")+
+  (art?($("pugilism-on").checked?"Uma manobra no acerto, sem custo adicional.":"Uma manobra no acerto por 1 Coragem."):""):plan.error;
+ renderAffinity();
+}
 function renderAffinity(){
- const hint=weightAffinity(chosenWeapon(),target(),actor());
+ const hint=weightAffinity(chosenWeapon()||martialDeclaration().weapon,target(),actor());
  $("weight-affinity").textContent="Comparação por peso: "+hint.description+" A afinidade será aplicada na rolagem quando definida. Carga física do atacante: "+
   (actor()?weightUsed(actor()).toFixed(3):"—")+
   ". A categoria da armadura equipada determina a afinidade defensiva.";
@@ -409,7 +433,7 @@ function options(){
 function evaluate(a,rolled,kept,opts){
  const health=combatHealth(a),t=byId(pending?.target);
  const weapon=pending?.weaponId?equippedWeapons(a,catalog()).find(w=>w.id===pending.weaponId):null;
- const affinity=weightAffinity(weapon,t,a);
+ const affinity=weightAffinity(weapon||pending?.martial?.weapon,t,a);
  const manejo=manejoPerfeitoBonus(a,weapon,affinity,{
   situation:opts.situation,mode:pending?.mode,baseKey:pending?.baseKey,thrown:!!pending?.thrown
  });
@@ -447,6 +471,8 @@ function preview(opts=options(),selectedIds=pending?.kept){
  if(!weaponPlan.ok)return weaponPlan;
  const status=weaponEffectOutcome(weaponPlan.active,t,weapon);
  if(!status.ok)return status;
+ const martialActive=pre.result.success&&pending.martial?.manoeuvre?[pending.martial.manoeuvre]:[];
+ if(martialActive.length)status.notes.push("Artista Marcial: "+martialActive[0]+" aplicado no acerto; resolver o efeito da manobra conforme a regra e o Narrador.");
  const propertySkills=(pending.weaponEffects||[]).length?
   [weaponActivationSkill(a,weapon,{thrown:!!pending.thrown}).required,
    weaponMasteryFor(weapon,{thrown:!!pending.thrown})]:[];
@@ -475,7 +501,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
  const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,
+ return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,
   integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderDice(){
@@ -515,7 +541,8 @@ function renderDice(){
    (actor()?.side==="jogadores"?" · recupera "+pre.result.criticalRefundCourage+" Coragem":" · gera "+pre.result.monsterCriticalPavor+" Pavor (teto aplicado ao confirmar)"):null,
   pre.noisy?"Barulhenta (passiva): +1P, inclusive no crítico":null,
   ...pre.weaponPlan.active.map(x=>"Característica da arma: "+x+" (ativada no acerto)"),
-  ...pre.status.notes,
+  pending.martial?.weapon?"Soco de peso "+({leve:"Leve",medio:"Médio",pesado:"Pesado"}[pending.martial.category])+" · "+pending.martial.cost+" recurso já pago":null,
+   ...pre.status.notes,
   pre.weaponPlan.active.length?"Coragem declarada para características: "+pre.weaponPlan.cost+(actor()?.side==="inimigos"?"P local":" Coragem")+
    " · "+pre.weaponPlan.free+" gratuitas":null,
   pre.perfuranteBlocked?"Perfurante: anulado pela defesa confirmada; dano básico mantido":null,
@@ -548,6 +575,7 @@ function roll(){
  const a=actor(),t=target();
  if(!a||!t||a.id===t.id)return notice("Escolha um atacante e um alvo distintos.");
  if(a.acted)return notice(a.name+" já agiu nesta rodada. Avance a rodada.");
+ if(pending)return notice("Confirme a rolagem pendente antes de rolar novamente.");
  const declared=selectedActivations(a);
  if(!declared.ok)return notice(declared.error);
  const human=isHumanoidKind(a.kind),[group,key]=String($("base-source").value||"").split(":");
@@ -597,11 +625,23 @@ function roll(){
   if(grade>=2&&!confirm("Este Grau exige elementos, habilitação, focos e tempo adequados. O comparador só adiciona os dados do Grau e não resolve a preparação. Confirma a validação manual do Narrador?"))return;
   bonus.forEach((sides,i)=>pool.pool.push({id:"magic."+grade+"."+i,group:"magic",key:"G"+grade,sides}));
  }
+ const martial=martialDeclaration();
+ if(!martial.ok)return notice(martial.error);
+ const martialCost=martial.cost,hostile=a.side==="inimigos";
+ const otherDeclared=declared.skills.reduce((sum,x)=>sum+x.cost,0);
+ if(martialCost){
+  if(hostile? a.pavorLocal<martialCost+otherDeclared : a.courage<martialCost+otherDeclared||Number(a.courageRoundSpent||0)+martialCost+otherDeclared>5)
+   return notice("Recursos insuficientes para as ativações declaradas.");
+  if(hostile)a.pavorLocal-=martialCost;
+  else {a.courage-=martialCost;a.courageRoundSpent=Number(a.courageRoundSpent||0)+martialCost;}
+  log("Perícia",a.name+": "+($("pugilism-on").checked?"Pugilismo":"Artista Marcial")+" — "+martialCost+(hostile?" Pavor local":" Coragem")+" pago antes de rolar; não devolvido por falha.",{actor:a.id,martialCost,category:martial.category,manoeuvre:martial.manoeuvre});
+  persist();
+ }
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
   mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
   weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown,
-  weaponEffects:selectedWeaponEffects()};
+  weaponEffects:selectedWeaponEffects(),martial};
  $("cancel-p").value="0";$("convert-a").value="0";
  renderDice();
 }
@@ -678,7 +718,7 @@ function confirmRoll(){
  const crit=criticalFaces(pending.rolled,pending.kept);
  const keptFaces=crit.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ");
  last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
-  critical:r.critical,keptFaces,activeWeaponEffects:pre.weaponPlan.active,
+  critical:r.critical,keptFaces,activeWeaponEffects:pre.weaponPlan.active,activeMartialEffects:pre.martialActive,
   criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0,
   de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
   integrityApplied:false,lifeApplied:false};
@@ -688,12 +728,12 @@ function confirmRoll(){
   (pre.life.damage===2?"2 (se permanecer sem armadura)":"não automática")+". "+
   moved.notes.join(" "),{actor:a.id,target:t.id,rolled:pending.rolled,kept:pending.kept,
    damagePotential:pre.integrityDamage,lifeAtFive:pre.life.damage===2?2:null,
-   courageCost:pre.courageCost,pavorCost:pre.pavorCost,weapon:pending.weapon,
+   courageCost:pre.courageCost+(a.side==="jogadores"?(pending.martial?.cost||0):0),pavorCost:pre.pavorCost+(a.side==="inimigos"?(pending.martial?.cost||0):0),weapon:pending.weapon||pending.martial?.weapon?.name,martial:pending.martial,martialEffects:pre.martialActive,
    elevation:pending.boosted||"",activeSkills:pre.activations.map(x=>({id:x.id,cost:x.cost})),
    fulminante:pending.fulminanteId||"",companion:pre.companion,health:pre.health.id,weight:pre.affinity.description,
    critical:r.critical,keptFaces,weaponEffects:pre.weaponPlan.active,weaponEffectCost:pre.weaponPlan.cost,
    weaponNotes:pre.status.notes,criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0});
- state.resourceActor=t.id;pending=null;
+ state.resourceActor=t.id;pending=null;resetMartial();
  $("weapon-effects").querySelectorAll("[data-weapon-property]:checked").forEach(el=>el.checked=false);
  persist();render(false);renderWeapons();
  $("action-state").textContent="Rolagem confirmada";
@@ -829,7 +869,7 @@ function bind(){
  });
  $("weapon-source").addEventListener("change",()=>{
   pending=null;$("weapon-effects").innerHTML="";$("perfurante-blocked").checked=false;
-  renderAffinity();renderWeaponEffects();renderDice();
+  renderMartial();renderWeaponEffects();renderDice();
  });
  $("weapon-effects").addEventListener("change",event=>{
   if(!event.target.matches("[data-weapon-property]"))return;
@@ -838,10 +878,11 @@ function bind(){
  });
  $("perfurante-blocked").addEventListener("change",()=>{if(pending)renderDice();});
  for(const id of ["base-source","attribute-source","extra-source"]){
-  $(id).addEventListener("change",()=>{pending=null;renderStepChoices();renderDice();});
+  $(id).addEventListener("change",()=>{pending=null;renderStepChoices();renderMartial();renderDice();});
  }
  $("step-source").addEventListener("change",()=>{pending=null;renderDice();});
- $("discipline-mode").addEventListener("change",()=>{pending=null;renderDice();});
+ $("discipline-mode").addEventListener("change",()=>{pending=null;renderMartial();renderDice();});
+ for(const id of ["pugilism-on","punch-weight","martial-manoeuvre"])$(id).addEventListener("change",()=>{if(pending){$("pugilism-on").checked=!!(pending.martial?.cost&&pending.martial?.category!=="medio");$("punch-weight").value=pending.martial?.category==="pesado"?"pesado":"leve";$("martial-manoeuvre").value=pending.martial?.manoeuvre||"";return notice("A declaração marcial fica fixa depois de rolar.");}renderMartial();});
  $("active-skill").addEventListener("change",()=>{
   $("skill-approved").checked=false;pending=null;
   if(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes($("active-skill").value))$("skill-courage").value="1";
@@ -853,7 +894,7 @@ function bind(){
    const single=$("weapon-effects").querySelector("[data-weapon-property]");
    if(single&&!single.disabled)single.checked=true;
   }
-  renderAdditionalSkills((actor()?.skills||[]).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
+  renderAdditionalSkills((actor()?.skills||[]).filter(id=>!["pugilismo","artista-marcial"].includes(id)).map(id=>selectedActiveSkill(actor(),id)).filter(Boolean));
   updateSkillInfo();renderDice();
  });
  for(const id of ["skill-courage","skill-approved"]){
@@ -871,7 +912,7 @@ function bind(){
   }else if(activeExtraSelections.has(key))activeExtraSelections.set(key,Number(el.value));
   pending=null;renderDice();
  });
- $("attack-thrown").addEventListener("change",()=>{pending=null;renderWeaponEffects();renderDice();});
+ $("attack-thrown").addEventListener("change",()=>{pending=null;renderMartial();renderWeaponEffects();renderDice();});
  $("target-bleeding").addEventListener("change",event=>{
   const t=target();if(!t)return;
   const changed=markCondition(t,"sangramento",event.target.checked);

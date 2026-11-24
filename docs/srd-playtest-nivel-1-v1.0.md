@@ -415,3 +415,7 @@ Modificadores de Saúde **substituem**, não acumulam, os de estados anteriores.
 ## Adendo normativo — Pugilismo (23/11/2026)
 
 **DEFINIDO:** Pugilismo é Perícia ativa de 1 XP, com requisitos Disciplina 1 + Força 2 + Destreza 1. O peso padrão do soco desarmado é Médio. Por 1 Coragem, o personagem pode escolher o peso Leve, Médio ou Pesado antes de rolar o ataque desarmado. A decisão encerra a pendência sobre os pesos disponíveis; não altera as regras de vantagem e desvantagem, nem concede características de armas aos socos. Ver [Continuidade v0.106](srd-continuidade-v0.106.md).
+
+## Adendo normativo — Pugilismo e Artista Marcial (23/11/2026)
+
+**DEFINIDO:** socos são Médios por padrão; ativar Pugilismo por 1 Coragem permite alterar para Leve ou Pesado. Artista Marcial (1 XP; Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo) é ativa com benefício passivo: uma manobra no acerto desarmado (Empurrar, Agarrar, Derrubar ou Desarmar), por 1 Coragem declarada antes de rolar, ou sem custo adicional se Pugilismo for ativado. Não exige crítico nesse caso; somente uma manobra por ataque. Ver [v0.107](srd-continuidade-v0.107.md).

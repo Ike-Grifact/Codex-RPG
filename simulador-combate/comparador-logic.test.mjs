@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
+import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planMartialAttack,armorOf,defense,equippedWeapons,
  weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
@@ -623,4 +623,17 @@ test("Especialização unificada e migração dos IDs legados de Martelos/Maças
  }
  assert.equal(canUseWeaponMastery({...legacy,skills:["maestria-macas"]},"maestria-martelos"),true);
  assert.deepEqual(normalizeCombatant({...legacy,skills:["maestria-macas"]}).skills,["maestria-martelos"]);
+});
+
+
+test("Pugilismo e Artista Marcial: peso, custo único, efeito somente no acerto",()=>{
+ const c=normalizeCombatant({kind:"humanoide",skills:["pugilismo","artista-marcial"],attributes:{forca:2,destreza:2},practices:{armas_conjuracao:2,atletismo:1}});
+ assert.equal(planMartialAttack(c,{unarmed:true}).category,"medio");
+ for(const weight of ["leve","pesado"]){const p=planMartialAttack(c,{unarmed:true,pugilism:true,weight,manoeuvre:"Derrubar",success:true});assert.equal(p.cost,1);assert.equal(p.category,weight);assert.deepEqual(p.active,["Derrubar"]);}
+ const fail=planMartialAttack(c,{unarmed:true,pugilism:true,weight:"leve",manoeuvre:"Agarrar"});assert.equal(fail.cost,1);assert.deepEqual(fail.active,[]);
+ assert.equal(planMartialAttack(c,{unarmed:true,manoeuvre:"Desarmar"}).cost,1);
+ assert.equal(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"medio"}).ok,false);
+ assert.equal(planMartialAttack(c,{pugilism:true,weight:"leve"}).ok,false);
+ assert.equal(planMartialAttack({...c,skills:["pugilismo"]},{unarmed:true,manoeuvre:"Empurrar"}).ok,false);
+ assert.equal(planMartialAttack(c,{unarmed:true,manoeuvre:"Cortante"}).ok,false);
 });

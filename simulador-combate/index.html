@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261123-manejo-passivo-v0104"></script>
+<script type="module" src="./app.mjs?v=20261123-marcial-v0107"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -96,6 +96,13 @@
     <label><input id="extra-keep" type="checkbox"> Manter dado adicional (custo conforme ficha)</label>
    </div>
    <div class="cc-affinity" id="weight-affinity">Peso da arma: selecione uma arma e um alvo.</div>
+   <section class="cc-activation" id="martial-panel" hidden aria-label="Combate desarmado">
+    <h3>Combate desarmado</h3>
+    <label id="pugilism-toggle" hidden><input type="checkbox" id="pugilism-on"> Ativar Pugilismo (1 recurso)</label>
+    <label id="punch-weight-wrap" hidden>Peso do soco <select id="punch-weight"><option value="leve">Leve</option><option value="pesado">Pesado</option></select></label>
+    <label id="martial-manoeuvre-wrap" hidden>Artista Marcial — manobra no acerto <select id="martial-manoeuvre"><option value="">Nenhuma</option><option>Empurrar</option><option>Agarrar</option><option>Derrubar</option><option>Desarmar</option></select></label>
+    <p class="cc-help" id="martial-info">Peso Médio por padrão.</p>
+   </section>
    <section class="cc-activation" aria-label="Características especiais da arma">
     <h3>Características da arma e efeitos de status</h3>
     <p class="cc-help">Marque as características reais que deseja ativar no acerto. A Perícia da categoria é obrigatória: acerto comum custa 1 recurso; crítico pode liberar efeitos gratuitos, e Maestria amplia o limite. As propriedades passivas permanecem automáticas.</p>
