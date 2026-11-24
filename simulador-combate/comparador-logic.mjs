@@ -55,14 +55,19 @@ export function disarmTransfer(attacker,target,weaponId,destination,newId){
 }
 export function normalizeEquipment(original={}){
  const raw=migrateArmorIntegrity(original);
- const kind=["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
+ const kind=raw.ammoRole==="container"?"container":raw.ammoRole==="supply"?"ammunition":["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
  const category=categoryOf(raw),sourceIntegrity=raw.integrity;
  const max=int(raw.integrityMax??raw.max??(typeof sourceIntegrity==="object"?sourceIntegrity.max:undefined)??0);
  const hp=int((typeof sourceIntegrity==="object"?sourceIntegrity.value:sourceIntegrity)??raw.hp??max,0,max);
+ const ammoRole=["container","supply"].includes(raw.ammoRole)?raw.ammoRole:"";
+ const ammoMix=ammoRole?{}:null;let room=20;
+ if(ammoMix)for(const type of raw.ammoFamily==="zarabatana"?["Dardo"]:["Cortante","Perfurante"]){ammoMix[type]=int(raw.ammoMix?.[type],0,room);room-=ammoMix[type];}
+ const ammoLoad=(20-room)/20*([.0125,.125].includes(Number(raw.ammoLotWeight))?Number(raw.ammoLotWeight):0);
+ const itemWeight=typeof raw.weight==="number"?Math.max(0,raw.weight):ammoRole?ammoLoad+(ammoRole==="container"?(weightNumbers[category]||.125):0):(weightNumbers[category]||0);
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
-  kind,category,grade:int(raw.grade||1,1,4),weight:typeof raw.weight==="number"?Math.max(0,raw.weight):(weightNumbers[category]||0),
-  qty:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
-  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[]};
+  kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,
+  qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
+  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  const kind=raw.kind==="criatura"?"monstro":(["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide");
@@ -206,7 +211,9 @@ export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
 }
 /** Características reais da arma, com efeitos condicionados ao acerto e à Perícia. */
 export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa","Empurrar","Agarrar","Derrubar","Desarmar"]);
+export function isPoisonOnlyWeapon(weapon){return /^zarabatana(?:\b|$)/i.test(weapon?.name||"");}
 export function activeWeaponProperties(weapon){
+ if(isPoisonOnlyWeapon(weapon))return ["Envenenar"];
  return [...new Set((weapon?.properties||[]).filter(x=>ACTIVE_WEAPON_PROPERTIES.includes(x)))];
 }
 export function weaponActivationSkill(c,weapon,{thrown=false}={}){
@@ -220,6 +227,7 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
   /^(luva|punho|soco|soqueira|manopla)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(isPoisonOnlyWeapon(weapon)&&(required!=="armas-longo-alcance"||Number(c?.practices?.armas_conjuracao||0)<1||Number(c?.attributes?.destreza||0)<2))return {ok:false,error:"Envenenar exige Disciplina 1, Destreza 2 e Armas de Longo Alcance.",required};
  if(required==="pugilismo"&&
    (Number(c?.practices?.armas_conjuracao||0)<1||
     Number(c?.attributes?.forca||0)<2||Number(c?.attributes?.destreza||0)<1))
@@ -284,6 +292,7 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
   return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
  const access=weaponActivationSkill(c,weapon,{thrown});
  if(!access.ok)return access;
+ if(isPoisonOnlyWeapon(weapon))return {ok:true,active:success?["Envenenar"]:[],cost:1,mastery:false,free:0,activationSkill:access.required};
  // Cravar exige a Perícia de peso mesmo no crítico e com Especialização.
  if(selected.includes("Cravar")){
   if(weapon?.kind!=="weapon"||weapon.equipped===false||!["medio","pesado"].includes(weapon.category))
@@ -346,6 +355,10 @@ export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];
  const notes=[];
  const applied={};
+ if(effects.includes("Envenenar")){
+  if(!isPoisonOnlyWeapon(weapon))return {ok:false,error:"Envenenar aqui exige Zarabatana."};
+  applied.envenenado=true;notes.push("Zarabatana: 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento; controlar dose e duração manualmente.");
+ }
  if(effects.includes("Cortante"))applied.sangramento=true;
  if(effects.includes("Perfurante"))notes.push("Perfurante: cada Pavor não anulado vale 1 dano à Integridade, sem somar o piso(P/2). Conferir escudo levantado e proteção psíquica.");
  if(effects.includes("Cravar")){
@@ -549,7 +562,8 @@ export function manejoPerfeitoBonus(attacker,weapon,affinity,{situation="normal"
  *  Abaixo de cinco: regra específica de Vida ainda não definida neste adendo.
  *  Com armadura: o patamar NÃO gera dano direto à Vida.
  */
-export function lifeAtFive(result,target){
+export function lifeAtFive(result,target,weapon=null){
+ if(isPoisonOnlyWeapon(weapon))return {eligible:false,damage:0,reason:"Zarabatana: somente envenenamento; sem dano à Integridade ou à Vida. Aplicação de veneno manual."};
  if(!result?.success)return {eligible:false,damage:0,reason:"Não atingiu a DE."};
  const armor=armorOf(target);
  if(armor)return {eligible:false,damage:0,reason:"Existe armadura equipada: resolver Integridade primeiro, sem 2 Vida diretos pelo patamar."};

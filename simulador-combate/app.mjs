@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-cravar-v0115";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261124-kits-v0116b";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-cravar-v0115";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-cravar-v0115";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-cravar-v0115";
@@ -386,7 +386,7 @@ function renderWeaponEffects(){
    '"'+(chosen.has(prop)?' checked':'')+(!access.ok||(prop==="Cravar"&&!cravarAccess)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
   '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
- $("weapon-effect-info").textContent=weapon?
+ $("weapon-effect-info").textContent=isPoisonOnlyWeapon(weapon)?(access.ok?"Envenenar: marque somente com dardo preparado; declare 1 Coragem. Acerto aplica 1 acúmulo por 2 rodadas sem Sangramento. Sem dano direto.":"Habilitação ausente: "+access.error):weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
    " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, a recuperação normal devolve 1 Coragem gasta, zerando o custo líquido da primeira característica; o segundo efeito pago exige declaração antecipada.")+
@@ -508,7 +508,9 @@ function preview(opts=options(),selectedIds=pending?.kept){
  if(!hostile&&pending.prepaidCourage===undefined&&(courageCost+Number(a.courageRoundSpent||0)>5||courageCost>a.courage))return {ok:false,error:"Coragem insuficiente ou teto de 5 excedido."};
  if(pavorCost>a.pavorLocal)return {ok:false,error:"Pavor local insuficiente: requer "+pavorCost+"P, possui "+a.pavorLocal+"P."};
  const g1=pending.spellGrade===1&&pending.mode==="conjuracao";
- const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t);
+ const poisonOnly=isPoisonOnlyWeapon(weapon);
+ const life=g1?{eligible:false,damage:0,reason:"G1 não causa dano ofensivo automático."}:lifeAtFive(pre.result,t,weapon);
+ if(poisonOnly)status.notes.push("Zarabatana: sem dano direto; controle de dose e duração do veneno manual.");
  const fulminanteActive=!!pending.fulminanteId;
  const criticalMultiplier=pre.result.critical===4?2:1;
  const extraP=fulminanteActive&&pre.result.success?
@@ -519,7 +521,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
  const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[]);
  return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,manoeuvres,colossal,
-  integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
+  integrityDamage:g1||poisonOnly?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderColossalControls(){
  const a=actor(),t=target(),el=$("colossal-targets");
@@ -783,6 +785,10 @@ function confirmRoll(){
  Object.assign(t,applyCombatManoeuvres(t,pre.manoeuvres));
  if(disarm?.ok){a.items=disarm.attacker.items;t.items=disarm.target.items;if(disarm.ground)state.groundItems.push(disarm.ground);log("Desarmar",a.name+" retirou "+disarm.weapon+" de "+t.name+" → "+$("disarm-destination").selectedOptions[0].textContent);}
 
+ if(pre.status.applied?.envenenado){
+  const changed=markCondition(t,"envenenado",true);
+  if(changed.ok){Object.assign(t,changed.actor);log("status",t.name+" recebeu 1 acúmulo de Envenenamento por 2 rodadas pela Zarabatana de "+a.name+"; controle individual manual.");}
+ }
  if(pre.status.applied?.sangramento){
   const changed=markCondition(t,"sangramento",true);
   if(changed.ok){Object.assign(t,changed.actor);log("status",t.name+" recebeu Sangramento por Cortante de "+a.name+

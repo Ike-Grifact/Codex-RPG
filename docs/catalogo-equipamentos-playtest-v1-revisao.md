@@ -18,14 +18,14 @@
 
 **DEFINIDO:** não revisar agora armas de fogo e equipamentos G2 ou superior.
 
-### Novos modelos [características DEFINIDAS, outros campos PENDENTES]
+### Novos modelos [atualização autoral v0.116 — categoria e preço DEFINIDOS]
 
 | Arma | Características | Peso, dado e preço |
 |---|---|---|
-| **Katana** | Cortante, Perfurante | **PENDENTES**: categoria/peso, dado, alcance, carga e VT |
-| **Naginata** | Longa, Cortante | **PENDENTES**: categoria/peso, dado, carga e VT. A regra geral de Longa implica alcance físico de **2 m** |
+| **Katana** | Cortante, Perfurante | **Média, 0,5 Alto, 5 VT** (Espada Longa). Dado e empunhadura pendentes; 1 m proposto |
+| **Naginata** | Longa, Cortante | **Média, 0,5 Alto, 5 VT** (Lança, duas características). Dado e empunhadura pendentes; alcance físico de **2 m** |
 
-Ambas estão listadas para revisão, **não habilitadas como armas compráveis ou rolagens funcionais** antes de preencher os campos pendentes.
+Ambas estão listadas para revisão, **não habilitadas como armas compráveis ou rolagens funcionais** antes de preencher os campos pendentes. **PROPOSTO:** d10 e 2M para ambas, seguindo os modelos de referência; peso não determina dado ou número de mãos.
 
 ## 2. Escudos e Integridade [DEFINIDO]
 
@@ -117,7 +117,7 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 
 - Catálogo do **site e Foundry sincronizados em 90 itens** pela branch de revisão; 43 itens anteriores + 44 novos.
 - Correções do criador: categoria de loja para Munições, Aljavas/Estojos, Instrumentos, Kits e Aventureiro; armazenamento manual da quantidade de munição; confirmação explícita de dano de Cravar no escudo.
-- Ferramentas e kits já têm categoria física Leve e preços proporcionais de playtest; instrumentos têm 5/10/15 VT conforme tamanho. Katana/Naginata e focos sem preço numérico continuam sem compra automática.
+- Ferramentas e kits já têm categoria física Leve e preços proporcionais de playtest; instrumentos têm 5/10/15 VT conforme tamanho. Katana/Naginata têm preço definido na v0.116, mas ainda aguardam dado e empunhadura; focos sem preço numérico continuam sem compra automática.
 - **PENDENTE DE VALIDAR:** compatibilidade visual e schema do Foundry para novos `kind` não combatentes; consumo automático de munição, capacidade efetiva das bolsas, múltiplas armas presas e resolução ao zerar Integridade do escudo.
 - **Não alterar XP, preços de pedras raras (3B), Maestrias ou níveis G2+** nesta revisão.
 
@@ -125,9 +125,24 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 
 | Tema | Informação faltante |
 |---|---|
-| Katana e Naginata | Categoria física Leve/Média/Pesada, dado e VT |
+| Katana e Naginata | Categoria Média e 5 VT definidos na v0.116; confirmar dado e empunhadura, alcance da Katana |
 | Luvas e Bastão/Cajado Leves | **Resolvido: 2, 2 e 4 VT**, respectivamente |
 | Cetros | Referência exata de arma contundente em cada porte (Bastão ou Cajado) |
 | Instrumentos musicais | **Resolvido: leve/médio/grande; 5/10/15 VT** |
 | Kits e exploração | **PROPOSTO:** conferir 5/7 VT básicos, 9 VT Explorador e avulsos proporcionais após playtest |
 | Cravar no escudo | Efeito operacional quando Integridade atinge 0 |
+
+
+### Tipos de projéteis — v0.116
+
+**DEFINIDO:** Cortante e Perfurante são os dois tipos de projéteis nomeados pelo autor nesta etapa. **PENDENTE:** distribuição por família (flechas e virotes; dardos de Zarabatana excluídos), características mecânicas, custos de ativação e VT específicos, consumo e recuperação. Os lotes básicos e valores existentes não mudam. Não presumir que as características homônimas de armas físicas se aplicam automaticamente ao projétil.
+
+
+**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
+
+
+## Kits de armas de longo alcance (24/11/2026)
+
+**DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
+
+**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.

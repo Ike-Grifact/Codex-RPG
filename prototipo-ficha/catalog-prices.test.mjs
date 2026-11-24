@@ -41,7 +41,7 @@ test("v0.65: armas de disparo, itens defensivos e preços pendentes não são al
  for(const [name,price] of [["Arco Curto",4],["Arco Longo",6],["Besta de uma mão",5],["Besta de duas mãos",6],["Besta Pesada",9],["Zarabatana",3],["Escudo Médio",5],["Armadura Média",8]]){
   assert.equal(byName(name).priceVT,price,name);
  }
- for(const name of ["Cetro Médio G1","Katana","Naginata"]){
+ for(const name of ["Cetro Médio G1"]){
   assert.equal(byName(name).priceVT,null,name+" continua pendente");
  }
  assert.deepEqual(byName("Espada Longa").properties,["Perfurante","Cortante"]);
@@ -65,7 +65,7 @@ test("Integridade corrigida: armaduras e escudos físicos",()=>{
 });
 test("Munições, porta-munições e instrumentos com os preços aprovados",()=>{
  for(const [name,vt,packSize] of [
-  ["Flechas (20 unidades)",5,20],["Virotes (20 unidades)",5,20],["Dardos de Zarabatana (20 unidades)",2,20],
+  ["Flechas (20 unidades)",5,20],["Virotes (20 unidades)",5,20],
   ["Munição de Revólver Leve (1 unidade)",1,1],["Munição de Revólver Média (1 unidade)",1,1],["Munição de Revólver Pesada (1 unidade)",2,1]
  ]){
   const item=byName(name);assert.equal(item.kind,"ammunition");assert.equal(item.priceVT,vt);assert.equal(item.packSize,packSize);
@@ -88,14 +88,19 @@ test("Focos com preço em função de B, sem conversão numérica arbitrária",(
   assert.deepEqual(x.properties,["Contundente","Elemental"]);
  }
 });
-test("Itens com categoria ou preço pendente não são armas ativadas automaticamente",()=>{
- for(const name of ["Katana","Naginata"]){
+test("Katana e Naginata: preço e categoria definidos, dado e mãos pendentes",()=>{
+ for(const [name,reference] of [["Katana","Espada Longa"],["Naginata","Lança"]]){
   const x=byName(name);
-  assert.equal(x.priceVT,null);assert.equal(x.category,"pendente");
+  assert.equal(x.priceVT,byName(reference).priceVT);assert.equal(x.category,"medio");assert.equal(x.weight,0.5);
+  assert.equal(x.status,"PENDENTE");assert.equal(x.die,0);assert.equal(x.hands,undefined);
  }
  assert.deepEqual(byName("Katana").properties,["Cortante","Perfurante"]);
  assert.deepEqual(byName("Naginata").properties,["Longa","Cortante"]);
  assert.equal(byName("Naginata").range,2);
+ const app=readFileSync(new URL("./app.js",import.meta.url),"utf8");
+ assert.ok(app.includes('item.status==="PENDENTE"'));
+ const foundry=readFileSync(new URL("../foundry-prototype/module/sheet.mjs",import.meta.url),"utf8");
+ assert.ok(foundry.includes('row.status==="PENDENTE"'));
 });
 
 test("Novos preços leves e instrumentos por porte aprovados",()=>{
@@ -113,7 +118,7 @@ test("Ferramentas e kits básicos são leves; kits não dão armas",()=>{
  }
  const explorer=byName("Kit de Explorador");assert.equal(explorer.priceVT,9);assert.equal(explorer.category,"medio");
  assert.equal(explorer.includedItems.length,6);
- assert.equal(siteCatalog.length,90);
+ assert.equal(siteCatalog.length,99);
 });
 test("Aventureiro: preços proporcionais, a maioria leve",()=>{
  for(const name of ["Mochila","Bolsa de Cintura","Corda","Gancho de Escalada","Tocha","Lampião","Óleo para Lampião","Pederneira","Cantil","Ração de Viagem","Cobertor","Frasco Vazio","Bolsa de Componentes","Papel ou Pergaminho","Tinta e Pena"]){
@@ -121,4 +126,31 @@ test("Aventureiro: preços proporcionais, a maioria leve",()=>{
  }
  for(const name of ["Saco de Dormir","Tenda"]){const x=byName(name);assert.equal(x.category,"medio");assert.equal(x.weight,0.5)}
  assert.equal(byName("Corda").priceVT,2);assert.equal(byName("Pederneira").priceVT,1);assert.equal(byName("Lampião").priceVT,3);
+});
+
+
+test("Zarabatana e dardos: somente veneno, preços e dado preservados",()=>{
+ const w=byName("Zarabatana"),d=byName("Dardos de Zarabatana (20 unidades)");
+ assert.deepEqual(w.properties,["À Distância","Envenenar"]);assert.deepEqual(d.properties,[]);
+ assert.equal(w.die,6);assert.equal(w.priceVT,3);assert.equal(d.priceVT,2);assert.equal(d.packSize,20);assert.equal(d.category,"muito-leve");assert.equal(d.weight,.0125);
+ assert.match(w.description,/sem Cortante, Perfurante, dano à Integridade/i);
+ const app=readFileSync(new URL("./app.js",import.meta.url),"utf8");
+ assert.ok(app.includes("const fulminanteDamageBasic=poisonOnly?0:success&&p.opts.fulminante?E+P:damageBasic;"));
+ const comparator=readFileSync(new URL("../simulador-combate/app.mjs",import.meta.url),"utf8");
+ assert.ok(comparator.includes("integrityDamage:g1||poisonOnly?0:"));
+});
+
+
+test("Kits por modelo: capacidade 20, mistura, preços e pesos de lote",()=>{
+ for(const [weapon,price,weight] of [["Arco Curto",14,.0125],["Arco Longo",16,.125],["Besta de uma mão",15,.0125],["Besta de duas mãos",16,.125],["Besta Pesada",19,.125],["Zarabatana",10,.0125]]){
+  const w=byName(weapon),a=byName(w.kitAmmo),q=byName(w.kitContainer);
+  assert.equal(w.kitPriceVT,price);assert.equal(w.priceVT+a.priceVT+q.priceVT,price);assert.equal(a.weight,weight);assert.equal(a.packSize,20);assert.equal(q.storageCapacity,20);assert.equal(q.ammoFamily,a.ammoFamily);
+ }
+ const app=readFileSync(new URL("./app.js",import.meta.url),"utf8");
+ const fragment=app.slice(app.indexOf("function ammoTypesFor("),app.indexOf("function chooseAmmoMix("));
+ const h=new Function(fragment+"return {ammoCount,normalizeAmmoMix,moveAmmoMix};")();
+ assert.equal(h.ammoCount(h.normalizeAmmoMix({Cortante:15,Perfurante:15},"arco-curto")),20);
+ const r=h.moveAmmoMix({Cortante:10,Perfurante:10},{Cortante:5,Perfurante:10},["Cortante","Perfurante"]);
+ assert.equal(r.moved,5);assert.equal(h.ammoCount(r.to),20);assert.equal(h.ammoCount(r.from),15);
+ assert.equal(h.ammoCount(r.to)+h.ammoCount(r.from),35);
 });

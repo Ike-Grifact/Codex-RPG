@@ -8,16 +8,19 @@ const start=app.indexOf("function capacity(){");
 const end=app.indexOf("function loadBlocksMarkup(){",start);
 assert.ok(start>0&&end>start,"Funções de capacidade e prévia não encontradas");
 const fragment=app.slice(start,end);
+const catalog=JSON.parse(readFileSync(new URL("./catalog.js",import.meta.url),"utf8").match(/=\s*(\[[\s\S]*\]);?\s*$/)[1]);
+const ammoHelpers=app.slice(app.indexOf("function ammoTypesFor("),app.indexOf("function chooseAmmoMix("));
+const purchaseHelpers=app.slice(app.indexOf("function catalogPurchaseRows("),app.indexOf("function refillAmmo("));
 const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Pesado",1],extremo:["Extremo",2]};
 const item=(weight="medio")=>({weight,qty:1,properties:[],type:"arma"});
 const sumWallet=s=>Object.values(s.trade.resources).reduce((n,v)=>n+v,0);
 function loadUI(s){
  const walletValue=()=>sumWallet(s),resourceWeight=()=>walletValue()/10*WEIGHTS.leve[1];
- const normalizedCatalogItem=entry=>item(({leve:"leve",medio:"medio",pesado:"alto","muito-leve":"muito_leve"})[entry.category]||"leve");
+ const normalizedCatalogItem=entry=>({...item(({leve:"leve",medio:"medio",pesado:"alto","muito-leve":"muito_leve"})[entry.category]||"leve"),ammoRole:entry.ammoRole,ammoLotWeight:entry.ammoLotWeight,ammoMix:entry.ammoMix});
  const pad=n=>String(Number(n.toFixed(4)));
- return new Function("state","NPC_MODE","WEIGHTS","resourceWeight","walletValue","normalizedCatalogItem","pad",
-  fragment+"\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,balanceForPercent,purchaseLoadPreview,purchaseLoadMarkup};")(
-  s,false,WEIGHTS,resourceWeight,walletValue,normalizedCatalogItem,pad);
+ return new Function("state","NPC_MODE","WEIGHTS","resourceWeight","walletValue","normalizedCatalogItem","pad","CATALOG",
+  ammoHelpers+"\n"+purchaseHelpers+"\n"+fragment+"\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,balanceForPercent,purchaseLoadPreview,purchaseLoadMarkup};")(
+  s,false,WEIGHTS,resourceWeight,walletValue,normalizedCatalogItem,pad,catalog);
 }
 const character=(forca,vigor,atletismo,disciplina=0,resources=20,items=[])=>({
  attributes:{forca,vigor},practices:{atletismo,armas_conjuracao:disciplina},items,trade:{resources:{ervas:resources}}
@@ -69,4 +72,13 @@ test("criador e mercado exibem alerta antes de confirmar, inclusive na revisão"
  assert.ok(html.includes('id="trade-purchase-load"'),"Prévia de compra não existe na ficha");
  assert.ok(app.includes("const preview=purchaseLoadPreview(item,price);"),"Confirmação sem recálculo");
  assert.ok(!app.includes("Math.floor((state.practices.armas_conjuracao||0)/3)"),"Disciplina ainda soma carga");
+});
+
+
+test("Kit de arco curto: prévia soma arma, recipiente e lote, desconta VT uma vez",()=>{
+ const s=character(0,0,0),ui=loadUI(s),w=catalog.find(x=>x.name==="Arco Curto");
+ const old=JSON.stringify(s),preview=ui.purchaseLoadPreview(w,w.kitPriceVT);
+ assert.ok(Math.abs(preview.added-(.125+.125+.0125))<1e-9);
+ assert.ok(Math.abs(preview.released-.175)<1e-9);
+ assert.equal(JSON.stringify(s),old);
 });
