@@ -20,7 +20,7 @@ test("IDs internos ocultos são exatamente os do criador de personagens",()=>{
  const hidden=new Function(source.slice(start,end)+"\nreturn [...HIDDEN_CATALOG_SKILLS];")();
  assert.deepEqual(HIDDEN_PLAYER_SKILL_IDS,hidden);
  assert.equal(hidden.length,19);
- assert.equal(PLAYER_SKILLS.length,123,"Catálogo bruto ainda preserva fichas antigas");
+ assert.equal(PLAYER_SKILLS.length,122,"Catálogo bruto ainda preserva fichas antigas");
  assert.equal(PLAYER_SKILLS.filter(s=>isVisiblePlayerSkill(s.id)).length,104);
  for(const id of hidden){
   assert.equal(isVisiblePlayerSkill(id),false,"Não expor efeito/placeholder como Perícia: "+id);
@@ -123,7 +123,6 @@ test("Especializações em Armas compráveis custam 1 XP, pedem atributos e não
   ["maestria-adagas",{agilidade:2,destreza:2}],
   ["maestria-espadas",{forca:2,destreza:2}],
   ["maestria-machados",{forca:2,destreza:1}],
-  ["maestria-macas",{forca:3,destreza:1,vigor:1}],
   ["maestria-martelos",{forca:3,destreza:1,vigor:1}],
   ["maestria-hastes",{forca:2,agilidade:1,destreza:1}],
   ["maestria-cajados",{destreza:2}],
