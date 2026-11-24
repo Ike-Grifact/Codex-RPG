@@ -189,7 +189,7 @@ Perícias, magias e condições que indicam duração em **turnos** contam açõ
 
 ### Combate Coordenado [DEFINIDO — SRD v0.120]
 
-**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta.
+**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta. **Raio máximo da formação: 5 m.** Os integrantes devem permanecer dentro desse raio para compartilhar a DE coordenada; quem estiver fora não contribui para a soma.
 
 **DE coordenada = mínimo(30; soma das DE defensivas dos participantes).** Use a DE defensiva individual vigente de cada integrante, com os modificadores aplicáveis, sem repetir bônus já incluídos. A soma é a defesa da formação; o teto absoluto é 30. A DE de cada ficha permanece distinta quando o combatente não está em formação. Se um integrante for eliminado ou deixar de integrar a formação, sua DE deixa de contribuir.
 
@@ -208,7 +208,7 @@ Perícias, magias e condições que indicam duração em **turnos** contam açõ
 
 **Dano e alvos:** preserva-se a regra de que um ataque de alvo único escolhe uma ficha alvo; área que alcance a DE coordenada e cubra combatentes separados pode afetar cada ficha atingida, enquanto o chefe composto de uma única ficha recebe um único dano pela área. Combate Coordenado não concede dano, dados, Coragem, Pavor ou ativações extras automaticamente. A declaração de formação não substitui as condições de convocação da ação conjunta.
 
-**PENDENTE:** momento e eventual custo da declaração ou dissolução da formação, distância máxima entre integrantes, efeitos de movimento e separação, procedimento de distribuição do XP e registro da DE de uma ficha coletiva, contagem de turnos e desgaste de integrantes na ficha de grupo. Não presumir que qualquer ficha coletiva tenha as características especiais do chefe de três em um corpo. Não automatizar esses casos antes de decisão.
+**PENDENTE:** momento e eventual custo da declaração ou dissolução da formação, referência exata do centro do raio, procedimento de movimento e separação, procedimento de distribuição do XP e registro da DE de uma ficha coletiva, contagem de turnos e desgaste de integrantes na ficha de grupo. Não presumir que qualquer ficha coletiva tenha as características especiais do chefe de três em um corpo. Não automatizar esses casos antes de decisão.
 
 ### Líder, ação conjunta e Antecipar dos inimigos [DEFINIDO / PENDENTE]
 
