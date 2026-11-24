@@ -52,7 +52,7 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
  "armas-fogo":"arma-pistola","pugilismo":"arma-punhos",
  "maestria-armas-fogo":"arma-pistola","maestria-punhos":"arma-punhos",
  "maestria-espadas":"arma-espada","maestria-adagas":"arma-adaga",
- "maestria-machados":"arma-montante","maestria-macas":"arma-montante",
+ "maestria-machados":"arma-montante",
  "maestria-hastes":"arma-lanca","maestria-cajados":"arma-lanca",
  "maestria-arcos":"arma-arco","maestria-bestas":"arma-arco",
  "maestria-arremessos":"arma-arremesso","maestria-longo-alcance":"arma-arco",
@@ -74,7 +74,7 @@ const GENE_SKILL_PICTOGRAMS=Object.freeze({
 // Esta classificação é independente do catálogo e NÃO é pré-requisito de compra.
 const GENE_CONSTELLATIONS=[
  {id:"escudos",label:"ESCUDOS FÍSICOS",column:0,skills:["maestria-escudos","escudo-refletor","escudo-bumerangue","sacrificio-heroico"]},
- {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo"]},
+ {id:"armas",label:"ARMAS E MANEJO",column:0,skills:["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-hastes","maestria-cajados","disciplina-avancada","manejo-perfeito","maestria-manejo-duplo"]},
  {id:"corporal",label:"CORPO A CORPO",column:0,skills:["pugilismo","maestria-punhos","artista-marcial","golpe-fulminante","espalhar-golpe","golpe-baixo","corpo-fechado","dilema"]},
  {id:"furtividade",label:"FURTIVIDADE",column:0,skills:["furtividade","furtividade-avancada","maos-leves","golpe-furtivo","pericia-armadilha"]},
  {id:"disparos",label:"ARMAS DE LONGO ALCANCE",column:0,skills:["armas-longo-alcance","olhos-de-aguia","maestria-arcos","maestria-bestas","maestria-longo-alcance","maestria-arremesso-armas","maestria-arremessos","disparo-fulminante","disparo-multiplo","disparo-violento","disparo-tatico","armas-fogo","maestria-armas-fogo"]},

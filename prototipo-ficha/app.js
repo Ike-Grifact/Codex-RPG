@@ -140,7 +140,6 @@ const WEAPON_MASTERY_TYPES=Object.freeze([
  {id:"maestria-adagas",name:"Especialização em Armas — Adagas e Facas",family:"adagas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-espadas",name:"Especialização em Armas — Espadas",family:"espadas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-machados",name:"Especialização em Armas — Machados",family:"machados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
- {id:"maestria-macas",name:"Especialização em Armas — Maças e Clavas",family:"macas",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-hastes",name:"Especialização em Armas — Lanças e Hastes",family:"hastes",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-cajados",name:"Especialização em Armas — Cajados e Bastões",family:"cajados",activationReq:"Armas Leves/Médias/Pesadas conforme peso"},
  {id:"maestria-arcos",name:"Especialização em Armas — Arcos",family:"arcos",activationReq:"Perícia em Armas de Longo Alcance"},
@@ -156,7 +155,6 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-adagas":"Agilidade 2 + Destreza 2",
  "maestria-machados":"Força 2 + Destreza 1",
  "maestria-cajados":"Destreza 2",
- "maestria-macas":"Força 3 + Destreza 1 + Vigor 1",
  "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
@@ -601,8 +599,8 @@ const SKILLS=[
  ],
  [
   "maestria-martelos",
-  "Especialização em Armas — Martelos",
-  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
+  "Especialização em Armas — Martelos, Maças e Clavas",
+  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo, maça ou clava e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
  [
@@ -981,7 +979,6 @@ const SKILL_AFFINITY={
  "maestria-adagas":["practice:armas_conjuracao", "attr:forca"],
  "maestria-espadas":["practice:armas_conjuracao","attr:forca","attr:destreza"],
  "maestria-machados":["practice:armas_conjuracao", "attr:forca"],
- "maestria-macas":["practice:armas_conjuracao", "attr:forca"],
  "maestria-hastes":["practice:armas_conjuracao","attr:forca","attr:agilidade","attr:destreza"],
  "maestria-cajados":["practice:armas_conjuracao", "attr:forca"],
  "maestria-arcos":["practice:armas_conjuracao", "attr:destreza"],
@@ -1129,7 +1126,7 @@ const SKILL_BRANCHES=[
  ["erudicao-avancada"],
  ["atletismo-avancado"],
  ["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"],
- ["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-macas","maestria-hastes","maestria-cajados"],
+ ["armas-leves","armas-medias","armas-pesadas","maestria-martelos","maestria-adagas","maestria-espadas","maestria-machados","maestria-hastes","maestria-cajados"],
  ["armas-longo-alcance","maestria-arremesso-armas","maestria-arcos","maestria-bestas","maestria-arremessos","maestria-punhos","maestria-longo-alcance","maestria-armas-fogo"],
  ["criar-item-foco-magia","encantar-com-elemento"],
  ["apresentacao-avancada"],
@@ -1244,7 +1241,6 @@ const SKILL_PERMALINKS={
  "maestria-adagas":"maestria-em-adagas",
  "maestria-espadas":"maestria-em-espadas",
  "maestria-machados":"maestria-em-machados",
- "maestria-macas":"maestria-em-macas",
  "maestria-hastes":"maestria-em-hastes",
  "maestria-cajados":"maestria-em-cajados",
  "maestria-arcos":"maestria-em-arcos",
@@ -1354,7 +1350,6 @@ const CARD_REQUIREMENTS={
  "maestria-adagas":"1 XP; Agilidade 2 + Destreza 2 para aquisição. Perícia da arma exigida apenas para ativar.",
  "maestria-espadas":"1 XP; Força 2 + Destreza 2 para aquisição. Perícia da arma exigida apenas para ativar.",
  "maestria-machados":"1 XP; Força 2 + Destreza 1 para aquisição. Perícia da arma exigida apenas para ativar.",
- "maestria-macas":"1 XP; Força 3 + Destreza 1 + Vigor 1 para aquisição. Perícia da arma exigida apenas para ativar.",
  "maestria-hastes":"1 XP; Força 2 + Agilidade 1 + Destreza 1 para aquisição. Perícia da arma exigida apenas para ativar.",
  "maestria-cajados":"1 XP; Destreza 2 para aquisição. Perícia da arma exigida apenas para ativar.",
  "maestria-arcos":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
@@ -1440,11 +1435,10 @@ const CARD_EFFECTS={
  "erudicao-avancada": "Erudição predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "atletismo-avancado": "Atletismo predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
  "artesao-avancado": "Artesão predominante + até duas fontes adicionais pertinentes, respeitando limites da pilha",
- "maestria-martelos": "Martelo habilitado pelo peso: acerto comum ativa 1 característica gratuita; crítico ativa até 2 características diferentes gratuitas e pode pagar 1 Coragem para mais uma terceira, se existente. Não exige Perícia de Armas para compra, só para ativação",
+ "maestria-martelos": "Martelo, maça ou clava habilitados pelo peso: acerto comum ativa 1 característica gratuita; crítico ativa até 2 características diferentes gratuitas e pode pagar 1 Coragem para mais uma terceira, se existente. Não exige Perícia de Armas para compra, só para ativação",
  "maestria-adagas":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-espadas":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-machados":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
- "maestria-macas":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-hastes":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-cajados":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
  "maestria-arcos":"Em acerto comum: 1 característica própria gratuita. No crítico: 2 diferentes gratuitas e uma terceira diferente por 1 Coragem, desde que a arma tenha tais características. Requer habilitação de manejo; respeitar DE, recursos e gatilhos.",
@@ -1533,7 +1527,6 @@ const CARD_BRIEFS={
  "maestria-adagas":"1 XP; compra: Agilidade 2 + Destreza 2. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
  "maestria-espadas":"1 XP; compra: Força 2 + Destreza 2. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
  "maestria-machados":"1 XP; compra: Força 2 + Destreza 1. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
- "maestria-macas":"1 XP; compra: Força 3 + Destreza 1 + Vigor 1. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
  "maestria-hastes":"1 XP; compra: Força 2 + Agilidade 1 + Destreza 1. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
  "maestria-cajados":"1 XP; compra: Destreza 2. Acerto com arma habilitada: 1 efeito grátis; crítico: 2 diferentes grátis e terceiro por 1 Coragem.",
  "maestria-arcos":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
@@ -1622,7 +1615,6 @@ const CARD_ACTIVATIONS={
  "maestria-adagas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
  "maestria-espadas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
  "maestria-machados":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-macas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
  "maestria-hastes":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
  "maestria-cajados":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
  "maestria-arcos":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
@@ -1675,7 +1667,7 @@ const PLAYER_SKILL_COPY={
 // Os requisitos específicos continuam vindo do catálogo; não inventar compras pendentes.
 function playerSkillGuide(id){
  if(PLAYER_SKILL_COPY[id])return PLAYER_SKILL_COPY[id];
- const mastery=WEAPON_MASTERY_TYPES.find(row=>row.id===id);
+ const mastery=id==="maestria-martelos"?{activationReq:"Perícia em Armas correspondente ao peso do martelo, maça ou clava"}:WEAPON_MASTERY_TYPES.find(row=>row.id===id);
  if(!mastery)return null;
  return {
   intro:"Você se especializou nesta família de armas e sabe aproveitar as características que seu equipamento possui.",
@@ -1843,12 +1835,12 @@ function equipmentWeight(item){
  if(item.weight==="extremo")return "extremo";
  return "leve";
 }
-// Especialização em Armas — Martelos: Perícia de Armas conforme o PESO é exigida na ativação,
-// e não como requisito para comprar Especialização em Armas — Martelos.
+// Especialização em Armas — Martelos, Maças e Clavas: Perícia de Armas conforme o PESO é exigida na ativação,
+// e não como requisito para comprar Especialização em Armas — Martelos, Maças e Clavas.
 function hammerMasteryRequiredSkill(item){
  if(!item||!["weapon","arma"].includes(item.type))return null;
  const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- if(!/martelo|marreta/.test(name))return null;
+ if(!/martelo|marreta|maca|clava/.test(name))return null;
  return {leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[equipmentWeight(item)]||null;
 }
 function hammerMasteryCanActivate(item,s=state){
@@ -1867,8 +1859,7 @@ function weaponMasteryId(item){
  if(!item||!["weapon","arma"].includes(item.type))return null;
  const name=String(item.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  if(item.firearm||/revolver|pistola|mosquete|rifle|metralhadora|escopeta|shotgun|sniper|lanca.granadas/.test(name))return "maestria-armas-fogo";
- if(/martelo|marreta/.test(name))return "maestria-martelos";
- if(/maca|clava/.test(name))return "maestria-macas";
+ if(/martelo|marreta|maca|clava/.test(name))return "maestria-martelos";
  if(/besta/.test(name))return "maestria-bestas";
  if(/arco/.test(name))return "maestria-arcos";
  if(/adaga|faca|punhal|kunai/.test(name))return "maestria-adagas";
@@ -2319,12 +2310,13 @@ function normalize(v){
  if(newDexGrant)s.racialInitialAttributes.push("destreza");
  // v0.87: "arma-certa" era uma duplicata de Manejo Perfeito. Migrar o ID legado
  // antes de filtrar SKILLS, deduplicando compras sem cobrar XP duas vezes.
- const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string").map(x=>x==="arma-certa"?"manejo-perfeito":x))]:[];
+ const rawSkills=Array.isArray(v.skills)?[...new Set(v.skills.filter(x=>typeof x==="string").map(x=>x==="arma-certa"?"manejo-perfeito":x==="maestria-macas"?"maestria-martelos":x))]:[];
  const legacyCost=(rawSkills.includes("aprendiz")?2:0)+(rawSkills.includes("magia")?1:0);
  const qualifiesForFocus=(s.practices.armas_conjuracao||0)>=1&&(s.attributes.inteligencia||0)>=1&&(s.practices.artesao||0)>=1;
  const shouldMigrateFocus=legacyCost>0&&qualifiesForFocus&&!rawSkills.includes("criar-item-foco-magia");
  const legacyDifference=legacyCost-(shouldMigrateFocus?1:0);
  const removed=[...RETIRED_PROTOTYPES].filter(id=>rawSkills.includes(id));
+ // v0.102: o ID anterior de Maças e Clavas é convertido em Martelos; o XP redundante é liberado pelo total de compras.
  s.skills=[...new Set(rawSkills.filter(x=>!RETIRED_PROTOTYPES.has(x)&&SKILLS.some(y=>y[0]===x&&Number.isInteger(y[3]))&&!(x==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")))];
  if(s.race!=="lucker_sangue"&&rawSkills.includes("transfusao-sanguinaria")&&!s.notes.includes("Restrição racial de Transfusão Sanguinária:")){
   s.notes=(s.notes+"\nRestrição racial de Transfusão Sanguinária: compra histórica inválida nesta origem; Perícia retirada da ficha, XP investido liberado para redistribuição.").trim().slice(0,5000);
@@ -2627,8 +2619,7 @@ function skillReq(id,s=state){
   if(advancedSource&&(s[SOURCE_PROPS[advancedSource.group]][advancedSource.key]||0)<3)
    return"Requer "+advancedSource.label+" 3.";
  if(id==="maestria-punhos"&&(strength<1||agi<1||dex<1||vig<1))return"Requer Força 1, Agilidade 1, Destreza 1 e Vigor 1 para comprar. Pugilismo é exigido somente para ativar os efeitos da Especialização.";
-  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso do martelo será exigida somente ao ativar o efeito.";
-  if(id==="maestria-macas"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1. A Perícia de Armas do peso da maça ou clava é exigida só para ativar.";
+  if(id==="maestria-martelos"&&(strength<3||dex<1||vig<1))return"Requer Força 3, Destreza 1 e Vigor 1 para comprar. A Perícia de Armas conforme peso da arma será exigida somente ao ativar o efeito.";
   if(id==="maestria-adagas"&&(agi<2||dex<2))return"Requer Agilidade 2 e Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
   if(id==="maestria-machados"&&(strength<2||dex<1))return"Requer Força 2 e Destreza 1 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
   if(id==="maestria-cajados"&&dex<2)return"Requer Destreza 2 para comprar. A Perícia de Armas do peso é exigida só para ativar.";
@@ -3391,7 +3382,6 @@ const GENE_AUTO_REQUIREMENTS={
   "maestria-punhos":[["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]],
   "maestria-adagas":[["a:agilidade:2","a:destreza:2"]],
   "maestria-machados":[["a:forca:2","a:destreza:1"]],
-  "maestria-macas":[["a:forca:3","a:destreza:1","a:vigor:1"]],
   "maestria-cajados":[["a:destreza:2"]],
  "maestria-hastes":[["a:forca:2","a:agilidade:1","a:destreza:1"]],
  "maestria-espadas":[["a:forca:2","a:destreza:2"]],

@@ -2,7 +2,7 @@
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
  from "./codex-rules.mjs?v=20261122-fulminantes-v1";
-import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261123-especializacao-punhos-v099";
+import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261123-familia-contundente-v0102";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
@@ -222,7 +222,7 @@ export function normalize(raw){
  t.courage=0; // Nenhum inimigo, inclusive humanoide, possui Coragem.
  for(const [group,defs] of [["attributes",ATTRIBUTES],["knowledges",KNOWLEDGES],["practices",PRACTICES]])
   for(const [key] of defs)t[group][key]=Math.floor(clamp(raw[group]?.[key],0,6));
- t.skills=[...new Set([...(Array.isArray(raw.skills)?raw.skills.filter(id=>SKILLS.some(s=>s.id===id)):[]),
+ t.skills=[...new Set([...(Array.isArray(raw.skills)?raw.skills.map(id=>id==="maestria-macas"?"maestria-martelos":id).filter(id=>SKILLS.some(s=>s.id===id)):[]),
   ...humanoidRacialGrants(t).filter(id=>SKILLS.some(s=>s.id===id))])];
  t.items=Array.isArray(raw.items)?raw.items.slice(0,70).map(original=>{
   const i=migrateArmorIntegrity(original);

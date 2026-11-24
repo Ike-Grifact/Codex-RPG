@@ -47,7 +47,6 @@ export const GENE_AUTO_REQUIREMENTS={
  "maestria-punhos":[["a:forca:1","a:agilidade:1","a:destreza:1","a:vigor:1"]],
   "maestria-adagas":[["a:agilidade:2","a:destreza:2"]],
   "maestria-machados":[["a:forca:2","a:destreza:1"]],
-  "maestria-macas":[["a:forca:3","a:destreza:1","a:vigor:1"]],
   "maestria-cajados":[["a:destreza:2"]],
  "maestria-hastes":[["a:forca:2","a:agilidade:1","a:destreza:1"]],
  "maestria-espadas":[["a:forca:2","a:destreza:2"]],

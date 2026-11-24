@@ -45,7 +45,7 @@ test("Benefícios são exibidos sem duplicar linha de ativação nas três Perí
  assert.match(player,/guide\?'<div class="fp-skill-quick-benefit"/);
 });
 
-const masteryFamilies=["adagas","espadas","machados","macas","martelos","hastes","cajados","arcos","bestas","arremessos","punhos","longo-alcance","armas-fogo"];
+const masteryFamilies=["adagas","espadas","machados","martelos","hastes","cajados","arcos","bestas","arremessos","punhos","longo-alcance","armas-fogo"];
 test("Todas as Especializações em Armas oferecem os benefícios em linguagem de jogador",()=>{
  assert.match(player,/function playerSkillGuide\(id\)/);
  assert.match(player,/const mastery=WEAPON_MASTERY_TYPES\.find/);
@@ -68,4 +68,14 @@ test("Todas as Especializações em Armas oferecem os benefícios em linguagem d
  const fogo=readFileSync(new URL("../pericias/maestria-em-armas-fogo.html",import.meta.url),"utf8");
  assert.match(fogo,/0 XP para Humanos pela origem/);
  assert.match(fogo,/não concede a Perícia em Armas de Fogo/);
+});
+
+test("Maças e Clavas redirecionam à Especialização única de Martelos",()=>{
+ const html=readFileSync(new URL("../pericias/maestria-em-macas.html",import.meta.url),"utf8");
+ assert.match(html,/rel="canonical" href="\.\/maestria-em-martelos\.html"/);
+ const unified=readFileSync(new URL("../pericias/maestria-em-martelos.html",import.meta.url),"utf8");
+ assert.match(unified,/<h1>Especialização em Armas — Martelos, Maças e Clavas<\/h1>/);
+ const catalog=readFileSync(new URL("../pericias/index.html",import.meta.url),"utf8");
+ assert.equal((catalog.match(/href="maestria-em-martelos\.html"/g)||[]).length,1);
+ assert.doesNotMatch(catalog,/href="maestria-em-macas\.html"/);
 });
