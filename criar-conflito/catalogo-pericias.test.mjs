@@ -13,9 +13,9 @@ function canonicalSource(){
  assert.ok(first>=0&&sk>first&&end>sk,"Não encontrou definições do catálogo da ficha de jogador");
  return new Function(source.slice(first,sk)+"\n"+source.slice(sk,end)+"\nreturn SKILLS;")();
 }
-test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e custos da ficha",()=>{
+test("Catálogo do inimigo espelha integralmente os 122 IDs, nomes, textos e custos da ficha",()=>{
  const original=canonicalSource();
- assert.equal(original.length,123);
+ assert.equal(original.length,122);
  assert.deepEqual(PLAYER_SKILLS.map(x=>[x.id,x.name,x.detail,x.cost]),original);
  for(const entry of original){
   const match=SKILLS.find(x=>x.id===entry[0]);
