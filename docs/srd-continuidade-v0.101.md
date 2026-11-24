@@ -22,6 +22,14 @@ O personagem declara o uso de uma característica existente em sua arma e paga 1
 
 A regra se aplica ao gasto da **tentativa**. Não altera o conjunto de características existentes, as habilitações da arma, os benefícios gratuitos das Especializações por família, a exceção de Cravar, nem o custo eventual de uma segunda ou terceira característica.
 
+### Aplicação às Especializações em Armas por família [DEFINIDO]
+
+As Especializações em Armas (antigas Maestrias por família) conservam as regras aprovadas na v0.99. **Uma característica da arma é gratuita no acerto comum**, sem gasto inicial. Uma segunda característica diferente, quando pretendida, envolve **1 Coragem declarada e paga antes da rolagem**; no crítico com acerto, a recuperação normal do crítico compensa esse pagamento, totalizando duas características distintas com custo líquido zero **para essa segunda ativação**. Não há outra devolução concedida pela Especialização.
+
+Uma terceira característica diferente, se existir e for elegível, exige **outra Coragem paga antes da rolagem**. O efeito da terceira continua restrito ao crítico com acerto, e a recuperação geral do crítico é aplicada uma vez, conforme o número de dados mantidos, sem bônus ou reembolso duplicado. Se não houver a condição necessária, a característica não produz efeito e a Coragem declarada não é devolvida por falha.
+
+A primeira característica da Especialização é uma gratuidade própria e **não deve ser debitada e depois reembolsada**. A recuperação geral de Coragem por crítico continua independente desse benefício. Não alterar habilitação por peso, Pugilismo para Armas de Punho, concessão racial das Armas de Fogo ou bloqueio de compra das quatro famílias com requisitos pendentes.
+
 ## 2. Sequência de resolução [DEFINIDO]
 
 1. **Declarar ação e Perícias** (inclusive característica paga da arma).
