@@ -1994,7 +1994,7 @@ const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT 
 // SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
 const STONE_CATALOG=[["Fogo","common"],["Água","common"],["Ar","common"],["Terra","common"],["Psíquico","common"],
  ["Veneno","rare"],["Sagrado","rare"],["Trevas","rare"]];
-const ACTIVE_PROPERTIES=new Set(["Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]);
+const ACTIVE_PROPERTIES=new Set(["Envenenar","Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]);
 const SOUND_KEY="codex-roll-sound-v1";
 let soundEnabled=true,audioContext=null,tradeDraft=null,tradeOwner=null;
 try{soundEnabled=localStorage.getItem(SOUND_KEY)!=="off";}catch(e){}
@@ -4673,7 +4673,8 @@ function score(){
  const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
  const criticalConverted=critTier&&raw[2]>0?1:0;
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
- const properties=item?.equipped?(item.properties||[]):[];
+ const poisonOnly=p.mode==="armas"&&item?.type==="arma"&&/^zarabatana(?:\b|$)/i.test(item.name||"");
+ const properties=item?.equipped?(poisonOnly?["À Distância","Envenenar"]:(item.properties||[])):[];
  const el=(item?.element||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
  const elementSkill={ar:"vento",vento:"vento",agua:"agua",fogo:"fogo",terra:"terra",
   veneno:"veneno",sagrado:"sagrado",trevas:"trevas",sangue:"sangue"}[el];
@@ -4765,7 +4766,8 @@ function score(){
  const declaredProperties=[p.characteristic,p.secondCharacteristic].filter(Boolean);
  const paidProperties=declaredProperties.filter(prop=>
   !(freeElementEffect&&prop==="Elemental")&&!(passivePiercing&&prop==="Perfurante"));
- const masteryFree=p.mode==="armas"&&item?.type==="arma"&&item.equipped&&
+ if(declaredProperties.includes("Envenenar")&&(!poisonOnly||!item?.equipped||!ownsSkill("armas-longo-alcance")||skillReq("armas-longo-alcance")||declaredProperties.length!==1))errs.push("Envenenar exige Zarabatana, dardo preparado e Armas de Longo Alcance habilitada.");
+ const masteryFree=!poisonOnly&&p.mode==="armas"&&item?.type==="arma"&&item.equipped&&
   weaponMasteryCanActivate(item,state)?1:0;
  courageCost+=Math.max(0,paidProperties.length-masteryFree);
  const active=success&&passivePiercing?["Perfurante"]:[];
@@ -4773,7 +4775,7 @@ function score(){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
   const weaponSkillId=weaponWeight==="leve"?"armas-leves":weaponWeight==="medio"?"armas-medias":
    weaponWeight==="pesado"?"armas-pesadas":null;
-  if(weaponSkillId&&
+  if(!poisonOnly&&weaponSkillId&&
     (p.mode!=="armas"||!ownsSkill(weaponSkillId)||skillReq(weaponSkillId)))
    errs.push("Ativar características desta arma exige a Perícia de Armas do peso correspondente e seus requisitos atuais.");
   if(!properties.includes(p.characteristic)||!ACTIVE_PROPERTIES.has(p.characteristic))
@@ -4829,7 +4831,6 @@ function score(){
  if(remainingCourageCost>state.courage)errs.push("Coragem insuficiente para a rolagem e ativações.");
  const critRecovery=critTier>=3?2:critTier>=2?1:0;
  // O d20 de Asura mantido compõe E/P tanto na DE quanto no dano básico; nunca rolar dano extra.
- const poisonOnly=p.mode==="armas"&&item?.type==="arma"&&/^zarabatana(?:\b|$)/i.test(item.name||"");
  const damageBasic=success&&!poisonOnly?E+Math.floor(P/2):0;
  const fulminanteDamageBasic=success&&p.opts.fulminante&&!poisonOnly?E+P:damageBasic;
  // Perfurante NÃO atravessa armadura: P vale 1 dano apenas no cálculo de Integridade.
@@ -4885,7 +4886,7 @@ function renderPending(){
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
- const specials=(item?.properties||[]).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar")&&
+ const specials=(s.poisonOnly?(ownsSkill("armas-longo-alcance")&&!skillReq("armas-longo-alcance")?["Envenenar"]:[]):(item?.properties||[]).filter(x=>x!=="Envenenar")).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar")&&
   (x!=="Cravar"||((item?.category==="medio"||item?.weight==="medio")&&ownsSkill("armas-medias")&&!skillReq("armas-medias"))||
    ((item?.category==="pesado"||["alto","extremo"].includes(item?.weight))&&ownsSkill("armas-pesadas")&&!skillReq("armas-pesadas"))));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
@@ -4895,8 +4896,8 @@ function renderPending(){
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
   '<p class="fp-caption">Cravar requer arma Média/Pesada, Perícia pertinente e DE atingida, inclusive no crítico. Declare a tentativa e pague a Coragem conforme a Perícia ou Especialização. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
- const masteryReady=p.mode==="armas"&&item?.type==="arma"&&weaponMasteryCanActivate(item,state);
- const effectRule=masteryReady?
+ const masteryReady=!s.poisonOnly&&p.mode==="armas"&&item?.type==="arma"&&weaponMasteryCanActivate(item,state);
+ const effectRule=s.poisonOnly?"Envenenar: selecione somente com dardo preparado. 1 Coragem; acerto aplica 1 acúmulo por 2 rodadas sem Sangramento. Nesta ficha, declaração antecipada ainda pendente.":masteryReady?
   "Especialização: primeira característica gratuita no acerto. Para tentar uma segunda, declare 1 Coragem antes de rolar; a recuperação normal do crítico devolve esse gasto em um crítico válido. A terceira característica da Especialização segue registro manual.":
   "Perícia de Armas: declare e pague 1 Coragem antes de rolar para tentar ativar a característica; a falha não devolve o gasto. Um crítico válido recupera Coragem pelo benefício normal, uma única vez.";
  const effects=specials.length?'<div class="fp-form-grid">'+
@@ -4945,7 +4946,7 @@ function renderPending(){
   '. '+(s.success?'Ao finalizar, a arma será retirada do escudo e sua carga/penalidade serão removidas.':'A arma permanecerá cravada no escudo.')+
   ' Não é ataque e não causa dano; Pavor continua produzindo risco.</p>':
   (p.shieldThrowId?'<p class="fp-caption"><strong>ESCUDO BUMERANGUE:</strong> Ataque de Disciplina + Atributo(s), até 8 m. <strong>'+(s.shieldThrowOutcome?.returned?'ACERTO — escudo retorna no mesmo turno, mesmo com Pavor.':'FALHA — escudo cai no chão; '+(s.shieldThrowOutcome?.where==='caminho'?'queda no caminho, 1A pode permitir correr e recuperar.':'queda próxima ao alvo; pode atingir aliado próximo se alcançar a DE dele.')+' Distância de queda: '+s.shieldThrowOutcome?.distance+' m (E mantidos + P não anulado + E convertido por 2A).')+'</strong> Dano físico básico no acerto: <strong>'+s.damage+'</strong> (Êxitos válidos + piso(Pavor/2), crítico normal). Características da peça só se existirem e forem habilitadas; Pavor conserva seus riscos. A situação será registrada ao finalizar.</p>':'<p class="fp-caption" style="margin-top:9px">Dano básico se acertar: '+s.damage+'. Pavor não anulado conserva o risco e a transferência pertinente.</p>'))+
- (s.poisonOnly?'<p class="fp-caption"><strong>ZARABATANA:</strong> sem dano à Integridade ou à Vida. Resolver aplicação de veneno manualmente; acerto não concede acúmulo automático.</p>':"")+
+ (s.poisonOnly?'<p class="fp-caption"><strong>ZARABATANA:</strong> sem dano à Integridade ou à Vida. '+(s.active.includes("Envenenar")?"Envenenamento: 1 acúmulo por 2 rodadas; registre no alvo.":"Sem Envenenar ativado, nenhum acúmulo.")+'</p>':"")+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
  (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+

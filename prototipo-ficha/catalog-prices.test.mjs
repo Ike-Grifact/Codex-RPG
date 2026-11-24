@@ -131,9 +131,9 @@ test("Aventureiro: preços proporcionais, a maioria leve",()=>{
 
 test("Zarabatana e dardos: somente veneno, preços e dado preservados",()=>{
  const w=byName("Zarabatana"),d=byName("Dardos de Zarabatana (20 unidades)");
- assert.deepEqual(w.properties,["À Distância"]);assert.deepEqual(d.properties,[]);
+ assert.deepEqual(w.properties,["À Distância","Envenenar"]);assert.deepEqual(d.properties,[]);
  assert.equal(w.die,6);assert.equal(w.priceVT,3);assert.equal(d.priceVT,2);assert.equal(d.packSize,20);
- assert.match(w.description,/sem Cortante, Perfurante, dano à Integridade/);
+ assert.match(w.description,/sem Cortante, Perfurante, dano à Integridade/i);
  const app=readFileSync(new URL("./app.js",import.meta.url),"utf8");
  assert.ok(app.includes("success&&!poisonOnly?E+Math.floor(P/2):0"));
  const comparator=readFileSync(new URL("../simulador-combate/app.mjs",import.meta.url),"utf8");

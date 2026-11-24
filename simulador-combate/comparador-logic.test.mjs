@@ -698,8 +698,23 @@ test("Golpe Colossal: Pavor supera DE mas não causa dano, inclusive com Fulmina
 test("Zarabatana: nenhum Cortante ou Perfurante, nem dano à Vida pelo patamar cinco",()=>{
  const w={name:"Zarabatana",properties:["À Distância","Cortante","Perfurante"]};
  assert.equal(isPoisonOnlyWeapon(w),true);
- assert.deepEqual(activeWeaponProperties(w),[]);
+ assert.deepEqual(activeWeaponProperties(w),["Envenenar"]);
  for(const target of [bare(),armor()])assert.equal(lifeAtFive({success:true,e:5,p:3},target,w).damage,0);
  assert.equal(isPoisonOnlyWeapon({name:"Arco Curto"}),false);
  assert.equal(lifeAtFive({success:true,e:5,p:0},bare(),{name:"Arco Curto"}).damage,2);
+});
+
+test("Zarabatana: Armas de Longo Alcance, 1 Coragem mesmo no crítico, somente no acerto",()=>{
+ const w={name:"Zarabatana",kind:"weapon",category:"leve",properties:["À Distância","Envenenar"]};
+ const c=normalizeCombatant({skills:["armas-longo-alcance"],attributes:{destreza:2},practices:{armas_conjuracao:1}});
+ assert.equal(declareWeaponEffects({...c,skills:[]},w,["Envenenar"]).ok,false);
+ assert.equal(declareWeaponEffects({...c,attributes:{destreza:1}},w,["Envenenar"]).ok,false);
+ assert.equal(declareWeaponEffects(c,w,["Perfurante"]).ok,false);
+ const d=declareWeaponEffects(c,w,["Envenenar"]);assert.equal(d.cost,1);
+ for(const critical of [0,2,4]){
+  const r=resolveDeclaredWeaponEffects(c,w,["Envenenar"],d,{success:true,critical});
+  assert.equal(r.cost,1);assert.equal(r.free,0);assert.deepEqual(r.active,["Envenenar"]);
+  assert.equal(weaponEffectOutcome(r.active,armor(),w).applied.envenenado,true);
+ }
+ assert.deepEqual(resolveDeclaredWeaponEffects(c,w,["Envenenar"],d,{success:false}).active,[]);
 });

@@ -208,7 +208,7 @@ export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
 export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa","Empurrar","Agarrar","Derrubar","Desarmar"]);
 export function isPoisonOnlyWeapon(weapon){return /^zarabatana(?:\b|$)/i.test(weapon?.name||"");}
 export function activeWeaponProperties(weapon){
- if(isPoisonOnlyWeapon(weapon))return [];
+ if(isPoisonOnlyWeapon(weapon))return ["Envenenar"];
  return [...new Set((weapon?.properties||[]).filter(x=>ACTIVE_WEAPON_PROPERTIES.includes(x)))];
 }
 export function weaponActivationSkill(c,weapon,{thrown=false}={}){
@@ -222,6 +222,7 @@ export function weaponActivationSkill(c,weapon,{thrown=false}={}){
   /^(luva|punho|soco|soqueira|manopla)/.test(name)?"pugilismo":
   ranged?"armas-longo-alcance":weightSkill;
  if(!skills.includes(required))return {ok:false,error:"Efeito da arma exige "+required+" adquirido.",required};
+ if(isPoisonOnlyWeapon(weapon)&&(required!=="armas-longo-alcance"||Number(c?.practices?.armas_conjuracao||0)<1||Number(c?.attributes?.destreza||0)<2))return {ok:false,error:"Envenenar exige Disciplina 1, Destreza 2 e Armas de Longo Alcance.",required};
  if(required==="pugilismo"&&
    (Number(c?.practices?.armas_conjuracao||0)<1||
     Number(c?.attributes?.forca||0)<2||Number(c?.attributes?.destreza||0)<1))
@@ -286,6 +287,7 @@ export function planWeaponEffects(c,weapon,chosen=[],{success=false,critical=0,t
   return {ok:false,error:"Só é possível ativar características distintas existentes na arma equipada."};
  const access=weaponActivationSkill(c,weapon,{thrown});
  if(!access.ok)return access;
+ if(isPoisonOnlyWeapon(weapon))return {ok:true,active:success?["Envenenar"]:[],cost:1,mastery:false,free:0,activationSkill:access.required};
  // Cravar exige a Perícia de peso mesmo no crítico e com Especialização.
  if(selected.includes("Cravar")){
   if(weapon?.kind!=="weapon"||weapon.equipped===false||!["medio","pesado"].includes(weapon.category))
@@ -348,6 +350,10 @@ export function weaponEffectOutcome(properties=[],target={},weapon=null){
  const effects=Array.isArray(properties)?properties:[];
  const notes=[];
  const applied={};
+ if(effects.includes("Envenenar")){
+  if(!isPoisonOnlyWeapon(weapon))return {ok:false,error:"Envenenar aqui exige Zarabatana."};
+  applied.envenenado=true;notes.push("Zarabatana: 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento; controlar dose e duração manualmente.");
+ }
  if(effects.includes("Cortante"))applied.sangramento=true;
  if(effects.includes("Perfurante"))notes.push("Perfurante: cada Pavor não anulado vale 1 dano à Integridade, sem somar o piso(P/2). Conferir escudo levantado e proteção psíquica.");
  if(effects.includes("Cravar")){
