@@ -2,7 +2,7 @@
 
 Este guia ensina a criar personagens, interpretar os símbolos e utilizar suas capacidades em jogo. Regras em teste ou ainda sem procedimento completo são identificadas nos assuntos a que pertencem.
 
-## I. O que é Codex RPG?
+## Parte I — Aprendendo a jogar
 
 Codex RPG é um sistema independente de fantasia, narrativa emergente e combate tático. Cada jogador começa como **Aprendiz**. Sua profissão resulta da combinação de **Atributos, Conhecimentos, Práticas, Perícias, equipamentos e técnicas** — não é necessário escolher uma classe obrigatória. Diferentes ramos de desenvolvimento podem cruzar-se e abrir novos caminhos, mesmo sem comprar todas as capacidades anteriores de um caminho.
 
@@ -22,9 +22,335 @@ No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão p
 
 **Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
 
+## Faces dos dados e runas
+
+Uma face pode mostrar uma ou várias runas. Se você mantiver uma face com dois Êxitos, ela contribui com 2E, e não apenas um. Leia todos os símbolos dos dados mantidos.
+
+- **ᛋ Êxito (E):** realiza sua intenção. Cada E conta para alcançar a dificuldade e pode contribuir para o dano em um ataque.
+- **ᚨ Antecipar (A):** adapta o resultado. Gaste 1A para anular 1T, 2A para criar 1E ou use A para passar a oportunidade a um aliado conforme o protagonismo. Cada A só pode ser gasto uma vez.
+- **ᚦ Temor (T):** também conta para alcançar a dificuldade, mas representa o risco diante do desconhecido e pode dar à oposição oportunidade de intervenção. Acertar com Temor não é um acerto limpo.
+- **○ Face vazia:** não acrescenta símbolos; — indica face inexistente.
+
+**Exemplo:** E+A+T oferece um Êxito, um Antecipar e um Temor. Se gastar A para anular T, sobra 1E; se preservar T, há dois símbolos que contam para a dificuldade. Dados descartados não produzem símbolos.
+
+### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
+
+A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica a quantidade de símbolos. Esta tabela inclui a distribuição **d20 reforçado G consolidada pelo autor em 9/11/2026**, substituindo o protótipo experimental anterior.
+
+**Runas e identidade cromática:** **ᛋ Êxito (E)** — verde `#267A45`; **ᚨ Antecipar (A)** — azul `#2369BB`; **ᚦ Temor (T)** — roxo `#542176`. ○ é uma face vazia; — indica face inexistente naquele dado.
+
+| Face | d4 | d6 | d10 | d12 | d20 |
+|---:|---|---|---|---|---|
+| 1 | ᛋ | ○ | ○ | ○ | ○ |
+| 2 | ᚨ | ○ | ○ | ○ | ○ |
+| 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
+| 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
+| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ |
+| 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
+| 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
+| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
+| 11 | — | — | — | 3ᚦ | 3ᚦ |
+| 12 | — | — | — | 3ᛋ | 3ᛋ |
+| 13 | — | — | — | — | 2ᛋ+ᚨ+ᚦ |
+| 14 | — | — | — | — | 2ᛋ+2ᚦ |
+| 15 | — | — | — | — | 3ᚦ+2ᚨ |
+| 16 | — | — | — | — | 4ᚦ |
+| 17 | — | — | — | — | 3ᛋ+ᚨ+ᚦ |
+| 18 | — | — | — | — | 4ᛋ+ᚨ+2ᚦ |
+| 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
+| 20 | — | — | — | — | 6ᛋ+2ᚨ |
+
+As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3T. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3T+2A. O teto de DE permanece 30.
+
+## Coragem e seus recursos
+
+Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recurso que permite ampliar suas possibilidades. A pilha é o conjunto de dados rolados; os mantidos produzem os símbolos.
+
+### Coragem e seus usos [DEFINIDO]
+
+**Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
+- **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
+- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados.
+- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Temor também retira 1 Coragem**.
+- **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
+
+**Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
+
+## Rolando os dados
+
+Quando uma ação tem resultado incerto, reúna uma pilha, role e escolha os dados mantidos. A DE é o valor a alcançar; os capítulos seguintes detalham a pilha e a interpretação do resultado.
+
+1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
+2. Estabeleça a DE adequada ao alvo ou tarefa. A DE base defensiva não é substituída por uma dificuldade inventada se houver ficha.
+3. Role a pilha permitida, **incluindo pelo menos um dado de Atributo**, e escolha livremente os dados mantidos, **sem precisar manter nenhum dado de Atributo**. Respeite o limite de retenção.
+4. Conte Êxitos (E), Antecipar (A) e Temor (T) **somente dos dados mantidos**.
+5. Gaste Antecipar:
+   - **1A anula 1T próprio**;
+   - **Antecipar passa a oportunidade a aliado** (1A inicial, custo progressivo conforme participações na sequência), preservando Temor não anulado;
+   - **2A convertem-se em 1E**;
+   - outras aplicações específicas requerem Perícias.
+6. Compare **E + T mantido não anulado** à DE. Decida o resultado e calcule dano e consequências quando aplicável.
+
+Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular T.
+
+**Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
+
+
+O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado rolado deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Temor.
+
+| Níveis | Dados mantidos naturalmente | Com gasto de 1 Coragem |
+|---|---:|---:|
+| 1–9 | 2 | 3 |
+| 10–20 | 3 | 4 |
+
+Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
+
+## Montando sua pilha e combinando Aptidões
+
+Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio ícone, para ajudar a reconhecer rapidamente o que está escolhendo:
+
+| Ícone na ficha | Grupo | O que representa |
+|---|---|---|
+| **◇** | **Atributos** | Suas capacidades fundamentais: força física, reflexos, raciocínio, presença e resistência |
+| **⚔** | **Práticas** | Aquilo que você treinou para fazer |
+| **✦** | **Conhecimentos** | Aquilo que você estudou e aprendeu a compreender |
+
+**O Grau mostra o quanto você desenvolveu uma Aptidão.** Quanto maior o Grau, melhores são os dados que ela pode oferecer. Você gasta **XP (pontos de experiência)** para aumentar seus Graus. Os números dos dados, como **d6** e **d10**, indicam quantas faces eles possuem; durante a rolagem, você lê as **runas** que aparecem, e não soma os números das faces.
+
+### Como combinar Aptidões em uma ação
+
+Normalmente, você escolhe **duas Aptidões de grupos diferentes** que façam sentido para o que está tentando fazer. Por exemplo:
+
+- **◇ Força + ⚔ Atletismo:** subir por uma parede difícil.
+- **◇ Inteligência + ✦ Engenharia:** investigar um mecanismo antigo.
+- **◇ Influência + ⚔ Apresentação:** fazer um discurso diante de uma multidão.
+- **◇ Destreza + ✦ Medicina:** realizar um procedimento que exige precisão.
+
+Você pode começar a escolha por qualquer um dos grupos. O que importa é explicar **como** pretende agir. Não combine normalmente dois Atributos, dois Conhecimentos ou duas Práticas na mesma ação; exceções dependem de habilidades específicas. Algumas Perícias também permitem acrescentar uma **terceira Aptidão**, respeitando seus requisitos.
+
+**Na ficha:** procure **◇**, **✦** e **⚔** para encontrar as fontes dos seus dados. Depois de selecionar as Aptidões, o rolador reúne os dados correspondentes. Você escolhe quais resultados manter, seguindo os limites explicados acima. A combinação de Aptidões **não garante sucesso**: os símbolos mantidos ainda precisam alcançar a Dificuldade de Êxito (DE).
+
+
+
+Consulte as tabelas completas de Aptidões na criação e as combinações avançadas no aprofundamento das Perícias.
+
+## Crítico
+
+Depois de conhecer a rolagem e os dados mantidos, aprenda a reconhecer as faces críticas. Elas não são necessariamente a face de maior número; um crítico depende da sua escolha de dados, pode modificar símbolos e recuperar Coragem.
+
+### Crítico — quando os dados mostram seu melhor resultado
+
+Às vezes, seus dados caem em faces especiais chamadas **faces críticas**. Elas são fáceis de reconhecer pelos símbolos destacados em dourado. Cada tipo de dado tem sua própria face crítica:
+
+| Dado | Face crítica | Símbolos da face |
+|---|---:|---|
+| d4 | **1** | **1 Êxito (1E)** — ᛋ |
+| d6 | **6** | **1 Êxito (1E)** — ᛋ |
+| d10 | **7** | **2 Êxitos (2E)** — ᛋᛋ |
+| d12 | **12** | **3 Êxitos (3E)** — ᛋᛋᛋ |
+| d20 | **20** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
+
+**Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
+
+Você consegue um **crítico** quando mantém **pelo menos dois dados** e **todos os dados mantidos estão em suas respectivas faces críticas**. Se você rolou outros dados que não são críticos, pode descartá-los. Também pode escolher manter menos dados do que seu limite. O importante é que **nenhum dado mantido fique fora de sua face crítica**.
+
+Você ainda precisa incluir um dado de **Atributo na pilha que rolou**, mas não precisa mantê-lo. E lembre-se: dados descartados não fornecem Êxito, Antecipar nem Temor.
+
+### O que você ganha com um crítico?
+
+Quanto mais dados críticos você mantiver, maior será a recompensa:
+
+| Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
+|---|:---:|:---:|:---:|
+| Trocar até **1 Temor seu por 1 Êxito** | Sim | Sim | Sim |
+| Ganhar **+1 Êxito** | — | Sim | Sim |
+| Ganhar **+1 Antecipar** | — | Sim | Sim |
+| Recuperar **Coragem** | **1** | **2** | **2** |
+| **Dobrar o dano** | — | — | Sim |
+
+Os benefícios **se somam**: com três dados críticos, você também pode trocar 1 Temor por 1 Êxito; com quatro, recebe tudo o que aparece na última coluna. Se não tiver Temor para trocar, simplesmente não ganha o Êxito dessa troca. Você continua recebendo os outros benefícios.
+
+**Exemplo:** você mantém um **d6 na face 6 (ᛋ, 1E)** e um **d10 na face 7 (ᛋᛋ, 2E)**. Como os dois estão em suas faces críticas, você fez um crítico com **3 Êxitos** e recupera **1 Coragem**, até seu limite. Como não há Temor nesse resultado, não há nada para converter em Êxito. Você ainda precisa alcançar a **Dificuldade de Êxito (DE)** para realizar a ação.
+
+**E o dano dobrado?** Se conseguir manter **quatro dados críticos** em um ataque, o dano calculado com sua rolagem é dobrado **antes de passar pelas proteções do alvo**. Imagine que seu ataque causaria **6 de dano**: com esse crítico, ele passa a causar **12**. Se uma proteção absorver **5**, sobram **7** para resolver contra as demais defesas ou a Vida, conforme as regras de dano. Esse bônus não dobra automaticamente efeitos que causam uma quantidade fixa de dano direto à Vida; por exemplo, um efeito de **+1 Vida direta** continua causando **+1**. O crítico também não aumenta os limites de dano à Vida.
+
+**Fique de olho nos símbolos dourados:** eles mostram que um dado caiu em sua face crítica, mas o crítico da ação só acontece depois que você escolhe os dados mantidos.
+
+**Coragem recuperada:** você não pode ultrapassar seu limite de Coragem. O limite começa em **10** e pode aumentar com a progressão e as Maestrias, até o máximo absoluto de **15**.
+
+## Dificuldade de Êxito
+
+### Dificuldade de Êxito: o que é preciso conseguir?
+
+A Dificuldade de Êxito (DE) indica quantos símbolos você precisa reunir para alcançar o objetivo de uma ação. Depois de escolher os dados que vai manter e decidir como gastar Antecipar, conte os Êxitos e o Temor que não foi anulado. Se a soma alcançar ou superar a DE, o teste é bem-sucedido. O Temor ajuda a alcançar a dificuldade, mas continua trazendo riscos.
+
+**Exemplo:** Imagine um teste de DE 3. Se você mantiver 2 Êxitos e 1 Temor não anulado, alcança a dificuldade, mas o acerto não é limpo. Se anular esse Temor sem conseguir outro Êxito, terá apenas 2 símbolos válidos e falhará. Por isso, anular todo o Temor nem sempre é a melhor escolha.
+
+Quando a ação é contra um alvo com defesa calculada, use sua DE defensiva vigente, considerando os modificadores aplicáveis. Em outras ações, o Narrador estabelece a dificuldade adequada ao desafio. Não substitua a defesa da ficha por uma dificuldade arbitrária.
+
+
+Os cálculos de defesa natural e armaduras estão na parte de combate.
+
+## Acertos e falhas
+
+### Resultados e protagonismo
+
+Primeiro descubra se a ação alcançou seu objetivo: depois de manter os dados e gastar Antecipar, compare a soma dos Êxitos e do Temor não anulado com a DE. Depois observe o Temor restante. Sem Temor, o resultado é limpo; com Temor igual ou inferior aos Êxitos, é misto; com mais Temor que Êxitos, é arriscado. Um empate entre Êxitos e Temor, quando há Temor, é misto.
+
+| Resultado | DE | Temor restante | Na prática |
+|---|---|---|---|
+| Acerto Limpo | Alcança a DE | Sem Temor restante | O objetivo é alcançado sem risco de Temor residual. Pode continuar ou passar voluntariamente o protagonismo, respeitando a troca de lado. |
+| Acerto Misto | Alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo é alcançado, mas há risco e possibilidade de intervenção. |
+| Acerto Arriscado | Alcança a DE | Mais Temor que Êxitos | O objetivo é alcançado, mas o Temor predomina e pode provocar consequências graves. |
+| Falha Limpa | Não alcança a DE | Sem Temor restante | O objetivo não é alcançado, sem consequência negativa automática. Em ataque, sem passagem válida por Antecipar, a oportunidade passa à oposição; nas demais ações, segue o fluxo geral. |
+| Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção e normalmente perde 1 Coragem. |
+| Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e normalmente perde 1 Coragem. |
+
+**Exemplo:** Em um teste de DE 4, 3E + 1T é um Acerto Misto; 1E + 3T é um Acerto Arriscado. Se a DE for 5, os mesmos resultados se tornam Falha Mista e Falha Arriscada, respectivamente. Com 2E + 2T, o resultado também é misto: o Temor não supera os Êxitos.
+
+**Destino do Temor:** Em ataques contra um adversário declarado, o Temor mantido e não anulado é transferido à reserva local desse alvo, mesmo que esteja distante ou que o ataque falhe. Não é transferido ao inimigo mais próximo. O adversário só pode gastar a reserva em oportunidades válidas; Temor não concede turnos extras. Inimigos começam cada conflito com reserva cheia: G1 4T, G2 5T, G3 6T, G4 7T, G5–G6 8T. A distribuição em ataques de área, múltiplos alvos ou ações sem adversário atacado permanece pendente.
+
+Antecipar permite anular Temor (1A por 1T), converter símbolos (2A em 1E) ou passar a oportunidade a um aliado (1A inicial, dobrando conforme as participações do aliado), antes da intervenção, conservando o Temor que não foi anulado. Cada símbolo só pode ser gasto uma vez.
+
+O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um ataque que não resulte em Acerto Limpo e não tenha passagem válida por Antecipar devolve a oportunidade à oposição. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
+
+## Turnos e rodadas
+
+### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
+
+Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
+
+O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto Limpo permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto limpo nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
+
+Temor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Temor disponível não concede ação gratuita.
+
+#### Ação em conjunto e custo progressivo de Antecipar
+
+Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
+
+**A primeira ação conjunta da sequência de protagonismo de cada lado não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
+
+**Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Temor, converter em Êxito ou financiar outra convocação. Não apagar Temor ao passar protagonismo.
+
+**A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+
+| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Temor público por inimigo independente convocado |
+|---|---|---|
+| 0 | 1A | 1T |
+| 1 | 2A | 1T |
+| 2 | 4A | 1T |
+| 3 | 8A | 1T |
+| 4 | 16A | 1T |
+
+#### Exemplo: cinco jogadores A, B, C, D e E
+
+| Formação | Convocação e resolução | Turnos acumulados |
+|---|---|---|
+| ABC | Primeira ação conjunta: gratuita em Antecipar; obtém 2A e convoca D e E (1A cada). | 3 |
+| DE → ADE | D e E rolam, gastam 2A para convocar A, que já participou uma vez. A rola; resolve-se ADE em conjunto. | 6 |
+| ADE → BC | Os participantes de ADE obtêm e gastam 4A para convocar B e C (2A cada). B e C rolam. | 6 (a nova ação ainda não foi resolvida) |
+| BC → ABC | B e C gastam mais 4A dos próprios resultados para incorporar A, que já participou duas vezes. A rola; resolve-se ABC em conjunto. | 9 |
+
+Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participou uma vez e custa 2A. Convocar ambos somaria 4A, mas não caberia no mesmo ataque conjunto de B e C pelo limite de três participantes. O custo de 8A para voltar a formar ABC no exemplo é pago em etapas: 4A por ADE e 4A por BC; não é um pagamento único por um personagem nem uma convocação de si mesmo.
+
+**Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
+
+#### Inimigos, Liderança e Temor público
+
+**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1T da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Temor público dos inimigos incorporados.
+
+**Somente o Narrador paga esse Temor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Temor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
+
+**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1T público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2T. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Temor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1T público disponível, o chefe não pode usar seu Temor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
+
+Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
+
+O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
+
+## Parte II — Construindo seu personagem
+
+Comece pelo nome, conceito e identidade de seu Aprendiz. Pense no que pretende fazer durante a aventura; a profissão surge das escolhas.
+
+## Crie seu Aprendiz
+
+### Linhagens e benefícios na criação [DEFINIDO / opções PENDENTES]
+
+| Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
+|---|---|---|
+| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Especialização em Armas de Fogo gratuita; a Especialização não concede automaticamente a Perícia em Armas de Fogo |
+| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
+| **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
+| **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
+
+**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.94):** escolhe **exatamente uma** Perícia elemental inicial gratuita entre **Fogo, Água, Ar, Terra e Sagrado**. A escolha não concede os cinco elementos de uma vez. **Sangue, Trevas e Veneno não são opções iniciais gratuitas**. Esses elementos especiais continuam sujeitos às próprias regras de aquisição posterior por XP e requisitos; Transfusão Sanguinária permanece exclusiva do Lucker de Sangue. Fichas antigas preservam o registro da escolha de origem revogada sem continuar concedendo sua Perícia gratuitamente, e compras explícitas de Perícias por XP são preservadas. O jogador pode regularizar uma escolha revogada, sem custo, uma única vez, inclusive em ficha já concluída.
+
+**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.95):** Criar Item de Foco e Magia tem **custo de aquisição 0 XP**, sem concessão automática. É obrigatório comprar Disciplina 1, Inteligência 1 e Artesão 1 pelos custos de fontes vigentes antes de confirmar a Perícia gratuitamente. A escolha elemental racial é separada, não dispensa requisitos e não habilita efeitos Psíquicos por si só.
+
+**Runa Espinhos:** o elemento gratuito pode ser somente **um** entre Ar, Água, Terra e Fogo. Os demais precisam ser adquiridos normalmente. Escudo Rúnico é a concessão racial de Escudo Arcano, com uma ativação base gratuita por dia; aplicações posteriores têm custo normal e a barreira ganha resistência a um elemento habilitado por utilização, não imunidade irrestrita. A segunda opção elemental de fichas antigas é apenas histórica, sem segundo benefício gratuito.
+
+**Custos raciais vigentes:** Lucker de Sangue favorece Vigor e Agilidade, com Influência/Apresentação elevados; Lucker Puro favorece Inteligência e Destreza, com Força/Atletismo elevados; Runa Espinhos favorece Vigor e Força, com Agilidade/Destreza elevados. As faixas usam os preços raciais existentes, sem criar multiplicadores novos.
+
+Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
+
+| Grau | Dados de Atributo | XP acumulado | Dados de Conhecimento/Prática | XP acumulado |
+|---:|---|---:|---|---:|
+| 0 | 1d4 | 0 | **1d6** | 0 |
+| 1 | 1d6 | 1 | 1d10 | 2 |
+| 2 | 2d6 | 3 | 2d10 | 4 |
+| 3 | 3d6 | 6 | 3d10 | 8 |
+| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
+| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
+| 6 | 3d10 | 32 | 3d12 | 64 |
+
+**Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
+
+**Práticas DEFINIDAS (6):** **Disciplina** (Prática compartilhada para ataques, defesas e conjurações), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
+
+**Disciplina é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a técnicas ofensivas, defensivas ou mágicas segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
+
+**Fichas antigas:** os valores anteriormente separados como Armas e Conjuração são conciliados provisoriamente pelo maior grau, com anotação histórica dos valores antigos; não se somam os dados nem os custos.
+
+**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Armas na especialização de Punhos continua exigindo habilitação específica.
+
+O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
+
+**DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
+
+**DEFINIDO — orçamento inicial vigente, SRD v0.89:** a criação possui **15 XP iniciais compartilhados**, não 18, 19 ou 20. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reservas 6/8/5 ou 7/7/5. Níveis não concedem XP automaticamente. O teto de referência é 260 XP acumulados no nível 20, incluindo os 15 iniciais. Custos por Grau e dados de fonte permanecem.
+
+**Vida máxima:** 3 + Vigor + piso(Força/2).
+
+**DE defensiva — SRD v0.89 [DEFINIDO]:** **min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, **sem +1 fixo**. Depois aplicar a armadura (Muito Leve/Roupas Simples **+2 em todas as defesas**, sem duplicação na esquiva) e os efeitos autorizados; teto final 12. A fórmula v0.88 está substituída. [v0.89](srd-continuidade-v0.89.md).
+
+**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias.
+
+**Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
+
+| Capacidade utilizada | Balanço do personagem |
+|---|---|
+| Menos de 25% | **Muito Leve** |
+| De 25% até menos de 50% | **Leve** |
+| De 50% até menos de 75% | **Médio** |
+| De 75% até menos de 100% | **Pesado** |
+| 100% ou mais | **Muito Pesado** |
+
+**Visualização na ficha:** 20 blocos representam 100% da capacidade (5% por bloco), com preenchimento parcial quando necessário; mostrar também a porcentagem exata e quanto cada item ocupa na capacidade. Ultrapassar 100% continua gerando o alerta já existente de carga excedida; nenhum novo custo ou penalidade por excesso foi aprovado. Esta mudança **não redefine o Tipo da armadura**, seus modificadores de DE, Integridade ou a categoria tática de armas e magias.
+
+### Deslocamento [DEFINIDO]
+
+O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a cada 3 graus completos de Atletismo**.
+
+**Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
+
+**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo Armas, alcance e efeitos.
+
+## Luckers — guia de interpretação
+
 ### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
 
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo II — Criar o Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo Crie seu Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
 
 #### Dois destinos para um povo antigo
 
@@ -256,196 +582,7 @@ Antes de interpretar um Lucker, responda:
 
 **Em resumo:** o Lucker Puro pode viver por eras, mas ainda pode morrer. O Lucker de Sangue pode continuar existindo por eras sem experimentar o que os outros chamam de viver. **Como cada um responde a isso é o que torna o personagem único.**
 
-
-## II. Criar o Aprendiz
-
-### Linhagens e benefícios na criação [DEFINIDO / opções PENDENTES]
-
-| Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
-|---|---|---|
-| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Especialização em Armas de Fogo gratuita; a Especialização não concede automaticamente a Perícia em Armas de Fogo |
-| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
-| **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
-| **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
-
-**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.94):** escolhe **exatamente uma** Perícia elemental inicial gratuita entre **Fogo, Água, Ar, Terra e Sagrado**. A escolha não concede os cinco elementos de uma vez. **Sangue, Trevas e Veneno não são opções iniciais gratuitas**. Esses elementos especiais continuam sujeitos às próprias regras de aquisição posterior por XP e requisitos; Transfusão Sanguinária permanece exclusiva do Lucker de Sangue. Fichas antigas preservam o registro da escolha de origem revogada sem continuar concedendo sua Perícia gratuitamente, e compras explícitas de Perícias por XP são preservadas. O jogador pode regularizar uma escolha revogada, sem custo, uma única vez, inclusive em ficha já concluída.
-
-**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.95):** Criar Item de Foco e Magia tem **custo de aquisição 0 XP**, sem concessão automática. É obrigatório comprar Disciplina 1, Inteligência 1 e Artesão 1 pelos custos de fontes vigentes antes de confirmar a Perícia gratuitamente. A escolha elemental racial é separada, não dispensa requisitos e não habilita efeitos Psíquicos por si só.
-
-**Runa Espinhos:** o elemento gratuito pode ser somente **um** entre Ar, Água, Terra e Fogo. Os demais precisam ser adquiridos normalmente. Escudo Rúnico é a concessão racial de Escudo Arcano, com uma ativação base gratuita por dia; aplicações posteriores têm custo normal e a barreira ganha resistência a um elemento habilitado por utilização, não imunidade irrestrita. A segunda opção elemental de fichas antigas é apenas histórica, sem segundo benefício gratuito.
-
-**Custos raciais vigentes:** Lucker de Sangue favorece Vigor e Agilidade, com Influência/Apresentação elevados; Lucker Puro favorece Inteligência e Destreza, com Força/Atletismo elevados; Runa Espinhos favorece Vigor e Força, com Agilidade/Destreza elevados. As faixas usam os preços raciais existentes, sem criar multiplicadores novos.
-
-Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
-
-| Grau | Dados de Atributo | XP acumulado | Dados de Conhecimento/Prática | XP acumulado |
-|---:|---|---:|---|---:|
-| 0 | 1d4 | 0 | **1d6** | 0 |
-| 1 | 1d6 | 1 | 1d10 | 2 |
-| 2 | 2d6 | 3 | 2d10 | 4 |
-| 3 | 3d6 | 6 | 3d10 | 8 |
-| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
-| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
-| 6 | 3d10 | 32 | 3d12 | 64 |
-
-**Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
-
-**Práticas DEFINIDAS (6):** **Disciplina** (Prática compartilhada para ataques, defesas e conjurações), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
-
-**Disciplina é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a técnicas ofensivas, defensivas ou mágicas segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
-
-**Fichas antigas:** os valores anteriormente separados como Armas e Conjuração são conciliados provisoriamente pelo maior grau, com anotação histórica dos valores antigos; não se somam os dados nem os custos.
-
-**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Armas na especialização de Punhos continua exigindo habilitação específica.
-
-O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
-
-**DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
-
-**DEFINIDO — orçamento inicial vigente, SRD v0.89:** a criação possui **15 XP iniciais compartilhados**, não 18, 19 ou 20. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reservas 6/8/5 ou 7/7/5. Níveis não concedem XP automaticamente. O teto de referência é 260 XP acumulados no nível 20, incluindo os 15 iniciais. Custos por Grau e dados de fonte permanecem.
-
-**Vida máxima:** 3 + Vigor + piso(Força/2).
-
-**DE defensiva — SRD v0.89 [DEFINIDO]:** **min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, **sem +1 fixo**. Depois aplicar a armadura (Muito Leve/Roupas Simples **+2 em todas as defesas**, sem duplicação na esquiva) e os efeitos autorizados; teto final 12. A fórmula v0.88 está substituída. [v0.89](srd-continuidade-v0.89.md).
-
-**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias.
-
-**Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
-
-| Capacidade utilizada | Balanço do personagem |
-|---|---|
-| Menos de 25% | **Muito Leve** |
-| De 25% até menos de 50% | **Leve** |
-| De 50% até menos de 75% | **Médio** |
-| De 75% até menos de 100% | **Pesado** |
-| 100% ou mais | **Muito Pesado** |
-
-**Visualização na ficha:** 20 blocos representam 100% da capacidade (5% por bloco), com preenchimento parcial quando necessário; mostrar também a porcentagem exata e quanto cada item ocupa na capacidade. Ultrapassar 100% continua gerando o alerta já existente de carga excedida; nenhum novo custo ou penalidade por excesso foi aprovado. Esta mudança **não redefine o Tipo da armadura**, seus modificadores de DE, Integridade ou a categoria tática de armas e magias.
-
-### Deslocamento [DEFINIDO]
-
-O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a cada 3 graus completos de Atletismo**.
-
-**Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
-
-**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
-
-### Perícias de especialização: o que você pode aprender
-
-As **Perícias** detalham técnicas específicas e só produzem os efeitos de seus verbetes quando os requisitos e os gatilhos são atendidos. As seguintes Perícias custam **1 XP cada**, compradas individualmente; efeitos em que falta procedimento específico dependem do Narrador.
-
-| Perícia | Uso permitido |
-|---|---|
-| [Mãos Leves](../pericias/maos-leves.html) | Em combate, teste **Disciplina + Furtividade** para retirar item inimigo; DE do alvo + Grau do item + peso se equipado. É uma exceção específica à restrição de combinar duas Práticas. |
-| [Perícia em Armadilha](../pericias/pericia-armadilha.html) | **Vantagem** ao armar e desarmar armadilhas, usando Proteção como Conhecimento pertinente. |
-| [Golpe Furtivo](../pericias/golpe-furtivo.html) | Em ataque furtivo com arma habilitada, acrescenta **um dado da própria arma**, sem criar dano fixo ou +1E. |
-| [Bioética](../pericias/bioetica.html) | Com os requisitos de Alquimia, Sangue, elementos e Domar, pode criar homúnculos com **ficha própria**. |
-| [Pesquisa Avançada em Poções](../pericias/pesquisa-avancada-pocoes.html) | **+1E** ao criar poções, e permite poções elementais habilitadas. |
-| [Corpo Fechado](../pericias/corpo-fechado.html) | **1 Coragem** protege a Vitalidade contra golpes físicos de armas por uma rodada, sem conceder imunidade a magia. |
-| [Invocar Esfera Espiritual](../pericias/invocar-esfera-espiritual.html) | Cada esfera custa **1 Coragem**; cria até **5 por rodada** e mantém até **5 armazenadas**. |
-| [Passo Etéreo](../pericias/passo-etereo.html) | Técnica especializada que consome uma esfera; demais condições seguem seu verbete. |
-| [Absorver Esferas](../pericias/absorver-esferas.html) | Consome todas as esferas armazenadas para o efeito próprio da Perícia, sem duplicar recursos. |
-| [Disparo de Esferas Espirituais](../pericias/disparo-esferas-espirituais.html) | Utiliza esfera espiritual conforme o ataque especializado e suas condições. |
-| [Dilema](../pericias/dilema.html) | Com a habilitação marcial, estabelece duelo sem deslocamento até que um combatente fique inconsciente; aplicação resistida permanece pendente. |
-| [Impacto Psíquico](../pericias/impacto-psiquico.html) | Por **1 Coragem**, permite golpes psíquicos com efeitos de armas quando habilitados, sem acrescentar dano fictício. |
-
-**Bioética:** exige **Alquimia 3, Inteligência 3, Destreza 3**, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia Elemental diferente de Sangue e Domar Criatura Média. O homúnculo é produzido com **sangue e tecidos vivos** de duas criaturas. Cada homúnculo possui **ficha própria**, com XP proporcional ao total atual do criador e custos da ficha de criatura do porte correspondente; a compra não gera automaticamente um homúnculo. Porte, tempo, materiais exatos e controle ainda dependem de procedimento.
-
-## III. Rolar dados e mantê-los
-
-O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado rolado deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Temor.
-
-| Níveis | Dados mantidos naturalmente | Com gasto de 1 Coragem |
-|---|---:|---:|
-| 1–9 | 2 | 3 |
-| 10–20 | 3 | 4 |
-
-Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
-
-### Crítico — quando os dados mostram seu melhor resultado
-
-Às vezes, seus dados caem em faces especiais chamadas **faces críticas**. Elas são fáceis de reconhecer pelos símbolos destacados em dourado. Cada tipo de dado tem sua própria face crítica:
-
-| Dado | Face crítica | Símbolos da face |
-|---|---:|---|
-| d4 | **1** | **1 Êxito (1E)** — ᛋ |
-| d6 | **6** | **1 Êxito (1E)** — ᛋ |
-| d10 | **7** | **2 Êxitos (2E)** — ᛋᛋ |
-| d12 | **12** | **3 Êxitos (3E)** — ᛋᛋᛋ |
-| d20 | **20** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
-
-**Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
-
-Você consegue um **crítico** quando mantém **pelo menos dois dados** e **todos os dados mantidos estão em suas respectivas faces críticas**. Se você rolou outros dados que não são críticos, pode descartá-los. Também pode escolher manter menos dados do que seu limite. O importante é que **nenhum dado mantido fique fora de sua face crítica**.
-
-Você ainda precisa incluir um dado de **Atributo na pilha que rolou**, mas não precisa mantê-lo. E lembre-se: dados descartados não fornecem Êxito, Antecipar nem Temor.
-
-### O que você ganha com um crítico?
-
-Quanto mais dados críticos você mantiver, maior será a recompensa:
-
-| Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
-|---|:---:|:---:|:---:|
-| Trocar até **1 Temor seu por 1 Êxito** | Sim | Sim | Sim |
-| Ganhar **+1 Êxito** | — | Sim | Sim |
-| Ganhar **+1 Antecipar** | — | Sim | Sim |
-| Recuperar **Coragem** | **1** | **2** | **2** |
-| **Dobrar o dano** | — | — | Sim |
-
-Os benefícios **se somam**: com três dados críticos, você também pode trocar 1 Temor por 1 Êxito; com quatro, recebe tudo o que aparece na última coluna. Se não tiver Temor para trocar, simplesmente não ganha o Êxito dessa troca. Você continua recebendo os outros benefícios.
-
-**Exemplo:** você mantém um **d6 na face 6 (ᛋ, 1E)** e um **d10 na face 7 (ᛋᛋ, 2E)**. Como os dois estão em suas faces críticas, você fez um crítico com **3 Êxitos** e recupera **1 Coragem**, até seu limite. Como não há Temor nesse resultado, não há nada para converter em Êxito. Você ainda precisa alcançar a **Dificuldade de Êxito (DE)** para realizar a ação.
-
-**E o dano dobrado?** Se conseguir manter **quatro dados críticos** em um ataque, o dano calculado com sua rolagem é dobrado **antes de passar pelas proteções do alvo**. Imagine que seu ataque causaria **6 de dano**: com esse crítico, ele passa a causar **12**. Se uma proteção absorver **5**, sobram **7** para resolver contra as demais defesas ou a Vida, conforme as regras de dano. Esse bônus não dobra automaticamente efeitos que causam uma quantidade fixa de dano direto à Vida; por exemplo, um efeito de **+1 Vida direta** continua causando **+1**. O crítico também não aumenta os limites de dano à Vida.
-
-**Fique de olho nos símbolos dourados:** eles mostram que um dado caiu em sua face crítica, mas o crítico da ação só acontece depois que você escolhe os dados mantidos.
-
-**Coragem recuperada:** você não pode ultrapassar seu limite de Coragem. O limite começa em **10** e pode aumentar com a progressão e as Maestrias, até o máximo absoluto de **15**.
-
-### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
-
-A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica a quantidade de símbolos. Esta tabela inclui a distribuição **d20 reforçado G consolidada pelo autor em 9/11/2026**, substituindo o protótipo experimental anterior.
-
-**Runas e identidade cromática:** **ᛋ Êxito (E)** — verde `#267A45`; **ᚨ Antecipar (A)** — azul `#2369BB`; **ᚦ Temor (T)** — roxo `#542176`. ○ é uma face vazia; — indica face inexistente naquele dado.
-
-| Face | d4 | d6 | d10 | d12 | d20 |
-|---:|---|---|---|---|---|
-| 1 | ᛋ | ○ | ○ | ○ | ○ |
-| 2 | ᚨ | ○ | ○ | ○ | ○ |
-| 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
-| 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
-| 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
-| 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
-| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ |
-| 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
-| 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
-| 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
-| 11 | — | — | — | 3ᚦ | 3ᚦ |
-| 12 | — | — | — | 3ᛋ | 3ᛋ |
-| 13 | — | — | — | — | 2ᛋ+ᚨ+ᚦ |
-| 14 | — | — | — | — | 2ᛋ+2ᚦ |
-| 15 | — | — | — | — | 3ᚦ+2ᚨ |
-| 16 | — | — | — | — | 4ᚦ |
-| 17 | — | — | — | — | 3ᛋ+ᚨ+ᚦ |
-| 18 | — | — | — | — | 4ᛋ+ᚨ+2ᚦ |
-| 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
-| 20 | — | — | — | — | 6ᛋ+2ᚨ |
-
-As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3T. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3T+2A. O teto de DE permanece 30.
-
-
-
-## Conheça suas Aptidões — de onde vêm seus dados
-
-Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio ícone, para ajudar a reconhecer rapidamente o que está escolhendo:
-
-| Ícone na ficha | Grupo | O que representa |
-|---|---|---|
-| **◇** | **Atributos** | Suas capacidades fundamentais: força física, reflexos, raciocínio, presença e resistência |
-| **⚔** | **Práticas** | Aquilo que você treinou para fazer |
-| **✦** | **Conhecimentos** | Aquilo que você estudou e aprendeu a compreender |
-
-**O Grau mostra o quanto você desenvolveu uma Aptidão.** Quanto maior o Grau, melhores são os dados que ela pode oferecer. Você gasta **XP (pontos de experiência)** para aumentar seus Graus. Os números dos dados, como **d6** e **d10**, indicam quantas faces eles possuem; durante a rolagem, você lê as **runas** que aparecem, e não soma os números das faces.
+## Aptidões na criação — dados, Graus e XP
 
 ### ◇ Atributos — possibilidades e efeitos na ficha
 
@@ -637,176 +774,132 @@ No nível 1, você tem **15 XP compartilhados** para construir seu Aprendiz. Pri
 
 **Perícias não são um quarto grupo de dados:** elas representam especializações. Você compra uma Perícia quando atende aos requisitos dela, pagando o XP indicado em sua descrição. Algumas permitem novas combinações ou efeitos, mas não concedem automaticamente dados extras.
 
-### Como combinar Aptidões em uma ação
+## Perícias, ramos e especializações
 
-Normalmente, você escolhe **duas Aptidões de grupos diferentes** que façam sentido para o que está tentando fazer. Por exemplo:
+Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas, efeitos e combinações de Aptidões; podem ser passivas ou depender de ativação. Disciplina é uma única Prática, marcial e mágica. Consulte o [catálogo de Perícias](../pericias/) para requisitos e custos e aprofunde-se depois das mecânicas.
 
-- **◇ Força + ⚔ Atletismo:** subir por uma parede difícil.
-- **◇ Inteligência + ✦ Engenharia:** investigar um mecanismo antigo.
-- **◇ Influência + ⚔ Apresentação:** fazer um discurso diante de uma multidão.
-- **◇ Destreza + ✦ Medicina:** realizar um procedimento que exige precisão.
+## Equipamentos, compras e inventário
 
-Você pode começar a escolha por qualquer um dos grupos. O que importa é explicar **como** pretende agir. Não combine normalmente dois Atributos, dois Conhecimentos ou duas Práticas na mesma ação; exceções dependem de habilidades específicas. Algumas Perícias também permitem acrescentar uma **terceira Aptidão**, respeitando seus requisitos.
+**DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
-**Na ficha:** procure **◇**, **✦** e **⚔** para encontrar as fontes dos seus dados. Depois de selecionar as Aptidões, o rolador reúne os dados correspondentes. Você escolhe quais resultados manter, seguindo os limites explicados acima. A combinação de Aptidões **não garante sucesso**: os símbolos mantidos ainda precisam alcançar a Dificuldade de Êxito (DE).
+[Referência de mecânica](../mecanicas/inventario-e-acesso-rapido.html) · [SRD v0.109](srd-continuidade-v0.109.md).
 
 
-### Combinações avançadas — Especializações
-
-À medida que seu personagem desenvolve uma Prática ou um Conhecimento, ele pode aprender a aplicar aquilo que sabe de maneiras mais elaboradas. As **Especializações** são Perícias que permitem reunir até três Aptidões em uma mesma rolagem, em vez das duas habituais. Assim, o personagem pode recorrer a outros talentos para realizar uma ação sem deixar de lado aquilo em que se especializou.
-
-Cada Prática e cada Conhecimento possui sua própria Especialização. Para adquiri-la, você precisa alcançar o **Grau 3** na Aptidão correspondente e investir **1 XP** na Perícia. Algumas possuem requisitos adicionais, como Furtividade Avançada. Consulte o [catálogo de Perícias](../pericias/index.html) para conhecer cada uma delas. A combinação é passiva, sem custo adicional de ativação; atingir o Grau 3, por si só, não libera a terceira Aptidão.
-
-#### O que você está tentando fazer?
-
-Imagine que seu grupo esteja atravessando as ruínas de uma antiga fortaleza. Uma parte da ponte desabou, e um sentinela guarda a passagem do outro lado. Você carrega uma lança e precisa decidir como superar o obstáculo.
-
-**Atacar durante um salto.** Você toma impulso, salta sobre a abertura e tenta atingir o sentinela com a lança. Seu objetivo é acertar o ataque: **Disciplina** é a Aptidão principal, Atletismo contribui com a técnica do salto e Agilidade com o controle do movimento. Com a Especialização em Disciplina, você pode reunir **Disciplina + Atletismo + Agilidade**, desde que o ataque seja viável e a arma esteja habilitada.
-
-**Atravessar usando a lança como apoio.** Em vez de enfrentar o sentinela, você procura vencer a abertura da ponte. Usa a lança como apoio para ajudar a transpor o vão e tenta alcançar uma parte firme da estrutura. Agora o objetivo é a travessia, não o ataque. A Aptidão principal é **Atletismo**; Disciplina auxilia no manejo da lança e Agilidade no controle do corpo. Para reunir **Atletismo + Disciplina + Agilidade**, a Especialização pertinente é Atletismo Avançado.
-
-Nos dois casos, as três Aptidões são as mesmas, mas a intenção muda. Se você possui apenas a Especialização em Disciplina, ela não habilita a terceira Aptidão na travessia. A Especialização deve corresponder ao que você pretende realizar, não simplesmente à Aptidão que fornece os melhores dados.
-
-#### Especializar-se também é útil fora do combate
-
-Depois da travessia, o grupo encontra um companheiro ferido. Você examina a lesão para compreender o que aconteceu e precisa manipular o ferimento com cuidado. Com Medicina Avançada, pode combinar **Medicina + Inteligência + Destreza**: Medicina orienta o atendimento, Inteligência ajuda a interpretar os sinais e Destreza auxilia na execução precisa do procedimento. Nesse caso, dois Atributos diferentes complementam um Conhecimento. O tratamento ainda deve seguir as regras e habilitações aplicáveis.
-
-**Na hora de rolar:** escolha a Aptidão especializada como principal e até duas complementares pertinentes. Pelo menos um dado deve vir de um Atributo. Não repita Aptidões nem acumule Especializações para acrescentar uma quarta fonte; exceções expressamente habilitadas seguem seus próprios verbetes. Os limites continuam sendo de 9 dados rolados e até 4 mantidos, respeitando seu Marco. A Especialização amplia suas possibilidades de combinação, mas não concede sucesso automático, ações extras nem efeitos de outras Perícias.
-
-## IV. Resolver ações
-
-1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
-2. Estabeleça a DE adequada ao alvo ou tarefa. A DE base defensiva não é substituída por uma dificuldade inventada se houver ficha.
-3. Role a pilha permitida, **incluindo pelo menos um dado de Atributo**, e escolha livremente os dados mantidos, **sem precisar manter nenhum dado de Atributo**. Respeite o limite de retenção.
-4. Conte Êxitos (E), Antecipar (A) e Temor (T) **somente dos dados mantidos**.
-5. Gaste Antecipar:
-   - **1A anula 1T próprio**;
-   - **Antecipar passa a oportunidade a aliado** (1A inicial, custo progressivo conforme participações na sequência), preservando Temor não anulado;
-   - **2A convertem-se em 1E**;
-   - outras aplicações específicas requerem Perícias.
-6. Compare **E + T mantido não anulado** à DE. Decida o resultado e calcule dano e consequências quando aplicável.
-
-Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular T.
-
-**Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
+**Saque Rápido [DEFINIDO — 24/11/2026]:** aquisição 1 XP, Agilidade 2 + Destreza 1 + Disciplina 2. Armas distinguem inventário, acesso rápido e mãos; arma de duas mãos ocupa ambas, arma de uma mão ocupa uma. Escudo empunhado ocupa uma mão. Carga transportada não muda por posição. [SRD v0.110](srd-continuidade-v0.110.md).
 
 
-### Resultados e protagonismo
+**Correção autoral — SRD v0.111 (24/11/2026):** Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Substitui a regra anterior de Golpe de Sorte por ausência de Antecipar no saque. [SRD v0.111](srd-continuidade-v0.111.md).
 
-Primeiro descubra se a ação alcançou seu objetivo: depois de manter os dados e gastar Antecipar, compare a soma dos Êxitos e do Temor não anulado com a DE. Depois observe o Temor restante. Sem Temor, o resultado é limpo; com Temor igual ou inferior aos Êxitos, é misto; com mais Temor que Êxitos, é arriscado. Um empate entre Êxitos e Temor, quando há Temor, é misto.
 
-| Resultado | DE | Temor restante | Na prática |
-|---|---|---|---|
-| Acerto Limpo | Alcança a DE | Sem Temor restante | O objetivo é alcançado sem risco de Temor residual. Pode continuar ou passar voluntariamente o protagonismo, respeitando a troca de lado. |
-| Acerto Misto | Alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo é alcançado, mas há risco e possibilidade de intervenção. |
-| Acerto Arriscado | Alcança a DE | Mais Temor que Êxitos | O objetivo é alcançado, mas o Temor predomina e pode provocar consequências graves. |
-| Falha Limpa | Não alcança a DE | Sem Temor restante | O objetivo não é alcançado, sem consequência negativa automática. Em ataque, sem passagem válida por Antecipar, a oportunidade passa à oposição; nas demais ações, segue o fluxo geral. |
-| Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção e normalmente perde 1 Coragem. |
-| Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e normalmente perde 1 Coragem. |
+**Golpe Fulminante [DEFINIDO — 24/11/2026]:** 1 XP, Ativa. Requisitos: Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo. Gasta 1 Coragem antes da rolagem, elevando um dado da arma corpo a corpo habilitada (d6→d10; d10→d12; d12→2d12), até 9 dados rolados. No acerto cada Temor mantido não anulado causa 1 dano, sem cancelar transferência aos inimigos. Arremesso utiliza Disparo Fulminante. Pugilismo não cria dado de arma para socos sem equipamento. **Declaração de ataque:** somar e pagar antecipadamente as ativações de Perícias, características e recursos declarados (incluindo retenção adicional), respeitando saldo e teto de 5 Coragens gastas por turno do jogador. Ex.: Fulminante 1 + característica de Armas Médias 1 + Colossal 1 + retenção 1 = 4 Coragens. Falha não devolve; recuperação geral de crítico é creditada uma única vez e não restaura o teto de gasto. Manter gatilhos e custos de cada técnica, sem automatizar geometria pendente de Colossal.
 
-**Exemplo:** Em um teste de DE 4, 3E + 1T é um Acerto Misto; 1E + 3T é um Acerto Arriscado. Se a DE for 5, os mesmos resultados se tornam Falha Mista e Falha Arriscada, respectivamente. Com 2E + 2T, o resultado também é misto: o Temor não supera os Êxitos.
+[SRD v0.112](srd-continuidade-v0.112.md).
 
-**Destino do Temor:** Em ataques contra um adversário declarado, o Temor mantido e não anulado é transferido à reserva local desse alvo, mesmo que esteja distante ou que o ataque falhe. Não é transferido ao inimigo mais próximo. O adversário só pode gastar a reserva em oportunidades válidas; Temor não concede turnos extras. Inimigos começam cada conflito com reserva cheia: G1 4T, G2 5T, G3 6T, G4 7T, G5–G6 8T. A distribuição em ataques de área, múltiplos alvos ou ações sem adversário atacado permanece pendente.
 
-Antecipar permite anular Temor (1A por 1T), converter símbolos (2A em 1E) ou passar a oportunidade a um aliado (1A inicial, dobrando conforme as participações do aliado), antes da intervenção, conservando o Temor que não foi anulado. Cada símbolo só pode ser gasto uma vez.
+**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
 
-O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um ataque que não resulte em Acerto Limpo e não tenha passagem válida por Antecipar devolve a oportunidade à oposição. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
+[SRD v0.113](srd-continuidade-v0.113.md).
 
-### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
 
-Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
+**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
 
-O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto Limpo permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto limpo nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
+[SRD v0.114](srd-continuidade-v0.114.md).
 
-Temor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Temor disponível não concede ação gratuita.
 
-#### Ação em conjunto e custo progressivo de Antecipar
+**Características de Armas, Golpes e Magias [DEFINIDO — SRD v0.115]:** Cravar segue as características ativas de armas físicas; nunca se ativa sem a Perícia de peso correspondente. A exceção histórica da v0.77 fica revogada. Características de armas, manobras de golpes e efeitos de magias possuem habilitações próprias; não transferir automaticamente gatilhos entre categorias. Consultar [mecânicas relacionadas](../mecanicas/caracteristicas-de-combate.html) e [SRD v0.115](srd-continuidade-v0.115.md).
 
-Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
 
-**A primeira ação conjunta da sequência de protagonismo de cada lado não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
+**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 0,5 Alto e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
 
-**Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Temor, converter em Êxito ou financiar outra convocação. Não apagar Temor ao passar protagonismo.
 
-**A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
 
-| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Temor público por inimigo independente convocado |
-|---|---|---|
-| 0 | 1A | 1T |
-| 1 | 2A | 1T |
-| 2 | 4A | 1T |
-| 3 | 8A | 1T |
-| 4 | 16A | 1T |
+## Kits de armas de longo alcance (24/11/2026)
 
-#### Exemplo: cinco jogadores A, B, C, D e E
+**DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
 
-| Formação | Convocação e resolução | Turnos acumulados |
-|---|---|---|
-| ABC | Primeira ação conjunta: gratuita em Antecipar; obtém 2A e convoca D e E (1A cada). | 3 |
-| DE → ADE | D e E rolam, gastam 2A para convocar A, que já participou uma vez. A rola; resolve-se ADE em conjunto. | 6 |
-| ADE → BC | Os participantes de ADE obtêm e gastam 4A para convocar B e C (2A cada). B e C rolam. | 6 (a nova ação ainda não foi resolvida) |
-| BC → ABC | B e C gastam mais 4A dos próprios resultados para incorporar A, que já participou duas vezes. A rola; resolve-se ABC em conjunto. | 9 |
+**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
 
-Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participou uma vez e custa 2A. Convocar ambos somaria 4A, mas não caberia no mesmo ataque conjunto de B e C pelo limite de três participantes. O custo de 8A para voltar a formar ABC no exemplo é pago em etapas: 4A por ADE e 4A por BC; não é um pagamento único por um personagem nem uma convocação de si mesmo.
+## Carga por compartimento e disparos (24/11/2026)
 
-**Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
+**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + piso((Força + Vigor + Atletismo)/3). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
 
-#### Inimigos, Liderança e Temor público
+**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
 
-**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1T da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Temor público dos inimigos incorporados.
+**Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
 
-**Somente o Narrador paga esse Temor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Temor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
+### Alcance cadastrado das armas G1
 
-**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1T público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2T. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Temor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1T público disponível, o chefe não pode usar seu Temor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
+| Arma | Alcance base |
+|---|---:|
+| Faca | 1 m |
+| Punhal | 1 m |
+| Espada Curta | 1 m |
+| Maça Curta | 1 m |
+| Chicote | 1 m |
+| Kunai | 12 m |
+| Shuriken | 12 m |
+| Adaga Ritualística | 1 m |
+| Espada Longa | 1 m |
+| Espada Larga | 1 m |
+| Lança | 2 m |
+| Machado Barbado | 1 m |
+| Lança de Arremesso | 8 m |
+| Martelo de Guerra | 1 m |
+| Machado de Guerra | 1 m |
+| Montante | 2 m |
+| Marreta | 1 m |
+| Arco Curto | 24 m |
+| Arco Longo | 32 m |
+| Besta de uma mão | 16 m |
+| Besta de duas mãos | 24 m |
+| Besta Pesada | 32 m |
+| Zarabatana | 12 m |
+| Cajado Leve | 1 m |
+| Cajado Médio | 1 m |
+| Cajado Pesado | 1 m |
+| Bastão Leve | 1 m |
+| Bastão Médio | 1 m |
+| Bastão Pesado | 1 m |
+| Luvas | 1 m |
+| Revólver | 16 m |
+| Katana | PENDENTE |
+| Naginata | 2 m |
 
-Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
 
-O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
+### Capacidade de Carga — exemplos e referência (v0.118)
 
-### Coragem e seus usos [DEFINIDO]
+| Peso físico | Alto |
+|---|---:|
+| Muito Leve | 0,0125 |
+| Leve | 0,125 |
+| Médio | 0,5 |
+| Pesado | 1 |
+| Extremo | 2 |
 
-**Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
-- **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados.
-- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Temor também retira 1 Coragem**.
-- **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
+Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade é −2 Êxitos nos testes afetados e metade do deslocamento padrão (v0.119), com abrangência e automação de −2E PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.
 
-**Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
+## Evolução, níveis, Marcos e XP
+
+**Coragem:** inicia com teto 10, recebe +1 nos níveis 5, 10 e 20; bônus de Maestria respeitam o máximo absoluto 15. Maestrias especializadas ainda dependem de implementação própria.
+
+Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
+
+A referência **DEFINIDA PARA O PLAYTEST de 21/11/2026** é de **260 XP acumulados no nível 20, incluindo 15 XP iniciais e até 245 de evolução**, contra 664 XP antes. O aumento de nível permanece manual e não concede XP automaticamente. Mais detalhes no [SRD v0.58](srd-continuidade-v0.58.md) e nas tabelas da [v0.56](srd-continuidade-v0.56.md). Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
+
+### Materiais para públicos diferentes
+
+Este documento concentra regras necessárias **aos jogadores**. Para a ficha jogável unificada, use o [Criador de personagem e ficha](../prototipo-ficha/); o antigo endereço `criador.html` encaminha para essa ferramenta. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
+
+## Parte III — Jogando Codex RPG
 
 ### Como jogar narrativamente
 
 Declare **o que deseja alcançar** e **como seu personagem tenta fazê-lo**. Escolha as fontes pertinentes à abordagem, role a pilha e interprete os símbolos. Um Êxito pode representar a realização do objetivo; Antecipar permite reagir ou cooperar; Temor introduz tensão e oportunidade para a situação mudar. A **falha limpa** não precisa causar dano ou humilhação narrativa. Não é obrigatório usar todas as opções de posicionamento, peso ou equipamentos em toda cena. Em desafios conjuntos, as ações dos aliados podem ser coordenadas conforme as regras específicas.
 
-### Provocar: ação tática básica [DEFINIDO]
+## Defesa natural e armaduras
 
-**Qualquer personagem pode Provocar**, sem comprar Perícia. Declare que deseja atrair a atenção de **um inimigo** e realize um teste normal de **Influência** contra a **DE do inimigo**:
-
-- **Resultado maior ou igual à DE:** o inimigo **fica provocado por você**. Resultado igual **é sucesso**.
-- **Resultado inferior à DE:** a provocação **falha**, sem impor Vantagem ou Desvantagem ao inimigo.
-- **Enquanto provocado, nos ataques do turno desse inimigo**, atacar **um aliado seu** impõe **Desvantagem (−1 Antecipar)**; atacar **você** concede **Vantagem (+1 Antecipar)** ao inimigo.
-- O bônus ou a penalidade dependem de **quem o inimigo realmente escolhe atacar**, não do mero anúncio do ataque. Não se aplica custo adicional de Coragem à ação básica sem uma regra que o defina.
-
-**Exemplo:** se sua ação de Influência resultar em 3 contra **DE 3**, você provocou o inimigo. No turno afetado, atacar um aliado concede −1A ao inimigo; atacar você concede +1A. Resultado 2 não provoca.
-
-### Provocação Sofisticada [DEFINIDO: requisito e XP; efeito exclusivo PENDENTE]
-
-A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1 XP**. Sua descrição fornecida até aqui **repete o efeito da ação Provocar básica**. Portanto, **não há benefício adicional distinto aprovado**: não empilhar Vantagens ou Desvantagens, não ampliar automaticamente a duração e não adicionar outros alvos. **A compra não é exigida para usar Provocar.**
-
-**PENDENTE:** definir o que diferencia a Perícia, a duração além do turno afetado, alcance e conflito entre múltiplas provocações. Não importar essas propriedades de outros RPGs.
-
-## V. Defesa, Vantagem e peso
-
-**DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
-
-### Dificuldade de Êxito: o que é preciso conseguir?
-
-A Dificuldade de Êxito (DE) indica quantos símbolos você precisa reunir para alcançar o objetivo de uma ação. Depois de escolher os dados que vai manter e decidir como gastar Antecipar, conte os Êxitos e o Temor que não foi anulado. Se a soma alcançar ou superar a DE, o teste é bem-sucedido. O Temor ajuda a alcançar a dificuldade, mas continua trazendo riscos.
-
-**Exemplo:** Imagine um teste de DE 3. Se você mantiver 2 Êxitos e 1 Temor não anulado, alcança a dificuldade, mas o acerto não é limpo. Se anular esse Temor sem conseguir outro Êxito, terá apenas 2 símbolos válidos e falhará. Por isso, anular todo o Temor nem sempre é a melhor escolha.
-
-Quando a ação é contra um alvo com defesa calculada, use sua DE defensiva vigente, considerando os modificadores aplicáveis. Em outras ações, o Narrador estabelece a dificuldade adequada ao desafio. Não substitua a defesa da ficha por uma dificuldade arbitrária.
-
-#### Como calcular sua DE defensiva natural
+### Como calcular sua DE defensiva natural
 
 A DE defensiva natural representa a capacidade de um personagem humanoide de evitar ou resistir a um ataque antes dos modificadores de equipamento e outros efeitos.
 
@@ -820,7 +913,7 @@ Some as três contribuições. Conte somente grupos completos de dois Graus de D
 
 **DE natural de 0 a 9 [DEFINIDO].** A defesa natural pode ser 0. Não há bônus fixo de +1 nem mínimo obrigatório de 1. Se a soma superar 9, use 9 como DE natural.
 
-#### Como a armadura modifica sua defesa
+### Como a armadura modifica sua defesa
 
 Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. A DE defensiva individual final fica entre 0 e 12.
 
@@ -834,7 +927,7 @@ Aplique os modificadores da única armadura equipada depois de calcular a defesa
 
 **Exemplo:** Com Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6, você recebe 2 DE pela Agilidade, 3 pela soma de Destreza e Vigor e 2 pelo Atletismo: DE natural 7. Com armadura Pesada, fica 6; com Muito Pesada, fica 5.
 
-#### Integridade das armaduras
+### Integridade das armaduras
 
 A DE indica o quanto é difícil acertar o personagem. A Integridade indica quanto desgaste a armadura suporta: são valores diferentes. Uma armadura mais pesada pode tornar o personagem mais fácil de acertar e, ao mesmo tempo, absorver mais desgaste antes de ser destruída. Os valores abaixo são os do catálogo de playtest para peças de Grau 1; não representam uma progressão automática por Grau.
 
@@ -848,9 +941,13 @@ A DE indica o quanto é difícil acertar o personagem. A Integridade indica quan
 
 A armadura Muito Pesada exige Vigor 6 e Atletismo 6 e possui imunidade natural ao dano físico comum; sua Integridade quantitativa ainda está pendente. A Integridade dos Graus superiores também não tem uma escala geral definida. O Grau permite propriedades adicionais conforme o tipo, sem alterar automaticamente o modificador de DE. A Vida e a Integridade são contabilizadas separadamente; consulte as regras de dano e proteção para resolver um ataque.
 
-#### Defesas especiais e em conjunto
+### Defesas especiais e em conjunto
 
 Monstros extraordinários não humanoides seguem suas regras próprias de defesa. A DE conjunta também possui regras próprias e teto 30. Consulte o Guia do Narrador para a referência de desafios e defesas coletivas.
+
+## Vantagem, Desvantagem e peso
+
+**DE = Dificuldade de Êxito.** O tipo de ataque e a **armadura equipada do alvo humanoide** produzem condições de Vantagem ou Desvantagem, conforme a matriz abaixo. Contra criaturas não humanoides, o Narrador considera porte e classificação de peso natural, não carga do inventário.
 
 ### Condições da ação
 
@@ -886,6 +983,52 @@ Monstros extraordinários não humanoides seguem suas regras próprias de defesa
 
 **Fora do conflito**, a mesma lógica permite construir proteções, investigar ruínas, negociar, atravessar terreno, improvisar ferramentas ou resgatar um aliado. **Nenhum exemplo concede bônus automático**; o Narrador avalia a Dificuldade de Êxito, a posição, as fontes e as consequências. O peso pode ser uma vantagem real para um objetivo e um inconveniente para outro.
 
+## Dano, armadura e Vida
+
+> **DEFINIDO — adendo autoral de 22/11/2026, nova escala de Vida em playtest:** quando um ataque **acerta** e soma **5 ou mais pontos válidos (E + T não anulado)**, o alvo **SEM armadura equipada sofre 2 de dano à Vida**. **Com armadura equipada, NÃO existe esse dano direto de 2 Vida:** resolver o dano à **Integridade separadamente**, pelo cálculo convencional abaixo e pelas propriedades habilitadas. O dano à Vida para resultados menores que cinco e o tratamento de excedentes de Integridade na nova escala seguem **PENDENTES**. [Detalhes e exemplos](adendo-playtest-dano-vida-5-pontos-2026-11-22.md). Os parágrafos históricos abaixo sobre dano convencional à armadura não autorizam aplicar 5E como 5 Vida diretos.
+
+
+**Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
+
+**DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
+
+Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
+
+
+### Levantar Escudo físico [DEFINIDO — 16/11/2026]
+
+Levantar Escudo **consome uma ação**; o defensor realiza um **teste de Disciplina** e escolhe os dados mantidos dentro dos limites normais. A Integridade simbólica extra é **E + T válidos dos dados mantidos**. O desgaste usa as equivalências já definidas: **1E do ataque anula 1E do escudo ou 2T; 1T anula 1T; 2T anulam 1E**. Antecipar não concede Integridade automaticamente. **Não é reação**.
+
+O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem abaixá-lo; **atacar encerra o bloqueio**. A postura protege contra **o primeiro ataque frontal recebido** e termina **depois da resolução desse ataque**, inclusive se ele não atingir. Se houver dano excedente, aplica-se à **armadura** e, depois, à **Vida**. Enquanto protege, anula a característica **Perfurante de armas físicas**, mas não o **Perfurar de Água**. **Cravar [DEFINIDO — SRD v0.115]:** uma arma **Média ou Pesada com a característica Cravar** pode ficar presa ao escudo físico quando o ataque **alcançar a DE** e a característica tiver sido ativada pela **Perícia de Armas correspondente**, mesmo no crítico. Declare e pague o custo antes de rolar, conforme a Perícia ou Especialização. Escudo físico **Pesado** só pode ser cravado por **arma Pesada**. **Cravar cumulativo [DEFINIDO — SRD v0.79, 17/11/2026]:** cada arma cravada no mesmo escudo impõe **−1E em Levantar Escudo**, acumulando-se por arma (2 armas = −2E; 3 = −3E). A retirada de uma arma elimina o −1E dessa arma, mas preserva as penalidades das demais. Não reduzir Temor/Antecipar nem penalizar outras ações por Cravar. O peso de cada arma acompanha a carga do escudo enquanto estiver presa. O registro do alvo permanece manual no protótipo.
+
+**PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
+
+### Armaduras: cinco tipos independentes do Grau [DEFINIDO]
+
+**Tipo** determina categoria, Integridade, DE e proteção natural. **Grau** determina acesso a propriedades adicionais. Uma armadura Muito Leve de Grau 4 **continua Muito Leve**; uma Muito Pesada de Grau 1 já tem imunidade física natural.
+
+| Tipo | Integridade | DE | Progressão elemental |
+|---|---|---|---|
+| **Muito Leve** | **G1: 2 de Integridade (playtest)** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
+| **Leve** | **G1: 5 de Integridade (playtest)** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
+| **Média** | **G1: 8 de Integridade (playtest)** | **0** | **Grau 2+:** pode receber resistências específicas |
+| **Pesada** | **G1: 12 de Integridade (playtest)** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
+| **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
+
+**Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
+
+**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
+
+**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE base com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
+
+**Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
+
+**Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
+
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+
+## Combate Coordenado
+
 ### Combate Coordenado [DEFINIDO — SRD v0.120]
 
 **Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta. A formação começa quando dois ou mais combatentes declaram que vão agir coordenadamente em combate. **Raio máximo da formação: 5 m.** O centro do raio é o combatente da formação que estiver mais ao meio dos demais, não um ponto fixo no terreno nem necessariamente o Líder. Se dois combatentes estiverem igualmente ao centro, escolha aquele que estiver mais próximo do integrante mais distante da formação. Sempre que o posicionamento dos integrantes mudar, considere novamente qual combatente está mais ao meio e meça o raio de 5 m a partir dele. A formação se dissolve quando qualquer integrante sai do raio de 5 m ou quando seus integrantes atacam alvos principais diferentes em ações que não sejam de área. Declarar, redeclarar ou dissolver a formação é gratuito: não consome Coragem, Antecipar, Temor, ação ou turno adicional. Os custos próprios de ações conjuntas, técnicas e convocações permanecem inalterados. A partir da dissolução, todos voltam às suas DE individuais; para voltar a compartilhar a defesa, os interessados declaram novamente a coordenação. A mudança do centro, por si só, não dissolve a formação se todos permanecem dentro do raio.
@@ -917,18 +1060,367 @@ Os procedimentos específicos de criação de fichas coletivas são tratados no 
 
 Referências experimentais para preparar DE sem ficha pertencem ao [Guia do Narrador](../narrador.html#dificuldades).
 
+## Provocar
 
-## VI. Dano, armadura e Vida
+### Provocar: ação tática básica [DEFINIDO]
 
-> **DEFINIDO — adendo autoral de 22/11/2026, nova escala de Vida em playtest:** quando um ataque **acerta** e soma **5 ou mais pontos válidos (E + T não anulado)**, o alvo **SEM armadura equipada sofre 2 de dano à Vida**. **Com armadura equipada, NÃO existe esse dano direto de 2 Vida:** resolver o dano à **Integridade separadamente**, pelo cálculo convencional abaixo e pelas propriedades habilitadas. O dano à Vida para resultados menores que cinco e o tratamento de excedentes de Integridade na nova escala seguem **PENDENTES**. [Detalhes e exemplos](adendo-playtest-dano-vida-5-pontos-2026-11-22.md). Os parágrafos históricos abaixo sobre dano convencional à armadura não autorizam aplicar 5E como 5 Vida diretos.
+**Qualquer personagem pode Provocar**, sem comprar Perícia. Declare que deseja atrair a atenção de **um inimigo** e realize um teste normal de **Influência** contra a **DE do inimigo**:
+
+- **Resultado maior ou igual à DE:** o inimigo **fica provocado por você**. Resultado igual **é sucesso**.
+- **Resultado inferior à DE:** a provocação **falha**, sem impor Vantagem ou Desvantagem ao inimigo.
+- **Enquanto provocado, nos ataques do turno desse inimigo**, atacar **um aliado seu** impõe **Desvantagem (−1 Antecipar)**; atacar **você** concede **Vantagem (+1 Antecipar)** ao inimigo.
+- O bônus ou a penalidade dependem de **quem o inimigo realmente escolhe atacar**, não do mero anúncio do ataque. Não se aplica custo adicional de Coragem à ação básica sem uma regra que o defina.
+
+**Exemplo:** se sua ação de Influência resultar em 3 contra **DE 3**, você provocou o inimigo. No turno afetado, atacar um aliado concede −1A ao inimigo; atacar você concede +1A. Resultado 2 não provoca.
+
+## Características de armas, golpes e magias
+
+### Mecânicas de Combate — Características de Armas, Golpes e Magias [DEFINIDO / PENDENTE]
+
+**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
+
+[Consultar características de combate](../mecanicas/caracteristicas-de-combate.html).
+
+## Armas, alcance e efeitos
+
+O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo Vantagem, Desvantagem e peso.
+
+**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o Balanço concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
+
+### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
+
+| Tipo | Propriedade possível | Limite |
+|---|---|---|
+| **Cortante** | **Sangramento superficial** habilitado | Aplica o **estado Sangrando mesmo através da armadura**; a condição **não reduz Vida** nem causa dano periódico por si só |
+| **Perfurante** | Em acerto, cada Temor não anulado vale **1 dano à Integridade** da armadura, substituindo `⌊T/2⌋` (não soma os dois) | Não ignora armadura nem acrescenta dano direto à Vida. Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula essa propriedade, não o dano básico |
+| **Cravar** | Arma Média ou Pesada fica presa ao escudo físico após **acertar a DE** e **ativar a característica com a Perícia de arma correspondente, inclusive no crítico** | Declare **1 Coragem** por tentativa, respeitando Especialização e recuperação normal de crítico. Sem a Perícia, não ativa. Escudo Pesado exige arma Pesada. **Cada arma cravada aplica −1E cumulativo** em Levantar Escudo; o peso de cada arma presa é carregado com o escudo |
+| **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
+| **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
+| **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
+
+**Cravar [DEFINIDO — SRD v0.115]:** é uma característica ativa, não uma reação gratuita nem um acerto automático. A arma precisa possuir Cravar e ser Média/Pesada; o ataque precisa **alcançar a DE**; exige a **Perícia de Armas Médias/Pesadas pertinente, mesmo no crítico**. Declare a ativação e pague **1 Coragem antes da rolagem**, salvo benefício de Especialização aplicável. O crítico mantém a recuperação normal de Coragem, mas não substitui a Perícia. A arma não fere diretamente a Vida por Cravar: ela permanece presa ao escudo físico. Escudo pesado só pode ser cravado por arma pesada. **DEFINIDO — SRD v0.79:** a penalidade é **−1E por arma cravada e cumulativa**, aplicada somente quando o defensor executa **Levantar Escudo**, não nos demais testes. O peso extra acompanha o escudo até abandono ou retirada de cada arma. A retirada por teste combinado e DE conforme peso está definida na sequência. **DEFINIDO — v0.79, opções A e B:** o personagem pode tentar retirar uma arma cravada **mesmo com as duas mãos ocupadas**. Em sucesso, se tiver uma **mão livre**, recebe a arma diretamente nessa mão, sem nova ação de coleta; **sem mão livre, a arma cai no chão**. O resultado de falha não muda: ela permanece cravada. **DEFINIDO — SRD v0.79, opção A:** a retirada exige **uma ação própria do personagem**, separada de Levantar Escudo ou de qualquer outra ação, mesmo se o teste falhar. **PENDENTE DE IMPLEMENTAÇÃO:** vínculo automático entre fichas.
+
+**Retirar Cravar [DEFINIDO — SRD v0.79, corrige v0.78]:** para retirar do escudo a arma presa, o personagem deve **alcançar a DE correspondente ao peso da arma**, limitada a **DE 4**. **DEFINIDO — correção autoral SRD v0.79 (17/11/2026):** deve combinar **uma Prática — Disciplina ou Atletismo — com um Atributo — Força, Vigor ou Destreza**, conforme a ação. São válidos **Disciplina + Força, Disciplina + Vigor, Disciplina + Destreza, Atletismo + Força, Atletismo + Vigor ou Atletismo + Destreza**. Essa retirada específica não permite substituir essas fontes por outras nem rolar apenas uma delas. A escolha precisa ser pertinente e respeitar os graus/dados normais. Esta regra substitui o procedimento anterior mais aberto. Não exige Perícia em Armas Médias/Pesadas nem crítico adicional. **Sucesso:** a arma se desprende do escudo. **Se o personagem tiver uma mão livre, a arma passa imediatamente para essa mão**, sem ação adicional de coleta; **se estiver com as duas mãos ocupadas, a arma cai no chão**, sem passar automaticamente à sua posse. Em ambos os casos, elimina **apenas o −1E correspondente a essa arma** em Levantar Escudo e o peso da arma deixa de contar como preso ao escudo. As demais armas eventualmente cravadas continuam impondo −1E cada uma. **Falha:** a arma continua cravada. **DEFINIDO — SRD v0.79:** DE de retirada por peso da arma: **Leve 1; Média 2; Pesada 3**, teto geral de **DE 4**. A tabela de retirada para arma Leve não concede habilitação para aplicar Cravar com arma Leve; a aplicação continua restrita a arma Média/Pesada com os gatilhos aprovados. No protótipo, a ação é rolada na seção do escudo e a alteração de inventário só é confirmada após o sucesso. Custos adicionais não foram criados pela revisão. **DEFINIDO — opção A (SRD v0.79):** cada tentativa de retirar uma arma cravada exige **gastar uma ação própria do personagem**; não pode ser incorporada à ação de **Levantar Escudo** ou a outra ação, nem se torna gratuita em caso de falha. **DEFINIDO:** sem mão livre, a retirada pode ser tentada normalmente, mas a arma cai no chão em caso de sucesso; com mão livre, ela vai para a mão de quem a retirou. Não criar custo ou penalidade adicional pelo resultado sem mão livre.
+
+**Sangramento [DEFINIDO — SRD v0.70]:** a propriedade cortante habilitada aplica o **estado Sangrando ao alvo, ignorando a armadura apenas para estabelecer a condição**. Não reduz Vida, não acrescenta dano imediato nem periódico e não cria penalidade automática. O **dano normal do golpe**, se existir, continua passando por escudo, Integridade de armadura e eventual excedente; somente **o estado**, não o dano físico, ignora a armadura. A condição exige os gatilhos e habilitações do efeito, não é automática para todo ataque cortante.
+
+O estado Sangrando **permite aplicar veneno fisicamente** (por arma previamente envenenada e habilitada), pode viabilizar a **transmissão de veneno por magia de Sangue** e **habilita as aplicações pertinentes de magia de Sangue**. Nenhuma dessas interações é gratuita: permanecem os requisitos e custos das técnicas e os limites de doses. **PENDENTE:** procedimento e custo da transmissão de veneno com magia de Sangue, além da reconciliação entre a exigência autoral recente de que o próprio conjurador esteja Sangrando e os custos históricos de conjurar sem esse estado.
+
+**Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
+
+### Proximidade, armas longas e alcance efetivo [DEFINIDO]
+
+**Próximo / adjacente** significa **até 1 metro** do inimigo. Armas comuns de combate corpo a corpo atingem a **1 m**. Uma **arma longa** atinge a **2 m** e, enquanto mantém o inimigo a essa distância, impede um contra-ataque de quem só possui alcance de 1 m. Um oponente com **outra arma longa** pode responder normalmente no mesmo alcance. Esse efeito protege pela distância, **não anula Temor**.
+
+A distância máxima normal de uma arma ou técnica é **R**. Para além desse alcance, aplicam-se as condições seguintes:
+
+| Distância | Condição | Modificador |
+|---|---|---|
+| Até **R** | Normal por alcance | Nenhum |
+| **Acima de R** e **abaixo de R + 8 m** | Desvantagem | **−1A** |
+| De **R + 8 m** a menos de **R + 16 m** | Desvantagem absoluta | **−1E** |
+| A partir de **R + 16 m** | **Acerto de Sorte / Ação de Sorte** | **−2E** |
+
+Os patamares **se substituem**; não se aplica −1A e depois −1E e depois −2E pela mesma fonte de distância. Outros riscos independentes, como aliados a até 1 m do alvo, podem acrescentar condições. A possibilidade e os limites de ataques muito além de R + 16 m continuam **PENDENTES**.
+
+### Armas de fogo — Graus atualizados [DEFINIDO / catálogo PENDENTE]
+
+Armas de fogo dependem de **munição por calibre, carregador, disparos consumidos, recarga, alcance e recuo**. Armas suscetíveis a travamento podem travar com **Temor predominante**, e não qualquer Temor; limpar travamento exige Engenharia pertinente sem usar dados da própria arma. **Revólver não trava.**
+
+| Arma | Grau definido | Características em desenvolvimento |
+|---|---|---|
+| Revólver | **G1** | Não trava; Perícia básica histórica 3 XP |
+| Pistola | **G2** | Carregador e travamento; Perícia básica 5 XP |
+| Metralhadora | G3 | Vários disparos/munição; alcance histórico 16 m; Perícia básica 5 XP |
+| Doze / escopeta | G3 | Cone, derrubada, não perfurante; básica histórica 5 XP |
+| Rifle | G4 | Avançada pode derrubar ou atravessar dois alvos alinhados; básica histórica 6 XP |
+| Lança-granadas | **G5** | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
+
+**PENDENTE:** preços finais, composições, dano, alcance e procedimentos de recarga. **A referência antiga de 3d20 do lança-granadas é incompatível com o limite atual de até dois d20 por ação de jogador comum**, devendo ser refeita. Os **Graus acima estão definidos**, mas não se devem tratar como definitivos os preços históricos de Perícias, danos, composições e fichas ainda não aprovados.
+
+## Furtividade
+
+### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
+
+O Ladino com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
+
+**Nova decisão:** se o Ladino **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
+
+**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o Ladino está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o Ladino manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
+
+**Exemplo:** se o Ladino manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
+
+**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
+
+**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
+
+Exemplos documentados de Perícias (não necessariamente disponíveis no nível 1):
+
+| Perícia | XP | Função |
+|---|---:|---|
+| Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
+| **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
+| **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
+| **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Inteligência 1; ativação-base de efeitos G1/G2 **gratuita** com a Perícia e Grau habilitados; elevar a G3 custa **1 Coragem**; recuperação de Fôlego ainda pendente |
+| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
+| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
+| **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G1/G2 **gratuitos em Coragem** (inclusive G2 sem foco com fonte válida); G2 **Queimar E + T à Integridade** (4 × 4); G3 **Derreter: 1 Coragem**, dano à Integridade + 1 Vida direta fixa (8 × 8, fim do turno dos aliados); G4 conjunta cobra **1 Coragem pelo componente Fogo elevado a G3** |
+| Perito Conjurador | 2 | Fontes pertinentes adicionais |
+| Improviso Mágico | 1 | Elemento disponível no ambiente |
+| Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
+| Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
+| **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
+| Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
+| Montar Animal | 2 | Requer Influência 2; concede **Vantagem** nos testes com montaria (**não +1A**) |
+| **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
+| **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
+| Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 Coragem |
+
+**A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
+
+**Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
+
+A lista completa ainda será desenhada pelo autor. A ferramenta de criação expõe somente as capacidades documentadas e não cria poderes inéditos.
+
+## Conjuração, elementos e possibilidades
+
+### Regra geral de dados, foco e declaração [DEFINIDO — SRD v0.89, 22/11/2026]
+
+**DEFINIDO — adendo autoral de 22/11/2026:** a magia adiciona os dados do Grau: **G1 +1d6; G2 +1d10; G3 +1d12; G4 +2d12 (dois dados distintos)**. Não acumular os dados dos Graus anteriores. **Os dados da magia não vêm do item de foco**. G4 continua exigindo dois elementos diferentes, cada qual com sua magia G3 habilitada; não ganha dois d12 por uma conjuração de elemento único. Este dado integra a pilha normal (máximo 9 rolados, retenção por Marco) e não é uma fonte Atributo, Conhecimento ou Prática extra a ser comprada. A substituição da regra anterior de dado de foco vale para novas rolagens; não reescrever resultados históricos.
+
+**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Temor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Temor não é falha automática nem ataque bem-sucedido automático. **Antecipar pode passar o protagonismo a um aliado pelo custo progressivo vigente**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Temor.
+
+**Tempo da magia:** G1 imediato (1 turno); **G2 2 turnos sem gastar carga e 1 turno ao gastar exatamente 1 carga do foco compatível**, conservando G2 e +1d10. Foco vazio não acelera. G3 3 turnos, reduzíveis para 2 por 1 carga ou 1 por 2 cargas do foco correspondente. **G4 plena +2d12**, 6 turnos e mínimo 3; a aceleração exige 1 carga **de cada um de dois focos dos elementos distintos** por turno reduzido, conforme regra própria. **O foco não soma dado** à rolagem e sua aceleração não muda o Grau nem concede Êxitos automáticos. **O custo exato de cargas de foco para G2 está PENDENTE:** o uso de foco compatível para acelerar está DEFINIDO, mas não impor 1 carga não aprovada. A rolagem inicia na declaração; **somente concluir/aplicar efeito após o tempo devido**. Critérios genéricos para interromper pela ação inimiga permanecem PENDENTES; aplicar as exceções aprovadas para técnicas específicas.
+
+Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substituída por **um dado pelo Grau**. Criação continua em **15 XP iniciais compartilhados**, com custos e requisitos normais.
 
 
-**Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
 
-**DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
+**Criar Item de Foco e Magia (1 XP; Lucker Puro: 0 XP após requisitos; Disciplina 1 + Inteligência 1 + Artesão 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
 
-Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
+**Ácido (Fogo + Veneno) [DEFINIDO — v0.85]:** segue toda a regra geral de mistura: **1A** para introduzir o segundo elemento e os custos e habilitações dos Graus. **Improviso Elemental** troca a natureza do dano, mas não ativa Veneno; **Maestria Elemental** é necessária para usar Queimar e o efeito especial de Veneno conjuntamente. Quando houver acerto com Queimar, a queimadura substitui Sangramento para transmitir **1 acúmulo de Veneno por 2 rodadas**, sem novo dano ou custo exclusivo. Defesa mista segue a matriz geral. [SRD v0.85](srd-continuidade-v0.85.md).
 
+**Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. **DEFINIDO — esclarecimento posterior (SRD v0.79, 17/11/2026):** misturar conscientemente o segundo elemento custa **1 Antecipar (1A)**, não reutilizável. Com a **Perícia do elemento** adquirida e o Grau habilitado, **conjurar/controlar e ativar os efeitos G1 e G2 não cobra Coragem como custo-base de ativação**. **Cada elemento elevado a G3 custa +1 Coragem**, separadamente da mistura e das cargas de foco gastas na aceleração. **G4 plena de dois efeitos G3 simultâneos:** **1A + 2 Coragens** para mistura/elevação, não 1A + 3. **Improviso Elemental** adapta o elemento da manifestação/dano sem ativar duas propriedades; **Maestria Elemental** permite combinar simultaneamente as propriedades especiais dos dois elementos quando o conjurador possui as duas Perícias. A mistura não concede automaticamente dados nem Êxitos. Custos específicos históricos de Maestria/Invocação seguem em revisão própria. **Fogo G2 sem foco já está resolvido: ativação gratuita em Coragem** com a Perícia, o Grau e uma fonte elemental válida.
+
+### Dano elemental, Improviso e Maestria [DEFINIDO / procedimento PENDENTE]
+
+**Dano elemental não é controle elemental.** Armas ou equipamentos encantados podem **causar dano de Ar/Vento, Água, Fogo etc. sem que o portador tenha a Perícia do elemento**. Mas isso **não** habilita efeitos de controle como **puxar, empurrar, congelar ou criar tornados**. Exemplo: uma espada encantada com Vento causa **dano de Vento**; sem **Perícia em Elemento Ar/Vento**, seu portador não controla o vento. **Com** a Perícia e o Grau/habilitação pertinentes, poderá manifestar os efeitos de Ar através da arma (um **tornado** pertence às manifestações avançadas G3). Ter um equipamento encantado não concede a Perícia gratuitamente.
+
+**Perícia em elemento [DEFINIDO]:** permite conjurar, controlar e ativar **gratuitamente quanto ao custo-base de ativação** os efeitos de **G1 e G2**, respeitando o Grau já habilitado, a fonte elemental disponível (foco correspondente apenas no inventário ou abundância ambiental a critério do Narrador), as rolagens e a DE. **Gratuidade não elimina** requisitos, limites, resistências, imunidades, testes, gasto de 1A por mistura, custo de elevação a G3 nem custos especiais cujo procedimento ainda precisa ser reconciliado.
+
+**Improviso Elemental [DEFINIDO — aquisição revisada no SRD v0.82, 18/11/2026]:** requer apenas **Disciplina 1 + Inteligência 1 + Destreza 1**, custa **1 XP** e **não exige Criar Item de Foco e Magia**. Esta mudança permite compras em builds mágicas híbridas sem obrigar a via de Psique ou fabricação de Foco, mas não concede novas técnicas de forja, alquimia ou encantamento nem muda o procedimento de conjuração. O efeito continua inalterado. [SRD v0.82](srd-continuidade-v0.82.md).
+
+**Improviso Elemental [DEFINIDO]:** incorpora **um elemento adicional em uma mistura simples**, adaptando o **tipo/natureza do dano** para lidar com resistências da cena, sem ativar o efeito especial do elemento acrescentado e **sem duplicar automaticamente o dano**. Ex.: Água + Vento pode manifestar o ataque como dano de Vento contra um alvo resistente à Água; **não** significa puxar com Vento e congelar com Água simultaneamente. O elemento precisa estar disponível conforme a habilitação/contexto; a Perícia é necessária para controlar suas propriedades especiais. O bônus próprio **+1A** da Perícia descrito em seu verbete não é o mesmo que criar Êxitos gratuitos.
+
+**Maestria Elemental [DEFINIDO]:** com as duas **Perícias elementais** adquiridas e os requisitos da Maestria, é possível usar **os efeitos especiais reais dos dois elementos na mesma combinação**; por exemplo, **puxar com Vento e congelar com Água**, aplicando dano dos elementos quando pertinente e permitido. O autor esclareceu que **uma combinação apropriada pode dobrar o dano**; isso **não** significa dobrar qualquer mescla ou aplicar um segundo multiplicador automático ao dano já contabilizado. **PENDENTE:** critérios de compatibilidade, fórmula de dano e reconciliação com o **custo próprio histórico de Maestria (1 Coragem)**; não automatizar dano dobrado antes de defini-los.
+
+**Elevação a Grau 3 [DEFINIDO]:** cada elemento cujo efeito é elevado a **G3** exige **1 Coragem**. Se apenas um dos dois elementos é elevado, gasta-se 1 Coragem; se ambos forem, 2 Coragens. O gasto de **1 Antecipar para mistura** permanece. Os graus G1 e G2 são de ativação-base gratuita quando a Perícia é possuída. **PENDENTE:** classificação e tempo de uma mistura com apenas um elemento G3.
+
+**DIVERGÊNCIAS DE VERBETES ANTERIORES:** Perícias elementais (Ar/Água/Terra/Fogo e outras) e Maestria citam **1 Coragem** para ativar um efeito G1/G2, enquanto a decisão nova torna essa **ativação-base gratuita**. A cobrança histórica **não prevalece como regra geral de ativação-base**. O gasto **próprio de Maestria** em uma combinação de dois efeitos, os custos especiais de **Invocação Elemental** devem ser revisados separadamente. **Fogo G2 sem foco foi resolvido: não há cobrança adicional em Coragem** com a Perícia e o Grau habilitados e com fonte elemental válida. Não presumir que os demais custos próprios foram abolidos. O verbete de Improviso concede **+1A** como bônus e a regra de mistura usa **1A** como recurso: a ordem e origem do Antecipar na mistura seguem a mecânica vigente, sem criar um segundo símbolo gratuito.
+
+### Perícias elementais independentes de Foco [DEFINIDO — SRD v0.81, 18/11/2026]
+
+As Perícias em **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não exigem adquirir **Criar Item de Foco e Magia**. Para Ar/Água/Terra/Fogo, os requisitos continuam **Disciplina 1 + Inteligência 1**; para Sagrado/Sangue/Trevas, **Disciplina 2 + Inteligência 2**; Veneno conserva **Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2**. Os custos individuais de compra em XP não foram alterados.
+
+Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo sem a Perícia Criar Foco, desde que haja fonte elemental válida e os efeitos/Graus sejam permitidos. Uma fonte válida pode ser ambiental, conforme o Narrador, ou foco apropriado quando utilizado. **Criar Item de Foco e Magia** permanece para **Psique e a confecção de focos**; Escudo Arcano, Maestria Elemental, Conjuração Refinada e Invocação Elemental conservam seus requisitos próprios de Foco; **Improviso Elemental não exige mais Foco** (SRD v0.82). Preparação em turnos, cargas, DE, Temor e ativação não mudaram. [SRD v0.81](srd-continuidade-v0.81.md).
+
+### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
+
+Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Coragem, distância, área e efeitos avançados ainda dependem dos requisitos.
+
+| Elemento | Leve / Grau 1 | Médio / Grau 2 | Pesado / Grau 3 |
+|---|---|---|---|
+| **Água** | Congelar e imobilizar por 1 rodada com Desvantagem, sem dano automático | Perfuração no crítico habilitado | Empurrar e causar dano; mantém condições menores pertinentes |
+| **Fogo** | Disparo convencional e conduzir chamas, sem dano direto à Vida | **Queimar:** E + T à Integridade; área 4 × 4 | **Derreter:** E + T à Integridade e **+1 Vida direta fixa**; área 8 × 8 e conjuração ao fim do turno dos aliados |
+| **Terra** | Desvantagem por 2 rodadas | Enredar, imobilizar e espinhos que desgastam proteção | Dano, empurrar e derrubar |
+| **Ar / Vento** | Mover mais rápido, puxar/empurrar objetos | Sufocar, deslocar e derrubar | Grande área, vários alvos e possíveis danos de queda |
+
+**Elementos especiais:**
+
+- **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
+- **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
+- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2T válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Temor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Temor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1T a mais) **ou concentrado integralmente num alvo**. Não duplicar Temor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 Coragem no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
+- **Sangue [REWORK — SRD v0.73]:** a técnica separada **Extração de Sangue está revogada**. Sangue puro conjurado causa dano convencional contra proteção e armadura; sem armadura ou havendo excedente que atinja a Vida, cada ponto de Vida realmente perdido de inimigo gera 1 marca de sangue derramado. Para **amplificar uma magia**, inclusive habilitar dano direto à Vida contornando a armadura, **sacrificar 1 Vida própria OU consumir 3 marcas de sangue derramado de inimigos** (custos alternativos). Amplificação não concede dano numérico gratuito nem cria um dano extra de 1 Vida no alvo. Uma vez por turno, o Hemomante também pode escolher a substituição de Coragem para manter mais um dado ou elevar um dado, usando a mesma regra de pagamento. **Quando uma magia de Sangue acertar e tiver sido amplificada para contornar a armadura, TODO o dano convencional calculado do ataque é aplicado diretamente à Vida do alvo**, sem desgaste simultâneo de Integridade. Usa-se a fórmula vigente de dano e de crítico, **sem bônus numérico gratuito**, e preservam-se Temor e outros riscos. Um ataque que falhe não causa dano à Vida; os recursos pagos pela amplificação não são devolvidos. **Exclusivo da magia de Sangue dessa construção**, não se estende a Perfurante nem aos demais elementos. O rolador da ficha exibe o resultado para a Vida, mas aplicação em ficha externa ainda é manual. **Escudos físicos (inclusive Levantar Escudo) e Escudos Arcanos de outros elementos NÃO anulam o dano direto da Hemomancia amplificada**; **somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade**. Nessa exceção, o ataque volta a ser resolvido pelas regras usuais da barreira e das demais proteções, mantendo acerto, dano convencional e riscos, sem aplicar dano integral direto à Vida. Escudo Arcano de Sangue é **Escudo Arcano com elemento Sangue incorporado**, não uma Perícia nova nem um custo adicional presumido. Permanecem **PENDENTES** detalhes de coexistência de defesas, imunidades e aplicação em área.
+- **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
+**Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
+
+### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
+
+**Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
+
+**Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
+
+**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
+
+**Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
+
+### Exemplos de combinação criativa em diferentes cenas
+
+| Elementos | Durante um conflito | Fora do conflito |
+|---|---|---|
+| Fogo + Ar | Calor, fumaça ou área perigosa quando habilitada | Forja, ventilação, sinalização |
+| Água + Terra | Lama, cobertura, alterar o caminho | Irrigação, moldagem de barro, travessia |
+| Água + Ar | Névoa como elemento de ocultação situacional | Refrescar, dispersar vapor |
+| Fogo + Terra | Trabalhar obstáculos e materiais | Cerâmica, forja, transformação |
+| Água com manifestação elétrica habilitada | Conduzir eletricidade na água, se a técnica e o ambiente permitirem | Investigar condução elétrica e fenômenos naturais |
+
+São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades automáticas. O Narrador define DE, efeitos, risco, alvo, recursos, extensão, disponibilidade dos elementos e segurança de aliados. A criatividade deve incentivar **soluções dentro e fora de combate**, sem dispensar perícias e custos.
+
+### Defesas elementais [DEFINIDO / PENDENTE]
+
+**Escudo Rúnico [DEFINIDO — v0.85]:** a resistência a um elemento escolhido tem o mesmo coeficiente da resistência elemental comum: **cada E do ataque vale 0,5 de dano e cada T vale 0 dano desse elemento**, sem apagar o Temor e suas consequências. Não concede imunidade; arredondamento universal de frações continua pendente. [SRD v0.85](srd-continuidade-v0.85.md).
+
+- Resistência aos **dois** elementos: metade do dano dos Êxitos, Temor não causa dano.
+- Imunidade ao **principal**, mas não ao secundário: metade dos Êxitos, sem componente de dano de Temor.
+- Imunidade aos **dois** elementos: dano elemental zero.
+- Resistência apenas ao secundário, sem resistência ao principal: dano normal.
+- Vulnerabilidade **efetivamente explorada**: dobra o dano dos Êxitos, sem duplicar a DE.
+
+Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
+
+**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** 1 Coragem por ativação das técnicas pertinentes, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
+
+
+### Escudo Rúnico e resistência elemental
+
+O **Escudo Rúnico (Escudo Arcano racial) + um elemento** protege a barreira contra **um elemento habilitado escolhido para aquele uso**. Nessa resistência, cada Êxito do ataque provoca **0,5 dano por E, 0 dano por T**; a parcela de Temor não causa dano elemental, mas seus símbolos continuam gerando Pressão, risco e demais consequências. Resistência não é imunidade e não se estende a outros elementos.
+
+Na formação da barreira, a habilidade racial pode converter **2T em 1E**, sem apagar os riscos da rolagem; essa conversão não cria uma segunda redução de dano. A primeira ativação diária é gratuita em Coragem e as demais custam **1 Coragem**, preservando ampliações próprias. Frações de dano são mantidas até existir um critério geral de arredondamento.
+
+
+As habilitações e efeitos específicos de Perícias de conjuração estão no aprofundamento.
+
+## Parte IV — Aprofundamento das Perícias
+
+### Combinações avançadas — Especializações
+
+À medida que seu personagem desenvolve uma Prática ou um Conhecimento, ele pode aprender a aplicar aquilo que sabe de maneiras mais elaboradas. As **Especializações** são Perícias que permitem reunir até três Aptidões em uma mesma rolagem, em vez das duas habituais. Assim, o personagem pode recorrer a outros talentos para realizar uma ação sem deixar de lado aquilo em que se especializou.
+
+Cada Prática e cada Conhecimento possui sua própria Especialização. Para adquiri-la, você precisa alcançar o **Grau 3** na Aptidão correspondente e investir **1 XP** na Perícia. Algumas possuem requisitos adicionais, como Furtividade Avançada. Consulte o [catálogo de Perícias](../pericias/index.html) para conhecer cada uma delas. A combinação é passiva, sem custo adicional de ativação; atingir o Grau 3, por si só, não libera a terceira Aptidão.
+
+#### O que você está tentando fazer?
+
+Imagine que seu grupo esteja atravessando as ruínas de uma antiga fortaleza. Uma parte da ponte desabou, e um sentinela guarda a passagem do outro lado. Você carrega uma lança e precisa decidir como superar o obstáculo.
+
+**Atacar durante um salto.** Você toma impulso, salta sobre a abertura e tenta atingir o sentinela com a lança. Seu objetivo é acertar o ataque: **Disciplina** é a Aptidão principal, Atletismo contribui com a técnica do salto e Agilidade com o controle do movimento. Com a Especialização em Disciplina, você pode reunir **Disciplina + Atletismo + Agilidade**, desde que o ataque seja viável e a arma esteja habilitada.
+
+**Atravessar usando a lança como apoio.** Em vez de enfrentar o sentinela, você procura vencer a abertura da ponte. Usa a lança como apoio para ajudar a transpor o vão e tenta alcançar uma parte firme da estrutura. Agora o objetivo é a travessia, não o ataque. A Aptidão principal é **Atletismo**; Disciplina auxilia no manejo da lança e Agilidade no controle do corpo. Para reunir **Atletismo + Disciplina + Agilidade**, a Especialização pertinente é Atletismo Avançado.
+
+Nos dois casos, as três Aptidões são as mesmas, mas a intenção muda. Se você possui apenas a Especialização em Disciplina, ela não habilita a terceira Aptidão na travessia. A Especialização deve corresponder ao que você pretende realizar, não simplesmente à Aptidão que fornece os melhores dados.
+
+#### Especializar-se também é útil fora do combate
+
+Depois da travessia, o grupo encontra um companheiro ferido. Você examina a lesão para compreender o que aconteceu e precisa manipular o ferimento com cuidado. Com Medicina Avançada, pode combinar **Medicina + Inteligência + Destreza**: Medicina orienta o atendimento, Inteligência ajuda a interpretar os sinais e Destreza auxilia na execução precisa do procedimento. Nesse caso, dois Atributos diferentes complementam um Conhecimento. O tratamento ainda deve seguir as regras e habilitações aplicáveis.
+
+**Na hora de rolar:** escolha a Aptidão especializada como principal e até duas complementares pertinentes. Pelo menos um dado deve vir de um Atributo. Não repita Aptidões nem acumule Especializações para acrescentar uma quarta fonte; exceções expressamente habilitadas seguem seus próprios verbetes. Os limites continuam sendo de 9 dados rolados e até 4 mantidos, respeitando seu Marco. A Especialização amplia suas possibilidades de combinação, mas não concede sucesso automático, ações extras nem efeitos de outras Perícias.
+
+## Perícias e profissões emergentes
+
+Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
+
+### Perícias autorais: corpo a corpo, disparos e recuperação [DEFINIDO / PENDENTE]
+
+O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra seus requisitos. Não há reserva exclusiva de 5 XP para esta categoria. Estes ramos são acessíveis por requisitos, não por classes obrigatórias. **Espadachim** é apenas uma inspiração de personagem.
+
+| Perícia | XP | Requisitos (decisões mais recentes) | Função |
+|---|---:|---|---|
+| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Em acerto com arma Leve, **1 Coragem ativa uma característica**; no **crítico, uma característica é gratuita**. Contra alvo com armadura Pesada/Muito Pesada, ignora apenas o **−1A natural de peso**, sem anular outras penalidades. Efeitos e custos automatizados no rolador |
+| **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Em acerto com arma **Média**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Média**, mantendo outras penalidades. Automatizada nos roladores |
+| **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Em acerto com arma **Pesada**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Leve/Muito Leve**, mantendo outras penalidades. Automatizada nos roladores |
+| **Especialização em Disciplina** | **1** | **Disciplina 3** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
+| **Manejo Perfeito — Armas Corpo a Corpo** | **1** | **Especialização em Disciplina (Disciplina 3) + Destreza 2** | Passiva, sem custo de ativação. Arma correta contra oponente em Desvantagem: **Vantagem Absoluta (+1E)** no lugar do +1A natural do peso; se já estava em Vantagem Absoluta, aplica **Golpe Certo (+2E no total, não +3E)** |
+| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + Armas Leves, Médias, Pesadas ou Pugilismo** | **1 Coragem antes de rolar:** eleva um dado da arma (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado causa 1 dano em vez de metade, respeitando 9 dados |
+| **Golpe Colossal** | **1** | **Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1** | Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+T válidos devem alcançar a soma das DE do principal e dos adicionais; se não alcançar a soma, apenas o principal pode ser atingido se superar sua DE. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Temor. Raio fixo; teto de 5 Coragens por turno. |
+| **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Ativa; soco de peso Médio por padrão. Por 1 Coragem antes da rolagem, altere para Leve ou Pesado. |
+| **Artista Marcial** | **1** | **Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo** | 1 Coragem por tentativa ou sem custo adicional ao ativar Pugilismo; no acerto, **uma** manobra: Empurrar, Agarrar, Derrubar ou Desarmar |
+| **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
+| **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado vale 1 dano. Não se aplica a armas de fogo |
+| **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
+| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
+| **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
+| **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
+| **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
+| **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
+
+**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. **Armas por peso [revisão autoral de 23/11/2026, SRD v0.97]:** gastar 1 Coragem após um acerto ativa **uma característica própria da arma da categoria habilitada**; no crítico, uma é gratuita. Uma segunda diferente, quando permitida, custa 1 Coragem. Não permite selecionar características não presentes no equipamento ou usar uma arma de outro peso como se fosse da categoria adquirida. **Leves** ignoram −1A contra armadura **Pesada/Muito Pesada**; **Médias** ignoram −1A contra armadura **Média**; **Pesadas** ignoram −1A contra armadura **Leve/Muito Leve**. Só é ignorada a Desvantagem natural da relação de peso, nunca as penalidades independentes. Os três grupos exigem seus graus e custos de XP próprios; a automatização não libera efeitos sem requisitos.
+
+**Golpe Certo [DEFINIDO — SRD v0.97]:** é uma mecânica de <a href="../mecanicas/golpe-certo.html">vantagem além da Absoluta</a>, não uma Perícia comprável. Quando **Manejo Perfeito** tem arma corpo a corpo apropriada, afinidade favorável contra a armadura do alvo e a ação **já estava em Vantagem Absoluta (+1E)**, o bônus final daquela condição com Manejo torna-se **+2E (ᛋ)**. O valor é **total**, não são +2E adicionais nem +3E; a Vantagem natural de peso (+1A) é substituída e não acumulada. Sem Vantagem Absoluta prévia, Manejo concede apenas +1E substituindo +1A. Consulte também [Vantagens e Desvantagens](../mecanicas/vantagens-e-desvantagens.html).
+
+**Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia de armas adicional**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Especialização em Disciplina (1 XP, Disciplina 3; passiva, sem custo de ativação)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
+
+### Conhecimentos e Práticas Avançadas [DEFINIDO — atualizado no SRD v0.96]
+
+**Atualização autoral de 23/11/2026 (SRD v0.96):** toda Perícia de **Conhecimento Avançado ou Prática Avançada** exige **Grau 3 na fonte especializada** e custa **1 XP**. A versão anterior exigia Grau 2; essa condição foi substituída. Quando o personagem possui a Perícia pertinente, pode usar **o Conhecimento ou Prática especializado como fonte principal** e **até duas fontes adicionais pertinentes**, formando uma rolagem de **até três fontes no total**. **DEFINIDO — esclarecimento adicional:** as duas fontes adicionais **podem ser dois Atributos diferentes**, como **Medicina + Inteligência + Destreza** ou **Disciplina + Força + Agilidade**, se pertinentes. Assim, não se exige que as três fontes pertençam a três categorias distintas. Apenas comprar um Conhecimento ou Prática, sem a habilitação da combinação de três fontes, **não dispensa os requisitos da Perícia Avançada**. É proibido repetir o mesmo Atributo. Uma das fontes deve fornecer dado de Atributo. Respeitar o máximo de 9 dados rolados, 4 mantidos e a pertinência da ação; não escolher novamente a fonte principal. Não há soma automática de duas Perícias Avançadas para uma quarta fonte.
+
+**Medicina Avançada [DEFINIDO]:** custa **1 XP** e requer **Medicina 3**. Em tratamento de **Sangrando**, Medicina deve ser a fonte predominante; fazer teste contra a **DE defensiva do alvo tratado**, com **Desvantagem (−1A)**. Em sucesso, remover Sangrando; em falha, manter. Sangramento não expira automaticamente. Esta habilidade foi adicionada ao criador na branch da revisão v0.79, mas sua remoção automática no alvo ainda não foi implementada.
+
+**Encantar com Elemento [DEFINIDO — 20/11/2026]:** custa **1 XP**; requisitos **uma Perícia Elemental adquirida + Criar Item de Foco e Magia**. Em **armaduras e escudos**, paga **1 Coragem** para aplicar resistência ao elemento habilitado. Em **armas**, muda temporariamente o elemento da arma para o escolhido. **Todas as modalidades duram E − T, somente quando E − T > 0**, com símbolos válidos e sem duração-base adicional. Resistência: o elemento correspondente causa metade do dano dos Êxitos, e Temor não acrescenta dano desse elemento, embora conserve seus riscos. Não concede imunidade, dano extra ou efeitos elementais adicionais. **PENDENTE:** duração em turnos/rodadas, fontes/DE, custo específico para arma, resistências preexistentes e automação.
+
+
+**Especializações por famílias de armas [DEFINIDO — 20/11/2026]:** Especializações individuais existem para **Adagas e Facas, Espadas, Machados, Martelos, Maças e Clavas (uma única família), Lanças e Hastes, Cajados e Bastões, Arcos, Bestas, Armas de Arremesso, Punhos, demais Armas de Longo Alcance e Armas de Fogo**. São Perícias **passivas, sem custo próprio de ativação**; eventuais gastos de Coragem são das características adicionais escolhidas, conforme a v0.101. Elas compartilham **um efeito da arma gratuito em acerto comum; dois diferentes gratuitos no crítico; terceiro diferente por 1 Coragem no crítico**, sempre limitado às características presentes no equipamento, à DE e à Perícia de Armas adequada. Para corpo a corpo, habilitação pelo peso; para longa distância, Armas de Longo Alcance; para arremesso, a habilitação de Arremesso; para Punhos, Pugilismo; para armas de fogo, Perícia em Armas de Fogo. **Especialização em Armas de Fogo é exclusiva da origem Humano e vem de graça**, sem conceder a Perícia em Armas de Fogo. **DEFINIDO:** todas as Maestrias de famílias de armas custam **1 XP nominal**. A aquisição de Adagas/Facas, Machados, Cajados/Bastões e Maças/Clavas tem requisitos próprios definidos na revisão v0.98; os graus para comprar Arcos, Bestas, Armas Arremessadas, Punhos e Armas de Longo Alcance Diversas continuam **PENDENTES**, mas o preço já não é pendente. A Perícia preexistente Maestria em Arremesso de Armas **não é renomeada nem substituída**.
+
+**Especialização em Armas — Martelos, Maças e Clavas [DEFINIDO — 23/11/2026]:** custa **1 XP** e exige **Força 3, Destreza 1 e Vigor 1**. Uma única compra habilita a família de martelos, marretas, maças e clavas, desde que o personagem possua também a Perícia em Armas correspondente ao peso da arma utilizada. Os benefícios de Especialização e a recuperação de Coragem por crítico seguem o SRD v0.101. Categorias de peso não padronizadas seguem sujeitas ao Narrador. A separação anterior entre Martelos e Maças e Clavas foi substituída pelo [SRD v0.102](srd-continuidade-v0.102.md).
+
+**Resistência a Fogo [DEFINIDO — 20/11/2026]:** **1 XP**, exige **Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2**. O portador sofre **metade do dano de ataques de Fogo que alcançaria a Vida**, sem proteção à Integridade da armadura. O dano direto à Vida de **Derreter G3 é 0** contra ele (o +1 fixo é anulado); **Derreter/Queimar continuam aplicando E + T à Integridade** normalmente. Não é imunidade e não há segunda redução cumulativa ao dano à Vida. Temor mantém seus riscos, outros elementos não recebem redução e não se alteram equipamentos. **PENDENTE:** arredondamento de frações na Vida e interações com outras resistências.
+
+**Ferreiro Elemental [DEFINIDO / PENDENTE — 20/11/2026]:** custa **1 XP** e exige **Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento**. A denominação «Criar magia + item de foco» foi interpretada como a Perícia vigente **Criar Item de Foco e Magia**, sem criar uma habilitação extra. A nova Perícia habilita **criar armas elementais e pedras elementais**, sem definir receita, Grau, custo, DE, propriedade ou bônus adicional por conta própria. **Encantar com Elemento já está cadastrada** (1 XP, uma Perícia Elemental + Criar Item de Foco e Magia), mas continua pré-requisito obrigatório, não concedido por Ferreiro Elemental. O +1E de Ferreiro não vira +1E genérico em qualquer criação elemental.
+
+**Ferreiro [DEFINIDO — 20/11/2026]:** 1 XP; requisitos **Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado** (que agora exige Artesão 3). Habilita criar armas e armaduras Médias e Pesadas Grau 1; consertar e modificar armas; preparar minérios e metais. Concede **+1 Êxito (E) somente nos testes de Forja**. Não transforma testes gerais de Artesão em Forja. Materiais, tempo, DE, resultados específicos de conserto/modificação e automação permanecem pendentes; comprar a Perícia não gera um item pronto.
+
+**Especialização em Disciplina [DEFINIDO]:** passa a exigir **Disciplina 3**, com custo de **1 XP** e Disciplina como fonte principal. **Furtividade Avançada [DEFINIDO]:** passa a exigir **Furtividade 3 + Perícia em Furtividade**, com custo de **1 XP** e Furtividade predominante. **Demais especializações, todas por 1 XP e Grau 3 da própria fonte:** Proteção Avançada, Astronomia Avançada, Alquimia Avançada, Engenharia Avançada, Erudição Avançada, Atletismo Avançado, Artesão Avançado, Apresentação Avançada e Coleta Avançada. Esses nomes identificam apenas a capacidade de combinação com até três fontes; **não conferem novos efeitos temáticos automáticos**. Medicina Avançada, Especialização em Disciplina e Furtividade Avançada completam as **12 especializações**, preservados os requisitos extras de Furtividade Avançada. Esta regra prevalece sobre os antigos requisitos de Grau 2 registrados na revisão v0.79. As fichas antigas mantêm o registro de compra, mas não habilitam a terceira fonte enquanto o Grau 3 não for cumprido.
+
+**Interrupção da Hemomancia em canalização com três alvos Sangrando [DEFINIDO — SRD v0.79]:** um ataque recebido só cancela a preparação se **acertar a DE defensiva do Hemomante** **e** se a sua força for **igual ou superior à força da magia** já rolada e mantida na declaração. Nas duas forças, calcular **E + piso(T/2)** com símbolos válidos; não usar E+T bruto. Um empate de força interrompe apenas se também houver acerto na DE defensiva. Se uma das exigências falhar, o ataque não interrompe a preparação. **DEFINIDO — opção A:** ocorrendo uma interrupção válida, **a conjuração é perdida**. O Hemomante precisa **declarar uma nova conjuração, rolar novamente e iniciar mais três turnos completos de preparação**; não pode retomar a rolagem ou a contagem anteriores. **DEFINIDO — opção A:** **Coragem ou cargas de foco já gastos na preparação interrompida são definitivamente consumidos**, sem restituição. A interrupção não cobra recursos adicionais ainda não pagos. A condição Sangrando dos três alvos usados como fonte não é consumida apenas por sustentar uma canalização.
+
+**Referência de precedência:** [SRD de Continuidade v0.79](srd-continuidade-v0.79.md). Este texto prevalece nas matérias expressamente corrigidas em relação a descrições históricas deste Livro.
+
+**Especializações para Golpe Fulminante:** Perícia em Armas Leves, Médias, Pesadas ou Pugilismo. Golpe Colossal exige Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1, sem outra Perícia como requisito direto. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
+
+**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 12 XP do orçamento experimental de 15, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
+
+**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
+
+| Alvos totais | Adicionais | Gastos de Espalhar Golpe | Equivalente só em Coragem |
+|---|---:|---:|---:|
+| 1 | 0 | 0 | 0 |
+| 2 | 1 | 1 Coragem | 1 |
+| 3 | 2 | 2 Coragens | 2 |
+| 4 | 3 | 3 Coragens | 3 |
+
+**Golpe Fulminante:** além do requisito de **Força 2**, custa separadamente **1 Coragem** para aprimorar dano de Temor no alvo atingido. **Espalhar Golpe** custa seus próprios recursos por alvo adicional. A combinação pressiona a reserva de Coragem e não ignora Temor, Pressão ou Apavorado.
+
+**Custo-padrão de ativação:** **1 Coragem** quando explicitamente definido para a Perícia. **Exceção informada:** **Amplificar Atributo custa 4 Coragens**; seus demais requisitos/efeitos não são introduzidos nesta seção.
+
+**Disparo Múltiplo [DEFINIDO em geometria e DE / PENDENTE no restante]:** o círculo para os outros atingidos terá **2 metros de raio ao redor do alvo principal**; **o resultado do primeiro disparo é comparado à DE de cada alvo adicional, e erro ocorre se o resultado for inferior à DE individual**, sem nova rolagem. O ramo de arremesso é separado para evitar autorizar implicitamente que uma única arma arremessada produza ataques simultâneos; possibilidades como duas armas lançadas ou uma arma grande aguardam o detalhamento de requisitos pelo autor. A Maestria em Arremesso de Armas continua com seus próprios efeitos de alojamento e recuperação.
+
+**Artista Marcial:** uma manobra por ataque desarmado, ao acertar; Pugilismo ativado habilita a manobra sem custo adicional, sem exigir crítico. **Recuperação em Movimento:** dano reinicia a contagem de 8 horas e não transforma automaticamente prazos semanais em 8h. **Maestria em Manejo Duplo:** além de DES 2 e AGI 1 agora definidos, falta determinar os requisitos combinados de Maestrias/Especialização em Disciplina. **Manejo Perfeito:** 1 XP, Especialização em Disciplina + DES 2; usa Vantagem Absoluta contra oponente desfavorecido pela arma correta ou Golpe Certo se já havia Vantagem Absoluta. A entrada antiga Arma Certa não é uma segunda Perícia, conforme SRD v0.87.
+
+**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; retirada de armas lançadas e riscos a aliados; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; Especialização em Disciplina; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
+
+### Perícias de especialização: o que você pode aprender
+
+As **Perícias** detalham técnicas específicas e só produzem os efeitos de seus verbetes quando os requisitos e os gatilhos são atendidos. As seguintes Perícias custam **1 XP cada**, compradas individualmente; efeitos em que falta procedimento específico dependem do Narrador.
+
+| Perícia | Uso permitido |
+|---|---|
+| [Mãos Leves](../pericias/maos-leves.html) | Em combate, teste **Disciplina + Furtividade** para retirar item inimigo; DE do alvo + Grau do item + peso se equipado. É uma exceção específica à restrição de combinar duas Práticas. |
+| [Perícia em Armadilha](../pericias/pericia-armadilha.html) | **Vantagem** ao armar e desarmar armadilhas, usando Proteção como Conhecimento pertinente. |
+| [Golpe Furtivo](../pericias/golpe-furtivo.html) | Em ataque furtivo com arma habilitada, acrescenta **um dado da própria arma**, sem criar dano fixo ou +1E. |
+| [Bioética](../pericias/bioetica.html) | Com os requisitos de Alquimia, Sangue, elementos e Domar, pode criar homúnculos com **ficha própria**. |
+| [Pesquisa Avançada em Poções](../pericias/pesquisa-avancada-pocoes.html) | **+1E** ao criar poções, e permite poções elementais habilitadas. |
+| [Corpo Fechado](../pericias/corpo-fechado.html) | **1 Coragem** protege a Vitalidade contra golpes físicos de armas por uma rodada, sem conceder imunidade a magia. |
+| [Invocar Esfera Espiritual](../pericias/invocar-esfera-espiritual.html) | Cada esfera custa **1 Coragem**; cria até **5 por rodada** e mantém até **5 armazenadas**. |
+| [Passo Etéreo](../pericias/passo-etereo.html) | Técnica especializada que consome uma esfera; demais condições seguem seu verbete. |
+| [Absorver Esferas](../pericias/absorver-esferas.html) | Consome todas as esferas armazenadas para o efeito próprio da Perícia, sem duplicar recursos. |
+| [Disparo de Esferas Espirituais](../pericias/disparo-esferas-espirituais.html) | Utiliza esfera espiritual conforme o ataque especializado e suas condições. |
+| [Dilema](../pericias/dilema.html) | Com a habilitação marcial, estabelece duelo sem deslocamento até que um combatente fique inconsciente; aplicação resistida permanece pendente. |
+| [Impacto Psíquico](../pericias/impacto-psiquico.html) | Por **1 Coragem**, permite golpes psíquicos com efeitos de armas quando habilitados, sem acrescentar dano fictício. |
+
+**Bioética:** exige **Alquimia 3, Inteligência 3, Destreza 3**, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia Elemental diferente de Sangue e Domar Criatura Média. O homúnculo é produzido com **sangue e tecidos vivos** de duas criaturas. Cada homúnculo possui **ficha própria**, com XP proporcional ao total atual do criador e custos da ficha de criatura do porte correspondente; a compra não gera automaticamente um homúnculo. Porte, tempo, materiais exatos e controle ainda dependem de procedimento.
+
+## Perícias de combate, escudos e arremesso
 
 ### Especializações por família de arma [DEFINIDO — requisitos e nomenclatura v0.99]
 
@@ -968,14 +1460,6 @@ Armadura equipada possui **integridade**, que absorve primeiro o dano; excedente
 
 **Escudo Bumerangue [DEFINIDO — resolução posterior de 20/11/2026]:** 1 XP, exige **Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos**. Lança escudo físico até **8 m** com **Disciplina (Armas) + Atributo(s) escolhido(s) e rolado(s)**, respeitando a seleção de fontes, os limites de dados e os requisitos da combinação. **Acerto com ou sem Temor:** escudo retorna **no mesmo turno do lançamento**. **Falha limpa:** cai no caminho; **1A pode permitir correr e recuperá-lo**. **Falha com Temor:** cai próximo ao alvo ou pode atingir aliado próximo se alcançar a DE do aliado. **Distância da queda:** E mantidos + T não anulado mantido + E obtidos de 2A convertidos, em metros; A não usado não soma. Em falha, o escudo fica **no chão e deixa de estar equipado**, até recuperação confirmada. Consequências de Temor permanecem. Não usar as regras de arma alojada no alvo no acerto, pois o escudo retorna. **DEFINIDO (20/11/2026):** arremessar o escudo consome **1 Coragem**, inclusive se falhar. No acerto, causa **dano físico normal** da própria rolagem: **Êxitos válidos + ⌊Temor mantido não anulado ÷ 2⌋**, aplicando crítico e proteções como qualquer ataque físico. Escudos que **possuam características próprias de armas cadastradas** podem aplicá-las no lançamento, mediante requisitos, gatilhos e custos normais: no acerto comum, **+1 Coragem para ativar uma característica**; no crítico, a primeira é gratuita e a segunda custa **+1 Coragem**; características passivas seguem seus critérios. Nenhum escudo ganha características ou dados extras automaticamente, nem causa segundo golpe no retorno; **Cravar não é aplicável** ao escudo que retorna. Respeitar o teto de 5 Coragens por rolagem. **PENDENTE:** momento na ordem de ações, obstáculos e interação com Levantar Escudo durante o voo.
 
-### Levantar Escudo físico [DEFINIDO — 16/11/2026]
-
-Levantar Escudo **consome uma ação**; o defensor realiza um **teste de Disciplina** e escolhe os dados mantidos dentro dos limites normais. A Integridade simbólica extra é **E + T válidos dos dados mantidos**. O desgaste usa as equivalências já definidas: **1E do ataque anula 1E do escudo ou 2T; 1T anula 1T; 2T anulam 1E**. Antecipar não concede Integridade automaticamente. **Não é reação**.
-
-O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem abaixá-lo; **atacar encerra o bloqueio**. A postura protege contra **o primeiro ataque frontal recebido** e termina **depois da resolução desse ataque**, inclusive se ele não atingir. Se houver dano excedente, aplica-se à **armadura** e, depois, à **Vida**. Enquanto protege, anula a característica **Perfurante de armas físicas**, mas não o **Perfurar de Água**. **Cravar [DEFINIDO — SRD v0.115]:** uma arma **Média ou Pesada com a característica Cravar** pode ficar presa ao escudo físico quando o ataque **alcançar a DE** e a característica tiver sido ativada pela **Perícia de Armas correspondente**, mesmo no crítico. Declare e pague o custo antes de rolar, conforme a Perícia ou Especialização. Escudo físico **Pesado** só pode ser cravado por **arma Pesada**. **Cravar cumulativo [DEFINIDO — SRD v0.79, 17/11/2026]:** cada arma cravada no mesmo escudo impõe **−1E em Levantar Escudo**, acumulando-se por arma (2 armas = −2E; 3 = −3E). A retirada de uma arma elimina o −1E dessa arma, mas preserva as penalidades das demais. Não reduzir Temor/Antecipar nem penalizar outras ações por Cravar. O peso de cada arma acompanha a carga do escudo enquanto estiver presa. O registro do alvo permanece manual no protótipo.
-
-**PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
-
 ### Perícia Recuperação Vigorosa [DEFINIDO]
 
 **Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
@@ -984,66 +1468,29 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
 
-### Armaduras: cinco tipos independentes do Grau [DEFINIDO]
+### Provocação Sofisticada [DEFINIDO: requisito e XP; efeito exclusivo PENDENTE]
 
-**Tipo** determina categoria, Integridade, DE e proteção natural. **Grau** determina acesso a propriedades adicionais. Uma armadura Muito Leve de Grau 4 **continua Muito Leve**; uma Muito Pesada de Grau 1 já tem imunidade física natural.
+A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1 XP**. Sua descrição fornecida até aqui **repete o efeito da ação Provocar básica**. Portanto, **não há benefício adicional distinto aprovado**: não empilhar Vantagens ou Desvantagens, não ampliar automaticamente a duração e não adicionar outros alvos. **A compra não é exigida para usar Provocar.**
 
-| Tipo | Integridade | DE | Progressão elemental |
-|---|---|---|---|
-| **Muito Leve** | **G1: 2 de Integridade (playtest)** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Leve** | **G1: 5 de Integridade (playtest)** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Média** | **G1: 8 de Integridade (playtest)** | **0** | **Grau 2+:** pode receber resistências específicas |
-| **Pesada** | **G1: 12 de Integridade (playtest)** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
-| **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
+**PENDENTE:** definir o que diferencia a Perícia, a duração além do turno afetado, alcance e conflito entre múltiplas provocações. Não importar essas propriedades de outros RPGs.
 
-**Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
+### Maestria em Arremesso de Armas [DEFINIDO / detalhes PENDENTES]
 
-**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
+**Nome corrigido:** Maestria em Arremesso de Armas, não “Arremesso de Armas Leves”. **Compra: 1 XP. Requisitos: Perícia em Armas Leves, Força 2, Destreza 2, Agilidade 1. Ativação: 1 Coragem.** Arremessa **Armas Leves a 24 m**, causando dano e efeitos habilitados, e a arma fica alojada no alvo. Usa os patamares de armas à distância além do alcance, **sem Desvantagem por arremessar próximo do alvo**; aliados próximos do inimigo impõem Desvantagem.
 
-**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE base com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
+- **Acerto sem Temor:** pode realizar nova jogada, avançar até o inimigo, retirar a arma e atacar novamente corpo a corpo.
+- **Acerto com Temor:** o inimigo pode tentar pegar a arma alojada e utilizá-la ou arremessá-la.
+- **Falha sem Temor:** arma cai no meio do caminho; **1A** pode permitir correr e recuperá-la.
+- **Falha com Temor:** arma cai perto do alvo ou pode atingir aliado próximo, conforme comparação com a DE do aliado.
+- **Retirada resistida quando exigida:** teste **Armas + Força + Atletismo** contra dificuldade determinada por **Força + Vigor + Atletismo do inimigo**, considerando os dados comprados.
 
-**Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
+**PENDENTE:** gatilho da retirada resistida versus avanço após acerto sem Temor, conversão de dados inimigos em DE, consequências de alojamento, comparação exata de DE do aliado e se nova jogada muda o fluxo normal. Para requisitos de outras Perícias, usar exclusivamente o nome **Maestria em Arremesso de Armas**.
 
-**Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
+**Barulhenta [DEFINIDO — SRD v0.69]:** característica **passiva** que fornece **+1T**, inclusive em armas de fogo. **Não depende de crítico** nem de ativação paga. Mesmo no crítico, permanece +1T, não +2T. O Temor se sujeita aos mesmos riscos e gastos de Antecipar.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Perfurante em armas de fogo [DEFINIDO — SRD v0.69]:** armas de fogo que **possuem a propriedade Perfurante** utilizam seu dano adicional à Integridade **automaticamente em acertos**, sem gastar 1 Coragem para habilitar essa característica e sem precisar ativar a Perícia para esse efeito específico. A arma continua exigindo as habilitações normais para suas outras capacidades; não se atribui Perfurante à escopeta ou a outros modelos sem essa propriedade.
 
-
-## VII. Conjuração, elementos e possibilidades
-
-### Regra geral de dados, foco e declaração [DEFINIDO — SRD v0.89, 22/11/2026]
-
-**DEFINIDO — adendo autoral de 22/11/2026:** a magia adiciona os dados do Grau: **G1 +1d6; G2 +1d10; G3 +1d12; G4 +2d12 (dois dados distintos)**. Não acumular os dados dos Graus anteriores. **Os dados da magia não vêm do item de foco**. G4 continua exigindo dois elementos diferentes, cada qual com sua magia G3 habilitada; não ganha dois d12 por uma conjuração de elemento único. Este dado integra a pilha normal (máximo 9 rolados, retenção por Marco) e não é uma fonte Atributo, Conhecimento ou Prática extra a ser comprada. A substituição da regra anterior de dado de foco vale para novas rolagens; não reescrever resultados históricos.
-
-**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Temor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Temor não é falha automática nem ataque bem-sucedido automático. **Antecipar pode passar o protagonismo a um aliado pelo custo progressivo vigente**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Temor.
-
-**Tempo da magia:** G1 imediato (1 turno); **G2 2 turnos sem gastar carga e 1 turno ao gastar exatamente 1 carga do foco compatível**, conservando G2 e +1d10. Foco vazio não acelera. G3 3 turnos, reduzíveis para 2 por 1 carga ou 1 por 2 cargas do foco correspondente. **G4 plena +2d12**, 6 turnos e mínimo 3; a aceleração exige 1 carga **de cada um de dois focos dos elementos distintos** por turno reduzido, conforme regra própria. **O foco não soma dado** à rolagem e sua aceleração não muda o Grau nem concede Êxitos automáticos. **O custo exato de cargas de foco para G2 está PENDENTE:** o uso de foco compatível para acelerar está DEFINIDO, mas não impor 1 carga não aprovada. A rolagem inicia na declaração; **somente concluir/aplicar efeito após o tempo devido**. Critérios genéricos para interromper pela ação inimiga permanecem PENDENTES; aplicar as exceções aprovadas para técnicas específicas.
-
-Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substituída por **um dado pelo Grau**. Criação continua em **15 XP iniciais compartilhados**, com custos e requisitos normais.
-
-
-
-**Criar Item de Foco e Magia (1 XP; Lucker Puro: 0 XP após requisitos; Disciplina 1 + Inteligência 1 + Artesão 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
-
-**Ácido (Fogo + Veneno) [DEFINIDO — v0.85]:** segue toda a regra geral de mistura: **1A** para introduzir o segundo elemento e os custos e habilitações dos Graus. **Improviso Elemental** troca a natureza do dano, mas não ativa Veneno; **Maestria Elemental** é necessária para usar Queimar e o efeito especial de Veneno conjuntamente. Quando houver acerto com Queimar, a queimadura substitui Sangramento para transmitir **1 acúmulo de Veneno por 2 rodadas**, sem novo dano ou custo exclusivo. Defesa mista segue a matriz geral. [SRD v0.85](srd-continuidade-v0.85.md).
-
-**Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. **DEFINIDO — esclarecimento posterior (SRD v0.79, 17/11/2026):** misturar conscientemente o segundo elemento custa **1 Antecipar (1A)**, não reutilizável. Com a **Perícia do elemento** adquirida e o Grau habilitado, **conjurar/controlar e ativar os efeitos G1 e G2 não cobra Coragem como custo-base de ativação**. **Cada elemento elevado a G3 custa +1 Coragem**, separadamente da mistura e das cargas de foco gastas na aceleração. **G4 plena de dois efeitos G3 simultâneos:** **1A + 2 Coragens** para mistura/elevação, não 1A + 3. **Improviso Elemental** adapta o elemento da manifestação/dano sem ativar duas propriedades; **Maestria Elemental** permite combinar simultaneamente as propriedades especiais dos dois elementos quando o conjurador possui as duas Perícias. A mistura não concede automaticamente dados nem Êxitos. Custos específicos históricos de Maestria/Invocação seguem em revisão própria. **Fogo G2 sem foco já está resolvido: ativação gratuita em Coragem** com a Perícia, o Grau e uma fonte elemental válida.
-
-### Dano elemental, Improviso e Maestria [DEFINIDO / procedimento PENDENTE]
-
-**Dano elemental não é controle elemental.** Armas ou equipamentos encantados podem **causar dano de Ar/Vento, Água, Fogo etc. sem que o portador tenha a Perícia do elemento**. Mas isso **não** habilita efeitos de controle como **puxar, empurrar, congelar ou criar tornados**. Exemplo: uma espada encantada com Vento causa **dano de Vento**; sem **Perícia em Elemento Ar/Vento**, seu portador não controla o vento. **Com** a Perícia e o Grau/habilitação pertinentes, poderá manifestar os efeitos de Ar através da arma (um **tornado** pertence às manifestações avançadas G3). Ter um equipamento encantado não concede a Perícia gratuitamente.
-
-**Perícia em elemento [DEFINIDO]:** permite conjurar, controlar e ativar **gratuitamente quanto ao custo-base de ativação** os efeitos de **G1 e G2**, respeitando o Grau já habilitado, a fonte elemental disponível (foco correspondente apenas no inventário ou abundância ambiental a critério do Narrador), as rolagens e a DE. **Gratuidade não elimina** requisitos, limites, resistências, imunidades, testes, gasto de 1A por mistura, custo de elevação a G3 nem custos especiais cujo procedimento ainda precisa ser reconciliado.
-
-**Improviso Elemental [DEFINIDO — aquisição revisada no SRD v0.82, 18/11/2026]:** requer apenas **Disciplina 1 + Inteligência 1 + Destreza 1**, custa **1 XP** e **não exige Criar Item de Foco e Magia**. Esta mudança permite compras em builds mágicas híbridas sem obrigar a via de Psique ou fabricação de Foco, mas não concede novas técnicas de forja, alquimia ou encantamento nem muda o procedimento de conjuração. O efeito continua inalterado. [SRD v0.82](srd-continuidade-v0.82.md).
-
-**Improviso Elemental [DEFINIDO]:** incorpora **um elemento adicional em uma mistura simples**, adaptando o **tipo/natureza do dano** para lidar com resistências da cena, sem ativar o efeito especial do elemento acrescentado e **sem duplicar automaticamente o dano**. Ex.: Água + Vento pode manifestar o ataque como dano de Vento contra um alvo resistente à Água; **não** significa puxar com Vento e congelar com Água simultaneamente. O elemento precisa estar disponível conforme a habilitação/contexto; a Perícia é necessária para controlar suas propriedades especiais. O bônus próprio **+1A** da Perícia descrito em seu verbete não é o mesmo que criar Êxitos gratuitos.
-
-**Maestria Elemental [DEFINIDO]:** com as duas **Perícias elementais** adquiridas e os requisitos da Maestria, é possível usar **os efeitos especiais reais dos dois elementos na mesma combinação**; por exemplo, **puxar com Vento e congelar com Água**, aplicando dano dos elementos quando pertinente e permitido. O autor esclareceu que **uma combinação apropriada pode dobrar o dano**; isso **não** significa dobrar qualquer mescla ou aplicar um segundo multiplicador automático ao dano já contabilizado. **PENDENTE:** critérios de compatibilidade, fórmula de dano e reconciliação com o **custo próprio histórico de Maestria (1 Coragem)**; não automatizar dano dobrado antes de defini-los.
-
-**Elevação a Grau 3 [DEFINIDO]:** cada elemento cujo efeito é elevado a **G3** exige **1 Coragem**. Se apenas um dos dois elementos é elevado, gasta-se 1 Coragem; se ambos forem, 2 Coragens. O gasto de **1 Antecipar para mistura** permanece. Os graus G1 e G2 são de ativação-base gratuita quando a Perícia é possuída. **PENDENTE:** classificação e tempo de uma mistura com apenas um elemento G3.
-
-**DIVERGÊNCIAS DE VERBETES ANTERIORES:** Perícias elementais (Ar/Água/Terra/Fogo e outras) e Maestria citam **1 Coragem** para ativar um efeito G1/G2, enquanto a decisão nova torna essa **ativação-base gratuita**. A cobrança histórica **não prevalece como regra geral de ativação-base**. O gasto **próprio de Maestria** em uma combinação de dois efeitos, os custos especiais de **Invocação Elemental** devem ser revisados separadamente. **Fogo G2 sem foco foi resolvido: não há cobrança adicional em Coragem** com a Perícia e o Grau habilitados e com fonte elemental válida. Não presumir que os demais custos próprios foram abolidos. O verbete de Improviso concede **+1A** como bônus e a regra de mistura usa **1A** como recurso: a ordem e origem do Antecipar na mistura seguem a mecânica vigente, sem criar um segundo símbolo gratuito.
+## Perícias de conjuração e elementos
 
 ### Criar Item de Foco e Magia [DEFINIDO / efeitos avançados PENDENTES]
 
@@ -1122,12 +1569,6 @@ Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substitu�
 **Compra histórica: 1 XP. Requisitos mantidos enquanto a técnica não for reescrita: Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2.**
 
 Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu novo objetivo é **ampliar o alcance de disparos e efeitos de magias**. Os metros adicionais, custo e condições ainda serão escritos pelo autor. A antiga mudança de peso Leve/Pesada mediante esta Perícia está **revogada** e não habilita dados maiores automaticamente. **A amplificação comum de 1 Coragem da v0.43 não depende desta Perícia.** Consulte [verbete atual](../pericias/conjuracao-refinada.html).
-
-### Perícias elementais independentes de Foco [DEFINIDO — SRD v0.81, 18/11/2026]
-
-As Perícias em **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não exigem adquirir **Criar Item de Foco e Magia**. Para Ar/Água/Terra/Fogo, os requisitos continuam **Disciplina 1 + Inteligência 1**; para Sagrado/Sangue/Trevas, **Disciplina 2 + Inteligência 2**; Veneno conserva **Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2**. Os custos individuais de compra em XP não foram alterados.
-
-Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo sem a Perícia Criar Foco, desde que haja fonte elemental válida e os efeitos/Graus sejam permitidos. Uma fonte válida pode ser ambiental, conforme o Narrador, ou foco apropriado quando utilizado. **Criar Item de Foco e Magia** permanece para **Psique e a confecção de focos**; Escudo Arcano, Maestria Elemental, Conjuração Refinada e Invocação Elemental conservam seus requisitos próprios de Foco; **Improviso Elemental não exige mais Foco** (SRD v0.82). Preparação em turnos, cargas, DE, Temor e ativação não mudaram. [SRD v0.81](srd-continuidade-v0.81.md).
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
@@ -1213,26 +1654,6 @@ Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo se
 
 **Continuidade:** substitui a antiga entrada **Magia Sagrada** (custo histórico 3 XP) por **Perícia em Elemento Sagrado** (**2 XP**), preservando a Perícia existente no cadastro de personagens.
 
-### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
-
-Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Coragem, distância, área e efeitos avançados ainda dependem dos requisitos.
-
-| Elemento | Leve / Grau 1 | Médio / Grau 2 | Pesado / Grau 3 |
-|---|---|---|---|
-| **Água** | Congelar e imobilizar por 1 rodada com Desvantagem, sem dano automático | Perfuração no crítico habilitado | Empurrar e causar dano; mantém condições menores pertinentes |
-| **Fogo** | Disparo convencional e conduzir chamas, sem dano direto à Vida | **Queimar:** E + T à Integridade; área 4 × 4 | **Derreter:** E + T à Integridade e **+1 Vida direta fixa**; área 8 × 8 e conjuração ao fim do turno dos aliados |
-| **Terra** | Desvantagem por 2 rodadas | Enredar, imobilizar e espinhos que desgastam proteção | Dano, empurrar e derrubar |
-| **Ar / Vento** | Mover mais rápido, puxar/empurrar objetos | Sufocar, deslocar e derrubar | Grande área, vários alvos e possíveis danos de queda |
-
-**Elementos especiais:**
-
-- **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
-- **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
-- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2T válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Temor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Temor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1T a mais) **ou concentrado integralmente num alvo**. Não duplicar Temor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 Coragem no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
-- **Sangue [REWORK — SRD v0.73]:** a técnica separada **Extração de Sangue está revogada**. Sangue puro conjurado causa dano convencional contra proteção e armadura; sem armadura ou havendo excedente que atinja a Vida, cada ponto de Vida realmente perdido de inimigo gera 1 marca de sangue derramado. Para **amplificar uma magia**, inclusive habilitar dano direto à Vida contornando a armadura, **sacrificar 1 Vida própria OU consumir 3 marcas de sangue derramado de inimigos** (custos alternativos). Amplificação não concede dano numérico gratuito nem cria um dano extra de 1 Vida no alvo. Uma vez por turno, o Hemomante também pode escolher a substituição de Coragem para manter mais um dado ou elevar um dado, usando a mesma regra de pagamento. **Quando uma magia de Sangue acertar e tiver sido amplificada para contornar a armadura, TODO o dano convencional calculado do ataque é aplicado diretamente à Vida do alvo**, sem desgaste simultâneo de Integridade. Usa-se a fórmula vigente de dano e de crítico, **sem bônus numérico gratuito**, e preservam-se Temor e outros riscos. Um ataque que falhe não causa dano à Vida; os recursos pagos pela amplificação não são devolvidos. **Exclusivo da magia de Sangue dessa construção**, não se estende a Perfurante nem aos demais elementos. O rolador da ficha exibe o resultado para a Vida, mas aplicação em ficha externa ainda é manual. **Escudos físicos (inclusive Levantar Escudo) e Escudos Arcanos de outros elementos NÃO anulam o dano direto da Hemomancia amplificada**; **somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade**. Nessa exceção, o ataque volta a ser resolvido pelas regras usuais da barreira e das demais proteções, mantendo acerto, dano convencional e riscos, sem aplicar dano integral direto à Vida. Escudo Arcano de Sangue é **Escudo Arcano com elemento Sangue incorporado**, não uma Perícia nova nem um custo adicional presumido. Permanecem **PENDENTES** detalhes de coexistência de defesas, imunidades e aplicação em área.
-- **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
-**Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
-
 ### Hemomancia e Transfusão Sanguinária [DEFINIDO em custos / PENDENTE em dano direto]
 
 **Transfusão Sanguinária** é uma **nova Perícia**, custo de aquisição **1 XP** e requisitos **Transfusão + Perícia em Elemento Sangue**. É uma **conjuração ativa**, não uma cura gratuita passiva. Para cada **3 marcas elegíveis de sangue derivadas de dano direto à Vida**, pode-se recuperar **1 Vida**, até o máximo. Não há mais uma ação de Extração de Sangue nem reserva de sangue extraído separada. As 3 marcas devem estar disponíveis na reserva de **sangue derramado de inimigos**, após qualquer gasto anterior; não contar duas vezes a mesma perda de Vida.
@@ -1248,49 +1669,6 @@ A ficha do Hemomante possui **uma reserva manual de sangue derramado de inimigos
 
 **Amplificação por Sangue [DEFINIDO — v0.73; limite reafirmado em v0.79, 17/11/2026]:** o Hemomante pode realizar **no máximo uma amplificação de Sangue por turno**, mesmo que possua recursos suficientes para outras. Uma vez por turno, escolher **uma** destas ações: (1) amplificar a magia, incluindo optar por dano direto à Vida apesar da armadura; (2) manter um dado adicional; ou (3) elevar um dado. O custo, **alternativo e não cumulativo**, é **perder 1 Vida do próprio Hemomante OU consumir 3 marcas de sangue já derramado por inimigos**. A ficha registra o pagamento e limita a uma ativação por turno, mas **não modifica o dano ou os dados automaticamente**. Para dano à Vida contornando a armadura, a quantidade de dano aplicável e a interação com barreiras ainda são PENDENTES; o pagamento não causa 1 dano ao alvo por si só.
 
-### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
-
-**Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
-
-**Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
-
-**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
-
-**Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
-
-### Exemplos de combinação criativa em diferentes cenas
-
-| Elementos | Durante um conflito | Fora do conflito |
-|---|---|---|
-| Fogo + Ar | Calor, fumaça ou área perigosa quando habilitada | Forja, ventilação, sinalização |
-| Água + Terra | Lama, cobertura, alterar o caminho | Irrigação, moldagem de barro, travessia |
-| Água + Ar | Névoa como elemento de ocultação situacional | Refrescar, dispersar vapor |
-| Fogo + Terra | Trabalhar obstáculos e materiais | Cerâmica, forja, transformação |
-| Água com manifestação elétrica habilitada | Conduzir eletricidade na água, se a técnica e o ambiente permitirem | Investigar condução elétrica e fenômenos naturais |
-
-São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades automáticas. O Narrador define DE, efeitos, risco, alvo, recursos, extensão, disponibilidade dos elementos e segurança de aliados. A criatividade deve incentivar **soluções dentro e fora de combate**, sem dispensar perícias e custos.
-
-### Defesas elementais [DEFINIDO / PENDENTE]
-
-**Escudo Rúnico [DEFINIDO — v0.85]:** a resistência a um elemento escolhido tem o mesmo coeficiente da resistência elemental comum: **cada E do ataque vale 0,5 de dano e cada T vale 0 dano desse elemento**, sem apagar o Temor e suas consequências. Não concede imunidade; arredondamento universal de frações continua pendente. [SRD v0.85](srd-continuidade-v0.85.md).
-
-- Resistência aos **dois** elementos: metade do dano dos Êxitos, Temor não causa dano.
-- Imunidade ao **principal**, mas não ao secundário: metade dos Êxitos, sem componente de dano de Temor.
-- Imunidade aos **dois** elementos: dano elemental zero.
-- Resistência apenas ao secundário, sem resistência ao principal: dano normal.
-- Vulnerabilidade **efetivamente explorada**: dobra o dano dos Êxitos, sem duplicar a DE.
-
-Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
-
-**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** 1 Coragem por ativação das técnicas pertinentes, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
-
-
-### Escudo Rúnico e resistência elemental
-
-O **Escudo Rúnico (Escudo Arcano racial) + um elemento** protege a barreira contra **um elemento habilitado escolhido para aquele uso**. Nessa resistência, cada Êxito do ataque provoca **0,5 dano por E, 0 dano por T**; a parcela de Temor não causa dano elemental, mas seus símbolos continuam gerando Pressão, risco e demais consequências. Resistência não é imunidade e não se estende a outros elementos.
-
-Na formação da barreira, a habilidade racial pode converter **2T em 1E**, sem apagar os riscos da rolagem; essa conversão não cria uma segunda redução de dano. A primeira ativação diária é gratuita em Coragem e as demais custam **1 Coragem**, preservando ampliações próprias. Frações de dano são mantidas até existir um critério geral de arredondamento.
-
 ### Transformação Elemental e Perícias de antimagia
 
 **Aura Sagrada** não é uma Perícia adicional a comprar. Ao realizar uma **Transformação Elemental em Sagrado**, as pessoas a até **3 metros** recebem **1 Coragem**, respeitando seus tetos. O benefício ocorre pela transformação, não a cada turno de permanência na aura.
@@ -1302,225 +1680,6 @@ Na formação da barreira, a habilidade racial pode converter **2T em 1E**, sem 
 **Desencantar (1 XP):** exige Cancelar Magia e pode remover **elementos ou imunidades** presentes em um alvo a até 8 metros. Não apaga o elemento **natural constitutivo** de uma criatura realmente formada por aquele elemento. Isso não destrói a criatura ou o equipamento.
 
 **Espelho Mágico (1 XP):** exige Cancelar Magia e é **passivo**. Reflete ao conjurador a parte do dano **mágico de Temor** mantido, calculada **antes da absorção da armadura** da vítima. **Exemplo:** uma magia causaria 3 de dano por Êxitos e 2 por Temor; a armadura absorve 5, a vítima perde 0 Vida, mas o conjurador recebe **reflexão de 2 de dano**, sujeita às próprias proteções ainda em definição. Não funciona contra ataques físicos e não reflete Êxitos.
-
-## VIII. Armas e seus efeitos
-
-O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo V.
-
-**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o Balanço concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
-
-### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
-
-| Tipo | Propriedade possível | Limite |
-|---|---|---|
-| **Cortante** | **Sangramento superficial** habilitado | Aplica o **estado Sangrando mesmo através da armadura**; a condição **não reduz Vida** nem causa dano periódico por si só |
-| **Perfurante** | Em acerto, cada Temor não anulado vale **1 dano à Integridade** da armadura, substituindo `⌊T/2⌋` (não soma os dois) | Não ignora armadura nem acrescenta dano direto à Vida. Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula essa propriedade, não o dano básico |
-| **Cravar** | Arma Média ou Pesada fica presa ao escudo físico após **acertar a DE** e **ativar a característica com a Perícia de arma correspondente, inclusive no crítico** | Declare **1 Coragem** por tentativa, respeitando Especialização e recuperação normal de crítico. Sem a Perícia, não ativa. Escudo Pesado exige arma Pesada. **Cada arma cravada aplica −1E cumulativo** em Levantar Escudo; o peso de cada arma presa é carregado com o escudo |
-| **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
-| **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
-| **Dupla empunhadura** | Combinar armas com Atributo, com Perícia | Não ganha Vantagem absoluta gratuitamente; dificulta uso de escudo |
-
-**Cravar [DEFINIDO — SRD v0.115]:** é uma característica ativa, não uma reação gratuita nem um acerto automático. A arma precisa possuir Cravar e ser Média/Pesada; o ataque precisa **alcançar a DE**; exige a **Perícia de Armas Médias/Pesadas pertinente, mesmo no crítico**. Declare a ativação e pague **1 Coragem antes da rolagem**, salvo benefício de Especialização aplicável. O crítico mantém a recuperação normal de Coragem, mas não substitui a Perícia. A arma não fere diretamente a Vida por Cravar: ela permanece presa ao escudo físico. Escudo pesado só pode ser cravado por arma pesada. **DEFINIDO — SRD v0.79:** a penalidade é **−1E por arma cravada e cumulativa**, aplicada somente quando o defensor executa **Levantar Escudo**, não nos demais testes. O peso extra acompanha o escudo até abandono ou retirada de cada arma. A retirada por teste combinado e DE conforme peso está definida na sequência. **DEFINIDO — v0.79, opções A e B:** o personagem pode tentar retirar uma arma cravada **mesmo com as duas mãos ocupadas**. Em sucesso, se tiver uma **mão livre**, recebe a arma diretamente nessa mão, sem nova ação de coleta; **sem mão livre, a arma cai no chão**. O resultado de falha não muda: ela permanece cravada. **DEFINIDO — SRD v0.79, opção A:** a retirada exige **uma ação própria do personagem**, separada de Levantar Escudo ou de qualquer outra ação, mesmo se o teste falhar. **PENDENTE DE IMPLEMENTAÇÃO:** vínculo automático entre fichas.
-
-**Retirar Cravar [DEFINIDO — SRD v0.79, corrige v0.78]:** para retirar do escudo a arma presa, o personagem deve **alcançar a DE correspondente ao peso da arma**, limitada a **DE 4**. **DEFINIDO — correção autoral SRD v0.79 (17/11/2026):** deve combinar **uma Prática — Disciplina ou Atletismo — com um Atributo — Força, Vigor ou Destreza**, conforme a ação. São válidos **Disciplina + Força, Disciplina + Vigor, Disciplina + Destreza, Atletismo + Força, Atletismo + Vigor ou Atletismo + Destreza**. Essa retirada específica não permite substituir essas fontes por outras nem rolar apenas uma delas. A escolha precisa ser pertinente e respeitar os graus/dados normais. Esta regra substitui o procedimento anterior mais aberto. Não exige Perícia em Armas Médias/Pesadas nem crítico adicional. **Sucesso:** a arma se desprende do escudo. **Se o personagem tiver uma mão livre, a arma passa imediatamente para essa mão**, sem ação adicional de coleta; **se estiver com as duas mãos ocupadas, a arma cai no chão**, sem passar automaticamente à sua posse. Em ambos os casos, elimina **apenas o −1E correspondente a essa arma** em Levantar Escudo e o peso da arma deixa de contar como preso ao escudo. As demais armas eventualmente cravadas continuam impondo −1E cada uma. **Falha:** a arma continua cravada. **DEFINIDO — SRD v0.79:** DE de retirada por peso da arma: **Leve 1; Média 2; Pesada 3**, teto geral de **DE 4**. A tabela de retirada para arma Leve não concede habilitação para aplicar Cravar com arma Leve; a aplicação continua restrita a arma Média/Pesada com os gatilhos aprovados. No protótipo, a ação é rolada na seção do escudo e a alteração de inventário só é confirmada após o sucesso. Custos adicionais não foram criados pela revisão. **DEFINIDO — opção A (SRD v0.79):** cada tentativa de retirar uma arma cravada exige **gastar uma ação própria do personagem**; não pode ser incorporada à ação de **Levantar Escudo** ou a outra ação, nem se torna gratuita em caso de falha. **DEFINIDO:** sem mão livre, a retirada pode ser tentada normalmente, mas a arma cai no chão em caso de sucesso; com mão livre, ela vai para a mão de quem a retirou. Não criar custo ou penalidade adicional pelo resultado sem mão livre.
-
-**Sangramento [DEFINIDO — SRD v0.70]:** a propriedade cortante habilitada aplica o **estado Sangrando ao alvo, ignorando a armadura apenas para estabelecer a condição**. Não reduz Vida, não acrescenta dano imediato nem periódico e não cria penalidade automática. O **dano normal do golpe**, se existir, continua passando por escudo, Integridade de armadura e eventual excedente; somente **o estado**, não o dano físico, ignora a armadura. A condição exige os gatilhos e habilitações do efeito, não é automática para todo ataque cortante.
-
-O estado Sangrando **permite aplicar veneno fisicamente** (por arma previamente envenenada e habilitada), pode viabilizar a **transmissão de veneno por magia de Sangue** e **habilita as aplicações pertinentes de magia de Sangue**. Nenhuma dessas interações é gratuita: permanecem os requisitos e custos das técnicas e os limites de doses. **PENDENTE:** procedimento e custo da transmissão de veneno com magia de Sangue, além da reconciliação entre a exigência autoral recente de que o próprio conjurador esteja Sangrando e os custos históricos de conjurar sem esse estado.
-
-**Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
-
-### Proximidade, armas longas e alcance efetivo [DEFINIDO]
-
-**Próximo / adjacente** significa **até 1 metro** do inimigo. Armas comuns de combate corpo a corpo atingem a **1 m**. Uma **arma longa** atinge a **2 m** e, enquanto mantém o inimigo a essa distância, impede um contra-ataque de quem só possui alcance de 1 m. Um oponente com **outra arma longa** pode responder normalmente no mesmo alcance. Esse efeito protege pela distância, **não anula Temor**.
-
-A distância máxima normal de uma arma ou técnica é **R**. Para além desse alcance, aplicam-se as condições seguintes:
-
-| Distância | Condição | Modificador |
-|---|---|---|
-| Até **R** | Normal por alcance | Nenhum |
-| **Acima de R** e **abaixo de R + 8 m** | Desvantagem | **−1A** |
-| De **R + 8 m** a menos de **R + 16 m** | Desvantagem absoluta | **−1E** |
-| A partir de **R + 16 m** | **Acerto de Sorte / Ação de Sorte** | **−2E** |
-
-Os patamares **se substituem**; não se aplica −1A e depois −1E e depois −2E pela mesma fonte de distância. Outros riscos independentes, como aliados a até 1 m do alvo, podem acrescentar condições. A possibilidade e os limites de ataques muito além de R + 16 m continuam **PENDENTES**.
-
-### Maestria em Arremesso de Armas [DEFINIDO / detalhes PENDENTES]
-
-**Nome corrigido:** Maestria em Arremesso de Armas, não “Arremesso de Armas Leves”. **Compra: 1 XP. Requisitos: Perícia em Armas Leves, Força 2, Destreza 2, Agilidade 1. Ativação: 1 Coragem.** Arremessa **Armas Leves a 24 m**, causando dano e efeitos habilitados, e a arma fica alojada no alvo. Usa os patamares de armas à distância além do alcance, **sem Desvantagem por arremessar próximo do alvo**; aliados próximos do inimigo impõem Desvantagem.
-
-- **Acerto sem Temor:** pode realizar nova jogada, avançar até o inimigo, retirar a arma e atacar novamente corpo a corpo.
-- **Acerto com Temor:** o inimigo pode tentar pegar a arma alojada e utilizá-la ou arremessá-la.
-- **Falha sem Temor:** arma cai no meio do caminho; **1A** pode permitir correr e recuperá-la.
-- **Falha com Temor:** arma cai perto do alvo ou pode atingir aliado próximo, conforme comparação com a DE do aliado.
-- **Retirada resistida quando exigida:** teste **Armas + Força + Atletismo** contra dificuldade determinada por **Força + Vigor + Atletismo do inimigo**, considerando os dados comprados.
-
-**PENDENTE:** gatilho da retirada resistida versus avanço após acerto sem Temor, conversão de dados inimigos em DE, consequências de alojamento, comparação exata de DE do aliado e se nova jogada muda o fluxo normal. Para requisitos de outras Perícias, usar exclusivamente o nome **Maestria em Arremesso de Armas**.
-
-**Barulhenta [DEFINIDO — SRD v0.69]:** característica **passiva** que fornece **+1T**, inclusive em armas de fogo. **Não depende de crítico** nem de ativação paga. Mesmo no crítico, permanece +1T, não +2T. O Temor se sujeita aos mesmos riscos e gastos de Antecipar.
-
-**Perfurante em armas de fogo [DEFINIDO — SRD v0.69]:** armas de fogo que **possuem a propriedade Perfurante** utilizam seu dano adicional à Integridade **automaticamente em acertos**, sem gastar 1 Coragem para habilitar essa característica e sem precisar ativar a Perícia para esse efeito específico. A arma continua exigindo as habilitações normais para suas outras capacidades; não se atribui Perfurante à escopeta ou a outros modelos sem essa propriedade.
-
-### Armas de fogo — Graus atualizados [DEFINIDO / catálogo PENDENTE]
-
-Armas de fogo dependem de **munição por calibre, carregador, disparos consumidos, recarga, alcance e recuo**. Armas suscetíveis a travamento podem travar com **Temor predominante**, e não qualquer Temor; limpar travamento exige Engenharia pertinente sem usar dados da própria arma. **Revólver não trava.**
-
-| Arma | Grau definido | Características em desenvolvimento |
-|---|---|---|
-| Revólver | **G1** | Não trava; Perícia básica histórica 3 XP |
-| Pistola | **G2** | Carregador e travamento; Perícia básica 5 XP |
-| Metralhadora | G3 | Vários disparos/munição; alcance histórico 16 m; Perícia básica 5 XP |
-| Doze / escopeta | G3 | Cone, derrubada, não perfurante; básica histórica 5 XP |
-| Rifle | G4 | Avançada pode derrubar ou atravessar dois alvos alinhados; básica histórica 6 XP |
-| Lança-granadas | **G5** | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
-
-**PENDENTE:** preços finais, composições, dano, alcance e procedimentos de recarga. **A referência antiga de 3d20 do lança-granadas é incompatível com o limite atual de até dois d20 por ação de jogador comum**, devendo ser refeita. Os **Graus acima estão definidos**, mas não se devem tratar como definitivos os preços históricos de Perícias, danos, composições e fichas ainda não aprovados.
-
-## IX. Perícias e profissões emergentes
-
-Perícias têm preços e requisitos específicos; numerosas opções baratas podem se combinar em árvores abertas. Um ramo pode se conectar a outro sem exigir comprar toda uma sequência de uma “classe” tradicional.
-
-### Perícias autorais: corpo a corpo, disparos e recuperação [DEFINIDO / PENDENTE]
-
-O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra seus requisitos. Não há reserva exclusiva de 5 XP para esta categoria. Estes ramos são acessíveis por requisitos, não por classes obrigatórias. **Espadachim** é apenas uma inspiração de personagem.
-
-| Perícia | XP | Requisitos (decisões mais recentes) | Função |
-|---|---:|---|---|
-| **Perícia em Armas Leves** | **2** | **Disciplina 1** | Em acerto com arma Leve, **1 Coragem ativa uma característica**; no **crítico, uma característica é gratuita**. Contra alvo com armadura Pesada/Muito Pesada, ignora apenas o **−1A natural de peso**, sem anular outras penalidades. Efeitos e custos automatizados no rolador |
-| **Perícia em Armas Médias** | **2** | **Disciplina 1 + Força 1** | Em acerto com arma **Média**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Média**, mantendo outras penalidades. Automatizada nos roladores |
-| **Perícia em Armas Pesadas** | **2** | **Disciplina 2 + Força 2** | Em acerto com arma **Pesada**, **1 Coragem ativa UMA característica própria**; no **crítico, UMA é gratuita**. Ignora somente o **−1A natural de peso** contra armadura **Leve/Muito Leve**, mantendo outras penalidades. Automatizada nos roladores |
-| **Especialização em Disciplina** | **1** | **Disciplina 3** | **Somente em ação com Disciplina**, combina +1 Atributo, Conhecimento ou Prática pertinente |
-| **Manejo Perfeito — Armas Corpo a Corpo** | **1** | **Especialização em Disciplina (Disciplina 3) + Destreza 2** | Passiva, sem custo de ativação. Arma correta contra oponente em Desvantagem: **Vantagem Absoluta (+1E)** no lugar do +1A natural do peso; se já estava em Vantagem Absoluta, aplica **Golpe Certo (+2E no total, não +3E)** |
-| **Golpe Fulminante** | **1** | **Disciplina 2 + Força 2 + Armas Leves, Médias, Pesadas ou Pugilismo** | **1 Coragem antes de rolar:** eleva um dado da arma (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado causa 1 dano em vez de metade, respeitando 9 dados |
-| **Golpe Colossal** | **1** | **Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1** | Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+T válidos devem alcançar a soma das DE do principal e dos adicionais; se não alcançar a soma, apenas o principal pode ser atingido se superar sua DE. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Temor. Raio fixo; teto de 5 Coragens por turno. |
-| **Pugilismo** | **1** | **Disciplina 1 + Força 2 + Destreza 1** | Ativa; soco de peso Médio por padrão. Por 1 Coragem antes da rolagem, altere para Leve ou Pesado. |
-| **Artista Marcial** | **1** | **Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo** | 1 Coragem por tentativa ou sem custo adicional ao ativar Pugilismo; no acerto, **uma** manobra: Empurrar, Agarrar, Derrubar ou Desarmar |
-| **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
-| **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado vale 1 dano. Não se aplica a armas de fogo |
-| **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
-| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
-| **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
-| **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
-| **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
-| **Instinto de Sobrevivência** | **PENDENTE** | **Vigor 3** | Ignora **−1A** de Incapacitado, sem apagar **−2E** |
-
-**Requisitos atualizados [DEFINIDO]:** toda menção de Armas 1 como requisito é substituída por Disciplina 1. Armas Leves exige Disciplina 1; Armas Médias e Pesadas mantêm seus requisitos específicos de Disciplina e Força. **Armas por peso [revisão autoral de 23/11/2026, SRD v0.97]:** gastar 1 Coragem após um acerto ativa **uma característica própria da arma da categoria habilitada**; no crítico, uma é gratuita. Uma segunda diferente, quando permitida, custa 1 Coragem. Não permite selecionar características não presentes no equipamento ou usar uma arma de outro peso como se fosse da categoria adquirida. **Leves** ignoram −1A contra armadura **Pesada/Muito Pesada**; **Médias** ignoram −1A contra armadura **Média**; **Pesadas** ignoram −1A contra armadura **Leve/Muito Leve**. Só é ignorada a Desvantagem natural da relação de peso, nunca as penalidades independentes. Os três grupos exigem seus graus e custos de XP próprios; a automatização não libera efeitos sem requisitos.
-
-**Golpe Certo [DEFINIDO — SRD v0.97]:** é uma mecânica de <a href="../mecanicas/golpe-certo.html">vantagem além da Absoluta</a>, não uma Perícia comprável. Quando **Manejo Perfeito** tem arma corpo a corpo apropriada, afinidade favorável contra a armadura do alvo e a ação **já estava em Vantagem Absoluta (+1E)**, o bônus final daquela condição com Manejo torna-se **+2E (ᛋ)**. O valor é **total**, não são +2E adicionais nem +3E; a Vantagem natural de peso (+1A) é substituída e não acumulada. Sem Vantagem Absoluta prévia, Manejo concede apenas +1E substituindo +1A. Consulte também [Vantagens e Desvantagens](../mecanicas/vantagens-e-desvantagens.html).
-
-**Disciplina e composição [DEFINIDO]:** Disciplina é a Prática compartilhada de Armas e Conjuração. O teste marcial básico **Disciplina + Atributo** pode ser rolado **sem Perícia de armas adicional**; as Perícias habilitam efeitos/especializações pertinentes. A conjuração especializada mantém suas habilitações próprias. **Especialização em Disciplina (1 XP, Disciplina 3; passiva, sem custo de ativação)** permite, **apenas ao realizar ação com Disciplina**, combinar mais **um Atributo, Conhecimento ou Prática** pertinente — inclusive um **segundo Atributo diferente**. A fonte adicional usa seus próprios dados, respeitando a pilha, o limite de retenção e a confirmação contextual do Narrador; não fornece +1 Êxito grátis. Combinação de mais de três fontes com Perícias simultâneas continua PENDENTE.
-
-### Conhecimentos e Práticas Avançadas [DEFINIDO — atualizado no SRD v0.96]
-
-**Atualização autoral de 23/11/2026 (SRD v0.96):** toda Perícia de **Conhecimento Avançado ou Prática Avançada** exige **Grau 3 na fonte especializada** e custa **1 XP**. A versão anterior exigia Grau 2; essa condição foi substituída. Quando o personagem possui a Perícia pertinente, pode usar **o Conhecimento ou Prática especializado como fonte principal** e **até duas fontes adicionais pertinentes**, formando uma rolagem de **até três fontes no total**. **DEFINIDO — esclarecimento adicional:** as duas fontes adicionais **podem ser dois Atributos diferentes**, como **Medicina + Inteligência + Destreza** ou **Disciplina + Força + Agilidade**, se pertinentes. Assim, não se exige que as três fontes pertençam a três categorias distintas. Apenas comprar um Conhecimento ou Prática, sem a habilitação da combinação de três fontes, **não dispensa os requisitos da Perícia Avançada**. É proibido repetir o mesmo Atributo. Uma das fontes deve fornecer dado de Atributo. Respeitar o máximo de 9 dados rolados, 4 mantidos e a pertinência da ação; não escolher novamente a fonte principal. Não há soma automática de duas Perícias Avançadas para uma quarta fonte.
-
-**Medicina Avançada [DEFINIDO]:** custa **1 XP** e requer **Medicina 3**. Em tratamento de **Sangrando**, Medicina deve ser a fonte predominante; fazer teste contra a **DE defensiva do alvo tratado**, com **Desvantagem (−1A)**. Em sucesso, remover Sangrando; em falha, manter. Sangramento não expira automaticamente. Esta habilidade foi adicionada ao criador na branch da revisão v0.79, mas sua remoção automática no alvo ainda não foi implementada.
-
-**Encantar com Elemento [DEFINIDO — 20/11/2026]:** custa **1 XP**; requisitos **uma Perícia Elemental adquirida + Criar Item de Foco e Magia**. Em **armaduras e escudos**, paga **1 Coragem** para aplicar resistência ao elemento habilitado. Em **armas**, muda temporariamente o elemento da arma para o escolhido. **Todas as modalidades duram E − T, somente quando E − T > 0**, com símbolos válidos e sem duração-base adicional. Resistência: o elemento correspondente causa metade do dano dos Êxitos, e Temor não acrescenta dano desse elemento, embora conserve seus riscos. Não concede imunidade, dano extra ou efeitos elementais adicionais. **PENDENTE:** duração em turnos/rodadas, fontes/DE, custo específico para arma, resistências preexistentes e automação.
-
-
-**Especializações por famílias de armas [DEFINIDO — 20/11/2026]:** Especializações individuais existem para **Adagas e Facas, Espadas, Machados, Martelos, Maças e Clavas (uma única família), Lanças e Hastes, Cajados e Bastões, Arcos, Bestas, Armas de Arremesso, Punhos, demais Armas de Longo Alcance e Armas de Fogo**. São Perícias **passivas, sem custo próprio de ativação**; eventuais gastos de Coragem são das características adicionais escolhidas, conforme a v0.101. Elas compartilham **um efeito da arma gratuito em acerto comum; dois diferentes gratuitos no crítico; terceiro diferente por 1 Coragem no crítico**, sempre limitado às características presentes no equipamento, à DE e à Perícia de Armas adequada. Para corpo a corpo, habilitação pelo peso; para longa distância, Armas de Longo Alcance; para arremesso, a habilitação de Arremesso; para Punhos, Pugilismo; para armas de fogo, Perícia em Armas de Fogo. **Especialização em Armas de Fogo é exclusiva da origem Humano e vem de graça**, sem conceder a Perícia em Armas de Fogo. **DEFINIDO:** todas as Maestrias de famílias de armas custam **1 XP nominal**. A aquisição de Adagas/Facas, Machados, Cajados/Bastões e Maças/Clavas tem requisitos próprios definidos na revisão v0.98; os graus para comprar Arcos, Bestas, Armas Arremessadas, Punhos e Armas de Longo Alcance Diversas continuam **PENDENTES**, mas o preço já não é pendente. A Perícia preexistente Maestria em Arremesso de Armas **não é renomeada nem substituída**.
-
-**Especialização em Armas — Martelos, Maças e Clavas [DEFINIDO — 23/11/2026]:** custa **1 XP** e exige **Força 3, Destreza 1 e Vigor 1**. Uma única compra habilita a família de martelos, marretas, maças e clavas, desde que o personagem possua também a Perícia em Armas correspondente ao peso da arma utilizada. Os benefícios de Especialização e a recuperação de Coragem por crítico seguem o SRD v0.101. Categorias de peso não padronizadas seguem sujeitas ao Narrador. A separação anterior entre Martelos e Maças e Clavas foi substituída pelo [SRD v0.102](srd-continuidade-v0.102.md).
-
-**Resistência a Fogo [DEFINIDO — 20/11/2026]:** **1 XP**, exige **Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2**. O portador sofre **metade do dano de ataques de Fogo que alcançaria a Vida**, sem proteção à Integridade da armadura. O dano direto à Vida de **Derreter G3 é 0** contra ele (o +1 fixo é anulado); **Derreter/Queimar continuam aplicando E + T à Integridade** normalmente. Não é imunidade e não há segunda redução cumulativa ao dano à Vida. Temor mantém seus riscos, outros elementos não recebem redução e não se alteram equipamentos. **PENDENTE:** arredondamento de frações na Vida e interações com outras resistências.
-
-**Ferreiro Elemental [DEFINIDO / PENDENTE — 20/11/2026]:** custa **1 XP** e exige **Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento**. A denominação «Criar magia + item de foco» foi interpretada como a Perícia vigente **Criar Item de Foco e Magia**, sem criar uma habilitação extra. A nova Perícia habilita **criar armas elementais e pedras elementais**, sem definir receita, Grau, custo, DE, propriedade ou bônus adicional por conta própria. **Encantar com Elemento já está cadastrada** (1 XP, uma Perícia Elemental + Criar Item de Foco e Magia), mas continua pré-requisito obrigatório, não concedido por Ferreiro Elemental. O +1E de Ferreiro não vira +1E genérico em qualquer criação elemental.
-
-**Ferreiro [DEFINIDO — 20/11/2026]:** 1 XP; requisitos **Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado** (que agora exige Artesão 3). Habilita criar armas e armaduras Médias e Pesadas Grau 1; consertar e modificar armas; preparar minérios e metais. Concede **+1 Êxito (E) somente nos testes de Forja**. Não transforma testes gerais de Artesão em Forja. Materiais, tempo, DE, resultados específicos de conserto/modificação e automação permanecem pendentes; comprar a Perícia não gera um item pronto.
-
-**Especialização em Disciplina [DEFINIDO]:** passa a exigir **Disciplina 3**, com custo de **1 XP** e Disciplina como fonte principal. **Furtividade Avançada [DEFINIDO]:** passa a exigir **Furtividade 3 + Perícia em Furtividade**, com custo de **1 XP** e Furtividade predominante. **Demais especializações, todas por 1 XP e Grau 3 da própria fonte:** Proteção Avançada, Astronomia Avançada, Alquimia Avançada, Engenharia Avançada, Erudição Avançada, Atletismo Avançado, Artesão Avançado, Apresentação Avançada e Coleta Avançada. Esses nomes identificam apenas a capacidade de combinação com até três fontes; **não conferem novos efeitos temáticos automáticos**. Medicina Avançada, Especialização em Disciplina e Furtividade Avançada completam as **12 especializações**, preservados os requisitos extras de Furtividade Avançada. Esta regra prevalece sobre os antigos requisitos de Grau 2 registrados na revisão v0.79. As fichas antigas mantêm o registro de compra, mas não habilitam a terceira fonte enquanto o Grau 3 não for cumprido.
-
-**Interrupção da Hemomancia em canalização com três alvos Sangrando [DEFINIDO — SRD v0.79]:** um ataque recebido só cancela a preparação se **acertar a DE defensiva do Hemomante** **e** se a sua força for **igual ou superior à força da magia** já rolada e mantida na declaração. Nas duas forças, calcular **E + piso(T/2)** com símbolos válidos; não usar E+T bruto. Um empate de força interrompe apenas se também houver acerto na DE defensiva. Se uma das exigências falhar, o ataque não interrompe a preparação. **DEFINIDO — opção A:** ocorrendo uma interrupção válida, **a conjuração é perdida**. O Hemomante precisa **declarar uma nova conjuração, rolar novamente e iniciar mais três turnos completos de preparação**; não pode retomar a rolagem ou a contagem anteriores. **DEFINIDO — opção A:** **Coragem ou cargas de foco já gastos na preparação interrompida são definitivamente consumidos**, sem restituição. A interrupção não cobra recursos adicionais ainda não pagos. A condição Sangrando dos três alvos usados como fonte não é consumida apenas por sustentar uma canalização.
-
-**Referência de precedência:** [SRD de Continuidade v0.79](srd-continuidade-v0.79.md). Este texto prevalece nas matérias expressamente corrigidas em relação a descrições históricas deste Livro.
-
-**Especializações para Golpe Fulminante:** Perícia em Armas Leves, Médias, Pesadas ou Pugilismo. Golpe Colossal exige Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1, sem outra Perícia como requisito direto. **Maestria em Arremesso de Armas não satisfaz mais esses dois requisitos**; os arremessos terão o ramo **Disparo Fulminante / Disparo Múltiplo**, com requisitos e custos de aquisição PENDENTES.
-
-**XP inicial remanescente [DEFINIDO]:** ao **concluir a criação**, o XP não gasto dos orçamentos iniciais torna-se **saldo livre** para comprar Atributos, Conhecimentos, Práticas ou Perícias sem se limitar à categoria em que sobrou. Ex.: comprar Força 1 (1 XP) e Atletismo 1 (2 XP) libera o uso dos outros 12 XP do orçamento experimental de 15, inclusive em Perícias quando os requisitos forem atendidos. O saldo não gasto na criação continua disponível após a conclusão; compras consolidadas não geram reembolso automático.
-
-**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
-
-| Alvos totais | Adicionais | Gastos de Espalhar Golpe | Equivalente só em Coragem |
-|---|---:|---:|---:|
-| 1 | 0 | 0 | 0 |
-| 2 | 1 | 1 Coragem | 1 |
-| 3 | 2 | 2 Coragens | 2 |
-| 4 | 3 | 3 Coragens | 3 |
-
-**Golpe Fulminante:** além do requisito de **Força 2**, custa separadamente **1 Coragem** para aprimorar dano de Temor no alvo atingido. **Espalhar Golpe** custa seus próprios recursos por alvo adicional. A combinação pressiona a reserva de Coragem e não ignora Temor, Pressão ou Apavorado.
-
-**Custo-padrão de ativação:** **1 Coragem** quando explicitamente definido para a Perícia. **Exceção informada:** **Amplificar Atributo custa 4 Coragens**; seus demais requisitos/efeitos não são introduzidos nesta seção.
-
-**Disparo Múltiplo [DEFINIDO em geometria e DE / PENDENTE no restante]:** o círculo para os outros atingidos terá **2 metros de raio ao redor do alvo principal**; **o resultado do primeiro disparo é comparado à DE de cada alvo adicional, e erro ocorre se o resultado for inferior à DE individual**, sem nova rolagem. O ramo de arremesso é separado para evitar autorizar implicitamente que uma única arma arremessada produza ataques simultâneos; possibilidades como duas armas lançadas ou uma arma grande aguardam o detalhamento de requisitos pelo autor. A Maestria em Arremesso de Armas continua com seus próprios efeitos de alojamento e recuperação.
-
-**Artista Marcial:** uma manobra por ataque desarmado, ao acertar; Pugilismo ativado habilita a manobra sem custo adicional, sem exigir crítico. **Recuperação em Movimento:** dano reinicia a contagem de 8 horas e não transforma automaticamente prazos semanais em 8h. **Maestria em Manejo Duplo:** além de DES 2 e AGI 1 agora definidos, falta determinar os requisitos combinados de Maestrias/Especialização em Disciplina. **Manejo Perfeito:** 1 XP, Especialização em Disciplina + DES 2; usa Vantagem Absoluta contra oponente desfavorecido pela arma correta ou Golpe Certo se já havia Vantagem Absoluta. A entrada antiga Arma Certa não é uma segunda Perícia, conforme SRD v0.87.
-
-**PENDENTES para revisão um a um:** requisitos e custos de Disparo Fulminante / Disparo Múltiplo; proteção e efeitos nos alvos adicionais de Espalhar Golpe e Disparo Múltiplo (a comparação da rolagem única com cada DE já está definida; a metade do dano arredondada para baixo vale para Espalhar Golpe); agrupamento de requisitos e dados de Manejo Duplo; retirada de armas lançadas e riscos a aliados; custos de Recuperação Vigorosa, sua Maestria e Instinto de Sobrevivência; Especialização em Disciplina; frequência de Recobrar Coragem. **Integridade das armaduras será fixada depois da análise de dano.**
-
-### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
-
-O Ladino com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
-
-**Nova decisão:** se o Ladino **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
-
-**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o Ladino está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o Ladino manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
-
-**Exemplo:** se o Ladino manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
-
-**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
-
-**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
-
-Exemplos documentados de Perícias (não necessariamente disponíveis no nível 1):
-
-| Perícia | XP | Função |
-|---|---:|---|
-| Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
-| **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
-| **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
-| **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
-| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Inteligência 1; ativação-base de efeitos G1/G2 **gratuita** com a Perícia e Grau habilitados; elevar a G3 custa **1 Coragem**; recuperação de Fôlego ainda pendente |
-| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
-| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
-| **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G1/G2 **gratuitos em Coragem** (inclusive G2 sem foco com fonte válida); G2 **Queimar E + T à Integridade** (4 × 4); G3 **Derreter: 1 Coragem**, dano à Integridade + 1 Vida direta fixa (8 × 8, fim do turno dos aliados); G4 conjunta cobra **1 Coragem pelo componente Fogo elevado a G3** |
-| Perito Conjurador | 2 | Fontes pertinentes adicionais |
-| Improviso Mágico | 1 | Elemento disponível no ambiente |
-| Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
-| Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
-| **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
-| Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
-| Montar Animal | 2 | Requer Influência 2; concede **Vantagem** nos testes com montaria (**não +1A**) |
-| **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
-| **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
-| Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
-| **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 Coragem |
-
-**A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
-
-**Perícia de identificar fraquezas e imunidades [DEFINIDO em conceito / PENDENTE em regras]:** observar um inimigo pode permitir descobrir vulnerabilidades, resistências e imunidades. O nome final, o custo, os requisitos e o teste necessário ainda precisam de definição; não há identificação gratuita sem o procedimento apropriado.
-
-A lista completa ainda será desenhada pelo autor. A ferramenta de criação expõe somente as capacidades documentadas e não cria poderes inéditos.
-
-## X. Níveis, Marcos e XP
-
-**Coragem:** inicia com teto 10, recebe +1 nos níveis 5, 10 e 20; bônus de Maestria respeitam o máximo absoluto 15. Maestrias especializadas ainda dependem de implementação própria.
-
-Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
-
-A referência **DEFINIDA PARA O PLAYTEST de 21/11/2026** é de **260 XP acumulados no nível 20, incluindo 15 XP iniciais e até 245 de evolução**, contra 664 XP antes. O aumento de nível permanece manual e não concede XP automaticamente. Mais detalhes no [SRD v0.58](srd-continuidade-v0.58.md) e nas tabelas da [v0.56](srd-continuidade-v0.56.md). Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
-
-### Materiais para públicos diferentes
-
-Este documento concentra regras necessárias **aos jogadores**. Para a ficha jogável unificada, use o [Criador de personagem e ficha](../prototipo-ficha/); o antigo endereço `criador.html` encaminha para essa ferramenta. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
-
-## XI. Referência de continuidade
-
-O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, os valores de integridade, a interação avançada entre penalidades de distância, a resolução de retirada resistida de armas arremessadas, as condições de localização de Furtividade e as árvores completas de Perícias. As decisões de continuidade são mantidas em documento interno de desenvolvimento. O Livro histórico v0.5 foi preservado para comparação e não substitui decisões mais recentes.
-
-
----
 
 ## Atualização das Perícias — 12/11/2026
 
@@ -1569,113 +1728,10 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 As **Maestrias por família de armas** foram renomeadas para **Especializações em Armas**, mantendo os identificadores `maestria-*` para compatibilidade com fichas existentes e o custo de **1 XP por aquisição**. A **Especialização em Armas de Punho** agora pode ser comprada com **Força 1 + Agilidade 1 + Destreza 1 + Vigor 1**; **Pugilismo** não é requisito de compra, apenas de ativação das características da arma. **Arcos, Bestas, Armas Arremessadas e Longo Alcance Diversas** continuam com requisitos de compra pendentes. Consultar o [SRD de Continuidade v0.99](srd-continuidade-v0.99.md). Outras Maestrias fora das famílias de armas não foram renomeadas.
 
+## Referência de continuidade
 
-### Mecânicas de Combate — Características de Armas, Golpes e Magias [DEFINIDO / PENDENTE]
-
-**Empurrar:** desloca o alvo em 4 metros, salvo distância específica da fonte. **Agarrar:** Desvantagem de movimento; para se libertar, superar a DE de quem está agarrando. **Derrubar:** alvo caído; gastar 4 movimentos para levantar ou realizar golpe em Desvantagem (−1A). **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. Os gatilhos e custos permanecem nas armas, golpes, magias e Perícias respectivas.
-
-[Consultar características de combate](../mecanicas/caracteristicas-de-combate.html).
+O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, os valores de integridade, a interação avançada entre penalidades de distância, a resolução de retirada resistida de armas arremessadas, as condições de localização de Furtividade e as árvores completas de Perícias. As decisões de continuidade são mantidas em documento interno de desenvolvimento. O Livro histórico v0.5 foi preservado para comparação e não substitui decisões mais recentes.
 
 
-## Inventário e armas de acesso rápido (23/11/2026)
+---
 
-**DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
-
-[Referência de mecânica](../mecanicas/inventario-e-acesso-rapido.html) · [SRD v0.109](srd-continuidade-v0.109.md).
-
-
-**Saque Rápido [DEFINIDO — 24/11/2026]:** aquisição 1 XP, Agilidade 2 + Destreza 1 + Disciplina 2. Armas distinguem inventário, acesso rápido e mãos; arma de duas mãos ocupa ambas, arma de uma mão ocupa uma. Escudo empunhado ocupa uma mão. Carga transportada não muda por posição. [SRD v0.110](srd-continuidade-v0.110.md).
-
-
-**Correção autoral — SRD v0.111 (24/11/2026):** Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Substitui a regra anterior de Golpe de Sorte por ausência de Antecipar no saque. [SRD v0.111](srd-continuidade-v0.111.md).
-
-
-**Golpe Fulminante [DEFINIDO — 24/11/2026]:** 1 XP, Ativa. Requisitos: Disciplina 2, Força 2 e uma das Perícias: Armas Leves, Armas Médias, Armas Pesadas ou Pugilismo. Gasta 1 Coragem antes da rolagem, elevando um dado da arma corpo a corpo habilitada (d6→d10; d10→d12; d12→2d12), até 9 dados rolados. No acerto cada Temor mantido não anulado causa 1 dano, sem cancelar transferência aos inimigos. Arremesso utiliza Disparo Fulminante. Pugilismo não cria dado de arma para socos sem equipamento. **Declaração de ataque:** somar e pagar antecipadamente as ativações de Perícias, características e recursos declarados (incluindo retenção adicional), respeitando saldo e teto de 5 Coragens gastas por turno do jogador. Ex.: Fulminante 1 + característica de Armas Médias 1 + Colossal 1 + retenção 1 = 4 Coragens. Falha não devolve; recuperação geral de crítico é creditada uma única vez e não restaura o teto de gasto. Manter gatilhos e custos de cada técnica, sem automatizar geometria pendente de Colossal.
-
-[SRD v0.112](srd-continuidade-v0.112.md).
-
-
-**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
-
-[SRD v0.113](srd-continuidade-v0.113.md).
-
-
-**Golpe Colossal [DEFINIDO — SRD v0.121, 24/11/2026]:** Golpe Fulminante + Disciplina 2 + Agilidade 1 + Destreza 1; 1 XP; Ativa. Declare o alvo principal, os adicionais e todas as ativações antes de rolar. Cada Coragem investida nesta Perícia concede +1E e permite selecionar até dois alvos adicionais em um raio fixo de 3 m centrado no atacante. O gasto total de Coragem no turno continua limitado a 5. A mesma rolagem, com E+T válidos, deve alcançar a soma das DE do principal e de todos os adicionais declarados para atingir todos; se não alcançar essa soma, só o principal pode ser acertado, desde que o resultado alcance a DE que o protege, individual ou coordenada. Se falhar contra o principal, nenhum alvo é atingido. O principal conserva dano integral; cada adicional atingido recebe exclusivamente metade do dano dos Êxitos, arredondada para baixo, sem dano de Temor, inclusive com Golpe Fulminante. Mantêm-se o multiplicador crítico antes do arredondamento, a declaração antecipada e a despesa mesmo em falha. Não duplicar Temor, recuperação crítica ou características da arma. Contra integrantes da mesma formação coordenada, utilize a DE coordenada uma única vez, inclusive se houver vários alvos daquela formação na área. Para atingir todos os alvos de formações ou fichas independentes distintas, some as respectivas DE sem duplicar a defesa de uma mesma formação. Se não atingir a soma, só o principal pode ser acertado, desde que alcance a DE que o protege. Ao atingir a DE necessária, o principal sofre dano normal e os adicionais atingidos sofrem dano reduzido. Distribuição de Temor e dano à Vida dos adicionais permanecem pendentes.
-
-[SRD v0.114](srd-continuidade-v0.114.md).
-
-
-**Características de Armas, Golpes e Magias [DEFINIDO — SRD v0.115]:** Cravar segue as características ativas de armas físicas; nunca se ativa sem a Perícia de peso correspondente. A exceção histórica da v0.77 fica revogada. Características de armas, manobras de golpes e efeitos de magias possuem habilitações próprias; não transferir automaticamente gatilhos entre categorias. Consultar [mecânicas relacionadas](../mecanicas/caracteristicas-de-combate.html) e [SRD v0.115](srd-continuidade-v0.115.md).
-
-
-**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 0,5 Alto e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
-
-
-**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
-
-
-## Kits de armas de longo alcance (24/11/2026)
-
-**DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
-
-**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
-
-
-## Carga por compartimento e disparos — 24/11/2026
-
-**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + piso((Força + Vigor + Atletismo)/3). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
-
-**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
-
-**Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
-
-### Alcance cadastrado das armas G1
-
-| Arma | Alcance base |
-|---|---:|
-| Faca | 1 m |
-| Punhal | 1 m |
-| Espada Curta | 1 m |
-| Maça Curta | 1 m |
-| Chicote | 1 m |
-| Kunai | 12 m |
-| Shuriken | 12 m |
-| Adaga Ritualística | 1 m |
-| Espada Longa | 1 m |
-| Espada Larga | 1 m |
-| Lança | 2 m |
-| Machado Barbado | 1 m |
-| Lança de Arremesso | 8 m |
-| Martelo de Guerra | 1 m |
-| Machado de Guerra | 1 m |
-| Montante | 2 m |
-| Marreta | 1 m |
-| Arco Curto | 24 m |
-| Arco Longo | 32 m |
-| Besta de uma mão | 16 m |
-| Besta de duas mãos | 24 m |
-| Besta Pesada | 32 m |
-| Zarabatana | 12 m |
-| Cajado Leve | 1 m |
-| Cajado Médio | 1 m |
-| Cajado Pesado | 1 m |
-| Bastão Leve | 1 m |
-| Bastão Médio | 1 m |
-| Bastão Pesado | 1 m |
-| Luvas | 1 m |
-| Revólver | 16 m |
-| Katana | PENDENTE |
-| Naginata | 2 m |
-
-
-### Capacidade de Carga — exemplos e referência (v0.118)
-
-| Peso físico | Alto |
-|---|---:|
-| Muito Leve | 0,0125 |
-| Leve | 0,125 |
-| Médio | 0,5 |
-| Pesado | 1 |
-| Extremo | 2 |
-
-Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade é −2 Êxitos nos testes afetados e metade do deslocamento padrão (v0.119), com abrangência e automação de −2E PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.
