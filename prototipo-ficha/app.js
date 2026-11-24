@@ -4841,11 +4841,15 @@ function renderPending(){
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
   [['','Selecione a categoria do escudo (exigido no acerto)'],['leve','Leve / Muito Leve'],['medio','Médio'],['pesado','Pesado / Muito Pesado']].map(([v,l])=>'<option value="'+v+'"'+(p.cravarTargetShield===v?' selected':'')+'>'+l+'</option>').join("")+'</select></label>'+
   '<p class="fp-caption">Cravar requer arma Média/Pesada, DE atingida e crítico OU Perícia pertinente. Sem crítico: 1 Coragem. Não altera automaticamente a ficha do defensor; registre a arma presa no escudo dele.</p>':"";
+ const masteryReady=p.mode==="armas"&&item?.type==="arma"&&weaponMasteryCanActivate(item,state);
+ const effectRule=masteryReady?
+  "Especialização: primeira característica gratuita no acerto. Para tentar uma segunda, declare 1 Coragem antes de rolar; a recuperação normal do crítico devolve esse gasto em um crítico válido. A terceira característica da Especialização segue registro manual.":
+  "Perícia de Armas: declare e pague 1 Coragem antes de rolar para tentar ativar a característica; a falha não devolve o gasto. Um crítico válido recupera Coragem pelo benefício normal, uma única vez.";
  const effects=specials.length?'<div class="fp-form-grid">'+
   chooseEffect("characteristic","Característica escolhida",p.characteristic||"")+
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
-  '<p class="fp-caption">Ativação paga, quando necessária: 1 Coragem. Crítico: uma característica grátis e outra paga.</p></div>'+
-  '<p class="fp-caption">Acerto comum: uma característica por 1 Coragem. Efeitos G1/G2 habilitados têm ativação-base gratuita. Narrador aplica danos e condições.</p>'+cravarSelector:"";
+  '<p class="fp-caption">'+esc(effectRule)+'</p></div>'+
+  '<p class="fp-caption">Só características existentes na arma. Efeitos G1/G2 habilitados têm ativação-base gratuita; o Narrador aplica danos e condições.</p>'+cravarSelector:"";
  const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
   '<p class="fp-caption">Trevas: efeito habilitado gratuito.</p>':
   '<p class="fp-caption">Trevas: ativação paga no acerto custa 1 Coragem.</p>'):'';
