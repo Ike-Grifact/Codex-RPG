@@ -651,11 +651,36 @@ Você pode começar a escolha por qualquer um dos grupos. O que importa é expli
 **Na ficha:** procure **◇**, **✦** e **⚔** para encontrar as fontes dos seus dados. Depois de selecionar as Aptidões, o rolador reúne os dados correspondentes. Você escolhe quais resultados manter, seguindo os limites explicados acima. A combinação de Aptidões **não garante sucesso**: os símbolos mantidos ainda precisam alcançar a Dificuldade de Êxito (DE).
 
 
-### Combinações avançadas — Especialização em Disciplina
+### Combinações avançadas — Especializações
 
-A Aptidão principal define o objetivo da ação; a complementar descreve como você a executa. Disciplina + Atletismo é uma técnica de combate apoiada pelo treinamento atlético, como um golpe durante um salto. Atletismo + Disciplina é uma ação atlética apoiada pelo manejo de uma arma, como usar uma lança para auxiliar uma travessia. A ordem não é apenas visual: determina qual especialização pode ser aplicada. Essas combinações exigem habilitação quando envolverem duas Práticas; não dispensam o Atributo obrigatório na rolagem.
+Especializações são Perícias que representam domínio avançado de uma Prática ou Conhecimento. Normalmente você combina duas Aptidões pertinentes; com a Especialização adquirida, pode usar a Aptidão especializada como principal e acrescentar até duas outras Aptidões à mesma rolagem. Os dados continuam vindo dos Graus comprados. Não é uma nova categoria de Aptidão, nem um bônus automático de Êxitos.
 
-Especialização em Disciplina (1 XP, Disciplina 3, passiva): quando Disciplina é a Aptidão principal, você pode acrescentar uma terceira Aptidão pertinente — Atributo, Prática ou Conhecimento — respeitando os limites de dados e as demais regras de combinação. Disciplina não pode ser repetida sem uma habilitação específica.
+#### Como adquirir uma Especialização
+
+Existem 12 Especializações de combinação, uma para cada Prática e Conhecimento. Cada uma custa 1 XP, exige Grau 3 na Aptidão correspondente e é passiva para compor a rolagem. Furtividade Avançada exige também a Perícia em Furtividade. A compra do Grau 3 não libera a terceira fonte sozinha: é preciso adquirir a Perícia e manter seus requisitos.
+
+| Perícia | Requisitos | Exemplo de aplicação |
+|---|---|---|
+| ⚔ [Especialização em Disciplina](../pericias/disciplina-avancada.html) | Disciplina 3 | **Disciplina + Força + Agilidade:** Executar um ataque com arma habilitada, aproveitando potência e mobilidade. |
+| ⚔ [Atletismo Avançado](../pericias/atletismo-avancado.html) | Atletismo 3 | **Atletismo + Força + Agilidade:** Superar uma escalada que exige força e controle do corpo. |
+| ⚔ [Furtividade Avançada](../pericias/furtividade-avancada.html) | Furtividade 3 + Perícia em Furtividade | **Furtividade + Agilidade + Destreza:** Atravessar uma área vigiada, controlando posição, ruídos e exposição. |
+| ⚔ [Artesão Avançado](../pericias/artesao-avancado.html) | Artesão 3 | **Artesão + Destreza + Engenharia:** Executar a montagem de uma peça complexa seguindo um projeto. |
+| ⚔ [Apresentação Avançada](../pericias/apresentacao-avancada.html) | Apresentação 3 | **Apresentação + Influência + Erudição:** Realizar um discurso apoiado em conhecimentos culturais. |
+| ⚔ [Coleta Avançada](../pericias/coleta-avancada.html) | Coleta 3 | **Coleta + Destreza + Inteligência:** Procurar e retirar um recurso delicado a partir de indícios. |
+| ✦ [Proteção Avançada](../pericias/protecao-avancada.html) | Proteção 3 | **Proteção + Inteligência + Engenharia:** Avaliar vulnerabilidades de uma fortificação. |
+| ✦ [Astronomia Avançada](../pericias/astronomia-avancada.html) | Astronomia 3 | **Astronomia + Inteligência + Destreza:** Interpretar uma observação celeste que exige precisão. |
+| ✦ [Medicina Avançada](../pericias/medicina-avancada.html) | Medicina 3 | **Medicina + Inteligência + Destreza:** Avaliar uma lesão e executar um procedimento delicado. |
+| ✦ [Alquimia Avançada](../pericias/alquimia-avancada.html) | Alquimia 3 | **Alquimia + Inteligência + Destreza:** Investigar uma substância e manipular uma preparação delicada. |
+| ✦ [Engenharia Avançada](../pericias/engenharia-avancada.html) | Engenharia 3 | **Engenharia + Inteligência + Artesão:** Planejar uma solução técnica considerando sua execução manual. |
+| ✦ [Erudição Avançada](../pericias/erudicao-avancada.html) | Erudição 3 | **Erudição + Inteligência + Influência:** Interpretar costumes e precedentes para fundamentar uma negociação. |
+
+#### Como utilizar e distinguir a Aptidão principal
+
+Escolha a Aptidão principal de acordo com o objetivo da ação, não apenas com a quantidade de dados. A Especialização precisa corresponder a essa Aptidão. As duas complementares explicam como você realiza a ação e podem incluir dois Atributos diferentes. Pelo menos um Atributo deve fornecer dado à pilha; respeite a pertinência, as habilitações, o máximo de 9 dados rolados e a retenção de seu Marco, até 4 mantidos. Não repita a mesma Aptidão nem acumule Especializações para obter uma quarta fonte. Exceções específicas, como Manejo Duplo, seguem seus próprios verbetes.
+
+**Uma mesma combinação pode ter objetivos diferentes.** Disciplina + Atletismo + Força: se você pretende acertar um golpe durante uma manobra atlética, Disciplina é a principal; a Especialização em Disciplina habilita a terceira fonte. Atletismo + Disciplina + Agilidade: se o objetivo é transpor um obstáculo usando uma arma como apoio, Atletismo é a principal; Atletismo Avançado habilita a terceira fonte. Ter a Especialização de Disciplina não habilita automaticamente a segunda ação. Combinações de duas Práticas exigem a habilitação aplicável e não dispensam o Atributo.
+
+Os exemplos são possibilidades de composição, não efeitos gratuitos. Ataques, conjurações, fabricação e tratamentos continuam sujeitos às Perícias, equipamentos e procedimentos específicos. Medicina Avançada também permite tentar remover Sangrando com Medicina predominante, contra a DE defensiva do alvo tratado e com Desvantagem (−1A); sucesso remove a condição, falha a mantém.
 
 ## IV. Resolver ações
 
@@ -818,7 +843,19 @@ Aplique os modificadores da única armadura equipada depois de calcular a defesa
 
 **Exemplo:** Com Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6, você recebe 2 DE pela Agilidade, 3 pela soma de Destreza e Vigor e 2 pelo Atletismo: DE natural 7. Com armadura Pesada, fica 6; com Muito Pesada, fica 5.
 
-Integridade da armadura e Vida são contabilizadas separadamente.
+#### Integridade das armaduras
+
+A DE indica o quanto é difícil acertar o personagem. A Integridade indica quanto desgaste a armadura suporta: são valores diferentes. Uma armadura mais pesada pode tornar o personagem mais fácil de acertar e, ao mesmo tempo, absorver mais desgaste antes de ser destruída. Os valores abaixo são os do catálogo de playtest para peças de Grau 1; não representam uma progressão automática por Grau.
+
+| Tipo de armadura | DE | Integridade G1 (playtest) |
+|---|---:|---:|
+| Muito Leve (incluindo Roupas Simples) | +2 | 2 |
+| Leve | +1 | 5 |
+| Média | 0 | 8 |
+| Pesada | −1 | 12 |
+| Muito Pesada (quando permitida) | −2 | Pendente |
+
+A armadura Muito Pesada exige Vigor 6 e Atletismo 6 e possui imunidade natural ao dano físico comum; sua Integridade quantitativa ainda está pendente. A Integridade dos Graus superiores também não tem uma escala geral definida. O Grau permite propriedades adicionais conforme o tipo, sem alterar automaticamente o modificador de DE. A Vida e a Integridade são contabilizadas separadamente; consulte as regras de dano e proteção para resolver um ataque.
 
 #### Defesas especiais e em conjunto
 
@@ -976,7 +1013,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 
-**Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
+**Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
 **Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
