@@ -442,8 +442,8 @@ Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio
 | Ícone na ficha | Grupo | O que representa |
 |---|---|---|
 | **◇** | **Atributos** | Suas capacidades fundamentais: força física, reflexos, raciocínio, presença e resistência |
-| **✦** | **Conhecimentos** | Aquilo que você estudou e aprendeu a compreender |
 | **⚔** | **Práticas** | Aquilo que você treinou para fazer |
+| **✦** | **Conhecimentos** | Aquilo que você estudou e aprendeu a compreender |
 
 **O Grau mostra o quanto você desenvolveu uma Aptidão.** Quanto maior o Grau, melhores são os dados que ela pode oferecer. Você gasta **XP (pontos de experiência)** para aumentar seus Graus. Os números dos dados, como **d6** e **d10**, indicam quantas faces eles possuem; durante a rolagem, você lê as **runas** que aparecem, e não soma os números das faces.
 
@@ -469,11 +469,11 @@ Ajuda a reagir, mudar de posição, atravessar perigos e alcançar lugares rapid
 
 #### ◇ Destreza
 
-Representa coordenação e precisão: mexer em mecanismos, manusear ferramentas, fazer procedimentos delicados e controlar movimentos.
+Destreza representa **percepção, mira e precisão**. Ajuda a notar detalhes, perceber movimentos e sinais de perigo, apontar um disparo, coordenar mãos e ferramentas, manipular mecanismos e executar procedimentos delicados. Perceber algo não significa automaticamente compreender seu significado; outras Aptidões podem ser necessárias conforme a abordagem.
 
 **Na ficha:** A DE defensiva natural considera ⌊(Destreza + Vigor)/2⌋; um novo grau de Destreza aumenta essa parcela quando a soma alcança o próximo número par.
 
-**Exemplo:** Destreza + Medicina para cuidar de um ferimento difícil.
+**Exemplo:** Destreza + Medicina para cuidar de um ferimento difícil; Destreza + Disciplina para mirar com uma arma habilitada, conforme as regras de ataque.
 
 #### ◇ Inteligência
 
@@ -503,45 +503,19 @@ Ajuda a suportar esforço, cansaço, desgaste e condições fisicamente exigente
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
-### ✦ Conhecimentos — estudo que abre caminhos
+#### Progressão de Atributos — dados e XP
 
-Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam possibilidades de testes, não efeitos gratuitos nem substitutos de Perícias exigidas.
+XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
 
-#### ✦ Proteção
-
-Estudo de defesas, riscos e maneiras de proteger pessoas e locais.
-
-**Em jogo:** Analisar a segurança de uma passagem.
-
-#### ✦ Astronomia
-
-Estudo dos astros, ciclos e fenômenos celestes.
-
-**Em jogo:** Orientar uma viagem usando o céu.
-
-#### ✦ Medicina
-
-Conhecimento sobre ferimentos, doenças e cuidados.
-
-**Em jogo:** Avaliar uma lesão e escolher como tratá-la.
-
-#### ✦ Alquimia
-
-Estudo de substâncias, misturas e transformações.
-
-**Em jogo:** Investigar um líquido desconhecido.
-
-#### ✦ Engenharia
-
-Compreensão de estruturas, máquinas e mecanismos.
-
-**Em jogo:** Identificar a falha de uma ponte.
-
-#### ✦ Erudição
-
-Estudo de registros, história, cultura e saberes especializados.
-
-**Em jogo:** Interpretar uma inscrição ou tradição.
+| Grau | Dados | XP acumulado |
+|---:|---|---:|
+| 0 | 1d4 | 0 |
+| 1 | 1d6 | 1 |
+| 2 | 2d6 | 3 |
+| 3 | 3d6 | 6 |
+| 4 | 2d6 + 1d10 | 9 |
+| 5 | 1d6 + 2d10 | 18 |
+| 6 | 3d10 | 32 |
 
 ### ⚔ Práticas — treinamento para agir
 
@@ -583,21 +557,75 @@ Treino de procura, identificação e obtenção de recursos.
 
 **Em jogo:** Localizar materiais úteis numa região.
 
+#### Progressão de Práticas — dados e XP
+
+XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
+
+| Grau | Dados | XP acumulado |
+|---:|---|---:|
+| 0 | 1d6 | 0 |
+| 1 | 1d10 | 2 |
+| 2 | 2d10 | 4 |
+| 3 | 3d10 | 8 |
+| 4 | 2d10 + 1d12 | 16 |
+| 5 | 1d10 + 2d12 | 32 |
+| 6 | 3d12 | 64 |
+
+### ✦ Conhecimentos — estudo que abre caminhos
+
+Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam possibilidades de testes, não efeitos gratuitos nem substitutos de Perícias exigidas.
+
+#### ✦ Proteção
+
+Estudo de defesas, riscos e maneiras de proteger pessoas e locais.
+
+**Em jogo:** Analisar a segurança de uma passagem.
+
+#### ✦ Astronomia
+
+Estudo dos astros, ciclos e fenômenos celestes.
+
+**Em jogo:** Orientar uma viagem usando o céu.
+
+#### ✦ Medicina
+
+Conhecimento sobre ferimentos, doenças e cuidados.
+
+**Em jogo:** Avaliar uma lesão e escolher como tratá-la.
+
+#### ✦ Alquimia
+
+Estudo de substâncias, misturas e transformações.
+
+**Em jogo:** Investigar um líquido desconhecido.
+
+#### ✦ Engenharia
+
+Compreensão de estruturas, máquinas e mecanismos.
+
+**Em jogo:** Identificar a falha de uma ponte.
+
+#### ✦ Erudição
+
+Estudo de registros, história, cultura e saberes especializados.
+
+**Em jogo:** Interpretar uma inscrição ou tradição.
+
+#### Progressão de Conhecimentos — dados e XP
+
+XP acumulado é o total investido no Grau. Para avançar, pague a diferença entre os totais.
+
+| Grau | Dados | XP acumulado |
+|---:|---|---:|
+| 0 | 1d6 | 0 |
+| 1 | 1d10 | 2 |
+| 2 | 2d10 | 4 |
+| 3 | 3d10 | 8 |
+| 4 | 2d10 + 1d12 | 16 |
+| 5 | 1d10 + 2d12 | 32 |
+| 6 | 3d12 | 64 |
+
 **Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.
-
-### Quantos dados cada Grau oferece?
-
-Esta é a progressão comum das Aptidões. **XP acumulado** significa quanto você gastou ao todo naquela Aptidão para chegar ao Grau indicado, não o preço de cada avanço isolado.
-
-| Grau | ◇ Atributo: dados | XP acumulado | ✦ Conhecimento ou ⚔ Prática: dados | XP acumulado |
-|---:|---|---:|---|---:|
-| **0** | 1d4 | 0 | 1d6 | 0 |
-| **1** | 1d6 | 1 | 1d10 | 2 |
-| **2** | 2d6 | 3 | 2d10 | 4 |
-| **3** | 3d6 | 6 | 3d10 | 8 |
-| **4** | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
-| **5** | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
-| **6** | 3d10 | 32 | 3d12 | 64 |
 
 **Exemplo de compra:** Força no Grau 1 custa **1 XP**. Para passar de Força 1 (1 XP acumulado) para Força 2 (3 XP acumulados), você paga **mais 2 XP**. O mesmo raciocínio vale para Conhecimentos e Práticas: Disciplina 1 custa **2 XP**; avançar para Disciplina 2 custa **mais 2 XP**.
 
