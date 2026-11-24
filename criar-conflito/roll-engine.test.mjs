@@ -43,7 +43,7 @@ test("Gasto local de retenção só acontece na confirmação",()=>{
 });
 test("Crítico de monstro retém Pavor local, depois público, sem duplicar",()=>{
  const t=blank("monstro");t.attributes.forca=1;t.pavorLocal=0;
- const rolled=rollCreatureFaces(creaturePool(t,"forca","vigor").pool,()=>0.99999);
+ const rolled=creaturePool(t,"forca","vigor").pool.map(d=>({...d,face:d.sides===10?7:d.sides}));
  const p=previewCreatureRoll(t,rolled,rolled.map(d=>d.id),{de:1});
  assert.equal(p.ok,true);assert.equal(p.result.critical,2);
  assert.equal(p.criticalPavor,2);
@@ -87,7 +87,7 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  const trained=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
  assert.equal(trained.ok,true);
  assert.deepEqual(trained.pool.map(d=>d.sides),[10,6]);
- const rolled=rollCreatureFaces(trained.pool,()=>0.9999);
+ const rolled=trained.pool.map(d=>({...d,face:d.sides===10?7:d.sides}));
  const got=previewHumanoidRoll(npc,rolled,rolled.map(x=>x.id),{de:1});
  assert.equal(got.ok,true);
  assert.equal(got.cost,0);
