@@ -160,7 +160,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
 }
 export function resolveRoll(rolled,selectedIds,options={}){
  const {de=1,level=1,extraKeep=false,step=false,courage=10,situation="neutral",
-  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0,enemyKeepLimit=null}=options;
+  weight=0,cancelP=0,convertPairs=0,skillBonusE=0,monster=false,hostile=false,threatGrade=1,bonusA=0,bonusP=0,enemyKeepLimit=null,drawMode="none"}=options;
  const errors=[],kept=rolled.filter(d=>selectedIds.includes(d.id));
  if(kept.length!==new Set(selectedIds).size)errors.push("Dados mantidos não encontrados.");
  // O teto próprio do inimigo vem do Grau da ameaça, não de um nível fictício.
@@ -175,15 +175,18 @@ export function resolveRoll(rolled,selectedIds,options={}){
  let convertedCrit=0,extraCritE=0,extraCritA=0;
  if(crit){convertedCrit=raw[2]>0?1:0;extraCritE=kept.length>=3?1:0;extraCritA=kept.length>=3?1:0;}
  const st=SITUATIONS[situation]||SITUATIONS.neutral;
- const a=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA));
+ const availableA=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA));
+ const drawSpent=drawMode==="quick"&&availableA>0?1:0;
+ const drawPenalty=drawMode==="normal"?-1:drawMode==="quick"&&!drawSpent?-2:0;
+ const a=availableA-drawSpent;
  const pBefore=Math.max(0,raw[2]-convertedCrit+Number(bonusP));
  if(!Number.isInteger(cancelP)||cancelP<0||cancelP>Math.min(pBefore,a))errors.push("Anulação de Pavor inválida.");
  if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs>a)errors.push("Conversão 2A → 1E inválida.");
- const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
+ const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)+drawPenalty),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
  const outcome=success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
  const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(crit&&kept.length===4?2:1):0;
  const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
-  reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
+  reached,de,success,outcome,damage,critical,drawSpent,drawPenalty,criticalRefundCourage:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
   freeCharacteristics:success&&crit?1:0,selected:kept};
 }
