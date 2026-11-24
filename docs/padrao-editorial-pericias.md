@@ -16,6 +16,8 @@ O jogador precisa reconhecer rapidamente o que a Perícia permite, quando pode u
 4. **Benefícios:** itens curtos, cada qual explicando uma consequência concreta para o personagem. Indicar gatilho e custo junto do respectivo efeito.
 5. **Condição importante:** limite ou exceção realmente necessário para não interpretar o benefício incorretamente.
 
+Quando a ativação exige Coragem, o texto voltado ao jogador deve explicitar que **o recurso é gasto antes do teste e não é devolvido na falha** (SRD v0.100). O benefício condicionado ao acerto só ocorre quando o teste tem sucesso. Não repetir a mesma regra em vários blocos.
+
 Para Perícias mais complexas, usar subseções por benefício, grau ou técnica, sem copiar o mesmo texto em vários quadros.
 
 ## Evitar no texto voltado ao jogador
