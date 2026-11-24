@@ -39,7 +39,7 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
 });
 
 const SKILLS=[
- ["saque-rapido","Saque Rápido","Passiva: sacar ou trocar arma em combate custa 1 Antecipar da ação; se não obtiver esse símbolo, Golpe de Sorte (−2 Êxitos). Acesso rápido no corpo respeita a carga física.",1],
+ ["saque-rapido","Saque Rápido","Passiva: sacar do acesso rápido custa 1 Antecipar para evitar −1E; sem Antecipar, −1E. Sacar do inventário impõe −1E com a Perícia, em vez de Golpe de Sorte (−2E). A carga física permanece.",1],
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
  ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],

@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0110";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-saque-v0110";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0111";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-saque-v0111";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -23,18 +23,24 @@ export function equipmentPosition(it){return it?.equipped&&isHandEquipment(it)?"
 export function hasQuickDraw(c){return !!c?.skills?.includes("saque-rapido")&&Number(c.attributes?.agilidade||0)>=2&&Number(c.attributes?.destreza||0)>=1&&Number(c.practices?.armas_conjuracao||0)>=2;}
 export function carryingCapacity(c){return 1+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3);}
 export function heldHands(items=[]){const held=items.filter(it=>isHandEquipment(it)&&it.equipped);return held.some(it=>!weaponHands(it)||it.qty!==1)?null:held.reduce((n,it)=>n+weaponHands(it),0);}
+export function drawModeFor(c,it){
+ const position=equipmentPosition(it),trained=hasQuickDraw(c);
+ if(position==="hands")return "none";
+ if(position==="quick")return trained?"quick":"normal";
+ return trained?"inventory-trained":"inventory-untrained";
+}
 export function planDraw(c,id,stow=[]){
  const it=c?.items?.find(x=>x.id===id&&["weapon","firearm"].includes(x.kind));
  if(!it)return {ok:false,error:"Arma não encontrada."};
  if(it.equipped)return {ok:true,mode:"none",items:c.items};
- if(equipmentPosition(it)==="bag"&&!hasQuickDraw(c))return {ok:false,error:"Sem Saque Rápido, prepare a arma no acesso rápido antes do combate."};
+ const mode=drawModeFor(c,it);
  if(!weaponHands(it)||it.qty!==1)return {ok:false,error:"Defina a empunhadura e separe uma arma (quantidade 1)."};
  const selected=new Set(stow);
  if([...selected].some(k=>!c.items.some(x=>x.id===k&&x.equipped&&isHandEquipment(x))))return {ok:false,error:"Seleção de armas/escudos para guardar inválida."};
  const items=c.items.map(x=>x.id===id?{...x,equipped:true,position:"hands"}:selected.has(x.id)?{...x,equipped:false,position:x.kind==="shield"?"bag":"quick"}:x);
  const used=heldHands(items);
  if(used===null||used>2)return {ok:false,error:"Libere mãos suficientes ou confirme a empunhadura dos itens já em mãos."};
- return {ok:true,mode:hasQuickDraw(c)?"quick":"normal",items};
+ return {ok:true,mode,items};
 }
 export function disarmTransfer(attacker,target,weaponId,destination,newId){
  const it=target?.items?.find(x=>x.id===weaponId&&x.equipped&&["weapon","firearm"].includes(x.kind));
@@ -434,7 +440,7 @@ export function defense(c){
 }
 export function weightUsed(c){return (c.items||[]).reduce((v,it)=>v+Number(it.weight||0)*Number(it.qty||1),0);}
 export function equippedWeapons(c,catalog=[],includeCarried=false){
- return (c?.items||[]).filter(it=>["weapon","firearm"].includes(it.kind)&&(it.equipped||includeCarried&&(equipmentPosition(it)==="quick"||hasQuickDraw(c)))).map(it=>{
+ return (c?.items||[]).filter(it=>["weapon","firearm"].includes(it.kind)&&(it.equipped||includeCarried)).map(it=>{
   const cat=catalog.find(x=>x.name?.toLowerCase()===it.name.toLowerCase())||{};
   const kind=it.kind==="firearm"||cat.kind==="firearm"?"firearm":"weapon";
   const category=cat.category||it.category;

@@ -177,7 +177,7 @@ export function resolveRoll(rolled,selectedIds,options={}){
  const st=SITUATIONS[situation]||SITUATIONS.neutral;
  const availableA=Math.max(0,raw[1]+extraCritA+st.a+Number(weight)+Number(bonusA));
  const drawSpent=drawMode==="quick"&&availableA>0?1:0;
- const drawPenalty=drawMode==="normal"?-1:drawMode==="quick"&&!drawSpent?-2:0;
+ const drawPenalty=drawMode==="inventory-untrained"?-2:drawMode==="normal"||drawMode==="inventory-trained"||(drawMode==="quick"&&!drawSpent)?-1:0;
  const a=availableA-drawSpent;
  const pBefore=Math.max(0,raw[2]-convertedCrit+Number(bonusP));
  if(!Number.isInteger(cancelP)||cancelP<0||cancelP>Math.min(pBefore,a))errors.push("Anulação de Pavor inválida.");

@@ -660,5 +660,21 @@ test("Características compartilhadas aplicam efeitos apenas no acerto; condiç�
  const de=defense(attacker);assert.equal(escapeGrapple(restored,attacker,de-1).success,false);assert.equal(escapeGrapple(restored,attacker,de).actor.statuses.agarradoPor,"");
 });
 
-test("Saque Rápido reserva A antes dos demais usos e não inventa E",()=>{const rolled=[{id:"x",group:"attribute",sides:12,face:12}];const regular=resolveRoll(rolled,["x"],{bonusA:1});const draw=resolveRoll(rolled,["x"],{bonusA:1,drawMode:"quick"});assert.equal(draw.drawSpent,1);assert.equal(draw.aRemaining,regular.aRemaining-1);const zero=resolveRoll(rolled,["x"],{bonusA:-99,drawMode:"quick"});assert.equal(zero.drawPenalty,-2);assert.equal(resolveRoll(rolled,["x"],{drawMode:"normal"}).drawPenalty,-1);});
+test("Saque Rápido reserva A antes dos demais usos e não inventa E",()=>{const rolled=[{id:"x",group:"attribute",sides:12,face:12}];const regular=resolveRoll(rolled,["x"],{bonusA:1});const draw=resolveRoll(rolled,["x"],{bonusA:1,drawMode:"quick"});assert.equal(draw.drawSpent,1);assert.equal(draw.aRemaining,regular.aRemaining-1);const zero=resolveRoll(rolled,["x"],{bonusA:-99,drawMode:"quick"});assert.equal(zero.drawPenalty,-1);assert.equal(resolveRoll(rolled,["x"],{drawMode:"normal"}).drawPenalty,-1);});
 test("Saque e Desarmar respeitam mãos e posse",()=>{const a=normalizeCombatant({id:"a",skills:["saque-rapido"],attributes:{agilidade:2,destreza:1,forca:3},practices:{armas_conjuracao:2},items:[{id:"s",name:"Escudo",kind:"shield",equipped:true,qty:1,weight:.125},{id:"w",name:"Arco longo",kind:"weapon",position:"quick",hands:2,qty:1,weight:.5}]});assert.equal(planDraw(a,"w").ok,false);const plan=planDraw(a,"w",["s"]);assert.equal(plan.ok,true);assert.equal(plan.mode,"quick");assert.equal(heldHands(plan.items),2);const b=normalizeCombatant({id:"b",items:[{id:"x",name:"Besta de uma mão",kind:"weapon",equipped:true,hands:1,weight:.125,qty:1}]});const result=disarmTransfer(a,b,"x","bag","captured");assert.equal(result.ok,true);assert.equal(result.target.items.length,0);assert.equal(result.attacker.items.length,3);assert.equal(disarmTransfer({...a,items:plan.items},b,"x","hands").ok,false);assert.ok(disarmTransfer(a,b,"x","ground").ground);});
+
+test("Matriz de saque por posição e Saque Rápido: todos os casos",()=>{
+ const c=normalizeCombatant({id:"saque",skills:["saque-rapido","armas-leves"],attributes:{agilidade:2,destreza:1},practices:{armas_conjuracao:2},items:[{id:"w",name:"Faca",kind:"weapon",category:"leve",hands:1,qty:1,die:6,weight:.125}]});
+ const rolled=[{id:"x",group:"attribute",sides:12,face:12}];
+ for(const trained of [false,true])for(const position of ["hands","quick","bag"]){
+  const actor={...c,skills:trained?c.skills:["armas-leves"],items:[{...c.items[0],position,equipped:position==="hands"}]};
+  assert.equal(equippedWeapons(actor,[],true).length,1);const plan=planDraw(actor,"w");assert.equal(plan.ok,true);assert.equal(plan.items[0].equipped,true);
+  const expected=position==="hands"?"none":position==="quick"?(trained?"quick":"normal"):(trained?"inventory-trained":"inventory-untrained");assert.equal(plan.mode,expected);
+  for(const available of [false,true]){
+   const opts={bonusA:available?3:-99},normal=resolveRoll(rolled,["x"],opts),result=resolveRoll(rolled,["x"],{...opts,drawMode:plan.mode});
+   const spend=position==="quick"&&trained&&available?1:0;
+   const penalty=position==="hands"||spend?0:position==="bag"&&!trained?-2:-1;
+   assert.equal(result.drawSpent,spend);assert.equal(result.drawPenalty,penalty);assert.equal(result.aRemaining,normal.aRemaining-spend);assert.equal(result.e,Math.max(0,normal.e+penalty));
+  }
+ }
+});
