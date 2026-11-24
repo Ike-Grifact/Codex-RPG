@@ -1,26 +1,52 @@
 # Codex RPG — Livro do Jogador
 
-Este guia ensina a criar personagens, interpretar os símbolos e utilizar suas capacidades em jogo. Regras em teste ou ainda sem procedimento completo são identificadas nos assuntos a que pertencem.
+Descubra um mundo de fantasia sombria e tecnomagia, construa seu Aprendiz e aprenda a transformar as possibilidades dos dados em escolhas durante a aventura. Este livro apresenta o universo, as regras de jogo, a criação de personagens e as possibilidades de especialização.
 
 ## Parte I — Aprendendo a jogar
 
-Codex RPG é um sistema independente de fantasia, narrativa emergente e combate tático. Cada jogador começa como **Aprendiz**. Sua profissão resulta da combinação de **Atributos, Conhecimentos, Práticas, Perícias, equipamentos e técnicas** — não é necessário escolher uma classe obrigatória. Diferentes ramos de desenvolvimento podem cruzar-se e abrir novos caminhos, mesmo sem comprar todas as capacidades anteriores de um caminho.
+### Bem-vindo ao Codex RPG
 
-### Três símbolos
+### O mundo que você ainda não conhece
+
+Codex RPG é um jogo de interpretação e aventura em um universo de fantasia sombria, marcado pela exploração do desconhecido, por ruínas antigas e pelo encontro entre magia e tecnologia. Inspirado pela atmosfera de Dark Fantasy e Shadowdark, o cenário convida você a descobrir um mundo tão fascinante quanto perigoso. Ninguém sabe ao certo se vive depois de um grande colapso ou às vésperas de um ainda maior.
+
+Há cidades onde a tecnologia lembra a nossa, embora as leis que governam seu funcionamento sejam diferentes. A eletricidade não se comporta como a conhecemos: a corrente alternada não funciona, e ninguém sabe exatamente por quê. A magia assume o papel de controlar máquinas, dando origem à tecnomagia. Aquilo que se assemelha a uma inteligência artificial pode ser um elemental aprisionado em uma máquina — ou algo muito mais difícil de compreender.
+
+Humanos, Luckers Puros, Luckers de Sangue e Runa Espinhos fazem parte desse universo. Entre cidades e ruínas, os aventureiros podem encontrar seres de aparência angelical, criaturas elementais e monstros terríveis. Nem tudo o que parece sobrenatural é magia, nem tudo o que parece tecnologia pode ser explicado. O mundo do Codex é um lugar de possibilidades, e suas respostas não estão todas escritas de antemão.
+
+### Uma profissão é uma descoberta
+
+Todo personagem começa como **Aprendiz**. Em vez de escolher uma classe obrigatória na criação, você desenvolve Atributos, Conhecimentos, Práticas e Perícias que dão forma à sua profissão ao longo da aventura. Codex RPG foi concebido para favorecer a construção de personagens híbridos: um guerreiro pode aprender magia, um estudioso pode se tornar um combatente e um artesão pode desenvolver técnicas de cura. Esses caminhos não são classes que concedem benefícios automáticos; são possibilidades que você constrói com suas escolhas.
+
+Você pode aprofundar uma especialidade ou cruzar diferentes ramos para criar algo próprio. Cada investimento abre novas maneiras de agir, respeitando os custos e requisitos de cada capacidade. O importante não é encontrar uma classe que descreva seu personagem, mas desenvolver as capacidades que expressem quem ele é e o que pretende se tornar.
+
+### Uma aventura, diferentes maneiras de jogar
+
+O Codex une **narrativa emergente e combate tático**. Em uma investigação, negociação ou exploração de ruínas, você descreve sua intenção e utiliza as capacidades de seu personagem para interagir com o mundo. Quando a situação exige precisão tática, posicionamento, alcance, terreno, peso dos equipamentos e proteções passam a importar.
+
+Os dois estilos utilizam a mesma mecânica de rolagem. Você não precisa abandonar a narrativa para entrar em combate, nem precisa transformar toda conversa em uma disputa tática. Ajudar um aliado também é protagonismo: quando a ação permite, você pode passar voluntariamente a oportunidade a outro jogador. Vencer um conflito pode significar negociar, escapar, proteger alguém ou derrotar uma ameaça.
+
+## Roll and Keep — rolar e manter
+
+Em Codex RPG, as ações de resultado incerto são resolvidas por um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. Em vez de somar todos os dados que caíram na mesa, você reúne uma pilha de dados de acordo com as capacidades usadas na ação, rola essa pilha e escolhe quais resultados deseja manter.
+
+Um Aprendiz normalmente mantém dois dados. Imagine que você rolou três dados e obteve as faces E+A, 2E+T e E. Você pode manter E+A e E para obter 2E+1A sem Temor, ou manter 2E+T e E para obter 3E+1T. A segunda escolha reúne mais símbolos que ajudam a alcançar o objetivo, mas traz risco. Os símbolos dos dados descartados não produzem efeitos.
+
+É essa escolha que distingue o Roll and Keep de uma rolagem em que todos os resultados são somados. Rolar mais dados oferece mais possibilidades, mas não significa manter todos eles. O limite geral é de **9 dados rolados e 4 dados mantidos**, respeitando os limites de retenção do personagem e os recursos disponíveis.
+
+### As três runas do Codex
+
+As faces dos dados expressam três ideias centrais do Codex: a vontade de realizar algo, a compreensão das possibilidades e o risco diante do desconhecido. Para representar essas ideias, o sistema utiliza três runas — Sowilo, Ansuz e Thurisaz — como sua identidade visual. Seus significados no jogo são interpretações próprias do Codex, não traduções históricas literais das runas.
+
+Esses símbolos aproximam a mecânica da atmosfera do cenário e ajudam você a ler o que acontece na aventura: não apenas se conseguiu fazer algo, mas também quais possibilidades encontrou e quais riscos assumiu. A Coragem, apresentada adiante, representa a capacidade de agir apesar do Temor.
 
 | Símbolo | Runa | Cor | Significado |
 |---|---|---|---|
-| Êxito (E) | Sowilo **ᛋ** | **#267A45** | Execução, domínio e dano |
-| Antecipar (A) | Ansuz **ᚨ** | **#2369BB** | Adaptação, coordenação e controle de Temor |
-| Temor (T) | Thurisaz **ᚦ** | **#542176** | O risco diante do desconhecido; possibilidade de intervenção |
+| Êxito (E) | Sowilo **ᛋ** | **#267A45** | Realização da vontade |
+| Antecipar (A) | Ansuz **ᚨ** | **#2369BB** | Compreensão das possibilidades |
+| Temor (T) | Thurisaz **ᚦ** | **#542176** | Risco diante do desconhecido |
 
-Um resultado pode alcançar o objetivo e ainda deixar Temor para o adversário.
-
-### Filosofia de jogo: escolhas e consequências
-
-No Codex, todo personagem começa como **Aprendiz** e constrói sua profissão pela combinação de Atributos, Conhecimentos, Práticas (inclusive Disciplina), Perícias e equipamentos. A liberdade de construir um personagem híbrido não é um bônus gratuito: cada investimento abre possibilidades e deixa outras para depois. O grupo pode favorecer **interpretação narrativa**, **combate tático** ou alternar ambos, usando as mesmas regras centrais de dados e símbolos.
-
-**Ajudar um aliado também é protagonismo.** Quando a ação permite, um jogador pode passar voluntariamente a oportunidade a outro, sem ficar obrigado a agir até perder a iniciativa.
+Agora que você conhece a ideia por trás das runas, veja como elas aparecem nas faces dos dados e o que cada símbolo permite fazer.
 
 ## Faces dos dados e runas
 
@@ -62,7 +88,7 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
 | 20 | — | — | — | — | 6ᛋ+2ᚨ |
 
-As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3T. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3T+2A. O teto de DE permanece 30.
+O teto de DE permanece 30.
 
 ## Coragem e seus recursos
 
