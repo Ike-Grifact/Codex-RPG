@@ -431,7 +431,7 @@ const metadata={
  "criar-item-de-foco-e-magia": {
   "id": "criar-item-foco-magia",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "magia-foco"
  },
  "escudo-arcano": {
@@ -461,37 +461,37 @@ const metadata={
  "pericia-em-elemento-fogo": {
   "id": "fogo",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-fogo"
  },
  "pericia-em-elemento-agua": {
   "id": "agua",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-agua"
  },
  "pericia-em-elemento-ar": {
   "id": "vento",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-ar"
  },
  "pericia-em-elemento-terra": {
   "id": "terra",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-terra"
  },
  "pericia-em-elemento-sagrado": {
   "id": "sagrado",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-sagrado"
  },
  "pericia-em-elemento-veneno": {
   "id": "veneno",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-veneno"
  },
  "pericia-em-elemento-sangue": {
@@ -503,7 +503,7 @@ const metadata={
  "pericia-em-elemento-trevas": {
   "id": "trevas",
   "type": "Ativa",
-  "cost": "Conforme o grau da conjuração",
+  "cost": "G1/G2: gratuito; graus superiores conforme a Perícia",
   "icon": "elemento-trevas"
  },
  "transfusao": {
@@ -660,7 +660,7 @@ function cleanup(){
 function decorateText(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);for(const n of nodes){if(n.parentElement.closest(".codex-inline-rune,script,style"))continue;const raw=n.nodeValue,matches=[...raw.matchAll(pattern)];if(!matches.length)continue;const frag=document.createDocumentFragment();let pos=0;for(const m of matches){let start=m.index+m[1].length;frag.append(document.createTextNode(raw.slice(pos,start)));const s=element("span","codex-inline-rune",m[2]),i=element("img");i.src="../assets/icons/"+files[key(m[3])]+".svg";i.alt="";i.title=names[key(m[3])];i.setAttribute("aria-hidden","true");s.append(i);frag.append(s);pos=start+m[2].length;}frag.append(document.createTextNode(raw.slice(pos)));n.replaceWith(frag);}}
 function enhance(){if(document.documentElement.dataset.codexSkillPresentation)return;document.documentElement.dataset.codexSkillPresentation="1";const css=element("link");css.rel="stylesheet";css.href="../assets/skill-presentation.css?v=20261123-v0104";document.head.append(css);
  if(page.includes("/pericias/")){cleanup();const m=metadata[page.split("/").pop().replace(/\.html$/,"")];if(m){const h=document.querySelector(".skill-hero h1");if(h){h.classList.add("codex-skill-title");h.prepend(icon(m.icon,"codex-skill-title-icon"));}
- const dl=document.querySelector(".skill-stats");if(dl){if(!findStat(dl,/^Tipo$/i))stat(dl,"Tipo",m.type);const cost=findStat(dl,/^(Custo de ativação|Ativação)$/i);if(!cost)stat(dl,"Custo de ativação",m.cost);else if(m.type==="Passiva"||m.type==="Ativa + benefício passivo"||/^(Não especificado|Sem custo adicional especificado|PENDENTE)$/i.test(cost.querySelector("dd")?.textContent.trim()||"")){const dd=cost.querySelector("dd");if(dd&&m.cost!=="Pendente")dd.textContent=m.cost;}}}
+ const dl=document.querySelector(".skill-stats");if(dl){const type=findStat(dl,/^Tipo$/i);if(!type)stat(dl,"Tipo",m.type);else if(m.type!=="Pendente"){const dd=type.querySelector("dd");if(dd)dd.textContent=m.type;}const cost=findStat(dl,/^(Custo de ativação|Ativação)$/i);if(!cost)stat(dl,"Custo de ativação",m.cost);else if(m.type==="Passiva"||m.type==="Ativa + benefício passivo"||/^(Não especificado|Sem custo adicional especificado|PENDENTE)$/i.test(cost.querySelector("dd")?.textContent.trim()||"")){const dd=cost.querySelector("dd");if(dd&&m.cost!=="Pendente")dd.textContent=m.cost;}}}
  for(const card of document.querySelectorAll(".skill-catalog-card")){const a=card.querySelector("h3 a[href]"),t=a&&target(a),m=t&&metadata[t.slug];if(!m)continue;a.classList.add("codex-skill-card-title");a.prepend(icon(m.icon,"codex-skill-card-icon"));const d=element("div","codex-skill-card-meta");d.append(element("span","codex-skill-kind",m.type==="Pendente"?"Tipo pendente":m.type),element("span","codex-skill-cost","Ativação: "+m.cost));card.insertBefore(d,card.querySelector("p")||null);}}
  for(const el of document.querySelectorAll(".skill-article,.skill-stat dd,.skill-description,.skill-catalog-card p"))decorateText(el);
 }
