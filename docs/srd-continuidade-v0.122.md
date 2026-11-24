@@ -20,4 +20,6 @@ Ataques em área que atingem uma ficha coletiva aplicam o dano uma vez; não mul
 
 **PENDENTE:** eventual custo próprio de declaração ou dissolução da formação, procedimento de compra/distribuição do XP reunido e registro da DE de uma ficha coletiva. Não criar fórmula de progressão adicional, novas penalidades ou limiares de baixas. A distinção entre a ficha coletiva comum e o chefe excepcional de três participantes preserva a regra específica de turnos e convocação da v0.120.
 
+**Organização editorial:** os procedimentos de criação, XP e interpretação de baixas de fichas coletivas e chefes pertencem ao Livro do Mestre, seção Criação de inimigos, monstros e criaturas. Livro do Jogador e Mecânicas apresentam apenas a regra de resolução e a referência ao capítulo do Mestre.
+
 **Implementação:** documentação dos livros e página de Mecânicas. Uma ficha coletiva pode ser representada manualmente como uma única ficha de inimigo; não foi criado novo tipo de ficha ou automatismo no simulador/Foundry.
