@@ -627,7 +627,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — 23/11/2026, SRD v0.92]:** **1 + piso((Força + Vigor + Atletismo)/3)**. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento. **Compras:** mostrar carga e balanço projetados antes de confirmar, descontando também o peso dos recursos gastos. Os avisos de Pesado/Muito Pesado não bloqueiam compras nem criam penalidades novas.
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso:** −1 Êxito definido, abrangência e automação pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 
 ## VII. Conjuração, elementos e possibilidades
@@ -1287,3 +1287,16 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 | Revólver | 16 m |
 | Katana | PENDENTE |
 | Naginata | 2 m |
+
+
+### Capacidade de Carga — exemplos e referência (v0.118)
+
+| Peso físico | Alto |
+|---|---:|
+| Muito Leve | 0,0125 |
+| Leve | 0,125 |
+| Médio | 0,5 |
+| Pesado | 1 |
+| Extremo | 2 |
+
+Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade prevista é −1 Êxito (Desvantagem Absoluta), com abrangência e aplicação automática PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE ou deslocamento. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.

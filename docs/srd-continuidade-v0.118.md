@@ -48,3 +48,8 @@
 | Revólver | 16 m |
 | Katana | PENDENTE |
 | Naginata | 2 m |
+
+
+### Referência de Capacidade de Carga
+
+A página [Capacidade de Carga](../mecanicas/capacidade-de-carga.html) e o Livro do Jogador consolidam v0.67, v0.92 e v0.118. Balanço pelo percentual total: Muito Leve <25%, Leve 25–<50%, Médio 50–<75%, Pesado 75–<100%, Muito Pesado ≥100%. A penalidade de −1 Êxito no estado Muito Pesado/sobrepeso foi aprovada; sua abrangência e automação continuam PENDENTES. Não há nova penalidade de compartimento, deslocamento ou DE.
