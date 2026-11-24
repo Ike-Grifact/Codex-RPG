@@ -41,7 +41,7 @@ test("Benefícios são exibidos sem duplicar linha de ativação nas três Perí
  assert.match(player,/const PLAYER_SKILL_COPY=\{/);
  assert.match(player,/const playerGuide=playerSkillGuide\(sid\)/);
  assert.match(player,/fp-gene-player-benefits/);
- assert.match(player,/playerGuide\?"":'<dt>Ativação/);
+ assert.match(player,/playerGuide\?"":!presentation\|\|presentation\.type==="Pendente"\?'<dt>Ativação/);
  assert.match(player,/guide\?'<div class="fp-skill-quick-benefit"/);
 });
 
