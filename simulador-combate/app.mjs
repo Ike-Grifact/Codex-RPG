@@ -316,7 +316,7 @@ function updateSkillInfo(){
  const cost=$("skill-courage").value;
  $("skill-info").textContent=skill?
   skill.name+": "+skill.detail+" | Custo em "+(actor()?.side==="inimigos"?"Pavor":"Coragem")+": "+(["golpe-fulminante","disparo-fulminante","domar-criatura-pequena"].includes(skill.id)?1:cost)+
-  ". É possível combinar várias Perícias diferentes, até o limite de 5 por rodada.":
+  ". Declare e pague a Coragem antes da rolagem; na falha, o gasto permanece. É possível combinar várias Perícias diferentes, até o limite de 5 por rodada.":
   "Declare e pague a Coragem antes de rolar. Este comparador lança os débitos ao confirmar a ação, inclusive quando o ataque falhar; os efeitos especializados não são inventados.";
 }
 
@@ -376,7 +376,7 @@ function renderWeaponEffects(){
  $("weapon-effect-info").textContent=weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
-   " Sem Especialização: um efeito custa 1 Coragem no acerto comum; no crítico um é grátis e o segundo custa 1.")+
+   " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, um efeito é gratuito; um segundo pago exige declaração antecipada.")+
   (cravarCriticalPossible?" Cravar: sem especialização, só é permitido mediante crítico em arma Média/Pesada, acerto e escudo físico.":"")+
   " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige escudo físico. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
