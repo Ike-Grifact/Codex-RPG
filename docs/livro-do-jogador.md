@@ -434,6 +434,88 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 As faces comuns do d6, d10, d12 e d20 seguem a distribuição do d12. A face 11 do d12 e do d20 possui 3P. O d4 mantém sua tabela própria. A face 12 do d12 e do d20 possui 3E. A face 15 do d20 possui 3P+2A. O d4 mantém a face 4 como máxima numérica, embora vazia. O teto de DE permanece 30.
 
 
+
+## Conheça suas Aptidões — de onde vêm seus dados
+
+Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio ícone, para ajudar a reconhecer rapidamente o que está escolhendo:
+
+| Ícone na ficha | Grupo | O que representa |
+|---|---|---|
+| **◇** | **Atributos** | Suas capacidades fundamentais: força física, reflexos, raciocínio, presença e resistência |
+| **✦** | **Conhecimentos** | Aquilo que você estudou e aprendeu a compreender |
+| **⚔** | **Práticas** | Aquilo que você treinou para fazer |
+
+**O Grau mostra o quanto você desenvolveu uma Aptidão.** Quanto maior o Grau, melhores são os dados que ela pode oferecer. Você gasta **XP (pontos de experiência)** para aumentar seus Graus. Os números dos dados, como **d6** e **d10**, indicam quantas faces eles possuem; durante a rolagem, você lê as **runas** que aparecem, e não soma os números das faces.
+
+### ◇ Atributos — o que seu personagem é capaz de fazer
+
+- **Força:** empurrar, erguer, agarrar e realizar esforços físicos.
+- **Agilidade:** movimentar-se, reagir e mudar de posição com rapidez.
+- **Destreza:** executar movimentos precisos e controlar as mãos.
+- **Inteligência:** raciocinar, analisar e encontrar soluções.
+- **Influência:** convencer, negociar e se expressar diante de outras pessoas.
+- **Vigor:** resistir ao esforço, suportar adversidades e manter o fôlego.
+
+Os Atributos são fundamentais: **toda rolagem precisa incluir pelo menos um dado vindo de um Atributo**, mesmo que você decida descartá-lo depois.
+
+### ✦ Conhecimentos — o que você estudou
+
+- **Proteção:** compreender defesas, riscos e formas de proteção.
+- **Astronomia:** observar e interpretar astros e fenômenos celestes.
+- **Medicina:** compreender ferimentos, doenças e cuidados com a saúde.
+- **Alquimia:** estudar substâncias, misturas e transformações.
+- **Engenharia:** entender mecanismos, estruturas e soluções técnicas.
+- **Erudição:** investigar saberes, registros e informações especializadas.
+
+Um Conhecimento ajuda quando sua **compreensão do assunto** faz diferença. Por exemplo, **Inteligência + Medicina** pode ser uma boa combinação para examinar um ferimento.
+
+### ⚔ Práticas — o que você treinou
+
+- **Disciplina:** treinamento usado em ações marciais e mágicas, conforme as Perícias que você possui.
+- **Atletismo:** correr, saltar, escalar e superar obstáculos com o corpo.
+- **Furtividade:** mover-se ou agir sem chamar atenção.
+- **Artesão:** fabricar, trabalhar e reparar objetos com técnicas apropriadas.
+- **Apresentação:** atuar, discursar e realizar apresentações.
+- **Coleta:** procurar, reconhecer e obter recursos no ambiente.
+
+**Disciplina é uma única Prática.** Você não precisa comprar uma Disciplina para armas e outra para magia. As Perícias determinam quais usos especiais ficam disponíveis.
+
+### Quantos dados cada Grau oferece?
+
+Esta é a progressão comum das Aptidões. **XP acumulado** significa quanto você gastou ao todo naquela Aptidão para chegar ao Grau indicado, não o preço de cada avanço isolado.
+
+| Grau | ◇ Atributo: dados | XP acumulado | ✦ Conhecimento ou ⚔ Prática: dados | XP acumulado |
+|---:|---|---:|---|---:|
+| **0** | 1d4 | 0 | 1d6 | 0 |
+| **1** | 1d6 | 1 | 1d10 | 2 |
+| **2** | 2d6 | 3 | 2d10 | 4 |
+| **3** | 3d6 | 6 | 3d10 | 8 |
+| **4** | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
+| **5** | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
+| **6** | 3d10 | 32 | 3d12 | 64 |
+
+**Exemplo de compra:** Força no Grau 1 custa **1 XP**. Para passar de Força 1 (1 XP acumulado) para Força 2 (3 XP acumulados), você paga **mais 2 XP**. O mesmo raciocínio vale para Conhecimentos e Práticas: Disciplina 1 custa **2 XP**; avançar para Disciplina 2 custa **mais 2 XP**.
+
+### Como começar a montar sua ficha
+
+No nível 1, você tem **15 XP compartilhados** para construir seu Aprendiz. Primeiro, compre **pelo menos um Atributo no Grau 1** e **pelo menos um Conhecimento ou uma Prática no Grau 1**. Essa escolha mínima custa **3 XP**, deixando **12 XP livres** para desenvolver outras Aptidões ou adquirir Perícias cujos requisitos você cumpra. Algumas origens possuem regras próprias de custo, mostradas na ficha.
+
+**Perícias não são um quarto grupo de dados:** elas representam especializações. Você compra uma Perícia quando atende aos requisitos dela, pagando o XP indicado em sua descrição. Algumas permitem novas combinações ou efeitos, mas não concedem automaticamente dados extras.
+
+### Como combinar Aptidões em uma ação
+
+Normalmente, você escolhe **duas Aptidões de grupos diferentes** que façam sentido para o que está tentando fazer. Por exemplo:
+
+- **◇ Força + ⚔ Atletismo:** subir por uma parede difícil.
+- **◇ Inteligência + ✦ Engenharia:** investigar um mecanismo antigo.
+- **◇ Influência + ⚔ Apresentação:** fazer um discurso diante de uma multidão.
+- **◇ Destreza + ✦ Medicina:** realizar um procedimento que exige precisão.
+
+Você pode começar a escolha por qualquer um dos grupos. O que importa é explicar **como** pretende agir. Não combine normalmente dois Atributos, dois Conhecimentos ou duas Práticas na mesma ação; exceções dependem de habilidades específicas. Algumas Perícias também permitem acrescentar uma **terceira Aptidão**, respeitando seus requisitos.
+
+**Na ficha:** procure **◇**, **✦** e **⚔** para encontrar as fontes dos seus dados. Depois de selecionar as Aptidões, o rolador reúne os dados correspondentes. Você escolhe quais resultados manter, seguindo os limites explicados acima. A combinação de Aptidões **não garante sucesso**: os símbolos mantidos ainda precisam alcançar a Dificuldade de Êxito (DE).
+
+
 ## IV. Resolver ações
 
 1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
