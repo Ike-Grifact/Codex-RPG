@@ -447,38 +447,143 @@ Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio
 
 **O Grau mostra o quanto você desenvolveu uma Aptidão.** Quanto maior o Grau, melhores são os dados que ela pode oferecer. Você gasta **XP (pontos de experiência)** para aumentar seus Graus. Os números dos dados, como **d6** e **d10**, indicam quantas faces eles possuem; durante a rolagem, você lê as **runas** que aparecem, e não soma os números das faces.
 
-### ◇ Atributos — o que seu personagem é capaz de fazer
+### ◇ Atributos — possibilidades e efeitos na ficha
 
-- **Força:** empurrar, erguer, agarrar e realizar esforços físicos.
-- **Agilidade:** movimentar-se, reagir e mudar de posição com rapidez.
-- **Destreza:** executar movimentos precisos e controlar as mãos.
-- **Inteligência:** raciocinar, analisar e encontrar soluções.
-- **Influência:** convencer, negociar e se expressar diante de outras pessoas.
-- **Vigor:** resistir ao esforço, suportar adversidades e manter o fôlego.
+Atributos não são apenas dados: alguns também alteram **Vida, capacidade de carga, deslocamento e defesa**. Outros ajudam a encontrar soluções que não dependem de combate.
 
-Os Atributos são fundamentais: **toda rolagem precisa incluir pelo menos um dado vindo de um Atributo**, mesmo que você decida descartá-lo depois.
+#### ◇ Força
 
-### ✦ Conhecimentos — o que você estudou
+Permite erguer, empurrar, sustentar pesos, agarrar e vencer obstáculos físicos. Não se limita a causar dano: segurar uma passagem para o grupo também é uma ação de Força.
 
-- **Proteção:** compreender defesas, riscos e formas de proteção.
-- **Astronomia:** observar e interpretar astros e fenômenos celestes.
-- **Medicina:** compreender ferimentos, doenças e cuidados com a saúde.
-- **Alquimia:** estudar substâncias, misturas e transformações.
-- **Engenharia:** entender mecanismos, estruturas e soluções técnicas.
-- **Erudição:** investigar saberes, registros e informações especializadas.
+**Na ficha:** A Vida máxima recebe +1 a cada dois graus completos de Força. A carga corporal é 1 + ⌊(Força + Vigor + Atletismo)/3⌋ Alto; portanto, Força pode aumentar quanto você carrega quando a soma ultrapassa o próximo múltiplo de três.
 
-Um Conhecimento ajuda quando sua **compreensão do assunto** faz diferença. Por exemplo, **Inteligência + Medicina** pode ser uma boa combinação para examinar um ferimento.
+**Exemplo:** Força + Atletismo para levantar uma viga e libertar um aliado.
 
-### ⚔ Práticas — o que você treinou
+#### ◇ Agilidade
 
-- **Disciplina:** treinamento usado em ações marciais e mágicas, conforme as Perícias que você possui.
-- **Atletismo:** correr, saltar, escalar e superar obstáculos com o corpo.
-- **Furtividade:** mover-se ou agir sem chamar atenção.
-- **Artesão:** fabricar, trabalhar e reparar objetos com técnicas apropriadas.
-- **Apresentação:** atuar, discursar e realizar apresentações.
-- **Coleta:** procurar, reconhecer e obter recursos no ambiente.
+Ajuda a reagir, mudar de posição, atravessar perigos e alcançar lugares rapidamente.
 
-**Disciplina é uma única Prática.** Você não precisa comprar uma Disciplina para armas e outra para magia. As Perícias determinam quais usos especiais ficam disponíveis.
+**Na ficha:** Cada grau soma 1 metro ao deslocamento padrão e 1 à parcela de Agilidade na DE defensiva natural, respeitando tetos e modificadores.
+
+**Exemplo:** Agilidade + Furtividade para trocar de cobertura sem ser visto.
+
+#### ◇ Destreza
+
+Representa coordenação e precisão: mexer em mecanismos, manusear ferramentas, fazer procedimentos delicados e controlar movimentos.
+
+**Na ficha:** A DE defensiva natural considera ⌊(Destreza + Vigor)/2⌋; um novo grau de Destreza aumenta essa parcela quando a soma alcança o próximo número par.
+
+**Exemplo:** Destreza + Medicina para cuidar de um ferimento difícil.
+
+#### ◇ Inteligência
+
+Ajuda a analisar pistas, estudar máquinas, reconhecer padrões e planejar soluções antes de agir.
+
+**Na ficha:** Não aumenta automaticamente Vida, carga ou DE defensiva natural; seus graus oferecem dados em testes pertinentes e podem cumprir requisitos de Perícias.
+
+**Exemplo:** Inteligência + Engenharia para entender por que uma máquina parou.
+
+#### ◇ Influência
+
+Abre caminhos sociais: negociar, persuadir, inspirar, provocar, convencer ou buscar uma trégua. Um conflito pode terminar sem combate se o inimigo tiver razões para ouvir.
+
+**Na ficha:** Não obriga criaturas a obedecer nem garante uma resolução pacífica. O Narrador considera a compreensão, os interesses e a disposição do interlocutor para determinar se há teste e qual é a DE.
+
+**Exemplo:** Influência + Apresentação para discursar; Influência + Erudição para negociar com base em costumes.
+
+#### ◇ Vigor
+
+Ajuda a suportar esforço, cansaço, desgaste e condições fisicamente exigentes.
+
+**Na ficha:** Cada grau acrescenta 1 à Vida máxima. Também participa da capacidade de carga e da parcela ⌊(Destreza + Vigor)/2⌋ da DE defensiva natural.
+
+**Exemplo:** Vigor + Atletismo para completar uma travessia exaustiva.
+
+**Regra de defesa:** DE natural = mínimo entre 9 e Agilidade + ⌊(Destreza + Vigor)/2⌋ + ⌊Atletismo/3⌋, antes dos modificadores aplicáveis. **Vida máxima = 4 + Vigor + ⌊Força/2⌋.**
+
+Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
+
+### ✦ Conhecimentos — estudo que abre caminhos
+
+Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam possibilidades de testes, não efeitos gratuitos nem substitutos de Perícias exigidas.
+
+#### ✦ Proteção
+
+Estudo de defesas, riscos e maneiras de proteger pessoas e locais.
+
+**Em jogo:** Analisar a segurança de uma passagem.
+
+#### ✦ Astronomia
+
+Estudo dos astros, ciclos e fenômenos celestes.
+
+**Em jogo:** Orientar uma viagem usando o céu.
+
+#### ✦ Medicina
+
+Conhecimento sobre ferimentos, doenças e cuidados.
+
+**Em jogo:** Avaliar uma lesão e escolher como tratá-la.
+
+#### ✦ Alquimia
+
+Estudo de substâncias, misturas e transformações.
+
+**Em jogo:** Investigar um líquido desconhecido.
+
+#### ✦ Engenharia
+
+Compreensão de estruturas, máquinas e mecanismos.
+
+**Em jogo:** Identificar a falha de uma ponte.
+
+#### ✦ Erudição
+
+Estudo de registros, história, cultura e saberes especializados.
+
+**Em jogo:** Interpretar uma inscrição ou tradição.
+
+### ⚔ Práticas — treinamento para agir
+
+Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
+
+#### ⚔ Disciplina
+
+Treino de técnicas marciais e mágicas, conforme as Perícias habilitadoras.
+
+**Em jogo:** Aplicar uma técnica de arma ou conjuração habilitada; não são duas Práticas separadas.
+
+#### ⚔ Atletismo
+
+Treino de corrida, salto, escalada e esforço corporal.
+
+**Em jogo:** Escalar uma parede. Cada três graus completos somam +1 m de deslocamento e +1 à DE defensiva natural.
+
+#### ⚔ Furtividade
+
+Treino de ações discretas e movimentos sem ser notado.
+
+**Em jogo:** Atravessar uma área vigiada.
+
+#### ⚔ Artesão
+
+Treino de fabricação, trabalho manual e reparos.
+
+**Em jogo:** Consertar um equipamento com ferramentas adequadas.
+
+#### ⚔ Apresentação
+
+Treino de atuação, discurso e performance.
+
+**Em jogo:** Prender a atenção de uma plateia.
+
+#### ⚔ Coleta
+
+Treino de procura, identificação e obtenção de recursos.
+
+**Em jogo:** Localizar materiais úteis numa região.
+
+**Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.
 
 ### Quantos dados cada Grau oferece?
 
