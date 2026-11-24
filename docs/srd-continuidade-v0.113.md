@@ -8,3 +8,5 @@
 **Identificador legado:** `espalhar-golpe`, preservado nas fichas.
 
 **Interpretação de dano:** adicional atingido = piso(dano dos Êxitos/2) + dano de Pavor de Golpe Fulminante (se ativado); sem Fulminante, Pavor continua contando para a DE mas não para dano dos adicionais. A metade se aplica à parcela de Êxitos, já incluindo o +1E. A parcela de Pavor não é uma segunda aplicação de Êxitos.
+
+**IMPLEMENTADO no comparador:** seleção dos adicionais antes de rolar, área confirmada pelo Narrador (sem mapa), limite 2 por recurso, +1E único, comparação individual inclusive em falha do alvo principal, prévia de dano e aplicação de Integridade por alvo com confirmação única. Vida dos adicionais, transferência de Pavor entre múltiplos alvos e demais efeitos são resolvidos na mesa. Validação integral de navegador pendente.
