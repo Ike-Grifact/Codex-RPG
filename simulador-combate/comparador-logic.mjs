@@ -357,13 +357,15 @@ export function planColossalTargets(attacker,primary,roster,ids,cost){
  if(!Array.isArray(ids)||new Set(ids).size!==ids.length||ids.length>2*cost)return {ok:false,error:"Selecione até "+(2*cost)+" alvos adicionais distintos."};
  const targets=ids.map(id=>roster.find(x=>x.id===id));
  if(targets.some(t=>!t||t.id===attacker.id||t.id===primary.id||t.side===attacker.side||t.life===0))return {ok:false,error:"Selecione somente adversários válidos, distintos do alvo principal."};
- return {ok:true,cost,bonusE:1,targets:targets.map(t=>({id:t.id,name:t.name,de:defense(t)}))};
+ return {ok:true,cost,bonusE:cost,targets:targets.map(t=>({id:t.id,name:t.name,de:defense(t)}))};
 }
-export function colossalOutcomes(result,targets=[]){
+export function colossalOutcomes(result,targets=[],primaryDE=0){
  const e=Math.max(0,Number(result.e)||0),p=Math.max(0,Number(result.p)||0),reached=e+p;
+ const totalDE=Math.max(0,Number(primaryDE)||0)+targets.reduce((sum,t)=>sum+Math.max(0,Number(t.de)||0),0);
  const mult=result.critical===4?2:1;
  const damageE=Math.floor(e*mult/2);
- return targets.map(t=>{const success=reached>=t.de;return {...t,e,p,reached,success,damageE:success?damageE:0,damageP:0,integrityDamage:success?damageE:0,integrityApplied:false};});
+ const success=result.success===true&&reached>=totalDE;
+ return targets.map(t=>({...t,e,p,reached,totalDE,success,damageE:success?damageE:0,damageP:0,integrityDamage:success?damageE:0,integrityApplied:false}));
 }
 export function planCourageDeclaration(c,{activations=[],weaponCost=0,martialCost=0,extraKeep=false,step=false,healthCost=0}={}){
  const costs=[...activations.map(x=>x.cost),weaponCost,martialCost,Number(extraKeep),Number(step),healthCost];
