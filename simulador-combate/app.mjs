@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-saque-v0110";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-saque-v0110";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-saque-v0110";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0110";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261124-saque-v0111";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-saque-v0111";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-saque-v0111";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-saque-v0111";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -406,13 +406,13 @@ function renderWeapons(){
 }
 function chosenWeapon(){
  const w=equippedWeapons(actor(),catalog(),true).find(w=>w.id===$("weapon-source").value);
- return w?{...w,wasHeld:!!w.equipped,equipped:true}:null;
+ return w?{...w,wasHeld:!!w.equipped,drawMode:drawModeFor(actor(),w),equipped:true}:null;
 }
 function renderDrawControls(){
  const w=chosenWeapon(),a=actor(),old=new Set([...$("draw-stow").selectedOptions].map(o=>o.value));
  $("draw-controls").hidden=!w||w.wasHeld;
  $("draw-stow").innerHTML=(a?.items||[]).filter(x=>x.equipped&&isHandEquipment(x)).map(x=>'<option value="'+esc(x.id)+'"'+(old.has(x.id)?' selected':'')+'>'+esc(x.name)+'</option>').join("");
- $("draw-info").textContent=hasQuickDraw(a)?"Saque Rápido: reserva 1A; sem A, −2E.":"Saque do corpo: −1E.";
+ $("draw-info").textContent=({none:"Arma empunhada: sem penalidade de saque.",quick:"Acesso rápido com Saque Rápido: reserva 1A; sem A, −1E.",normal:"Acesso rápido sem Saque Rápido: Desvantagem Absoluta (−1E).","inventory-trained":"Inventário com Saque Rápido: Desvantagem Absoluta (−1E).","inventory-untrained":"Inventário sem Saque Rápido: Golpe de Sorte (−2E)."})[w?.drawMode||"none"];
 }
 
 function isUnarmedAttack(){
@@ -551,7 +551,7 @@ function renderDice(){
   '<span class="cc-p">'+x.p+'P</span></li>').join("");
  const bonuses=pre.ok?[
   "Peso: "+pre.affinity.description,
-   pre.result.drawSpent?"Saque Rápido: 1A reservado":pre.result.drawPenalty?"Saque: "+pre.result.drawPenalty+"E":null,
+   pre.result.drawSpent?"Saque Rápido: 1A reservado":pre.result.drawPenalty?"Saque: "+(pre.result.drawPenalty===-2?"Golpe de Sorte (−2E)":"Desvantagem Absoluta (−1E)"):null,
    byId(pending?.actor)?.statuses?.caido?"Caído: golpe em Desvantagem (−1A, sem duplicar a condição situacional).":null,
    pre.manejo?.active?pre.manejo.description:null,
   "Situação: "+$("situation").selectedOptions[0]?.textContent,
