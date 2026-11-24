@@ -653,34 +653,25 @@ Você pode começar a escolha por qualquer um dos grupos. O que importa é expli
 
 ### Combinações avançadas — Especializações
 
-Especializações são Perícias que representam domínio avançado de uma Prática ou Conhecimento. Normalmente você combina duas Aptidões pertinentes; com a Especialização adquirida, pode usar a Aptidão especializada como principal e acrescentar até duas outras Aptidões à mesma rolagem. Os dados continuam vindo dos Graus comprados. Não é uma nova categoria de Aptidão, nem um bônus automático de Êxitos.
+À medida que seu personagem desenvolve uma Prática ou um Conhecimento, ele pode aprender a aplicar aquilo que sabe de maneiras mais elaboradas. As **Especializações** são Perícias que permitem reunir até três Aptidões em uma mesma rolagem, em vez das duas habituais. Assim, o personagem pode recorrer a outros talentos para realizar uma ação sem deixar de lado aquilo em que se especializou.
 
-#### Como adquirir uma Especialização
+Cada Prática e cada Conhecimento possui sua própria Especialização. Para adquiri-la, você precisa alcançar o **Grau 3** na Aptidão correspondente e investir **1 XP** na Perícia. Algumas possuem requisitos adicionais, como Furtividade Avançada. Consulte o [catálogo de Perícias](../pericias/index.html) para conhecer cada uma delas. A combinação é passiva, sem custo adicional de ativação; atingir o Grau 3, por si só, não libera a terceira Aptidão.
 
-Existem 12 Especializações de combinação, uma para cada Prática e Conhecimento. Cada uma custa 1 XP, exige Grau 3 na Aptidão correspondente e é passiva para compor a rolagem. Furtividade Avançada exige também a Perícia em Furtividade. A compra do Grau 3 não libera a terceira fonte sozinha: é preciso adquirir a Perícia e manter seus requisitos.
+#### O que você está tentando fazer?
 
-| Perícia | Requisitos | Exemplo de aplicação |
-|---|---|---|
-| ⚔ [Especialização em Disciplina](../pericias/disciplina-avancada.html) | Disciplina 3 | **Disciplina + Força + Agilidade:** Executar um ataque com arma habilitada, aproveitando potência e mobilidade. |
-| ⚔ [Atletismo Avançado](../pericias/atletismo-avancado.html) | Atletismo 3 | **Atletismo + Força + Agilidade:** Superar uma escalada que exige força e controle do corpo. |
-| ⚔ [Furtividade Avançada](../pericias/furtividade-avancada.html) | Furtividade 3 + Perícia em Furtividade | **Furtividade + Agilidade + Destreza:** Atravessar uma área vigiada, controlando posição, ruídos e exposição. |
-| ⚔ [Artesão Avançado](../pericias/artesao-avancado.html) | Artesão 3 | **Artesão + Destreza + Engenharia:** Executar a montagem de uma peça complexa seguindo um projeto. |
-| ⚔ [Apresentação Avançada](../pericias/apresentacao-avancada.html) | Apresentação 3 | **Apresentação + Influência + Erudição:** Realizar um discurso apoiado em conhecimentos culturais. |
-| ⚔ [Coleta Avançada](../pericias/coleta-avancada.html) | Coleta 3 | **Coleta + Destreza + Inteligência:** Procurar e retirar um recurso delicado a partir de indícios. |
-| ✦ [Proteção Avançada](../pericias/protecao-avancada.html) | Proteção 3 | **Proteção + Inteligência + Engenharia:** Avaliar vulnerabilidades de uma fortificação. |
-| ✦ [Astronomia Avançada](../pericias/astronomia-avancada.html) | Astronomia 3 | **Astronomia + Inteligência + Destreza:** Interpretar uma observação celeste que exige precisão. |
-| ✦ [Medicina Avançada](../pericias/medicina-avancada.html) | Medicina 3 | **Medicina + Inteligência + Destreza:** Avaliar uma lesão e executar um procedimento delicado. |
-| ✦ [Alquimia Avançada](../pericias/alquimia-avancada.html) | Alquimia 3 | **Alquimia + Inteligência + Destreza:** Investigar uma substância e manipular uma preparação delicada. |
-| ✦ [Engenharia Avançada](../pericias/engenharia-avancada.html) | Engenharia 3 | **Engenharia + Inteligência + Artesão:** Planejar uma solução técnica considerando sua execução manual. |
-| ✦ [Erudição Avançada](../pericias/erudicao-avancada.html) | Erudição 3 | **Erudição + Inteligência + Influência:** Interpretar costumes e precedentes para fundamentar uma negociação. |
+Imagine que seu grupo esteja atravessando as ruínas de uma antiga fortaleza. Uma parte da ponte desabou, e um sentinela guarda a passagem do outro lado. Você carrega uma lança e precisa decidir como superar o obstáculo.
 
-#### Como utilizar e distinguir a Aptidão principal
+**Atacar durante um salto.** Você toma impulso, salta sobre a abertura e tenta atingir o sentinela com a lança. Seu objetivo é acertar o ataque: **Disciplina** é a Aptidão principal, Atletismo contribui com a técnica do salto e Agilidade com o controle do movimento. Com a Especialização em Disciplina, você pode reunir **Disciplina + Atletismo + Agilidade**, desde que o ataque seja viável e a arma esteja habilitada.
 
-Escolha a Aptidão principal de acordo com o objetivo da ação, não apenas com a quantidade de dados. A Especialização precisa corresponder a essa Aptidão. As duas complementares explicam como você realiza a ação e podem incluir dois Atributos diferentes. Pelo menos um Atributo deve fornecer dado à pilha; respeite a pertinência, as habilitações, o máximo de 9 dados rolados e a retenção de seu Marco, até 4 mantidos. Não repita a mesma Aptidão nem acumule Especializações para obter uma quarta fonte. Exceções específicas, como Manejo Duplo, seguem seus próprios verbetes.
+**Atravessar usando a lança como apoio.** Em vez de enfrentar o sentinela, você procura vencer a abertura da ponte. Usa a lança como apoio para ajudar a transpor o vão e tenta alcançar uma parte firme da estrutura. Agora o objetivo é a travessia, não o ataque. A Aptidão principal é **Atletismo**; Disciplina auxilia no manejo da lança e Agilidade no controle do corpo. Para reunir **Atletismo + Disciplina + Agilidade**, a Especialização pertinente é Atletismo Avançado.
 
-**Uma mesma combinação pode ter objetivos diferentes.** Disciplina + Atletismo + Força: se você pretende acertar um golpe durante uma manobra atlética, Disciplina é a principal; a Especialização em Disciplina habilita a terceira fonte. Atletismo + Disciplina + Agilidade: se o objetivo é transpor um obstáculo usando uma arma como apoio, Atletismo é a principal; Atletismo Avançado habilita a terceira fonte. Ter a Especialização de Disciplina não habilita automaticamente a segunda ação. Combinações de duas Práticas exigem a habilitação aplicável e não dispensam o Atributo.
+Nos dois casos, as três Aptidões são as mesmas, mas a intenção muda. Se você possui apenas a Especialização em Disciplina, ela não habilita a terceira Aptidão na travessia. A Especialização deve corresponder ao que você pretende realizar, não simplesmente à Aptidão que fornece os melhores dados.
 
-Os exemplos são possibilidades de composição, não efeitos gratuitos. Ataques, conjurações, fabricação e tratamentos continuam sujeitos às Perícias, equipamentos e procedimentos específicos. Medicina Avançada também permite tentar remover Sangrando com Medicina predominante, contra a DE defensiva do alvo tratado e com Desvantagem (−1A); sucesso remove a condição, falha a mantém.
+#### Especializar-se também é útil fora do combate
+
+Depois da travessia, o grupo encontra um companheiro ferido. Você examina a lesão para compreender o que aconteceu e precisa manipular o ferimento com cuidado. Com Medicina Avançada, pode combinar **Medicina + Inteligência + Destreza**: Medicina orienta o atendimento, Inteligência ajuda a interpretar os sinais e Destreza auxilia na execução precisa do procedimento. Nesse caso, dois Atributos diferentes complementam um Conhecimento. O tratamento ainda deve seguir as regras e habilitações aplicáveis.
+
+**Na hora de rolar:** escolha a Aptidão especializada como principal e até duas complementares pertinentes. Pelo menos um dado deve vir de um Atributo. Não repita Aptidões nem acumule Especializações para acrescentar uma quarta fonte; exceções expressamente habilitadas seguem seus próprios verbetes. Os limites continuam sendo de 9 dados rolados e até 4 mantidos, respeitando seu Marco. A Especialização amplia suas possibilidades de combinação, mas não concede sucesso automático, ações extras nem efeitos de outras Perícias.
 
 ## IV. Resolver ações
 
