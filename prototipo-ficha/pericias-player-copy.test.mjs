@@ -152,3 +152,12 @@ test("Cravar aplica −1E por arma registrada apenas em Levantar Escudo",()=>{
  assert.match(player,/const shieldCravarPenalty=p\.opts\.shieldRaise&&raisedShield\?\.embeddedWeapon\?1:0;/);
  assert.doesNotMatch(player,/arma cravada: −2E|−2E ao Levantar Escudo/);
 });
+
+
+test("Armas de Longo Alcance: benefício passivo e característica do projétil declarada antes de rolar",()=>{
+ const html=readFileSync(new URL("../pericias/pericia-em-armas-de-longo-alcance.html",import.meta.url),"utf8");
+ assert.match(html,/<dd>2 XP<\/dd>/);assert.match(html,/Disciplina 1 \+ Destreza 2/);assert.match(html,/Ativa \+ benefício passivo/);assert.match(html,/Passivo — Afinidade de peso/);assert.match(html,/Antes de rolar, declare qual flecha ou virote/);assert.match(html,/falha não devolve a Coragem/);assert.match(html,/sem dano à Vida ou à armadura/);assert.match(html,/Mecânicas relacionadas/);assert.doesNotMatch(html,/Regra atualizada|Funcionamento completo|crítico gratuito/);
+ const win={};new Function("window",readFileSync(new URL("../assets/skill-presentation.js",import.meta.url),"utf8"))(win);assert.equal(win.CODEX_SKILL_PRESENTATION.byId["armas-longo-alcance"].type,"Ativa + benefício passivo");assert.equal(win.CODEX_SKILL_PRESENTATION.byId["armas-longo-alcance"].cost,"1 Coragem antes de rolar");
+ assert.match(player,/"armas-longo-alcance":\{type:"Ativa \+ benefício passivo"/);assert.match(player,/id==="armas-longo-alcance"&&\(disc<1\|\|dex<2\)/);
+ const mechanics=readFileSync(new URL("../mecanicas/vantagens-e-desvantagens.html",import.meta.url),"utf8");assert.match(mechanics,/id="longo-alcance"/);assert.match(mechanics,/<td>Arco Curto<\/td><td>−1A<\/td><td>\+1A<\/td><td>0<\/td>/);
+});

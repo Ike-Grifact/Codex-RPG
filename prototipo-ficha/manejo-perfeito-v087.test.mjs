@@ -39,7 +39,7 @@ const evaluate=new Function("hasSkill","itemKind","equipped","attackWeight","tar
  'const ownsSkill=id=>["manejo-perfeito","armas-leves","armas-medias","armas-pesadas"].includes(id)&&hasSkill;'+
  'const skillReq=()=>null,equipmentWeight=item=>item.category;'+
  'const raw=[2,1,0],critTier=0,criticalConverted=0,properties=[],health={a:0};'+
- aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored};');
+ part("function projectileFamily(","function ammoTypesFor(")+aff+roller+'return {eBase,aPool,manejoPerfeitoActive,manejoPerfeitoGolpeCerto,lightWeightIgnored,mediumWeightIgnored,heavyWeightIgnored};');
 function scenario({hasSkill=true,itemKind="arma",equipped=true,attackWeight="leve",targetWeight="medio",condition="normal",mode="armas",weightEnabled=true}={}){
  return evaluate(hasSkill,itemKind,equipped,attackWeight,targetWeight,condition,mode,weightEnabled);
 }

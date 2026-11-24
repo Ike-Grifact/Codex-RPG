@@ -517,7 +517,7 @@ const SKILLS=[
  [
   "armas-longo-alcance",
   "Perícia em Armas de Longo Alcance",
-  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 Coragem ativa uma segunda; acerto normal exige 1 Coragem.",
+  "Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.",
   2
  ],
  [
@@ -1421,7 +1421,7 @@ const CARD_EFFECTS={
  "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue; conjuração ativa. 3 marcas disponíveis de sangue inimigo recuperam +1 Vida, mantendo custo 1 XP e requisitos Transfusão + Elemento Sangue.",
- "armas-longo-alcance": "Arcos e bestas: ativa efeitos, remove Desvantagens naturais por peso",
+ "armas-longo-alcance": "Ignora Desvantagens naturais de peso passivamente; ativa a característica do projétil declarado por 1 Coragem.",
  "golpe-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "espalhar-golpe": "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
  "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
@@ -1509,7 +1509,7 @@ const CARD_BRIEFS={
  "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
  "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
  "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
- "armas-longo-alcance": "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especi…",
+ "armas-longo-alcance": "Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.",
  "golpe-fulminante": "1 Coragem antes de rolar; eleva um dado de arma corpo a corpo e cada Pavor válido causa 1 dano no acerto, sem impedir sua transferência aos inimigos.",
  "espalhar-golpe": "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
  "maestria-arremesso-armas": "Qualquer personagem pode arremessar uma arma sem esta Perícia, causar dano básico, passar a um aliado ou afastar uma arma de inimigo. A Perícia permite ativar os efeitos próprios da arma ao acertar pagando 1 Coragem, e exige possuir a especialização corpo a corpo do peso usado. Al…",
@@ -1599,7 +1599,7 @@ const CARD_ACTIVATIONS={
  "criar-antidoto": "1 dose remove 1 acúmulo",
  "transfusao": "Custo de Vida; custo de ativação PENDENTE",
  "transfusao-sanguinaria": "Conjuração ativa · custo e procedimento pendentes",
- "armas-longo-alcance": "1 Coragem no acerto comum; crítico gratuito",
+ "armas-longo-alcance": "1 Coragem antes de rolar",
  "golpe-fulminante": "1 Coragem antes de rolar",
  "espalhar-golpe": "1 Coragem antes de rolar; +1 por até 2 outros alvos",
  "maestria-arremesso-armas": "1 Coragem ao acertar para ativar efeitos",
@@ -1643,6 +1643,7 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "armas-longo-alcance":{type:"Ativa + benefício passivo","intro":"Você domina o disparo de projéteis e sabe explorar suas características contra as defesas do oponente.","benefits":["Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício.","Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem.","Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação."],"note":"Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.","mechanics":[["vantagens-e-desvantagens","Vantagens e Desvantagens"],["caracteristicas-de-combate","Características de Armas, Golpes e Magias"],["declaracao-de-ataque","Declaração de ataque e Coragem"],["inventario-e-acesso-rapido","Inventário e acesso rápido"]]},
  "espalhar-golpe":{type:"Ativa",intro:"Você executa um golpe de grande amplitude, capaz de atingir diversos adversários ao seu redor.",benefits:["Potência colossal. Ao ativar esta Perícia, receba +1E na rolagem de ataque.","Espalhar golpe. Além do alvo principal, escolha até dois alvos adicionais em um raio de 3 metros centrado em você. Compare o mesmo resultado da rolagem com a DE individual de cada alvo.","Dano em área. O alvo principal recebe o dano integral. Os alvos adicionais atingidos recebem metade do dano dos Êxitos, arredondada para baixo. O Pavor válido continua contribuindo para superar a DE individual, mas não causa dano aos alvos adicionais, mesmo com Golpe Fulminante ativo. O dano de Pavor de Golpe Fulminante permanece restrito ao alvo principal.","Ampliação. Antes de rolar, você pode gastar mais 1 Coragem para incluir até dois outros alvos dentro da mesma área, respeitando o teto de 5 Coragens por turno. O raio e o bônus de +1E não aumentam."],mechanics:[["declaracao-de-ataque","Declaração de ataque e Coragem"]]},
  "golpe-fulminante":{type:"Ativa",intro:"Você concentra sua força em um golpe corpo a corpo, elevando o potencial da arma e convertendo o risco em dano.",benefits:["Elevação da arma. Antes de rolar, gaste 1 Coragem para elevar um dado da arma habilitada: d6 → d10, d10 → d12 ou d12 → 2d12. Respeite o limite de 9 dados rolados.","Dano de Pavor. No acerto, cada Pavor mantido e não anulado causa 1 dano em vez da contribuição normal de metade. Esse Pavor continua sendo transferido aos inimigos conforme a regra de transferência.","Combinação de técnicas. Declare e pague esta Perícia junto às demais ativações e recursos antes de rolar. O custo da tentativa permanece na falha; o crítico não dispensa a ativação, mas mantém a recuperação normal de Coragem. Respeite o teto de 5 Coragens por turno."],note:"Para usar: ataque corpo a corpo com dado de arma habilitado. Para arremesso de armas, utilize Disparo Fulminante. Pugilismo satisfaz o requisito de compra, mas não cria um dado de arma para socos sem equipamento.",mechanics:[["declaracao-de-ataque","Declaração de ataque e Coragem"]]},
  "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar para uma arma de acesso rápido durante um ataque, gaste 1 Antecipar obtido na própria rolagem para atacar sem a penalidade do saque. Sem esse símbolo, aplica-se a Desvantagem Absoluta normal do saque (−1 Êxito).","Arma guardada. Sacar uma arma de dentro do inventário para atacar causa Desvantagem Absoluta (−1 Êxito), mesmo com esta Perícia. Sem Saque Rápido, esse ataque é um Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
@@ -2129,7 +2130,7 @@ const WIZARD_TRAINING_GUIDE={
 };
 const freshDraft=()=>({base:null,attribute:null,third:null,mode:"normal",de:1,situation:"normal",
   extraKeep:false,step:false,stepSourceId:"",fulminante:"",attackThrown:false,domarActivate:false,combatBonus:false,weightEnabled:false,attackWeight:"leve",targetWeight:"medio",
-  shieldRaise:false,contextOK:false,equipmentId:"",trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
+  shieldRaise:false,contextOK:false,equipmentId:"",shotChoice:"",shotActivate:false,trevas:false,cravarRemovalShieldId:"",cravarRemovalDEConfirmed:false,
   shieldThrowId:"",shieldThrowMeters:8,maosLeves:false,stealthAttack:false,potionResearch:false,asura:false,asuraDieId:"",
   magicElement:"",magicSecondElement:"",magicGrade:1,magicFocusId:"",magicSecondFocusId:"",magicCharges:0,magicAmplify:false,magicGradeConfirmed:false,magicTimeConfirmed:false});
 // Múltiplas fichas de jogadores compartilham a lógica da ficha, nunca suas compras ou saldos.
@@ -2475,6 +2476,23 @@ function normalize(v){
  return s;
 }
 // Kit de projéteis: um lote comercial de 20, sem alterar o preço de referência.
+function projectileFamily(weapon){
+ if(!weapon)return "";
+ const n=String(weapon.name||"").toLowerCase();
+ return /^arco curto/.test(n)?"arco-curto":/^arco longo/.test(n)?"arco-longo":/^besta de uma mão/.test(n)?"besta-1m":/^besta de duas mãos|^besta pesada/.test(n)?"besta-2m":/^zarabatana/.test(n)?"zarabatana":"";
+}
+function shotChoices(items,weapon){
+ const family=projectileFamily(weapon);
+ if(!family)return [];
+ return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+type+" ("+n+")"})));
+}
+function planShot(items,weapon,id,type){
+ if(!projectileFamily(weapon))return {ok:true,items,shot:null};
+ const choice=shotChoices(items,weapon).find(x=>x.id===id&&x.type===type);
+ if(!choice)return {ok:false,error:"Sem projétil compatível selecionado em recipiente de acesso rápido."};
+ const next=items.map(x=>x.id===id?{...x,ammoMix:{...x.ammoMix,[type]:Number(x.ammoMix[type])-1}}:x);
+ return {ok:true,items:next,shot:{id,type,remaining:choice.n-1}};
+}
 function ammoTypesFor(family){return family==="zarabatana"?["Dardo"]:["Cortante","Perfurante"];}
 function ammoCount(mix={}){return Object.values(mix||{}).reduce((n,x)=>n+Math.max(0,Math.floor(Number(x)||0)),0);}
 function normalizeAmmoMix(mix,family){
@@ -2508,7 +2526,9 @@ function refillAmmo(id){
  if(!targets.length){toast("Não há porta-munições compatível com espaço livre.");return;}
  let target=targets[0];
  if(targets.length>1){const v=prompt("Escolha o recipiente:\n"+targets.map((x,i)=>(i+1)+". "+x.name+" ("+ammoCount(x.ammoMix)+"/20)").join("\n"),"1");if(v===null)return;target=targets[Number(v)-1];if(!target){toast("Recipiente inválido.");return;}}
- const moved=moveAmmoMix(source.ammoMix,target.ammoMix,ammoTypesFor(source.ammoFamily));source.ammoMix=moved.from;target.ammoMix=moved.to;
+ const moved=moveAmmoMix(source.ammoMix,target.ammoMix,ammoTypesFor(source.ammoFamily));
+ if(itemPosition(target)==="quick"&&bodyLoad()+Number(target.ammoLotWeight||0)*moved.moved/20>bodyCapacity()+1e-9){toast("Reposição excede a capacidade corporal; guarde o recipiente ou libere carga.");return;}
+ source.ammoMix=moved.from;target.ammoMix=moved.to;
  if(!ammoCount(source.ammoMix))state.items=state.items.filter(x=>x!==source);
  render();save();toast(moved.moved+" projéteis transferidos para "+target.name+".");
 }
@@ -2528,6 +2548,7 @@ function canHoldItem(it,hands=itemHands(it)){
  return others.every(x=>itemHands(x)>0&&x.qty===1)&&others.reduce((n,x)=>n+itemHands(x),0)+hands<=2;
 }
 function setItemPosition(it,pos){
+ if(pos!=="bag"&&!validBodyChange(it,pos))return false;
  if(it.ammoRole==="container"){if(!["bag","quick"].includes(pos))return false;it.position=pos;it.equipped=false;return true;}
  if(!handItem(it)||!["bag","quick","hands"].includes(pos)||pos==="quick"&&it.type!=="arma")return false;
  if(pos==="hands"&&!canHoldItem(it)){toast("Informe 1 ou 2 mãos, use uma entrada de quantidade 1 e libere as mãos necessárias.");return false;}
@@ -2787,7 +2808,8 @@ function dependentsValid(testState){
  const invalid=testState.skills.find(id=>skillReq(id,testState));
  return invalid?skillReq(invalid,testState):null;
 }
-function movement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function baseMovement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function movement(s=state){return baseMovement(s)*(s===state&&!NPC_MODE&&loadPercent()>=100?.5:1);}
 function renderXP(){
  const x=xpCosts();
  $("xp-total-spent").textContent=x.total+" XP";
@@ -2910,7 +2932,12 @@ function defensePresentation(s=state){
   "DE base "+natural;
  return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 9 / final 12"};
 }
-function capacity(){return 1+Math.floor(((state.attributes.forca||0)+(state.attributes.vigor||0)+(state.practices.atletismo||0))/3);}
+function capacity(){return 1.5+Math.floor(((state.attributes.forca||0)+(state.attributes.vigor||0)+(state.practices.atletismo||0))/3);}
+function bodyCapacity(){return capacity()-.5;}
+function bodyLoad(items=state.items){return items.filter(it=>itemPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+itemLoad(it),0);}
+function quickSlots(items=state.items){return items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+it.qty,0);}
+function backpackLoad(){return loadUsed()-bodyLoad();}
+function validBodyChange(it,pos){const items=state.items.map(x=>x===it?{...x,position:pos,equipped:pos==="hands"||pos==="worn"}:x);if(quickSlots(items)>3){toast("Acesso rápido: máximo de 3 espaços.");return false;}if(bodyLoad(items)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente; guarde equipamento ou aumente Força, Vigor e Atletismo.");return false;}return true;}
 function itemLoad(it){
  if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
  const regular=it.ammoRole==="supply"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1)+(it.ammoRole==="container"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:0);
@@ -2934,7 +2961,7 @@ function purchaseLoadPreview(entry,price){
   status:percent>=100?"over":percent>=75?"heavy":"normal"};
 }
 function purchaseLoadMarkup(preview){
- const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso). A compra não é bloqueada.":
+ const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso): −2E nos testes afetados e metade do deslocamento. A compra não é bloqueada.":
   preview.status==="heavy"?"Atenção: ficará Pesado, com pouca margem para transportar outros itens.":
   "A compra permanece abaixo do patamar Pesado.";
  return '<div class="fp-purchase-load fp-purchase-load-'+preview.status+'"><strong>Carga após compra: '+
@@ -2955,7 +2982,7 @@ const CARGO_CELL_ALTO=0.05;
 const CARGO_TYPES=new Set(["arma","armadura","escudo","foco"]);
 function cargoCapacitySources(){
  const sources=[
-  ["Base",null,1],["Força",state.attributes.forca||0,0],
+  ["Corpo base",null,1],["Mochila",null,.5],["Força",state.attributes.forca||0,0],
   ["Vigor",state.attributes.vigor||0,0],
   ["Atletismo",state.practices.atletismo||0,0]
  ];
@@ -2963,7 +2990,7 @@ function cargoCapacitySources(){
 }
 function cargoCapacitySourcesMarkup(){
  return cargoCapacitySources().map(src=>
-  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>'+(src.grade===null?'+1 Alto':src.gain+' graus')+'</strong></div>'
+  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>'+(src.grade===null?'+'+src.gain+' Alto':src.gain+' graus')+'</strong></div>'
  ).join("");
 }
 function cargoGridMarkup(){
@@ -4199,10 +4226,10 @@ function renderVitals(){
  $("de-caption").textContent="Base "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga"+(loadPercent()>=100?" · −2E / metade do deslocamento":"");
  if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
- $("move-caption").textContent="Por deslocamento";
+ $("move-caption").textContent=!NPC_MODE&&loadPercent()>=100?"Sobrepeso · metade do deslocamento":"Por deslocamento";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
  const bands=health.bands;
  $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
@@ -4239,10 +4266,10 @@ function vitalHelpDetails(kind){
  "Ocupação: "+used+" / "+capacity()+" = "+percent+"%. Faixas: abaixo de 25% Muito Leve; 25–49% Leve; 50–74% Médio; 75–99% Pesado; 100% ou mais Muito Pesado.",
  "Classificação atual do criador (playtest)."],
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
- "Capacidade = 1 + ⌊Força ("+(a.forca||0)+")/3⌋ + ⌊Vigor ("+(a.vigor||0)+")/3⌋ + ⌊Disciplina ("+(p.armas_conjuracao||0)+")/3⌋ + ⌊Atletismo ("+(p.atletismo||0)+")/3⌋ = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Capacidade = 1,5 + piso((Força "+(a.forca||0)+" + Vigor "+(a.vigor||0)+" + Atletismo "+(p.atletismo||0)+")/3) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
- movement:["Movimento","Deslocamento básico antes de efeitos situacionais e Perícias específicas.",
- "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+movement()+" m.",
+ movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrepeso; outros efeitos seguem suas regras.",
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: metade = "+movement()+" m.":""),
  "Fórmula atual da ficha · Agilidade e Atletismo."]
  };
  return entries[kind]||null;
@@ -4446,7 +4473,7 @@ function buildPool(){
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
   const dice=combatItem(item,draft.mode);
-  if(!dice.length)errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
+  if(!dice.length&&!(draft.mode==="armas"&&item?.equipped&&projectileFamily(item)))errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
  if(draft.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||draft.maosLeves||draft.mode==="conjuracao"||draft.shieldThrowId))
@@ -4496,8 +4523,9 @@ function buildPool(){
   else{chosen.baseSides=chosen.sides;chosen.sides=20;chosen.asuraSpecial=true;}
  }
  if(pool.length>9)errors.push("A pilha ultrapassa o limite de 9 dados rolados.");
+ const shot=prepareShot();if(!shot.ok)errors.push(shot.error);
  const spellCost=draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0;
- const totalPreparationCost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+spellCost+Number(!!draft.shieldThrowId)+
+ const totalPreparationCost=Number(shot.cost||0)+Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+spellCost+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?lifeStage().coragem:0);
  if(totalPreparationCost>5)errors.push("Máximo de 5 Coragens por rolagem, incluindo Grau, amplificação e condição.");
  if(totalPreparationCost+Number(state.courageRoundSpent||0)>5)errors.push("Máximo de 5 Coragens por rodada. Confirme a próxima rodada antes de agir novamente.");
@@ -4514,6 +4542,15 @@ function buildPool(){
    errors.push("Retirar Cravar é teste de remoção, sem afinidade de ataque, equipamento de ataque nem defesa simultânea.");
  }
  return{errors,pool};
+}
+function prepareShot(){
+ const weapon=draft.mode==="armas"&&draft.base?.key==="armas_conjuracao"&&!draft.shieldRaise&&!draft.shieldThrowId?state.items.find(x=>x.id===draft.equipmentId&&x.equipped):null;
+ if(!projectileFamily(weapon))return {ok:true,items:state.items,shot:null,cost:0};
+ const [id,type]=String(draft.shotChoice||"").split("|");
+ const plan=planShot(state.items,weapon,id,type);
+ if(!plan.ok)return plan;
+ if(draft.shotActivate&&(!ownsSkill("armas-longo-alcance")||skillReq("armas-longo-alcance")))return {ok:false,error:"Ativar característica do projétil exige Armas de Longo Alcance."};
+ return {...plan,cost:Number(!!draft.shotActivate),effect:draft.shotActivate?(projectileFamily(weapon)==="zarabatana"?"Envenenar":type):""};
 }
 function renderComposer(){
  const box=$("composer-content"),stat=$("composer-status");
@@ -4540,7 +4577,7 @@ function renderComposer(){
   const eligible=state.items.filter(x=>combatItem(x,draft.mode).length>0);
   if(eligible.length===1)draft.equipmentId=eligible[0].id;
  }
- const {errors,pool}=buildPool(),cost=Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
+ const {errors,pool}=buildPool(),cost=Number(prepareShot().cost||0)+Number(draft.extraKeep)+Number(draft.step)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+(draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0)+Number(!!draft.shieldThrowId)+lifeStage().coragem;
  const removalShield=draft.cravarRemovalShieldId?
   state.items.find(it=>it.id===draft.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
  const removalHint=draft.cravarRemovalShieldId?
@@ -4560,8 +4597,11 @@ function renderComposer(){
  const gearOptions=throwingShield?"":spellSelection?magicComposerFields():
   usingDiscipline()?'<label class="fp-form-field full">Arma (dado extra somente de arma habilitada)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&x.type==="arma")
-     .map(x=>[x.id,x.name+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
+     .map(x=>[x.id,x.name+(x.range?" · "+effectiveWeaponRange(x)+" m":"")+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':"";
+ const shots=projectileFamily(selectedItem)&&draft.mode==="armas"&&!draft.shieldRaise&&!throwingShield?shotChoices(state.items,selectedItem):[];
+ const shotFields=projectileFamily(selectedItem)&&draft.mode==="armas"&&!draft.shieldRaise&&!throwingShield?'<label class="fp-form-field full">Projétil (consome 1 ao rolar) '+select("shotChoice",[["","Selecione a munição"],...shots.map(x=>[x.id+"|"+x.type,x.label])],draft.shotChoice)+'</label>'+
+ (ownsSkill("armas-longo-alcance")&&!skillReq("armas-longo-alcance")?'<label class="fp-checkline full"><input type="checkbox" data-option="shotActivate"'+(draft.shotActivate?' checked':'')+'> Ativar característica do projétil por 1 Coragem (Zarabatana: somente com dardo preparado)</label>':""):'';
  const stepOptions=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])].filter(source=>
   source&&(state[SOURCE_PROPS[source.group]]?.[source.key]||0)<6).map(source=>{
   const grade=state[SOURCE_PROPS[source.group]][source.key]||0;
@@ -4603,7 +4643,7 @@ function renderComposer(){
  "";
  const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Lançamento: 1 Coragem; Disciplina + Atributo(s), até 8 m, sem dado adicional de escudo. No acerto, dano físico normal, características da peça conforme custos/gatilhos e retorno no mesmo turno. Na falha, queda conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
  const options=throwDetails+(draft.maosLeves?'<div class="fp-alert"><strong>MÃOS LEVES:</strong> exceção exclusiva de Disciplina + Furtividade. DE inimiga + Grau do item + peso somente se equipado. Não é ataque nem causa dano; o Narrador confirma retirada do item.</div>':"")+
- '<div class="fp-form-grid">'+(isShared&&!draft.maosLeves?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+(draft.maosLeves?"":gearOptions)+
+ '<div class="fp-form-grid">'+(isShared&&!draft.maosLeves?'<label class="fp-form-field full">Uso da Prática compartilhada '+select("mode",modes,draft.mode)+'</label>':"")+(draft.maosLeves?"":gearOptions+shotFields)+
  '<label class="fp-form-field">Dificuldade de Êxito <input data-option="de" type="number" min="0" max="30" value="'+draft.de+'"></label>'+
  '<label class="fp-form-field">Condição da ação '+select("situation",Object.entries(SITUATIONS).map(([k,v])=>[k,v[0]]),draft.situation)+'</label>'+
  (draft.weightEnabled?'<label class="fp-form-field">Peso tático do ataque '+select("attackWeight",[["leve","Leve"],["medio","Médio"],["pesado","Pesado"]],draft.attackWeight)+'</label><label class="fp-form-field">Armadura do alvo humanoide (ou porte de criatura) '+select("targetWeight",weight,draft.targetWeight)+'</label>':"")+
@@ -4628,7 +4668,8 @@ function randomFace(n){
 function roll(){
  const health=lifeStage();
  if(health.id==="morto"){toast("Vida zero: personagem morto não pode agir.");return;}
- const precoPrevisto=health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+Number(!!draft.shieldThrowId)+
+ const shot=prepareShot();if(!shot.ok){toast(shot.error);return;}
+ const precoPrevisto=Number(shot.cost||0)+health.coragem+Number(draft.extraKeep||0)+Number(draft.step||0)+Number(!!draft.fulminante)+Number(!!draft.domarActivate)+Number(!!draft.shieldThrowId)+
   (draft.mode==="conjuracao"&&draft.magicElement?magicCourageCost():0);
  if(precoPrevisto>5||precoPrevisto+Number(state.courageRoundSpent||0)>5){toast("Limite de 5 Coragens por rodada (e por rolagem) excedido.");return;}
  if(precoPrevisto>state.courage){toast("Coragem insuficiente: "+health.label+" e a preparação exigem "+precoPrevisto+" Coragem.");return;}
@@ -4637,9 +4678,10 @@ function roll(){
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  // Técnicas Fulminantes e retenção adicional física são pagas antes de gerar as faces.
- const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step):0;
+ const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step)+Number(shot.cost||0):0;
+ state.items=shot.items;
  state.courage-=prepaidCourage;state.courageRoundSpent=Number(state.courageRoundSpent||0)+prepaidCourage;
- state.pending={prepaidCourage,created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
+ state.pending={prepaidCourage,shot:shot.shot,shotEffect:shot.effect||"",shotCost:shot.cost||0,created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
   shieldThrowId:draft.shieldThrowId||"",
   base:{...draft.base},attribute:{...draft.attribute},
   third:draft.third?{...draft.third}:null,mode:draft.mode,
@@ -4733,7 +4775,9 @@ function score(){
  const passivePiercing=!!(item?.equipped&&item.firearm&&properties.includes("Perfurante"));
  const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
- const naturalWeight=p.opts.weightEnabled?affinity(p.opts.attackWeight,p.opts.targetWeight):0;
+ const rangedFamily=projectileFamily(item);
+ const rangedWeights={"arco-curto":{leve:-1,medio:1,pesado:0},"arco-longo":{leve:-1,medio:0,pesado:1},"besta-1m":{leve:0,medio:0,pesado:0},"besta-2m":{leve:-1,medio:0,pesado:1}};
+ const naturalWeight=p.opts.weightEnabled?(rangedFamily?(/^besta pesada|^zarabatana/i.test(item.name)?0:rangedWeights[rangedFamily]?.[p.opts.targetWeight]||0):affinity(p.opts.attackWeight,p.opts.targetWeight)):0;
   // Perícias de armas anulam SOMENTE a Desvantagem natural (−1A) contra a armadura especificada.
   const weaponWeight=item?.type==="arma"&&item.equipped&&!item.firearm?equipmentWeight(item):null;
   const weightSpecialty={
@@ -4741,9 +4785,9 @@ function score(){
    medio:{id:"armas-medias",versus:"medio"},
    pesado:{id:"armas-pesadas",versus:"leve"}
   }[p.opts.attackWeight];
-  const weightSpecialtyIgnored=naturalWeight===-1&&p.mode==="armas"&&
+  const weightSpecialtyIgnored=naturalWeight===-1&&p.mode==="armas"&&(rangedFamily?ownsSkill("armas-longo-alcance")&&!skillReq("armas-longo-alcance"):
    weaponWeight===p.opts.attackWeight&&p.opts.targetWeight===weightSpecialty?.versus&&
-   ownsSkill(weightSpecialty.id)&&!skillReq(weightSpecialty.id);
+   ownsSkill(weightSpecialty.id)&&!skillReq(weightSpecialty.id));
   const lightWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="leve";
   const mediumWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="medio";
   const heavyWeightIgnored=weightSpecialtyIgnored&&p.opts.attackWeight==="pesado";
@@ -4810,6 +4854,7 @@ function score(){
  // já ocorre uma única vez ao confirmar. Especialização fornece somente a
  // PRIMEIRA característica gratuita na declaração.
  const declaredProperties=[p.characteristic,p.secondCharacteristic].filter(Boolean);
+ courageCost+=Number(p.shotCost||0);
  const paidProperties=declaredProperties.filter(prop=>
   !(freeElementEffect&&prop==="Elemental")&&!(passivePiercing&&prop==="Perfurante"));
  if(declaredProperties.includes("Envenenar")&&(!poisonOnly||!item?.equipped||!ownsSkill("armas-longo-alcance")||skillReq("armas-longo-alcance")||declaredProperties.length!==1))errs.push("Envenenar exige Zarabatana, dardo preparado e Armas de Longo Alcance habilitada.");
@@ -4817,6 +4862,7 @@ function score(){
   weaponMasteryCanActivate(item,state)?1:0;
  courageCost+=Math.max(0,paidProperties.length-masteryFree);
  const active=success&&passivePiercing?["Perfurante"]:[];
+ if(success&&p.shotEffect==="Envenenar")active.push("Envenenar");
  if(success&&p.characteristic){
   // Crítico e gasto de Coragem não habilitam características sem Perícia do peso da arma.
   const weaponSkillId=weaponWeight==="leve"?"armas-leves":weaponWeight==="medio"?"armas-medias":
@@ -4932,7 +4978,7 @@ function renderPending(){
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
- const specials=(s.poisonOnly?(ownsSkill("armas-longo-alcance")&&!skillReq("armas-longo-alcance")?["Envenenar"]:[]):(item?.properties||[]).filter(x=>x!=="Envenenar")).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar")&&
+ const specials=p.shot?[]:(s.poisonOnly?(ownsSkill("armas-longo-alcance")&&!skillReq("armas-longo-alcance")?["Envenenar"]:[]):(item?.properties||[]).filter(x=>x!=="Envenenar")).filter(x=>ACTIVE_PROPERTIES.has(x)&&!(item?.firearm&&x==="Perfurante")&&!(p.shieldThrowId&&x==="Cravar")&&
   (x!=="Cravar"||((item?.category==="medio"||item?.weight==="medio")&&ownsSkill("armas-medias")&&!skillReq("armas-medias"))||
    ((item?.category==="pesado"||["alto","extremo"].includes(item?.weight))&&ownsSkill("armas-pesadas")&&!skillReq("armas-pesadas"))));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
@@ -4974,7 +5020,7 @@ function renderPending(){
    '<p class="fp-caption">Fogo G2 Queimar: 0 Coragem com Perícia e Grau habilitados, inclusive sem foco quando houver fonte elemental disponível. Fogo G3 Derreter: 1 Coragem. G4 plena (dois G3): 1 Coragem por elemento elevado + 1 Antecipar de mistura; a composição G4 ainda é manual.</p>'+
    '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
   :'')+'</div>':"";
- const controls='<div class="fp-form-grid">'+
+ const controls=(p.shot?'<p class="fp-caption">Projétil consumido: '+esc(p.shot.type)+' · restante: '+p.shot.remaining+(p.shotEffect?' · característica declarada: '+esc(p.shotEffect)+(s.success?' (acerto; '+(p.shotEffect==="Envenenar"?"aplique Envenenamento":"efeito específico pendente de resolução pelo Narrador")+')':' (sem efeito na falha)'):"")+'</p>':"")+'<div class="fp-form-grid">'+
  selectNumber("cancelP","Anular Pavor (1A por 1P)",Math.min(s.pAvailable,s.aPool),p.cancelP)+
  selectNumber("pairs","Converter 2A em 1E",Math.floor(s.aPool/2),p.pairs)+
  selectNumber("pass","Passar ação ao aliado (1A)",1,p.pass)+'</div>'+effects+trevasPayment+hemoControl+fireControl;
@@ -5187,7 +5233,7 @@ function renderInventory(){
  if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
  if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional.";
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: −2E nos testes afetados e metade do deslocamento. Abrangência e aplicação de −2E pendentes.":"");
  const cargoPanel=$("inventory-cargo-panel");
  if(cargoPanel)cargoPanel.hidden=NPC_MODE;
  if(!NPC_MODE&&cargoPanel){
@@ -5198,10 +5244,10 @@ function renderInventory(){
   grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+balance()+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
   const parts=cargoCapacitySources();
   $("inventory-capacity-sources").innerHTML=cargoCapacitySourcesMarkup();
-  $("inventory-capacity-equation").textContent="1 + ⌊(Força "+(state.attributes.forca||0)+" + Vigor "+(state.attributes.vigor||0)+" + Atletismo "+(state.practices.atletismo||0)+") / 3⌋ = "+max+" Alto · somar os três graus antes de dividir";
+  $("inventory-capacity-equation").textContent="1,5 + ⌊(Força "+(state.attributes.forca||0)+" + Vigor "+(state.attributes.vigor||0)+" + Atletismo "+(state.practices.atletismo||0)+") / 3⌋ = "+max+" Alto · somar os três graus antes de dividir";
   const overflow=$("inventory-cargo-overflow");
-  overflow.hidden=!(load>max);
-  overflow.textContent=load>max?"Capacidade excedida em "+pad(load-max)+" Alto. Nenhuma nova penalidade foi definida.":"";
+  overflow.hidden=!(load>max||bodyLoad()>bodyCapacity()+1e-9||backpackLoad()>.5+1e-9||quickSlots()>3);
+  overflow.textContent=overflow.hidden?"":"Capacidade por compartimento excedida. Reorganize os itens; fichas antigas não perdem equipamentos automaticamente.";
  }
  const filterSelect=(opts,current,attribute)=>'<select '+attribute+'>'+opts.map(([id,label])=>
   '<option value="'+id+'"'+(current===id?' selected':'')+'>'+esc(label)+'</option>').join("")+'</select>';
@@ -5209,7 +5255,7 @@ function renderInventory(){
   filterSelect(EQUIPMENT_FAMILIES,inventoryType,'data-inventory-type aria-label="Filtrar inventário por tipo"')+'</label>'+
   '<label>Peso '+filterSelect(EQUIPMENT_WEIGHT_OPTIONS,inventoryWeight,'data-inventory-weight aria-label="Filtrar inventário por peso"')+'</label>'+
   '<span class="fp-filter-count">'+state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight)).length+' de '+state.items.length+' itens</span></div>';
- $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+state.items.filter(it=>itemPosition(it)==="quick").length+' entradas · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Alto (parte da carga total; sem teto de slots definido).</p>');
+ $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+quickSlots()+'/3 espaços · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Alto · Corpo '+pad(bodyLoad())+'/'+bodyCapacity()+' Alto · Mochila '+pad(backpackLoad())+'/0,5 Alto · Mãos '+state.items.filter(it=>handItem(it)&&it.equipped).reduce((n,it)=>n+itemHands(it),0)+'/2.</p>');
  const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
  const positionOrder={hands:0,quick:1,bag:2};
  const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
@@ -5255,7 +5301,7 @@ function renderInventory(){
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
-  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Mochila"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
@@ -5266,8 +5312,8 @@ function renderInventory(){
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  (it.ammoRole==="container"?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],["quick","Acesso rápido"]],it.id)+'</label></div>':"")+
-  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
+  (it.ammoRole==="container"?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],["quick","Acesso rápido"]],it.id)+'</label></div>':"")+
+  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+((it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick")?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick"?"✓":"○")+'</button>'+
@@ -5288,7 +5334,7 @@ function renderInventory(){
    '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+it.grade+'" value="'+(it.focusCharges??it.grade)+'"></label>'+
    ' / '+it.grade+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??it.grade)>=it.grade?" disabled":"")+'>Encerrar rodada: +1 carga</button>'+
    '<small>Recarga gradual manual no fim de cada rodada; Pedra da Alma não recarrega naturalmente.</small></div>':"")+
-  (it.ammoRole?'<div class="fp-item-hint"><b>Projéteis: '+ammoCount(it.ammoMix)+' / 20</b> · consumo manual '+ammoTypesFor(it.ammoFamily).map(k=>'<label>'+esc(k)+' <input type="number" data-item-field="ammoMix" data-ammo-type="'+esc(k)+'" data-id="'+esc(it.id)+'" min="0" max="'+(it.ammoMix?.[k]||0)+'" value="'+(it.ammoMix?.[k]||0)+'" style="width:60px"></label>').join(" ")+(it.ammoRole==="supply"?' <button type="button" class="fp-secondary" data-action="ammo-refill" data-id="'+esc(it.id)+'">Transferir para recipiente</button>':"")+'</div>':"")+
+  (it.ammoRole?'<div class="fp-item-hint"><b>Projéteis: '+ammoCount(it.ammoMix)+' / 20</b> · consumo por disparo (ajuste manual disponível) '+ammoTypesFor(it.ammoFamily).map(k=>'<label>'+esc(k)+' <input type="number" data-item-field="ammoMix" data-ammo-type="'+esc(k)+'" data-id="'+esc(it.id)+'" min="0" max="'+(it.ammoMix?.[k]||0)+'" value="'+(it.ammoMix?.[k]||0)+'" style="width:60px"></label>').join(" ")+(it.ammoRole==="supply"?' <button type="button" class="fp-secondary" data-action="ammo-refill" data-id="'+esc(it.id)+'">Transferir para recipiente</button>':"")+'</div>':"")+
   (!it.ammoRole&&it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (!it.ammoRole&&it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+
@@ -5396,8 +5442,9 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const ammo=rows.find(x=>x.ammoRole==="supply"),mix=ammo?chooseAmmoMix(ammo.ammoFamily):null;
  if(ammo&&!mix)return;
  const purchaseItems=item.kitContainer?[normalizedCatalogItem(item),normalizedCatalogItem({...rows[1],position:"quick",ammoMix:mix})]:[normalizedCatalogItem(ammo?{...item,ammoMix:mix}:item)];
+ if(item.kitContainer&&(quickSlots([...state.items,...purchaseItems])>3||bodyLoad([...state.items,...purchaseItems])>bodyCapacity()+1e-9)){purchaseItems[1].position="bag";toast("Sem espaço corporal: recipiente guardado na mochila.");}
  const preview=purchaseLoadPreview(item,price);
-  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso).":
+  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso): −2E e metade do deslocamento.":
    preview.status==="heavy"?"\nATENÇÃO: após esta compra ficará PESADO.":"";
   if(!confirm("Comprar "+item.name+(item.kitContainer?" + "+item.kitContainer+" + 20 projéteis":"")+(mix?" ("+Object.entries(mix).map(([k,v])=>v+" "+k).join(", ")+")":"")+" por "+price+" VT em recursos de Grau 1?"+
    "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Alto ("+pad(preview.percent)+"%) · "+preview.balance+
@@ -5556,7 +5603,7 @@ function npcConflictItems(items=state.items){
   category:categories[it.weight]||"",
   weight:it.ammoRole?itemLoad(it):typeof it.weight==="number"?it.weight:(WEIGHTS[it.weight]?.[1]??0),
   qty:it.qty,grade:it.grade,
-  integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped,position:itemPosition(it),hands:itemHands(it),die:it.die,range:it.range,properties:it.properties,ammoRole:it.ammoRole,ammoFamily:it.ammoFamily,ammoMix:it.ammoMix,storageCapacity:it.storageCapacity
+  integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped,position:itemPosition(it),hands:itemHands(it),die:it.die,range:it.range,properties:it.properties,ammoRole:it.ammoRole,ammoFamily:it.ammoFamily,ammoMix:it.ammoMix,ammoLotWeight:it.ammoLotWeight,storageCapacity:it.storageCapacity
  }));
 }
 /** Transferir uma ficha NPC independente, feita pelo próprio Codex Genético, para o encontro. */
@@ -5944,10 +5991,10 @@ function onClick(event){
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
   if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
-  if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
+  if(!it.equipped&&it.type==="armadura"){const next=state.items.map(x=>x.type==="armadura"?{...x,equipped:x===it}:x);if(bodyLoad(next)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente para esta armadura.");return;}for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false;} // Restrição técnica da ficha; sobreposição é PENDENTE.
   if(it.ammoRole==="container"){setItemPosition(it,itemPosition(it)==="quick"?"bag":"quick");}
   else if(it.ammoRole==="supply"){toast("Munições de reserva são transferidas para o recipiente.");return;}
-  else if(handItem(it)){if(!setItemPosition(it,it.equipped?"bag":"hands"))return;}else it.equipped=!it.equipped;
+  else if(handItem(it)){if(!setItemPosition(it,it.equipped?"bag":"hands"))return;}else {if(!it.equipped&&!validBodyChange(it,"worn"))return;it.equipped=!it.equipped;}
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
   renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
@@ -6048,6 +6095,7 @@ function onChange(event){
   if(!Object.hasOwn(draft,k))return;
   draft[k]=el.type==="checkbox"?el.checked:el.type==="number"?clamp(Math.floor(el.value),0,30):el.value;
   if(k==="stepSourceId")draft.step=!!draft.stepSourceId;
+  if(k==="equipmentId"||k==="mode"){draft.shotChoice="";draft.shotActivate=false;}
   if(k==="mode"){draft.third=null;draft.contextOK=false;draft.equipmentId="";draft.fulminante="";draft.attackThrown=false;draft.trevas=false;draft.shieldRaise=false;draft.asura=false;draft.asuraDieId="";}
   if(k==="asura"&&!draft.asura)draft.asuraDieId="";
   if(k==="equipmentId"&&draft.mode==="conjuracao"&&draft.magicElement){draft.magicFocusId=draft.equipmentId;alignMagicDraft();}
@@ -6070,7 +6118,7 @@ function onChange(event){
  }
  if(el.dataset.itemField){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
-  const k=el.dataset.itemField;
+  const k=el.dataset.itemField,oldItem={...it},oldBody=bodyLoad();
   if(k==="position"){if(!setItemPosition(it,el.value)){renderInventory();return;}if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";renderComposer();}
   else if(k==="hands"&&it.type==="arma"){const n=Number(el.value);if(it.equipped&&!canHoldItem(it,n)){toast("Libere as mãos necessárias antes de alterar a empunhadura.");renderInventory();return;}it.hands=n;}
   else if(k==="name")it.name=el.value.slice(0,90);
@@ -6084,7 +6132,7 @@ function onChange(event){
     it.embeddedWeapon="";toast("Escudo pesado só aceita Cravar de arma Pesada; marca de arma Média retirada.");
    }
   }
-  else if(k==="qty"){const n=it.ammoRole||it.packSize>0?1:clamp(Math.floor(el.value),1,99);if(handItem(it)&&it.equipped&&n!==1){toast("Arma ou escudo nas mãos deve ter quantidade 1.");renderInventory();return;}it.qty=n;}
+  else if(k==="qty"){const n=it.ammoRole||it.packSize>0?1:clamp(Math.floor(el.value),1,99);if(itemPosition(it)==="quick"&&quickSlots()-it.qty+n>3){toast("Acesso rápido: máximo de 3 espaços.");renderInventory();return;}if(handItem(it)&&it.equipped&&n!==1){toast("Arma ou escudo nas mãos deve ter quantidade 1.");renderInventory();return;}it.qty=n;}
   else if(k==="ammoMix"&&it.ammoRole){const type=el.dataset.ammoType;if(ammoTypesFor(it.ammoFamily).includes(type))it.ammoMix[type]=clamp(Math.floor(el.value),0,it.ammoMix[type]||0);}
   else if(k==="ammoRemaining"&&it.packSize>0&&!it.ammoRole){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??it.grade,0,it.grade);}
@@ -6104,6 +6152,7 @@ function onChange(event){
     it.embeddedWeapon="";
    }else it.embeddedWeapon=w;
   }
+  if(bodyLoad()>bodyCapacity()+1e-9&&bodyLoad()>oldBody+1e-9){Object.assign(it,oldItem);toast("Alteração excede a capacidade corporal.");renderInventory();return;}
   // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;

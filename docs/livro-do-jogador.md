@@ -328,7 +328,7 @@ O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a ca
 
 **Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
 
-**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
+**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
 
 ### Perícias de especialização: o que você pode aprender
 
@@ -526,7 +526,7 @@ DE final = min(12, max(0, DE base + modificador da única armadura equipada + ef
 
 **Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. O autor definiu a penalidade **−1E no estado de sobrepeso/Muito Pesado**, mas a abrangência e o procedimento automático de aplicação estão **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
+**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. **SRD v0.119:** o estado de sobrepeso/Muito Pesado impõe **−2E e metade do deslocamento padrão**. A abrangência dos testes afetados, as interações e a aplicação automática de −2E continuam **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
 
 **Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
@@ -627,7 +627,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — 23/11/2026, SRD v0.92]:** **1 + piso((Força + Vigor + Atletismo)/3)**. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Pontos de composição dos dados não equivalem automaticamente a peso real de equipamento. **Compras:** mostrar carga e balanço projetados antes de confirmar, descontando também o peso dos recursos gastos. Os avisos de Pesado/Muito Pesado não bloqueiam compras nem criam penalidades novas.
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 
 ## VII. Conjuração, elementos e possibilidades
@@ -1161,7 +1161,7 @@ O sistema ainda precisa finalizar o catálogo de armas, a geometria de magias, o
 
 ### Ramo de longa distância, arremesso e técnicas somáticas [DEFINIDO / ressalvas]
 
-- **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2; crítico ativa efeitos da arma gratuitamente, acerto normal custa 1 Coragem. Ignora Desvantagens naturais por peso, mantendo Vantagens. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta pequena neutra em todos; besta de duas mãos −1A/neutro/+1A.
+- **Perícia em Armas de Longo Alcance:** 2 XP, Disciplina 1 + Destreza 2. Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico. Tabela natural (leve/médio/pesado): arco curto −1A/+1A/neutro; arco longo 2 mãos −1A/neutro/+1A; besta de uma mão neutra em todos; besta de duas mãos −1A/neutro/+1A. [Afinidades de longo alcance](../mecanicas/vantagens-e-desvantagens.html#longo-alcance).
 - **Arremesso é ação geral:** qualquer personagem pode arremessar armas, passar armas a aliados e lançar armas inimigas para longe. **Perícia em Arremesso de Armas** (antiga Maestria; ID salvo preservado) custa 1 XP, exige Força 2 + Destreza 2 + Agilidade 1 e Perícia em Armas Leves OU Médias OU Pesadas. Por 1 Coragem no acerto, ativa os efeitos especiais da arma arremessada além do dano básico. Alcance efetivo leve 12 m, médio 8 m, pesado 4 m; exceder 1 m dá Desvantagem (−1A), 2 m Desvantagem Absoluta (−1E), 3 m Acerto de Sorte (−2E); além do terceiro metro, escalonamento PENDENTE. Não sofre Desvantagem por proximidade, mas aliados próximos do alvo geram Desvantagem. Arma se aloja no alvo com penalidade pertinente. Acerto limpo pode permitir nova jogada, avanço, retirada e ataque corpo a corpo; acerto com Pavor pode permitir ao inimigo utilizar a arma. Falha limpa: cai no caminho, pode gastar 1A para correr e recuperar; falha com Pavor: cai próxima ao inimigo ou pode atingir aliado próximo se alcançar sua DE. Distância da queda em falha (metros) = E mantidos + P mantidos NÃO anulados + 1E por 2A convertidos; A restante não soma. Retirar arma alojada testa Armas + Força + Atletismo contra resistência Força + Vigor + Atletismo do alvo; conversão da dificuldade ainda PENDENTE.
 - **Disparo Fulminante:** compra 1 XP; Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance OU Arremesso). Por 1 Coragem antes da rolagem, eleva um dado da arma d6→d10, d10→d12 ou d12→2d12 (máximo 9 rolados). No acerto, cada Pavor válido causa 1 dano por P no alvo principal; crítico não dispensa. NÃO aplica a armas de fogo.
 - **Disparo Múltiplo:** compra 1 XP; Destreza 2 + Agilidade 2 + Disciplina 2 + Disparo Fulminante + (Longo Alcance OU Arremesso). Cada 1 Coragem cobre até dois alvos adicionais num raio de 3 m ao redor do ALVO PRINCIPAL; rolagem única vs DE individual, custo pago mesmo se errar. Alvo principal dano integral; adicionais metade dos Êxitos arredondada para baixo e 0,5 por Pavor válido, mesmo se Fulminante estiver ativado no principal.
@@ -1240,3 +1240,63 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 **DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
 
 **Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
+
+
+## Carga por compartimento e disparos — 24/11/2026
+
+**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + piso((Força + Vigor + Atletismo)/3). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
+
+**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
+
+**Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
+
+### Alcance cadastrado das armas G1
+
+| Arma | Alcance base |
+|---|---:|
+| Faca | 1 m |
+| Punhal | 1 m |
+| Espada Curta | 1 m |
+| Maça Curta | 1 m |
+| Chicote | 1 m |
+| Kunai | 12 m |
+| Shuriken | 12 m |
+| Adaga Ritualística | 1 m |
+| Espada Longa | 1 m |
+| Espada Larga | 1 m |
+| Lança | 2 m |
+| Machado Barbado | 1 m |
+| Lança de Arremesso | 8 m |
+| Martelo de Guerra | 1 m |
+| Machado de Guerra | 1 m |
+| Montante | 2 m |
+| Marreta | 1 m |
+| Arco Curto | 24 m |
+| Arco Longo | 32 m |
+| Besta de uma mão | 16 m |
+| Besta de duas mãos | 24 m |
+| Besta Pesada | 32 m |
+| Zarabatana | 12 m |
+| Cajado Leve | 1 m |
+| Cajado Médio | 1 m |
+| Cajado Pesado | 1 m |
+| Bastão Leve | 1 m |
+| Bastão Médio | 1 m |
+| Bastão Pesado | 1 m |
+| Luvas | 1 m |
+| Revólver | 16 m |
+| Katana | PENDENTE |
+| Naginata | 2 m |
+
+
+### Capacidade de Carga — exemplos e referência (v0.118)
+
+| Peso físico | Alto |
+|---|---:|
+| Muito Leve | 0,0125 |
+| Leve | 0,125 |
+| Médio | 0,5 |
+| Pesado | 1 |
+| Extremo | 2 |
+
+Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade é −2 Êxitos nos testes afetados e metade do deslocamento padrão (v0.119), com abrangência e automação de −2E PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.

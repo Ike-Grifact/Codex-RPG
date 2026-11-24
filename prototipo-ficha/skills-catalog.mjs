@@ -398,7 +398,7 @@ const SKILLS=[
  [
   "armas-longo-alcance",
   "Perícia em Armas de Longo Alcance",
-  "Arco curto: contra alvo leve −1A, médio +1A, pesado neutro. Arco longo (2 mãos): leve −1A, médio neutro, pesado +1A. Besta pequena: neutro para todos os pesos. Besta de duas mãos: leve −1A, médio neutro, pesado +1A. Os valores são naturais inclusive para quem não possui a Perícia. O especialista elimina somente Desvantagem por peso e mantém Vantagens. Crítico ativa UMA característica escolhida da arma sem custo; pagamento adicional de 1 Coragem ativa uma segunda; acerto normal exige 1 Coragem.",
+  "Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.",
   2
  ],
  [
