@@ -121,7 +121,7 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 - **Foco obrigatório:** durante **uma rodada**, o inimigo provocado deve dirigir seu ataque ao provocador **sempre que for possível realizar ataque válido** contra ele. Não ganha alcance, teleporte, turno gratuito ou permissão de ignorar outras restrições.
 - A **Provocação simples** dá ao inimigo **Vantagem (+1A)** quando atacar o próprio provocador. A **Desvantagem (−1A)** para atacar aliados do provocador, prevista na v0.33, continua aplicável **quando um ataque a esses aliados for validamente possível**; não remove a obrigação de foco sem motivo.
 - **Última provocação válida:** se outro personagem superar a DE e provocar o alvo depois, o foco troca para o novo provocador, independentemente do dano causado. Falhas não desfazem foco anterior.
-- **Proteção de aliados:** um mago que falhou com Pavor pode gastar **1A** para antecipar a oportunidade do guerreiro sem anular o Pavor. Se o guerreiro provocar com sucesso, assume o foco. Isso não cria Pavor novo nem ativação gratuita.
+- **Proteção de aliados:** um mago que falhou com Pavor pode gastar **1A**, se o guerreiro ainda não agiu na sequência, para antecipar a oportunidade do guerreiro sem anular o Pavor. Se o guerreiro provocar com sucesso, assume o foco. Isso não cria Pavor novo nem ativação gratuita.
 
 ### Provocação Planejada [DEFINIDO]
 
@@ -138,19 +138,97 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 - **Pavor não multiplica pelo número de alvos.** A rolagem gera seus símbolos uma vez; na continuidade atual, **dados descartados não geram Pavor**. Não duplicar 1P em dez inimigos.
 - **PENDENTE:** unidade/geometria das áreas e procedimento de distribuição de Pavor entre reservas locais elegíveis, sem contagem duplicada.
 
+### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
+
+Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
+
+O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto puro permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto puro nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
+
+Pavor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Pavor disponível não concede ação gratuita.
+
+#### Ação em conjunto e custo progressivo de Antecipar
+
+Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
+
+**A primeira ação conjunta da sequência de protagonismo de cada lado não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
+
+**Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Pavor, converter em Êxito ou financiar outra convocação. Não apagar Pavor ao passar protagonismo.
+
+**A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+
+| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Pavor público por inimigo independente convocado |
+|---|---|---|
+| 0 | 1A | 1P |
+| 1 | 2A | 1P |
+| 2 | 4A | 1P |
+| 3 | 8A | 1P |
+| 4 | 16A | 1P |
+
+#### Exemplo: cinco jogadores A, B, C, D e E
+
+| Formação | Convocação e resolução | Turnos acumulados |
+|---|---|---|
+| ABC | Primeira ação conjunta: gratuita em Antecipar; obtém 2A e convoca D e E (1A cada). | 3 |
+| DE → ADE | D e E rolam, gastam 2A para convocar A, que já participou uma vez. A rola; resolve-se ADE em conjunto. | 6 |
+| ADE → BC | Os participantes de ADE obtêm e gastam 4A para convocar B e C (2A cada). B e C rolam. | 6 (a nova ação ainda não foi resolvida) |
+| BC → ABC | B e C gastam mais 4A dos próprios resultados para incorporar A, que já participou duas vezes. A rola; resolve-se ABC em conjunto. | 9 |
+
+Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participou uma vez e custa 2A. Convocar ambos somaria 4A, mas não caberia no mesmo ataque conjunto de B e C pelo limite de três participantes. O custo de 8A para voltar a formar ABC no exemplo é pago em etapas: 4A por ADE e 4A por BC; não é um pagamento único por um personagem nem uma convocação de si mesmo.
+
+**Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
+
+#### Inimigos, Liderança e Pavor público
+
+**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1P da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Pavor público dos inimigos incorporados.
+
+**Somente o Narrador paga esse Pavor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Pavor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
+
+**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1P público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2P. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Pavor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1P público disponível, o chefe não pode usar seu Pavor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
+
+Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
+
+### Combate Coordenado [DEFINIDO — SRD v0.120]
+
+**Combate Coordenado** é uma mecânica geral, disponível a jogadores e inimigos, não uma Perícia comprável. Para compartilhar defesa, os participantes devem declarar que estão unidos em uma dupla, trio ou grupo e atuar efetivamente de forma coordenada. Estar apenas na mesma cena ou pertencer ao mesmo lado não basta. **Raio máximo da formação: 5 m.** O centro do raio é o combatente da formação que estiver mais ao meio dos demais, não um ponto fixo no terreno nem necessariamente o Líder. Se dois combatentes estiverem igualmente ao centro, escolha aquele que estiver mais próximo do integrante mais distante da formação. Sempre que o posicionamento dos integrantes mudar, considere novamente qual combatente está mais ao meio e meça o raio de 5 m a partir dele. Os integrantes dentro desse raio compartilham a DE coordenada; quem estiver fora não contribui para a soma. A mudança de centro acompanha a formação declarada e não exige nova declaração apenas para atualizar a referência espacial.
+
+#### Por que lutar em formação?
+
+Coordenar-se é importante porque nem toda ameaça pode ser enfrentada com a eficiência de uma ação individual. Ao protegerem uns aos outros, os personagens somam suas defesas; ao declararem uma ação conjunta, podem reunir seus resultados para superar uma DE elevada. Uma dupla com DE 6 e 7, por exemplo, passa a ter DE 13 enquanto permanecer coordenada. A cooperação exige atenção ao posicionamento, aos custos de Antecipar e aos riscos de Pavor: reunir-se não garante acerto nem elimina consequências.
+
+**A oposição também reage.** Lembre-se de que os inimigos também podem reagir. Eles podem declarar suas próprias formações, somar suas DE, realizar ações conjuntas ou procurar separar os integrantes da formação adversária por meio de movimentação, condições e técnicas já habilitadas. Estar próximo também pode expor vários aliados ao mesmo efeito de área, conforme a área realmente atingida. Nenhuma dessas respostas concede ação, dano ou penalidade automática: respeitam-se as regras de protagonismo, Pavor, alcance e resolução. Coordenar-se deve ser uma escolha tática, não uma obrigação permanente.
+
+**DE coordenada = mínimo(30; soma das DE defensivas dos participantes).** Use a DE defensiva individual vigente de cada integrante, com os modificadores aplicáveis, sem repetir bônus já incluídos. A soma é a defesa da formação; o teto absoluto é 30. A DE de cada ficha permanece distinta quando o combatente não está em formação. Se um integrante for eliminado ou deixar de integrar a formação, sua DE deixa de contribuir.
+
+**Combatentes independentes em formação:** cada integrante mantém sua ficha e realiza sua própria rolagem. A defesa coordenada não funde fichas nem transforma automaticamente todas as ações em um único ataque. Quando a dupla ou o trio declara uma ação conjunta, cada participante rola individualmente e os resultados pertinentes são somados em uma única resolução, respeitando os limites de dados, os custos, Antecipar e Pavor. A ação conta um turno por participante. O limite vigente de até três participantes em ataques conjuntos não é ampliado por esta regra.
+
+**Grupo de inimigos com ficha única:** o Narrador pode representar uma formação de inimigos por uma única ficha, com orçamento igual à soma do XP de todos os seus integrantes. O XP reunido permite desenvolver essa ficha e elevar sua DE dentro do teto de 30. A ficha do grupo faz apenas uma rolagem por ação, em vez de uma rolagem para cada integrante. Não duplicar XP nem acumular uma segunda soma de DE sobre a defesa conjunta já registrada. Essa representação é diferente de inimigos com fichas independentes que declaram Combate Coordenado. Não fundir fichas de jogadores: eles mantêm suas próprias rolagens.
+
+| Formação | Fichas | DE defensiva | Rolagens |
+|---|---|---|---|
+| Três inimigos separados | 3 fichas | 4, 5 e 6 | Individuais |
+| Três inimigos em formação | 3 fichas | 15 (4 + 5 + 6) | Individuais; somadas se declararem ação conjunta |
+| Grupo de inimigos (ficha única) | 1 ficha; XP total reunido | DE do grupo, até 30 | Uma rolagem por ação |
+| Dupla de jogadores | 2 fichas | Ex.: 7 + 8 = 15 | Uma rolagem por PJ, somadas na ação conjunta |
+
+**Exemplo:** três combatentes com DE 11, 10 e 12 declaram um trio. A soma é 33, mas a DE coordenada fica em 30. Dois jogadores com DE 7 e 8 declaram uma dupla: a DE da formação fica em 15. Ao atacar em conjunto, ambos rolam e somam os resultados pertinentes; a resolução simultânea conta dois turnos.
+
+**Dano e alvos:** preserva-se a regra de que um ataque de alvo único escolhe uma ficha alvo; área que alcance a DE coordenada e cubra combatentes separados pode afetar cada ficha atingida, enquanto o chefe composto de uma única ficha recebe um único dano pela área. Combate Coordenado não concede dano, dados, Coragem, Pavor ou ativações extras automaticamente. A declaração de formação não substitui as condições de convocação da ação conjunta.
+
+**PENDENTE:** momento e eventual custo da declaração ou dissolução da formação, detalhes de dissolução e reentrada na formação, procedimento de distribuição do XP e registro da DE de uma ficha coletiva, contagem de turnos e desgaste de integrantes na ficha de grupo. Não presumir que qualquer ficha coletiva tenha as características especiais do chefe de três em um corpo. Não automatizar esses casos antes de decisão.
+
 ### Líder, ação conjunta e Antecipar dos inimigos [DEFINIDO / PENDENTE]
 
 - **Todo conflito começa com pelo menos um Líder** da oposição; uma criatura sozinha lidera a si mesma. Grupos podem ter **múltiplos Líderes**. Liderança permite estratégia e observação de fragilidades, não dá ataque gratuito.
-- **Antecipar normal de inimigos:** gastar **1A para passar a oportunidade a um aliado**, antecipando **um turno individual**. Respeitar o limite vigente de cada combatente ser antecipado no máximo uma vez por rodada. **Não é ação conjunta** e não combina dano/dados automaticamente. Inimigos provocados mantêm o foco ao receber a ação.
-- **Iniciativa da oposição:** quando todos os jogadores passam ou acumulam falhas sem Pavor, o Narrador pode gastar **Pavor de sua reserva pública**, limitada a **2 + jogadores**, para fazer uma ameaça sob liderança **agir visando seus objetivos** (não necessariamente atacar). **PENDENTE:** custo dessa iniciativa comum e sua integração com ativações locais; não presumir 1P fixo.
-- **Golpe conjunto focado com Líder:** para cada aliado convocado a **participar do mesmo golpe**, o Líder gasta **1P da reserva pública do Narrador**. Líder + 1 aliado = **1P público**; Líder + 2 = **2P públicos**. Mantém-se o limite vigente de **até três participantes**, com custos e requisitos próprios de ativação. **Substitui o custo fixo histórico de 3P** para ações conjuntas inimigas.
+- **Antecipar de inimigos:** usar o custo progressivo individual de 1/2/4/8/16A conforme participações na sequência, mais 1P exclusivamente da reserva pública do Narrador por inimigo adicional ativado, observada a exceção de ação conjunta do chefe composto. Pode antecipar novamente pagando o custo crescente; revogado o limite anterior de uma antecipação por rodada. Uma passagem para turno individual não combina dano/dados automaticamente. Inimigos provocados mantêm o foco ao receber a ação.
+- **Iniciativa da oposição:** quando a oposição recebe o protagonismo conforme a v0.120, o Narrador pode gastar **Pavor de sua reserva pública**, limitada a **2 + jogadores**, para fazer uma ameaça sob liderança **agir visando seus objetivos** (não necessariamente atacar). **PENDENTE:** custo dessa iniciativa comum e sua integração com ativações locais; não presumir 1P fixo.
+- **Golpe conjunto focado com Líder:** o Narrador paga 1P público por aliado adicional incorporado e os inimigos pagam Antecipar conforme a progressão (primeira ação conjunta gratuita em A). Líder + 1 aliado = 1P público; Líder + 2 aliados independentes = 2P públicos. Exceção: chefe composto de três em um corpo paga 1P público total pelos dois componentes adicionais na mesma ação conjunta. Uma criatura sozinha é sua própria Líder. O custo público não pode ser pago da reserva local. Mantêm-se até três participantes e demais requisitos/custos próprios.
 - O aliado incorporado **não precisa ter sido provocado**. Se o Líder está provocado e ataca, o golpe conjunto comandado contra aquele alvo **mantém o foco no provocador**; comando, por si só, não anula a provocação.
 - **PENDENTE:** cálculo e custos locais exatos dos participantes, resolução de múltiplos Líderes e exceções formais a foco; não inventar cobranças adicionais.
 
 ### Queda dos Líderes e disputa de influência [DEFINIDO / PENDENTE]
 
 - Ao cair **o último Líder**, os inimigos restantes ficam **confusos/desorganizados e concedem Vantagem aos jogadores**. Se outro Líder ainda está ativo, a liderança se mantém.
-- Sem liderança, os combatentes agem por instinto: podem lutar desordenadamente, proteger-se ou fugir. Podem agir **na oportunidade natural da oposição** (por exemplo, após todos os jogadores passarem ou falharem sem Pavor) ou quando **tiverem Pavor para agir**, respeitando os custos existentes. Não coordenam golpes conjuntos táticos automaticamente.
+- Sem liderança, os combatentes agem por instinto: podem lutar desordenadamente, proteger-se ou fugir. Podem agir **na oportunidade natural da oposição** (conforme a troca de protagonismo da v0.120) ou quando **tiverem Pavor para agir**, respeitando os custos existentes. Não coordenam golpes conjuntos táticos automaticamente.
 - **Sucessão por Influência:** a hipótese de exigir **Inteligência 2 foi substituída**. Um candidato a Líder testa **Influência contra a DE dos aliados que quer convencer**; somente os alvos convencidos reconhecem seu comando. Os jogadores também podem tentar convencê-los a se render, fugir, cooperar ou mudar de lado, conforme a intenção.
 - **Última convicção válida:** quando dois testes sucessivos superam a DE do mesmo alvo, **prevalece a última rolagem válida**, não a maior rolagem antiga. Uma falha não altera a influência atual. Vantagens/Desvantagens, inclusive gradações, e Perícias são aplicadas normalmente. A mesma lógica temporal se aplica à troca de foco por Provocação.
 - **Sem Pavor**, um convencimento bem-sucedido conserva o protagonismo dos jogadores, que podem neutralizar o possível novo Líder e encerrar o conflito conforme a cena. **Com Pavor**, a convicção continua válida, mas a oposição pode tentar reagir: o pretendente pode tentar de novo em oportunidade permitida, ou desistir e fugir. A morte de todos os Líderes pode terminar um combate sem matar todos os subordinados.
@@ -159,7 +237,7 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 ### Controle de conflitos entre versões
 
 - **Revoga na v0.33:** nome «Provocação Sofisticada»; indicação de benefício próprio ainda pendente; foco apenas sugestivo; duração indefinida. **Mantém da v0.33:** Provocar é básico, **Influência Grau 2 e 1 XP** para a Perícia, e os modificadores gerais +1A/−1A quando cabíveis.
-- **Revoga custo histórico:** 3P públicos fixos para habilitar ação conjunta inimiga, substituídos por **1P público por aliado incorporado**.
+- **Revoga custo histórico:** 3P públicos fixos para habilitar ação conjunta inimiga, substituídos por **1P público por aliado adicional ativado**, também em antecipações individuais, mais o custo progressivo em A quando aplicável, com exceção de 1P público total para o chefe de três em um corpo.
 - **Não importar regra v0.9:** Pavor de dados descartados não é contado no SRD recente do Codex-RPG; não há moeda separada «Pressão».
 - **Divisão editorial:** procedimentos de controle e comando são matéria do **Livro do Mestre**, não uma reformulação automática do Livro do Jogador.
 
@@ -180,7 +258,7 @@ O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2
 
 ### O guerreiro protege o mago
 
-O mago falha com Pavor e conserva 1A. Ele gasta esse Antecipar para passar a oportunidade ao guerreiro sem cancelar o Pavor. O guerreiro declara «provoco e ataco», usando Influência e sua arma. Se igualar a DE, o inimigo deve focar nele ao atacar durante a rodada, quando possível. O inimigo não recebe ataque gratuito: precisa ter oportunidade e recursos de ativação.
+O mago falha com Pavor e conserva 1A. Como o guerreiro ainda não agiu na sequência, ele gasta esse Antecipar para passar a oportunidade ao guerreiro sem cancelar o Pavor. O guerreiro declara «provoco e ataco», usando Influência e sua arma. Se igualar a DE, o inimigo deve focar nele ao atacar durante a rodada, quando possível. O inimigo não recebe ataque gratuito: precisa ter oportunidade e recursos de ativação.
 
 ### Cinco saqueadores e uma única rolagem de área
 
@@ -188,7 +266,7 @@ A personagem usa Influência + Apresentação para provocar na área **16 × 16*
 
 ### Dupla de inimigos: Antecipar ou golpe conjunto?
 
-Um inimigo com 1A pode antecipar o **turno individual** do parceiro; os ataques seguem separados. Se houver Líder e ele quiser somar a participação do parceiro ao **mesmo golpe conjunto focado**, gasta **1P público** por esse parceiro. Não confundir os dois procedimentos.
+Um inimigo com 1A pode antecipar o **turno individual** de um parceiro que ainda não agiu na sequência, se o Narrador pagar 1P público. Os ataques seguem separados. Se o Líder incorporar esse parceiro ao **mesmo golpe conjunto focado**, a ação é simultânea; o custo público continua sendo 1P por parceiro, além do A aplicável. Não confundir resolução individual e conjunta nem cobrar duas vezes a mesma ativação.
 
 ### A derrota do comandante não exige massacre
 
@@ -198,7 +276,7 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 
 - Registre quem estava provocado, quem substituiu o foco, quando a rodada terminou e se houve exceção plausível de alvo.
 - Separe **Pavor da rolagem**, **saldo local do inimigo** e **saldo público**; não duplique pontos entre alvos de área.
-- Diferencie **turnos individuais antecipados por 1A** de **golpes conjuntos convocados por 1P público por aliado**.
+- Diferencie **turnos individuais antecipados** de **ações conjuntas simultâneas**. Ambos usam o custo progressivo em A quando aplicável e 1P público por inimigo adicional ativado, ressalvada a exceção de 1P total para os dois componentes adicionais do chefe composto.
 - Observe quantas vezes a queda do último Líder realmente abriu negociação, fuga, rendição ou reorganização por Influência.
 - Não invente custo de iniciativa pública de inimigo, divisão de Pavor de área ou novos graus de Vantagem enquanto os procedimentos estão PENDENTES.
 
