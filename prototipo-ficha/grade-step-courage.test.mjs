@@ -12,9 +12,10 @@ function extract(a,b){
  assert.ok(i>=0&&j>i,"Seção não encontrada: "+a);
  return app.slice(i,j);
 }
+const projectileCode=extract("function projectileFamily(","function ammoTypesFor(");
 const diceTable=extract("const DICE_ATTR=","const FACES=");
 const helpers=extract("function dataDice(","function label(");
-const poolCode=extract("function buildPool(){","function renderComposer(){");
+const poolCode=projectileCode+extract("function buildPool(){","function renderComposer(){");
 const weaponMasteryDefs=extract("const WEAPON_MASTERY_TYPES=","const SKILLS=[");
 const unitFactory=new Function("state","draft",diceTable+helpers+
  "\nconst SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
@@ -601,7 +602,7 @@ test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características p
 
 test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de Coragem",()=>{
  const resultCode=extract("function shieldBoomerangResult(","function prepareShieldBoomerang(");
- const scoreCode=extract("function score(){","function renderPending(){");
+ const scoreCode=projectileCode+extract("function score(){","function renderPending(){");
  const makeScore=new Function("state","face","SITUATIONS","LIFE_STATES","lifeStage","ownsSkill",
   "magicKnownElements","magicPreparationTurns","magicElementId","affinity","keepLimit","clamp",
   "shieldBoomerangReady","ACTIVE_PROPERTIES",resultCode+scoreCode+"\nreturn score;");
@@ -913,7 +914,7 @@ test("Novas doze perícias de 21/11/2026: custos 1 XP, requisitos e Bioética co
 });
 
 test("Mãos Leves e Golpe Furtivo: validação real da pilha, exceção restrita e dado da arma",()=>{
- const poolCode=extract("function buildPool(){","function renderComposer(){");
+ const poolCode=projectileCode+extract("function buildPool(){","function renderComposer(){");
  const helper="const SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
   "const key=s=>s?s.group+'.'+s.key:'';const same=(a,b)=>!!a&&!!b&&key(a)===key(b);"+
   "const ownsSkill=id=>state.skills.includes(id);const skillReq=()=>null;"+
@@ -1021,7 +1022,7 @@ test("Esferas DEFINIDAS: 5 por rodada, teto de 5, 1 Coragem por esfera e absorç
 });
 
 test("Punho Supremo de Asura transforma exatamente um dado em d20 e exige cinco esferas",()=>{
- const poolCode=extract("function buildPool(){","function renderComposer(){");
+ const poolCode=projectileCode+extract("function buildPool(){","function renderComposer(){");
  const helper="const SOURCE_PROPS={attr:'attributes',know:'knowledges',practice:'practices'};"+
    "const key=s=>s?s.group+'.'+s.key:'';const same=(a,b)=>!!a&&!!b&&key(a)===key(b);"+
    "const ownsSkill=id=>state.skills.includes(id);const skillReq=()=>null;"+

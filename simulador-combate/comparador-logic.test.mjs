@@ -123,7 +123,7 @@ test("Busca as várias fichas de jogador, NPC e Criar Conflito do navegador sem 
 test("Arco e revólver usam a tabela própria, sem copiar a matriz genérica",()=>{
  const t=armor();
  assert.equal(weightAffinity({kind:"weapon",name:"Arco Curto",category:"leve"},t).delta,-1);
- assert.equal(weightAffinity({kind:"weapon",name:"Arco Curto",category:"leve"},t,{skills:["armas-longo-alcance"]}).delta,0);
+ assert.equal(weightAffinity({kind:"weapon",name:"Arco Curto",category:"leve"},t,{skills:["armas-longo-alcance"],practices:{armas_conjuracao:1},attributes:{destreza:2}}).delta,0);
  assert.equal(weightAffinity({kind:"weapon",name:"Arco Longo",category:"medio"},t).delta,-1);
  assert.equal(weightAffinity({kind:"weapon",name:"Besta de uma mão",category:"leve"},t).delta,0);
  assert.equal(weightAffinity({kind:"firearm",name:"Revólver",category:"leve"},t).delta,-1);

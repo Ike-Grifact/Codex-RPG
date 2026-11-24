@@ -2526,7 +2526,9 @@ function refillAmmo(id){
  if(!targets.length){toast("Não há porta-munições compatível com espaço livre.");return;}
  let target=targets[0];
  if(targets.length>1){const v=prompt("Escolha o recipiente:\n"+targets.map((x,i)=>(i+1)+". "+x.name+" ("+ammoCount(x.ammoMix)+"/20)").join("\n"),"1");if(v===null)return;target=targets[Number(v)-1];if(!target){toast("Recipiente inválido.");return;}}
- const moved=moveAmmoMix(source.ammoMix,target.ammoMix,ammoTypesFor(source.ammoFamily));source.ammoMix=moved.from;target.ammoMix=moved.to;
+ const moved=moveAmmoMix(source.ammoMix,target.ammoMix,ammoTypesFor(source.ammoFamily));
+ if(itemPosition(target)==="quick"&&bodyLoad()+Number(target.ammoLotWeight||0)*moved.moved/20>bodyCapacity()+1e-9){toast("Reposição excede a capacidade corporal; guarde o recipiente ou libere carga.");return;}
+ source.ammoMix=moved.from;target.ammoMix=moved.to;
  if(!ammoCount(source.ammoMix))state.items=state.items.filter(x=>x!==source);
  render();save();toast(moved.moved+" projéteis transferidos para "+target.name+".");
 }
@@ -4263,7 +4265,7 @@ function vitalHelpDetails(kind){
  "Ocupação: "+used+" / "+capacity()+" = "+percent+"%. Faixas: abaixo de 25% Muito Leve; 25–49% Leve; 50–74% Médio; 75–99% Pesado; 100% ou mais Muito Pesado.",
  "Classificação atual do criador (playtest)."],
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
- "Capacidade = 1 + ⌊Força ("+(a.forca||0)+")/3⌋ + ⌊Vigor ("+(a.vigor||0)+")/3⌋ + ⌊Disciplina ("+(p.armas_conjuracao||0)+")/3⌋ + ⌊Atletismo ("+(p.atletismo||0)+")/3⌋ = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Capacidade = 1,5 + piso((Força "+(a.forca||0)+" + Vigor "+(a.vigor||0)+" + Atletismo "+(p.atletismo||0)+")/3) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
  movement:["Movimento","Deslocamento básico antes de efeitos situacionais e Perícias específicas.",
  "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+movement()+" m.",
@@ -5298,7 +5300,7 @@ function renderInventory(){
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
-  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Mochila"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
@@ -5309,8 +5311,8 @@ function renderInventory(){
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
-  (it.ammoRole==="container"?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],["quick","Acesso rápido"]],it.id)+'</label></div>':"")+
-  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
+  (it.ammoRole==="container"?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],["quick","Acesso rápido"]],it.id)+'</label></div>':"")+
+  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+((it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick")?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick"?"✓":"○")+'</button>'+
@@ -5988,7 +5990,7 @@ function onClick(event){
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
   if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
-  if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
+  if(!it.equipped&&it.type==="armadura"){const next=state.items.map(x=>x.type==="armadura"?{...x,equipped:x===it}:x);if(bodyLoad(next)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente para esta armadura.");return;}for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false;} // Restrição técnica da ficha; sobreposição é PENDENTE.
   if(it.ammoRole==="container"){setItemPosition(it,itemPosition(it)==="quick"?"bag":"quick");}
   else if(it.ammoRole==="supply"){toast("Munições de reserva são transferidas para o recipiente.");return;}
   else if(handItem(it)){if(!setItemPosition(it,it.equipped?"bag":"hands"))return;}else {if(!it.equipped&&!validBodyChange(it,"worn"))return;it.equipped=!it.equipped;}
@@ -6115,7 +6117,7 @@ function onChange(event){
  }
  if(el.dataset.itemField){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
-  const k=el.dataset.itemField;
+  const k=el.dataset.itemField,oldItem={...it},oldBody=bodyLoad();
   if(k==="position"){if(!setItemPosition(it,el.value)){renderInventory();return;}if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";renderComposer();}
   else if(k==="hands"&&it.type==="arma"){const n=Number(el.value);if(it.equipped&&!canHoldItem(it,n)){toast("Libere as mãos necessárias antes de alterar a empunhadura.");renderInventory();return;}it.hands=n;}
   else if(k==="name")it.name=el.value.slice(0,90);
@@ -6149,6 +6151,7 @@ function onChange(event){
     it.embeddedWeapon="";
    }else it.embeddedWeapon=w;
   }
+  if(bodyLoad()>bodyCapacity()+1e-9&&bodyLoad()>oldBody+1e-9){Object.assign(it,oldItem);toast("Alteração excede a capacidade corporal.");renderInventory();return;}
   // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
