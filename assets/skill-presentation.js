@@ -215,8 +215,8 @@ const metadata={
  },
  "pericia-em-armas-de-longo-alcance": {
   "id": "armas-longo-alcance",
-  "type": "Ativa",
-  "cost": "1 Coragem",
+  "type": "Ativa + benefício passivo",
+  "cost": "1 Coragem antes de rolar",
   "icon": "arma-arco"
  },
  "olhos-de-aguia": {
