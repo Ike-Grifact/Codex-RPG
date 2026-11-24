@@ -677,19 +677,30 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 ### Resultados e protagonismo
 
-- **Acerto puro:** alcança DE sem Pavor residual. Permite continuar ou passar voluntariamente a oportunidade a um aliado, respeitando a troca de lado descrita em **Turnos, rodadas e protagonismo** (v0.120).
-- **Acerto normal:** alcança DE com Pavor não anulado sem predominância de P sobre E.
-- **Acerto com Pavor predominante:** alcança DE com P>E, podendo introduzir consequências graves.
-- **Falha limpa:** não alcança DE e não tem consequência negativa automática.
-- **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
+Primeiro descubra se a ação alcançou seu objetivo: depois de manter os dados e gastar Antecipar, compare a soma dos Êxitos e do Pavor não anulado com a DE. Depois observe o Pavor restante. Sem Pavor, o resultado é limpo; com Pavor igual ou inferior aos Êxitos, é misto; com mais Pavor que Êxitos, é pavoroso. Um empate entre Êxitos e Pavor, quando há Pavor, é misto.
 
-O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo da v0.120; mesmo sem Pavor, um ataque que não seja acerto puro nem antecipe um aliado devolve a oportunidade à oposição. **Em ataque contra um adversário declarado como alvo, o Pavor dos dados mantidos que não foi anulado entra na reserva local do próprio adversário atacado, mesmo que ele esteja distante e mesmo se o ataque falhar — nunca na reserva do inimigo mais próximo.** O alvo só pode aproveitar esse recurso quando tiver uma oportunidade válida. O teto local do inimigo começa em **4P no Grau 1**, e sobe até **8P nos Graus 5–6**; inimigos começam o conflito com saldo cheio. Ataques contra vários alvos/área e ações sem adversário atacado ainda têm distribuição PENDENTE. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html) e no [SRD v0.41](srd-continuidade-v0.41.md).
+| Resultado | DE | Pavor restante | Na prática |
+|---|---|---|---|
+| Acerto Limpo | Alcança a DE | Sem Pavor restante | O objetivo é alcançado sem risco de Pavor residual. Pode continuar ou passar voluntariamente o protagonismo, respeitando a troca de lado. |
+| Acerto Misto | Alcança a DE | Há Pavor, mas não supera os Êxitos | O objetivo é alcançado, mas há risco e possibilidade de intervenção. |
+| Acerto Pavoroso | Alcança a DE | Mais Pavor que Êxitos | O objetivo é alcançado, mas o Pavor predomina e pode provocar consequências graves. |
+| Falha Limpa | Não alcança a DE | Sem Pavor restante | O objetivo não é alcançado, sem consequência negativa automática. Em ataque, sem passagem válida por Antecipar, a oportunidade passa à oposição; nas demais ações, segue o fluxo geral. |
+| Falha Mista | Não alcança a DE | Há Pavor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção e normalmente perde 1 Coragem. |
+| Falha Pavorosa | Não alcança a DE | Mais Pavor que Êxitos | O objetivo não é alcançado e o Pavor predomina. Há risco de consequências graves e normalmente perde 1 Coragem. |
+
+**Exemplo:** Em um teste de DE 4, 3E + 1P é um Acerto Misto; 1E + 3P é um Acerto Pavoroso. Se a DE for 5, os mesmos resultados se tornam Falha Mista e Falha Pavorosa, respectivamente. Com 2E + 2P, o resultado também é misto: o Pavor não supera os Êxitos.
+
+**Destino do Pavor:** Em ataques contra um adversário declarado, o Pavor mantido e não anulado é transferido à reserva local desse alvo, mesmo que esteja distante ou que o ataque falhe. Não é transferido ao inimigo mais próximo. O adversário só pode gastar a reserva em oportunidades válidas; Pavor não concede turnos extras. Inimigos começam cada conflito com reserva cheia: G1 4P, G2 5P, G3 6P, G4 7P, G5–G6 8P. A distribuição em ataques de área, múltiplos alvos ou ações sem adversário atacado permanece pendente.
+
+Antecipar permite anular Pavor (1A por 1P), converter símbolos (2A em 1E) ou passar a oportunidade a um aliado (1A inicial, dobrando conforme as participações do aliado), antes da intervenção, conservando o Pavor que não foi anulado. Cada símbolo só pode ser gasto uma vez.
+
+O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um ataque que não resulte em Acerto Limpo e não tenha passagem válida por Antecipar devolve a oportunidade à oposição. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
 
 ### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
 
 Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
-O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto puro permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto puro nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
+O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto Limpo permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto limpo nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
 
 Pavor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Pavor disponível não concede ação gratuita.
 

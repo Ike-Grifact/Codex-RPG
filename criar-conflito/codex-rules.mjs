@@ -185,7 +185,7 @@ export function resolveRoll(rolled,selectedIds,options={}){
  if(!Number.isInteger(cancelP)||cancelP<0||cancelP>Math.min(pBefore,a))errors.push("Anulação de Pavor inválida.");
  if(!Number.isInteger(convertPairs)||convertPairs<0||cancelP+2*convertPairs>a)errors.push("Conversão 2A → 1E inválida.");
  const e=Math.max(0,raw[0]+convertedCrit+extraCritE+st.e+convertPairs+Number(skillBonusE)+drawPenalty),p=Math.max(0,pBefore-cancelP),reached=e+p,success=reached>=de;
- const outcome=success?(p===0?"Acerto sem Pavor":p>e?"Acerto com Pavor":"Acerto neutro (com Pavor mantido)"):(p>0?"Falha com Pavor":e>0?"Falha com Êxito":"Falha");
+ const outcome=success?(p===0?"Acerto Limpo":p>e?"Acerto Pavoroso":"Acerto Misto"):(p===0?"Falha Limpa":p>e?"Falha Pavorosa":"Falha Mista");
  const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(crit&&kept.length===4?2:1):0;
  const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
