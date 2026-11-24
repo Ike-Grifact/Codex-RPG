@@ -29,7 +29,7 @@ test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e cus
 });
 
 test("Custo pendente permanece visível e não se transforma em compra gratuita",()=>{
- for(const id of ["saque-rapido","dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
+ for(const id of ["dueto-improvisado","maestria-em-apresentacao","pericia-em-instrumentos","montaria-epica"]){
   const skill=SKILLS.find(x=>x.id===id);
   assert.ok(skill,"Perícia pendente precisa estar visível: "+id);
   assert.equal(skill.cost,null);
@@ -99,3 +99,5 @@ test("Especialização em Armas de Punho: 1 XP, quatro atributos e compra sem Pu
   t.attributes[a]=1;
  }
 });
+
+ test("Saque Rápido custa 1 XP e exige Agilidade 2, Destreza 1 e Disciplina 2",()=>{const t=blank("humanoide");assert.equal(SKILLS.find(x=>x.id==="saque-rapido").cost,1);assert.match(playerSkillRequirement("saque-rapido",t),/Agilidade 2/);t.attributes.agilidade=2;t.attributes.destreza=1;t.practices.armas_conjuracao=2;assert.equal(playerSkillRequirement("saque-rapido",t),null);});
