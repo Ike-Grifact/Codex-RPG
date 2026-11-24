@@ -39,3 +39,8 @@ O painel mostra **descrição breve + benefícios + requisitos e XP + botão de 
 A cada novo verbete, comparar com o SRD atual para conferir requisitos, gatilhos, custos, bônus, limitações e exceções. Primeiro revisar o texto do jogador; depois propagar ao site e ao Codex Genético. Esta diretriz é apenas editorial: **não autoriza criar ou modificar regras**.
 
 **PENDENTE:** revisão autoral e migração gradual das demais Perícias. Somente Armas Leves, Médias e Pesadas receberam este modelo editorial; não implica revisão das demais especializações ou de outros verbetes.
+
+
+## Identidade visual e referências (23/11/2026)
+
+Separar tipo e custo de ativação do XP. Perícia passiva não exige custo próprio; ativa pode ter custo, inclusive zero. Benefícios passivos podem coexistir com ativações pagas. Classificações e custos não confirmados permanecem PENDENTES. Reutilizar os SVGs de Êxito, Antecipar, Pavor e pictogramas existentes no Codex Genético, com ícone da constelação quando não houver específico. Manter valores e nomes em texto. Perícias relacionadas apontam para entradas ativas; mecânicas têm grupo próprio. Arquivos antigos são preservados por compatibilidade, sem exposição como Perícias atuais.

@@ -54,7 +54,7 @@ jobs:
       # Os módulos druid-life/druid-action da v0.82 permanecem no Git apenas
       # como LEGADO HISTÓRICO e não são mais testes normativos do SRD v1.0.
       - name: Validar os SVGs e os pictogramas do Codex Genético
-        run: node --test prototipo-ficha/iconography.test.mjs
+        run: node --test prototipo-ficha/iconography.test.mjs prototipo-ficha/pericias-player-copy.test.mjs
       - name: Validar apresentação Druídica e ícones nos equipamentos
         run: node --test prototipo-ficha/druid-icons-ui.test.mjs
       - name: Validar loja compacta e rolagem rápida de equipamentos

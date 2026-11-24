@@ -390,7 +390,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Ao usar arma correta contra oponente que possui Desvantagem natural perante ela, substitui a Vantagem de peso (+1A) por Vantagem Absoluta (+1E). Se a condição da ação já era Vantagem Absoluta, aplica Golpe Certo (+2E no total da condição + Manejo, nunca +3E).",
+  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Perícia passiva — sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E). Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total). Consulte as mecânicas Vantagens e Desvantagens e Golpe Certo.",
   1
  ],
  [
@@ -1134,6 +1134,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "concentracao-refinada":"concentracao-refinada",
  "dueto-improvisado":"dueto-improvisado",
  "contratempo":"contratempo",
  "solo-provocador":"solo-provocador",
@@ -1544,6 +1545,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "manejo-perfeito":"Passiva — sem custo de ativação",
  "disciplina-avancada":"Passiva — sem custo de ativação",
  "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
  "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
@@ -1635,6 +1637,13 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "manejo-perfeito":{
+  type:"Passiva — sem custo de ativação",
+  intro:"Você domina o uso da arma adequada contra as defesas do oponente.",
+  benefits:["Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E).","Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total)."],
+  note:"",
+  mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"],["golpe-certo","Golpe Certo"]]
+ },
  "disciplina-avancada":{
   type:"Passiva — sem custo de ativação",
   intro:"Você aprendeu a combinar suas aptidões em ações marciais e mágicas.",
@@ -1694,6 +1703,7 @@ function skillCompactCard([id,baseName,detail,cost],wizard){
  const disabled=racial||!!state.pending||(!owned&&(!!req||!affordable));
  const act=CARD_ACTIVATIONS[id]||(id==="olhos-de-aguia"?"Passiva · sem custo":(/1 Coragem/i.test(detail)?"1 Coragem (quando exigida)":"Passiva / consultar"));
  const guide=playerSkillGuide(id);
+ const presentation=window.CODEX_SKILL_PRESENTATION?.byId[id];
  const practical=guide?guide.benefits[0]:(CARD_EFFECTS[id]||detail.replace(/^\\d+ XP [·•] /,"").split(". ")[0].slice(0,105));
  const warning=req||(!owned&&!affordable?"XP insuficiente.":"");
  const button=racial?"Origem · Gratuita":owned?("Devolver "+(Number.isInteger(price)?price:"?")+" XP · playtest"):price===null?"Pendente":"Comprar · "+price+" XP";
@@ -1701,10 +1711,10 @@ function skillCompactCard([id,baseName,detail,cost],wizard){
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":price===null?"Pendente":price+" XP")+'</dd></div>'+
-  (guide?.type?'<div><dt>Tipo</dt><dd>'+esc(guide.type)+'</dd></div>':"")+
-  (guide?'<div class="fp-skill-quick-benefit"><dt>Benefício</dt><dd>'+esc(practical)+'</dd></div>':
- '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
- '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div>')+'</dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
+  (presentation?'<div><dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd></div><div><dt>Custo de ativação</dt><dd>'+esc(presentation.cost)+'</dd></div>':guide?.type?'<div><dt>Tipo</dt><dd>'+esc(guide.type)+'</dd></div>':"")+
+  (guide?'<div class="fp-skill-quick-benefit"><dt>Benefício</dt><dd>'+skillRuneHTML(practical)+'</dd></div>':
+ ((!presentation||presentation.type==="Pendente")?'<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>':"")+
+ '<div><dt>Efeito prático</dt><dd>'+skillRuneHTML(practical)+'</dd></div>')+'</dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
  '<div class="fp-skill-preview" role="tooltip"><strong>Resumo</strong><p>'+esc(guide?guide.intro:(CARD_BRIEFS[id]||detail.slice(0,240)))+'</p><small>Clique para abrir explicação completa.</small></div>'+
  '<div class="fp-skill-controls"><button type="button" data-action="skill" data-id="'+esc(id)+'" aria-pressed="'+owned+'" title="'+esc(warning)+'"'+(disabled?' disabled':'')+'>'+esc(button)+'</button>'+
  (warning?'<small class="fp-skill-req">'+esc(warning)+'</small>':'')+'</div></article>';
@@ -1795,7 +1805,8 @@ function codexIcon(icon,cls="fp-codex-icon"){
  if(!icon||!/^[a-z0-9-]+$/.test(icon))return "";
  return '<img class="'+cls+'" src="../assets/icons/codex/'+icon+'.svg" alt="" aria-hidden="true">';
 }
-const codexSkillIcon=(id,cls)=>codexIcon(CODEX_SKILL_ICONS[id],cls);
+const codexSkillIcon=(id,cls)=>codexIcon(CODEX_SKILL_ICONS[id]||window.CODEX_SKILL_PRESENTATION?.byId[id]?.icon,cls);
+const skillRuneHTML=text=>window.CODEX_SKILL_PRESENTATION?.decorateEscaped(esc(text))||esc(text);
 const codexItemIcon=(item,cls)=>codexIcon(codexItemIconId(item),cls);
 
 
@@ -3623,11 +3634,13 @@ function geneDetailHTML(id,s=state){
  const status=geneSkillStatus(skill,s),reason=skillReq(sid,s);
  const packagePlan=status==="potential"?geneAutoPlan(sid,s):null;
  const playerGuide=playerSkillGuide(sid);
+ const presentation=window.CODEX_SKILL_PRESENTATION?.byId[sid];
  const playerGuideHTML=playerGuide?
   '<p class="fp-gene-player-intro">'+esc(playerGuide.intro)+'</p>'+
   '<h5 class="fp-gene-player-subtitle">Benefícios</h5>'+
-  '<ul class="fp-gene-player-benefits">'+playerGuide.benefits.map(benefit=>'<li>'+esc(benefit)+'</li>').join("")+'</ul>'+
-  '<p class="fp-gene-player-note">'+esc(playerGuide.note)+'</p>':
+  '<ul class="fp-gene-player-benefits">'+playerGuide.benefits.map(benefit=>'<li>'+skillRuneHTML(benefit)+'</li>').join("")+'</ul>'+
+  (playerGuide.note?'<p class="fp-gene-player-note">'+esc(playerGuide.note)+'</p>':"")+
+  (playerGuide.mechanics?.length?'<p class="fp-gene-player-note"><strong>Mecânicas relacionadas:</strong> '+playerGuide.mechanics.map(([slug,label])=>'<a href="../mecanicas/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer">'+esc(label)+'</a>').join(" · ")+'</p>':""):
   '<p>'+esc(sid==="pericia-druidica"?CARD_BRIEFS[sid]:detail)+'</p>';
  const slug=SKILL_PERMALINKS[sid];
  const verbete=slug?'<a class="fp-gene-verbete" href="../pericias/'+encodeURIComponent(slug)+'.html" target="_blank" rel="noopener noreferrer" aria-label="Abrir verbete completo de '+esc(name)+' em nova aba">Ler verbete completo ↗</a>':"";
@@ -3646,8 +3659,8 @@ function geneDetailHTML(id,s=state){
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
-  (playerGuide?.type?'<dt>Tipo</dt><dd>'+esc(playerGuide.type)+'</dd>':"")+
-  (playerGuide?"":'<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd>')+'</dl>'+skillButton+verbete;
+  (presentation?'<dt>Tipo</dt><dd>'+esc(presentation.type)+'</dd><dt>Custo de ativação</dt><dd>'+esc(presentation.cost)+'</dd>':playerGuide?.type?'<dt>Tipo</dt><dd>'+esc(playerGuide.type)+'</dd>':"")+
+  (playerGuide?"":!presentation||presentation.type==="Pendente"?'<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd>':"")+'</dl>'+skillButton+verbete;
 }
 function renderGenetic(){
  const preview=genePreviewState();
