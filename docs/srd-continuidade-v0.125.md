@@ -2,7 +2,7 @@
 
 **Data:** 24/11/2026
 
-**DEFINIDO — correção autoral:** a face 11 do d12 passa de 2P a 3P; a face 15 do d20 passa de 3P a 3P+2A. Complementa [v0.124](srd-continuidade-v0.124.md) e substitui exclusivamente esses dois valores. A face 11 do d20 permanece 2P (interpretação literal do pedido); constitui exceção à distribuição compartilhada. Demais faces, retenção, críticos, custos, dano, proteções e usos de Antecipar permanecem vigentes.
+**DEFINIDO — correção autoral:** a face 11 do d12 e do d20 passa de 2P a 3P; a face 15 do d20 passa de 3P a 3P+2A. Complementa [v0.124](srd-continuidade-v0.124.md) e substitui exclusivamente esses valores. A distribuição comum das faces 1–12 do d12 e d20 permanece idêntica. Demais faces, retenção, críticos, custos, dano, proteções e usos de Antecipar permanecem vigentes.
 
 ## Faces
 
@@ -18,7 +18,7 @@
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
-| 11 | — | — | — | 3ᚦ | 2ᚦ |
+| 11 | — | — | — | 3ᚦ | 3ᚦ |
 | 12 | — | — | — | 3ᛋ | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+2ᚨ |
 | 14 | — | — | — | — | 3ᛋ+2ᚨ |

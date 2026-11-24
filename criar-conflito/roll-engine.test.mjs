@@ -17,7 +17,7 @@ test("Faces simbólicas corretas, descarte sem Pavor e máximo de dados",()=>{
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(4,3),[0,0,1]);
  assert.deepEqual(faceSymbols(12,11),[0,0,3]);
- assert.deepEqual(faceSymbols(20,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,3]);
  assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
  const r=previewCreatureRoll(t,rolled,rolled.slice(0,2).map(d=>d.id),{de:1});

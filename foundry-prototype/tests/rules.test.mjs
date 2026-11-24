@@ -22,10 +22,10 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
  assert.deepEqual(faceSymbols(12,11),[0,0,3]);
- assert.deepEqual(faceSymbols(20,11),[0,0,2]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,3]);
  assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
- for(let i=1;i<=12;i++){if(i!==11)assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
+ for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
