@@ -97,7 +97,7 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização passiva por família de arma, sem custo próprio de ativação: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
   1
  ]),
  [
@@ -259,7 +259,7 @@ const SKILLS=[
  [
   "disciplina-avancada",
   "Disciplina Avançada",
-  "Disciplina 3; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
+  "Perícia passiva — sem custo de ativação. Disciplina 3; ao realizar uma ação com Disciplina como fonte principal, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
   1
  ],
  [
@@ -481,7 +481,7 @@ const SKILLS=[
  [
   "maestria-martelos",
   "Especialização em Armas — Martelos, Maças e Clavas",
-  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo, maça ou clava e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
+  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Especialização passiva, sem custo próprio de ativação. Ataque com martelo, maça ou clava e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
  [

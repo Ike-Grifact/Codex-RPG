@@ -216,7 +216,7 @@ const SKILLS=[
  ],
  ...WEAPON_MASTERY_TYPES.map(({id,name,family,activationReq})=>[
   id,name,
-  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização por família de arma: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
+  (family==="fogo"?"Custo nominal 1 XP; exclusiva de Humanos e concedida gratuitamente pela origem. ":APPROVED_WEAPON_MASTERY_PURCHASE[id]?"1 XP. Requisitos de compra: "+APPROVED_WEAPON_MASTERY_PURCHASE[id]+". ":"1 XP. Requisitos de compra ainda PENDENTES. ")+"Especialização passiva por família de arma, sem custo próprio de ativação: no acerto comum, uma característica da arma é gratuita. Para tentar uma segunda, declare e pague 1 Coragem antes de rolar; no crítico com acerto, a recuperação normal do crítico compensa esse custo, deixando duas características diferentes gratuitas no saldo. Uma terceira diferente exige mais 1 Coragem declarada antecipadamente, quando a arma permitir; falha não devolve gastos e a recuperação do crítico ocorre somente uma vez. Exige "+activationReq+" para usar, arma com características habilitadas e acerto na DE. Não concede a Perícia em Armas automaticamente.",
   1
  ]),
  [
@@ -378,7 +378,7 @@ const SKILLS=[
  [
   "disciplina-avancada",
   "Disciplina Avançada",
-  "Disciplina 3; ao realizar uma ação com Disciplina, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
+  "Perícia passiva — sem custo de ativação. Disciplina 3; ao realizar uma ação com Disciplina como fonte principal, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
   1
  ],
  [
@@ -600,7 +600,7 @@ const SKILLS=[
  [
   "maestria-martelos",
   "Especialização em Armas — Martelos, Maças e Clavas",
-  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Ataque com martelo, maça ou clava e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
+  "1 XP. Compra: Força 3 + Destreza 1 + Vigor 1. Especialização passiva, sem custo próprio de ativação. Ataque com martelo, maça ou clava e Perícia em Armas do peso: acerto comum ativa 1 característica gratuitamente; crítico ativa 2 características diferentes gratuitamente e pode gastar 1 Coragem para uma terceira, se a arma possuir três. A Perícia do peso é requisito da ativação, não da compra. Sem acerto, sem gratuidade; não cria características ou dano extra.",
   1
  ],
  [
@@ -1544,6 +1544,7 @@ const CARD_BRIEFS={
 };
 
 const CARD_ACTIVATIONS={
+ "disciplina-avancada":"Passiva — sem custo de ativação",
  "maos-leves":"Teste de Disciplina + Furtividade; confirmação do Narrador para inventário/DE.",
  "pericia-armadilha":"Vantagem contextual (+1A) em teste com Proteção para armar ou desarmar armadilhas.",
  "golpe-furtivo":"Dado da arma adicional no ataque furtivo; sem custo de Coragem informado.",
@@ -1611,18 +1612,18 @@ const CARD_ACTIVATIONS={
  "erudicao-avancada": "Passiva",
  "atletismo-avancado": "Passiva",
  "artesao-avancado": "Passiva",
- "maestria-martelos": "Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-adagas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-espadas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-machados":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-hastes":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-cajados":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-arcos":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-bestas":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-arremessos":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-punhos":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-longo-alcance":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
- "maestria-armas-fogo":"Acerto com arma e habilitação específica: 1 efeito grátis. Crítico: 2 diferentes grátis; terceira por 1 Coragem, quando existir.",
+ "maestria-martelos":"Passiva — sem custo de ativação",
+ "maestria-adagas":"Passiva — sem custo de ativação",
+ "maestria-espadas":"Passiva — sem custo de ativação",
+ "maestria-machados":"Passiva — sem custo de ativação",
+ "maestria-hastes":"Passiva — sem custo de ativação",
+ "maestria-cajados":"Passiva — sem custo de ativação",
+ "maestria-arcos":"Passiva — sem custo de ativação",
+ "maestria-bestas":"Passiva — sem custo de ativação",
+ "maestria-arremessos":"Passiva — sem custo de ativação",
+ "maestria-punhos":"Passiva — sem custo de ativação",
+ "maestria-longo-alcance":"Passiva — sem custo de ativação",
+ "maestria-armas-fogo":"Passiva — sem custo de ativação",
  "ferreiro": "Passiva no teste de Forja; produção/alterações aguardam procedimento",
  "ferreiro-elemental": "Habilitação de criação; procedimentos de fabricação pendentes",
  "resistencia-a-fogo": "Passiva pessoal: metade do dano de Fogo à Vida e 0 Vida direta por Derreter. Não protege Integridade; cálculos automáticos pendentes",
@@ -1634,6 +1635,12 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "disciplina-avancada":{
+  type:"Passiva — sem custo de ativação",
+  intro:"Você aprendeu a combinar suas aptidões em ações marciais e mágicas.",
+  benefits:["Combinação de aptidões. Ao realizar uma ação com Disciplina como fonte principal, você pode combinar uma terceira aptidão pertinente: um Atributo, Conhecimento ou Prática. Essa aptidão fornece seus próprios dados à rolagem."],
+  note:"Respeite as regras de combinação de fontes e os limites de dados rolados e mantidos. A Perícia não permite repetir Disciplina nem concede Êxitos extras automaticamente."
+ },
  "armas-leves":{
   intro:"Você aprendeu a manejar armas leves e a aproveitar suas características em combate.",
   benefits:[
@@ -1670,13 +1677,14 @@ function playerSkillGuide(id){
  const mastery=id==="maestria-martelos"?{activationReq:"Perícia em Armas correspondente ao peso do martelo, maça ou clava"}:WEAPON_MASTERY_TYPES.find(row=>row.id===id);
  if(!mastery)return null;
  return {
+  type:"Passiva — sem custo de ativação",
   intro:"Você se especializou nesta família de armas e sabe aproveitar as características que seu equipamento possui.",
   benefits:[
    "Acerto comum. Quando você acerta com uma arma da família e possui sua habilitação de uso, pode ativar uma característica existente sem gastar Coragem.",
    "Acerto crítico. Para tentar uma segunda característica diferente, declare e pague 1 Coragem antes de rolar. No crítico com acerto, a recuperação normal do crítico devolve a Coragem paga, deixando até duas características diferentes gratuitas no saldo final. Não há segunda devolução.",
    "Terceira característica. Se a arma possuir uma terceira característica diferente, você pode declarar mais 1 Coragem antes da rolagem para tentar ativá-la em um crítico com acerto. Sem o crítico, essa característica extra não produz efeito; o gasto não é devolvido por falha."
   ],
-  note:"Para usar: equipe uma arma da família, tenha a Especialização e cumpra a habilitação: "+mastery.activationReq+". A primeira característica é gratuita no acerto; pagamentos adicionais sempre antecedem a rolagem. Características distintas e realmente existentes na arma são obrigatórias."
+  note:"Para usar: equipe uma arma da família, tenha a Especialização e cumpra a habilitação: "+mastery.activationReq+". A Especialização não tem custo próprio de ativação. Somente as características adicionais pagas exigem Coragem antes da rolagem. Características distintas e realmente existentes na arma são obrigatórias."
  };
 }
 
@@ -1693,6 +1701,7 @@ function skillCompactCard([id,baseName,detail,cost],wizard){
  '<a class="fp-skill-content fp-skill-main-link" href="../pericias/'+SKILL_PERMALINKS[id]+'.html" aria-label="Ler verbete completo de '+esc(name)+'"><span class="fp-skill-heading">'+codexSkillIcon(id)+'<strong>'+esc(name)+'</strong></span><dl class="fp-skill-quick">'+
  '<div><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[id]||"Consultar verbete")+'</dd></div>'+
  '<div><dt>XP</dt><dd>'+esc(racial?"0 XP · origem":price===null?"Pendente":price+" XP")+'</dd></div>'+
+  (guide?.type?'<div><dt>Tipo</dt><dd>'+esc(guide.type)+'</dd></div>':"")+
   (guide?'<div class="fp-skill-quick-benefit"><dt>Benefício</dt><dd>'+esc(practical)+'</dd></div>':
  '<div><dt>Ativação</dt><dd>'+esc(act)+'</dd></div>'+
  '<div><dt>Efeito prático</dt><dd>'+esc(practical)+'</dd></div>')+'</dl><span class="fp-skill-link-note">Ler verbete completo ↗</span></a>'+
@@ -3637,6 +3646,7 @@ function geneDetailHTML(id,s=state){
   '<dl><dt>Requisitos</dt><dd>'+esc(CARD_REQUIREMENTS[sid]||reason||"Consulte o verbete")+'</dd>'+
   '<dt>Custo da Perícia</dt><dd>'+esc(racial?"0 XP · Origem":Number.isInteger(cost)?cost+" XP":"Pendente")+'</dd>'+
   (packagePlan?'<dt>Custo de tudo que falta</dt><dd>'+packagePlan.cost+' XP</dd>':"")+
+  (playerGuide?.type?'<dt>Tipo</dt><dd>'+esc(playerGuide.type)+'</dd>':"")+
   (playerGuide?"":'<dt>Ativação</dt><dd>'+esc(CARD_ACTIVATIONS[sid]||"Conforme verbete")+'</dd>')+'</dl>'+skillButton+verbete;
 }
 function renderGenetic(){

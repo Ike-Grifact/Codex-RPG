@@ -48,12 +48,13 @@ test("Benefícios são exibidos sem duplicar linha de ativação nas três Perí
 const masteryFamilies=["adagas","espadas","machados","martelos","hastes","cajados","arcos","bestas","arremessos","punhos","longo-alcance","armas-fogo"];
 test("Todas as Especializações em Armas oferecem os benefícios em linguagem de jogador",()=>{
  assert.match(player,/function playerSkillGuide\(id\)/);
- assert.match(player,/const mastery=WEAPON_MASTERY_TYPES\.find/);
+ assert.match(player,/WEAPON_MASTERY_TYPES\.find\(row=>row\.id===id\)/);
  assert.match(player,/const guide=playerSkillGuide\(id\)/);
  assert.match(player,/const playerGuide=playerSkillGuide\(sid\)/);
  for(const family of masteryFamilies){
   const html=readFileSync(new URL("../pericias/maestria-em-"+family+".html",import.meta.url),"utf8");
   assert.match(html,/<h2>Benefícios<\/h2>/,family);
+  assert.match(html,/Passiva — sem custo de ativação/,family);
   assert.match(html,/uma de suas características sem gastar Coragem/,family);
   assert.match(html,/declare e pague 1 Coragem antes da rolagem/,family);
   assert.match(html,/recuperação normal do crítico devolve essa Coragem/,family);
@@ -78,4 +79,16 @@ test("Maças e Clavas redirecionam à Especialização única de Martelos",()=>{
  const catalog=readFileSync(new URL("../pericias/index.html",import.meta.url),"utf8");
  assert.equal((catalog.match(/href="maestria-em-martelos\.html"/g)||[]).length,1);
  assert.doesNotMatch(catalog,/href="maestria-em-macas\.html"/);
+});
+
+test("Disciplina Avançada é passiva, mantém aquisição 1 XP e possui texto de jogador",()=>{
+ const html=readFileSync(new URL("../pericias/disciplina-avancada.html",import.meta.url),"utf8");
+ assert.match(html,/Disciplina 3/);
+ assert.match(html,/<dd>1 XP<\/dd>/);
+ assert.match(html,/Passiva — sem custo de ativação/);
+ assert.match(html,/terceira aptidão pertinente/);
+ assert.doesNotMatch(html,/Não especificado|Descrição completa|Aplicação prática/);
+ assert.match(player,/"disciplina-avancada":\{\s*type:"Passiva — sem custo de ativação"/);
+ assert.match(player,/playerGuide\?\.type/);
+ assert.match(player,/guide\?\.type/);
 });
