@@ -2,8 +2,9 @@
  * O mapa de alternativas abaixo é copiado de prototipo-ficha/app.js.
  * A CI compara as alternativas com o criador e impede divergências silenciosas.
  */
-import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261123-especializacao-punhos-v099";
+import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261124-saque-v0110";
 export const GENE_AUTO_REQUIREMENTS={
+ "saque-rapido":[["a:agilidade:2","a:destreza:1","p:armas_conjuracao:2"]],
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
  "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],

@@ -158,6 +158,7 @@ const APPROVED_WEAPON_MASTERY_PURCHASE=Object.freeze({
  "maestria-punhos":"Força 1 + Agilidade 1 + Destreza 1 + Vigor 1"
 });
 const SKILLS=[
+ ["saque-rapido","Saque Rápido","Passiva: sacar ou trocar arma em combate custa 1 Antecipar da ação; se não obtiver esse símbolo, Golpe de Sorte (−2 Êxitos). Acesso rápido no corpo respeita a carga física.",1],
  ["dueto-improvisado","Dueto Improvisado","PROPOSTO: transferir 1A musical ao parceiro de dueto sem duplicar símbolo. XP de compra PENDENTE.",null],
  ["contratempo","Contratempo","PROPOSTO: interferir na seleção de dados mantidos pelo inimigo; custos e procedimento pendentes. XP de compra PENDENTE.",null],
  ["solo-provocador","Solo Provocador","PROPOSTO: usar Apresentação e Influência para chamar atenção, sem controle mental automático. XP de compra PENDENTE.",null],
@@ -408,13 +409,13 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, escolha o peso Leve, Médio ou Pesado antes da rolagem.",
+  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, altere o peso para Leve ou Pesado antes da rolagem.",
   1
  ],
  [
   "artista-marcial",
   "Artista Marcial",
-  "Disciplina 2 + Destreza 2 + Atletismo 1 + Pugilismo; 1 XP. 1 Coragem por manobra ou crítico ativando Pugilismo; só uma por vez: Empurrar, Agarrar, Derrubar, Desarmar.",
+  "Combate desarmado: 1 Coragem por tentativa de manobra, ou sem custo adicional ao ativar Pugilismo. No acerto, aplica uma manobra: Empurrar, Agarrar, Derrubar ou Desarmar.",
   1
  ],
  [
@@ -703,6 +704,7 @@ const visibleSkillCount=()=>SKILLS.length-HIDDEN_CATALOG_SKILLS.size;
 
 // Facetas servem à navegação: uma associação temática nunca se torna pré-requisito.
 const SKILL_AFFINITY={
+ "saque-rapido":["attr:agilidade","attr:destreza","practice:armas_conjuracao"],
  "dueto-improvisado":["practice:apresentacao","attr:influencia"],
  "contratempo":["practice:apresentacao","attr:influencia"],
  "solo-provocador":["practice:apresentacao","attr:influencia"],
@@ -1134,6 +1136,7 @@ const SKILL_BRANCHES=[
 ];
 
 const SKILL_PERMALINKS={
+ "saque-rapido":"saque-rapido",
  "concentracao-refinada":"concentracao-refinada",
  "dueto-improvisado":"dueto-improvisado",
  "contratempo":"contratempo",
@@ -1258,6 +1261,8 @@ const SKILL_PERMALINKS={
  "coleta-avancada": "coleta-avancada"
 };
 const CARD_REQUIREMENTS={
+ "saque-rapido":"Agilidade 2, Destreza 1 e Disciplina 2",
+ "artista-marcial":"Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo",
  "pugilismo":"Disciplina 1, Força 2 e Destreza 1",
  "dueto-improvisado":"Requisitos e custos pendentes; PROPOSTO",
  "contratempo":"Requisitos e custos pendentes; PROPOSTO",
@@ -1638,11 +1643,17 @@ const CARD_ACTIVATIONS={
 // Texto de leitura do jogador. Regras de compra/combate continuam no catálogo e SRD.
 // Ampliar após revisão autoral de cada Perícia, sem gerar benefícios automaticamente.
 const PLAYER_SKILL_COPY={
+ "saque-rapido":{type:"Passiva",intro:"Você desenvolveu a habilidade de sacar e trocar suas armas durante o combate sem perder o ritmo de seus golpes.",benefits:["Troca de arma. Ao sacar ou trocar uma arma durante uma ação de combate, gaste 1 Antecipar obtido na própria rolagem para realizar o ataque normalmente.","Golpe de Sorte. Se tentar atacar com a arma sacada sem obter o Antecipar necessário, o ataque é considerado Golpe de Sorte (−2 Êxitos).","Acesso rápido. Distribua armas pelo corpo sem ocupar as mãos, respeitando a capacidade de carga. Os itens continuam contando no peso do personagem."],mechanics:[["inventario-e-acesso-rapido","Inventário e armas de acesso rápido"]]},
+ "artista-marcial":{
+  type:"Ativa + benefício passivo",
+  intro:"Você domina técnicas de combate desarmado capazes de desequilibrar, controlar ou desarmar seus oponentes.",benefits:["Manobra marcial. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para tentar Empurrar, Agarrar, Derrubar ou Desarmar. Escolha uma manobra; ela só é aplicada se o golpe acertar.","Sinergia com Pugilismo. Ao ativar Pugilismo, você pode escolher uma dessas manobras sem gastar Coragem adicional. O efeito é aplicado no acerto, sem exigir crítico."],note:"Para usar: declare a manobra antes de rolar. Apenas uma manobra por ataque; a Coragem paga não é devolvida em caso de falha.",
+  mechanics:[["caracteristicas-de-combate","Características de Armas, Golpes e Magias"]]
+ },
  "pugilismo":{
   type:"Ativa",
   intro:"Você domina o combate desarmado e sabe adaptar o peso de seus socos.",
-  benefits:["Peso padrão. Seus socos são considerados de peso Médio.","Mudança de peso. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para escolher o peso do soco: Leve, Médio ou Pesado."],
-  note:"Para usar: tenha a Perícia adquirida, realize um ataque desarmado e declare o peso escolhido antes de rolar. Sem ativar Pugilismo, o peso padrão é Médio.",
+  benefits:["Peso padrão. Seus socos são considerados de peso Médio.","Mudança de peso. Antes de rolar um ataque desarmado, você pode gastar 1 Coragem para alterar o peso do soco para Leve ou Pesado."],
+  note:"Para usar: tenha a Perícia adquirida, realize um ataque desarmado e declare o peso escolhido antes de rolar. Sem ativar Pugilismo, o peso padrão é Médio. Se você possui Artista Marcial, pode escolher uma manobra sem custo adicional.",
   mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"]]
  },
  "manejo-perfeito":{
@@ -2455,6 +2466,26 @@ function normalize(v){
  }
  return s;
 }
+function itemHands(it){
+ if(it.type==="escudo")return 1;
+ if(it.type!=="arma")return 0;
+ if([1,2].includes(Number(it.hands)))return Number(it.hands);
+ if(/(?:duas|2) mãos|^arco longo/i.test(it.name))return 2;
+ if(/(?:uma|1) mão/i.test(it.name))return 1;
+ return 0;
+}
+function handItem(it){return ["arma","escudo"].includes(it.type);}
+function itemPosition(it){return it.equipped&&handItem(it)?"hands":it.position==="quick"&&it.type==="arma"?"quick":"bag";}
+function canHoldItem(it,hands=itemHands(it)){
+ if(!hands||it.qty!==1)return false;
+ const others=state.items.filter(x=>x!==it&&handItem(x)&&x.equipped);
+ return others.every(x=>itemHands(x)>0&&x.qty===1)&&others.reduce((n,x)=>n+itemHands(x),0)+hands<=2;
+}
+function setItemPosition(it,pos){
+ if(!handItem(it)||!["bag","quick","hands"].includes(pos)||pos==="quick"&&it.type!=="arma")return false;
+ if(pos==="hands"&&!canHoldItem(it)){toast("Informe 1 ou 2 mãos, use uma entrada de quantidade 1 e libere as mãos necessárias.");return false;}
+ it.position=pos;it.equipped=pos==="hands";return true;
+}
 function normalizeItem(it={}){
  const type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(it.type)?it.type:"outro";
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=clamp(Math.floor(it.qty??1),1,99);
@@ -2464,7 +2495,7 @@ function normalizeItem(it={}){
  const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
   (!["alto","extremo"].includes(weight)||it.embeddedWeapon==="pesado")?it.embeddedWeapon:"";
  return {id:String(it.id||getId()).slice(0,80),name:String(it.name||"Item sem nome").slice(0,90),
-  type,weight,grade,qty,max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped&&!it.shieldGrounded,
+  type,weight,grade,qty,hands:itemHands({...it,type}),position:it.equipped&&["arma","escudo"].includes(type)?"hands":it.position==="quick"&&type==="arma"?"quick":"bag",max,hp:clamp(Math.floor(it.hp??max),0,max),equipped:!!it.equipped&&!it.shieldGrounded,
   shieldGrounded:type==="escudo"&&!!it.shieldGrounded,
   shieldFallCase:type==="escudo"&&["caminho","perto-alvo"].includes(it.shieldFallCase)?it.shieldFallCase:"",
   shieldFallMeters:type==="escudo"?clamp(Math.floor(Number(it.shieldFallMeters)||0),0,1000):0,
@@ -2585,6 +2616,7 @@ function xpStepCost(group,k,delta){
 }
 function canAfford(group,cost){return Number.isFinite(cost)&&cost>=0&&xpCosts().free>=cost;}
 function skillReq(id,s=state){
+ if(id==="saque-rapido"){if((s.attributes.agilidade||0)<2||(s.attributes.destreza||0)<1||(s.practices.armas_conjuracao||0)<2)return "Requer Agilidade 2, Destreza 1 e Disciplina 2.";return null;}
  if(id==="transfusao-sanguinaria"&&s.race!=="lucker_sangue")return"Transfusão Sanguinária é exclusiva de Lucker de Sangue; outras linhagens não podem comprar nem usar.";
  if(id==="maestria-armas-fogo"&&s.race!=="humano")return"Especialização em Armas de Fogo é exclusiva dos Humanos, concedida gratuitamente pela origem.";
  if(id!=="maestria-armas-fogo"&&WEAPON_MASTERY_TYPES.some(x=>x.id===id)&&!APPROVED_WEAPON_MASTERY_PURCHASE[id])return"Preço definido em 1 XP; requisitos de aquisição ainda PENDENTES. Compra bloqueada até definição dos graus pelo autor.";
@@ -3367,6 +3399,7 @@ function geneStageGrade(id,delta){
 // a partir das linhas temáticas do grafo. Cada sublista é uma alternativa válida.
 // a=Atributo, k=Conhecimento, p=Prática, s=Perícia.
 const GENE_AUTO_REQUIREMENTS={
+ "saque-rapido":[["a:agilidade:2","a:destreza:1","p:armas_conjuracao:2"]],
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],
  "maos-leves":[["p:furtividade:3","p:armas_conjuracao:3","k:protecao:2"]],
  "pericia-armadilha":[["p:artesao:1","p:armas_conjuracao:1","k:engenharia:1","a:destreza:1","a:inteligencia:1","k:protecao:2","p:furtividade:1"]],
@@ -5129,8 +5162,9 @@ function renderInventory(){
   '<label>Peso '+filterSelect(EQUIPMENT_WEIGHT_OPTIONS,inventoryWeight,'data-inventory-weight aria-label="Filtrar inventário por peso"')+'</label>'+
   '<span class="fp-filter-count">'+state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight)).length+' de '+state.items.length+' itens</span></div>';
  const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
+ const positionOrder={hands:0,quick:1,bag:2};
  const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
-  .sort((a,b)=>EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
+  .sort((a,b)=>positionOrder[itemPosition(a)]-positionOrder[itemPosition(b)]||EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
     EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||
     EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(a))-
     EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(b))||a.name.localeCompare(b.name,"pt-BR"));
@@ -5172,17 +5206,18 @@ function renderInventory(){
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
-  const group=equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
   '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
-  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':handItem(it)?({hands:"Nas mãos",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
+  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Inventário"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+(it.equipped?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped?"✓":"○")+'</button>'+
@@ -5466,7 +5501,7 @@ function npcConflictItems(items=state.items){
   category:categories[it.weight]||"",
   weight:typeof it.weight==="number"?it.weight:(WEIGHTS[it.weight]?.[1]??0),
   qty:it.qty,grade:it.grade,
-  integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped
+  integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped,position:itemPosition(it),hands:itemHands(it),die:it.die,range:it.range,properties:it.properties
  }));
 }
 /** Transferir uma ficha NPC independente, feita pelo próprio Codex Genético, para o encontro. */
@@ -5854,7 +5889,7 @@ function onClick(event){
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
   if(!it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Não pode equipar: G2 exige nível 5, G3 nível 10, G4 nível 20; Muito Pesada exige Vigor 6 e Atletismo 6.");return;}
   if(!it.equipped&&it.type==="armadura")for(const other of state.items)if(other.type==="armadura"&&other!==it)other.equipped=false; // Restrição técnica da ficha; sobreposição é PENDENTE.
-  it.equipped=!it.equipped;
+  if(handItem(it)){if(!setItemPosition(it,it.equipped?"bag":"hands"))return;}else it.equipped=!it.equipped;
   if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
   if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
   renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
@@ -5978,7 +6013,9 @@ function onChange(event){
  if(el.dataset.itemField){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
   const k=el.dataset.itemField;
-  if(k==="name")it.name=el.value.slice(0,90);
+  if(k==="position"){if(!setItemPosition(it,el.value)){renderInventory();return;}if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";renderComposer();}
+  else if(k==="hands"&&it.type==="arma"){const n=Number(el.value);if(it.equipped&&!canHoldItem(it,n)){toast("Libere as mãos necessárias antes de alterar a empunhadura.");renderInventory();return;}it.hands=n;}
+  else if(k==="name")it.name=el.value.slice(0,90);
   else if(k==="type"){
    it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";
    if(it.type!=="escudo")it.embeddedWeapon="";
@@ -5989,7 +6026,7 @@ function onChange(event){
     it.embeddedWeapon="";toast("Escudo pesado só aceita Cravar de arma Pesada; marca de arma Média retirada.");
    }
   }
-  else if(k==="qty")it.qty=it.packSize>0?1:clamp(Math.floor(el.value),1,99);
+  else if(k==="qty"){const n=it.packSize>0?1:clamp(Math.floor(el.value),1,99);if(handItem(it)&&it.equipped&&n!==1){toast("Arma ou escudo nas mãos deve ter quantidade 1.");renderInventory();return;}it.qty=n;}
   else if(k==="ammoRemaining"&&it.packSize>0){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
   else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??it.grade,0,it.grade);}
   else if(k==="focusCharges"&&it.type==="foco")it.focusCharges=clamp(Math.floor(Number(el.value)),0,it.grade);

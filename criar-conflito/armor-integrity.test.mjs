@@ -73,15 +73,23 @@ test("Envio do NPC transporta inventário, Integridade e equipamento",()=>{
   {id:"id2",name:"Escudo Leve",type:"escudo",weight:"leve",grade:1,qty:1,max:2,hp:1,equipped:true}
  ]};
  const WEIGHTS={medio:["Médio",.5],leve:["Leve",.125]};
- const transfer=new Function("state","WEIGHTS",npcSrc.slice(begin,end+2)+";return npcConflictItems;")(mockState,WEIGHTS);
+ const helperStart=npcSrc.indexOf("function itemHands("),helperEnd=npcSrc.indexOf("function canHoldItem(",helperStart);
+ assert.ok(helperStart>=0&&helperEnd>helperStart);
+ const transfer=new Function("state","WEIGHTS",npcSrc.slice(helperStart,helperEnd)+npcSrc.slice(begin,end+2)+";return npcConflictItems;")(mockState,WEIGHTS);
  const exported=transfer();
  assert.equal(exported.length,2);
  assert.deepEqual(exported.map(x=>[x.kind,x.integrity,x.integrityMax,x.equipped]),
   [["armor",5,12,true],["shield",1,2,true]]);
+ assert.equal(exported[1].hands,1);
+ assert.equal(exported[1].position,"hands");
+ mockState.items.push({id:"id3",name:"Arco longo",type:"arma",weight:"medio",grade:1,qty:1,max:0,hp:0,equipped:false,position:"quick",hands:2,die:10,range:12,properties:["À Distância"]});
+ const weapon=transfer()[2];
+ assert.equal(weapon.hands,2);assert.equal(weapon.position,"quick");assert.equal(weapon.die,10);
  const creature=humanoid();
- creature.items=exported;
+ creature.items=transfer();
  const received=normalize(creature);
  assert.equal(equippedArmor(received).integrity,1);
+ assert.equal(received.items[2].hands,2);assert.equal(received.items[2].position,"quick");
  assert.ok(npcSrc.includes("items:npcConflictItems()"),"envio real não usa lista vazia");
 });
 

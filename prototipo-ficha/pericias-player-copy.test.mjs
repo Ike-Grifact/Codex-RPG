@@ -123,7 +123,9 @@ test("Identidade visual e classificação das Perícias",()=>{
 
 test("Pugilismo: ativa, peso Médio padrão e três pesos disponíveis",()=>{
  const html=readFileSync(new URL("../pericias/pugilismo.html",import.meta.url),"utf8");
- assert.match(html,/<h2>Benefícios<\/h2>/);assert.match(html,/Disciplina 1, Força 2 e Destreza 1/);assert.match(html,/<dd>1 XP<\/dd>/);assert.match(html,/<dd>Ativa<\/dd>/);assert.match(html,/<dd>1 Coragem<\/dd>/);assert.match(html,/peso Médio/);assert.match(html,/Leve, Médio ou Pesado/);assert.doesNotMatch(html,/PENDENTE|Aplicação prática|Descrição completa/);
+ assert.match(html,/<h2>Benefícios<\/h2>/);assert.match(html,/Disciplina 1, Força 2 e Destreza 1/);assert.match(html,/<dd>1 XP<\/dd>/);assert.match(html,/<dd>Ativa<\/dd>/);assert.match(html,/<dd>1 Coragem<\/dd>/);assert.match(html,/peso Médio/);assert.match(html,/Leve ou Pesado/);assert.doesNotMatch(html,/PENDENTE|Aplicação prática|Descrição completa/);
  assert.match(player,/"pugilismo":\{\s*type:"Ativa"/);assert.match(player,/id==="pugilismo"&&\(disc<1\|\|strength<2\|\|dex<1\)/);
  const win={};new Function("window",readFileSync(new URL("../assets/skill-presentation.js",import.meta.url),"utf8"))(win);assert.equal(win.CODEX_SKILL_PRESENTATION.byId.pugilismo.type,"Ativa");assert.equal(win.CODEX_SKILL_PRESENTATION.byId.pugilismo.cost,"1 Coragem");
 });
+
+test("Artista Marcial: uma manobra no acerto e sinergia com Pugilismo",()=>{const html=readFileSync(new URL("../pericias/artista-marcial.html",import.meta.url),"utf8");assert.match(html,/Ativa \+ benefício passivo/);assert.match(html,/Empurrar, Agarrar, Derrubar ou Desarmar/);assert.match(html,/sem gastar Coragem adicional/);assert.match(html,/sem exigir crítico/);assert.doesNotMatch(html,/Descrição completa|Aplicação prática/);assert.match(player,/"artista-marcial":\{\s*type:"Ativa \+ benefício passivo"/);});

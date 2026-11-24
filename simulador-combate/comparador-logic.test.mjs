@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,armorOf,defense,equippedWeapons,
+import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planDraw,disarmTransfer,heldHands,planMartialAttack,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,armorOf,defense,equippedWeapons,
  weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
@@ -624,3 +624,41 @@ test("Especialização unificada e migração dos IDs legados de Martelos/Maças
  assert.equal(canUseWeaponMastery({...legacy,skills:["maestria-macas"]},"maestria-martelos"),true);
  assert.deepEqual(normalizeCombatant({...legacy,skills:["maestria-macas"]}).skills,["maestria-martelos"]);
 });
+
+
+test("Pugilismo e Artista Marcial: peso, custo único, efeito somente no acerto",()=>{
+ const c=normalizeCombatant({kind:"humanoide",skills:["pugilismo","artista-marcial"],attributes:{forca:2,destreza:2},practices:{armas_conjuracao:2,atletismo:1}});
+ assert.equal(planMartialAttack(c,{unarmed:true}).category,"medio");
+ for(const weight of ["leve","pesado"]){const p=planMartialAttack(c,{unarmed:true,pugilism:true,weight,manoeuvre:"Derrubar",success:true});assert.equal(p.cost,1);assert.equal(p.category,weight);assert.deepEqual(p.active,["Derrubar"]);}
+ const fail=planMartialAttack(c,{unarmed:true,pugilism:true,weight:"leve",manoeuvre:"Agarrar"});assert.equal(fail.cost,1);assert.deepEqual(fail.active,[]);
+ assert.equal(planMartialAttack(c,{unarmed:true,manoeuvre:"Desarmar"}).cost,1);
+ assert.equal(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"medio"}).ok,false);
+ assert.equal(planMartialAttack(c,{pugilism:true,weight:"leve"}).ok,false);
+ assert.equal(planMartialAttack({...c,skills:["pugilismo"]},{unarmed:true,manoeuvre:"Empurrar"}).ok,false);
+ assert.equal(planMartialAttack(c,{unarmed:true,manoeuvre:"Cortante"}).ok,false);
+});
+
+
+test("Peso do soco usa a matriz natural, sem dado de equipamento nem Perícia de armas",()=>{
+ const c=normalizeCombatant({kind:"humanoide",skills:["pugilismo","armas-medias"],attributes:{forca:2,destreza:1},practices:{armas_conjuracao:1}});
+ const t=armor();t.items[0].category="medio";
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true}).weapon,t,c).delta,-1);
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"leve"}).weapon,t,c).delta,1);
+ assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"pesado"}).weapon,t,c).delta,0);
+});
+
+
+test("Características compartilhadas aplicam efeitos apenas no acerto; condições persistem",()=>{
+ const attacker={...bare(),id:"agressor"},target=armor();
+ const effects=["Empurrar","Agarrar","Derrubar"];
+ assert.deepEqual(combatManoeuvreOutcome(effects,attacker,target,false).applied,{});
+ const outcome=combatManoeuvreOutcome(effects,attacker,target,true);assert.equal(outcome.applied.pushMeters,4);
+ const changed=applyCombatManoeuvres(target,outcome);assert.equal(changed.statuses.agarradoPor,attacker.id);assert.equal(changed.statuses.caido,true);
+ const restored=normalizeCombatant(changed);assert.equal(restored.statuses.caido,true);assert.equal(restored.statuses.agarradoPor,attacker.id);
+ assert.equal(proneAttackPenalty(restored),-1);assert.equal(proneAttackPenalty(restored,"disadvantage"),0);
+ assert.equal(standFromProne(restored,3).ok,false);assert.equal(standFromProne(restored,4).actor.statuses.caido,false);
+ const de=defense(attacker);assert.equal(escapeGrapple(restored,attacker,de-1).success,false);assert.equal(escapeGrapple(restored,attacker,de).actor.statuses.agarradoPor,"");
+});
+
+test("Saque Rápido reserva A antes dos demais usos e não inventa E",()=>{const rolled=[{id:"x",group:"attribute",sides:12,face:12}];const regular=resolveRoll(rolled,["x"],{bonusA:1});const draw=resolveRoll(rolled,["x"],{bonusA:1,drawMode:"quick"});assert.equal(draw.drawSpent,1);assert.equal(draw.aRemaining,regular.aRemaining-1);const zero=resolveRoll(rolled,["x"],{bonusA:-99,drawMode:"quick"});assert.equal(zero.drawPenalty,-2);assert.equal(resolveRoll(rolled,["x"],{drawMode:"normal"}).drawPenalty,-1);});
+test("Saque e Desarmar respeitam mãos e posse",()=>{const a=normalizeCombatant({id:"a",skills:["saque-rapido"],attributes:{agilidade:2,destreza:1,forca:3},practices:{armas_conjuracao:2},items:[{id:"s",name:"Escudo",kind:"shield",equipped:true,qty:1,weight:.125},{id:"w",name:"Arco longo",kind:"weapon",position:"quick",hands:2,qty:1,weight:.5}]});assert.equal(planDraw(a,"w").ok,false);const plan=planDraw(a,"w",["s"]);assert.equal(plan.ok,true);assert.equal(plan.mode,"quick");assert.equal(heldHands(plan.items),2);const b=normalizeCombatant({id:"b",items:[{id:"x",name:"Besta de uma mão",kind:"weapon",equipped:true,hands:1,weight:.125,qty:1}]});const result=disarmTransfer(a,b,"x","bag","captured");assert.equal(result.ok,true);assert.equal(result.target.items.length,0);assert.equal(result.attacker.items.length,3);assert.equal(disarmTransfer({...a,items:plan.items},b,"x","hands").ok,false);assert.ok(disarmTransfer(a,b,"x","ground").ground);});

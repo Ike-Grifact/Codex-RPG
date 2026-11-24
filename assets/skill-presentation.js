@@ -2,6 +2,7 @@
 (function(){
 "use strict";
 const metadata={
+ "saque-rapido": {"id":"saque-rapido","type":"Passiva","cost":"Sem custo próprio; saque/troca: 1 Antecipar","icon":"arma-espada"},
  "pericia-em-armas-leves": {
   "id": "armas-leves",
   "type": "Ativa + benefício passivo",
@@ -58,8 +59,8 @@ const metadata={
  },
  "artista-marcial": {
   "id": "artista-marcial",
-  "type": "Pendente",
-  "cost": "Pendente",
+  "type": "Ativa + benefício passivo",
+  "cost": "1 Coragem por tentativa; sem custo adicional com Pugilismo",
   "icon": "categoria-corporal"
  },
  "pericia-em-arremesso-de-armas": {
