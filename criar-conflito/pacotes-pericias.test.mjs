@@ -21,7 +21,7 @@ test("IDs internos ocultos são exatamente os do criador de personagens",()=>{
  assert.deepEqual(HIDDEN_PLAYER_SKILL_IDS,hidden);
  assert.equal(hidden.length,19);
  assert.equal(PLAYER_SKILLS.length,122,"Catálogo bruto ainda preserva fichas antigas");
- assert.equal(PLAYER_SKILLS.filter(s=>isVisiblePlayerSkill(s.id)).length,104);
+ assert.equal(PLAYER_SKILLS.filter(s=>isVisiblePlayerSkill(s.id)).length,103);
  for(const id of hidden){
   assert.equal(isVisiblePlayerSkill(id),false,"Não expor efeito/placeholder como Perícia: "+id);
   assert.equal(plan(blank("humanoide"),id),null,"Não permitir comprar efeito oculto: "+id);
