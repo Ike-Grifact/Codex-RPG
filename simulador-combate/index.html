@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261122-integridade-2-5-8-12" defer></script>
-<script type="module" src="./app.mjs?v=20261123-marcial-v0107"></script>
+<script type="module" src="./app.mjs?v=20261123-caracteristicas-v0108"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -144,6 +144,7 @@
     <label>Combatente <select id="resource-actor"></select></label>
    </div>
    <div id="resource-summary" class="cc-resource-summary"><p>Selecione uma ficha.</p></div>
+   <section id="manoeuvre-controls" class="cc-activation" hidden><h3>Condições de combate</h3><button type="button" id="stand-up" hidden>Levantar (4 movimentos)</button><div id="escape-wrap" hidden><p class="cc-help" id="grapple-info"></p><label>Total válido do teste de libertação <input type="number" min="0" step="1" id="escape-total"></label><button type="button" id="escape-grapple">Registrar teste de libertação</button></div><p class="cc-help">Deslocamento é resolvido na mesa. <a href="../mecanicas/caracteristicas-de-combate.html">Consultar características de combate</a>.</p></section>
    <div class="cc-form cc-duo">
     <label>Recurso <select id="resource-kind"><option value="integridade">Integridade da armadura/escudo</option><option value="vida">Vida</option><option value="coragem">Coragem</option><option value="pavor">Pavor local</option></select></label>
     <label>Equipamento <select id="resource-item"></select></label>
@@ -160,7 +161,7 @@
     <button id="apply-integrity" type="button" disabled>Aplicar dano à Integridade</button>
     <button id="apply-life" type="button" disabled>Aplicar 2 de dano à Vida (sem armadura)</button>
    </div>
-   <p class="cc-help">Os botões aplicam o resultado somente após a confirmação. Ajustes manuais são registrados no histórico. Efeitos de armas com regra definida são registrados quando selecionados e habilitados; Cravar e manobras ainda exigem adjudicação do Narrador. Dano excedente, interrupções e ação conjunta não são inventados.</p>
+   <p class="cc-help">Os botões aplicam o resultado somente após a confirmação. Ajustes manuais são registrados no histórico. Efeitos de armas com regra definida são registrados quando selecionados e habilitados; Empurrar registra deslocamento, Agarrar e Derrubar registram condições; Cravar e Desarmar conservam seus procedimentos específicos. Dano excedente, interrupções e ação conjunta não são inventados.</p>
   </section>
  </div>
  <section class="cc-panel" aria-label="Histórico de rolagens">

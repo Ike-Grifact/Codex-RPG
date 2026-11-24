@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planMartialAttack,armorOf,defense,equippedWeapons,
+import {normalizeCombatant,normalizeEquipment,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,planMartialAttack,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,armorOf,defense,equippedWeapons,
  weightAffinity,manejoPerfeitoBonus,hasCombatFocus,focusCombatStatus,lifeAtFive,transferPavor,updateResource,fulminanteWeaponDice,applyFulminanteToPool,validFulminanteForWeapon,hasSmallCompanion,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection} from "./comparador-logic.mjs";
 import {resolveRoll} from "../criar-conflito/codex-rules.mjs";
 
@@ -645,4 +645,17 @@ test("Peso do soco usa a matriz natural, sem dado de equipamento nem Perícia de
  assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true}).weapon,t,c).delta,-1);
  assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"leve"}).weapon,t,c).delta,1);
  assert.equal(weightAffinity(planMartialAttack(c,{unarmed:true,pugilism:true,weight:"pesado"}).weapon,t,c).delta,0);
+});
+
+
+test("Características compartilhadas aplicam efeitos apenas no acerto; condições persistem",()=>{
+ const attacker={...bare(),id:"agressor"},target=armor();
+ const effects=["Empurrar","Agarrar","Derrubar"];
+ assert.deepEqual(combatManoeuvreOutcome(effects,attacker,target,false).applied,{});
+ const outcome=combatManoeuvreOutcome(effects,attacker,target,true);assert.equal(outcome.applied.pushMeters,4);
+ const changed=applyCombatManoeuvres(target,outcome);assert.equal(changed.statuses.agarradoPor,attacker.id);assert.equal(changed.statuses.caido,true);
+ const restored=normalizeCombatant(changed);assert.equal(restored.statuses.caido,true);assert.equal(restored.statuses.agarradoPor,attacker.id);
+ assert.equal(proneAttackPenalty(restored),-1);assert.equal(proneAttackPenalty(restored,"disadvantage"),0);
+ assert.equal(standFromProne(restored,3).ok,false);assert.equal(standFromProne(restored,4).actor.statuses.caido,false);
+ const de=defense(attacker);assert.equal(escapeGrapple(restored,attacker,de-1).success,false);assert.equal(escapeGrapple(restored,attacker,de).actor.statuses.agarradoPor,"");
 });

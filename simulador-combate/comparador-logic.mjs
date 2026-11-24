@@ -40,6 +40,7 @@ export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
   smallCompanion:{present:!!raw.smallCompanion?.present,name:String(raw.smallCompanion?.name||"").slice(0,70),
    species:String(raw.smallCompanion?.species||"").slice(0,50)},
   statuses:{sangramento:!!raw.statuses?.sangramento,envenenado:!!raw.statuses?.envenenado,
+   caido:!!raw.statuses?.caido,agarradoPor:String(raw.statuses?.agarradoPor||"").slice(0,110),
    cravadas:(Array.isArray(raw.statuses?.cravadas)?raw.statuses.cravadas:[]).slice(0,30)
     .filter(x=>x&&typeof x.name==="string").map(x=>({name:x.name.slice(0,90),weaponId:String(x.weaponId||"").slice(0,100),
      attackerId:String(x.attackerId||"").slice(0,100),shieldId:String(x.shieldId||"").slice(0,100),category:String(x.category||"").slice(0,24)}))},
@@ -160,7 +161,7 @@ export function applyFulminanteToPool(pool,weapon,skill,thrown=false){
  return {ok:true,pool:output,before:[base.sides],after:elevated};
 }
 /** Características reais da arma, com efeitos condicionados ao acerto e à Perícia. */
-export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa"]);
+export const ACTIVE_WEAPON_PROPERTIES=Object.freeze(["Cortante","Perfurante","Cravar","Contundente","Enganchar","Longa","Empurrar","Agarrar","Derrubar","Desarmar"]);
 export function activeWeaponProperties(weapon){
  return [...new Set((weapon?.properties||[]).filter(x=>ACTIVE_WEAPON_PROPERTIES.includes(x)))];
 }
@@ -278,6 +279,37 @@ export function weaponEffectOutcome(properties=[],target={},weapon=null){
   notes.push(property+": característica ativada; desfecho numérico/manobra exige procedimento do Narrador.");
  if(effects.includes("Cortante"))notes.push("Cortante: estado Sangramento aplicado mesmo com armadura, sem dano direto de condição.");
  return {ok:true,applied,notes};
+}
+/** Efeitos comuns: o gatilho e a habilitação continuam sendo responsabilidade da fonte. */
+export function combatManoeuvreOutcome(effects=[],attacker={},target={},success=true){
+ const applied={},notes=[];
+ if(!success)return {applied,notes};
+ const selected=new Set(effects);
+ if(selected.has("Empurrar")){applied.pushMeters=4;notes.push("Empurrar: deslocar o alvo 4 metros (posição resolvida na mesa).");}
+ if(selected.has("Agarrar")){applied.agarradoPor=String(attacker.id||"");notes.push("Agarrar: Desvantagem de movimento; para escapar, superar a DE de quem agarra ("+defense(attacker)+").");}
+ if(selected.has("Derrubar")){applied.caido=true;notes.push("Derrubar: alvo caído; levantar custa 4 movimentos; golpe enquanto caído tem Desvantagem (−1A).");}
+ if(selected.has("Desarmar"))notes.push("Desarmar: procedimento específico ainda não definido.");
+ return {applied,notes};
+}
+export function applyCombatManoeuvres(target,outcome){
+ const applied=outcome?.applied||{},statuses={...target.statuses};
+ if(applied.agarradoPor)statuses.agarradoPor=applied.agarradoPor;
+ if(applied.caido)statuses.caido=true;
+ return {...target,statuses};
+}
+export function standFromProne(c,available){
+ if(!c?.statuses?.caido)return {ok:false,error:"Combatente não está caído."};
+ if(!Number.isFinite(available)||available<4)return {ok:false,error:"São necessários 4 movimentos para se levantar."};
+ return {ok:true,spent:4,actor:{...c,statuses:{...c.statuses,caido:false}}};
+}
+export function escapeGrapple(c,grappler,reached){
+ if(!grappler||!c?.statuses?.agarradoPor||c.statuses.agarradoPor!==grappler.id)return {ok:false,error:"Quem agarra não está disponível nesta ficha."};
+ if(!Number.isInteger(reached)||reached<0)return {ok:false,error:"Informe os pontos válidos do teste."};
+ const de=defense(grappler),success=reached>=de;
+ return {ok:true,success,de,actor:success?{...c,statuses:{...c.statuses,agarradoPor:""}}:c};
+}
+export function proneAttackPenalty(c,situation="neutral"){
+ return c?.statuses?.caido&&situation!=="disadvantage"?-1:0;
 }
 export const MARTIAL_MANOEUVRES=Object.freeze(["Empurrar","Agarrar","Derrubar","Desarmar"]);
 export function canChangePunchWeight(c){

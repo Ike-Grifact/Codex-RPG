@@ -1,6 +1,6 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261123-marcial-v0107";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261123-caracteristicas-v0108";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261123-marcial-v0107";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261123-advanced-g3-v096";
 import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261122-fulminantes-v1";
@@ -79,6 +79,8 @@ function rosterSide(side){
    '<div class="cc-card-stats"><span>DE '+defense(c)+'</span><span>Vida '+c.life+' · '+esc(combatHealth(c).id)+'</span>'+
    (c.side==="inimigos"?'<span>Coragem — (somente PCs)</span>':'<span>Coragem '+c.courage+'</span>')+'<span>Pavor '+c.pavorLocal+'/'+monsterCap(c.threatGrade)+' · G'+c.threatGrade+'</span><span>Integridade '+
    (armor?armor.integrity+"/"+armor.integrityMax:"—")+'</span></div>'+
+   (c.statuses?.caido?'<small class="cc-used">Caído · golpe −1A</small>':'')+
+   (c.statuses?.agarradoPor?'<small class="cc-used">Agarrado · Desvantagem de movimento</small>':'')+
    (c.acted?'<small class="cc-used">Já agiu nesta rodada</small>':'')+
    '<div class="cc-card-actions"><button type="button" data-inspect="'+esc(c.id)+'">Ver ficha</button>'+
    '<button type="button" data-actor="'+esc(c.id)+'">Atacar</button>'+
@@ -164,7 +166,7 @@ function renderTarget(){
  const t=target();
  $("target-info").textContent=t?
   "DE "+defense(t)+" · armadura "+(armorOf(t)?.name||"nenhuma")+
-  " · Vida "+t.life+((t.statuses?.cravadas||[]).length?" · "+t.statuses.cravadas.length+" arma(s) cravada(s) no escudo (−1E cada ao Levantar Escudo)":"")+
+  " · Vida "+t.life+(t.statuses?.caido?" · Caído":"")+(t.statuses?.agarradoPor?" · Agarrado por "+(byId(t.statuses.agarradoPor)?.name||"combatente removido"):"")+((t.statuses?.cravadas||[]).length?" · "+t.statuses.cravadas.length+" arma(s) cravada(s) no escudo (−1E cada ao Levantar Escudo)":"")+
   ". Alcance e linha de visão são decisões da mesa, sem mapa.":
   "Escolha um alvo.";
  $("target-bleeding").disabled=!t;
@@ -174,7 +176,13 @@ function renderTarget(){
 }
 function renderResources(){
  const c=byId(state.resourceActor);
- if(!c){$("resource-summary").textContent="Escolha uma ficha.";return;}
+ if(!c){$("resource-summary").textContent="Escolha uma ficha.";$("manoeuvre-controls").hidden=true;return;}
+ const grabber=byId(c.statuses?.agarradoPor);
+ $("manoeuvre-controls").hidden=!c.statuses?.caido&&!c.statuses?.agarradoPor;
+ $("stand-up").hidden=!c.statuses?.caido;
+ $("escape-wrap").hidden=!c.statuses?.agarradoPor;
+ $("escape-grapple").disabled=!grabber;
+ $("grapple-info").textContent=grabber?"Agarrado por "+grabber.name+" · DE "+defense(grabber)+" · Desvantagem de movimento. Informe o total válido de um teste de libertação.":"Quem está agarrando não está na lista de combatentes; resolva na mesa.";
  $("resource-summary").innerHTML='<strong>'+esc(c.name)+'</strong><div class="cc-card-stats">'+
   '<span>Vida '+c.life+'</span><span>DE '+defense(c)+'</span>'+
   (c.side==='inimigos'?'<span>Coragem: não se aplica</span>':'<span>Coragem '+c.courage+'/'+maxCourage(c.level)+'</span>')+
@@ -209,6 +217,7 @@ function renderLast(){
   ' · Dano à Vida por 5 pontos: '+(!a&&last.lifeDamage===2?"2":"não automático")+'</p>'+
   '<small>'+(last.integrityApplied?"Integridade aplicada. ":"")+(last.lifeApplied?"Vida aplicada. ":"")+
   'Dano excedente ainda requer resolução do Narrador.</small>'+
+  ((last.manoeuvreNotes||[]).length?'<p>'+last.manoeuvreNotes.map(esc).join("<br>")+'</p>':"")+
   ((last.activeMartialEffects||[]).length?'<p>Manobra marcial: '+esc(last.activeMartialEffects.join(", "))+'</p>':"")+
   ((last.activeWeaponEffects||[]).length?'<p>Características ativadas: '+esc(last.activeWeaponEffects.join(', '))+'</p>':'');
 }
@@ -441,7 +450,8 @@ function evaluate(a,rolled,kept,opts){
  const stealth=!!(a.skills?.includes("furtividade")&&pending?.baseGroup==="practice"&&pending?.baseKey==="furtividade");
  const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
  const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
- const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion),bonusP:health.p+Number(noisy),
+ const pronePenalty=proneAttackPenalty(a,opts.situation);
+ const conf={...opts,weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty,bonusP:health.p+Number(noisy),
   skillBonusE:health.e+manejo.bonusE,stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
@@ -454,7 +464,7 @@ function evaluate(a,rolled,kept,opts){
   const free=keepLimit(a.level,false,false);
   pre={ok:true,result:r,cost:0,courageCost:Number(opts.extraKeep&&kept.length>free)};
  }
- return {...pre,health,affinity,manejo,stealth,companion,noisy};
+ return {...pre,health,affinity,manejo,stealth,companion,noisy,pronePenalty};
 }
 function preview(opts=options(),selectedIds=pending?.kept){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
@@ -472,7 +482,8 @@ function preview(opts=options(),selectedIds=pending?.kept){
  const status=weaponEffectOutcome(weaponPlan.active,t,weapon);
  if(!status.ok)return status;
  const martialActive=pre.result.success&&pending.martial?.manoeuvre?[pending.martial.manoeuvre]:[];
- if(martialActive.length)status.notes.push("Artista Marcial: "+martialActive[0]+" aplicado no acerto; resolver o efeito da manobra conforme a regra e o Narrador.");
+ const manoeuvres=combatManoeuvreOutcome([...weaponPlan.active,...martialActive],a,t,pre.result.success);
+ status.notes.push(...manoeuvres.notes);
  const propertySkills=(pending.weaponEffects||[]).length?
   [weaponActivationSkill(a,weapon,{thrown:!!pending.thrown}).required,
    weaponMasteryFor(weapon,{thrown:!!pending.thrown})]:[];
@@ -501,7 +512,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
  const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,
+ return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,manoeuvres,
   integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
 function renderDice(){
@@ -530,6 +541,7 @@ function renderDice(){
   '<span class="cc-p">'+x.p+'P</span></li>').join("");
  const bonuses=pre.ok?[
   "Peso: "+pre.affinity.description,
+   byId(pending?.actor)?.statuses?.caido?"Caído: golpe em Desvantagem (−1A, sem duplicar a condição situacional).":null,
    pre.manejo?.active?pre.manejo.description:null,
   "Situação: "+$("situation").selectedOptions[0]?.textContent,
   "Saúde "+pre.health.id+": "+pre.health.e+"E, "+pre.health.a+"A, +"+pre.health.p+"P",
@@ -693,6 +705,7 @@ function confirmRoll(){
  const alreadyBleeding=!!t.statuses?.sangramento;
  const moved=transferPavor(a,t,r.p,state.publicPavor);
  Object.assign(t,moved.target);
+ Object.assign(t,applyCombatManoeuvres(t,pre.manoeuvres));
  if(pre.status.applied?.sangramento){
   const changed=markCondition(t,"sangramento",true);
   if(changed.ok){Object.assign(t,changed.actor);log("status",t.name+" recebeu Sangramento por Cortante de "+a.name+
@@ -719,7 +732,7 @@ function confirmRoll(){
  const crit=criticalFaces(pending.rolled,pending.kept);
  const keptFaces=crit.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ");
  last={actor:a.id,name:a.name,target:t.id,targetName:t.name,outcome:r.outcome,e:r.e,p:r.p,
-  critical:r.critical,keptFaces,activeWeaponEffects:pre.weaponPlan.active,activeMartialEffects:pre.martialActive,
+  critical:r.critical,keptFaces,activeWeaponEffects:pre.weaponPlan.active,activeMartialEffects:pre.martialActive,manoeuvreNotes:pre.manoeuvres.notes,
   criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0,
   de:r.de,integrityDamage:pre.integrityDamage,lifeDamage:pre.life.damage===2?2:0,
   integrityApplied:false,lifeApplied:false};
@@ -733,7 +746,7 @@ function confirmRoll(){
    elevation:pending.boosted||"",activeSkills:pre.activations.map(x=>({id:x.id,cost:x.cost})),
    fulminante:pending.fulminanteId||"",companion:pre.companion,health:pre.health.id,weight:pre.affinity.description,
    critical:r.critical,keptFaces,weaponEffects:pre.weaponPlan.active,weaponEffectCost:pre.weaponPlan.cost,
-   weaponNotes:pre.status.notes,criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0});
+   manoeuvres:pre.manoeuvres,weaponNotes:pre.status.notes,criticalRefund:r.criticalRefundCourage||0,criticalPavor:r.monsterCriticalPavor||0});
  state.resourceActor=t.id;pending=null;resetMartial();
  $("weapon-effects").querySelectorAll("[data-weapon-property]:checked").forEach(el=>el.checked=false);
  persist();render(false);renderWeapons();
@@ -935,6 +948,8 @@ function bind(){
   state.resourceActor=event.target.value;persist();renderResources();
  });
  $("resource-kind").addEventListener("change",renderResources);
+ $("stand-up").addEventListener("click",()=>{const c=byId(state.resourceActor);if(pending)return notice("Confirme a rolagem antes de alterar condições.");if(!c||!confirm("Confirma que o combatente tem 4 movimentos disponíveis e irá gastá-los na mesa?"))return;const result=standFromProne(c,4);if(!result.ok)return notice(result.error);Object.assign(c,result.actor);log("condição",c.name+" gastou 4 movimentos para se levantar.");persist();render(false);});
+ $("escape-grapple").addEventListener("click",()=>{const c=byId(state.resourceActor);if(pending)return notice("Confirme a rolagem antes de alterar condições.");if(!c||$("escape-total").value==="")return notice("Informe o resultado do teste de libertação.");const result=escapeGrapple(c,byId(c.statuses?.agarradoPor),Number($("escape-total").value));if(!result.ok)return notice(result.error);Object.assign(c,result.actor);log("condição",c.name+": teste de libertação "+$("escape-total").value+" contra DE "+result.de+" — "+(result.success?"libertou-se":"permanece agarrado")+".");$("escape-total").value="";persist();render(false);});
  for(const [button,sign] of [["resource-minus",-1],["resource-plus",1]])
   $(button).addEventListener("click",()=>{
    const n=Number($("resource-amount").value);
