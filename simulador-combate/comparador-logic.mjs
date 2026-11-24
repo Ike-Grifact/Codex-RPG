@@ -62,7 +62,7 @@ export function normalizeEquipment(original={}){
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
   kind,category,grade:int(raw.grade||1,1,4),weight:typeof raw.weight==="number"?Math.max(0,raw.weight):(weightNumbers[category]||0),
   qty:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
-  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[]};
+  die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole:raw.ammoRole||"",ammoFamily:raw.ammoFamily||"",ammoMix:raw.ammoMix||null,storageCapacity:Number(raw.storageCapacity)||0};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
  const kind=raw.kind==="criatura"?"monstro":(["humanoide","monstro","humanoide-monstro"].includes(raw.kind)?raw.kind:"humanoide");

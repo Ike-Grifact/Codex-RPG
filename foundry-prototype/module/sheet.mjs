@@ -57,7 +57,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
-   catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name,status:row.status})).filter(row=>row.status!=="PENDENTE"),
+   catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name,status:row.status,legacy:row.legacy})).filter(row=>row.status!=="PENDENTE"&&!row.legacy),
    attributes:cards(ATTRIBUTES,"attribute",s,d),
    knowledges:monster?[]:cards(KNOWLEDGES,"knowledge",s,d),
    practices:monster?[]:cards(PRACTICES,"practice",s,d),
