@@ -328,7 +328,7 @@ O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a ca
 
 **Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
 
-**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
+**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo VIII.
 
 ### Perícias de especialização: o que você pode aprender
 
@@ -526,7 +526,7 @@ DE final = min(12, max(0, DE base + modificador da única armadura equipada + ef
 
 **Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. O autor definiu a penalidade **−1E no estado de sobrepeso/Muito Pesado**, mas a abrangência e o procedimento automático de aplicação estão **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
+**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. **SRD v0.119:** o estado de sobrepeso/Muito Pesado impõe **−2E e metade do deslocamento padrão**. A abrangência dos testes afetados, as interações e a aplicação automática de −2E continuam **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
 
 **Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
@@ -627,7 +627,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa [PENDENTE POR DECISÃO DO AUTOR]:** os valores serão estabelecidos **após a definição das Perícias iniciais e análise da distribuição de dano**. Não criar números provisórios. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso:** −1 Êxito definido, abrangência e automação pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 
 ## VII. Conjuração, elementos e possibilidades
@@ -1299,4 +1299,4 @@ As **Maestrias por família de armas** foram renomeadas para **Especializações
 | Pesado | 1 |
 | Extremo | 2 |
 
-Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade prevista é −1 Êxito (Desvantagem Absoluta), com abrangência e aplicação automática PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE ou deslocamento. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.
+Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade é −2 Êxitos nos testes afetados e metade do deslocamento padrão (v0.119), com abrangência e automação de −2E PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.

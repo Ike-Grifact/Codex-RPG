@@ -82,3 +82,13 @@ test("Kit de arco curto: prévia soma arma, recipiente e lote, desconta VT uma v
  assert.ok(Math.abs(preview.released-.175)<1e-9);
  assert.equal(JSON.stringify(s),old);
 });
+
+
+test("Sobrepeso v0.119: metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
+ const code=app.slice(app.indexOf("function baseMovement("),app.indexOf("function renderXP("));
+ const state=character(0,0,3,0,0,[]);state.attributes.agilidade=2;
+ let percent=99.99;
+ const ui=new Function("state","NPC_MODE","loadPercent",code+"return {movement,baseMovement};")(state,false,()=>percent);
+ assert.equal(ui.baseMovement(),11);assert.equal(ui.movement(),11);percent=100;assert.equal(ui.movement(),5.5);percent=125;assert.equal(ui.movement(),5.5);percent=99;assert.equal(ui.movement(),11);
+ const npc=new Function("state","NPC_MODE","loadPercent",code+"return movement;")(state,true,()=>100);assert.equal(npc(),11);
+});

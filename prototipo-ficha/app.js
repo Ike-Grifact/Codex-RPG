@@ -2808,7 +2808,8 @@ function dependentsValid(testState){
  const invalid=testState.skills.find(id=>skillReq(id,testState));
  return invalid?skillReq(invalid,testState):null;
 }
-function movement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function baseMovement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function movement(s=state){return baseMovement(s)*(s===state&&!NPC_MODE&&loadPercent()>=100?.5:1);}
 function renderXP(){
  const x=xpCosts();
  $("xp-total-spent").textContent=x.total+" XP";
@@ -2960,7 +2961,7 @@ function purchaseLoadPreview(entry,price){
   status:percent>=100?"over":percent>=75?"heavy":"normal"};
 }
 function purchaseLoadMarkup(preview){
- const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso). A compra não é bloqueada.":
+ const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso): −2E nos testes afetados e metade do deslocamento. A compra não é bloqueada.":
   preview.status==="heavy"?"Atenção: ficará Pesado, com pouca margem para transportar outros itens.":
   "A compra permanece abaixo do patamar Pesado.";
  return '<div class="fp-purchase-load fp-purchase-load-'+preview.status+'"><strong>Carga após compra: '+
@@ -4225,10 +4226,10 @@ function renderVitals(){
  $("de-caption").textContent="Base "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga";
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga"+(loadPercent()>=100?" · −2E / metade do deslocamento":"");
  if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
  $("move-text").textContent=movement()+" m";
- $("move-caption").textContent="Por deslocamento";
+ $("move-caption").textContent=!NPC_MODE&&loadPercent()>=100?"Sobrepeso · metade do deslocamento":"Por deslocamento";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
  const bands=health.bands;
  $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
@@ -4267,8 +4268,8 @@ function vitalHelpDetails(kind){
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
  "Capacidade = 1,5 + piso((Força "+(a.forca||0)+" + Vigor "+(a.vigor||0)+" + Atletismo "+(p.atletismo||0)+")/3) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
- movement:["Movimento","Deslocamento básico antes de efeitos situacionais e Perícias específicas.",
- "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+movement()+" m.",
+ movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrepeso; outros efeitos seguem suas regras.",
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: metade = "+movement()+" m.":""),
  "Fórmula atual da ficha · Agilidade e Atletismo."]
  };
  return entries[kind]||null;
@@ -5232,7 +5233,7 @@ function renderInventory(){
  if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
  if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional.";
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: −2E nos testes afetados e metade do deslocamento. Abrangência e aplicação de −2E pendentes.":"");
  const cargoPanel=$("inventory-cargo-panel");
  if(cargoPanel)cargoPanel.hidden=NPC_MODE;
  if(!NPC_MODE&&cargoPanel){
@@ -5443,7 +5444,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const purchaseItems=item.kitContainer?[normalizedCatalogItem(item),normalizedCatalogItem({...rows[1],position:"quick",ammoMix:mix})]:[normalizedCatalogItem(ammo?{...item,ammoMix:mix}:item)];
  if(item.kitContainer&&(quickSlots([...state.items,...purchaseItems])>3||bodyLoad([...state.items,...purchaseItems])>bodyCapacity()+1e-9)){purchaseItems[1].position="bag";toast("Sem espaço corporal: recipiente guardado na mochila.");}
  const preview=purchaseLoadPreview(item,price);
-  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso).":
+  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso): −2E e metade do deslocamento.":
    preview.status==="heavy"?"\nATENÇÃO: após esta compra ficará PESADO.":"";
   if(!confirm("Comprar "+item.name+(item.kitContainer?" + "+item.kitContainer+" + 20 projéteis":"")+(mix?" ("+Object.entries(mix).map(([k,v])=>v+" "+k).join(", ")+")":"")+" por "+price+" VT em recursos de Grau 1?"+
    "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Alto ("+pad(preview.percent)+"%) · "+preview.balance+
