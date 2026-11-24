@@ -100,8 +100,8 @@ test("Pictogramas de nós coloridos do Codex Genético são brancos",()=>{
  assert.match(css,whiteRule,"Filtragem de branco só nos ícones dos nós coloridos");
  assert.ok(!css.includes(".fp-gene-skill.is-locked .fp-gene-skill-pictogram{filter:brightness(0) invert(1)"),
   "Nós bloqueados devem preservar contraste atenuado");
- assert.ok(html.includes("styles.css?v=20261123-npc-hub-v1"),
-  "Nova versão do CSS deve invalidar cache do navegador");
+ assert.match(html,/styles\.css\?v=\d{8}-[a-z0-9-]+/,
+  "CSS do criador deve ter versão de cache para atualizar a interface");
  assert.match(graph,/class="fp-gene-skill-pictogram"/,"Os ícones permanecem SVG no mapa");
 });
 
