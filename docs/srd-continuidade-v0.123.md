@@ -2,13 +2,13 @@
 
 **Data:** 24/11/2026
 
-**DEFINIDO:** decisão autoral que complementa v0.121–0.122. A dissolução da formação não possui custo. Golpe Colossal permanece uma Perícia ativa, não uma mecânica geral.
+**DEFINIDO:** decisão autoral que complementa v0.121–0.122. A declaração e a dissolução da formação não possuem custo. Golpe Colossal permanece uma Perícia ativa, não uma mecânica geral.
 
-## Combate Coordenado — dissolução gratuita
+## Combate Coordenado — declaração e dissolução gratuitas
 
-A formação se dissolve quando qualquer integrante sai do raio de 5 m ou quando seus integrantes atacam alvos principais diferentes em ações que não sejam de área. A dissolução da formação é gratuita: não consome Coragem, Antecipar, Pavor, PP, ação ou turno adicional. Os integrantes retornam às DE individuais. Uma nova formação exige nova declaração de coordenação, conforme v0.121. Mantêm-se os custos das ações, técnicas e convocações que tenham sido declaradas; a dissolução não devolve recursos gastos.
+A formação se dissolve quando qualquer integrante sai do raio de 5 m ou quando seus integrantes atacam alvos principais diferentes em ações que não sejam de área. Declarar, redeclarar ou dissolver a formação é gratuito: não consome Coragem, Antecipar, Pavor, PP, ação ou turno adicional. Os custos próprios de ações conjuntas, técnicas e convocações permanecem inalterados. Os integrantes retornam às DE individuais. Uma nova formação exige nova declaração de coordenação, conforme v0.121. Mantêm-se os custos das ações, técnicas e convocações que tenham sido declaradas; a dissolução não devolve recursos gastos.
 
-**PENDENTE:** eventual custo próprio da declaração de formação, não da dissolução; procedimentos de compra/distribuição do XP reunido e registro da DE coletiva. As regras de contagem de turnos e Saúde da ficha coletiva da v0.122 permanecem definidas.
+**PENDENTE:** procedimentos de compra/distribuição do XP reunido e registro da DE coletiva. As regras de contagem de turnos e Saúde da ficha coletiva da v0.122 permanecem definidas.
 
 ## Organização — Golpe Colossal
 
