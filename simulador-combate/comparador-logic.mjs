@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0113";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0113";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0114";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0114";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
@@ -327,11 +327,11 @@ export function planColossalTargets(attacker,primary,roster,ids,cost){
  if(targets.some(t=>!t||t.id===attacker.id||t.id===primary.id||t.side===attacker.side||t.life===0))return {ok:false,error:"Selecione somente adversários válidos, distintos do alvo principal."};
  return {ok:true,cost,bonusE:1,targets:targets.map(t=>({id:t.id,name:t.name,de:defense(t)}))};
 }
-export function colossalOutcomes(result,targets=[],fulminante=false){
+export function colossalOutcomes(result,targets=[]){
  const e=Math.max(0,Number(result.e)||0),p=Math.max(0,Number(result.p)||0),reached=e+p;
  const mult=result.critical===4?2:1;
- const damageE=Math.floor(e*mult/2),damageP=fulminante?p*mult:0;
- return targets.map(t=>{const success=reached>=t.de;return {...t,reached,success,damageE:success?damageE:0,damageP:success?damageP:0,integrityDamage:success?damageE+damageP:0,integrityApplied:false};});
+ const damageE=Math.floor(e*mult/2);
+ return targets.map(t=>{const success=reached>=t.de;return {...t,e,p,reached,success,damageE:success?damageE:0,damageP:0,integrityDamage:success?damageE:0,integrityApplied:false};});
 }
 export function planCourageDeclaration(c,{activations=[],weaponCost=0,martialCost=0,extraKeep=false,step=false,healthCost=0}={}){
  const costs=[...activations.map(x=>x.cost),weaponCost,martialCost,Number(extraKeep),Number(step),healthCost];

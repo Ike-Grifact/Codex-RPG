@@ -2,7 +2,7 @@
  * O mapa de alternativas abaixo é copiado de prototipo-ficha/app.js.
  * A CI compara as alternativas com o criador e impede divergências silenciosas.
  */
-import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261124-colossal-v0113";
+import {HIDDEN_PLAYER_SKILL_IDS} from "./skills-catalog.mjs?v=20261124-colossal-v0114";
 export const GENE_AUTO_REQUIREMENTS={
  "saque-rapido":[["a:agilidade:2","a:destreza:1","p:armas_conjuracao:2"]],
  "manejo-perfeito":[["p:armas_conjuracao:3","a:destreza:2","s:disciplina-avancada"]],

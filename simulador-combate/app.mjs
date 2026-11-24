@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261124-colossal-v0113";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0113";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-colossal-v0113";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0113";
+ from "./comparador-logic.mjs?v=20261124-colossal-v0114";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261124-colossal-v0114";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261124-colossal-v0114";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols} from "../criar-conflito/codex-rules.mjs?v=20261124-colossal-v0114";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -518,7 +518,7 @@ function preview(opts=options(),selectedIds=pending?.kept){
  // Perfurante e Fulminante substituem, cada um, piso(P/2) por P; nunca acumulam duas vezes.
  const piercing=pre.result.success&&status.applied!==null&&weaponPlan.active.includes("Perfurante")&&!blocked;
  const extraPierce=piercing&&!fulminanteActive?(pre.result.p-Math.floor(pre.result.p/2))*criticalMultiplier:0;
- const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[],pending.fulminanteId==="golpe-fulminante");
+ const colossal=colossalOutcomes(pre.result,pending.colossal?.targets||[]);
  return {...pre,courageCost,pavorCost,activations:paidActivations,totalSkillCost,weaponPlan,status,martialActive,manoeuvres,colossal,
   integrityDamage:g1?0:pre.result.damage+extraP+extraPierce,extraP,extraPierce,perfuranteBlocked:blocked,life};
 }
@@ -536,7 +536,7 @@ function colossalRows(rows,confirmed=false){
  if(!rows?.length)return "";
  return '<div class="cc-origins"><strong>Golpe Colossal · alvos adicionais</strong><ul>'+rows.map(x=>{
   const t=byId(x.id),armor=armorOf(t),apply=confirmed&&t&&armor&&x.integrityDamage>0&&!x.integrityApplied;
-  return '<li>'+esc(x.name)+' · DE '+x.de+' · '+(x.success?"Acerto":"Falha")+' · dano '+x.integrityDamage+' ('+x.damageE+' de Êxitos + '+x.damageP+' de Pavor)'+
+  return '<li>'+esc(x.name)+' · DE '+x.de+' · '+(x.success?"Acerto":"Falha")+' · '+(x.e??last?.e??0)+'E + '+(x.p??last?.p??0)+'P contra DE · dano '+x.integrityDamage+' (somente Êxitos; Pavor não causa dano)'+
    (confirmed?(x.integrityApplied?" · Integridade aplicada":apply?' <button type="button" data-colossal-integrity="'+esc(x.id)+'">Aplicar à Integridade</button>':x.success&&!armor?" · Vida: resolver na mesa":""):"")+'</li>';
  }).join("")+'</ul></div>';
 }

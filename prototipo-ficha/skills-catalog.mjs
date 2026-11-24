@@ -284,7 +284,7 @@ const SKILLS=[
  [
   "espalhar-golpe",
   "Golpe Colossal",
-  "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido acrescenta 1 dano por P somente com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
+  "Ativa: 1 Coragem antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante, mesma rolagem contra DE individual. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo; Pavor válido conta para a DE, mas não causa dano nos adicionais, mesmo com Golpe Fulminante ativo. Cada Coragem adicional inclui até mais 2 alvos, sem aumentar raio ou bônus.",
   1
  ],
  [
