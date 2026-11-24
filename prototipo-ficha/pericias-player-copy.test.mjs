@@ -21,6 +21,8 @@ for(const skill of latest){
   assert.match(text,/Coragem é consumida mesmo que o ataque falhe/);
   assert.match(text,/falha não devolve a Coragem/);
   assert.match(text,/Acerto crítico/);
+  assert.match(text,/recupera 1 Coragem do custo já pago/);
+  assert.match(text,/gratuita no saldo final/);
   assert.match(text,skill.aff);
   assert.match(text,/−1 Antecipar/);
   assert.doesNotMatch(text,/DEFINIDO — SRD|Automatizad[oa] nos roladores|Regra atualizada|Aplicação prática/);
@@ -31,6 +33,7 @@ for(const skill of latest){
   assert.match(player,new RegExp('"'+skill.id+'":\\{'));
   assert.match(player,skill.guard);
   assert.match(player,/O efeito só acontece se acertar, mas a Coragem é gasta mesmo na falha/);
+  assert.match(player,/você recupera 1 Coragem que já pagou/);
  });
 }
 
