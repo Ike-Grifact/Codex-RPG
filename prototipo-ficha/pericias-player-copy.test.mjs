@@ -116,6 +116,14 @@ test("Identidade visual e classificação das Perícias",()=>{
  for(const slug of slugs){const m=metadata[slug];assert.ok(m?.type&&m?.cost&&m?.icon,slug);readFileSync(new URL("../assets/icons/codex/"+m.icon+".svg",import.meta.url));}
  assert.equal(byId["manejo-perfeito"].type,"Passiva");assert.equal(byId["disciplina-avancada"].cost,"Sem custo de ativação");assert.equal(byId["armas-leves"].type,"Ativa + benefício passivo");
  for(const slug of ["combate","armas-1","artes-marciais","combinacao-de-fontes","golpe-certo","vantagens-e-desvantagens"])assert.equal(metadata[slug],undefined);
- assert.match(decorateEscaped("+1E e −1A"),/exito\.svg[\s\S]*antecipar\.svg/);assert.equal(decorateEscaped("1 XP e 1 Coragem"),"1 XP e 1 Coragem");
+ assert.match(decorateEscaped("+1E e −1A"),/exito\.svg[\s\S]*antecipar\.svg/);assert.match(decorateEscaped("1 XP e 1 Coragem"),/1 XP e [\s\S]*status-coragem\.svg/);assert.equal(decorateEscaped("1 XP"),"1 XP");
  assert.match(player,/skillRuneHTML\(benefit\)/);assert.match(player,/presentation\.cost/);
+});
+
+
+test("Pugilismo: ativa, peso Médio padrão e três pesos disponíveis",()=>{
+ const html=readFileSync(new URL("../pericias/pugilismo.html",import.meta.url),"utf8");
+ assert.match(html,/<h2>Benefícios<\/h2>/);assert.match(html,/Disciplina 1, Força 2 e Destreza 1/);assert.match(html,/<dd>1 XP<\/dd>/);assert.match(html,/<dd>Ativa<\/dd>/);assert.match(html,/<dd>1 Coragem<\/dd>/);assert.match(html,/peso Médio/);assert.match(html,/Leve, Médio ou Pesado/);assert.doesNotMatch(html,/PENDENTE|Aplicação prática|Descrição completa/);
+ assert.match(player,/"pugilismo":\{\s*type:"Ativa"/);assert.match(player,/id==="pugilismo"&&\(disc<1\|\|strength<2\|\|dex<1\)/);
+ const win={};new Function("window",readFileSync(new URL("../assets/skill-presentation.js",import.meta.url),"utf8"))(win);assert.equal(win.CODEX_SKILL_PRESENTATION.byId.pugilismo.type,"Ativa");assert.equal(win.CODEX_SKILL_PRESENTATION.byId.pugilismo.cost,"1 Coragem");
 });

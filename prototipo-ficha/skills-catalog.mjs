@@ -289,7 +289,7 @@ const SKILLS=[
  [
   "pugilismo",
   "Pugilismo",
-  "Disciplina 1 + Força 2 + Destreza 1. Desarmado: 1 Coragem para mudar peso do soco. Pesos disponíveis PENDENTES.",
+  "Combate desarmado: socos de peso Médio por padrão. Por 1 Coragem, escolha o peso Leve, Médio ou Pesado antes da rolagem.",
   1
  ],
  [

@@ -52,8 +52,8 @@ const metadata={
  },
  "pugilismo": {
   "id": "pugilismo",
-  "type": "Pendente",
-  "cost": "Pendente",
+  "type": "Ativa",
+  "cost": "1 Coragem",
   "icon": "arma-punhos"
  },
  "artista-marcial": {
