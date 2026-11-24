@@ -8,11 +8,15 @@ Descubra um mundo de fantasia sombria e tecnomagia, construa seu Aprendiz e apre
 
 ### O mundo que você ainda não conhece
 
-Codex RPG é um jogo de interpretação e aventura em um universo de fantasia sombria, marcado pela exploração do desconhecido, por ruínas antigas e pelo encontro entre magia e tecnologia. Inspirado pela atmosfera de Dark Fantasy e Shadowdark, o cenário convida você a descobrir um mundo tão fascinante quanto perigoso. Ninguém sabe ao certo se vive depois de um grande colapso ou às vésperas de um ainda maior.
+Codex RPG é um jogo de interpretação e aventura em um universo de fantasia sombria, marcado pela exploração do desconhecido, por ruínas antigas e pelo encontro entre magia e tecnologia. Inspirado pela atmosfera de Dark Fantasy e Shadowdark, o cenário convida você a descobrir um mundo tão fascinante quanto perigoso. O mundo conhecido nasceu das ruínas de um grande colapso, mas ninguém sabe ao certo o que aconteceu com o velho mundo — ou o que ainda está por vir.
 
 Há cidades onde a tecnologia lembra a nossa, embora as leis que governam seu funcionamento sejam diferentes. A eletricidade não se comporta como a conhecemos: a corrente alternada não funciona, e ninguém sabe exatamente por quê. A magia assume o papel de controlar máquinas, dando origem à tecnomagia. Aquilo que se assemelha a uma inteligência artificial pode ser um elemental aprisionado em uma máquina — ou algo muito mais difícil de compreender.
 
-Humanos, Luckers Puros, Luckers de Sangue e Runa Espinhos fazem parte desse universo. Entre cidades e ruínas, os aventureiros podem encontrar seres de aparência angelical, criaturas elementais e monstros terríveis. Nem tudo o que parece sobrenatural é magia, nem tudo o que parece tecnologia pode ser explicado. O mundo do Codex é um lugar de possibilidades, e suas respostas não estão todas escritas de antemão.
+Há cerca de 1.400 anos, os humanos retornaram a este mundo e descobriram que já não eram seus senhores. Os Luckers habitam estas terras há cerca de 20 mil anos, divididos entre Puros e de Sangue. Já a história dos Runa Espinhos remonta a milhões de anos; entre eles estão os temidos Runalmas. Para esses povos, a presença humana é apenas um breve capítulo de uma história muito mais antiga.
+
+Acima da paisagem flutuam imensos pilares de cristal vermelho, conhecidos como as **Espinhas do Mundo**. Aos seus pés, cavernas guardam riquezas cobiçadas e perigos que poucos ousam enfrentar. Nas antigas Arcas, os humanos ergueram cidades de pedra, metal e destroços: Arcanum encontrou na magia um caminho para sobreviver; Arcrois voltou-se à engenharia; Triarca buscou na natureza e nas tradições uma nova forma de viver. Outras Arcas conheceram destinos menos afortunados.
+
+Alianças improváveis dividem espaço com antigas rivalidades e ambições de conquista. Entre cidades e ruínas, você poderá encontrar seres de aparência angelical, elementais, golens e monstros terríveis. Há expedições em busca de cristais, caçadas, resgates e lugares que permanecem desconhecidos. Nenhum povo é inteiramente bom ou mau. Neste mundo, a origem de um personagem não determina o lado que ele escolherá, e cada descoberta pode mudar aquilo que acreditava saber.
 
 ### Uma profissão é uma descoberta
 
