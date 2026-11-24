@@ -184,7 +184,7 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
    "Fulminante e Domar Pequena devem gastar exatamente duas Coragens na ativação.");
   assert((await page.locator("#roll-origins").innerText()).includes("Companheiro Pequeno"),
    "A ajuda da serpente deve ser identificada como fonte de Antecipar.");
-  // Regressão: faces máximas douradas, crítico persistido, seleção ótima e Sangramento habilitado.
+  // Regressão: faces críticas douradas, crítico persistido, seleção ótima e Sangramento habilitado.
   await page.locator("#confirm").click();
   await page.locator("#next-round").click();
   await page.evaluate(()=>{
@@ -204,10 +204,11 @@ const assert=(condition,message)=>{if(!condition)throw Error(message);};
    "Características da Faca devem aparecer no comparador.");
   await page.locator('[data-weapon-property="Cortante"]').check();
   await page.locator("#difficulty").fill("1");
-  await page.evaluate(()=>{Math.random=()=>.999999;});
+  // A pilha inicia com 2d10 de Disciplina, depois os dados do Atributo e da Faca (d6).
+  await page.evaluate(()=>{let i=0;Math.random=()=>i++<2?.65:.999999;});
   await page.locator("#roll").click();
-  assert(await page.locator(".cc-die.is-max").count()>=2,"Faces máximas devem ter destaque dourado.");
-  assert(await page.locator(".cc-die.is-critical.kept").count()>=2,"Crítico necessita faces máximas mantidas.");
+  assert(await page.locator(".cc-die.is-max").count()>=2,"Faces críticas devem ter destaque dourado.");
+  assert(await page.locator(".cc-die.is-critical.kept").count()>=2,"Crítico necessita faces críticas mantidas.");
   await page.locator("#auto-goal").selectOption("balanced");
   await page.locator("#suggest").click();
   assert((await page.locator("#roll-result").innerText()).includes("CRÍTICO"),

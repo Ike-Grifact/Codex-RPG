@@ -1,7 +1,7 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxCourage,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap} from "./rules.mjs";
+ loadCapacity,mayComplement,affinity,xpLedger,monsterCap,isCriticalFace} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment,fireActivationCourage} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
@@ -21,7 +21,7 @@ function cards(list,group,s,d){
 const markerText=v=>(v[0]?v[0]+"ᛋ ":"")+(v[1]?v[1]+"ᚨ ":"")+(v[2]?v[2]+"ᚦ":"")||"Vazio";
 const markerHTML=v=>[["e","ᛋ",v[0]],["a","ᚨ",v[1]],["p","ᚦ",v[2]]].filter(x=>x[2]>0)
  .map(x=>'<b class="codex-rune codex-rune-'+x[0]+'">'+x[2]+x[1]+'</b>').join(" ")||"Vazio";
-const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>d.face===d.sides);};
+const isCrit=(dice,selected)=>{const k=dice.filter(d=>selected.includes(d.id));return k.length>=2&&k.every(d=>isCriticalFace(d.sides,d.face));};
 const situate=(opts)=>opts.weightEnabled?affinity(opts.attackWeight,opts.targetWeight):0;
 const bonusP=(dice,selected,opts)=>opts.noisy?(isCrit(dice,selected)?2:1):0;
 function selectedItem(actor,opts){return actor.items.get(opts.equipmentId)||null;}
@@ -325,7 +325,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
     (p.options.targetName?'<p><strong>Alvo:</strong> '+escapeHTML(p.options.targetName)+'</p>':'')+
     '<p><strong>DE:</strong> '+result.reached+' / '+result.de+'</p>'+
     '<p>ᛋ '+result.e+' · ᚨ '+result.aRemaining+' · ᚦ '+result.p+'</p>'+
-    (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face máxima (automático).</p>':'')+
+    (result.critical?'<p><strong>CRÍTICO:</strong> '+result.critical+' dados mantidos na face crítica (automático).</p>':'')+
     (fireGrade?'<p><strong>Fogo G'+fireGrade+':</strong> '+(fireCost===0?'ativação-base gratuita':'1 Coragem por elevação a G3')+' (grau e fonte confirmados com Narrador).</p>':'')+
     (active.length?'<p><strong>Características escolhidas:</strong> '+active.map(escapeHTML).join(" + ")+'</p>':'')+
     '<p><strong>Dano básico:</strong> '+result.damage+' (proteção e aplicação de condições: adjudicação)</p>'+

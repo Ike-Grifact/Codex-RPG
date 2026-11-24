@@ -16,8 +16,8 @@ const FACES={
  4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
  10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
- 12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,2],[3,0,0]],
- 20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,2],[3,0,0],[2,2,0],[3,2,0],[0,0,3],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
+ 12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,3],[3,0,0]],
+ 20:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,3],[3,0,0],[2,2,0],[3,2,0],[0,2,3],[0,0,4],[4,2,0],[5,2,1],[6,2,1],[8,0,0]]
 };
 // SRD v0.56: XP acumulado por Grau G0–G6 (avanço = diferença).
 const AT_COST=[0,1,3,6,9,18,32];
@@ -3020,6 +3020,8 @@ function cargoGridMarkup(){
  }).join("");
 }
 function keepLimit(extra=false){return Math.min(4,(state.level>=10?3:2)+(extra?1:0));}
+const CRITICAL_FACES=Object.freeze({4:4,6:6,10:7,12:12,20:20});
+function isCriticalFace(sides,face){return CRITICAL_FACES[sides]===face&&Number.isInteger(face);}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}
 function temporaryGradeDice(group,grade,raise=false){
@@ -4758,7 +4760,7 @@ function score(){
  const raw=[0,0,0];
  for(const d of dice){const f=face(d.sides,d.face);for(let i=0;i<3;i++)raw[i]+=f[i];}
  if(p.opts.asura&&(p.characteristic==="Elemental"||p.secondCharacteristic==="Elemental"))errs.push("Asura causa sempre dano neutro: característica Elemental não aplicável.");
- const critTier=dice.length>=2&&dice.every(d=>d.face===d.sides)?dice.length:0;
+ const critTier=dice.length>=2&&dice.every(d=>isCriticalFace(d.sides,d.face))?dice.length:0;
  const criticalConverted=critTier&&raw[2]>0?1:0;
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));
  const poisonOnly=p.mode==="armas"&&item?.type==="arma"&&/^zarabatana(?:\b|$)/i.test(item.name||"");
@@ -4974,7 +4976,7 @@ function renderPending(){
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
   (p.third?" + "+esc(label(p.third.group,p.third.key)):"");
  const dice='<div class="fp-rolled-dice">'+p.dice.map(d=>'<button type="button" class="fp-roll-die fp-die-d'+d.sides+' '+(p.selected.includes(d.id)?"kept":"")+'" data-action="keep" data-id="'+esc(d.id)+'" title="Face '+d.face+' do d'+d.sides+'" aria-label="'+esc(label(d.group,d.key))+' · d'+d.sides+' · face '+d.face+'" aria-pressed="'+p.selected.includes(d.id)+'">'+dieIcon(d.sides)+
-  '<strong class="fp-face-runes" aria-hidden="true">'+faceRunesMarkup(face(d.sides,d.face),d.face===d.sides)+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),d.face===d.sides)+'</span></button>').join("")+'</div>';
+  '<strong class="fp-face-runes" aria-hidden="true">'+faceRunesMarkup(face(d.sides,d.face),isCriticalFace(d.sides,d.face))+'</strong><span class="fp-die-source">'+esc(label(d.group,d.key))+' · d'+d.sides+'</span><span class="fp-symbol-line">'+symbolMarkup(face(d.sides,d.face),isCriticalFace(d.sides,d.face))+'</span></button>').join("")+'</div>';
  const selectNumber=(k,labelText,max,value)=>'<label class="fp-form-field">'+labelText+'<select data-pending="'+k+'">'+
  Array.from({length:Math.max(1,max+1)},(_,i)=>'<option value="'+i+'"'+(Number(value)===i?" selected":"")+'>'+i+'</option>').join("")+'</select></label>';
  const item=state.items.find(x=>x.id===(p.shieldThrowId||p.opts.equipmentId));

@@ -30,7 +30,7 @@ Não há instalador por URL de manifesto nem distribuição ZIP própria publica
 1. Clique primeiro em uma fonte de base e depois em Atributo. Para monstro, clique em dois Atributos distintos.
 2. Escolha o modo de Disciplina, as condições de **Vantagem Absoluta (+1E), Vantagem (+1A), Normal, Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Ação de Sorte (−2E)**, equipamento equipado e custos opcionais.
 3. Selecione **exatamente um Token como alvo** durante o combate para consultar a DE defensiva desse alvo; sem alvo, o teste é apenas anunciado no chat.
-4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face máxima (mínimo dois); não existe botão de “rolar crítico”.
+4. Role a pilha de até nove dados; **escolha quais manter**. Somente os mantidos geram símbolos. O crítico é detectado automaticamente quando todos os mantidos estão na face crítica de seu tipo (mínimo dois; d4/4, d6/6, d10/7, d12/12, d20/20); não existe botão de “rolar crítico”.
 5. Escolha quantos A usar para cancelar Pavor ou converter 2A→1E. Escolha as características da arma que deseja ativar, seguindo a regra **uma grátis no crítico e mais uma pagando**, ou uma paga no acerto comum.
 6. Finalize a ação. O chat mostra acerto, falha, DE atingida, símbolos, dano básico, crítico e os custos. Crítico recupera somente Coragem ao jogador até o teto; monstro recebe recompensa em Pavor.
 

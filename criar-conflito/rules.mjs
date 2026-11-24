@@ -1,7 +1,7 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs?v=20261124-v0124b";
+ from "./codex-rules.mjs?v=20261124-v0125c";
 import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261124-colossal-v0114";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.

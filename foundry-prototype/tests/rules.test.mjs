@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,faceSymbols,sourceDice,sourceLabel,
  buildPool,resolveRoll,keepLimit,monsterCap,narratorCap,xpLedger,lifeMax,healthBands,healthByLife,naturalDE,
- maxCourage,CREATION_REFERENCE,FACES,SITUATIONS} from "../module/rules.mjs";
+ maxCourage,CREATION_REFERENCE,FACES,SITUATIONS,isCriticalFace} from "../module/rules.mjs";
 import {G1_CATALOG} from "../module/catalog.mjs";
 import {equippedDie,skillPrerequisite,defenseDE} from "../module/equipment-logic.mjs";
 
@@ -21,9 +21,9 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
- assert.deepEqual(faceSymbols(12,11),[0,0,2]);
- assert.deepEqual(faceSymbols(20,11),[0,0,2]);
- assert.deepEqual(faceSymbols(20,15),[0,0,3]);
+ assert.deepEqual(faceSymbols(12,11),[0,0,3]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,3]);
+ assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
  for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
  assert.deepEqual(faceSymbols(20,20),[8,0,0]);
@@ -39,13 +39,13 @@ test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
 test("crítico usa somente dados mantidos, sem obrigar Atributo mantido",()=>{
  const dice=[
  {id:"a",group:"attribute",sides:6,face:1},
- {id:"b",group:"practice",sides:10,face:10},
- {id:"c",group:"practice",sides:10,face:10},
+ {id:"b",group:"practice",sides:10,face:7},
+ {id:"c",group:"practice",sides:10,face:7},
  {id:"descartado",group:"equipment",sides:12,face:12}
  ];
- const r=resolveRoll(dice,["b","c"],{de:5,level:1});
- assert.equal(r.ok,true);assert.equal(r.critical,2);assert.equal(r.e,5);assert.equal(r.p,1);
- assert.equal(r.outcome,"Acerto neutro (com Pavor mantido)");
+ const r=resolveRoll(dice,["b","c"],{de:4,level:1});
+ assert.equal(r.ok,true);assert.equal(r.critical,2);assert.equal(r.e,4);assert.equal(r.p,0);
+ assert.equal(r.outcome,"Acerto sem Pavor");
  assert.equal(r.freeCharacteristics,1);assert.equal(r.criticalRefundCourage,1);
 });
 test("dado descartado não gera Êxito, Antecipar nem Pavor",()=>{
@@ -174,4 +174,27 @@ test("Conjuração sem Perícia elemental e sem Psique permanece bloqueada",()=>
  assert.match(buildPool(s,sel,{mode:"conjuracao"}).errors.join(" "),/Perícia elemental ou Criar Item/);
  s.skills=["criar-item-foco-magia"];
  assert.deepEqual(buildPool(s,sel,{mode:"conjuracao"}).errors,[]);
+});
+
+
+test("Face 15 do d20 permite gastar os dois A uma única vez",()=>{
+ const rolled=[{id:"a",group:"attribute",sides:20,face:15}];
+ const cancelled=resolveRoll(rolled,["a"],{de:1,cancelP:2});
+ assert.equal(cancelled.ok,true);assert.deepEqual(cancelled.raw,{e:0,a:2,p:3});
+ assert.equal(cancelled.p,1);assert.equal(cancelled.aRemaining,0);
+ const converted=resolveRoll(rolled,["a"],{de:4,convertPairs:1});
+ assert.equal(converted.ok,true);assert.equal(converted.e,1);assert.equal(converted.p,3);
+ assert.equal(converted.aRemaining,0);assert.equal(converted.success,true);
+ assert.equal(resolveRoll(rolled,["a"],{de:1,cancelP:1,convertPairs:1}).ok,false);
+});
+
+
+test("Faces críticas por tipo, sem confundir d10/10 com d10/7",()=>{
+ for(const [sides,critical] of [[4,4],[6,6],[10,7],[12,12],[20,20]]){
+  for(let face=1;face<=sides;face++)assert.equal(isCriticalFace(sides,face),face===critical);
+ }
+ const dice=[{id:"a",group:"attribute",sides:10,face:10},{id:"b",group:"practice",sides:12,face:12}];
+ assert.equal(resolveRoll(dice,["a","b"],{de:1}).critical,0);
+ dice[0].face=7;const result=resolveRoll(dice,["a","b"],{de:5});
+ assert.equal(result.critical,2);assert.equal(result.e,5);assert.equal(result.p,0);
 });

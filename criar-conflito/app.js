@@ -1,9 +1,9 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261124-v0124b";
-import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,SITUATIONS}
- from "./roll-engine.mjs?v=20261124-v0124b";
+ from "./rules.mjs?v=20261124-v0125c";
+import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,isCriticalFace,SITUATIONS}
+ from "./roll-engine.mjs?v=20261124-v0125c";
 import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261124-colossal-v0114";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
@@ -682,7 +682,7 @@ function rollPane(t){
  const dice=r?'<div class="cf-roll-dice">'+r.dice.map(d=>{
   const kept=sel.includes(d.id);
   const marks=faceSymbols(d.sides,d.face).map((qty,i)=>
-   Array(qty).fill(0).map(()=>'<span class="cf-symbol cf-symbol-'+colors[i]+(d.face===d.sides?' is-max':'')+'">'+runes[i]+'</span>').join("")).join("")||"Vazio";
+   Array(qty).fill(0).map(()=>'<span class="cf-symbol cf-symbol-'+colors[i]+(isCriticalFace(d.sides,d.face)?' is-max':'')+'">'+runes[i]+'</span>').join("")).join("")||"Vazio";
   return '<label class="cf-roll-die'+(kept?' is-kept':'')+'">'+
    '<input type="checkbox" data-roll-keep="'+esc(d.id)+'"'+(kept?' checked':'')+'>'+
    dieIcons([d.sides])+'<b>Face '+d.face+'</b><span>'+marks+'</span>'+

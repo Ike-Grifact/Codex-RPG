@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {blank,stats,quickHumanoid,normalize} from "./rules.mjs";
 import {creaturePool,rollCreatureFaces,previewCreatureRoll,settleCreatureRoll,
- publicJointCost,canDeclareJoint,faceSymbols,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
+ publicJointCost,canDeclareJoint,faceSymbols,isCriticalFace,humanoidPool,previewHumanoidRoll,composeActionPool} from "./roll-engine.mjs";
 
 test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
  const t=blank("monstro");t.attributes.forca=1;
@@ -16,9 +16,9 @@ test("Faces simbólicas corretas, descarte sem Pavor e máximo de dados",()=>{
  const rolled=creaturePool(t,"forca","vigor").pool.map((d,i)=>({...d,face:i===2?3:1}));
  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
  assert.deepEqual(faceSymbols(4,3),[0,0,1]);
- assert.deepEqual(faceSymbols(12,11),[0,0,2]);
- assert.deepEqual(faceSymbols(20,11),[0,0,2]);
- assert.deepEqual(faceSymbols(20,15),[0,0,3]);
+ assert.deepEqual(faceSymbols(12,11),[0,0,3]);
+ assert.deepEqual(faceSymbols(20,11),[0,0,3]);
+ assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
  const r=previewCreatureRoll(t,rolled,rolled.slice(0,2).map(d=>d.id),{de:1});
  assert.equal(r.ok,true);
@@ -43,7 +43,7 @@ test("Gasto local de retenção só acontece na confirmação",()=>{
 });
 test("Crítico de monstro retém Pavor local, depois público, sem duplicar",()=>{
  const t=blank("monstro");t.attributes.forca=1;t.pavorLocal=0;
- const rolled=rollCreatureFaces(creaturePool(t,"forca","vigor").pool,()=>0.99999);
+ const rolled=creaturePool(t,"forca","vigor").pool.map(d=>({...d,face:d.sides===10?7:d.sides}));
  const p=previewCreatureRoll(t,rolled,rolled.map(d=>d.id),{de:1});
  assert.equal(p.ok,true);assert.equal(p.result.critical,2);
  assert.equal(p.criticalPavor,2);
@@ -87,7 +87,7 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  const trained=humanoidPool(npc,"practice","armas_conjuracao","forca","armas");
  assert.equal(trained.ok,true);
  assert.deepEqual(trained.pool.map(d=>d.sides),[10,6]);
- const rolled=rollCreatureFaces(trained.pool,()=>0.9999);
+ const rolled=trained.pool.map(d=>({...d,face:d.sides===10?7:d.sides}));
  const got=previewHumanoidRoll(npc,rolled,rolled.map(x=>x.id),{de:1});
  assert.equal(got.ok,true);
  assert.equal(got.cost,0);
@@ -284,5 +284,12 @@ test("Humanoides inimigos Grau 2 podem reter quatro, pagando Pavor; nível sozin
   assert.equal(post.unit.courage,0);
   enemy.pavorLocal=0;
   assert.equal(previewHumanoidRoll(enemy,rolled,ids,{de:0,extraKeep:true}).ok,false);
+ }
+});
+
+
+test("Motor de conflitos reconhece a face crítica específica de cada dado",()=>{
+ for(const [sides,critical] of [[4,4],[6,6],[10,7],[12,12],[20,20]]){
+  for(let face=1;face<=sides;face++)assert.equal(isCriticalFace(sides,face),face===critical);
  }
 });
