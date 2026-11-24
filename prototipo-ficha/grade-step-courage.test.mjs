@@ -602,7 +602,7 @@ test("Escudo Bumerangue: 1 Coragem ao lançar, dano físico e características p
 
 test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de Coragem",()=>{
  const resultCode=extract("function shieldBoomerangResult(","function prepareShieldBoomerang(");
- const scoreCode=projectileCode+extract("function score(){","function renderPending(){");
+ const scoreCode=projectileCode+extract("const CRITICAL_FACES=","function face(sides,number)")+extract("function score(){","function renderPending(){");
  const makeScore=new Function("state","face","SITUATIONS","LIFE_STATES","lifeStage","ownsSkill",
   "magicKnownElements","magicPreparationTurns","magicElementId","affinity","keepLimit","clamp",
   "shieldBoomerangReady","ACTIVE_PROPERTIES",resultCode+scoreCode+"\nreturn score;");
@@ -618,7 +618,7 @@ test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de
    fireMode:"",cravarTargetShield:""};
   const state={pending:p,items:[{id:"sh",type:"escudo",equipped:true,properties:["Perfurante","Contundente"]}],
    courage,skills:[],hemomancy:{}};
-  const face=(n,value)=>({6:{6:[1,0,0]},10:{6:[1,0,0],7:[2,0,0],9:[1,1,1],10:[2,0,1]},12:{12:[0,0,2]}}[n]||{})[value]||[0,0,0];
+  const face=new Function(app.match(/const FACES\s*=\s*\{[\s\S]*?\n\s*\};/)[0]+"\nreturn (n,value)=>FACES[n]?.[value-1]||[0,0,0];")();
   const health={e:0,p:0,a:0,coragem:0};
   const score=makeScore(state,face,{normal:["Normal",0,0]},{ok:health},()=>health,
    ()=>false,()=>[],()=>1,()=>"",()=>0,()=>4,(v,min,max)=>Math.max(min,Math.min(max,v)),
@@ -628,13 +628,13 @@ test("Escudo Bumerangue: resolução real de dano, propriedades, custo e erro de
  const basic=compute([[6,6],[10,7]]);
  assert.deepEqual({damage:basic.damage,cost:basic.courageCost,returned:basic.shieldThrowOutcome.returned,errors:basic.errors},
   {damage:3,cost:1,returned:true,errors:[]},"Dano só da rolagem, não do equipamento");
- const piercing=compute([[6,6],[10,9],[12,12]],"Perfurante");
- assert.equal(piercing.damage,3,"Dano básico com Pavor usa piso(P/2)");
- assert.equal(piercing.armorDamage,5,"Perfurante habilitado substitui contribuição de P à Integridade");
+ const piercing=compute([[6,6],[10,9],[12,11]],"Perfurante");
+ assert.equal(piercing.damage,4,"Dano básico com Pavor usa piso(P/2)");
+ assert.equal(piercing.armorDamage,6,"Perfurante habilitado substitui contribuição de P à Integridade");
  assert.equal(piercing.courageCost,2,"Lançar custa 1 e ativar característica em acerto não crítico custa mais 1");
  assert.deepEqual(piercing.active,["Perfurante"]);
  assert.equal(piercing.errors.length,0);
- assert.match(compute([[6,6],[10,7]],"Contundente",1).errors.join(" "),/Coragem insuficiente/);
+ assert.match(compute([[6,6],[10,6]],"Contundente",1).errors.join(" "),/Coragem insuficiente/);
  const missed=compute([[6,6]],"",10,5);
  assert.equal(missed.damage,0);
  assert.equal(missed.courageCost,1,"Falha ainda consome Coragem do lançamento quando finalizada");
