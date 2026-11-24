@@ -436,19 +436,31 @@ Um **crítico** exige que **todos os dados escolhidos para manter** estejam em s
 
 ### Resultados e protagonismo
 
-- **Acerto puro:** alcança DE sem Pavor residual. **Mantém o protagonismo:** o mesmo jogador pode agir novamente ou passar voluntariamente a oportunidade a um aliado, sem limitar a continuidade a apenas dois ataques.
+- **Acerto puro:** alcança DE sem Pavor residual. Permite continuar ou passar voluntariamente a oportunidade a um aliado, respeitando a troca de lado descrita em **Turnos, rodadas e protagonismo** (v0.120).
 - **Acerto normal:** alcança DE com Pavor não anulado sem predominância de P sobre E.
 - **Acerto com Pavor predominante:** alcança DE com P>E, podendo introduzir consequências graves.
 - **Falha limpa:** não alcança DE e não tem consequência negativa automática.
 - **Falha com Pavor:** não alcança DE e deixa risco, intervenção e normalmente perda de 1 Coragem; a intensidade da complicação depende da situação.
 
-Enquanto não houver Pavor não anulado, jogadores preservam o fluxo de oportunidades entre si. **Em ataque contra um adversário declarado como alvo, o Pavor dos dados mantidos que não foi anulado entra na reserva local do próprio adversário atacado, mesmo que ele esteja distante e mesmo se o ataque falhar — nunca na reserva do inimigo mais próximo.** O alvo só pode aproveitar esse recurso quando tiver uma oportunidade válida. O teto local do inimigo começa em **4P no Grau 1**, e sobe até **8P nos Graus 5–6**; inimigos começam o conflito com saldo cheio. Ataques contra vários alvos/área e ações sem adversário atacado ainda têm distribuição PENDENTE. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html) e no [SRD v0.41](srd-continuidade-v0.41.md).
+O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo da v0.120; mesmo sem Pavor, um ataque que não seja acerto puro nem antecipe um aliado devolve a oportunidade à oposição. **Em ataque contra um adversário declarado como alvo, o Pavor dos dados mantidos que não foi anulado entra na reserva local do próprio adversário atacado, mesmo que ele esteja distante e mesmo se o ataque falhar — nunca na reserva do inimigo mais próximo.** O alvo só pode aproveitar esse recurso quando tiver uma oportunidade válida. O teto local do inimigo começa em **4P no Grau 1**, e sobe até **8P nos Graus 5–6**; inimigos começam o conflito com saldo cheio. Ataques contra vários alvos/área e ações sem adversário atacado ainda têm distribuição PENDENTE. A economia de Pavor exclusiva de inimigos e as intervenções do Narrador estão detalhadas no [Guia do Narrador](../narrador.html) e no [SRD v0.41](srd-continuidade-v0.41.md).
 
-### Rodadas, oportunidades e protagonismo [DEFINIDO]
+### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
 
-Uma **rodada** organiza a passagem das oportunidades em conflito; a sequência **não** impõe alternância automática entre jogador e inimigo. Enquanto não surgir Pavor não anulado que dê ocasião para intervenção, o grupo mantém o protagonismo e **pode transferir voluntariamente a ação** ao aliado mais adequado. Uma **falha limpa** não impõe consequência negativa automática e a oportunidade passa a outro jogador. Com **Pavor residual**, o Narrador normalmente pode intervir; gastar **1A** permite passar a ação a um aliado antes dessa intervenção, **sem apagar o Pavor nem gerar outro**.
+Um **turno** corresponde a uma ação realizada por um personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena: personagens jogadores + inimigos. Em um conflito com 3 PJs e 3 inimigos, a rodada termina após 6 turnos realizados, independentemente da ordem ou de quem realizou cada um. A rodada mede o tempo do conflito; não é uma fila de iniciativa e não exige que cada combatente aja exatamente uma vez.
 
-O uso de Coragem e técnicas continua sujeito a seus custos específicos; o fato de uma pessoa agir mais de uma vez não concede recursos extras.
+O **protagonismo** indica qual lado tem a oportunidade de agir. Um acerto puro (acerto sem Pavor residual) permite ao jogador continuar ou ceder voluntariamente a ação. Gastar Antecipar permite passar a oportunidade a um aliado elegível, antecipando seu turno individual sem anular Pavor. Se um ataque não resultar em acerto puro nem houver passagem válida por Antecipar, o protagonismo passa à oposição, inclusive na falha limpa ofensiva. A falha limpa continua sem punição negativa automática. Fora dessa regra de ataque em conflito, a falha limpa mantém o fluxo geral entre aliados.
+
+Quando todos os jogadores já tiverem agido na sequência de protagonismo do grupo, inclusive por antecipações sucessivas, a oportunidade passa aos inimigos. Os inimigos podem encadear ações de aliados enquanto tiverem Antecipar válido para passar a oportunidade; quando não conseguirem fazê-lo, o protagonismo retorna aos jogadores. O acerto puro do inimigo, por si só, não prolonga essa sequência sem Antecipar. A troca de lado não encerra nem reinicia automaticamente a rodada.
+
+Pavor pode abrir oportunidade de intervenção ou contra-ataque, mudando o protagonismo antes de completar uma rodada. Um contra-ataque que constitua uma ação conta como turno; a mera transferência de símbolos, a passagem de protagonismo e uma intervenção narrativa sem ação de combatente não contam como novos turnos. Permanecem os requisitos e custos de ativação válidos da oposição e as restrições de Antecipar; o Pavor disponível não concede automaticamente uma ação gratuita.
+
+Uma **ação em conjunto** utiliza simultaneamente **um turno de cada participante**. Dois participantes contam dois turnos; três contam três. Não é um turno gratuito para quem ajuda, nem uma sequência de ataques individuais. Mantêm-se as regras próprias de resolução, os limites vigentes de até três participantes em ataques conjuntos, os custos e os requisitos aplicáveis. Passar protagonismo com Antecipar, por si só, não é uma ação em conjunto.
+
+Perícias, magias e condições que indicam duração em **turnos** contam ações; aquelas que indicam **rodadas** contam ciclos completos de turnos equivalentes ao total de combatentes. Não tratar os dois termos como sinônimos nem alterar durações já publicadas. O tratamento de entradas e saídas de combatentes durante uma rodada, de ações conjuntas que cruzam o limite de uma rodada e o momento exato de expiração de efeitos específicos ainda precisam de definição.
+
+**Exemplo:** três PJs (A, B e C) enfrentam três inimigos (X, Y e Z). A age e antecipa B; B age e antecipa C; C age. Já são três turnos, e a oportunidade passa à oposição. X age e antecipa Y; Y age sem Antecipar disponível para passar a ação. Após cinco turnos o protagonismo volta aos jogadores. A age: sexto turno, fim da primeira rodada. Z não precisou agir e A agiu duas vezes. Se A e B realizassem uma ação conjunta, ela contaria dois turnos simultâneos, não um.
+
+O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
 
 ### Coragem e seus usos [DEFINIDO]
 
