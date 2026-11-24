@@ -16,7 +16,8 @@ test("15 verbetes ativos e catalogo usam Coragem, sem PP legado",()=>{
   assert.equal(oldCost.test(page),false,name+" apresenta custo antigo");
   if(["pericia-em-armas-leves","pericia-em-armas-medias","pericia-em-armas-pesadas"].includes(name)){
    // Verbetes revisados: custo fica junto ao benefício, não em quadro duplicado.
-   assert.match(page,/Quando você acerta[^<]*1 Coragem/i,name+" deve indicar o custo da característica no acerto");
+   assert.match(page,/Antes de rolar[^<]*1 Coragem/i,name+" deve indicar custo antes da rolagem");
+   assert.match(page,/Coragem é consumida mesmo que o ataque falhe/i,name+" deve manter o custo na falha");
    assert.match(page,/Acerto crítico[\s\S]*?gratuitamente/i,name+" deve indicar a ativação gratuita no crítico");
   }else{
    assert.match(page,/<dt>Custo de ativação<\/dt><dd>1 Coragem/i,name+" deve indicar custo revisado");
