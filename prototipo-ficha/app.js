@@ -2108,11 +2108,11 @@ const WIZARD_CATEGORIES=[
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
- agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui integralmente à DE defensiva, além do deslocamento."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui à DE defensiva em conjunto com Destreza e Vigor, além do deslocamento."],
  destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
  inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
  influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
- vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Destreza e então divide por 2 (SRD v0.89). Contribui para a Vida."]
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Agilidade e Destreza e então divide por 2. Contribui para a Vida."]
 };
 const WIZARD_TRAINING_GUIDE={
  "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
@@ -2835,7 +2835,7 @@ function renderXP(){
 }
 function deNatural(s=state){
  const a=s.attributes||{};
- return Math.min(11,2+(a.agilidade||0)+Math.floor(((a.vigor||0)+(a.destreza||0))/2));
+ return Math.min(11,2+Math.floor(((a.agilidade||0)+(a.vigor||0)+(a.destreza||0))/2));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -4258,7 +4258,7 @@ function vitalHelpDetails(kind){
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
  defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 11 e total com modificadores limitado a 12.",
- "DE base: min(11, 2 + AGI "+(a.agilidade||0)+" + ⌊(VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
+ "DE base: min(11, 2 + ⌊(AGI "+(a.agilidade||0)+" + VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
@@ -5284,9 +5284,9 @@ function renderInventory(){
   );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade; não altera a DE natural.</div>':"")+
-   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
-   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
-   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
+   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> −1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
+   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> −2 DE; resistência específica desde Grau 2.</div>':"")+
+   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −3 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
    (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −4 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+

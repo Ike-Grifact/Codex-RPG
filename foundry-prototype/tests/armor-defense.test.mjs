@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {defenseDE} from "../module/equipment-logic.mjs";
 
-const base=()=>({monsterRules:false,attributes:{agilidade:1,destreza:0,vigor:0},practices:{atletismo:0}});
+const base=()=>({monsterRules:false,attributes:{agilidade:2,destreza:0,vigor:0},practices:{atletismo:0}});
 const actor=(category,equipped=true,system=base())=>({system,items:category?[{
  type:"equipment",system:{kind:"armor",category,equipped}
 }]:[]});
@@ -28,11 +28,11 @@ test("DE natural não excede 11, limite final 12, sem empilhar duas armaduras",(
 });
 
 
-test("v0.147: base 2, Agilidade, metade de Vigor+Destreza, sem Atletismo; monstros preservados" ,()=>{
+test("v0.149: base 2, metade de Agilidade+Vigor+Destreza, sem Atletismo; monstros preservados" ,()=>{
  const attrs={agilidade:1,destreza:2,vigor:4};
  const humanoid={...base(),attributes:attrs,practices:{atletismo:3}};
  const monster={...humanoid,monsterRules:true};
- assert.equal(defenseDE(actor(null,true,humanoid)),6);
+ assert.equal(defenseDE(actor(null,true,humanoid)),5);
  assert.equal(defenseDE(actor(null,true,monster)),2);
 });
 

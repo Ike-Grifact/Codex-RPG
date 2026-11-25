@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Mestre
 
+> **Atualização vigente — [SRD v0.149](srd-continuidade-v0.149.md):** DE natural humanoide = min(11; 2 + piso((Agilidade + Destreza + Vigor)/2)); armaduras 0/−1/−2/−3/−4, Maestria em Escudos +1 com escudo equipado, DE final 0–12. Sem teto geral de Êxitos por Perícia ou ação. Monstros não humanoides mantêm a fórmula própria.
+
 > **Norma vigente (18/11/2026):** [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos**, não 18; o teto adicional derivado até 260 XP é **245**, não 242. Maestrias de recuperação ficam adiadas. Druídica **não depende mais de Domar ou Influência**; requer Foco + Terra e não tem fichas animais. Transformação Elemental: 1 XP, Foco + uma Perícia Elemental. Referências antigas abaixo ficam subordinadas à norma de Playtest.
 
 

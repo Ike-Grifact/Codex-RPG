@@ -1,4 +1,4 @@
-> **SRD v0.89 — 22/11/2026 [DEFINIDO]:** DE base humanoide `min(9, AGI + piso((VIG + DES)/2) + piso(Atletismo/3))`, sem +1 fixo. Roupas Simples/Muito Leve +2 DE em todas as defesas, inclusive esquiva, sem duplicar; teto final 12. **15 XP compartilhados** para humanoides comuns; magia recebe dados pelo Grau (G1 d6, G2 d10, G3 d12, **G4 2d12 com dois elementos G3 distintos**); foco sem dado, **G2 exige 1 carga do foco para reduzir a preparação a 1 turno**. Monstros não humanoides preservam sua fórmula própria. [SRD v0.89](../docs/srd-continuidade-v0.89.md).
+> **SRD v0.89 — 22/11/2026 [DEFINIDO]:** DE base humanoide `min(11, 2 + piso((AGI + VIG + DES)/2))` (v0.149). Armaduras Muito Leve/Leve/Média/Pesada/Muito Pesada: 0/−1/−2/−3/−4 DE; Maestria em Escudos +1 quando equipada; teto final 12. **15 XP compartilhados** para humanoides comuns; magia recebe dados pelo Grau (G1 d6, G2 d10, G3 d12, **G4 2d12 com dois elementos G3 distintos**); foco sem dado, **G2 exige 1 carga do foco para reduzir a preparação a 1 turno**. Monstros não humanoides preservam sua fórmula própria. [SRD v0.89](../docs/srd-continuidade-v0.89.md).
 
 # Criar Conflito — Codex RPG (prévia)
 
