@@ -34,38 +34,40 @@ O Codex une **narrativa emergente e combate tático**. Em uma investigação, ne
 
 Os dois estilos utilizam a mesma mecânica de rolagem. Você não precisa abandonar a narrativa para entrar em combate, nem precisa transformar toda conversa em uma disputa tática. Ajudar um aliado também é protagonismo: quando a ação permite, você pode passar voluntariamente a oportunidade a outro jogador. Vencer um conflito pode significar negociar, escapar, proteger alguém ou derrotar uma ameaça.
 
-## Roll and Keep — rolar e manter
+## As três runas do Codex
 
-Em Codex RPG, as ações de resultado incerto são resolvidas por um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. Em vez de somar todos os dados que caíram na mesa, você reúne uma pilha de dados de acordo com as capacidades usadas na ação, rola essa pilha e escolhe quais resultados deseja manter.
+O Codex utiliza três runas como identidade visual e filosófica. Elas expressam aspectos de toda escolha feita durante uma aventura: aquilo que você pretende realizar, as possibilidades que consegue compreender e os riscos que não consegue controlar. Os significados abaixo são interpretações próprias do Codex, não traduções históricas literais das runas.
 
-Um Aprendiz normalmente mantém dois dados. Imagine que você rolou três dados e obteve as faces E+A, 2E+T e E. Você pode manter E+A e E para obter 2E+1A sem Temor, ou manter 2E+T e E para obter 3E+1T. A segunda escolha reúne mais símbolos que ajudam a alcançar o objetivo, mas traz risco. Os símbolos dos dados descartados não produzem efeitos.
+### ᛋ Sowilo — Realização da vontade
 
-É essa escolha que distingue o Roll and Keep de uma rolagem em que todos os resultados são somados. Rolar mais dados oferece mais possibilidades, mas não significa manter todos eles. O limite geral é de **9 dados rolados e 4 dados mantidos**, respeitando os limites de retenção do personagem e os recursos disponíveis.
+**Êxito (E)** — A vontade é o ponto de partida de toda ação: abrir uma porta, proteger um aliado ou concluir uma criação. Sowilo representa a realização dessa intenção, aquilo que o personagem consegue concretizar.
 
-### As três runas do Codex
+### ᚨ Ansuz — Compreensão das possibilidades
 
-As faces dos dados expressam três ideias centrais do Codex: a vontade de realizar algo, a compreensão das possibilidades e o risco diante do desconhecido. Para representar essas ideias, o sistema utiliza três runas — Sowilo, Ansuz e Thurisaz — como sua identidade visual. Seus significados no jogo são interpretações próprias do Codex, não traduções históricas literais das runas.
+**Antecipar (A)** — Nem tudo depende de força ou de execução. Ansuz representa perceber alternativas, compreender o que está acontecendo e adaptar-se ao inesperado. É a possibilidade de mudar o curso de uma ação ou abrir caminho para um aliado.
 
-Esses símbolos aproximam a mecânica da atmosfera do cenário e ajudam você a ler o que acontece na aventura: não apenas se conseguiu fazer algo, mas também quais possibilidades encontrou e quais riscos assumiu. A Coragem, apresentada adiante, representa a capacidade de agir apesar do Temor.
+### ᚦ Thurisaz — Risco diante do desconhecido
 
-| Símbolo | Runa | Cor | Significado |
-|---|---|---|---|
-| Êxito (E) | Sowilo **ᛋ** | **#267A45** | Realização da vontade |
-| Antecipar (A) | Ansuz **ᚨ** | **#2369BB** | Compreensão das possibilidades |
-| Temor (T) | Thurisaz **ᚦ** | **#542176** | Risco diante do desconhecido |
+**Temor (T)** — Thurisaz representa aquilo que escapa ao controle da vontade: o perigo, a incerteza e as consequências de agir. Uma ação pode alcançar sua intenção e ainda trazer complicações. Temor não exige que o personagem sinta medo.
 
-Agora que você conhece a ideia por trás das runas, veja como elas aparecem nas faces dos dados e o que cada símbolo permite fazer.
+A Coragem completa essa filosofia: é a capacidade de agir apesar do Temor. Os três símbolos não são apenas uma maneira de contar resultados; ajudam a narrar o que aconteceu e quais caminhos ainda estão disponíveis.
 
-## Faces dos dados e runas
+## Dados, faces e símbolos
 
-Uma face pode mostrar uma ou várias runas. Se você mantiver uma face com dois Êxitos, ela contribui com 2E, e não apenas um. Leia todos os símbolos dos dados mantidos.
+Os dados do Codex têm formas e quantidades de faces diferentes. A letra d significa dado, e o número indica quantas faces ele possui: um d6 tem seis faces, um d10 tem dez. Uma face é um dos lados do dado, isto é, um resultado possível quando você o rola. Cada face corresponde a um conjunto de runas ou a um resultado vazio.
+
+**Tipos de dados:** d4 (quatro faces), d6 (seis), d10 (dez), d12 (doze) e d20 (vinte).
+
+### Como ler as faces
+
+Uma face pode mostrar uma ou várias runas. Uma face com dois Êxitos contém 2E, e não apenas um. Leia cada símbolo que aparece na face.
 
 - **ᛋ Êxito (E):** realiza sua intenção. Cada E conta para alcançar a dificuldade e pode contribuir para o dano em um ataque.
 - **ᚨ Antecipar (A):** adapta o resultado. Gaste 1A para anular 1T, 2A para criar 1E ou use A para passar a oportunidade a um aliado conforme o protagonismo. Cada A só pode ser gasto uma vez.
 - **ᚦ Temor (T):** também conta para alcançar a dificuldade, mas representa o risco diante do desconhecido e pode dar à oposição oportunidade de intervenção. Acertar com Temor não é um acerto limpo.
 - **○ Face vazia:** não acrescenta símbolos; — indica face inexistente.
 
-**Exemplo:** E+A+T oferece um Êxito, um Antecipar e um Temor. Se gastar A para anular T, sobra 1E; se preservar T, há dois símbolos que contam para a dificuldade. Dados descartados não produzem símbolos.
+**Exemplo:** ᛋ + ᚨ + ᚦ (E+A+T) oferece um Êxito, um Antecipar e um Temor. Se gastar A para anular T, sobra 1E; se preservar T, há dois símbolos que contam para a dificuldade.
 
 ### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
 
@@ -112,9 +114,30 @@ Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recu
 
 **Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
 
-## Rolando os dados
+## Rolando os dados — Roll and Keep
 
-Quando uma ação tem resultado incerto, reúna uma pilha, role e escolha os dados mantidos. A DE é o valor a alcançar; os capítulos seguintes detalham a pilha e a interpretação do resultado.
+Quando uma ação tem resultado incerto, o Codex utiliza um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. A pilha é o conjunto de dados que você reúne para a ação. Você rola a pilha inteira e depois escolhe quais dados deseja manter, dentro do seu limite de retenção. Apenas os dados mantidos produzem símbolos; os descartados não têm efeito.
+
+### Exemplo: role três dados, mantenha dois
+
+Imagine um Aprendiz que rolou três dados e pode manter dois. O primeiro d10 caiu na face 8, o segundo d10 na face 10 e o d6 na face 6. Observe como a escolha dos dados altera o resultado.
+
+| Dado | Face | Runas | Símbolos |
+|---|---:|---|---|
+| Primeiro d10 | 8 | ᛋ + ᚨ | 1E + 1A |
+| Segundo d10 | 10 | ᛋᛋ + ᚦ | 2E + 1T |
+| d6 | 6 | ᛋ | 1E |
+
+| Escolha | Dados mantidos | Resultado | Consequência |
+|---|---|---|---|
+| Sem Temor | Primeiro e terceiro | ᛋᛋ + ᚨ (2E + 1A) | Menos risco e 1 Antecipar disponível. |
+| Com Temor | Segundo e terceiro | ᛋᛋᛋ + ᚦ (3E + 1T) | Mais símbolos para alcançar a DE, mas com risco. |
+
+Rolar mais dados oferece mais possibilidades de escolha, não significa somar todos os resultados. O limite geral é de 9 dados rolados e 4 dados mantidos, respeitando a retenção do personagem e os recursos disponíveis.
+
+### Passo a passo de uma rolagem
+
+Agora que você conhece os dados, as runas e a Coragem, veja como aplicar essas escolhas em jogo. Os capítulos seguintes detalham a pilha e a interpretação do resultado.
 
 1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
 2. Estabeleça a DE adequada ao alvo ou tarefa. A DE base defensiva não é substituída por uma dificuldade inventada se houver ficha.
@@ -131,8 +154,6 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 
 **Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
 
-
-O Codex usa *roll and keep*: reúna uma pilha de dados de fontes pertinentes, role e mantenha apenas os resultados escolhidos. **No máximo nove dados rolados** e **no máximo quatro dados mantidos por ação**; ao menos um dado rolado deve ser de Atributo. Dados descartados **não produzem qualquer efeito**, nem Temor.
 
 | Níveis | Dados mantidos naturalmente | Com gasto de 1 Coragem |
 |---|---:|---:|
