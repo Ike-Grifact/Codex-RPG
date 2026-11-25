@@ -723,7 +723,7 @@ Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem
 
 ##### Como a Vida aparece na ficha
 
-Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida é colorido em azul (Saudável), ocre (Ferido), laranja-avermelhado (Incapacitado) e roxo (Inconsciente); branco indica um ponto perdido. A tabela Markdown usa ■ e □ como representação textual. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
+Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida mantém o traçado original sem preenchimento, com contorno verde (Saudável), azul (Ferido), vermelho (Incapacitado) e roxo (Inconsciente); contorno neutro indica um ponto perdido. A tabela Markdown usa ■ e □ como representação textual. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
 
 | Vigor | Força | Vida máxima | Saudável | Ferido | Incapacitado | Inconsciente |
 |---:|---:|---:|---|---|---|---|
