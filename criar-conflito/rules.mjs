@@ -1,7 +1,7 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs?v=20261125-v0147";
+ from "./codex-rules.mjs?v=20261125-v0148";
 import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261124-colossal-v0114";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
@@ -180,14 +180,12 @@ export function stats(t){
  const maxKeep=human?Math.min(4,naturalKeep+1):enemyKeepCap(grade);
  return {life,de:defense,baseDE,armorDE,shieldDE,playerEquivalentLevel:threatPlayerEquivalentLevel(grade),limitLocal:monsterCap(grade),keepBase:naturalKeep,keepMax:maxKeep,
   keepCostP:Math.max(0,Number(t.keep||2)-naturalKeep),
-  xp:ledger(t),capacity:t.kind==="humanoide"?
-   1+Math.floor((Number(s.attributes.forca||0)+Number(s.attributes.vigor||0)+Number(s.practices.atletismo||0))/3):
-   loadCapacity(s),used:weightUsed(t)};
+  xp:ledger(t),capacity:human?loadCapacity({...s,monsterRules:false}):loadCapacity({...s,monsterRules:true}),used:weightUsed(t)};
 }
 export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+Number(it.weight||0)*Math.max(1,Number(it.qty||1)),0);}
 export function afterItem(t,item){const x=Number(item.weight)||0,qty=Math.max(1,Number(item.qty||1));return weightUsed(t)+x*qty;}
 export function remainingKinds(t){
- const free=Math.max(0,loadCapacity(toSystem(t))-weightUsed(t));
+ const free=Math.max(0,stats(t).capacity-weightUsed(t));
  return {leve:Math.floor((free+1e-9)/WEIGHT.leve),medio:Math.floor((free+1e-9)/WEIGHT.medio),pesado:Math.floor((free+1e-9)/WEIGHT.pesado)};
 }
 /** Atualização de Integridade G1 de 22/11: preserva dano já sofrido e idempotência. */

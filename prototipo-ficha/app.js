@@ -2808,7 +2808,7 @@ function dependentsValid(testState){
  const invalid=testState.skills.find(id=>skillReq(id,testState));
  return invalid?skillReq(invalid,testState):null;
 }
-function baseMovement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.practices.atletismo||0)/3);}
+function baseMovement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.attributes.destreza||0)/2);}
 function movement(s=state){return baseMovement(s)*(s===state&&!NPC_MODE&&loadPercent()>=100?.5:1);}
 function renderXP(){
  const x=xpCosts();
@@ -2931,12 +2931,12 @@ function defensePresentation(s=state){
   "DE base "+natural;
  return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 11 / final 12"};
 }
-function capacity(){return 1.5+Math.floor(((state.attributes.forca||0)+(state.attributes.vigor||0)+(state.practices.atletismo||0))/3);}
+function capacity(){return 1.5+(state.attributes.forca||0)+Math.floor((state.attributes.vigor||0)/2);}
 function bodyCapacity(){return capacity()-.5;}
 function bodyLoad(items=state.items){return items.filter(it=>itemPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+itemLoad(it),0);}
 function quickSlots(items=state.items){return items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+it.qty,0);}
 function backpackLoad(){return loadUsed()-bodyLoad();}
-function validBodyChange(it,pos){const items=state.items.map(x=>x===it?{...x,position:pos,equipped:pos==="hands"||pos==="worn"}:x);if(quickSlots(items)>3){toast("Acesso rápido: máximo de 3 espaços.");return false;}if(bodyLoad(items)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente; guarde equipamento ou aumente Força, Vigor e Atletismo.");return false;}return true;}
+function validBodyChange(it,pos){const items=state.items.map(x=>x===it?{...x,position:pos,equipped:pos==="hands"||pos==="worn"}:x);if(quickSlots(items)>3){toast("Acesso rápido: máximo de 3 espaços.");return false;}if(bodyLoad(items)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente; guarde equipamento ou aumente Força ou Vigor.");return false;}return true;}
 function itemLoad(it){
  if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
  const regular=it.ammoRole==="supply"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1)+(it.ammoRole==="container"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:0);
@@ -4095,7 +4095,7 @@ function wizardEquipment(){
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
-  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+loadStatus(loadPercent())+'</strong><small>Capacidade = 1 + ⌊(Força + Vigor + Atletismo) / 3⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
+  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+loadStatus(loadPercent())+'</strong><small>Capacidade total = 1,5 + Força + ⌊Vigor / 2⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
  '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
@@ -4265,10 +4265,10 @@ function vitalHelpDetails(kind){
  "SRD Playtest Nível 1 v1.0 · Proteções; Inventário da ficha."],
  balance:["Peso do personagem",NPC_MODE?"Peso natural de criatura: regra pendente.":state.race==="runa_espinhos"?"Runa Espinhos são sempre Pesados.":"Peso determinado pela armadura equipada: "+balance()+".","Carga transportada é independente do peso; sobrecarga não muda sua categoria.","SRD v0.138."],
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
- "Capacidade = 1,5 + piso((Força "+(a.forca||0)+" + Vigor "+(a.vigor||0)+" + Atletismo "+(p.atletismo||0)+")/3) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Capacidade = 1,5 + Força "+(a.forca||0)+" + piso(Vigor "+(a.vigor||0)+"/2) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
  movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrecarga; outros efeitos seguem suas regras.",
- "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
  "Fórmula atual da ficha · Agilidade e Atletismo."]
  };
  return entries[kind]||null;
@@ -5242,7 +5242,7 @@ function renderInventory(){
   grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+loadStatus(loadPercent())+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
   const parts=cargoCapacitySources();
   $("inventory-capacity-sources").innerHTML=cargoCapacitySourcesMarkup();
-  $("inventory-capacity-equation").textContent="1,5 + ⌊(Força "+(state.attributes.forca||0)+" + Vigor "+(state.attributes.vigor||0)+" + Atletismo "+(state.practices.atletismo||0)+") / 3⌋ = "+max+" Alto · somar os três graus antes de dividir";
+  $("inventory-capacity-equation").textContent="1,5 + Força "+(state.attributes.forca||0)+" + ⌊Vigor "+(state.attributes.vigor||0)+" / 2⌋ = "+max+" Alto · inclui mochila inicial de 0,5";
   const overflow=$("inventory-cargo-overflow");
   overflow.hidden=!(load>max||bodyLoad()>bodyCapacity()+1e-9||backpackLoad()>.5+1e-9||quickSlots()>3);
   overflow.textContent=overflow.hidden?"":"Capacidade por compartimento excedida. Reorganize os itens; fichas antigas não perdem equipamentos automaticamente.";

@@ -89,7 +89,7 @@ export function distributeDarknessPavor(total,targetUuids,{mode="split",preferre
  return targetUuids.map(uuid=>({uuid,p:half+(odd&&uuid===preferred?1:0)}));
 }
 
-export const loadCapacity=s=>1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3); // Formação Disciplina na carga: pendente.
+export const loadCapacity=s=>s.monsterRules?1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3):1.5+Number(s.attributes?.forca||0)+Math.floor(Number(s.attributes?.vigor||0)/2); // humanoides: inclui mochila inicial
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
  const attr=ATTRIBUTES.reduce((n,[k])=>n+XP_ATTRIBUTE[Number(s.attributes?.[k]||0)],0);
