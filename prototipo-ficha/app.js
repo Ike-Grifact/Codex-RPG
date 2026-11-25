@@ -2949,21 +2949,21 @@ function itemLoad(it){
 }
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
-function balanceForPercent(p){return p<25?"Muito Leve":p<50?"Leve":p<75?"Médio":p<100?"Pesado":"Muito Pesado";}
-function balance(){return NPC_MODE?"Pendente":balanceForPercent(loadPercent());}
+function loadStatus(p){return p>=100?"Sobrecarga":"Dentro da capacidade";}
+function balance(){if(NPC_MODE)return "Pendente";if(state.race==="runa_espinhos")return "Pesado";const armor=equippedArmor();return armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Médio",alto:"Pesado",extremo:"Muito Pesado"}[armor.weight]||"Pendente"):"Sem armadura";}
 // A prévia subtrai o peso dos recursos de troca realmente gastos na compra.
 function purchaseLoadPreview(entry,price){
  const current=loadUsed(),added=catalogPurchaseRows(entry).reduce((n,row)=>n+itemLoad(normalizedCatalogItem(row.ammoRole==="supply"?{...row,ammoMix:{[ammoTypesFor(row.ammoFamily)[0]]:20}}:row)),0);
  const paid=Math.min(Math.max(0,Number(price)||0),walletValue());
  const released=paid/10*WEIGHTS.leve[1];
  const after=Math.max(0,current+added-released),max=capacity(),percent=100*after/max;
- return {current,added,released,after,max,percent,balance:balanceForPercent(percent),
-  status:percent>=100?"over":percent>=75?"heavy":"normal"};
+ return {current,added,released,after,max,percent,balance:loadStatus(percent),
+  status:percent>=100?"over":"normal"};
 }
 function purchaseLoadMarkup(preview){
- const warning=preview.status==="over"?"Atenção: ficará Muito Pesado (sobrepeso): −2E nos testes afetados e metade do deslocamento. A compra não é bloqueada.":
-  preview.status==="heavy"?"Atenção: ficará Pesado, com pouca margem para transportar outros itens.":
-  "A compra permanece abaixo do patamar Pesado.";
+ const warning=preview.status==="over"?"Atenção: ficará em sobrecarga: −2E nos testes afetados e metade do deslocamento. A compra não é bloqueada.":
+  
+  "A compra permanece dentro da capacidade total.";
  return '<div class="fp-purchase-load fp-purchase-load-'+preview.status+'"><strong>Carga após compra: '+
   pad(preview.after)+' / '+preview.max+' Alto ('+pad(preview.percent)+'%) · '+preview.balance+'</strong>'+
   '<small>Agora: '+pad(preview.current)+' · Item: +'+pad(preview.added)+' · Recursos gastos: −'+pad(preview.released)+' Alto</small>'+
@@ -4052,7 +4052,7 @@ function wizardBuild(){
 function wizardEquipment(){
  if(tradeOwner!==state){tradeOwner=state;tradeDraft={...state.trade.resources};}
  const spent=state.trade.purchases.reduce((n,p)=>n+Number(p.price||0),0),remaining=walletValue();
-  const currentPercent=loadPercent(),currentLoadStatus=currentPercent>=100?"over":currentPercent>=75?"heavy":"normal";
+  const currentPercent=loadPercent(),currentLoadStatus=currentPercent>=100?"over":"normal";
  const editable=!state.trade.purchases.length&&!state.trade.collected;
  // Depois da primeira compra, mostrar recursos restantes, não a distribuição original.
  if(!editable)tradeDraft={...state.trade.resources};
@@ -4096,7 +4096,7 @@ function wizardEquipment(){
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
-  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+balance()+'</strong><small>Capacidade = 1 + ⌊(Força + Vigor + Atletismo) / 3⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
+  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+loadStatus(loadPercent())+'</strong><small>Capacidade = 1 + ⌊(Força + Vigor + Atletismo) / 3⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
  '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
@@ -4121,7 +4121,7 @@ function wizardReview(){
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
   '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
   '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>'+
-  '<div class="fp-purchase-load fp-purchase-load-'+(loadPercent()>=100?"over":loadPercent()>=75?"heavy":"normal")+'"><strong>Revisão de carga: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(loadPercent())+'%) · '+balance()+'</strong><small>Confira o peso antes de concluir o personagem. Itens transportados e recursos de troca contam na carga.</small></div>';
+  '<div class="fp-purchase-load fp-purchase-load-'+(loadPercent()>=100?"over":"normal")+'"><strong>Revisão de carga: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(loadPercent())+'%) · '+loadStatus(loadPercent())+'</strong><small>Confira o peso antes de concluir o personagem. Itens transportados e recursos de troca contam na carga.</small></div>';
 }
 function wizardOverview(){
  const x=xpCosts();
@@ -4228,10 +4228,10 @@ function renderVitals(){
  $("de-caption").textContent="Base "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+"% de carga"+(loadPercent()>=100?" · −2E / metade do deslocamento":"");
- if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, balanço "+balance());}
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":(state.race==="runa_espinhos"?"Peso natural":equippedArmor()?"Armadura equipada":"Peso sem armadura pendente");
+ if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, "+loadStatus(loadPercent()));}
  $("move-text").textContent=movement()+" m";
- $("move-caption").textContent=!NPC_MODE&&loadPercent()>=100?"Sobrepeso · metade do deslocamento":"Por deslocamento";
+ $("move-caption").textContent=!NPC_MODE&&loadPercent()>=100?"Sobrecarga · metade do deslocamento":"Por deslocamento";
  const health=lifeStage(),names=["Saudável","Ferido","Incapacitado","Inconsciente"];
  const bands=health.bands;
  $("life-boxes").setAttribute("aria-label","Quatro estados de Saúde: "+bands.join(" / ")+". Atual: "+health.label);
@@ -4264,14 +4264,12 @@ function vitalHelpDetails(kind){
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
  "SRD Playtest Nível 1 v1.0 · Proteções; Inventário da ficha."],
- balance:["Balanço por carga",NPC_MODE?"Balanço natural de criatura: regra pendente.":"Categoria atual do peso carregado: "+balance()+".",
- "Ocupação: "+used+" / "+capacity()+" = "+percent+"%. Faixas: abaixo de 25% Muito Leve; 25–49% Leve; 50–74% Médio; 75–99% Pesado; 100% ou mais Muito Pesado.",
- "Classificação atual do criador (playtest)."],
+ balance:["Peso do personagem",NPC_MODE?"Peso natural de criatura: regra pendente.":state.race==="runa_espinhos"?"Runa Espinhos são sempre Pesados.":"Peso determinado pela armadura equipada: "+balance()+".","Carga transportada é independente do peso; sobrecarga não muda sua categoria.","SRD v0.138."],
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
  "Capacidade = 1,5 + piso((Força "+(a.forca||0)+" + Vigor "+(a.vigor||0)+" + Atletismo "+(p.atletismo||0)+")/3) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
- movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrepeso; outros efeitos seguem suas regras.",
- "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: metade = "+movement()+" m.":""),
+ movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrecarga; outros efeitos seguem suas regras.",
+ "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Atletismo ("+(p.atletismo||0)+") / 3⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
  "Fórmula atual da ficha · Agilidade e Atletismo."]
  };
  return entries[kind]||null;
@@ -5234,15 +5232,15 @@ function renderInventory(){
  if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
  if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · Balanço "+balance()+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrepeso: −2E nos testes afetados e metade do deslocamento. Abrangência e aplicação de −2E pendentes.":"");
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · "+loadStatus(loadPercent())+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: −2E nos testes afetados e metade do deslocamento. Abrangência e aplicação de −2E pendentes.":"");
  const cargoPanel=$("inventory-cargo-panel");
  if(cargoPanel)cargoPanel.hidden=NPC_MODE;
  if(!NPC_MODE&&cargoPanel){
   $("inventory-cargo-total").textContent=pad(load)+" / "+max+" Alto transportado";
-  $("inventory-cargo-balance").textContent=balance()+" · "+pad(loadPercent())+"%";
+  $("inventory-cargo-balance").textContent=loadStatus(loadPercent())+" · "+pad(loadPercent())+"%";
   const grid=$("inventory-load-grid");
   grid.innerHTML=cargoGridMarkup();
-  grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+balance()+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
+  grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+loadStatus(loadPercent())+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
   const parts=cargoCapacitySources();
   $("inventory-capacity-sources").innerHTML=cargoCapacitySourcesMarkup();
   $("inventory-capacity-equation").textContent="1,5 + ⌊(Força "+(state.attributes.forca||0)+" + Vigor "+(state.attributes.vigor||0)+" + Atletismo "+(state.practices.atletismo||0)+") / 3⌋ = "+max+" Alto · somar os três graus antes de dividir";
@@ -5428,7 +5426,7 @@ function renderPurchaseLoadPreview(){
  const preview=$("trade-purchase-load");if(!preview)return;
  const item=CATALOG.find(x=>x.name===$("shop-items")?.value);
  if(!item||item.kind==="focus"||item.category==="pendente"||item.status==="PENDENTE"||!(Number(item.priceVT)>0)){
-  preview.innerHTML='<small>Escolha um equipamento para visualizar a carga e o balanço após a compra.</small>';return;
+  preview.innerHTML='<small>Escolha um equipamento para visualizar a carga após a compra.</small>';return;
  }
  preview.innerHTML=purchaseLoadMarkup(purchaseLoadPreview(item,catalogPurchasePrice(item)));
 }
@@ -5445,8 +5443,8 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const purchaseItems=item.kitContainer?[normalizedCatalogItem(item),normalizedCatalogItem({...rows[1],position:"quick",ammoMix:mix})]:[normalizedCatalogItem(ammo?{...item,ammoMix:mix}:item)];
  if(item.kitContainer&&(quickSlots([...state.items,...purchaseItems])>3||bodyLoad([...state.items,...purchaseItems])>bodyCapacity()+1e-9)){purchaseItems[1].position="bag";toast("Sem espaço corporal: recipiente guardado na mochila.");}
  const preview=purchaseLoadPreview(item,price);
-  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará MUITO PESADO (sobrepeso): −2E e metade do deslocamento.":
-   preview.status==="heavy"?"\nATENÇÃO: após esta compra ficará PESADO.":"";
+  const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará em SOBRECARGA: −2E e metade do deslocamento.":
+   "";
   if(!confirm("Comprar "+item.name+(item.kitContainer?" + "+item.kitContainer+" + 20 projéteis":"")+(mix?" ("+Object.entries(mix).map(([k,v])=>v+" "+k).join(", ")+")":"")+" por "+price+" VT em recursos de Grau 1?"+
    "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Alto ("+pad(preview.percent)+"%) · "+preview.balance+
    "\nInclui o peso do item e desconta o peso dos recursos gastos."+risk+"\nDeseja confirmar?"))return;

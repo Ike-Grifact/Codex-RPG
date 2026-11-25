@@ -19,7 +19,7 @@ function loadUI(s){
  const normalizedCatalogItem=entry=>({...item(({leve:"leve",medio:"medio",pesado:"alto","muito-leve":"muito_leve"})[entry.category]||"leve"),ammoRole:entry.ammoRole,ammoLotWeight:entry.ammoLotWeight,ammoMix:entry.ammoMix});
  const pad=n=>String(Number(n.toFixed(4)));
  return new Function("state","NPC_MODE","WEIGHTS","resourceWeight","walletValue","normalizedCatalogItem","pad","CATALOG",
-  ammoHelpers+"\n"+purchaseHelpers+"\n"+fragment+"\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,balanceForPercent,purchaseLoadPreview,purchaseLoadMarkup};")(
+  ammoHelpers+"\n"+purchaseHelpers+"\n"+fragment+"\nreturn {capacity,itemLoad,loadUsed,loadPercent,balance,loadStatus,purchaseLoadPreview,purchaseLoadMarkup};")(
   s,false,WEIGHTS,resourceWeight,walletValue,normalizedCatalogItem,pad,catalog);
 }
 const character=(forca,vigor,atletismo,disciplina=0,resources=20,items=[])=>({
@@ -43,24 +43,24 @@ test("prévia desconta exatamente os VT consumidos e não muda a ficha",()=>{
  assert.equal(preview.released,0.1);
  assert.equal(preview.after,0.65);
  assert.equal(preview.percent,26);
- assert.equal(preview.balance,"Leve");
+ assert.equal(preview.balance,"Dentro da capacidade");
  assert.equal(preview.status,"normal");
  assert.equal(JSON.stringify(s),old,"Prévia não pode efetuar uma compra");
 });
 
-test("prévia avisa exatamente em 75% e 100%, mas não bloqueia compra",()=>{
+test("prévia não classifica peso em 75% e avisa sobrecarga em 100%",()=>{
  const heavy=loadUI(character(2,1,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadPreview({category:"medio"},4);
  assert.ok(Math.abs(heavy.percent-75)<1e-8);
- assert.equal(heavy.status,"heavy");assert.equal(heavy.balance,"Pesado");
- assert.match(loadUI(character(2,1,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadMarkup(heavy),/Atenção: ficará Pesado/);
+ assert.equal(heavy.status,"normal");assert.equal(heavy.balance,"Dentro da capacidade");
+ assert.match(loadUI(character(2,1,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadMarkup(heavy),/dentro da capacidade total/);
  const full=loadUI(character(0,0,0,0,0,[item(),item()])).purchaseLoadPreview({category:"medio"},0);
  assert.equal(full.percent,100);
  assert.equal(full.status,"over");
- assert.equal(full.balance,"Muito Pesado");
+ assert.equal(full.balance,"Sobrecarga");
  const over=loadUI(character(0,0,0,0,20,[item(),item()])).purchaseLoadPreview({category:"medio"},8);
  assert.ok(over.percent>100);
  assert.equal(over.status,"over");
- assert.match(loadUI(character(0,0,0,0,20,[item()])).purchaseLoadMarkup(over),/sobrepeso/);
+ assert.match(loadUI(character(0,0,0,0,20,[item()])).purchaseLoadMarkup(over),/sobrecarga/);
 });
 
 test("criador e mercado exibem alerta antes de confirmar, inclusive na revisão",()=>{
@@ -84,7 +84,7 @@ test("Kit de arco curto: prévia soma arma, recipiente e lote, desconta VT uma v
 });
 
 
-test("Sobrepeso v0.119: metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
+test("Sobrecarga (limiar de playtest preservado): metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
  const code=app.slice(app.indexOf("function baseMovement("),app.indexOf("function renderXP("));
  const state=character(0,0,3,0,0,[]);state.attributes.agilidade=2;
  let percent=99.99;
@@ -92,3 +92,12 @@ test("Sobrepeso v0.119: metade do deslocamento em 100%, recupera abaixo de 100%"
  assert.equal(ui.baseMovement(),11);assert.equal(ui.movement(),11);percent=100;assert.equal(ui.movement(),5.5);percent=125;assert.equal(ui.movement(),5.5);percent=99;assert.equal(ui.movement(),11);
  const npc=new Function("state","NPC_MODE","loadPercent",code+"return movement;")(state,true,()=>100);assert.equal(npc(),11);
 });
+
+ test("peso por armadura ou linhagem independe da ocupação",()=>{
+ const src=app.slice(app.indexOf("function balance(){"),app.indexOf("// A prévia subtrai"));
+ const get=(state,armor)=>new Function("state","NPC_MODE","equippedArmor",src+"return balance();")(state,false,()=>armor);
+ assert.equal(get({race:"humano"},{weight:"leve"}),"Leve");
+ assert.equal(get({race:"humano"},{weight:"medio"}),"Médio");
+ assert.equal(get({race:"runa_espinhos"},null),"Pesado");
+ assert.equal(get({race:"humano"},null),"Sem armadura");
+ });

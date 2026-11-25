@@ -13,7 +13,7 @@
   <script src="./gene-graph.js?v=20261123-familia-contundente-v0102" defer></script>
   <link rel="stylesheet" href="../assets/skill-presentation.css?v=20261124-v0115">
   <script src="../assets/skill-presentation.js?v=20261124-v0117" defer></script>
-  <script src="./app.js?v=20261124-v0137" defer></script>
+  <script src="./app.js?v=20261125-v0138" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -144,8 +144,8 @@
           <small>Até 5 por rolagem</small>
         </div>
         <div class="fp-vital fp-vital-small fp-vital-basic">
-          <button class="fp-vital-open" type="button" data-vital-open="balance" aria-label="Peso: consultar balanço, carga atual e capacidade" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
-          <div class="fp-vital-label fp-icon-load">PESO</div><strong id="balance-text">Muito Leve</strong><small id="balance-caption">0% de carga</small>
+          <button class="fp-vital-open" type="button" data-vital-open="balance" aria-label="Peso: consultar peso da armadura e linhagem" aria-expanded="false" aria-haspopup="dialog" aria-controls="fp-vital-tooltip"></button>
+          <div class="fp-vital-label fp-icon-load">PESO</div><strong id="balance-text">Sem armadura</strong><small id="balance-caption">Peso da armadura</small>
         </div>
         <button type="button" class="fp-vital fp-vital-small fp-vital-inventory" data-sheet-page="inventory" aria-label="Abrir Inventário, equipamentos, carga e capacidade" title="Abrir Inventário e verificar carga e capacidade">
           <span class="fp-vital-label fp-icon-inventory" aria-hidden="true"></span><span class="fp-vital-inventory-text">Inventário</span>
@@ -413,7 +413,7 @@
           <section class="fp-cargo-panel" id="inventory-cargo-panel" aria-label="Mapa visual de capacidade de carga">
           <div class="fp-cargo-heading">
             <div><span class="fp-overline">MAPA DO INVENTÁRIO</span><h4>Espaço e peso transportado</h4><small id="inventory-cargo-total">0 / 1 Alto de capacidade</small></div>
-            <strong class="fp-cargo-balance" id="inventory-cargo-balance">Muito Leve · 0%</strong>
+            <strong class="fp-cargo-balance" id="inventory-cargo-balance">Dentro da capacidade · 0%</strong>
           </div>
           <div class="fp-cargo-grid" id="inventory-load-grid" role="img" aria-label="Ilustração proporcional da carga do inventário"></div>
           <p class="fp-cargo-grid-hint">Cada célula equivale a 0,05 Alto. As áreas coloridas representam o peso ocupado pelos itens; as vazias representam espaço disponível.</p>

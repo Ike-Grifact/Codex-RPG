@@ -108,7 +108,7 @@ Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recu
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados. A elevação extraordinária de um Atributo G6 → G7 exige Perícia própria; consulte a seção sobre os Graus.
+- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados. O Grau 7 está em estudo.
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falha Arriscada retira 1 Coragem; Falha Limpa e Falha Mista não retiram esse recurso pelo resultado.** Custos já pagos para realizar a ação continuam gastos.
 - **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
 
@@ -189,7 +189,7 @@ Os níveis representam a evolução do personagem durante a campanha. Os Marcos 
 Os Graus da tabela indicam o acesso por nível aos equipamentos sujeitos a essa progressão, não um limite geral de Grau das Aptidões. O teto absoluto de Coragem é 15, quando benefícios específicos o permitirem. O limite geral continua em 9 dados rolados e 4 mantidos. A curva de XP de referência é apresentada em Evolução e XP.
 
 
-Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6 pela regra comum. O acesso extraordinário de Atributo G6 → G7 depende de Perícia habilitadora. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
+Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6 pela regra comum. O Grau 7 está em estudo. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
 ## Montando sua pilha e combinando Aptidões
 
@@ -569,13 +569,7 @@ Os termos abaixo são referências de interpretação, não títulos, requisitos
 | 5 | Capacidade extraordinária | Domínio refinado | Compreensão profunda |
 | 6 | Ápice da progressão comum | Domínio especializado | Referência no assunto |
 
-#### Além do Grau 6 — acesso extraordinário ao Grau 7
-
-O Grau 6 é o ápice da progressão comum, mas não o limite de todas as possibilidades. O Grau 7 representa um acesso extraordinário, condicionado às Perícias e aos requisitos que o habilitam.
-
-Para alcançar temporariamente o Grau 7 de um Atributo, é necessário que ele já esteja no Grau 6 e que o personagem possua a Perícia que permite essa elevação. Com a habilitação adequada, o uso de 1 Coragem para elevar a fonte permite acessar 1d20 no Atributo durante a rolagem. Isso não compra um Grau permanente, não concede um d20 automaticamente ao alcançar G6 e não amplia os limites gerais de dados.
-
-Os requisitos e custos de aquisição das Maestrias de Atributo ainda aguardam rebalanceamento; esta possibilidade não está liberada pela elevação comum de Coragem. A composição completa do Grau 7 e a automação dessa elevação extraordinária permanecem pendentes.
+O Grau 6 é o limite da progressão comum. O Grau 7 e suas formas de acesso ao d20 ainda estão em estudo e não fazem parte das regras de criação ou elevação de Aptidões do playtest de nível 1.
 
 ### ◇ Atributos — as capacidades do seu Aprendiz
 
@@ -806,11 +800,73 @@ Uma pilha com somente três d12 disponíveis para retenção pode alcançar 9 s�
 
 Esses valores são limites possíveis, não dificuldades recomendadas nem garantias de acerto. Uma ação pode alcançar a dificuldade com Temor e ainda trazer riscos. A escolha de dificuldades de encontros e grupos será aprofundada no Guia do Narrador.
 
-### Como começar a montar sua ficha
+## Como começar a montar sua ficha
 
-Você começa com 15 XP. Para concluir sua criação, tenha pelo menos um Atributo no Grau 1 ou superior e um Conhecimento ou uma Prática no Grau 1 ou superior. Com os custos normais, esses dois investimentos custam 3 XP e deixam 12 XP livres. Se sua origem já concedeu um Atributo no Grau 1, esse requisito está atendido. Os demais custos dependem das suas escolhas e da linhagem. Use todo o XP restante como preferir, respeitando os requisitos das Aptidões e Perícias.
+Você começa com 15 XP compartilhados. Compre pelo menos um Atributo no Grau 1 ou superior e um Conhecimento ou uma Prática no Grau 1 ou superior. Se a origem já concedeu um Atributo G1, esse requisito está atendido. Com os custos normais, o mínimo custa 3 XP e deixa 12 XP livres. Distribua o restante como preferir, respeitando os requisitos.
 
-**Perícias não são um quarto grupo de dados:** elas representam especializações. Você compra uma Perícia quando atende aos requisitos dela, pagando o XP indicado em sua descrição. Algumas permitem novas combinações ou efeitos, mas não concedem automaticamente dados extras.
+[Abra a ficha imprimível A4](../ficha-imprimivel.html), veja a [ficha preenchida de Maela](../ficha-exemplo.html) ou o [criador digital](../prototipo-ficha/).
+
+### 1. Identidade
+
+Vamos preencher a ficha de Maela, uma Aprendiz humana de nível 1, Marco I, que protege caravanas. Virtude: lealdade; personalidade: cautelosa. O conceito orienta suas escolhas, mas não concede bônus.
+
+### 2. Aptidões e Perícias
+
+Registre o Grau, os dados e o XP acumulado em cada Aptidão. Maela desenvolve as capacidades abaixo. As demais ficam no Grau 0, com os dados iniciais da categoria. Ela investe 13 XP em Aptidões e 2 XP na Perícia em Armas Leves (requer Disciplina 1). A Perícia é anotada na seção de Perícias e não fornece uma pilha própria. Concessões gratuitas de linhagem não consomem XP.
+
+| Aptidão / Perícia | Grau | Dados | XP |
+|---|---|---|---|
+| Força | 2 | 2d6 | 3 |
+| Agilidade | 2 | 2d6 | 3 |
+| Destreza | 1 | 1d6 | 1 |
+| Inteligência | 1 | 1d6 | 1 |
+| Vigor | 1 | 1d6 | 1 |
+| Disciplina | 1 | 1d10 | 2 |
+| Atletismo | 1 | 1d10 | 2 |
+| Perícia em Armas Leves | — | — | 2 |
+
+### 3. Vida, Coragem, defesa e movimento
+
+Vida máxima = 4 + Vigor + piso(Força/2) = 6. Distribua os pontos extras alternadamente entre Saudável e Ferido: 2/2/1/1. Coragem inicial 10/10; nível 1 permite manter 2 dados, ou 3 com 1 Coragem, dentro do teto geral de 9 rolados. DE natural = Agilidade 2 + piso((Vigor 1 + Destreza 1)/2) + piso(Atletismo 1/3) = 3. Movimento = 8 + Agilidade 2 + piso(Atletismo 1/3) = 10 m.
+
+### 4. Equipamentos, peso e carga
+
+Maela escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Maela começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+
+O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria.
+
+### 5. Dano e Integridade
+
+DE e Integridade são diferentes: a DE decide se o ataque acerta; a Integridade é a proteção que sofre desgaste. Em um acerto comum de 3E e 2T não anulados, o dano básico à Integridade é 3 + piso(2/2) = 4. A armadura de Maela passa de 5/5 para 1/5. Sem armadura equipada, um ataque acertado com 5 ou mais E + T válidos causa 2 Vida no playtest; não converta automaticamente o dano de Integridade em Vida. Excedentes e resultados menores ainda estão em estudo. Consulte Dano, armadura e Vida para propriedades e exceções.
+
+### Descanso curto e descanso longo
+
+O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
+
+| Recurso | Descanso curto · 1h | Descanso longo · 8h |
+|---|---|---|
+| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
+| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
+| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
+| Perseverança Humana | Não renova. | Renova a utilização. |
+| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
+
+Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
+
+Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
+
+Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
+
+Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
+
+#### Reparando a armadura
+
+O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
+
+**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
+
+[SRD v0.134](srd-continuidade-v0.134.md).
+
 
 ## Perícias, ramos e especializações
 
@@ -818,19 +874,11 @@ Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas
 
 ## Equipamentos, compras e inventário
 
-### Balanço por carga
+### Peso e sobrecarga
 
-A classificação depende da porcentagem de carga física utilizada: divida a carga transportada pela capacidade total e multiplique por 100. A classificação não modifica a categoria da armadura equipada.
+O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria.
 
-| Capacidade utilizada | Balanço do personagem |
-|---|---|
-| Menos de 25% | **Muito Leve** |
-| De 25% até menos de 50% | **Leve** |
-| De 50% até menos de 75% | **Médio** |
-| De 75% até menos de 100% | **Pesado** |
-| 100% ou mais | **Muito Pesado** |
-
-Com 100% ou mais da capacidade, o personagem fica Muito Pesado: −2 Êxitos nos testes afetados e metade do deslocamento. A abrangência dos testes afetados permanece pendente.
+Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem.
 
 **DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
@@ -929,88 +977,19 @@ Com 100% ou mais da capacidade, o personagem fica Muito Pesado: −2 Êxitos nos
 | Pesado | 1 |
 | Extremo | 2 |
 
-Um personagem inicial transportando 0,75 Alto no corpo e 0,5 na mochila ocupa 1,25/1,5 Alto (83,33%, Pesado). Com 1,5 Alto fica Muito Pesado; a penalidade é −2 Êxitos nos testes afetados e metade do deslocamento padrão (v0.119), com abrangência e automação de −2E PENDENTES. Não aplicar outra penalidade por compartimento nem alterar DE. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila. Os espaços e mãos não aumentam. A afinidade tática usa armadura equipada, não o Balanço por carga.
+Exemplo: 0,75 Alto no corpo e 0,5 Alto na mochila totalizam 1,25 de 1,5 Alto. O personagem não está em sobrecarga. Sua armadura, e não a porcentagem de carga, determina seu peso. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila.
 
 ## Evolução, níveis, Marcos e XP
 
 **Coragem:** inicia com teto 10, recebe +1 nos níveis 5, 10 e 20; bônus de Maestria respeitam o máximo absoluto 15. Maestrias especializadas ainda dependem de implementação própria.
 
-Disciplina possui **sete Graus de acesso**, com Grau 7 habilitando o primeiro d20 desde o nível 10 mediante compras e requisitos próprios. **PENDENTE DE REBALANCEAMENTO:** Maestria de Atributo mantém historicamente a exigência de 100 XP anteriores em Perícias e mais 100 XP de compra, incompatível com o novo ritmo de XP e com Perícias de 1–2 XP; este preço excepcional **não foi reduzido automaticamente**. Não é possível converter dois dados de Atributo em uma ação.
+O Grau 7 e as Maestrias extraordinárias de Atributo estão em estudo. Não são necessários para a criação de nível 1.
 
 A referência **DEFINIDA PARA O PLAYTEST de 21/11/2026** é de **260 XP acumulados no nível 20, incluindo 15 XP iniciais e até 245 de evolução**, contra 664 XP antes. O aumento de nível permanece manual e não concede XP automaticamente. Mais detalhes no [SRD v0.58](srd-continuidade-v0.58.md) e nas tabelas da [v0.56](srd-continuidade-v0.56.md). Alternativas de balanceamento pertencem ao [Guia do Narrador](../narrador.html#encontros).
 
 ### Materiais para públicos diferentes
 
 Este documento concentra regras necessárias **aos jogadores**. Para a ficha jogável unificada, use o [Criador de personagem e ficha](../prototipo-ficha/); o antigo endereço `criador.html` encaminha para essa ferramenta. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
-
-## Conheça sua ficha
-
-A ficha reúne as escolhas feitas durante a criação e os recursos que você acompanha durante a aventura. Você pode preencher a ficha manualmente ou utilizar o criador digital do Codex.
-
-### Identidade
-
-Nome, origem, conceito, nível, Marco, virtude e personalidade situam seu Aprendiz no mundo. A profissão emerge das escolhas de desenvolvimento.
-
-### Aptidões
-
-Registre o Grau de cada Atributo, Conhecimento e Prática, os dados que ele fornece e o XP investido. Esses dados formam as pilhas de ação; não são somados como valores numéricos de um dado comum.
-
-### Vida e Saúde
-
-Anote a Vida atual e máxima, distribua os pontos pelas quatro faixas de Saúde e acompanhe os ferimentos. O estado atual pode modificar suas ações.
-
-### Coragem e retenção
-
-Registre a reserva atual e seu teto, bem como os limites de dados rolados e mantidos. Coragem pode ser investida em ações e recuperada conforme as regras.
-
-### Defesa e movimento
-
-Anote a DE natural, a defesa com proteção equipada e o deslocamento. Atualize os valores quando equipamentos, carga ou condições mudarem.
-
-Seu movimento começa em **8 metros**. Acrescente **1 metro por Grau de Agilidade** e **1 metro a cada 3 Graus completos de Atletismo**. Agilidade 2 e Atletismo 3 resultam em 11 metros; em sobrepeso, 5,5 metros. A regra de arredondamento em tabuleiro permanece pendente. Consulte Capacidade de Carga e Armas, alcance e efeitos.
-
-### Perícias, equipamentos e inventário
-
-Registre habilitações, custos, condições, armas, focos, armaduras, Integridade, cargas, alcance, peso e recursos transportados. A aquisição de uma Perícia não implica ativação gratuita.
-
-### Experiência
-
-Controle o XP total, o investido e o saldo livre. Ao começar, distribua os 15 XP iniciais segundo as regras da criação. Não há reserva de XP obrigatória para Perícias.
-
-### Monte seu personagem
-
-Depois de conhecer as linhagens, as Aptidões, os custos de XP e os equipamentos, escolha a forma de preencher sua ficha.
-
-- [Abrir criador digital](../prototipo-ficha/).
-- [Ficha imprimível A4 — duas páginas](../ficha-imprimivel.html). Use Imprimir / Salvar como PDF ou baixe o HTML para preenchimento manual.
-
-### Descanso curto e descanso longo
-
-O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
-
-| Recurso | Descanso curto · 1h | Descanso longo · 8h |
-|---|---|---|
-| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
-| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
-| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
-| Perseverança Humana | Não renova. | Renova a utilização. |
-| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
-
-Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
-
-Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
-
-Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
-
-Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
-
-#### Reparando a armadura
-
-O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
-
-**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
-
-[SRD v0.134](srd-continuidade-v0.134.md).
 
 ## Parte III — Jogando Codex RPG
 
@@ -1094,7 +1073,7 @@ Monstros extraordinários não humanoides seguem suas regras próprias de defesa
 
 **Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-**Balanço por carga da v0.67:** indica **sobrecarga**, e não a coluna de afinidade. **SRD v0.119:** o estado de sobrepeso/Muito Pesado impõe **−2E e metade do deslocamento padrão**. A abrangência dos testes afetados, as interações e a aplicação automática de −2E continuam **PENDENTES**; isso não altera por si só a armadura Muito Pesada (que mantém −2 DE).
+O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem.
 
 **Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
@@ -1146,7 +1125,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. **Balanço:** 100% ou mais é Muito Pesado; acima de 100% há excesso total. Exceder qualquer compartimento também exige reorganização, mesmo com carga total abaixo de 100%. **Sobrepeso (v0.119):** −2 Êxitos nos testes afetados e deslocamento padrão reduzido à metade; abrangência e automação de −2E pendentes. **Compras:** mostrar carga e balanço projetados descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 ## Combate Coordenado
 
@@ -1206,7 +1185,7 @@ Referências experimentais para preparar DE sem ficha pertencem ao [Guia do Narr
 
 O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo Vantagem, Desvantagem e peso.
 
-**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o Balanço concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
+**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o peso do alvo concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
 
 ### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
 
@@ -1374,7 +1353,7 @@ Os elementos **têm utilidades próprias** e não dependem de estarem combinados
 
 **Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
 
-**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com Balanço e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
+**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com o peso do alvo e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
 
 **Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
 
@@ -1402,7 +1381,7 @@ São **exemplos narrativos**, não um catálogo de bônus ou vulnerabilidades au
 
 Sagrado e Trevas possuem vulnerabilidade mútua. Veneno e Psique não possuem fraquezas elementais universais. A matriz de fraquezas naturais, arredondamentos de metades e efeitos mistos ainda possui pendências.
 
-**Magia extraordinária** com d20 depende do Grau 7 e dos requisitos próprios desde o nível 10. **DEFINIDO — regra de custo único:** 1 Coragem por ativação das técnicas pertinentes, inclusive no caso de converter um dado de Inteligência em d20 ou aplicar efeitos avançados/área, se essas técnicas forem habilitadas. **PENDENTE / MAESTRIAS ADIADAS:** os requisitos, as condições de uso e os demais efeitos das Maestrias ainda precisam de revisão; o custo não concede a habilidade.
+**Magia extraordinária:** o Grau 7 está em estudo. Técnicas específicas já definidas que usam d20 conservam suas próprias regras.
 
 
 ### Escudo Rúnico e resistência elemental
