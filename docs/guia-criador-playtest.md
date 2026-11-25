@@ -2,7 +2,7 @@
 
 O [Criador de Ficha nível 1](../criador.html) ajuda a testar construções iniciais e a futura árvore de Perícias do Codex RPG. As regras de referência são mantidas em notas internas de continuidade; o portal não publica atalhos para esses documentos.
 
-> **Atualização autoral prioritária — SRD v0.89 (22/11/2026), DEFINIDO:** **15 XP iniciais compartilhados**, sem reservas 6/8/5 ou 7/7/5. DE humana `min(11, 2 + AGI + piso((VIG + DES)/2))`; Muito Leve **0 DE**, Leve −1, Média −2, Pesada −3, Muito Pesada −4 (SRD v0.147). Conjuração: **role ao declarar**, +1d6 G1 / +1d10 G2 / +1d12 G3 pelo Grau, **nenhum dado do foco**; foco compatível **gasta 1 carga** para acelerar G2 para um turno; G3 preserva a escala de cargas, e **G4 recebe +2d12 e exige dois elementos G3 distintos**, 6–3 turnos, com pares de cargas dos dois focos para acelerar. Pavor na preparação oferece oportunidade ao inimigo; interrupção é mediada pelo Narrador. [Continuidade v0.89](srd-continuidade-v0.89.md).
+> **Atualização autoral prioritária — SRD v0.89 (22/11/2026), DEFINIDO:** **15 XP iniciais compartilhados**, sem reservas 6/8/5 ou 7/7/5. DE humana `min(11, 2 + piso((AGI + VIG + DES)/2))`; Muito Leve **0 DE**, Leve −1, Média −2, Pesada −3, Muito Pesada −4 (SRD v0.149). Conjuração: **role ao declarar**, +1d6 G1 / +1d10 G2 / +1d12 G3 pelo Grau, **nenhum dado do foco**; foco compatível **gasta 1 carga** para acelerar G2 para um turno; G3 preserva a escala de cargas, e **G4 recebe +2d12 e exige dois elementos G3 distintos**, 6–3 turnos, com pares de cargas dos dois focos para acelerar. Pavor na preparação oferece oportunidade ao inimigo; interrupção é mediada pelo Narrador. [Continuidade v0.89](srd-continuidade-v0.89.md).
 
 > **Atualização normativa em 18/11/2026:** a referência ativa agora é [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos (DEFINIDO)**, com 12 XP livres após o mínimo de 3 XP para um Humano sem descontos raciais. A Druídica requer Foco + Terra, sem Domar, e Transformação Elemental é nova Perícia (Foco + elemento); a compra é validada, mas os efeitos de transformação permanecem manuais quando procedimentos estão pendentes. Este guia conserva explicações antigas apenas para o fluxo da interface; a seção normativa do novo SRD prevalece.
 
@@ -39,7 +39,7 @@ No Codex Genético, as fontes ficam ao redor de uma dupla hélice; os dados usam
 ## O que funciona
 
 - Distribuir XP em seis Atributos, Conhecimentos, Práticas e Perícias iniciais com seus preços.
-- Ver Vida, **Dificuldade de Êxito (DE)** natural, balanço corporal, carga parcial, Coragem e resumo da ficha. **DE = Agilidade + (Destreza ÷ 2, arredondada para baixo)**; exemplo: Agilidade 4, Destreza 3 → **DE 5**.
+- Ver Vida, **Dificuldade de Êxito (DE)** natural, balanço corporal, carga parcial, Coragem e resumo da ficha. **DE natural = min(11, 2 + piso((Agilidade + Destreza + Vigor)/2))**; exemplo: Agilidade 4, Destreza 3, Vigor 1 → **DE 6**.
 - Comprar Perícias documentadas, com uma verificação conservadora dos requisitos conhecidos.
 - Criar **rascunhos de Perícias personalizadas**, de 1 a 5 XP, com nome, requisitos e efeito. Elas entram como opções na ficha, não no catálogo oficial.
 - Selecionar Atributo e fontes de dados, rolar d4/d6/d10/d12, manter manualmente dois dados (ou três mediante Coragem) e converter Antecipar.
@@ -62,7 +62,7 @@ Quando estiver disponível o editor de Perícias experimentais, preencha os segu
 
 Clique **“Registrar como rascunho”**. Ela aparecerá em uma categoria separada e poderá ser comprada com o XP da ficha. As Perícias experimentais são salvas e exportadas junto ao personagem, mas **o criador não verifica automaticamente seus requisitos nem aplica seus bônus**. O autor ou Narrador deve validar caso a caso.
 
-**Exemplo PROPOSTO, não oficial:** Passo Calculado — 1 XP, requer Agilidade 1 e espaço livre; concede +1E em uma manobra de reposicionamento quando a condição é cumprida. Respeita o teto +2E de Perícias por ação.
+**Exemplo PROPOSTO, não oficial:** Passo Calculado — 1 XP, requer Agilidade 1 e espaço livre; concede +1E em uma manobra de reposicionamento quando a condição é cumprida.
 
 Na ficha jogável, os **contornos/etiquetas de XP reduzido e aumentado** ficam ocultos durante as ações e aparecem apenas no **Modo edição**, quando é possível revisar os graus e seus custos. No Codex de criação, continuam visíveis para orientar escolhas.
 

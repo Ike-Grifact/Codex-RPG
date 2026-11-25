@@ -80,7 +80,7 @@ A ficha e a escolha do modo são salvas localmente; a alternância entre Codex G
 - Até 9 dados rolados; retenção de 2 normalmente até o nível 5, 3 a partir do nível 6, ou mais 1 com Coragem, teto 4.
 - Ao menos um dado mantido é de Atributo.
 - Só dados mantidos produzem símbolos E/A/P. O resultado distingue acertos puros, acertos com Pavor normal/predominante e falhas.
-- A DE defensiva é Agilidade + metade de Destreza arredondada para baixo; Vida máxima é 3 + Vigor + metade de Força arredondada para baixo.
+- A DE natural é 2 + metade da soma de Agilidade, Destreza e Vigor, arredondada para baixo (teto 11); Vida máxima é 4 + Vigor + metade de Força arredondada para baixo.
 - A reserva de Coragem recebe +1 ao teto nos níveis 5, 10 e 20; a conversão em PP foi revogada.
 - Recuperação de Vida por faixas 3/3, 2/3 e 1/3 é apresentada sem criar um temporizador de cura não aprovado.
 
@@ -127,7 +127,7 @@ Nos dados rolados, o destaque principal mostra **as runas reais da face repetida
 
 O tipo de armadura é independente do Grau: **Muito Leve** (sem Integridade, +2 DE na esquiva), **Leve** (Integridade baixa, +1 DE na esquiva), **Média** (0 DE), **Pesada** (−1 DE) e **Muito Pesada** (−2 DE, imunidade física natural e requisitos Vigor 6 + Atletismo 6 em qualquer Grau).
 
-A ficha mostra **DE base** e, quando for relevante, o valor de **DE para esquiva**. O teto 9 é aplicado à DE natural antes dos modificadores. O peso da peça não é alterado automaticamente ao escolher Grau 3 ou Grau 4. Uma Muito Leve não pode ter Integridade. Ao equipar, o protótipo verifica nível mínimo: G1 nível 1, G2 nível 5, G3 nível 10, G4 nível 20. Por conveniência técnica, o protótipo deixa apenas uma armadura equipada de cada vez; **não é uma nova regra oficial de sobreposição**.
+A ficha mostra **DE defensiva**, com teto natural 11 e final 12. Armaduras 0/−1/−2/−3/−4 conforme o peso, sem duplicar ao esquivar; Maestria em Escudos +1 com escudo equipado. O peso da peça não é alterado automaticamente ao escolher Grau 3 ou Grau 4. Muito Leve G1 tem 2 de Integridade. Ao equipar, o protótipo verifica nível mínimo: G1 nível 1, G2 nível 5, G3 nível 10, G4 nível 20. Por conveniência técnica, o protótipo deixa apenas uma armadura equipada de cada vez; **não é uma nova regra oficial de sobreposição**.
 
 **Propriedades por Grau:** Muito Leve e Leve recebem campo de resistência G3+; Média G2+; Pesada G2+ com segunda resistência G3+; Muito Pesada G2+ com resistência e G4 com **imunidade elemental adicional cumulativa**. A ficha apenas registra os elementos e mostra a imunidade física natural da Muito Pesada, **não calcula resistências nem dano recebido**. A natureza **neutra do Psíquico** impede que seja tratado como dano físico automaticamente. Integridades numéricas aguardam análise do dano das Perícias iniciais.
 

@@ -5284,7 +5284,7 @@ function renderInventory(){
   );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade; não altera a DE natural.</div>':"")+
-   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
+   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> −1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
    (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −4 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
