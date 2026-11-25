@@ -673,38 +673,23 @@ Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo q
 
 Agora que você conhece os seis Atributos, veja como seus Graus influenciam os valores que acompanhará na aventura. Algumas fórmulas também usam Atletismo, apresentado entre as Práticas logo adiante.
 
-#### Vida e Saúde
+#### Capacidade de carga, peso e sobrecarga
 
-A Vida representa quanto desgaste físico o Aprendiz ainda consegue suportar. Todo Aprendiz parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
+A capacidade de carga indica quanto o Aprendiz consegue transportar, e depende de Força, Vigor e Atletismo. O corpo suporta 1 Alto inicial, mais 1 Alto a cada 3 Graus completos somados dessas Aptidões. A mochila oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
 
-Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem se encontra. Incapacitado corresponde a 2 pontos restantes, Inconsciente a 1, e 0 significa morte.
-
-| Estado | Efeito nas ações |
-|---|---|
-| Saudável | Sem penalidade de Saúde |
-| Ferido | −1A |
-| Incapacitado | −1E, +1T; 1 Coragem para agir |
-| Inconsciente | −2E, +2T; 2 Coragens para agir |
-
-Exemplo: Força 2 e Vigor 1 resultam em 6 pontos de Vida, distribuídos em 2 Saudável, 2 Ferido, 1 Incapacitado e 1 Inconsciente.
-
-#### Coragem
-
-No nível 1, a reserva tem teto 10. Coragem permite elevar temporariamente uma fonte dentro da progressão comum, manter um dado adicional ou pagar ativações e condições previstas. O Vigor determina quanto se recupera em um descanso longo, caso o jogador escolha recuperar Coragem: Grau de Vigor + 1.
-
-#### Defesa e movimento
-
-A DE natural começa em zero. Some 1 por Grau de Agilidade, 1 a cada 2 Graus completos somados de Destreza e Vigor e 1 a cada 3 Graus completos de Atletismo. O teto natural é 9; após modificadores de equipamento, a DE final fica entre 0 e 12.
-
-O deslocamento padrão começa em 8 metros, mais 1 metro por Grau de Agilidade e 1 a cada 3 Graus completos de Atletismo. Atletismo é uma Prática que você conhecerá a seguir.
-
-#### Peso, capacidade de carga e sobrecarga
+Exemplo: Força 2, Vigor 1 e Atletismo 0 somam 3 Graus; o personagem suporta 2 Altos no corpo e 0,5 na mochila, totalizando 2,5 Altos.
 
 O peso do personagem indica sua categoria para as afinidades dos ataques. Ele é determinado pela armadura equipada, não pela quantidade de objetos carregados. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação permanece pendente.
 
-A capacidade de carga é outra coisa: indica quanto o Aprendiz consegue transportar. O corpo suporta 1 Alto inicial, mais 1 Alto a cada 3 Graus completos somados de Força, Vigor e Atletismo. A mochila oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
-
 Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre sobrecarga: −2E nos testes afetados e metade do deslocamento padrão. A abrangência de −2E e a confirmação do limiar permanecem pendentes. Exceder um compartimento exige reorganização; a sobrecarga não muda o peso do personagem nem sua DE.
+
+
+#### Defesa e movimento
+
+A DE natural começa em zero. Some 1 por Grau de Agilidade, 1 a cada 2 Graus completos somados de Destreza e Vigor e 1 a cada 3 Graus completos de Atletismo. A DE natural varia de 0 a 9. Uma armadura Muito Leve acrescenta no máximo +2 DE, chegando a 11. A Perícia Maestria em Escudos pode acrescentar mais +1 DE quando houver escudo físico equipado, chegando ao teto absoluto de 12. Se um modificador reduzir a DE abaixo de zero, registre 0: não existe DE negativa.
+
+O deslocamento padrão começa em 8 metros, mais 1 metro por Grau de Agilidade e 1 a cada 3 Graus completos de Atletismo. Atletismo é uma Prática que você conhecerá a seguir.
+
 
 #### Equipamentos, Integridade e dano
 
@@ -718,7 +703,62 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 | Pesada | −1 | 12 |
 | Muito Pesada | −2 | Pendente |
 
+Exemplo: um Aprendiz com DE natural 0 e armadura Pesada (−1 DE) continua com DE 0. Com DE natural 9 e armadura Muito Leve (+2 DE), chega a 11; somente com o benefício adicional de Maestria em Escudos e escudo físico equipado chega a 12.
+
 Armaduras Muito Pesadas exigem Vigor 6 e Atletismo 6 e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é E válidos + 1 por par completo de T não anulados, salvo efeitos específicos. Sem armadura equipada, um acerto com 5 ou mais E + T válidos causa 2 Vida na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. Ataques que falham não desgastam a armadura.
+
+
+#### Vida e Saúde
+
+A Vida representa quanto desgaste físico o Aprendiz ainda consegue suportar. Todo Aprendiz parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
+
+Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem se encontra. Incapacitado corresponde a 2 pontos restantes, Inconsciente a 1, e 0 significa morte.
+
+| Estado | Efeito nas ações |
+|---|---|
+| Saudável | Sem penalidade de Saúde |
+| Ferido | −1A |
+| Incapacitado | −1E, +1T; 1 Coragem para agir |
+| Inconsciente | −2E, +2T; 2 Coragens para agir |
+
+##### Como a Vida aparece na ficha
+
+Cada quadrado representa 1 ponto de Vida. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
+
+| Vigor | Força | Vida máxima | Saudável | Ferido | Incapacitado | Inconsciente |
+|---:|---:|---:|---|---|---|---|
+| 0 | 0 | 4 | ■ | ■ | ■ | ■ |
+| 1 | 0 | 5 | ■■ | ■ | ■ | ■ |
+| 2 | 0 | 6 | ■■ | ■■ | ■ | ■ |
+| 3 | 0 | 7 | ■■■ | ■■ | ■ | ■ |
+| 4 | 0 | 8 | ■■■ | ■■■ | ■ | ■ |
+| 5 | 0 | 9 | ■■■■ | ■■■ | ■ | ■ |
+| 6 | 0 | 10 | ■■■■ | ■■■■ | ■ | ■ |
+| 1 | 2 | 6 | ■■ | ■■ | ■ | ■ |
+| 3 | 4 | 9 | ■■■■ | ■■■ | ■ | ■ |
+| 6 | 6 | 13 | ■■■■■■ | ■■■■■ | ■ | ■ |
+
+##### Exemplo de perda de Vida
+
+Maela tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague quadrados a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
+
+| Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado |
+|---:|---|---|---|---|---|
+| 6/6 | ■■ | ■■ | ■ | ■ | Saudável |
+| 5/6 | □■ | ■■ | ■ | ■ | Saudável |
+| 4/6 | □□ | ■■ | ■ | ■ | Ferido |
+| 3/6 | □□ | □■ | ■ | ■ | Ferido |
+| 2/6 | □□ | □□ | ■ | ■ | Incapacitado |
+| 1/6 | □□ | □□ | □ | ■ | Inconsciente |
+| 0/6 | □□ | □□ | □ | □ | Morto |
+
+
+
+
+#### Coragem
+
+No nível 1, a reserva tem teto 10. Coragem permite elevar temporariamente uma fonte dentro da progressão comum, manter um dado adicional ou pagar ativações e condições previstas. O Vigor determina quanto se recupera em um descanso longo, caso o jogador escolha recuperar Coragem: Grau de Vigor + 1.
+
 
 #### Descanso curto e descanso longo
 
@@ -1065,7 +1105,7 @@ Some as três contribuições. Conte somente grupos completos de dois Graus de D
 
 ### Como a armadura modifica sua defesa
 
-Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. A DE defensiva individual final fica entre 0 e 12.
+Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. A armadura sozinha eleva a DE natural máxima de 9 para 11. O teto absoluto de 12 inclui o +1 da Maestria em Escudos com escudo físico equipado. O mínimo é 0, mesmo quando os modificadores resultariam em valor negativo.
 
 | Tipo de armadura equipada | Alteração na DE |
 |---|---:|
