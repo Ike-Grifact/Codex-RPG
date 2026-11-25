@@ -293,3 +293,8 @@ test("Motor de conflitos reconhece a face crítica específica de cada dado",()=
   for(let face=1;face<=sides;face++)assert.equal(isCriticalFace(sides,face),face===critical);
  }
 });
+
+ test("d4: 1 vazio, 2 Antecipar, 3 Temor e 4 Êxito crítico",()=>{
+  assert.equal(isCriticalFace(4,1),false);
+  assert.equal(isCriticalFace(4,4),true);
+ });

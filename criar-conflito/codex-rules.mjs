@@ -11,7 +11,7 @@ export const ATTRIBUTE_DICE=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]
 export const TRAINING_DICE=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 export const MONSTER_DICE=[[4],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 export const FACES={
- 4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
+ 4:[[0,0,0],[0,1,0],[0,0,1],[1,0,0]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
  10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,3],[3,0,0]],
@@ -31,7 +31,7 @@ export const XP_TRAINING=[0,2,8,20,38,66,102];
 export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // Compatibilidade com G1-G3.
 export const MAGIC_GRADE_DICE={1:[6],2:[10],3:[12],4:[12,12]}; // SRD v0.89: G4 com dois d12.
 export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD v0.89: 15 XP compartilhados, sem reservas por categoria.
-export const CRITICAL_FACES=Object.freeze({4:1,6:6,10:7,12:12,20:20});
+export const CRITICAL_FACES=Object.freeze({4:4,6:6,10:7,12:12,20:20});
 export function isCriticalFace(sides,face){return CRITICAL_FACES[sides]===face&&Number.isInteger(face);}
 export function faceSymbols(sides,face){
  if(!FACES[sides]||!Number.isInteger(face)||face<1||face>sides)throw Error("Face inválida.");

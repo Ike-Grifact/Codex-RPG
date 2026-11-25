@@ -198,3 +198,8 @@ test("Faces críticas por tipo, sem confundir d10/10 com d10/7",()=>{
  dice[0].face=7;const result=resolveRoll(dice,["a","b"],{de:5});
  assert.equal(result.critical,2);assert.equal(result.e,5);assert.equal(result.p,0);
 });
+
+ test("d4: 1 vazio, 2 Antecipar, 3 Temor e 4 Êxito crítico",()=>{
+  assert.equal(isCriticalFace(4,1),false);
+  assert.equal(isCriticalFace(4,4),true);
+ });
