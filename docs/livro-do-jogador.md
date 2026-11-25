@@ -118,6 +118,26 @@ Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recu
 
 Quando uma ação tem resultado incerto, o Codex utiliza um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. A pilha é o conjunto de dados que você reúne para a ação. Você rola a pilha inteira e depois escolhe quais dados deseja manter, dentro do seu limite de retenção. Apenas os dados mantidos produzem símbolos; os descartados não têm efeito.
 
+### Quando precisamos rolar?
+
+Você pode propor qualquer ação coerente com a história. Descreva sua intenção e como pretende realizá-la; o Narrador considera a situação, os recursos e as capacidades envolvidas.
+
+Nem toda ação exige uma rolagem. Quando o personagem consegue realizar uma tarefa sem incerteza relevante, sem risco de falhar e sem Temor capaz de alterar a cena, simplesmente narre o resultado. O fato de uma tarefa demorar não torna necessário um teste.
+
+Peça um teste quando houver possibilidade de falha com consequências relevantes, quando a qualidade do resultado importar para a aventura ou quando o Temor puder trazer uma complicação significativa, mesmo fora de um conflito. Não é necessário que o personagem sinta medo literalmente: Temor também representa o risco e a incerteza que escapam ao seu controle.
+
+Se o objetivo for inviável nas condições atuais, não exija uma rolagem inútil. Explique o obstáculo e permita que o grupo procure outra abordagem, ferramentas, preparação ou cooperação.
+
+#### Ações fora de conflitos
+
+Fora de um conflito, o teste pode representar uma tentativa de poucos segundos, horas ou dias. Por exemplo, consertar um mecanismo antigo com peças improvisadas pode exigir Inteligência + Engenharia ou Destreza + Artesão, conforme a abordagem. Se houver condições seguras, ferramentas adequadas e nenhuma incerteza relevante, o Narrador pode simplesmente permitir o reparo.
+
+#### Ações em conflito
+
+Quando uma ameaça concreta, uma disputa de objetivos ou a urgência exige acompanhar as oportunidades de cada lado, o Narrador estabelece um conflito. Não precisa ser uma batalha: uma enchente, uma fuga ou um resgate sob pressão também podem exigir coordenação. Use as regras de turnos, protagonismo e rodadas quando forem pertinentes.
+
+O jogador declara o objetivo e a abordagem, sugere as Aptidões e o Narrador confirma se a combinação faz sentido. Se for necessário testar, o Narrador estabelece a DE ou utiliza a defesa já existente. A rolagem decide o resultado e o risco: o jogador escolhe quais dados manter e como gastar Antecipar; o Narrador descreve as consequências coerentes com os símbolos finais.
+
 ### Exemplo: role três dados, mantenha dois
 
 Imagine um Aprendiz que rolou três dados e pode manter dois. O primeiro d10 caiu na face 8, o segundo d10 na face 10 e o d6 na face 6. Observe como a escolha dos dados altera o resultado.
@@ -525,19 +545,68 @@ Agora que você escolheu sua origem, veja como desenvolver as capacidades do seu
 
 ## Aptidões na criação — dados, Graus e XP
 
-Todos começam com um dado em cada Aptidão, mesmo antes de investir XP: 1d4 em cada Atributo e 1d6 em cada Conhecimento ou Prática pertinente. Esse é o Grau 0. Ao desenvolver um Atributo para o Grau 1, seu d4 passa a ser um d6; em Conhecimentos e Práticas, o d6 passa a ser um d10. Os dados são substituídos, não somados ao dado anterior.
+### O que é um Grau?
 
-As tabelas a seguir mostram os custos normais de cada avanço e o total investido desde o Grau 0. As vantagens e desvantagens de origem alteram os custos das Aptidões indicadas na linhagem.
+Grau é a medida de quanto você desenvolveu uma Aptidão, não o nível geral do personagem. Cada avanço melhora a pilha daquela capacidade: pode acrescentar um dado ou substituir um dado por outro mais potente. O Grau 0 já oferece um dado básico, sem gastar XP. O Grau 1 aprimora esse dado; os Graus 2 e 3 acrescentam dados do mesmo tipo; do Grau 4 ao 6, os três dados são aprimorados um de cada vez.
+
+**Exemplo de Atributo:** Grau 0 (1d4) → Grau 1 (1d6) → Grau 2 (2d6) → Grau 3 (3d6) → Grau 4 (2d6 + 1d10) → Grau 5 (1d6 + 2d10) → Grau 6 (3d10).
+
+Conhecimentos e Práticas seguem a mesma lógica, começando com d6 e avançando para d10 e d12. A composição de dados de cada Grau substitui a anterior.
+
+O XP do avanço é o preço para passar do Grau anterior ao seguinte. O XP acumulado é a soma de todos os avanços desde o Grau 0, considerando os custos normais; sua linhagem pode alterar esse investimento.
+
+### O que os Graus representam na aventura?
+
+Os termos abaixo são referências de interpretação, não títulos, requisitos ou garantias de sucesso. Um Grau baixo não determina a personalidade do personagem, e um Grau alto não permite ignorar riscos, ferramentas ou habilitações. O mesmo Grau pode ser representado de maneiras diferentes.
+
+| Grau | Atributos | Práticas | Conhecimentos |
+|---|---|---|---|
+| 0 | Capacidade básica, sem desenvolvimento comprado | Familiaridade inicial | Repertório elementar |
+| 1 | Capacidade desenvolvida | Treino inicial | Estudo introdutório |
+| 2 | Capacidade bem desenvolvida | Praticante familiarizado | Conhecimento aplicado |
+| 3 | Capacidade de destaque | Execução experiente | Compreensão consistente |
+| 4 | Capacidade excepcional | Técnica avançada | Estudo avançado |
+| 5 | Capacidade extraordinária | Domínio refinado | Compreensão profunda |
+| 6 | Ápice da progressão comum | Domínio especializado | Referência no assunto |
 
 ### ◇ Atributos — as capacidades do seu Aprendiz
 
 Os Atributos representam as capacidades físicas, mentais e sociais do seu Aprendiz. Desenvolvê-los abre novas maneiras de superar obstáculos: resistir ao perigo, alcançar lugares distantes, compreender o desconhecido ou inspirar outras pessoas. Alguns também ampliam sua Vida, capacidade de carga, deslocamento e defesa.
 
+#### Progressão de Atributos — dados e XP
+
+O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
+
+| Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
+|---:|---|---:|---:|
+| 0 | 🎲 1d4 | Inicial | 0 XP |
+| 1 | 🎲 1d6 | 1 XP | 1 XP |
+| 2 | 🎲 2d6 | 2 XP | 3 XP |
+| 3 | 🎲 3d6 | 3 XP | 6 XP |
+| 4 | 🎲 2d6 + 1d10 | 3 XP | 9 XP |
+| 5 | 🎲 1d6 + 2d10 | 9 XP | 18 XP |
+| 6 | 🎲 3d10 | 14 XP | 32 XP |
+
+#### Como imaginar as capacidades do seu Aprendiz
+
+Estas descrições ajudam a interpretar o personagem sem determinar automaticamente o resultado de uma ação.
+
+| Atributo | Grau 0 | Graus 1–2 | Graus 3–4 | Graus 5–6 |
+|---|---|---|---|---|
+| Força | Força comum | Potência desenvolvida | Força de destaque | Potência extraordinária |
+| Agilidade | Reflexos comuns | Movimentos treinados | Rapidez de destaque | Mobilidade extraordinária |
+| Destreza | Precisão comum | Coordenação desenvolvida | Precisão de destaque | Controle extraordinário |
+| Inteligência | Raciocínio cotidiano | Análise desenvolvida | Raciocínio de destaque | Compreensão extraordinária |
+| Influência | Presença cotidiana | Comunicação desenvolvida | Presença persuasiva | Liderança de destaque |
+| Vigor | Resistência comum | Fôlego desenvolvido | Resistência de destaque | Resistência extraordinária |
+
 #### ◇ Força
 
 Potência física para vencer resistência, deslocar massas e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços, transportar um companheiro ferido ou disputar espaço com um oponente. Sua utilidade vai além de atacar: em uma exploração, abrir caminho ou proteger a retirada do grupo pode ser a melhor contribuição.
 
-Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**. Some Força, Vigor e Atletismo: a cada **3 Graus somados**, sua capacidade corporal aumenta em **1 Alto**, além do **1 Alto inicial**. A mochila oferece mais 0,5 Alto.
+Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**.
+
+Some Força, Vigor e Atletismo: a cada **3 Graus somados**, sua capacidade corporal aumenta em **1 Alto**, além do **1 Alto inicial**. A mochila oferece mais 0,5 Alto.
 
 **Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
 
@@ -561,7 +630,13 @@ A precisão dos movimentos também ajuda a reagir às ameaças. A cada **2 Graus
 
 Capacidade de raciocinar, relacionar informações, aprender e elaborar soluções. Permite investigar causas, prever consequências e escolher um método em vez de depender apenas da tentativa e erro. É especialmente valiosa quando o grupo enfrenta algo desconhecido, como uma máquina antiga, uma substância estranha ou um fenômeno cuja lógica precisa ser descoberta.
 
-A Inteligência é o Atributo fundamental da conjuração: sem ela, o Aprendiz não consegue conjurar uma magia. A Disciplina e as Perícias pertinentes permitem transformar sua compreensão da magia em ação. Também é essencial para elaborar estratégias, avaliar riscos e identificar fragilidades. Junto à Influência, orienta a liderança: compreender o que precisa ser feito e conduzir o grupo nessa direção. Para os inimigos, esses Atributos ajudam o Narrador a caracterizar sua capacidade estratégica e sua liderança. Consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
+A Inteligência é o Atributo fundamental da conjuração: sem ela, o Aprendiz não consegue conjurar uma magia. A Disciplina e as Perícias pertinentes permitem transformar sua compreensão da magia em ação.
+
+Também é essencial para elaborar estratégias, avaliar riscos e identificar fragilidades.
+
+Junto à Influência, orienta a liderança: compreender o que precisa ser feito e conduzir o grupo nessa direção.
+
+Para os inimigos, esses Atributos ajudam o Narrador a caracterizar sua capacidade estratégica e sua liderança. Consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
 **Possibilidades em jogo:** Inteligência + Engenharia para identificar uma falha mecânica; Inteligência + Alquimia para investigar uma mistura; Inteligência + Erudição para relacionar pistas históricas. Não substitui o treinamento ou os materiais necessários para executar a solução.
 
@@ -577,7 +652,13 @@ Liderar envolve conquistar a confiança dos aliados, transmitir intenções e in
 
 Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajuda a enfrentar jornadas cansativas, esforços prolongados e ambientes hostis quando resistir é o objetivo da ação. Distingue-se de Força: erguer algo muito pesado exige potência; sustentar o esforço por muito tempo pode exigir Vigor.
 
-Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**. A cada **3 Graus somados de Força, Vigor e Atletismo**, sua capacidade corporal aumenta em **1 Alto**. A cada **2 Graus somados de Vigor e Destreza**, sua DE defensiva natural recebe **+1**, respeitando seus limites. Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor + 1, caso escolha recuperá-la.
+Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**.
+
+A cada **3 Graus somados de Força, Vigor e Atletismo**, sua capacidade corporal aumenta em **1 Alto**.
+
+A cada **2 Graus somados de Vigor e Destreza**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
+
+Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor + 1, caso escolha recuperá-la.
 
 **Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
 
@@ -585,23 +666,24 @@ Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigo
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
-#### Progressão de Atributos — dados e XP
+
+### ⚔ Práticas — treinamento para agir
+
+Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
+
+#### Progressão de Práticas — dados e XP
 
 O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
 | Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
 |---:|---|---:|---:|
-| 0 | 🎲 1d4 | Inicial | 0 XP |
-| 1 | 🎲 1d6 | 1 XP | 1 XP |
-| 2 | 🎲 2d6 | 2 XP | 3 XP |
-| 3 | 🎲 3d6 | 3 XP | 6 XP |
-| 4 | 🎲 2d6 + 1d10 | 3 XP | 9 XP |
-| 5 | 🎲 1d6 + 2d10 | 9 XP | 18 XP |
-| 6 | 🎲 3d10 | 14 XP | 32 XP |
-
-### ⚔ Práticas — treinamento para agir
-
-Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
+| 0 | 🎲 1d6 | Inicial | 0 XP |
+| 1 | 🎲 1d10 | 2 XP | 2 XP |
+| 2 | 🎲 2d10 | 2 XP | 4 XP |
+| 3 | 🎲 3d10 | 4 XP | 8 XP |
+| 4 | 🎲 2d10 + 1d12 | 8 XP | 16 XP |
+| 5 | 🎲 1d10 + 2d12 | 16 XP | 32 XP |
+| 6 | 🎲 3d12 | 32 XP | 64 XP |
 
 #### ⚔ Disciplina
 
@@ -641,7 +723,12 @@ Treinamento para procurar, reconhecer, extrair e preservar recursos encontrados 
 
 **Possibilidades em jogo:** Coleta + Destreza para retirar um material delicado; Coleta + Força para desprender um recurso resistente; Coleta + Inteligência para organizar uma busca a partir de indícios.
 
-#### Progressão de Práticas — dados e XP
+
+### ✦ Conhecimentos — estudo que abre caminhos
+
+Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam possibilidades de testes, não efeitos gratuitos nem substitutos de Perícias exigidas.
+
+#### Progressão de Conhecimentos — dados e XP
 
 O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
@@ -654,10 +741,6 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 | 4 | 🎲 2d10 + 1d12 | 8 XP | 16 XP |
 | 5 | 🎲 1d10 + 2d12 | 16 XP | 32 XP |
 | 6 | 🎲 3d12 | 32 XP | 64 XP |
-
-### ✦ Conhecimentos — estudo que abre caminhos
-
-Conhecimentos ajudam a investigar, compreender e planejar. Os exemplos indicam possibilidades de testes, não efeitos gratuitos nem substitutos de Perícias exigidas.
 
 #### ✦ Proteção
 
@@ -695,23 +778,25 @@ Conhecimento de história, culturas, tradições, registros escritos e saberes e
 
 **Possibilidades em jogo:** Erudição + Inteligência para comparar crônicas e interpretar inscrições; Erudição + Influência para construir um argumento baseado em costumes ou precedentes. O personagem não conhece automaticamente todos os segredos do cenário.
 
-#### Progressão de Conhecimentos — dados e XP
-
-O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
-
-| Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
-|---:|---|---:|---:|
-| 0 | 🎲 1d6 | Inicial | 0 XP |
-| 1 | 🎲 1d10 | 2 XP | 2 XP |
-| 2 | 🎲 2d10 | 2 XP | 4 XP |
-| 3 | 🎲 3d10 | 4 XP | 8 XP |
-| 4 | 🎲 2d10 + 1d12 | 8 XP | 16 XP |
-| 5 | 🎲 1d10 + 2d12 | 16 XP | 32 XP |
-| 6 | 🎲 3d12 | 32 XP | 64 XP |
 
 **Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.
 
 **Exemplo de compra:** Força 1 custa **1 XP**; para passar de Força 1 para Força 2, pague **2 XP**. Disciplina 1 custa **2 XP**; para passar de Disciplina 1 para Disciplina 2, pague **mais 2 XP**. O preço do avanço indica quanto pagar agora; a última coluna mostra o total investido.
+
+### Dos Graus ao potencial de uma rolagem
+
+Quanto mais desenvolvida uma Aptidão, maior o potencial de sua pilha. Mas o Grau não determina sozinho a dificuldade que você consegue superar: também importam os outros dados da ação, quantos você pode manter, os símbolos obtidos, os gastos de Antecipar e os benefícios de Perícias.
+
+Imagine que todos os dados escolhidos sejam d12. Um d12 oferece no máximo três símbolos de Êxito e Temor somados na face, antes de benefícios adicionais. A tabela mostra apenas esse potencial bruto, sem bônus de crítico, conversões de Antecipar, Perícias ou outras fontes de modificadores. Você precisa ter dados suficientes na pilha para manter a quantidade indicada.
+
+| Níveis | Retenção natural | Máximo bruto com d12 | Retenção com 1 Coragem | Máximo bruto com d12 |
+|---|---:|---:|---:|---:|
+| 1–9 | 2 | 6 | 3 | 9 |
+| 10–20 | 3 | 9 | 4 | 12 |
+
+Uma pilha com somente três d12 disponíveis para retenção pode alcançar 9 símbolos mantendo os três; não alcança 12 apenas por chegar ao nível 10. Para alcançar 12 brutos, é necessário um quarto d12 disponível e mantido. Um Atributo ainda deve participar da rolagem, mesmo que seu dado seja descartado. Críticos de três ou quatro dados podem acrescentar 1 Êxito, chegando a 10 ou 13 respectivamente neste exemplo.
+
+Esses valores são limites possíveis, não dificuldades recomendadas nem garantias de acerto. Uma ação pode alcançar a dificuldade com Temor e ainda trazer riscos. A escolha de dificuldades de encontros e grupos será aprofundada no Guia do Narrador.
 
 ### Como começar a montar sua ficha
 

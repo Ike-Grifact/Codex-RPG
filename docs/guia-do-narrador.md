@@ -8,6 +8,10 @@ A proposta do Codex combina **interpretação narrativa e combate tático**, com
 
 O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não cria punição automática. Não há obrigação de jogar cada cena com todos os detalhamentos táticos; os mesmos dados servem a cenas narrativas e conflitos com posicionamento.
 
+### Quando solicitar um teste?
+
+Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Temor puderem interferir significativamente na narrativa. Se não houver incerteza relevante, narre o resultado sem exigir rolagem; se a ação for inviável, explicite a limitação e permita outra abordagem. Considere as Aptidões, condições e recursos disponíveis. Não transforme o potencial máximo de uma pilha em sucesso garantido. A escala de DE por nível, composição e cooperação do grupo ainda será revisada.
+
 ## 2. Pavor do Narrador e Pavor dos inimigos [DEFINIDO]
 
 - **Existe apenas Pavor (P)**, não outra moeda chamada Pressão.
