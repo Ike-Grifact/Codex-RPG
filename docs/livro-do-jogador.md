@@ -109,7 +109,7 @@ Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recu
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
 - **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados.
-- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falhar com Temor também retira 1 Coragem**.
+- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falha Arriscada retira 1 Coragem; Falha Limpa e Falha Mista não retiram esse recurso pelo resultado.** Custos já pagos para realizar a ação continuam gastos.
 - **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
 
 **Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
@@ -276,8 +276,8 @@ Essas classificações são independentes: uma falha pode ser limpa, assim como 
 | Acerto Misto | Alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo é alcançado, mas há risco e possibilidade de intervenção. |
 | Acerto Arriscado | Alcança a DE | Mais Temor que Êxitos | O objetivo é alcançado, mas o Temor predomina e pode provocar consequências graves. |
 | Falha Limpa | Não alcança a DE | Sem Temor restante | O objetivo não é alcançado, sem consequência negativa automática. Em ataque, sem passagem válida por Antecipar, a oportunidade passa à oposição; nas demais ações, segue o fluxo geral. |
-| Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção e normalmente perde 1 Coragem. |
-| Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e normalmente perde 1 Coragem. |
+| Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção, mas o personagem não perde Coragem por essa falha. |
+| Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e o personagem perde 1 Coragem. |
 
 ### O mesmo resultado, dificuldades diferentes
 
@@ -306,7 +306,17 @@ No início de cada conflito, os inimigos têm a reserva local cheia. O teto e o 
 | G4 | ᚦ 7T |
 | G5–6 | ᚦ 8T |
 
-A reserva não se enche automaticamente a cada rodada. Quando um inimigo ataca um personagem jogador, cada Temor não anulado gera 1 Coragem para o personagem atacado, respeitando seu teto. A distribuição do Temor em ataques de área, com vários alvos ou em ações sem adversário atacado ainda está pendente de definição geral.
+#### Temor em ataques em área
+
+Em ataques em área, direcione o Temor restante ao alvo principal declarado, ao adversário mais próximo do centro da magia ou a um adversário efetivamente acertado, conforme a configuração do ataque. Não duplique o Temor entre todos os alvos. Regras específicas de distribuição de uma Perícia continuam aplicáveis.
+
+**Exemplo:** uma magia atinge três inimigos e gera dois Temores não anulados. Os dois pontos são direcionados ao destinatário definido para o ataque, respeitando o teto de sua reserva; não são dois pontos para cada inimigo.
+
+#### Temor e Coragem: uma troca entre os lados
+
+A reserva local dos inimigos não se enche automaticamente a cada rodada. O combate possui uma troca de recursos: assim como o Temor deixado pelos jogadores alimenta a reserva dos inimigos e aumenta o perigo que eles representam, o Temor deixado pelos inimigos em seus ataques ajuda os jogadores a recuperar Coragem.
+
+Quando um inimigo ataca um personagem jogador, cada ᚦ 1T não anulado recupera 1 Coragem do personagem atacado, respeitando seu teto, mesmo que o ataque falhe. Esse recurso permite ao jogador voltar a investir em suas próximas ações. A prioridade entre destinatários igualmente válidos, o caso de uma área sem alvo principal e sem nenhum adversário acertado e as ações sem adversário atacado ainda precisam de definição.
 
 ### Como Antecipar muda o resultado
 

@@ -15,7 +15,8 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 - **Reserva local de uma ameaça:** tem teto igual ao **Grau da criatura**; o Pavor que nela couber é preservado para a rodada seguinte. Uma criatura paga **1P para ativar seu turno**, podendo gastar até **4P na ativação** quando suas capacidades o permitirem.
 - Não confundir a **entrada de um conflito** com a **ativação de um inimigo**. Não contabilizar o mesmo Pavor duas vezes.
 - **Dados descartados não geram Pavor** na continuidade vigente; Êxito e Antecipar descartados também não são utilizados.
-- Falhas com Pavor de inimigos podem conceder Coragem aos jogadores nas proporções previstas pela continuidade; não definir outro cálculo por suposição.
+- Ataques de inimigos recuperam 1 Coragem do personagem jogador atacado por Temor mantido e não anulado, mesmo em falha, respeitando o teto individual.
+- Em ataques em área, direcione o Temor restante ao alvo principal declarado, ao adversário mais próximo do centro da magia ou a um adversário efetivamente acertado, conforme a configuração do ataque. Não duplique o Temor entre todos os alvos. Regras específicas de distribuição de uma Perícia continuam aplicáveis. A prioridade entre destinatários igualmente válidos, o caso de uma área sem alvo principal e sem nenhum adversário acertado e as ações sem adversário atacado ainda precisam de definição.
 
 ## 3. Intervenções e protagonismo [DEFINIDO]
 
@@ -24,7 +25,8 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 | Acerto limpo | O mesmo jogador pode continuar ou passar voluntariamente a ação a um aliado |
 | Falha limpa | A oportunidade passa ao próximo jogador; sem complicação negativa automática |
 | Acerto com Pavor | A ação foi bem-sucedida, mas conserva oportunidade de intervenção |
-| Falha com Pavor | Possível intervenção e normalmente **−1 Coragem** |
+| Falha Mista | Possível intervenção, sem perda de Coragem pelo resultado |
+| Falha Arriscada | Possível intervenção e **−1 Coragem** |
 | Passar com **1A** | Antecipar passa a ação antes da intervenção, mas **não anula o Pavor** nem produz outro |
 
 O Narrador pode expressar a intervenção por alteração de terreno, posicionamento, novos perigos, ameaça ou informação pertinente. Não transformar toda intervenção em dano não previsto pelas técnicas.
