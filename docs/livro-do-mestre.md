@@ -94,7 +94,7 @@ Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande 
 
 Armadura Muito Leve G1 agora tem 3 de Integridade; demais armaduras G1 continuam 7/12/17. Dano prévio do druida reduz ponto por ponto a Vida atual inicial da forma animal. Pavor de ação sem alvo de ataque alimenta reserva pública; excedente permite intervenção da ameaça mais próxima do último jogador ativo, desempate por DE e Vida, salvo circunstância da cena. Múltiplos excedentes e custo exato ainda pendentes.
 
-Cura: Saudável 1 dia/ponto, Ferido prazos progressivos 1/2/3... dias por posição, Incapacitado 1 semana mais tratamento avançado, Inconsciente 1 semana mais 1 Sangue transfundido. 1 Êxito médico válido reduz 1 dia; 7 Êxitos + transfusão 1 Sangue permitem passagem de Inconsciente a Ferido após um descanso longo. Os casos parciais permanecem pendentes.
+Recuperação natural vigente (SRD v0.133): 1 Vida por dia após descanso longo válido de 8 horas, com pelo menos 6 horas de sono. Escolha recuperar Coragem (Vigor + 1) ou reparar armadura com kit; a Vida é recuperada independentemente da escolha. Os antigos prazos por caixas e tratamentos graves precisam de revisão.
 
 **Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
 

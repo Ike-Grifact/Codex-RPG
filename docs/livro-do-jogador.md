@@ -909,24 +909,25 @@ Depois de conhecer as linhagens, as Aptidões, os custos de XP e os equipamentos
 
 ### Descanso curto e descanso longo
 
-Entre conflitos e expedições, os personagens podem interromper suas atividades para descansar. Descansar é uma oportunidade de recuperar recursos, cuidar de ferimentos e preparar a próxima etapa da aventura. A recuperação não é igual para todos os recursos.
+O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
 
-| Recurso | Descanso curto | Descanso longo |
+| Recurso | Descanso curto · 1h | Descanso longo · 8h |
 |---|---|---|
-| Coragem | Somente com Recobrar Coragem: +2 após a cena narrativa pertinente. | Vigor + 1, até o teto, com ou sem Recobrar Coragem. |
+| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
+| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia após descanso longo válido, até o máximo. |
+| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
 | Perseverança Humana | Não renova. | Renova a utilização. |
-| Vida e Saúde | Sem cura automática geral definida. | Segue os procedimentos de recuperação e tratamento; não restaura toda a Vida automaticamente. |
-| Integridade e cargas de foco | Sem recuperação automática geral definida. | Sem recuperação automática geral definida. |
+| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
 
-O descanso longo recupera Coragem igual ao Grau de Vigor + 1. Um personagem com Vigor 2 e Coragem 5 de um máximo de 10, por exemplo, volta a 8. Se estivesse com 9, voltaria a 10, sem exceder o teto.
+Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
 
-Recobrar Coragem permite recuperar 2 Coragens em um descanso curto, acompanhado de uma cena narrativa que demonstre a recuperação. Não some automaticamente esses 2 pontos à recuperação do descanso longo; o acúmulo ainda está pendente.
+Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
 
-Símbolos guardados por Antecipação e os benefícios de Concentração Refinada expiram ao serem usados, ao realizar outra ação ou ao completar um descanso longo, o que ocorrer primeiro. A ativação gratuita diária de Escudo Rúnico segue sua própria frequência: uma por dia, não uma por descanso curto ou longo.
+Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
 
-Ainda estão pendentes a duração operacional dos dois descansos, as condições de interrupção, a frequência de recuperação por Recobrar Coragem e a revisão geral de recuperação de Vida nas quatro faixas de Saúde. Não trate descanso como cura completa, reparo de armadura ou recarga automática de foco. As regras específicas de tratamento e Perícias continuam aplicáveis.
+PENDENTE: quantidade de Integridade reparada, consumo do kit, necessidade de teste, condições de interrupção e tratamento de estados graves. Recuperação Vigorosa com 2 Vida por dia é proposta em revisão; o efeito antigo pertencia ao modelo de três caixas.
 
-Referências: [SRD de Playtest Nível 1](srd-playtest-nivel-1-v1.0.md), [v0.55](srd-continuidade-v0.55.md) e [v0.84](srd-continuidade-v0.84.md).
+[SRD v0.133](srd-continuidade-v0.133.md).
 
 ## Parte III — Jogando Codex RPG
 
@@ -1213,7 +1214,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; acelera os últimos pontos da caixa intermediária em 1 dia por ponto |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; efeito em revisão |
 | **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 Coragem |
 
 **A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
@@ -1376,7 +1377,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado vale 1 dano. Não se aplica a armas de fogo |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
-| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Acelera os últimos pontos da caixa Machucado |
+| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Efeito em revisão |
 | **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
 | **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
@@ -1497,13 +1498,9 @@ As **Perícias** detalham técnicas específicas e só produzem os efeitos de se
 
 **Escudo Bumerangue [DEFINIDO — resolução posterior de 20/11/2026]:** 1 XP, exige **Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos**. Lança escudo físico até **8 m** com **Disciplina (Armas) + Atributo(s) escolhido(s) e rolado(s)**, respeitando a seleção de fontes, os limites de dados e os requisitos da combinação. **Acerto com ou sem Temor:** escudo retorna **no mesmo turno do lançamento**. **Falha limpa:** cai no caminho; **1A pode permitir correr e recuperá-lo**. **Falha com Temor:** cai próximo ao alvo ou pode atingir aliado próximo se alcançar a DE do aliado. **Distância da queda:** E mantidos + T não anulado mantido + E obtidos de 2A convertidos, em metros; A não usado não soma. Em falha, o escudo fica **no chão e deixa de estar equipado**, até recuperação confirmada. Consequências de Temor permanecem. Não usar as regras de arma alojada no alvo no acerto, pois o escudo retorna. **DEFINIDO (20/11/2026):** arremessar o escudo consome **1 Coragem**, inclusive se falhar. No acerto, causa **dano físico normal** da própria rolagem: **Êxitos válidos + ⌊Temor mantido não anulado ÷ 2⌋**, aplicando crítico e proteções como qualquer ataque físico. Escudos que **possuam características próprias de armas cadastradas** podem aplicá-las no lançamento, mediante requisitos, gatilhos e custos normais: no acerto comum, **+1 Coragem para ativar uma característica**; no crítico, a primeira é gratuita e a segunda custa **+1 Coragem**; características passivas seguem seus critérios. Nenhum escudo ganha características ou dados extras automaticamente, nem causa segundo golpe no retorno; **Cravar não é aplicável** ao escudo que retorna. Respeitar o teto de 5 Coragens por rolagem. **PENDENTE:** momento na ordem de ações, obstáculos e interação com Levantar Escudo durante o voo.
 
-### Perícia Recuperação Vigorosa [DEFINIDO]
+### Perícia Recuperação Vigorosa [REVISÃO PENDENTE]
 
-**Requisito: Vigor 3. Compra: XP PENDENTE (1 XP constava em versão anterior sem confirmação neste lote).** Para cada **3 graus completos de Vigor**, o personagem acelera a recuperação de **um dos últimos pontos da caixa Machucado**: passa de **1 semana para 1 dia por ponto**, até o limite de pontos dessa caixa. Não acelera a caixa Incapacitado nem remove a necessidade de tratamento médico.
-
-**Exemplo com 6 Vida:** Vigor 3, Força 0 → caixas **2 / 2 / 2**. Se a ficha está em **0 / 1 / 2**, a Perícia permite passar a **0 / 2 / 2 em 1 dia**.
-
-**Exemplo com 12 Vida, caixas 4 / 4 / 4, e Vigor 6:** dois últimos pontos intermediários recebem o benefício: **0 / 1 / 4 → 0 / 2 / 4** ainda demora **1 semana**, depois **0 / 2 / 4 → 0 / 3 / 4** leva **1 dia** e **0 / 3 / 4 → 0 / 4 / 4** leva **1 dia**.
+Requisito documentado: Vigor 3. Custo pendente. O efeito anterior dependia do modelo histórico de três caixas. **PROPOSTO:** 2 Vida por dia em vez de 1 após descanso longo válido. Confirmar efeito, custo e interação com tratamento e Maestria em Movimento.
 
 ### Provocação Sofisticada [DEFINIDO: requisito e XP; efeito exclusivo PENDENTE]
 
