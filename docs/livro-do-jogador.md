@@ -362,7 +362,7 @@ Cooperar também exige escolhas. O grupo investe o turno de cada participante em
 
 #### Exemplo: uma defesa impossível de superar sozinho
 
-Imagine uma ameaça com DE 13 e três Aprendizes que possuem, cada um, uma pilha de dois d10 para essa ação. Sem outros bônus ou dados adicionais, cada personagem pode reunir no máximo seis símbolos válidos de Êxito e Temor nesses dois dados. Sozinho, nenhum consegue alcançar 13. Mesmo dois personagens, nessas condições, não passariam de 12.
+Imagine uma ameaça com DE 13. Três Aprendizes rolam suas próprias pilhas, incluindo a fonte de Atributo exigida. Para este exemplo, cada um pode manter dois d10, sem gastar Coragem para retenção extra e sem outros bônus. Cada participante pode alcançar no máximo seis símbolos válidos nessas condições. Um ataque individual não alcançaria 13, e dois participantes juntos chegariam no máximo a 12.
 
 | Participante | Resultado final individual | Contribuição para o acerto |
 |---|---|---:|
@@ -371,48 +371,46 @@ Imagine uma ameaça com DE 13 e três Aprendizes que possuem, cada um, uma pilha
 | Aprendiz 3 | ᛋ 4E + ᚦ 1T | 5 |
 | **Total conjunto** | ᛋ 10E + ᚦ 3T | **13** |
 
-O resultado conjunto soma 10 Êxitos e 3 Temores: alcança 13 e constitui um Acerto Misto, se nenhum desses Temores for anulado. A ação conta três turnos, um de cada participante. O grupo supera a defesa, mas ainda assume o risco dos símbolos mantidos.
+Os três resultados são reunidos: ᛋ 10E + ᚦ 3T = 13. O grupo alcança a DE e obtém um Acerto Misto, considerando esses símbolos finais. A defesa foi superada por uma única ação em conjunto, que conta três turnos. Os três Temores continuam trazendo risco.
 
 #### Ação em conjunto e custo progressivo de Antecipar
 
-Uma **ação em conjunto** é uma única resolução simultânea que soma os turnos de seus participantes. Dois participantes contam 2 turnos; três contam 3 turnos. Não se resolve um ataque sucessivo para cada participante. O limite vigente de até três participantes em ataques conjuntos, requisitos, custos, retenção e demais regras próprias continuam aplicáveis.
+Quando dois ou três personagens realizam uma ação em conjunto, cada um contribui com sua própria rolagem para uma única resolução. Cada participante investe um turno. Assim, uma dupla consome dois turnos e um trio consome três, sem realizar ataques sucessivos.
 
-**A primeira ação conjunta da sequência de protagonismo de cada lado não custa Antecipar para reunir seus participantes.** Isso não torna gratuitas Perícias ou demais ativações. Para formar as próximas ações conjuntas sem perder o protagonismo, gaste os símbolos Antecipar válidos das rolagens para convocar os aliados. O custo é individual por aliado convocado e dobra a cada participação anterior na mesma sequência: quem ainda não agiu custa 1A; quem agiu uma vez custa 2A; duas vezes custa 4A; três vezes custa 8A, e assim por diante.
+**Começando a sequência.** A primeira ação em conjunto de cada sequência de protagonismo não exige Antecipar para reunir os participantes. Isso não dispensa os custos das Perícias, dos equipamentos ou de outras ativações.
 
-**Ninguém antecipa a si mesmo.** Os participantes podem somar os símbolos Antecipar que obtiveram para pagar a convocação de outro personagem. A ação conjunta pode ser formada em etapas: os aliados convocados rolam e podem utilizar seus próprios Antecipar válidos para incorporar outro aliado antes da resolução conjunta, respeitando o máximo de participantes. Cada símbolo só pode ser gasto uma vez; Antecipar usado para convocar não pode também cancelar Temor, converter em Êxito ou financiar outra convocação. Não apagar Temor ao passar protagonismo.
+**Mantendo o protagonismo.** Para continuar a sequência, os participantes podem usar os símbolos Antecipar que obtiveram para chamar outros aliados. O custo depende de quantas vezes o aliado convocado já participou desde a última ação efetiva da oposição. A cada participação anterior, o custo dobra.
 
-**A quebra de protagonismo reinicia os custos de um lado quando um combatente do lado adversário age.** Terminar uma rodada não reinicia a progressão. Uma simples troca de oportunidade sem ação do lado adversário não é o gatilho de reinício. A contagem de turnos/rodadas permanece independente da contagem de participações para Antecipar.
+| Participações anteriores do aliado | Custo para convocá-lo |
+|---|---:|
+| 0 | ᚨ 1A |
+| 1 | ᚨ 2A |
+| 2 | ᚨ 4A |
+| 3 | ᚨ 8A |
+| 4 | ᚨ 16A |
 
-| Participações anteriores na sequência | Custo em Antecipar por aliado convocado | Temor público por inimigo independente convocado |
-|---|---|---|
-| 0 | 1A | 1T |
-| 1 | 2A | 1T |
-| 2 | 4A | 1T |
-| 3 | 8A | 1T |
-| 4 | 16A | 1T |
+**Formando o grupo.** A formação pode acontecer em etapas: os aliados convocados rolam e podem reunir seus próprios Antecipar para chamar outro personagem, até o limite de três participantes em ataques conjuntos. Ninguém pode antecipar a si mesmo. Cada símbolo gasto na convocação não pode também anular Temor, gerar Êxito ou financiar outra convocação.
 
-#### Exemplo: cinco jogadores A, B, C, D e E
+**Quando os custos reiniciam?** Quando um adversário age, a sequência do grupo termina e os custos de antecipação são reiniciados. O fim de uma rodada, ou a simples transferência de oportunidade sem ação efetiva do adversário, não reinicia esses custos. Passar a oportunidade não elimina o Temor restante.
+
+#### Exemplo: cinco jogadores cooperando
+
+Os jogadores A, B, C, D e E enfrentam uma ameaça. Veja como três ações conjuntas podem acontecer na mesma sequência, sem que a oposição tenha agido entre elas.
 
 | Formação | Convocação e resolução | Turnos acumulados |
-|---|---|---|
-| ABC | Primeira ação conjunta: gratuita em Antecipar; obtém 2A e convoca D e E (1A cada). | 3 |
-| DE → ADE | D e E rolam, gastam 2A para convocar A, que já participou uma vez. A rola; resolve-se ADE em conjunto. | 6 |
-| ADE → BC | Os participantes de ADE obtêm e gastam 4A para convocar B e C (2A cada). B e C rolam. | 6 (a nova ação ainda não foi resolvida) |
-| BC → ABC | B e C gastam mais 4A dos próprios resultados para incorporar A, que já participou duas vezes. A rola; resolve-se ABC em conjunto. | 9 |
+|---|---|---:|
+| A, B e C | Começam a sequência com uma ação conjunta. Obtêm ᚨ 2A e convocam D e E, por ᚨ 1A cada. | 3 |
+| D e E → A, D e E | D e E rolam e gastam ᚨ 2A para chamar A, que já participou uma vez. A rola; os três resolvem uma única ação em conjunto. | 6 |
+| A, D e E → B e C | O trio obtém ᚨ 4A e convoca B e C, por ᚨ 2A cada. Os dois começam a rolar; a nova ação ainda não foi concluída. | 6 |
+| B e C → A, B e C | B e C gastam outros ᚨ 4A para chamar A, que já participou duas vezes. A rola; o trio resolve a terceira ação conjunta. | 9 |
 
-Se B e C optarem por chamar D ou E em vez de A, cada um desses aliados participou uma vez e custa 2A. Convocar ambos somaria 4A, mas não caberia no mesmo ataque conjunto de B e C pelo limite de três participantes. O custo de 8A para voltar a formar ABC no exemplo é pago em etapas: 4A por ADE e 4A por BC; não é um pagamento único por um personagem nem uma convocação de si mesmo.
+Observe que chamar novamente um aliado fica mais caro. Para voltar a formar A, B e C, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar B e C e ᚨ 4A para incorporar A. A dupla B e C poderia chamar D ou E por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
 
-**Chefes compostos:** um chefe que represente três combatentes em um único corpo e realize uma ação conjunta dos três conta três turnos, não um. Em um conflito com cinco PJs e um chefe composto por três combatentes, a referência de rodada é 8 turnos. Isso permite reunir esforços contra DE elevada sem atribuir automaticamente três ações a todo chefe ou alterar dados, DE ou regras de d20.
+#### Como os inimigos agem?
 
-#### Inimigos, Liderança e Temor público
+Os inimigos também podem cooperar, antecipar aliados e formar ações conjuntas, seguindo uma lógica semelhante à dos jogadores. O Narrador dispõe ainda de uma reserva pública de Temor, distinta das reservas locais dos inimigos, utilizada para convocar combatentes e administrar oportunidades conforme as regras da oposição. Os custos, exceções de Liderança e chefes compostos estão no [Guia do Narrador — intervenção e protagonismo](../narrador.html#intervencao).
 
-**Inimigos e Liderança.** A oposição usa a mesma tabela progressiva de Antecipar, os mesmos critérios de formação em etapas e a mesma proibição de autoantecipação. Além disso, cada inimigo adicional independente ativado por convocação, seja para um turno individual antecipado ou para integrar uma ação conjunta, custa **1T da reserva pública do Narrador**. O custo público permanece fixo por inimigo independente, mesmo quando o custo em Antecipar dobra; para o chefe de três componentes em um corpo, aplica-se a exceção descrita abaixo. A primeira ação conjunta não cobra Antecipar pela formação, mas cobra o Temor público dos inimigos incorporados.
-
-**Somente o Narrador paga esse Temor.** Debite do saldo disponível da reserva pública, cujo teto continua sendo 2 + número de jogadores. Não retire o ponto da reserva local do inimigo, nem permita substituir o custo público pelo Temor local, mesmo que a reserva local esteja cheia. Não confunda esse custo com os demais custos próprios de técnicas ou da iniciativa natural da oposição. Uma mesma ativação convocada não é cobrada duas vezes por ser antecipada e integrar uma ação conjunta.
-
-**Inimigos únicos são Líderes de si mesmos.** Um chefe composto por três combatentes em um único corpo é uma exceção: o Narrador paga apenas 1T público no total para ativar os outros dois componentes na mesma ação conjunta, em vez de 2T. A primeira formação é gratuita em Antecipar; as seguintes seguem a progressão individual de A por componente convocado, sem autoantecipação. A ação conjunta dos três conta três turnos. A exceção considera o teto de Temor local menor desses chefes e não aumenta esse teto nem altera seus valores cadastrados. Se não houver 1T público disponível, o chefe não pode usar seu Temor local para substituir esse pagamento. A exceção não se estende a dois inimigos independentes, mesmo quando comandados pelo mesmo Líder.
-
-Perícias, magias e condições que indicam duração em **turnos** contam ações; as que indicam **rodadas** contam ciclos de turnos equivalentes ao total de combatentes. Não converter durações publicadas. **PENDENTE:** entradas/saídas de combatentes durante a rodada; ação conjunta que cruza o limite de rodada; expiração específica.
+Perícias, magias e condições com duração em turnos contam ações; as que duram rodadas contam ciclos equivalentes ao total de combatentes presentes. Entradas e saídas durante a rodada, ações conjuntas que cruzam o limite de rodada e expirações específicas ainda precisam de definição.
 
 O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
 
@@ -422,12 +420,24 @@ Comece pelo nome, conceito e identidade de seu Aprendiz. Pense no que pretende f
 
 ## Crie seu Aprendiz
 
+### Conheça as linhagens
+
+**Humanos.** Descendentes dos sobreviventes das Arcas, adaptam-se a culturas e tecnologias muito diferentes. Seus nomes podem seguir as tradições da Arca de origem ou da família. A Perseverança Humana e o domínio inicial de armas de fogo representam benefícios de origem, não uma profissão obrigatória.
+
+**Luckers Puros.** Herdeiros de antigas tradições mágicas, são longevos e preservam as sensações e emoções. Podem usar nomes como Astel, Luel'et ou Etelion; a partícula el é associada aos Puros rebatizados.
+
+**Luckers de Sangue.** Os personagens jogáveis são párias de sua sociedade após o Infortúnio. Não experimentam sensações e emoções como os demais povos, mas preservam a capacidade de aprender e decidir. Nomes como Ketreaver, Eterion ou Reaveretion podem expressar sua história e propósito.
+
+**Runa Espinhos.** Gigantes de pedra e espinhos, ligados à natureza e às tradições dos Pastores. Seus nomes utilizam fragmentos sonoros de runas, como Ruhaan, Lothuso e Sofe. As tradições xamânicas não obrigam o personagem a seguir determinada profissão.
+
+Para conhecer as tradições de nomes e o cenário, consulte Crônicas e histórias do mundo. As orientações narrativas detalhadas estão em Interpretando seu personagem. A origem não concede efeitos adicionais além dos benefícios descritos abaixo.
+
 ### Linhagens e benefícios na criação [DEFINIDO / opções PENDENTES]
 
 | Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
 |---|---|---|
-| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Especialização em Armas de Fogo gratuita; a Especialização não concede automaticamente a Perícia em Armas de Fogo |
-| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue gratuita. Transfusão Sanguinária é exclusiva da linhagem, mas **não é gratuita** |
+| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas gratuitas |
+| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas; Transfusão Sanguinária é exclusiva da linhagem |
 | **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
 | **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
 
@@ -492,242 +502,6 @@ O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a ca
 **Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
 
 **Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo Armas, alcance e efeitos.
-
-## Luckers — guia de interpretação
-
-### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
-
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo Crie seu Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
-
-#### Dois destinos para um povo antigo
-
-Há cerca de **20 mil anos**, a Queda e o chamado **Infortúnio dos Luckers** marcaram o destino desse povo. Guerras mágicas, cidades perdidas e tradições contraditórias obscureceram o passado. A causa verdadeira do Infortúnio **não é conhecimento público**: lendas podem falar em castigo, mas não são uma explicação confirmada para os personagens.
-
-- **Luckers Puros — imortalidade com vida.** Conservam vitalidade sem envelhecer até morrer e continuam capazes de sentir o mundo e suas emoções. **Podem ser mortos se forem abatidos.** As guerras reduziram seu número, e hoje restam poucos. Um Puro pode temer uma batalha, amar alguém, cultivar hábitos e escolher o que fazer com o tempo — não é obrigado a ser solene nem a conhecer toda a história.
-- **Luckers de Sangue — permanência sem sensação.** A condição que os atingiu retirou-lhes a experiência das sensações físicas e das emoções, mas **não a consciência, a cognição ou a capacidade de aprender**. São imortais de maneira literal: não alcançam a morte definitiva. A existência pode prosseguir mesmo quando o corpo é ferido, aprisionado ou soterrado. A maneira exata de representar destruição corporal extrema **não está definida para personagens** e cabe à condução do Narrador, sem imunidades mecânicas presumidas.
-
-Um Puro possui uma vida que pode ser interrompida. Um Lucker de Sangue possui uma existência que não consegue encerrar, sem poder experimentá-la como os demais. **Ambos continuam sendo pessoas distintas**, não modelos fixos de personalidade.
-
-#### Interpretar um Lucker Puro
-
-Um Puro **sente**, e sua longevidade altera sobretudo sua relação com o tempo. Ele pode pensar em séculos, mas também agir impulsivamente, mudar de opinião, errar, esquecer e aprender. Ter vivido muito **não concede conhecimento automático**, principalmente sobre acontecimentos que não presenciou.
-
-Perguntas para construir sua interpretação:
-
-1. Quais perdas, compromissos ou lugares marcaram sua história?
-2. Ele se aproxima dos povos mortais ou evita vínculos que podem terminar?
-3. A possibilidade de morrer em combate o torna prudente, corajoso ou indiferente ao risco?
-4. O que ele ainda deseja descobrir, construir ou preservar?
-
-**Exemplo de diálogo:**
-
-> **Humano:** “Você acredita que esta cidade vai durar?”
->
-> **Lucker Puro:** “Eu vi duas cidades erguidas neste vale. Esta ainda pode ser a que aprende com as anteriores.”
-
-#### Interpretar um Lucker de Sangue
-
-**A regra central da interpretação é separar compreender de sentir.** Um Lucker de Sangue pode reconhecer uma ameaça, identificar sinais de tristeza, estudar o amor e entender o valor de um compromisso. Ele não precisa experimentar dor, medo, alegria ou afeto para **tomar decisões**.
-
-- **Observação não é experiência.** Ele pode estudar o choro e reconhecer o luto sem conhecer internamente a tristeza. A percepção e a comunicação necessárias à cena existem na ficção, mas os meios precisos pelos quais isso ocorre ainda não constituem regras mecânicas.
-- **Ausência de sensação não é ausência de caráter.** Um Lucker pode ser gentil, cruel, ético, protetor, irônico, paciente ou obstinado. Suas decisões podem vir de princípios, memória, hábitos, cálculos ou promessas, sem emoção correspondente.
-- **Não sentir dor não o torna invencível em jogo.** Ferimentos, restrições, captura, incapacidade de agir e conflitos continuam relevantes. A maldição não concede benefícios automáticos à ficha.
-- **Intensidade não é cura.** Um golpe mais forte, uma batalha ou uma grande demonstração de carinho não faz um Lucker voltar a sentir por padrão. Qualquer exceção pertence à história conduzida pelo Narrador, não a um recurso livre do jogador.
-- **Nem todos pensam ou falam da mesma forma.** Alguns usam linguagem objetiva, outros aprenderam gestos sociais, metáforas, humor ou estilos muito próprios. Não é necessário interpretar um robô, falar apenas com números ou responder tudo literalmente.
-
-**Exemplo de diálogo:**
-
-> **Companheiro:** “Você não tem medo de entrar?”
->
-> **Lucker de Sangue:** “Não experimento medo. Mas reconheço a possibilidade de ficarmos presos e prefiro preservar nossa passagem.”
-
-Outro Lucker poderia responder apenas “É perigoso. Vamos por outro caminho”. Ambos são interpretações válidas.
-
-#### Diários, memória e linguagem própria
-
-Muitos Luckers de Sangue mantêm **diários** para registrar experiências observadas, decisões, vínculos e mudanças de comportamento. Não são obrigados a esquecer o que viveram: os registros podem ajudá-los a **organizar a identidade e compreender experiências que não conseguem sentir**.
-
-Alguns criaram maneiras próprias de falar, com palavras para padrões de comportamento que os humanos chamariam de saudade, carinho, prazer ou sofrimento. O jogador pode inventar expressões, mas deve explicar seu significado ao grupo para não transformar a interpretação em obstáculo à mesa.
-
-**Exemplo de registro fictício:**
-
-> **Registro 4.821.** Ela afirmou ter sentido alegria ao meu retorno. Reconheci os sinais que descreveu em outros encontros. Minha presença parece ser importante para ela. Registrei que continuarei voltando a este lugar.
-
-Os números e as pessoas do exemplo são ilustrativos, não cronologia oficial do cenário.
-
-#### Vinte mil anos não criam uma única resposta
-
-Alguns Luckers de Sangue procuram uma forma de se libertar da condição. Outros desenvolveram modos próprios de existir. Há indivíduos que ficaram profundamente desorganizados após épocas de isolamento, exploração e aprisionamento; isso **não significa que todos sejam violentos ou incapazes de raciocinar**.
-
-A imortalidade também os tornou alvos de **escravização e utilização como ferramentas**. Há relatos de Luckers perdidos em cavernas e ruínas, soterrados por milênios; uma formação que parece apenas pedra pode ocultar um deles. O tempo de cativeiro não torna esses indivíduos automaticamente sábios nem hostis.
-
-O personagem pode ser um guardião, estudioso, errante, escriba, viajante ou qualquer outra pessoa com objetivos próprios. Esses são **conceitos de interpretação**, não profissões, Perícias ou benefícios de ficha.
-
-#### Interpretar vínculos com os vivos
-
-Um Lucker de Sangue pode preservar relações, cuidar de alguém, viver em família e cumprir promessas. **Vínculo e emoção não são a mesma coisa** neste contexto: para ele, a ligação pode existir como compromisso, lembrança e escolha consciente.
-
-> **Humana:** “Por que continua me acompanhando, se não sente amizade?”
->
-> **Lucker de Sangue:** “Prometi estar aqui. Continuo considerando essa promessa importante.”
-
-O jogador não precisa repetir a maldição em toda conversa. Mostre a diferença quando ela realmente importar para uma decisão, um conflito ou um diálogo.
-
-#### Oficina de interpretação: sete maneiras de ser um Lucker
-
-**DEFINIDO no conceito, ORIENTAÇÃO na atuação:** a maldição determina a ausência de sensações dos Luckers de Sangue, mas **não obriga a mesma personalidade, voz ou comportamento**. A interpretação aparece nas palavras, no silêncio, na postura e em hábitos aprendidos. Escolha um estilo principal e um contraste; não precisa representar todos os cacoetes toda hora.
-
-Use marcações breves como *[pausa]*, *[observa o diário]* e *[repete a palavra]*. Uma pausa funciona quando tem motivo: recordar, medir, escolher uma fórmula social ou organizar lembranças. **Nenhum exemplo abaixo cria Perícias, imunidades, condições ou habilidades mecânicas.**
-
-##### 1. O Lógico — a razão como abrigo
-
-**Conceito:** Procura causas, padrões e explicações. Não é onisciente, nem incapaz de fazer escolhas pessoais que pareçam ineficientes.
-
-- **Voz:** Ritmo regular; respostas objetivas; distingue fato, hipótese e opinião; pode corrigir a própria frase.
-- **Olhar e postura:** Observa portas, posições, objetos e reações do grupo, mais do que encarar os olhos.
-- **Pausa:** Conta silenciosamente ou reconstrói as circunstâncias antes de responder.
-- **Cacoete:** Alinha objetos e repete 'Corrigindo...' quando encontra um erro.
-- **Contraste:** Cumpre uma promessa mesmo quando isso não é a opção mais eficiente.
-
-> **Aliado: 'Você vai ficar comigo?'**
->
-> **Lucker de Sangue:** [olha a saída, pausa] 'Sim. Minha presença reduz o risco de você permanecer sozinho. ... E eu prometi ficar.'
-
-**Cuidado na mesa:** Não use números inventados como poderes de previsão nem faça o personagem ter razão em tudo.
-
-##### 2. O Vazio — apatia sem paralisia
-
-**Conceito:** Aparenta não responder aos acontecimentos, mas continua capaz de tomar decisões, defender seus princípios e cuidar de outras pessoas.
-
-- **Voz:** Tom baixo e uniforme, frases curtas, nenhuma explicação além do necessário.
-- **Olhar e postura:** Fica imóvel por longos períodos; o olhar repousa num detalhe qualquer; move-se de maneira econômica.
-- **Pausa:** Deixa o silêncio se prolongar antes de responder, sem procurar preenchê-lo.
-- **Cacoete:** Alisa uma dobra da roupa ou fecha o diário na mesma posição.
-- **Contraste:** Age imediatamente para salvar alguém, embora permaneça sem expressão.
-
-> **Aliada: 'Ela morreu. Você não vai dizer nada?'**
->
-> **Lucker de Sangue:** [permanece imóvel, longa pausa] 'Não sei o que acrescentar. Vou guardar os objetos dela.'
-
-**Cuidado na mesa:** Apatia não é desculpa para ficar fora do jogo ou impedir a aventura de avançar.
-
-##### 3. O Fragmentado — o 'louco' aos olhos dos outros
-
-**Conceito:** Após séculos de sepultamento, escravidão ou isolamento, embaralha a ordem de certos acontecimentos. Sua memória pode conservar informações úteis mesmo quando a fala parece desorganizada. É uma possibilidade ficcional, não um diagnóstico de psicose.
-
-- **Voz:** Começa relatos com precisão e os interrompe com referências a épocas remotas; retoma frases antigas mais tarde.
-- **Olhar e postura:** Conta rachaduras, marca paredes e observa sinais que associa a lugares perdidos.
-- **Pausa:** Fica em silêncio ao ouvir uma palavra ligada ao passado; depois retoma de onde parou.
-- **Cacoete:** Risca datas na pedra ou repete o início de uma anotação: 'Registro... registro...'.
-- **Contraste:** Percebe com lucidez um perigo que o grupo não notou.
-
-> **Aliado: 'Há quanto tempo você está soterrado?'**
->
-> **Lucker de Sangue:** 'Quarenta e dois invernos. ... Não. Quarenta e duas dinastias.' [risca a parede] 'Não encoste na coluna norte. Ela cede primeiro.'
-
-**Cuidado na mesa:** Não transforme sofrimento psíquico em piada, violência automática ou gritos aleatórios; combine o tom com a mesa.
-
-##### 4. O Eco — o imitador de emoções
-
-**Conceito:** Aprendeu expressões humanas pela observação e procura reproduzi-las para facilitar o convívio, sem experimentar a emoção correspondente.
-
-- **Voz:** Repete fórmulas sociais; às vezes usa um cumprimento ou uma entonação no momento inadequado.
-- **Olhar e postura:** Observa os rostos dos outros antes de sorrir ou oferecer um gesto de consolo.
-- **Pausa:** Espera um instante para verificar como os demais reagem.
-- **Cacoete:** Ensaia expressões no reflexo de metal ou anota que palavras funcionaram.
-- **Contraste:** Quando percebe que a imitação incomoda, prefere explicar suas intenções diretamente.
-
-> **Humana: 'Estou feliz que você voltou!'**
->
-> **Lucker de Sangue:** [observa o sorriso dela e sorri atrasado] 'Também estou feliz.' [pausa] 'A frase corresponde à situação? Eu quis dizer que escolhi voltar por você.'
-
-**Cuidado na mesa:** Não faça da imitação uma piada repetitiva nem trate gestos aprendidos como cura da maldição.
-
-##### 5. O Guardião — a promessa acima da emoção
-
-**Conceito:** Sustenta a identidade em um juramento, clã, lugar ou pessoa. A lealdade é uma escolha preservada em registros e ações, não um sentimento recuperado.
-
-- **Voz:** Frases firmes e diretas; recita compromissos como se fossem fórmulas antigas.
-- **Olhar e postura:** Mantém-se perto de quem protege; observa rotas de fuga; ocupa a entrada sem chamar atenção.
-- **Pausa:** Consulta mentalmente ou no diário suas promessas antes de aceitar outra obrigação.
-- **Cacoete:** Ajeita uma fita, um medalhão ou uma lista de nomes.
-- **Contraste:** Aprende que respeitar a vontade de alguém pode exigir mudar a forma de cumprir uma promessa.
-
-> **Criança: 'Por que você nunca vai embora?'**
->
-> **Lucker de Sangue:** [ajeita a fita no braço] 'Prometi que esperaria.' [pausa] 'Mas posso partir, se você desejar.'
-
-**Cuidado na mesa:** Não transforme proteção em controle sobre os outros personagens nem em obediência sem autonomia.
-
-##### 6. O Investigador — estudar o que não pode sentir
-
-**Conceito:** Observa e registra o que os mortais descrevem como prazer, saudade e medo. Não é automaticamente um fanático antigo nem conhece a causa secreta do Infortúnio.
-
-- **Voz:** Perguntas específicas; reformula hipóteses; usa expressões como 'Segundo meus registros...'.
-- **Olhar e postura:** Acompanha expressões alheias, protege seus cadernos e compara suas observações.
-- **Pausa:** Interrompe uma pergunta ao perceber que o interlocutor não deseja ser estudado.
-- **Cacoete:** Repete três perguntas fixas e assinala contradições com um símbolo próprio.
-- **Contraste:** Decide respeitar a intimidade de alguém mesmo quando perde a chance de aprender.
-
-> **Aliada: 'Não quero explicar o que estou sentindo.'**
->
-> **Lucker de Sangue:** [fecha o caderno] 'Entendido. ... Não registrarei nada sem sua permissão.'
-
-**Cuidado na mesa:** O desejo de conhecer não autoriza manipular pessoas ou inventar revelações do cenário.
-
-##### 7. O Puro Ancestral — longa vida, emoções presentes
-
-**Conceito:** Não compartilha a ausência de sensações dos de Sangue. Pode sentir medo, ternura, tristeza e raiva, mesmo após milênios de existência; ainda pode morrer se for abatido.
-
-- **Voz:** Pode usar expressões de épocas diferentes, hesitar ao falar de mortos ou mudar de tom ao lembrar de algo.
-- **Olhar e postura:** Guarda uma relíquia, toca um medalhão ou se detém diante de arquitetura antiga.
-- **Pausa:** Emudece ao reconhecer um nome ou lugar que acreditava perdido.
-- **Cacoete:** Chama ruínas por antigos nomes ou corrige datas segundo calendários esquecidos.
-- **Contraste:** Apesar de milênios de experiência, pode ser apaixonado, imprudente e temer a própria morte.
-
-> **Companheiro: 'Você está com medo?'**
->
-> **Lucker Puro:** [aperta o medalhão] 'Estou. Sobrevivi a guerras demais para confundir medo com covardia.'
-
-**Cuidado na mesa:** Não confunda longevidade com sabedoria absoluta, frieza emocional ou invulnerabilidade.
-
-##### A mesma cena, seis interpretações
-
-**Situação:** o grupo encontra um aliado morto numa ruína. Um Lucker de Sangue o conhecia havia décadas. A situação não devolve sensações a nenhum deles.
-
-| Estilo | Primeira fala | O que faz |
-|---|---|---|
-| Lógico | 'Precisamos determinar a causa antes de mover o corpo.' | Registra sinais e organiza a saída. |
-| Vazio | 'Ele não vai nos acompanhar.' [silêncio] | Recolhe os pertences sem fazer comentários. |
-| Fragmentado | 'Já aconteceu nesta passagem... ou naquela era?' | Marca a parede e lembra um detalhe útil. |
-| Eco | [observa os demais] 'Sinto muito.' | Tenta oferecer um gesto de consolo aprendido. |
-| Guardião | 'Ele estava sob minha responsabilidade.' | Fica junto ao corpo até decidirem como proceder. |
-| Investigador | 'Ele dizia que partir é diferente de desaparecer.' | Guarda a frase em seu diário. |
-
-##### Exercício: um personagem reconhecível em cinco escolhas
-
-1. **Ritmo:** fala rápido, mantém longos silêncios ou retoma frases fora de ordem?
-2. **Gestos:** escolha **um ou dois** movimentos recorrentes; de onde vieram?
-3. **Expressão:** “Corrigindo...”, “Segundo meus registros...”, “Permaneço”, “Na última vez...”. Escolha a sua.
-4. **Gatilho:** o que interrompe o padrão — uma promessa, um número, um nome, um rosto, uma porta selada?
-5. **Contradição:** em que momento sua atitude surpreende os outros sem trair seus valores?
-
-**Treine uma fala curta:** uma frase normal, uma pausa com propósito e um gesto significativo. Se repetir o mesmo recurso a cada sentença, ele perde efeito e atrapalha o ritmo da mesa. O Lucker pode aprender linguagem social e mudar seus hábitos **sem recuperar sensações**. Desorganização após isolamento não significa que todos sejam violentos ou que sofrimento psicológico seja motivo de humor. Combine limites de interpretação com o grupo.
-
-#### Exercício rápido para o jogador
-
-Antes de interpretar um Lucker, responda:
-
-1. Ele é **Puro** ou **de Sangue**? Como isso afeta sua relação com a vida e o tempo?
-2. O que **presenciou** e o que conhece apenas por relatos? O que **não sabe**?
-3. Quais compromissos, objetivos e hábitos orientam suas escolhas?
-4. Que relação mantém com outros povos? O que pensa sobre sua própria condição?
-5. Se for de Sangue, ele usa **diários**, símbolos, rotinas ou linguagem própria? Como se comunica com seus aliados?
-6. O que seus companheiros descobrem sobre ele **pelas ações**, sem que precise explicar tudo?
-
-**Evite estes equívocos:** interpretar todos os Puros como seres perfeitos; transformar todos os de Sangue em máquinas frias, vilões ou indivíduos desorganizados; tratar ausência de emoção como ausência de ética; presumir conhecimento de segredos antigos; usar a imortalidade narrativa para ignorar as consequências das regras.
-
-**Em resumo:** o Lucker Puro pode viver por eras, mas ainda pode morrer. O Lucker de Sangue pode continuar existindo por eras sem experimentar o que os outros chamam de viver. **Como cada um responde a isso é o que torna o personagem único.**
 
 ## Aptidões na criação — dados, Graus e XP
 
@@ -1803,10 +1577,10 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Hemomancia e Transfusão Sanguinária [DEFINIDO em custos / PENDENTE em dano direto]
 
-**Transfusão Sanguinária** é uma **nova Perícia**, custo de aquisição **1 XP** e requisitos **Transfusão + Perícia em Elemento Sangue**. É uma **conjuração ativa**, não uma cura gratuita passiva. Para cada **3 marcas elegíveis de sangue derivadas de dano direto à Vida**, pode-se recuperar **1 Vida**, até o máximo. Não há mais uma ação de Extração de Sangue nem reserva de sangue extraído separada. As 3 marcas devem estar disponíveis na reserva de **sangue derramado de inimigos**, após qualquer gasto anterior; não contar duas vezes a mesma perda de Vida.
+**Transfusão Sanguinária** é uma Perícia de origem exclusiva dos Luckers de Sangue, concedida gratuitamente na criação (SRD v0.132). É uma **conjuração ativa**, não uma cura gratuita passiva. Para cada **3 marcas elegíveis de sangue derivadas de dano direto à Vida**, pode-se recuperar **1 Vida**, até o máximo. Não há mais uma ação de Extração de Sangue nem reserva de sangue extraído separada. As 3 marcas devem estar disponíveis na reserva de **sangue derramado de inimigos**, após qualquer gasto anterior; não contar duas vezes a mesma perda de Vida.
 
 
-**Exclusividade racial [DEFINIDO — 20/11/2026]:** **Transfusão Sanguinária só pode ser comprada ou utilizada por Luckers de Sangue**. Lucker Puro que conhece Sangue não obtém essa permissão. A exclusividade **não altera o custo de 1 XP**, nem concede Transfusão gratuitamente; a aquisição da Perícia prévia Transfusão ainda está pendente.
+**Exclusividade racial [DEFINIDO — SRD v0.132]:** Transfusão Sanguinária é recebida por Luckers de Sangue na criação, por 0 XP. Lucker Puro que conhece Sangue não obtém essa permissão. Não concede a Perícia Transfusão separadamente nem elimina os custos e condições de uso já definidos; a relação com a Perícia Transfusão prévia permanece pendente de esclarecimento.
 
 **Geração das marcas [DEFINIDO — SRD v0.72]:** para cada **1 ponto de dano direto aplicado à Vida**, registra-se **1 marca**. Um golpe que causa 3 de dano à Vida produz **3 marcas**, não apenas uma. Dano absorvido pela armadura e Sangramento sem dano não geram marcas. O protótipo registra apenas **sangue derramado de inimigos**; sacrifícios de Vida do próprio Hemomante **não** são automaticamente adicionados a essa reserva.
 
@@ -1856,7 +1630,7 @@ A ficha do Hemomante possui **uma reserva manual de sangue derramado de inimigos
 
 ### Armas de Fogo [DEFINIDO / dependência PENDENTE]
 
-- **Perícia em Armas de Fogo:** 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente **outras características**, e acerto normal custa 1 Coragem para essas ativações. **Perfurante da própria arma de fogo é passivo e não exige esse gasto.** Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
+- **Perícia em Armas de Fogo:** concessão inicial gratuita para Humanos; referência nominal de compra: 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente **outras características**, e acerto normal custa 1 Coragem para essas ativações. **Perfurante da própria arma de fogo é passivo e não exige esse gasto.** Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
 - **Descarregar Tambor:** modalidade de Disparo Múltiplo exclusivamente com arma automática ou semiautomática, alvo ÚNICO, um teste, consome todas as munições disponíveis, custa **1 Coragem por tiro**. Primeiro tiro dano integral de Êxitos; demais metade dos Êxitos cada (arredondar para baixo). Temor NÃO causa dano. Um Temor mantido e não anulado provoca travamento em arma sujeita; T anulado por A ou descartado não trava. O revólver não trava e não é automático. Disparo Fulminante não se aplica a armas de fogo. **PENDENTE:** exceção de acesso a Disparo Múltiplo para especialistas só em armas de fogo, pois seu requisito atual exige Fulminante/Longo Alcance/Arremesso.
 
 ### Veneno e Antídoto [DEFINIDO / evolução PENDENTE]
@@ -1934,6 +1708,246 @@ Os Runa Espinhos e Runalmas compartilham uma tradição de nomes construída a p
 Um grupo pode acompanhar uma expedição às cavernas das Espinhas do Mundo, procurar desaparecidos nas montanhas, resgatar prisioneiros, recuperar conhecimento perdido ou investigar máquinas cuja natureza ninguém consegue explicar. As alianças do grupo influenciam os lugares em que será acolhido e os perigos que encontrará.
 
 Estas crônicas não encerram a história do Codex. Há seres angelicais, elementais, golens, monstros e vestígios de épocas esquecidas além do que estas páginas descrevem. O mundo está aberto à descoberta; as respostas que ainda faltam pertencem às aventuras.
+
+## Parte VI — Interpretando seu personagem
+
+A origem e a história de um Aprendiz ajudam a construir sua identidade, seus vínculos e seu modo de agir. Use as tradições como inspiração, não como uma obrigação de personalidade. Os traços narrativos não criam benefícios mecânicos adicionais.
+
+## Luckers — guia de interpretação
+
+### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
+
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo Crie seu Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
+
+#### Dois destinos para um povo antigo
+
+Há cerca de **20 mil anos**, a Queda e o chamado **Infortúnio dos Luckers** marcaram o destino desse povo. Guerras mágicas, cidades perdidas e tradições contraditórias obscureceram o passado. A causa verdadeira do Infortúnio **não é conhecimento público**: lendas podem falar em castigo, mas não são uma explicação confirmada para os personagens.
+
+- **Luckers Puros — imortalidade com vida.** Conservam vitalidade sem envelhecer até morrer e continuam capazes de sentir o mundo e suas emoções. **Podem ser mortos se forem abatidos.** As guerras reduziram seu número, e hoje restam poucos. Um Puro pode temer uma batalha, amar alguém, cultivar hábitos e escolher o que fazer com o tempo — não é obrigado a ser solene nem a conhecer toda a história.
+- **Luckers de Sangue — permanência sem sensação.** A condição que os atingiu retirou-lhes a experiência das sensações físicas e das emoções, mas **não a consciência, a cognição ou a capacidade de aprender**. São imortais de maneira literal: não alcançam a morte definitiva. A existência pode prosseguir mesmo quando o corpo é ferido, aprisionado ou soterrado. A maneira exata de representar destruição corporal extrema **não está definida para personagens** e cabe à condução do Narrador, sem imunidades mecânicas presumidas.
+
+Um Puro possui uma vida que pode ser interrompida. Um Lucker de Sangue possui uma existência que não consegue encerrar, sem poder experimentá-la como os demais. **Ambos continuam sendo pessoas distintas**, não modelos fixos de personalidade.
+
+#### Interpretar um Lucker Puro
+
+Um Puro **sente**, e sua longevidade altera sobretudo sua relação com o tempo. Ele pode pensar em séculos, mas também agir impulsivamente, mudar de opinião, errar, esquecer e aprender. Ter vivido muito **não concede conhecimento automático**, principalmente sobre acontecimentos que não presenciou.
+
+Perguntas para construir sua interpretação:
+
+1. Quais perdas, compromissos ou lugares marcaram sua história?
+2. Ele se aproxima dos povos mortais ou evita vínculos que podem terminar?
+3. A possibilidade de morrer em combate o torna prudente, corajoso ou indiferente ao risco?
+4. O que ele ainda deseja descobrir, construir ou preservar?
+
+**Exemplo de diálogo:**
+
+> **Humano:** “Você acredita que esta cidade vai durar?”
+>
+> **Lucker Puro:** “Eu vi duas cidades erguidas neste vale. Esta ainda pode ser a que aprende com as anteriores.”
+
+#### Interpretar um Lucker de Sangue
+
+**A regra central da interpretação é separar compreender de sentir.** Um Lucker de Sangue pode reconhecer uma ameaça, identificar sinais de tristeza, estudar o amor e entender o valor de um compromisso. Ele não precisa experimentar dor, medo, alegria ou afeto para **tomar decisões**.
+
+- **Observação não é experiência.** Ele pode estudar o choro e reconhecer o luto sem conhecer internamente a tristeza. A percepção e a comunicação necessárias à cena existem na ficção, mas os meios precisos pelos quais isso ocorre ainda não constituem regras mecânicas.
+- **Ausência de sensação não é ausência de caráter.** Um Lucker pode ser gentil, cruel, ético, protetor, irônico, paciente ou obstinado. Suas decisões podem vir de princípios, memória, hábitos, cálculos ou promessas, sem emoção correspondente.
+- **Não sentir dor não o torna invencível em jogo.** Ferimentos, restrições, captura, incapacidade de agir e conflitos continuam relevantes. A maldição não concede benefícios automáticos à ficha.
+- **Intensidade não é cura.** Um golpe mais forte, uma batalha ou uma grande demonstração de carinho não faz um Lucker voltar a sentir por padrão. Qualquer exceção pertence à história conduzida pelo Narrador, não a um recurso livre do jogador.
+- **Nem todos pensam ou falam da mesma forma.** Alguns usam linguagem objetiva, outros aprenderam gestos sociais, metáforas, humor ou estilos muito próprios. Não é necessário interpretar um robô, falar apenas com números ou responder tudo literalmente.
+
+**Exemplo de diálogo:**
+
+> **Companheiro:** “Você não tem medo de entrar?”
+>
+> **Lucker de Sangue:** “Não experimento medo. Mas reconheço a possibilidade de ficarmos presos e prefiro preservar nossa passagem.”
+
+Outro Lucker poderia responder apenas “É perigoso. Vamos por outro caminho”. Ambos são interpretações válidas.
+
+#### Diários, memória e linguagem própria
+
+Muitos Luckers de Sangue mantêm **diários** para registrar experiências observadas, decisões, vínculos e mudanças de comportamento. Não são obrigados a esquecer o que viveram: os registros podem ajudá-los a **organizar a identidade e compreender experiências que não conseguem sentir**.
+
+Alguns criaram maneiras próprias de falar, com palavras para padrões de comportamento que os humanos chamariam de saudade, carinho, prazer ou sofrimento. O jogador pode inventar expressões, mas deve explicar seu significado ao grupo para não transformar a interpretação em obstáculo à mesa.
+
+**Exemplo de registro fictício:**
+
+> **Registro 4.821.** Ela afirmou ter sentido alegria ao meu retorno. Reconheci os sinais que descreveu em outros encontros. Minha presença parece ser importante para ela. Registrei que continuarei voltando a este lugar.
+
+Os números e as pessoas do exemplo são ilustrativos, não cronologia oficial do cenário.
+
+#### Vinte mil anos não criam uma única resposta
+
+Alguns Luckers de Sangue procuram uma forma de se libertar da condição. Outros desenvolveram modos próprios de existir. Há indivíduos que ficaram profundamente desorganizados após épocas de isolamento, exploração e aprisionamento; isso **não significa que todos sejam violentos ou incapazes de raciocinar**.
+
+A imortalidade também os tornou alvos de **escravização e utilização como ferramentas**. Há relatos de Luckers perdidos em cavernas e ruínas, soterrados por milênios; uma formação que parece apenas pedra pode ocultar um deles. O tempo de cativeiro não torna esses indivíduos automaticamente sábios nem hostis.
+
+O personagem pode ser um guardião, estudioso, errante, escriba, viajante ou qualquer outra pessoa com objetivos próprios. Esses são **conceitos de interpretação**, não profissões, Perícias ou benefícios de ficha.
+
+#### Interpretar vínculos com os vivos
+
+Um Lucker de Sangue pode preservar relações, cuidar de alguém, viver em família e cumprir promessas. **Vínculo e emoção não são a mesma coisa** neste contexto: para ele, a ligação pode existir como compromisso, lembrança e escolha consciente.
+
+> **Humana:** “Por que continua me acompanhando, se não sente amizade?”
+>
+> **Lucker de Sangue:** “Prometi estar aqui. Continuo considerando essa promessa importante.”
+
+O jogador não precisa repetir a maldição em toda conversa. Mostre a diferença quando ela realmente importar para uma decisão, um conflito ou um diálogo.
+
+#### Oficina de interpretação: sete maneiras de ser um Lucker
+
+**DEFINIDO no conceito, ORIENTAÇÃO na atuação:** a maldição determina a ausência de sensações dos Luckers de Sangue, mas **não obriga a mesma personalidade, voz ou comportamento**. A interpretação aparece nas palavras, no silêncio, na postura e em hábitos aprendidos. Escolha um estilo principal e um contraste; não precisa representar todos os cacoetes toda hora.
+
+Use marcações breves como *[pausa]*, *[observa o diário]* e *[repete a palavra]*. Uma pausa funciona quando tem motivo: recordar, medir, escolher uma fórmula social ou organizar lembranças. **Nenhum exemplo abaixo cria Perícias, imunidades, condições ou habilidades mecânicas.**
+
+##### 1. O Lógico — a razão como abrigo
+
+**Conceito:** Procura causas, padrões e explicações. Não é onisciente, nem incapaz de fazer escolhas pessoais que pareçam ineficientes.
+
+- **Voz:** Ritmo regular; respostas objetivas; distingue fato, hipótese e opinião; pode corrigir a própria frase.
+- **Olhar e postura:** Observa portas, posições, objetos e reações do grupo, mais do que encarar os olhos.
+- **Pausa:** Conta silenciosamente ou reconstrói as circunstâncias antes de responder.
+- **Cacoete:** Alinha objetos e repete 'Corrigindo...' quando encontra um erro.
+- **Contraste:** Cumpre uma promessa mesmo quando isso não é a opção mais eficiente.
+
+> **Aliado: 'Você vai ficar comigo?'**
+>
+> **Lucker de Sangue:** [olha a saída, pausa] 'Sim. Minha presença reduz o risco de você permanecer sozinho. ... E eu prometi ficar.'
+
+**Cuidado na mesa:** Não use números inventados como poderes de previsão nem faça o personagem ter razão em tudo.
+
+##### 2. O Vazio — apatia sem paralisia
+
+**Conceito:** Aparenta não responder aos acontecimentos, mas continua capaz de tomar decisões, defender seus princípios e cuidar de outras pessoas.
+
+- **Voz:** Tom baixo e uniforme, frases curtas, nenhuma explicação além do necessário.
+- **Olhar e postura:** Fica imóvel por longos períodos; o olhar repousa num detalhe qualquer; move-se de maneira econômica.
+- **Pausa:** Deixa o silêncio se prolongar antes de responder, sem procurar preenchê-lo.
+- **Cacoete:** Alisa uma dobra da roupa ou fecha o diário na mesma posição.
+- **Contraste:** Age imediatamente para salvar alguém, embora permaneça sem expressão.
+
+> **Aliada: 'Ela morreu. Você não vai dizer nada?'**
+>
+> **Lucker de Sangue:** [permanece imóvel, longa pausa] 'Não sei o que acrescentar. Vou guardar os objetos dela.'
+
+**Cuidado na mesa:** Apatia não é desculpa para ficar fora do jogo ou impedir a aventura de avançar.
+
+##### 3. O Fragmentado — o 'louco' aos olhos dos outros
+
+**Conceito:** Após séculos de sepultamento, escravidão ou isolamento, embaralha a ordem de certos acontecimentos. Sua memória pode conservar informações úteis mesmo quando a fala parece desorganizada. É uma possibilidade ficcional, não um diagnóstico de psicose.
+
+- **Voz:** Começa relatos com precisão e os interrompe com referências a épocas remotas; retoma frases antigas mais tarde.
+- **Olhar e postura:** Conta rachaduras, marca paredes e observa sinais que associa a lugares perdidos.
+- **Pausa:** Fica em silêncio ao ouvir uma palavra ligada ao passado; depois retoma de onde parou.
+- **Cacoete:** Risca datas na pedra ou repete o início de uma anotação: 'Registro... registro...'.
+- **Contraste:** Percebe com lucidez um perigo que o grupo não notou.
+
+> **Aliado: 'Há quanto tempo você está soterrado?'**
+>
+> **Lucker de Sangue:** 'Quarenta e dois invernos. ... Não. Quarenta e duas dinastias.' [risca a parede] 'Não encoste na coluna norte. Ela cede primeiro.'
+
+**Cuidado na mesa:** Não transforme sofrimento psíquico em piada, violência automática ou gritos aleatórios; combine o tom com a mesa.
+
+##### 4. O Eco — o imitador de emoções
+
+**Conceito:** Aprendeu expressões humanas pela observação e procura reproduzi-las para facilitar o convívio, sem experimentar a emoção correspondente.
+
+- **Voz:** Repete fórmulas sociais; às vezes usa um cumprimento ou uma entonação no momento inadequado.
+- **Olhar e postura:** Observa os rostos dos outros antes de sorrir ou oferecer um gesto de consolo.
+- **Pausa:** Espera um instante para verificar como os demais reagem.
+- **Cacoete:** Ensaia expressões no reflexo de metal ou anota que palavras funcionaram.
+- **Contraste:** Quando percebe que a imitação incomoda, prefere explicar suas intenções diretamente.
+
+> **Humana: 'Estou feliz que você voltou!'**
+>
+> **Lucker de Sangue:** [observa o sorriso dela e sorri atrasado] 'Também estou feliz.' [pausa] 'A frase corresponde à situação? Eu quis dizer que escolhi voltar por você.'
+
+**Cuidado na mesa:** Não faça da imitação uma piada repetitiva nem trate gestos aprendidos como cura da maldição.
+
+##### 5. O Guardião — a promessa acima da emoção
+
+**Conceito:** Sustenta a identidade em um juramento, clã, lugar ou pessoa. A lealdade é uma escolha preservada em registros e ações, não um sentimento recuperado.
+
+- **Voz:** Frases firmes e diretas; recita compromissos como se fossem fórmulas antigas.
+- **Olhar e postura:** Mantém-se perto de quem protege; observa rotas de fuga; ocupa a entrada sem chamar atenção.
+- **Pausa:** Consulta mentalmente ou no diário suas promessas antes de aceitar outra obrigação.
+- **Cacoete:** Ajeita uma fita, um medalhão ou uma lista de nomes.
+- **Contraste:** Aprende que respeitar a vontade de alguém pode exigir mudar a forma de cumprir uma promessa.
+
+> **Criança: 'Por que você nunca vai embora?'**
+>
+> **Lucker de Sangue:** [ajeita a fita no braço] 'Prometi que esperaria.' [pausa] 'Mas posso partir, se você desejar.'
+
+**Cuidado na mesa:** Não transforme proteção em controle sobre os outros personagens nem em obediência sem autonomia.
+
+##### 6. O Investigador — estudar o que não pode sentir
+
+**Conceito:** Observa e registra o que os mortais descrevem como prazer, saudade e medo. Não é automaticamente um fanático antigo nem conhece a causa secreta do Infortúnio.
+
+- **Voz:** Perguntas específicas; reformula hipóteses; usa expressões como 'Segundo meus registros...'.
+- **Olhar e postura:** Acompanha expressões alheias, protege seus cadernos e compara suas observações.
+- **Pausa:** Interrompe uma pergunta ao perceber que o interlocutor não deseja ser estudado.
+- **Cacoete:** Repete três perguntas fixas e assinala contradições com um símbolo próprio.
+- **Contraste:** Decide respeitar a intimidade de alguém mesmo quando perde a chance de aprender.
+
+> **Aliada: 'Não quero explicar o que estou sentindo.'**
+>
+> **Lucker de Sangue:** [fecha o caderno] 'Entendido. ... Não registrarei nada sem sua permissão.'
+
+**Cuidado na mesa:** O desejo de conhecer não autoriza manipular pessoas ou inventar revelações do cenário.
+
+##### 7. O Puro Ancestral — longa vida, emoções presentes
+
+**Conceito:** Não compartilha a ausência de sensações dos de Sangue. Pode sentir medo, ternura, tristeza e raiva, mesmo após milênios de existência; ainda pode morrer se for abatido.
+
+- **Voz:** Pode usar expressões de épocas diferentes, hesitar ao falar de mortos ou mudar de tom ao lembrar de algo.
+- **Olhar e postura:** Guarda uma relíquia, toca um medalhão ou se detém diante de arquitetura antiga.
+- **Pausa:** Emudece ao reconhecer um nome ou lugar que acreditava perdido.
+- **Cacoete:** Chama ruínas por antigos nomes ou corrige datas segundo calendários esquecidos.
+- **Contraste:** Apesar de milênios de experiência, pode ser apaixonado, imprudente e temer a própria morte.
+
+> **Companheiro: 'Você está com medo?'**
+>
+> **Lucker Puro:** [aperta o medalhão] 'Estou. Sobrevivi a guerras demais para confundir medo com covardia.'
+
+**Cuidado na mesa:** Não confunda longevidade com sabedoria absoluta, frieza emocional ou invulnerabilidade.
+
+##### A mesma cena, seis interpretações
+
+**Situação:** o grupo encontra um aliado morto numa ruína. Um Lucker de Sangue o conhecia havia décadas. A situação não devolve sensações a nenhum deles.
+
+| Estilo | Primeira fala | O que faz |
+|---|---|---|
+| Lógico | 'Precisamos determinar a causa antes de mover o corpo.' | Registra sinais e organiza a saída. |
+| Vazio | 'Ele não vai nos acompanhar.' [silêncio] | Recolhe os pertences sem fazer comentários. |
+| Fragmentado | 'Já aconteceu nesta passagem... ou naquela era?' | Marca a parede e lembra um detalhe útil. |
+| Eco | [observa os demais] 'Sinto muito.' | Tenta oferecer um gesto de consolo aprendido. |
+| Guardião | 'Ele estava sob minha responsabilidade.' | Fica junto ao corpo até decidirem como proceder. |
+| Investigador | 'Ele dizia que partir é diferente de desaparecer.' | Guarda a frase em seu diário. |
+
+##### Exercício: um personagem reconhecível em cinco escolhas
+
+1. **Ritmo:** fala rápido, mantém longos silêncios ou retoma frases fora de ordem?
+2. **Gestos:** escolha **um ou dois** movimentos recorrentes; de onde vieram?
+3. **Expressão:** “Corrigindo...”, “Segundo meus registros...”, “Permaneço”, “Na última vez...”. Escolha a sua.
+4. **Gatilho:** o que interrompe o padrão — uma promessa, um número, um nome, um rosto, uma porta selada?
+5. **Contradição:** em que momento sua atitude surpreende os outros sem trair seus valores?
+
+**Treine uma fala curta:** uma frase normal, uma pausa com propósito e um gesto significativo. Se repetir o mesmo recurso a cada sentença, ele perde efeito e atrapalha o ritmo da mesa. O Lucker pode aprender linguagem social e mudar seus hábitos **sem recuperar sensações**. Desorganização após isolamento não significa que todos sejam violentos ou que sofrimento psicológico seja motivo de humor. Combine limites de interpretação com o grupo.
+
+#### Exercício rápido para o jogador
+
+Antes de interpretar um Lucker, responda:
+
+1. Ele é **Puro** ou **de Sangue**? Como isso afeta sua relação com a vida e o tempo?
+2. O que **presenciou** e o que conhece apenas por relatos? O que **não sabe**?
+3. Quais compromissos, objetivos e hábitos orientam suas escolhas?
+4. Que relação mantém com outros povos? O que pensa sobre sua própria condição?
+5. Se for de Sangue, ele usa **diários**, símbolos, rotinas ou linguagem própria? Como se comunica com seus aliados?
+6. O que seus companheiros descobrem sobre ele **pelas ações**, sem que precise explicar tudo?
+
+**Evite estes equívocos:** interpretar todos os Puros como seres perfeitos; transformar todos os de Sangue em máquinas frias, vilões ou indivíduos desorganizados; tratar ausência de emoção como ausência de ética; presumir conhecimento de segredos antigos; usar a imortalidade narrativa para ignorar as consequências das regras.
+
+**Em resumo:** o Lucker Puro pode viver por eras, mas ainda pode morrer. O Lucker de Sangue pode continuar existindo por eras sem experimentar o que os outros chamam de viver. **Como cada um responde a isso é o que torna o personagem único.**
 
 ## Referência de continuidade
 
