@@ -529,15 +529,15 @@ Todos começam com um dado em cada Aptidão, mesmo antes de investir XP: 1d4 em 
 
 As tabelas a seguir mostram os custos normais de cada avanço e o total investido desde o Grau 0. As vantagens e desvantagens de origem alteram os custos das Aptidões indicadas na linhagem.
 
-### ◇ Atributos — possibilidades e efeitos na ficha
+### ◇ Atributos — as capacidades do seu Aprendiz
 
-Atributos não são apenas dados: alguns também alteram **Vida, capacidade de carga, deslocamento e defesa**. Outros ajudam a encontrar soluções que não dependem de combate.
+Os Atributos representam as capacidades físicas, mentais e sociais do seu Aprendiz. Desenvolvê-los abre novas maneiras de superar obstáculos: resistir ao perigo, alcançar lugares distantes, compreender o desconhecido ou inspirar outras pessoas. Alguns também ampliam sua Vida, capacidade de carga, deslocamento e defesa.
 
 #### ◇ Força
 
 Potência física para vencer resistência, deslocar massas e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços, transportar um companheiro ferido ou disputar espaço com um oponente. Sua utilidade vai além de atacar: em uma exploração, abrir caminho ou proteger a retirada do grupo pode ser a melhor contribuição.
 
-**Na ficha:** A Vida máxima recebe +1 a cada dois graus completos de Força. Para saber quanto pode carregar, some os Graus de Força, Vigor e Atletismo. A cada **3 Graus somados**, você ganha **1 Alto** de capacidade corporal, além do **1 Alto inicial**. A mochila acrescenta **0,5 Alto**.
+Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**. Some Força, Vigor e Atletismo: a cada **3 Graus somados**, sua capacidade corporal aumenta em **1 Alto**, além do **1 Alto inicial**. A mochila oferece mais 0,5 Alto.
 
 **Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
 
@@ -545,7 +545,7 @@ Potência física para vencer resistência, deslocar massas e aplicar força de 
 
 Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
 
-**Na ficha:** Cada grau soma 1 metro ao deslocamento padrão e 1 à parcela de Agilidade na DE defensiva natural, respeitando tetos e modificadores.
+Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Cada Grau de Agilidade acrescenta **1 metro ao deslocamento padrão** e **+1 à DE defensiva natural**, respeitando os limites da defesa.
 
 **Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
 
@@ -553,7 +553,7 @@ Capacidade de reagir rapidamente, mudar de direção e controlar a própria posi
 
 Reúne percepção, mira e precisão: notar detalhes do ambiente, acompanhar movimentos, identificar sinais de perigo e coordenar mãos e ferramentas. É a diferença entre executar uma tarefa com cuidado e realizá-la de modo grosseiro. Perceber uma marca não significa entender sua origem; para interpretar aquilo que viu, pode ser necessário outro Conhecimento.
 
-**Na ficha:** Destreza e Vigor ajudam na defesa: a cada **2 Graus somados** entre eles, sua DE defensiva natural aumenta em **1**, respeitando os limites.
+A precisão dos movimentos também ajuda a reagir às ameaças. A cada **2 Graus somados de Destreza e Vigor**, sua DE defensiva natural aumenta em **1**, respeitando os limites de defesa.
 
 **Possibilidades em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para localizar e retirar um material frágil.
 
@@ -561,7 +561,7 @@ Reúne percepção, mira e precisão: notar detalhes do ambiente, acompanhar mov
 
 Capacidade de raciocinar, relacionar informações, aprender e elaborar soluções. Permite investigar causas, prever consequências e escolher um método em vez de depender apenas da tentativa e erro. É especialmente valiosa quando o grupo enfrenta algo desconhecido, como uma máquina antiga, uma substância estranha ou um fenômeno cuja lógica precisa ser descoberta.
 
-**Na ficha:** Não aumenta automaticamente Vida, carga ou DE defensiva natural; seus graus oferecem dados em testes pertinentes e podem cumprir requisitos de Perícias.
+A Inteligência é o Atributo fundamental da conjuração: sem ela, o Aprendiz não consegue conjurar uma magia. A Disciplina e as Perícias pertinentes permitem transformar sua compreensão da magia em ação. Também é essencial para elaborar estratégias, avaliar riscos e identificar fragilidades. Junto à Influência, orienta a liderança: compreender o que precisa ser feito e conduzir o grupo nessa direção. Para os inimigos, esses Atributos ajudam o Narrador a caracterizar sua capacidade estratégica e sua liderança. Consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
 **Possibilidades em jogo:** Inteligência + Engenharia para identificar uma falha mecânica; Inteligência + Alquimia para investigar uma mistura; Inteligência + Erudição para relacionar pistas históricas. Não substitui o treinamento ou os materiais necessários para executar a solução.
 
@@ -569,7 +569,7 @@ Capacidade de raciocinar, relacionar informações, aprender e elaborar soluçõ
 
 Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Pode servir para negociar, persuadir, intimidar, inspirar, provocar ou mediar uma disputa. Uma ameaça pode ser resolvida oferecendo uma saída aceitável ao adversário, descobrindo seus interesses ou convencendo-o de que lutar não vale a pena. É uma via de protagonismo tão relevante quanto a força física.
 
-**Na ficha:** Não obriga criaturas a obedecer nem garante uma resolução pacífica. O Narrador considera a compreensão, os interesses e a disposição do interlocutor para determinar se há teste e qual é a DE.
+Liderar envolve conquistar a confiança dos aliados, transmitir intenções e inspirar decisões coletivas. Enquanto a Inteligência ajuda a elaborar a estratégia, a Influência permite comunicá-la e mobilizar o grupo. A disposição e a compreensão de quem ouve continuam importantes; o Narrador considera a situação para determinar se há teste e qual é a DE.
 
 **Possibilidades em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais. O diálogo precisa fazer sentido para o interlocutor: criaturas incapazes de compreender a proposta não se tornam obedientes por causa de um teste.
 
@@ -577,7 +577,7 @@ Capacidade de transmitir intenções, conquistar confiança e alterar a disposi�
 
 Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajuda a enfrentar jornadas cansativas, esforços prolongados e ambientes hostis quando resistir é o objetivo da ação. Distingue-se de Força: erguer algo muito pesado exige potência; sustentar o esforço por muito tempo pode exigir Vigor.
 
-**Na ficha:** Cada grau acrescenta 1 à Vida máxima. Também ajuda na capacidade de carga junto com Força e Atletismo (mais **1 Alto** a cada **3 Graus somados**) e na defesa junto com Destreza (**+1 DE** a cada **2 Graus somados**).
+Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**. A cada **3 Graus somados de Força, Vigor e Atletismo**, sua capacidade corporal aumenta em **1 Alto**. A cada **2 Graus somados de Vigor e Destreza**, sua DE defensiva natural recebe **+1**, respeitando seus limites. Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor + 1, caso escolha recuperá-la.
 
 **Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
 
@@ -605,9 +605,7 @@ Práticas representam atividades treinadas e ajudam a transformar intenções em
 
 #### ⚔ Disciplina
 
-Disciplina é uma única Prática: seus dados podem servir tanto a técnicas com armas quanto à conjuração, de acordo com as Perícias que você possui. Não é necessário comprar Disciplina novamente para usar magia, nem se recebe uma segunda pilha de dados por ter as duas habilitações. Técnicas com punhos também exigem a habilitação pertinente.
-
-Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange a aplicação de uma arma, o domínio de movimentos de combate e a execução de uma conjuração habilitada. Não representa duas Práticas diferentes: o equipamento e as Perícias adquiridas determinam quais técnicas o personagem pode realizar. Um especialista pode construir sua profissão em torno das armas, da magia ou de uma combinação das duas.
+Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange o uso de armas, o domínio de movimentos de combate e, junto à Inteligência, a execução de conjurações habilitadas. Disciplina é uma única Prática: você pode se especializar em armas, magia ou combinar ambas sem comprar a mesma Aptidão duas vezes. Equipamentos e Perícias determinam as técnicas disponíveis, inclusive o uso especializado dos punhos.
 
 **Possibilidades em jogo:** Disciplina + Força para aplicar potência a um golpe com arma habilitada; Disciplina + Destreza para mirar; Disciplina + Inteligência para executar uma conjuração permitida. A Especialização em Disciplina permite acrescentar uma terceira Aptidão quando Disciplina é a principal, sem dispensar as habilitações específicas.
 
@@ -615,7 +613,7 @@ Treinamento para executar técnicas marciais e mágicas com controle, precisão 
 
 Treinamento do corpo para deslocar-se e superar obstáculos de maneira eficiente. Inclui corrida, salto, escalada, equilíbrio e esforço coordenado. Diferentemente de Força, que mede potência, Atletismo representa a técnica para utilizar o corpo. Um personagem atlético pode abrir rotas para o grupo, alcançar posições vantajosas ou atravessar terrenos difíceis.
 
-**Na ficha:** A cada 3 Graus de Atletismo, você recebe +1 metro de deslocamento e +1 à DE defensiva natural, respeitando os limites. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
+O treino aprimora seu deslocamento e sua capacidade de reagir aos perigos. A cada **3 Graus de Atletismo**, você recebe **+1 metro de deslocamento padrão** e **+1 à DE defensiva natural**, respeitando seus limites. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
 
 **Possibilidades em jogo:** Atletismo + Agilidade para cruzar plataformas; Atletismo + Força para escalar carregando equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
 
