@@ -95,7 +95,7 @@ test("Compra de XP usa progressões distintas e perícias sem custo inventado",(
  assert.equal(xp.training,2);
  assert.equal(xp.skills,2);
  assert.equal(xp.grant,15);
- assert.equal(naturalDE(s),2); // AGI1 + piso((VIG1 + DES1)/2)
+ assert.equal(naturalDE(s),4); // base 2 + AGI1 + piso((VIG1 + DES1)/2)
  assert.equal(lifeMax(s),5);
  assert.equal(maxCourage(1),10);assert.equal(maxCourage(5),11);assert.equal(maxCourage(10),12);assert.equal(maxCourage(20),13);
  assert.equal(skillPrerequisite({...s,practices:{...s.practices,artesao:1}},"criar-item-foco-magia"),false);
