@@ -983,7 +983,7 @@ Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afe
 [Referência de mecânica](../mecanicas/inventario-e-acesso-rapido.html) · [SRD v0.109](srd-continuidade-v0.109.md).
 
 
-**Saque Rápido [DEFINIDO — 24/11/2026]:** aquisição 1 XP, Agilidade 2 + Destreza 1 + Disciplina 2. Armas distinguem inventário, acesso rápido e mãos; arma de duas mãos ocupa ambas, arma de uma mão ocupa uma. Escudo empunhado ocupa uma mão. Carga transportada não muda por posição. [SRD v0.110](srd-continuidade-v0.110.md).
+**Saque Rápido [DEFINIDO — 24/11/2026]:** aquisição 1 XP, Agilidade 2 + Destreza 1 + Disciplina 2. Armas distinguem inventário, acesso rápido e mãos; arma de duas mãos ocupa ambas, arma de uma mão ocupa uma. Escudo empunhado ocupa uma mão. Por padrão, armas Leves e Médias ocupam uma mão e Pesadas ocupam duas; modelos com empunhadura específica prevalecem. Carga transportada não muda por posição. [SRD v0.110](srd-continuidade-v0.110.md).
 
 
 **Correção autoral — SRD v0.111 (24/11/2026):** Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Substitui a regra anterior de Golpe de Sorte por ausência de Antecipar no saque. [SRD v0.111](srd-continuidade-v0.111.md).

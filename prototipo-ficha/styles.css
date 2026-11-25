@@ -1986,3 +1986,9 @@ button.fp-vital-inventory:hover,button.fp-vital-inventory:focus-visible{border-c
 .fp-npc-embed-bottom span{font-size:12px;color:var(--fp-text)}
 @media(max-width:650px){.fp-body.fp-npc-embedded .fp-npc-embed-bottom{flex-direction:column;align-items:stretch}
  .fp-npc-embed-bottom button{width:100%}}
+
+/* SRD v0.152: painel de organização das mãos e acesso rápido */
+.fp-hand-panel{border:1px solid var(--fp-stroke);border-radius:10px;padding:12px;margin:0 0 14px;background:var(--fp-surface)}
+.fp-hand-panel h5{margin:12px 0 6px;color:var(--fp-gold);font-size:12px}
+.fp-hand-grid,.fp-quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fp-quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fp-hand-slot{display:flex;flex-direction:column;gap:6px;min-width:0;padding:10px;border:1px dashed var(--fp-stroke);border-radius:8px;overflow-wrap:anywhere}.fp-hand-slot.is-occupied{border-style:solid;background:var(--fp-deep)}.fp-hand-slot small,.fp-hand-slot span{font-size:11px;color:var(--fp-muted)}.fp-hand-slot strong{font-size:13px}.fp-hand-panel button{white-space:normal;min-height:36px}.fp-hand-available{display:grid;gap:6px}.fp-hand-available>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fp-hand-available strong{flex:1;min-width:90px;font-size:12px}@media(max-width:480px){.fp-quick-grid{grid-template-columns:1fr}.fp-hand-slot{padding:8px}}

@@ -2536,9 +2536,9 @@ function itemHands(it){
  if(it.type==="escudo")return 1;
  if(it.type!=="arma")return 0;
  if([1,2].includes(Number(it.hands)))return Number(it.hands);
- if(/(?:duas|2) mãos|^arco longo/i.test(it.name))return 2;
- if(/(?:uma|1) mão/i.test(it.name))return 1;
- return 0;
+ if(/(?:duas|2) mãos|^arco (?:curto|longo)|^besta pesada/i.test(it.name||""))return 2;
+ if(/(?:uma|1) mão/i.test(it.name||""))return 1;
+ return ["pesado","alto","extremo","muito-pesado","muito_pesado"].includes(it.category||it.weight)?2:1;
 }
 function handItem(it){return ["arma","escudo"].includes(it.type);}
 function itemPosition(it){return it.equipped&&handItem(it)?"hands":it.position==="quick"&&(it.type==="arma"||it.ammoRole==="container")?"quick":"bag";}
@@ -2551,7 +2551,8 @@ function setItemPosition(it,pos){
  if(pos!=="bag"&&!validBodyChange(it,pos))return false;
  if(it.ammoRole==="container"){if(!["bag","quick"].includes(pos))return false;it.position=pos;it.equipped=false;return true;}
  if(!handItem(it)||!["bag","quick","hands"].includes(pos)||pos==="quick"&&it.type!=="arma")return false;
- if(pos==="hands"&&!canHoldItem(it)){toast("Informe 1 ou 2 mãos, use uma entrada de quantidade 1 e libere as mãos necessárias.");return false;}
+ if(pos==="hands"&&it.shieldGrounded){toast("Confirme a recuperação do escudo antes de equipar.");return false;}
+ if(pos==="hands"&&!canHoldItem(it)){toast(it.qty!==1?"Separe uma unidade do item para empunhar.":"Mãos insuficientes: "+it.name+" precisa de "+itemHands(it)+" mão(s). Guarde ou coloque outra arma no acesso rápido.");return false;}
  it.position=pos;it.equipped=pos==="hands";return true;
 }
 function normalizeItem(it={}){
@@ -4085,7 +4086,7 @@ function wizardEquipment(){
    (it.description?'<p>'+esc(it.description)+'</p>':'<p>As características exigem Perícia apropriada; não concedem bônus automáticos.</p>')+
    (preview?purchaseLoadMarkup(preview):'')+
    (purchasable?'<button type="button" data-action="wizard-buy-item" data-item="'+esc(it.name)+'"'+
-    (remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar · '+price+' VT')+'</button>':
+    (remaining>=price&&!changed?'':' disabled')+'>'+(changed?'Confirme recursos':remaining<price?'Sem VT':'Comprar · '+price+' VT')+'</button>'+(["weapon","firearm","shield"].includes(it.kind)?'<button type="button" class="fp-secondary" data-action="wizard-buy-equip" data-item="'+esc(it.name)+'"'+(remaining>=price&&!changed?'':' disabled')+'>Comprar e empunhar</button>':''):
     '<span class="fp-wiz-muted">Não disponível para compra automática</span>')+
    '</div></details>';
  }).join("");
@@ -4099,7 +4100,7 @@ function wizardEquipment(){
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
  '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
- '<section class="fp-wiz-vt-section"><h4>Seus itens iniciais</h4><div class="fp-wiz-owned-list">'+owned+'</div></section>'+
+ '<section class="fp-wiz-vt-section"><h4>Seus itens iniciais</h4>'+handPanelMarkup()+'<div class="fp-wiz-owned-list">'+owned+'</div></section>'+
  '<div class="fp-wiz-reminder"><strong>VT não é XP</strong><p>Você não precisa gastar todo o patrimônio. Itens comprados aparecem na ficha e podem ser equipados conforme as regras.</p></div>';
 }
 function wizardReview(){
@@ -5218,6 +5219,20 @@ function renderSkills(){
 function inventorySelect(field,value,values,id){
  return'<select data-item-field="'+field+'" data-id="'+esc(id)+'">'+values.map(([k,v])=>'<option value="'+k+'"'+(k===value?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select>';
 }
+function handLayout(items){
+ const held=items.filter(it=>handItem(it)&&it.equipped&&!it.shieldGrounded);
+ const slots=held.flatMap(it=>Array.from({length:itemHands(it)},(_,index)=>({item:it,continuation:index>0})));
+ const quick=items.filter(it=>itemPosition(it)==="quick").flatMap(it=>Array.from({length:it.qty},()=>it));
+ return {slots,quick,free:Math.max(0,2-slots.length)};
+}
+function handPanelMarkup(items=state.items){
+ const {slots,quick,free}=handLayout(items);
+ const action=(it,pos,label)=>'<button type="button" class="fp-secondary" data-action="inventory-position" data-id="'+esc(it.id)+'" data-position="'+pos+'">'+label+'</button>';
+ const slot=(entry,index)=>'<div class="fp-hand-slot'+(entry?' is-occupied':'')+'"><small>MÃO '+(index+1)+'</small>'+(entry?'<strong>'+esc(entry.item.name)+'</strong><span>'+(itemHands(entry.item)===2?'Empunhadura de duas mãos':'Uma mão')+'</span>'+(entry.continuation?'':action(entry.item,"bag","Guardar")+(entry.item.type==="arma"?action(entry.item,"quick","No corpo"):"")):'<strong>Mão livre</strong><span>Pronta para empunhar</span>')+'</div>';
+ const quickSlot=(it,index)=>'<div class="fp-hand-slot'+(it?' is-occupied':'')+'"><small>ESPAÇO '+(index+1)+'</small>'+(it?'<strong>'+esc(it.name)+'</strong>'+(it.type==="arma"?action(it,"hands","Puxar para as mãos"):"<span>Porta-munições</span>")+action(it,"bag","Mochila"):'<strong>Livre</strong>')+'</div>';
+ const available=items.filter(it=>handItem(it)&&!it.equipped&&!it.shieldGrounded&&itemPosition(it)==="bag");
+ return '<section class="fp-hand-panel" aria-label="Mãos e acesso rápido"><div class="fp-inventory-section-heading"><h4>Mãos e equipamentos no corpo</h4><small>'+free+'/2 mãos livres · '+quick.length+'/3 espaços de acesso rápido ocupados.</small></div><div class="fp-hand-grid">'+[0,1].map(i=>slot(slots[i],i)).join("")+'</div>'+(slots.length>2?'<p class="fp-caption">Ficha antiga com mãos excedidas: reorganize os itens.</p>':"")+'<h5>Acesso rápido no corpo</h5><div class="fp-quick-grid">'+[0,1,2].map(i=>quickSlot(quick[i],i)).join("")+'</div>'+(quick.length>3?'<p class="fp-caption">Há espaços excedidos; reorganize pelo inventário completo.</p>':"")+(available.length?'<h5>Na mochila</h5><div class="fp-hand-available">'+available.map(it=>'<div><strong>'+esc(it.name)+'</strong>'+action(it,"hands","Empunhar")+(it.type==="arma"?action(it,"quick","No corpo"):"")+'</div>').join("")+'</div>':"")+'<p class="fp-caption">Organização de equipamento. Em combate, aplique as regras de saque da posição anterior; mover um item aqui não concede saque gratuito.</p></section>';
+}
 function renderInventory(){
  const focusSelector=$("focus-test-model");
  if(focusSelector){
@@ -5254,6 +5269,7 @@ function renderInventory(){
   '<label>Peso '+filterSelect(EQUIPMENT_WEIGHT_OPTIONS,inventoryWeight,'data-inventory-weight aria-label="Filtrar inventário por peso"')+'</label>'+
   '<span class="fp-filter-count">'+state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight)).length+' de '+state.items.length+' itens</span></div>';
  $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+quickSlots()+'/3 espaços · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Alto · Corpo '+pad(bodyLoad())+'/'+bodyCapacity()+' Alto · Mochila '+pad(backpackLoad())+'/0,5 Alto · Mãos '+state.items.filter(it=>handItem(it)&&it.equipped).reduce((n,it)=>n+itemHands(it),0)+'/2.</p>');
+ const handPanel=$("inventory-hands");if(handPanel)handPanel.innerHTML=handPanelMarkup();
  const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
  const positionOrder={hands:0,quick:1,bag:2};
  const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
@@ -5295,7 +5311,7 @@ function renderInventory(){
   );
   const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
   const shieldMasteryHint=it.type!=="escudo"?"":(
-   (shieldMasteryActive(it)?'<div class="fp-item-hint"><strong>Maestria em Escudos ativa:</strong> +1 DE defensiva (teto 12) e +1 Integridade neste escudo: '+shieldIntegrity.hp+' / '+shieldIntegrity.max+' efetivos. Valor-base: '+it.hp+' / '+it.max+'. Ponto adicional '+(it.shieldMasteryBonusSpent?'já consumido (reparo manual necessário).':'disponível.')+' Não altera a Integridade simbólica de Levantar Escudo.</div>':"")+
+   (shieldMasteryActive(it)?'<div class="fp-item-hint"><strong>Maestria em Escudos ativa:</strong> +1 DE defensiva (teto 9) e +1 Integridade neste escudo: '+shieldIntegrity.hp+' / '+shieldIntegrity.max+' efetivos. Valor-base: '+it.hp+' / '+it.max+'. Ponto adicional '+(it.shieldMasteryBonusSpent?'já consumido (reparo manual necessário).':'disponível.')+' Não altera a Integridade simbólica de Levantar Escudo.</div>':"")+
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
@@ -5311,7 +5327,7 @@ function renderInventory(){
   inventorySelect("type",it.type,types,it.id)+
   inventorySelect("weight",it.weight,Object.entries(WEIGHTS).map(([id,values])=>[id,values[0]]),it.id)+
   (it.ammoRole==="container"?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],["quick","Acesso rápido"]],it.id)+'</label></div>':"")+
-  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(itemHands(it)),[["0","A definir"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
+  (handItem(it)?'<div class="fp-item-hint"><label>Posição '+inventorySelect("position",itemPosition(it),[["bag","Mochila"],...(it.type==="arma"?[["quick","Acesso rápido"]]:[]),["hands","Mãos"]],it.id)+'</label> '+(it.type==="arma"?'<label>Empunhadura '+inventorySelect("hands",String(it.hands||0),[["0","Automática pelo peso/modelo"],["1","1 mão"],["2","2 mãos"]],it.id)+'</label>':"1 mão")+'</div>':"")+
   '<div class="fp-item-controls"><button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="-1" aria-label="Reduzir integridade">−</button><b title="Integridade atual / máxima">Integridade '+(shieldIntegrity?shieldIntegrity.hp:it.hp)+' / '+(shieldIntegrity?shieldIntegrity.max:it.max)+'</b>'+
   '<button type="button" data-action="integrity" data-id="'+esc(it.id)+'" data-delta="1" aria-label="Aumentar integridade">+</button>'+
   '<button type="button" class="'+((it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick")?"fp-item-equipped":"")+'" data-action="equip" data-id="'+esc(it.id)+'" title="Equipar/guardar">'+(it.equipped||it.ammoRole==="container"&&itemPosition(it)==="quick"?"✓":"○")+'</button>'+
@@ -5424,14 +5440,16 @@ function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-p
 function renderPurchaseLoadPreview(){
  const preview=$("trade-purchase-load");if(!preview)return;
  const item=CATALOG.find(x=>x.name===$("shop-items")?.value);
+ const equipButton=document.querySelector('[data-action="trade-buy-equip"]');if(equipButton)equipButton.disabled=!item||!["weapon","firearm","shield"].includes(item.kind);
  if(!item||item.kind==="focus"||item.category==="pendente"||item.status==="PENDENTE"||!(Number(item.priceVT)>0)){
   preview.innerHTML='<small>Escolha um equipamento para visualizar a carga após a compra.</small>';return;
  }
  preview.innerHTML=purchaseLoadMarkup(purchaseLoadPreview(item,catalogPurchasePrice(item)));
 }
-function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value){
+function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value,equipAfter=false){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus"||item.legacy)return;
+ if(equipAfter&&!["weapon","firearm","shield"].includes(item.kind)){toast("Comprar e empunhar é exclusivo de armas e escudos.");return;}
  if(item.category==="pendente"||item.status==="PENDENTE"){toast("Equipamento com campos de combate pendentes; compra indisponível.");return;}
  if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const rows=catalogPurchaseRows(item);if(!rows.length){toast("Kit incompleto no catálogo.");return;}
@@ -5455,7 +5473,8 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  state.trade.resources=res;
  state.trade.purchases.push({name:item.name+(item.kitContainer?" (kit)":""),price});
  state.items.push(...purchaseItems);
- render();save();toast(item.name+" adquirido por "+price+" VT."+(ammo&&!item.kitContainer?" Transfira a reposição para um recipiente compatível no inventário.":" Equipe no inventário."));
+ const bought=purchaseItems[0],didEquip=equipAfter&&handItem(bought)&&setItemPosition(bought,"hands");
+ render();save();toast(item.name+" adquirido por "+price+" VT."+(didEquip?" Equipado nas mãos.":equipAfter?" Guardado; não foi possível empunhar agora.":ammo&&!item.kitContainer?" Transfira a reposição para um recipiente compatível no inventário.":" Equipe no inventário."));
 }
 function addTestFocus(){
  if(!ownsSkill("criar-item-foco-magia")||
@@ -5907,6 +5926,8 @@ function onClick(event){
   state.trade.resources={...tradeDraft};render();save();toast("Composição dos recursos iniciais atualizada.");break;
  }
  case "trade-buy":buyCatalogItem();break;
+ case "trade-buy-equip":buyCatalogItem(undefined,undefined,true);break;
+ case "wizard-buy-equip":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred,true);break;
  case "stone-buy":buyElementalStone();break;
  case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
  case "wizard-shop-category":{
@@ -5985,6 +6006,13 @@ function onClick(event){
   const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderVitals();save();}break;
  }
  case "ammo-refill":refillAmmo(id);break;
+ case "inventory-position":{
+  const it=state.items.find(x=>x.id===id);if(!it)return;
+  if(!setItemPosition(it,button.dataset.position))return;
+  if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
+  if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
+  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
+ }
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
@@ -6118,7 +6146,7 @@ function onChange(event){
   const it=state.items.find(x=>x.id===el.dataset.id);if(!it)return;
   const k=el.dataset.itemField,oldItem={...it},oldBody=bodyLoad();
   if(k==="position"){if(!setItemPosition(it,el.value)){renderInventory();return;}if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";renderComposer();}
-  else if(k==="hands"&&it.type==="arma"){const n=Number(el.value);if(it.equipped&&!canHoldItem(it,n)){toast("Libere as mãos necessárias antes de alterar a empunhadura.");renderInventory();return;}it.hands=n;}
+  else if(k==="hands"&&it.type==="arma"){const n=Number(el.value);if(it.equipped&&!canHoldItem(it,itemHands({...it,hands:n}))){toast("Libere as mãos necessárias antes de alterar a empunhadura.");renderInventory();return;}it.hands=n;}
   else if(k==="name")it.name=el.value.slice(0,90);
   else if(k==="type"){
    it.type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(el.value)?el.value:"outro";
@@ -6152,6 +6180,7 @@ function onChange(event){
   }
   if(bodyLoad()>bodyCapacity()+1e-9&&bodyLoad()>oldBody+1e-9){Object.assign(it,oldItem);toast("Alteração excede a capacidade corporal.");renderInventory();return;}
   // Não zerar Integridade 3 da Armadura Muito Leve ao editar a ficha.
+  if(it.equipped&&handItem(it)&&!canHoldItem(it)){Object.assign(it,oldItem);toast("Mãos insuficientes para esta alteração.");renderInventory();return;}
   if(it.equipped&&it.type==="armadura"&&!canEquipArmor(state,it)){it.equipped=false;toast(state.race==="runa_espinhos"?"Runa Espinhos não pode equipar armaduras físicas.":"Armadura desequipada: nível ou requisitos do tipo/Grau não atendidos.");}
   renderInventory();renderVitals();save();return;
  }
