@@ -13,7 +13,7 @@ const GROUPS={attr:A,know:K,practice:P},SOURCE_PROPS={attr:"attributes",know:"kn
 const DICE_ATTR=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10]];
 const DICE_FORM=[[6],[10],[10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]];
 const FACES={
- 4:[[1,0,0],[0,1,0],[0,0,1],[0,0,0]],
+ 4:[[0,0,0],[0,1,0],[0,0,1],[1,0,0]],
  6:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0]],
  10:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1]],
  12:[[0,0,0],[0,0,0],[0,0,1],[0,0,1],[0,1,1],[1,0,0],[2,0,0],[1,1,0],[1,1,1],[2,0,1],[0,0,3],[3,0,0]],
@@ -3020,7 +3020,7 @@ function cargoGridMarkup(){
  }).join("");
 }
 function keepLimit(extra=false){return Math.min(4,(state.level>=10?3:2)+(extra?1:0));}
-const CRITICAL_FACES=Object.freeze({4:1,6:6,10:7,12:12,20:20});
+const CRITICAL_FACES=Object.freeze({4:4,6:6,10:7,12:12,20:20});
 function isCriticalFace(sides,face){return CRITICAL_FACES[sides]===face&&Number.isInteger(face);}
 function face(sides,number){return FACES[sides]?.[number-1]||[0,0,0];}
 function dataDice(g,grade){return [...(g==="attr"?DICE_ATTR:DICE_FORM)[grade||0]];}

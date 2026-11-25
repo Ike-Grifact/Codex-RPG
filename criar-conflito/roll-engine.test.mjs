@@ -14,7 +14,7 @@ test("Monstro G1 utiliza d10 e d4, respeitando pool e fontes diferentes",()=>{
 test("Faces simbólicas corretas, descarte sem Pavor e máximo de dados",()=>{
  const t=blank("monstro");t.attributes.forca=2;t.keep=2;
  const rolled=creaturePool(t,"forca","vigor").pool.map((d,i)=>({...d,face:i===2?3:1}));
- assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
+ assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[0,0,0],[0,1,0],[0,0,1],[1,0,0]]);
  assert.deepEqual(faceSymbols(4,3),[0,0,1]);
  assert.deepEqual(faceSymbols(12,11),[0,0,3]);
  assert.deepEqual(faceSymbols(20,11),[0,0,3]);
@@ -293,3 +293,9 @@ test("Motor de conflitos reconhece a face crítica específica de cada dado",()=
   for(let face=1;face<=sides;face++)assert.equal(isCriticalFace(sides,face),face===critical);
  }
 });
+
+ test("d4: 1 vazio, 2 Antecipar, 3 Temor e 4 Êxito crítico",()=>{
+  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[0,0,0],[0,1,0],[0,0,1],[1,0,0]]);
+  assert.equal(isCriticalFace(4,1),false);
+  assert.equal(isCriticalFace(4,4),true);
+ });

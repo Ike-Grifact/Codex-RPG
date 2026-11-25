@@ -77,10 +77,10 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 
 | Face | d4 | d6 | d10 | d12 | d20 |
 |---:|---|---|---|---|---|
-| 1 | **ᛋ ★** | ○ | ○ | ○ | ○ |
+| 1 | ○ | ○ | ○ | ○ | ○ |
 | 2 | ᚨ | ○ | ○ | ○ | ○ |
 | 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
-| 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
+| 4 | **ᛋ ★** | ᚦ | ᚦ | ᚦ | ᚦ |
 | 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
 | 6 | — | **ᛋ ★** | ᛋ | ᛋ | ᛋ |
 | 7 | — | — | **2ᛋ ★** | 2ᛋ | 2ᛋ |
@@ -108,7 +108,7 @@ Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recu
 
 **Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
 - **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados.
+- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados. A elevação extraordinária de um Atributo G6 → G7 exige Perícia própria; consulte a seção sobre os Graus.
 - Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falha Arriscada retira 1 Coragem; Falha Limpa e Falha Mista não retiram esse recurso pelo resultado.** Custos já pagos para realizar a ação continuam gastos.
 - **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
 
@@ -132,9 +132,13 @@ Se o objetivo for inviável nas condições atuais, não exija uma rolagem inút
 
 Fora de um conflito, o teste pode representar uma tentativa de poucos segundos, horas ou dias. Por exemplo, consertar um mecanismo antigo com peças improvisadas pode exigir Inteligência + Engenharia ou Destreza + Artesão, conforme a abordagem. Se houver condições seguras, ferramentas adequadas e nenhuma incerteza relevante, o Narrador pode simplesmente permitir o reparo.
 
-#### Ações em conflito
+#### Conflitos e combates
 
-Quando uma ameaça concreta, uma disputa de objetivos ou a urgência exige acompanhar as oportunidades de cada lado, o Narrador estabelece um conflito. Não precisa ser uma batalha: uma enchente, uma fuga ou um resgate sob pressão também podem exigir coordenação. Use as regras de turnos, protagonismo e rodadas quando forem pertinentes.
+Um conflito é uma situação de risco, urgência ou disputa em que importa acompanhar as ações e as oportunidades dos envolvidos. Um combate é um tipo de conflito em que há confronto direto, mas nem todo conflito é um combate.
+
+A oposição pode ser uma criatura viva, um grupo rival ou uma ameaça sem vida própria, como o fogo que consome uma casa, uma enchente ou um mecanismo prestes a desabar. Quando for pertinente, o Narrador pode representar a ameaça com DE e resistências adequadas à sua natureza, sem precisar tratá-la como um inimigo que luta.
+
+Imagine um resgate em uma casa em chamas: enquanto alguns Aprendizes tentam conter o incêndio, outros procuram sobreviventes ou liberam uma saída. O objetivo não é matar um inimigo, mas salvar pessoas antes que o fogo avance. Use turnos, protagonismo e rodadas quando o risco, o tempo ou a oposição exigirem acompanhar as ações.
 
 O jogador declara o objetivo e a abordagem, sugere as Aptidões e o Narrador confirma se a combinação faz sentido. Se for necessário testar, o Narrador estabelece a DE ou utiliza a defesa já existente. A rolagem decide o resultado e o risco: o jogador escolhe quais dados manter e como gastar Antecipar; o Narrador descreve as consequências coerentes com os símbolos finais.
 
@@ -159,16 +163,12 @@ Rolar mais dados oferece mais possibilidades de escolha, não significa somar to
 
 Agora que você conhece os dados, as runas e a Coragem, veja como aplicar essas escolhas em jogo. Os capítulos seguintes detalham a pilha e a interpretação do resultado.
 
-1. Declare o objetivo e escolha as fontes de Atributo, Conhecimento ou Prática pertinentes.
-2. Estabeleça a DE adequada ao alvo ou tarefa. A DE base defensiva não é substituída por uma dificuldade inventada se houver ficha.
-3. Role a pilha permitida, **incluindo pelo menos um dado de Atributo**, e escolha livremente os dados mantidos, **sem precisar manter nenhum dado de Atributo**. Respeite o limite de retenção.
-4. Conte Êxitos (E), Antecipar (A) e Temor (T) **somente dos dados mantidos**.
-5. Gaste Antecipar:
-   - **1A anula 1T próprio**;
-   - **Antecipar passa a oportunidade a aliado** (1A inicial, custo progressivo conforme participações na sequência), preservando Temor não anulado;
-   - **2A convertem-se em 1E**;
-   - outras aplicações específicas requerem Perícias.
-6. Compare **E + T mantido não anulado** à DE. Decida o resultado e calcule dano e consequências quando aplicável.
+1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
+2. Antes de rolar, decida se vai gastar Coragem para elevar a fonte, conforme as regras aplicáveis. Role até nove dados pertinentes das fontes habilitadas, incluindo **ao menos um dado de Atributo na pilha**.
+3. Escolha livremente os dados a manter dentro do limite do Marco: **não é necessário manter dados de Atributo**.
+4. Leia Êxitos, Antecipar e Temor **apenas dos dados mantidos**.
+5. Use Antecipar: **ᚨ 1A anula ᚦ 1T**, **ᚨ 2A viram ᛋ 1E** ou **ᚨ Antecipar passa a ação a um aliado pelo custo progressivo** sem anular o Temor. Outras aplicações específicas requerem Perícias.
+6. Compare Êxitos mais Temor não anulado à DE. Classifique o risco e, se houver acerto ofensivo, calcule o dano.
 
 Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular T.
 
@@ -189,7 +189,7 @@ Os níveis representam a evolução do personagem durante a campanha. Os Marcos 
 Os Graus da tabela indicam o acesso por nível aos equipamentos sujeitos a essa progressão, não um limite geral de Grau das Aptidões. O teto absoluto de Coragem é 15, quando benefícios específicos o permitirem. O limite geral continua em 9 dados rolados e 4 mantidos. A curva de XP de referência é apresentada em Evolução e XP.
 
 
-Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
+Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6 pela regra comum. O acesso extraordinário de Atributo G6 → G7 depende de Perícia habilitadora. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
 ## Montando sua pilha e combinando Aptidões
 
@@ -230,7 +230,7 @@ Depois de conhecer a rolagem e os dados mantidos, aprenda a reconhecer as faces 
 
 | Dado | Face crítica | Símbolos da face |
 |---|---:|---|
-| d4 | **1 ★** | **1 Êxito (1E)** — ᛋ |
+| d4 | **4 ★** | **1 Êxito (1E)** — ᛋ |
 | d6 | **6 ★** | **1 Êxito (1E)** — ᛋ |
 | d10 | **7 ★** | **2 Êxitos (2E)** — ᛋᛋ |
 | d12 | **12 ★** | **3 Êxitos (3E)** — ᛋᛋᛋ |
@@ -415,16 +415,16 @@ Quando dois ou três personagens realizam uma ação em conjunto, cada um contri
 
 #### Exemplo: cinco jogadores cooperando
 
-Os jogadores A, B, C, D e E enfrentam uma ameaça. Veja como três ações conjuntas podem acontecer na mesma sequência, sem que a oposição tenha agido entre elas.
+Os jogadores 1, 2, 3, 4 e 5 enfrentam uma ameaça. Veja como três ações conjuntas podem acontecer na mesma sequência, sem que a oposição tenha agido entre elas.
 
 | Formação | Convocação e resolução | Turnos acumulados |
 |---|---|---:|
-| A, B e C | Começam a sequência com uma ação conjunta. Obtêm ᚨ 2A e convocam D e E, por ᚨ 1A cada. | 3 |
-| D e E → A, D e E | D e E rolam e gastam ᚨ 2A para chamar A, que já participou uma vez. A rola; os três resolvem uma única ação em conjunto. | 6 |
-| A, D e E → B e C | O trio obtém ᚨ 4A e convoca B e C, por ᚨ 2A cada. Os dois começam a rolar; a nova ação ainda não foi concluída. | 6 |
-| B e C → A, B e C | B e C gastam outros ᚨ 4A para chamar A, que já participou duas vezes. A rola; o trio resolve a terceira ação conjunta. | 9 |
+| 1, 2 e 3 | Começam a sequência com uma ação conjunta. Obtêm ᚨ 2A e convocam 4 e 5, por ᚨ 1A cada. | 3 |
+| 4 e 5 → 1, 4 e 5 | 4 e 5 rolam e gastam ᚨ 2A para chamar 1, que já participou uma vez. O jogador 1 rola; os três resolvem uma única ação em conjunto. | 6 |
+| 1, 4 e 5 → 2 e 3 | O trio obtém ᚨ 4A e convoca 2 e 3, por ᚨ 2A cada. Os dois começam a rolar; a nova ação ainda não foi concluída. | 6 |
+| 2 e 3 → 1, 2 e 3 | 2 e 3 gastam outros ᚨ 4A para chamar 1, que já participou duas vezes. O jogador 1 rola; o trio resolve a terceira ação conjunta. | 9 |
 
-Observe que chamar novamente um aliado fica mais caro. Para voltar a formar A, B e C, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar B e C e ᚨ 4A para incorporar A. A dupla B e C poderia chamar D ou E por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
+Observe que chamar novamente um aliado fica mais caro. Para voltar a formar 1, 2 e 3, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar 2 e 3 e ᚨ 4A para incorporar 1. A dupla 2 e 3 poderia chamar 4 ou 5 por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
 
 #### Como os inimigos agem?
 
@@ -568,6 +568,14 @@ Os termos abaixo são referências de interpretação, não títulos, requisitos
 | 4 | Capacidade excepcional | Técnica avançada | Estudo avançado |
 | 5 | Capacidade extraordinária | Domínio refinado | Compreensão profunda |
 | 6 | Ápice da progressão comum | Domínio especializado | Referência no assunto |
+
+#### Além do Grau 6 — acesso extraordinário ao Grau 7
+
+O Grau 6 é o ápice da progressão comum, mas não o limite de todas as possibilidades. O Grau 7 representa um acesso extraordinário, condicionado às Perícias e aos requisitos que o habilitam.
+
+Para alcançar temporariamente o Grau 7 de um Atributo, é necessário que ele já esteja no Grau 6 e que o personagem possua a Perícia que permite essa elevação. Com a habilitação adequada, o uso de 1 Coragem para elevar a fonte permite acessar 1d20 no Atributo durante a rolagem. Isso não compra um Grau permanente, não concede um d20 automaticamente ao alcançar G6 e não amplia os limites gerais de dados.
+
+Os requisitos e custos de aquisição das Maestrias de Atributo ainda aguardam rebalanceamento; esta possibilidade não está liberada pela elevação comum de Coragem. A composição completa do Grau 7 e a automação dessa elevação extraordinária permanecem pendentes.
 
 ### ◇ Atributos — as capacidades do seu Aprendiz
 
