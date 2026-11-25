@@ -275,7 +275,7 @@ Essas classificações são independentes: uma falha pode ser limpa, assim como 
 | Acerto Limpo | Alcança a DE | Sem Temor restante | O objetivo é alcançado sem risco de Temor residual. Pode continuar ou passar voluntariamente o protagonismo, respeitando a troca de lado. |
 | Acerto Misto | Alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo é alcançado, mas há risco e possibilidade de intervenção. |
 | Acerto Arriscado | Alcança a DE | Mais Temor que Êxitos | O objetivo é alcançado, mas o Temor predomina e pode provocar consequências graves. |
-| Falha Limpa | Não alcança a DE | Sem Temor restante | O objetivo não é alcançado, sem consequência negativa automática. Em ataque, sem passagem válida por Antecipar, a oportunidade passa à oposição; nas demais ações, segue o fluxo geral. |
+| Falha Limpa | Não alcança a DE | Sem Temor restante | O objetivo não é alcançado, sem perda de Coragem pelo resultado. A oportunidade passa a um aliado elegível quando o grupo conserva o protagonismo: sem Temor residual nos turnos anteriores ou com passagem válida por Antecipar que tenha preservado a sequência. Consulte Turnos e rodadas. |
 | Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção, mas o personagem não perde Coragem por essa falha. |
 | Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e o personagem perde 1 Coragem. |
 
@@ -332,7 +332,7 @@ Antes de concluir a ação e da intervenção da oposição, você pode gastar A
 
 Cada símbolo Antecipar pode ser gasto uma única vez. Você não pode usar o mesmo símbolo para anular Temor, criar Êxito e passar a oportunidade. Consulte Turnos e rodadas para entender como o custo de passagem aumenta.
 
-O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um ataque que não resulte em Acerto Limpo e não tenha passagem válida por Antecipar devolve a oportunidade à oposição. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
+O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. A Falha Limpa pode preservar o protagonismo do grupo, conforme as condições de continuidade da sequência. Resultados com Temor seguem as regras de intervenção e de passagem por Antecipar. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
 
 ## Turnos e rodadas
 
@@ -340,9 +340,38 @@ O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um a
 
 Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
-O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto Limpo permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. Um ataque sem acerto limpo nem passagem válida por Antecipar devolve a oportunidade à oposição, inclusive na falha limpa ofensiva, sem punição negativa automática. Fora da regra ofensiva, a falha limpa mantém o fluxo geral entre aliados. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
+O **protagonismo** indica qual lado tem a oportunidade de agir. Acerto Limpo permite continuar ou ceder voluntariamente a oportunidade, respeitando as condições de continuidade. A Falha Limpa encerra a ação do personagem, mas não entrega automaticamente o protagonismo aos inimigos. A oportunidade passa a um aliado elegível se, na sequência de turnos do grupo, não tiver restado Temor em ações anteriores ou se as passagens válidas por Antecipar tiverem preservado o protagonismo apesar do Temor. A passagem não apaga Temor nem impede intervenções que já sejam válidas. Uma ação com Temor residual sem passagem válida por Antecipar pode entregar a oportunidade à oposição, conforme as regras de intervenção. Quando todos os jogadores já agiram, o grupo ainda pode continuar pagando a antecipação progressiva; se não puder fazê-lo, passa a oportunidade à oposição. Inimigos podem encadear ações conforme suas regras de Antecipar e, quando não puderem passar a oportunidade, devolvem o protagonismo aos jogadores.
 
 Temor pode abrir intervenção ou contra-ataque e alterar o protagonismo. Um contra-ataque que constitui ação conta como turno; transferência de símbolos, simples passagem de oportunidade e intervenção narrativa sem ação de combatente não acrescentam turnos. Mantêm-se os custos e oportunidades válidas da oposição: Temor disponível não concede ação gratuita.
+
+### Falha Limpa e continuidade do protagonismo
+
+**Turnos anteriores sem Temor:** Um aliado acerta sem Temor. Você tenta agir, mas obtém uma Falha Limpa. A oportunidade passa a outro aliado elegível, sem que o inimigo ganhe um turno apenas porque você falhou.
+
+**Temor com Antecipar:** Um aliado mantém Temor, mas utiliza Antecipar para passar validamente a oportunidade a você, preservando o protagonismo. Se você obtiver uma Falha Limpa, pode passar a oportunidade a outro aliado elegível. O Temor anterior não desaparece.
+
+**Quando o inimigo recupera a oportunidade:** Se a oposição receber uma oportunidade válida e agir, a sequência anterior se encerra. Uma Falha Limpa não cancela intervenções nem permite ignorar os custos de convocação de aliados que já participaram.
+
+### Por que agir em conjunto?
+
+Nem toda ameaça pode ser vencida por um personagem isolado. Uma criatura extraordinária, um inimigo muito bem protegido ou uma formação defensiva pode apresentar uma dificuldade superior ao que sua pilha de dados é capaz de alcançar. Nesses casos, insistir em ataques individuais pode não produzir resultado algum, por melhores que sejam as suas faces.
+
+A ação em conjunto permite unir esforços em uma única tentativa. Cada participante escolhe uma abordagem pertinente ao mesmo objetivo, rola sua própria pilha e mantém os dados dentro de seus limites. Os resultados válidos são reunidos para a resolução conjunta contra a dificuldade do alvo. Dessa forma, a cooperação permite alcançar dificuldades que seriam impossíveis individualmente, sem aumentar o limite de dados de uma ficha.
+
+Cooperar também exige escolhas. O grupo investe o turno de cada participante em uma única ação, precisa lidar com o Temor obtido e pode precisar gastar Antecipar para convocar aliados. Não é uma ação extra gratuita nem a soma de ataques independentes já resolvidos. Personagens de especialidades diferentes podem contribuir para um objetivo comum, desde que suas ações sejam pertinentes e respeitem as habilitações aplicáveis.
+
+#### Exemplo: uma defesa impossível de superar sozinho
+
+Imagine uma ameaça com DE 13 e três Aprendizes que possuem, cada um, uma pilha de dois d10 para essa ação. Sem outros bônus ou dados adicionais, cada personagem pode reunir no máximo seis símbolos válidos de Êxito e Temor nesses dois dados. Sozinho, nenhum consegue alcançar 13. Mesmo dois personagens, nessas condições, não passariam de 12.
+
+| Participante | Resultado final individual | Contribuição para o acerto |
+|---|---|---:|
+| Aprendiz 1 | ᛋ 3E + ᚦ 1T | 4 |
+| Aprendiz 2 | ᛋ 3E + ᚦ 1T | 4 |
+| Aprendiz 3 | ᛋ 4E + ᚦ 1T | 5 |
+| **Total conjunto** | ᛋ 10E + ᚦ 3T | **13** |
+
+O resultado conjunto soma 10 Êxitos e 3 Temores: alcança 13 e constitui um Acerto Misto, se nenhum desses Temores for anulado. A ação conta três turnos, um de cada participante. O grupo supera a defesa, mas ainda assume o risco dos símbolos mantidos.
 
 #### Ação em conjunto e custo progressivo de Antecipar
 

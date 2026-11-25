@@ -23,7 +23,7 @@ O resultado pode **alcançar a DE e ainda conservar Pavor**. A falha limpa não 
 | Resultado | Consequência |
 |---|---|
 | Acerto limpo | O mesmo jogador pode continuar ou passar voluntariamente a ação a um aliado |
-| Falha limpa | A oportunidade passa ao próximo jogador; sem complicação negativa automática |
+| Falha Limpa | A oportunidade passa a um aliado elegível se o grupo conservou o protagonismo: sem Temor residual nos turnos anteriores ou com Antecipar que tenha preservado a sequência; sem perda de Coragem pelo resultado |
 | Acerto com Pavor | A ação foi bem-sucedida, mas conserva oportunidade de intervenção |
 | Falha Mista | Possível intervenção, sem perda de Coragem pelo resultado |
 | Falha Arriscada | Possível intervenção e **−1 Coragem** |
