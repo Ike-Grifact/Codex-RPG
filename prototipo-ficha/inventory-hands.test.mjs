@@ -8,7 +8,7 @@ const rules=app.slice(app.indexOf("function itemHands("),app.indexOf("function n
 const panel=app.slice(app.indexOf("function handLayout("),app.indexOf("function renderInventory("));
 function setup(items=[]){
  const state={items},messages=[];
- const ui=new Function("state","toast","validBodyChange","esc",rules+panel+";return {itemHands,canHoldItem,setItemPosition,handLayout,handPanelMarkup};")(state,x=>messages.push(x),()=>true,String);
+ const ui=new Function("state","toast","validBodyChange","esc","codexItemIcon",rules+panel+";return {itemHands,canHoldItem,setItemPosition,handLayout,handPanelMarkup};")(state,x=>messages.push(x),()=>true,String,()=>'<img alt="">');
  return {...ui,state,messages};
 }
 test("Catálogo e fichas legadas inferem mãos sem escolha manual",()=>{
@@ -46,4 +46,16 @@ test("Painel e compra com empunhadura disponíveis no criador e mercado",()=>{
  assert.match(html,/data-action="trade-buy-equip"/);
  assert.match(app,/data-action="wizard-buy-equip"/);
  assert.match(app,/case "inventory-position"/);
+});
+
+test("Painel compacto tem cinco espaços, comandos em detalhes e não repete mochila",()=>{
+ const light={id:"a",name:"Espada Curta",type:"arma",weight:"leve",qty:1,equipped:true};
+ const spare={id:"b",name:"Adaga reserva",type:"arma",weight:"leve",qty:1};
+ const u=setup([light,spare]),markup=u.handPanelMarkup();
+ assert.equal((markup.match(/class="fp-hand-slot/g)||[]).length,5);
+ assert.match(markup,/<summary[^>]*>.*<img.*Espada Curta/);
+ assert.match(markup,/<div class="fp-hand-actions">/);
+ assert.doesNotMatch(markup,/Adaga reserva/);
+ assert.match(app,/hands:"Equipado"/);
+ assert.match(app,/equipped:"Equipados"/);
 });
