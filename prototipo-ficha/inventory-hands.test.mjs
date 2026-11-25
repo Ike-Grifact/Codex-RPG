@@ -8,7 +8,7 @@ const rules=app.slice(app.indexOf("function itemHands("),app.indexOf("function n
 const panel=app.slice(app.indexOf("function handLayout("),app.indexOf("function renderInventory("));
 function setup(items=[]){
  const state={items},messages=[];
- const ui=new Function("state","toast","validBodyChange","esc","codexItemIcon",rules+panel+";return {itemHands,canHoldItem,setItemPosition,handLayout,handPanelMarkup,inventoryPositionOptions,handTooltipMarkup};")(state,x=>messages.push(x),()=>true,String,()=>'<img alt="">');
+ const ui=new Function("state","toast","validBodyChange","esc","codexItemIcon","equipmentDetails","pad","itemLoad","shieldIntegrityDisplay","effectiveWeaponRange",rules+panel+";return {itemHands,canHoldItem,setItemPosition,handLayout,handPanelMarkup,inventoryPositionOptions,handTooltipMarkup};")(state,x=>messages.push(x),()=>true,String,()=>'<img alt="">',it=>it.properties?.join(" · ")||"Leve",String,()=>0.25,it=>({hp:it.hp,max:it.max}),it=>it.range);
  return {...ui,state,messages};
 }
 test("Catálogo e fichas legadas inferem mãos sem escolha manual",()=>{
@@ -72,4 +72,20 @@ test("Destinos de drag e botões são os mesmos, sem movimentar escudos caídos 
  assert.deepEqual(u.inventoryPositionOptions({type:"armadura",equipped:true}),[]);
  assert.match(app,/case "inventory-position":moveInventoryItem/);
  assert.match(app,/if\(target\)moveInventoryItem\(id,target.dataset.inventoryDrop\)/);
+});
+
+test("Tooltip exibe detalhes no mouse e acrescenta comandos apenas quando aberto",()=>{
+ const it={id:"a",name:"Espada Curta",type:"arma",weight:"leve",qty:1,equipped:true,grade:1,properties:["Corte"],hp:2,max:4,description:"Descrição do equipamento."};
+ const u=setup([it]),hover=u.handTooltipMarkup(it,false),tap=u.handTooltipMarkup(it,true);
+ for(const markup of [hover,tap]){
+  assert.match(markup,/Espada Curta/);
+  assert.match(markup,/Corte/);
+  assert.match(markup,/Integridade: 2 \/ 4/);
+  assert.match(markup,/Descrição do equipamento/);
+  assert.match(markup,/Equipado/);
+ }
+ assert.doesNotMatch(hover,/data-action="inventory-position"/);
+ assert.match(tap,/data-position="quick"/);
+ assert.match(tap,/data-position="bag"/);
+ assert.doesNotMatch(tap,/data-position="hands"/);
 });
