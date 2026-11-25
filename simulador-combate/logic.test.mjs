@@ -19,7 +19,7 @@ test("Parede interrompe linha de visão; cobertura parcial só sinaliza Narrador
  assert.match(blocked.reason,/Parede/);
 });
 test("Movimento ortogonal respeita paredes, casas ocupadas e limite por rodada",()=>{
- const unit={id:"u",x:1,y:1,moved:0,attributes:{agilidade:2},practices:{atletismo:3}};
+ const unit={id:"u",x:1,y:1,moved:0,attributes:{agilidade:2,destreza:2},practices:{atletismo:3}};
  assert.equal(movementAllowance(unit),11);
  const terrain={[cellKey(2,1)]:"parede"};
  const route=shortestPath(unit,{x:4,y:1},terrain,[unit]);

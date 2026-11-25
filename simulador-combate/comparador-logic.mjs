@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0147";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0147";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0148";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0148";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:-1,medio:-2,pesado:-3,"muito-pesado":-4});
@@ -38,7 +38,7 @@ export function planShot(items,weapon,id,type){
 export function isHandEquipment(it){return ["weapon","firearm","shield"].includes(it?.kind);}
 export function equipmentPosition(it){return it?.equipped&&isHandEquipment(it)?"hands":it?.position==="quick"?"quick":"bag";}
 export function hasQuickDraw(c){return !!c?.skills?.includes("saque-rapido")&&Number(c.attributes?.agilidade||0)>=2&&Number(c.attributes?.destreza||0)>=1&&Number(c.practices?.armas_conjuracao||0)>=2;}
-export function carryingCapacity(c){return 1.5+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3);}
+export function carryingCapacity(c){return c.kind==="monstro"||c.kind==="criatura"?1.5+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3):1.5+Number(c.attributes?.forca||0)+Math.floor(Number(c.attributes?.vigor||0)/2);}
 export function bodyUsage(items=[]){return items.filter(it=>equipmentPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+Number(it.weight||0)*Number(it.qty||1),0);}
 export function quickUsage(items=[]){return items.filter(it=>equipmentPosition(it)==="quick").reduce((n,it)=>n+Number(it.qty||1),0);}
 export function heldHands(items=[]){const held=items.filter(it=>isHandEquipment(it)&&it.equipped);return held.some(it=>!weaponHands(it)||it.qty!==1)?null:held.reduce((n,it)=>n+weaponHands(it),0);}

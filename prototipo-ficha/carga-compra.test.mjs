@@ -26,9 +26,9 @@ const character=(forca,vigor,atletismo,disciplina=0,resources=20,items=[])=>({
  attributes:{forca,vigor},practices:{atletismo,armas_conjuracao:disciplina},items,trade:{resources:{ervas:resources}}
 });
 
-test("v0.92 soma FOR + VIG + ATL antes do piso e exclui Disciplina",()=>{
+test("v0.148: FOR integral + metade de VIG; exclui Práticas",()=>{
  for(const [forca,vigor,atletismo,disciplina,expected] of [
-  [0,0,0,0,1.5],[1,1,0,6,1.5],[1,1,1,6,2.5],[2,1,1,6,2.5],[3,3,3,6,4.5],[6,6,6,6,7.5]
+  [0,0,0,0,1.5],[1,1,0,6,2.5],[1,1,1,6,2.5],[2,1,1,6,3.5],[3,3,3,6,5.5],[6,6,6,6,10.5]
  ]){
   assert.equal(loadUI(character(forca,vigor,atletismo,disciplina)).capacity(),expected);
  }
@@ -42,17 +42,17 @@ test("prévia desconta exatamente os VT consumidos e não muda a ficha",()=>{
  assert.equal(preview.added,0.5);
  assert.equal(preview.released,0.1);
  assert.equal(preview.after,0.65);
- assert.equal(preview.percent,26);
+ assert.ok(Math.abs(preview.percent-100*.65/3.5)<1e-8);
  assert.equal(preview.balance,"Dentro da capacidade");
  assert.equal(preview.status,"normal");
  assert.equal(JSON.stringify(s),old,"Prévia não pode efetuar uma compra");
 });
 
 test("prévia não classifica peso em 75% e avisa sobrecarga em 100%",()=>{
- const heavy=loadUI(character(2,1,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadPreview({category:"medio"},4);
+ const heavy=loadUI(character(1,0,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadPreview({category:"medio"},4);
  assert.ok(Math.abs(heavy.percent-75)<1e-8);
  assert.equal(heavy.status,"normal");assert.equal(heavy.balance,"Dentro da capacidade");
- assert.match(loadUI(character(2,1,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadMarkup(heavy),/dentro da capacidade total/);
+ assert.match(loadUI(character(1,0,1,0,4,[item(),item(),{...item("leve"),qty:3}])).purchaseLoadMarkup(heavy),/dentro da capacidade total/);
  const full=loadUI(character(0,0,0,0,0,[item(),item()])).purchaseLoadPreview({category:"medio"},0);
  assert.equal(full.percent,100);
  assert.equal(full.status,"over");
@@ -86,7 +86,7 @@ test("Kit de arco curto: prévia soma arma, recipiente e lote, desconta VT uma v
 
 test("Sobrecarga (limiar de playtest preservado): metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
  const code=app.slice(app.indexOf("function baseMovement("),app.indexOf("function renderXP("));
- const state=character(0,0,3,0,0,[]);state.attributes.agilidade=2;
+ const state=character(0,0,3,0,0,[]);state.attributes.agilidade=2;state.attributes.destreza=2;
  let percent=99.99;
  const ui=new Function("state","NPC_MODE","loadPercent",code+"return {movement,baseMovement};")(state,false,()=>percent);
  assert.equal(ui.baseMovement(),11);assert.equal(ui.movement(),11);percent=100;assert.equal(ui.movement(),5.5);percent=125;assert.equal(ui.movement(),5.5);percent=99;assert.equal(ui.movement(),11);

@@ -608,7 +608,7 @@ Potência física para vencer resistência, deslocar massas e aplicar força de 
 
 Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**.
 
-Some Força, Vigor e Atletismo: a cada **3 Graus somados**, sua capacidade corporal aumenta em **1 Alto**, além do **1 Alto inicial**. A mochila oferece mais 0,5 Alto.
+Cada Grau de Força aumenta a capacidade corporal em **1 Alto**, além do **1 Alto inicial**. Some metade de Vigor, arredondada para baixo. A mochila inicial oferece mais 0,5 Alto.
 
 **Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
 
@@ -656,7 +656,7 @@ Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajud
 
 Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**.
 
-A cada **3 Graus somados de Força, Vigor e Atletismo**, sua capacidade corporal aumenta em **1 Alto**.
+A cada **2 Graus completos de Vigor**, sua capacidade corporal aumenta em **1 Alto**.
 
 A cada **2 Graus somados de Vigor e Destreza**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
 
@@ -671,13 +671,13 @@ Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo q
 
 ### Do Atributo à ficha — recursos e capacidades
 
-Agora que você conhece os seis Atributos, veja como seus Graus influenciam os valores que acompanhará na aventura. Algumas fórmulas também usam Atletismo, apresentado entre as Práticas logo adiante.
+Agora que você conhece os seis Atributos, veja como seus Graus influenciam os valores que acompanhará na aventura. As capacidades básicas dependem exclusivamente dos Atributos.
 
 #### Capacidade de carga, peso e sobrecarga
 
-A capacidade de carga indica quanto o Aprendiz consegue transportar, e depende de Força, Vigor e Atletismo. O corpo suporta 1 Alto inicial, mais 1 Alto a cada 3 Graus completos somados dessas Aptidões. A mochila oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
+A capacidade de carga indica quanto o Aprendiz consegue transportar. O corpo suporta 1 Alto inicial, mais o Grau de Força e metade do Grau de Vigor arredondada para baixo. A mochila inicial oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
 
-Exemplo: Força 2, Vigor 1 e Atletismo 0 somam 3 Graus; o personagem suporta 2 Altos no corpo e 0,5 na mochila, totalizando 2,5 Altos.
+Exemplo: Força 2 e Vigor 1: 3 Altos no corpo e 0,5 na mochila, totalizando 3,5 Altos.
 
 O peso do personagem indica sua categoria para as afinidades dos ataques. Ele é determinado pela armadura equipada, não pela quantidade de objetos carregados. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação permanece pendente.
 
@@ -686,9 +686,9 @@ Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre s
 
 #### Defesa e movimento
 
-A DE natural começa em 2. Some 1 por Grau de Agilidade e 1 a cada 2 Graus completos somados de Destreza e Vigor, até o teto natural 11. Atletismo não aumenta a DE: continua contribuindo para deslocamento e capacidade de carga. Sem armadura ou com armadura Muito Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 12. A DE final nunca é negativa: o mínimo é 0.
+A DE natural começa em 2. Some 1 por Grau de Agilidade e 1 a cada 2 Graus completos somados de Destreza e Vigor, até o teto natural 11. Atletismo não aumenta valores derivados da ficha; é utilizado em testes e requisitos. Sem armadura ou com armadura Muito Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 12. A DE final nunca é negativa: o mínimo é 0.
 
-O deslocamento padrão começa em 8 metros, mais 1 metro por Grau de Agilidade e 1 a cada 3 Graus completos de Atletismo. Atletismo é uma Prática que você conhecerá a seguir.
+O deslocamento padrão é 8 metros + Grau de Agilidade + metade do Grau de Destreza arredondada para baixo.
 
 
 #### Equipamentos, Integridade e dano
@@ -823,7 +823,7 @@ Treinamento para executar técnicas marciais e mágicas com controle, precisão 
 
 Treinamento do corpo para deslocar-se e superar obstáculos de maneira eficiente. Inclui corrida, salto, escalada, equilíbrio e esforço coordenado. Diferentemente de Força, que mede potência, Atletismo representa a técnica para utilizar o corpo. Um personagem atlético pode abrir rotas para o grupo, alcançar posições vantajosas ou atravessar terrenos difíceis.
 
-O treino aprimora seu deslocamento e sua capacidade de reagir aos perigos. A cada **3 Graus de Atletismo**, você recebe **+1 metro de deslocamento padrão**. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
+O treino permite executar ações físicas com técnica, como escalada, corrida, salto e natação. Não aumenta diretamente o movimento ou a capacidade de carga.
 
 **Possibilidades em jogo:** Atletismo + Agilidade para cruzar plataformas; Atletismo + Força para escalar carregando equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
 
@@ -957,7 +957,7 @@ Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas
 
 ### 4. Equipamentos, peso e carga
 
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (−1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (−1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
@@ -1017,7 +1017,7 @@ Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afe
 
 ## Carga por compartimento e disparos (24/11/2026)
 
-**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + piso((Força + Vigor + Atletismo)/3). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
+**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + Força + piso(Vigor/2). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
 
 **DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
 
@@ -1072,7 +1072,7 @@ Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afe
 | Pesado | 1 |
 | Extremo | 2 |
 
-Exemplo: 0,75 Alto no corpo e 0,5 Alto na mochila totalizam 1,25 de 1,5 Alto. O personagem não está em sobrecarga. Sua armadura, e não a porcentagem de carga, determina seu peso. Com Força 2, Vigor 1 e Atletismo 0, a capacidade passa a 2 Alto no corpo + 0,5 na mochila.
+Exemplo: 0,75 Alto no corpo e 0,5 Alto na mochila totalizam 1,25 de 1,5 Alto. O personagem não está em sobrecarga. Sua armadura, e não a porcentagem de carga, determina seu peso. Com Força 2 e Vigor 1, a capacidade passa a 3 Altos no corpo + 0,5 na mochila.
 
 ## Evolução, níveis, Marcos e XP
 
@@ -1220,7 +1220,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.118]:** corpo = **1 + piso((Força + Vigor + Atletismo)/3)**; mochila = **0,5 Alto**; total = soma dos dois. Somam-se os três graus antes de dividir por 3; Disciplina não contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.148]:** corpo = **1 + Força + piso(Vigor/2)**; mochila inicial = **0,5 Alto**; total = soma dos dois. Força integral e metade de Vigor arredondada para baixo; nenhuma Prática ou Conhecimento contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 ## Combate Coordenado
 
@@ -1737,7 +1737,7 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **DEFINIDO — improvisar não altera a potência:** o narrador e o jogador verificam **Perícia elemental, Grau de acesso, fonte elemental**, efeitos e combinações permitidos, **DE/rolagem**, custos de Coragem/Antecipar/cargas, bem como o **tempo de conjuração**. A preparação G2/G3/G4 continua sendo o **tempo efetivamente gasto para conjurar aquela magia**, não um período anterior para memorizá-la. G1 permanece imediato quando habilitado; G2 mantém 2 turnos, G3 3 turnos (com as acelerações válidas), e a G4 plena 6 turnos, mínimo 3. Uma magia diferente narrada no mesmo Grau não gera dados, dano ou propriedades extras. **Fabricação de foco** permanece separada e depende de sua Perícia e materiais/rolagem aplicáveis.
 
-**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, tenham ou não sido usados na conjuração livre. A referência a **Potência com Força e Atletismo** para carregar equipamentos permanece em revisão técnica quanto à fórmula; isso não cria slots mentais. O foco comum criado com Artesão recupera **1 carga no encerramento da própria rodada do esgotamento**, e depois mais 1 no fim de cada rodada até encher, conforme seu Grau. A Pedra da Alma é exceção.
+**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, tenham ou não sido usados na conjuração livre. Utilize a capacidade de carga geral; isso não cria slots mentais. O foco comum criado com Artesão recupera **1 carga no encerramento da própria rodada do esgotamento**, e depois mais 1 no fim de cada rodada até encher, conforme seu Grau. A Pedra da Alma é exceção.
 
 **PENDENTE:** limites de controle de efeitos mentais, testes dos alvos, duração e alcance em casos ainda não regulamentados. A memorização/slots e a chamada “conjuração rápida da magia memorizada” foram revogados; continuam vigentes os tempos normais de conjuração e sua aceleração por foco/ambiente, quando aprovadas.
 

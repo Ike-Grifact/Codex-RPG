@@ -41,9 +41,9 @@ test("Pavor público é independente do local, teto 2 + jogadores",()=>{
 });
 test("Carga informa quantidades alternativas leves, médias e pesadas",()=>{
  const h=blank("humanoide");
- assert.deepEqual(remainingKinds(h),{leve:8,medio:2,pesado:1});
+ assert.deepEqual(remainingKinds(h),{leve:12,medio:3,pesado:1});
  h.items.push({id:"x",name:"Espada",weight:WEIGHT.medio,qty:1});
- assert.deepEqual(remainingKinds(h),{leve:4,medio:1,pesado:0});
+ assert.deepEqual(remainingKinds(h),{leve:8,medio:2,pesado:1});
 });
 test("Importação saneia campos e impede grau/capacidade fora do limite",()=>{
  const t=normalize({kind:"monstro",name:"Dragão",threatGrade:99,
