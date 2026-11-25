@@ -5285,8 +5285,8 @@ function renderInventory(){
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade; não altera a DE natural.</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> −1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
-   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
-   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
+   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> −2 DE; resistência específica desde Grau 2.</div>':"")+
+   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −3 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
    (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −4 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
