@@ -723,7 +723,7 @@ Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem
 
 ##### Como a Vida aparece na ficha
 
-Cada quadrado representa 1 ponto de Vida. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
+Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida é colorido em azul (Saudável), ocre (Ferido), laranja-avermelhado (Incapacitado) e roxo (Inconsciente); branco indica um ponto perdido. A tabela Markdown usa ■ e □ como representação textual. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
 
 | Vigor | Força | Vida máxima | Saudável | Ferido | Incapacitado | Inconsciente |
 |---:|---:|---:|---|---|---|---|
@@ -740,14 +740,14 @@ Cada quadrado representa 1 ponto de Vida. O nível do personagem, por si só, n�
 
 ##### Exemplo de perda de Vida
 
-Maela tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague quadrados a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
+Maela tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones da esquerda para a direita, a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
 
 | Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado |
 |---:|---|---|---|---|---|
 | 6/6 | ■■ | ■■ | ■ | ■ | Saudável |
-| 5/6 | ■□ | ■■ | ■ | ■ | Saudável |
+| 5/6 | □■ | ■■ | ■ | ■ | Saudável |
 | 4/6 | □□ | ■■ | ■ | ■ | Ferido |
-| 3/6 | □□ | ■□ | ■ | ■ | Ferido |
+| 3/6 | □□ | □■ | ■ | ■ | Ferido |
 | 2/6 | □□ | □□ | ■ | ■ | Incapacitado |
 | 1/6 | □□ | □□ | □ | ■ | Inconsciente |
 | 0/6 | □□ | □□ | □ | □ | Morto |
