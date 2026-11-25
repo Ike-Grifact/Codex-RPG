@@ -94,7 +94,7 @@ Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande 
 
 Armadura Muito Leve G1 agora tem 3 de Integridade; demais armaduras G1 continuam 7/12/17. Dano prévio do druida reduz ponto por ponto a Vida atual inicial da forma animal. Pavor de ação sem alvo de ataque alimenta reserva pública; excedente permite intervenção da ameaça mais próxima do último jogador ativo, desempate por DE e Vida, salvo circunstância da cena. Múltiplos excedentes e custo exato ainda pendentes.
 
-Recuperação natural vigente (SRD v0.133): 1 Vida por dia após descanso longo válido de 8 horas, com pelo menos 6 horas de sono. Escolha recuperar Coragem (Vigor + 1) ou reparar armadura com kit; a Vida é recuperada independentemente da escolha. Os antigos prazos por caixas e tratamentos graves precisam de revisão.
+Recuperação natural vigente (SRD v0.134): 1 Vida por dia, ou 2 com Recuperação Vigorosa, após descanso longo válido de 8 horas com pelo menos 6 horas de sono. Escolha recuperar Coragem (Vigor + 1) ou reparar armadura com kit; a Vida é recuperada independentemente da escolha. O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça. Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
 
 **Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
 

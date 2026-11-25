@@ -437,15 +437,21 @@ Há cerca de 1.400 anos, os humanos retornaram a um mundo que já não dominavam
 - Perseverança Humana: pode rolar novamente um teste uma vez por descanso longo.
 - Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas concedidas gratuitamente na criação.
 
-**Vantagens no desenvolvimento:** Todas as Aptidões usam seus custos normais de XP.
+**Vantagens:** Facilidade para construir personagens de longo alcance com armas de fogo ou combinar esse estilo com outras especialidades.
 
-**Limitações e desvantagens:** Não recebe Graus 1 automáticos de origem nem descontos raciais. Também não possui faixas raciais de XP aumentado.
+**Desvantagens:** Não possui bônus racial no desenvolvimento das Aptidões.
 
 #### Luckers Puros
 
 Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a capacidade de sentir e experimentar emoções. Não morrem naturalmente pelo envelhecimento, mas podem morrer se forem abatidos. Restam cerca de 300. Aprenderam a magia com os Runa Espinhos e a transmitiram à humanidade; em Arcanum, convivem com os outros povos.
 
-**Tradição de nomes.** O fragmento el é especialmente associado aos Puros rebatizados. Nomes antigos também podem conservar et, presente antes do Infortúnio. As partículas podem se combinar, inclusive com apóstrofos. *Astel, Luel'et, Luet'el, Ikel'et.* [Guia de nomes — Luckers Puros](#nomes-luckers-puros).
+**Tradição de nomes.** Escolha uma sonoridade inicial e combine-a com uma partícula tradicional. El é associado aos Puros rebatizados; Et era comum antes do Infortúnio. Ast é um fragmento sem significado fixo.
+
+- Ast + el → Astel
+- Et + el → Etel
+- Lu + et + 'el → Luet'el
+
+[Guia de nomes — Luckers Puros](#nomes-luckers-puros).
 
 **Benefícios de origem**
 
@@ -453,30 +459,42 @@ Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a
 - Uma Perícia elemental gratuita à escolha: Fogo, Água, Ar, Terra ou Sagrado.
 - Criar Item de Foco e Magia custa 0 XP, mas precisa ser adquirida após cumprir Disciplina 1, Inteligência 1 e Artesão 1. A Inteligência racial já satisfaz o segundo requisito.
 
-**Vantagens no desenvolvimento:** Inteligência e Destreza têm custos reduzidos de XP para seu desenvolvimento.
+**Vantagens:** XP reduzido em Inteligência e Destreza.
 
-**Limitações e desvantagens:** Força e Atletismo têm custos elevados de XP.
+**Desvantagens:** XP elevado em Força e Atletismo.
 
 #### Luckers de Sangue
 
 O Infortúnio privou os Luckers de Sangue das sensações físicas e emocionais, mas não da capacidade de aprender, compreender e decidir. Sua imortalidade é literal: não conseguem alcançar a morte definitiva. Os aventureiros desta linhagem são párias de sua sociedade, e alguns encontraram acolhimento em Arcanum. Diários e formas próprias de linguagem podem ajudá-los a preservar sua identidade.
 
-**Tradição de nomes.** Et remete à tradição anterior ao Infortúnio. Ion aparece associado às antigas lideranças e à força psicológica. Reaver é usado sobretudo por quem procura se lembrar de algo. Essas associações não determinam personalidade nem posição social. *Or'et, Eterion, Ketreaver, Ikreaver.* [Guia de nomes — Luckers de Sangue](#nomes-luckers-sangue).
+**Tradição de nomes.** Os nomes de Sangue podem guardar marcas de sua identidade anterior ou de uma nova escolha. Et remete à tradição anterior ao Infortúnio; ion, presente em nomes como Arion e Ikarion, é associado à força psicológica e a antigas lideranças; reaver, à busca por recordar algo. Combine esses fragmentos com um início sonoro.
+
+- Or + 'et → Or'et
+- Ar + ion → Arion
+- Ket + reaver → Ketreaver
+
+[Guia de nomes — Luckers de Sangue](#nomes-luckers-sangue).
 
 **Benefícios de origem**
 
 - Vigor 1 e Agilidade 1 automáticos, sem custo de XP.
 - Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas desde a criação. Transfusão Sanguinária é exclusiva da linhagem.
 
-**Vantagens no desenvolvimento:** Vigor e Agilidade têm custos reduzidos de XP para seu desenvolvimento.
+**Vantagens:** XP reduzido em Vigor e Agilidade.
 
-**Limitações e desvantagens:** Influência e Apresentação têm custos elevados de XP. A imortalidade e a ausência de sensações não concedem imunidade mecânica a ferimentos, captura ou outras consequências. A concessão de Transfusão Sanguinária não elimina seus custos de utilização; a relação com a Perícia Transfusão prévia permanece pendente.
+**Desvantagens:** XP elevado em Influência e Apresentação.
 
 #### Runa Espinhos
 
 Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa Espinhos também são conhecidos como Pastores por sua dedicação à natureza. Habitam florestas, encostas e montanhas e preservam tradições xamânicas. Ensinaram a magia aos Luckers Puros. Os Runalmas são uma facção extremista distinta dos Pastores, não o caminho obrigatório de um personagem dessa linhagem.
 
-**Tradição de nomes.** Seus nomes são formados a partir de fragmentos sonoros associados às runas. Combine sílabas como Ru, Na, Ha, So, Thu e Saz para criar uma sonoridade própria. *Ruhaan, Lothuso, Ruthufe, Sofe.* [Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
+**Tradição de nomes.** Escolha dois ou três fragmentos sonoros inspirados nas runas, como Ru, Na, Ha, Lo, Thu, So, Ri, Saz ou Fe, e una-os para criar um nome. As runas abaixo são referências sonoras para a composição, não traduções literais.
+
+- ᚱ Ru + ᚦ Thu + ᚠ Fe → Ruthufe
+- ᛚ Lo + ᚦ Thu + ᛋ So → Lothuso
+- ᛋ So + ᚠ Fe → Sofe
+
+[Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
 
 **Benefícios de origem**
 
@@ -484,9 +502,9 @@ Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa 
 - Pugilismo, Criar Item de Foco e Magia e Escudo Rúnico gratuitos, além de uma Perícia elemental à escolha entre Ar, Água, Terra e Fogo.
 - Escudo Rúnico: uma ativação de custo-base zero por dia; as demais têm custo-base de 1 Coragem. A barreira concede resistência a um elemento habilitado por utilização, não imunidade; a rolagem e eventuais custos adicionais permanecem.
 
-**Vantagens no desenvolvimento:** Vigor e Força têm custos reduzidos de XP para seu desenvolvimento.
+**Vantagens:** XP reduzido em Vigor e Força.
 
-**Limitações e desvantagens:** Agilidade e Destreza têm custos elevados de XP. Não pode equipar armaduras físicas, embora possa carregá-las ou negociá-las. Recebe somente um elemento gratuito; Escudo Rúnico substitui a antiga segunda escolha.
+**Desvantagens:** XP elevado em Agilidade e Destreza. Não pode equipar armaduras físicas.
 
 ### Compare as quatro linhagens
 
@@ -499,11 +517,13 @@ Use este resumo para comparar as origens depois de conhecer cada povo. As coluna
 | Luckers de Sangue | Vigor, Agilidade | Vigor, Agilidade | Influência, Apresentação | Hemomancia; Sangue e Transfusão Sanguinária. |
 | Runa Espinhos | Vigor, Força | Vigor, Força | Agilidade, Destreza | Pugilismo, Foco, elemento e Escudo Rúnico; sem armadura física. |
 
-Os Graus 1 automáticos indicados acima custam 0 XP. Uma Perícia de origem gratuita não concede outros graus ou Perícias automaticamente e não dispensa os custos de ativação ou as condições de utilização, salvo exceções expressamente descritas. As demais Aptidões seguem os custos normais.
+Os Graus 1 (primeiro dado aprimorado da Aptidão) indicados acima são adquiridos gratuitamente, por 0 XP. Uma Perícia de origem gratuita não concede outros graus ou Perícias automaticamente e não dispensa os custos de ativação ou as condições de utilização, salvo exceções expressamente descritas. As demais Aptidões seguem os custos normais.
 
 Conheça mais sobre o cenário em Crônicas e histórias do mundo e veja como interpretar os Luckers em Interpretando seu personagem.
 
-**Compatibilidade de fichas antigas:** Fichas antigas de Lucker Puro com uma escolha elemental revogada preservam seu histórico e as compras efetivamente realizadas com XP; podem regularizar a escolha uma única vez, gratuitamente. Runa Espinhos conserva a segunda escolha antiga apenas como histórico, sem segundo elemento gratuito.
+### Desenvolvendo suas Aptidões
+
+Agora que você escolheu sua origem, é hora de desenvolver as capacidades do seu Aprendiz. As Aptidões representam o que ele é capaz de fazer e fornecem os dados que você utiliza nas ações.
 
 Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
 
@@ -914,7 +934,7 @@ O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 ho
 | Recurso | Descanso curto · 1h | Descanso longo · 8h |
 |---|---|---|
 | Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
-| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia após descanso longo válido, até o máximo. |
+| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
 | Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
 | Perseverança Humana | Não renova. | Renova a utilização. |
 | Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
@@ -925,9 +945,15 @@ Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem,
 
 Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
 
-PENDENTE: quantidade de Integridade reparada, consumo do kit, necessidade de teste, condições de interrupção e tratamento de estados graves. Recuperação Vigorosa com 2 Vida por dia é proposta em revisão; o efeito antigo pertencia ao modelo de três caixas.
+Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
 
-[SRD v0.133](srd-continuidade-v0.133.md).
+#### Reparando a armadura
+
+O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
+
+**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
+
+[SRD v0.134](srd-continuidade-v0.134.md).
 
 ## Parte III — Jogando Codex RPG
 
@@ -1214,7 +1240,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
 | **Provocação Sofisticada** | **1** | Influência 2; efeito adicional pendente. Provocar é ação básica gratuita |
 | Combinação geral de fontes | 2 | Habilita fontes pertinentes, respeitando a ação |
-| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; efeito em revisão |
+| **Recuperação Vigorosa** | **PENDENTE** | Vigor 3; passiva: recupera 2 Vida por dia após descanso longo válido |
 | **Maestria em Arremesso de Armas** | **1** | Força 2, Destreza 2, Agilidade 1; arremesso até 24 m; ativação 1 Coragem |
 
 **A Prática Punhos foi retirada da lista atual.** **EXPERIMENTAL/PENDENTE:** Artes Marciais exige Disciplina 1, sem Armas 1 nem foco Punhos obrigatório; demais regras do treino desarmado ainda em playtest.
@@ -1377,7 +1403,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 | **Maestria em Arremesso de Armas** | **1** | **Perícia em Armas Leves + Força 2 + Destreza 2 + Agilidade 1** | Arremesso de Arma Leve a 24 m, alojamento e consequências por resultado (ver Armas) |
 | **Disparo Fulminante** | **1** | **Destreza 2 + Força 1 + Disciplina 2 + (Longo Alcance ou Arremesso)** | **1 Coragem antes de rolar:** eleva um dado de arco, besta ou arma arremessada habilitada (d6→d10; d10→d12; d12→2d12). No acerto, cada Temor não anulado vale 1 dano. Não se aplica a armas de fogo |
 | **Disparo Múltiplo** | **PENDENTE** | **PENDENTE — será definido pelo autor** | Ramo separado; **alvos adicionais até 2 m do alvo principal**, não do atacante |
-| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Efeito em revisão |
+| **Recuperação Vigorosa** | **PENDENTE** | **Vigor 3** | Recupera 2 Vida por dia após descanso longo válido |
 | **Maestria em Recuperação Vigorosa em Movimento** | **PENDENTE** | **Recuperação Vigorosa + Vigor 6** | Recuperação natural em viagem após 8 h sem dano; demais prazos mantidos |
 | **Recobrar Coragem** | **1** | Não informado | Descanso curto/longo e cena narrativa proporcionam **2 Coragens** |
 | **Maestria em Manejo Duplo** | **1** | Requisitos anteriormente informados, **mais Destreza 2 + Agilidade 1** | Um golpe com duas armas, Armas + Armas + Atributo; dois efeitos em crítico; combinação dos requisitos antigos pendente |
@@ -1498,9 +1524,9 @@ As **Perícias** detalham técnicas específicas e só produzem os efeitos de se
 
 **Escudo Bumerangue [DEFINIDO — resolução posterior de 20/11/2026]:** 1 XP, exige **Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos**. Lança escudo físico até **8 m** com **Disciplina (Armas) + Atributo(s) escolhido(s) e rolado(s)**, respeitando a seleção de fontes, os limites de dados e os requisitos da combinação. **Acerto com ou sem Temor:** escudo retorna **no mesmo turno do lançamento**. **Falha limpa:** cai no caminho; **1A pode permitir correr e recuperá-lo**. **Falha com Temor:** cai próximo ao alvo ou pode atingir aliado próximo se alcançar a DE do aliado. **Distância da queda:** E mantidos + T não anulado mantido + E obtidos de 2A convertidos, em metros; A não usado não soma. Em falha, o escudo fica **no chão e deixa de estar equipado**, até recuperação confirmada. Consequências de Temor permanecem. Não usar as regras de arma alojada no alvo no acerto, pois o escudo retorna. **DEFINIDO (20/11/2026):** arremessar o escudo consome **1 Coragem**, inclusive se falhar. No acerto, causa **dano físico normal** da própria rolagem: **Êxitos válidos + ⌊Temor mantido não anulado ÷ 2⌋**, aplicando crítico e proteções como qualquer ataque físico. Escudos que **possuam características próprias de armas cadastradas** podem aplicá-las no lançamento, mediante requisitos, gatilhos e custos normais: no acerto comum, **+1 Coragem para ativar uma característica**; no crítico, a primeira é gratuita e a segunda custa **+1 Coragem**; características passivas seguem seus critérios. Nenhum escudo ganha características ou dados extras automaticamente, nem causa segundo golpe no retorno; **Cravar não é aplicável** ao escudo que retorna. Respeitar o teto de 5 Coragens por rolagem. **PENDENTE:** momento na ordem de ações, obstáculos e interação com Levantar Escudo durante o voo.
 
-### Perícia Recuperação Vigorosa [REVISÃO PENDENTE]
+### Perícia Recuperação Vigorosa [DEFINIDO — efeito e requisito; custo PENDENTE]
 
-Requisito documentado: Vigor 3. Custo pendente. O efeito anterior dependia do modelo histórico de três caixas. **PROPOSTO:** 2 Vida por dia em vez de 1 após descanso longo válido. Confirmar efeito, custo e interação com tratamento e Maestria em Movimento.
+**Requisito:** Vigor 3. **Tipo:** passiva. **Benefício:** recupera 2 Vida por dia, em vez de 1, após descanso longo válido. Respeita a Vida máxima. O custo de aquisição e a interação com tratamentos especializados e Maestria em Movimento permanecem pendentes.
 
 ### Provocação Sofisticada [DEFINIDO: requisito e XP; efeito exclusivo PENDENTE]
 
