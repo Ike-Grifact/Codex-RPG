@@ -200,6 +200,7 @@ test("Faces críticas por tipo, sem confundir d10/10 com d10/7",()=>{
 });
 
  test("d4: 1 vazio, 2 Antecipar, 3 Temor e 4 Êxito crítico",()=>{
+  assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[0,0,0],[0,1,0],[0,0,1],[1,0,0]]);
   assert.equal(isCriticalFace(4,1),false);
   assert.equal(isCriticalFace(4,4),true);
  });

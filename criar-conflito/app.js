@@ -3,7 +3,7 @@ import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
  from "./rules.mjs?v=20261124-v0125c";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,isCriticalFace,SITUATIONS}
- from "./roll-engine.mjs?v=20261124-v0125c";
+ from "./roll-engine.mjs?v=20261124-v0137";
 import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261124-colossal-v0114";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";

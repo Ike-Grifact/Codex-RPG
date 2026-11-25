@@ -163,7 +163,7 @@ Rolar mais dados oferece mais possibilidades de escolha, não significa somar to
 
 Agora que você conhece os dados, as runas e a Coragem, veja como aplicar essas escolhas em jogo. Os capítulos seguintes detalham a pilha e a interpretação do resultado.
 
-1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**.
+1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
 2. Antes de rolar, decida se vai gastar Coragem para elevar a fonte, conforme as regras aplicáveis. Role até nove dados pertinentes das fontes habilitadas, incluindo **ao menos um dado de Atributo na pilha**.
 3. Escolha livremente os dados a manter dentro do limite do Marco: **não é necessário manter dados de Atributo**.
 4. Leia Êxitos, Antecipar e Temor **apenas dos dados mantidos**.
@@ -420,11 +420,11 @@ Os jogadores 1, 2, 3, 4 e 5 enfrentam uma ameaça. Veja como três ações conju
 | Formação | Convocação e resolução | Turnos acumulados |
 |---|---|---:|
 | 1, 2 e 3 | Começam a sequência com uma ação conjunta. Obtêm ᚨ 2A e convocam 4 e 5, por ᚨ 1A cada. | 3 |
-| 4 e 5 → 1, 4 e 5 | 4 e 5 rolam e gastam ᚨ 2A para chamar 1, que já participou uma vez. 1 rola; os três resolvem uma única ação em conjunto. | 6 |
+| 4 e 5 → 1, 4 e 5 | 4 e 5 rolam e gastam ᚨ 2A para chamar 1, que já participou uma vez. O jogador 1 rola; os três resolvem uma única ação em conjunto. | 6 |
 | 1, 4 e 5 → 2 e 3 | O trio obtém ᚨ 4A e convoca 2 e 3, por ᚨ 2A cada. Os dois começam a rolar; a nova ação ainda não foi concluída. | 6 |
-| 2 e 3 → 1, 2 e 3 | 2 e 3 gastam outros ᚨ 4A para chamar 1, que já participou duas vezes. 1 rola; o trio resolve a terceira ação conjunta. | 9 |
+| 2 e 3 → 1, 2 e 3 | 2 e 3 gastam outros ᚨ 4A para chamar 1, que já participou duas vezes. O jogador 1 rola; o trio resolve a terceira ação conjunta. | 9 |
 
-Observe que chamar novamente um aliado fica mais caro. Para voltar a formar 1, 2 e 3, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar 2 e 3 e ᚨ 4A para incorporar 1. 1 dupla 2 e 3 poderia chamar 4 ou 5 por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
+Observe que chamar novamente um aliado fica mais caro. Para voltar a formar 1, 2 e 3, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar 2 e 3 e ᚨ 4A para incorporar 1. A dupla 2 e 3 poderia chamar 4 ou 5 por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
 
 #### Como os inimigos agem?
 
