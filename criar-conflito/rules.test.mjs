@@ -265,13 +265,13 @@ test("Domar Grande exige explicitamente Pequena, Média e Apresentação 2, sem 
 });
 
 
-test("v0.149: humanoides usam 2 + piso((AGI+VIG+DES)/2), sem Atletismo; monstros preservados",()=>{
+test("v0.149: humanoides usam 2 + piso((AGI+VIG)/2), sem Atletismo; monstros preservados",()=>{
  const h=blank("humanoide");
  h.attributes.agilidade=1;h.attributes.destreza=2;h.attributes.vigor=3;h.practices.atletismo=3;
- assert.equal(stats(h).de,5);
+ assert.equal(stats(h).de,4);
  const hm=blank("humanoide-monstro");
  hm.attributes.agilidade=1;hm.attributes.destreza=2;hm.attributes.vigor=3;hm.practices.atletismo=3;
- assert.equal(stats(hm).de,5);
+ assert.equal(stats(hm).de,4);
  const m=blank("monstro");
  m.attributes.agilidade=1;m.attributes.destreza=2;m.attributes.vigor=3;
  assert.equal(stats(m).de,2);

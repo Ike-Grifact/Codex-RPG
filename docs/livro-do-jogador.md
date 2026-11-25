@@ -1213,7 +1213,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−3 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Modificadores gerais de armadura [DEFINIDO — SRD v0.147]:** Leve 0, Média −1, Pesada −2, Muito Pesada −3 em todas as defesas. Calcule a DE natural com teto 11, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 9. Não duplicar modificadores. Integridade é recurso separado.
+**Modificadores gerais de armadura [DEFINIDO — SRD v0.150]:** Leve 0, Média −1, Pesada −2, Muito Pesada −3 em todas as defesas. Calcule a DE natural com teto 8, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 9. Não duplicar modificadores. Integridade é recurso separado.
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 

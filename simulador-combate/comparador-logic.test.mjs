@@ -32,7 +32,7 @@ test("Cinco Êxitos contra alvo sem armadura: exatamente 2 Vida (não +2 Integri
 test("Armadura equipada impede os 2 Vida diretos por patamar de cinco",()=>{
  const target=armor(),def=defense(target),source=bare();
  assert.equal(armorOf(target).integrity,1);
- assert.equal(def,3,"DE natural 2 + piso((1+1+1)/2); armadura Muito Leve 0");
+ assert.equal(def,3,"DE natural 2 + piso((1+1)/2); armadura Leve 0");
  const actual=lifeAtFive({success:true,e:5,p:0},target);
  assert.equal(actual.eligible,false);assert.equal(actual.damage,0);
  const hit=updateResource(target,"a","integridade",-2);

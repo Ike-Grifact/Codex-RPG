@@ -31,7 +31,7 @@ test("Armadura Muito Leve: migração de 3 para 2 de Integridade, sem redução 
 
 test("Somente a categoria da única armadura equipada modifica a DE",()=>{
  const t=humanoid(),base=stats(t).de;
- for(const [category,modifier] of [["muito-leve",0],["leve",-1],["medio",-2],["pesado",-3]]){
+ for(const [category,modifier] of [["muito-leve",0],["leve",0],["medio",-1],["pesado",-2]]){
   t.items=[{id:"a",name:"Peça",kind:"armor",category,grade:1,
    weight:.125,qty:1,integrityMax:12,integrity:6,equipped:true}];
   assert.equal(stats(t).de,Math.max(0,base+modifier),category);

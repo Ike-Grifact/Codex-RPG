@@ -22,16 +22,16 @@ const assert=require("node:assert/strict");
   const de=page.locator("#de-text"),label=page.locator("#de-label"),caption=page.locator("#de-caption");
   assert.equal(await de.textContent(),"2");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
-  assert.equal(await de.textContent(),"1","DE total com Armadura Leve equipada");
+  assert.equal(await de.textContent(),"2","DE total com Armadura Leve equipada");
   assert.equal(await label.textContent(),"DE DEFENSIVA");
-  assert.match(await caption.textContent(),/Base 2 · armadura -1/,"O cartão mostra só o resumo");
+  assert.match(await caption.textContent(),/Base 2 · armadura \+0/,"O cartão mostra só o resumo");
   assert.equal(await page.locator(".fp-vitals").evaluate(el=>getComputedStyle(el).display),"flex","Indicadores compactos");
   assert.equal(await caption.isVisible(),false,"Subtexto deixa de ocupar espaço visual");
   await page.locator('[data-vital-open="defense"]').click();
   const tooltip=page.locator("#fp-vital-tooltip");
   assert.equal(await tooltip.isVisible(),true,"O detalhe deve abrir ao toque");
   assert.match(await tooltip.textContent(),/todas as defesas/,"A explicação detalhada fica no tooltip");
-  assert.match(await tooltip.textContent(),/Total = 1/,"O tooltip usa a defesa calculada e não um exemplo fixo");
+  assert.match(await tooltip.textContent(),/Total = 2/,"O tooltip usa a defesa calculada e não um exemplo fixo");
   await page.keyboard.press("Escape");
   assert.equal(await tooltip.isVisible(),false,"Escape fecha a explicação");
   await page.setViewportSize({width:1200,height:900});
@@ -88,7 +88,7 @@ const assert=require("node:assert/strict");
 
   assert.equal(await page.locator("#armor-integrity-text").textContent(),"5 / 5");
   await page.reload({waitUntil:"load"});
-  assert.equal(await de.textContent(),"1","DE geral persiste após recarregar ficha equipada");
+  assert.equal(await de.textContent(),"2","DE geral persiste após recarregar ficha equipada");
   await page.locator('#inventory-list [data-action="equip"]').first().evaluate(el=>el.click());
   assert.equal(await de.textContent(),"2","Desequipar elimina penalidade");
 
@@ -161,6 +161,6 @@ const assert=require("node:assert/strict");
   assert.equal(await page.locator('#inventory-list [data-item-field="focusCharges"]').getAttribute("value"),"0",
    "Duas cargas são gastas somente após finalizar; persiste no Inventário");
   assert.deepEqual(errors,[],"Nenhum erro no navegador");
-  console.log("PASS armadura: DE geral −1 Leve com recarga e retirada no navegador móvel");
+  console.log("PASS armadura: DE geral 0 Leve com recarga e retirada no navegador móvel");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
