@@ -488,11 +488,11 @@ O Infortúnio privou os Luckers de Sangue das sensações físicas e emocionais,
 
 Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa Espinhos também são conhecidos como Pastores por sua dedicação à natureza. Habitam florestas, encostas e montanhas e preservam tradições xamânicas. Ensinaram a magia aos Luckers Puros. Os Runalmas são uma facção extremista distinta dos Pastores, não o caminho obrigatório de um personagem dessa linhagem.
 
-**Tradição de nomes.** Escolha dois ou três fragmentos sonoros inspirados nas runas, como Ru, Na, Ha, Lo, Thu, So, Ri, Saz ou Fe, e una-os para criar um nome. As runas abaixo são referências sonoras para a composição, não traduções literais.
+**Tradição de nomes.** Escolha dois ou três fragmentos sonoros inspirados nas runas, como Ru, Na, Ha, Lo, Thu, So, Ri, Saz ou Fe, e una-os para criar um nome. Os nomes completos das runas aparecem ao lado dos fragmentos usados no Codex. Você pode adaptar a sonoridade ao criar o nome do seu personagem.
 
-- ᚱ Ru + ᚦ Thu + ᚠ Fe → Ruthufe
-- ᛚ Lo + ᚦ Thu + ᛋ So → Lothuso
-- ᛋ So + ᚠ Fe → Sofe
+- ᚱ Raidho (Ru) + ᚦ Thurisaz (Thu) + ᚠ Fehu (Fe) → Ruthufe
+- ᛚ Laguz (Lo) + ᚦ Thurisaz (Thu) + ᛋ Sowilo (So) → Lothuso
+- ᛋ Sowilo (So) + ᚠ Fehu (Fe) → Sofe
 
 [Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
 
@@ -521,65 +521,13 @@ Os Graus 1 (primeiro dado aprimorado da Aptidão) indicados acima são adquirido
 
 Conheça mais sobre o cenário em Crônicas e histórias do mundo e veja como interpretar os Luckers em Interpretando seu personagem.
 
-### Desenvolvendo suas Aptidões
-
-Agora que você escolheu sua origem, é hora de desenvolver as capacidades do seu Aprendiz. As Aptidões representam o que ele é capaz de fazer e fornecem os dados que você utiliza nas ações.
-
-Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
-
-| Grau | Dados de Atributo | XP acumulado | Dados de Conhecimento/Prática | XP acumulado |
-|---:|---|---:|---|---:|
-| 0 | 1d4 | 0 | **1d6** | 0 |
-| 1 | 1d6 | 1 | 1d10 | 2 |
-| 2 | 2d6 | 3 | 2d10 | 4 |
-| 3 | 3d6 | 6 | 3d10 | 8 |
-| 4 | 2d6 + 1d10 | 9 | 2d10 + 1d12 | 16 |
-| 5 | 1d6 + 2d10 | 18 | 1d10 + 2d12 | 32 |
-| 6 | 3d10 | 32 | 3d12 | 64 |
-
-**Conhecimentos DEFINIDOS:** Proteção, Astronomia, Medicina, Alquimia, Engenharia, Erudição.
-
-**Práticas DEFINIDAS (6):** **Disciplina** (Prática compartilhada para ataques, defesas e conjurações), Atletismo, Furtividade, Artesão, Apresentação e Coleta.
-
-**Disciplina é UMA ÚNICA Prática**, com uma única graduação, pilha e compra de XP de Formação. Seus dados servem a técnicas ofensivas, defensivas ou mágicas segundo as **Perícias habilitadoras**. É possível ter as duas famílias de Perícias no mesmo personagem sem duplicar o grau comprado, a fonte nem seu 1d6 gratuito. **Exemplo:** grau 1 da Prática compartilhada custa **2 XP de Formação** e fornece **1d10**; obter uma Perícia de Conjuração não exige pagar outros 2 XP para criar outra Prática. Os custos específicos das **Perícias** (inclusive Aprendiz de Conjurador) continuam próprios. Punhos é especialização marcial, não outra Prática.
-
-**Fichas antigas:** os valores anteriormente separados como Armas e Conjuração são conciliados provisoriamente pelo maior grau, com anotação histórica dos valores antigos; não se somam os dados nem os custos.
-
-**DEFINIDO:** o grau 0 de **cada Conhecimento e Prática pertinente** oferece **seu próprio 1d6 gratuito** (um dado por fonte), equivalente ao 1d4 gratuito por Atributo. O primeiro treinamento troca esse d6 por 1d10, não acrescenta outro dado gratuito. Armas na especialização de Punhos continua exigindo habilitação específica.
-
-O XP adquirido após a criação é livre: pode ser investido em qualquer fonte ou Perícia cujo requisito seja atendido. Grau 6 alcançado cedo **não amplia** automaticamente a quantidade de dados mantidos.
-
-**DEFINIDO — distribuição inicial:** para concluir o Aprendiz, o jogador compra **pelo menos um Atributo no grau 1** e **pelo menos um Conhecimento ou Prática no grau 1**. Depois desses dois investimentos mínimos, **todo o XP restante é livre**, podendo financiar qualquer Atributo, Conhecimento, Prática ou Perícia cujo custo e requisitos sejam atendidos. Não há limite ou reserva exclusiva de XP por categoria. A antiga vinculação de 5 XP somente a Perícias e as distribuições 6/8/5 ou 7/7/5 foram substituídas.
-
-**DEFINIDO — orçamento inicial vigente, SRD v0.89:** a criação possui **15 XP iniciais compartilhados**, não 18, 19 ou 20. Atributo G1 custa 1 XP, Conhecimento ou Prática G1 custa 2 XP e restam **12 XP livres**, sem reservas 6/8/5 ou 7/7/5. Níveis não concedem XP automaticamente. O teto de referência é 260 XP acumulados no nível 20, incluindo os 15 iniciais. Custos por Grau e dados de fonte permanecem.
-
-**Vida máxima:** 3 + Vigor + piso(Força/2).
-
-**DE defensiva — SRD v0.89 [DEFINIDO]:** **min(9; Agilidade + ⌊(Vigor + Destreza)/2⌋ + ⌊Atletismo/3⌋)**, **sem +1 fixo**. Depois aplicar a armadura (Muito Leve/Roupas Simples **+2 em todas as defesas**, sem duplicação na esquiva) e os efeitos autorizados; teto final 12. A fórmula v0.88 está substituída. [v0.89](srd-continuidade-v0.89.md).
-
-**Coragem:** começa com teto 10, recebe +1 de teto natural nos níveis 5, 10 e 20, e respeita o limite absoluto de 15 mesmo com Maestrias.
-
-**Balanço corporal por carga [DEFINIDO — 17/11/2026]:** a classificação do personagem depende da **porcentagem de carga física utilizada** e não da comparação entre Agilidade e Vigor. Calcule `100 × Carga carregada ÷ Capacidade total`, usando as unidades de carga existentes no inventário; todos os itens e recursos físicos transportados entram na soma, inclusive itens de foco e armaduras. Vigor continua contribuindo para ampliar a capacidade de carga, conforme a fórmula vigente, sem alterar o Atributo Agilidade.
-
-| Capacidade utilizada | Balanço do personagem |
-|---|---|
-| Menos de 25% | **Muito Leve** |
-| De 25% até menos de 50% | **Leve** |
-| De 50% até menos de 75% | **Médio** |
-| De 75% até menos de 100% | **Pesado** |
-| 100% ou mais | **Muito Pesado** |
-
-**Visualização na ficha:** 20 blocos representam 100% da capacidade (5% por bloco), com preenchimento parcial quando necessário; mostrar também a porcentagem exata e quanto cada item ocupa na capacidade. Ultrapassar 100% continua gerando o alerta já existente de carga excedida; nenhum novo custo ou penalidade por excesso foi aprovado. Esta mudança **não redefine o Tipo da armadura**, seus modificadores de DE, Integridade ou a categoria tática de armas e magias.
-
-### Deslocamento [DEFINIDO]
-
-O movimento padrão é **8 metros + 1 metro por grau de Agilidade + 1 metro a cada 3 graus completos de Atletismo**.
-
-**Fórmula:** Deslocamento = 8 + Agilidade + parte inteira de (Atletismo ÷ 3), em metros.
-
-**Exemplo:** Agilidade 2 e Atletismo 3 permitem **11 metros** de deslocamento padrão; em sobrepeso, **5,5 metros**. A regra de arredondamento em tabuleiro permanece pendente. O valor do movimento e o alcance de uma arma são propriedades diferentes; alcance corpo a corpo e distância efetiva são tratados no capítulo Armas, alcance e efeitos.
+Agora que você escolheu sua origem, veja como desenvolver as capacidades do seu Aprendiz e quais dados cada Aptidão fornece.
 
 ## Aptidões na criação — dados, Graus e XP
+
+Todos começam com um dado em cada Aptidão, mesmo antes de investir XP: 1d4 em cada Atributo e 1d6 em cada Conhecimento ou Prática pertinente. Esse é o Grau 0. Ao desenvolver um Atributo para o Grau 1, seu d4 passa a ser um d6; em Conhecimentos e Práticas, o d6 passa a ser um d10. Os dados são substituídos, não somados ao dado anterior.
+
+As tabelas a seguir mostram os custos normais de cada avanço e o total investido desde o Grau 0. As vantagens e desvantagens de origem alteram os custos das Aptidões indicadas na linhagem.
 
 ### ◇ Atributos — possibilidades e efeitos na ficha
 
@@ -639,23 +587,25 @@ Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo q
 
 #### Progressão de Atributos — dados e XP
 
-Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
+O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
-| Grau desejado | Dados que terá | XP para subir do Grau anterior |
-|---:|---|---:|
-| 0 | 🎲 1d4 | Inicial |
-| 1 | 🎲 1d6 | 1 XP |
-| 2 | 🎲 2d6 | 2 XP |
-| 3 | 🎲 3d6 | 3 XP |
-| 4 | 🎲 2d6 + 1d10 | 3 XP |
-| 5 | 🎲 1d6 + 2d10 | 9 XP |
-| 6 | 🎲 3d10 | 14 XP |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
+|---:|---|---:|---:|
+| 0 | 🎲 1d4 | Inicial | 0 XP |
+| 1 | 🎲 1d6 | 1 XP | 1 XP |
+| 2 | 🎲 2d6 | 2 XP | 3 XP |
+| 3 | 🎲 3d6 | 3 XP | 6 XP |
+| 4 | 🎲 2d6 + 1d10 | 3 XP | 9 XP |
+| 5 | 🎲 1d6 + 2d10 | 9 XP | 18 XP |
+| 6 | 🎲 3d10 | 14 XP | 32 XP |
 
 ### ⚔ Práticas — treinamento para agir
 
 Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
 
 #### ⚔ Disciplina
+
+Disciplina é uma única Prática: seus dados podem servir tanto a técnicas com armas quanto à conjuração, de acordo com as Perícias que você possui. Não é necessário comprar Disciplina novamente para usar magia, nem se recebe uma segunda pilha de dados por ter as duas habilitações. Técnicas com punhos também exigem a habilitação pertinente.
 
 Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange a aplicação de uma arma, o domínio de movimentos de combate e a execução de uma conjuração habilitada. Não representa duas Práticas diferentes: o equipamento e as Perícias adquiridas determinam quais técnicas o personagem pode realizar. Um especialista pode construir sua profissão em torno das armas, da magia ou de uma combinação das duas.
 
@@ -695,17 +645,17 @@ Treinamento para procurar, reconhecer, extrair e preservar recursos encontrados 
 
 #### Progressão de Práticas — dados e XP
 
-Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
+O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
-| Grau desejado | Dados que terá | XP para subir do Grau anterior |
-|---:|---|---:|
-| 0 | 🎲 1d6 | Inicial |
-| 1 | 🎲 1d10 | 2 XP |
-| 2 | 🎲 2d10 | 2 XP |
-| 3 | 🎲 3d10 | 4 XP |
-| 4 | 🎲 2d10 + 1d12 | 8 XP |
-| 5 | 🎲 1d10 + 2d12 | 16 XP |
-| 6 | 🎲 3d12 | 32 XP |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
+|---:|---|---:|---:|
+| 0 | 🎲 1d6 | Inicial | 0 XP |
+| 1 | 🎲 1d10 | 2 XP | 2 XP |
+| 2 | 🎲 2d10 | 2 XP | 4 XP |
+| 3 | 🎲 3d10 | 4 XP | 8 XP |
+| 4 | 🎲 2d10 + 1d12 | 8 XP | 16 XP |
+| 5 | 🎲 1d10 + 2d12 | 16 XP | 32 XP |
+| 6 | 🎲 3d12 | 32 XP | 64 XP |
 
 ### ✦ Conhecimentos — estudo que abre caminhos
 
@@ -749,25 +699,25 @@ Conhecimento de história, culturas, tradições, registros escritos e saberes e
 
 #### Progressão de Conhecimentos — dados e XP
 
-Cada linha mostra o XP necessário para subir **um Grau**, partindo do Grau anterior, não o total gasto desde o início.
+O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
-| Grau desejado | Dados que terá | XP para subir do Grau anterior |
-|---:|---|---:|
-| 0 | 🎲 1d6 | Inicial |
-| 1 | 🎲 1d10 | 2 XP |
-| 2 | 🎲 2d10 | 2 XP |
-| 3 | 🎲 3d10 | 4 XP |
-| 4 | 🎲 2d10 + 1d12 | 8 XP |
-| 5 | 🎲 1d10 + 2d12 | 16 XP |
-| 6 | 🎲 3d12 | 32 XP |
+| Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
+|---:|---|---:|---:|
+| 0 | 🎲 1d6 | Inicial | 0 XP |
+| 1 | 🎲 1d10 | 2 XP | 2 XP |
+| 2 | 🎲 2d10 | 2 XP | 4 XP |
+| 3 | 🎲 3d10 | 4 XP | 8 XP |
+| 4 | 🎲 2d10 + 1d12 | 8 XP | 16 XP |
+| 5 | 🎲 1d10 + 2d12 | 16 XP | 32 XP |
+| 6 | 🎲 3d12 | 32 XP | 64 XP |
 
 **Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.
 
-**Exemplo de compra:** Força 1 custa **1 XP**; para passar de Força 1 para Força 2, pague **2 XP**. Disciplina 1 custa **2 XP**; para passar de Disciplina 1 para Disciplina 2, pague **mais 2 XP**. As tabelas mostram o preço de cada avanço, não o total investido.
+**Exemplo de compra:** Força 1 custa **1 XP**; para passar de Força 1 para Força 2, pague **2 XP**. Disciplina 1 custa **2 XP**; para passar de Disciplina 1 para Disciplina 2, pague **mais 2 XP**. O preço do avanço indica quanto pagar agora; a última coluna mostra o total investido.
 
 ### Como começar a montar sua ficha
 
-No nível 1, você tem **15 XP compartilhados** para construir seu Aprendiz. Primeiro, compre **pelo menos um Atributo no Grau 1** e **pelo menos um Conhecimento ou uma Prática no Grau 1**. Essa escolha mínima custa **3 XP**, deixando **12 XP livres** para desenvolver outras Aptidões ou adquirir Perícias cujos requisitos você cumpra. Algumas origens possuem regras próprias de custo, mostradas na ficha.
+Você começa com 15 XP. Para concluir sua criação, tenha pelo menos um Atributo no Grau 1 ou superior e um Conhecimento ou uma Prática no Grau 1 ou superior. Com os custos normais, esses dois investimentos custam 3 XP e deixam 12 XP livres. Se sua origem já concedeu um Atributo no Grau 1, esse requisito está atendido. Os demais custos dependem das suas escolhas e da linhagem. Use todo o XP restante como preferir, respeitando os requisitos das Aptidões e Perícias.
 
 **Perícias não são um quarto grupo de dados:** elas representam especializações. Você compra uma Perícia quando atende aos requisitos dela, pagando o XP indicado em sua descrição. Algumas permitem novas combinações ou efeitos, mas não concedem automaticamente dados extras.
 
@@ -776,6 +726,20 @@ No nível 1, você tem **15 XP compartilhados** para construir seu Aprendiz. Pri
 Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas, efeitos e combinações de Aptidões; podem ser passivas ou depender de ativação. Disciplina é uma única Prática, marcial e mágica. Consulte o [catálogo de Perícias](../pericias/) para requisitos e custos e aprofunde-se depois das mecânicas.
 
 ## Equipamentos, compras e inventário
+
+### Balanço por carga
+
+A classificação depende da porcentagem de carga física utilizada: divida a carga transportada pela capacidade total e multiplique por 100. A classificação não modifica a categoria da armadura equipada.
+
+| Capacidade utilizada | Balanço do personagem |
+|---|---|
+| Menos de 25% | **Muito Leve** |
+| De 25% até menos de 50% | **Leve** |
+| De 50% até menos de 75% | **Médio** |
+| De 75% até menos de 100% | **Pesado** |
+| 100% ou mais | **Muito Pesado** |
+
+Com 100% ou mais da capacidade, o personagem fica Muito Pesado: −2 Êxitos nos testes afetados e metade do deslocamento. A abrangência dos testes afetados permanece pendente.
 
 **DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
@@ -911,6 +875,8 @@ Registre a reserva atual e seu teto, bem como os limites de dados rolados e mant
 ### Defesa e movimento
 
 Anote a DE natural, a defesa com proteção equipada e o deslocamento. Atualize os valores quando equipamentos, carga ou condições mudarem.
+
+Seu movimento começa em **8 metros**. Acrescente **1 metro por Grau de Agilidade** e **1 metro a cada 3 Graus completos de Atletismo**. Agilidade 2 e Atletismo 3 resultam em 11 metros; em sobrepeso, 5,5 metros. A regra de arredondamento em tabuleiro permanece pendente. Consulte Capacidade de Carga e Armas, alcance e efeitos.
 
 ### Perícias, equipamentos e inventário
 
@@ -1878,7 +1844,7 @@ Um personagem pode manter um nome de sua existência anterior, adotar uma nova c
 
 Os Runa Espinhos e os Runalmas compartilham a tradição de construir nomes com fragmentos sonoros associados às runas. Entre os fragmentos conhecidos estão Ru, Na, Ha, An, So, Wi, Lo, Thu, Ri, Saz, Fe e Hu. Eles servem como matéria-prima para a sonoridade, não como um dicionário de significados obrigatórios.
 
-Escolha dois ou três fragmentos e experimente uni-los: Ru + Ha + An inspira Ruhaan; Lo + Thu + So forma Lothuso; Ru + Thu + Fe forma Ruthufe; Saz + Fe forma Sazfe; So + Fe forma Sofe; Ri + Saz forma Risaz. Ajustes de junção são possíveis, como em Nauha, Berhu e Karilo.
+Use os nomes das runas como inspiração: ᚱ Raidho (Ru), ᚺ Hagalaz (Ha), ᚨ Ansuz (An), ᛚ Laguz (Lo), ᚦ Thurisaz (Thu, Ri, Saz), ᛋ Sowilo (So), ᚠ Fehu (Fe, Hu), ᚾ Nauthiz (Na) e ᚹ Wunjo (Wi). Os fragmentos são adaptações criativas para os nomes do Codex, não uma transcrição histórica obrigatória. Por exemplo, Raidho + Hagalaz + Ansuz inspiram Ruhaan; Laguz + Thurisaz + Sowilo inspiram Lothuso; Raidho + Thurisaz + Fehu inspiram Ruthufe. Sazfe, Sofe e Risaz são outras combinações. Ajustes de junção são possíveis, como em Nauha, Berhu e Karilo.
 
 Pastores e Runalmas compartilham essa tradição de nomes. O nome não revela necessariamente a facção, a personalidade, a afinidade elemental ou os poderes de um indivíduo.
 
