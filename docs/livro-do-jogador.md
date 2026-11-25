@@ -77,18 +77,18 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 
 | Face | d4 | d6 | d10 | d12 | d20 |
 |---:|---|---|---|---|---|
-| 1 | ᛋ | ○ | ○ | ○ | ○ |
+| 1 | **ᛋ ★** | ○ | ○ | ○ | ○ |
 | 2 | ᚨ | ○ | ○ | ○ | ○ |
 | 3 | ᚦ | ᚦ | ᚦ | ᚦ | ᚦ |
 | 4 | ○ | ᚦ | ᚦ | ᚦ | ᚦ |
 | 5 | — | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ | ᚨ+ᚦ |
-| 6 | — | ᛋ | ᛋ | ᛋ | ᛋ |
-| 7 | — | — | 2ᛋ | 2ᛋ | 2ᛋ |
+| 6 | — | **ᛋ ★** | ᛋ | ᛋ | ᛋ |
+| 7 | — | — | **2ᛋ ★** | 2ᛋ | 2ᛋ |
 | 8 | — | — | ᛋ+ᚨ | ᛋ+ᚨ | ᛋ+ᚨ |
 | 9 | — | — | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ | ᛋ+ᚨ+ᚦ |
 | 10 | — | — | 2ᛋ+ᚦ | 2ᛋ+ᚦ | 2ᛋ+ᚦ |
 | 11 | — | — | — | 3ᚦ | 3ᚦ |
-| 12 | — | — | — | 3ᛋ | 3ᛋ |
+| 12 | — | — | — | **3ᛋ ★** | 3ᛋ |
 | 13 | — | — | — | — | 2ᛋ+ᚨ+ᚦ |
 | 14 | — | — | — | — | 2ᛋ+2ᚦ |
 | 15 | — | — | — | — | 3ᚦ+2ᚨ |
@@ -96,9 +96,9 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 | 17 | — | — | — | — | 3ᛋ+ᚨ+ᚦ |
 | 18 | — | — | — | — | 4ᛋ+ᚨ+2ᚦ |
 | 19 | — | — | — | — | 5ᛋ+2ᚨ+ᚦ |
-| 20 | — | — | — | — | 6ᛋ+2ᚨ |
+| 20 | — | — | — | — | **6ᛋ+2ᚨ ★** |
 
-O teto de DE permanece 30.
+**★ = face crítica (dourada na versão do site).** O teto de DE permanece 30.
 
 ## Coragem e seus recursos
 
@@ -126,7 +126,7 @@ Imagine um Aprendiz que rolou três dados e pode manter dois. O primeiro d10 cai
 |---|---:|---|---|
 | Primeiro d10 | 8 | ᛋ + ᚨ | 1E + 1A |
 | Segundo d10 | 10 | ᛋᛋ + ᚦ | 2E + 1T |
-| d6 | 6 | ᛋ | 1E |
+| d6 | 6 ★ | ᛋ | 1E |
 
 | Escolha | Dados mantidos | Resultado | Consequência |
 |---|---|---|---|
@@ -155,10 +155,19 @@ Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A
 **Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
 
 
-| Níveis | Dados mantidos naturalmente | Com gasto de 1 Coragem |
-|---|---:|---:|
-| 1–9 | 2 | 3 |
-| 10–20 | 3 | 4 |
+### Progressão de níveis e Marcos — o que muda?
+
+Os níveis representam a evolução do personagem durante a campanha. Os Marcos de progressão são momentos em que novos limites ou possibilidades de aquisição são liberados. O nível não concede XP, dados, equipamentos nem Perícias automaticamente: as compras e requisitos continuam necessários.
+
+| Níveis | Dados mantidos naturalmente | Com 1 Coragem | Teto natural de Coragem | O que muda |
+|---|---:|---:|---:|---|
+| 1–4 | 2 | 3 | 10 | Grau 1; criação do Aprendiz e desenvolvimento de Aptidões e Perícias. |
+| 5–9 | 2 | 3 | 11 | Grau 2; +1 ao teto de Coragem. |
+| 10–19 | 3 | 4 | 12 | Grau 3; +1 ao teto de Coragem; possibilidade de acesso extraordinário ao d20 mediante requisitos. |
+| 20 | 3 | 4 | 13 | Grau 4; +1 ao teto de Coragem. O limite de retenção não aumenta novamente. |
+
+Os Graus da tabela indicam o acesso por nível aos equipamentos sujeitos a essa progressão, não um limite geral de Grau das Aptidões. O teto absoluto de Coragem é 15, quando benefícios específicos o permitirem. O limite geral continua em 9 dados rolados e 4 mantidos. A curva de XP de referência é apresentada em Evolução e XP.
+
 
 Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
@@ -201,11 +210,11 @@ Depois de conhecer a rolagem e os dados mantidos, aprenda a reconhecer as faces 
 
 | Dado | Face crítica | Símbolos da face |
 |---|---:|---|
-| d4 | **1** | **1 Êxito (1E)** — ᛋ |
-| d6 | **6** | **1 Êxito (1E)** — ᛋ |
-| d10 | **7** | **2 Êxitos (2E)** — ᛋᛋ |
-| d12 | **12** | **3 Êxitos (3E)** — ᛋᛋᛋ |
-| d20 | **20** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
+| d4 | **1 ★** | **1 Êxito (1E)** — ᛋ |
+| d6 | **6 ★** | **1 Êxito (1E)** — ᛋ |
+| d10 | **7 ★** | **2 Êxitos (2E)** — ᛋᛋ |
+| d12 | **12 ★** | **3 Êxitos (3E)** — ᛋᛋᛋ |
+| d20 | **20 ★** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
 
 **Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
 
@@ -219,9 +228,9 @@ Quanto mais dados críticos você mantiver, maior será a recompensa:
 
 | Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
 |---|:---:|:---:|:---:|
-| Trocar até **1 Temor seu por 1 Êxito** | Sim | Sim | Sim |
-| Ganhar **+1 Êxito** | — | Sim | Sim |
-| Ganhar **+1 Antecipar** | — | Sim | Sim |
+| Trocar até **ᚦ 1 Temor seu por ᛋ 1 Êxito** | Sim | Sim | Sim |
+| Ganhar **ᛋ +1 Êxito** | — | Sim | Sim |
+| Ganhar **ᚨ +1 Antecipar** | — | Sim | Sim |
 | Recuperar **Coragem** | **1** | **2** | **2** |
 | **Dobrar o dano** | — | — | Sim |
 
