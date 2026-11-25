@@ -302,7 +302,7 @@ const SKILLS=[
  [
   "maestria-escudos",
   "Maestria em Escudos",
-  "1 XP. Requisitos: Destreza 2 + Vigor 2. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 12, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
+  "1 XP. Requisitos: Destreza 2 + Vigor 2 + Força 1 + Proteção 1. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 9, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
   1
  ],
  [
@@ -673,7 +673,7 @@ function skillReq(id,s){
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
   if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
-  if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
+  if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";

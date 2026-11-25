@@ -24,6 +24,7 @@ export function skillPrerequisite(system,id){
  const disc=Number(p.armas_conjuracao||0),arts=Number(p.artesao||0),
   force=Number(a.forca||0),dex=Number(a.destreza||0),intel=Number(a.inteligencia||0),agil=Number(a.agilidade||0);
  const req={
+  "maestria-escudos":dex>=2&&Number(a.vigor||0)>=2&&force>=1&&Number(system.knowledges?.protecao||0)>=1,
   "armas-leves":disc>=1,
   "armas-medias":disc>=1&&force>=1,
   "armas-pesadas":disc>=2&&force>=2,
@@ -52,13 +53,13 @@ export function canSpendXP(system,delta){
 export function defenseDE(actor){
  const s=actor.system,a=s.attributes||{};
  if(s.monsterRules)return Math.min(9,Math.max(0,Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2)));
- const natural=Math.min(11,2+Math.floor((Number(a.agilidade||0)+Number(a.vigor||0)+Number(a.destreza||0))/2));
+ const natural=Math.min(8,2+Math.floor((Number(a.agilidade||0)+Number(a.vigor||0))/2));
  let modifier=0;
  for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
   const cat=String(armor.system.category||"").toLowerCase().replace(/[_ ]/g,"-");
-  modifier=({"muito-leve":0,leve:-1,medio:-2,pesado:-3,"muito-pesado":-4})[cat]||0;
+  modifier=({"muito-leve":0,leve:0,medio:-1,pesado:-2,"muito-pesado":-3})[cat]||0;
   break;
  }
- const shield=(s.skills||[]).includes("maestria-escudos")&&(actor.items||[]).some(i=>i.type==="equipment"&&i.system.kind==="shield"&&i.system.equipped)?1:0;
- return Math.min(12,Math.max(0,natural+modifier+shield));
+ const shield=(s.skills||[]).includes("maestria-escudos")&&skillPrerequisite(s,"maestria-escudos")&&(actor.items||[]).some(i=>i.type==="equipment"&&i.system.kind==="shield"&&i.system.equipped)?1:0;
+ return Math.min(9,Math.max(0,natural+modifier+shield));
 }

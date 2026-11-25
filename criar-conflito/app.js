@@ -1,16 +1,16 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261125-v0149";
+ from "./rules.mjs?v=20261125-v0150";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,isCriticalFace,SITUATIONS}
- from "./roll-engine.mjs?v=20261125-v0149";
-import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261124-colossal-v0114";
+ from "./roll-engine.mjs?v=20261125-v0150";
+import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261125-v0150";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:4});
-const catalog=(window.CODEX_G1_CATALOG||[]).filter(x=>Number(x.grade)===1&&x.kind!=="focus");
+const catalog=(window.CODEX_G1_CATALOG||[]).filter(x=>Number(x.grade)===1&&x.kind!=="focus"&&!x.legacy);
 const diePath={
  4:'<polygon points="21,4 39,36 3,36"/><path d="M21 4 L21 27 L3 36 M21 27 L39 36"/>',
  6:'<polygon points="21,3 37,12 37,30 21,39 5,30 5,12"/><path d="M5 12 L21 21 L37 12 M21 21 L21 39"/>',
@@ -485,7 +485,7 @@ function inventory(t,x){
     ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
-  '<p class="cf-note">Integridades G1 vigentes: Roupas Simples/Muito Leve 2, Leve 5, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
+  '<p class="cf-note">Integridades G1 vigentes: Leve 5, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
 }
 
 

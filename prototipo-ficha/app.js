@@ -30,7 +30,7 @@ const RACES={
  humano:["Humano","Perseverança Humana + Especialização em Armas de Fogo inicial gratuita (não concede Perícia em Armas de Fogo).","Sem custos raciais adicionais."],
  lucker_sangue:["Lucker de Sangue","Perícia em Elemento Sangue gratuita; linhagem exclusiva de Transfusão Sanguinária (que não é gratuita).","Vigor/Agilidade: desconto; Influência/Apresentação: faixa elevada."],
  lucker_puro:["Lucker Puro","Criar Item de Foco e Magia custa 0 XP somente após cumprir Disciplina 1, Inteligência 1 e Artesão 1; um elemento gratuito à escolha: Fogo, Água, Ar, Terra ou Sagrado. Veneno, Sangue e Trevas não são opções iniciais.","Inteligência/Destreza: desconto; Força/Atletismo: faixa elevada."],
- runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
+ runa_espinhos:["Runa Espinhos","Pugilismo, Criar Item de Foco e Magia, um elemento (Ar/Água/Terra/Fogo) e Escudo Rúnico gratuitos. Não pode usar armadura física; pode equipar escudos físicos normalmente; 1 conjuração do Escudo Rúnico é gratuita por dia.","Vigor/Força: desconto; Agilidade/Destreza: faixa elevada."]
 };
 // v0.94: Lucker Puro escolhe um elemento básico ou Sagrado; especiais não são gratuitos.
 // Vento é o identificador interno da Perícia em Ar.
@@ -421,7 +421,7 @@ const SKILLS=[
  [
   "maestria-escudos",
   "Maestria em Escudos",
-  "1 XP. Requisitos: Destreza 2 + Vigor 2. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 12, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
+  "1 XP. Requisitos: Destreza 2 + Vigor 2 + Força 1 + Proteção 1. Ao usar escudo físico equipado, ganha +1 à DE defensiva (teto 9, sem acumular por vários escudos) e +1 de Integridade material nesse escudo. O ponto adicional não altera Integridade-base nem E+P de Levantar Escudo.",
   1
  ],
  [
@@ -881,7 +881,7 @@ const SKILL_AFFINITY={
  "sacrificio-heroico":["attr:vigor","practice:atletismo","know:protecao"],
  "escudo-refletor":["know:protecao","attr:vigor","attr:destreza"],
  "sentido-elemental":["attr:inteligencia","practice:armas_conjuracao","know:erudicao"],
- "maestria-escudos": ["attr:destreza","attr:vigor","know:protecao"],
+ "maestria-escudos": ["attr:destreza","attr:vigor","attr:forca","know:protecao"],
  "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
  "maestria-arremesso-armas": [
   "practice:armas_conjuracao",
@@ -1304,7 +1304,7 @@ const CARD_REQUIREMENTS={
  "desencantar":"Cancelar Magia",
  "espelho-magico":"Cancelar Magia",
  "manejo-perfeito": "Especialização em Disciplina + Destreza 2",
- "maestria-escudos": "Destreza 2 + Vigor 2",
+ "maestria-escudos": "Destreza 2 + Vigor 2 + Força 1 + Proteção 1",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
  "pericia-montaria": "Influência 1 + Destreza 2; custo em XP PENDENTE",
@@ -1394,7 +1394,7 @@ const CARD_EFFECTS={
  "mudanca-elemental":"Altera o elemento de criatura, armadura ou ambiente até 8 m para um elemento em que possui Perícia; duração E − P (>0); unidade temporal e resistência pendentes.",
  "desencantar":"Remove elementos ou imunidades a até 8 m; não remove o elemento natural constitutivo de criatura feita desse elemento. Teste, custo e duração pendentes.",
  "espelho-magico":"Passivo: reflete ao conjurador a parcela do dano mágico provocada por Pavor mantido, mesmo se a armadura da vítima absorveu ou anulou totalmente o dano. Não funciona contra dano físico.",
- "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 12) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
+ "maestria-escudos": "+1 DE defensiva com escudo físico equipado (teto total 9) e +1 Integridade material apenas nesse escudo; não aumenta a armadura nem os E+P simbólicos de Levantar Escudo.",
  "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
  "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
@@ -1482,7 +1482,7 @@ const CARD_BRIEFS={
  "mudanca-elemental":"1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente até 8 m para elemento habilitado; duração E − P, exigindo resultado positivo.",
  "desencantar":"1 XP; Cancelar Magia. Remove elementos ou imunidades em 8 m, exceto elemento natural constituinte de criatura elemental; teste e ativação pendentes.",
  "espelho-magico":"1 XP; Cancelar Magia. Passivo; reflete dano mágico por Pavor mantido antes da armadura absorver ou anular, mesmo se a Vida não for atingida; somente magia.",
- "maestria-escudos": "1 XP; Destreza 2 e Vigor 2. Com escudo equipado, +1 DE defensiva (teto 12, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
+ "maestria-escudos": "1 XP; Destreza 2, Vigor 2, Força 1 e Proteção 1. Com escudo equipado, +1 DE defensiva (teto 9, único) e +1 Integridade material da peça. Bônus separado da Integridade-base.",
  "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
@@ -1955,7 +1955,7 @@ function equipmentDetails(item){
  if(item.die>0)info.push("d"+item.die+" com Perícia");
  if(kind==="armor"||kind==="armadura"){
   info.push("Integridade "+(item.integrity?.max??item.max??0));
-  info.push(({muito_leve:"+2 DE",leve:"+1 DE",medio:"0 DE",pesado:"−1 DE",extremo:"−2 DE"})[equipmentWeight(item)]||"DE a conferir");
+  info.push(({muito_leve:"0 DE (legado)",leve:"0 DE",medio:"−1 DE",pesado:"−2 DE",extremo:"−3 DE"})[equipmentWeight(item)]||"DE a conferir");
  }else if(kind==="shield"||kind==="escudo")info.push("Integridade "+(kind==="escudo"?shieldIntegrityDisplay(item).max:(item.integrity?.max??item.max??0))+(kind==="escudo"&&shieldMasteryActive(item)?" (+1 Maestria)":""));
  if(item.range>0)info.push("Alcance "+item.range+" m");
  if(item.kitContainer)info.push("Kit: "+item.kitContainer+" + 20 projéteis");
@@ -2108,11 +2108,11 @@ const WIZARD_CATEGORIES=[
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
- agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui à DE defensiva em conjunto com Destreza e Vigor, além do deslocamento."],
- destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui à DE defensiva em conjunto com Vigor, além do deslocamento."],
+ destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para ações que dependem de coordenação e deslocamento, não para DE natural."],
  inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
  influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
- vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Agilidade e Destreza e então divide por 2. Contribui para a Vida."]
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Agilidade e então divide por 2. Contribui para a Vida."]
 };
 const WIZARD_TRAINING_GUIDE={
  "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
@@ -2557,7 +2557,7 @@ function setItemPosition(it,pos){
 function normalizeItem(it={}){
  const type=["arma","armadura","escudo","foco","ferramenta","outro"].includes(it.type)?it.type:"outro";
  const grade=clamp(Math.floor(it.grade??1),1,4),qty=it.ammoRole?1:clamp(Math.floor(it.qty??1),1,99);
- const weight=Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
+ const weight=type==="armadura"&&it.weight==="muito_leve"?"leve":Object.hasOwn(WEIGHTS,it.weight)?it.weight:"leve";
  const max=clamp(Math.floor(it.max??0),0,999);
  // v0.77: armadura pesada não é escudo pesado; Cravar fica preso ao escudo físico.
  const embed=type==="escudo"&&["medio","pesado"].includes(it.embeddedWeapon)&&
@@ -2572,7 +2572,7 @@ function normalizeItem(it={}){
   elementalResistance:String(it.elementalResistance||"").slice(0,70),
   secondResistance:String(it.secondResistance||"").slice(0,70),specificImmunity:String(it.specificImmunity||"").slice(0,70),
   g4ElementalMode:it.g4ElementalMode==="immunity"?"immunity":"resistances",
-  catalogId:String(it.catalogId||"").slice(0,90),category:String(it.category||"").slice(0,20),
+  catalogId:String(it.catalogId||"").slice(0,90),category:type==="armadura"&&["muito-leve","muito_leve"].includes(it.category)?"leve":String(it.category||"").slice(0,20),
   die:[6,10,12].includes(Number(it.die))?Number(it.die):0,range:clamp(Math.floor(it.range||0),0,1000),
   priceVT:clamp(Math.floor(it.priceVT||0),0,10000),
   properties:Array.isArray(it.properties)?it.properties.filter(x=>typeof x==="string").slice(0,6):[],
@@ -2782,7 +2782,7 @@ function skillReq(id,s=state){
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
   if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
-  if(id==="maestria-escudos"&&(dex<2||vig<2))return"Requer Destreza 2 e Vigor 2.";
+  if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
@@ -2835,7 +2835,7 @@ function renderXP(){
 }
 function deNatural(s=state){
  const a=s.attributes||{};
- return Math.min(11,2+Math.floor(((a.agilidade||0)+(a.vigor||0)+(a.destreza||0))/2));
+ return Math.min(8,2+Math.floor(((a.agilidade||0)+(a.vigor||0))/2));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -2847,7 +2847,7 @@ function canEquipArmor(s=state,it=null){
 }
 // Bônus de Maestria em Escudos: apenas uma peça física equipada recebe os bônus.
 function masteredShield(s=state){
- return ownsSkill("maestria-escudos",s)?(s.items||[]).find(it=>it.type==="escudo"&&it.equipped)||null:null;
+ return ownsSkill("maestria-escudos",s)&&(s.attributes?.destreza||0)>=2&&(s.attributes?.vigor||0)>=2&&(s.attributes?.forca||0)>=1&&(s.knowledges?.protecao||0)>=1?(s.items||[]).find(it=>it.type==="escudo"&&it.equipped)||null:null;
 }
 function shieldMasteryActive(item,s=state){
  const shield=masteredShield(s);
@@ -2910,26 +2910,26 @@ function prepareShieldBoomerang(id){
 function equippedArmor(s=state){return s.items.find(it=>it.type==="armadura"&&it.equipped&&canEquipArmor(s,it))||null;}
 function armorDePenalty(s=state){
  const it=equippedArmor(s);
- return ({leve:1,medio:2,alto:3,extremo:4})[it?.weight]||0;
+ return ({leve:0,medio:1,alto:2,extremo:3})[it?.weight]||0;
 }
 function armorDodgeBonus(s=state){
  return 0; // Armaduras não concedem bônus de DE.
 }
 // Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
-// Teto da DE base: 11. Teto absoluto após modificadores: 12.
+// Teto da DE base: 8. Teto absoluto após modificadores: 9.
 function deDefense(s=state){
- return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
+ return Math.min(9,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
 }
 function deDodge(s=state){return deDefense(s);} // Esquiva não recebe um segundo bônus.
 function defensePresentation(s=state){
  const natural=deNatural(s),total=deDefense(s),bonus=armorDodgeBonus(s),penalty=armorDePenalty(s);
  const armor=equippedArmor(s);
- const type=armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
+ const type=armor?({muito_leve:"Leve (legado)",leve:"Leve",medio:"Média",alto:"Pesada",extremo:"Muito Pesada"}[armor.weight]||armor.name):null;
  const modifier=bonus-penalty,shieldBonus=masteredShield(s)?1:0;
  const baseCaption=armor?
   "DE base "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
   "DE base "+natural;
- return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 11 / final 12"};
+ return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 8 / final 9"};
 }
 function capacity(){return 1.5+(state.attributes.forca||0)+Math.floor((state.attributes.vigor||0)/2);}
 function bodyCapacity(){return capacity()-.5;}
@@ -2949,7 +2949,7 @@ function itemLoad(it){
 function loadUsed(){return state.items.reduce((n,it)=>n+itemLoad(it),0)+resourceWeight(); /* Recursos de troca também ocupam Carga. */}
 function loadPercent(){return 100*loadUsed()/Math.max(1,capacity());}
 function loadStatus(p){return p>=100?"Sobrecarga":"Dentro da capacidade";}
-function balance(){if(NPC_MODE)return "Pendente";if(state.race==="runa_espinhos")return "Pesado";const armor=equippedArmor();return armor?({muito_leve:"Muito Leve",leve:"Leve",medio:"Médio",alto:"Pesado",extremo:"Muito Pesado"}[armor.weight]||"Pendente"):"Sem armadura";}
+function balance(){if(NPC_MODE)return "Pendente";if(state.race==="runa_espinhos")return "Pesado";const armor=equippedArmor();return armor?({muito_leve:"Leve (legado)",leve:"Leve",medio:"Médio",alto:"Pesado",extremo:"Muito Pesado"}[armor.weight]||"Pendente"):"Sem armadura";}
 // A prévia subtrai o peso dos recursos de troca realmente gastos na compra.
 function purchaseLoadPreview(entry,price){
  const current=loadUsed(),added=catalogPurchaseRows(entry).reduce((n,row)=>n+itemLoad(normalizedCatalogItem(row.ammoRole==="supply"?{...row,ammoMix:{[ammoTypesFor(row.ammoFamily)[0]]:20}}:row)),0);
@@ -3167,7 +3167,7 @@ function renderRacePanel(){
   (raceCaution()?'<p>XP PENDENTE: '+esc(raceCaution())+'</p>':'')+
  (state.race==="lucker_puro"&&!state.pureElement&&state.creationLocked?
   '<label class="fp-wiz-field">Atualizar elemento de origem (uma única escolha gratuita)<select data-race-element="pure"'+(state.pending?' disabled':'')+'>'+raceOptions(PURE_ELEMENTS,state.pureElement)+'</select></label><p><small>O elemento anterior foi preservado nas notas; não há cobrança de XP nem alteração das Perícias compradas.</small></p>':'')+
- (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência elemental padrão (0,5 dano por E e 0 dano por P do elemento escolhido) e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas.</p>'+
+ (state.race==="runa_espinhos"?'<p><strong>Escudo Rúnico:</strong> Escudo Arcano racial; resistência elemental padrão (0,5 dano por E e 0 dano por P do elemento escolhido) e conversão defensiva de 2P em 1E (somente na barreira). <strong>'+(state.runeShieldFreeUsed?'Uso diário gasto':'1 uso gratuito disponível hoje')+'</strong>. Outras ativações custam 1 Coragem. Não pode equipar armaduras físicas; pode equipar escudos físicos.</p>'+
  '<button type="button" data-action="rune-shield-use"'+(state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Marcar ativação gratuita</button> '+
  '<button type="button" data-action="rune-shield-reset"'+(!state.runeShieldFreeUsed||!!state.pending?' disabled':'')+'>Restaurar uso diário</button>'+
  (state.runeElements?.[1]?'<p><small>Ficha legada: o segundo elemento '+esc(RUNE_ELEMENTS.find(([id])=>id===state.runeElements[1])?.[1]||state.runeElements[1])+' foi preservado apenas como dado histórico; não é mais gratuito e pode ser comprado separadamente.</small></p>':''):'')+
@@ -3552,7 +3552,7 @@ const GENE_AUTO_REQUIREMENTS={
  "mudanca-elemental":[["s:transformacao-elemental","a:destreza:4","a:inteligencia:4"]],
  "desencantar":[["s:cancelar-magia"]],
  "espelho-magico":[["s:cancelar-magia"]],
- "maestria-escudos":[["a:destreza:2","a:vigor:2"]],
+ "maestria-escudos":[["a:destreza:2","a:vigor:2","a:forca:1","k:protecao:1"]],
  "escudo-bumerangue":[["a:destreza:2","a:forca:3","s:maestria-arremesso-armas","s:maestria-escudos"]],
  "maestria-arremesso-armas":[
   ["a:forca:2","a:destreza:2","a:agilidade:1","s:armas-leves"],
@@ -4257,8 +4257,8 @@ function vitalHelpDetails(kind){
  courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
- defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 11 e total com modificadores limitado a 12.",
- "DE base: min(11, 2 + ⌊(AGI "+(a.agilidade||0)+" + VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 8 e total com modificadores limitado a 9.",
+ "DE base: min(8, 2 + ⌊(AGI "+(a.agilidade||0)+" + VIG "+(a.vigor||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Leve 0; Média −1; Pesada −2; Muito Pesada −3). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
@@ -4589,7 +4589,7 @@ function renderComposer(){
  const canTrevas=isShared&&draft.mode==="conjuracao"&&ownsSkill("trevas");
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
- const weight=[["leve","Muito Leve / Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
+ const weight=[["leve","Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
  const selectedItem=state.items.find(x=>x.id===draft.equipmentId);
  const throwingShield=!!draft.shieldThrowId;
  const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
@@ -5284,14 +5284,14 @@ function renderInventory(){
   );
   const armorFields=it.type!=="armadura"?"":(
    (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade; não altera a DE natural.</div>':"")+
-   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> −1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
-   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> −2 DE; resistência específica desde Grau 2.</div>':"")+
-   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −3 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
-   (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −4 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
+   (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> 0 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
+   (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> −1 DE; resistência específica desde Grau 2.</div>':"")+
+   (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −2 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
+   (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −3 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Muito Leve 2, Leve 5, Média 8, Pesada 12 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Leve 5, Média 8, Pesada 12 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
   const shieldMasteryHint=it.type!=="escudo"?"":(
