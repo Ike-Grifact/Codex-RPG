@@ -740,7 +740,7 @@ Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida manté
 
 ##### Exemplo de perda de Vida
 
-Ælfwynne tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones da esquerda para a direita, a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
+Eldric tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones da esquerda para a direita, a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
 
 | Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado | Penalidades e custo para agir |
 |---:|---|---|---|---|---|---|
@@ -925,15 +925,15 @@ Esses valores são limites possíveis, não dificuldades recomendadas nem garant
 
 Você começa com 15 XP compartilhados. Compre pelo menos um Atributo no Grau 1 ou superior e um Conhecimento ou uma Prática no Grau 1 ou superior. Se a origem já concedeu um Atributo G1, esse requisito está atendido. Com os custos normais, o mínimo custa 3 XP e deixa 12 XP livres. Distribua o restante como preferir, respeitando os requisitos.
 
-[Abra a ficha imprimível A4](../ficha-imprimivel.html), veja a [ficha preenchida de Ælfwynne](../ficha-exemplo.html) ou o [criador digital](../prototipo-ficha/).
+[Abra a ficha imprimível A4](../ficha-imprimivel.html), veja a [ficha preenchida de Eldric](../ficha-exemplo.html) ou o [criador digital](../prototipo-ficha/).
 
 ### 1. Identidade
 
-Vamos preencher a ficha de Ælfwynne, uma Aprendiz humana de nível 1, Marco I, que protege caravanas. Virtude: lealdade; personalidade: cautelosa. O conceito orienta suas escolhas, mas não concede bônus.
+Vamos preencher a ficha de Eldric, um Aprendiz humano de nível 1, Marco I, que protege caravanas. Virtude: lealdade; personalidade: cauteloso. O conceito orienta suas escolhas, mas não concede bônus.
 
 ### 2. Aptidões e Perícias
 
-Registre o Grau, os dados e o XP acumulado em cada Aptidão. Ælfwynne desenvolve as capacidades abaixo. As demais ficam no Grau 0, com os dados iniciais da categoria. Ela investe 13 XP em Aptidões e 2 XP na Perícia em Armas Leves (requer Disciplina 1). A Perícia é anotada na seção de Perícias e não fornece uma pilha própria. Concessões gratuitas de linhagem não consomem XP.
+Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve as capacidades abaixo. As demais ficam no Grau 0, com os dados iniciais da categoria. Ele investe 13 XP em Aptidões e 2 XP na Perícia em Armas Leves (requer Disciplina 1). A Perícia é anotada na seção de Perícias e não fornece uma pilha própria. Concessões gratuitas de linhagem não consomem XP.
 
 | Aptidão / Perícia | Grau | Dados | XP |
 |---|---|---|---|
@@ -948,15 +948,15 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Ælfwynne desenvolv
 
 ### 3. Vida, Coragem, defesa e movimento
 
-Aplicando as regras apresentadas após os Atributos: Ælfwynne tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
+Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
 
 ### 4. Equipamentos, peso e carga
 
-Ælfwynne escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Ælfwynne começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
-Em um acerto comum de 3E e 2T não anulados, Ælfwynne sofre 4 de dano à Integridade. Registre a armadura de 5/5 para 1/5; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 5/5 em vez de recuperar Coragem.
+Em um acerto comum de 3E e 2T não anulados, Eldric sofre 4 de dano à Integridade. Registre a armadura de 5/5 para 1/5; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 5/5 em vez de recuperar Coragem.
 
 ## Perícias, ramos e especializações
 
