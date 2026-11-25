@@ -248,7 +248,9 @@ Os benefícios **se somam**: com três dados críticos, você também pode troca
 
 ### Dificuldade de Êxito: o que é preciso conseguir?
 
-A Dificuldade de Êxito (DE) indica quantos símbolos você precisa reunir para alcançar o objetivo de uma ação. Depois de escolher os dados que vai manter e decidir como gastar Antecipar, conte os Êxitos e o Temor que não foi anulado. Se a soma alcançar ou superar a DE, o teste é bem-sucedido. O Temor ajuda a alcançar a dificuldade, mas continua trazendo riscos.
+A Dificuldade de Êxito (DE) é o valor que você precisa alcançar para realizar uma ação. Depois de escolher os dados mantidos e resolver os gastos de Antecipar, some os Êxitos e o Temor restante. Se essa soma for igual ou superior à dificuldade, você consegue realizar a ação. O Temor ajuda a alcançar esse valor, mas pode trazer consequências.
+
+**Para determinar o acerto:** ᛋ E + ᚦ T não anulado ≥ DE.
 
 **Exemplo:** Imagine um teste de DE 3. Se você mantiver 2 Êxitos e 1 Temor não anulado, alcança a dificuldade, mas o acerto não é limpo. Se anular esse Temor sem conseguir outro Êxito, terá apenas 2 símbolos válidos e falhará. Por isso, anular todo o Temor nem sempre é a melhor escolha.
 
@@ -261,7 +263,12 @@ Os cálculos de defesa natural e armaduras estão na parte de combate.
 
 ### Resultados e protagonismo
 
-Primeiro descubra se a ação alcançou seu objetivo: depois de manter os dados e gastar Antecipar, compare a soma dos Êxitos e do Temor não anulado com a DE. Depois observe o Temor restante. Sem Temor, o resultado é limpo; com Temor igual ou inferior aos Êxitos, é misto; com mais Temor que Êxitos, é arriscado. Um empate entre Êxitos e Temor, quando há Temor, é misto.
+Uma rolagem responde a duas perguntas diferentes: **você conseguiu realizar a ação?** E **quanto risco permaneceu no resultado?** Depois de resolver os gastos de Antecipar, faça as duas verificações:
+
+1. **Acerto ou falha:** some os Êxitos e o Temor restante. Se alcançar ou superar a DE, é um acerto; caso contrário, é uma falha.
+2. **Limpo, misto ou arriscado:** se não restou Temor, o resultado é limpo. Se restou Temor em quantidade igual ou inferior aos Êxitos, é misto. Se o Temor supera os Êxitos, é arriscado.
+
+Essas classificações são independentes: uma falha pode ser limpa, assim como um acerto pode ser arriscado.
 
 | Resultado | DE | Temor restante | Na prática |
 |---|---|---|---|
@@ -272,11 +279,48 @@ Primeiro descubra se a ação alcançou seu objetivo: depois de manter os dados 
 | Falha Mista | Não alcança a DE | Há Temor, mas não supera os Êxitos | O objetivo não é alcançado. Há risco de intervenção e normalmente perde 1 Coragem. |
 | Falha Arriscada | Não alcança a DE | Mais Temor que Êxitos | O objetivo não é alcançado e o Temor predomina. Há risco de consequências graves e normalmente perde 1 Coragem. |
 
-**Exemplo:** Em um teste de DE 4, 3E + 1T é um Acerto Misto; 1E + 3T é um Acerto Arriscado. Se a DE for 5, os mesmos resultados se tornam Falha Mista e Falha Arriscada, respectivamente. Com 2E + 2T, o resultado também é misto: o Temor não supera os Êxitos.
+### O mesmo resultado, dificuldades diferentes
 
-**Destino do Temor:** Em ataques contra um adversário declarado, o Temor mantido e não anulado é transferido à reserva local desse alvo, mesmo que esteja distante ou que o ataque falhe. Não é transferido ao inimigo mais próximo. O adversário só pode gastar a reserva em oportunidades válidas; Temor não concede turnos extras. Inimigos começam cada conflito com reserva cheia: G1 4T, G2 5T, G3 6T, G4 7T, G5–G6 8T. A distribuição em ataques de área, múltiplos alvos ou ações sem adversário atacado permanece pendente.
+Imagine quatro rolagens que, depois dos gastos de Antecipar, totalizaram quatro símbolos válidos. Todas alcançam uma dificuldade 4, mas nenhuma alcança uma dificuldade 5. O risco, por sua vez, depende de como esses símbolos estão distribuídos.
 
-Antecipar permite anular Temor (1A por 1T), converter símbolos (2A em 1E) ou passar a oportunidade a um aliado (1A inicial, dobrando conforme as participações do aliado), antes da intervenção, conservando o Temor que não foi anulado. Cada símbolo só pode ser gasto uma vez.
+| Resultado final dos símbolos | DE 4 | DE 5 | Por quê? |
+|---|---|---|---|
+| ᛋ 4E + ᚦ 0T | Acerto Limpo | Falha Limpa | Não restou Temor. |
+| ᛋ 3E + ᚦ 1T | Acerto Misto | Falha Mista | O Temor é menor que os Êxitos. |
+| ᛋ 2E + ᚦ 2T | Acerto Misto | Falha Mista | O empate também é misto. |
+| ᛋ 1E + ᚦ 3T | Acerto Arriscado | Falha Arriscada | O Temor supera os Êxitos. |
+
+### Para onde vai o Temor?
+
+Quando você ataca um único adversário, o Temor que permaneceu nos dados mantidos após os gastos de Antecipar é transferido à **reserva local do alvo do ataque**. Isso acontece mesmo se o ataque falhar ou se o alvo estiver distante. Símbolos anulados ou descartados não são transferidos.
+
+**Exemplo:** você dispara uma flecha contra um inimigo distante e termina a rolagem com ᚦ 2T não anulados. Esses dois pontos vão para a reserva do inimigo que você atacou, até o teto da reserva dele. Um inimigo ao seu lado não recebe esses pontos só por estar mais perto. Receber Temor não concede um turno extra: o adversário pode gastar sua reserva quando tiver uma oportunidade válida.
+
+No início de cada conflito, os inimigos têm a reserva local cheia. O teto e o saldo inicial dependem do Grau da ameaça:
+
+| Grau da ameaça | Temor inicial e máximo |
+|---|---:|
+| G1 | ᚦ 4T |
+| G2 | ᚦ 5T |
+| G3 | ᚦ 6T |
+| G4 | ᚦ 7T |
+| G5–6 | ᚦ 8T |
+
+A reserva não se enche automaticamente a cada rodada. Quando um inimigo ataca um personagem jogador, cada Temor não anulado gera 1 Coragem para o personagem atacado, respeitando seu teto. A distribuição do Temor em ataques de área, com vários alvos ou em ações sem adversário atacado ainda está pendente de definição geral.
+
+### Como Antecipar muda o resultado
+
+Antes de concluir a ação e da intervenção da oposição, você pode gastar Antecipar para escolher como lidar com os símbolos obtidos. Existem três usos básicos:
+
+| O que você quer fazer | Custo | Efeito |
+|---|---|---|
+| Anular Temor | ᚨ 1A | Remove ᚦ 1T do próprio resultado. Reduz o risco, mas também a soma que conta para o acerto. |
+| Gerar Êxito | ᚨ 2A | Acrescenta ᛋ 1E ao resultado. |
+| Passar a oportunidade a um aliado | ᚨ 1A inicial | Permite que um aliado aja, respeitando o protagonismo. O custo dobra conforme as participações anteriores desse aliado na sequência; o Temor restante não é anulado. |
+
+**Exemplo:** você precisa alcançar uma DE 3 e manteve ᛋ 2E, ᚨ 1A e ᚦ 1T. Se gastar o Antecipar para anular o Temor, restam dois Êxitos: uma falha limpa. Se usar esse mesmo Antecipar para passar a oportunidade a um aliado que ainda não agiu na sequência, os dois Êxitos e o Temor permanecem: um acerto misto, com a oportunidade passada conforme as regras de protagonismo.
+
+Cada símbolo Antecipar pode ser gasto uma única vez. Você não pode usar o mesmo símbolo para anular Temor, criar Êxito e passar a oportunidade. Consulte Turnos e rodadas para entender como o custo de passagem aumenta.
 
 O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. Um ataque que não resulte em Acerto Limpo e não tenha passagem válida por Antecipar devolve a oportunidade à oposição. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
 
