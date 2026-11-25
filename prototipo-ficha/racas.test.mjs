@@ -135,7 +135,7 @@ test("Livro e portal não apresentam opções raciais revogadas como gratuitas",
  assert.ok(!portal.includes("dois elementos diferentes entre Ar, Água, Terra e Fogo"));
  assert.ok(!portal.includes("Criar Item de Foco e Magia + Sangue, Trevas ou Veneno"));
  assert.ok(portal.includes("Escudo Rúnico"),"Escudo Rúnico precisa constar da tabela racial");
- assert.ok(book.includes("Sangue, Trevas e Veneno não são opções gratuitas de origem"));
+ assert.ok(book.includes("Uma Perícia elemental gratuita à escolha: Fogo, Água, Ar, Terra ou Sagrado."),"A lista positiva de escolhas de origem deve permanecer restrita às cinco opções aprovadas");
 });
 
 test("Migração da concessão Lucker Puro legada não vira XP nem apaga Perícia comprada",()=>{
