@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261125-v0150";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261125-v0150";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261125-v0150";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0150";
+ from "./comparador-logic.mjs?v=20261125-v0151";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261125-v0151";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261125-v0151";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0151";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -916,7 +916,7 @@ function demo(){
  setup("Saqueador","inimigos","humanoide",
   {agilidade:1,vigor:1,destreza:1},{armas_conjuracao:1},["armas-leves"],
   [{id:"armadura-1",name:"Armadura Leve",kind:"armor",category:"leve",grade:1,
-   integrityMax:5,integrity:5,equipped:true}]);
+   integrityMax:3,integrity:3,equipped:true}]);
  setup("Lobo","inimigos","monstro",{agilidade:2,forca:1,destreza:1},{},[]);
  log("cenário","Exemplo 2 × 2 criado. As builds de demonstração não substituem fichas reais de 15 XP.");
  persist();render();if(target())$("difficulty").value=String(defense(target()));

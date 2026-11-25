@@ -88,7 +88,7 @@ test("Envio do NPC transporta inventário, Integridade e equipamento",()=>{
  const creature=humanoid();
  creature.items=transfer();
  const received=normalize(creature);
- assert.equal(equippedArmor(received).integrity,1);
+ assert.equal(equippedArmor(received).integrity,0);
  assert.equal(received.items[2].hands,2);assert.equal(received.items[2].position,"quick");
  assert.ok(npcSrc.includes("items:npcConflictItems()"),"envio real não usa lista vazia");
 });

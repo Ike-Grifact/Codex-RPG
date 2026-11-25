@@ -774,7 +774,7 @@ Além da recuperação de Vida, escolha **uma** das duas opções:
 - **Recuperar Coragem:** recupere uma quantidade igual ao seu Grau de Vigor + 1, até o limite da reserva.
 - **Reparar a armadura:** use um kit de reparo adequado à peça. Nesse descanso, você não recupera Coragem pela regra de Vigor.
 
-Exemplo: Eldric tem Vigor 1, 5/10 Coragens, 4/6 de Vida e uma armadura Leve com 1/5 de Integridade. Após um descanso longo válido, fica com 5/6 de Vida. Se escolher recuperar Coragem, fica com 7/10 e mantém a Integridade 1/5. Se escolher reparar, fica com 5/10 Coragens e restaura a Integridade para 5/5.
+Exemplo: Eldric tem Vigor 1, 5/10 Coragens, 4/6 de Vida e uma armadura Leve com 1/3 de Integridade. Após um descanso longo válido, fica com 5/6 de Vida. Se escolher recuperar Coragem, fica com 7/10 e mantém a Integridade 1/3. Se escolher reparar, fica com 5/10 Coragens e restaura a Integridade para 3/3.
 
 ##### Reparando a armadura
 
@@ -785,7 +785,7 @@ Um **kit de reparo custa 3 VT**, valor correspondente ao material necessário pa
 | Leve | Toda a Integridade perdida. |
 | Média, Pesada ou Muito Pesada | Metade da Integridade máxima, sem ultrapassar o máximo da peça. |
 
-Exemplo: uma armadura Média com 3/8 de Integridade recupera 4 pontos, chegando a 7/8.
+Exemplo: uma armadura Pesada com 3/12 de Integridade recupera 6 pontos, chegando a 9/12.
 
 ##### Outros efeitos do descanso
 
@@ -959,11 +959,11 @@ Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas
 
 ### 4. Equipamentos, peso e carga
 
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 5). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 3). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
-Em um acerto comum de 3E e 2T não anulados, Eldric sofre 4 de dano à Integridade. Registre a armadura de 5/5 para 1/5; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 5/5 em vez de recuperar Coragem.
+Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 3/3 para 1/3; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 3/3 em vez de recuperar Coragem.
 
 ## Perícias, ramos e especializações
 
@@ -1204,8 +1204,8 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 | Tipo | Integridade | DE | Progressão elemental |
 |---|---|---|---|
-| **Leve** | **G1: 5 de Integridade (playtest)** | **0 DE** | **Grau 3+:** pode ter resistência elemental |
-| **Média** | **G1: 8 de Integridade (playtest)** | **−1 DE** | **Grau 2+:** pode receber resistências específicas |
+| **Leve** | **G1: 3 de Integridade (playtest)** | **0 DE** | **Grau 3+:** pode ter resistência elemental |
+| **Média** | **G1: 7 de Integridade (playtest)** | **−1 DE** | **Grau 2+:** pode receber resistências específicas |
 | **Pesada** | **G1: 12 de Integridade (playtest)** | **−2 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
 | **Muito Pesada** | Valor **PENDENTE** | **−3 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
 

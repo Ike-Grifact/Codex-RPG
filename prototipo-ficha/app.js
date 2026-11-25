@@ -2419,15 +2419,15 @@ function normalize(v){
   createdThisRound:clamp(Math.floor(typeof v.spiritualSpheres?.createdThisRound==="boolean"?(v.spiritualSpheres.createdThisRound?1:0):Number(v.spiritualSpheres?.createdThisRound)||0),0,5)
  };
  s.xp=clamp(Math.floor(v.xp),0,1e9);
- // Migração idempotente (playtest 22/11): G1 3/7/12/17 → 2/5/8/12.
+ // Migração idempotente (SRD v0.151): armaduras G1 Leve 3, Média 7, Pesada 12.
  // Conserva o dano já sofrido, inclusive após alterações históricas 10/15/20.
  s.items=Array.isArray(v.items)?v.items.slice(0,150).map(raw=>{
   const item=normalizeItem(raw);
   if(item.type!=="armadura"||item.grade!==1)return item;
   const updates={
    "Roupas Simples":{0:2,3:2},
-   "Armadura Leve":{7:5,10:5},
-   "Armadura Média":{12:8,15:8},
+   "Armadura Leve":{5:3,7:3,10:3},
+   "Armadura Média":{8:7,12:7,15:7},
    "Armadura Pesada":{17:12,20:12}
   };
   const map=updates[item.catalogId||item.name],nextMax=map?.[item.max];
@@ -5291,7 +5291,7 @@ function renderInventory(){
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+
-   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Leve 5, Média 8, Pesada 12 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
+   '<div class="fp-item-hint">Acesso por Grau: G1 desde nível 1 · G2 desde 5 · G3 desde 10 · G4 desde 20. Integridade G1 do catálogo: Leve 3, Média 7, Pesada 12 (valores de playtest). Nos graus superiores sem valor documentado, Integridade PENDENTE.</div>'
   );
   const shieldIntegrity=it.type==="escudo"?shieldIntegrityDisplay(it):null;
   const shieldMasteryHint=it.type!=="escudo"?"":(
